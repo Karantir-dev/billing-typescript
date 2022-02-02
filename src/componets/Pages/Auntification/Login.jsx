@@ -21,10 +21,14 @@ const Login =(props)=>{
     const token = useSelector(state => state.auth.token)
     const data = useSelector(state => state.auth.loginData)
     const error = useSelector(state => state.auth.loginError);
+    
     const handleSubmit = (event, email, password,lang) => {
         event.preventDefault()
-        props.loginHandler(email, password,lang)
-        
+        if(!email){
+          return
+        } else {
+          props.loginHandler(email, password,lang)
+        }
       }
     
     if (loading){

@@ -4,7 +4,7 @@ import {reactLocalStorage} from 'reactjs-localstorage';
 import { Url } from '../config/config';
 
 export const instance = axios.create ({
-    baseURL: `https://test.hardsoft.cf`,
+    baseURL: `${Url}`,
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
    
   });

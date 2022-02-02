@@ -47,9 +47,9 @@ export const loginHandler = (email, passowrd, lang) => {
         dispatch(setShowLoading(true))
         LoginUser(email, passowrd, lang)
             .then((data) =>{
-                //reactLocalStorage.set('token', data.data.doc.auth.$id)
+                reactLocalStorage.set('token', data.data.doc.auth.$id)
                 dispatch(setData(data))
-                //dispatch(setToken(data.data.doc.auth.$id))
+                dispatch(setToken(data.data.doc.auth.$id))
                 dispatch(setHideLoading(false))
                 })
             .catch((loginError) => {

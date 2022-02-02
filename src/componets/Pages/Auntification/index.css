@@ -7,7 +7,7 @@ input[type=text], select {
     border-radius: 4px;
     box-sizing: border-box;
     margin-left: 35%;
-    margin-top: 15%;
+    margin-top: 10px;
   }
   
 input[type=password] {
@@ -26,6 +26,8 @@ button {
     width: 120px;
     height: 40px;
     background-color: #45a049;
+    margin-top: 18px;
+    margin-left: 35%;
   }
 .select {
    width: 120px;
