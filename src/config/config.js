@@ -1,1 +1,1 @@
-export const Url = `https://test.hardsoft.cf/billmgr`
+export const BASE_URL = `https://test.hardsoft.cf/billmgr`

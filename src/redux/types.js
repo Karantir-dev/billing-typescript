@@ -1,5 +1,0 @@
-export const SET_LOGIN = "SET-LOGIN"
-export const SET_LOGIN_ERROR = "SET-LOGIN-ERROR"
-export const SHOW_LOADING = "SHOW_LOADING"
-export const HIDE_LOADING = "HIDE_LOADING"
-export const SET_TOKEN = "SET_TOKEN"
