@@ -6,20 +6,28 @@ import { SignupPage } from './Pages/SignupPage'
 import { MainPage } from './Pages/MainPage'
 import PasswordResetPage from './Pages/PasswordResetPage'
 import { PrivateRoute } from './Components/PrivateRoute'
+import { PublicRoute } from './Components/PublicRoute'
 
 function App() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/reset" element={<PasswordResetPage />} />
+      <Route
+        path="/login"
+        element={<PublicRoute children={<LoginPage />} restricted redirectTo="/" />}
+      />
+      <Route
+        path="/signup"
+        element={<PublicRoute children={<SignupPage />} restricted redirectTo="/" />}
+      />
+      <Route
+        path="/reset"
+        element={
+          <PublicRoute children={<PasswordResetPage />} restricted redirectTo="/" />
+        }
+      />
       <Route
         path="/"
-        element={
-          <PrivateRoute redirectTo="/login">
-            <MainPage />
-          </PrivateRoute>
-        }
+        element={<PrivateRoute children={<MainPage />} redirectTo="/login" />}
       ></Route>
     </Routes>
   )

@@ -7,6 +7,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import App from './App'
 import entireStore from './Redux/store'
 
+import './index.scss'
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={entireStore.store}>
