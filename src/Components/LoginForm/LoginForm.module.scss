@@ -1,0 +1,98 @@
+@import '../../scss/placeholders.scss';
+
+.form_wrapper {
+  height: fit-content;
+  width: fit-content;
+}
+.auth_links_wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 40px;
+}
+.current_auth_link {
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 99px;
+    background-image: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    box-shadow: 0px 1px 6px rgba(255, 66, 168, 0.7);
+  }
+}
+.auth_link {
+  font-size: 18px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  height: fit-content;
+  padding: 18px;
+  margin-bottom: 25px;
+  background: #fff;
+  box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  height: 50px;
+  padding-left: 16px;
+  border-radius: 3px;
+  border: 1px solid #e2e2e2;
+  font-size: 17px;
+}
+
+.input_wrapper {
+  margin-bottom: 13px;
+}
+
+.submit_btn {
+  @extend %btn;
+  height: 50px;
+  margin-bottom: 15px;
+}
+
+.btn_text {
+  @extend %btn-text;
+  font-size: 18px;
+}
+.reset_pass_link {
+  width: fit-content;
+  margin: 0 auto 15px;
+  font-size: 16px;
+  color: #356ab9;
+  border-bottom: 1px solid #356ab9;
+}
+.social_title {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.social_list {
+  display: flex;
+  width: 100%;
+  padding: 0 50px;
+  justify-content: space-between;
+}
+.captcha {
+  transform: scale(0.74);
+  transform-origin: 0 0;
+  margin-bottom: -5px;
+}

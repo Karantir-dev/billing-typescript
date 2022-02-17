@@ -1,0 +1,14 @@
+body {
+  --accent-gradient: linear-gradient(120deg, #ff3cb1 30%, #e030bd 70%);
+
+  // variables that will be changed on the dark theme
+  --main-bgc: #fdfcff;
+  --main-text: #392955;
+  --btn-bgc: #f9f2ff;
+}
+
+body.dark-theme {
+  --main-bgc: #21192e;
+  --main-text: #fff;
+  --btn-bgc: #3d3649;
+}

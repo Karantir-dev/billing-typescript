@@ -1,8 +1,48 @@
 @import 'modern-normalize';
+@import './scss/fonts.scss';
+@import './scss/variables.scss';
 
 body {
   margin: 0;
-  font-family: 'ProximaNova', sans-serif;
+  font-family: 'Proxima', sans-serif;
+  color: var(--main-text);
+  background-color: var(--main-bgc);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+// ------- reset styles -------
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+th,
+td,
+input {
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+[type='search'] {
+  outline-offset: 0;
 }
