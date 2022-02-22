@@ -1,4 +1,10 @@
 {
   "logIn": "ВОЙТИ",
-  "registration": "ЗАРЕГИСТРИРОВАТСЯ"
+  "registration": "РЕГИСТРАЦИЯ",
+  "email_label": "Почтовый адрес:",
+  "password_label": "Пароль:",
+  "email_placeholder": "Введите ваш email",
+  "password_placeholder": "Введите ваш пароль",
+  "forgot_password": "Забыли пароль?",
+  "login_with": "ВОЙТИ ЧЕРЕЗ:"
 }

@@ -4,7 +4,7 @@ import authActions from './authActions'
 
 const initialState = {
   data: {},
-  token: false,
+  sessionId: null,
   isLoading: false,
 }
 
@@ -13,8 +13,8 @@ const data = createReducer(initialState.data, {
   [authActions.logoutSuccess]: () => ({}),
 })
 
-const token = createReducer(initialState.token, {
-  [authActions.loginSuccess]: (_, { payload }) => true,
+const sessionId = createReducer(initialState.sessionId, {
+  [authActions.loginSuccess]: (_, { payload }) => payload,
   [authActions.logoutSuccess]: () => false,
   [authActions.getCurrentUserSuccess]: () => true,
   [authActions.getCurrentUserError]: () => false,
@@ -37,39 +37,6 @@ const isLoading = createReducer(initialState.isLoading, {
 
 export default combineReducers({
   data,
-  token,
+  sessionId,
   isLoading,
 })
-
-// const appReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case SET_LOGIN:
-//       return {
-//         ...state,
-//         loginData: action.data,
-//       }
-
-//     case SET_LOGIN_ERROR:
-//       return {
-//         ...state,
-//         loginError: action.loginError,
-//       }
-//     case SHOW_LOADING:
-//       return {
-//         ...state,
-//         loading: action.loading,
-//       }
-//     case HIDE_LOADING:
-//       return {
-//         ...state,
-//         loading: action.loading,
-//       }
-//     case SET_TOKEN:
-//       return {
-//         ...state,
-//         token: action.token,
-//       }
-//     default:
-//       return state
-//   }
-// }

@@ -6,7 +6,7 @@ import React from 'react'
 // import { loginHandler } from '../../redux/actions'
 // import Loading from '../Loading/Loading'
 
-export function SignupPage() {
+export function SignupForm() {
   //   const [email, setEmail] = useState(
   //     reactLocalStorage.get('email') !== null ? reactLocalStorage.get('email') : '',
   //   )

@@ -2,8 +2,8 @@ import React from 'react'
 import Icons from '../images/sprite.svg'
 import PropTypes from 'prop-types'
 
-export const Icon = ({ className, name, size }) => (
-  <svg className={className} width={size} height={size}>
+export const Icon = ({ className, name, width, height }) => (
+  <svg className={className} width={width} height={height}>
     <use href={`${Icons}#icon-${name}`} />
   </svg>
 )
@@ -11,6 +11,6 @@ export const Icon = ({ className, name, size }) => (
 Icon.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  size: PropTypes.number,
+  height: PropTypes.number,
+  width: PropTypes.number,
 }

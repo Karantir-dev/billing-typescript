@@ -67,7 +67,7 @@
 .submit_btn {
   @extend %btn;
   height: 50px;
-  margin-bottom: 15px;
+  margin: 15px 0;
 }
 
 .btn_text {
@@ -94,5 +94,10 @@
 .captcha {
   transform: scale(0.74);
   transform-origin: 0 0;
-  margin-bottom: -5px;
+  margin-bottom: -15px;
+}
+.error_message {
+  color: #d93f21;
+  font-size: 13px;
+  line-height: 1.2;
 }

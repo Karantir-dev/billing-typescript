@@ -8,7 +8,7 @@ import './i18n'
 import App from './App'
 import entireStore from './Redux/store'
 
-import './index.scss'
+import './scss/common.scss'
 
 ReactDOM.render(
   <React.StrictMode>

@@ -16,11 +16,8 @@ i18n
     debug: false,
     // Распознавание и кэширование языковых кук
     detection: {
-      order: ['queryString', 'cookie'],
-      cache: ['cookie'],
-    },
-    interpolation: {
-      escapeValue: false,
+      order: ['cookie', 'localStorage', 'navigator'],
+      cache: ['localStorage'],
     },
   })
 

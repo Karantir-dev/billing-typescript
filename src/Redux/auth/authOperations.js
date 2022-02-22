@@ -10,16 +10,7 @@ const axiosInstance = axios.create({
   },
 })
 
-const token = {
-  set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`
-  },
-  unset() {
-    axios.defaults.headers.common.Authorization = ''
-  },
-}
-
-const login = (email, password) => dispatch => {
+const login = (email, password, reCaptcha) => dispatch => {
   dispatch(authActions.loginRequest())
 
   axiosInstance
@@ -28,18 +19,23 @@ const login = (email, password) => dispatch => {
       qs.stringify({
         func: 'auth',
         username: email,
-        password,
+        password: password,
         sok: 'ok',
         out: 'json',
+        'g-recaptcha-response': reCaptcha,
       }),
     )
     .then(({ data }) => {
-      token.set(data.doc.auth.$id)
+      if (data.doc.error) {
+        throw data.doc.error.msg.$
+      }
 
-      dispatch(authActions.loginSuccess(data))
+      console.log(data.doc.auth.$id)
+      dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
     .catch(err => {
-      dispatch(authActions.loginError())
+      console.log(err)
+      dispatch(authActions.loginError(err))
     })
 }
 
