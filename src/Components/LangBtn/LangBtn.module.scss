@@ -1,32 +1,27 @@
-@import '../../scss/variables.scss';
-
 .btn_wrapper {
-  --width: 64px;
-  --before-width: calc(var(--width) + 4px);
-  --height: 32px;
-  --before-height: calc(var(--height) + 4px);
   position: relative;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: var(--width);
-  height: var(--height);
+  width: 64px;
+  height: 33px;
   padding: 2px;
   border-radius: 99px;
   background-image: var(--accent-gradient);
 }
 
 .btn {
+  --horizontal-text-indent: 5px;
   z-index: 1;
   border-top-left-radius: 99px;
   border-bottom-left-radius: 99px;
   align-self: stretch;
   flex: auto;
-  padding-left: 5px;
+  padding-left: var(--horizontal-text-indent);
   text-align: center;
   font-weight: 600;
   font-size: 16px;
-  background-color: var(--header-footer-bgc);
+  background-color: var(--elements-bgc);
   color: #bebebe;
   cursor: pointer;
 
@@ -36,7 +31,7 @@
     border-top-right-radius: 99px;
     border-bottom-right-radius: 99px;
     padding-left: 0;
-    padding-right: 5px;
+    padding-right: var(--horizontal-text-indent);
   }
 
   &:hover {
@@ -44,7 +39,7 @@
     background-color: transparent;
 
     &:disabled {
-      background-color: var(--header-footer-bgc);
+      background-color: var(--elements-bgc);
     }
   }
 

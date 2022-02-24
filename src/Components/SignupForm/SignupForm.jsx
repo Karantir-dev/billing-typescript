@@ -1,10 +1,12 @@
 import React from 'react'
 // import { reactLocalStorage } from 'reactjs-localstorage'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // import './index.css'
 // import { connect, useSelector } from 'react-redux'
 // import { loginHandler } from '../../redux/actions'
 // import Loading from '../Loading/Loading'
+import * as route from '../../routes'
+import { ThemeBtn } from '../ThemeBtn/ThemeBtn'
 
 export function SignupForm() {
   //   const [email, setEmail] = useState(
@@ -63,7 +65,9 @@ export function SignupForm() {
       </div>
 
       <pre>{JSON.stringify(null, null, 2)}</pre> */}
-      SIGNUP PAGE
+      <ThemeBtn></ThemeBtn>
+      <Link to={route.LOGIN}>LOGIN</Link>
+      <div>SIGNUP PAGE</div>
     </div>
   )
 }

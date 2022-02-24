@@ -9,8 +9,13 @@ import { PrivateRoute } from './Components/PrivateRoute'
 import { PublicRoute } from './Components/PublicRoute'
 import { LoginForm } from './Components/LoginForm/LoginForm'
 import * as route from './routes'
+import { useSelector } from 'react-redux'
+import selectors from './Redux/selectors'
 
 function App() {
+  // const theme = useSelector(selectors.getTheme)
+  // const body = document.querySelector('body')
+
   return (
     <Suspense fallback="Загружаем...">
       <Routes>

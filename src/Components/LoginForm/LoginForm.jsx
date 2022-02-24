@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
+import cn from 'classnames'
 
 import authOperations from '../../Redux/auth/authOperations'
 import { Icon } from '../Icon'
@@ -34,15 +35,16 @@ export function LoginForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue }) => {
+        {({ setFieldValue, errors }) => {
           return (
             <Form className={s.form}>
               <div className={s.input_wrapper}>
                 <label htmlFor="email" className={s.label}>
                   {t('email_label')}
                 </label>
+
                 <Field
-                  className={s.input}
+                  className={cn({ [s.input]: true, [s.error]: errors.email })}
                   name="email"
                   type="text"
                   placeholder={t('email_placeholder')}
@@ -55,7 +57,7 @@ export function LoginForm() {
                   {t('password_label')}
                 </label>
                 <Field
-                  className={s.input}
+                  className={cn({ [s.input]: true, [s.error]: errors.password })}
                   name="password"
                   type="password"
                   placeholder={t('password_placeholder')}
@@ -77,7 +79,6 @@ export function LoginForm() {
                 onErrored={() => {
                   console.log('error')
                 }}
-                theme="light"
               />
 
               <ErrorMessage
