@@ -4,10 +4,10 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthPage } from './Pages/AuthPage/AuthPage'
 import { SignupForm } from './Components/SignupForm/SignupForm'
 import { MainPage } from './Pages/MainPage'
-import PasswordResetPage from './Pages/PasswordResetPage'
 import { PrivateRoute } from './Components/PrivateRoute'
 import { PublicRoute } from './Components/PublicRoute'
 import { LoginForm } from './Components/LoginForm/LoginForm'
+import { PasswordReset } from './Components/PasswordReset/PasswordReset'
 import * as route from './routes'
 import { useSelector } from 'react-redux'
 import selectors from './Redux/selectors'
@@ -43,7 +43,9 @@ function App() {
           path={route.RESET_PASSWORD}
           element={
             <PublicRoute
-              children={<PasswordResetPage />}
+              children={
+                <AuthPage children={<PasswordReset />} redirectTo={route.LOGIN} />
+              }
               restricted
               redirectTo={route.HOME}
             />
