@@ -1,27 +1,60 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { LoginPage } from './Pages/LoginPage'
-import { SignupPage } from './Pages/SignupPage'
+import { AuthPage } from './Pages/AuthPage/AuthPage'
+import { SignupForm } from './Components/SignupForm/SignupForm'
 import { MainPage } from './Pages/MainPage'
 import PasswordResetPage from './Pages/PasswordResetPage'
 import { PrivateRoute } from './Components/PrivateRoute'
+import { PublicRoute } from './Components/PublicRoute'
+import { LoginForm } from './Components/LoginForm/LoginForm'
+import * as route from './routes'
+import { useSelector } from 'react-redux'
+import selectors from './Redux/selectors'
 
 function App() {
+  // const theme = useSelector(selectors.getTheme)
+  // const body = document.querySelector('body')
+
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/reset" element={<PasswordResetPage />} />
-      <Route
-        path="/"
-        element={
-          <PrivateRoute redirectTo="/login">
-            <MainPage />
-          </PrivateRoute>
-        }
-      ></Route>
-    </Routes>
+    <Suspense fallback="Загружаем...">
+      <Routes>
+        <Route
+          path={route.LOGIN}
+          element={
+            <PublicRoute
+              children={<AuthPage children={<LoginForm />} />}
+              restricted
+              redirectTo={route.HOME}
+            />
+          }
+        />
+        <Route
+          path={route.REGISTRATION}
+          element={
+            <PublicRoute
+              children={<AuthPage children={<SignupForm />} />}
+              restricted
+              redirectTo={route.HOME}
+            />
+          }
+        />
+        <Route
+          path={route.RESET_PASSWORD}
+          element={
+            <PublicRoute
+              children={<PasswordResetPage />}
+              restricted
+              redirectTo={route.HOME}
+            />
+          }
+        />
+        <Route
+          path={route.HOME}
+          element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
+        ></Route>
+      </Routes>
+    </Suspense>
   )
 }
 

@@ -1,0 +1,140 @@
+@import '../../scss/placeholders.scss';
+
+.form_wrapper {
+  height: fit-content;
+  width: fit-content;
+}
+
+.auth_links_wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 40px;
+}
+
+.current_auth_link {
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 99px;
+    background-image: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    box-shadow: 0px 1px 6px rgba(255, 66, 168, 0.7);
+  }
+}
+
+.auth_link {
+  font-size: 18px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  min-height: 383px;
+  height: fit-content;
+  padding: 18px;
+  margin-bottom: 25px;
+  background: var(--elements-bgc);
+  box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+.field_wrapper {
+  margin-bottom: 13px;
+}
+
+.input_wrapper {
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+
+.input {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  padding-left: 16px;
+  border-radius: 3px;
+  border: 1px solid #e2e2e2;
+  z-index: 1;
+  font-size: 17px;
+  background-color: #fff;
+
+  &.error {
+    border-color: #d93f21;
+  }
+
+  &:focus {
+    outline: transparent;
+    border-color: transparent;
+
+    & ~ .input_border {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      border-radius: 4px;
+      background-image: linear-gradient(90deg, #ff42a8 0%, #f02ce2 100%);
+    }
+  }
+}
+
+.field_icon {
+}
+
+.submit_btn {
+  @extend %btn;
+  height: 50px;
+  margin: 10px 0 15px 0;
+}
+
+.btn_text {
+  @extend %btn-text;
+  font-size: 18px;
+}
+.reset_pass_link {
+  width: fit-content;
+  margin: 0 auto 15px;
+  font-size: 16px;
+  color: #356ab9;
+  border-bottom: 1px solid #356ab9;
+}
+.social_title {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.social_list {
+  display: flex;
+  width: 100%;
+  padding: 0 50px;
+  justify-content: space-between;
+}
+.captcha {
+  transform: scale(0.74);
+  transform-origin: 0 0;
+  margin-bottom: -15px;
+}
+.error_message {
+  color: #d93f21;
+  font-size: 13px;
+  line-height: 1.2;
+}

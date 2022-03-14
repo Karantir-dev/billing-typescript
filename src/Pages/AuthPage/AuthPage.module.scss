@@ -1,0 +1,38 @@
+.wrapper {
+  min-height: 100vh;
+  padding-top: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  z-index: 50;
+
+  background-color: var(--elements-bgc);
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.flex {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 90px;
+  height: 40px;
+  margin-top: -8px;
+}
+
+.btns_wrapper {
+  width: 140px;
+  display: flex;
+  justify-content: space-between;
+}

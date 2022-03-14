@@ -1,0 +1,36 @@
+%accent-text-gradient {
+  background-image: var(--accent-gradient);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+%btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 99px;
+  background: var(--btn-bgc);
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.1s;
+
+  &:hover {
+    background-image: linear-gradient(90deg, #fd3bb2 0%, #e432bc 100%);
+
+    %btn-text {
+      color: #fff;
+      -webkit-text-fill-color: initial;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+%btn-text {
+  @extend %accent-text-gradient;
+  font-weight: 800;
+  line-height: 1;
+  background-image: linear-gradient(90deg, #ff3cb1 40%, #e030bd 60%);
+}
