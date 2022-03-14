@@ -12,13 +12,16 @@ import { Icon } from '../Icon'
 import * as routes from '../../routes'
 
 import s from './LoginForm.module.scss'
+import { useMediaQuery } from 'react-responsive'
 
 export function LoginForm() {
-  const [passShown, setPassShown] = useState(false)
-
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
+  const [passShown, setPassShown] = useState(false)
+
+  const tabletOrHigher = useMediaQuery({ query: 'min-width: 768px' })
+  console.log(tabletOrHigher)
   const handleSubmit = ({ email, password, reCaptcha }) => {
     dispatch(authOperations.login(email, password, reCaptcha))
   }
@@ -45,7 +48,7 @@ export function LoginForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, errors }) => {
+        {({ setFieldValue, errors, values: { password } }) => {
           return (
             <Form className={s.form}>
               <div className={s.field_wrapper}>
@@ -53,7 +56,14 @@ export function LoginForm() {
                   {t('email_label')}
                 </label>
                 <div className={s.input_wrapper}>
-                  {/* <Icon className={s.field_icon} name="envelope" /> */}
+                  {tabletOrHigher && (
+                    <Icon
+                      className={s.field_icon}
+                      name="envelope"
+                      width={17}
+                      height={13}
+                    />
+                  )}
                   <Field
                     className={cn({ [s.input]: true, [s.error]: errors.email })}
                     name="email"
@@ -70,16 +80,33 @@ export function LoginForm() {
                   {t('password_label')}
                 </label>
                 <div className={s.input_wrapper}>
-                  {/* <Icon className={s.field_icon} name="padlock" /> */}
+                  {tabletOrHigher && (
+                    <Icon
+                      className={s.field_icon}
+                      name="padlock"
+                      width={19}
+                      height={19}
+                    />
+                  )}
+
                   <Field
                     className={cn({ [s.input]: true, [s.error]: errors.password })}
                     name="password"
-                    type="password"
+                    type={passShown ? 'text' : 'password'}
                     placeholder={t('password_placeholder')}
                   />
                   <div className={s.input_border}></div>
-                  <button className="" type="button" onClick={() => setPassShown(true)}>
-                    <Icon name={passShown ? 'closed-eye' : 'eye'}></Icon>
+                  <button
+                    className={cn({ [s.pass_show_btn]: true, [s.shown]: password })}
+                    type="button"
+                    onClick={() => setPassShown(!passShown)}
+                  >
+                    <Icon
+                      className={s.icon_eye}
+                      name={passShown ? 'closed-eye' : 'eye'}
+                      width={21}
+                      height={21}
+                    ></Icon>
                   </button>
                 </div>
                 <ErrorMessage
@@ -94,9 +121,6 @@ export function LoginForm() {
                 sitekey="6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR"
                 onChange={value => {
                   setFieldValue('reCaptcha', value)
-                }}
-                onErrored={() => {
-                  console.log('ReCAPTCHA error')
                 }}
               />
 
