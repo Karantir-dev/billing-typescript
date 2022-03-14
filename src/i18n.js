@@ -11,6 +11,7 @@ i18n
   // модуль инициализации
   .use(initReactI18next)
   .init({
+    ns: ['auth'],
     // Стандартный язык
     fallbackLng: 'en',
     debug: false,
@@ -20,5 +21,7 @@ i18n
       cache: ['localStorage'],
     },
   })
+
+i18n.loadNamespaces(['other'])
 
 export default i18n

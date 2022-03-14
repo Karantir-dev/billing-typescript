@@ -54,29 +54,57 @@
   margin-left: 10px;
   margin-bottom: 5px;
 }
+.field_wrapper {
+  margin-bottom: 13px;
+}
 
-.input {
+.input_wrapper {
   width: 100%;
   height: 50px;
+  position: relative;
+}
+
+.input {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
   padding-left: 16px;
   border-radius: 3px;
   border: 1px solid #e2e2e2;
+  z-index: 1;
   font-size: 17px;
-  background-color: transparent;
+  background-color: #fff;
 
   &.error {
     border-color: #d93f21;
   }
+
+  &:focus {
+    outline: transparent;
+    border-color: transparent;
+
+    & ~ .input_border {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+
+      border-radius: 4px;
+      background-image: linear-gradient(90deg, #ff42a8 0%, #f02ce2 100%);
+    }
+  }
 }
 
-.input_wrapper {
-  margin-bottom: 13px;
+.field_icon {
 }
 
 .submit_btn {
   @extend %btn;
   height: 50px;
-  margin: auto 0 15px 0;
+  margin: 10px 0 15px 0;
 }
 
 .btn_text {
