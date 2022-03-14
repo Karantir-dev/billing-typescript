@@ -72,13 +72,18 @@
   left: 1px;
   padding-left: 16px;
   border-radius: 3px;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--input-border);
   z-index: 1;
   font-size: 17px;
-  background-color: #fff;
+  background-color: var(--elements-bgc);
+  color: inherit;
 
   &.error {
-    border-color: #d93f21;
+    border-color: var(--error-color);
+  }
+
+  &::placeholder {
+    color: var(--auth-placeholder-color);
   }
 
   &:focus {
@@ -99,6 +104,29 @@
 }
 
 .field_icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.pass_show_btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+
+  &.shown {
+    display: flex;
+  }
+}
+
+.icon_eye {
+  fill: var(--eye-color);
 }
 
 .submit_btn {
@@ -115,8 +143,8 @@
   width: fit-content;
   margin: 0 auto 15px;
   font-size: 16px;
-  color: #356ab9;
-  border-bottom: 1px solid #356ab9;
+  color: var(--link-color);
+  border-bottom: 1px solid var(--link-color);
 }
 .social_title {
   text-align: center;
@@ -134,7 +162,7 @@
   margin-bottom: -15px;
 }
 .error_message {
-  color: #d93f21;
+  color: var(--error-color);
   font-size: 13px;
   line-height: 1.2;
 }
