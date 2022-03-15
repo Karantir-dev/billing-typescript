@@ -48,3 +48,15 @@
     cursor: initial;
   }
 }
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .btn_wrapper {
+    width: 75px;
+    height: 40px;
+  }
+
+  .btn {
+    font-size: 17px;
+  }
+}

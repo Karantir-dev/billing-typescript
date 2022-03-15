@@ -1,0 +1,30 @@
+---
+- name: Change interpreter
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Log in to docker-hub
+  shell:
+    cmd: 'docker login -u {{ docker_user }} -p {{ docker_password }}'
+
+- name: Deploy compose
+  community.docker.docker_compose:
+    project_name: zomro-bill-dev
+    pull: yes
+    state: present
+    recreate: smart
+    definition:
+      version: '3'
+      services:
+        web:
+          image: docker.io/zomrocom/zomro-bill-dev
+          pull_policy: always
+          ports:
+            - 80
+            - 443
+          restart: always
+
+  register: output
+
+- ansible.builtin.debug:
+    var: output
