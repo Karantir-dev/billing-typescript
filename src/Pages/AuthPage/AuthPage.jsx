@@ -9,6 +9,7 @@ import logo_lt from '../../images/logo-lt.svg'
 import s from './AuthPage.module.scss'
 import { ThemeBtn } from '../../Components/ThemeBtn/ThemeBtn'
 import selectors from '../../Redux/selectors'
+import cn from 'classnames'
 
 export function AuthPage({ children }) {
   const isLoading = useSelector(authSelectors.getIsLoadding)
@@ -18,7 +19,7 @@ export function AuthPage({ children }) {
     <>
       {isLoading ? <div>Загружаем...</div> : ''}
 
-      <div className={s.wrapper}>
+      <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
         <div className={s.header}>
           <div className={`container ${s.flex}`}>
             <img className={s.logo} src={darkTheme ? logo_dt : logo_lt} alt="logo" />

@@ -32,7 +32,30 @@
 }
 
 .btns_wrapper {
-  width: 140px;
+  width: fit-content;
   display: flex;
   justify-content: space-between;
+  gap: 14px;
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .wrapper {
+    background-image: url('../../images/auth_lines.svg');
+    background-repeat: no-repeat;
+    background-position: 50% 60%;
+
+    &.dt {
+      background-image: url('../../images/auth_lines_dt.svg');
+    }
+  }
+
+  .header {
+    height: 74px;
+  }
+
+  .logo {
+    width: 102px;
+    height: 45px;
+  }
 }
