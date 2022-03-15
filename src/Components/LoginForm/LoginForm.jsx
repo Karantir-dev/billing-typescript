@@ -20,8 +20,8 @@ export function LoginForm() {
 
   const [passShown, setPassShown] = useState(false)
 
-  const tabletOrHigher = useMediaQuery({ query: 'min-width: 768px' })
-  console.log(tabletOrHigher)
+  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
   const handleSubmit = ({ email, password, reCaptcha }) => {
     dispatch(authOperations.login(email, password, reCaptcha))
   }
@@ -48,7 +48,7 @@ export function LoginForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, errors, values: { password } }) => {
+        {({ setFieldValue, errors, values: { password }, touched }) => {
           return (
             <Form className={s.form}>
               <div className={s.field_wrapper}>
@@ -60,12 +60,15 @@ export function LoginForm() {
                     <Icon
                       className={s.field_icon}
                       name="envelope"
-                      width={17}
-                      height={13}
+                      width={19}
+                      height={15}
                     />
                   )}
                   <Field
-                    className={cn({ [s.input]: true, [s.error]: errors.email })}
+                    className={cn({
+                      [s.input]: true,
+                      [s.error]: errors.email && touched.email,
+                    })}
                     name="email"
                     type="text"
                     placeholder={t('email_placeholder')}
@@ -90,7 +93,11 @@ export function LoginForm() {
                   )}
 
                   <Field
-                    className={cn({ [s.input]: true, [s.error]: errors.password })}
+                    className={cn({
+                      [s.input]: true,
+                      [s.pr]: true,
+                      [s.error]: errors.password && touched.password,
+                    })}
                     name="password"
                     type={passShown ? 'text' : 'password'}
                     placeholder={t('password_placeholder')}
