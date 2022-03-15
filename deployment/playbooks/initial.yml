@@ -1,0 +1,5 @@
+---
+- hosts: zomro-bill-test
+  become: True
+  roles:
+    - deploy
