@@ -29,9 +29,27 @@ const login = (email, password, reCaptcha) => dispatch => {
       if (data.doc.error) {
         throw data.doc.error.msg.$
       }
+      const sessionId = data.doc.auth.$id
 
-      console.log(data.doc.auth.$id)
-      dispatch(authActions.loginSuccess(data.doc.auth.$id))
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'usrparam',
+            sok: 'ok',
+            out: 'json',
+            auth: sessionId,
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc?.error.$type === 'extraconfirm') {
+            dispatch(authActions.setTemporaryId(sessionId))
+            dispatch(authActions.openTotpForm())
+            return
+          }
+
+          dispatch(authActions.loginSuccess(sessionId))
+        })
     })
     .catch(err => {
       console.log(err)
@@ -39,5 +57,33 @@ const login = (email, password, reCaptcha) => dispatch => {
     })
 }
 
-const authOperations = { login }
+const sendTotp = (totp, setError) => (dispatch, getState) => {
+  const {
+    auth: { temporaryId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'totp.confirm',
+        sok: 'ok',
+        out: 'json',
+        clicked_button: 'ok',
+        qrcode: totp,
+        auth: temporaryId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        setError(true)
+        throw data.doc.error.msg.$
+      }
+
+      dispatch(authActions.loginSuccess(data.doc.auth.$id))
+    })
+    .catch(err => console.log(err))
+}
+
+const authOperations = { login, sendTotp }
 export default authOperations
