@@ -18,48 +18,21 @@ export function PasswordChange() {
 
   const dispatch = useDispatch()
 
-  //   const [newPass, setNewPass] = useState('')
-  //   const [confirmPass, setConfirmPass] = useState('')
-
-  //   const [valid, setValid] = useState('')
-  const [passShown, setPassShown] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .required('Password is required')
+      .required(t('change.warnings.emptyPass'))
       .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
+        t('change.warnings.invalidPass'),
       ),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref('password'), null],
-      'Passwords must match',
+      t('change.warnings.notMatchPass'),
     ),
   })
-
-  //   const validPass = async () => {
-  //     const isValid = await validationSchema.isValid({ newPass, confirmPass })
-  //     const statePassword = isValid ? 'valid' : 'invalid'
-  //     console.log({ newPass, confirmPass })
-  //     setValid(statePassword)
-  //     return statePassword
-  //   }
-
-  //   const handleSubmit = e => {
-  //     e.preventDefault()
-  //     console.log(valid)
-  //     if (valid === 'valid') {
-  //       dispatch(authOperations.changePassword(newPass))
-  //     }
-  //   }
-
-  //   const handlePassword = e => {
-  //     if (e.target.id === 'pass') {
-  //       setNewPass(e.target.value)
-  //     } else if (e.target.id === 'confPass') {
-  //       setConfirmPass(e.target.value)
-  //     }
-  //   }
 
   return (
     <div className={s.form_wrapper}>
@@ -88,11 +61,11 @@ export function PasswordChange() {
                   <input
                     className={cn({
                       [s.input]: true,
-                      //   [s.error]: valid === 'invalid',
+                      [s.error]: errors.password,
                     })}
                     id="pass"
                     name="password"
-                    type={passShown ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder={t('change.changePass')}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -104,11 +77,11 @@ export function PasswordChange() {
                       [s.shown]: values.password,
                     })}
                     type="button"
-                    onClick={() => setPassShown(!passShown)}
+                    onClick={() => setShowPassword(!showPassword)}
                   >
                     <Icon
                       className={s.icon_eye}
-                      name={passShown ? 'closed-eye' : 'eye'}
+                      name={showPassword ? 'closed-eye' : 'eye'}
                       width={21}
                       height={21}
                     ></Icon>
@@ -135,11 +108,11 @@ export function PasswordChange() {
                   <input
                     className={cn({
                       [s.input]: true,
-                      //   [s.error]: valid === 'invalid',
+                      [s.error]: errors.confirmPassword,
                     })}
                     id="confPass"
                     name="confirmPassword"
-                    type={passShown ? 'text' : 'password'}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder={t('change.confPass')}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -151,11 +124,11 @@ export function PasswordChange() {
                       [s.shown]: values.confirmPassword,
                     })}
                     type="button"
-                    onClick={() => setPassShown(!passShown)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     <Icon
                       className={s.icon_eye}
-                      name={passShown ? 'closed-eye' : 'eye'}
+                      name={showConfirmPassword ? 'closed-eye' : 'eye'}
                       width={21}
                       height={21}
                     ></Icon>
@@ -177,83 +150,5 @@ export function PasswordChange() {
         }}
       </Formik>
     </div>
-
-    // <div className={s.form_wrapper}>
-    //   <h3 className={s.form_title}>{t('change.passChangeTitle')}</h3>
-    //   <form className={s.form} onSubmit={handleSubmit}>
-    //     <div className={s.field_wrapper}>
-    //       <label htmlFor="pass" className={s.label}>
-    //         {t('change.password')}
-    //       </label>
-    //       <div className={s.input_wrapper}>
-    //         {tabletOrHigher && (
-    //           <Icon className={s.field_icon} name="padlock" width={19} height={19} />
-    //         )}
-    //         <input
-    //           className={cn({ [s.input]: true, [s.error]: valid === 'invalid' })}
-    //           id="pass"
-    //           name="password"
-    //           type={passShown ? 'text' : 'password'}
-    //           placeholder={t('change.changePass')}
-    //           onChange={handlePassword}
-    //         />
-    //         <button
-    //           className={cn({ [s.pass_show_btn]: true, [s.shown]: !passShown })}
-    //           type="button"
-    //           onClick={() => setPassShown(!passShown)}
-    //         >
-    //           <Icon
-    //             className={s.icon_eye}
-    //             name={passShown ? 'closed-eye' : 'eye'}
-    //             width={21}
-    //             height={21}
-    //           ></Icon>
-    //         </button>
-    //         <div className={s.input_border}></div>
-    //       </div>
-    //       {valid === 'invalid' && <span className={s.error_message}>{t('ERROR')}</span>}
-    //     </div>
-
-    //     <div className={s.field_wrapper}>
-    //       <label htmlFor="confPass" className={s.label}>
-    //         {t('change.confirmation')}
-    //       </label>
-    //       <div className={s.input_wrapper}>
-    //         {tabletOrHigher && (
-    //           <Icon className={s.field_icon} name="padlock" width={19} height={19} />
-    //         )}
-    //         <input
-    //           className={cn({ [s.input]: true, [s.error]: valid === 'invalid' })}
-    //           id="confPass"
-    //           name="confPass"
-    //           type={passShown ? 'text' : 'password'}
-    //           placeholder={t('change.confPass')}
-    //           onChange={handlePassword}
-    //         />
-    //         <button
-    //           className={cn({ [s.pass_show_btn]: true, [s.shown]: !passShown })}
-    //           type="button"
-    //           onClick={() => setPassShown(!passShown)}
-    //         >
-    //           <Icon
-    //             className={s.icon_eye}
-    //             name={passShown ? 'closed-eye' : 'eye'}
-    //             width={21}
-    //             height={21}
-    //           ></Icon>
-    //         </button>
-    //         <div className={s.input_border}></div>
-    //       </div>
-    //       {valid === 'invalid' && <span className={s.error_message}>{t('ERROR')}</span>}
-    //     </div>
-
-    //     <button className={s.submit_btn} type="submit" onClick={validPass}>
-    //       <span className={s.btn_text}>{t('change.save')}</span>
-    //     </button>
-    //     <Link className={s.reset_pass_link} to={routes.LOGIN}>
-    //       {t('change.cancel')}
-    //     </Link>
-    //   </form>
-    // </div>
   )
 }
