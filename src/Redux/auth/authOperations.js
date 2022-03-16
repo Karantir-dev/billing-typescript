@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
   },
 })
 
-const login = (email, password, reCaptcha) => dispatch => {
+const login = (email, password, reCaptcha, setLoginError) => dispatch => {
   dispatch(authActions.loginRequest())
 
   axiosInstance
@@ -27,6 +27,7 @@ const login = (email, password, reCaptcha) => dispatch => {
     )
     .then(({ data }) => {
       if (data.doc.error) {
+        setLoginError(true)
         throw data.doc.error.msg.$
       }
       const sessionId = data.doc.auth.$id
@@ -52,7 +53,7 @@ const login = (email, password, reCaptcha) => dispatch => {
         })
     })
     .catch(err => {
-      console.log(err)
+      console.log('error', err)
       dispatch(authActions.loginError(err))
     })
 }
@@ -82,7 +83,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
 
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log('error', err))
 }
 
 const authOperations = { login, sendTotp }
