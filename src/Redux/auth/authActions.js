@@ -8,6 +8,12 @@ const loginRequest = createAction('LOGIN_REQUEST')
 const loginSuccess = createAction('LOGIN_SUCCESS')
 const loginError = createAction('LOGIN_ERROR')
 
+const openTotpForm = createAction('OPEN_TOTP_FORM')
+const closeTotpForm = createAction('CLOSE_TOTP_FORM')
+
+const setTemporaryId = createAction('SET_TEMPORARY_ID')
+const clearTemporaryId = createAction('CLEAR_TEMPORARY_ID')
+
 const logoutRequest = createAction('LOGOUT_REQUEST')
 const logoutSuccess = createAction('LOGOUT_SUCCESS')
 const logoutError = createAction('LOGOUT_ERROR')
@@ -23,6 +29,10 @@ const authActions = {
   loginRequest,
   loginSuccess,
   loginError,
+  openTotpForm,
+  closeTotpForm,
+  setTemporaryId,
+  clearTemporaryId,
   logoutRequest,
   logoutSuccess,
   logoutError,
