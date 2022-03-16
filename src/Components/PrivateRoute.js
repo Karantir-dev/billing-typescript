@@ -7,7 +7,7 @@ import { authSelectors } from '../Redux/auth/authSelectors'
  * - Otherwise render Redirect to /auth
  */
 export function PrivateRoute({ redirectTo, children }) {
-  const isAuthenticated = useSelector(authSelectors.getToken)
+  const isAuthenticated = useSelector(authSelectors.getSessionId)
 
   return isAuthenticated ? children : <Navigate to={redirectTo} />
 }
