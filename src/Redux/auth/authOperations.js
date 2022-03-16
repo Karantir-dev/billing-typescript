@@ -39,5 +39,20 @@ const login = (email, password, reCaptcha) => dispatch => {
     })
 }
 
-const authOperations = { login }
+const reset = email => dispatch => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'recovery',
+        email,
+        sok: 'ok',
+        out: 'json',
+      }),
+    )
+    .then(res => console.log(res))
+    .catch(error => console.log(error))
+}
+
+const authOperations = { login, reset }
 export default authOperations
