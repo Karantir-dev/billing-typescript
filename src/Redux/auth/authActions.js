@@ -31,6 +31,5 @@ const authActions = {
   getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
-  resetPassword,
 }
 export default authActions

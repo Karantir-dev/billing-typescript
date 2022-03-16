@@ -8,6 +8,7 @@ import { PrivateRoute } from './Components/PrivateRoute'
 import { PublicRoute } from './Components/PublicRoute'
 import { LoginForm } from './Components/LoginForm/LoginForm'
 import { PasswordReset } from './Components/PasswordReset/PasswordReset'
+import { PasswordChange } from './Components/PasswordChange/PasswordChange'
 import * as route from './routes'
 import { useSelector } from 'react-redux'
 import selectors from './Redux/selectors'
@@ -45,6 +46,18 @@ function App() {
             <PublicRoute
               children={
                 <AuthPage children={<PasswordReset />} redirectTo={route.LOGIN} />
+              }
+              restricted
+              redirectTo={route.HOME}
+            />
+          }
+        />
+        <Route
+          path={route.CHANGE_PASSWORD}
+          element={
+            <PublicRoute
+              children={
+                <AuthPage children={<PasswordChange />} redirectTo={route.LOGIN} />
               }
               restricted
               redirectTo={route.HOME}

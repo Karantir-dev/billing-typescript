@@ -39,13 +39,14 @@ const login = (email, password, reCaptcha) => dispatch => {
     })
 }
 
-const reset = email => dispatch => {
+const reset = (email, lang) => dispatch => {
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'recovery',
-        email,
+        email: email,
+        lang: lang,
         sok: 'ok',
         out: 'json',
       }),
@@ -53,6 +54,8 @@ const reset = email => dispatch => {
     .then(res => console.log(res))
     .catch(error => console.log(error))
 }
+
+const chengePassword = newPass => dispatch => {}
 
 const authOperations = { login, reset }
 export default authOperations

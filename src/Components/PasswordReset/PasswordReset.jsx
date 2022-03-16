@@ -13,8 +13,11 @@ import s from './PasswordReset.module.scss'
 
 export function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation()
   const dispatch = useDispatch()
+
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language
+
   const [email, setEmail] = useState('')
   const [confirmEmail, setConfirmEmail] = useState(false)
   const [valid, setValid] = useState('')
@@ -40,8 +43,7 @@ export function PasswordReset() {
     event.preventDefault()
 
     if (valid === 'valid') {
-      console.log(valid)
-      dispatch(authOperations.reset(email))
+      dispatch(authOperations.reset(email, lang))
       setConfirmEmail(!confirmEmail)
     }
   }
@@ -128,7 +130,7 @@ export function PasswordReset() {
 
   return !confirmEmail ? (
     <div className={s.form_wrapper}>
-      <p className={s.form_title}>{t('reset.resetTitle')}</p>
+      <h3 className={s.form_title}>{t('reset.resetTitle')}</h3>
       <form className={s.form} onSubmit={handleSubmit}>
         <p className={s.reset_description}>
           {t('reset.restDescription_1')}
@@ -141,7 +143,7 @@ export function PasswordReset() {
           <label htmlFor="email" className={s.label}>
             Email:
           </label>
-          {/* <p className={s.reset__input_title}>Email Adress:</p> */}
+
           <div className={s.input_wrapper}>
             {tabletOrHigher && (
               <Icon className={s.field_icon} name="envelope" width={18} height={14} />
@@ -155,6 +157,7 @@ export function PasswordReset() {
               onChange={handleInput}
               onBlur={validEmail}
             />
+
             <div className={s.input_border}></div>
           </div>
           {valid === 'invalid' && (
@@ -171,7 +174,7 @@ export function PasswordReset() {
     </div>
   ) : (
     <div className={s.form_wrapper}>
-      <p className={s.form_title}>{t('reset.confirmTitle')}</p>
+      <h3 className={s.form_title}>{t('reset.confirmTitle')}</h3>
       <form className={s.form}>
         <p className={s.reset_description}>
           {t('reset.confirmDescription_1')}
