@@ -20,15 +20,16 @@ export function LoginForm() {
   const dispatch = useDispatch()
 
   const [passShown, setPassShown] = useState(false)
+  const [loginError, setLoginError] = useState(false)
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const handleSubmit = ({ email, password, reCaptcha }) => {
-    dispatch(authOperations.login(email, password, reCaptcha))
+    dispatch(authOperations.login(email, password, reCaptcha, setLoginError))
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('warnings.wrong_email')).required(t('warnings.email')),
+    email: Yup.string().email(t('warnings.invalid_email')).required(t('warnings.email')),
     password: Yup.string().required(t('warnings.password')),
     reCaptcha: Yup.string()
       .typeError(t('warnings.recaptcha'))
@@ -44,7 +45,6 @@ export function LoginForm() {
             {t('registration')}
           </Link>
         </div>
-
         <Formik
           initialValues={{ email: '', password: '', reCaptcha: '' }}
           onSubmit={handleSubmit}
@@ -53,6 +53,11 @@ export function LoginForm() {
           {({ setFieldValue, errors, values: { password }, touched }) => {
             return (
               <Form className={s.form}>
+                {loginError && (
+                  <div className={s.credentials_error}>
+                    {t('warnings.wrong_credentials')}
+                  </div>
+                )}
                 <div className={s.field_wrapper}>
                   <label htmlFor="email" className={s.label}>
                     {t('email_label')}

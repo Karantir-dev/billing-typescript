@@ -30,12 +30,15 @@ export function VerificationModal() {
   }
 
   return (
-    <div className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}>
+    <div
+      className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
+      onClick={() => dispatch(authActions.closeTotpForm())}
+    >
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('title')}</h3>
         <button
           className={s.closeBtn}
-          onClick={() => dispatch(authActions.closeExtraVerifModal())}
+          onClick={() => dispatch(authActions.closeTotpForm())}
           type="button"
         >
           <Icon className={s.icon} name="cross" width={16} height={16} />
