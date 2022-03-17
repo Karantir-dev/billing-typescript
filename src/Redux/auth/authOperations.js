@@ -55,7 +55,36 @@ const reset = (email, lang) => dispatch => {
     .catch(error => console.log(error))
 }
 
-const chengePassword = newPass => dispatch => {}
+//  qs.stringify({
+//         func: 'recovery.change',
+//         password: password,
+//         sok: 'ok',
+//         out: 'json',
+//         user: int
+//         secret: string
+//       }),
 
-const authOperations = { login, reset }
+const chengePassword = newPass => dispatch => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'recovery.change',
+        sok: 'ok',
+        sfromextform: 'yes',
+        newwindow: 'extform',
+        clicked_button: 'ok',
+        userid: '11',
+        secret: 'nEwHiUYvA4MBe6M6ilNVeMWGnuSY3FeO',
+        project: '1',
+        type: 'type',
+        password: newPass,
+        confirm: newPass,
+      }),
+    )
+    .then(res => console.log(res.data))
+    .catch(error => console.log(error))
+}
+
+const authOperations = { login, reset, chengePassword }
 export default authOperations

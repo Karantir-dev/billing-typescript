@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../Icon'
 
 import authOperations from '../../Redux/auth/authOperations'
@@ -17,6 +18,9 @@ export function PasswordChange() {
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
+
+  const { user, secret } = useParams()
+  console.log(useParams())
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -34,17 +38,22 @@ export function PasswordChange() {
     ),
   })
 
+  const handleSubmit = password => {
+    dispatch(authOperations.chengePassword(password))
+    console.log(password)
+  }
+
   return (
     <div className={s.form_wrapper}>
       <h3 className={s.form_title}>{t('change.passChangeTitle')}</h3>
       <Formik
         initialValues={{ password: '', confirmPassword: '' }}
-        onSubmit={() => {}}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ values, errors, handleSubmit, handleChange, handleBlur }) => {
+        {({ values, errors, handleChange, handleBlur }) => {
           return (
-            <Form className={s.form} onSubmit={handleSubmit}>
+            <Form className={s.form}>
               <div className={s.field_wrapper}>
                 <label htmlFor="pass" className={s.label}>
                   {t('change.password')}
