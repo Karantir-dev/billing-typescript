@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
@@ -19,8 +19,18 @@ export function PasswordChange() {
 
   const dispatch = useDispatch()
 
-  const { user, secret } = useParams()
-  console.log(useParams())
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const [userId, setUserId] = useState('')
+  const [secretKey, setSecretKey] = useState('')
+
+  useEffect(() => {
+    setUserId(searchParams.get('user'))
+    setSecretKey(searchParams.get('secret'))
+  }, [userId])
+
+  // console.log(userId)
+  // console.log(secretKey)
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -38,20 +48,27 @@ export function PasswordChange() {
     ),
   })
 
-  const handleSubmit = password => {
-    dispatch(authOperations.chengePassword(password))
-    console.log(password)
+  // const handleParams = () => {
+  //   setUserId(searchParams.get('user'))
+  //   setSecretKey(searchParams.get('secret'))
+  // }
+
+  const handleSubmit = (password, userId, secretKey) => {
+    dispatch(authOperations.chengePassword(password, userId, secretKey))
+    console.log(password, userId, secretKey)
   }
 
   return (
     <div className={s.form_wrapper}>
       <h3 className={s.form_title}>{t('change.passChangeTitle')}</h3>
       <Formik
-        initialValues={{ password: '', confirmPassword: '' }}
+        initialValues={{ password: '', confirmPassword: '', userId: '', secretKey: '' }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         {({ values, errors, handleChange, handleBlur }) => {
+          values.userId = userId
+          values.secretKey = secretKey
           return (
             <Form className={s.form}>
               <div className={s.field_wrapper}>

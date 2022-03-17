@@ -111,7 +111,8 @@ const reset = (email, lang) => dispatch => {
 //         secret: string
 //       }),
 
-const chengePassword = newPass => dispatch => {
+const chengePassword = (newPass, userId, userKey) => dispatch => {
+  console.log(newPass, userId, userKey)
   axiosInstance
     .post(
       '/',
@@ -119,18 +120,15 @@ const chengePassword = newPass => dispatch => {
         func: 'recovery.change',
         sok: 'ok',
         sfromextform: 'yes',
-        newwindow: 'extform',
         clicked_button: 'ok',
-        userid: '11',
-        secret: 'nEwHiUYvA4MBe6M6ilNVeMWGnuSY3FeO',
-        project: '1',
-        type: 'type',
+        userid: userId,
+        secret: userKey,
         password: newPass,
         confirm: newPass,
       }),
     )
     .then(res => console.log(res.data))
-    .catch(error => console.log(error))
+    .catch(error => console.log('ERROR', error))
 }
 
 const authOperations = { login, reset, chengePassword, sendTotp }
