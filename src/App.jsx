@@ -10,13 +10,8 @@ import { LoginForm } from './Components/LoginForm/LoginForm'
 import { PasswordReset } from './Components/PasswordReset/PasswordReset'
 import { PasswordChange } from './Components/PasswordChange/PasswordChange'
 import * as route from './routes'
-import { useSelector } from 'react-redux'
-import selectors from './Redux/selectors'
 
 function App() {
-  // const theme = useSelector(selectors.getTheme)
-  // const body = document.querySelector('body')
-
   return (
     <Suspense fallback="Загружаем...">
       <Routes>
@@ -44,9 +39,7 @@ function App() {
           path={route.RESET_PASSWORD}
           element={
             <PublicRoute
-              children={
-                <AuthPage children={<PasswordReset />} redirectTo={route.LOGIN} />
-              }
+              children={<AuthPage children={<PasswordReset />} />}
               restricted
               redirectTo={route.HOME}
             />
@@ -56,9 +49,7 @@ function App() {
           path={route.CHANGE_PASSWORD}
           element={
             <PublicRoute
-              children={
-                <AuthPage children={<PasswordChange />} redirectTo={route.LOGIN} />
-              }
+              children={<AuthPage children={<PasswordChange />} />}
               restricted
               redirectTo={route.HOME}
             />

@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
   },
 })
 
-const login = (email, password, reCaptcha) => dispatch => {
+const login = (email, password, reCaptcha, setLoginError) => dispatch => {
   dispatch(authActions.loginRequest())
 
   axiosInstance
@@ -27,16 +27,63 @@ const login = (email, password, reCaptcha) => dispatch => {
     )
     .then(({ data }) => {
       if (data.doc.error) {
+        setLoginError(true)
+        throw data.doc.error.msg.$
+      }
+      const sessionId = data.doc.auth.$id
+
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'usrparam',
+            sok: 'ok',
+            out: 'json',
+            auth: sessionId,
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc?.error.$type === 'extraconfirm') {
+            dispatch(authActions.setTemporaryId(sessionId))
+            dispatch(authActions.openTotpForm())
+            return
+          }
+
+          dispatch(authActions.loginSuccess(sessionId))
+        })
+    })
+    .catch(err => {
+      console.log('error', err)
+      dispatch(authActions.loginError(err))
+    })
+}
+
+const sendTotp = (totp, setError) => (dispatch, getState) => {
+  const {
+    auth: { temporaryId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'totp.confirm',
+        sok: 'ok',
+        out: 'json',
+        clicked_button: 'ok',
+        qrcode: totp,
+        auth: temporaryId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        setError(true)
         throw data.doc.error.msg.$
       }
 
-      console.log(data.doc.auth.$id)
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(err => {
-      console.log(err)
-      dispatch(authActions.loginError(err))
-    })
+    .catch(err => console.log('error', err))
 }
 
 const reset = (email, lang) => dispatch => {
@@ -86,5 +133,6 @@ const chengePassword = newPass => dispatch => {
     .catch(error => console.log(error))
 }
 
-const authOperations = { login, reset, chengePassword }
+const authOperations = { login, reset, chengePassword, sendTotp }
+
 export default authOperations
