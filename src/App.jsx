@@ -35,6 +35,7 @@ function App() {
             />
           }
         />
+
         <Route
           path={route.RESET_PASSWORD}
           element={

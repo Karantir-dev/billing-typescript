@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -8,12 +9,12 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import cn from 'classnames'
 
 import authOperations from '../../Redux/auth/authOperations'
+import { useMediaQuery } from 'react-responsive'
+import { VerificationModal } from '../VerificationModal/VerificationModal'
 import { Icon } from '../Icon'
 import * as routes from '../../routes'
 
 import s from './LoginForm.module.scss'
-import { useMediaQuery } from 'react-responsive'
-import { VerificationModal } from '../VerificationModal/VerificationModal'
 
 export function LoginForm() {
   const { t } = useTranslation()
@@ -174,7 +175,8 @@ export function LoginForm() {
           </ul>
         </div>
       </div>
-      <VerificationModal />
+
+      {ReactDOM.createPortal(<VerificationModal />, document.getElementById('portal'))}
     </>
   )
 }

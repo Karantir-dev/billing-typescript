@@ -17,7 +17,7 @@ export function AuthPage({ children }) {
 
   return (
     <>
-      {isLoading ? <div>Загружаем...</div> : ''}
+      {/* {isLoading ? <div>Загружаем...</div> : ''} */}
 
       <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
         <div className={s.header}>
