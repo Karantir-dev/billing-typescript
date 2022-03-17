@@ -86,5 +86,51 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     .catch(err => console.log('error', err))
 }
 
-const authOperations = { login, sendTotp }
+const reset = (email, lang) => dispatch => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'recovery',
+        email: email,
+        lang: lang,
+        sok: 'ok',
+        out: 'json',
+      }),
+    )
+    .then(res => console.log(res))
+    .catch(error => console.log(error))
+}
+
+//  qs.stringify({
+//         func: 'recovery.change',
+//         password: password,
+//         sok: 'ok',
+//         out: 'json',
+//         user: int
+//         secret: string
+//       }),
+
+const chengePassword = (newPass, userId, userKey) => dispatch => {
+  console.log(newPass, userId, userKey)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'recovery.change',
+        sok: 'ok',
+        sfromextform: 'yes',
+        clicked_button: 'ok',
+        userid: userId,
+        secret: userKey,
+        password: newPass,
+        confirm: newPass,
+      }),
+    )
+    .then(res => console.log(res.data))
+    .catch(error => console.log('ERROR', error))
+}
+
+const authOperations = { login, reset, chengePassword, sendTotp }
+
 export default authOperations
