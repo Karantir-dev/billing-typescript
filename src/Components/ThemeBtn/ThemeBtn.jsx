@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
@@ -13,9 +13,7 @@ export function ThemeBtn() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const body = document.querySelector('body')
 
-  useEffect(() => {
-    darkTheme ? body.classList.add('dark-theme') : body.classList.remove('dark-theme')
-  }, [darkTheme])
+  darkTheme ? body.classList.add('dark-theme') : body.classList.remove('dark-theme')
 
   return (
     <button

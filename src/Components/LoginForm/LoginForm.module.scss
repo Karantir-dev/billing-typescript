@@ -153,10 +153,15 @@
   background-color: rgba(255, 68, 102, 0.1);
 }
 
+.recaptcha_wrapper {
+  min-height: 61px;
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .form {
     width: 431px;
+    min-height: 453px;
     padding: 36px 64px;
   }
 
@@ -192,5 +197,9 @@
 
   .credentials_error {
     padding: 0;
+  }
+
+  .recaptcha_wrapper {
+    min-height: 83px;
   }
 }
