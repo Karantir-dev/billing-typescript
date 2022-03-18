@@ -24,7 +24,7 @@ const getCurrentUserError = createAction('GET_CURRENT_USER_ERROR')
 
 const resetPassword = createAction('RESET_ACTION')
 
-const authActions = {
+export const authActions = {
   registrationRequest,
   registrationSuccess,
   registrationError,
@@ -42,4 +42,3 @@ const authActions = {
   getCurrentUserSuccess,
   getCurrentUserError,
 }
-export default authActions

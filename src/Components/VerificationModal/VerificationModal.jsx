@@ -7,7 +7,7 @@ import { Icon } from '../Icon'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
-import authActions from '../../Redux/auth/authActions'
+import {authActions} from '../../Redux/auth/authActions'
 import authOperations from '../../Redux/auth/authOperations'
 
 export function VerificationModal() {
