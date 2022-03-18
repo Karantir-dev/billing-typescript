@@ -7,7 +7,7 @@ import { Icon } from '../Icon'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
-import authActions from '../../Redux/auth/authActions'
+import {authActions} from '../../Redux/auth/authActions'
 import authOperations from '../../Redux/auth/authOperations'
 
 export function VerificationModal() {
@@ -29,10 +29,16 @@ export function VerificationModal() {
     dispatch(authOperations.sendTotp(totp, setError))
   }
 
+  const handleClosing = e => {
+    if (e.currentTarget === e.target) {
+      dispatch(authActions.closeTotpForm())
+    }
+  }
+
   return (
     <div
       className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
-      onClick={() => dispatch(authActions.closeTotpForm())}
+      onClick={handleClosing}
     >
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('title')}</h3>

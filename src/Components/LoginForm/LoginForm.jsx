@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -8,25 +8,27 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import cn from 'classnames'
 
 import authOperations from '../../Redux/auth/authOperations'
+import { useMediaQuery } from 'react-responsive'
+import { VerificationModal } from '../VerificationModal/VerificationModal'
 import { Icon } from '../Icon'
 import * as routes from '../../routes'
 
 import s from './LoginForm.module.scss'
-import { useMediaQuery } from 'react-responsive'
-import { VerificationModal } from '../VerificationModal/VerificationModal'
 
 export function LoginForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const recaptchaEl = useRef()
 
   const [passShown, setPassShown] = useState(false)
-  const [loginError, setLoginError] = useState(false)
+  const [errMsg, setErrMsg] = useState('')
 
-  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
+    recaptchaEl.current.reset()
+    setFieldValue('reCaptcha', '')
 
-  const handleSubmit = ({ email, password, reCaptcha }) => {
-    dispatch(authOperations.login(email, password, reCaptcha, setLoginError))
-    console.log(loginError)
+    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg))
   }
 
   const validationSchema = Yup.object().shape({
@@ -51,13 +53,11 @@ export function LoginForm() {
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
-          {({ setFieldValue, errors, values: { password }, touched }) => {
+          {({ setFieldValue, errors, values, touched }) => {
             return (
               <Form className={s.form}>
-                {loginError && (
-                  <div className={s.credentials_error}>
-                    {t('warnings.wrong_credentials')}
-                  </div>
+                {errMsg && (
+                  <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
                 )}
                 <div className={s.field_wrapper}>
                   <label htmlFor="email" className={s.label}>
@@ -116,7 +116,10 @@ export function LoginForm() {
                     />
                     <div className={s.input_border}></div>
                     <button
-                      className={cn({ [s.pass_show_btn]: true, [s.shown]: password })}
+                      className={cn({
+                        [s.pass_show_btn]: true,
+                        [s.shown]: values.password,
+                      })}
                       type="button"
                       onClick={() => setPassShown(!passShown)}
                     >
@@ -134,14 +137,16 @@ export function LoginForm() {
                     component="span"
                   />
                 </div>
-
-                <ReCAPTCHA
-                  className={s.captcha}
-                  sitekey="6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR"
-                  onChange={value => {
-                    setFieldValue('reCaptcha', value)
-                  }}
-                />
+                <div className={s.recaptcha_wrapper}>
+                  <ReCAPTCHA
+                    className={s.captcha}
+                    ref={recaptchaEl}
+                    sitekey="6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR"
+                    onChange={value => {
+                      setFieldValue('reCaptcha', value)
+                    }}
+                  />
+                </div>
 
                 <ErrorMessage
                   className={s.error_message}
@@ -175,6 +180,7 @@ export function LoginForm() {
           </ul>
         </div>
       </div>
+
       <VerificationModal />
     </>
   )

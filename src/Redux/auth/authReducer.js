@@ -1,12 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import authActions from './authActions'
+import { authActions } from './authActions'
 
 const initialState = {
   // data: {},
   sessionId: null,
   temporaryId: null,
-  isLoading: false,
   totpFormVisibility: 'hidden',
 }
 
@@ -48,10 +47,9 @@ const isLoading = createReducer(initialState.isLoading, {
   // [authActions.maxPassResetError]: () => false,
 })
 
-export default combineReducers({
+export const authReducer = combineReducers({
   // data,
   sessionId,
   temporaryId,
-  isLoading,
   totpFormVisibility,
 })

@@ -24,7 +24,7 @@ const getCurrentUserError = createAction('GET_CURRENT_USER_ERROR')
 
 // const maxPassResetError = createAction('MAX_PASS_RESET_ERROR')
 
-const authActions = {
+export const authActions = {
   registrationRequest,
   registrationSuccess,
   registrationError,
@@ -43,4 +43,3 @@ const authActions = {
   getCurrentUserError,
   // maxPassResetError,
 }
-export default authActions
