@@ -26,6 +26,7 @@ export function LoginForm() {
 
   const handleSubmit = ({ email, password, reCaptcha }) => {
     dispatch(authOperations.login(email, password, reCaptcha, setLoginError))
+    console.log(loginError)
   }
 
   const validationSchema = Yup.object().shape({

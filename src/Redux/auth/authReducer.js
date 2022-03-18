@@ -45,6 +45,7 @@ const isLoading = createReducer(initialState.isLoading, {
   // [authActions.getCurrentUserRequest]: () => true,
   // [authActions.getCurrentUserSuccess]: () => false,
   // [authActions.getCurrentUserError]: () => false,
+  // [authActions.maxPassResetError]: () => false,
 })
 
 export default combineReducers({

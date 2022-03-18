@@ -86,48 +86,52 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     .catch(err => console.log('error', err))
 }
 
-const reset = (email, lang) => dispatch => {
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'recovery',
-        email: email,
-        lang: lang,
-        sok: 'ok',
-        out: 'json',
-      }),
-    )
-    .then(res => console.log(res))
-    .catch(error => console.log(error))
-}
+const reset =
+  (email, lang, setConfirmEmail, setTimeSendError, setTypeEmailError) => dispatch => {
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'recovery',
+          email: email,
+          lang: lang,
+          sok: 'ok',
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        console.log(data)
+        if (data.doc.error) {
+          if (data.doc.error.param) {
+            setTimeSendError(data.doc.error.param[1].$)
+          }
+          setConfirmEmail(true)
+          setTypeEmailError(data.doc.error.$type)
+          throw data.doc.error.msg.$
+        } else {
+          setConfirmEmail(false)
+          setTypeEmailError('')
+        }
+      })
+      .catch(error => console.log(error))
+  }
 
-//  qs.stringify({
-//         func: 'recovery.change',
-//         password: password,
-//         sok: 'ok',
-//         out: 'json',
-//         user: int
-//         secret: string
-//       }),
-
-const chengePassword = (newPass, userId, userKey) => dispatch => {
-  console.log(newPass, userId, userKey)
+const chengePassword = (password, userId, secretKey) => dispatch => {
+  console.log(password, userId, secretKey)
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'recovery.change',
         sok: 'ok',
-        sfromextform: 'yes',
-        clicked_button: 'ok',
-        userid: userId,
-        secret: userKey,
-        password: newPass,
-        confirm: newPass,
+        userid: '11',
+        secret: 'CUVmEia2j0uQf9SDBMFWFKr3cJVPexu8',
+        password: '11112222FDb@',
+        confirm: '11112222FDb@',
+        out: 'json',
       }),
     )
-    .then(res => console.log(res.data))
+    .then(res => console.log(res))
     .catch(error => console.log('ERROR', error))
 }
 

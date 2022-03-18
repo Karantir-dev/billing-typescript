@@ -22,7 +22,7 @@ const getCurrentUserRequest = createAction('GET_CURRENT_USER_REQUEST')
 const getCurrentUserSuccess = createAction('GET_CURRENT_USER_SUCCESS')
 const getCurrentUserError = createAction('GET_CURRENT_USER_ERROR')
 
-const resetPassword = createAction('RESET_ACTION')
+// const maxPassResetError = createAction('MAX_PASS_RESET_ERROR')
 
 const authActions = {
   registrationRequest,
@@ -41,5 +41,6 @@ const authActions = {
   getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
+  // maxPassResetError,
 }
 export default authActions

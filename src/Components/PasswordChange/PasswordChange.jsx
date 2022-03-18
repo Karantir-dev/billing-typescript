@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Icon } from '../Icon'
 
 import authOperations from '../../Redux/auth/authOperations'
@@ -15,60 +15,72 @@ import { Form, Formik } from 'formik'
 
 export function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  let lang = i18n.language
+
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
-  const [userId, setUserId] = useState('')
-  const [secretKey, setSecretKey] = useState('')
+  // const [userId, setUserId] = useState('')
+  // const [secretKey, setSecretKey] = useState('')
 
   useEffect(() => {
-    setUserId(searchParams.get('user'))
-    setSecretKey(searchParams.get('secret'))
-  }, [userId])
+    let secret = searchParams.get('secret')
+    let user = searchParams.get('user')
+    if (!user || !secret) {
+      return navigate('/')
+    }
+  }, [])
 
-  // console.log(userId)
-  // console.log(secretKey)
+  // useEffect(() => {
+  //   setUserId(searchParams.get('user'))
+  //   setSecretKey(searchParams.get('secret'))
+  // }, [])
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .required(t('change.warnings.emptyPass'))
+      .required(t('warnings.emptyPass'))
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
-        t('change.warnings.invalidPass'),
+        t('warnings.invalidPass'),
       ),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref('password'), null],
-      t('change.warnings.notMatchPass'),
+      t('warnings.notMatchPass'),
     ),
   })
 
-  // const handleParams = () => {
-  //   setUserId(searchParams.get('user'))
-  //   setSecretKey(searchParams.get('secret'))
-  // }
-
-  const handleSubmit = (password, userId, secretKey) => {
-    dispatch(authOperations.chengePassword(password, userId, secretKey))
-    console.log(password, userId, secretKey)
+  const handleSubmit = ({ password }) => {
+    dispatch(
+      authOperations.chengePassword(
+        password,
+        searchParams.get('user'),
+        searchParams.get('secret'),
+      ),
+    )
   }
 
   return (
     <div className={s.form_wrapper}>
       <h3 className={s.form_title}>{t('change.passChangeTitle')}</h3>
       <Formik
-        initialValues={{ password: '', confirmPassword: '', userId: '', secretKey: '' }}
+        initialValues={{
+          password: '',
+          confirmPassword: '',
+          // userId: '',
+          // secretKey: '',
+          // lang: '',
+        }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         {({ values, errors, handleChange, handleBlur }) => {
-          values.userId = userId
-          values.secretKey = secretKey
           return (
             <Form className={s.form}>
               <div className={s.field_wrapper}>
