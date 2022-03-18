@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import authActions from './authActions'
+import { authActions } from './authActions'
+import { actions } from '../actions'
 import { BASE_URL } from '../../config/config'
 
 const axiosInstance = axios.create({
@@ -65,6 +66,8 @@ const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
 }
 
 const sendTotp = (totp, setError) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
   const {
     auth: { temporaryId },
   } = getState()
@@ -90,7 +93,10 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(err => console.log('error', err))
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('error', err)
+    })
 }
 
 const reset = (email, lang) => dispatch => {

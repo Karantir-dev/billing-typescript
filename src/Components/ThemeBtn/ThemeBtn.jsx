@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
 import { Icon } from '../Icon'
-import actions from '../../Redux/actions'
-import selectors from '../../Redux/selectors'
+import {actions} from '../../Redux/actions'
+import { selectors } from '../../Redux/selectors'
 
 import s from './ThemeBtn.module.scss'
 

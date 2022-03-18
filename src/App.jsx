@@ -12,7 +12,7 @@ import { PasswordReset } from './Components/PasswordReset/PasswordReset'
 import { PasswordChange } from './Components/PasswordChange/PasswordChange'
 import * as route from './routes'
 import { Loader } from './Components/Loader/Loader'
-// import { Loader } from './Components/Loader/Loader'
+
 
 function App() {
   return (
