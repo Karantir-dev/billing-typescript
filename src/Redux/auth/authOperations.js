@@ -99,35 +99,36 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     })
 }
 
-const reset =
-  (email, lang, setConfirmEmail, setTimeSendError, setTypeEmailError) => dispatch => {
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'recovery',
-          email: email,
-          lang: lang,
-          sok: 'ok',
-          out: 'json',
-        }),
-      )
-      .then(({ data }) => {
-        console.log(data)
-        if (data.doc.error) {
-          if (data.doc.error.param) {
-            setTimeSendError(data.doc.error.param[1].$)
-          }
-          setConfirmEmail(true)
-          setTypeEmailError(data.doc.error.$type)
-          throw data.doc.error.msg.$
-        } else {
-          setConfirmEmail(false)
-          setTypeEmailError('')
+const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'recovery',
+        email: email,
+        sok: 'ok',
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      dispatch(actions.hideLoader())
+
+      if (data.doc.error) {
+        setErrorType(data.doc.error.$type)
+
+        if (data.doc.error.$type === 'min_email_send_timeout') {
+          setErrorTime(data.doc.error.param[1].$)
         }
-      })
-      .catch(error => console.log(error))
-  }
+
+        throw data.doc.error.msg.$
+      }
+
+      setEmailSended(true)
+    })
+    .catch(error => console.log(error))
+}
 
 const chengePassword = (password, userId, secretKey) => dispatch => {
   console.log(password, userId, secretKey)
