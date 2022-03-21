@@ -10,7 +10,6 @@ import s from './Loader.module.scss'
 export function Loader({ logo = false }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const isLoading = useSelector(selectors.getIsLoadding)
-  console.log(isLoading)
 
   return (
     <div className={cn({ [s.backdrop]: true, [s.main]: logo, [s.shown]: isLoading })}>

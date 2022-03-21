@@ -89,5 +89,9 @@
       border-radius: 4px;
       background-image: linear-gradient(90deg, #ff42a8 0%, #f02ce2 100%);
     }
+
+    & ~ .field_icon {
+      fill: var(--main-text);
+    }
   }
 }

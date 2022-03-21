@@ -99,48 +99,53 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     })
 }
 
-const reset = (email, lang) => dispatch => {
+const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch => {
+  dispatch(actions.showLoader())
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'recovery',
         email: email,
-        lang: lang,
         sok: 'ok',
         out: 'json',
       }),
     )
-    .then(res => console.log(res))
+    .then(({ data }) => {
+      dispatch(actions.hideLoader())
+
+      if (data.doc.error) {
+        setErrorType(data.doc.error.$type)
+
+        if (data.doc.error.$type === 'min_email_send_timeout') {
+          setErrorTime(data.doc.error.param[1].$)
+        }
+
+        throw data.doc.error.msg.$
+      }
+
+      setEmailSended(true)
+    })
     .catch(error => console.log(error))
 }
 
-//  qs.stringify({
-//         func: 'recovery.change',
-//         password: password,
-//         sok: 'ok',
-//         out: 'json',
-//         user: int
-//         secret: string
-//       }),
-
-const chengePassword = (newPass, userId, userKey) => dispatch => {
-  console.log(newPass, userId, userKey)
+const chengePassword = (password, userId, secretKey) => dispatch => {
+  console.log(password, userId, secretKey)
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'recovery.change',
         sok: 'ok',
-        sfromextform: 'yes',
-        clicked_button: 'ok',
-        userid: userId,
-        secret: userKey,
-        password: newPass,
-        confirm: newPass,
+        userid: '11',
+        secret: 'CUVmEia2j0uQf9SDBMFWFKr3cJVPexu8',
+        password: '11112222FDb@',
+        confirm: '11112222FDb@',
+        out: 'json',
       }),
     )
-    .then(res => console.log(res.data))
+    .then(res => console.log(res))
     .catch(error => console.log('ERROR', error))
 }
 

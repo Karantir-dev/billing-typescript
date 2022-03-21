@@ -64,14 +64,6 @@ export function LoginForm() {
                     {t('email_label')}
                   </label>
                   <div className={s.input_wrapper}>
-                    {tabletOrHigher && (
-                      <Icon
-                        className={s.field_icon}
-                        name="envelope"
-                        width={19}
-                        height={15}
-                      />
-                    )}
                     <Field
                       className={cn({
                         [s.input]: true,
@@ -81,6 +73,14 @@ export function LoginForm() {
                       type="text"
                       placeholder={t('email_placeholder')}
                     />
+                    {tabletOrHigher && (
+                      <Icon
+                        className={s.field_icon}
+                        name="envelope"
+                        width={19}
+                        height={15}
+                      />
+                    )}
                     <div className={s.input_border}></div>
                   </div>
                   <ErrorMessage
@@ -95,15 +95,6 @@ export function LoginForm() {
                     {t('password_label')}
                   </label>
                   <div className={s.input_wrapper}>
-                    {tabletOrHigher && (
-                      <Icon
-                        className={s.field_icon}
-                        name="padlock"
-                        width={19}
-                        height={19}
-                      />
-                    )}
-
                     <Field
                       className={cn({
                         [s.input]: true,
@@ -114,6 +105,14 @@ export function LoginForm() {
                       type={passShown ? 'text' : 'password'}
                       placeholder={t('password_placeholder')}
                     />
+                    {tabletOrHigher && (
+                      <Icon
+                        className={s.field_icon}
+                        name="padlock"
+                        width={19}
+                        height={19}
+                      />
+                    )}
                     <div className={s.input_border}></div>
                     <button
                       className={cn({
