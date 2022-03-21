@@ -15,17 +15,13 @@ import { Form, Formik } from 'formik'
 
 export function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t, i18n } = useTranslation()
-  let lang = i18n.language
+  const { t } = useTranslation()
 
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
   const [searchParams] = useSearchParams()
-
-  // const [userId, setUserId] = useState('')
-  // const [secretKey, setSecretKey] = useState('')
 
   useEffect(() => {
     let secret = searchParams.get('secret')
@@ -34,11 +30,6 @@ export function PasswordChange() {
       return navigate('/')
     }
   }, [])
-
-  // useEffect(() => {
-  //   setUserId(searchParams.get('user'))
-  //   setSecretKey(searchParams.get('secret'))
-  // }, [])
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -73,9 +64,6 @@ export function PasswordChange() {
         initialValues={{
           password: '',
           confirmPassword: '',
-          // userId: '',
-          // secretKey: '',
-          // lang: '',
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
