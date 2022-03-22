@@ -1,5 +1,5 @@
-export const CHANGE_PASSWORD = '/change'
-export const RESET_PASSWORD = '/reset'
+export const CHANGE_PASSWORD = '/change_pass'
+export const RESET_PASSWORD = '/reset_pass'
 export const LOGIN = '/login'
 export const REGISTRATION = '/signup'
 export const HOME = '/'

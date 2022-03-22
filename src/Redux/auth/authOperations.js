@@ -47,7 +47,8 @@ const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
           }),
         )
         .then(({ data }) => {
-          if (data.doc?.error.$type === 'extraconfirm') {
+          console.log(data)
+          if (data.doc?.error?.$type === 'extraconfirm') {
             dispatch(authActions.setTemporaryId(sessionId))
 
             dispatch(authActions.loginSuccess())
@@ -107,7 +108,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
       '/',
       qs.stringify({
         func: 'recovery',
-        email: email,
+        email,
         sok: 'ok',
         out: 'json',
       }),
@@ -130,25 +131,36 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
     .catch(error => console.log(error))
 }
 
-const chengePassword = (password, userId, secretKey) => dispatch => {
-  console.log(password, userId, secretKey)
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'recovery.change',
-        sok: 'ok',
-        userid: '11',
-        secret: 'CUVmEia2j0uQf9SDBMFWFKr3cJVPexu8',
-        password: '11112222FDb@',
-        confirm: '11112222FDb@',
-        out: 'json',
-      }),
-    )
-    .then(res => console.log(res))
-    .catch(error => console.log('ERROR', error))
-}
+const changePassword =
+  (password, userId, secretKey, setErrType, onChangeSuccess) => dispatch => {
+    dispatch(actions.showLoader())
+    console.log(password, userId, secretKey)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'recovery.change',
+          sok: 'ok',
+          userid: userId,
+          secret: secretKey,
+          password,
+          confirm: password,
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        console.log(data)
+        if (data.doc.error) {
+          setErrType(data.doc.error.$type)
+          throw data.doc.error.msg.$
+        }
+        onChangeSuccess()
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        dispatch(actions.hideLoader())
+        console.log('ERROR', error)
+      })
+  }
 
-const authOperations = { login, reset, chengePassword, sendTotp }
-
-export default authOperations
+export const authOperations = { login, reset, changePassword, sendTotp }

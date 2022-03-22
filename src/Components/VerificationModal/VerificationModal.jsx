@@ -7,8 +7,8 @@ import { Icon } from '../Icon'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
-import {authActions} from '../../Redux/auth/authActions'
-import authOperations from '../../Redux/auth/authOperations'
+import { authActions } from '../../Redux/auth/authActions'
+import { authOperations } from '../../Redux/auth/authOperations'
 
 export function VerificationModal() {
   const [totp, setTotp] = useState('')
