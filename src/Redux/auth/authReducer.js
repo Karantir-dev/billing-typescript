@@ -31,22 +31,6 @@ const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
   [authActions.closeTotpForm]: () => 'hidden',
 })
 
-const isLoading = createReducer(initialState.isLoading, {
-  [authActions.registrationRequest]: () => true,
-  [authActions.registrationSuccess]: () => false,
-  [authActions.registrationError]: () => false,
-  [authActions.loginRequest]: () => true,
-  [authActions.loginSuccess]: () => false,
-  [authActions.loginError]: () => false,
-  [authActions.logoutRequest]: () => true,
-  [authActions.logoutSuccess]: () => false,
-  [authActions.logoutError]: () => false,
-  // [authActions.getCurrentUserRequest]: () => true,
-  // [authActions.getCurrentUserSuccess]: () => false,
-  // [authActions.getCurrentUserError]: () => false,
-  // [authActions.maxPassResetError]: () => false,
-})
-
 export const authReducer = combineReducers({
   // data,
   sessionId,

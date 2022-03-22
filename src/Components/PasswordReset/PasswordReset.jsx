@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 import { Icon } from '../Icon'
 
-import authOperations from '../../Redux/auth/authOperations'
+import { authOperations } from '../../Redux/auth/authOperations'
 import * as Yup from 'yup'
 import * as routes from '../../routes'
 import cn from 'classnames'

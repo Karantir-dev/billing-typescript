@@ -7,13 +7,14 @@ import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import cn from 'classnames'
 
-import authOperations from '../../Redux/auth/authOperations'
+import { authOperations } from '../../Redux/auth/authOperations'
 import { useMediaQuery } from 'react-responsive'
 import { VerificationModal } from '../VerificationModal/VerificationModal'
 import { Icon } from '../Icon'
 import * as routes from '../../routes'
 
 import s from './LoginForm.module.scss'
+import { RECAPTCHA_KEY } from '../../config/config'
 
 export function LoginForm() {
   const { t } = useTranslation()
@@ -32,8 +33,10 @@ export function LoginForm() {
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('warnings.invalid_email')).required(t('warnings.email')),
-    password: Yup.string().required(t('warnings.password')),
+    email: Yup.string()
+      .email(t('warnings.invalid_email'))
+      .required(t('warnings.email_required')),
+    password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string()
       .typeError(t('warnings.recaptcha'))
       .required(t('warnings.recaptcha')),
@@ -60,9 +63,7 @@ export function LoginForm() {
                   <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
                 )}
                 <div className={s.field_wrapper}>
-                  <label htmlFor="email" className={s.label}>
-                    {t('email_label')}
-                  </label>
+                  <label className={s.label}>{t('email_label')}</label>
                   <div className={s.input_wrapper}>
                     <Field
                       className={cn({
@@ -91,9 +92,7 @@ export function LoginForm() {
                 </div>
 
                 <div className={s.field_wrapper}>
-                  <label htmlFor="password" className={s.label}>
-                    {t('password_label')}
-                  </label>
+                  <label className={s.label}>{t('password_label')}</label>
                   <div className={s.input_wrapper}>
                     <Field
                       className={cn({
@@ -140,7 +139,7 @@ export function LoginForm() {
                   <ReCAPTCHA
                     className={s.captcha}
                     ref={recaptchaEl}
-                    sitekey="6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR"
+                    sitekey={RECAPTCHA_KEY}
                     onChange={value => {
                       setFieldValue('reCaptcha', value)
                     }}
