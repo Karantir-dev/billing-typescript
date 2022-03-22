@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import authActions from './authActions'
+import { authActions } from './authActions'
+import { actions } from '../actions'
 import { BASE_URL } from '../../config/config'
 
 const axiosInstance = axios.create({
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
   },
 })
 
-const login = (email, password, reCaptcha, setLoginError) => dispatch => {
+const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
   dispatch(authActions.loginRequest())
 
   axiosInstance
@@ -26,8 +27,11 @@ const login = (email, password, reCaptcha, setLoginError) => dispatch => {
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) {
-        setLoginError(true)
+      if (data.doc?.error?.$object === 'badpassword') {
+        setErrMsg(data.doc.error.$object)
+        throw data.doc.error.msg.$
+      } else if (data.doc?.error?.$object === 'badip') {
+        setErrMsg(data.doc.error.$object)
         throw data.doc.error.msg.$
       }
       const sessionId = data.doc.auth.$id
@@ -43,8 +47,12 @@ const login = (email, password, reCaptcha, setLoginError) => dispatch => {
           }),
         )
         .then(({ data }) => {
-          if (data.doc?.error.$type === 'extraconfirm') {
+          console.log(data)
+          if (data.doc?.error?.$type === 'extraconfirm') {
             dispatch(authActions.setTemporaryId(sessionId))
+
+            dispatch(authActions.loginSuccess())
+
             dispatch(authActions.openTotpForm())
             return
           }
@@ -59,6 +67,8 @@ const login = (email, password, reCaptcha, setLoginError) => dispatch => {
 }
 
 const sendTotp = (totp, setError) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
   const {
     auth: { temporaryId },
   } = getState()
@@ -81,56 +91,76 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
         throw data.doc.error.msg.$
       }
 
+      dispatch(authActions.clearTemporaryId())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(err => console.log('error', err))
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('error', err)
+    })
 }
 
-const reset = (email, lang) => dispatch => {
+const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch => {
+  dispatch(actions.showLoader())
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'recovery',
-        email: email,
-        lang: lang,
+        email,
         sok: 'ok',
         out: 'json',
       }),
     )
-    .then(res => console.log(res))
+    .then(({ data }) => {
+      dispatch(actions.hideLoader())
+
+      if (data.doc.error) {
+        setErrorType(data.doc.error.$type)
+
+        if (data.doc.error.$type === 'min_email_send_timeout') {
+          setErrorTime(data.doc.error.param[1].$)
+        }
+
+        throw data.doc.error.msg.$
+      }
+
+      setEmailSended(true)
+    })
     .catch(error => console.log(error))
 }
 
-//  qs.stringify({
-//         func: 'recovery.change',
-//         password: password,
-//         sok: 'ok',
-//         out: 'json',
-//         user: int
-//         secret: string
-//       }),
+const changePassword =
+  (password, userId, secretKey, setErrType, onChangeSuccess) => dispatch => {
+    dispatch(actions.showLoader())
+    console.log(password, userId, secretKey)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'recovery.change',
+          sok: 'ok',
+          userid: userId,
+          secret: secretKey,
+          password,
+          confirm: password,
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        console.log(data)
+        if (data.doc.error) {
+          setErrType(data.doc.error.$type)
+          throw data.doc.error.msg.$
+        }
+        onChangeSuccess()
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        dispatch(actions.hideLoader())
+        console.log('ERROR', error)
+      })
+  }
 
-const chengePassword = (newPass, userId, userKey) => dispatch => {
-  console.log(newPass, userId, userKey)
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'recovery.change',
-        sok: 'ok',
-        sfromextform: 'yes',
-        clicked_button: 'ok',
-        userid: userId,
-        secret: userKey,
-        password: newPass,
-        confirm: newPass,
-      }),
-    )
-    .then(res => console.log(res.data))
-    .catch(error => console.log('ERROR', error))
-}
-
-const authOperations = { login, reset, chengePassword, sendTotp }
-
-export default authOperations
+export const authOperations = { login, reset, changePassword, sendTotp }
