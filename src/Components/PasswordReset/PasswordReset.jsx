@@ -49,7 +49,7 @@ export function PasswordReset() {
 
   return !emailSended ? (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title}>{t('reset.resetTitle')}</h3>
+      <h3 className={s.form_title}>{t('reset.form_title')}</h3>
       <form className={s.form} onSubmit={handleSubmit}>
         {errorType && (
           <div className={s.credentials_error}>
@@ -58,15 +58,15 @@ export function PasswordReset() {
         )}
 
         <p className={s.reset_description}>
-          {t('reset.restDescription_1')}
+          {t('reset.description_1')}
           <a className={s.mail_link} href="mailto:support@zomro.com">
             support@zomro.com
           </a>
-          {t('reset.restDescription_2')}
+          {t('reset.description_2')}
         </p>
         <div className={s.field_wrapper}>
           <label htmlFor="email" className={s.label}>
-            {t('reset.email')}
+            {t('email_label')}
           </label>
 
           <div className={s.input_wrapper}>
@@ -74,7 +74,7 @@ export function PasswordReset() {
               className={cn({ [s.input]: true, [s.error]: isValid === 'invalid' })}
               name="email"
               type="text"
-              placeholder={t('reset.resetEmail')}
+              placeholder={t('email_placeholder')}
               value={email}
               onChange={handleInputChange}
               onBlur={validateEmail}
@@ -90,29 +90,25 @@ export function PasswordReset() {
           )}
         </div>
         <button className={s.submit_btn} type="submit">
-          <span className={s.btn_text}>{t('reset.resetButton')}</span>
+          <span className={s.btn_text}>{t('reset.send_btn')}</span>
         </button>
         <Link className={s.reset_pass_link} to={routes.LOGIN}>
-          {t('reset.resetCancel')}
+          {t('reset.cancel_link')}
         </Link>
       </form>
     </div>
   ) : (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title}>{t('reset.confirmTitle')}</h3>
+      <h3 className={s.form_title}>{t('reset.confirmation_title')}</h3>
       <form className={s.form}>
-        <p className={s.reset_description}>
-          {t('reset.confirmDescription_1')}
-          <span>{email}</span>
-          {t('reset.confirmDescription_2')}
-        </p>
+        <p className={s.reset_description}>{t('reset.confirm_descr_1', { email })}</p>
 
         <p className={s.reset_description}>
-          {t('reset.confirmDescription_3')}
+          {t('reset.confirm_descr_2')}
           <a className={s.mail_link} href="mailto:support@zomro.com">
             support@zomro.com
           </a>
-          {t('reset.confirmDescription_4')}
+          {t('reset.confirm_descr_3')}
         </p>
         <Link className={s.to_login_link} to={routes.LOGIN}>
           <span className={s.btn_text}>OK</span>

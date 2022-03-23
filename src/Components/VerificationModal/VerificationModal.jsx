@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
 
 import { authSelectors } from '../../Redux/auth/authSelectors'
 import { Icon } from '../Icon'
@@ -10,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { authActions } from '../../Redux/auth/authActions'
 import { authOperations } from '../../Redux/auth/authOperations'
 
-export function VerificationModal() {
+export function VerificationModal({ resetRecaptcha }) {
   const [totp, setTotp] = useState('')
   const [error, setError] = useState(false)
 
@@ -29,24 +30,26 @@ export function VerificationModal() {
     dispatch(authOperations.sendTotp(totp, setError))
   }
 
-  const handleClosing = e => {
+  const handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
+      resetRecaptcha()
       dispatch(authActions.closeTotpForm())
     }
+  }
+
+  const handleBtnCloseClick = () => {
+    resetRecaptcha()
+    dispatch(authActions.closeTotpForm())
   }
 
   return (
     <div
       className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
-      onClick={handleClosing}
+      onClick={handleBackdropClick}
     >
       <div className={s.modalWindow}>
-        <h3 className={s.title}>{t('title')}</h3>
-        <button
-          className={s.closeBtn}
-          onClick={() => dispatch(authActions.closeTotpForm())}
-          type="button"
-        >
+        <h3 className={s.title}>{t('form_title')}</h3>
+        <button className={s.closeBtn} onClick={handleBtnCloseClick} type="button">
           <Icon className={s.icon} name="cross" width={16} height={16} />
         </button>
         <p className={s.text}>{t('text')}</p>
@@ -74,4 +77,8 @@ export function VerificationModal() {
       </div>
     </div>
   )
+}
+
+VerificationModal.propTypes = {
+  resetRecaptcha: PropTypes.func.isRequired,
 }

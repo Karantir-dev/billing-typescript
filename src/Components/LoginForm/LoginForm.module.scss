@@ -157,6 +157,12 @@
   min-height: 61px;
 }
 
+.changed_pass {
+  @extend .credentials_error;
+  background-color: var(--success-bgc);
+  color: var(--success-color);
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .form {

@@ -1,73 +1,55 @@
 import React from 'react'
-// import { reactLocalStorage } from 'reactjs-localstorage'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import * as Yup from 'yup'
+
 import { Link } from 'react-router-dom'
-// import './index.css'
-// import { connect, useSelector } from 'react-redux'
-// import { loginHandler } from '../../redux/actions'
-// import Loading from '../Loading/Loading'
-import * as route from '../../routes'
-import { ThemeBtn } from '../ThemeBtn/ThemeBtn'
+
+import * as routes from '../../routes'
+import { Icon } from '../Icon'
+import s from './SignupForm.module.scss'
 
 export function SignupForm() {
-  //   const [email, setEmail] = useState(
-  //     reactLocalStorage.get('email') !== null ? reactLocalStorage.get('email') : '',
-  //   )
-  //   const [password, setPassword] = useState(
-  //     reactLocalStorage.get('password') !== null ? reactLocalStorage.get('password') : '',
-  //   )
-  //   const [lang, setLang] = useState('')
-  //   const loading = useSelector(state => state.auth.loading)
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
-  //   const handleSubmit = (event, email, password, lang) => {
-  //     event.preventDefault()
-  //   }
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(t('warnings.name_required')),
+    email: Yup.string()
+      .email(t('warnings.invalid_email'))
+      .required(t('warnings.email_required')),
+    password: Yup.string().required(t('warnings.password_required')),
+    passConfirmation: Yup.string()
+      .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
+      .required(t('warnings.mismatched_password')),
+    reCaptcha: Yup.string()
+      .typeError(t('warnings.recaptcha'))
+      .required(t('warnings.recaptcha')),
+  })
+
   return (
-    <div>
-      {/* <form>
-        <input className="input" type="text" name="field" placeholder="Contact name" />
-        <input
-          className="input"
-          onChange={e => setEmail(e.target.value)}
-          value={email}
-          type="text"
-          name="field"
-          placeholder="Enter email"
-        />
-        <input
-          className="input"
-          onChange={e => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          name="field"
-          placeholder="Enter passowrd"
-        />
-        <input
-          className="input"
-          onChange={e => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          name="field"
-          placeholder="Repeat passowrd"
-        />
-      </form>
-      <div>
-        <button
-          type="submit"
-          onClick={event => handleSubmit(event, email, password, lang)}
-        >
-          Submit
-        </button>
-      </div>
-      <div>
-        <Link className="login_link" to="/login">
-          Login
+    <div className={s.form_wrapper}>
+      <div className={s.auth_links_wrapper}>
+        <span className={s.current_auth_link}>{t('registration')}</span>
+        <Link className={s.auth_link} to={routes.REGISTRATION}>
+          {t('logIn')}
         </Link>
       </div>
 
-      <pre>{JSON.stringify(null, null, 2)}</pre> */}
-      <ThemeBtn></ThemeBtn>
-      <Link to={route.LOGIN}>LOGIN</Link>
-      <div>SIGNUP PAGE</div>
+      <div>
+        <p className={s.social_title}>{t('login_with')}</p>
+        <ul className={s.social_list}>
+          <li>
+            <Icon name="facebook" width={32} height={32}></Icon>
+          </li>
+          <li>
+            <Icon name="google" width={32} height={32}></Icon>
+          </li>
+          <li>
+            <Icon name="vk" width={32} height={32}></Icon>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }
