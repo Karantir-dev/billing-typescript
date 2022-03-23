@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
   },
 })
 
-const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
+const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(authActions.loginRequest())
 
   axiosInstance
@@ -27,16 +27,14 @@ const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
       }),
     )
     .then(({ data }) => {
-      if (data.doc?.error?.$object === 'badpassword') {
+      if (data.doc.error) {
         setErrMsg(data.doc.error.$object)
-        throw data.doc.error.msg.$
-      } else if (data.doc?.error?.$object === 'badip') {
-        setErrMsg(data.doc.error.$object)
+
         throw data.doc.error.msg.$
       }
       const sessionId = data.doc.auth.$id
 
-      axiosInstance
+      return axiosInstance
         .post(
           '/',
           qs.stringify({
@@ -47,22 +45,26 @@ const login = (email, password, reCaptcha, setErrMsg) => dispatch => {
           }),
         )
         .then(({ data }) => {
-          console.log(data)
-          if (data.doc?.error?.$type === 'extraconfirm') {
-            dispatch(authActions.setTemporaryId(sessionId))
+          if (data.doc.error) {
+            if (data.doc.error.$type === 'extraconfirm') {
+              dispatch(authActions.setTemporaryId(sessionId))
 
-            dispatch(authActions.loginSuccess())
+              dispatch(actions.hideLoader())
 
-            dispatch(authActions.openTotpForm())
-            return
+              dispatch(authActions.openTotpForm())
+              return
+            } else {
+              throw `usrparam - ${data.doc.error.msg.$}`
+            }
           }
 
           dispatch(authActions.loginSuccess(sessionId))
         })
     })
-    .catch(err => {
-      console.log('error', err)
-      dispatch(authActions.loginError(err))
+    .catch(error => {
+      resetRecaptcha()
+      console.log('auth -', error)
+      dispatch(authActions.loginError())
     })
 }
 
@@ -94,9 +96,9 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(err => {
+    .catch(error => {
       dispatch(actions.hideLoader())
-      console.log('error', err)
+      console.log('totp.confirm - ', error)
     })
 }
 
@@ -114,6 +116,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
       }),
     )
     .then(({ data }) => {
+      console.log(data.doc)
       dispatch(actions.hideLoader())
 
       if (data.doc.error) {
@@ -128,13 +131,13 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
 
       setEmailSended(true)
     })
-    .catch(error => console.log(error))
+    .catch(error => console.log('recovery - ', error))
 }
 
 const changePassword =
   (password, userId, secretKey, setErrType, onChangeSuccess) => dispatch => {
     dispatch(actions.showLoader())
-    console.log(password, userId, secretKey)
+
     axiosInstance
       .post(
         '/',
@@ -149,18 +152,31 @@ const changePassword =
         }),
       )
       .then(({ data }) => {
-        console.log(data)
+        console.log(data.doc)
         if (data.doc.error) {
           setErrType(data.doc.error.$type)
           throw data.doc.error.msg.$
         }
+
+        axiosInstance.post(
+          '/',
+          qs.stringify({
+            func: 'logon',
+            auth: data.doc.auth.$id,
+            sok: 'ok',
+            out: 'json',
+          }),
+        )
+
         onChangeSuccess()
         dispatch(actions.hideLoader())
       })
       .catch(error => {
         dispatch(actions.hideLoader())
-        console.log('ERROR', error)
+        console.log('recovery.change - ', error)
       })
   }
 
-export const authOperations = { login, reset, changePassword, sendTotp }
+const logout = () => {}
+
+export const authOperations = { login, reset, changePassword, sendTotp, logout }

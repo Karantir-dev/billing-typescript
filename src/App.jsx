@@ -13,11 +13,10 @@ import { PasswordChange } from './Components/PasswordChange/PasswordChange'
 import * as route from './routes'
 import { Loader } from './Components/Loader/Loader'
 
-
 function App() {
   return (
     <>
-      <Suspense fallback={''}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route
             path={route.LOGIN}
