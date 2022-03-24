@@ -48,8 +48,8 @@ jobs:
       - name: Run playbook
         uses: arillso/action.playbook@master
         with:
-          playbook: deploy/initial.yml
-          inventory: deploy/hosts.ini
+          playbook: deployment/playbooks/initial.yml
+          inventory: deployment/host.ini
           user: git
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
         env:
