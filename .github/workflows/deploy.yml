@@ -35,11 +35,25 @@ jobs:
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker built -t zomro-bill-dev
+          docker built -t zomro-bill-dev .
           docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:latest
           docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:$RELEASE_NAME
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
+
+      - name: Run playbook
+        uses: arillso/action.playbook@master
+        run: |
+          ansible-galaxy collection install community.docker
+        with:
+          playbook: deploy/initial.yml
+          inventory: deploy/hosts.ini
+          user: git
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+          ANSIBLE_DEPRECATION_WARNINGS: 'false'
+          ANSIBLE_ENABLE_TASK_DEBUGGER: 'true'
 
       - name: Deploy status
         uses: 8398a7/action-slack@v3
