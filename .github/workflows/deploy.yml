@@ -50,6 +50,7 @@ jobs:
         with:
           playbook: deployment/playbooks/initial.yml
           inventory: deployment/host.ini
+          vault_password: ${{secrets.ANSIBLE_VAULET}}
           user: git
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
         env:
