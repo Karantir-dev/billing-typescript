@@ -41,15 +41,12 @@ jobs:
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
 
-      - name: Install collection
-        run: |
-          ansible-galaxy collection install community.docker
-
       - name: Run playbook
         uses: arillso/action.playbook@master
         with:
           playbook: deployment/playbooks/initial.yml
           inventory: deployment/host.ini
+          galaxy_file: deployment/playbooks/requirements.yml
           vault_password: ${{secrets.ANSIBLE_VAULET}}
           user: git
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
