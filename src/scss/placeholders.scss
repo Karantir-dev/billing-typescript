@@ -72,6 +72,10 @@
     border-color: var(--error-color);
   }
 
+  &.pr {
+    padding-right: 45px;
+  }
+
   &::placeholder {
     color: var(--auth-placeholder-color);
   }

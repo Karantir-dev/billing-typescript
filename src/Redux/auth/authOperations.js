@@ -54,7 +54,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
               dispatch(authActions.openTotpForm())
               return
             } else {
-              throw `usrparam - ${data.doc.error.msg.$}`
+              throw new Error(`usrparam - ${data.doc.error.msg.$}`)
             }
           }
 
@@ -63,7 +63,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
     .catch(error => {
       resetRecaptcha()
-      console.log('auth -', error)
+      console.log('auth -', error.message)
       dispatch(authActions.loginError())
     })
 }

@@ -38,9 +38,7 @@ export function LoginForm() {
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
-    reCaptcha: Yup.string()
-      .typeError(t('warnings.recaptcha'))
-      .required(t('warnings.recaptcha')),
+    reCaptcha: Yup.string().required(t('warnings.recaptcha')),
   })
 
   return (
@@ -87,16 +85,15 @@ export function LoginForm() {
                   inputValue={!!values.password}
                 />
 
-                <div className={s.recaptcha_wrapper}>
-                  <ReCAPTCHA
-                    className={s.captcha}
-                    ref={recaptchaEl}
-                    sitekey={RECAPTCHA_KEY}
-                    onChange={value => {
-                      setFieldValue('reCaptcha', value)
-                    }}
-                  />
-                </div>
+                <ReCAPTCHA
+                  className={s.captcha}
+                  ref={recaptchaEl}
+                  sitekey={RECAPTCHA_KEY}
+                  onChange={value => {
+                    setFieldValue('reCaptcha', value)
+                  }}
+                />
+
                 <ErrorMessage
                   className={s.error_message}
                   name="reCaptcha"

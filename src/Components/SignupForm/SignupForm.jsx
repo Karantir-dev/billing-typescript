@@ -9,7 +9,7 @@ import * as routes from '../../routes'
 import { Icon } from '../Icon'
 import s from './SignupForm.module.scss'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { ReCAPTCHA } from 'react-google-recaptcha'
+import ReCAPTCHA from 'react-google-recaptcha'
 import { RECAPTCHA_KEY } from '../../config/config'
 import { InputField } from '../InputField/InputField'
 
@@ -27,9 +27,7 @@ export function SignupForm() {
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
-    reCaptcha: Yup.string()
-      .typeError(t('warnings.recaptcha'))
-      .required(t('warnings.recaptcha')),
+    reCaptcha: Yup.string().required(t('warnings.recaptcha')),
   })
 
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {}
@@ -37,14 +35,20 @@ export function SignupForm() {
   return (
     <div className={s.form_wrapper}>
       <div className={s.auth_links_wrapper}>
-        <span className={s.current_auth_link}>{t('registration')}</span>
-        <Link className={s.auth_link} to={routes.REGISTRATION}>
+        <Link className={s.auth_link} to={routes.LOGIN}>
           {t('logIn')}
         </Link>
+        <span className={s.current_auth_link}>{t('registration')}</span>
       </div>
 
       <Formik
-        initialValues={{ email: '', password: '', reCaptcha: '' }}
+        initialValues={{
+          name: '',
+          email: '',
+          password: '',
+          passConfirmation: '',
+          reCaptcha: '',
+        }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
@@ -54,6 +58,13 @@ export function SignupForm() {
               {/* {errMsg && (
                 <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
               )} */}
+
+              <InputField
+                label="name"
+                icon="person"
+                error={!!errors.name}
+                touched={!!touched.name}
+              />
 
               <InputField
                 label="email"
@@ -70,16 +81,23 @@ export function SignupForm() {
                 inputValue={!!values.password}
               />
 
-              <div className={s.recaptcha_wrapper}>
-                <ReCAPTCHA
-                  className={s.captcha}
-                  ref={recaptchaEl}
-                  sitekey={RECAPTCHA_KEY}
-                  onChange={value => {
-                    setFieldValue('reCaptcha', value)
-                  }}
-                />
-              </div>
+              <InputField
+                label="passConfirmation"
+                icon="padlock"
+                error={!!errors.passConfirmation}
+                touched={!!touched.passConfirmation}
+                inputValue={!!values.passConfirmation}
+              />
+
+              <ReCAPTCHA
+                className={s.captcha}
+                ref={recaptchaEl}
+                sitekey={RECAPTCHA_KEY}
+                onChange={value => {
+                  setFieldValue('reCaptcha', value)
+                }}
+              />
+
               <ErrorMessage
                 className={s.error_message}
                 name="reCaptcha"
@@ -95,7 +113,7 @@ export function SignupForm() {
       </Formik>
 
       <div>
-        <p className={s.social_title}>{t('login_with')}</p>
+        <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
           <li>
             <Icon name="facebook" width={32} height={32}></Icon>

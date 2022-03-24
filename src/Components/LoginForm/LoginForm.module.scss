@@ -39,48 +39,12 @@
   display: flex;
   flex-direction: column;
   width: 260px;
-  min-height: 383px;
   height: fit-content;
   padding: 18px;
   margin-bottom: 25px;
+  border-radius: 3px;
   background: var(--elements-bgc);
   box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
-}
-
-.input {
-  @extend %input;
-
-  &.pr {
-    padding-right: 45px;
-  }
-}
-
-.field_icon {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  z-index: 2;
-  fill: var(--input-border-icon);
-}
-
-.pass_show_btn {
-  display: none;
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  z-index: 1;
-  cursor: pointer;
-
-  &.shown {
-    display: flex;
-  }
-}
-
-.icon_eye {
-  fill: var(--eye-color);
 }
 
 .submit_btn {
@@ -111,11 +75,14 @@
   margin: 0 auto;
   justify-content: space-between;
 }
+
 .captcha {
   transform: scale(0.74);
   transform-origin: 0 0;
   margin-bottom: -15px;
+  min-height: 61px;
 }
+
 .error_message {
   margin-left: 2px;
   color: var(--error-color);
@@ -136,10 +103,6 @@
   background-color: rgba(255, 68, 102, 0.1);
 }
 
-.recaptcha_wrapper {
-  min-height: 61px;
-}
-
 .changed_pass {
   @extend .credentials_error;
   background-color: var(--success-bgc);
@@ -150,7 +113,6 @@
 @media screen and (min-width: 768px) {
   .form {
     width: 431px;
-    min-height: 453px;
     padding: 36px 64px;
   }
 
@@ -162,13 +124,10 @@
     font-size: 20px;
   }
 
-  .input {
-    padding-left: 36px;
-  }
-
   .captcha {
     transform: scale(1);
     margin-bottom: 0;
+    min-height: 83px;
   }
 
   .submit_btn {
@@ -182,9 +141,5 @@
 
   .credentials_error {
     padding: 0;
-  }
-
-  .recaptcha_wrapper {
-    min-height: 83px;
   }
 }

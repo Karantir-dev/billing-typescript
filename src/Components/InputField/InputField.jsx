@@ -21,14 +21,15 @@ export function InputField({ label, icon, error, touched, inputValue }) {
         <Field
           className={cn({
             [s.input]: true,
+            [s.pr]: label === 'password',
             [s.error]: error && touched,
           })}
           name={label}
           type={label === 'password' && !passShown ? 'password' : 'text'}
-          placeholder={t('email_placeholder')}
+          placeholder={t(`${label}_placeholder`)}
         />
         {tabletOrHigher && (
-          <Icon className={s.field_icon} name={icon} width={19} height={15} />
+          <Icon className={s.field_icon} name={icon} width={18} height={19} />
         )}
         <div className={s.input_border}></div>
 
