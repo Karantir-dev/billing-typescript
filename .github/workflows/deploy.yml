@@ -41,10 +41,12 @@ jobs:
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
 
-      - name: Run playbook
-        uses: arillso/action.playbook@master
+      - name: Install collection
         run: |
           ansible-galaxy collection install community.docker
+
+      - name: Run playbook
+        uses: arillso/action.playbook@master
         with:
           playbook: deploy/initial.yml
           inventory: deploy/hosts.ini
