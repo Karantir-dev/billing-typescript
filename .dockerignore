@@ -1,3 +1,5 @@
 .github/
 deployment/
 .git/
+Dockerfile
+node_modules/
