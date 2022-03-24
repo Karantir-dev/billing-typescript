@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -18,20 +18,21 @@ export function PasswordChange() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const userId = searchParams.get('user')
   const secret = searchParams.get('secret')
 
   const [errType, setErrType] = useState('')
   const [passIsShown, setPassIsShown] = useState(false)
-  const [confirmationPassIsShown, setConfirmationPassIsShown] = useState(false)
+  const [passConfirmationIsShown, setPassConfirmationIsShown] = useState(false)
 
   // redirects to login if query parasms are missing
-  useEffect(() => {
-    if (!userId || !secret) {
-      navigate(routes.LOGIN)
-    }
-  }, [userId, secret, navigate])
+  // useEffect(() => {
+  //   if (!userId || !secret) {
+  //     navigate(routes.LOGIN)
+  //   }
+  // }, [userId, secret, navigate])
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -39,13 +40,13 @@ export function PasswordChange() {
       .min(6, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
       .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass')),
-    confirmationPass: Yup.string()
+    passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
   })
 
   const onChangeSuccess = () => {
-    navigate(routes.LOGIN)
+    navigate(routes.LOGIN, { state: { from: location.pathname } })
   }
 
   const handleSubmit = ({ password }) => {
@@ -62,11 +63,13 @@ export function PasswordChange() {
 
   return (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title}>{t('change.passChangeTitle')}</h3>
+      <h3 className={s.form_title} onClick={onChangeSuccess}>
+        {t('change.form_title')}
+      </h3>
       <Formik
         initialValues={{
           password: '',
-          confirmationPass: '',
+          passConfirmation: '',
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -78,7 +81,7 @@ export function PasswordChange() {
                 <div className={s.credentials_error}>{t(`warnings.${errType}`)}</div>
               )}
               <div className={s.field_wrapper}>
-                <label className={s.label}>{t('change.password')}</label>
+                <label className={s.label}>{t('password_label')}</label>
                 <div className={s.input_wrapper}>
                   <Field
                     className={cn({
@@ -87,7 +90,7 @@ export function PasswordChange() {
                     })}
                     name="password"
                     type={passIsShown ? 'text' : 'password'}
-                    placeholder={t('change.changePass')}
+                    placeholder={t('change.pass_placeholder')}
                   />
                   {tabletOrHigher && (
                     <Icon
@@ -123,16 +126,16 @@ export function PasswordChange() {
               </div>
 
               <div className={s.field_wrapper}>
-                <label className={s.label}>{t('change.confirmation')}</label>
+                <label className={s.label}>{t('change.confirmation_label')}</label>
                 <div className={s.input_wrapper}>
                   <Field
                     className={cn({
                       [s.input]: true,
-                      [s.error]: errors.confirmationPass && touched.confirmationPass,
+                      [s.error]: errors.passConfirmation && touched.passConfirmation,
                     })}
-                    name="confirmationPass"
-                    type={confirmationPassIsShown ? 'text' : 'password'}
-                    placeholder={t('change.confPass')}
+                    name="passConfirmation"
+                    type={passConfirmationIsShown ? 'text' : 'password'}
+                    placeholder={t('change.confirmation_placeholder')}
                   />
                   {tabletOrHigher && (
                     <Icon
@@ -145,14 +148,14 @@ export function PasswordChange() {
                   <button
                     className={cn({
                       [s.pass_show_btn]: true,
-                      [s.shown]: values.confirmationPass,
+                      [s.shown]: values.passConfirmation,
                     })}
                     type="button"
-                    onClick={() => setConfirmationPassIsShown(!confirmationPassIsShown)}
+                    onClick={() => setPassConfirmationIsShown(!passConfirmationIsShown)}
                   >
                     <Icon
                       className={s.icon_eye}
-                      name={confirmationPassIsShown ? 'closed-eye' : 'eye'}
+                      name={passConfirmationIsShown ? 'closed-eye' : 'eye'}
                       width={21}
                       height={21}
                     ></Icon>
@@ -162,16 +165,16 @@ export function PasswordChange() {
 
                 <ErrorMessage
                   className={s.error_message}
-                  name="confirmationPass"
+                  name="passConfirmation"
                   component="span"
                 />
               </div>
 
               <button className={s.submit_btn} type="submit">
-                <span className={s.btn_text}>{t('change.save')}</span>
+                <span className={s.btn_text}>{t('change.save_btn')}</span>
               </button>
               <Link className={s.reset_pass_link} to={routes.LOGIN}>
-                {t('change.cancel')}
+                {t('change.cancel_link')}
               </Link>
             </Form>
           )
