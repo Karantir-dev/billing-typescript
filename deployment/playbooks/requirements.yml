@@ -1,1 +1,3 @@
-- src: community.docker.docker_container
+- src: https://github.com/ansible-collections/community.docker
+  version: master
+  name: docker_role
