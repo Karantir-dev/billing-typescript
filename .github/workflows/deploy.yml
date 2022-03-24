@@ -36,7 +36,7 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker build -t zomro-bill-dev .
-          docker tag zomrocom/zomro-bill-dev zomrocom/zomro-bill-dev:latest
+          docker tag zomro-bill-dev zomrocom/zomro-bill-dev:latest
           docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:$RELEASE_NAME
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
