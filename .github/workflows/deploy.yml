@@ -30,7 +30,7 @@ jobs:
 
       - name: Login to docker hub
         env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}s
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
