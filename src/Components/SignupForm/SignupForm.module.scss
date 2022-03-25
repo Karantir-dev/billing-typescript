@@ -3,6 +3,7 @@
 .form_wrapper {
   height: fit-content;
   width: fit-content;
+  margin-top: 30px;
 }
 
 .auth_links_wrapper {
@@ -78,7 +79,7 @@
 .submit_btn {
   @extend %btn;
   height: 50px;
-  margin: 10px 0 15px 0;
+  margin-top: 10px;
 }
 
 .btn_text {
@@ -121,7 +122,6 @@
   }
 
   .submit_btn {
-    margin: 20px 0;
     height: 55px;
   }
 

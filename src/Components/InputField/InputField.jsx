@@ -3,15 +3,15 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-
-import s from './InputField.module.scss'
-import { Icon } from '../Icon'
 import PropTypes from 'prop-types'
+
+import { Icon } from '../Icon'
+import s from './InputField.module.scss'
 
 export function InputField({ label, icon, error, touched, inputValue }) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
-
+  const inputTypePassword = label === 'password' || label === 'passConfirmation'
   const [passShown, setPassShown] = useState(false)
 
   return (
@@ -21,11 +21,11 @@ export function InputField({ label, icon, error, touched, inputValue }) {
         <Field
           className={cn({
             [s.input]: true,
-            [s.pr]: label === 'password',
+            [s.pr]: inputTypePassword,
             [s.error]: error && touched,
           })}
           name={label}
-          type={label === 'password' && !passShown ? 'password' : 'text'}
+          type={inputTypePassword && !passShown ? 'password' : 'text'}
           placeholder={t(`${label}_placeholder`)}
         />
         {tabletOrHigher && (
@@ -44,8 +44,8 @@ export function InputField({ label, icon, error, touched, inputValue }) {
           <Icon
             className={s.icon_eye}
             name={passShown ? 'closed-eye' : 'eye'}
-            width={21}
-            height={21}
+            width={20}
+            height={13}
           ></Icon>
         </button>
       </div>

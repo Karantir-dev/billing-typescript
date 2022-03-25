@@ -66,6 +66,7 @@ export function VerificationModal({ resetRecaptcha }) {
               onChange={e => setTotp(e.target.value)}
               placeholder={t('placeholder')}
               autoFocus
+              autoComplete="off"
             />
             <div className={s.input_border}></div>
           </div>

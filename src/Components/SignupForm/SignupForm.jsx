@@ -1,17 +1,19 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-
+import ReCAPTCHA from 'react-google-recaptcha'
 import { Link } from 'react-router-dom'
+import { ErrorMessage, Form, Formik } from 'formik'
 
+import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 import { Icon } from '../Icon'
-import s from './SignupForm.module.scss'
-import { ErrorMessage, Form, Formik } from 'formik'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { RECAPTCHA_KEY } from '../../config/config'
 import { InputField } from '../InputField/InputField'
+
+import s from './SignupForm.module.scss'
+import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
 
 export function SignupForm() {
   const { t } = useTranslation()
@@ -23,7 +25,11 @@ export function SignupForm() {
     email: Yup.string()
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
-    password: Yup.string().required(t('warnings.password_required')),
+    password: Yup.string()
+      .min(6, t('warnings.invalid_pass'))
+      .max(48, t('warnings.invalid_pass'))
+      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass'))
+      .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
@@ -88,6 +94,8 @@ export function SignupForm() {
                 touched={!!touched.passConfirmation}
                 inputValue={!!values.passConfirmation}
               />
+
+              <SelectOfCountries />
 
               <ReCAPTCHA
                 className={s.captcha}
