@@ -21,7 +21,7 @@ export function LoginForm() {
   const [passShown, setPassShown] = useState(false)
 
   const tabletOrHigher = useMediaQuery({ query: 'min-width: 768px' })
-  console.log(tabletOrHigher)
+
   const handleSubmit = ({ email, password, reCaptcha }) => {
     dispatch(authOperations.login(email, password, reCaptcha))
   }

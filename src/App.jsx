@@ -11,10 +11,12 @@ import { LoginForm } from './Components/LoginForm/LoginForm'
 import * as route from './routes'
 import { useSelector } from 'react-redux'
 import selectors from './Redux/selectors'
+import actions from './Redux/actions'
 
 function App() {
   // const theme = useSelector(selectors.getTheme)
   // const body = document.querySelector('body')
+  console.log(actions.changeTheme())
 
   return (
     <Suspense fallback="Загружаем...">
