@@ -70,7 +70,7 @@ export function SelectOfCountries() {
               console.log(countryCode)
 
               return (
-                <li className={s.country_item}>
+                <li key={$key} className={s.country_item}>
                   <img
                     className={s.country_img}
                     src={require(`../../images/countryFlags/${countryCode}.png`)}

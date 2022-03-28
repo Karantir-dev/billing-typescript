@@ -63,9 +63,15 @@ export function PasswordChange() {
 
   return (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title} onClick={onChangeSuccess}>
+      <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => null}
+        className={s.form_title}
+        onClick={onChangeSuccess}
+      >
         {t('change.form_title')}
-      </h3>
+      </div>
       <Formik
         initialValues={{
           password: '',

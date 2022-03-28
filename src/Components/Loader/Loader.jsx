@@ -19,7 +19,7 @@ export function Loader({ logo = false }) {
           className="loader__logo"
           src={darkTheme ? logo_dt : logo_lt}
           alt="logo"
-          onload="this.style.opacity = '1'"
+          onLoad="this.style.opacity = '1'"
         />
       )}
 

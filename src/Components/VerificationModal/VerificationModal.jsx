@@ -44,6 +44,9 @@ export function VerificationModal({ resetRecaptcha }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={() => null}
       className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
       onClick={handleBackdropClick}
     >
