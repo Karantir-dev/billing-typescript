@@ -7,7 +7,7 @@ import logo_dt from '../../images/logo-dt.svg'
 import logo_lt from '../../images/logo-lt.svg'
 import s from './Loader.module.scss'
 
-export function Loader({ logo = false }) {
+export default function Loader({ logo = false }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const isLoading = useSelector(selectors.getIsLoadding)
 

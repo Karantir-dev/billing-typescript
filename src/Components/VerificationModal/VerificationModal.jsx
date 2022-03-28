@@ -4,14 +4,14 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 
 import { authSelectors } from '../../Redux/auth/authSelectors'
-import { Icon } from '../Icon'
+import { Icon } from '..'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
 import { authActions } from '../../Redux/auth/authActions'
 import { authOperations } from '../../Redux/auth/authOperations'
 
-export function VerificationModal({ resetRecaptcha }) {
+export default function VerificationModal({ resetRecaptcha }) {
   const [totp, setTotp] = useState('')
   const [error, setError] = useState(false)
 

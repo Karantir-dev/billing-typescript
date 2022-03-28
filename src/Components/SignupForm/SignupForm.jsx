@@ -8,14 +8,12 @@ import { ErrorMessage, Form, Formik } from 'formik'
 
 // import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
-import { Icon } from '../Icon'
+import { Icon, InputField, SelectOfCountries } from '..'
 import { RECAPTCHA_KEY } from '../../config/config'
-import { InputField } from '../InputField/InputField'
 
 import s from './SignupForm.module.scss'
-import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
 
-export function SignupForm() {
+export default function SignupForm() {
   const { t } = useTranslation()
   // const dispatch = useDispatch()
   const recaptchaEl = useRef()

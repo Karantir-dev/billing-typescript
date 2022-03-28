@@ -4,11 +4,10 @@ import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-
-import { Icon } from '../Icon'
+import { Icon } from '..'
 import s from './InputField.module.scss'
 
-export function InputField({ label, icon, error, touched, inputValue }) {
+export default function InputField({ label, icon, error, touched, inputValue }) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const inputTypePassword = label === 'password' || label === 'passConfirmation'

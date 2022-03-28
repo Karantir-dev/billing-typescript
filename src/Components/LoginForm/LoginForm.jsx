@@ -7,15 +7,13 @@ import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 import { authOperations } from '../../Redux/auth/authOperations'
-import { VerificationModal } from '../VerificationModal/VerificationModal'
-import { Icon } from '../Icon'
+import { Icon, InputField, VerificationModal } from '..'
 import * as routes from '../../routes'
-import { InputField } from '../InputField/InputField'
 import { RECAPTCHA_KEY } from '../../config/config'
 
 import s from './LoginForm.module.scss'
 
-export function LoginForm() {
+export default function LoginForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 

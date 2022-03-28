@@ -7,13 +7,13 @@ import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 
-import { Icon } from '../Icon'
+import { Icon } from '..'
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 
 import s from './PasswordChange.module.scss'
 
-export function PasswordChange() {
+export default function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -63,15 +63,7 @@ export function PasswordChange() {
 
   return (
     <div className={s.form_wrapper}>
-      <div
-        role="button"
-        tabIndex={0}
-        onKeyDown={() => null}
-        className={s.form_title}
-        onClick={onChangeSuccess}
-      >
-        {t('change.form_title')}
-      </div>
+      <h3 className={s.form_title}>{t('change.form_title')}</h3>
       <Formik
         initialValues={{
           password: '',

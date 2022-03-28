@@ -4,12 +4,11 @@ import { useMediaQuery } from 'react-responsive'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
-
-import { Icon } from '../Icon'
+import { Icon } from '..'
 import { authOperations } from '../../Redux/auth/authOperations'
 import s from './SelectOfCountries.module.scss'
 
-export function SelectOfCountries() {
+export default function SelectOfCountries() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const dispatch = useDispatch()
