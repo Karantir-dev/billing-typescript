@@ -125,3 +125,11 @@
     transform: translateX(30px);
   }
 }
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .btn {
+    width: 75px;
+    height: 40px;
+  }
+}

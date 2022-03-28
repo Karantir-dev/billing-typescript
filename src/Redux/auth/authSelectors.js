@@ -1,7 +1,7 @@
-const getIsLoadding = state => state.auth.isLoading
-const getToken = state => state.auth.token
+const getSessionId = state => state.auth.sessionId
+const getTotpFormVisibility = state => state.auth.totpFormVisibility
 
 export const authSelectors = {
-  getIsLoadding,
-  getToken,
+  getSessionId,
+  getTotpFormVisibility,
 }

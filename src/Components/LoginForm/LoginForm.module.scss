@@ -32,6 +32,7 @@
 
 .auth_link {
   font-size: 18px;
+  color: var(--main-text);
 }
 
 .form {
@@ -65,41 +66,10 @@
 }
 
 .input {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  bottom: 1px;
-  left: 1px;
-  padding-left: 16px;
-  border-radius: 3px;
-  border: 1px solid var(--input-border);
-  z-index: 1;
-  font-size: 17px;
-  background-color: var(--elements-bgc);
-  color: inherit;
+  @extend %input;
 
-  &.error {
-    border-color: var(--error-color);
-  }
-
-  &::placeholder {
-    color: var(--auth-placeholder-color);
-  }
-
-  &:focus {
-    outline: transparent;
-    border-color: transparent;
-
-    & ~ .input_border {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-
-      border-radius: 4px;
-      background-image: linear-gradient(90deg, #ff42a8 0%, #f02ce2 100%);
-    }
+  &.pr {
+    padding-right: 45px;
   }
 }
 
@@ -108,7 +78,8 @@
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  z-index: 1;
+  z-index: 2;
+  fill: var(--input-border-icon);
 }
 
 .pass_show_btn {
@@ -149,11 +120,12 @@
 .social_title {
   text-align: center;
   margin-bottom: 15px;
+  font-size: 18px;
 }
 .social_list {
   display: flex;
-  width: 100%;
-  padding: 0 50px;
+  width: 146px;
+  margin: 0 auto;
   justify-content: space-between;
 }
 .captcha {
@@ -162,7 +134,78 @@
   margin-bottom: -15px;
 }
 .error_message {
+  margin-left: 2px;
   color: var(--error-color);
   font-size: 13px;
   line-height: 1.2;
+}
+
+.credentials_error {
+  height: 50px;
+  padding: 0 40px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 15px;
+  color: var(--error-color);
+  background-color: rgba(255, 68, 102, 0.1);
+}
+
+.recaptcha_wrapper {
+  min-height: 61px;
+}
+
+.changed_pass {
+  @extend .credentials_error;
+  background-color: var(--success-bgc);
+  color: var(--success-color);
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .form {
+    width: 431px;
+    min-height: 453px;
+    padding: 36px 64px;
+  }
+
+  .current_auth_link {
+    font-size: 20px;
+  }
+
+  .auth_link {
+    font-size: 20px;
+  }
+
+  .input {
+    padding-left: 36px;
+  }
+
+  .captcha {
+    transform: scale(1);
+    margin-bottom: 0;
+  }
+
+  .submit_btn {
+    margin: 20px 0;
+    height: 55px;
+  }
+
+  .field_wrapper {
+    margin-bottom: 15px;
+  }
+
+  .btn_text {
+    font-size: 20px;
+  }
+
+  .credentials_error {
+    padding: 0;
+  }
+
+  .recaptcha_wrapper {
+    min-height: 83px;
+  }
 }

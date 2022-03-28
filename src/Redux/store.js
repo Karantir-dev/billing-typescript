@@ -12,8 +12,8 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import authReducer from './auth/authReducer'
-import commonReducer from './reducer'
+import { authReducer } from './auth/authReducer'
+import { theme, isLoading } from './reducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -28,7 +28,8 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-  theme: commonReducer,
+  theme,
+  isLoading,
 })
 
 const store = configureStore({

@@ -1,0 +1,68 @@
+name: Ansible Deployment
+on:
+  push:
+    branches:
+      - 'dev'
+jobs:
+  # eslint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: stefanoeb/eslint-action@1.0.2
+  #       with:
+  #         files: src/
+
+  deploy:
+    #needs: [eslint]
+    name: Deploy image to server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H')"
+      - name: Test with environment variables
+        run: echo $TAG_NAME - $RELEASE_NAME
+        env:
+          RELEASE_NAME: release-${{ steps.date.outputs.date }}
+
+      - name: Login to docker hub
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+          RELEASE_NAME: release-${{ steps.date.outputs.date }}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t zomro-bill-dev .
+          docker tag zomro-bill-dev:latest zomrocom/zomro-bill-dev:latest
+          docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:$RELEASE_NAME
+          docker push $DOCKER_USERNAME/zomro-bill-dev:latest
+          docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
+
+      - name: Run playbook
+        uses: arillso/action.playbook@master
+        with:
+          playbook: deployment/playbooks/initial.yml
+          inventory: deployment/host.ini
+          galaxy_file: deployment/playbooks/requirements.yml
+          vault_password: ${{secrets.ANSIBLE_VAULET}}
+          user: git
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+          ANSIBLE_DEPRECATION_WARNINGS: 'false'
+          ANSIBLE_ENABLE_TASK_DEBUGGER: 'true'
+
+      - name: Deploy status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always()
