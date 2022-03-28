@@ -28,11 +28,11 @@ export function PasswordChange() {
   const [passConfirmationIsShown, setPassConfirmationIsShown] = useState(false)
 
   // redirects to login if query parasms are missing
-  // useEffect(() => {
-  //   if (!userId || !secret) {
-  //     navigate(routes.LOGIN)
-  //   }
-  // }, [userId, secret, navigate])
+  useEffect(() => {
+    if (!userId || !secret) {
+      navigate(routes.LOGIN)
+    }
+  }, [userId, secret, navigate])
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()

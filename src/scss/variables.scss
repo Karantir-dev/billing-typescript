@@ -8,6 +8,7 @@ body {
   --main-text: #392955;
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
+  --nearby-elements-bgc: #fff;
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -22,7 +23,8 @@ body.dark-theme {
   --main-bgc: #21192e;
   --main-text: #fff;
   --btn-bgc: #3d3649;
-  --elements-bgc: #312b3b;
+  --elements-bgc: #2e273b;
+  --nearby-elements-bgc: #3b3447;
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;

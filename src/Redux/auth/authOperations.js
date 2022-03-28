@@ -30,7 +30,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       if (data.doc.error) {
         setErrMsg(data.doc.error.$object)
 
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
       const sessionId = data.doc.auth.$id
 
@@ -54,7 +54,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
               dispatch(authActions.openTotpForm())
               return
             } else {
-              throw `usrparam - ${data.doc.error.msg.$}`
+              throw new Error(`usrparam - ${data.doc.error.msg.$}`)
             }
           }
 
@@ -63,7 +63,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
     .catch(error => {
       resetRecaptcha()
-      console.log('auth -', error)
+      console.log('auth -', error.message)
       dispatch(authActions.loginError())
     })
 }
@@ -179,4 +179,30 @@ const changePassword =
 
 const logout = () => {}
 
-export const authOperations = { login, reset, changePassword, sendTotp, logout }
+const getCountries = setCountries => dispatch => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      const countries = data.doc.slist[0].val
+      countries.shift()
+      setCountries(countries)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+export const authOperations = {
+  login,
+  reset,
+  changePassword,
+  sendTotp,
+  logout,
+  getCountries,
+}

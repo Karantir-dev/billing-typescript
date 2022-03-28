@@ -1,0 +1,73 @@
+@import '../../scss/placeholders.scss';
+
+.field_wrapper {
+  margin-bottom: 13px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.input_wrapper {
+  width: 100%;
+  height: 45px;
+  position: relative;
+}
+
+.input {
+  @extend %input;
+}
+
+.field_icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+  fill: var(--input-border-icon);
+}
+
+.pass_show_btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+
+  &.shown {
+    display: flex;
+  }
+}
+
+.icon_eye {
+  fill: var(--eye-color);
+}
+
+.error_message {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .field_wrapper {
+    margin-bottom: 15px;
+  }
+
+  .input_wrapper {
+    height: 50px;
+  }
+
+  .input {
+    padding-left: 36px;
+  }
+}
