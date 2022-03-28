@@ -8,6 +8,10 @@
     align-items: center;
     background: #ffffff;
     box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
+
+    &_pinned {
+      width: 68px;
+    }
   }
   &_dt {
     height: 100vh;
@@ -18,6 +22,10 @@
     align-items: center;
     background: #2e273b;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
+
+    &_pinned {
+      width: 68px;
+    }
   }
 }
 
@@ -26,20 +34,35 @@
 }
 
 .img {
-  fill: #d9d0eb;
-  margin-top: 23px;
+  &_lt {
+    fill: #d9d0eb;
+    margin-top: 23px;
+    cursor: pointer;
+  }
+
+  &_dt {
+    fill: #75707e;
+    margin-top: 23px;
+    cursor: pointer;
+  }
+}
+
+.img_pinned {
+  margin-top: 0;
+  transform: rotate(-90deg);
+  cursor: pointer;
 }
 
 .img_hovered {
+  cursor: pointer;
   margin-top: 23px;
   display: none;
 }
 
 .item {
   position: relative;
-  padding: 10px;
+  margin-bottom: 10px;
   border: none;
-  box-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
 
   &_lt {
     background: #fffdfe;
@@ -49,16 +72,14 @@
     background: #2e273b;
   }
 
-  &:hover .img {
+  &:hover .img_lt,
+  &:hover .img_dt {
     display: none;
   }
   &:hover .img_hovered {
     margin-top: 23px;
     display: block;
   }
-}
-
-.navigation__list {
 }
 
 .text {
@@ -84,10 +105,20 @@
   }
 }
 
+.active .img_lt,
+.active .img_dt {
+  display: none;
+}
+
+.active .img_hovered {
+  display: block;
+}
+
 .active {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #383245;
 
   &:before {
     content: '';
@@ -96,30 +127,30 @@
     right: 98%;
     bottom: 0;
     left: 0;
-    border-radius: inherit;
+    border-radius: 5px;
     background: linear-gradient(to top, #e238d7, #ff59a9);
   }
-}
-
-.active .img {
-  display: none;
-}
-
-.active .img_hovered {
-  display: block;
 }
 
 .inactive {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: unset;
 }
 
 .pin_wrapper {
-  &:hover .img {
-    display: block;
+  & .img_dt,
+  & .img_lt {
+    margin-bottom: 68px;
+  }
+
+  &:hover .img_dt,
+  &:hover .img_lt {
+    display: none;
   }
   &:hover .img_hovered {
     display: block;
+    margin-bottom: 68px;
   }
 }
