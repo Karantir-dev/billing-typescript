@@ -1,16 +1,17 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-import { LangBtn } from '../../Components/LangBtn/LangBtn'
+
+import { LangBtn } from '../../Components'
 
 import logo_dt from '../../images/logo-dt.svg'
 import logo_lt from '../../images/logo-lt.svg'
 import s from './AuthPage.module.scss'
-import { ThemeBtn } from '../../Components/ThemeBtn/ThemeBtn'
+import { ThemeBtn } from '../../Components/'
 import { selectors } from '../../Redux/selectors'
 import cn from 'classnames'
 
-export function AuthPage({ children }) {
+export default function AuthPage({ children }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   return (

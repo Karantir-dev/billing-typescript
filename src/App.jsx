@@ -2,18 +2,21 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Routes, Route } from 'react-router-dom'
 
-import { AuthPage } from './Pages/AuthPage/AuthPage'
-import { SignupForm } from './Components/SignupForm/SignupForm'
-import { MainPage } from './Pages/MainPage'
-import { PrivateRoute } from './Components/PrivateRoute'
-import { PublicRoute } from './Components/PublicRoute'
-import { LoginForm } from './Components/LoginForm/LoginForm'
-import { PasswordReset } from './Components/PasswordReset/PasswordReset'
-import { PasswordChange } from './Components/PasswordChange/PasswordChange'
-import * as route from './routes'
-import { Loader } from './Components/Loader/Loader'
+import {
+  Loader,
+  LoginForm,
+  SignupForm,
+  PasswordChange,
+  PasswordReset,
+  PrivateRoute,
+  PublicRoute,
+} from './Components'
 
-function App() {
+import { AuthPage, MainPage } from './Pages'
+
+import * as route from './routes'
+
+export default function App() {
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -69,5 +72,3 @@ function App() {
     </>
   )
 }
-
-export default App

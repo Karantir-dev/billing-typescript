@@ -1,5 +1,5 @@
 import React from 'react'
 
-export function MainPage() {
+export default function MainPage() {
   return <h1>MAIN PAGE</h1>
 }

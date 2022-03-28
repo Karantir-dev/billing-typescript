@@ -179,7 +179,7 @@ const changePassword =
 
 const logout = () => {}
 
-const getCountries = setCountries => dispatch => {
+const getCountries = setCountries => () => {
   axiosInstance
     .post(
       '/',

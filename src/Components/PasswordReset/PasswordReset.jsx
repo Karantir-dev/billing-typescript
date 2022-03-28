@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
-import { Icon } from '../Icon'
+import { Icon } from '..'
 
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as Yup from 'yup'
@@ -11,7 +11,7 @@ import * as routes from '../../routes'
 import cn from 'classnames'
 import s from './PasswordReset.module.scss'
 
-export function PasswordReset() {
+export default function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation()

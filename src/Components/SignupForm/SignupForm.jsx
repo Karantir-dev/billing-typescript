@@ -1,23 +1,21 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { Link } from 'react-router-dom'
 import { ErrorMessage, Form, Formik } from 'formik'
 
-import { authOperations } from '../../Redux/auth/authOperations'
+// import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
-import { Icon } from '../Icon'
+import { Icon, InputField, SelectOfCountries } from '..'
 import { RECAPTCHA_KEY } from '../../config/config'
-import { InputField } from '../InputField/InputField'
 
 import s from './SignupForm.module.scss'
-import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
 
-export function SignupForm() {
+export default function SignupForm() {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const recaptchaEl = useRef()
 
   const validationSchema = Yup.object().shape({
@@ -36,7 +34,7 @@ export function SignupForm() {
     reCaptcha: Yup.string().required(t('warnings.recaptcha')),
   })
 
-  const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {}
+  // const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {}
 
   return (
     <div className={s.form_wrapper}>
@@ -55,7 +53,7 @@ export function SignupForm() {
           passConfirmation: '',
           reCaptcha: '',
         }}
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         {({ setFieldValue, errors, values, touched }) => {
