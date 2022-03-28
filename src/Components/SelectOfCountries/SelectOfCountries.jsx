@@ -9,22 +9,54 @@ import { Icon } from '../Icon'
 import { authOperations } from '../../Redux/auth/authOperations'
 import s from './SelectOfCountries.module.scss'
 
-export function SelectOfCountries() {
+export function SelectOfCountries({ setFieldValue }) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const [countries, setCountries] = useState([])
+  const [countrySearchQuery, setCountrySearchQuery] = useState('')
+  const [stateSearchQuery, setStateSearchQuery] = useState('')
+
+  const [countries, _setCountries] = useState([])
+  const [filteredCountries, setFilteredCountries] = useState([])
+  const setCountries = value => {
+    _setCountries(value)
+    setFilteredCountries(value)
+  }
+
+  const [states, _setStates] = useState([])
+  const [filteredStates, setFilteredStates] = useState([])
+  const setStates = value => {
+    _setStates(value)
+    setFilteredStates(value)
+  }
   const [countriesOpened, setCountriesOpened] = useState(false)
-  console.log(
-    countries.map(el => {
-      return el
-    }),
-  )
 
   useEffect(() => {
-    dispatch(authOperations.getCountries(setCountries))
+    dispatch(authOperations.getCountries(setCountries, setStates))
   }, [dispatch])
+
+  const filterItems = (query, itemsList, callback) => {
+    if (query === '') {
+      callback(itemsList)
+      return
+    }
+
+    const filteredItems = itemsList.filter(({ $: countryName }) =>
+      countryName.toLowerCase().includes(query.toLowerCase()),
+    )
+
+    if (filteredItems.length === 0) {
+      callback(itemsList)
+      return
+    }
+    callback(filteredItems)
+  }
+
+  const handleInputChange = (value, itemsList, callback) => {
+    setCountrySearchQuery(value)
+    filterItems(value, itemsList, callback)
+  }
 
   return (
     <div className={s.field_wrapper}>
@@ -38,6 +70,10 @@ export function SelectOfCountries() {
           })}
           name="country"
           type="text"
+          value={countrySearchQuery}
+          onChange={e =>
+            handleInputChange(e.target.value, countries, setFilteredCountries)
+          }
           placeholder={t('country_placeholder')}
           onFocus={() => {
             setCountriesOpened(true)
@@ -63,14 +99,11 @@ export function SelectOfCountries() {
       {countriesOpened && (
         <div className={s.countries_dropdown}>
           <ul className={s.countries_list}>
-            {countries.map(({ $key, $image, $ }) => {
-              console.log('1', $image)
-              console.log('1', $)
+            {filteredCountries.map(({ $key, $image, $: countryName }) => {
               const countryCode = $image.slice(-6, -4).toLowerCase()
-              console.log(countryCode)
 
               return (
-                <li className={s.country_item}>
+                <li key={$key} className={s.country_item} onClick={() => {}}>
                   <img
                     className={s.country_img}
                     src={require(`../../images/countryFlags/${countryCode}.png`)}
@@ -78,7 +111,7 @@ export function SelectOfCountries() {
                     height={14}
                     alt="flag"
                   />
-                  <span className={s.country_name}>{$}</span>
+                  <span className={s.country_name}>{countryName}</span>
                 </li>
               )
             })}

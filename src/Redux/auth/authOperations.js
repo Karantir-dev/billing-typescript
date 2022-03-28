@@ -179,7 +179,7 @@ const changePassword =
 
 const logout = () => {}
 
-const getCountries = setCountries => dispatch => {
+const getCountries = (setCountries, setStates) => dispatch => {
   axiosInstance
     .post(
       '/',
@@ -189,12 +189,19 @@ const getCountries = setCountries => dispatch => {
       }),
     )
     .then(({ data }) => {
+      console.log(data)
+      if (data.doc.error) {
+        throw data.doc.error.msg.$
+      }
+
       const countries = data.doc.slist[0].val
+      const states = data.doc.slist[1].val
       countries.shift()
       setCountries(countries)
+      setStates(states)
     })
     .catch(err => {
-      console.log(err)
+      console.log('getCountries - ', err)
     })
 }
 

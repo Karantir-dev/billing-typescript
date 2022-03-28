@@ -21,7 +21,9 @@ export function SignupForm() {
   const recaptchaEl = useRef()
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required(t('warnings.name_required')),
+    name: Yup.string()
+      .matches(/(?!\W)/)
+      .required(t('warnings.name_required')),
     email: Yup.string()
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
@@ -34,6 +36,7 @@ export function SignupForm() {
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
     reCaptcha: Yup.string().required(t('warnings.recaptcha')),
+    country: Yup.number().required(),
   })
 
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {}
@@ -54,6 +57,8 @@ export function SignupForm() {
           password: '',
           passConfirmation: '',
           reCaptcha: '',
+          country: 0,
+          state: 0,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -95,7 +100,7 @@ export function SignupForm() {
                 inputValue={!!values.passConfirmation}
               />
 
-              <SelectOfCountries />
+              <SelectOfCountries setFieldValue={setFieldValue} />
 
               <ReCAPTCHA
                 className={s.captcha}
