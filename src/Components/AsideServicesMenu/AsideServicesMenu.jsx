@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
 
-import { Icon } from '../Icon'
+import { Icon } from '..'
 import logo_dt from '../../images/logo-dt.svg'
 import logo_lt from '../../images/logo-lt.svg'
 import * as routes from '../../routes'
