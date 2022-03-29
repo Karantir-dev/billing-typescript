@@ -24,4 +24,5 @@ Icon.propTypes = {
   name: PropTypes.string.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
+  isGradient: PropTypes.bool,
 }

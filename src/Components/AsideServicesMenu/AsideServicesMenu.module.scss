@@ -69,7 +69,7 @@
 .text {
   color: var(--main-text);
   font-size: 16px;
-  line-height: 70.9%;
+  line-height: 1.2;
   margin-bottom: 21px;
   margin-top: 10px;
   text-align: center;
@@ -80,29 +80,27 @@
 }
 
 .active {
-  & .img {
-    display: none;
-  }
-}
-
-.active {
-  & .img_hovered {
-    display: block;
-  }
-}
-
-.active {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: var(--nearby-elements-bgc);
   box-shadow: var(--elements-shadow);
 
+  & .img {
+    display: none;
+  }
+
+  & .img_hovered {
+    display: block;
+  }
+
   &:before {
     content: '';
+    display: block;
+    width: 4px;
+    height: 100%;
     position: absolute;
     top: 0;
-    right: 98%;
     bottom: 0;
     left: 0;
     border-radius: 5px;

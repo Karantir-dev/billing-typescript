@@ -45,62 +45,6 @@
   border-radius: 3px;
   background: var(--elements-bgc);
   box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.15);
-<<<<<<< HEAD
-  border-radius: 3px;
-}
-
-.label {
-  display: block;
-  font-size: 14px;
-  line-height: 1.2;
-  margin-left: 10px;
-  margin-bottom: 5px;
-}
-.field_wrapper {
-  margin-bottom: 13px;
-}
-
-.input_wrapper {
-  width: 100%;
-  height: 50px;
-  position: relative;
-}
-
-.input {
-  @extend %input;
-
-  &.pr {
-    padding-right: 45px;
-  }
-}
-
-.field_icon {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  z-index: 2;
-  fill: var(--input-border-icon);
-}
-
-.pass_show_btn {
-  display: none;
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  z-index: 1;
-  cursor: pointer;
-
-  &.shown {
-    display: flex;
-  }
-}
-
-.icon_eye {
-  fill: var(--eye-color);
-=======
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
 }
 
 .submit_btn {
@@ -159,13 +103,6 @@
   background-color: rgba(255, 68, 102, 0.1);
 }
 
-<<<<<<< HEAD
-.recaptcha_wrapper {
-  min-height: 61px;
-}
-
-=======
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
 .changed_pass {
   @extend .credentials_error;
   background-color: var(--success-bgc);
@@ -176,10 +113,6 @@
 @media screen and (min-width: 768px) {
   .form {
     width: 431px;
-<<<<<<< HEAD
-    min-height: 453px;
-=======
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
     padding: 36px 64px;
   }
 
@@ -191,20 +124,10 @@
     font-size: 20px;
   }
 
-<<<<<<< HEAD
-  .input {
-    padding-left: 36px;
-  }
-
-  .captcha {
-    transform: scale(1);
-    margin-bottom: 0;
-=======
   .captcha {
     transform: scale(1);
     margin-bottom: 0;
     min-height: 83px;
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
   }
 
   .submit_btn {
@@ -212,13 +135,6 @@
     height: 55px;
   }
 
-<<<<<<< HEAD
-  .field_wrapper {
-    margin-bottom: 15px;
-  }
-
-=======
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
   .btn_text {
     font-size: 20px;
   }
@@ -226,11 +142,4 @@
   .credentials_error {
     padding: 0;
   }
-<<<<<<< HEAD
-
-  .recaptcha_wrapper {
-    min-height: 83px;
-  }
-=======
->>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
 }

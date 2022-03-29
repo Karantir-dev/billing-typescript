@@ -1,8 +1,8 @@
 import React from 'react'
-import { AsideServicesMenu } from '../Components/AsideServicesMenu/AsideServicesMenu'
-import { Header } from '../Components/Header/Header'
+import { AsideServicesMenu } from '../../Components'
+// import { Header } from '../Components/Header/Header'
 
-export function MainPage() {
+export default function MainPage() {
   return (
     <>
       <AsideServicesMenu />

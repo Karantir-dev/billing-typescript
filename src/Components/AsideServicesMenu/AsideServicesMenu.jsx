@@ -11,7 +11,7 @@ import * as routes from '../../routes'
 
 import s from './AsideServicesMenu.module.scss'
 
-export const AsideServicesMenu = () => {
+const AsideServicesMenu = () => {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isPinned, setIsPinned] = useState(true)
 
@@ -166,3 +166,5 @@ export const AsideServicesMenu = () => {
     </nav>
   )
 }
+
+export default AsideServicesMenu
