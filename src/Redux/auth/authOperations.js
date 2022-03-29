@@ -29,11 +29,19 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     .then(({ data }) => {
       if (data.doc.error) {
         setErrMsg(data.doc.error.$object)
+<<<<<<< HEAD
 
         throw data.doc.error.msg.$
       }
       const sessionId = data.doc.auth.$id
 
+=======
+
+        throw new Error(data.doc.error.msg.$)
+      }
+      const sessionId = data.doc.auth.$id
+
+>>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
       return axiosInstance
         .post(
           '/',
@@ -54,7 +62,11 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
               dispatch(authActions.openTotpForm())
               return
             } else {
+<<<<<<< HEAD
               throw `usrparam - ${data.doc.error.msg.$}`
+=======
+              throw new Error(`usrparam - ${data.doc.error.msg.$}`)
+>>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
             }
           }
 
@@ -63,7 +75,11 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
     .catch(error => {
       resetRecaptcha()
+<<<<<<< HEAD
       console.log('auth -', error)
+=======
+      console.log('auth -', error.message)
+>>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9
       dispatch(authActions.loginError())
     })
 }
@@ -179,4 +195,34 @@ const changePassword =
 
 const logout = () => {}
 
+<<<<<<< HEAD
 export const authOperations = { login, reset, changePassword, sendTotp, logout }
+=======
+const getCountries = setCountries => () => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      const countries = data.doc.slist[0].val
+      countries.shift()
+      setCountries(countries)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+export const authOperations = {
+  login,
+  reset,
+  changePassword,
+  sendTotp,
+  logout,
+  getCountries,
+}
+>>>>>>> 6418e4cc7e1d6cef03341e6fb8661f60702d77e9

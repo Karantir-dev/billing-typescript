@@ -72,10 +72,14 @@
     border-color: var(--error-color);
   }
 
-  &::placeholder {
-    color: var(--auth-placeholder-color);
+  &.pr {
+    padding-right: 45px;
   }
 
+  &::placeholder {
+    font-size: 16px;
+    color: var(--auth-placeholder-color);
+  }
   &:focus {
     outline: transparent;
     border-color: transparent;

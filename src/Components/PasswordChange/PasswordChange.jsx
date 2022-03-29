@@ -7,13 +7,13 @@ import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 
-import { Icon } from '../Icon'
+import { Icon } from '..'
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 
 import s from './PasswordChange.module.scss'
 
-export function PasswordChange() {
+export default function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -28,11 +28,11 @@ export function PasswordChange() {
   const [passConfirmationIsShown, setPassConfirmationIsShown] = useState(false)
 
   // redirects to login if query parasms are missing
-  // useEffect(() => {
-  //   if (!userId || !secret) {
-  //     navigate(routes.LOGIN)
-  //   }
-  // }, [userId, secret, navigate])
+  useEffect(() => {
+    if (!userId || !secret) {
+      navigate(routes.LOGIN)
+    }
+  }, [userId, secret, navigate])
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -63,9 +63,7 @@ export function PasswordChange() {
 
   return (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title} onClick={onChangeSuccess}>
-        {t('change.form_title')}
-      </h3>
+      <h3 className={s.form_title}>{t('change.form_title')}</h3>
       <Formik
         initialValues={{
           password: '',

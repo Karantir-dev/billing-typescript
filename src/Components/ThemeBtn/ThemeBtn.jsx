@@ -2,13 +2,13 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
-import { Icon } from '../Icon'
-import {actions} from '../../Redux/actions'
+import { Icon } from '..'
+import { actions } from '../../Redux/actions'
 import { selectors } from '../../Redux/selectors'
 
 import s from './ThemeBtn.module.scss'
 
-export function ThemeBtn() {
+export default function ThemeBtn() {
   const dispatch = useDispatch()
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const body = document.querySelector('body')
