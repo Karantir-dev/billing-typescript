@@ -1,37 +1,42 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import cn from 'classnames'
 
-import authOperations from '../../Redux/auth/authOperations'
-import { Icon } from '../Icon'
+import { authOperations } from '../../Redux/auth/authOperations'
+import { Icon, InputField, VerificationModal } from '..'
 import * as routes from '../../routes'
+import { RECAPTCHA_KEY } from '../../config/config'
 
 import s from './LoginForm.module.scss'
-import { useMediaQuery } from 'react-responsive'
 
-export function LoginForm() {
+export default function LoginForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const [passShown, setPassShown] = useState(false)
+  const recaptchaEl = useRef()
+  const location = useLocation()
 
-  const tabletOrHigher = useMediaQuery({ query: 'min-width: 768px' })
+  const [errMsg, setErrMsg] = useState('')
 
-  const handleSubmit = ({ email, password, reCaptcha }) => {
-    dispatch(authOperations.login(email, password, reCaptcha))
+  const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
+    const resetRecaptcha = () => {
+      recaptchaEl.current.reset()
+      setFieldValue('reCaptcha', '')
+    }
+
+    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('warnings.wrong_email')).required(t('warnings.email')),
-    password: Yup.string().required(t('warnings.password')),
-    reCaptcha: Yup.string()
-      .typeError(t('warnings.recaptcha'))
-      .required(t('warnings.recaptcha')),
+    email: Yup.string()
+      .email(t('warnings.invalid_email'))
+      .required(t('warnings.email_required')),
+    password: Yup.string().required(t('warnings.password_required')),
+    reCaptcha: Yup.string().required(t('warnings.recaptcha')),
   })
 
   return (
@@ -42,101 +47,65 @@ export function LoginForm() {
           {t('registration')}
         </Link>
       </div>
-
       <Formik
         initialValues={{ email: '', password: '', reCaptcha: '' }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, errors, values: { password } }) => {
+        {({ setFieldValue, errors, values, touched }) => {
+          const resetRecaptcha = () => {
+            recaptchaEl.current.reset()
+            setFieldValue('reCaptcha', '')
+          }
           return (
-            <Form className={s.form}>
-              <div className={s.field_wrapper}>
-                <label htmlFor="email" className={s.label}>
-                  {t('email_label')}
-                </label>
-                <div className={s.input_wrapper}>
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="envelope"
-                      width={17}
-                      height={13}
-                    />
-                  )}
-                  <Field
-                    className={cn({ [s.input]: true, [s.error]: errors.email })}
-                    name="email"
-                    type="text"
-                    placeholder={t('email_placeholder')}
-                  />
-                  <div className={s.input_border}></div>
-                </div>
-                <ErrorMessage className={s.error_message} name="email" component="span" />
-              </div>
+            <>
+              <VerificationModal resetRecaptcha={resetRecaptcha} />
+              <Form className={s.form}>
+                {errMsg && (
+                  <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
+                )}
+                {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (
+                  <div className={s.changed_pass}>{t('changed_pass')}</div>
+                )}
 
-              <div className={s.field_wrapper}>
-                <label htmlFor="password" className={s.label}>
-                  {t('password_label')}
-                </label>
-                <div className={s.input_wrapper}>
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="padlock"
-                      width={19}
-                      height={19}
-                    />
-                  )}
+                <InputField
+                  label="email"
+                  icon="envelope"
+                  error={!!errors.email}
+                  touched={!!touched.email}
+                />
 
-                  <Field
-                    className={cn({ [s.input]: true, [s.error]: errors.password })}
-                    name="password"
-                    type={passShown ? 'text' : 'password'}
-                    placeholder={t('password_placeholder')}
-                  />
-                  <div className={s.input_border}></div>
-                  <button
-                    className={cn({ [s.pass_show_btn]: true, [s.shown]: password })}
-                    type="button"
-                    onClick={() => setPassShown(!passShown)}
-                  >
-                    <Icon
-                      className={s.icon_eye}
-                      name={passShown ? 'closed-eye' : 'eye'}
-                      width={21}
-                      height={21}
-                    ></Icon>
-                  </button>
-                </div>
+                <InputField
+                  label="password"
+                  icon="padlock"
+                  error={!!errors.password}
+                  touched={!!touched.password}
+                  inputValue={!!values.password}
+                />
+
+                <ReCAPTCHA
+                  className={s.captcha}
+                  ref={recaptchaEl}
+                  sitekey={RECAPTCHA_KEY}
+                  onChange={value => {
+                    setFieldValue('reCaptcha', value)
+                  }}
+                />
+
                 <ErrorMessage
                   className={s.error_message}
-                  name="password"
+                  name="reCaptcha"
                   component="span"
                 />
-              </div>
 
-              <ReCAPTCHA
-                className={s.captcha}
-                sitekey="6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR"
-                onChange={value => {
-                  setFieldValue('reCaptcha', value)
-                }}
-              />
-
-              <ErrorMessage
-                className={s.error_message}
-                name="reCaptcha"
-                component="span"
-              />
-
-              <button className={s.submit_btn} type="submit">
-                <span className={s.btn_text}>{t('logIn')}</span>
-              </button>
-              <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
-                {t('forgot_password')}
-              </Link>
-            </Form>
+                <button className={s.submit_btn} type="submit">
+                  <span className={s.btn_text}>{t('logIn')}</span>
+                </button>
+                <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
+                  {t('forgot_password')}
+                </Link>
+              </Form>
+            </>
           )
         }}
       </Formik>

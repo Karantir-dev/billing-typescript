@@ -1,63 +1,74 @@
 import React, { Suspense } from 'react'
+import ReactDOM from 'react-dom'
 import { Routes, Route } from 'react-router-dom'
 
-import { AuthPage } from './Pages/AuthPage/AuthPage'
-import { SignupForm } from './Components/SignupForm/SignupForm'
-import { MainPage } from './Pages/MainPage'
-import PasswordResetPage from './Pages/PasswordResetPage'
-import { PrivateRoute } from './Components/PrivateRoute'
-import { PublicRoute } from './Components/PublicRoute'
-import { LoginForm } from './Components/LoginForm/LoginForm'
+import {
+  Loader,
+  LoginForm,
+  SignupForm,
+  PasswordChange,
+  PasswordReset,
+  PrivateRoute,
+  PublicRoute,
+} from './Components'
+
+import { AuthPage, MainPage } from './Pages'
+
 import * as route from './routes'
-import { useSelector } from 'react-redux'
-import selectors from './Redux/selectors'
-import actions from './Redux/actions'
 
-function App() {
-  // const theme = useSelector(selectors.getTheme)
-  // const body = document.querySelector('body')
-  console.log(actions.changeTheme())
-
+export default function App() {
   return (
-    <Suspense fallback="Загружаем...">
-      <Routes>
-        <Route
-          path={route.LOGIN}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<LoginForm />} />}
-              restricted
-              redirectTo={route.HOME}
-            />
-          }
-        />
-        <Route
-          path={route.REGISTRATION}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<SignupForm />} />}
-              restricted
-              redirectTo={route.HOME}
-            />
-          }
-        />
-        <Route
-          path={route.RESET_PASSWORD}
-          element={
-            <PublicRoute
-              children={<PasswordResetPage />}
-              restricted
-              redirectTo={route.HOME}
-            />
-          }
-        />
-        <Route
-          path={route.HOME}
-          element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
-        ></Route>
-      </Routes>
-    </Suspense>
+    <>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route
+            path={route.LOGIN}
+            element={
+              <PublicRoute
+                children={<AuthPage children={<LoginForm />} />}
+                restricted
+                redirectTo={route.HOME}
+              />
+            }
+          />
+          <Route
+            path={route.REGISTRATION}
+            element={
+              <PublicRoute
+                children={<AuthPage children={<SignupForm />} />}
+                restricted
+                redirectTo={route.HOME}
+              />
+            }
+          />
+
+          <Route
+            path={route.RESET_PASSWORD}
+            element={
+              <PublicRoute
+                children={<AuthPage children={<PasswordReset />} />}
+                restricted
+                redirectTo={route.HOME}
+              />
+            }
+          />
+          <Route
+            path={route.CHANGE_PASSWORD}
+            element={
+              <PublicRoute
+                children={<AuthPage children={<PasswordChange />} />}
+                restricted
+                redirectTo={route.HOME}
+              />
+            }
+          />
+          <Route
+            path={route.HOME}
+            element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
+          ></Route>
+        </Routes>
+      </Suspense>
+      {ReactDOM.createPortal(<Loader />, document.getElementById('portal'))}
+    </>
   )
 }
-
-export default App

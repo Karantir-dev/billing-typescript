@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import s from './LangBtn.module.scss'
 
-export function LangBtn() {
+export default function LangBtn() {
   const { i18n } = useTranslation()
 
   return (
@@ -11,7 +11,7 @@ export function LangBtn() {
       <button
         className={s.btn}
         type="button"
-        disabled={i18n.language === 'en'}
+        disabled={i18n.language === 'en' || i18n.language === 'en-EN'}
         onClick={() => i18n.changeLanguage('en')}
       >
         EN
@@ -20,7 +20,7 @@ export function LangBtn() {
       <button
         className={s.btn}
         type="button"
-        disabled={i18n.language === 'ru'}
+        disabled={i18n.language === 'ru' || i18n.language === 'ru-RU'}
         onClick={() => i18n.changeLanguage('ru')}
       >
         RU

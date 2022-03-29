@@ -1,14 +1,17 @@
 body {
   --accent-gradient: linear-gradient(120deg, #ff3cb1 30%, #e030bd 70%);
   --accent-color-light: #ff50bf;
-  --input-border: #c4c4c4;
+  --input-border-icon: #c4c4c4;
 
   // variables that will be changed on the dark theme
   --main-bgc: #fdfcff;
   --main-text: #392955;
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
+  --nearby-elements-bgc: #fff;
   --error-color: #d93f21;
+  --success-bgc: #fcfcfc;
+  --success-color: #45a884;
   --link-color: #4c75a3;
 
   --auth-placeholder-color: #c4c4c4;
@@ -20,8 +23,11 @@ body.dark-theme {
   --main-bgc: #21192e;
   --main-text: #fff;
   --btn-bgc: #3d3649;
-  --elements-bgc: #312b3b;
+  --elements-bgc: #2e273b;
+  --nearby-elements-bgc: #3b3447;
   --error-color: #ff4466;
+  --success-bgc: #433d4f;
+  --success-color: #38d49c;
   --link-color: #8ab7fa;
 
   --auth-placeholder-color: #544e5e;
