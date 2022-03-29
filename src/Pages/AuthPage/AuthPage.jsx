@@ -2,12 +2,10 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 
-import { LangBtn } from '../../Components'
-
 import logo_dt from '../../images/logo-dt.svg'
 import logo_lt from '../../images/logo-lt.svg'
 import s from './AuthPage.module.scss'
-import { ThemeBtn } from '../../Components/'
+import { ThemeBtn, LangBtn } from '../../Components/'
 import { selectors } from '../../Redux/selectors'
 import cn from 'classnames'
 

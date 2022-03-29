@@ -22,6 +22,6 @@ i18n
     },
   })
 
-i18n.loadNamespaces(['other'])
+i18n.loadNamespaces(['other', 'access_log'])
 
 export default i18n

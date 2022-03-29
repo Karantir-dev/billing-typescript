@@ -12,7 +12,7 @@ import {
   PublicRoute,
 } from './Components'
 
-import { AuthPage, MainPage } from './Pages'
+import { AuthPage, MainPage, AccessLogScreen } from './Pages'
 
 import * as route from './routes'
 
@@ -65,7 +65,11 @@ export default function App() {
           <Route
             path={route.HOME}
             element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
-          ></Route>
+          />
+          <Route
+            path={route.ACCESS_LOG}
+            element={<PrivateRoute children={<AccessLogScreen />} />}
+          />
         </Routes>
       </Suspense>
       {ReactDOM.createPortal(<Loader />, document.getElementById('portal'))}
