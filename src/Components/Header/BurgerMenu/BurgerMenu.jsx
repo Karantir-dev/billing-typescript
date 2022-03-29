@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from '../../'
 
-export default BurgerMenu = () => {
+export default function BurgerMenu() {
   return (
     <ul>
       <li>

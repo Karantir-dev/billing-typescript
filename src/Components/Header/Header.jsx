@@ -3,7 +3,7 @@ import { LangBtn } from '../LangBtn/LangBtn'
 import { ThemeBtn } from '../ThemeBtn/ThemeBtn'
 // import BurgerMenu from './BurgerMenu/BurgerMenu'
 
-export const Header = () => {
+export default function Header() {
   return (
     <header>
       <ThemeBtn />
