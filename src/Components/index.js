@@ -15,3 +15,5 @@ export { default as PasswordReset } from './PasswordReset/PasswordReset'
 export { default as PrivateRoute } from './Routes/PrivateRoute'
 export { default as PublicRoute } from './Routes/PublicRoute'
 export { default as AsideServicesMenu } from './AsideServicesMenu/AsideServicesMenu'
+
+export { default as Button } from './Button/Button'
