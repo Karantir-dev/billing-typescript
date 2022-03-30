@@ -3,10 +3,7 @@ import { NavLink } from 'react-router-dom'
 import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
-
-import { Icon } from '..'
-import logo_dt from '../../images/logo-dt.svg'
-import logo_lt from '../../images/logo-lt.svg'
+import { Logo, Pin, Box, Wallet, Social, Support } from './../../images'
 import * as routes from '../../routes'
 
 import s from './AsideServicesMenu.module.scss'
@@ -32,14 +29,10 @@ const AsideServicesMenu = () => {
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !isPinned })}>
       <ul className={s.list}>
-        <img
-          width="91px"
-          height="40px"
+        <Logo
           className={cn({ [s.logo]: true, [s.pinned_logo]: !isPinned })}
-          src={darkTheme ? logo_dt : logo_lt}
-          alt="logo"
+          darktheme={darkTheme ? 1 : 0}
         />
-
         <li className={s.item}>
           <NavLink
             to={routes.HOME}
@@ -48,20 +41,7 @@ const AsideServicesMenu = () => {
               paddingBottom: isPinned ? '0px' : '23px',
             }}
           >
-            <Icon
-              className={s.img}
-              name="box"
-              width={25}
-              height={25}
-              isGradient={false}
-            />
-            <Icon
-              className={s.img_hovered}
-              name="box"
-              width={25}
-              height={25}
-              isGradient={true}
-            />
+            <Box className={s.img} />
             {isPinned && <p className={s.text}>Услуги</p>}
           </NavLink>
         </li>
@@ -73,20 +53,7 @@ const AsideServicesMenu = () => {
               paddingBottom: isPinned ? '0px' : '23px',
             }}
           >
-            <Icon
-              className={s.img}
-              name="wallet"
-              width={25}
-              height={25}
-              isGradient={false}
-            />
-            <Icon
-              className={s.img_hovered}
-              name="wallet"
-              width={25}
-              height={25}
-              isGradient={true}
-            />
+            <Wallet className={s.img} />
             {isPinned && <p className={s.text}>Финансы и документы</p>}
           </NavLink>
         </li>
@@ -98,20 +65,7 @@ const AsideServicesMenu = () => {
               paddingBottom: isPinned ? '0px' : '23px',
             }}
           >
-            <Icon
-              className={s.img}
-              name="social"
-              width={26}
-              height={26}
-              isGradient={false}
-            />
-            <Icon
-              className={s.img_hovered}
-              name="social"
-              width={26}
-              height={26}
-              isGradient={true}
-            />
+            <Social className={s.img} />
             {isPinned && <p className={s.text}>Реферальная программа</p>}
           </NavLink>
         </li>
@@ -123,20 +77,7 @@ const AsideServicesMenu = () => {
               paddingBottom: isPinned ? '0px' : '23px',
             }}
           >
-            <Icon
-              className={s.img}
-              name="support"
-              width={28}
-              height={28}
-              isGradient={false}
-            />
-            <Icon
-              className={s.img_hovered}
-              name="support"
-              width={28}
-              height={28}
-              isGradient={true}
-            />
+            <Support className={s.img} />
             {isPinned && <p className={s.text}>Поддержка</p>}
           </NavLink>
         </li>
@@ -146,22 +87,7 @@ const AsideServicesMenu = () => {
         className={cn({ [s.pin_wrapper]: true, [s.transformed]: !isPinned })}
         onClick={handleClick}
       >
-        <>
-          <Icon
-            className={s.pin_icon}
-            name="pin"
-            width={17}
-            height={34}
-            isGradient={false}
-          />
-          <Icon
-            className={s.pin_icon_hovered}
-            name="pin"
-            width={17}
-            height={34}
-            isGradient={true}
-          />
-        </>
+        <Pin className={s.pin_icon} />
       </button>
     </nav>
   )

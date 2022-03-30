@@ -6,8 +6,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-
-import { Icon } from '..'
+import { EyeClosed, Eye, Padlock } from '../../images'
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 
@@ -90,14 +89,7 @@ export default function PasswordChange() {
                     type={passIsShown ? 'text' : 'password'}
                     placeholder={t('change.pass_placeholder')}
                   />
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="padlock"
-                      width={19}
-                      height={19}
-                    />
-                  )}
+                  {tabletOrHigher && <Padlock className={s.field_icon} />}
                   <button
                     className={cn({
                       [s.pass_show_btn]: true,
@@ -106,12 +98,11 @@ export default function PasswordChange() {
                     type="button"
                     onClick={() => setPassIsShown(!passIsShown)}
                   >
-                    <Icon
-                      className={s.icon_eye}
-                      name={passIsShown ? 'closed-eye' : 'eye'}
-                      width={21}
-                      height={21}
-                    ></Icon>
+                    {passIsShown ? (
+                      <Eye className={s.icon_eye} />
+                    ) : (
+                      <EyeClosed className={s.icon_eye} />
+                    )}
                   </button>
                   <div className={s.input_border}></div>
                 </div>
@@ -135,14 +126,7 @@ export default function PasswordChange() {
                     type={passConfirmationIsShown ? 'text' : 'password'}
                     placeholder={t('change.confirmation_placeholder')}
                   />
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="padlock"
-                      width={19}
-                      height={19}
-                    />
-                  )}
+                  {tabletOrHigher && <Padlock className={s.field_icon} />}
                   <button
                     className={cn({
                       [s.pass_show_btn]: true,
@@ -151,12 +135,11 @@ export default function PasswordChange() {
                     type="button"
                     onClick={() => setPassConfirmationIsShown(!passConfirmationIsShown)}
                   >
-                    <Icon
-                      className={s.icon_eye}
-                      name={passConfirmationIsShown ? 'closed-eye' : 'eye'}
-                      width={21}
-                      height={21}
-                    ></Icon>
+                    {passConfirmationIsShown ? (
+                      <Eye className={s.icon_eye} />
+                    ) : (
+                      <EyeClosed className={s.icon_eye} />
+                    )}
                   </button>
                   <div className={s.input_border}></div>
                 </div>
