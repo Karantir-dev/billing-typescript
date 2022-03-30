@@ -1,12 +1,11 @@
 import React from 'react'
-import { AsideServicesMenu } from '../../Components'
-// import { Header } from '../Components/Header/Header'
+import { AsideServicesMenu, Header } from '../../Components'
 
 export default function MainPage() {
   return (
     <>
-      <AsideServicesMenu />
-      {/* <Header /> */}
+      {/* <AsideServicesMenu /> */}
+      <Header />
     </>
   )
 }

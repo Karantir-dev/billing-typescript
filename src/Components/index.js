@@ -14,4 +14,8 @@ export { default as PasswordReset } from './PasswordReset/PasswordReset'
 
 export { default as PrivateRoute } from './Routes/PrivateRoute'
 export { default as PublicRoute } from './Routes/PublicRoute'
+
 export { default as AsideServicesMenu } from './AsideServicesMenu/AsideServicesMenu'
+export { default as Header } from './Header/Header'
+export { default as BurgerMenu } from './BurgerMenu/BurgerMenu'
+export { default as BurgerListItem } from './BurgerListItem/BurgerListItem'
