@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 import { authOperations } from '../../Redux/auth/authOperations'
-import { Icon, InputField, VerificationModal } from '..'
+import { Icon, InputField, VerificationModal, Button } from '..'
 import * as routes from '../../routes'
 import { RECAPTCHA_KEY } from '../../config/config'
 
@@ -97,10 +97,7 @@ export default function LoginForm() {
                   name="reCaptcha"
                   component="span"
                 />
-
-                <button className={s.submit_btn} type="submit">
-                  <span className={s.btn_text}>{t('logIn')}</span>
-                </button>
+                <Button label={t('logIn')} type="submit" />
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}
                 </Link>
