@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { Icon } from '../Icon'
 import s from './InputField.module.scss'
 
-export function InputField({ label, icon, error, touched, inputValue }) {
+export function InputField({ label, icon, error, touched, inputValue, autoComplete }) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const inputTypePassword = label === 'password' || label === 'passConfirmation'
@@ -27,6 +27,7 @@ export function InputField({ label, icon, error, touched, inputValue }) {
           name={label}
           type={inputTypePassword && !passShown ? 'password' : 'text'}
           placeholder={t(`${label}_placeholder`)}
+          autoComplete={autoComplete ? 'on' : 'off'}
         />
         {tabletOrHigher && (
           <Icon className={s.field_icon} name={icon} width={18} height={19} />
@@ -56,7 +57,9 @@ export function InputField({ label, icon, error, touched, inputValue }) {
 
 InputField.propTypes = {
   label: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,
   inputValue: PropTypes.bool,
+  autoComplete: PropTypes.bool,
 }

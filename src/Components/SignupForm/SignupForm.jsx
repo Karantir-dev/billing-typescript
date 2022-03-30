@@ -14,15 +14,22 @@ import { InputField } from '../InputField/InputField'
 
 import s from './SignupForm.module.scss'
 import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
+import Cookies from 'js-cookie'
 
 export function SignupForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const recaptchaEl = useRef()
 
+  useEffect(() => {
+    const referalID = Cookies.get('billpartner')
+    console.log(referalID)
+    // Cookies.set('billpartner', referalID)
+  }, [])
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/(?!\W)/)
+      .matches(/^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
       .email(t('warnings.invalid_email'))
@@ -35,11 +42,24 @@ export function SignupForm() {
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
-    reCaptcha: Yup.string().required(t('warnings.recaptcha')),
-    country: Yup.number().min(1, 'Select your country').required('country required'),
+    reCaptcha: Yup.string()
+      .typeError(t('warnings.recaptcha'))
+      .required(t('warnings.recaptcha')),
+    country: Yup.number()
+      .min(1, t('warnings.country_required'))
+      .required(t('warnings.country_required')),
+    region: Yup.number().when('country', {
+      is: val => [233, 108, 14].includes(val),
+      then: Yup.number()
+        .min(1, t('warnings.region_required'))
+        .required(t('warnings.region_required')),
+      otherwise: Yup.number(),
+    }),
   })
 
-  const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {}
+  const handleSubmit = (values, { setFieldValue }) => {
+    dispatch(authOperations.register(values))
+  }
 
   return (
     <div className={s.form_wrapper}>
@@ -54,16 +74,16 @@ export function SignupForm() {
         initialValues={{
           name: '',
           email: '',
-          country: 0,
           password: '',
           passConfirmation: '',
           reCaptcha: '',
+          country: 0,
           region: 0,
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, errors, values, touched }) => {
+        {({ setFieldValue, validateField, setFieldTouched, errors, values, touched }) => {
           return (
             <Form className={s.form}>
               {/* {errMsg && (
@@ -82,6 +102,7 @@ export function SignupForm() {
                 icon="envelope"
                 error={!!errors.email}
                 touched={!!touched.email}
+                autoComplete
               />
 
               <InputField
@@ -100,7 +121,13 @@ export function SignupForm() {
                 inputValue={!!values.passConfirmation}
               />
 
-              <SelectOfCountries setFieldValue={setFieldValue} />
+              <SelectOfCountries
+                setFieldValue={setFieldValue}
+                validateField={validateField}
+                setFieldTouched={setFieldTouched}
+                errors={errors}
+                touched={touched}
+              />
 
               <ReCAPTCHA
                 className={s.captcha}
@@ -118,7 +145,7 @@ export function SignupForm() {
               />
 
               <button className={s.submit_btn} type="submit">
-                <span className={s.btn_text}>{t('logIn')}</span>
+                <span className={s.btn_text}>{t('register')}</span>
               </button>
             </Form>
           )

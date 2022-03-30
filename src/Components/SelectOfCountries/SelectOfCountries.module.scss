@@ -15,7 +15,7 @@
 
 .input_wrapper {
   width: 100%;
-  height: 50px;
+  height: 45px;
   position: relative;
 }
 
@@ -133,6 +133,7 @@
 }
 
 .country_btn {
+  width: 100%;
   display: flex;
   align-items: center;
   text-align: start;
@@ -162,6 +163,10 @@
 @media screen and (min-width: 768px) {
   .field_wrapper {
     margin-bottom: 15px;
+  }
+
+  .input_wrapper {
+    height: 50px;
   }
 
   .input {

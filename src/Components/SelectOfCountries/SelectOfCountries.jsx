@@ -8,7 +8,13 @@ import { Icon } from '../Icon'
 import { authOperations } from '../../Redux/auth/authOperations'
 import s from './SelectOfCountries.module.scss'
 
-export function SelectOfCountries({ setFieldValue }) {
+export function SelectOfCountries({
+  setFieldValue,
+  validateField,
+  setFieldTouched,
+  errors,
+  touched,
+}) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
@@ -23,13 +29,14 @@ export function SelectOfCountries({ setFieldValue }) {
   }
 
   const [regions, _setRegions] = useState([])
+  const [currentRegions, setCurrentRegions] = useState([])
   const [filteredregions, setFilteredRegions] = useState([])
   const setRegions = value => {
     _setRegions(value)
     setFilteredRegions(value)
   }
   const [countriesListOpened, setCountriesListOpened] = useState(false)
-  const [currentRegions, setCurrentRegions] = useState([])
+  const [regionsListOpened, setRegionsListOpened] = useState(false)
   const [currentFlag, setCurrentFlag] = useState('')
 
   useEffect(() => {
@@ -78,19 +85,29 @@ export function SelectOfCountries({ setFieldValue }) {
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
       setCountriesListOpened(false)
+      setRegionsListOpened(false)
     }
   }
 
   const handleCountryClick = (countryCode, countryName, $key) => {
     setCurrentFlag(countryCode)
     setCountrySearchQuery(countryName)
-    setFieldValue('country', $key)
+    setFieldValue('country', +$key)
+
     setCountriesListOpened(false)
 
     if (countriesWithRegions.includes($key)) {
       const activeRegions = regions.filter(({ $depend }) => $depend === $key)
       setCurrentRegions(activeRegions)
+    } else {
+      setCurrentRegions([])
     }
+  }
+
+  const handleRegionClick = (regionName, $key) => {
+    setRegionSearchQuery(regionName)
+    setFieldValue('region', +$key)
+    setRegionsListOpened(false)
   }
 
   return (
@@ -102,17 +119,23 @@ export function SelectOfCountries({ setFieldValue }) {
             className={cn({
               [s.input]: true,
               [s.pr]: true,
-              // [s.error]: error && touched,
+              [s.pl]: true,
+              [s.error]: errors.country && touched.country,
             })}
             name="country"
             type="text"
             value={countrySearchQuery}
+            placeholder={t('country_placeholder')}
+            autoComplete="off"
             onChange={e =>
               handleCountryInputChange(e.target.value, countries, setFilteredCountries)
             }
-            placeholder={t('country_placeholder')}
             onFocus={() => {
               setCountriesListOpened(true)
+            }}
+            onBlur={() => {
+              setFieldTouched('country')
+              validateField('country')
             }}
           />
 
@@ -180,17 +203,27 @@ export function SelectOfCountries({ setFieldValue }) {
               className={cn({
                 [s.input]: true,
                 [s.pr]: true,
-                // [s.error]: error && touched,
+                [s.pl]: true,
+                [s.error]: errors.region && touched.region,
               })}
               name="region"
               type="text"
               value={regionSearchQuery}
-              onChange={e =>
-                handleRegionInputChange(e.target.value, countries, setFilteredCountries)
-              }
               placeholder={t('region_placeholder')}
+              autoComplete="off"
+              onChange={e =>
+                handleRegionInputChange(
+                  e.target.value,
+                  currentRegions,
+                  setFilteredRegions,
+                )
+              }
               onFocus={() => {
-                setCountriesListOpened(true)
+                setRegionsListOpened(true)
+              }}
+              onBlur={() => {
+                setFieldTouched('region')
+                validateField('region')
               }}
             />
 
@@ -199,39 +232,28 @@ export function SelectOfCountries({ setFieldValue }) {
             <div className={s.input_border}></div>
 
             <Icon
-              className={cn({ [s.right_icon]: true, [s.opened]: countriesListOpened })}
+              className={cn({ [s.right_icon]: true, [s.opened]: regionsListOpened })}
               name="shevron"
               width={13}
               height={9}
             ></Icon>
           </div>
-          <ErrorMessage className={s.error_message} name="country" component="span" />
+          <ErrorMessage className={s.error_message} name="region" component="span" />
 
-          {countriesListOpened && (
+          {regionsListOpened && (
             <>
               <div className={s.backdrop} onClick={handleBackdropClick}></div>
               <div className={s.countries_dropdown}>
                 <ul className={s.countries_list}>
-                  {filteredCountries.map(({ $key, $image, $: countryName }) => {
-                    const countryCode = $image.slice(-6, -4).toLowerCase()
-
+                  {filteredregions.map(({ $key, $: regionName }) => {
                     return (
                       <li className={s.country_item} key={$key}>
                         <button
                           className={s.country_btn}
                           type="button"
-                          onClick={() =>
-                            handleCountryClick(countryCode, countryName, $key)
-                          }
+                          onClick={() => handleRegionClick(regionName, $key)}
                         >
-                          <img
-                            className={s.country_img}
-                            src={require(`../../images/countryFlags/${countryCode}.png`)}
-                            width={20}
-                            height={14}
-                            alt="flag"
-                          />
-                          <span className={s.country_name}>{countryName}</span>
+                          {regionName}
                         </button>
                       </li>
                     )
