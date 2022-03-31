@@ -22,7 +22,7 @@ const getUserInfo = sessionId => dispatch => {
       }),
     )
     .then(({ data }) => {
-      // console.log(data.doc.user)
+      console.log(data.doc.user)
       const { $realname, $balance, $email, $phone } = data.doc.user
       dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
     })
@@ -63,8 +63,8 @@ const getItems = sessionId => dispatch => {
       }),
     )
     .then(({ data }) => {
-      const { $ } = data.doc.p_elems
-      dispatch(userActions.setItems({ $ }))
+      const { doc } = data
+      dispatch(userActions.setItems({ doc }))
     })
     .catch(error => {
       console.log('error', error)

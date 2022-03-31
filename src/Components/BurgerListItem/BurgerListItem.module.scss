@@ -21,6 +21,29 @@
     display: block;
   }
 }
+.user_name,
+.list_name {
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.user_name {
+  margin-top: 11px;
+}
+
+.email {
+  font-size: 14px;
+  line-height: 70.9%;
+  margin-top: 10px;
+  margin-bottom: 11px;
+  color: #716d79;
+}
+
+.list_name {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
 
 .list_item {
   margin-left: 70px;
@@ -29,27 +52,40 @@
 .list_item_container {
   position: relative;
   display: flex;
-  padding: 20px 26px 20px 27px;
+  align-items: center;
+  // padding: 20px 26px 20px 27px;
 
-  &::before {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    border-radius: 5px;
-    background: var(--accent-gradient);
+  &.opened {
+    background-color: var(--nearby-elements-bgc);
+
+    &::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 5px;
+      background: var(--accent-gradient);
+    }
   }
 }
 
-.svg_icon {
-  margin-right: 19px;
+.open_list_icon {
+  margin-left: auto;
+  margin-right: 26px;
+  transform: rotateZ(-90deg);
+
+  &.closed {
+    transform: rotateZ(90deg);
+  }
 }
 
-.show_hide_icon {
-  margin-left: auto;
-  transform: rotateZ(-90deg);
+.list_item_name {
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--main-text);
+  padding-bottom: 20px;
 }

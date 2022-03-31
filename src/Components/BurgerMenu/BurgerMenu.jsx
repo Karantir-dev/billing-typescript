@@ -1,97 +1,125 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
-// import { Icon } from '..'
 import { BurgerListItem, ThemeBtn, LangBtn } from '../../Components'
-import calendar_dt from '../../images/calendar_dt.svg'
-
+import { Box, ExitSign, Profile, Social, Support, Wallet } from '../../images'
+import { selectors } from '../../Redux/selectors'
 import * as routes from '../../routes'
 
 import s from './BurgerMenu.module.scss'
 
+const servicesMenuList = [
+  { name: 'Домены', routeName: routes.HOME },
+  { name: 'Виртуальные серверы', routeName: routes.HOME },
+  { name: 'Выделенные серверы', routeName: routes.HOME },
+  { name: 'Виртуальный хостинг', routeName: routes.HOME },
+  { name: 'DNS-хостинг', routeName: routes.HOME },
+  { name: 'Внешнее FTP хранилище', routeName: routes.HOME },
+  { name: 'Забота о сайте', routeName: routes.HOME },
+  { name: 'Сервер для Forex', routeName: routes.HOME },
+]
+const financeMenuList = [
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+]
+const supportMenuList = [
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+]
+const refProgrammMenuList = [
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+  { name: 'N/A', routeName: routes.HOME },
+]
+const profileMenuList = [
+  { name: 'Настройки профиля', routeName: routes.HOME },
+  { name: 'Доверенные пользователи', routeName: routes.HOME },
+  { name: 'Журнал посещений', routeName: routes.HOME },
+  { name: 'История действий', routeName: routes.HOME },
+  { name: 'Договоры', routeName: routes.HOME },
+]
+
 export default function BurgerMenu() {
-  const servicesMenuList = [
-    { name: 'Домены', routeName: routes.HOME },
-    { name: 'Виртуальные серверы', routeName: routes.HOME },
-    { name: 'Выделенные серверы', routeName: routes.HOME },
-    { name: 'Виртуальный хостинг', routeName: routes.HOME },
-    { name: 'DNS-хостинг', routeName: routes.HOME },
-    { name: 'Внешнее FTP хранилище', routeName: routes.HOME },
-    { name: 'Забота о сайте', routeName: routes.HOME },
-    { name: 'Сервер для Forex', routeName: routes.HOME },
-  ]
-  const financeMenuList = [
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-  ]
-  const supportMenuList = [
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-  ]
-  const refProgrammMenuList = [
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-    { name: 'N/A', routeName: routes.HOME },
-  ]
-  const profileMenuList = [
-    { name: 'Настройки профиля', routeName: routes.HOME },
-    { name: 'Доверенные пользователи', routeName: routes.HOME },
-    { name: 'Журнал посещений', routeName: routes.HOME },
-    { name: 'История действий', routeName: routes.HOME },
-    { name: 'Договоры', routeName: routes.HOME },
-  ]
+  const { $realname, $email, $balance } = useSelector(selectors.getUserInfo)
 
   return (
-    <section className={s.burger_menu}>
+    <div className={s.burger_menu}>
       <nav className={s.burger_nav}>
-        <ThemeBtn />
+        <div className={s.theme_btn_wrapper}>
+          <ThemeBtn />
+        </div>
         <LangBtn />
-        {/* <button>X</button> */}
       </nav>
 
-      <ul>
+      <ul className={s.list}>
         <li className={s.list_item}>
           <BurgerListItem
-            name={'name from ajax'}
-            svg={calendar_dt}
+            name={$realname}
+            svg={<Profile className={s.icon} />}
             subList={profileMenuList}
             isProfile={true}
-            email={'from ajax request'}
+            email={$email}
+          />
+        </li>
+        <div className={s.balance_wrapper}>
+          <p className={s.balance_text}>Баланс</p>
+          <p className={s.balance_sum}>{$balance} EUR</p>
+        </div>
+        <li className={s.list_item}>
+          <BurgerListItem
+            name="Услуги"
+            svg={<Box className={s.icon} />}
+            subList={servicesMenuList}
           />
         </li>
         <li className={s.list_item}>
-          <BurgerListItem name="Услуги" svg={calendar_dt} subList={servicesMenuList} />
-        </li>
-        <li className={s.list_item}>
-          <BurgerListItem name="Финансы" svg={calendar_dt} subList={financeMenuList} />
+          <BurgerListItem
+            name="Финансы"
+            svg={<Wallet className={s.icon} />}
+            subList={financeMenuList}
+          />
         </li>
         <li className={s.list_item}>
           <BurgerListItem
             name="Реферальная программа"
-            svg={calendar_dt}
+            svg={<Social className={s.icon} />}
             subList={refProgrammMenuList}
           />
         </li>
         <li className={s.list_item}>
-          <BurgerListItem name="Поддержка" svg={calendar_dt} subList={supportMenuList} />
+          <BurgerListItem
+            name="Поддержка"
+            svg={<Support className={s.icon} />}
+            subList={supportMenuList}
+          />
+        </li>
+        <li className={s.exit_list_item}>
+          <NavLink to={routes.REGISTRATION}>
+            <div className={s.exit_wrapper}>
+              <ExitSign className={s.icon} />
+              <p className={s.exit_name}>Выход</p>
+            </div>
+          </NavLink>
         </li>
       </ul>
-    </section>
+    </div>
   )
 }
