@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 
 import { authActions } from './authActions'
 import { actions } from '../actions'
@@ -12,16 +12,16 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/x-www-form-urlencoded',
   },
 })
-// const referalID = Cookies.get('billpartner')
-const axiosInstance2 = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Accept: '/',
-    Cookie: document.cookie,
-  },
-  credentials: 'localhost:3000',
-})
+
+// const axiosInstance2 = axios.create({
+//   baseURL: BASE_URL,
+//   headers: {
+//     'Content-Type': 'application/x-www-form-urlencoded',
+//     Accept: '/',
+//     Cookie: document.cookie,
+//   },
+//   credentials: 'localhost:3000',
+// })
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(authActions.loginRequest())
@@ -216,29 +216,28 @@ const getCountries = (setCountries, setStates) => () => {
     })
 }
 
-const register = values => dispatch => {
-  const referalId = Cookies.get('billpartner')
-  axiosInstance2
-    .post(
-      '/',
-      qs.stringify({
-        func: 'register',
-        realname: values.name,
-        email: values.email,
-        passwd: values.password,
-        confirm: values.passConfirmation,
-        country: values.country,
-        state: values.region,
-        'g-recaptcha-response': values.reCaptcha,
-        out: 'json',
-        sok: 'ok',
-      }),
-      { withCredentials: true },
-      // { headers: referalId ? { cookie: `billpartner=${referalId}` } : {} },
-    )
-    .then(({ data }) => {
-      console.log('resp', data)
-    })
+const register = values => () => {
+  console.log(values)
+  // axiosInstance
+  //   .post(
+  //     '/',
+  //     qs.stringify({
+  //       func: 'register',
+  //       realname: values.name,
+  //       email: values.email,
+  //       passwd: values.password,
+  //       confirm: values.passConfirmation,
+  //       country: values.country,
+  //       state: values.region,
+  //       'g-recaptcha-response': values.reCaptcha,
+  //       out: 'json',
+  //       sok: 'ok',
+  //     }),
+  //     { withCredentials: true },
+  //   )
+  //   .then(({ data }) => {
+  //     console.log('resp', data)
+  //   })
 }
 
 export const authOperations = {
