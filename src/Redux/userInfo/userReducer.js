@@ -4,7 +4,7 @@ import { userActions } from './userActions'
 
 const initialState = {
   userInfo: {},
-  userTickets: {},
+  userTickets: [],
   userItems: {},
 }
 

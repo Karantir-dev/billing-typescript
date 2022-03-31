@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsideServicesMenu, Header } from '../../Components'
+import { Header } from '../../Components'
 
 export default function MainPage() {
   return (

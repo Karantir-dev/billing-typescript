@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Icon } from '..'
+// import { Icon } from '..'
 import { BurgerListItem, ThemeBtn, LangBtn } from '../../Components'
 import calendar_dt from '../../images/calendar_dt.svg'
 

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
-import qs from 'qs'
 
 import { BurgerMenu } from '../../Components'
 import logo_dt from '../../images/logo-dt.svg'
@@ -11,93 +10,18 @@ import Icon from '../Icon/Icon'
 import * as routes from '../../routes'
 
 import s from './Header.module.scss'
-import { BASE_URL } from '../../config/config'
-import axios from 'axios'
 
 export default function Header() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
+  // const userInfo = useSelector(selectors.getUserInfo)
+  // const userItems = useSelector(selectors.getUserItems)
+  // const userTickets = useSelector(selectors.getUserTickets)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
 
   const handleClick = () => {
     setIsMenuOpened(!isMenuOpened)
   }
-
-  // const axiosInstance = axios.create({
-  //   baseURL: BASE_URL,
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded',
-  //   },
-  // })
-
-  // const getUserInfo = () => {
-  //   axiosInstance
-  //     .post(
-  //       '/',
-  //       qs.stringify({
-  //         func: 'whoami',
-  //         out: 'json',
-  //         auth: 'ec8be596c40712d375e9509d',
-  //       }),
-  //     )
-  //     .then(({ data }) => {
-  //       console.log(data.doc)
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   // getUserInfo()
-  // }, [])
-
-  // const getTickets = () => {
-  //   axiosInstance
-  //     .post(
-  //       '/',
-  //       qs.stringify({
-  //         func: 'dashboard.tickets',
-  //         out: 'json',
-  //         lang: 'en',
-  //         auth: 'ec8be596c40712d375e9509d',
-  //       }),
-  //     )
-  //     .then(({ data }) => {
-  //       console.log(data.doc)
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   // getTickets()
-  // }, [])
-
-  // const getItems = () => {
-  //   axiosInstance
-  //     .post(
-  //       '/',
-  //       qs.stringify({
-  //         func: 'dashboard.items',
-  //         out: 'json',
-  //         lang: 'en',
-  //         auth: 'ec8be596c40712d375e9509d',
-  //       }),
-  //     )
-  //     .then(({ data }) => {
-  //       console.log(data.doc)
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   getItems()
-  //   getUserInfo()
-  // }, [])
 
   return (
     <>
@@ -136,8 +60,8 @@ export default function Header() {
               </NavLink>
             </li>
 
-            <li className={s.item} onClick={handleClick}>
-              <NavLink to={routes.HOME} className={s.link}>
+            <li className={s.item}>
+              <button onClick={handleClick}>
                 {isMenuOpened ? (
                   <button className={s.close_burger_btn}>X</button>
                 ) : (
@@ -149,7 +73,7 @@ export default function Header() {
                     isGradient={false}
                   />
                 )}
-              </NavLink>
+              </button>
             </li>
           </ul>
         </nav>

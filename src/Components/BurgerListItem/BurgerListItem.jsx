@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { v4 as uuidv4 } from 'uuid'
 
-import * as routes from '../../routes'
+// import * as routes from '../../routes'
 
 import s from './BurgerListItem.module.scss'
 import cn from 'classnames'
@@ -28,9 +28,9 @@ export default function BurgerListItem({ svg, name, isProfile, email, subList })
           <p className={s.list_name}>{name}</p>
         )}
 
-        <span className={s.show_hide_icon} onClick={handleClick}>
+        <button className={s.show_hide_icon} onClick={handleClick}>
           &lt;
-        </span>
+        </button>
       </div>
       <ul className={cn({ [s.list]: true, [s.closed]: isListOpened })}>
         {subList.map(item => {
