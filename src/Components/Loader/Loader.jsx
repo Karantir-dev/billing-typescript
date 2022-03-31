@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { selectors } from '../../Redux/selectors'
-import logo_dt from '../../images/logo-dt.svg'
-import logo_lt from '../../images/logo-lt.svg'
+import { Logo } from './../../images'
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false }) {
@@ -13,15 +12,7 @@ export default function Loader({ logo = false }) {
 
   return (
     <div className={cn({ [s.backdrop]: true, [s.main]: logo, [s.shown]: isLoading })}>
-      {logo && (
-        <img
-          width="200px"
-          className="loader__logo"
-          src={darkTheme ? logo_dt : logo_lt}
-          alt="logo"
-          onLoad="this.style.opacity = '1'"
-        />
-      )}
+      {logo && <Logo darktheme={darkTheme ? 1 : 0} />}
 
       <div className={s.loader}>
         <div className={`${s.loader_circle} ${s.first}`}></div>

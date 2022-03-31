@@ -1,6 +1,5 @@
 import React from 'react'
-import { LangBtn } from '../LangBtn/LangBtn'
-import { ThemeBtn } from '../ThemeBtn/ThemeBtn'
+import { LangBtn, ThemeBtn } from '..'
 // import BurgerMenu from './BurgerMenu/BurgerMenu'
 
 export default function Header() {
