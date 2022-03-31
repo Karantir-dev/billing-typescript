@@ -1,11 +1,3 @@
-import React, { useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import * as Yup from 'yup'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { Link } from 'react-router-dom'
-import { ErrorMessage, Form, Formik } from 'formik'
-
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 import { Icon } from '../Icon'
@@ -16,7 +8,7 @@ import s from './SignupForm.module.scss'
 import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
 import Cookies from 'js-cookie'
 
-export function SignupForm() {
+export default function SignupForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const recaptchaEl = useRef()

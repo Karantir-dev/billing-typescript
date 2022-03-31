@@ -1,5 +1,5 @@
 %accent-text-gradient {
-  background-image: var(--accent-gradient);
+  background-image: var(--accent-text-gradient);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -84,7 +84,6 @@
     font-size: 16px;
     color: var(--auth-placeholder-color);
   }
-
   &:focus {
     outline: transparent;
     border-color: transparent;
@@ -96,7 +95,7 @@
       left: 0;
       bottom: 0;
       border-radius: 4px;
-      background-image: linear-gradient(90deg, #ff42a8 0%, #f02ce2 100%);
+      background-image: var(--accent-gradient);
     }
 
     & ~ .field_icon {

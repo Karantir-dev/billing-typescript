@@ -9,7 +9,7 @@ const initialState = {
 }
 
 export const theme = createReducer(initialState.theme, {
-  [actions.changeTheme]: (state, _) => (state === 'light' ? 'dark' : 'light'),
+  [actions.changeTheme]: state => (state === 'light' ? 'dark' : 'light'),
 })
 
 export const isLoading = createReducer(initialState.isLoading, {

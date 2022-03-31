@@ -6,14 +6,13 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-
-import { Icon } from '../Icon'
+import { EyeClosed, Eye, Padlock } from '../../images'
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 
 import s from './PasswordChange.module.scss'
 
-export function PasswordChange() {
+export default function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -28,11 +27,11 @@ export function PasswordChange() {
   const [passConfirmationIsShown, setPassConfirmationIsShown] = useState(false)
 
   // redirects to login if query parasms are missing
-  // useEffect(() => {
-  //   if (!userId || !secret) {
-  //     navigate(routes.LOGIN)
-  //   }
-  // }, [userId, secret, navigate])
+  useEffect(() => {
+    if (!userId || !secret) {
+      navigate(routes.LOGIN)
+    }
+  }, [userId, secret, navigate])
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -63,9 +62,7 @@ export function PasswordChange() {
 
   return (
     <div className={s.form_wrapper}>
-      <h3 className={s.form_title} onClick={onChangeSuccess}>
-        {t('change.form_title')}
-      </h3>
+      <h3 className={s.form_title}>{t('change.form_title')}</h3>
       <Formik
         initialValues={{
           password: '',
@@ -92,14 +89,7 @@ export function PasswordChange() {
                     type={passIsShown ? 'text' : 'password'}
                     placeholder={t('change.pass_placeholder')}
                   />
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="padlock"
-                      width={19}
-                      height={19}
-                    />
-                  )}
+                  {tabletOrHigher && <Padlock className={s.field_icon} />}
                   <button
                     className={cn({
                       [s.pass_show_btn]: true,
@@ -108,12 +98,11 @@ export function PasswordChange() {
                     type="button"
                     onClick={() => setPassIsShown(!passIsShown)}
                   >
-                    <Icon
-                      className={s.icon_eye}
-                      name={passIsShown ? 'closed-eye' : 'eye'}
-                      width={21}
-                      height={21}
-                    ></Icon>
+                    {passIsShown ? (
+                      <Eye className={s.icon_eye} />
+                    ) : (
+                      <EyeClosed className={s.icon_eye} />
+                    )}
                   </button>
                   <div className={s.input_border}></div>
                 </div>
@@ -137,14 +126,7 @@ export function PasswordChange() {
                     type={passConfirmationIsShown ? 'text' : 'password'}
                     placeholder={t('change.confirmation_placeholder')}
                   />
-                  {tabletOrHigher && (
-                    <Icon
-                      className={s.field_icon}
-                      name="padlock"
-                      width={19}
-                      height={19}
-                    />
-                  )}
+                  {tabletOrHigher && <Padlock className={s.field_icon} />}
                   <button
                     className={cn({
                       [s.pass_show_btn]: true,
@@ -153,12 +135,11 @@ export function PasswordChange() {
                     type="button"
                     onClick={() => setPassConfirmationIsShown(!passConfirmationIsShown)}
                   >
-                    <Icon
-                      className={s.icon_eye}
-                      name={passConfirmationIsShown ? 'closed-eye' : 'eye'}
-                      width={21}
-                      height={21}
-                    ></Icon>
+                    {passConfirmationIsShown ? (
+                      <Eye className={s.icon_eye} />
+                    ) : (
+                      <EyeClosed className={s.icon_eye} />
+                    )}
                   </button>
                   <div className={s.input_border}></div>
                 </div>

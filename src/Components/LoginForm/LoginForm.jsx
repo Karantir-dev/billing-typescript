@@ -5,17 +5,15 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-
 import { authOperations } from '../../Redux/auth/authOperations'
-import { VerificationModal } from '../VerificationModal/VerificationModal'
-import { Icon } from '../Icon'
+import { InputField, VerificationModal, Button } from '..'
 import * as routes from '../../routes'
-import { InputField } from '../InputField/InputField'
 import { RECAPTCHA_KEY } from '../../config/config'
+import { Facebook, Google, Vk } from './../../images'
 
 import s from './LoginForm.module.scss'
 
-export function LoginForm() {
+export default function LoginForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
@@ -99,10 +97,7 @@ export function LoginForm() {
                   name="reCaptcha"
                   component="span"
                 />
-
-                <button className={s.submit_btn} type="submit">
-                  <span className={s.btn_text}>{t('logIn')}</span>
-                </button>
+                <Button label={t('logIn')} type="submit" />
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}
                 </Link>
@@ -116,13 +111,13 @@ export function LoginForm() {
         <p className={s.social_title}>{t('login_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <Icon name="facebook" width={32} height={32}></Icon>
+            <Facebook />
           </li>
           <li>
-            <Icon name="google" width={32} height={32}></Icon>
+            <Google />
           </li>
           <li>
-            <Icon name="vk" width={32} height={32}></Icon>
+            <Vk />
           </li>
         </ul>
       </div>

@@ -1,14 +1,14 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Icon } from '../Icon'
-import {actions} from '../../Redux/actions'
+import { actions } from '../../Redux/actions'
 import { selectors } from '../../Redux/selectors'
+
+import { Moon, Sun } from './../../images'
 
 import s from './ThemeBtn.module.scss'
 
-export function ThemeBtn() {
+export default function ThemeBtn() {
   const dispatch = useDispatch()
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const body = document.querySelector('body')
@@ -21,8 +21,8 @@ export function ThemeBtn() {
       type="button"
       onClick={() => dispatch(actions.changeTheme())}
     >
-      <Icon className={`${s.icon_sun}`} name="sun" />
-      <Icon className={`${s.icon_moon}`} name="moon" />
+      <Sun className={s.icon_sun} />
+      <Moon className={s.icon_moon} />
     </button>
   )
 }

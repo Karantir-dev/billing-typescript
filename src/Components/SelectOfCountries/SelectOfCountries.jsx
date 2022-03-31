@@ -3,12 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
-
-import { Icon } from '../Icon'
 import { authOperations } from '../../Redux/auth/authOperations'
+import { Shevron, Search } from '../../images'
 import s from './SelectOfCountries.module.scss'
 
-export function SelectOfCountries({
+export default function SelectOfCountries({
   setFieldValue,
   validateField,
   setFieldTouched,

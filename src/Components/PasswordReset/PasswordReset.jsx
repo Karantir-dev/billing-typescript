@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
-import { Icon } from '../Icon'
+
+import { Envelope } from '../../images'
 
 import { authOperations } from '../../Redux/auth/authOperations'
 import * as Yup from 'yup'
@@ -11,7 +12,7 @@ import * as routes from '../../routes'
 import cn from 'classnames'
 import s from './PasswordReset.module.scss'
 
-export function PasswordReset() {
+export default function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -79,9 +80,7 @@ export function PasswordReset() {
               onChange={handleInputChange}
               onBlur={validateEmail}
             />
-            {tabletOrHigher && (
-              <Icon className={s.field_icon} name="envelope" width={19} height={15} />
-            )}
+            {tabletOrHigher && <Envelope className={s.field_icon} />}
             <div className={s.input_border}></div>
           </div>
 

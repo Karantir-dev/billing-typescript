@@ -1,5 +1,6 @@
 body {
-  --accent-gradient: linear-gradient(120deg, #ff3cb1 30%, #e030bd 70%);
+  --accent-text-gradient: linear-gradient(120deg, #ff3cb1 30%, #e030bd 70%);
+  --accent-gradient: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
   --accent-color-light: #ff50bf;
   --input-border-icon: #c4c4c4;
 
@@ -9,6 +10,8 @@ body {
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
+  --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
+  --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -16,6 +19,7 @@ body {
 
   --auth-placeholder-color: #c4c4c4;
   --eye-color: #777;
+  --icon-color: #d9d0eb;
 }
 
 // dark theme variables
@@ -25,6 +29,8 @@ body.dark-theme {
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
+  --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
+  --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;
@@ -32,4 +38,5 @@ body.dark-theme {
 
   --auth-placeholder-color: #6e6977;
   --eye-color: #c4c4c4;
+  --icon-color: #75707e;
 }
