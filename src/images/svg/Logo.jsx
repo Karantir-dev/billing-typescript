@@ -1,9 +1,9 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../Redux/selectors'
 
 export default function SvgComponent(props) {
-  const { darktheme } = props
-
-  console.log(darktheme, 'darktheme')
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const renderDark = () => {
     return (
@@ -228,7 +228,7 @@ export default function SvgComponent(props) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      {darktheme ? renderDark() : renderLight()}
+      {darkTheme ? renderDark() : renderLight()}
     </svg>
   )
 }

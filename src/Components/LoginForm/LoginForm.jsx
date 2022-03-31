@@ -73,6 +73,7 @@ export default function LoginForm() {
                   icon="envelope"
                   error={!!errors.email}
                   touched={!!touched.email}
+                  autoComplete
                 />
 
                 <InputField

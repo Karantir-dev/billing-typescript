@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { EyeClosed, Eye, Envelope, Padlock } from '../../images'
+import { EyeClosed, Eye, Envelope, Padlock, Person } from '../../images'
 import s from './InputField.module.scss'
 
 export default function InputField({
@@ -22,6 +22,8 @@ export default function InputField({
 
   const renderIcon = name => {
     switch (name) {
+      case 'person':
+        return <Person className={s.field_icon} />
       case 'envelope':
         return <Envelope className={s.field_icon} />
       case 'padlock':

@@ -2,6 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../config/config'
 import Cookies from 'js-cookie'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { ErrorMessage, Form, Formik } from 'formik'
+import { Link } from 'react-router-dom'
 
 import { authOperations } from '../../Redux/auth/authOperations'
 import InputField from '../InputField/InputField'
@@ -10,11 +15,6 @@ import * as routes from '../../routes'
 import { Facebook, Google, Vk } from './../../images'
 
 import s from './SignupForm.module.scss'
-import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { ErrorMessage, Form, Formik } from 'formik'
-import { Link } from 'react-router-dom'
-import { ReCAPTCHA } from 'react-google-recaptcha'
 
 export default function SignupForm() {
   const { t } = useTranslation()
