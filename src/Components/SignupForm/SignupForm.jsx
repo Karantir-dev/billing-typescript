@@ -1,12 +1,20 @@
-import { authOperations } from '../../Redux/auth/authOperations'
-import * as routes from '../../routes'
-import { Icon } from '../Icon'
+import React, { useEffect, useRef } from 'react'
+import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../config/config'
-import { InputField } from '../InputField/InputField'
+import Cookies from 'js-cookie'
+
+import { authOperations } from '../../Redux/auth/authOperations'
+import InputField from '../InputField/InputField'
+import SelectOfCountries from '../SelectOfCountries/SelectOfCountries'
+import * as routes from '../../routes'
+import { Facebook, Google, Vk } from './../../images'
 
 import s from './SignupForm.module.scss'
-import { SelectOfCountries } from '../SelectOfCountries/SelectOfCountries'
-import Cookies from 'js-cookie'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { ErrorMessage, Form, Formik } from 'formik'
+import { Link } from 'react-router-dom'
+import { ReCAPTCHA } from 'react-google-recaptcha'
 
 export default function SignupForm() {
   const { t } = useTranslation()
@@ -49,7 +57,7 @@ export default function SignupForm() {
     }),
   })
 
-  const handleSubmit = (values, { setFieldValue }) => {
+  const handleSubmit = values => {
     dispatch(authOperations.register(values))
   }
 
@@ -148,13 +156,13 @@ export default function SignupForm() {
         <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <Icon name="facebook" width={32} height={32}></Icon>
+            <Facebook />
           </li>
           <li>
-            <Icon name="google" width={32} height={32}></Icon>
+            <Google />
           </li>
           <li>
-            <Icon name="vk" width={32} height={32}></Icon>
+            <Vk />
           </li>
         </ul>
       </div>

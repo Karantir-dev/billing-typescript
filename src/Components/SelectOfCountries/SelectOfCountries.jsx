@@ -147,23 +147,25 @@ export default function SelectOfCountries({
               alt="flag"
             />
           ) : (
-            <Icon className={s.field_icon} name="search" width={18} height={19} />
+            <Search className={s.field_icon} />
           )}
 
           <div className={s.input_border}></div>
-
-          <Icon
+          <Shevron
             className={cn({ [s.right_icon]: true, [s.opened]: countriesListOpened })}
-            name="shevron"
-            width={13}
-            height={9}
-          ></Icon>
+          />
         </div>
         <ErrorMessage className={s.error_message} name="country" component="span" />
 
         {countriesListOpened && (
           <>
-            <div className={s.backdrop} onClick={handleBackdropClick}></div>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              className={s.backdrop}
+              onClick={handleBackdropClick}
+            ></div>
             <div className={s.countries_dropdown}>
               <ul className={s.countries_list}>
                 {filteredCountries.map(({ $key, $image, $: countryName }) => {
@@ -226,22 +228,24 @@ export default function SelectOfCountries({
               }}
             />
 
-            <Icon className={s.field_icon} name="search" width={18} height={19} />
+            <Search className={s.field_icon} />
 
             <div className={s.input_border}></div>
-
-            <Icon
+            <Shevron
               className={cn({ [s.right_icon]: true, [s.opened]: regionsListOpened })}
-              name="shevron"
-              width={13}
-              height={9}
-            ></Icon>
+            />
           </div>
           <ErrorMessage className={s.error_message} name="region" component="span" />
 
           {regionsListOpened && (
             <>
-              <div className={s.backdrop} onClick={handleBackdropClick}></div>
+              <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => null}
+                className={s.backdrop}
+                onClick={handleBackdropClick}
+              ></div>
               <div className={s.countries_dropdown}>
                 <ul className={s.countries_list}>
                   {filteredregions.map(({ $key, $: regionName }) => {
