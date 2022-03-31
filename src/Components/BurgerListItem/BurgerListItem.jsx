@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
@@ -6,13 +6,15 @@ import { v4 as uuidv4 } from 'uuid'
 
 import s from './BurgerListItem.module.scss'
 
-export default function BurgerListItem({ svg, name, isProfile, email, subList }) {
-  const [isListOpened, setIsListOpened] = useState(false)
-
-  const handleClick = () => {
-    setIsListOpened(!isListOpened)
-  }
-
+export default function BurgerListItem({
+  svg,
+  name,
+  isProfile,
+  email,
+  subList,
+  isListOpened,
+  arrow,
+}) {
   return (
     <>
       <div className={cn({ [s.list_item_container]: true, [s.opened]: isListOpened })}>
@@ -25,12 +27,7 @@ export default function BurgerListItem({ svg, name, isProfile, email, subList })
         ) : (
           <p className={s.list_name}>{name}</p>
         )}
-        <button
-          className={cn({ [s.open_list_icon]: true, [s.closed]: isListOpened })}
-          onClick={handleClick}
-        >
-          &lt;
-        </button>
+        {arrow}
       </div>
       <ul
         className={cn({
@@ -42,7 +39,7 @@ export default function BurgerListItem({ svg, name, isProfile, email, subList })
           return (
             <li key={uuidv4()} className={s.list_item}>
               <NavLink to={item.routeName}>
-                <p className={s.list_item_name}> {item.name}</p>
+                <p className={s.list_item_name}>{item.name}</p>
               </NavLink>
             </li>
           )

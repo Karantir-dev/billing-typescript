@@ -1,9 +1,10 @@
-import React from 'react'
+import cn from 'classnames'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import { BurgerListItem, ThemeBtn, LangBtn } from '../../Components'
-import { Box, ExitSign, Profile, Social, Support, Wallet } from '../../images'
+import { ArrowSign, Box, ExitSign, Profile, Social, Support, Wallet } from '../../images'
 import { selectors } from '../../Redux/selectors'
 import * as routes from '../../routes'
 
@@ -57,69 +58,185 @@ const profileMenuList = [
   { name: 'Договоры', routeName: routes.HOME },
 ]
 
-export default function BurgerMenu() {
+export default function BurgerMenu({ classes }) {
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { $realname, $email, $balance } = useSelector(selectors.getUserInfo)
+  const [isProfileListOpened, setIsProfileListOpened] = useState(false)
+  const [isServicesListOpened, setIsServicesListOpened] = useState(false)
+  const [isFinanceListOpened, setIsFinanceListOpened] = useState(false)
+  const [isReferalListOpened, setIsReferalListOpened] = useState(false)
+  const [isSupportListOpened, setIsSupportListOpened] = useState(false)
 
   return (
-    <div className={s.burger_menu}>
-      <nav className={s.burger_nav}>
-        <div className={s.theme_btn_wrapper}>
-          <ThemeBtn />
-        </div>
-        <LangBtn />
-      </nav>
+    <div className={s.burger}>
+      <div className={classes}>
+        <nav className={s.burger_nav}>
+          <div className={s.theme_btn_wrapper}>
+            <ThemeBtn />
+          </div>
+          <LangBtn />
+        </nav>
 
-      <ul className={s.list}>
-        <li className={s.list_item}>
-          <BurgerListItem
-            name={$realname}
-            svg={<Profile className={s.icon} />}
-            subList={profileMenuList}
-            isProfile={true}
-            email={$email}
-          />
-        </li>
-        <div className={s.balance_wrapper}>
-          <p className={s.balance_text}>Баланс</p>
-          <p className={s.balance_sum}>{$balance} EUR</p>
-        </div>
-        <li className={s.list_item}>
-          <BurgerListItem
-            name="Услуги"
-            svg={<Box className={s.icon} />}
-            subList={servicesMenuList}
-          />
-        </li>
-        <li className={s.list_item}>
-          <BurgerListItem
-            name="Финансы"
-            svg={<Wallet className={s.icon} />}
-            subList={financeMenuList}
-          />
-        </li>
-        <li className={s.list_item}>
-          <BurgerListItem
-            name="Реферальная программа"
-            svg={<Social className={s.icon} />}
-            subList={refProgrammMenuList}
-          />
-        </li>
-        <li className={s.list_item}>
-          <BurgerListItem
-            name="Поддержка"
-            svg={<Support className={s.icon} />}
-            subList={supportMenuList}
-          />
-        </li>
-        <li className={s.exit_list_item}>
-          <NavLink to={routes.REGISTRATION}>
-            <div className={s.exit_wrapper}>
-              <ExitSign className={s.icon} />
-              <p className={s.exit_name}>Выход</p>
+        <ul className={s.list}>
+          <li className={s.list_item}>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              onClick={() => setIsProfileListOpened(!isProfileListOpened)}
+            >
+              <BurgerListItem
+                name={$realname}
+                arrow={
+                  <ArrowSign
+                    className={cn({
+                      [s.arrow_icon]: true,
+                      [s.closed]: isProfileListOpened,
+                    })}
+                  />
+                }
+                svg={<Profile className={s.icon} />}
+                subList={profileMenuList}
+                isProfile={true}
+                email={$email}
+                isListOpened={isProfileListOpened}
+              />
             </div>
-          </NavLink>
-        </li>
-      </ul>
+          </li>
+          <li className={darkTheme ? s.balance_wrapper : s.balance_wrapper_lt}>
+            <p className={s.balance_text}>Баланс</p>
+            <p className={s.balance_sum}>{$balance} EUR</p>
+          </li>
+          <li className={s.list_item}>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              onClick={() => setIsServicesListOpened(!isServicesListOpened)}
+            >
+              <BurgerListItem
+                name="Услуги"
+                arrow={
+                  <ArrowSign
+                    className={cn({
+                      [s.arrow_icon]: true,
+                      [s.closed]: isServicesListOpened,
+                    })}
+                  />
+                }
+                svg={
+                  <Box
+                    className={cn({
+                      [s.icon]: true,
+                      [s.active]: isServicesListOpened,
+                    })}
+                  />
+                }
+                subList={servicesMenuList}
+                isListOpened={isServicesListOpened}
+              />
+            </div>
+          </li>
+          <li className={s.list_item}>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              onClick={() => setIsFinanceListOpened(!isFinanceListOpened)}
+            >
+              <BurgerListItem
+                name="Финансы"
+                arrow={
+                  <ArrowSign
+                    className={cn({
+                      [s.arrow_icon]: true,
+                      [s.closed]: isFinanceListOpened,
+                    })}
+                  />
+                }
+                svg={
+                  <Wallet
+                    className={cn({
+                      [s.icon]: true,
+                      [s.active]: isFinanceListOpened,
+                    })}
+                  />
+                }
+                subList={financeMenuList}
+                isListOpened={isFinanceListOpened}
+              />
+            </div>
+          </li>
+          <li className={s.list_item}>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              onClick={() => setIsReferalListOpened(!isReferalListOpened)}
+            >
+              <BurgerListItem
+                name="Реферальная программа"
+                arrow={
+                  <ArrowSign
+                    className={cn({
+                      [s.arrow_icon]: true,
+                      [s.closed]: isReferalListOpened,
+                    })}
+                  />
+                }
+                svg={
+                  <Social
+                    className={cn({
+                      [s.icon]: true,
+                      [s.active]: isReferalListOpened,
+                    })}
+                  />
+                }
+                subList={refProgrammMenuList}
+                isListOpened={isReferalListOpened}
+              />
+            </div>
+          </li>
+          <li className={s.list_item}>
+            <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={() => null}
+              onClick={() => setIsSupportListOpened(!isSupportListOpened)}
+            >
+              <BurgerListItem
+                name="Поддержка"
+                arrow={
+                  <ArrowSign
+                    className={cn({
+                      [s.arrow_icon]: true,
+                      [s.closed]: isSupportListOpened,
+                    })}
+                  />
+                }
+                svg={
+                  <Support
+                    className={cn({
+                      [s.icon]: true,
+                      [s.active]: isSupportListOpened,
+                    })}
+                  />
+                }
+                subList={supportMenuList}
+                isListOpened={isSupportListOpened}
+              />
+            </div>
+          </li>
+          <li className={s.exit_list_item}>
+            <NavLink to={routes.REGISTRATION}>
+              <div className={s.exit_wrapper}>
+                <ExitSign className={s.icon} />
+                <p className={s.exit_name}>Выход</p>
+              </div>
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }

@@ -65,7 +65,8 @@ export default function Header() {
           </ul>
         </nav>
       </header>
-      {isMenuOpened && <BurgerMenu />}
+
+      <BurgerMenu classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })} />
     </>
   )
 }

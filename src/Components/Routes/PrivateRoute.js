@@ -12,11 +12,11 @@ export default function PrivateRoute({ redirectTo, children }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(userOperations.getUserInfo(isAuthenticated))
-      dispatch(userOperations.getItems(isAuthenticated))
-      dispatch(userOperations.getTickets(isAuthenticated))
-    }
+    // if (isAuthenticated) {
+    //   dispatch(userOperations.getUserInfo(isAuthenticated))
+    //   dispatch(userOperations.getItems(isAuthenticated))
+    //   dispatch(userOperations.getTickets(isAuthenticated))
+    // }
   }, [])
 
   return isAuthenticated ? children : <Navigate to={redirectTo} />

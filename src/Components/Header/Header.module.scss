@@ -156,3 +156,18 @@ $hamburger-layer-border-radius: 99px;
     bottom: ($hamburger-layer-spacing + $hamburger-layer-height) * -1;
   }
 }
+
+.burger_menu {
+  position: fixed;
+  top: 0;
+  left: 24px;
+  right: 0;
+  bottom: 0;
+  background-color: var(--burger-menu-bgc);
+  transform: translateX(100%);
+  transition: transform 1s;
+
+  &.opened {
+    transform: translateX(0px);
+  }
+}
