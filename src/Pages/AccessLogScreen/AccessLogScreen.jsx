@@ -3,10 +3,7 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import calendar_dt from '../../images/calendar_dt.svg'
-import calendar from '../../images/calendar.svg'
-import csv_doc_dt from '../../images/csv_doc_dt.svg'
-import csv_doc from '../../images/csv_doc.svg'
+import { CsvDoc, Calendar } from '../../images'
 import { ThemeBtn, LangBtn } from '../../Components/'
 import s from './AccessLogScreen.module.scss'
 
@@ -34,19 +31,11 @@ export default function MainPage() {
               <input placeholder="Удалённый IP-адрес" />
               <input placeholder="За все время" />
               <button>
-                <img
-                  className={s.icon}
-                  src={darkTheme ? calendar_dt : calendar}
-                  alt="calendar"
-                />
+                <Calendar darktheme={darkTheme ? 1 : 0} />
               </button>
             </div>
             <button>
-              <img
-                className={s.icon}
-                src={darkTheme ? csv_doc_dt : csv_doc}
-                alt="calendar"
-              />
+              <CsvDoc darktheme={darkTheme ? 1 : 0} />
             </button>
           </div>
         </div>

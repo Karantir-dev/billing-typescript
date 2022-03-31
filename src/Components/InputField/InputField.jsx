@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { Icon } from '..'
+import { EyeClosed, Eye, Envelope, Padlock } from '../../images'
 import s from './InputField.module.scss'
 
 export default function InputField({ label, icon, error, touched, inputValue }) {
@@ -12,6 +12,17 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
   const { t } = useTranslation()
   const inputTypePassword = label === 'password' || label === 'passConfirmation'
   const [passShown, setPassShown] = useState(false)
+
+  const renderIcon = name => {
+    switch (name) {
+      case 'envelope':
+        return <Envelope className={s.field_icon} />
+      case 'padlock':
+        return <Padlock className={s.field_icon} />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className={s.field_wrapper}>
@@ -27,10 +38,8 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
           type={inputTypePassword && !passShown ? 'password' : 'text'}
           placeholder={t(`${label}_placeholder`)}
         />
-        {tabletOrHigher && (
-          <Icon className={s.field_icon} name={icon} width={18} height={19} />
-        )}
-        <div className={s.input_border}></div>
+        {tabletOrHigher && renderIcon(icon)}
+        <div className={s.input_border} />
 
         <button
           className={cn({
@@ -40,12 +49,11 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
           type="button"
           onClick={() => setPassShown(!passShown)}
         >
-          <Icon
-            className={s.icon_eye}
-            name={passShown ? 'closed-eye' : 'eye'}
-            width={20}
-            height={13}
-          ></Icon>
+          {passShown ? (
+            <Eye className={s.icon_eye} />
+          ) : (
+            <EyeClosed className={s.icon_eye} />
+          )}
         </button>
       </div>
       <ErrorMessage className={s.error_message} name={label} component="span" />

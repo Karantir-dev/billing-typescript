@@ -1,11 +1,9 @@
 import React from 'react'
 
 import { useSelector } from 'react-redux'
-
-import logo_dt from '../../images/logo-dt.svg'
-import logo_lt from '../../images/logo-lt.svg'
+import { Logo } from '../../images'
 import s from './AuthPage.module.scss'
-import { ThemeBtn, LangBtn } from '../../Components/'
+import { ThemeBtn, LangBtn } from '../../Components'
 import { selectors } from '../../Redux/selectors'
 import cn from 'classnames'
 
@@ -16,8 +14,7 @@ export default function AuthPage({ children }) {
     <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
       <div className={s.header}>
         <div className={`container ${s.flex}`}>
-          <img className={s.logo} src={darkTheme ? logo_dt : logo_lt} alt="logo" />
-
+          <Logo darktheme={darkTheme ? 1 : 0} />
           <div className={s.btns_wrapper}>
             <ThemeBtn />
             <LangBtn />

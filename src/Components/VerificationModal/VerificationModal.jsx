@@ -4,7 +4,8 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 
 import { authSelectors } from '../../Redux/auth/authSelectors'
-import { Icon } from '..'
+
+import { Cross } from './../../images'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -53,7 +54,7 @@ export default function VerificationModal({ resetRecaptcha }) {
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('form_title')}</h3>
         <button className={s.closeBtn} onClick={handleBtnCloseClick} type="button">
-          <Icon className={s.icon} name="cross" width={16} height={16} />
+          <Cross className={s.icon} />
         </button>
         <p className={s.text}>{t('text')}</p>
         <form onSubmit={handleSubmit}>

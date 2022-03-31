@@ -4,8 +4,8 @@ import { useMediaQuery } from 'react-responsive'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
-import { Icon } from '..'
 import { authOperations } from '../../Redux/auth/authOperations'
+import { Shevron, Search } from '../../images'
 import s from './SelectOfCountries.module.scss'
 
 export default function SelectOfCountries() {
@@ -45,17 +45,10 @@ export default function SelectOfCountries() {
             setCountriesOpened(false)
           }}
         />
-        {tabletOrHigher && (
-          <Icon className={s.field_icon} name="search" width={18} height={19} />
-        )}
+        {tabletOrHigher && <Search className={s.field_icon} />}
         <div className={s.input_border}></div>
 
-        <Icon
-          className={cn({ [s.right_icon]: true, [s.opened]: countriesOpened })}
-          name="shevron"
-          width={13}
-          height={9}
-        ></Icon>
+        <Shevron className={cn({ [s.right_icon]: true, [s.opened]: countriesOpened })} />
       </div>
       <ErrorMessage className={s.error_message} name="country" component="span" />
 

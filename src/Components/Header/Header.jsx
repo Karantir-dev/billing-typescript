@@ -4,12 +4,11 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
 
 import { BurgerMenu } from '../../Components'
-import logo_dt from '../../images/logo-dt.svg'
-import logo_lt from '../../images/logo-lt.svg'
 import Icon from '../Icon/Icon'
 import * as routes from '../../routes'
 
 import s from './Header.module.scss'
+import { Logo } from '../../images'
 
 export default function Header() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -26,12 +25,9 @@ export default function Header() {
   return (
     <>
       <header className={s.main_header}>
-        <img
-          width="93px"
-          height="41px"
-          className={s.logo}
-          src={darkTheme ? logo_dt : logo_lt}
-          alt="logo"
+        <Logo
+          className={cn({ [s.logo]: true, [s.pinned_logo]: !isPinned })}
+          darktheme={darkTheme ? 1 : 0}
         />
 
         <nav className={s.main_nav}>
