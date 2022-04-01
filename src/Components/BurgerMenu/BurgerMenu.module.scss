@@ -46,17 +46,6 @@
   }
 }
 
-.arrow_icon {
-  margin-left: auto;
-
-  stroke: var(--main-text);
-  transition: transform 0.5s;
-
-  &.closed {
-    transform: rotateZ(-180deg);
-  }
-}
-
 .balance_wrapper {
   display: flex;
   justify-content: space-around;
