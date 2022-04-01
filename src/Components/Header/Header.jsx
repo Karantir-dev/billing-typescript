@@ -1,22 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
-import { selectors } from '../../Redux/selectors'
 
+import { userOperations } from '../../Redux/userInfo/userOperations'
+import { authSelectors } from '../../Redux/auth/authSelectors'
+import { selectors } from '../../Redux/selectors'
 import { BurgerMenu } from '../../Components'
-// import Icon from '../Icon/Icon'
 import { Logo, FilledEnvelope, Bell } from '../../images'
 import * as routes from '../../routes'
 
 import s from './Header.module.scss'
 
 export default function Header() {
+  const isAuthenticated = useSelector(authSelectors.getSessionId)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(userOperations.getUserInfo(isAuthenticated))
+      dispatch(userOperations.getItems(isAuthenticated))
+      dispatch(userOperations.getTickets(isAuthenticated))
+    }
+  }, [])
+
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  // const userInfo = useSelector(selectors.getUserInfo)
-  // const userItems = useSelector(selectors.getUserItems)
+  const messages = useSelector(selectors.getUserItems)
+
+  const mes = messages.msg.$
+  const notifications = messages.bitem
+  console.log(notifications)
+
   const userTickets = useSelector(selectors.getUserTickets)
-  console.log(userTickets)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
 
@@ -27,22 +42,32 @@ export default function Header() {
   return (
     <>
       <header className={s.main_header}>
-        <Logo
-          className={cn({ [s.logo]: true, [s.pinned_logo]: true })}
-          darktheme={darkTheme ? 1 : 0}
-        />
+        <Logo className={s.logo} darktheme={darkTheme ? 1 : 0} />
 
         <nav className={s.main_nav}>
           <ul className={s.list}>
-            <li className={cn({ [s.item]: true, [s.active_notification]: userTickets })}>
+            <li
+              className={cn({
+                [s.item]: true,
+                [s.active_notification]: userTickets.length > 0,
+              })}
+            >
               <NavLink to={routes.HOME} className={s.link}>
                 <FilledEnvelope className={s.icon} />
               </NavLink>
             </li>
 
-            <li>
+            <li
+              className={cn({
+                [s.item]: true,
+                [s.notification_messages]: messages > 0,
+              })}
+            >
               <NavLink to={routes.HOME} className={s.link}>
                 <Bell className={s.icon} />
+                {mes > 0 && (
+                  <span className={s.notification_messages_counter}>{mes}</span>
+                )}
               </NavLink>
             </li>
 
@@ -63,7 +88,6 @@ export default function Header() {
             </li>
           </ul>
         </nav>
-        <button className={s.button}></button>
       </header>
 
       <BurgerMenu

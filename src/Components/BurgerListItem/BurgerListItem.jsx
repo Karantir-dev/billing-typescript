@@ -54,7 +54,7 @@ export default function BurgerListItem({
 }
 
 BurgerListItem.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   subList: PropTypes.array,
   svg: PropTypes.object,
   email: PropTypes.string,

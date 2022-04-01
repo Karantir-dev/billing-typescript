@@ -22,7 +22,6 @@ const getUserInfo = sessionId => dispatch => {
       }),
     )
     .then(({ data }) => {
-      console.log(data.doc.user)
       const { $realname, $balance, $email, $phone } = data.doc.user
       dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
     })
@@ -56,15 +55,16 @@ const getItems = sessionId => dispatch => {
     .post(
       '/',
       qs.stringify({
-        func: 'dashboard.items',
+        func: 'notify',
         out: 'json',
         lang: 'en',
         auth: `${sessionId}`,
       }),
     )
     .then(({ data }) => {
-      const { doc } = data
-      dispatch(userActions.setItems({ doc }))
+      const { bitem, msg } = data.doc.notify.item[0]
+      dispatch(userActions.setItems({ bitem, msg }))
+      console.log('getItems', { bitem, msg })
     })
     .catch(error => {
       console.log('error', error)

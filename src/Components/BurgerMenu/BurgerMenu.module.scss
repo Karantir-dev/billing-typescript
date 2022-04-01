@@ -102,14 +102,15 @@
 
 .exit_list_item {
   position: relative;
+  margin-bottom: 50px;
 
   &::before {
     content: '';
     display: block;
     height: 1px;
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 26px;
+    right: 26px;
     border-radius: 5px;
     background: var(--icon-color);
   }
@@ -118,7 +119,7 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .exit_wrapper {
-    padding: 60px 26px 0 26px;
+    padding: 60px 60px 0 48px;
   }
 
   .balance_text {
@@ -131,5 +132,16 @@
   .balance_wrapper_lt {
     margin: 14px 0;
     border-radius: unset;
+  }
+
+  .exit_list_item {
+    &::before {
+      left: 48px;
+      right: 60px;
+    }
+  }
+
+  .burger_nav {
+    padding-left: 48px;
   }
 }

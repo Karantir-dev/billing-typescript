@@ -5,7 +5,7 @@ import { userActions } from './userActions'
 const initialState = {
   userInfo: {},
   userTickets: [],
-  userItems: {},
+  userItems: { bitem: [], msg: { $: 0 } },
 }
 
 const userInfo = createReducer(initialState.userInfo, {
