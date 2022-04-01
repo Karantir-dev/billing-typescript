@@ -19,5 +19,6 @@ export { default as Header } from './Header/Header'
 export { default as BurgerMenu } from './BurgerMenu/BurgerMenu'
 export { default as BurgerListItem } from './BurgerListItem/BurgerListItem'
 export { default as ListItems } from './ListItems/ListItems'
+export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
 
 export { default as Button } from './Button/Button'
