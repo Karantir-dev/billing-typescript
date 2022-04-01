@@ -2,6 +2,7 @@ export { default as InputField } from './InputField/InputField'
 export { default as LangBtn } from './LangBtn/LangBtn'
 export { default as Loader } from './Loader/Loader'
 export { default as SelectOfCountries } from './SelectOfCountries/SelectOfCountries'
+export { default as SelectOfRegions } from './SelectOfRegions/SelectOfRegions'
 export { default as ThemeBtn } from './ThemeBtn/ThemeBtn'
 
 export { default as VerificationModal } from './VerificationModal/VerificationModal'

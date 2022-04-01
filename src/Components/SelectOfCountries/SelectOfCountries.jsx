@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
-import { authOperations } from '../../Redux/auth/authOperations'
+
 import { Shevron, Search } from '../../images'
+import { SelectOfRegions } from '../'
+import { authOperations } from '../../Redux/auth/authOperations'
 import s from './SelectOfCountries.module.scss'
 
 export default function SelectOfCountries({
   setFieldValue,
-  validateField,
   setFieldTouched,
   errors,
   touched,
@@ -18,7 +19,8 @@ export default function SelectOfCountries({
   const dispatch = useDispatch()
 
   const [countrySearchQuery, setCountrySearchQuery] = useState('')
-  const [regionSearchQuery, setRegionSearchQuery] = useState('')
+  const [countriesListOpened, setCountriesListOpened] = useState(false)
+  const [currentFlag, setCurrentFlag] = useState('')
 
   const [countries, _setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
@@ -27,16 +29,8 @@ export default function SelectOfCountries({
     setFilteredCountries(value)
   }
 
-  const [regions, _setRegions] = useState([])
+  const [regions, setRegions] = useState([])
   const [currentRegions, setCurrentRegions] = useState([])
-  const [filteredregions, setFilteredRegions] = useState([])
-  const setRegions = value => {
-    _setRegions(value)
-    setFilteredRegions(value)
-  }
-  const [countriesListOpened, setCountriesListOpened] = useState(false)
-  const [regionsListOpened, setRegionsListOpened] = useState(false)
-  const [currentFlag, setCurrentFlag] = useState('')
 
   useEffect(() => {
     dispatch(authOperations.getCountries(setCountries, setRegions))
@@ -67,30 +61,23 @@ export default function SelectOfCountries({
     callback(filteredItems)
   }
 
-  const handleCountryInputChange = (value, itemsList, callback) => {
+  const handleCountryInputChange = value => {
     setCountrySearchQuery(value)
     setCurrentFlag('')
     setFieldValue('country', 0)
-    filterItems(value, itemsList, callback)
-  }
-
-  const handleRegionInputChange = (value, itemsList, callback) => {
-    setRegionSearchQuery(value)
-
-    setFieldValue('region', 0)
-    filterItems(value, itemsList, callback)
+    filterItems(value, countries, setFilteredCountries)
   }
 
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
       setCountriesListOpened(false)
-      setRegionsListOpened(false)
     }
   }
 
   const handleCountryClick = (countryCode, countryName, $key) => {
     setCurrentFlag(countryCode)
     setCountrySearchQuery(countryName)
+    setFieldTouched('country')
     setFieldValue('country', +$key)
 
     setCountriesListOpened(false)
@@ -101,12 +88,6 @@ export default function SelectOfCountries({
     } else {
       setCurrentRegions([])
     }
-  }
-
-  const handleRegionClick = (regionName, $key) => {
-    setRegionSearchQuery(regionName)
-    setFieldValue('region', +$key)
-    setRegionsListOpened(false)
   }
 
   return (
@@ -126,15 +107,9 @@ export default function SelectOfCountries({
             value={countrySearchQuery}
             placeholder={t('country_placeholder')}
             autoComplete="off"
-            onChange={e =>
-              handleCountryInputChange(e.target.value, countries, setFilteredCountries)
-            }
+            onChange={e => handleCountryInputChange(e.target.value)}
             onFocus={() => {
               setCountriesListOpened(true)
-            }}
-            onBlur={() => {
-              setFieldTouched('country')
-              validateField('country')
             }}
           />
 
@@ -161,7 +136,7 @@ export default function SelectOfCountries({
           <>
             <div
               role="button"
-              tabIndex={0}
+              tabIndex={-1}
               onKeyDown={() => null}
               className={s.backdrop}
               onClick={handleBackdropClick}
@@ -197,75 +172,14 @@ export default function SelectOfCountries({
       </div>
 
       {currentRegions.length > 0 && (
-        <div className={s.field_wrapper}>
-          <label className={s.label}>{t('region_label')}</label>
-          <div className={s.input_wrapper}>
-            <input
-              className={cn({
-                [s.input]: true,
-                [s.pr]: true,
-                [s.pl]: true,
-                [s.error]: errors.region && touched.region,
-              })}
-              name="region"
-              type="text"
-              value={regionSearchQuery}
-              placeholder={t('region_placeholder')}
-              autoComplete="off"
-              onChange={e =>
-                handleRegionInputChange(
-                  e.target.value,
-                  currentRegions,
-                  setFilteredRegions,
-                )
-              }
-              onFocus={() => {
-                setRegionsListOpened(true)
-              }}
-              onBlur={() => {
-                setFieldTouched('region')
-                validateField('region')
-              }}
-            />
-
-            <Search className={s.field_icon} />
-
-            <div className={s.input_border}></div>
-            <Shevron
-              className={cn({ [s.right_icon]: true, [s.opened]: regionsListOpened })}
-            />
-          </div>
-          <ErrorMessage className={s.error_message} name="region" component="span" />
-
-          {regionsListOpened && (
-            <>
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={() => null}
-                className={s.backdrop}
-                onClick={handleBackdropClick}
-              ></div>
-              <div className={s.countries_dropdown}>
-                <ul className={s.countries_list}>
-                  {filteredregions.map(({ $key, $: regionName }) => {
-                    return (
-                      <li className={s.country_item} key={$key}>
-                        <button
-                          className={s.country_btn}
-                          type="button"
-                          onClick={() => handleRegionClick(regionName, $key)}
-                        >
-                          {regionName}
-                        </button>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            </>
-          )}
-        </div>
+        <SelectOfRegions
+          currentRegions={currentRegions}
+          filterItems={filterItems}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+          errors={errors}
+          touched={touched}
+        />
       )}
     </>
   )

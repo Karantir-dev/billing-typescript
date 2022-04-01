@@ -16,6 +16,8 @@ import { Facebook, Google, Vk } from './../../images'
 
 import s from './SignupForm.module.scss'
 
+const COUNTRIES_WITH_REGIONS = [233, 108, 14]
+
 export default function SignupForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -23,8 +25,7 @@ export default function SignupForm() {
 
   useEffect(() => {
     const referalID = Cookies.get('billpartner')
-    console.log(referalID)
-    // Cookies.set('billpartner', referalID)
+    console.log('cookie value', referalID)
   }, [])
 
   const validationSchema = Yup.object().shape({
@@ -49,7 +50,7 @@ export default function SignupForm() {
       .min(1, t('warnings.country_required'))
       .required(t('warnings.country_required')),
     region: Yup.number().when('country', {
-      is: val => [233, 108, 14].includes(val),
+      is: val => COUNTRIES_WITH_REGIONS.includes(val),
       then: Yup.number()
         .min(1, t('warnings.region_required'))
         .required(t('warnings.region_required')),
@@ -83,7 +84,7 @@ export default function SignupForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, validateField, setFieldTouched, errors, values, touched }) => {
+        {({ setFieldValue, setFieldTouched, errors, values, touched }) => {
           return (
             <Form className={s.form}>
               {/* {errMsg && (
@@ -123,7 +124,6 @@ export default function SignupForm() {
 
               <SelectOfCountries
                 setFieldValue={setFieldValue}
-                validateField={validateField}
                 setFieldTouched={setFieldTouched}
                 errors={errors}
                 touched={touched}

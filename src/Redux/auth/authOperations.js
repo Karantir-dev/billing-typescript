@@ -13,16 +13,6 @@ const axiosInstance = axios.create({
   },
 })
 
-// const axiosInstance2 = axios.create({
-//   baseURL: BASE_URL,
-//   headers: {
-//     'Content-Type': 'application/x-www-form-urlencoded',
-//     Accept: '/',
-//     Cookie: document.cookie,
-//   },
-//   credentials: 'localhost:3000',
-// })
-
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(authActions.loginRequest())
 
@@ -208,6 +198,7 @@ const getCountries = (setCountries, setStates) => () => {
       const countries = data.doc.slist[0].val
       const states = data.doc.slist[1].val
       countries.shift()
+
       setCountries(countries)
       setStates(states)
     })
@@ -217,27 +208,32 @@ const getCountries = (setCountries, setStates) => () => {
 }
 
 const register = values => () => {
-  console.log(values)
-  // axiosInstance
-  //   .post(
-  //     '/',
-  //     qs.stringify({
-  //       func: 'register',
-  //       realname: values.name,
-  //       email: values.email,
-  //       passwd: values.password,
-  //       confirm: values.passConfirmation,
-  //       country: values.country,
-  //       state: values.region,
-  //       'g-recaptcha-response': values.reCaptcha,
-  //       out: 'json',
-  //       sok: 'ok',
-  //     }),
-  //     { withCredentials: true },
-  //   )
-  //   .then(({ data }) => {
-  //     console.log('resp', data)
-  //   })
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        realname: values.name,
+        email: values.email,
+        passwd: values.password,
+        confirm: values.passConfirmation,
+        country: values.country,
+        state: values.region,
+        'g-recaptcha-response': values.reCaptcha,
+        out: 'json',
+        sok: 'ok',
+      }),
+      {
+        // credentials: 'cp.hardsoft.cf:3000',
+        withCredentials: true,
+      },
+    )
+    .then(({ data }) => {
+      console.log('resp', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 export const authOperations = {
