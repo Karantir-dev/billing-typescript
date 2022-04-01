@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { ErrorMessage } from 'formik'
 import { Search, Shevron } from '../../images'
-import s from '../SelectOfCountries/SelectOfCountries.module.scss'
+import s from '../SelectOfCountries/SignupSelects.module.scss'
 
 export default function SelectOfRegions({
   currentRegions,

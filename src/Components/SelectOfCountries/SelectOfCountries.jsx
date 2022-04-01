@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { Shevron, Search } from '../../images'
 import { SelectOfRegions } from '../'
 import { authOperations } from '../../Redux/auth/authOperations'
-import s from './SelectOfCountries.module.scss'
+import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({
   setFieldValue,
