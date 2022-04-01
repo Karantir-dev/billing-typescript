@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import { BurgerListItem, ThemeBtn, LangBtn } from '../../Components'
 import { ArrowSign, Box, ExitSign, Profile, Social, Support, Wallet } from '../../images'
@@ -58,9 +59,10 @@ const profileMenuList = [
   { name: 'Договоры', routeName: routes.HOME },
 ]
 
-export default function BurgerMenu({ classes }) {
+export default function BurgerMenu({ classes, isOpened }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { $realname, $email, $balance } = useSelector(selectors.getUserInfo)
+
   const [isProfileListOpened, setIsProfileListOpened] = useState(false)
   const [isServicesListOpened, setIsServicesListOpened] = useState(false)
   const [isFinanceListOpened, setIsFinanceListOpened] = useState(false)
@@ -68,7 +70,7 @@ export default function BurgerMenu({ classes }) {
   const [isSupportListOpened, setIsSupportListOpened] = useState(false)
 
   return (
-    <div className={s.burger}>
+    <div className={isOpened ? s.burger : ''}>
       <div className={classes}>
         <nav className={s.burger_nav}>
           <div className={s.theme_btn_wrapper}>
@@ -103,7 +105,12 @@ export default function BurgerMenu({ classes }) {
               />
             </div>
           </li>
-          <li className={darkTheme ? s.balance_wrapper : s.balance_wrapper_lt}>
+          <li
+            className={cn({
+              [s.balance_wrapper]: true,
+              [s.balance_wrapper_lt]: !darkTheme,
+            })}
+          >
             <p className={s.balance_text}>Баланс</p>
             <p className={s.balance_sum}>{$balance} EUR</p>
           </li>
@@ -239,4 +246,9 @@ export default function BurgerMenu({ classes }) {
       </div>
     </div>
   )
+}
+
+BurgerMenu.propTypes = {
+  classes: PropTypes.string.isRequired,
+  isOpened: PropTypes.bool.isRequired,
 }

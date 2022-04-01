@@ -7,7 +7,7 @@
   &::before {
     content: '';
     display: block;
-    width: 1px;
+    width: 2px;
     height: 100%;
     position: absolute;
     margin-left: 39px;
@@ -15,7 +15,7 @@
     bottom: 0;
     left: 0;
     border-radius: 5px;
-    background: #4d4758;
+    background: var(--icon-color);
   }
 
   &.closed {
@@ -39,6 +39,9 @@
   margin-top: 10px;
   margin-bottom: 11px;
   color: #716d79;
+  &.email_lt {
+    color: #b3a9c1;
+  }
 }
 
 .list_name {
@@ -54,9 +57,12 @@
   position: relative;
   display: flex;
   align-items: center;
+  padding-left: 26px;
+  padding-right: 26px;
 
   &.opened {
     background-color: var(--nearby-elements-bgc);
+    box-shadow: var(--burger-menu-elem-box-shadow);
 
     &::before {
       content: '';
@@ -88,4 +94,16 @@
   line-height: 70.9%;
   color: var(--main-text);
   padding-bottom: 20px;
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .user_name,
+  .list_name {
+    font-size: 20px;
+  }
+  .list_item_name {
+    font-size: 18px;
+    padding-bottom: 30px;
+  }
 }

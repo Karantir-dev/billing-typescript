@@ -1,6 +1,10 @@
 .burger {
   position: fixed;
-  background-color: #4d4758;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(19, 16, 25, 0.3);
 }
 
 .burger_nav {
@@ -35,7 +39,6 @@
 .icon {
   fill: var(--icon-color);
   margin-right: 18px;
-  margin-left: 25px;
   cursor: pointer;
 
   &.active {
@@ -45,8 +48,8 @@
 
 .arrow_icon {
   margin-left: auto;
-  margin-right: 26px;
-  stroke: #fff;
+
+  stroke: var(--main-text);
   transition: transform 0.5s;
 
   &.closed {
@@ -60,17 +63,13 @@
   align-items: center;
   margin-bottom: 14px;
   margin-top: 14px;
-  background-color: var(--burger-menu-bgc);
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--nearby-elements-bgc);
 }
 
 .balance_wrapper_lt {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   margin: 14px 29px 23px;
-  box-shadow: var(--elements-shadow);
   border-radius: 5px;
-  background-color: var(--burger-menu-bgc);
 }
 
 .balance_text {
@@ -91,7 +90,7 @@
 .exit_wrapper {
   display: flex;
   align-items: center;
-  padding-top: 25px;
+  padding: 25px 26px 0 26px;
   margin-top: 25px;
 }
 
@@ -109,9 +108,28 @@
     display: block;
     height: 1px;
     position: absolute;
-    left: 23px;
-    right: 29px;
+    left: 0;
+    right: 0;
     border-radius: 5px;
-    background: #4d4758;
+    background: var(--icon-color);
+  }
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .exit_wrapper {
+    padding: 60px 26px 0 26px;
+  }
+
+  .balance_text {
+    font-size: 20px;
+  }
+
+  .balance_sum {
+    font-size: 20px;
+  }
+  .balance_wrapper_lt {
+    margin: 14px 0;
+    border-radius: unset;
   }
 }

@@ -2,8 +2,10 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
+import { useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 
+import { selectors } from '../../Redux/selectors'
 import s from './BurgerListItem.module.scss'
 
 export default function BurgerListItem({
@@ -15,6 +17,8 @@ export default function BurgerListItem({
   isListOpened,
   arrow,
 }) {
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
+
   return (
     <>
       <div className={cn({ [s.list_item_container]: true, [s.opened]: isListOpened })}>
@@ -22,7 +26,7 @@ export default function BurgerListItem({
         {isProfile ? (
           <div className={s.profile_wrapper}>
             <p className={s.user_name}>{name}</p>
-            <p className={s.email}>{email}</p>
+            <p className={cn({ [s.email]: true, [s.email_lt]: !darkTheme })}>{email}</p>
           </div>
         ) : (
           <p className={s.list_name}>{name}</p>
