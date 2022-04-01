@@ -44,6 +44,7 @@ const getTickets = sessionId => dispatch => {
     .then(({ data }) => {
       const { elem } = data.doc
       dispatch(userActions.setTickets(elem))
+      console.log(elem)
     })
     .catch(error => {
       console.log('error', error)

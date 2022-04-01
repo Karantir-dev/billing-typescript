@@ -95,8 +95,7 @@ $hamburger-layer-border-radius: 99px;
   position: relative;
   width: 43px;
   height: 28px;
-  // padding-left: 15px;
-  margin-left: 10px;
+  padding-right: 40px;
   align-items: center;
   z-index: 3;
   cursor: pointer;
@@ -238,7 +237,7 @@ $hamburger-layer-border-radius: 99px;
 
   .header_menuburger {
     padding-right: 60px;
-    padding-left: 0px;
+    margin-right: 20px;
   }
 
   .logo {

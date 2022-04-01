@@ -33,22 +33,29 @@ export default function BurgerListItem({
         )}
         {arrow}
       </div>
-      <ul
-        className={cn({
-          [s.list]: true,
-          [s.closed]: isListOpened,
-        })}
+      <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => null}
+        onClick={e => e.stopPropagation()}
       >
-        {subList.map(item => {
-          return (
-            <li key={uuidv4()} className={s.list_item}>
-              <NavLink to={item.routeName}>
-                <p className={s.list_item_name}>{item.name}</p>
-              </NavLink>
-            </li>
-          )
-        })}
-      </ul>
+        <ul
+          className={cn({
+            [s.list]: true,
+            [s.closed]: isListOpened,
+          })}
+        >
+          {subList.map(item => {
+            return (
+              <li key={uuidv4()} className={s.list_item}>
+                <NavLink to={item.routeName}>
+                  <p className={s.list_item_name}>{item.name}</p>
+                </NavLink>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </>
   )
 }

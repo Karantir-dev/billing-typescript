@@ -32,6 +32,8 @@ export default function Header() {
   console.log(notifications)
 
   const userTickets = useSelector(selectors.getUserTickets)
+  const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
+  console.log(userTickets)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
 
@@ -49,7 +51,7 @@ export default function Header() {
             <li
               className={cn({
                 [s.item]: true,
-                [s.active_notification]: userTickets.length > 0,
+                [s.active_notification]: areNewTickets,
               })}
             >
               <NavLink to={routes.HOME} className={s.link}>
