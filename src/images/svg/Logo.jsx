@@ -3,8 +3,6 @@ import * as React from 'react'
 export default function SvgComponent(props) {
   const { darktheme } = props
 
-  console.log(darktheme, 'darktheme')
-
   const renderDark = () => {
     return (
       <>

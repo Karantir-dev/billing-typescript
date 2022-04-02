@@ -5,18 +5,22 @@
   padding: 20px;
   border-width: 0;
   width: 100%;
+  &.shadow {
+    box-shadow: var(--btn-shadow);
+  }
   &.block {
     width: auto;
   }
-  &.small {
-    max-width: 220px;
-  }
-  &.medium {
-    max-width: 230px;
-  }
-  &.large {
-    max-width: 310px;
-  }
+}
+
+.small {
+  max-width: 220px;
+}
+.medium {
+  max-width: 230px;
+}
+.large {
+  max-width: 310px;
 }
 
 .btn_text {
@@ -26,8 +30,7 @@
 
 @media screen and (min-width: 768px) {
   .submit_btn {
-    margin: 20px 0;
-    height: 55px;
+    padding: 20px;
   }
 
   .btn_text {

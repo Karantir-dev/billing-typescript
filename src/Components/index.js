@@ -17,3 +17,13 @@ export { default as AsideServicesMenu } from './AsideServicesMenu/AsideServicesM
 export { default as Header } from './Header/Header'
 
 export { default as Button } from './Button/Button'
+
+//==========================================UI==========================================//
+export { default as InputFieldNew } from './ui/InputField/InputFieldNew'
+export { default as Select } from './ui/Select/Select'
+export { default as IconButton } from './ui/IconButton/IconButton'
+export { default as CalendarModal } from './ui/CalendarModal/CalendarModal'
+
+//==========================================Access Logs==========================================//
+
+export { default as AccessLogsTable } from './accessLogs/AccessLogsTable'

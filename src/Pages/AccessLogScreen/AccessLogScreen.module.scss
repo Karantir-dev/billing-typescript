@@ -1,63 +1,45 @@
 .wrapper {
   min-height: 100vh;
-  padding-top: 70px;
   display: flex;
-}
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  z-index: 50;
-
-  background-color: var(--elements-bgc);
-  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.07);
-}
-
-.flex {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.icon {
-  width: 18px;
-  height: 18px;
-}
-
-.btns_wrapper {
-  width: fit-content;
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
+  background: var(--background-color);
 }
 
 .body {
   display: flex;
   width: 100%;
 }
-
-.menu {
-  width: 129px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25);
+.content {
+  padding: 80px 60px 150px 158px;
+  width: 100%;
+  max-width: 1384px;
 }
 
-.content {
-  padding: 80px 0px 80px 160px;
-  width: 100%;
-  max-width: 1164px;
+.searchInput {
+  max-width: 260px;
+  margin-right: 20px;
+}
+
+.select {
+  max-width: 260px;
+}
+
+.calendarBtn {
+  margin: 0 20px 0 15px;
 }
 
 .filterBlock {
-  width: 100%;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   margin: 36px 0 40px 0;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .pageTitle {
@@ -66,23 +48,130 @@
   line-height: 1.2;
 }
 
-// ADAPTIVE
-@media screen and (min-width: 768px) {
-  .wrapper {
-    padding-top: 74px;
-    background-color: #fefdff;
+.selectAndBtn {
+  width: 341px;
+  display: flex;
+  align-items: center;
+}
 
-    &.dt {
-      background-color: #201a2a;
+.csvBtn {
+  margin-top: 10px;
+}
+
+.searchBtn {
+  text-transform: uppercase;
+}
+
+.calendarBlock {
+  position: relative;
+}
+
+.calendarModal {
+  position: absolute;
+  left: -140%;
+  transform: translate(10px, 15px);
+}
+
+// ADAPTIVE
+@media screen and (max-width: 1191px) {
+  .content {
+    padding: 50px 60px 63px 79px;
+  }
+
+  .searchInput {
+    max-width: 255px;
+    margin-right: 15px;
+  }
+
+  .calendarBtn {
+    margin: 0 0 0 10px;
+  }
+
+  .selectAndBtn {
+    width: 315px;
+    margin-top: 10px;
+  }
+
+  .calendarModal {
+    left: -215%;
+  }
+
+  .select {
+    max-width: 255px;
+  }
+}
+
+@media screen and (max-width: 1077px) {
+  .pageTitle {
+    font-size: 20px;
+  }
+  .searchBtn {
+    margin-top: 20px;
+  }
+  .filterBlock {
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 871px) {
+  .pageTitle {
+    font-size: 22px;
+  }
+  .searchBtn {
+    margin-top: 25px;
+  }
+
+  .searchBtn {
+    margin-top: 20px;
+  }
+
+  .content {
+    padding: 50px 61px 63px 61px;
+  }
+  .calendarModal {
+    left: -400%;
+    div {
+      &::after {
+        left: 84%;
+      }
     }
   }
+}
 
-  .header {
-    height: 74px;
+@media screen and (max-width: 752px) {
+  .content {
+    padding: 40px 30px 71px;
   }
 
-  .logo {
-    width: 18px;
-    height: 18px;
+  .searchBtn {
+    margin-top: 15px;
+    max-width: 100%;
+  }
+
+  .searchInput {
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  .select {
+    max-width: 100%;
+  }
+
+  .csvBtn {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .selectAndBtn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .calendarBtn {
+    margin: 0 0 0 9px;
+  }
+
+  .pageTitle {
+    font-size: 20px;
   }
 }

@@ -1,0 +1,16 @@
+@import '../../../scss/placeholders.scss';
+
+.icon_btn {
+  background-color: var(--elements-bgc);
+  justify-content: center;
+  align-items: center;
+  min-width: 46px;
+  min-height: 46px;
+  box-shadow: var(--input-btn-shadow);
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

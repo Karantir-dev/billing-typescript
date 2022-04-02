@@ -27,10 +27,10 @@
 .pinned_logo {
   width: auto;
   margin-right: -24px;
-  margin-left: -16px;
+  margin-left: -18px;
   padding-left: 4px;
   padding-right: 4px;
-  transform: scale(0.7);
+  transform: scale(0.65);
   transition: margin 0.15s;
 }
 
@@ -117,3 +117,10 @@
   fill: var(--icon-color);
   cursor: pointer;
 }
+
+@media screen and (max-width: 871px) {
+  .navigation {
+    display: none;
+  }
+}
+
