@@ -17,9 +17,7 @@ export const isLoading = createReducer(initialState.isLoading, {
   [actions.showLoader]: () => true,
   [actions.hideLoader]: () => false,
   [authActions.registrationSuccess]: () => false,
-  [authActions.loginRequest]: () => true,
   [authActions.loginSuccess]: () => false,
-  [authActions.loginError]: () => false,
   [authActions.logoutSuccess]: () => false,
 })
 
