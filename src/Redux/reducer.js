@@ -16,15 +16,11 @@ export const theme = createReducer(initialState.theme, {
 export const isLoading = createReducer(initialState.isLoading, {
   [actions.showLoader]: () => true,
   [actions.hideLoader]: () => false,
-  [authActions.registrationRequest]: () => true,
   [authActions.registrationSuccess]: () => false,
-  [authActions.registrationError]: () => false,
   [authActions.loginRequest]: () => true,
   [authActions.loginSuccess]: () => false,
   [authActions.loginError]: () => false,
-  [authActions.logoutRequest]: () => true,
   [authActions.logoutSuccess]: () => false,
-  [authActions.logoutError]: () => false,
 })
 
 // export const userInfo = createReducer(initialState.userInfo, {

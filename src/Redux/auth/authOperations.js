@@ -1,6 +1,5 @@
 import axios from 'axios'
 import qs from 'qs'
-// import Cookies from 'js-cookie'
 
 import { authActions } from './authActions'
 import { actions } from '../actions'
@@ -14,7 +13,7 @@ const axiosInstance = axios.create({
 })
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
-  dispatch(authActions.loginRequest())
+  dispatch(actions.showLoader())
 
   axiosInstance
     .post(
@@ -65,8 +64,8 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
     .catch(error => {
       resetRecaptcha()
+      dispatch(actions.hideLoader())
       console.log('auth -', error.message)
-      dispatch(authActions.loginError())
     })
 }
 
@@ -92,15 +91,15 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) {
         setError(true)
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
 
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(error => {
+    .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('totp.confirm - ', error)
+      console.log('totp.confirm - ', err.message)
     })
 }
 
@@ -118,9 +117,6 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
       }),
     )
     .then(({ data }) => {
-      console.log(data.doc)
-      dispatch(actions.hideLoader())
-
       if (data.doc.error) {
         setErrorType(data.doc.error.$type)
 
@@ -128,12 +124,16 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
           setErrorTime(data.doc.error.param[1].$)
         }
 
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
 
       setEmailSended(true)
+      dispatch(actions.hideLoader())
     })
-    .catch(error => console.log('recovery - ', error))
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('recovery - ', err.message)
+    })
 }
 
 const changePassword =
@@ -154,10 +154,9 @@ const changePassword =
         }),
       )
       .then(({ data }) => {
-        console.log(data.doc)
         if (data.doc.error) {
           setErrType(data.doc.error.$type)
-          throw data.doc.error.msg.$
+          throw new Error(data.doc.error.msg.$)
         }
 
         axiosInstance.post(
@@ -173,15 +172,17 @@ const changePassword =
         onChangeSuccess()
         dispatch(actions.hideLoader())
       })
-      .catch(error => {
+      .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('recovery.change - ', error)
+        console.log('recovery.change - ', err.message)
       })
   }
 
 const logout = () => {}
 
-const getCountries = (setCountries, setStates) => () => {
+const getCountries = (setCountries, setStates) => dispatch => {
+  dispatch(actions.showLoader())
+
   axiosInstance
     .post(
       '/',
@@ -192,7 +193,7 @@ const getCountries = (setCountries, setStates) => () => {
     )
     .then(({ data }) => {
       if (data.doc.error) {
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
 
       const countries = data.doc.slist[0].val
@@ -201,13 +202,18 @@ const getCountries = (setCountries, setStates) => () => {
 
       setCountries(countries)
       setStates(states)
+
+      dispatch(actions.hideLoader())
     })
     .catch(err => {
-      console.log('getCountries - ', err)
+      dispatch(actions.hideLoader())
+      console.log('getCountries - ', err.message)
     })
 }
 
-const register = values => () => {
+const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
+  dispatch(actions.showLoader())
+
   axiosInstance
     .post(
       '/',
@@ -224,15 +230,23 @@ const register = values => () => {
         sok: 'ok',
       }),
       {
-        // credentials: 'cp.hardsoft.cf:3000',
         // withCredentials: true,
       },
     )
     .then(({ data }) => {
-      console.log('resp', data)
+      if (data.doc.error) {
+        console.log(data.doc.error)
+        setErrMsg(data.doc.error.$type)
+        throw new Error(data.doc.error.msg.$)
+      }
+      successRegistration()
+
+      dispatch(actions.hideLoader())
     })
     .catch(err => {
-      console.log(err)
+      resetRecaptcha()
+      dispatch(actions.hideLoader())
+      console.log('registration - ', err.message)
     })
 }
 
