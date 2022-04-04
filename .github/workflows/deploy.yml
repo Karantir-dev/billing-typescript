@@ -11,9 +11,30 @@ jobs:
       - uses: stefanoeb/eslint-action@1.0.2
         with:
           files: src/
+      - name: linter status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always()
 
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
   deploy:
-    needs: [eslint]
+    needs: [eslint, security]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:

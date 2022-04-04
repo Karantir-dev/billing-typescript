@@ -9,7 +9,7 @@ import { authOperations } from '../../Redux/auth/authOperations'
 import { InputField, VerificationModal } from '..'
 import * as routes from '../../routes'
 import { RECAPTCHA_KEY } from '../../config/config'
-import { Facebook, Google, Vk } from './../../images'
+import { Facebook, Google, Vk } from '../../images'
 
 import s from './LoginForm.module.scss'
 

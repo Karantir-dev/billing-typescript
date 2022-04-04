@@ -1,0 +1,136 @@
+.burger {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(19, 16, 25, 0.3);
+}
+
+.burger_nav {
+  display: flex;
+  padding: 20px 23px;
+}
+
+.theme_btn_wrapper {
+  margin-right: 15px;
+}
+
+.list_item {
+  &:hover {
+    .icon {
+      fill: url(#gradient);
+    }
+    .arrow_icon {
+      stroke: url(#gradient);
+    }
+  }
+  cursor: pointer;
+}
+
+.exit_list_item {
+  &:hover {
+    .icon {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.icon {
+  fill: var(--icon-color);
+  margin-right: 18px;
+  cursor: pointer;
+
+  &.active {
+    fill: url(#gradient);
+  }
+}
+
+.balance_wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 14px;
+  margin-top: 14px;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--nearby-elements-bgc);
+}
+
+.balance_wrapper_lt {
+  margin: 14px 29px 23px;
+  border-radius: 5px;
+}
+
+.balance_text {
+  padding-top: 17px;
+  padding-bottom: 17px;
+  color: var(--main-text);
+  font-size: 17px;
+  line-height: 70.9%;
+}
+
+.balance_sum {
+  font-size: 17px;
+  line-height: 70.9%;
+  text-decoration-line: underline;
+  color: var(--link-color);
+}
+
+.exit_wrapper {
+  display: flex;
+  align-items: center;
+  padding: 25px 26px 0 26px;
+  margin-top: 25px;
+}
+
+.exit_name {
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.exit_list_item {
+  position: relative;
+  margin-bottom: 50px;
+
+  &::before {
+    content: '';
+    display: block;
+    height: 1px;
+    position: absolute;
+    left: 26px;
+    right: 26px;
+    border-radius: 5px;
+    background: var(--icon-color);
+  }
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .exit_wrapper {
+    padding: 60px 60px 0 48px;
+  }
+
+  .balance_text {
+    font-size: 20px;
+  }
+
+  .balance_sum {
+    font-size: 20px;
+  }
+  .balance_wrapper_lt {
+    margin: 14px 0;
+    border-radius: unset;
+  }
+
+  .exit_list_item {
+    &::before {
+      left: 48px;
+      right: 60px;
+    }
+  }
+
+  .burger_nav {
+    padding-left: 48px;
+  }
+}
