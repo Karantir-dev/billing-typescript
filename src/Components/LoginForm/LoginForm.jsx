@@ -6,10 +6,10 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { authOperations } from '../../Redux/auth/authOperations'
-import { InputField, VerificationModal, Button } from '..'
+import { InputField, VerificationModal } from '..'
 import * as routes from '../../routes'
 import { RECAPTCHA_KEY } from '../../config/config'
-import { Facebook, Google, Vk } from './../../images'
+import { Facebook, Google, Vk } from '../../images'
 
 import s from './LoginForm.module.scss'
 
@@ -73,6 +73,7 @@ export default function LoginForm() {
                   icon="envelope"
                   error={!!errors.email}
                   touched={!!touched.email}
+                  autoComplete
                 />
 
                 <InputField
@@ -97,7 +98,12 @@ export default function LoginForm() {
                   name="reCaptcha"
                   component="span"
                 />
-                <Button label={t('logIn')} type="submit" />
+                {/* <Button label={t('logIn')} type="submit" /> */}
+
+                <button className={s.submit_btn} type="submit">
+                  <span className={s.btn_text}>{t('logIn')}</span>
+                </button>
+
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}
                 </Link>

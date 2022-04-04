@@ -10,12 +10,12 @@
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  height: 40px;
+  height: 30px;
 }
 
 .current_auth_link {
   position: relative;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 
   &::after {
@@ -32,7 +32,7 @@
 }
 
 .auth_link {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--main-text);
 }
 
@@ -78,19 +78,19 @@
 
 .submit_btn {
   @extend %btn;
-  height: 50px;
+  height: 43px;
   margin-top: 10px;
 }
 
 .btn_text {
   @extend %btn-text;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .social_title {
   text-align: center;
   margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .social_list {
@@ -103,8 +103,19 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .form {
+    width: 304px;
+    padding: 25px 40px;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .form {
     width: 431px;
     padding: 36px 64px;
+  }
+
+  .auth_links_wrapper {
+    height: 40px;
   }
 
   .current_auth_link {
@@ -131,5 +142,9 @@
 
   .credentials_error {
     padding: 0;
+  }
+
+  .social_title {
+    font-size: 18px;
   }
 }
