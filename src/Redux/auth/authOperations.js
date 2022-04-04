@@ -235,7 +235,6 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     )
     .then(({ data }) => {
       if (data.doc.error) {
-        console.log(data.doc.error)
         setErrMsg(data.doc.error.$type)
         throw new Error(data.doc.error.msg.$)
       }
