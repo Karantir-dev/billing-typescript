@@ -4,10 +4,17 @@ import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { EyeClosed, Eye, Envelope, Padlock } from '../../images'
+import { EyeClosed, Eye, Envelope, Padlock, Person } from '../../images'
 import s from './InputField.module.scss'
 
-export default function InputField({ label, icon, error, touched, inputValue }) {
+export default function InputField({
+  label,
+  icon,
+  error,
+  touched,
+  inputValue,
+  autoComplete,
+}) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation()
   const inputTypePassword = label === 'password' || label === 'passConfirmation'
@@ -15,6 +22,8 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
 
   const renderIcon = name => {
     switch (name) {
+      case 'person':
+        return <Person className={s.field_icon} />
       case 'envelope':
         return <Envelope className={s.field_icon} />
       case 'padlock':
@@ -37,6 +46,7 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
           name={label}
           type={inputTypePassword && !passShown ? 'password' : 'text'}
           placeholder={t(`${label}_placeholder`)}
+          autoComplete={autoComplete ? 'on' : 'off'}
         />
         {tabletOrHigher && renderIcon(icon)}
         <div className={s.input_border} />
@@ -63,7 +73,9 @@ export default function InputField({ label, icon, error, touched, inputValue }) 
 
 InputField.propTypes = {
   label: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,
   inputValue: PropTypes.bool,
+  autoComplete: PropTypes.bool,
 }

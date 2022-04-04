@@ -1,5 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
+// import Cookies from 'js-cookie'
+
 import { authActions } from './authActions'
 import { actions } from '../actions'
 import { BASE_URL } from '../../config/config'
@@ -179,7 +181,7 @@ const changePassword =
 
 const logout = () => {}
 
-const getCountries = setCountries => () => {
+const getCountries = (setCountries, setStates) => () => {
   axiosInstance
     .post(
       '/',
@@ -189,9 +191,45 @@ const getCountries = setCountries => () => {
       }),
     )
     .then(({ data }) => {
+      if (data.doc.error) {
+        throw data.doc.error.msg.$
+      }
+
       const countries = data.doc.slist[0].val
+      const states = data.doc.slist[1].val
       countries.shift()
+
       setCountries(countries)
+      setStates(states)
+    })
+    .catch(err => {
+      console.log('getCountries - ', err)
+    })
+}
+
+const register = values => () => {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        realname: values.name,
+        email: values.email,
+        passwd: values.password,
+        confirm: values.passConfirmation,
+        country: values.country,
+        state: values.region,
+        'g-recaptcha-response': values.reCaptcha,
+        out: 'json',
+        sok: 'ok',
+      }),
+      {
+        // credentials: 'cp.hardsoft.cf:3000',
+        withCredentials: true,
+      },
+    )
+    .then(({ data }) => {
+      console.log('resp', data)
     })
     .catch(err => {
       console.log(err)
@@ -200,6 +238,7 @@ const getCountries = setCountries => () => {
 
 export const authOperations = {
   login,
+  register,
   reset,
   changePassword,
   sendTotp,

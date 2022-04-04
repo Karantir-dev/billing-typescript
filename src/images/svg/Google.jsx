@@ -1,16 +1,8 @@
 import * as React from 'react'
 
 export default function SvgComponent(props) {
-  const { className } = props
   return (
-    <svg
-      className={className}
-      width={30}
-      height={30}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={30} height={30} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
         d="M28.867 12.392H16.631a.978.978 0 0 0-.979.977v3.91c0 .54.438.978.979.978h6.89a9.2 9.2 0 0 1-3.96 4.64l2.94 5.087c4.712-2.727 7.5-7.51 7.5-12.864 0-.762-.057-1.307-.17-1.92a.983.983 0 0 0-.964-.808Z"
         fill="#167EE6"
