@@ -121,11 +121,44 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
     })
 }
 
+const getAccessLogsCvs = () => (dispatch, getState) =>{ 
+  const {
+    auth: { sessionId },
+  } = getState()
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'authlog',
+        out: 'csv',
+        clickstat: 'yes',
+        auth: sessionId,
+      }),
+      { responseType: 'blob' }
+    )
+    .then((response) => {
+      const url = window.URL.createObjectURL(
+        new Blob([response.data]),
+      );
+      const link = document.createElement('a');
+      console.log(url)
+      link.href = url;
+      link.setAttribute(
+        'download',
+        'Access_logs.csv',
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    });
+}
+
 
 
 
 export default {
   getAccessLogsHandler,
   getAccessLogsFiltersHandler,
-  filterDataHandler
+  filterDataHandler,
+  getAccessLogsCvs
 }

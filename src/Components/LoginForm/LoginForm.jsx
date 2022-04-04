@@ -67,6 +67,9 @@ export default function LoginForm() {
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (
                   <div className={s.changed_pass}>{t('changed_pass')}</div>
                 )}
+                {location.state?.from === routes.REGISTRATION && !errMsg && (
+                  <div className={s.changed_pass}>{t('registration_success')}</div>
+                )}
 
                 <InputField
                   label="email"

@@ -10,10 +10,7 @@ body {
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
-  --burger-menu-bgc: #fefdff;
-  --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
-  --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
-  --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
+  --burger-menu-bgc: var(--main-bgc);
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -31,6 +28,10 @@ body {
   --transparent-color: #b3a9c1;
 
   --forms-bg-2-color: #ffffff;
+  // SHADOWS
+  --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
+  --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
+  --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
 }
 
 // dark theme variables
@@ -40,10 +41,7 @@ body.dark-theme {
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
-  --burger-menu-bgc: #2e273b;
-  --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
-  --burger-menu-elem-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.21);
-  --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
+  --burger-menu-bgc: var(--elements-bgc);
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;
@@ -61,4 +59,8 @@ body.dark-theme {
   --transparent-color: #716d79;
 
   --forms-bg-2-color: #342f3f;
+  // SHADOWS
+  --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
+  --burger-menu-elem-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.21);
+  --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
-import { BASE_URL } from '../../config/config'
 import accessLogsSelectors from '../../Redux/accessLogs/accessLogsSelectors'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -146,12 +145,7 @@ export default function MainPage() {
               }}
             </Formik>
             <IconButton
-              onClick={() =>
-                window.open(
-                  `${BASE_URL}/?clickstat=yes&sfrom=ajax&func=authlog&out=csv`,
-                  '_blank',
-                )
-              }
+              onClick={() => dispatch(accessLogsOperations.getAccessLogsCvs())}
               className={s.csvBtn}
               icon="csv"
             />

@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../config/config'
-import Cookies from 'js-cookie'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { authOperations } from '../../Redux/auth/authOperations'
 import { InputField, SelectOfCountries } from '../'
@@ -20,12 +19,14 @@ const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 export default function SignupForm() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const recaptchaEl = useRef()
 
-  useEffect(() => {
-    const referalID = Cookies.get('billpartner')
-    console.log('cookie value', referalID)
-  }, [])
+  const [errMsg, setErrMsg] = useState('')
+
+  const successRegistration = () => {
+    navigate(routes.LOGIN, { state: { from: location.pathname } })
+  }
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -57,8 +58,15 @@ export default function SignupForm() {
     }),
   })
 
-  const handleSubmit = values => {
-    dispatch(authOperations.register(values))
+  const handleSubmit = (values, { setFieldValue }) => {
+    const resetRecaptcha = () => {
+      recaptchaEl.current.reset()
+      setFieldValue('reCaptcha', '')
+    }
+
+    dispatch(
+      authOperations.register(values, setErrMsg, successRegistration, resetRecaptcha),
+    )
   }
 
   return (
@@ -86,9 +94,9 @@ export default function SignupForm() {
         {({ setFieldValue, setFieldTouched, errors, values, touched }) => {
           return (
             <Form className={s.form}>
-              {/* {errMsg && (
+              {errMsg && (
                 <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
-              )} */}
+              )}
 
               <InputField
                 label="name"
