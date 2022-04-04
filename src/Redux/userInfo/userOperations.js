@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
 })
 
 const getUserInfo = sessionId => dispatch => {
-  console.log(sessionId)
   axiosInstance
     .post(
       '/',
@@ -44,7 +43,6 @@ const getTickets = sessionId => dispatch => {
     .then(({ data }) => {
       const { elem } = data.doc
       dispatch(userActions.setTickets(elem))
-      console.log(elem)
     })
     .catch(error => {
       console.log('error', error)
@@ -65,7 +63,6 @@ const getItems = sessionId => dispatch => {
     .then(({ data }) => {
       const { bitem, msg } = data.doc.notify.item[0]
       dispatch(userActions.setItems({ bitem, msg }))
-      console.log('getItems', { bitem, msg })
     })
     .catch(error => {
       console.log('error', error)

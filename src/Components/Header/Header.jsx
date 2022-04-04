@@ -29,12 +29,10 @@ export default function Header() {
   const messages = useSelector(userSelectors.getUserItems)
 
   const mes = messages.msg.$
-  const notifications = messages.bitem
-  console.log(notifications)
+  // const notifications = messages.bitem
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
-  console.log(userTickets)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
 

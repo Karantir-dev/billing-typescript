@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useSelector } from 'react-redux'
-import { v4 as uuidv4 } from 'uuid'
+import { nanoid } from 'nanoid'
 
 import { selectors } from '../../../Redux/selectors'
 import s from './BurgerListItem.module.scss'
@@ -47,7 +47,7 @@ export default function BurgerListItem({
         >
           {subList.map(item => {
             return (
-              <li key={uuidv4()} className={s.list_item}>
+              <li key={nanoid()} className={s.list_item}>
                 <NavLink to={item.routeName}>
                   <p className={s.list_item_name}>{item.name}</p>
                 </NavLink>
