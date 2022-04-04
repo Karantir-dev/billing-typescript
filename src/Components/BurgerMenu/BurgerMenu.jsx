@@ -87,7 +87,7 @@ export default function BurgerMenu({ classes, isOpened }) {
           <li
             className={cn({
               [s.balance_wrapper]: true,
-              [s.balance_wrapper_lt]: !darkTheme,
+              [darkTheme ? s.balance_wrapper_dt : s.balance_wrapper_lt]: true,
             })}
           >
             <p className={s.balance_text}>Баланс</p>

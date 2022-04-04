@@ -21,7 +21,12 @@ export default function BurgerListItem({
 
   return (
     <>
-      <div className={cn({ [s.list_item_container]: true, [s.opened]: isListOpened })}>
+      <div
+        className={cn({
+          [s.list_item_container]: true,
+          [darkTheme ? s.opened_dt : s.opened_lt]: isListOpened,
+        })}
+      >
         {svg}
         {isProfile ? (
           <div className={s.profile_wrapper}>

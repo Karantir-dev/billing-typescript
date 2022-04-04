@@ -4,7 +4,7 @@ import { authActions } from './authActions'
 import { actions } from '../actions'
 import { BASE_URL } from '../../config/config'
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',

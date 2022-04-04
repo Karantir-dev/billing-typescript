@@ -1,0 +1,17 @@
+{
+  "aside_menu": {
+    "services": "Services",
+    "finance_and_docs": "Finance and documents",
+    "referal_program": "Referal program",
+    "support": "Support"
+  },
+  "balance": "Balance",
+  "profile": {
+    "user_settings": "User settings",
+    "trusted_users": "Trusted users",
+    "visiting_log": "Browsing history",
+    "activity_log": "Activity history",
+    "contracts": "Contracts",
+    "log_out": "Log out"
+  }
+}

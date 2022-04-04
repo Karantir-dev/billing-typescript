@@ -1,14 +1,6 @@
-import axios from 'axios'
 import qs from 'qs'
 import { userActions } from './userActions'
-import { BASE_URL } from '../../config/config'
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
+import { axiosInstance } from '../auth/authOperations'
 
 const getUserInfo = sessionId => dispatch => {
   axiosInstance
@@ -17,12 +9,13 @@ const getUserInfo = sessionId => dispatch => {
       qs.stringify({
         func: 'whoami',
         out: 'json',
-        auth: `${sessionId}`,
+        auth: sessionId,
       }),
     )
     .then(({ data }) => {
       const { $realname, $balance, $email, $phone } = data.doc.user
       dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
+      if (!data.doc.user) throw new Error('User info has not found')
     })
     .catch(error => {
       console.log('error', error)
@@ -37,7 +30,7 @@ const getTickets = sessionId => dispatch => {
         func: 'dashboard.tickets',
         out: 'json',
         lang: 'en',
-        auth: `${sessionId}`,
+        auth: sessionId,
       }),
     )
     .then(({ data }) => {
@@ -57,12 +50,17 @@ const getItems = sessionId => dispatch => {
         func: 'notify',
         out: 'json',
         lang: 'en',
-        auth: `${sessionId}`,
+        auth: sessionId,
       }),
     )
     .then(({ data }) => {
-      const { bitem, msg } = data.doc.notify.item[0]
-      dispatch(userActions.setItems({ bitem, msg }))
+      const { bitem } = data.doc.notify.item[0]
+      dispatch(userActions.setItems({ bitem }))
+
+      console.log(data)
+      console.log(bitem)
+
+      if (!bitem) throw new Error('Notifications info is not found')
     })
     .catch(error => {
       console.log('error', error)

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
+
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
 import { Logo, Pin, Box, Wallet, Social, Support } from './../../images'
@@ -11,6 +13,7 @@ import s from './AsideServicesMenu.module.scss'
 const AsideServicesMenu = () => {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isPinned, setIsPinned] = useState(true)
+  const { t } = useTranslation('main')
 
   const handleClick = e => {
     e.preventDefault()
@@ -42,7 +45,7 @@ const AsideServicesMenu = () => {
             }}
           >
             <Box className={s.img} />
-            {isPinned && <p className={s.text}>Услуги</p>}
+            {isPinned && <p className={s.text}>{t('aside_menu.services')}</p>}
           </NavLink>
         </li>
         <li className={s.item}>
@@ -54,7 +57,7 @@ const AsideServicesMenu = () => {
             }}
           >
             <Wallet className={s.img} />
-            {isPinned && <p className={s.text}>Финансы и документы</p>}
+            {isPinned && <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>}
           </NavLink>
         </li>
         <li className={s.item}>
@@ -66,7 +69,7 @@ const AsideServicesMenu = () => {
             }}
           >
             <Social className={s.img} />
-            {isPinned && <p className={s.text}>Реферальная программа</p>}
+            {isPinned && <p className={s.text}>{t('aside_menu.referal_program')}</p>}
           </NavLink>
         </li>
         <li className={s.item}>
@@ -78,7 +81,7 @@ const AsideServicesMenu = () => {
             }}
           >
             <Support className={s.img} />
-            {isPinned && <p className={s.text}>Поддержка</p>}
+            {isPinned && <p className={s.text}>{t('aside_menu.support')}</p>}
           </NavLink>
         </li>
       </ul>
