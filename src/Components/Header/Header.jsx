@@ -6,6 +6,7 @@ import cn from 'classnames'
 import { userOperations } from '../../Redux/userInfo/userOperations'
 import { authSelectors } from '../../Redux/auth/authSelectors'
 import { selectors } from '../../Redux/selectors'
+import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import { BurgerMenu } from '../../Components'
 import { Logo, FilledEnvelope, Bell } from '../../images'
 import * as routes from '../../routes'
@@ -25,13 +26,13 @@ export default function Header() {
   }, [])
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const messages = useSelector(selectors.getUserItems)
+  const messages = useSelector(userSelectors.getUserItems)
 
   const mes = messages.msg.$
   const notifications = messages.bitem
   console.log(notifications)
 
-  const userTickets = useSelector(selectors.getUserTickets)
+  const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
   console.log(userTickets)
 

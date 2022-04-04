@@ -6,8 +6,9 @@ import PropTypes from 'prop-types'
 
 import { ThemeBtn, LangBtn } from '../../Components'
 import { ExitSign } from '../../images'
-import { ListItems } from '..'
+import ListItems from './ListItems/ListItems'
 import { selectors } from '../../Redux/selectors'
+import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import * as routes from '../../routes'
 
 import s from './BurgerMenu.module.scss'
@@ -62,7 +63,7 @@ const profileMenuList = [
 
 export default function BurgerMenu({ classes, isOpened }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const { $realname, $email, $balance } = useSelector(selectors.getUserInfo)
+  const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
 
   return (
     <div className={isOpened ? s.burger : ''}>

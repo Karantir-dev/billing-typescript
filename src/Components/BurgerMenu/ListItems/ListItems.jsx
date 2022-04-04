@@ -2,8 +2,8 @@ import cn from 'classnames'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { BurgerListItem } from '..'
-import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../images'
+import BurgerListItem from '../BurgerListItem/BurgerListItem'
+import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../images'
 
 import s from './ListItems.module.scss'
 

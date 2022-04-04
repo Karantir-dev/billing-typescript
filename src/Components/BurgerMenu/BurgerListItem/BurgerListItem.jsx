@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 
-import { selectors } from '../../Redux/selectors'
+import { selectors } from '../../../Redux/selectors'
 import s from './BurgerListItem.module.scss'
 
 export default function BurgerListItem({
