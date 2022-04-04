@@ -9,8 +9,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { Link } from 'react-router-dom'
 
 import { authOperations } from '../../Redux/auth/authOperations'
-import InputField from '../InputField/InputField'
-import SelectOfCountries from '../SelectOfCountries/SelectOfCountries'
+import { InputField, SelectOfCountries } from '../'
 import * as routes from '../../routes'
 import { Facebook, Google, Vk } from './../../images'
 
