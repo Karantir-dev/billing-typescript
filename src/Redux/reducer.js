@@ -6,6 +6,7 @@ import { authActions } from './auth/authActions'
 const initialState = {
   theme: 'light',
   isLoading: false,
+  userInfo: [],
 }
 
 export const theme = createReducer(initialState.theme, {
@@ -25,3 +26,7 @@ export const isLoading = createReducer(initialState.isLoading, {
   [authActions.logoutSuccess]: () => false,
   [authActions.logoutError]: () => false,
 })
+
+// export const userInfo = createReducer(initialState.userInfo, {
+//   [actions.getUserInfo]: state => {},
+// })

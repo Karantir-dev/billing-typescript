@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 import { authReducer } from './auth/authReducer'
+import { userReducer } from './userInfo/userReducer'
 import { theme, isLoading } from './reducer'
 
 const rootPersistConfig = {
@@ -28,6 +29,7 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  currentUserInfo: userReducer,
   theme,
   isLoading,
 })
