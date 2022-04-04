@@ -225,7 +225,7 @@ const register = values => () => {
       }),
       {
         // credentials: 'cp.hardsoft.cf:3000',
-        withCredentials: true,
+        // withCredentials: true,
       },
     )
     .then(({ data }) => {
