@@ -9,9 +9,9 @@ export default function useOutsideAlerter(ref, condition = true, func) {
         }
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('click', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('click', handleClickOutside)
     }
   }, [ref, condition])
 }
