@@ -8,6 +8,7 @@ export default function useOutsideAlerter(ref, condition = true, func) {
           func()
         }
       }
+      event.stopPropagation();
     }
     document.addEventListener('click', handleClickOutside)
     return () => {

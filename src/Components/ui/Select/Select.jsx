@@ -21,9 +21,7 @@ export default function Component(props) {
   const dropdown = useRef(null)
 
   const clickOutside = () => {
-    setTimeout(() => {
-      setIsOpened(false)
-    }, 100)
+    setIsOpened(false)
   }
 
   useOutsideAlerter(dropdown, isOpened, clickOutside)
