@@ -43,13 +43,15 @@ const getTickets = sessionId => dispatch => {
 }
 
 const getItems = sessionId => dispatch => {
+  const lang = localStorage.getItem('i18nextLng')
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'notify',
         out: 'json',
-        lang: 'en',
+        lang: lang,
         auth: sessionId,
       }),
     )
