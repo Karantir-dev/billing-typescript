@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { userActions } from './userActions'
-import { axiosInstance } from '../auth/authOperations'
+import { axiosInstance } from './../../config/axiosInstance'
 
 const getUserInfo = sessionId => dispatch => {
   axiosInstance

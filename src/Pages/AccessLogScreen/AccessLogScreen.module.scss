@@ -1,63 +1,17 @@
 .wrapper {
   min-height: 100vh;
-  padding-top: 70px;
   display: flex;
-}
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  z-index: 50;
-
-  background-color: var(--elements-bgc);
-  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.07);
-}
-
-.flex {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.icon {
-  width: 18px;
-  height: 18px;
-}
-
-.btns_wrapper {
-  width: fit-content;
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
+  background: var(--background-color);
 }
 
 .body {
   display: flex;
   width: 100%;
 }
-
-.menu {
-  width: 129px;
-  height: 100%;
-  background: #ffffff;
-  box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25);
-}
-
 .content {
-  padding: 80px 0px 80px 160px;
+  padding: 80px 60px 40px 158px;
   width: 100%;
-  max-width: 1164px;
-}
-
-.filterBlock {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 36px 0 40px 0;
+  max-width: 1384px;
 }
 
 .pageTitle {
@@ -66,23 +20,59 @@
   line-height: 1.2;
 }
 
+.noResults {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--transparent-color);
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 31px;
+}
+
 // ADAPTIVE
-@media screen and (min-width: 768px) {
-  .wrapper {
-    padding-top: 74px;
-    background-color: #fefdff;
+@media screen and (max-width: 1191px) {
+  .content {
+    padding: 50px 60px 63px 79px;
+  }
+}
 
-    &.dt {
-      background-color: #201a2a;
-    }
+@media screen and (max-width: 1077px) {
+  .pageTitle {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 871px) {
+  .pageTitle {
+    font-size: 22px;
   }
 
-  .header {
-    height: 74px;
+  .content {
+    padding: 50px 61px 63px 61px;
   }
 
-  .logo {
-    width: 18px;
-    height: 18px;
+  .pagination {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (max-width: 752px) {
+  .content {
+    padding: 40px 30px 71px;
+  }
+
+  .pagination {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pageTitle {
+    font-size: 20px;
   }
 }
