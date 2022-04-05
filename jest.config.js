@@ -2,6 +2,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
+  snapshotSerializers: ['enzyme-to-json/serializer'],
   moduleNameMapper: {
     '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
   },
