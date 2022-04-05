@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Shevron } from '../../../images'
+import { useOutsideAlerter } from '../../../utils'
 import s from './Select.module.scss'
 
 export default function Component(props) {
@@ -16,6 +17,14 @@ export default function Component(props) {
 
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState()
+
+  const dropdown = useRef(null)
+
+  const clickOutside = () => {
+    setIsOpened(false)
+  }
+
+  useOutsideAlerter(dropdown, isOpened, clickOutside)
 
   useEffect(() => {
     if (itemsList && value) {
@@ -33,13 +42,17 @@ export default function Component(props) {
     setIsOpened(false)
   }
 
+  const openHandler = () => {
+    setIsOpened(!isOpened)
+  }
+
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && <label className={s.label}>{label}</label>}
       <button
         type="button"
         className={s.input_wrapper}
-        onClick={() => setIsOpened(!isOpened)}
+        onClick={isOpened ? null : openHandler}
       >
         <div
           className={cn({
@@ -51,8 +64,8 @@ export default function Component(props) {
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
-      {isOpened && itemsList.length !== 0 && (
-        <div className={s.dropdown}>
+      {itemsList.length !== 0 && (
+        <div ref={dropdown} className={cn(s.dropdown, { [s.opened]: isOpened })}>
           <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
