@@ -1,3 +1,10 @@
+body {
+  --header-profile-menu-shadow: 1px 0px 10px rgba(0, 0, 0, 0.15);
+}
+body.dark-theme {
+  --header-profile-menu-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
 .main_header {
   min-width: 320px;
   display: flex;
@@ -38,7 +45,7 @@
   top: 50px;
   right: 0px;
   padding: 34px 31px 24px 20px;
-  box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--header-profile-menu-shadow);
   border-radius: 5px;
   display: none;
 
@@ -282,7 +289,7 @@ $hamburger-layer-border-radius: 99px;
 .hamburger_inner {
   display: block;
   top: 50%;
-  margin-top: $hamburger-layer-height / -2;
+  margin-top: calc($hamburger-layer-height / -2);
 
   &,
   &::before,

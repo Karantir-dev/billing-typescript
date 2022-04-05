@@ -64,7 +64,7 @@
   border-radius: 3px;
   border: 1px solid var(--input-border-icon);
   z-index: 1;
-  font-size: 17px;
+  font-size: 16px;
   background-color: var(--elements-bgc);
   color: inherit;
 
@@ -74,6 +74,10 @@
 
   &.pr {
     padding-right: 45px;
+  }
+
+  &.pl {
+    padding-left: 36px;
   }
 
   &::placeholder {

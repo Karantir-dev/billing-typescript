@@ -3,16 +3,10 @@ import { combineReducers } from 'redux'
 import { authActions } from './authActions'
 
 const initialState = {
-  // data: {},
   sessionId: null,
   temporaryId: null,
   totpFormVisibility: 'hidden',
 }
-
-// const data = createReducer(initialState.data, {
-//   [authActions.loginSuccess]: (_, { payload }) => payload,
-//   [authActions.logoutSuccess]: () => ({}),
-// })
 
 const temporaryId = createReducer(initialState.temporaryId, {
   [authActions.setTemporaryId]: (_, { payload }) => payload,
@@ -32,7 +26,6 @@ const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
 })
 
 export const authReducer = combineReducers({
-  // data,
   sessionId,
   temporaryId,
   totpFormVisibility,

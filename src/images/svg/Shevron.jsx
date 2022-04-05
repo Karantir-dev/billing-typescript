@@ -1,10 +1,8 @@
 import * as React from 'react'
 
 export default function SvgComponent(props) {
-  const { className } = props
   return (
     <svg
-      className={className}
       width={15}
       height={11}
       strokeWidth={2}

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+
 import { authActions } from './authActions'
 import { actions } from '../actions'
 import { BASE_URL } from '../../config/config'
@@ -12,7 +13,7 @@ export const axiosInstance = axios.create({
 })
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
-  dispatch(authActions.loginRequest())
+  dispatch(actions.showLoader())
 
   axiosInstance
     .post(
@@ -63,8 +64,8 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
     .catch(error => {
       resetRecaptcha()
+      dispatch(actions.hideLoader())
       console.log('auth -', error.message)
-      dispatch(authActions.loginError())
     })
 }
 
@@ -90,15 +91,15 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) {
         setError(true)
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
 
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
-    .catch(error => {
+    .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('totp.confirm - ', error)
+      console.log('totp.confirm - ', err.message)
     })
 }
 
@@ -116,9 +117,6 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
       }),
     )
     .then(({ data }) => {
-      console.log(data.doc)
-      dispatch(actions.hideLoader())
-
       if (data.doc.error) {
         setErrorType(data.doc.error.$type)
 
@@ -126,12 +124,16 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
           setErrorTime(data.doc.error.param[1].$)
         }
 
-        throw data.doc.error.msg.$
+        throw new Error(data.doc.error.msg.$)
       }
 
       setEmailSended(true)
+      dispatch(actions.hideLoader())
     })
-    .catch(error => console.log('recovery - ', error))
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('recovery - ', err.message)
+    })
 }
 
 const changePassword =
@@ -152,10 +154,9 @@ const changePassword =
         }),
       )
       .then(({ data }) => {
-        console.log(data.doc)
         if (data.doc.error) {
           setErrType(data.doc.error.$type)
-          throw data.doc.error.msg.$
+          throw new Error(data.doc.error.msg.$)
         }
 
         axiosInstance.post(
@@ -171,15 +172,17 @@ const changePassword =
         onChangeSuccess()
         dispatch(actions.hideLoader())
       })
-      .catch(error => {
+      .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('recovery.change - ', error)
+        console.log('recovery.change - ', err.message)
       })
   }
 
 const logout = () => {}
 
-const getCountries = setCountries => () => {
+const getCountries = (setCountries, setStates) => dispatch => {
+  dispatch(actions.showLoader())
+
   axiosInstance
     .post(
       '/',
@@ -189,17 +192,66 @@ const getCountries = setCountries => () => {
       }),
     )
     .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
       const countries = data.doc.slist[0].val
+      const states = data.doc.slist[1].val
       countries.shift()
+
       setCountries(countries)
+      setStates(states)
+
+      dispatch(actions.hideLoader())
     })
     .catch(err => {
-      console.log(err)
+      dispatch(actions.hideLoader())
+      console.log('getCountries - ', err.message)
+    })
+}
+
+const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        realname: values.name,
+        email: values.email,
+        passwd: values.password,
+        confirm: values.passConfirmation,
+        country: values.country,
+        state: values.region,
+        'g-recaptcha-response': values.reCaptcha,
+        out: 'json',
+        sok: 'ok',
+      }),
+      {
+        // withCredentials: true,
+      },
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        setErrMsg(data.doc.error.$type)
+        throw new Error(data.doc.error.msg.$)
+      }
+      successRegistration()
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      resetRecaptcha()
+      dispatch(actions.hideLoader())
+      console.log('registration - ', err.message)
     })
 }
 
 export const authOperations = {
   login,
+  register,
   reset,
   changePassword,
   sendTotp,

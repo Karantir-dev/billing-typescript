@@ -1,7 +1,7 @@
 @import '../../scss/placeholders.scss';
 
 .field_wrapper {
-  margin-bottom: 13px;
+  margin-bottom: 10px;
 }
 
 .label {
@@ -14,7 +14,7 @@
 
 .input_wrapper {
   width: 100%;
-  height: 45px;
+  height: 40px;
   position: relative;
 }
 
@@ -59,15 +59,17 @@
 
 // ADAPTIVE
 @media screen and (min-width: 768px) {
+  .input {
+    padding-left: 36px;
+  }
+}
+
+@media screen and (min-width: 1281px) {
   .field_wrapper {
     margin-bottom: 15px;
   }
 
   .input_wrapper {
     height: 50px;
-  }
-
-  .input {
-    padding-left: 36px;
   }
 }
