@@ -1,4 +1,6 @@
 {
   "access_log": "Access log",
-  "remote_ip_address": "Remote IP address"
+  "remote_ip_address": "Remote IP address",
+  "nothing_found": "Nothing was found according to your request. Try changing your search options.",
+  "clear_filter": "Clear filter"
 }

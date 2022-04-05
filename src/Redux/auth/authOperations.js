@@ -1,16 +1,8 @@
-import axios from 'axios'
 import qs from 'qs'
-
 import { authActions } from './authActions'
 import { actions } from '../actions'
-import { BASE_URL } from '../../config/config'
+import { axiosInstance } from './../../config/axiosInstance'
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())

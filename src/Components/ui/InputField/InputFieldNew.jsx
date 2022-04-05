@@ -18,6 +18,8 @@ export default function Component(props) {
     name,
     isShadow, // shadow or border
     className,
+    autoComplete,
+    height,
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -69,9 +71,11 @@ export default function Component(props) {
             [s.shadow]: isShadow,
             [s.error]: error && touched,
           })}
+          style={{ height }}
           name={name}
           type={passShown ? 'text' : type}
           placeholder={placeholder}
+          autoComplete={autoComplete ? 1 : 0}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
         {tabletOrHigher && type !== 'password' && renderIcon(iconRight, 'right')}
@@ -93,9 +97,12 @@ Component.propTypes = {
   error: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,
   isShadow: PropTypes.bool.isRequired,
+  autoComplete: PropTypes.bool,
+  height: PropTypes.number,
 }
 
 Component.defaultProps = {
   type: 'text',
   isShadow: false,
+  autoComplete: false,
 }

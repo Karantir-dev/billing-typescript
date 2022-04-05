@@ -1,14 +1,7 @@
-import axios from 'axios'
 import qs from 'qs'
 import accessLogsActions from './accessLogsActions'
-import { BASE_URL } from '../../config/config'
+import { axiosInstance } from './../../config/axiosInstance'
 
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
 
 const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
   const {
@@ -23,7 +16,7 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         auth: sessionId,
-        p_cnt: 7,
+        p_cnt: 15,
         p_col: '+time',
         clickstat: 'yes',
         ...body
@@ -35,6 +28,9 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
       }
       const elem = data?.doc?.elem || [];
       dispatch(accessLogsActions.getAccessLogs(elem))
+      const count = data?.doc?.p_elems?.$ || 0
+      dispatch(accessLogsActions.getAccessLogsCount(count))
+
     })
     .catch(error => {
       console.log('logs -', error.message)
@@ -99,7 +95,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             sok: 'ok',
             out: 'json',
             auth: sessionId,
-            p_cnt: 7,
+            p_cnt: 15,
             p_col: '+time',
             ...body
           }),
@@ -109,6 +105,8 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             throw new Error(data.doc.error.msg.$)
           }
           const elem = data?.doc?.elem || [];
+          const count = data?.doc?.p_elems?.$ || 0
+          dispatch(accessLogsActions.getAccessLogsCount(count))
           dispatch(accessLogsActions.getAccessLogs(elem))
         })
         .catch(error => {

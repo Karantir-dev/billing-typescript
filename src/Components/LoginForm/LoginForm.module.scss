@@ -12,6 +12,10 @@
   height: 30px;
 }
 
+.input_field_wrapper {
+  margin-bottom: 10px;
+}
+
 .current_auth_link {
   position: relative;
   font-size: 16px;
@@ -48,7 +52,6 @@
 }
 
 .submit_btn {
-  @extend %btn;
   height: 43px;
   margin: 10px 0 15px 0;
 }
@@ -124,6 +127,10 @@
   .form {
     width: 431px;
     padding: 36px 64px;
+  }
+
+  .input_field_wrapper {
+    margin-bottom: 20px;
   }
 
   .auth_links_wrapper {

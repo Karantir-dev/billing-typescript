@@ -1,14 +1,6 @@
-import axios from 'axios'
 import qs from 'qs'
 import { userActions } from './userActions'
-import { BASE_URL } from '../../config/config'
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
+import { axiosInstance } from './../../config/axiosInstance'
 
 const getUserInfo = sessionId => dispatch => {
   axiosInstance

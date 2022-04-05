@@ -1,156 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectors } from '../../Redux/selectors'
 import accessLogsSelectors from '../../Redux/accessLogs/accessLogsSelectors'
+import accessLogsOperations from '../../Redux/accessLogs/accessLogsOperations'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Formik, Form } from 'formik'
-import {
-  AsideServicesMenu,
-  IconButton,
-  Button,
-  InputFieldNew,
-  Select,
-  AccessLogsTable,
-  CalendarModal,
-} from '../../Components/'
+import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components/'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectors } from '../../Redux/selectors'
 import s from './AccessLogScreen.module.scss'
-import accessLogsOperations from '../../Redux/accessLogs/accessLogsOperations'
 
 export default function MainPage() {
   const { t } = useTranslation(['access_log', 'other'])
   const dispatch = useDispatch()
 
-  const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const logsList = useSelector(accessLogsSelectors.getLogsList)
-  const logsFilterList = useSelector(accessLogsSelectors.getLogsFilters)
-  const logsCurrentFilter = useSelector(accessLogsSelectors.getCurrentLogsFilters)
+  const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
   useEffect(() => {
     dispatch(accessLogsOperations.getAccessLogsHandler())
     dispatch(accessLogsOperations.getAccessLogsFiltersHandler())
   }, [])
 
-  const filterHandler = values => {
-    setIsOpenedCalendar(false)
-    dispatch(accessLogsOperations.filterDataHandler(values))
-  }
-
-  const parseCurrentFilter = () => {
-    let time = null
-    let ip = null
-    let timestart = null
-    let timeend = null
-    if (Array.isArray(logsCurrentFilter)) {
-      logsCurrentFilter?.forEach(({ $name, $ }) => {
-        if ($name === 'time') {
-          time = $
-        }
-        if ($name === 'ip') {
-          ip = $
-        }
-        if ($name === 'timestart') {
-          timestart = $
-        }
-        if ($name === 'timeend') {
-          timeend = $
-        }
-      })
-    } else if (logsCurrentFilter) {
-      const { $name, $ } = logsCurrentFilter
-      if ($name === 'time') {
-        time = $
-      }
-      if ($name === 'ip') {
-        ip = $
-      }
-      if ($name === 'timestart') {
-        timestart = $
-      }
-      if ($name === 'timeend') {
-        timeend = $
-      }
-    }
-    return { time, ip, timestart, timeend }
-  }
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(accessLogsOperations.getAccessLogsHandler(data))
+  }, [currentPage])
 
   return (
     <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
-      <AsideServicesMenu />
       <div className={s.body}>
         <div className={s.content}>
           <h1 className={s.pageTitle}>{t('access_log')}</h1>
-          <div className={s.filterBlock}>
-            <Formik
-              enableReinitialize
-              initialValues={{
-                ip: parseCurrentFilter()?.ip || '',
-                time: parseCurrentFilter()?.time || 'nodate',
-                timestart: '',
-                timeend: '',
-              }}
-              onSubmit={filterHandler}
-            >
-              {({ errors, touched, setFieldValue, values }) => {
-                return (
-                  <Form className={s.form}>
-                    <InputFieldNew
-                      name="ip"
-                      placeholder={t('remote_ip_address')}
-                      isShadow
-                      iconRight="search"
-                      className={s.searchInput}
-                      error={!!errors.email}
-                      touched={!!touched.email}
-                    />
-                    <div className={s.selectAndBtn}>
-                      <Select
-                        value={values.time}
-                        getElement={item => setFieldValue('time', item)}
-                        isShadow
-                        itemsList={logsFilterList}
-                        className={s.select}
-                      />
-                      <div className={s.calendarBlock}>
-                        <IconButton
-                          onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
-                          icon="calendar"
-                          className={s.calendarBtn}
-                        />
-                        {isOpenedCalendar && (
-                          <div className={s.calendarModal}>
-                            <CalendarModal
-                              setStartDate={item => {
-                                setFieldValue('timestart', item)
-                                setFieldValue('time', 'other')
-                              }}
-                              setEndDate={item => setFieldValue('timeend', item)}
-                              range={values?.timestart?.length !== 0}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <Button
-                      className={s.searchBtn}
-                      isShadow
-                      size="medium"
-                      label={t('search', { ns: 'other' })}
-                      type="submit"
-                    />
-                  </Form>
-                )
-              }}
-            </Formik>
-            <IconButton
-              onClick={() => dispatch(accessLogsOperations.getAccessLogsCvs())}
-              className={s.csvBtn}
-              icon="csv"
-            />
-          </div>
-          <AccessLogsTable list={logsList} />
+          <AccessLogsFilter setCurrentPage={setCurrentPage} />
+          {logsList.length !== 0 ? (
+            <AccessLogsTable list={logsList} />
+          ) : (
+            <span className={s.noResults}>{t('nothing_found')}</span>
+          )}
+          {logsList.length !== 0 && (
+            <div className={s.pagination}>
+              <Pagination
+                currentPage={currentPage}
+                totalCount={logsCount}
+                pageSize={15}
+                onPageChange={page => setCurrentPage(page)}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -9,37 +9,9 @@
   width: 100%;
 }
 .content {
-  padding: 80px 60px 150px 158px;
+  padding: 80px 60px 40px 158px;
   width: 100%;
   max-width: 1384px;
-}
-
-.searchInput {
-  max-width: 260px;
-  margin-right: 20px;
-}
-
-.select {
-  max-width: 260px;
-}
-
-.calendarBtn {
-  margin: 0 20px 0 15px;
-}
-
-.filterBlock {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  margin: 36px 0 40px 0;
-}
-
-.form {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .pageTitle {
@@ -48,28 +20,19 @@
   line-height: 1.2;
 }
 
-.selectAndBtn {
-  width: 341px;
+.noResults {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--transparent-color);
+}
+
+.pagination {
+  width: 100%;
   display: flex;
-  align-items: center;
-}
-
-.csvBtn {
-  margin-top: 10px;
-}
-
-.searchBtn {
-  text-transform: uppercase;
-}
-
-.calendarBlock {
-  position: relative;
-}
-
-.calendarModal {
-  position: absolute;
-  left: -140%;
-  transform: translate(10px, 15px);
+  justify-content: flex-end;
+  margin-top: 31px;
 }
 
 // ADAPTIVE
@@ -77,39 +40,11 @@
   .content {
     padding: 50px 60px 63px 79px;
   }
-
-  .searchInput {
-    max-width: 255px;
-    margin-right: 15px;
-  }
-
-  .calendarBtn {
-    margin: 0 0 0 10px;
-  }
-
-  .selectAndBtn {
-    width: 315px;
-    margin-top: 10px;
-  }
-
-  .calendarModal {
-    left: -215%;
-  }
-
-  .select {
-    max-width: 255px;
-  }
 }
 
 @media screen and (max-width: 1077px) {
   .pageTitle {
     font-size: 20px;
-  }
-  .searchBtn {
-    margin-top: 20px;
-  }
-  .filterBlock {
-    align-items: flex-start;
   }
 }
 
@@ -117,24 +52,13 @@
   .pageTitle {
     font-size: 22px;
   }
-  .searchBtn {
-    margin-top: 25px;
-  }
-
-  .searchBtn {
-    margin-top: 20px;
-  }
 
   .content {
     padding: 50px 61px 63px 61px;
   }
-  .calendarModal {
-    left: -400%;
-    div {
-      &::after {
-        left: 84%;
-      }
-    }
+
+  .pagination {
+    margin-top: 25px;
   }
 }
 
@@ -143,32 +67,9 @@
     padding: 40px 30px 71px;
   }
 
-  .searchBtn {
-    margin-top: 15px;
-    max-width: 100%;
-  }
-
-  .searchInput {
-    max-width: 100%;
-    margin-right: 0;
-  }
-
-  .select {
-    max-width: 100%;
-  }
-
-  .csvBtn {
-    display: none;
-    margin-top: 10px;
-  }
-
-  .selectAndBtn {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .calendarBtn {
-    margin: 0 0 0 9px;
+  .pagination {
+    justify-content: center;
+    margin-top: 20px;
   }
 
   .pageTitle {

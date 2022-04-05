@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './AccessLogsComponents.module.scss'
+import s from '../AccessLogsComponents.module.scss'
 import { useTranslation } from 'react-i18next'
 import AccessLogsTableItem from './AccessLogsTableItem'
 import PropTypes from 'prop-types'
