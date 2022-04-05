@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import accessLogsOperations from '../../../Redux/accessLogs/accessLogsOperations'
 import accessLogsSelectors from '../../../Redux/accessLogs/accessLogsSelectors'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
+import { useOutsideAlerter } from '../../../utils'
 import { Formik, Form } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { InputFieldNew, Select, IconButton, CalendarModal, Button } from '../..'
@@ -16,6 +18,16 @@ export default function Component({ setCurrentPage }) {
 
   const logsFilterList = useSelector(accessLogsSelectors.getLogsFilters)
   const logsCurrentFilter = useSelector(accessLogsSelectors.getCurrentLogsFilters)
+
+  const dropdownCalendar = useRef(null)
+
+  const clickOutside = () => {
+    setTimeout(() => {
+      setIsOpenedCalendar(false)
+    }, 100)
+  }
+
+  useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutside)
 
   const filterHandler = values => {
     setCurrentPage(1)
@@ -112,18 +124,19 @@ export default function Component({ setCurrentPage }) {
                     icon="calendar"
                     className={s.calendarBtn}
                   />
-                  {isOpenedCalendar && (
-                    <div className={s.calendarModal}>
-                      <CalendarModal
-                        setStartDate={item => {
-                          setFieldValue('timestart', item)
-                          setFieldValue('time', 'other')
-                        }}
-                        setEndDate={item => setFieldValue('timeend', item)}
-                        range={values?.timestart?.length !== 0}
-                      />
-                    </div>
-                  )}
+                  <div
+                    ref={dropdownCalendar}
+                    className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
+                  >
+                    <CalendarModal
+                      setStartDate={item => {
+                        setFieldValue('timestart', item)
+                        setFieldValue('time', 'other')
+                      }}
+                      setEndDate={item => setFieldValue('timeend', item)}
+                      range={values?.timestart?.length !== 0}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={s.btnBlock}>
