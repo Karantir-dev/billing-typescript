@@ -16,8 +16,8 @@ export default function AuthPage({ children }) {
         <div className={`container ${s.flex}`}>
           <Logo darktheme={darkTheme ? 1 : 0} />
           <div className={s.btns_wrapper}>
-            <ThemeBtn />
-            <LangBtn />
+            <ThemeBtn authType />
+            <LangBtn authType />
           </div>
         </div>
       </div>
