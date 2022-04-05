@@ -69,8 +69,31 @@ const getItems = sessionId => dispatch => {
     })
 }
 
+const removeItems = (sessionId, id) => {
+  const lang = localStorage.getItem('i18nextLng')
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'notificationbar.delete',
+        out: 'json',
+        lang: lang,
+        auth: sessionId,
+        elid: id,
+      }),
+    )
+    .then(({ data }) => {
+      if (!data) throw new Error('Notifications info is not found')
+    })
+    .catch(error => {
+      console.log('error', error)
+    })
+}
+
 export const userOperations = {
   getUserInfo,
   getTickets,
   getItems,
+  removeItems,
 }

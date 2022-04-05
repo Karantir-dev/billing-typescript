@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 import BurgerListItem from '../BurgerListItem/BurgerListItem'
 import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../images'
@@ -9,7 +10,21 @@ import s from './ListItems.module.scss'
 
 export default function ListItems(props) {
   const { name, email, isProfile, subList } = props
+  let transcriptor = name
   const [isOpened, setIsOpened] = useState(false)
+  const { t } = useTranslation('main')
+
+  if (name === 'Услуги') {
+    transcriptor = t('burger_menu.services.services')
+  } else if (transcriptor === 'Финансы') {
+    transcriptor = t('burger_menu.finance.finance')
+  } else if (transcriptor === 'Реферальная программа') {
+    transcriptor = t('burger_menu.ref_program.ref_program')
+  } else if (transcriptor === 'Поддержка') {
+    transcriptor = t('burger_menu.support.support')
+  } else {
+    transcriptor
+  }
 
   const renderIcon = name => {
     switch (name) {
@@ -63,7 +78,7 @@ export default function ListItems(props) {
       onClick={() => setIsOpened(!isOpened)}
     >
       <BurgerListItem
-        name={name}
+        name={transcriptor}
         arrow={
           <ArrowSign
             className={cn({

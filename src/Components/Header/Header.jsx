@@ -29,18 +29,32 @@ export default function Header() {
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  const getAllUserData = () => {
     if (isAuthenticated) {
-      dispatch(userOperations.getUserInfo(isAuthenticated))
-      dispatch(userOperations.getItems(isAuthenticated))
-      dispatch(userOperations.getTickets(isAuthenticated))
+      return Promise.all([
+        userOperations.getUserInfo(isAuthenticated),
+        userOperations.getItems(isAuthenticated),
+        userOperations.getTickets(isAuthenticated),
+      ])
     }
+  }
+
+  useEffect(() => {
+    getAllUserData().then(data => {
+      data.forEach(request => {
+        dispatch(request)
+      })
+    })
   }, [])
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const messages = useSelector(userSelectors.getUserItems)
 
-  const mes = messages.bitem ? messages.bitem.length : ''
+  const mes = messages.bitem
+    ? Array.isArray(messages.bitem) && messages.bitem !== 'undefined'
+      ? messages.bitem.length
+      : 1
+    : ''
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -131,12 +145,13 @@ export default function Header() {
               <ul
                 className={cn({
                   [s.profile_list]: true,
+                  [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
                   [s.opened]: isProfileOpened,
                 })}
               >
                 {profileMenuList.map(item => {
                   return (
-                    <li key={nanoid()} className={s.profilt_list_item}>
+                    <li key={nanoid()} className={s.profile_list_item}>
                       <NavLink to={item.routeName}>
                         <p className={s.list_item_name}>{item.name}</p>
                       </NavLink>

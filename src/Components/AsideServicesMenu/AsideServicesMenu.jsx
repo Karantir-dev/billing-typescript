@@ -12,16 +12,15 @@ import s from './AsideServicesMenu.module.scss'
 
 const AsideServicesMenu = () => {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const [isPinned, setIsPinned] = useState(true)
+  const getLocalIsPinned = localStorage.getItem('pinned-menu')
+  const [isPinned, setIsPinned] = useState(getLocalIsPinned)
   const { t } = useTranslation('main')
 
-  const handleClick = e => {
-    e.preventDefault()
-    setIsPinned(!isPinned)
-
+  const handleClick = () => {
     isPinned
       ? localStorage.setItem('pinned-menu', 'false')
       : localStorage.setItem('pinned-menu', 'true')
+    setIsPinned(!isPinned)
   }
 
   useEffect(() => {

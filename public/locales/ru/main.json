@@ -13,5 +13,44 @@
     "activity_log": "История действий",
     "contracts": "Договоры",
     "log_out": "Выход"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "Услуги",
+      "services_list": {
+        "domains": "Домены",
+        "virtual_servers": "Виртуальные серверы",
+        "dedicated_servers": "Выделенные серверы",
+        "virtual_hosting": "Виртуальный хостинг",
+        "dns_hosting": "DNS-хостинг",
+        "external_ftp": "Внешнее FTP хранилище",
+        "wetsite_care": "Забота о сайте",
+        "forex_server": "Сервер для Forex"
+      }
+    },
+    "ref_program": {
+      "ref_program": "Реферальная программа",
+      "ref_program_list": {
+        "about_program": "О програмее",
+        "incomes": "Доход",
+        "statistic": "Статистика"
+      }
+    },
+    "support": {
+      "support": "Поддержка",
+      "support_list": {
+        "requests": "Запросы",
+        "requests_archieve": "Архив запросов"
+      }
+    },
+    "finance": {
+      "finance": "Финансы",
+      "support_list": {
+        "automatic_payment": "Автоплатеж",
+        "payments": "Платежи",
+        "expenses": "Расходы",
+        "auto_renewal": "Автопродление услуг"
+      }
+    }
   }
 }

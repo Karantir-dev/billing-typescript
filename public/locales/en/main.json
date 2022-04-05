@@ -13,5 +13,44 @@
     "activity_log": "Activity history",
     "contracts": "Contracts",
     "log_out": "Log out"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "Services",
+      "services_list": {
+        "domains": "Domains",
+        "virtual_servers": "Virtual servers",
+        "dedicated_servers": "Dedicated servers",
+        "virtual_hosting": "Virtual hosting",
+        "dns_hosting": "DNS-hosting",
+        "external_ftp": "External FTP storage",
+        "wetsite_care": "Website care",
+        "forex_server": "Forex server"
+      }
+    },
+    "ref_program": {
+      "ref_program": "Referral program",
+      "ref_program_list": {
+        "about_program": "About program",
+        "incomes": "Incomes",
+        "statistic": "Statistic"
+      }
+    },
+    "support": {
+      "support": "Support",
+      "support_list": {
+        "requests": "Requests",
+        "requests_archieve": "Requests archieve"
+      }
+    },
+    "finance": {
+      "finance": "Finance",
+      "finance_list": {
+        "automatic_payment": "Automatic payment",
+        "payments": "Payments",
+        "expenses": "Outcomes",
+        "auto_renewal": "Auto-renewal"
+      }
+    }
   }
 }

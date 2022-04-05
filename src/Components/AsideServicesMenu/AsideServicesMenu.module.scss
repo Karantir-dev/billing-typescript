@@ -9,6 +9,7 @@
   background: var(--elements-bgc);
   box-shadow: var(--box-shadow);
   transition: width 0.25s;
+  z-index: 100;
 }
 
 .navigation_pinned {
