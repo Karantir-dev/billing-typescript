@@ -97,7 +97,7 @@ export default function Header() {
                 [s.theme_item]: true,
               })}
             >
-              <ThemeBtn />
+              <ThemeBtn mainType={true} />
             </li>
             <li
               className={cn({
@@ -105,7 +105,7 @@ export default function Header() {
                 [s.lang_item]: true,
               })}
             >
-              <LangBtn />
+              <LangBtn mainType={true} />
             </li>
             <li
               className={cn({

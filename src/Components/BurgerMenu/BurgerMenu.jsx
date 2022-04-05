@@ -103,9 +103,9 @@ export default function BurgerMenu({ classes, isOpened }) {
       <div className={classes}>
         <nav className={s.burger_nav}>
           <div className={s.theme_btn_wrapper}>
-            <ThemeBtn />
+            <ThemeBtn burgerType />
           </div>
-          <LangBtn />
+          <LangBtn burgerType />
         </nav>
 
         <ul className={s.list}>

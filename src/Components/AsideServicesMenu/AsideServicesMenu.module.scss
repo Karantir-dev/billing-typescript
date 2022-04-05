@@ -1,7 +1,6 @@
 .navigation {
   position: fixed;
   height: 100vh;
-  width: 130px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -9,7 +8,8 @@
   background: var(--elements-bgc);
   box-shadow: var(--box-shadow);
   transition: width 0.25s;
-  z-index: 100;
+  z-index: 5;
+  width: 130px;
 }
 
 .navigation_pinned {
@@ -122,4 +122,3 @@
     display: none;
   }
 }
-
