@@ -6,6 +6,21 @@
   background-color: var(--main-text);
   cursor: pointer;
 
+  &.burger_type {
+    width: 66px;
+    height: 36px;
+  }
+
+  &.auth_type {
+    width: 66px;
+    height: 33px;
+  }
+
+  &.main_type {
+    width: 62px;
+    height: 33px;
+  }
+
   &.turnedOff {
     &:hover {
       .icon_moon {
@@ -127,7 +142,14 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .btn {
-    width: 75px;
-    height: 40px;
+    &.burger_type {
+      width: 72px;
+      height: 39px;
+    }
+
+    &.auth_type {
+      width: 75px;
+      height: 40px;
+    }
   }
 }
