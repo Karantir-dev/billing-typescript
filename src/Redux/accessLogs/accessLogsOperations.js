@@ -1,6 +1,8 @@
 import qs from 'qs'
 import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
+import i18n from 'i18next';
+
 
 
 const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
@@ -8,6 +10,8 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
     auth: { sessionId },
   } = getState()
 
+  console.log(i18n.language)
+  
   axiosInstance
     .post(
       '/',
@@ -16,6 +20,7 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         auth: sessionId,
+        lang: i18n.language,
         p_cnt: 15,
         p_col: '+time',
         clickstat: 'yes',
@@ -48,6 +53,7 @@ const getAccessLogsFiltersHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
+        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -78,6 +84,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
+        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -87,6 +94,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
       if (data.doc.error) {
         throw new Error(data.doc.error.msg.$)
       }
+      dispatch(accessLogsActions.getCurrentFilters(data?.doc?.filter?.param || []))
       axiosInstance
         .post(
           '/',
@@ -94,6 +102,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             func: 'authlog',
             sok: 'ok',
             out: 'json',
+            lang: i18n.language,
             auth: sessionId,
             p_cnt: 15,
             p_col: '+time',
@@ -129,6 +138,7 @@ const getAccessLogsCvs = () => (dispatch, getState) =>{
       qs.stringify({
         func: 'authlog',
         out: 'csv',
+        lang: i18n.language,
         clickstat: 'yes',
         auth: sessionId,
       }),

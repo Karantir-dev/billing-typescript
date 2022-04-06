@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 const dateFormat = 'YYYY-MM-DD'
 
 export default function Component(props) {
-  const { range, setStartDate, setEndDate } = props
+  const { range, setStartDate, setEndDate, value } = props
 
   const changeDatehandle = value => {
     if (range) {
@@ -32,6 +32,7 @@ export default function Component(props) {
         }}
         selectRange={range}
         onChange={changeDatehandle}
+        value={value ? value : null}
       />
     </div>
   )
@@ -39,11 +40,13 @@ export default function Component(props) {
 
 Component.propTypes = {
   range: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.any]),
   setStartDate: PropTypes.func,
   setEndDate: PropTypes.func,
 }
 
 Component.defaultProps = {
+  value: null,
   range: false,
   setStartDate: () => null,
   setEndDate: () => null,

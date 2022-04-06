@@ -82,8 +82,16 @@ export default function Component({ setCurrentPage }) {
         timeend = $
       }
     }
-    return { time, ip, timestart, timeend }
+    let dates = null
+    if (timestart && timeend) {
+      dates = [new Date(timestart), new Date(timeend)]
+    } else if (timestart) {
+      dates = new Date(timestart)
+    }
+    return { time, ip, dates }
   }
+
+  console.log(parseCurrentFilter())
 
   return (
     <div className={s.filterBlock}>
@@ -92,12 +100,18 @@ export default function Component({ setCurrentPage }) {
         initialValues={{
           ip: parseCurrentFilter()?.ip || '',
           time: parseCurrentFilter()?.time || 'nodate',
-          timestart: '',
-          timeend: '',
+          timestart: null,
+          timeend: null,
         }}
         onSubmit={filterHandler}
       >
         {({ errors, touched, setFieldValue, values, setValues }) => {
+          let dates = null
+          if (values.timestart && values.timeend) {
+            dates = [new Date(values.timestart), new Date(values.timeend)]
+          } else if (values.timestart) {
+            dates = new Date(values.timestart)
+          }
           return (
             <Form className={s.form}>
               <InputFieldNew
@@ -129,6 +143,7 @@ export default function Component({ setCurrentPage }) {
                     className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
                   >
                     <CalendarModal
+                      value={dates || parseCurrentFilter()?.dates}
                       setStartDate={item => {
                         setFieldValue('timestart', item)
                         setFieldValue('time', 'other')
