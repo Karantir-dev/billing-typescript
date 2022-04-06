@@ -6,7 +6,7 @@ import cn from 'classnames'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
 
-export default function NotificationsBar({ handler, isBarOpened }) {
+export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
 
   const mes = messages.bitem ? messages.bitem.length : 0
@@ -15,9 +15,19 @@ export default function NotificationsBar({ handler, isBarOpened }) {
   console.log(notifications)
 
   return (
-    <aside className={s.notification_wrapper}>
+    <div
+      className={s.notification_wrapper}
+      role="button"
+      tabIndex={0}
+      onKeyDown={() => null}
+      onClick={handler}
+    >
       <div
         className={cn({ [s.notificatonbar_container]: true, [s.opened]: isBarOpened })}
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => null}
+        onClick={e => e.stopPropagation()}
       >
         <div className={s.notification_title_container}>
           <p className={s.notification_title}>{`Оповещения (${mes})`}</p>
@@ -25,8 +35,11 @@ export default function NotificationsBar({ handler, isBarOpened }) {
             <button className={s.close_btn} onClick={handler}></button>
           </div>
         </div>
-        <NotificationList notifications={notifications} />
+        <NotificationList
+          notifications={notifications}
+          removedNotification={removedNotification}
+        />
       </div>
-    </aside>
+    </div>
   )
 }

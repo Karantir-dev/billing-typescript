@@ -15,12 +15,12 @@ import storage from 'redux-persist/lib/storage'
 import { authReducer } from './auth/authReducer'
 import { accessLogsReducer } from './accessLogs/accessLogsReducer'
 import { userReducer } from './userInfo/userReducer'
-import { theme, isLoading } from './reducer'
+import { theme, isLoading, pinned } from './reducer'
 
 const rootPersistConfig = {
   key: 'theme',
   storage,
-  whitelist: ['theme'],
+  whitelist: ['theme', 'pinned'],
 }
 const authPersistConfig = {
   key: 'sessionId',
@@ -34,6 +34,7 @@ const rootReducer = combineReducers({
   currentUserInfo: userReducer,
   theme,
   isLoading,
+  pinned,
 })
 
 const store = configureStore({

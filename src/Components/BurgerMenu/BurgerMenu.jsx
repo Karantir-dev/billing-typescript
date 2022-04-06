@@ -20,7 +20,7 @@ export default function BurgerMenu({ classes, isOpened }) {
   const profileMenuList = [
     { name: t('profile.user_settings'), routeName: routes.HOME },
     { name: t('profile.trusted_users'), routeName: routes.HOME },
-    { name: t('profile.visiting_log'), routeName: routes.HOME },
+    { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
     { name: t('profile.activity_log'), routeName: routes.HOME },
     { name: t('profile.contracts'), routeName: routes.HOME },
   ]

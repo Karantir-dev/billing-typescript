@@ -1,14 +1,25 @@
+.container {
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin: 0 auto;
+}
+
 .main_header {
   min-width: 320px;
   position: fixed;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 10px 19px 10px;
   background-color: var(--elements-bgc);
   box-shadow: var(--box-shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 10px;
+  padding-bottom: 19px;
 }
 
 .logo {
@@ -170,6 +181,10 @@
   }
 }
 
+.item_bell {
+  margin-right: 25px;
+}
+
 .profile_btn {
   display: none;
   align-items: center;
@@ -236,15 +251,16 @@ $hamburger-layer-color: var(--icon-color);
 $hamburger-layer-border-radius: 99px;
 
 .header_menuburger {
-  position: relative;
+  position: fixed;
   width: 43px;
   height: 28px;
-  padding-right: 40px;
+  right: 15px;
+  top: 30px;
   align-items: center;
-  z-index: 7;
   cursor: pointer;
   transition-property: opacity;
   transition-duration: 0.15s;
+  z-index: 105;
 }
 
 .hamburger_spin {
@@ -338,7 +354,8 @@ $hamburger-layer-border-radius: 99px;
 }
 
 .burger_menu {
-  left: 24px;
+  width: 296px;
+  right: 0;
   right: 0;
   bottom: 0;
   top: 0;
@@ -352,6 +369,10 @@ $hamburger-layer-border-radius: 99px;
   &.opened {
     transform: translateX(0px);
   }
+}
+.burger_item {
+  position: relative;
+  z-index: 120;
 }
 
 @keyframes glowing {
@@ -375,44 +396,67 @@ $hamburger-layer-border-radius: 99px;
 
 // ADAPTIVE
 @media screen and (min-width: 768px) {
+  .container {
+    width: 90%;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
   .burger_menu {
-    left: 365px;
+    width: 403px;
   }
 
   .header_menuburger {
-    padding-right: 60px;
-    margin-right: 20px;
-  }
+    right: 10%;
+    top: 30px;
 
-  .logo {
-    transform: scale(1);
-    display: none;
+    &.opened {
+      right: 55px;
+    }
   }
 
   .main_header {
     justify-content: flex-end;
   }
-}
-
-@media screen and (min-width: 1200px) {
-  .burger_item {
-    display: none;
+  .item_bell {
+    margin-right: 55px;
   }
-
   .balance_item {
     display: block;
   }
+}
+
+@media screen and (min-width: 1024px) {
   .theme_item {
     display: block;
   }
   .lang_item {
     display: block;
   }
+  .burger_item {
+    display: none;
+  }
+  .logo {
+    transform: scale(1);
+    display: none;
+  }
+  .header_menuburger {
+    display: none;
+  }
   .profile_btn {
     display: flex;
   }
+  .item_bell {
+    margin-right: 25px;
+  }
   .main_header {
     padding-top: 21px;
-    padding-bottom: 23px;
+    padding-bottom: 16px;
   }
+  .header {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (min-width: 1200px) {
 }

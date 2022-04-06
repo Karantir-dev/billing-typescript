@@ -4,9 +4,9 @@ import s from './NotificationList.module.scss'
 import { userOperations } from '../../../Redux/userInfo/userOperations'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '../../../Redux/auth/authSelectors'
-import NotificationListItem from '../NotificationListItem'
+import NotificationListItem from '../NotificationListItem/NotificationListItem'
 
-export default function NotificationList({ notifications }) {
+export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
   let shortNotificationsList =
@@ -24,7 +24,7 @@ export default function NotificationList({ notifications }) {
   const handleShowMoreClick = () => {
     setShowMore({
       isClicked: true,
-      messages: notifications,
+      messages: currentNotifList,
     })
   }
 
@@ -36,20 +36,19 @@ export default function NotificationList({ notifications }) {
       if (Array.isArray(currentNotifList)) {
         return currentNotifList.filter(item => item.$id !== id)
       } else if (currentNotifList.id !== id) {
-        currentNotifList
+        return currentNotifList
       }
-      // return Array.isArray(currentNotifList)
-      //   ? currentNotifList.filter(item => item.$id !== id)
-      //   : currentNotifList.id !== id
-      //   ? currentNotifList
-      //   : null
     })
   }
 
   return (
     <>
       {notifications ? (
-        <NotificationListItem arr={currentNotifList} removeItem={removeItem} />
+        <NotificationListItem
+          removedNotification={removedNotification}
+          arr={currentNotifList}
+          removeItem={removeItem}
+        />
       ) : (
         <p>there are no messages</p>
       )}

@@ -5,6 +5,7 @@
   left: 0;
   right: 0;
   background-color: rgba(19, 16, 25, 0.3);
+  z-index: 100;
 }
 
 .burger_nav {
@@ -49,11 +50,13 @@
 .balance_wrapper_dt,
 .balance_wrapper_lt {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 14px;
   margin-top: 14px;
   background-color: var(--nearby-elements-bgc);
+  padding-left: 26px;
+  padding-right: 26px;
 }
 
 .balance_wrapper_lt {
@@ -113,6 +116,11 @@
 @media screen and (min-width: 768px) {
   .exit_wrapper {
     padding: 60px 60px 0 48px;
+  }
+  .balance_wrapper_dt,
+  .balance_wrapper_lt {
+    padding-left: 48px;
+    padding-right: 60px;
   }
 
   .balance_text {
