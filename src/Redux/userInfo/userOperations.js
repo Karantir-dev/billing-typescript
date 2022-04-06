@@ -1,4 +1,6 @@
 import qs from 'qs'
+import i18n from 'i18next'
+
 import { userActions } from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 
@@ -43,15 +45,14 @@ const getTickets = sessionId => dispatch => {
 }
 
 const getItems = sessionId => dispatch => {
-  const lang = localStorage.getItem('i18nextLng')
-
+  console.log(i18n)
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'notify',
         out: 'json',
-        lang: lang,
+        lang: i18n.language,
         auth: sessionId,
       }),
     )
@@ -70,15 +71,13 @@ const getItems = sessionId => dispatch => {
 }
 
 const removeItems = (sessionId, id) => {
-  const lang = localStorage.getItem('i18nextLng')
-
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'notificationbar.delete',
         out: 'json',
-        lang: lang,
+        lang: i18n.language,
         auth: sessionId,
         elid: id,
       }),

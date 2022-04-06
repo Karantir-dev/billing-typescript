@@ -9,7 +9,16 @@ import s from './NotificationsBar.module.scss'
 export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
 
-  const mes = messages.bitem ? messages.bitem.length : 0
+  let mes = 0
+
+  if (Array.isArray(messages.bitem)) {
+    mes = messages.bitem.length
+  } else if (messages.bitem === 'undefined') {
+    mes = 0
+  } else {
+    mes = 1
+  }
+
   const notifications = messages.bitem
 
   console.log(notifications)

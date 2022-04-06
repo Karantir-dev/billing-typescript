@@ -10,8 +10,7 @@ import s from './NotificationList.module.scss'
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
-  let shortNotificationsList =
-    notifications?.length > 3 ? notifications.slice(0, 3) : notifications
+  let shortNotificationsList = notifications
 
   const [showMore, setShowMore] = useState({
     isClicked: false,
@@ -25,7 +24,7 @@ export default function NotificationList({ notifications, removedNotification })
   const handleShowMoreClick = () => {
     setShowMore({
       isClicked: true,
-      messages: currentNotifList,
+      messages: notifications,
     })
   }
 
@@ -51,7 +50,7 @@ export default function NotificationList({ notifications, removedNotification })
           removeItem={removeItem}
         />
       ) : (
-        <p>there are no messages</p>
+        <p className={s.no_messages}>There are no messages</p>
       )}
       {notifications?.length > 3 && !showMore.isClicked && (
         <button onClick={handleShowMoreClick}>
