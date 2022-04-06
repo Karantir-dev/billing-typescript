@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-
-import s from './NotificationList.module.scss'
-import { userOperations } from '../../../Redux/userInfo/userOperations'
 import { useSelector } from 'react-redux'
+
+import { userOperations } from '../../../Redux/userInfo/userOperations'
 import { authSelectors } from '../../../Redux/auth/authSelectors'
 import NotificationListItem from '../NotificationListItem/NotificationListItem'
+
+import s from './NotificationList.module.scss'
 
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)

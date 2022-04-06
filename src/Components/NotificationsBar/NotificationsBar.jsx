@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import cn from 'classnames'
 
+import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
 

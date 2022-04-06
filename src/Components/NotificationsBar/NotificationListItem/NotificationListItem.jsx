@@ -1,4 +1,5 @@
 import React from 'react'
+
 import s from './NotificationListItem.module.scss'
 
 export default function NotificationListItem({ arr, removeItem, removedNotification }) {

@@ -24,11 +24,6 @@ const AsideServicesMenu = () => {
     dispatch(actions.changeIsPinned())
   }
 
-  // useEffect(() => {
-  //   const isStoraged = localStorage.getItem('pinned-menu')
-  //   isStoraged === 'true' ? setIsPinned(true) : setIsPinned(false)
-  // }, [])
-
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
