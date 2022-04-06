@@ -16,9 +16,12 @@ const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)
 
   const dispatch = useDispatch()
-  console.log('pinnedStatus', pinnedStatus)
 
   const { t } = useTranslation('main')
+
+  const pinnedStyle = {
+    paddingBottom: pinnedStatus ? '0px' : '23px',
+  }
 
   const handleClick = () => {
     dispatch(actions.changeIsPinned())
@@ -34,10 +37,8 @@ const AsideServicesMenu = () => {
         <li className={s.item}>
           <NavLink
             to={routes.HOME}
-            className={({ isActive }) => (isActive ? `${s.active}` : `${s.inactive}`)}
-            style={{
-              paddingBottom: pinnedStatus ? '0px' : '23px',
-            }}
+            className={({ isActive }) => (isActive ? s.active : s.inactive)}
+            style={pinnedStyle}
           >
             <Box className={s.img} />
             {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
@@ -46,10 +47,8 @@ const AsideServicesMenu = () => {
         <li className={s.item}>
           <NavLink
             to={routes.RESET_PASSWORD}
-            className={({ isActive }) => (isActive ? `${s.active}` : `${s.inactive}`)}
-            style={{
-              paddingBottom: pinnedStatus ? '0px' : '23px',
-            }}
+            className={({ isActive }) => (isActive ? s.active : s.inactive)}
+            style={pinnedStyle}
           >
             <Wallet className={s.img} />
             {pinnedStatus && <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>}
@@ -58,10 +57,8 @@ const AsideServicesMenu = () => {
         <li className={s.item}>
           <NavLink
             to={routes.REGISTRATION}
-            className={({ isActive }) => (isActive ? `${s.active}` : `${s.inactive}`)}
-            style={{
-              paddingBottom: pinnedStatus ? '0px' : '23px',
-            }}
+            className={({ isActive }) => (isActive ? s.active : s.inactive)}
+            style={pinnedStyle}
           >
             <Social className={s.img} />
             {pinnedStatus && <p className={s.text}>{t('aside_menu.referal_program')}</p>}
@@ -70,10 +67,8 @@ const AsideServicesMenu = () => {
         <li className={s.item}>
           <NavLink
             to={routes.RESET_PASSWORD}
-            className={({ isActive }) => (isActive ? `${s.active}` : `${s.inactive}`)}
-            style={{
-              paddingBottom: pinnedStatus ? '0px' : '23px',
-            }}
+            className={({ isActive }) => (isActive ? s.active : s.inactive)}
+            style={pinnedStyle}
           >
             <Support className={s.img} />
             {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}

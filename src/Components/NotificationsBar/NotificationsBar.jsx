@@ -5,6 +5,7 @@ import cn from 'classnames'
 import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
+import { instanceOf } from 'prop-types'
 
 export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
@@ -15,8 +16,10 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
     mes = messages.bitem.length
   } else if (messages.bitem === 'undefined') {
     mes = 0
-  } else {
+  } else if (instanceOf(messages.bitem) === 'object') {
     mes = 1
+  } else {
+    mes = 0
   }
 
   const notifications = messages.bitem

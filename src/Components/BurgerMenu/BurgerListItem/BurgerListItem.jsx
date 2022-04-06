@@ -24,7 +24,7 @@ export default function BurgerListItem({
       <div
         className={cn({
           [s.list_item_container]: true,
-          [darkTheme ? s.opened_dt : s.opened_lt]: isListOpened,
+          [s.opened]: isListOpened,
         })}
       >
         {svg}
@@ -71,4 +71,6 @@ BurgerListItem.propTypes = {
   svg: PropTypes.object,
   email: PropTypes.string,
   isProfile: PropTypes.bool,
+  isListOpened: PropTypes.bool,
+  arrow: PropTypes.object,
 }
