@@ -76,7 +76,9 @@ export default function App() {
               />
               <Route
                 path={route.ACCESS_LOG}
-                element={<PrivateRoute children={<AccessLogScreen />} />}
+                element={
+                  <PrivateRoute children={<MainPage children={<AccessLogScreen />} />} />
+                }
               />
             </Routes>
           </Suspense>
