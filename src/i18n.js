@@ -11,6 +11,9 @@ i18n
   // модуль инициализации
   .use(initReactI18next)
   .init({
+    react: {
+      useSuspense: false,
+    },
     ns: ['auth', 'main'],
     // Стандартный язык
     fallbackLng: 'en',

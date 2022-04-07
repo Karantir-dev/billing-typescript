@@ -12,7 +12,7 @@ export default function AuthPage({ children }) {
 
   return (
     <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
-      <div className={s.header}>
+      <header className={s.header}>
         <div className={`container ${s.flex}`}>
           <Logo darktheme={darkTheme ? 1 : 0} />
           <div className={s.btns_wrapper}>
@@ -20,7 +20,7 @@ export default function AuthPage({ children }) {
             <LangBtn authType />
           </div>
         </div>
-      </div>
+      </header>
       {children}
     </div>
   )

@@ -2,10 +2,11 @@
   "extends": [
     "eslint:recommended",
     "plugin:import/errors",
+    "plugin:import/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["react", "import", "jsx-a11y", "jest"],
+  "plugins": ["react", "import", "jsx-a11y", "jest", "auto-import"],
   "rules": {
     "react/prop-types": 0,
     "jsx-a11y/no-autofocus": 0,
@@ -42,5 +43,10 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
+  },
+  "globals": {
+    "shallow": true,
+    "render": true,
+    "mount": true
   }
 }

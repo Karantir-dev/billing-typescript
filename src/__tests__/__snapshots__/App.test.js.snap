@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Render without crashing 1`] = `
+<Provider
+  store={
+    Object {
+      "@@observable": [Function],
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <PersistGate
+    loading={null}
+    persistor={
+      Object {
+        "@@observable": [Function],
+        "dispatch": [Function],
+        "flush": [Function],
+        "getState": [Function],
+        "pause": [Function],
+        "persist": [Function],
+        "purge": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <BrowserRouter>
+      <Suspense
+        fallback={<Loader />}
+      >
+        <Routes>
+          <Route
+            element={
+              <PublicRoute
+                redirectTo="/"
+                restricted={true}
+              >
+                <AuthPage>
+                  <LoginForm />
+                </AuthPage>
+              </PublicRoute>
+            }
+            path="/login"
+          />
+          <Route
+            element={
+              <PublicRoute
+                redirectTo="/"
+                restricted={true}
+              >
+                <AuthPage>
+                  <SignupForm />
+                </AuthPage>
+              </PublicRoute>
+            }
+            path="/signup"
+          />
+          <Route
+            element={
+              <PublicRoute
+                redirectTo="/"
+                restricted={true}
+              >
+                <AuthPage>
+                  <PasswordReset />
+                </AuthPage>
+              </PublicRoute>
+            }
+            path="/reset_pass"
+          />
+          <Route
+            element={
+              <PublicRoute
+                redirectTo="/"
+                restricted={true}
+              >
+                <AuthPage>
+                  <PasswordChange />
+                </AuthPage>
+              </PublicRoute>
+            }
+            path="/change_pass"
+          />
+          <Route
+            element={
+              <PrivateRoute
+                redirectTo="/login"
+              >
+                <MainPage />
+              </PrivateRoute>
+            }
+            path="/"
+          />
+          <Route
+            element={
+              <PrivateRoute>
+                <MainPage />
+              </PrivateRoute>
+            }
+            path="/access_log"
+          />
+        </Routes>
+      </Suspense>
+      <Component>
+        <Loader />
+      </Component>
+    </BrowserRouter>
+  </PersistGate>
+</Provider>
+`;
