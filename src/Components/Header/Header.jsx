@@ -43,11 +43,11 @@ export default function Header() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const messages = useSelector(userSelectors.getUserItems)
 
-  const mes = messages.bitem
+  const mesAmount = messages.bitem
     ? Array.isArray(messages.bitem) && messages.bitem !== 'undefined'
       ? messages.bitem.length
       : 1
-    : ''
+    : 0
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -128,15 +128,15 @@ export default function Header() {
                   className={cn({
                     [s.item]: true,
                     [s.item_bell]: true,
-                    [s.notification_messages]: messages > 0,
+                    [s.notification_messages]: mesAmount > 0,
                   })}
                 >
-                  <NavLink to={routes.HOME} className={s.link} onClick={handleBellClick}>
+                  <button onClick={handleBellClick}>
                     <Bell className={s.icon} />
-                    {mes > 0 && (
-                      <span className={s.notification_messages_counter}>{mes}</span>
+                    {mesAmount > 0 && (
+                      <span className={s.notification_messages_counter}>{mesAmount}</span>
                     )}
-                  </NavLink>
+                  </button>
                 </li>
                 <li className={cn({ [s.item]: true, [s.profile_item]: true })}>
                   <button

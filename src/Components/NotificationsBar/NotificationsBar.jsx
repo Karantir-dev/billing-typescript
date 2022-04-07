@@ -26,8 +26,6 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
 
   const notifications = messages.bitem
 
-  // console.log(notifications)
-
   return (
     <>
       <div
@@ -39,10 +37,6 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
       ></div>
       <div
         className={cn({ [s.notificatonbar_container]: true, [s.opened]: isBarOpened })}
-        role="button"
-        tabIndex={0}
-        onKeyDown={() => null}
-        onClick={e => e.stopPropagation()}
       >
         <div className={s.notification_title_container}>
           <p className={s.notification_title}>{`${t(

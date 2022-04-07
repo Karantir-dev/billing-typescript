@@ -6,7 +6,6 @@ import { axiosInstance } from './../../config/axiosInstance'
 import { actions } from '../actions'
 
 const userInfo = (data, dispatch) => {
-  if (!data.doc.user) throw new Error('User info has not found')
   const { $realname, $balance, $email, $phone } = data.doc.user
   dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
 }
@@ -56,12 +55,9 @@ const getUserInfo = sessionId => dispatch => {
     ),
   ])
     .then(responses => {
-      responses.map(({ data }, i) => {
+      responses.forEach(({ data }, i) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
         funcsArray[i](data, dispatch)
-        console.log(data)
-        return
       })
       dispatch(actions.hideLoader())
     })
