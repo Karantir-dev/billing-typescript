@@ -33,7 +33,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'referal_program':
+      case 'ref_program':
         return (
           <Social
             className={cn({
