@@ -232,6 +232,7 @@ export default function Header() {
       <BurgerMenu
         isOpened={isMenuOpened}
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}
+        controlMenu={handleClick}
       />
 
       <NotificationsBar

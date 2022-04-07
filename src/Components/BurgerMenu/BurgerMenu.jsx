@@ -15,7 +15,7 @@ import * as routes from '../../routes'
 
 import s from './BurgerMenu.module.scss'
 
-export default function BurgerMenu({ classes, isOpened }) {
+export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('main')
 
   const profileMenuList = [
@@ -118,6 +118,7 @@ export default function BurgerMenu({ classes, isOpened }) {
         <ul className={s.list}>
           <li className={s.list_item}>
             <ListItems
+              controlMenu={controlMenu}
               name={$realname}
               subList={profileMenuList}
               isProfile
@@ -134,16 +135,32 @@ export default function BurgerMenu({ classes, isOpened }) {
             <p className={s.balance_sum}>{$balance} EUR</p>
           </li>
           <li className={s.list_item}>
-            <ListItems name={'services'} subList={servicesMenuList} />
+            <ListItems
+              controlMenu={controlMenu}
+              name={'services'}
+              subList={servicesMenuList}
+            />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'finance'} subList={financeMenuList} />
+            <ListItems
+              controlMenu={controlMenu}
+              name={'finance'}
+              subList={financeMenuList}
+            />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'ref_program'} subList={refProgrammMenuList} />
+            <ListItems
+              controlMenu={controlMenu}
+              name={'ref_program'}
+              subList={refProgrammMenuList}
+            />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'support'} subList={supportMenuList} />
+            <ListItems
+              controlMenu={controlMenu}
+              name={'support'}
+              subList={supportMenuList}
+            />
           </li>
           <li className={s.exit_list_item}>
             <NavLink to={routes.LOGIN}>

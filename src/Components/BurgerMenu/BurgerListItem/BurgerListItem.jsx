@@ -16,6 +16,7 @@ export default function BurgerListItem({
   subList,
   isListOpened,
   arrow,
+  controlMenu,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
@@ -53,9 +54,16 @@ export default function BurgerListItem({
           {subList.map(item => {
             return (
               <li key={nanoid()} className={s.list_item}>
-                <NavLink to={item.routeName}>
-                  <p className={s.list_item_name}>{item.name}</p>
-                </NavLink>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={() => null}
+                  onClick={controlMenu}
+                >
+                  <NavLink to={item.routeName}>
+                    <p className={s.list_item_name}>{item.name}</p>
+                  </NavLink>
+                </div>
               </li>
             )
           })}
