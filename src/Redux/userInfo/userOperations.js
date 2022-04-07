@@ -16,8 +16,6 @@ const userTickets = (data, dispatch) => {
 }
 
 const userNotifications = (data, dispatch) => {
-  if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
   const { bitem } = data.doc.notify.item[0]
   dispatch(userActions.setItems({ bitem }))
 }
@@ -62,6 +60,7 @@ const getUserInfo = sessionId => dispatch => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
+      dispatch(actions.hideLoader())
       console.log('getUserInfo - ', err.message)
     })
 }
