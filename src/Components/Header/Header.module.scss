@@ -153,6 +153,7 @@
   display: flex;
   align-items: center;
   margin-right: 25px;
+  cursor: pointer;
 }
 
 .balance_item {
@@ -177,7 +178,11 @@
 
   &:hover {
     .arrow_icon {
+      cursor: pointer;
       stroke: url(#gradient);
+    }
+    .icon {
+      fill: url(#gradient);
     }
   }
 }
@@ -261,7 +266,7 @@ $hamburger-layer-border-radius: 99px;
   cursor: pointer;
   transition-property: opacity;
   transition-duration: 0.15s;
-  z-index: 105;
+  z-index: 120;
 }
 
 .hamburger_spin {
@@ -362,10 +367,11 @@ $hamburger-layer-border-radius: 99px;
   top: 0;
   position: fixed;
   overflow-y: auto;
+  z-index: 110;
 
   background-color: var(--burger-menu-bgc);
   transform: translateX(100%);
-  transition: transform 1s;
+  transition: transform 0.4s;
 
   &.opened {
     transform: translateX(0px);
@@ -450,12 +456,11 @@ $hamburger-layer-border-radius: 99px;
   .item_bell {
     margin-right: 25px;
   }
-  .main_header {
-    padding-top: 21px;
-    padding-bottom: 16px;
-  }
+
   .header {
     justify-content: flex-end;
+    padding-top: 22px;
+    padding-bottom: 22px;
   }
 }
 

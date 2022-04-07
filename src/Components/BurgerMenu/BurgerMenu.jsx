@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -11,6 +11,7 @@ import ListItems from './ListItems/ListItems'
 import { selectors } from '../../Redux/selectors'
 import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import { authOperations } from '../../Redux/auth/authOperations'
+import { useOutsideAlerter } from '../../utils'
 import * as routes from '../../routes'
 
 import s from './BurgerMenu.module.scss'
@@ -100,6 +101,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
 
   const dispatch = useDispatch()
+  const getBurgerEl = useRef()
+
+  useOutsideAlerter(getBurgerEl, isOpened, controlMenu)
 
   const logOut = () => {
     dispatch(authOperations.logout())
@@ -107,7 +111,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
 
   return (
     <div className={isOpened ? s.burger : ''}>
-      <div className={classes}>
+      <div ref={getBurgerEl} className={classes}>
         <nav className={s.burger_nav}>
           <div className={s.theme_btn_wrapper}>
             <ThemeBtn burgerType />
