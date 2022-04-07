@@ -17,6 +17,7 @@ export { default as AsideServicesMenu } from './AsideServicesMenu/AsideServicesM
 export { default as Header } from './Header/Header'
 export { default as BurgerMenu } from './BurgerMenu/BurgerMenu'
 export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
+export { default as Container } from './Container/Container'
 
 //==========================================UI==========================================//
 export { default as InputFieldNew } from './ui/InputField/InputFieldNew'

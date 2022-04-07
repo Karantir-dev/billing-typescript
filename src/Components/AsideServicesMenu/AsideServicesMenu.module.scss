@@ -1,6 +1,6 @@
 .navigation {
+  position: fixed;
   height: 100vh;
-  width: 138px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -8,6 +8,8 @@
   background: var(--elements-bgc);
   box-shadow: var(--box-shadow);
   transition: width 0.25s;
+  z-index: 5;
+  width: 117px;
 }
 
 .navigation_pinned {
@@ -115,9 +117,29 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 871px) {
+@media screen and (max-width: 1023px) {
   .navigation {
     display: none;
   }
+
+  .logo {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
+@media screen and (min-width: 1024px) {
+  .logo {
+    margin-right: 0;
+    // margin-left: 0;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .navigation {
+    width: 130px;
+  }
+  .navigation_pinned {
+    width: 84px;
+  }
+}
