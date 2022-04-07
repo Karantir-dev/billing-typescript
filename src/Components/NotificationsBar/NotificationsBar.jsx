@@ -26,7 +26,7 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
 
   const notifications = messages.bitem
 
-  console.log(notifications)
+  // console.log(notifications)
 
   return (
     <>

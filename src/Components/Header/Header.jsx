@@ -17,16 +17,6 @@ import s from './Header.module.scss'
 import { authOperations } from '../../Redux/auth/authOperations'
 import { useOutsideAlerter } from '../../utils'
 
-export const getAllUserData = isAuthenticated => {
-  if (isAuthenticated) {
-    return Promise.all([
-      userOperations.getUserInfo(isAuthenticated),
-      userOperations.getItems(isAuthenticated),
-      userOperations.getTickets(isAuthenticated),
-    ])
-  }
-}
-
 export default function Header() {
   const { t } = useTranslation('main')
   const profileMenuList = [
@@ -43,18 +33,7 @@ export default function Header() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    try {
-      getAllUserData(sessionId).then(data => {
-        data.forEach(request => {
-          dispatch(request)
-        })
-      })
-      if (!getAllUserData) {
-        throw new Error('no data during fetch inside header')
-      }
-    } catch (e) {
-      console.log(e)
-    }
+    dispatch(userOperations.getUserInfo(sessionId))
   }, [removeNotification])
 
   const handleRemoveNotif = () => {

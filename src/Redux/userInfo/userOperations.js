@@ -3,30 +3,40 @@ import i18n from 'i18next'
 
 import { userActions } from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
+import { actions } from '../actions'
+
+const userInfo = (data, dispatch) => {
+  if (!data.doc.user) throw new Error('User info has not found')
+  const { $realname, $balance, $email, $phone } = data.doc.user
+  dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
+}
+
+const userTickets = (data, dispatch) => {
+  const { elem } = data.doc
+  dispatch(userActions.setTickets(elem))
+}
+
+const userNotifications = (data, dispatch) => {
+  if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+  const { bitem } = data.doc.notify.item[0]
+  dispatch(userActions.setItems({ bitem }))
+}
+
+const funcsArray = [userInfo, userTickets, userNotifications]
 
 const getUserInfo = sessionId => dispatch => {
-  axiosInstance
-    .post(
+  dispatch(actions.showLoader())
+  Promise.all([
+    axiosInstance.post(
       '/',
       qs.stringify({
         func: 'whoami',
         out: 'json',
         auth: sessionId,
       }),
-    )
-    .then(({ data }) => {
-      const { $realname, $balance, $email, $phone } = data.doc.user
-      dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
-      if (!data.doc.user) throw new Error('User info has not found')
-    })
-    .catch(error => {
-      console.log('error', error)
-    })
-}
-
-const getTickets = sessionId => dispatch => {
-  axiosInstance
-    .post(
+    ),
+    axiosInstance.post(
       '/',
       qs.stringify({
         func: 'dashboard.tickets',
@@ -34,20 +44,8 @@ const getTickets = sessionId => dispatch => {
         lang: 'en',
         auth: sessionId,
       }),
-    )
-    .then(({ data }) => {
-      const { elem } = data.doc
-      dispatch(userActions.setTickets(elem))
-    })
-    .catch(error => {
-      console.log('error', error)
-    })
-}
-
-const getItems = sessionId => dispatch => {
-  // console.log(i18n)
-  axiosInstance
-    .post(
+    ),
+    axiosInstance.post(
       '/',
       qs.stringify({
         func: 'notify',
@@ -55,18 +53,20 @@ const getItems = sessionId => dispatch => {
         lang: i18n.language,
         auth: sessionId,
       }),
-    )
-    .then(({ data }) => {
-      const { bitem } = data.doc.notify.item[0]
-      dispatch(userActions.setItems({ bitem }))
+    ),
+  ])
+    .then(responses => {
+      responses.map(({ data }, i) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      // console.log(data)
-      // console.log(bitem)
-
-      if (!bitem) throw new Error('Notifications info is not found')
+        funcsArray[i](data, dispatch)
+        console.log(data)
+        return
+      })
+      dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      console.log('getUserInfo - ', err.message)
     })
 }
 
@@ -92,7 +92,5 @@ const removeItems = (sessionId, id) => {
 
 export const userOperations = {
   getUserInfo,
-  getTickets,
-  getItems,
   removeItems,
 }
