@@ -1,0 +1,93 @@
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+.calendar_block {
+  width: 284px;
+  padding: 5px 15px 15px;
+  border-radius: 5px;
+  background: var(--forms-bg-2-color);
+  box-shadow: var(--elements-shadow);
+  &::after {
+    content: '';
+    position: absolute;
+    left: 47%;
+    top: -3%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--forms-bg-2-color);
+    clear: both;
+  }
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  margin-bottom: 18px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--transparent-color);
+  text-align: center;
+
+  abbr[title] {
+    text-decoration: none;
+  }
+}
+
+.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+.react-calendar__tile.react-calendar__month-view__days__day {
+  padding: 7px 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--main-text);
+}
+
+.react-calendar__tile--range {
+  background-color: rgba(255, 80, 223, 0.15);
+}
+
+.react-calendar__tile--range.react-calendar__tile--rangeStart,
+.react-calendar__tile--range.react-calendar__tile--rangeEnd {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  &::before {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 100px;
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+  }
+  abbr {
+    position: absolute;
+    color: #ffffff;
+  }
+}
+
+.react-calendar__tile--range.react-calendar__tile--rangeStart {
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.react-calendar__tile--range.react-calendar__tile--rangeEnd {
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.react-calendar__navigation__arrow {
+  cursor: pointer;
+}

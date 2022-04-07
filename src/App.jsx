@@ -1,7 +1,5 @@
 import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
-import { Routes, Route } from 'react-router-dom'
-
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import {
   Loader,
   LoginForm,
@@ -10,7 +8,13 @@ import {
   PasswordReset,
   PrivateRoute,
   PublicRoute,
+  Portal,
 } from './Components'
+
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+
+import entireStore from './Redux/store'
 
 import { AuthPage, MainPage, AccessLogScreen, AboutAffiliateProgram } from './Pages'
 
@@ -18,65 +22,76 @@ import * as route from './routes'
 
 export default function App() {
   return (
-    <>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route
-            path={route.LOGIN}
-            element={
-              <PublicRoute
-                children={<AuthPage children={<LoginForm />} />}
-                restricted
-                redirectTo={route.HOME}
+    <Provider store={entireStore.store}>
+      <PersistGate loading={null} persistor={entireStore.persistor}>
+        <BrowserRouter>
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route
+                path={route.LOGIN}
+                element={
+                  <PublicRoute
+                    children={<AuthPage children={<LoginForm />} />}
+                    restricted
+                    redirectTo={route.HOME}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path={route.REGISTRATION}
-            element={
-              <PublicRoute
-                children={<AuthPage children={<SignupForm />} />}
-                restricted
-                redirectTo={route.HOME}
+              <Route
+                path={route.REGISTRATION}
+                element={
+                  <PublicRoute
+                    children={<AuthPage children={<SignupForm />} />}
+                    restricted
+                    redirectTo={route.HOME}
+                  />
+                }
               />
-            }
-          />
 
-          <Route
-            path={route.RESET_PASSWORD}
-            element={
-              <PublicRoute
-                children={<AuthPage children={<PasswordReset />} />}
-                restricted
-                redirectTo={route.HOME}
+              <Route
+                path={route.RESET_PASSWORD}
+                element={
+                  <PublicRoute
+                    children={<AuthPage children={<PasswordReset />} />}
+                    restricted
+                    redirectTo={route.HOME}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path={route.CHANGE_PASSWORD}
-            element={
-              <PublicRoute
-                children={<AuthPage children={<PasswordChange />} />}
-                restricted
-                redirectTo={route.HOME}
+              <Route
+                path={route.CHANGE_PASSWORD}
+                element={
+                  <PublicRoute
+                    children={<AuthPage children={<PasswordChange />} />}
+                    restricted
+                    redirectTo={route.HOME}
+                  />
+                }
               />
-            }
-          />
-          <Route
-            path={route.HOME}
-            element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
-          />
-          <Route
-            path={route.ACCESS_LOG}
-            element={<PrivateRoute children={<AccessLogScreen />} />}
-          />
-          <Route
-            path={route.AFFILIATE_PROGRAM_ABOUT}
-            element={<PrivateRoute children={<AboutAffiliateProgram />} />}
-          />
-        </Routes>
-      </Suspense>
-      {ReactDOM.createPortal(<Loader />, document.getElementById('portal'))}
-    </>
+              <Route
+                path={route.HOME}
+                element={
+                  <PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />
+                }
+              />
+              <Route
+                path={route.ACCESS_LOG}
+                element={
+                  <PrivateRoute children={<MainPage children={<AccessLogScreen />} />} />
+                }
+              />
+
+              <Route
+                path={route.AFFILIATE_PROGRAM_ABOUT}
+                element={<PrivateRoute children={<AboutAffiliateProgram />} />}
+              />
+            </Routes>
+          </Suspense>
+          <Portal>
+            <Loader />
+          </Portal>
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   )
 }

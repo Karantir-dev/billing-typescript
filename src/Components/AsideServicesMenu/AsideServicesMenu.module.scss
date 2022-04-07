@@ -1,6 +1,6 @@
 .navigation {
+  position: fixed;
   height: 100vh;
-  width: 138px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -8,6 +8,8 @@
   background: var(--elements-bgc);
   box-shadow: var(--box-shadow);
   transition: width 0.25s;
+  z-index: 10;
+  width: 117px;
 }
 
 .navigation_pinned {
@@ -27,10 +29,10 @@
 .pinned_logo {
   width: auto;
   margin-right: -24px;
-  margin-left: -16px;
+  margin-left: -18px;
   padding-left: 4px;
   padding-right: 4px;
-  transform: scale(0.7);
+  transform: scale(0.65);
   transition: margin 0.15s;
 }
 
@@ -113,4 +115,27 @@
 .pin_icon {
   fill: var(--icon-color);
   cursor: pointer;
+}
+
+@media screen and (max-width: 1023px) {
+  .logo {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .logo {
+    margin-right: 0;
+    // margin-left: 0;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .navigation {
+    width: 130px;
+  }
+  .navigation_pinned {
+    width: 84px;
+  }
 }

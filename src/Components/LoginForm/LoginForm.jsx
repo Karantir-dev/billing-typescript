@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { authOperations } from '../../Redux/auth/authOperations'
-import { InputField, VerificationModal } from '..'
+import { VerificationModal, Button, InputFieldNew } from '..'
 import * as routes from '../../routes'
 import { RECAPTCHA_KEY } from '../../config/config'
 import { Facebook, Google, Vk } from '../../images'
@@ -52,7 +52,7 @@ export default function LoginForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, errors, values, touched }) => {
+        {({ setFieldValue, errors, touched }) => {
           const resetRecaptcha = () => {
             recaptchaEl.current.reset()
             setFieldValue('reCaptcha', '')
@@ -71,20 +71,26 @@ export default function LoginForm() {
                   <div className={s.changed_pass}>{t('registration_success')}</div>
                 )}
 
-                <InputField
-                  label="email"
-                  icon="envelope"
+                <InputFieldNew
+                  label={t('email_label')}
+                  placeholder={t('email_placeholder')}
+                  iconLeft="envelope"
+                  name="email"
                   error={!!errors.email}
                   touched={!!touched.email}
+                  className={s.input_field_wrapper}
                   autoComplete
                 />
 
-                <InputField
-                  label="password"
-                  icon="padlock"
+                <InputFieldNew
+                  label={t('password_label')}
+                  placeholder={t('password_placeholder')}
+                  name="password"
+                  type="password"
+                  iconLeft="padlock"
+                  className={s.input_field_wrapper}
                   error={!!errors.password}
                   touched={!!touched.password}
-                  inputValue={!!values.password}
                 />
 
                 <ReCAPTCHA
@@ -101,12 +107,9 @@ export default function LoginForm() {
                   name="reCaptcha"
                   component="span"
                 />
-                {/* <Button label={t('logIn')} type="submit" /> */}
 
-                <button className={s.submit_btn} type="submit">
-                  <span className={s.btn_text}>{t('logIn')}</span>
-                </button>
-
+                <Button className={s.submit_btn} label={t('logIn')} type="submit" />
+                
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}
                 </Link>

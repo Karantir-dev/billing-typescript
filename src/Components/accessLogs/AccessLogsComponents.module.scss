@@ -1,0 +1,272 @@
+@import '../../scss/placeholders.scss';
+
+.tableHeader {
+  padding: 11px 72px;
+  width: 100%;
+  display: flex;
+}
+
+.item {
+  padding: 20px 72px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  box-shadow: var(--input-btn-shadow);
+  margin-bottom: 7px;
+}
+
+.filterBlock {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 36px 0 40px 0;
+}
+
+.item_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  flex-basis: 40%;
+  align-items: center;
+  word-break: break-all;
+  margin-right: 60px;
+
+  &:first-child {
+    flex-basis: 30%;
+  }
+
+  &:last-child {
+    flex-basis: 30%;
+    margin-right: 0;
+  }
+}
+
+.item_text_time {
+  color: var(--transparent-color);
+}
+
+.item_title {
+  display: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+  margin-bottom: 10px;
+}
+
+.form {
+  width: 100%;
+  max-width: 630px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  max-width: 260px;
+  margin-right: 20px;
+}
+
+.selectAndBtn {
+  width: 341px;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  max-width: 260px;
+}
+
+.calendarBlock {
+  position: relative;
+}
+
+.calendarBtn {
+  margin: 0 20px 0 15px;
+}
+
+.calendarModal {
+  position: absolute;
+  display: none;
+  left: -140%;
+  transform: translate(10px, 15px);
+  &.opened {
+    display: block;
+  }
+}
+
+.btnBlock {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchBtn {
+  text-transform: uppercase;
+  max-width: 260px;
+}
+
+.clearFilters {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-left: 40px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+.csvBtn {
+  margin-top: 10px;
+  height: 46px;
+}
+
+// ADAPTIVE
+
+@media screen and (max-width: 1191px) {
+  .searchInput {
+    max-width: 255px;
+    margin-right: 15px;
+  }
+
+  .selectAndBtn {
+    width: 315px;
+    margin-top: 10px;
+  }
+
+  .select {
+    max-width: 255px;
+  }
+
+  .calendarBtn {
+    margin: 0 0 0 10px;
+  }
+
+  .calendarModal {
+    left: -215%;
+  }
+}
+
+@media screen and (max-width: 1105px) {
+  .item {
+    padding: 20px 57px;
+  }
+  .tableHeader {
+    padding: 11px 57px;
+  }
+}
+
+@media screen and (max-width: 1077px) {
+  .filterBlock {
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .item {
+    padding: 20px 37px;
+  }
+  .tableHeader {
+    padding: 11px 37px;
+  }
+  .item_text {
+    flex-basis: 50%;
+
+    &:first-child {
+      flex-basis: 15%;
+      min-width: 90px;
+    }
+
+    &:last-child {
+      flex-basis: 35%;
+    }
+  }
+}
+
+@media screen and (max-width: 871px) {
+  .calendarModal {
+    left: -400%;
+    div {
+      &::after {
+        left: 84%;
+      }
+    }
+  }
+
+  .btnBlock {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (max-width: 752px) {
+  .selectAndBtn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .tableHeader {
+    display: none;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item_text {
+    margin-right: 0px;
+    flex-basis: 100%;
+    &:first-child {
+      flex-basis: 100%;
+    }
+
+    &:last-child {
+      flex-basis: 100%;
+    }
+    margin-bottom: 15px;
+  }
+
+  .item_title {
+    display: block;
+  }
+
+  .searchInput {
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  .select {
+    max-width: 100%;
+  }
+
+  .calendarBtn {
+    margin: 0 0 0 9px;
+  }
+
+  .btnBlock {
+    margin-top: 15px;
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .searchBtn {
+    max-width: 100%;
+  }
+
+  .clearFilters {
+    margin-left: 0px;
+    margin-top: 15px;
+  }
+
+  .csvBtn {
+    display: none;
+    margin-top: 10px;
+  }
+}

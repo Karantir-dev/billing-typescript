@@ -4,17 +4,19 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 export default function Component(props) {
-  const { label, type, onClick, disabled, size } = props
+  const { label, type, onClick, disabled, size, isShadow, className } = props
 
   return (
     <button
       disabled={disabled}
       className={cn({
         [s.submit_btn]: true,
+        [s.shadow]: isShadow,
         [s.block]: size === 'block',
         [s.small]: size === 'small',
         [s.medium]: size === 'medium',
         [s.large]: size === 'large',
+        [className]: className,
       })}
       type={type}
       onClick={onClick}
@@ -26,9 +28,11 @@ export default function Component(props) {
 
 Component.propTypes = {
   label: PropTypes.string,
+  className: PropTypes.string,
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  isShadow: PropTypes.bool,
   size: PropTypes.oneOf(['block', 'small', 'medium', 'large']),
 }
 
@@ -38,4 +42,5 @@ Component.defaultProps = {
   onClick: () => null,
   disabled: false,
   size: 'block',
+  isShadow: false,
 }

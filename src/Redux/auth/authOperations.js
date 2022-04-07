@@ -1,16 +1,7 @@
-import axios from 'axios'
 import qs from 'qs'
-
 import { authActions } from './authActions'
 import { actions } from '../actions'
-import { BASE_URL } from '../../config/config'
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
+import { axiosInstance } from './../../config/axiosInstance'
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
@@ -178,6 +169,37 @@ const changePassword =
       })
   }
 
+const logout = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'logon',
+        auth: sessionId,
+        sok: 'ok',
+        out: 'json',
+      }),
+    )
+    .then(data => {
+      if (data.status === 200) {
+        dispatch(authActions.logoutSuccess())
+        dispatch(actions.hideLoader())
+      } else {
+        throw new Error(data.doc.error.msg.$)
+      }
+    })
+    .catch(e => {
+      console.log('error during logging out', e.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const getCountries = (setCountries, setStates) => dispatch => {
   dispatch(actions.showLoader())
 
@@ -253,6 +275,6 @@ export const authOperations = {
   reset,
   changePassword,
   sendTotp,
-
+  logout,
   getCountries,
 }
