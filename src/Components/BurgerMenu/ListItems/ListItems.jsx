@@ -10,25 +10,12 @@ import s from './ListItems.module.scss'
 
 export default function ListItems(props) {
   const { name, email, isProfile, subList } = props
-  let transcriptor = name
   const [isOpened, setIsOpened] = useState(false)
   const { t } = useTranslation('main')
 
-  if (name === 'Услуги') {
-    transcriptor = t('burger_menu.services.services')
-  } else if (transcriptor === 'Финансы') {
-    transcriptor = t('burger_menu.finance.finance')
-  } else if (transcriptor === 'Реферальная программа') {
-    transcriptor = t('burger_menu.ref_program.ref_program')
-  } else if (transcriptor === 'Поддержка') {
-    transcriptor = t('burger_menu.support.support')
-  } else {
-    transcriptor
-  }
-
   const renderIcon = name => {
     switch (name) {
-      case 'Услуги':
+      case 'services':
         return (
           <Box
             className={cn({
@@ -37,7 +24,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Финансы':
+      case 'finance':
         return (
           <Wallet
             className={cn({
@@ -46,7 +33,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Реферальная программа':
+      case 'referal_program':
         return (
           <Social
             className={cn({
@@ -55,7 +42,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Поддержка':
+      case 'support':
         return (
           <Support
             className={cn({
@@ -78,7 +65,7 @@ export default function ListItems(props) {
       onClick={() => setIsOpened(!isOpened)}
     >
       <BurgerListItem
-        name={transcriptor}
+        name={isProfile ? name : t(`burger_menu.${name}.${name}`)}
         arrow={
           <ArrowSign
             className={cn({

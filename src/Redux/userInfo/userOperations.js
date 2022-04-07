@@ -45,7 +45,7 @@ const getTickets = sessionId => dispatch => {
 }
 
 const getItems = sessionId => dispatch => {
-  console.log(i18n)
+  // console.log(i18n)
   axiosInstance
     .post(
       '/',
@@ -60,8 +60,8 @@ const getItems = sessionId => dispatch => {
       const { bitem } = data.doc.notify.item[0]
       dispatch(userActions.setItems({ bitem }))
 
-      console.log(data)
-      console.log(bitem)
+      // console.log(data)
+      // console.log(bitem)
 
       if (!bitem) throw new Error('Notifications info is not found')
     })

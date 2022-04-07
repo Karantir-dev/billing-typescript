@@ -45,12 +45,17 @@
     },
     "finance": {
       "finance": "Финансы",
-      "support_list": {
+      "finance_list": {
         "automatic_payment": "Автоплатеж",
         "payments": "Платежи",
         "expenses": "Расходы",
         "auto_renewal": "Автопродление услуг"
       }
     }
+  },
+  "notification_bar": {
+    "no_messages": "Новых уведомлений нет",
+    "show_more": "Смотреть все уведомления",
+    "notifications": "Уведомления"
   }
 }

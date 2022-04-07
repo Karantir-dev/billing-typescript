@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 import { userSelectors } from '../../Redux/userInfo/userSelectors'
@@ -9,6 +10,7 @@ import { instanceOf } from 'prop-types'
 
 export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
+  const { t } = useTranslation('main')
 
   let mes = 0
 
@@ -42,7 +44,9 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
         onClick={e => e.stopPropagation()}
       >
         <div className={s.notification_title_container}>
-          <p className={s.notification_title}>{`Оповещения (${mes})`}</p>
+          <p className={s.notification_title}>{`${t(
+            'notification_bar.notifications',
+          )} (${mes})`}</p>
           <div className={s.close_btn_wrapper}>
             <button className={s.close_btn} onClick={handler}></button>
           </div>

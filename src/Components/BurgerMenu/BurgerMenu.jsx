@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { ExitSign } from '../../images'
 import ListItems from './ListItems/ListItems'
 import { selectors } from '../../Redux/selectors'
 import { userSelectors } from '../../Redux/userInfo/userSelectors'
+import { authOperations } from '../../Redux/auth/authOperations'
 import * as routes from '../../routes'
 
 import s from './BurgerMenu.module.scss'
@@ -98,6 +99,12 @@ export default function BurgerMenu({ classes, isOpened }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
 
+  const dispatch = useDispatch()
+
+  const logOut = () => {
+    dispatch(authOperations.logout())
+  }
+
   return (
     <div className={isOpened ? s.burger : ''}>
       <div className={classes}>
@@ -127,20 +134,26 @@ export default function BurgerMenu({ classes, isOpened }) {
             <p className={s.balance_sum}>{$balance} EUR</p>
           </li>
           <li className={s.list_item}>
-            <ListItems name={'Услуги'} subList={servicesMenuList} />
+            <ListItems name={'services'} subList={servicesMenuList} />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'Финансы'} subList={financeMenuList} />
+            <ListItems name={'finance'} subList={financeMenuList} />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'Реферальная программа'} subList={refProgrammMenuList} />
+            <ListItems name={'ref_program'} subList={refProgrammMenuList} />
           </li>
           <li className={s.list_item}>
-            <ListItems name={'Поддержка'} subList={supportMenuList} />
+            <ListItems name={'support'} subList={supportMenuList} />
           </li>
           <li className={s.exit_list_item}>
-            <NavLink to={routes.REGISTRATION}>
-              <div className={s.exit_wrapper}>
+            <NavLink to={routes.LOGIN}>
+              <div
+                className={s.exit_wrapper}
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => null}
+                onClick={logOut}
+              >
                 <ExitSign className={s.icon} />
                 <p className={s.exit_name}>{t('profile.log_out')}</p>
               </div>

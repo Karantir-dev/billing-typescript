@@ -14,6 +14,7 @@ import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../images'
 import * as routes from '../../routes'
 
 import s from './Header.module.scss'
+import { authOperations } from '../../Redux/auth/authOperations'
 
 export const getAllUserData = isAuthenticated => {
   if (isAuthenticated) {
@@ -41,12 +42,18 @@ export default function Header() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getAllUserData(isAuthenticated).then(data => {
-      data.forEach(request => {
-        dispatch(request)
+    try {
+      getAllUserData(isAuthenticated).then(data => {
+        data.forEach(request => {
+          dispatch(request)
+        })
       })
-    })
-    console.log('item was removed, all the components shoud rerender')
+      if (!getAllUserData) {
+        throw new Error('no data during fetch inside header')
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }, [removeNotification])
 
   const handleRemoveNotif = () => {
@@ -78,7 +85,9 @@ export default function Header() {
     setIsMenuOpened(!isMenuOpened)
   }
 
-  const logOut = () => {}
+  const logOut = () => {
+    dispatch(authOperations.logout())
+  }
 
   return (
     <>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { userOperations } from '../../../Redux/userInfo/userOperations'
 import { authSelectors } from '../../../Redux/auth/authSelectors'
@@ -9,6 +10,7 @@ import s from './NotificationList.module.scss'
 
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
+  const { t } = useTranslation('main')
 
   let shortNotificationsList = notifications
 
@@ -18,8 +20,6 @@ export default function NotificationList({ notifications, removedNotification })
   })
 
   const [currentNotifList, setCurrentNotifList] = useState(showMore.messages)
-
-  console.log(shortNotificationsList)
 
   const handleShowMoreClick = () => {
     setShowMore({
@@ -50,11 +50,11 @@ export default function NotificationList({ notifications, removedNotification })
           removeItem={removeItem}
         />
       ) : (
-        <p className={s.no_messages}>There are no messages</p>
+        <p className={s.no_messages}>{t('notification_bar.no_messages')}</p>
       )}
       {notifications?.length > 3 && !showMore.isClicked && (
         <button onClick={handleShowMoreClick}>
-          <p className={s.show_more}>Смотреть все уведомления</p>
+          <p className={s.show_more}>{t('notification_bar.show_more')}</p>
         </button>
       )}
     </>

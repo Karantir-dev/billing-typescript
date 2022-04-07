@@ -52,5 +52,10 @@
         "auto_renewal": "Auto-renewal"
       }
     }
+  },
+  "notification_bar": {
+    "no_messages": "There are no notifications",
+    "show_more": "Show all notifications",
+    "notifications": "Notifications"
   }
 }
