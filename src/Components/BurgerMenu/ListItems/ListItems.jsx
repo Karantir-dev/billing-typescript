@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 import BurgerListItem from '../BurgerListItem/BurgerListItem'
 import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../images'
@@ -8,12 +9,13 @@ import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../image
 import s from './ListItems.module.scss'
 
 export default function ListItems(props) {
-  const { name, email, isProfile, subList } = props
+  const { name, email, isProfile, subList, controlMenu } = props
   const [isOpened, setIsOpened] = useState(false)
+  const { t } = useTranslation('main')
 
   const renderIcon = name => {
     switch (name) {
-      case 'Услуги':
+      case 'services':
         return (
           <Box
             className={cn({
@@ -22,7 +24,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Финансы':
+      case 'finance':
         return (
           <Wallet
             className={cn({
@@ -31,7 +33,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Реферальная программа':
+      case 'referal_program':
         return (
           <Social
             className={cn({
@@ -40,7 +42,7 @@ export default function ListItems(props) {
             })}
           />
         )
-      case 'Поддержка':
+      case 'support':
         return (
           <Support
             className={cn({
@@ -63,7 +65,8 @@ export default function ListItems(props) {
       onClick={() => setIsOpened(!isOpened)}
     >
       <BurgerListItem
-        name={name}
+        controlMenu={controlMenu}
+        name={isProfile ? name : t(`burger_menu.${name}.${name}`)}
         arrow={
           <ArrowSign
             className={cn({

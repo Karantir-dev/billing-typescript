@@ -16,12 +16,18 @@ export default function BurgerListItem({
   subList,
   isListOpened,
   arrow,
+  controlMenu,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   return (
     <>
-      <div className={cn({ [s.list_item_container]: true, [s.opened]: isListOpened })}>
+      <div
+        className={cn({
+          [s.list_item_container]: true,
+          [s.opened]: isListOpened,
+        })}
+      >
         {svg}
         {isProfile ? (
           <div className={s.profile_wrapper}>
@@ -48,9 +54,16 @@ export default function BurgerListItem({
           {subList.map(item => {
             return (
               <li key={nanoid()} className={s.list_item}>
-                <NavLink to={item.routeName}>
-                  <p className={s.list_item_name}>{item.name}</p>
-                </NavLink>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={() => null}
+                  onClick={controlMenu}
+                >
+                  <NavLink to={item.routeName}>
+                    <p className={s.list_item_name}>{item.name}</p>
+                  </NavLink>
+                </div>
               </li>
             )
           })}
@@ -66,4 +79,6 @@ BurgerListItem.propTypes = {
   svg: PropTypes.object,
   email: PropTypes.string,
   isProfile: PropTypes.bool,
+  isListOpened: PropTypes.bool,
+  arrow: PropTypes.object,
 }
