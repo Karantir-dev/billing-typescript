@@ -29,13 +29,14 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
   console.log(notifications)
 
   return (
-    <div
-      className={s.notification_wrapper}
-      role="button"
-      tabIndex={0}
-      onKeyDown={() => null}
-      onClick={handler}
-    >
+    <>
+      <div
+        className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => null}
+        onClick={handler}
+      ></div>
       <div
         className={cn({ [s.notificatonbar_container]: true, [s.opened]: isBarOpened })}
         role="button"
@@ -51,11 +52,13 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
             <button className={s.close_btn} onClick={handler}></button>
           </div>
         </div>
-        <NotificationList
-          notifications={notifications}
-          removedNotification={removedNotification}
-        />
+        {isBarOpened && (
+          <NotificationList
+            notifications={notifications}
+            removedNotification={removedNotification}
+          />
+        )}
       </div>
-    </div>
+    </>
   )
 }
