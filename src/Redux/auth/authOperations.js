@@ -178,8 +178,6 @@ const changePassword =
       })
   }
 
-const logout = () => {}
-
 const getCountries = (setCountries, setStates) => dispatch => {
   dispatch(actions.showLoader())
 
@@ -255,6 +253,6 @@ export const authOperations = {
   reset,
   changePassword,
   sendTotp,
-  logout,
+
   getCountries,
 }

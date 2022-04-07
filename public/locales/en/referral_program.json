@@ -1,0 +1,23 @@
+{
+  "page_title": "Referral program",
+  "about_section_title": "About the program",
+  "income_section_title": "Income",
+  "statistics_section_title": "Statistics",
+  "about_section": {
+    "description_1": "The ZOMRO referral program will allow you to profitably earn without any investment. A referral program is a type of cooperation where you, as our partner, sell the services and goods of the company, and we, in turn, pay you a reward.",
+    "description_2": "Your referral network can be limitless! And it gives you the opportunity to earn unlimited passive income with no effort..",
+    "banners_link_caption": "Here you can download the archive with materials for your site",
+    "banners_download_link": "DOWNLOAD",
+    "referral_link": "Referral link",
+    "service": "Service:",
+    "service_placeholder": "Choose a service",
+    "promocode": "Promo code:",
+    "domains": "Domains",
+    "virtual_servers": "Virtual servers",
+    "dedicated_servers": "Dedicated servers",
+    "shared_hosting": "Shared hosting",
+    "DNS_hosting": "DNS-hosting",
+    "website_care": "Website care",
+    "server_for_forex": "Server for Forex"
+  }
+}

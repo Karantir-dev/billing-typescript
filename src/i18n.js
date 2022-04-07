@@ -11,7 +11,7 @@ i18n
   // модуль инициализации
   .use(initReactI18next)
   .init({
-    ns: ['auth', 'main'],
+    ns: ['auth'],
     // Стандартный язык
     fallbackLng: 'en',
     debug: false,
@@ -21,6 +21,10 @@ i18n
       cache: ['localStorage'],
     },
   })
+
+// i18n.services.formatter.add('uppercase', value => {
+//   return value.toUpperCase()
+// })
 
 i18n.loadNamespaces(['other', 'access_log'])
 
