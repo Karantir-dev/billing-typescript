@@ -102,7 +102,7 @@ export default function Header() {
       <header className={s.main_header}>
         <div className={s.container}>
           <div className={s.header}>
-            <Logo className={s.logo} darktheme={darkTheme ? 1 : 0} />
+            <Logo className={s.logo} />
 
             <nav className={s.main_nav}>
               <ul className={s.list}>
