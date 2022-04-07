@@ -36,14 +36,14 @@ export default function Header() {
     { name: t('profile.contracts'), routeName: routes.HOME },
   ]
 
-  const isAuthenticated = useSelector(authSelectors.getSessionId)
+  const sessionId = useSelector(authSelectors.getSessionId)
   const [removeNotification, setRemoveNotification] = useState(false)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     try {
-      getAllUserData(isAuthenticated).then(data => {
+      getAllUserData(sessionId).then(data => {
         data.forEach(request => {
           dispatch(request)
         })
