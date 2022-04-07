@@ -12,7 +12,7 @@ import {
   PublicRoute,
 } from './Components'
 
-import { AuthPage, MainPage, AccessLogScreen, AboutReferralProgram } from './Pages'
+import { AuthPage, MainPage, AccessLogScreen, AboutAffiliateProgram } from './Pages'
 
 import * as route from './routes'
 
@@ -71,8 +71,8 @@ export default function App() {
             element={<PrivateRoute children={<AccessLogScreen />} />}
           />
           <Route
-            path={route.REFERRAL_PROGRAM_ABOUT}
-            element={<PrivateRoute children={<AboutReferralProgram />} />}
+            path={route.AFFILIATE_PROGRAM_ABOUT}
+            element={<PrivateRoute children={<AboutAffiliateProgram />} />}
           />
         </Routes>
       </Suspense>

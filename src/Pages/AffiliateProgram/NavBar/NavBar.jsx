@@ -6,7 +6,7 @@ import * as route from '../../../routes'
 import s from './NavBar.module.scss'
 
 export default function NavBar() {
-  const { t } = useTranslation('referral_program')
+  const { t } = useTranslation('affiliate_program')
 
   return (
     <div className={s.nav_bar}>
@@ -17,7 +17,7 @@ export default function NavBar() {
             className={({ isActive }) =>
               isActive ? s.active_link + ' ' + s.link : s.link
             }
-            to={route.REFERRAL_PROGRAM_ABOUT}
+            to={route.AFFILIATE_PROGRAM_ABOUT}
           >
             {t('about_section_title')}
           </NavLink>
@@ -25,7 +25,7 @@ export default function NavBar() {
             className={({ isActive }) =>
               isActive ? s.active_link + ' ' + s.link : s.link
             }
-            to={route.REFERRAL_PROGRAM_INCOME}
+            to={route.AFFILIATE_PROGRAM_INCOME}
           >
             {t('income_section_title')}
           </NavLink>
@@ -33,11 +33,12 @@ export default function NavBar() {
             className={({ isActive }) =>
               isActive ? s.active_link + ' ' + s.link : s.link
             }
-            to={route.REFERRAL_PROGRAM_STATISTICS}
+            to={route.AFFILIATE_PROGRAM_STATISTICS}
           >
             {t('statistics_section_title')}
           </NavLink>
         </div>
+        <div className={s.line}></div>
       </div>
     </div>
   )
