@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
@@ -15,6 +15,7 @@ import * as routes from '../../routes'
 
 import s from './Header.module.scss'
 import { authOperations } from '../../Redux/auth/authOperations'
+import { useOutsideAlerter } from '../../utils'
 
 export const getAllUserData = isAuthenticated => {
   if (isAuthenticated) {
@@ -77,6 +78,13 @@ export default function Header() {
   const [isMenuOpened, setIsMenuOpened] = useState(false)
   const [isNotificationBarOpened, setIsNotificationBarOpened] = useState(false)
   const [isProfileOpened, setIsProfileOpened] = useState(false)
+  const getProfileEl = useRef()
+
+  const clickOutside = () => {
+    setIsProfileOpened(!isProfileOpened)
+  }
+
+  useOutsideAlerter(getProfileEl, isProfileOpened, clickOutside)
 
   const handleBellClick = () => {
     setIsNotificationBarOpened(!isNotificationBarOpened)
@@ -171,13 +179,21 @@ export default function Header() {
                       [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
                       [s.opened]: isProfileOpened,
                     })}
+                    ref={getProfileEl}
                   >
                     {profileMenuList.map(item => {
                       return (
                         <li key={nanoid()} className={s.profile_list_item}>
-                          <NavLink to={item.routeName}>
-                            <p className={s.list_item_name}>{item.name}</p>
-                          </NavLink>
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={() => null}
+                            onClick={() => setIsProfileOpened(!isProfileOpened)}
+                          >
+                            <NavLink to={item.routeName}>
+                              <p className={s.list_item_name}>{item.name}</p>
+                            </NavLink>
+                          </div>
                         </li>
                       )
                     })}
@@ -216,15 +232,14 @@ export default function Header() {
       <BurgerMenu
         isOpened={isMenuOpened}
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}
+        controlMenu={handleClick}
       />
 
-      {isNotificationBarOpened && (
-        <NotificationsBar
-          removedNotification={handleRemoveNotif}
-          isBarOpened={isNotificationBarOpened}
-          handler={handleBellClick}
-        />
-      )}
+      <NotificationsBar
+        removedNotification={handleRemoveNotif}
+        isBarOpened={isNotificationBarOpened}
+        handler={handleBellClick}
+      />
     </>
   )
 }

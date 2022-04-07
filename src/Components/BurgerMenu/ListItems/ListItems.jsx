@@ -9,7 +9,7 @@ import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../image
 import s from './ListItems.module.scss'
 
 export default function ListItems(props) {
-  const { name, email, isProfile, subList } = props
+  const { name, email, isProfile, subList, controlMenu } = props
   const [isOpened, setIsOpened] = useState(false)
   const { t } = useTranslation('main')
 
@@ -65,6 +65,7 @@ export default function ListItems(props) {
       onClick={() => setIsOpened(!isOpened)}
     >
       <BurgerListItem
+        controlMenu={controlMenu}
         name={isProfile ? name : t(`burger_menu.${name}.${name}`)}
         arrow={
           <ArrowSign
