@@ -7,12 +7,11 @@ import { Logo } from './../../images'
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false }) {
-  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const isLoading = useSelector(selectors.getIsLoadding)
   console.log('isLoading', isLoading)
   return (
     <div className={cn({ [s.backdrop]: true, [s.main]: logo, [s.shown]: isLoading })}>
-      {logo && <Logo darktheme={darkTheme ? 1 : 0} />}
+      {logo && <Logo />}
 
       <div className={s.loader}>
         <div className={`${s.loader_circle} ${s.first}`}></div>

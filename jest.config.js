@@ -6,6 +6,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
   },
+  setupFilesAfterEnv: ['./jest.setup.js'],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
     '.+\\.(svg|css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',

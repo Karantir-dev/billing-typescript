@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
+import { useMediaQuery } from 'react-responsive'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectors } from '../../Redux/selectors'
@@ -12,8 +13,8 @@ import s from './AsideServicesMenu.module.scss'
 import { actions } from '../../Redux/actions'
 
 const AsideServicesMenu = () => {
-  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const pinnedStatus = useSelector(selectors.getIsPinned)
+  const tabletOrHigher = useMediaQuery({ query: '(max-width: 1023px)' })
 
   const dispatch = useDispatch()
 
@@ -27,13 +28,14 @@ const AsideServicesMenu = () => {
     dispatch(actions.changeIsPinned())
   }
 
+  if(tabletOrHigher) {
+    return null;
+  }
+
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
-        <Logo
-          className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
-          darktheme={darkTheme ? 1 : 0}
-        />
+        <Logo className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })} />
         <li className={s.item}>
           <NavLink
             to={routes.HOME}
