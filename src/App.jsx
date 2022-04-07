@@ -9,6 +9,7 @@ import {
   PrivateRoute,
   PublicRoute,
   Portal,
+  TrustedUsers,
 } from './Components'
 
 import { Provider } from 'react-redux'
@@ -78,6 +79,12 @@ export default function App() {
                 path={route.ACCESS_LOG}
                 element={
                   <PrivateRoute children={<MainPage children={<AccessLogScreen />} />} />
+                }
+              />
+              <Route
+                path={route.TRUSTED_USERS}
+                element={
+                  <PrivateRoute children={<MainPage children={<TrustedUsers />} />} />
                 }
               />
             </Routes>
