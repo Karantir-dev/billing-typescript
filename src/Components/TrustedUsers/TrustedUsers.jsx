@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, { useState } from 'react'
+import { Button } from '..'
 
 import s from './TrustedUsers.module.scss'
 
@@ -12,15 +13,22 @@ export default function TrustedUsers() {
 
   return (
     <>
-      <h3 className={s.title}>Доверенные пользователи</h3>
-      <p className={classNames({ [s.subtitle]: true })}>
-        {readMore ? subtitleText : slicedSubtitle}
-      </p>
-      <button onClick={() => setReadMore(!readMore)}>
-        {readMore ? 'show less' : 'Read more'}
-      </button>
-      <p>Ваши пользователи</p>
-      <div>users card - component</div>
+      <section>
+        <div>
+          <h3 className={s.section_title}>Доверенные пользователи</h3>
+
+          <p className={classNames({ [s.subtitle]: true })}>
+            {readMore ? subtitleText : slicedSubtitle}
+          </p>
+          <button onClick={() => setReadMore(!readMore)}>
+            {readMore ? 'show less' : 'Read more'}
+          </button>
+        </div>
+
+        <Button size="large" label={'Добавить'} type="button" className={s.add_btn} />
+        <p className={s.users_title}>Ваши пользователи</p>
+        <div>users card - component</div>
+      </section>
     </>
   )
 }
