@@ -9,16 +9,14 @@
     "banners_link_caption": "Here you can download the archive with materials for your site",
     "banners_download_link": "DOWNLOAD",
     "referral_link": "Referral link",
-    "service": "Service:",
+    "service": "Service",
     "service_placeholder": "Choose a service",
-    "promocode": "Promo code:",
-    "domains": "Domains",
-    "virtual_servers": "Virtual servers",
+    "promocode": "Promo code",
+    "big_vds": "Servers VDS/VPS with big storage",
+    "vds": "Servers VDS/VPS for high load",
     "dedicated_servers": "Dedicated servers",
     "shared_hosting": "Shared hosting",
-    "DNS_hosting": "DNS-hosting",
-    "website_care": "Website care",
-    "server_for_forex": "Server for Forex",
+    "virtual_servers": "Virtual servers",
     "read_more": "Read more"
   }
 }

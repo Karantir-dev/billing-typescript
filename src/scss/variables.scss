@@ -15,23 +15,24 @@ body {
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
   --link-color: #4c75a3;
-
   --auth-placeholder-color: #c4c4c4;
   --eye-color: #777;
   --icon-color: #d9d0eb;
-
-  --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
-  --btn-shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #ffffff;
-
+  // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --background-color: #fefdff;
-
   --transparent-color: #b3a9c1;
-
   --forms-bg-2-color: #ffffff;
+  --inactive_icon_color: #e1daeb;
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
   --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
   --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
+
+  --menu_shadow: 4px 4px 10px rgba(213, 201, 236, 0.25);
+  --forms_shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
+  --forms2_shadow: 0px 1px 8px 0px rgba(65, 38, 114, 0.15);
+  --buttons_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #fff;
 }
 
 // dark theme variables
@@ -46,21 +47,22 @@ body.dark-theme {
   --success-bgc: #433d4f;
   --success-color: #38d49c;
   --link-color: #8ab7fa;
-
   --auth-placeholder-color: #6e6977;
   --eye-color: #c4c4c4;
   --icon-color: #75707e;
-
-  --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
-  --btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.3);
-
+  // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --background-color: #201a2a;
-
   --transparent-color: #716d79;
-
   --forms-bg-2-color: #342f3f;
+  --inactive_icon_color: #5c5865;
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
   --burger-menu-elem-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.21);
   --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
+
+  --menu_shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+  --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+  --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.3);
 }

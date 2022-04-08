@@ -77,16 +77,25 @@ export default function App() {
               <Route
                 path={route.ACCESS_LOG}
                 element={
-                  <PrivateRoute children={<MainPage children={<AccessLogScreen />} />} />
+                  <PrivateRoute
+                    children={
+                      <MainPage children={<AccessLogScreen />} redirectTo={route.LOGIN} />
+                    }
+                  />
                 }
               />
-
               <Route
                 path={route.AFFILIATE_PROGRAM_ABOUT}
-                element={<PrivateRoute children={<AboutAffiliateProgram />} />}
+                element={
+                  <PrivateRoute
+                    children={<AboutAffiliateProgram />}
+                    redirectTo={route.LOGIN}
+                  />
+                }
               />
             </Routes>
           </Suspense>
+
           <Portal>
             <Loader />
           </Portal>

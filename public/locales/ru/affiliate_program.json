@@ -9,16 +9,14 @@
     "banners_link_caption": "Здесь вы можете скачать архив с материалами для Вашего сайта",
     "banners_download_link": "СКАЧАТЬ",
     "referral_link": "Реферальная ссылка",
-    "service": "Услуга:",
+    "service": "Услуга",
     "service_placeholder": "Выберите услугу",
-    "promocode": "Промокод:",
-    "domains": "Домены",
-    "virtual_servers": "Виртуальные серверы",
+    "promocode": "Промокод",
+    "big_vds": "Серверы VDS/VPS с большим диском",
+    "vds": "Серверы VDS/VPS Высокопроизводительные",
     "dedicated_servers": "Выделенные серверы",
     "shared_hosting": "Виртуальный хостинг",
-    "DNS_hosting": "DNS-хостинг",
-    "website_care": "Забота о сайте",
-    "server_for_forex": "Сервер для Forex",
+    "virtual_servers": "Виртуальные серверы",
     "read_more": "Читать больше"
   }
 }
