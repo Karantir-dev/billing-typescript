@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
@@ -7,6 +7,7 @@ import { userSelectors } from '../../Redux/userInfo/userSelectors'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
 import { instanceOf } from 'prop-types'
+import { useOutsideAlerter } from '../../utils'
 
 export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
@@ -24,18 +25,23 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
     mes = 0
   }
 
+  const getNotifBarEl = useRef()
+
+  // const clickOutside = () => {
+  //   setIsProfileOpened(!isProfileOpened)
+  // }
+
+  useOutsideAlerter(getNotifBarEl, isBarOpened, handler)
+
   const notifications = messages.bitem
 
   return (
     <>
       <div
         className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}
-        role="button"
-        tabIndex={0}
-        onKeyDown={() => null}
-        onClick={handler}
       ></div>
       <div
+        ref={getNotifBarEl}
         className={cn({ [s.notificatonbar_container]: true, [s.opened]: isBarOpened })}
       >
         <div className={s.notification_title_container}>
