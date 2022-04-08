@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { authOperations } from '../../Redux/auth/authOperations'
-import { VerificationModal, Button, InputFieldNew } from '..'
+import { VerificationModal, Button, InputField } from '..'
 import * as routes from '../../routes'
 import { RECAPTCHA_KEY } from '../../config/config'
 import { Facebook, Google, Vk } from '../../images'
@@ -27,7 +27,6 @@ export default function LoginForm() {
       recaptchaEl.current.reset()
       setFieldValue('reCaptcha', '')
     }
-
     dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
   }
 
@@ -71,7 +70,7 @@ export default function LoginForm() {
                   <div className={s.changed_pass}>{t('registration_success')}</div>
                 )}
 
-                <InputFieldNew
+                <InputField
                   label={t('email_label')}
                   placeholder={t('email_placeholder')}
                   iconLeft="envelope"
@@ -82,7 +81,7 @@ export default function LoginForm() {
                   autoComplete
                 />
 
-                <InputFieldNew
+                <InputField
                   label={t('password_label')}
                   placeholder={t('password_placeholder')}
                   name="password"
@@ -109,7 +108,7 @@ export default function LoginForm() {
                 />
 
                 <Button className={s.submit_btn} label={t('logIn')} type="submit" />
-                
+
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}
                 </Link>
