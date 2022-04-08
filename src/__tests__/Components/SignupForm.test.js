@@ -9,7 +9,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 
 import i18n from '../../i18n'
 
-const mockedNavigator = jest.fn()
+// const mockedNavigator = jest.fn()
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -65,7 +65,7 @@ describe('Register Component', () => {
   })
 
   test('should update email field on change', async () => {
-    const emailInput = await tree.find("input[name='email']")
+    const emailInput = await tree.find('input[name=\'email\']')
     act(() => {
       emailInput.simulate('change', {
         persist: () => {},
@@ -79,7 +79,7 @@ describe('Register Component', () => {
   })
 
   test('should update password field on change', async () => {
-    const passwordInput = await tree.find("input[name='password']")
+    const passwordInput = await tree.find('input[name=\'password\']')
     act(() => {
       passwordInput.simulate('change', {
         persist: () => {},
@@ -93,7 +93,7 @@ describe('Register Component', () => {
   })
 
   test('should update passConfirmation field on change', async () => {
-    const passConfirmationInput = await tree.find("input[name='passConfirmation']")
+    const passConfirmationInput = await tree.find('input[name=\'passConfirmation\']')
     act(() => {
       passConfirmationInput.simulate('change', {
         persist: () => {},
@@ -107,7 +107,7 @@ describe('Register Component', () => {
   })
 
   test('should update name field on change', async () => {
-    const name = await tree.find("input[name='name']")
+    const name = await tree.find('input[name=\'name\']')
     act(() => {
       name.simulate('change', {
         persist: () => {},

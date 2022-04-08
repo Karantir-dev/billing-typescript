@@ -1,11 +1,10 @@
-import i18n from 'i18next'
+import i18n, { use, loadNamespaces} from 'i18next'
 import Backend from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 
-i18n
-  // Подключение бэкенда i18next
-  .use(Backend)
+// Подключение бэкенда i18next
+use(Backend)
   // Автоматическое определение языка
   .use(LanguageDetector)
   // модуль инициализации
@@ -25,6 +24,6 @@ i18n
     },
   })
 
-i18n.loadNamespaces(['other', 'access_log'])
+loadNamespaces(['other', 'access_log'])
 
 export default i18n
