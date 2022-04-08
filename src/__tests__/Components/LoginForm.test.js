@@ -56,7 +56,7 @@ describe('Login Component', () => {
   })
 
   test('should update email field on change', async () => {
-    const emailInput = await tree.find("input[name='email']")
+    const emailInput = await tree.find('input[name=\'email\']')
     act(() => {
       emailInput.simulate('change', {
         persist: () => {},
@@ -70,7 +70,7 @@ describe('Login Component', () => {
   })
 
   test('should update password field on change', async () => {
-    const passwordInput = await tree.find("input[name='password']")
+    const passwordInput = await tree.find('input[name=\'password\']')
     act(() => {
       passwordInput.simulate('change', {
         persist: () => {},
