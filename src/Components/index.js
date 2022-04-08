@@ -29,6 +29,8 @@ export { default as CalendarModal } from './ui/CalendarModal/CalendarModal'
 export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
+export { default as ToggleButton } from './ui/ToggleButton/ToggleButton'
+
 export { default as Pagination } from './ui/Pagination/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
 

@@ -1,0 +1,33 @@
+.btn {
+  position: relative;
+  background-color: #e1dfdf;
+  height: 26px;
+  width: 50px;
+
+  &.active {
+    background: var(--accent-gradient);
+  }
+}
+
+.circle {
+  right: -100%;
+  transition: right 1s ease;
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: white;
+  }
+
+  &.active {
+    left: unset;
+    right: 0;
+
+    &::after {
+      background-color: green;
+    }
+  }
+}

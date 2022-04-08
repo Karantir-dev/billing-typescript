@@ -34,3 +34,7 @@ export { default as Bell } from './svg/Bell.jsx'
 export { default as Profile } from './svg/Profile.jsx'
 export { default as ExitSign } from './svg/ExitSign.jsx'
 export { default as ArrowSign } from './svg/ArrowSign.jsx'
+
+export { default as Settings } from './svg/Settings.jsx'
+export { default as Key } from './svg/Key.jsx'
+export { default as Delete } from './svg/Delete.jsx'
