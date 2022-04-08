@@ -8,7 +8,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { authOperations } from '../../Redux/auth/authOperations'
-import { InputField, SelectOfCountries } from '../'
+import { SelectOfCountries, InputField, Button } from '../'
 import * as routes from '../../routes'
 import { Facebook, Google, Vk } from './../../images'
 
@@ -91,7 +91,7 @@ export default function SignupForm() {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ setFieldValue, setFieldTouched, errors, values, touched }) => {
+        {({ setFieldValue, setFieldTouched, errors, touched }) => {
           return (
             <Form className={s.form}>
               {errMsg && (
@@ -99,34 +99,45 @@ export default function SignupForm() {
               )}
 
               <InputField
-                label="name"
-                icon="person"
+                label={t('name_label')}
+                placeholder={t('name_placeholder')}
+                iconLeft="person"
+                name="name"
                 error={!!errors.name}
                 touched={!!touched.name}
+                className={s.input_field_wrapper}
               />
 
               <InputField
-                label="email"
-                icon="envelope"
+                label={t('email_label')}
+                placeholder={t('email_placeholder')}
+                iconLeft="envelope"
+                name="email"
                 error={!!errors.email}
                 touched={!!touched.email}
-                autoComplete
+                className={s.input_field_wrapper}
               />
 
               <InputField
-                label="password"
-                icon="padlock"
+                label={t('password_label')}
+                placeholder={t('password_placeholder')}
+                iconLeft="padlock"
+                name="password"
                 error={!!errors.password}
                 touched={!!touched.password}
-                inputValue={!!values.password}
+                type="password"
+                className={s.input_field_wrapper}
               />
 
               <InputField
-                label="passConfirmation"
-                icon="padlock"
+                label={t('passConfirmation_label')}
+                placeholder={t('passConfirmation_placeholder')}
+                iconLeft="padlock"
+                name="passConfirmation"
                 error={!!errors.passConfirmation}
                 touched={!!touched.passConfirmation}
-                inputValue={!!values.passConfirmation}
+                type="password"
+                className={s.input_field_wrapper}
               />
 
               <SelectOfCountries
@@ -151,9 +162,7 @@ export default function SignupForm() {
                 component="span"
               />
 
-              <button className={s.submit_btn} type="submit">
-                <span className={s.btn_text}>{t('register')}</span>
-              </button>
+              <Button className={s.submit_btn} label={t('register')} type="submit" />
             </Form>
           )
         }}

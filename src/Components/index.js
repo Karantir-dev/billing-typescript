@@ -1,4 +1,3 @@
-export { default as InputField } from './InputField/InputField'
 export { default as Loader } from './Loader/Loader'
 export { default as SelectOfCountries } from './SelectOfCountries/SelectOfCountries'
 export { default as SelectOfRegions } from './SelectOfRegions/SelectOfRegions'
@@ -20,7 +19,7 @@ export { default as NotificationsBar } from './NotificationsBar/NotificationsBar
 export { default as Container } from './Container/Container'
 
 //==========================================UI==========================================//
-export { default as InputFieldNew } from './ui/InputField/InputFieldNew'
+export { default as InputField } from './ui/InputField/InputField'
 export { default as Select } from './ui/Select/Select'
 export { default as IconButton } from './ui/IconButton/IconButton'
 export { default as CalendarModal } from './ui/CalendarModal/CalendarModal'
