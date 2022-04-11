@@ -1,0 +1,30 @@
+.filterBlock {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.newTicketBtn {
+  text-transform: uppercase;
+  max-width: 230px;
+}
+
+.form {
+  width: 100%;
+  max-width: 630px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  max-width: 260px;
+  margin-right: 20px;
+}
+
+.formBlock {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}

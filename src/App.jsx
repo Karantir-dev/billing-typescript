@@ -89,7 +89,14 @@ export default function App() {
                 path={route.SUPPORT}
                 element={<PrivateRoute children={<SupportPage />} />}
                 redirectTo={route.LOGIN}
-              />
+              >
+                <Route
+                  path={':path'}
+                  element={({ match }) => (
+                    <PrivateRoute children={<SupportPage path={match.params.path} />} />
+                  )}
+                />
+              </Route>
               <Route
                 path={route.AFFILIATE_PROGRAM_ABOUT}
                 element={

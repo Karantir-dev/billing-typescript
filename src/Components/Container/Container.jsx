@@ -1,6 +1,6 @@
 import React from 'react'
-
-import { AsideServicesMenu, Header } from '..'
+import AsideServicesMenu from './AsideServicesMenu/AsideServicesMenu'
+import Header from './Header/Header'
 
 import s from './Container.module.scss'
 
