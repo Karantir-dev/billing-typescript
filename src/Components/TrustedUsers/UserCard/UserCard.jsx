@@ -1,101 +1,144 @@
 import classNames from 'classnames'
-import React, { useRef, useState } from 'react'
-import { Delete, Key, Settings } from '../../../images'
-import { useOutsideAlerter } from '../../../utils'
+import React, { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
-// import { Button } from '..'
+import ControlBtn from '../ControlBtn/ControlBtn'
+import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
+import { useDispatch } from 'react-redux'
 
-export default function UserCard({ name, hasAccess, status, email }) {
+export default function UserCard({
+  name,
+  hasAccess,
+  status,
+  email,
+  userId,
+  handleUserRolesData,
+}) {
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
+  const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
+  const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
 
-  const dropDownEl = useRef()
+  const dispatch = useDispatch()
+
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const handleControlDotsClick = () => {
     setAreControlDotsActive(!areControlDotsActive)
   }
 
-  useOutsideAlerter(dropDownEl, areControlDotsActive, handleControlDotsClick)
+  const handleAccessAlert = () => {
+    setIsSuccessAlertOpened(!isSuccessAlertOpened)
+  }
+  const handleStatusAlert = () => {
+    setIsStatusAlertOpened(!isStatusAlertOpened)
+  }
+
+  const handleAccessClick = () => {
+    const switchAccess = hasAccess ? 'off' : 'on'
+    setIsSuccessAlertOpened(!isSuccessAlertOpened)
+    dispatch(usersOperations.changeUserRights(userId, switchAccess))
+    handleUserRolesData()
+  }
+
+  const handleStatusClick = () => {
+    const changeStatus = status === 'on' ? 'suspend' : 'resume'
+    setIsStatusAlertOpened(!isStatusAlertOpened)
+    dispatch(usersOperations.changeUserStatus(userId, changeStatus))
+    handleUserRolesData()
+  }
 
   return (
     <>
-      <div className={s.min_card_wrapper}>
-        <div className={s.email_wrapper}>
-          <p className={s.label}>Email:</p>
-          <p className={s.user_email}>{email}</p>
-        </div>
-        <div className={s.name_wrapper}>
-          <p className={s.label}>ФИО или название:</p>
-          <p className={s.user_name}>{name}</p>
-        </div>
-        <div className={s.full_access_wrapper}>
-          <p className={s.label}>Полный доступ:</p>
-          <p className={s.user_access}>{hasAccess ? 'Yes' : 'No'}</p>
-        </div>
-        <div className={s.status_wrapper}>
-          <p className={s.label}>Статус:</p>
-          <p
-            className={classNames({
-              [s.user_status]: true,
-              [s.user_status_off]: status !== 'on',
-            })}
-          >
-            {status === 'on' ? 'Active' : 'Inactive'}
-          </p>
-        </div>
-
-        <button
-          className={classNames({
-            [s.control_btn]: true,
-          })}
-          onClick={handleControlDotsClick}
-        >
-          <span className={s.dot}></span>
-          <span className={s.dot}></span>
-          <span className={s.dot}></span>
-
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() => null}
-            onClick={e => e.stopPropagation()}
-            className={classNames({
-              [s.list]: true,
-              [s.opened]: areControlDotsActive,
-            })}
-            ref={dropDownEl}
-          >
-            <button className={s.settings_btn}>
-              <Settings className={s.icon} /> <p className={s.setting_text}>Settings</p>
-            </button>
-            <button className={s.access_rights_btn}>
-              <Key className={s.icon} />
-              <p className={s.access_text}>Access rights</p>
-              <ToggleButton />
-            </button>
-            <button className={s.remove_btn}>
-              <Delete className={s.icon} />
-              <p className={s.delete_text}>Delete</p>
-            </button>
+      {mobile && (
+        <div className={s.min_card_wrapper}>
+          <div className={s.email_wrapper}>
+            <p className={s.label}>Email:</p>
+            <p className={s.user_email}>{email}</p>
           </div>
-        </button>
-      </div>
+          <div className={s.name_wrapper}>
+            <p className={s.label}>ФИО или название:</p>
+            <p className={s.user_name}>{name}</p>
+          </div>
+          <div className={s.full_access_wrapper}>
+            <p className={s.label}>Полный доступ:</p>
+            <div className={s.toggle_wrapper}>
+              <p className={s.user_access}>{hasAccess ? 'Yes' : 'No'}</p>
+              <ToggleButton
+                toggleName="access"
+                func={handleAccessClick}
+                initialState={hasAccess}
+                isAlertOpened={isSuccessAlertOpened}
+                email={email}
+                handleAlert={handleAccessAlert}
+              />
+            </div>
+          </div>
+          <div className={s.status_wrapper}>
+            <p className={s.label}>Статус:</p>
+            <div className={s.toggle_wrapper}>
+              <p
+                className={classNames({
+                  [s.user_status]: true,
+                  [s.user_status_off]: status !== 'on',
+                })}
+              >
+                {status === 'on' ? 'Active' : 'Inactive'}
+              </p>
+              <ToggleButton
+                toggleName="status"
+                initialState={status === 'on'}
+                func={handleStatusClick}
+                isAlertOpened={isStatusAlertOpened}
+                email={email}
+                handleAlert={handleStatusAlert}
+              />
+            </div>
+          </div>
 
-      {/* <div className={s.large_card_wrapper}>
-        <p className={s.user_email_lg}>{email}</p>
-        <p className={s.user_name_lg}>{name}</p>
-        <p className={s.user_access_lg}>{hasAccess ? 'Yes' : 'No'}</p>
-        <p className={s.label}>Статус:</p>
-        <p
-          className={classNames({
-            [s.user_status]: true,
-            [s.user_status_off]: status !== 'on',
-          })}
-        >
-          Статус
-        </p>
-      </div> */}
+          <ControlBtn
+            handleControlDotsClick={handleControlDotsClick}
+            areControlDotsActive={areControlDotsActive}
+          />
+        </div>
+      )}
+
+      {!mobile && (
+        <div className={s.table_wrapper}>
+          <div className={s.table_row}>
+            <p className={s.user_email_lg}>{email}</p>
+            <p className={s.user_name_lg}>{name}</p>
+            <div className={s.toggle_wrapper_lg}>
+              <p className={s.user_access_lg}>{hasAccess ? 'turn off' : 'turn on'}</p>
+              <ToggleButton
+                toggleName="access"
+                func={handleAccessClick}
+                initialState={hasAccess}
+                isAlertOpened={isSuccessAlertOpened}
+                email={email}
+                handleAlert={handleAccessAlert}
+              />
+            </div>
+            <div className={s.toggle_wrapper_lg}>
+              <ToggleButton
+                toggleName="status"
+                initialState={status === 'on'}
+                func={handleStatusClick}
+                isAlertOpened={isStatusAlertOpened}
+                email={email}
+                handleAlert={handleStatusAlert}
+              />
+            </div>
+
+            <ControlBtn
+              handleControlDotsClick={handleControlDotsClick}
+              areControlDotsActive={areControlDotsActive}
+            />
+          </div>
+        </div>
+      )}
     </>
   )
 }

@@ -31,6 +31,59 @@ const getUsers = () => (dispatch, getState) => {
     })
 }
 
+const changeUserRights = (id, switchAccess) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.edit',
+        out: 'json',
+        auth: sessionId,
+        elid: id,
+        default_access_allow: switchAccess,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log(data)
+    })
+    .catch(error => {
+      console.log('error', error)
+    })
+}
+
+const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: `user.${changeStatus}`,
+        out: 'json',
+        auth: sessionId,
+        elid: id,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log(data)
+    })
+    .catch(error => {
+      console.log('error', error)
+    })
+}
+
 export const usersOperations = {
   getUsers,
+  changeUserRights,
+  changeUserStatus,
 }

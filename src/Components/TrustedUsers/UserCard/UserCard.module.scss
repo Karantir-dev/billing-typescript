@@ -31,14 +31,14 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 70.9%;
-  color: #45a884;
+  color: var(--main-text);
 }
 
 .user_status_off {
   font-weight: 400;
   font-size: 16px;
   line-height: 70.9%;
-  color: #d93f21;
+  color: var(--main-text);
 }
 
 .email_wrapper,
@@ -48,76 +48,41 @@
   margin-bottom: 15px;
 }
 
-.control_btn {
-  position: absolute;
+.toggle_wrapper {
+  width: 144px;
   display: flex;
-  right: 21px;
-  top: 23px;
-  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.list {
-  position: absolute;
-  width: 193px;
-  background-color: var(--nearby-elements-bgc);
-  top: 25px;
-  right: -21px;
-  padding: 31px 16px 23px 16px;
-  box-shadow: var(--burger-menu-elem-box-shadow);
-  border-radius: 5px;
-  display: none;
+// desktop card
 
-  &::before {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: var(--nearby-elements-bgc);
-    transform: rotate(45deg);
-    top: -7px;
-    right: 27px;
-    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
-  }
-
-  &.opened {
-    display: block;
-  }
-}
-
-.dot {
+.table_wrapper {
   position: relative;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 6px;
-    height: 6px;
-    margin-left: 5px;
-    border-radius: 50%;
-    background-color: var(--main-text);
-  }
 }
-
-.settings_btn,
-.access_rights_btn,
-.remove_btn {
+.toggle_wrapper_lg {
+  width: 130px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.setting_text {
-  margin-left: 18px;
-}
-.access_text {
-  margin-left: 15px;
-}
-.delete_text {
-  margin-left: 22px;
+.table_row {
+  display: grid;
+  grid-template-columns: repeat(5, 130px);
+  padding: 18px 27px 16px 0;
+  box-shadow: var(--elements-shadow);
+  margin-bottom: 10px;
+  column-gap: 28px;
 }
 
-.icon {
-  fill: var(--icon-color);
+.user_email_lg {
+  padding-left: 27px;
+}
 
-  &:hover {
-    fill: url(#gradient);
+// ADAPTIVE
+@media screen and (min-width: 1550px) {
+  .table_row {
+    grid-template-columns: repeat(5, 190px);
   }
 }

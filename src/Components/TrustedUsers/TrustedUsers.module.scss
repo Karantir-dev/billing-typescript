@@ -27,6 +27,24 @@
   margin-bottom: 40px;
 }
 
+.table_header {
+  display: grid;
+  grid-template-columns: repeat(5, 130px);
+  column-gap: 28px;
+  margin-bottom: 15px;
+}
+.user_email_lg {
+  padding-left: 27px;
+}
+
+.user_name_lg {
+  // padding-left: 15px;
+}
+
+.table_wrapper {
+  display: none;
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .subtitle {
@@ -39,6 +57,9 @@
   }
   .add_btn {
     width: 260px;
+  }
+  .table_wrapper {
+    display: block;
   }
 }
 
@@ -61,5 +82,8 @@
   .subtitle {
     font-size: 18px;
     line-height: 130.5%;
+  }
+  .table_header {
+    grid-template-columns: repeat(5, 190px);
   }
 }
