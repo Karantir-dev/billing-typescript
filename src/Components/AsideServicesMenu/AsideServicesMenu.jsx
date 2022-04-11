@@ -68,7 +68,7 @@ const AsideServicesMenu = () => {
         </li>
         <li className={s.item}>
           <NavLink
-            to={routes.RESET_PASSWORD}
+            to={routes.SUPPORT}
             className={({ isActive }) => (isActive ? s.active : s.inactive)}
             style={pinnedStyle}
           >

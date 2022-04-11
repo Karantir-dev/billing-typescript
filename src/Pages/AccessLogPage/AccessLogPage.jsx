@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import accessLogsSelectors from '../../Redux/accessLogs/accessLogsSelectors'
 import accessLogsOperations from '../../Redux/accessLogs/accessLogsOperations'
-import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components/'
+import {
+  AccessLogsTable,
+  AccessLogsFilter,
+  Pagination,
+  Container,
+} from '../../Components'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectors } from '../../Redux/selectors'
-import s from './AccessLogScreen.module.scss'
+import s from './AccessLogPage.module.scss'
 
 export default function MainPage() {
   const { t } = useTranslation(['access_log', 'other'])
@@ -14,7 +17,6 @@ export default function MainPage() {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
@@ -29,7 +31,7 @@ export default function MainPage() {
   }, [currentPage])
 
   return (
-    <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
+    <Container>
       <div className={s.body}>
         <div className={s.content}>
           <h1 className={s.pageTitle}>{t('access_log')}</h1>
@@ -51,6 +53,6 @@ export default function MainPage() {
           )}
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
