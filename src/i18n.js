@@ -1,4 +1,4 @@
-import i18n, { use, loadNamespaces} from 'i18next'
+import i18n, { use, loadNamespaces } from 'i18next'
 import Backend from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
@@ -13,7 +13,7 @@ use(Backend)
     react: {
       useSuspense: false,
     },
-    ns: ['auth', 'main'],
+    ns: ['auth'],
     // Стандартный язык
     fallbackLng: 'en',
     debug: false,

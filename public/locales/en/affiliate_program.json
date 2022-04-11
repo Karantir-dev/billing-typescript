@@ -1,0 +1,24 @@
+{
+  "page_title": "Affiliate program",
+  "about_section_title": "About the program",
+  "income_section_title": "Income",
+  "statistics_section_title": "Statistics",
+  "about_section": {
+    "description_1": "Zomro Affiliate Program will allow you to earn without any investment. An Affiliate Program is a type of cooperation where you, as our partner, sell the company’s services and we pay you a commission.",
+    "description_2": "Your referral network can be limitless! And it gives you the opportunity to earn unlimited passive income effortlessly.",
+    "banners_link_caption": "Here you can download the archive with materials for your site",
+    "banners_download_link": "DOWNLOAD",
+    "referral_link": "Referral link",
+    "service": "Service",
+    "service_placeholder": "Choose a service",
+    "promocode": "Promo code",
+    "big_vds": "Servers VDS/VPS with big storage",
+    "vds": "Servers VDS/VPS for high load",
+    "dedicated_servers": "Dedicated servers",
+    "shared_hosting": "Shared hosting",
+    "virtual_servers": "Virtual servers",
+    "read_more": "Read more",
+    "link_copied": "Link copied",
+    "promocode_copied": "Promo code copied"
+  }
+}
