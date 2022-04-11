@@ -7,7 +7,7 @@ import { Shevron } from '../../../../images'
 
 import s from './ServicesSelect.module.scss'
 
-export default function ServicesSelect({ setSelectedService }) {
+export default function ServicesSelect({ setServiseName }) {
   const { t } = useTranslation('affiliate_program', { keyPrefix: 'about_section' })
   const dropdownEl = useRef(null)
   const currentServiceEl = useRef(null)
@@ -35,7 +35,7 @@ export default function ServicesSelect({ setSelectedService }) {
     }
 
     currentServiceEl.current.textContent = text
-    setSelectedService(linkName)
+    setServiseName(linkName)
   }
 
   const handleSelectClick = () => {

@@ -91,6 +91,7 @@
 }
 
 .copy_field {
+  position: relative;
   padding: 0 20px;
   display: flex;
   align-items: center;
@@ -99,6 +100,7 @@
   height: 50px;
   border-radius: 5px;
   box-shadow: var(--forms_shadow);
+  background-color: var(--elements-bgc);
 }
 
 .field_text {
@@ -120,4 +122,8 @@
   &.selected {
     fill: var(--transparent-color);
   }
+}
+
+.copy_prompt {
+  position: absolute;
 }

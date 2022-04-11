@@ -13,6 +13,7 @@
   height: 100%;
   border-radius: 5px;
   box-shadow: var(--forms_shadow);
+  background-color: var(--elements-bgc);
 
   &.opened {
     .icon {
@@ -51,6 +52,7 @@
   top: calc(100% + 5px);
   left: 0;
   right: 0;
+  background-color: var(--elements-bgc);
   box-shadow: var(--forms_shadow);
   transition: height 0.15s;
 }

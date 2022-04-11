@@ -17,6 +17,8 @@
     "dedicated_servers": "Dedicated servers",
     "shared_hosting": "Shared hosting",
     "virtual_servers": "Virtual servers",
-    "read_more": "Read more"
+    "read_more": "Read more",
+    "link_copied": "Link copied",
+    "promocode_copied": "Promo code copied"
   }
 }

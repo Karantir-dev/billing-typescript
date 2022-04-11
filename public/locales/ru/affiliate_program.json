@@ -17,6 +17,8 @@
     "dedicated_servers": "Выделенные серверы",
     "shared_hosting": "Виртуальный хостинг",
     "virtual_servers": "Виртуальные серверы",
-    "read_more": "Читать больше"
+    "read_more": "Читать больше",
+    "link_copied": "Ссылка скопирована",
+    "promocode_copied": "Промокод скопирован"
   }
 }
