@@ -8,7 +8,7 @@ import s from './Loader.module.scss'
 
 export default function Loader({ logo = false }) {
   const isLoading = useSelector(selectors.getIsLoadding)
-  console.log('isLoading', isLoading)
+
   return (
     <div className={cn({ [s.backdrop]: true, [s.main]: logo, [s.shown]: isLoading })}>
       {logo && <Logo />}

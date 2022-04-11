@@ -45,7 +45,7 @@
 }
 .shadow {
   border: none;
-  box-shadow: var(--input-btn-shadow);
+  box-shadow: var(--forms_shadow);
 }
 
 .dropdown {
@@ -62,7 +62,7 @@
 
   &.opened {
     display: block;
-  } 
+  }
 
   &::after {
     content: '';

@@ -13,7 +13,7 @@ use(Backend)
     react: {
       useSuspense: false,
     },
-    ns: ['auth', 'main'],
+    ns: ['auth'],
     // Стандартный язык
     fallbackLng: 'en',
     debug: false,

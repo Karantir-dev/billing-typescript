@@ -3,6 +3,7 @@ import * as React from 'react'
 export default function SvgComponent(props) {
   return (
     <svg
+      viewBox="0 0 15 11"
       width={15}
       height={11}
       strokeWidth={2}

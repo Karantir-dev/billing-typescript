@@ -16,7 +16,13 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import entireStore from './Redux/store'
 
-import { AuthPage, MainPage, AccessLogPage, SupportPage } from './Pages'
+import {
+  AuthPage,
+  MainPage,
+  AccessLogPage,
+  AboutAffiliateProgram,
+  SupportPage,
+} from './Pages'
 
 import * as route from './routes'
 
@@ -77,13 +83,25 @@ export default function App() {
               <Route
                 path={route.ACCESS_LOG}
                 element={<PrivateRoute children={<AccessLogPage />} />}
+                redirectTo={route.LOGIN}
               />
               <Route
                 path={route.SUPPORT}
                 element={<PrivateRoute children={<SupportPage />} />}
+                redirectTo={route.LOGIN}
+              />
+              <Route
+                path={route.AFFILIATE_PROGRAM_ABOUT}
+                element={
+                  <PrivateRoute
+                    children={<AboutAffiliateProgram />}
+                    redirectTo={route.LOGIN}
+                  />
+                }
               />
             </Routes>
           </Suspense>
+
           <Portal>
             <Loader />
           </Portal>
