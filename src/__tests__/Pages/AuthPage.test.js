@@ -2,6 +2,8 @@ import React from 'react'
 import { AuthPage } from '../../Pages'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
+import { ThemeBtn, LangBtn } from '../../Components'
+import { Logo } from '../../images'
 import configureStore from 'redux-mock-store'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '../../i18n'
@@ -17,9 +19,22 @@ describe('Auth Pages Component', () => {
       </I18nextProvider>
     </Provider>,
   )
-  test('', () => {
-    const instance = component.getInstance()
-    const header = instance.findByType('header')
+  const root = component.root
+
+  test('Component Have Header', () => {
+    const header = root.findAllByType('header')
     expect(header).toHaveLength(1)
+  })
+
+  test('Component have languages button', () => {
+    root.findByType(LangBtn)
+  })
+
+  test('Component have themes button', () => {
+    root.findByType(ThemeBtn)
+  })
+
+  test('Component have header Logo', () => {
+    root.findByType(Logo)
   })
 })

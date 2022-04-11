@@ -1,13 +1,13 @@
 import React from 'react'
-import { InputFieldNew } from '../Components'
+import { InputField } from '../Components'
 import { Formik, Form } from 'formik'
 
 export default {
   title: 'Input field',
-  component: InputFieldNew,
+  component: InputField,
 }
 
-const Template = args => <InputFieldNew {...args} />
+const Template = args => <InputField {...args} />
 
 export const InputFieldLight = Template.bind({})
 

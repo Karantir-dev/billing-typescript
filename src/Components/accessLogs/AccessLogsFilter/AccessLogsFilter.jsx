@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '../../../utils'
 import { Formik, Form } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { InputFieldNew, Select, IconButton, CalendarModal, Button } from '../..'
+import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
 import s from '../AccessLogsComponents.module.scss'
 
 export default function Component({ setCurrentPage }) {
@@ -114,7 +114,7 @@ export default function Component({ setCurrentPage }) {
           }
           return (
             <Form className={s.form}>
-              <InputFieldNew
+              <InputField
                 name="ip"
                 placeholder={t('remote_ip_address')}
                 isShadow
