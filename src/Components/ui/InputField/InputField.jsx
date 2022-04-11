@@ -3,7 +3,7 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { EyeClosed, Eye, Envelope, Padlock, Search } from '../../../images'
+import { EyeClosed, Eye, Envelope, Padlock, Search, Person } from '../../../images'
 import s from './InputField.module.scss'
 
 export default function Component(props) {
@@ -34,6 +34,8 @@ export default function Component(props) {
         return <Padlock className={pos} />
       case 'search':
         return <Search className={pos} />
+      case 'person':
+        return <Person className={pos} />
       default:
         return null
     }
@@ -61,7 +63,11 @@ export default function Component(props) {
 
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
-      {label && <label className={s.label}>{label}</label>}
+      {label && (
+        <label htmlFor={name} className={s.label}>
+          {label}
+        </label>
+      )}
       <div className={s.input_wrapper}>
         <Field
           className={cn({
@@ -72,6 +78,7 @@ export default function Component(props) {
             [s.error]: error && touched,
           })}
           style={{ height }}
+          id={name}
           name={name}
           type={passShown ? 'text' : type}
           placeholder={placeholder}
@@ -88,8 +95,8 @@ export default function Component(props) {
 
 Component.propTypes = {
   label: PropTypes.string,
-  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search']),
-  iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search']),
+  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
+  iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   placeholder: PropTypes.string,
   className: PropTypes.string,
   type: PropTypes.oneOf(['text', 'email', 'number', 'password']),

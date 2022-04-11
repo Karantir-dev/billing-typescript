@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { useSelector } from 'react-redux'
 import { Logo } from '../../images'
 import s from './AuthPage.module.scss'
@@ -14,7 +13,7 @@ export default function AuthPage({ children }) {
     <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
       <header className={s.header}>
         <div className={`container ${s.flex}`}>
-          <Logo darktheme={darkTheme ? 1 : 0} />
+          <Logo />
           <div className={s.btns_wrapper}>
             <ThemeBtn authType />
             <LangBtn authType />
