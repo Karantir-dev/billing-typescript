@@ -46,6 +46,7 @@
 
 .dropdown {
   position: absolute;
+  z-index: 1;
   padding: 0 20px;
   height: 0;
   overflow: hidden;

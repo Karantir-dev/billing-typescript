@@ -23,6 +23,7 @@ body {
   --transparent-color: #b3a9c1;
   --forms-bg-2-color: #ffffff;
   --inactive_icon_color: #e1daeb;
+  --popup_prompt: #ede7f4;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -55,6 +56,7 @@ body.dark-theme {
   --transparent-color: #716d79;
   --forms-bg-2-color: #342f3f;
   --inactive_icon_color: #5c5865;
+  --popup_prompt: #4f4a5b;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

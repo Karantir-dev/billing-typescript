@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import ServicesSelect from './ServicesSelect/ServicesSelect'
+import { CSSTransition } from 'react-transition-group'
 
 import NavBar from '../NavBar/NavBar'
 import s from './AboutAffiliateProgram.module.scss'
@@ -9,6 +10,7 @@ import { Copy } from '../../../images'
 import { useDispatch } from 'react-redux'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
 import * as route from '../../../routes'
+import animations from './animations.module.scss'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
@@ -20,12 +22,21 @@ export default function AboutAffiliateProgram() {
   const [referralLink, setReferralLink] = useState('')
   const [promocode, setPromocode] = useState('')
   const [isDescrOpened, setIsDescrOpened] = useState(false)
-
   const [serviceSelected, setServiceSelected] = useState(false)
+  const [promocodeCopied, setPromocodeCopied] = useState(false)
+  const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   useEffect(() => {
     dispatch(affiliateProgramOperations.getReferralLink(setReferralLink, setPromocode))
   }, [])
+
+  const showPrompt = fn => {
+    fn(true)
+
+    setTimeout(() => {
+      fn(false)
+    }, 2000)
+  }
 
   const toggleDescrHeight = () => {
     if (!isDescrOpened) {
@@ -49,8 +60,10 @@ export default function AboutAffiliateProgram() {
         return
       }
 
+      showPrompt(setRefLinkCopied)
       navigator.clipboard.writeText(el.current.textContent)
     } else {
+      showPrompt(setPromocodeCopied)
       navigator.clipboard.writeText(el.current.textContent)
     }
   }
@@ -119,7 +132,17 @@ export default function AboutAffiliateProgram() {
               className={cn({ [s.copy_icon]: true, [s.selected]: serviceSelected })}
             />
 
-            <div className={s.copy_prompt}>{t('about_section.link_copied')}</div>
+            <CSSTransition
+              in={refLinkCopied}
+              classNames={animations}
+              timeout={150}
+              unmountOnExit
+            >
+              <div className={s.copy_prompt}>
+                <div className={s.prompt_pointer}></div>
+                {t('about_section.link_copied')}
+              </div>
+            </CSSTransition>
           </div>
         </div>
 
@@ -139,8 +162,17 @@ export default function AboutAffiliateProgram() {
               {promocode}
             </span>
             <Copy className={cn({ [s.copy_icon]: true, [s.selected]: true })} />
-
-            <div className={s.copy_prompt}>{t('about_section.promocode_copied')}</div>
+            <CSSTransition
+              in={promocodeCopied}
+              classNames={animations}
+              timeout={150}
+              unmountOnExit
+            >
+              <div className={s.copy_prompt}>
+                <div className={s.prompt_pointer}></div>
+                {t('about_section.promocode_copied')}
+              </div>
+            </CSSTransition>
           </div>
         </div>
       </div>

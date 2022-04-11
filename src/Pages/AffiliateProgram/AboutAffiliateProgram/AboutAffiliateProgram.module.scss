@@ -126,4 +126,40 @@
 
 .copy_prompt {
   position: absolute;
+  top: calc(100% - 5px);
+  right: 0;
+  pointer-events: none;
+  padding: 12px 40px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  z-index: 1;
+  background-color: var(--popup_prompt);
 }
+
+.prompt_pointer {
+  position: absolute;
+  bottom: 100%;
+  right: 17px;
+
+  border: 10px solid transparent;
+  border-bottom-color: var(--popup_prompt);
+}
+
+// .transition-enter {
+//   opacity: 0;
+// }
+
+// .transition-enter-active {
+//   opacity: 1;
+//   transition: opacity 150ms;
+// }
+
+// .transition-exit {
+//   opacity: 1;
+// }
+
+// .transition-exit-active {
+//   opacity: 0;
+//   transition: opacity 150ms;
+// }
