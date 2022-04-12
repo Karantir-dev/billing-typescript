@@ -118,6 +118,43 @@
   }
 }
 
+.profile_list_username_item {
+  position: relative;
+  margin-bottom: 30px;
+  cursor: auto;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 1px;
+    position: absolute;
+    background-color: var(--icon-color);
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+  }
+}
+
+.user_email {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: #878291;
+
+  &_lt {
+    color: #b3a9c1;
+  }
+}
+
+.user_name {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
 .exit_name {
   padding-top: 20px;
   font-size: 16px;

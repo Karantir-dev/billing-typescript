@@ -23,7 +23,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { name: t('profile.user_settings'), routeName: routes.HOME },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
     { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.activity_log'), routeName: routes.HOME },
+    { name: t('profile.payers'), routeName: routes.HOME },
     { name: t('profile.contracts'), routeName: routes.HOME },
   ]
 

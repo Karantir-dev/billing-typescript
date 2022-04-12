@@ -107,9 +107,7 @@ export default function App() {
               />
               <Route
                 path={route.TRUSTED_USERS}
-                element={
-                  <PrivateRoute children={<MainPage children={<TrustedUsers />} />} />
-                }
+                element={<PrivateRoute children={<TrustedUsers />} />}
               />
             </Routes>
           </Suspense>

@@ -23,7 +23,7 @@ export default function Header() {
     { name: t('profile.user_settings'), routeName: routes.HOME },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
     { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.activity_log'), routeName: routes.HOME },
+    { name: t('profile.payers'), routeName: routes.HOME },
     { name: t('profile.contracts'), routeName: routes.HOME },
   ]
 
@@ -52,7 +52,7 @@ export default function Header() {
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
 
-  const { $balance } = useSelector(userSelectors.getUserInfo)
+  const { $balance, $realname, $email } = useSelector(userSelectors.getUserInfo)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
   const [isNotificationBarOpened, setIsNotificationBarOpened] = useState(false)
@@ -160,6 +160,20 @@ export default function Header() {
                     })}
                     ref={getProfileEl}
                   >
+                    <li className={s.profile_list_username_item}>
+                      <div>
+                        <p className={s.user_name}>{$realname}</p>
+                        <p
+                          className={cn({
+                            [s.user_email]: true,
+                            [s.user_email_lt]: !darkTheme,
+                          })}
+                        >
+                          {$email}
+                        </p>
+                      </div>
+                    </li>
+
                     {profileMenuList.map(item => {
                       return (
                         <li key={nanoid()} className={s.profile_list_item}>

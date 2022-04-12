@@ -9,6 +9,8 @@ import { usersOperations } from '../../Redux/users/usersOperations'
 import { usersSelectors } from '../../Redux/users/usersSelectors'
 
 import s from './TrustedUsers.module.scss'
+import Container from '../Container/Container'
+import AddUserForm from './AddUserForm/AddUserForm'
 
 export default function TrustedUsers() {
   const dispatch = useDispatch()
@@ -16,7 +18,14 @@ export default function TrustedUsers() {
 
   const [readMore, setReadMore] = useState(false)
   const [changeUserRoles, setChangeUserRoles] = useState(false)
+
+  const [isUserFormActive, setIsUserFormActive] = useState(false)
+  const handleUserForm = () => {
+    setIsUserFormActive(!isUserFormActive)
+  }
+
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
   const subtitleText =
     'Доверенные пользователи — лица, которым вы доверяете доступ к вашему личному кабинету. Это может быть полезно, когда, например, несколько человек управляет серверами или доменами вашего аккаунта. Вы можете управлять их правами доступа к функциональности личного кабинета.'
 
@@ -31,7 +40,7 @@ export default function TrustedUsers() {
   }, [changeUserRoles])
 
   return (
-    <>
+    <Container>
       <section>
         <div>
           <h3 className={s.section_title}>Доверенные пользователи</h3>
@@ -44,7 +53,13 @@ export default function TrustedUsers() {
           </button>
         </div>
 
-        <Button size="large" label={'Добавить'} type="button" className={s.add_btn} />
+        <Button
+          size="large"
+          label={'Добавить'}
+          type="button"
+          className={s.add_btn}
+          onClick={handleUserForm}
+        />
 
         <div className={s.table_wrapper}>
           <div className={s.table_header}>
@@ -70,6 +85,7 @@ export default function TrustedUsers() {
           )
         })}
       </section>
-    </>
+      {isUserFormActive && <AddUserForm />}
+    </Container>
   )
 }

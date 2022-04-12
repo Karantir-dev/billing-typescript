@@ -72,8 +72,10 @@
   grid-template-columns: repeat(5, 130px);
   padding: 18px 27px 16px 0;
   box-shadow: var(--elements-shadow);
+  background-color: var(--nearby-elements-bgc);
   margin-bottom: 10px;
   column-gap: 28px;
+  border-radius: 5px;
 }
 
 .user_email_lg {
