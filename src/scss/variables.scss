@@ -29,6 +29,7 @@ body {
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
   --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
   --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
+  --line-shadow: -1px -1px 2px rgba(255, 255, 255, 0.49), 1px 1px 2px #cfc4e8;
 
   --menu_shadow: 4px 4px 10px rgba(213, 201, 236, 0.25);
   --forms_shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
@@ -62,6 +63,7 @@ body.dark-theme {
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
   --burger-menu-elem-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.21);
   --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
+  --line-shadow: -1px -1px 2px #1e1a26, 1px 1px 3px #1a1720;
 
   --menu_shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);

@@ -24,6 +24,6 @@ use(Backend)
     },
   })
 
-loadNamespaces(['other', 'access_log'])
+loadNamespaces(['other', 'access_log', 'support'])
 
 export default i18n

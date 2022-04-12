@@ -4,6 +4,11 @@
   font-size: 18px;
 }
 
+.title {
+  font-weight: 600;
+  font-size: 20px;
+}
+
 .btn_more {
   margin-bottom: 10px;
   font-size: 18px;
@@ -146,20 +151,8 @@
   border-bottom-color: var(--popup_prompt);
 }
 
-// .transition-enter {
-//   opacity: 0;
-// }
-
-// .transition-enter-active {
-//   opacity: 1;
-//   transition: opacity 150ms;
-// }
-
-// .transition-exit {
-//   opacity: 1;
-// }
-
-// .transition-exit-active {
-//   opacity: 0;
-//   transition: opacity 150ms;
-// }
+@media screen and (min-width: 1550px) {
+  .title {
+    font-size: 22px;
+  }
+}

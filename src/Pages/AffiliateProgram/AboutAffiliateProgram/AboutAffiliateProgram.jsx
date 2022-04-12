@@ -4,8 +4,8 @@ import cn from 'classnames'
 import ServicesSelect from './ServicesSelect/ServicesSelect'
 import { CSSTransition } from 'react-transition-group'
 
-import NavBar from '../NavBar/NavBar'
 import s from './AboutAffiliateProgram.module.scss'
+import { PageTabBar } from '../../../Components'
 import { Copy } from '../../../images'
 import { useDispatch } from 'react-redux'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
@@ -77,7 +77,8 @@ export default function AboutAffiliateProgram() {
   return (
     <>
       <div style={{ padding: '30px' }}>
-        <NavBar sections={navBarSections} />
+        <h2 className={s.title}> {t('page_title')} </h2>
+        <PageTabBar sections={navBarSections} />
         <p className={s.description_title}> {t('about_section_title')} </p>
         <div className={s.description_wrapper} ref={descrWrapper}>
           <p className={s.paragraph}> {t('about_section.description_1')} </p>
