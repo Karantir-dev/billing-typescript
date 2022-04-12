@@ -56,6 +56,36 @@
   line-height: 130.5%;
   color: var(--main-text);
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.close_btn {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    position: absolute;
+    top: 5px;
+    content: ' ';
+    height: 16px;
+    width: 2px;
+    background-color: var(--main-text);
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    &::after,
+    &::before {
+      background: var(--accent-gradient);
+    }
+  }
 }
 
 // ADAPTIVE

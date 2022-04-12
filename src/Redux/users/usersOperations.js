@@ -1,11 +1,12 @@
 import qs from 'qs'
-// import i18n from 'i18next'
+import { actions } from '../actions'
 
 import { axiosInstance } from './../../config/axiosInstance'
 import { usersActions } from './usersActions'
-// import { actions } from '../actions'
 
 const getUsers = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
   const {
     auth: { sessionId },
   } = getState()
@@ -25,13 +26,17 @@ const getUsers = () => (dispatch, getState) => {
       const { elem } = data.doc
       console.log(data)
       dispatch(usersActions.setUsers(elem))
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+      dispatch(actions.hideLoader())
     })
 }
 
 const changeUserRights = (id, switchAccess) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
   const {
     auth: { sessionId },
   } = getState()
@@ -51,13 +56,17 @@ const changeUserRights = (id, switchAccess) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       console.log(data)
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+      dispatch(actions.hideLoader())
     })
 }
 
 const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
   const {
     auth: { sessionId },
   } = getState()
@@ -76,9 +85,11 @@ const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       console.log(data)
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+      dispatch(actions.hideLoader())
     })
 }
 

@@ -1,5 +1,6 @@
-import classNames from 'classnames'
+import cn from 'classnames'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
@@ -7,7 +8,6 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
-import { useDispatch } from 'react-redux'
 
 export default function UserCard({
   name,
@@ -80,7 +80,7 @@ export default function UserCard({
             <p className={s.label}>Статус:</p>
             <div className={s.toggle_wrapper}>
               <p
-                className={classNames({
+                className={cn({
                   [s.user_status]: true,
                   [s.user_status_off]: status !== 'on',
                 })}

@@ -1,6 +1,7 @@
-import classNames from 'classnames'
+import cn from 'classnames'
 import React, { useRef } from 'react'
 import { useMediaQuery } from 'react-responsive'
+
 import { Delete, Key, Settings } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
 
@@ -29,7 +30,7 @@ export default function ControlBtn({ handleControlDotsClick, areControlDotsActiv
         tabIndex={0}
         onKeyDown={() => null}
         onClick={e => e.stopPropagation()}
-        className={classNames({
+        className={cn({
           [s.list]: true,
           [s.opened]: areControlDotsActive,
         })}

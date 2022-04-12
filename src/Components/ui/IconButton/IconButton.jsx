@@ -2,7 +2,7 @@ import React from 'react'
 import s from './IconButton.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { Calendar, CsvDoc } from '../../../images'
+import { Calendar, CsvDoc, Filter } from '../../../images'
 
 export default function Component(props) {
   const { type, onClick, disabled, icon, className } = props
@@ -13,6 +13,8 @@ export default function Component(props) {
         return <Calendar />
       case 'csv':
         return <CsvDoc />
+      case 'filter':
+        return <Filter />
       default:
         return null
     }
@@ -37,7 +39,7 @@ Component.propTypes = {
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
-  icon: PropTypes.oneOf(['calendar', 'csv']),
+  icon: PropTypes.oneOf(['calendar', 'csv', 'filter']),
   className: PropTypes.string,
 }
 

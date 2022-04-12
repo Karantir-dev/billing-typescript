@@ -2,12 +2,13 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+
 import { Button } from '..'
+import UserCard from './UserCard/UserCard'
 import { usersOperations } from '../../Redux/users/usersOperations'
 import { usersSelectors } from '../../Redux/users/usersSelectors'
 
 import s from './TrustedUsers.module.scss'
-import UserCard from './UserCard/UserCard'
 
 export default function TrustedUsers() {
   const dispatch = useDispatch()
