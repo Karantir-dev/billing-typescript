@@ -74,19 +74,3 @@
     }
   }
 }
-
-@media screen and (min-width: 1550px) {
-  .nav_bar {
-    &::after {
-      right: 0;
-    }
-  }
-}
-
-@media screen and (min-width: 1918px) {
-  .nav_bar {
-    &::after {
-      right: 0;
-    }
-  }
-}

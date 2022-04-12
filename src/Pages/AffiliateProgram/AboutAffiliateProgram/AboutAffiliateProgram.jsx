@@ -64,7 +64,7 @@ export default function AboutAffiliateProgram() {
     <>
       <div style={{ padding: '30px' }}>
         <h2 className={s.title}> {t('page_title')} </h2>
-        <PageTabBar title={t('page_title')} sections={navBarSections} />
+        <PageTabBar sections={navBarSections} />
         <p className={s.description_title}> {t('about_section_title')} </p>
         <div className={s.description_wrapper} ref={descrWrapper}>
           <p className={s.paragraph}> {t('about_section.description_1')} </p>
