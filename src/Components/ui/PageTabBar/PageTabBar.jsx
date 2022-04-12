@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './PageTabBar.module.scss'
 
@@ -11,9 +12,7 @@ export default function Component({ sections }) {
           return (
             <NavLink
               key={route}
-              className={({ isActive }) =>
-                isActive ? s.active_link + ' ' + s.link : s.link
-              }
+              className={({ isActive }) => cn(s.link, { [s.active_link]: isActive })}
               to={route}
             >
               {label}
