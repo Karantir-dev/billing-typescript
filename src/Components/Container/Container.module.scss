@@ -1,5 +1,5 @@
 .container {
-  padding: 117px 30px 0px 30px;
+  padding: 117px 30px 87px 30px;
 }
 
 .aside_menu_container {
@@ -8,7 +8,7 @@
 
 @media screen and (min-width: 768px) {
   .container {
-    padding: 127px 60px 30px 60px;
+    padding: 127px 60px 210px 60px;
   }
 
   .aside_menu_container {
@@ -19,20 +19,20 @@
 @media screen and (min-width: 1024px) {
   .container {
     margin: 0 auto;
-    padding: 127px 0px 30px 200px;
+    padding: 127px 60px 42px 200px;
     width: 100%;
   }
 }
 
 @media screen and (min-width: 1550px) {
   .container {
-    padding: 137px 0px 30px 290px;
+    padding: 137px 135px 188px 290px;
   }
 }
 
 @media screen and (min-width: 1918px) {
   .container {
     margin: unset;
-    padding: 157px 0px 30px 290px;
+    padding: 157px 0px 120px 290px;
   }
 }
