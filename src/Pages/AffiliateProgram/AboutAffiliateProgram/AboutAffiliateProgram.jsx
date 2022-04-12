@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
 import * as route from '../../../routes'
 import animations from './animations.module.scss'
+import { Button } from '../../../Components'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
@@ -174,6 +175,11 @@ export default function AboutAffiliateProgram() {
               </div>
             </CSSTransition>
           </div>
+        </div>
+
+        <div>
+          <p>{t('about_section.banners_link_caption')}</p>
+          <Button label={t('about_section.banners_download_link')} />
         </div>
       </div>
     </>
