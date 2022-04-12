@@ -20,6 +20,7 @@ export default function Component({ sections }) {
           )
         })}
       </div>
+      <div className={s.blur} />
     </div>
   )
 }
