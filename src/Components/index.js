@@ -31,8 +31,8 @@ export { default as Loader } from './ui/Loader/Loader'
 
 //==========================================ACCESS LOGS==========================================//
 
-export { default as AccessLogsTable } from './AccessLogs/AccessLogsTable/AccessLogsTable'
-export { default as AccessLogsFilter } from './AccessLogs/AccessLogsFilter/AccessLogsFilter'
+export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
+export { default as AccessLogsFilter } from './accessLogs/AccessLogsFilter/AccessLogsFilter'
 
 //==========================================SUPPORT==========================================//
 export { default as SupportFilter } from './Support/SupportFilter/SupportFilter'
