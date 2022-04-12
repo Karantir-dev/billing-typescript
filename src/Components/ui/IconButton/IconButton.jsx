@@ -39,7 +39,7 @@ Component.propTypes = {
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
-  icon: PropTypes.oneOf(['calendar', 'csv']),
+  icon: PropTypes.oneOf(['calendar', 'csv', 'filter']),
   className: PropTypes.string,
 }
 

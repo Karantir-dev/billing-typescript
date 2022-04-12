@@ -92,9 +92,7 @@ export default function App() {
               >
                 <Route
                   path={':path'}
-                  element={({ match }) => (
-                    <PrivateRoute children={<SupportPage path={match.params.path} />} />
-                  )}
+                  element={<PrivateRoute children={<SupportPage />} />}
                 />
               </Route>
               <Route
