@@ -62,9 +62,9 @@
   }
 }
 
-.leftBlur {
+.blur {
   width: 0px;
-  &::after {
+  &::before {
     content: '';
     position: absolute;
     left: -60px;
@@ -72,10 +72,6 @@
     height: 30px;
     background: linear-gradient(90deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
   }
-}
-
-.rightBlur {
-  width: 0px;
   &::after {
     content: '';
     position: absolute;
