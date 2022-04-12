@@ -1,6 +1,9 @@
 export { default as SelectOfCountries } from './SelectOfCountries/SelectOfCountries'
 export { default as SelectOfRegions } from './SelectOfRegions/SelectOfRegions'
 
+export { default as ServicesSelect } from './affiliateProgram/ServicesSelect/ServicesSelect'
+export { default as FilesBanner } from './affiliateProgram/FilesBanner/FilesBanner'
+
 export { default as VerificationModal } from './VerificationModal/VerificationModal'
 
 //==========================================AUTH==========================================//
@@ -31,8 +34,8 @@ export { default as Loader } from './ui/Loader/Loader'
 
 //==========================================ACCESS LOGS==========================================//
 
-export { default as AccessLogsTable } from './AccessLogs/AccessLogsTable/AccessLogsTable'
-export { default as AccessLogsFilter } from './AccessLogs/AccessLogsFilter/AccessLogsFilter'
+export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
+export { default as AccessLogsFilter } from './accessLogs/AccessLogsFilter/AccessLogsFilter'
 
 //==========================================SUPPORT==========================================//
 export { default as SupportFilter } from './Support/SupportFilter/SupportFilter'
