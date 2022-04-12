@@ -16,8 +16,6 @@ export default function MainPage() {
   const tavBarSections = [
     { route: `${route.SUPPORT}/requests`, label: t('requests') },
     { route: `${route.SUPPORT}/requests_archive`, label: t('request archive') },
-    { route: `${route.SUPPORT}/requests_archive`, label: t('request archive') },
-    { route: `${route.SUPPORT}/requests_archive`, label: t('request archive') },
   ]
 
   if (location.pathname === route.SUPPORT) {
