@@ -1,20 +1,18 @@
-export { default as Loader } from './Loader/Loader'
 export { default as SelectOfCountries } from './SelectOfCountries/SelectOfCountries'
 export { default as SelectOfRegions } from './SelectOfRegions/SelectOfRegions'
 
 export { default as VerificationModal } from './VerificationModal/VerificationModal'
 
-export { default as LoginForm } from './LoginForm/LoginForm'
-export { default as SignupForm } from './SignupForm/SignupForm'
-export { default as PasswordChange } from './PasswordChange/PasswordChange'
-export { default as PasswordReset } from './PasswordReset/PasswordReset'
+//==========================================AUTH==========================================//
+export { default as LoginForm } from './Auth/LoginForm/LoginForm'
+export { default as SignupForm } from './Auth/SignupForm/SignupForm'
+export { default as PasswordChange } from './Auth/PasswordChange/PasswordChange'
+export { default as PasswordReset } from './Auth/PasswordReset/PasswordReset'
 
+//==========================================ROUTES==========================================//
 export { default as PrivateRoute } from './Routes/PrivateRoute'
 export { default as PublicRoute } from './Routes/PublicRoute'
 
-export { default as AsideServicesMenu } from './AsideServicesMenu/AsideServicesMenu'
-export { default as Header } from './Header/Header'
-export { default as BurgerMenu } from './BurgerMenu/BurgerMenu'
 export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
 export { default as Container } from './Container/Container'
 
@@ -28,8 +26,13 @@ export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
 export { default as Pagination } from './ui/Pagination/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
+export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
+export { default as Loader } from './ui/Loader/Loader'
 
-//==========================================Access Logs==========================================//
+//==========================================ACCESS LOGS==========================================//
 
-export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
-export { default as AccessLogsFilter } from './accessLogs/AccessLogsFilter/AccessLogsFilter'
+export { default as AccessLogsTable } from './AccessLogs/AccessLogsTable/AccessLogsTable'
+export { default as AccessLogsFilter } from './AccessLogs/AccessLogsFilter/AccessLogsFilter'
+
+//==========================================SUPPORT==========================================//
+export { default as SupportFilter } from './Support/SupportFilter/SupportFilter'

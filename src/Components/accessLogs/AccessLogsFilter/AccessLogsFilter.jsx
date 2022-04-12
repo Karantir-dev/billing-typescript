@@ -91,8 +91,6 @@ export default function Component({ setCurrentPage }) {
     return { time, ip, dates }
   }
 
-  console.log(parseCurrentFilter())
-
   return (
     <div className={s.filterBlock}>
       <Formik

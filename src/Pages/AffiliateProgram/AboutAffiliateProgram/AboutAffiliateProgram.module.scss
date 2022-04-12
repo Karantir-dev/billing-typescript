@@ -4,6 +4,11 @@
   font-size: 18px;
 }
 
+.title {
+  font-weight: 600;
+  font-size: 20px;
+}
+
 .btn_more {
   margin-bottom: 10px;
   font-size: 18px;
@@ -126,4 +131,10 @@
 
 .copy_prompt {
   position: absolute;
+}
+
+@media screen and (min-width: 1550px) {
+  .title {
+    font-size: 22px;
+  }
 }
