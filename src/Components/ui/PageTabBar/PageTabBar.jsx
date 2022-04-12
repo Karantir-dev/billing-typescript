@@ -20,6 +20,8 @@ export default function Component({ sections }) {
           )
         })}
       </div>
+      <div className={s.leftBlur} />
+      <div className={s.rightBlur} />
     </div>
   )
 }

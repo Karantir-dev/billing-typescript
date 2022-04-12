@@ -1,7 +1,7 @@
 .nav_bar {
   user-select: none;
   position: relative;
-
+  display: flex;
   &::after {
     content: '';
     position: absolute;
@@ -20,7 +20,10 @@
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-
+  padding-right: 80px;
+  padding-left: 30px;
+  position: relative;
+  left: -30px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -30,7 +33,7 @@
   font-size: 16px;
   white-space: nowrap;
   color: var(--main-text);
-  
+
   &:not(:last-child) {
     margin-right: 25px;
   }
@@ -59,6 +62,30 @@
   }
 }
 
+.leftBlur {
+  width: 0px;
+  &::after {
+    content: '';
+    position: absolute;
+    left: -60px;
+    width: 82px;
+    height: 30px;
+    background: linear-gradient(90deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
+  }
+}
+
+.rightBlur {
+  width: 0px;
+  &::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    width: 82px;
+    height: 30px;
+    background: linear-gradient(270deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
+  }
+}
+
 @media screen and (min-width: 768px) {
   .nav_bar {
     &::after {
@@ -67,10 +94,10 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1550px) {
   .nav_bar {
     &::after {
-      right: 0;
+      right: -130px;
     }
   }
 }
