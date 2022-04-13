@@ -107,7 +107,9 @@ export default function App() {
               />
               <Route
                 path={route.TRUSTED_USERS}
-                element={<PrivateRoute children={<TrustedUsers />} />}
+                element={
+                  <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+                }
               />
             </Routes>
           </Suspense>

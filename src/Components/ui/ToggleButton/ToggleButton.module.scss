@@ -3,6 +3,10 @@
   height: 27px;
   width: 52px;
   cursor: pointer;
+
+  &.owner {
+    opacity: 0.5;
+  }
 }
 
 .circle {

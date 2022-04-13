@@ -24,13 +24,14 @@
   left: 10%;
   z-index: 100;
   padding: 19px;
-  background-color: #fff;
+  background-color: var(--elements-bgc);
   border-radius: 5px;
 }
 
 .title_wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .alert_text {
@@ -58,7 +59,13 @@
   cursor: pointer;
 }
 
+.close_btn_wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .close_btn {
+  position: relative;
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -66,7 +73,7 @@
   &:before,
   &:after {
     position: absolute;
-    top: 5px;
+    top: 0px;
     content: ' ';
     height: 16px;
     width: 2px;

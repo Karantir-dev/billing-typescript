@@ -93,8 +93,41 @@ const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
     })
 }
 
+const createNewUser = (password, email, phone, realname) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.edit',
+        out: 'json',
+        auth: sessionId,
+        passwd: password,
+        email,
+        phone,
+        realname,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log(data)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export const usersOperations = {
   getUsers,
   changeUserRights,
   changeUserStatus,
+  createNewUser,
 }

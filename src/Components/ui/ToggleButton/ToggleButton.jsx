@@ -13,6 +13,7 @@ export default function ToggleButton({
   toggleName,
   email,
   handleAlert,
+  isOwner,
 }) {
   const [isToggled, setIsToggled] = useState(initialState || false)
 
@@ -24,9 +25,11 @@ export default function ToggleButton({
   return (
     <>
       <button
+        disabled={isOwner}
         className={cn({
           [s.btn]: true,
           [s.active]: isToggled,
+          [s.owner]: isOwner,
         })}
         type="button"
         onClick={handleAlert}

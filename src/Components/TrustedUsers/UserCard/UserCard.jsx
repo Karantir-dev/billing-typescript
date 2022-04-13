@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import PropTypes from 'prop-types'
 
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
@@ -16,6 +17,7 @@ export default function UserCard({
   email,
   userId,
   handleUserRolesData,
+  isOwner,
 }) {
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
@@ -73,6 +75,7 @@ export default function UserCard({
                 isAlertOpened={isSuccessAlertOpened}
                 email={email}
                 handleAlert={handleAccessAlert}
+                isOwner={isOwner}
               />
             </div>
           </div>
@@ -94,6 +97,7 @@ export default function UserCard({
                 isAlertOpened={isStatusAlertOpened}
                 email={email}
                 handleAlert={handleStatusAlert}
+                isOwner={isOwner}
               />
             </div>
           </div>
@@ -101,6 +105,7 @@ export default function UserCard({
           <ControlBtn
             handleControlDotsClick={handleControlDotsClick}
             areControlDotsActive={areControlDotsActive}
+            isOwner={isOwner}
           />
         </div>
       )}
@@ -119,6 +124,7 @@ export default function UserCard({
                 isAlertOpened={isSuccessAlertOpened}
                 email={email}
                 handleAlert={handleAccessAlert}
+                isOwner={isOwner}
               />
             </div>
             <div className={s.toggle_wrapper_lg}>
@@ -129,16 +135,28 @@ export default function UserCard({
                 isAlertOpened={isStatusAlertOpened}
                 email={email}
                 handleAlert={handleStatusAlert}
+                isOwner={isOwner}
               />
             </div>
 
             <ControlBtn
               handleControlDotsClick={handleControlDotsClick}
               areControlDotsActive={areControlDotsActive}
+              isOwner={isOwner}
             />
           </div>
         </div>
       )}
     </>
   )
+}
+
+UserCard.propTypes = {
+  name: PropTypes.string,
+  hasAccess: PropTypes.string,
+  status: PropTypes.string,
+  email: PropTypes.string,
+  userId: PropTypes.string,
+  handleUserRolesData: PropTypes.func,
+  isOwner: PropTypes.bool,
 }

@@ -69,6 +69,16 @@
   margin-left: 22px;
 }
 
+.remove_btn {
+  &.owner {
+    opacity: 0.3;
+    &:hover {
+      & .icon {
+        fill: var(--icon-color);
+      }
+    }
+  }
+}
 .settings_btn,
 .access_rights_btn,
 .remove_btn {

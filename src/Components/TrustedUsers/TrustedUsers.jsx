@@ -14,10 +14,10 @@ import AddUserForm from './AddUserForm/AddUserForm'
 
 export default function TrustedUsers() {
   const dispatch = useDispatch()
-  const users = useSelector(usersSelectors.getUsers)
 
   const [readMore, setReadMore] = useState(false)
   const [changeUserRoles, setChangeUserRoles] = useState(false)
+  const [createdNewUser, setCreatedNewUser] = useState(false)
 
   const [isUserFormActive, setIsUserFormActive] = useState(false)
   const handleUserForm = () => {
@@ -34,10 +34,15 @@ export default function TrustedUsers() {
   const handleUserRolesData = () => {
     setChangeUserRoles(!changeUserRoles)
   }
+  const checkIfCreatedUser = () => {
+    setCreatedNewUser(!createdNewUser)
+  }
+
+  const users = useSelector(usersSelectors.getUsers)
 
   useEffect(() => {
     dispatch(usersOperations.getUsers())
-  }, [changeUserRoles])
+  }, [changeUserRoles, createdNewUser])
 
   return (
     <Container>
@@ -81,11 +86,17 @@ export default function TrustedUsers() {
               status={user?.enabled?.$}
               userId={user.id.$}
               handleUserRolesData={handleUserRolesData}
+              isOwner={user.self.$ === 'on'}
             />
           )
         })}
       </section>
-      {isUserFormActive && <AddUserForm />}
+      {isUserFormActive && (
+        <AddUserForm
+          controlForm={handleUserForm}
+          checkIfCreatedUser={checkIfCreatedUser}
+        />
+      )}
     </Container>
   )
 }
