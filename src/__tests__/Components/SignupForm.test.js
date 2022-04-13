@@ -8,7 +8,7 @@ import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
 import ReCAPTCHA from 'react-google-recaptcha'
-
+import 'babel-polyfill'
 import i18n from '../../i18n'
 // const mockedNavigator = jest.fn()
 
