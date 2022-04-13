@@ -99,6 +99,7 @@ export default function SignupForm() {
               )}
 
               <InputField
+                dataTestid="input_name"
                 label={t('name_label')}
                 placeholder={t('name_placeholder')}
                 iconLeft="person"
@@ -109,6 +110,7 @@ export default function SignupForm() {
               />
 
               <InputField
+                dataTestid="input_email"
                 label={t('email_label')}
                 placeholder={t('email_placeholder')}
                 iconLeft="envelope"
@@ -119,6 +121,7 @@ export default function SignupForm() {
               />
 
               <InputField
+                dataTestid="input_password"
                 label={t('password_label')}
                 placeholder={t('password_placeholder')}
                 iconLeft="padlock"
@@ -130,6 +133,7 @@ export default function SignupForm() {
               />
 
               <InputField
+                dataTestid="input_passConfirmation"
                 label={t('passConfirmation_label')}
                 placeholder={t('passConfirmation_placeholder')}
                 iconLeft="padlock"
@@ -162,7 +166,12 @@ export default function SignupForm() {
                 component="span"
               />
 
-              <Button className={s.submit_btn} label={t('register')} type="submit" />
+              <Button
+                dataTestid="btn_form_submit"
+                className={s.submit_btn}
+                label={t('register')}
+                type="submit"
+              />
             </Form>
           )
         }}

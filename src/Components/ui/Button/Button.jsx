@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 export default function Component(props) {
-  const { label, type, onClick, disabled, size, isShadow, className } = props
+  const { label, type, onClick, disabled, size, isShadow, className, dataTestid } = props
 
   return (
     <button
+      data-testid={dataTestid}
       disabled={disabled}
       className={cn({
         [s.submit_btn]: true,
@@ -29,6 +30,7 @@ export default function Component(props) {
 Component.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
+  dataTestid: PropTypes.string,
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
@@ -43,4 +45,5 @@ Component.defaultProps = {
   disabled: false,
   size: 'block',
   isShadow: false,
+  dataTestid: null,
 }
