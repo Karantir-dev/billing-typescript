@@ -1,5 +1,7 @@
 import React from 'react'
-import { create, act } from 'react-test-renderer'
+import { create } from 'react-test-renderer'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { SignupForm, Button } from '../../Components'
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
@@ -8,7 +10,6 @@ import entireStore from '../../Redux/store'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 import i18n from '../../i18n'
-
 // const mockedNavigator = jest.fn()
 
 jest.mock('react-router-dom', () => ({
@@ -32,18 +33,6 @@ describe('Register Component', () => {
   )
   const root = component.root
 
-  const tree = mount(
-    <Provider store={entireStore.store}>
-      <I18nextProvider i18n={i18n}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<SignupForm />} />
-          </Routes>
-        </BrowserRouter>
-      </I18nextProvider>
-    </Provider>,
-  )
-
   test('Component have 5 inputs', () => {
     const input = root.findAllByType('input')
     expect(input).toHaveLength(5)
@@ -64,59 +53,45 @@ describe('Register Component', () => {
     expect(captcha).toHaveLength(1)
   })
 
-  test('should update email field on change', async () => {
-    const emailInput = await tree.find('input[name=\'email\']')
-    act(() => {
-      emailInput.simulate('change', {
-        persist: () => {},
-        target: {
-          name: 'email',
-          value: 'test@test.test',
-        },
-      })
-    })
-    expect(emailInput.html()).toMatch('test@test.test')
-  })
+  test('rendering and submitting a basic Formik form', async () => {
+    const handleSubmit = jest.fn()
+    render(
+      <Provider store={entireStore.store}>
+        <I18nextProvider i18n={i18n}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={<SignupForm onSubmit={handleSubmit} />} />
+            </Routes>
+          </BrowserRouter>
+        </I18nextProvider>
+      </Provider>,
+    )
+    const user = userEvent.setup()
 
-  test('should update password field on change', async () => {
-    const passwordInput = await tree.find('input[name=\'password\']')
-    act(() => {
-      passwordInput.simulate('change', {
-        persist: () => {},
-        target: {
-          name: 'password',
-          value: 'test123',
-        },
-      })
-    })
-    expect(passwordInput.html()).toMatch('test123')
-  })
+    let name = screen.getByTestId('input_name')
+    let email = screen.getByTestId('input_email')
+    let password = screen.getByTestId('input_password')
+    let passConfirmation = screen.getByTestId('input_passConfirmation')
 
-  test('should update passConfirmation field on change', async () => {
-    const passConfirmationInput = await tree.find('input[name=\'passConfirmation\']')
-    act(() => {
-      passConfirmationInput.simulate('change', {
-        persist: () => {},
-        target: {
-          name: 'passConfirmation',
-          value: 'test123',
-        },
-      })
-    })
-    expect(passConfirmationInput.html()).toMatch('test123')
-  })
+    await user.type(name, 'John')
+    await user.type(email, 'john.dee@someemail.com')
+    await user.type(password, 'test123')
+    await user.type(passConfirmation, 'test123')
 
-  test('should update name field on change', async () => {
-    const name = await tree.find('input[name=\'name\']')
-    act(() => {
-      name.simulate('change', {
-        persist: () => {},
-        target: {
-          name: 'name',
-          value: 'test123',
-        },
-      })
-    })
-    expect(name.html()).toMatch('test123')
+    await user.click(screen.getByTestId('btn_form_submit'))
+
+    expect(name.value).toMatch('John')
+    expect(email.value).toMatch('john.dee@someemail.com')
+    expect(password.value).toMatch('test123')
+    expect(passConfirmation.value).toMatch('test123')
+
+    // await waitFor(() =>
+    //   expect(handleSubmit).toHaveBeenCalledWith({
+    //     name: 'John',
+    //     email: 'john.dee@someemail.com',
+    //     password: 'test123',
+    //     passConfirmation: 'test123',
+    //   }),
+    // )
   })
 })
