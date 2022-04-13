@@ -4,6 +4,23 @@ on:
     branches:
       - 'dev'
 jobs:
+  jest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Jest
+        uses: stefanoeb/jest-action@1.0.3
+      - name: test status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always()
   eslint:
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +51,7 @@ jobs:
         with:
           command: monitor
   deploy:
-    needs: [eslint, security]
+    needs: [eslint, security, jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:
