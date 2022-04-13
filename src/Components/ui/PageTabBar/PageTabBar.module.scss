@@ -69,7 +69,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 82px;
+    width: 30px;
     height: 30px;
     background: linear-gradient(90deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
   }
@@ -79,7 +79,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 82px;
+    width: 30px;
     height: 30px;
     background: linear-gradient(270deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
   }
@@ -113,7 +113,7 @@
 @media screen and (min-width: 1918px) {
   .nav_bar {
     &::after {
-      right: -365px;
+      right: -150px;
     }
   }
 }

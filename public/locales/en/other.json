@@ -1,5 +1,8 @@
 {
   "search": "Search",
   "user": "User",
-  "time": "Time"
+  "time": "Time",
+  "date": "Date",
+  "status": "Status",
+  "theme": "Theme"
 }

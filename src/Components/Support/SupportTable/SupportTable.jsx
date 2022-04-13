@@ -1,23 +1,39 @@
 import React from 'react'
-import s from './SupportTable.module.scss'
-import { useTranslation } from 'react-i18next'
+import SupportTableItem from './SupportTableItem'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
+import s from './SupportTable.module.scss'
 
 export default function Component(props) {
-  const { t } = useTranslation(['access_log', 'other'])
+  const { t } = useTranslation(['support', 'other'])
   const { list } = props
-  console.log(t, list)
+  console.log(list)
   return (
-    <div>
+    <div className={s.table}>
       <div className={s.tableHeader}>
-        <span className={s.item_text}>{'id запроса:'}:</span>
-        <span className={s.item_text}>{'Тема:'}:</span>
-        <span className={s.item_text}>{'Дата:'}:</span>
-        <span className={s.item_text}>{'Статус:'}:</span>
+        <span style={{ flexBasis: '17.8%' }} className={s.item_text}>
+          {t('request_id')}:
+        </span>
+        <span style={{ flexBasis: '36.5%' }} className={s.item_text}>
+          {t('theme', { ns: 'other' })}:
+        </span>
+        <span style={{ flexBasis: '20.19%' }} className={s.item_text}>
+          {t('date', { ns: 'other' })}:
+        </span>
+        <span style={{ flexBasis: '15.7%' }} className={s.item_text}>
+          {t('status', { ns: 'other' })}:
+        </span>
+        <span style={{ flexBasis: '9.7%' }} className={s.item_text} />
       </div>
-      {/* {list?.map(({ time, user, ip, id }) => (
-        <AccessLogsTableItem key={id?.$} ip={ip?.$} time={time?.$} user={user?.$} />
-      ))} */}
+      {list?.map(({ tstatus, last_message, name, id }) => (
+        <SupportTableItem
+          key={id?.$}
+          theme={name?.$}
+          date={last_message?.$}
+          status={tstatus?.$}
+          id={id?.$}
+        />
+      ))}
     </div>
   )
 }
