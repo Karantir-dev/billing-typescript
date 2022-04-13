@@ -9,8 +9,6 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
-
-  console.log(i18n.language)
   
   axiosInstance
     .post(

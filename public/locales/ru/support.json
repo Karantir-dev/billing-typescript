@@ -2,5 +2,6 @@
   "support": "Поддержка",
   "new ticket": "Новый тикет",
   "requests": "Запросы",
-  "request archive": "Архив запросов"
+  "request archive": "Архив запросов",
+  "request_id": "id запроса"
 }
