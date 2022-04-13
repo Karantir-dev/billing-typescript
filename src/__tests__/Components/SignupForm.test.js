@@ -1,6 +1,6 @@
 import React from 'react'
 import { create } from 'react-test-renderer'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { SignupForm, Button } from '../../Components'
