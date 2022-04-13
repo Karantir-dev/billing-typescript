@@ -1,6 +1,6 @@
 import React from 'react'
 import { create } from 'react-test-renderer'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { SignupForm, Button } from '../../Components'
@@ -84,14 +84,5 @@ describe('Register Component', () => {
     expect(email.value).toMatch('john.dee@someemail.com')
     expect(password.value).toMatch('test123')
     expect(passConfirmation.value).toMatch('test123')
-
-    // await waitFor(() =>
-    //   expect(handleSubmit).toHaveBeenCalledWith({
-    //     name: 'John',
-    //     email: 'john.dee@someemail.com',
-    //     password: 'test123',
-    //     passConfirmation: 'test123',
-    //   }),
-    // )
   })
 })
