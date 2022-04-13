@@ -20,10 +20,8 @@
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-right: 80px;
+  padding-right: 30px;
   padding-left: 30px;
-  position: relative;
-  left: -30px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -63,19 +61,24 @@
 }
 
 .blur {
-  width: 0px;
+  width: 123%;
+  left: -30px;
+  position: relative;
   &::before {
     content: '';
     position: absolute;
-    left: -60px;
+    top: 0;
+    left: 0;
     width: 82px;
     height: 30px;
     background: linear-gradient(90deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
   }
+
   &::after {
     content: '';
     position: absolute;
-    right: -5px;
+    top: 0;
+    right: 0;
     width: 82px;
     height: 30px;
     background: linear-gradient(270deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
@@ -88,12 +91,29 @@
       right: -55px;
     }
   }
+
+  .blur {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
 }
 
 @media screen and (min-width: 1550px) {
   .nav_bar {
     &::after {
       right: -130px;
+    }
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .nav_bar {
+    &::after {
+      right: -365px;
     }
   }
 }
