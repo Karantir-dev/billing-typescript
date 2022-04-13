@@ -84,14 +84,5 @@ describe('Register Component', () => {
     expect(email.value).toMatch('john.dee@someemail.com')
     expect(password.value).toMatch('test123')
     expect(passConfirmation.value).toMatch('test123')
-
-    // await waitFor(() =>
-    //   expect(handleSubmit).toHaveBeenCalledWith({
-    //     name: 'John',
-    //     email: 'john.dee@someemail.com',
-    //     password: 'test123',
-    //     passConfirmation: 'test123',
-    //   }),
-    // )
   })
 })
