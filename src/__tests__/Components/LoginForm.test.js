@@ -35,23 +35,23 @@ describe('Login Component', () => {
     </Provider>,
   )
 
-  test('Component have 3 inputs', async () => {
-    const input = await root.findAllByType('input')
+  test('Component have 3 inputs', () => {
+    const input = root.findAllByType('input')
     expect(input).toHaveLength(3)
   })
 
-  test('Component have 2 links', async () => {
-    const links = await root.findAllByType(Link)
+  test('Component have 2 links', () => {
+    const links = root.findAllByType(Link)
     expect(links).toHaveLength(2)
   })
 
-  test('Component have 1 Button', async () => {
-    const button = await root.findAllByType(Button)
+  test('Component have 1 Button', () => {
+    const button = root.findAllByType(Button)
     expect(button).toHaveLength(1)
   })
 
-  test('Component have captcha', async () => {
-    const captcha = await root.findAllByType(ReCAPTCHA)
+  test('Component have captcha', () => {
+    const captcha = root.findAllByType(ReCAPTCHA)
     expect(captcha).toHaveLength(1)
   })
 
