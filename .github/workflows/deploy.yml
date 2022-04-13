@@ -40,7 +40,7 @@ jobs:
         with:
           command: monitor
   deploy:
-    needs: [eslint, security]
+    needs: [eslint, security, jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:
