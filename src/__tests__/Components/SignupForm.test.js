@@ -1,23 +1,13 @@
 import React from 'react'
 import { create } from 'react-test-renderer'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { SignupForm, Button } from '../../Components'
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
 import ReCAPTCHA from 'react-google-recaptcha'
-import 'babel-polyfill'
 import i18n from '../../i18n'
-// const mockedNavigator = jest.fn()
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => ({
-    navigate: jest.fn().mockImplementation(() => ({})),
-  }),
-}))
 
 describe('Register Component', () => {
   const component = create(
@@ -66,19 +56,18 @@ describe('Register Component', () => {
         </I18nextProvider>
       </Provider>,
     )
-    const user = userEvent.setup()
 
     let name = screen.getByTestId('input_name')
     let email = screen.getByTestId('input_email')
     let password = screen.getByTestId('input_password')
     let passConfirmation = screen.getByTestId('input_passConfirmation')
 
-    await user.type(name, 'John')
-    await user.type(email, 'john.dee@someemail.com')
-    await user.type(password, 'test123')
-    await user.type(passConfirmation, 'test123')
+    fireEvent.change(name, {target: {value: 'John'}})
+    fireEvent.change(email, {target: {value: 'john.dee@someemail.com'}})
+    fireEvent.change(password, {target: {value: 'test123'}})
+    fireEvent.change(passConfirmation, {target: {value: 'test123'}})
 
-    await user.click(screen.getByTestId('btn_form_submit'))
+
 
     expect(name.value).toMatch('John')
     expect(email.value).toMatch('john.dee@someemail.com')
