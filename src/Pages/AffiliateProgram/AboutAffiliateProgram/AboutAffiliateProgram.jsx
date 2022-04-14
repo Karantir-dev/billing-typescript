@@ -74,6 +74,7 @@ export default function AboutAffiliateProgram() {
     { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
     { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
   ]
+  console.log(navBarSections)
   return (
     <Container>
       <h2 className={s.title}> {t('page_title')} </h2>
