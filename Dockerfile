@@ -15,7 +15,7 @@ RUN apk add --no-cache apache2-utils openssl && \
     openssl req -x509 -nodes -days 365 \
         -subj  "/C=CA/ST=QC/O=Company Inc/CN=portal.com" \
         -newkey rsa:2048 -keyout /etc/nginx/ssl/cert.key \
-        -out etc/nginx/ssl/cert.crt && \
+        -out etc/nginx/ssl/cert.crt
     # addgroup -S portal && adduser -S portal -G portal && \
     # chown -R portal:portal /etc/nginx/ssl/ && \
     # chown -R portal:portal /etc/nginx/ && \
