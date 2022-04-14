@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 import { authReducer } from './auth/authReducer'
+import { supportReducer } from './support/supportReducer'
 import { accessLogsReducer } from './accessLogs/accessLogsReducer'
 import { userReducer } from './userInfo/userReducer'
 import { usersReducer } from './users/usersReducer'
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   access_logs: accessLogsReducer,
   currentUserInfo: userReducer,
   users: usersReducer,
+  support: supportReducer,
   theme,
   isLoading,
   pinned,

@@ -21,6 +21,7 @@ export default function Component(props) {
     autoComplete,
     height,
     background, // input bgc
+    dataTestid,
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -71,6 +72,7 @@ export default function Component(props) {
       )}
       <div className={s.input_wrapper}>
         <Field
+          data-testid={dataTestid}
           className={cn({
             [s.input]: true,
             [s.iconLeft]: iconLeft,
@@ -101,6 +103,7 @@ Component.propTypes = {
   iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   placeholder: PropTypes.string,
   className: PropTypes.string,
+  dataTestid: PropTypes.string,
   type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
   name: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
@@ -114,4 +117,5 @@ Component.defaultProps = {
   type: 'text',
   isShadow: false,
   autoComplete: false,
+  dataTestid: null,
 }

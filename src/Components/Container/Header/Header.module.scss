@@ -46,6 +46,14 @@
   align-items: center;
 }
 
+.link {
+  &.active {
+    path {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .profile_list_lt,
 .profile_list_dt {
   position: absolute;
