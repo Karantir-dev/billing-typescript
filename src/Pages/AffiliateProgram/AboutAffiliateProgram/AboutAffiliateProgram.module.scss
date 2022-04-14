@@ -39,6 +39,7 @@
 }
 
 .paragraph {
+  font-size: 16px;
   font-weight: 300;
 
   &:first-child {
@@ -46,13 +47,14 @@
   }
 }
 
-.percents_list {
+.tablet_wrapper {
   margin-bottom: 30px;
 }
 
 .percent {
   width: 54px;
   margin-right: 15px;
+  flex: none;
   font-weight: 900;
   font-size: 25px;
   background: var(--accent-gradient);
@@ -68,7 +70,7 @@
   height: 50px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #e4dfec;
+    border-bottom: 1px solid var(--dividing_line);
   }
 }
 
@@ -113,6 +115,7 @@
   border-radius: 5px;
   box-shadow: var(--forms_shadow);
   background-color: var(--elements-bgc);
+  cursor: pointer;
 }
 
 .field_text {
@@ -163,6 +166,7 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    width: 650px;
   }
 
   .description_wrapper {
@@ -180,19 +184,84 @@
   }
 
   .fields_list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(246px, 1fr));
     column-gap: 20px;
+    max-width: 1000px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .tablet_wrapper {
+    flex-direction: column;
+    max-width: 980px;
+    width: fit-content;
   }
 
-  .field_wrapper {
-    min-width: 246px;
-    max-width: 313px;
+  .percents_list {
+    display: flex;
+  }
+
+  .percents_item {
+    margin-right: 30px;
+    padding-right: 30px;
+    height: fit-content;
+    width: fit-content;
+    max-width: min-content;
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--dividing_line);
+      border-bottom: none;
+    }
   }
 }
 
 @media screen and (min-width: 1550px) {
   .title {
     font-size: 22px;
+  }
+
+  .notebook_wrapper {
+    display: flex;
+    column-gap: 60px;
+    max-width: 1300px;
+    margin-bottom: 50px;
+  }
+
+  .description_title {
+    margin-top: 35px;
+    margin-bottom: 25px;
+    font-size: 20px;
+  }
+
+  .description_wrapper {
+    padding: 0;
+    flex: none;
+  }
+
+  .link_title {
+    margin-bottom: 35px;
+    font-size: 20px;
+  }
+
+  .paragraph {
+    font-size: 18px;
+
+    &:first-child {
+      margin-bottom: 25px;
+    }
+  }
+
+  .percent {
+    width: 70px;
+    font-size: 35px;
+  }
+
+  .percents_categories {
+    font-size: 16px;
+  }
+
+  .field_text {
+    font-size: 18px;
   }
 }

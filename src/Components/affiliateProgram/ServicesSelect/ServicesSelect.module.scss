@@ -14,6 +14,7 @@
   border-radius: 5px;
   box-shadow: var(--forms_shadow);
   background-color: var(--elements-bgc);
+  cursor: pointer;
 
   &.opened {
     .icon {
@@ -62,6 +63,7 @@
   margin-bottom: 15px;
   font-size: 16px;
   font-weight: 300;
+  cursor: pointer;
 
   &:first-child {
     margin-top: 15px;
@@ -69,5 +71,15 @@
 
   &:hover {
     font-weight: 400;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .placeholder {
+    font-size: 18px;
+  }
+
+  .service_item {
+    font-size: 18px;
   }
 }

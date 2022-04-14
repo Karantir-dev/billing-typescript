@@ -16,6 +16,7 @@ export default function AboutAffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
   const descrWrapper = useRef(null)
   const refLinkEl = useRef(null)
   const promocodeEl = useRef(null)
@@ -82,38 +83,41 @@ export default function AboutAffiliateProgram() {
 
       <p className={s.description_title}> {t('about_section_title')} </p>
 
-      <div className={s.tablet_wrapper}>
-        <div className={s.description_wrapper} ref={descrWrapper}>
-          <p className={s.paragraph}> {t('about_section.description_1')} </p>
-          <p className={s.paragraph}> {t('about_section.description_2')} </p>
+      <div className={s.notebook_wrapper}>
+        <div className={s.tablet_wrapper}>
+          <div className={s.description_wrapper} ref={descrWrapper}>
+            <p className={s.paragraph}> {t('about_section.description_1')} </p>
+            <p className={s.paragraph}> {t('about_section.description_2')} </p>
+          </div>
+
+          {!tabletOrHigher && (
+            <button className={s.btn_more} type="button" onClick={toggleDescrHeight}>
+              {t('about_section.read_more')}
+            </button>
+          )}
+
+          <ul className={s.percents_list}>
+            <li className={s.percents_item}>
+              <span className={s.percent}>15%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.virtual_servers')}
+              </span>
+            </li>
+            <li className={s.percents_item}>
+              <span className={s.percent}>40%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.shared_hosting')}
+              </span>
+            </li>
+            <li className={s.percents_item}>
+              <span className={s.percent}>15%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.dedicated_servers')}
+              </span>
+            </li>
+          </ul>
         </div>
-
-        {!tabletOrHigher && (
-          <button className={s.btn_more} type="button" onClick={toggleDescrHeight}>
-            {t('about_section.read_more')}
-          </button>
-        )}
-
-        <ul className={s.percents_list}>
-          <li className={s.percents_item}>
-            <span className={s.percent}>15%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.virtual_servers')}
-            </span>
-          </li>
-          <li className={s.percents_item}>
-            <span className={s.percent}>40%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.shared_hosting')}
-            </span>
-          </li>
-          <li className={s.percents_item}>
-            <span className={s.percent}>15%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.dedicated_servers')}
-            </span>
-          </li>
-        </ul>
+        {higherThan1550px && <FilesBanner />}
       </div>
 
       <p className={s.link_title}>{t('about_section.referral_link')}</p>
@@ -123,6 +127,7 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}> {t('about_section.service')}: </label>
           <ServicesSelect setServiseName={handleRefLinkCreating} />
         </div>
+
         <div className={s.field_wrapper}>
           <label className={s.label}> {t('about_section.referral_link')}: </label>
           <div
@@ -155,6 +160,7 @@ export default function AboutAffiliateProgram() {
             </CSSTransition>
           </div>
         </div>
+
         <div className={s.field_wrapper}>
           <label className={s.label}> {t('about_section.promocode')}: </label>
           <div
@@ -186,7 +192,7 @@ export default function AboutAffiliateProgram() {
         </div>
       </div>
 
-      <FilesBanner />
+      {!higherThan1550px && <FilesBanner />}
     </Container>
   )
 }
