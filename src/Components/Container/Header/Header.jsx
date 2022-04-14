@@ -119,7 +119,14 @@ export default function Header() {
                     [s.active_notification]: areNewTickets,
                   })}
                 >
-                  <NavLink to={routes.HOME} className={s.link}>
+                  <NavLink
+                    to={routes.SUPPORT}
+                    className={({ isActive }) =>
+                      cn(s.link, {
+                        [s.active]: isActive,
+                      })
+                    }
+                  >
                     <FilledEnvelope className={s.icon} />
                   </NavLink>
                 </li>
