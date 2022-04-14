@@ -1,0 +1,1 @@
+describe('AboutAffiliateProgram Page jsx', () => {})

@@ -4,10 +4,10 @@ import { CSSTransition } from 'react-transition-group'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 
-import { PageTabBar, Container, ServicesSelect, FilesBanner } from '../../../Components'
+import { ServicesSelect, FilesBanner } from '../../../Components'
 import { Copy } from '../../../images'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
-import * as route from '../../../routes'
+// import * as route from '../../../routes'
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -70,16 +70,16 @@ export default function AboutAffiliateProgram() {
     }
   }
 
-  const navBarSections = [
-    { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
-    { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
-    { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
-  ]
-  console.log(navBarSections)
+  // const navBarSections = [
+  //   { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
+  //   { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
+  //   { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
+  // ]
+
   return (
-    <Container>
-      <h2 className={s.title}> {t('page_title')} </h2>
-      <PageTabBar sections={navBarSections} />
+    <>
+      {/* <h2 className={s.title}> {t('page_title')} </h2>
+      <PageTabBar sections={navBarSections} /> */}
 
       <p className={s.description_title}> {t('about_section_title')} </p>
 
@@ -193,6 +193,6 @@ export default function AboutAffiliateProgram() {
       </div>
 
       {!higherThan1550px && <FilesBanner />}
-    </Container>
+    </>
   )
 }
