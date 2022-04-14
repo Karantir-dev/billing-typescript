@@ -18,6 +18,7 @@ RUN apk add --no-cache apache2-utils openssl && \
         -out etc/nginx/ssl/cert.crt && \
     addgroup -S portal && adduser -S portal -G portal && \
     chown -R portal:portal /etc/nginx/ssl/ && \
+    chown -R portal:portal /etc/nginx/ && \
     chown -R portal:portal /var/cache/nginx/
 
 COPY --from=build /usr/local/src/build/ /web
