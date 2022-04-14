@@ -1,0 +1,119 @@
+@import '../../../scss/placeholders.scss';
+
+// lang
+.phone_label {
+  margin-bottom: 8px;
+  margin-left: 10px;
+  font-size: 14px;
+  color: var(--main-text);
+}
+.wrapper {
+  margin-bottom: 20px;
+}
+
+.lang_container {
+  height: 50px;
+  position: relative;
+}
+
+.lang_btn {
+  &.extra_style.opened {
+    background-color: var(--nearby-elements-bgc);
+    border: none;
+
+    &.opened {
+      background-color: var(--nearby-elements-bgc);
+    }
+
+    & > div[aria-expanded] {
+      background-color: var(--forms-drop-down);
+    }
+    &.lightTheme > div[aria-expanded] {
+      background-color: var(--btn-bgc);
+    }
+
+    &.lightTheme {
+      &:hover > div {
+        background-color: var(--btn-bgc);
+      }
+    }
+
+    &:hover > div {
+      background-color: var(--forms-drop-down);
+    }
+  }
+}
+
+.react_phone_input.lang {
+  width: 100%;
+  border: none;
+  box-shadow: var(--forms_shadow);
+  height: 50px;
+  background-color: var(--nearby-elements-bgc);
+
+  @extend %input;
+  position: static;
+  padding-left: 40px;
+}
+
+.drop_down {
+  &.list {
+    background-color: var(--nearby-elements-bgc);
+  }
+
+  &.list {
+    &.lightThemeDrop {
+      &.list_hover {
+        width: 250px;
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+        &::-webkit-scrollbar-track {
+          background: #e9e9e9;
+          border-radius: 5px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: var(--accent-gradient);
+          border-radius: 5px;
+        }
+
+        & li[aria-selected] {
+          background-color: var(--btn-bgc);
+        }
+        & li:hover {
+          background-color: var(--btn-bgc);
+        }
+
+        & span:last-child {
+          color: var(--main-text);
+        }
+      }
+    }
+
+    &.list_hover {
+      width: 250px;
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #3b3447;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: var(--accent-gradient);
+        border-radius: 5px;
+      }
+
+      & li[aria-selected] {
+        background-color: var(--forms-drop-down);
+      }
+      & li:hover {
+        background-color: var(--forms-drop-down);
+      }
+
+      & span:last-child {
+        color: var(--main-text);
+      }
+    }
+  }
+}
