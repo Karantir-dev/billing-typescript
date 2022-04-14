@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
 import classNames from 'classnames'
-import i18n from 'i18next'
+// import i18n from 'i18next'
 
 import { selectors } from '../../../Redux/selectors'
 import { requiredLabel } from '../AddUserForm/AddUserForm'
@@ -15,8 +15,9 @@ export default function CustomPhoneInput(props) {
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  const lang = i18n.language === 'en' ? 'es' : i18n.language
-  const language = require(`react-phone-input-2/lang/${lang}.json`)
+  // const lang = i18n.language === 'en' ? 'es' : i18n.language
+  // const language = require(`react-phone-input-2/lang/${lang}.json`)
+  const language = require('react-phone-input-2/lang/es.json')
 
   const onValueChange = (phoneNumber, country, e) => {
     handleChange(e)

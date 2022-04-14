@@ -59,6 +59,7 @@ export default function TrustedUsers() {
         </div>
 
         <Button
+          dataTestid="trusted_form_btn"
           size="large"
           label={'Добавить'}
           type="button"
@@ -95,6 +96,7 @@ export default function TrustedUsers() {
         <AddUserForm
           controlForm={handleUserForm}
           checkIfCreatedUser={checkIfCreatedUser}
+          dataTestid="trusted_form"
         />
       )}
     </Container>

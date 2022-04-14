@@ -6,7 +6,6 @@ import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
 
 import i18n from '../../i18n'
-import { Button } from '../../Components'
 import Alert from '../../Components/TrustedUsers/Alert/Alert'
 
 describe('Alert Component', () => {
@@ -23,12 +22,7 @@ describe('Alert Component', () => {
   )
   const root = component.root
 
-  test('Component has one Button component', async () => {
-    const button = await root.findAllByType(Button)
-    expect(button).toHaveLength(1)
-  })
-
-  test('Component has two buttons tags', async () => {
+  test('Component has three buttons tags', async () => {
     const button = await root.findAllByType('button')
     expect(button).toHaveLength(2)
   })

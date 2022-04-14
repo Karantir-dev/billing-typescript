@@ -10,7 +10,7 @@ import { usersOperations } from '../../../Redux/users/usersOperations'
 import CustomPhoneInput from '../CustomPhoneInput/CustomPhoneInput'
 import s from './AddUserForm.module.scss'
 
-export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
+export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTestid }) {
   const dispatch = useDispatch()
 
   const validationSchema = Yup.object().shape({
@@ -42,7 +42,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
   }
 
   return (
-    <div>
+    <div data-testid={dataTestid}>
       <div className={s.form_wrapper}>
         <div className={s.form}>
           <div className={s.form_title_wrapper}>
@@ -66,6 +66,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
               return (
                 <Form>
                   <InputField
+                    dataTestid="input_email"
                     label={requiredLabel('Email')}
                     placeholder={'Введите данные'}
                     name="email"
@@ -77,6 +78,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
                   />
 
                   <InputField
+                    dataTestid="input_name"
                     label={requiredLabel('ФИО:')}
                     placeholder={'Введите данные'}
                     name="name"
@@ -88,12 +90,14 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
                   />
 
                   <CustomPhoneInput
+                    dataTestid="input_phone"
                     handleBlur={handleBlur}
                     handleChange={handleChange}
                     name="phone"
                   />
 
                   <InputField
+                    dataTestid="input_password"
                     label={requiredLabel('Пароль:')}
                     placeholder={'Введите пароль'}
                     name="password"
@@ -106,6 +110,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser }) {
                   />
 
                   <InputField
+                    dataTestid="input_passConfirmation"
                     label={requiredLabel('Подтверждение пароля:')}
                     placeholder={'Подтвердите пароль'}
                     name="passConfirmation"
@@ -142,4 +147,6 @@ export function requiredLabel(labelName) {
 
 AddUserForm.propTypes = {
   controlForm: PropTypes.func,
+  dataTestid: PropTypes.string,
+  checkIfCreatedUser: PropTypes.bool,
 }

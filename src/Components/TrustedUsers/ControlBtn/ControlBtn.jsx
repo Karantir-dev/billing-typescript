@@ -31,6 +31,7 @@ export default function ControlBtn({
       <span className={s.dot}></span>
 
       <div
+        data-testid="controlBtn_testId"
         role="button"
         tabIndex={0}
         onKeyDown={() => null}
