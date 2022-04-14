@@ -16,10 +16,10 @@ RUN apk add --no-cache apache2-utils openssl && \
         -subj  "/C=CA/ST=QC/O=Company Inc/CN=portal.com" \
         -newkey rsa:2048 -keyout /etc/nginx/ssl/cert.key \
         -out etc/nginx/ssl/cert.crt && \
-    addgroup -S portal && adduser -S portal -G portal && \
-    chown -R portal:portal /etc/nginx/ssl/ && \
-    chown -R portal:portal /etc/nginx/ && \
-    chown -R portal:portal /var/cache/nginx/
+    # addgroup -S portal && adduser -S portal -G portal && \
+    # chown -R portal:portal /etc/nginx/ssl/ && \
+    # chown -R portal:portal /etc/nginx/ && \
+    # chown -R portal:portal /var/cache/nginx/
 
 COPY --from=build /usr/local/src/build/ /web
 
@@ -27,7 +27,7 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /web
 
-USER portal 
+# USER portal 
 
 EXPOSE 8080
 EXPOSE 8443
