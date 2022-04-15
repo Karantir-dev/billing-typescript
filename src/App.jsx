@@ -23,10 +23,14 @@ import {
   AboutAffiliateProgram,
   SupportPage,
 } from './Pages'
-
+import { useTranslation } from 'react-i18next'
 import * as route from './routes'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru';
 
 export default function App() {
+  const { i18n } = useTranslation()
+  dayjs.locale(i18n.language)
   return (
     <Provider store={entireStore.store}>
       <PersistGate loading={null} persistor={entireStore.persistor}>
