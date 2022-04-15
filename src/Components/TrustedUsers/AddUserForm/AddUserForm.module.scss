@@ -21,7 +21,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .form_title {
@@ -38,7 +38,7 @@
   padding: 18px;
   margin-top: 125px;
   margin-bottom: 125px;
-  width: 260px;
+  width: 100%;
 }
 
 .field_input {
@@ -51,7 +51,7 @@
 }
 
 .submit_btn {
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .close_btn_wrapper {
@@ -161,9 +161,24 @@
 }
 
 // ADAPTIVE
+@media screen and (min-width: 460px) {
+  .form {
+    width: 400px;
+    padding: 29px 78px 31px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .form {
     width: 473px;
     padding: 29px 78px 31px;
+  }
+
+  .form_title_wrapper {
+    margin-bottom: 25px;
+  }
+
+  .submit_btn {
+    margin-top: 25px;
   }
 }

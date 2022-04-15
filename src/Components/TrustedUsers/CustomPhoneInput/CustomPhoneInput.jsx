@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
@@ -23,9 +23,9 @@ export default function CustomPhoneInput(props) {
     setFieldValue('phone', value)
   }
 
-  useEffect(() => {
-    document.querySelector('input[type="tel"]').setAttribute('name', name)
-  }, [])
+  // useEffect(() => {
+  //   document.querySelector('input[type="tel"]').setAttribute('name', name)
+  // }, [])
 
   return (
     <div className={s.wrapper}>

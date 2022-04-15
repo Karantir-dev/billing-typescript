@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
@@ -19,6 +20,8 @@ export default function UserCard({
   handleUserRolesData,
   isOwner,
 }) {
+  const { t } = useTranslation('trusted_users')
+
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
@@ -55,17 +58,21 @@ export default function UserCard({
       {mobile && (
         <div className={s.min_card_wrapper}>
           <div className={s.email_wrapper}>
-            <p className={s.label}>Email:</p>
+            <p className={s.label}>{t('trusted_users.table_header.email')}:</p>
             <p className={s.user_email}>{email}</p>
           </div>
           <div className={s.name_wrapper}>
-            <p className={s.label}>ФИО или название:</p>
+            <p className={s.label}>{t('trusted_users.table_header.name')}:</p>
             <p className={s.user_name}>{name}</p>
           </div>
           <div className={s.full_access_wrapper}>
-            <p className={s.label}>Полный доступ:</p>
+            <p className={s.label}> {t('trusted_users.table_header.full_access')}</p>
             <div className={s.toggle_wrapper}>
-              <p className={s.user_access}>{hasAccess ? 'Yes' : 'No'}</p>
+              <p className={s.user_access}>
+                {hasAccess
+                  ? t('trusted_users.user_cards.yes')
+                  : t('trusted_users.user_cards.no')}
+              </p>
               <ToggleButton
                 toggleName="access"
                 func={handleAccessClick}
@@ -86,7 +93,9 @@ export default function UserCard({
                   [s.user_status_off]: status !== 'on',
                 })}
               >
-                {status === 'on' ? 'Active' : 'Inactive'}
+                {status === 'on'
+                  ? t('trusted_users.user_cards.active')
+                  : t('trusted_users.user_cards.inactive')}
               </p>
               <ToggleButton
                 toggleName="status"
@@ -104,6 +113,8 @@ export default function UserCard({
             handleControlDotsClick={handleControlDotsClick}
             areControlDotsActive={areControlDotsActive}
             isOwner={isOwner}
+            userId={userId}
+            handleUserRolesData={handleUserRolesData}
           />
         </div>
       )}
@@ -114,7 +125,11 @@ export default function UserCard({
             <p className={s.user_email_lg}>{email}</p>
             <p className={s.user_name_lg}>{name}</p>
             <div className={s.toggle_wrapper_lg}>
-              <p className={s.user_access_lg}>{hasAccess ? 'turn off' : 'turn on'}</p>
+              <p className={s.user_access_lg}>
+                {hasAccess
+                  ? t('trusted_users.user_cards.turn_off_field')
+                  : t('trusted_users.user_cards.turn_on_field')}
+              </p>
               <ToggleButton
                 toggleName="access"
                 func={handleAccessClick}
@@ -141,6 +156,8 @@ export default function UserCard({
               handleControlDotsClick={handleControlDotsClick}
               areControlDotsActive={areControlDotsActive}
               isOwner={isOwner}
+              userId={userId}
+              handleUserRolesData={handleUserRolesData}
             />
           </div>
         </div>

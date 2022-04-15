@@ -42,13 +42,13 @@ export default function ToggleButton({
           dataTestid="trusted_users_alert_access"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
-          title={initialState ? 'Запрет доступа' : 'Включение доступа'}
+          title={initialState ? 'Запрет' : 'Включение'}
           text={`После того, как вы включите доступ, ${email} получит доступ в ваш личный кабинет.`}
           mainBtn={
             <Button
               dataTestid="alert_controlBtn_test_access"
               size="small"
-              label={initialState ? 'Закрыть доступ' : 'Включить доступ'}
+              label={initialState ? 'Закрыть'.toUpperCase() : 'Включить'.toUpperCase()}
               type="button"
               className={s.add_btn}
               onClick={getUsersResponse}
@@ -68,7 +68,11 @@ export default function ToggleButton({
             <Button
               dataTestid="alert_controlBtn_test_status"
               size="small"
-              label={initialState ? 'Деактивировать' : 'Активировать'}
+              label={
+                initialState
+                  ? 'Деактивировать'.toUpperCase()
+                  : 'Активировать'.toUpperCase()
+              }
               type="button"
               className={s.add_btn}
               onClick={getUsersResponse}

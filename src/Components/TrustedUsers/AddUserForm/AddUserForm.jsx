@@ -30,10 +30,9 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       .max(48, 'invalide password')
       .required('Password is required!')
       .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, 'invalide password'),
-    passConfirmation: Yup.string().oneOf(
-      [Yup.ref('password')],
-      'passwords aren"t the same',
-    ),
+    passConfirmation: Yup.string()
+      .oneOf([Yup.ref('password')], 'passwords aren"t the same')
+      .required('Password confirmation is required!'),
   })
 
   const handleSubmit = values => {
@@ -67,7 +66,8 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            {({ errors, touched, handleBlur, setFieldValue }) => {
+            {({ errors, touched, handleBlur, setFieldValue, values }) => {
+              console.log(values)
               return (
                 <Form>
                   <InputField
@@ -130,7 +130,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                   <Button
                     size="large"
                     className={s.submit_btn}
-                    label={'Save'}
+                    label={'Save'.toUpperCase()}
                     type="submit"
                   />
                 </Form>

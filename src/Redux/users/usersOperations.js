@@ -130,9 +130,40 @@ const createNewUser =
       })
   }
 
+const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.delete',
+        out: 'json',
+        auth: sessionId,
+        elid: userId,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log('user removed', data)
+      updateUsersListFunc()
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export const usersOperations = {
   getUsers,
   changeUserRights,
   changeUserStatus,
   createNewUser,
+  removeUser,
 }

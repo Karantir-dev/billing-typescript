@@ -1,0 +1,33 @@
+{
+  "trusted_users": {
+    "title": "Trusted users",
+    "subtitle": "Trusted users are persons whom you trust with access to your personal account. This can be useful when, for example, several people manage the servers or domains of your account. You can manage their access rights to the functionality of their personal account.",
+    "button": "Add",
+    "read_more": "Show more",
+    "read_less": "Show less",
+
+    "table_header": {
+      "email": "Email",
+      "name": "Full name or title",
+      "full_access": "Full access",
+      "status": "Status"
+    },
+
+    "user_cards": {
+      "turn_on_field": "Turn on",
+      "turn_off_field": "Turn off",
+      "active": "Active",
+      "inactive": "Inactive",
+      "yes": "Yes",
+      "no": "No",
+
+      "drop_list": {
+        "settings": "Settings",
+        "access_rights": "Access rights",
+        "delete": "Delete"
+      }
+    },
+
+    "alerts": {}
+  }
+}
