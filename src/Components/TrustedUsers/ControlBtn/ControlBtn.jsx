@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import { usersOperations } from '../../../Redux/users/usersOperations'
@@ -19,6 +20,8 @@ export default function ControlBtn({
   userId,
   handleUserRolesData,
 }) {
+  const { t } = useTranslation('trusted_users')
+
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
 
   const dropDownEl = useRef()
@@ -63,11 +66,16 @@ export default function ControlBtn({
           ref={dropDownEl}
         >
           <button className={s.settings_btn}>
-            <Settings className={s.icon} /> <p className={s.setting_text}>Settings</p>
+            <Settings className={s.icon} />{' '}
+            <p className={s.setting_text}>
+              {t('trusted_users.user_cards.drop_list.settings')}
+            </p>
           </button>
           <button className={s.access_rights_btn}>
             <Key className={s.icon} />
-            <p className={s.access_text}>Access rights</p>
+            <p className={s.access_text}>
+              {t('trusted_users.user_cards.drop_list.access_rights')}
+            </p>
           </button>
 
           <button
@@ -76,7 +84,9 @@ export default function ControlBtn({
             onClick={showAlert}
           >
             <Delete className={s.icon} />
-            <p className={s.delete_text}>Delete</p>
+            <p className={s.delete_text}>
+              {t('trusted_users.user_cards.drop_list.delete')}
+            </p>
           </button>
         </div>
       </div>
@@ -86,13 +96,13 @@ export default function ControlBtn({
           dataTestid="trusted_users_alert_status"
           isOpened={showRemoveAlert}
           controlAlert={showAlert}
-          title={'Удаление пользователя'}
+          title={t('trusted_users.alerts.remove.title')}
           text={`Вы действительно хотите удалить пользователя ${userId}?`}
           mainBtn={
             <Button
               dataTestid="alert_removeuser_test_status"
               size="small"
-              label={'Удалить'.toUpperCase()}
+              label={t('trusted_users.user_cards.drop_list.delete').toUpperCase()}
               type="button"
               className={s.add_btn}
               onClick={removeUser}

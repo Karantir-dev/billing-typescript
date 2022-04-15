@@ -16,15 +16,24 @@
     "user_cards": {
       "turn_on_field": "Вкл.",
       "turn_off_field": "Выкл.",
-      "active": "Active",
-      "inactive": "Inactive",
-      "yes": "Yes",
-      "no": "No",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "yes": "Да",
+      "no": "Нет",
 
       "drop_list": {
-        "settings": "Settings",
-        "access_rights": "Access rights",
-        "delete": "Delete"
+        "settings": "Настройки",
+        "access_rights": "Права доступа",
+        "delete": "Удалить"
+      }
+    },
+
+    "alerts": {
+      "remove": {
+        "title": "Удаление пользователя",
+        "text": "Вы действительно хотите удалить пользователя",
+        "btn_text_ok": "Удалить",
+        "btn_text_cancel": "Отмена"
       }
     }
   }

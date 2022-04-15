@@ -28,6 +28,13 @@
       }
     },
 
-    "alerts": {}
+    "alerts": {
+      "remove": {
+        "title": "Deleting a user",
+        "text": "Are you sure you want to delete the user",
+        "btn_text_ok": "Delete",
+        "btn_text_cancel": "Cancel"
+      }
+    }
   }
 }

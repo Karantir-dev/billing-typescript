@@ -54,7 +54,7 @@ export default function TrustedUsers() {
             {laptopOrHigher ? subtitleText : readMore ? subtitleText : slicedSubtitle}
           </p>
           <button className={s.show_more_btn} onClick={() => setReadMore(!readMore)}>
-            {readMore ? t('trusted_users.show_less') : t('trusted_users.show_more')}
+            {readMore ? t('trusted_users.read_less') : t('trusted_users.read_more')}
           </button>
         </div>
 

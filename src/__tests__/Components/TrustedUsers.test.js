@@ -9,6 +9,7 @@ import entireStore from '../../Redux/store'
 import i18n from '../../i18n'
 import { Button, TrustedUsers } from '../../Components'
 
+
 describe('TrustedUsers Component', () => {
   const component = create(
     <Provider store={entireStore.store}>

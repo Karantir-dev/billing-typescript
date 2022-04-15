@@ -3,14 +3,18 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
-import 'react-phone-input-2/lib/style.css'
 
 import { InputField, Button } from '../..'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 import CustomPhoneInput from '../CustomPhoneInput/CustomPhoneInput'
 import s from './AddUserForm.module.scss'
 
-export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTestid }) {
+export default function AddUserForm({
+  controlForm,
+  checkIfCreatedUser,
+  dataTestid,
+  onSubmit,
+}) {
   const dispatch = useDispatch()
 
   const validationSchema = Yup.object().shape({
@@ -34,11 +38,13 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       .oneOf([Yup.ref('password')], 'passwords aren"t the same')
       .required('Password confirmation is required!'),
   })
+  
+  const sleep = ms => new Promise(r => setTimeout(r, ms))
 
-  const handleSubmit = values => {
+  const handleSubmit = async values => {
     const { email, name, phone, password } = values
-
-    console.log(values)
+    await sleep(500)
+    onSubmit(values)
     dispatch(
       usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
     )
@@ -128,6 +134,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                     background={true}
                   />
                   <Button
+                    dataTestid="btn_form_submit"
                     size="large"
                     className={s.submit_btn}
                     label={'Save'.toUpperCase()}

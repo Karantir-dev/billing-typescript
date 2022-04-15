@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
 import classNames from 'classnames'
+import 'react-phone-input-2/lib/style.css'
 import i18n from 'i18next'
-
+import { returnLanguage } from './langimport'
 import { selectors } from '../../../Redux/selectors'
 import { requiredLabel } from '../AddUserForm/AddUserForm'
 
@@ -16,16 +17,11 @@ export default function CustomPhoneInput(props) {
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  const lang = i18n.language === 'en' ? 'es' : i18n.language
-  const language = require(`react-phone-input-2/lang/${lang}.json`)
+  const lang = returnLanguage(i18n.language === 'en' ? 'es' : i18n.language)
 
   const onValueChange = value => {
     setFieldValue('phone', value)
   }
-
-  // useEffect(() => {
-  //   document.querySelector('input[type="tel"]').setAttribute('name', name)
-  // }, [])
 
   return (
     <div className={s.wrapper}>
@@ -33,7 +29,7 @@ export default function CustomPhoneInput(props) {
       <PhoneInput
         {...restProps}
         country={'ua'}
-        localization={language}
+        localization={lang}
         onChange={onValueChange}
         onBlur={handleBlur}
         name={name}
