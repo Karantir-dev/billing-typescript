@@ -49,22 +49,24 @@ describe('UserCard Component', () => {
     )
   })
 
-  it('should setAreControlDotsActive as false', () => {
-    expect(screen.getByTestId('controlBtn_testId')).not.toBeInTheDocument()
+  test('setAreControlDotsActive should be as true and render list', async () => {
+    const button = await screen.getByTestId('controlBtn_testId')
+    expect(screen.getByTestId('controlBtn_testId')).toBeInTheDocument()
+    fireEvent.click(button)
+    expect(screen.getByTestId('controlBtn_dropdown_testId')).toBeInTheDocument()
   })
-  // test('should setAreControlDotsActive as true when it clicked')
 
-  // test('useStateHooks', async () => {
-  //   render(
-  //     <Provider store={entireStore.store}>
-  //       <I18nextProvider i18n={i18n}>
-  //         <BrowserRouter>
-  //           <Routes>
-  //             <Route path="*" element={<UserCard />} />
-  //           </Routes>
-  //         </BrowserRouter>
-  //       </I18nextProvider>
-  //     </Provider>,
-  //   )
-  // })
+  test('setIsSuccessAlertOpened should be as true and render status alert', async () => {
+    const buttonSetAlert = await screen.getByTestId('alert_controlBtn_test_status')
+    expect(buttonSetAlert).toBeInTheDocument()
+    fireEvent.click(buttonSetAlert)
+    expect(screen.getByTestId('trusted_users_alert_status')).toBeInTheDocument()
+  })
+
+  test('setIsSuccessAlertOpened access should be as true and render access alert', async () => {
+    const buttonSetAlert = await screen.getByTestId('alert_controlBtn_test_access')
+    expect(buttonSetAlert).toBeInTheDocument()
+    fireEvent.click(buttonSetAlert)
+    expect(screen.getByTestId('trusted_users_alert_access')).toBeInTheDocument()
+  })
 })

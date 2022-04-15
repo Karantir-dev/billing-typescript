@@ -117,3 +117,10 @@
     }
   }
 }
+
+.error_message {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.2;
+}

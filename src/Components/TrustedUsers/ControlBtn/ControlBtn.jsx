@@ -20,6 +20,7 @@ export default function ControlBtn({
 
   return (
     <div
+      data-testid="controlBtn_testId"
       role="button"
       tabIndex={0}
       onKeyDown={() => null}
@@ -31,7 +32,7 @@ export default function ControlBtn({
       <span className={s.dot}></span>
 
       <div
-        data-testid="controlBtn_testId"
+        data-testid="controlBtn_dropdown_testId"
         role="button"
         tabIndex={0}
         onKeyDown={() => null}

@@ -35,6 +35,7 @@ describe('AddUserForm Component', () => {
 
   test('rendering and submitting creatingUserForm (Formik)', async () => {
     const handleSubmit = jest.fn()
+
     render(
       <Provider store={entireStore.store}>
         <I18nextProvider i18n={i18n}>
@@ -62,4 +63,23 @@ describe('AddUserForm Component', () => {
     expect(password.value).toMatch('test123')
     expect(passConfirmation.value).toMatch('test123')
   })
+})
+
+test('check if sumbmit func have been called', async () => {
+  const wrapper = create(
+    <Provider store={entireStore.store}>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<AddUserForm />} />
+          </Routes>
+        </BrowserRouter>
+      </I18nextProvider>
+    </Provider>,
+  )
+
+  wrapper.findAllByType('form').simulate('submit')
+  const instance = wrapper.instance()
+  instance.handleSubmit = jest.fn()
+  expect(instance.handleSubmit).toBeCalled()
 })

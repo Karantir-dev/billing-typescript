@@ -39,12 +39,14 @@ export default function ToggleButton({
 
       {toggleName === 'access' && (
         <Alert
+          dataTestid="trusted_users_alert_access"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
           title={initialState ? 'Запрет доступа' : 'Включение доступа'}
           text={`После того, как вы включите доступ, ${email} получит доступ в ваш личный кабинет.`}
           mainBtn={
             <Button
+              dataTestid="alert_controlBtn_test_access"
               size="small"
               label={initialState ? 'Закрыть доступ' : 'Включить доступ'}
               type="button"
@@ -57,12 +59,14 @@ export default function ToggleButton({
 
       {toggleName === 'status' && (
         <Alert
+          dataTestid="trusted_users_alert_status"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
           title={initialState ? 'Деактивация статуса' : 'Активация статуса'}
           text={`Вы действительно хотите активировать пользователя ${email}?`}
           mainBtn={
             <Button
+              dataTestid="alert_controlBtn_test_status"
               size="small"
               label={initialState ? 'Деактивировать' : 'Активировать'}
               type="button"

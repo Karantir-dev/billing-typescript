@@ -3,24 +3,24 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
 import classNames from 'classnames'
-// import i18n from 'i18next'
+import i18n from 'i18next'
 
 import { selectors } from '../../../Redux/selectors'
 import { requiredLabel } from '../AddUserForm/AddUserForm'
 
 import s from './CustomPhoneInput.module.scss'
+import { ErrorMessage } from 'formik'
 
 export default function CustomPhoneInput(props) {
-  const { handleChange, handleBlur, placeholder, name, ...restProps } = props
+  const { handleBlur, setFieldValue, name, ...restProps } = props
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  // const lang = i18n.language === 'en' ? 'es' : i18n.language
-  // const language = require(`react-phone-input-2/lang/${lang}.json`)
-  const language = require('react-phone-input-2/lang/es.json')
+  const lang = i18n.language === 'en' ? 'es' : i18n.language
+  const language = require(`react-phone-input-2/lang/${lang}.json`)
 
-  const onValueChange = (phoneNumber, country, e) => {
-    handleChange(e)
+  const onValueChange = value => {
+    setFieldValue('phone', value)
   }
 
   useEffect(() => {
@@ -30,10 +30,8 @@ export default function CustomPhoneInput(props) {
   return (
     <div className={s.wrapper}>
       <p className={s.phone_label}> {requiredLabel('Номер телефона:')}</p>
-
       <PhoneInput
         {...restProps}
-        placeholder={placeholder}
         country={'ua'}
         localization={language}
         onChange={onValueChange}
@@ -64,6 +62,8 @@ export default function CustomPhoneInput(props) {
         })}
         searchStyle={{ backgroundColor: 'red' }}
       />
+
+      <ErrorMessage name="phone" component="span" className={s.error_message} />
     </div>
   )
 }
@@ -81,5 +81,4 @@ CustomPhoneInput.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
   handleBlur: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
 }

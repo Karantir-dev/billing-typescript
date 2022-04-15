@@ -34,7 +34,7 @@ const getUsers = () => (dispatch, getState) => {
     })
 }
 
-const changeUserRights = (id, switchAccess) => (dispatch, getState) => {
+const changeUserRights = (id, switchAccess, updateAccessFunc) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -55,16 +55,18 @@ const changeUserRights = (id, switchAccess) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data)
+
+      updateAccessFunc()
       dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+
       dispatch(actions.hideLoader())
     })
 }
 
-const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
+const changeUserStatus = (id, changeStatus, updateStatusFunc) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -85,6 +87,7 @@ const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       console.log(data)
+      updateStatusFunc()
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -93,37 +96,39 @@ const changeUserStatus = (id, changeStatus) => (dispatch, getState) => {
     })
 }
 
-const createNewUser = (password, email, phone, realname) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const createNewUser =
+  (password, email, phone, realname, updateListFunc) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'user.edit',
-        out: 'json',
-        auth: sessionId,
-        passwd: password,
-        email,
-        phone,
-        realname,
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data)
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      dispatch(actions.hideLoader())
-    })
-}
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'user.edit',
+          out: 'json',
+          auth: sessionId,
+          passwd: password,
+          email,
+          phone,
+          realname,
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        console.log('user created', data)
+        updateListFunc()
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 export const usersOperations = {
   getUsers,

@@ -6,7 +6,14 @@ import { useOutsideAlerter } from '../../../utils'
 
 import s from './Alert.module.scss'
 
-export default function Alert({ isOpened, title, mainBtn, text, controlAlert }) {
+export default function Alert({
+  isOpened,
+  title,
+  mainBtn,
+  text,
+  controlAlert,
+  dataTestid,
+}) {
   const getAlerEl = useRef()
 
   useOutsideAlerter(getAlerEl, isOpened, controlAlert)
@@ -14,7 +21,7 @@ export default function Alert({ isOpened, title, mainBtn, text, controlAlert }) 
   return (
     <>
       <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
-        <div className={s.alert} ref={getAlerEl}>
+        <div className={s.alert} ref={getAlerEl} data-testid={dataTestid}>
           <div className={s.title_wrapper}>
             <h5>{title}</h5>
             <div className={s.close_btn_wrapper}>
@@ -41,4 +48,5 @@ Alert.propTypes = {
   mainBtn: PropTypes.object,
   text: PropTypes.string,
   controlAlert: PropTypes.func,
+  dataTestid: PropTypes.string,
 }

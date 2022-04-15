@@ -18,9 +18,12 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       .matches(/^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g, 'Specials symbols aren"t allowed')
       .required('Name is required!'),
     phone: Yup.string()
-      .min(6, 'invalide password')
-      .max(20, 'invalide password')
-      .required('Phone is required!'),
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        'Incorrect number',
+      )
+      .min(7, 'phone number should have at least 4 digits')
+      .required('Phone number is required!'),
     email: Yup.string().email('Incorrect email').required('Email is required!'),
     password: Yup.string()
       .min(6, 'invalide password')
@@ -35,10 +38,12 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
   const handleSubmit = values => {
     const { email, name, phone, password } = values
+
     console.log(values)
-    dispatch(usersOperations.createNewUser(password, email, phone, name))
+    dispatch(
+      usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
+    )
     controlForm()
-    checkIfCreatedUser()
   }
 
   return (
@@ -62,7 +67,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            {({ errors, touched, handleBlur, handleChange }) => {
+            {({ errors, touched, handleBlur, setFieldValue }) => {
               return (
                 <Form>
                   <InputField
@@ -75,6 +80,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                     className={s.field_input}
                     isShadow={true}
                     background={true}
+                    autoComplete
                   />
 
                   <InputField
@@ -92,7 +98,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                   <CustomPhoneInput
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
-                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
                     name="phone"
                   />
 
@@ -139,14 +145,14 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
 export function requiredLabel(labelName) {
   return (
-    <p>
-      {labelName} <span className={s.required_star}>*</span>
-    </p>
+    <>
+      {labelName} {<span className={s.required_star}>*</span>}
+    </>
   )
 }
 
 AddUserForm.propTypes = {
   controlForm: PropTypes.func,
   dataTestid: PropTypes.string,
-  checkIfCreatedUser: PropTypes.bool,
+  checkIfCreatedUser: PropTypes.func,
 }

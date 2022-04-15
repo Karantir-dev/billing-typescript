@@ -41,15 +41,13 @@ export default function UserCard({
   const handleAccessClick = () => {
     const switchAccess = hasAccess ? 'off' : 'on'
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
-    dispatch(usersOperations.changeUserRights(userId, switchAccess))
-    handleUserRolesData()
+    dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
   }
 
   const handleStatusClick = () => {
     const changeStatus = status === 'on' ? 'suspend' : 'resume'
     setIsStatusAlertOpened(!isStatusAlertOpened)
-    dispatch(usersOperations.changeUserStatus(userId, changeStatus))
-    handleUserRolesData()
+    dispatch(usersOperations.changeUserStatus(userId, changeStatus, handleUserRolesData))
   }
 
   return (
