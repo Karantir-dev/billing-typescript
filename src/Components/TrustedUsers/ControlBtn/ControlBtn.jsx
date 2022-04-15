@@ -19,6 +19,7 @@ export default function ControlBtn({
   isOwner,
   userId,
   handleUserRolesData,
+  userName,
 }) {
   const { t } = useTranslation('trusted_users')
 
@@ -98,12 +99,12 @@ export default function ControlBtn({
           isOpened={showRemoveAlert}
           controlAlert={showAlert}
           title={t('trusted_users.alerts.remove.title')}
-          text={`Вы действительно хотите удалить пользователя ${userId}?`}
+          text={`${t('trusted_users.alerts.remove.text')} ${userName}?`}
           mainBtn={
             <Button
               dataTestid="alert_removeuser_test_status"
               size="small"
-              label={t('trusted_users.user_cards.drop_list.delete').toUpperCase()}
+              label={t('trusted_users.alerts.remove.btn_text_ok').toUpperCase()}
               type="button"
               className={s.add_btn}
               onClick={removeUser}

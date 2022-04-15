@@ -3,13 +3,16 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 import { InputField, Button } from '../..'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 import CustomPhoneInput from '../CustomPhoneInput/CustomPhoneInput'
+
 import s from './AddUserForm.module.scss'
 
 export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTestid }) {
+  const { t } = useTranslation('trusted_users')
   const dispatch = useDispatch()
 
   const validationSchema = Yup.object().shape({
@@ -47,7 +50,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       <div className={s.form_wrapper}>
         <div className={s.form}>
           <div className={s.form_title_wrapper}>
-            <p className={s.form_title}>Новый пользователь</p>
+            <p className={s.form_title}>{t('trusted_users.form.title')}</p>
             <div className={s.close_btn_wrapper}>
               <button className={s.close_btn} onClick={controlForm}></button>
             </div>
@@ -68,8 +71,8 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                 <Form>
                   <InputField
                     dataTestid="input_email"
-                    label={requiredLabel('Email')}
-                    placeholder={'Введите данные'}
+                    label={requiredLabel(t('trusted_users.form.email'))}
+                    placeholder={t('trusted_users.form_placeholders.email')}
                     name="email"
                     error={!!errors.email}
                     touched={!!touched.email}
@@ -81,8 +84,8 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
                   <InputField
                     dataTestid="input_name"
-                    label={requiredLabel('ФИО:')}
-                    placeholder={'Введите данные'}
+                    label={requiredLabel(t('trusted_users.form.full_name'))}
+                    placeholder={t('trusted_users.form_placeholders.full_name')}
                     name="name"
                     error={!!errors.name}
                     touched={!!touched.name}

@@ -85,7 +85,7 @@ export default function UserCard({
             </div>
           </div>
           <div className={s.status_wrapper}>
-            <p className={s.label}>Статус:</p>
+            <p className={s.label}>{t('trusted_users.table_header.status')}</p>
             <div className={s.toggle_wrapper}>
               <p
                 className={cn({
@@ -114,6 +114,7 @@ export default function UserCard({
             areControlDotsActive={areControlDotsActive}
             isOwner={isOwner}
             userId={userId}
+            userName={name}
             handleUserRolesData={handleUserRolesData}
           />
         </div>
@@ -156,6 +157,7 @@ export default function UserCard({
               handleControlDotsClick={handleControlDotsClick}
               areControlDotsActive={areControlDotsActive}
               isOwner={isOwner}
+              userName={name}
               userId={userId}
               handleUserRolesData={handleUserRolesData}
             />
