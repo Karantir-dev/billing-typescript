@@ -4,6 +4,7 @@ import supportActions from './supportActions'
 
 const initialState = {
   ticketList: [],
+  ticketCount: 0,
 }
 
 const ticketList = createReducer(initialState.ticketList, {
@@ -11,6 +12,12 @@ const ticketList = createReducer(initialState.ticketList, {
   [supportActions.clearTickets]: () => [],
 })
 
+const ticketCount = createReducer(initialState.ticketCount, {
+  [supportActions.getTicketCount]: (_, { payload }) => payload,
+  [supportActions.clearTicketCount]: () => 0,
+})
+
 export const supportReducer = combineReducers({
   ticketList,
+  ticketCount,
 })

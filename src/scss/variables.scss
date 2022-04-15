@@ -7,6 +7,9 @@ body {
   // variables that will be changed on the dark theme
   --main-bgc: #fdfcff;
   --main-text: #392955;
+  --menu-text-3: #523e75;
+  --link-text: #4c75a3;
+  --support-title-color: #392952;
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
@@ -25,6 +28,7 @@ body {
   --forms-drop-down: #514a5f;
   --inactive_icon_color: #e1daeb;
 
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
   --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
@@ -41,6 +45,9 @@ body {
 body.dark-theme {
   --main-bgc: #21192e;
   --main-text: #fff;
+  --menu-text-3: #ffffff;
+  --link-text: #8ab7fa;
+  --support-title-color: #FFFFFF;
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;

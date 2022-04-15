@@ -20,8 +20,8 @@
           image: docker.io/zomrocom/zomro-bill-dev
           pull_policy: always
           ports:
-            - '80:80'
-            - '443:443'
+            - '80:8080'
+            - '443:8443'
           restart: always
 
   register: output

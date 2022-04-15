@@ -15,7 +15,7 @@ const getTicketsHandler = (body = {}) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         auth: sessionId,
-        p_cnt: 15,
+        p_cnt: 30,
         p_col: '+time',
         clickstat: 'yes',
         ...body
@@ -27,6 +27,8 @@ const getTicketsHandler = (body = {}) => (dispatch, getState) => {
       }
       const elem = data?.doc?.elem || [];
       dispatch(supportActions.getTickets(elem))
+      const count = data?.doc?.p_elems?.$ || 0
+      dispatch(supportActions.getTicketCount(count))
     })
     .catch(error => {
       console.log('support -', error.message)

@@ -11,9 +11,9 @@ export default function Component(props) {
   return (
     <div>
       <div className={s.tableHeader}>
-        <span className={s.item_text}>{t('time', { ns: 'other' })}:</span>
-        <span className={s.item_text}>{t('user', { ns: 'other' })}:</span>
-        <span className={s.item_text}>{t('remote_ip_address')}:</span>
+        <span className={s.item_text_title}>{t('time', { ns: 'other' })}:</span>
+        <span className={s.item_text_title}>{t('user', { ns: 'other' })}:</span>
+        <span className={s.item_text_title}>{t('remote_ip_address')}:</span>
       </div>
       {list?.map(({ time, user, ip, id }) => (
         <AccessLogsTableItem key={id?.$} ip={ip?.$} time={time?.$} user={user?.$} />
