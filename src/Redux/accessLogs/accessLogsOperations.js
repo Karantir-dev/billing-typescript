@@ -19,7 +19,7 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         lang: i18n.language,
-        p_cnt: 15,
+        p_cnt: 30,
         p_col: '+time',
         clickstat: 'yes',
         ...body
@@ -102,7 +102,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             out: 'json',
             lang: i18n.language,
             auth: sessionId,
-            p_cnt: 15,
+            p_cnt: 30,
             p_col: '+time',
             ...body
           }),
@@ -147,7 +147,6 @@ const getAccessLogsCvs = () => (dispatch, getState) =>{
         new Blob([response.data]),
       );
       const link = document.createElement('a');
-      console.log(url)
       link.href = url;
       link.setAttribute(
         'download',

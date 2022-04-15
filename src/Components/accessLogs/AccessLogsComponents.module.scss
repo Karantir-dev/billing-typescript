@@ -26,9 +26,30 @@
 .item_text {
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 130%;
   color: var(--main-text);
+  flex-basis: 40%;
+  align-items: center;
+  word-break: break-all;
+  margin-right: 60px;
+
+  &:first-child {
+    flex-basis: 30%;
+  }
+
+  &:last-child {
+    flex-basis: 30%;
+    margin-right: 0;
+  }
+}
+
+.item_text_title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--menu-text-3);
   flex-basis: 40%;
   align-items: center;
   word-break: break-all;
@@ -176,9 +197,21 @@
   .tableHeader {
     padding: 11px 37px;
   }
-  .item_text {
+  .item_text_title {
     flex-basis: 50%;
 
+    &:first-child {
+      flex-basis: 15%;
+      min-width: 90px;
+    }
+
+    &:last-child {
+      flex-basis: 35%;
+    }
+  }
+  .item_text {
+    flex-basis: 50%;
+    font-size: 16px;
     &:first-child {
       flex-basis: 15%;
       min-width: 90px;
@@ -218,6 +251,19 @@
   .item {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .item_text_title {
+    margin-right: 0px;
+    flex-basis: 100%;
+    &:first-child {
+      flex-basis: 100%;
+    }
+
+    &:last-child {
+      flex-basis: 100%;
+    }
+    margin-bottom: 15px;
   }
 
   .item_text {
