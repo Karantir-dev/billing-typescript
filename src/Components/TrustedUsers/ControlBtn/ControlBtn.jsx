@@ -79,6 +79,7 @@ export default function ControlBtn({
           </button>
 
           <button
+            data-testid="show_removing_alert"
             disabled={isOwner}
             className={cn({ [s.remove_btn]: true, [s.owner]: isOwner })}
             onClick={showAlert}

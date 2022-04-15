@@ -9,12 +9,7 @@ import { usersOperations } from '../../../Redux/users/usersOperations'
 import CustomPhoneInput from '../CustomPhoneInput/CustomPhoneInput'
 import s from './AddUserForm.module.scss'
 
-export default function AddUserForm({
-  controlForm,
-  checkIfCreatedUser,
-  dataTestid,
-  onSubmit,
-}) {
+export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTestid }) {
   const dispatch = useDispatch()
 
   const validationSchema = Yup.object().shape({
@@ -38,13 +33,9 @@ export default function AddUserForm({
       .oneOf([Yup.ref('password')], 'passwords aren"t the same')
       .required('Password confirmation is required!'),
   })
-  
-  const sleep = ms => new Promise(r => setTimeout(r, ms))
 
-  const handleSubmit = async values => {
+  const handleSubmit = values => {
     const { email, name, phone, password } = values
-    await sleep(500)
-    onSubmit(values)
     dispatch(
       usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
     )
@@ -72,8 +63,7 @@ export default function AddUserForm({
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            {({ errors, touched, handleBlur, setFieldValue, values }) => {
-              console.log(values)
+            {({ errors, touched, handleBlur, setFieldValue }) => {
               return (
                 <Form>
                   <InputField
