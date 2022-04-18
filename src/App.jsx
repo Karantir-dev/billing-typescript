@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Navigate, useLocation } from 'react-router-dom'
 import {
   Loader,
   LoginForm,
@@ -22,15 +22,38 @@ import {
   AccessLogPage,
   AboutAffiliateProgram,
   SupportPage,
+  OpenedTicker,
 } from './Pages'
 import { useTranslation } from 'react-i18next'
 import * as route from './routes'
 import dayjs from 'dayjs'
-import 'dayjs/locale/ru';
+import 'dayjs/locale/ru'
 
 export default function App() {
   const { i18n } = useTranslation()
   dayjs.locale(i18n.language)
+
+  const SupportScreen = () => {
+    const location = useLocation()
+
+    if (location.pathname === route.SUPPORT) {
+      return <Navigate to={`${route.SUPPORT}/requests`} />
+    }
+
+    return (
+      <Routes>
+        <Route
+          path=":path/*"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
+        />
+        <Route
+          path=":path/:id"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+        />
+      </Routes>
+    )
+  }
+
   return (
     <Provider store={entireStore.store}>
       <PersistGate loading={null} persistor={entireStore.persistor}>
@@ -86,19 +109,16 @@ export default function App() {
               />
               <Route
                 path={route.ACCESS_LOG}
-                element={<PrivateRoute children={<AccessLogPage />} />}
-                redirectTo={route.LOGIN}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
+                }
               />
               <Route
-                path={route.SUPPORT}
-                element={<PrivateRoute children={<SupportPage />} />}
-                redirectTo={route.LOGIN}
-              >
-                <Route
-                  path={':path'}
-                  element={<PrivateRoute children={<SupportPage />} />}
-                />
-              </Route>
+                path={`${route.SUPPORT}/*`}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
+                }
+              />
               <Route
                 path={route.AFFILIATE_PROGRAM_ABOUT}
                 element={

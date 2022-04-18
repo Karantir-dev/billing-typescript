@@ -126,7 +126,7 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
     })
 }
 
-const getAccessLogsCvs = () => (dispatch, getState) =>{ 
+const getAccessLogsCvs = (p_cnt) => (dispatch, getState) =>{ 
   const {
     auth: { sessionId },
   } = getState()
@@ -139,6 +139,7 @@ const getAccessLogsCvs = () => (dispatch, getState) =>{
         lang: i18n.language,
         clickstat: 'yes',
         auth: sessionId,
+        p_cnt
       }),
       { responseType: 'blob' }
     )

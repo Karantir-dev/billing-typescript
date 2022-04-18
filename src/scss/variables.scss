@@ -27,6 +27,7 @@ body {
   --forms-bg-2-color: #ffffff;
   --inactive_icon_color: #e1daeb;
 
+  --border-color: #f4f4f4;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -46,7 +47,7 @@ body.dark-theme {
   --main-text: #fff;
   --menu-text-3: #ffffff;
   --link-text: #8ab7fa;
-  --support-title-color: #FFFFFF;
+  --support-title-color: #ffffff;
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
@@ -63,6 +64,8 @@ body.dark-theme {
   --transparent-color: #716d79;
   --forms-bg-2-color: #342f3f;
   --inactive_icon_color: #5c5865;
+
+  --border-color: #5a5663;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

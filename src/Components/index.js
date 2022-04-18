@@ -37,4 +37,6 @@ export { default as AccessLogsFilter } from './accessLogs/AccessLogsFilter/Acces
 //==========================================SUPPORT==========================================//
 export { default as SupportFilter } from './Support/SupportFilter/SupportFilter'
 export { default as SupportTable } from './Support/SupportTable/SupportTable'
-
+export { default as SupportArchiveTable } from './Support/SupportArchiveTable/SupportArchiveTable'
+export { default as OpenedTicketMessages } from './Support/OpenedTicket/OpenedTicketMessages/OpenedTicketMessages'
+export { default as SendMessageForm } from './Support/OpenedTicket/SendMessageForm/SendMessageForm'
