@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import s from './ToggleButton.module.scss'
-import Alert from '../../TrustedUsers/Alert/Alert'
+import Alert from '../Alert/Alert'
 import { Button } from '../..'
 
 export default function ToggleButton({

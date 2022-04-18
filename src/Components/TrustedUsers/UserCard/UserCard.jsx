@@ -10,6 +10,7 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
+import { usersActions } from '../../../Redux/users/usersActions'
 
 export default function UserCard({
   name,
@@ -44,6 +45,7 @@ export default function UserCard({
   const handleAccessClick = () => {
     const switchAccess = hasAccess ? 'off' : 'on'
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
+    dispatch(usersActions.setUsers({ test: 'user test rights' }))
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
   }
 

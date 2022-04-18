@@ -111,6 +111,7 @@ Component.propTypes = {
   isShadow: PropTypes.bool.isRequired,
   autoComplete: PropTypes.bool,
   height: PropTypes.number,
+  background: PropTypes.bool,
 }
 
 Component.defaultProps = {

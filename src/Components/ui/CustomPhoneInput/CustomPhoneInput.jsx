@@ -7,7 +7,7 @@ import 'react-phone-input-2/lib/style.css'
 import i18n from 'i18next'
 import { returnLanguage } from './langimport'
 import { selectors } from '../../../Redux/selectors'
-import { requiredLabel } from '../AddUserForm/AddUserForm'
+import { requiredLabel } from '../../TrustedUsers/AddUserForm/AddUserForm'
 
 import s from './CustomPhoneInput.module.scss'
 import { ErrorMessage } from 'formik'

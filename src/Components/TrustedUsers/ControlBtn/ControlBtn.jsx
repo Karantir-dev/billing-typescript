@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 import { Delete, Key, Settings } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
-import Alert from '../Alert/Alert'
+import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
 
 import s from './ControlBtn.module.scss'
