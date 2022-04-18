@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
@@ -29,13 +29,24 @@ export default function TrustedUsers() {
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const subtitleText = t('trusted_users.subtitle')
-  const slicedSubtitle = subtitleText.split('').slice(0, 85).join('') + '...'
+  // const slicedSubtitle = subtitleText.split('').slice(0, 85).join('') + '...'
+  const subtitleWrap = useRef(null)
 
   const handleUserRolesData = () => {
     setChangeUserRoles(!changeUserRoles)
   }
   const checkIfCreatedUser = () => {
     setCreatedNewUser(!createdNewUser)
+  }
+
+  const hadndleReadMoreBtn = () => {
+    if (!readMore) {
+      subtitleWrap.current.style.height = subtitleWrap.current.scrollHeight + 'px'
+    } else {
+      subtitleWrap.current.removeAttribute('style')
+    }
+
+    setReadMore(!readMore)
   }
 
   const users = useSelector(usersSelectors.getUsers)
@@ -49,13 +60,14 @@ export default function TrustedUsers() {
       <section>
         <div>
           <h3 className={s.section_title}>{t('trusted_users.title')}</h3>
-
-          <p className={classNames({ [s.subtitle]: true })}>
-            {laptopOrHigher ? subtitleText : readMore ? subtitleText : slicedSubtitle}
-          </p>
-          <button className={s.show_more_btn} onClick={() => setReadMore(!readMore)}>
-            {readMore ? t('trusted_users.read_less') : t('trusted_users.read_more')}
-          </button>
+          <div className={s.subtitle_wrapper} ref={subtitleWrap}>
+            <p className={classNames({ [s.subtitle]: true })}>{subtitleText}</p>
+          </div>
+          {!laptopOrHigher && (
+            <button className={s.show_more_btn} onClick={hadndleReadMoreBtn}>
+              {readMore ? t('trusted_users.read_less') : t('trusted_users.read_more')}
+            </button>
+          )}
         </div>
 
         <Button
@@ -67,6 +79,7 @@ export default function TrustedUsers() {
           onClick={handleUserForm}
         />
 
+        <h4 className={s.users_title}>{t('trusted_users.users_title')}</h4>
         <div className={s.table_wrapper}>
           <div className={s.table_header}>
             <p className={s.user_email_lg}>{t('trusted_users.table_header.email')}:</p>

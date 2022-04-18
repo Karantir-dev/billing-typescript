@@ -83,6 +83,11 @@
 }
 
 // ADAPTIVE
+@media screen and (min-width: 1024px) {
+  .table_row {
+    grid-template-columns: repeat(5, 150px);
+  }
+}
 @media screen and (min-width: 1550px) {
   .table_row {
     grid-template-columns: repeat(5, 190px);

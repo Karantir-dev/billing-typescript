@@ -4,13 +4,14 @@ import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
 import classNames from 'classnames'
 import 'react-phone-input-2/lib/style.css'
+import { ErrorMessage } from 'formik'
 import i18n from 'i18next'
+
 import { returnLanguage } from './langimport'
 import { selectors } from '../../../Redux/selectors'
 import { requiredLabel } from '../../TrustedUsers/AddUserForm/AddUserForm'
 
 import s from './CustomPhoneInput.module.scss'
-import { ErrorMessage } from 'formik'
 
 export default function CustomPhoneInput(props) {
   const { handleBlur, setFieldValue, name, ...restProps } = props

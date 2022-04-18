@@ -5,6 +5,7 @@
     "button": "Add",
     "read_more": "Show more",
     "read_less": "Show less",
+    "users_title": "Your users",
 
     "table_header": {
       "email": "Email",

@@ -5,6 +5,7 @@
     "button": "Добавить",
     "read_more": "Читать больше",
     "read_less": "Скрыть",
+    "users_title": "Ваши пользователи",
 
     "table_header": {
       "email": "Email",

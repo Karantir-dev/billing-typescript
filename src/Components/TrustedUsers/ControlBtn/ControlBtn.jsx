@@ -85,10 +85,11 @@ export default function ControlBtn({
             className={cn({ [s.remove_btn]: true, [s.owner]: isOwner })}
             onClick={showAlert}
           >
-            <Delete className={s.icon} />
+            testBtn
+            {/* <Delete className={s.icon} />
             <p className={s.delete_text}>
               {t('trusted_users.user_cards.drop_list.delete')}
-            </p>
+            </p> */}
           </button>
         </div>
       </div>

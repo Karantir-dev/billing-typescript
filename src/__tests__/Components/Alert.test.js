@@ -6,7 +6,7 @@ import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
 
 import i18n from '../../i18n'
-import Alert from '../../Components/TrustedUsers/Alert/Alert'
+import { Alert } from '../../Components'
 
 describe('Alert Component', () => {
   const component = create(

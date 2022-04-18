@@ -42,15 +42,15 @@ describe('ControlBtn Component', () => {
     )
   })
 
-  test('When control OK button is clicked, aleret is shown', async () => {
-    const button = await screen.getByTestId('show_removing_alert')
+  test('When control OK button is clicked, aleret is shown', () => {
+    const button = screen.getByTestId('show_removing_alert')
     expect(button).toBeInTheDocument()
 
     fireEvent.click(button)
     expect(screen.getByTestId('trusted_users_alert_status')).toBeInTheDocument()
   })
-  test('When control btn is clicked, dropdown list is shown', async () => {
-    const button = await screen.getByTestId('controlBtn_testId')
+  test('When control btn is clicked, dropdown list is shown', () => {
+    const button = screen.getByTestId('controlBtn_testId')
     expect(button).toBeInTheDocument()
 
     fireEvent.click(button)
