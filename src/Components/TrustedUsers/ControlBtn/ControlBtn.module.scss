@@ -1,0 +1,113 @@
+.control_btn {
+  position: absolute;
+  display: flex;
+  right: 21px;
+  top: 23px;
+  cursor: pointer;
+}
+
+.dot {
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: var(--main-text);
+  }
+}
+
+.list {
+  position: absolute;
+  width: 210px;
+  background-color: var(--nearby-elements-bgc);
+  top: 25px;
+  right: -21px;
+  padding: 31px 16px 23px 16px;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  border-radius: 5px;
+  display: none;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--nearby-elements-bgc);
+    transform: rotate(45deg);
+    top: -7px;
+    right: 27px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+.settings_btn,
+.access_rights_btn {
+  display: flex;
+  margin-bottom: 27px;
+}
+
+.remove_btn {
+  display: flex;
+}
+.setting_text {
+  margin-left: 18px;
+  font-weight: 300;
+}
+.access_text {
+  margin-left: 15px;
+}
+.delete_text {
+  margin-left: 22px;
+}
+
+.remove_btn {
+  &.owner {
+    opacity: 0.3;
+    &:hover {
+      & .icon {
+        fill: var(--icon-color);
+      }
+    }
+  }
+}
+.settings_btn,
+.access_rights_btn,
+.remove_btn {
+  cursor: pointer;
+
+  &:hover {
+    & .icon {
+      fill: url(#gradient);
+    }
+    & .setting_text,
+    .delete_text,
+    .access_text {
+      font-weight: 400;
+    }
+  }
+}
+
+.icon {
+  fill: var(--icon-color);
+}
+
+.control_btn_lg {
+  position: absolute;
+  display: flex;
+  right: 21px;
+  top: 50%;
+  cursor: pointer;
+}
+
+.user_email_lg {
+  padding-left: 27px;
+}

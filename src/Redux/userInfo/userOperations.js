@@ -78,7 +78,7 @@ const removeItems = (sessionId, id) => {
       }),
     )
     .then(({ data }) => {
-      if (!data) throw new Error('Notifications info is not found')
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
     })
     .catch(error => {
       console.log('error', error)

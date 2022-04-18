@@ -1,0 +1,92 @@
+{
+  "trusted_users": {
+    "title": "Trusted users",
+    "subtitle": "Trusted users are persons whom you trust with access to your personal account. This can be useful when, for example, several people manage the servers or domains of your account. You can manage their access rights to the functionality of their personal account.",
+    "button": "Add",
+    "read_more": "Show more",
+    "read_less": "Show less",
+    "users_title": "Your users",
+
+    "table_header": {
+      "email": "Email",
+      "name": "Full name or title",
+      "full_access": "Full access",
+      "status": "Status"
+    },
+
+    "user_cards": {
+      "turn_on_field": "Turn on",
+      "turn_off_field": "Turn off",
+      "active": "Active",
+      "inactive": "Inactive",
+      "yes": "Yes",
+      "no": "No",
+
+      "drop_list": {
+        "settings": "Settings",
+        "access_rights": "Access rights",
+        "delete": "Delete"
+      }
+    },
+
+    "alerts": {
+      "remove": {
+        "title": "Deleting a user",
+        "text": "Are you sure you want to delete the user",
+        "btn_text_ok": "Delete",
+        "btn_text_cancel": "Cancel"
+      },
+      "access": {
+        "title": "Enabling a user",
+        "title2": "Disabling a user",
+        "text": "After you enable access,",
+        "text2": "will have access to your personal account.",
+        "text3": "After you turn off access,",
+        "text4": "will lose access to your personal account.",
+        "btn_text_ok": "Turn on",
+        "btn_text_ok2": "Turn off",
+        "btn_text_cancel": "Cancel"
+      },
+      "status": {
+        "title": "User activation",
+        "title2": "User deactivation",
+        "text": "Do you really want to activate the user",
+        "text2": "Are you sure you want to deactivate a user",
+        "btn_text_ok": "Activate",
+        "btn_text_ok2": "Deactivate",
+        "btn_text_cancel": "Cancel"
+      }
+    },
+
+    "form": {
+      "title": "New user",
+      "email": "Email",
+      "full_name": "ФИО",
+      "phone": "Номер телефона",
+      "password": "Пароль",
+      "conf_password": "Подтверждение пароля",
+      "submit_btn": "Сохранить"
+    },
+    "form_placeholders": {
+      "email": "Введите данные",
+      "full_name": "Введите данные",
+      "phone": "",
+      "password": "Введите пароль",
+      "conf_password": "Подтвердите пароль"
+    },
+    "form_errors": {
+      "email": "Неверный email",
+      "full_name": "Недопустимые символы",
+      "phone": "Номер должен содержать минимум 4 цифры",
+      "password": "Пароль должен содержать минимум 5 символов",
+      "conf_password": "Пароли не совпадают"
+    },
+    "form_warnings": {
+      "email": "Обязательное поле для заполнения",
+      "full_name": "Обязательное поле для заполнения",
+      "phone": "Обязательное поле для заполнения",
+      "password": "Обязательное поле для заполнения",
+      "conf_password": "Обязательное поле для заполнения"
+    }
+  }
+}
