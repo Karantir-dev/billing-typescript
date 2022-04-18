@@ -17,24 +17,29 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g, 'Specials symbols aren"t allowed')
-      .required('Name is required!'),
+      .matches(
+        /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+        t('trusted_users.form_errors.full_name'),
+      )
+      .required(t('trusted_users.form_warnings.full_name')),
     phone: Yup.string()
       .matches(
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        'Incorrect number',
+        t('trusted_users.form_errors.phone'),
       )
-      .min(7, 'phone number should have at least 4 digits')
-      .required('Phone number is required!'),
-    email: Yup.string().email('Incorrect email').required('Email is required!'),
+      .min(7, t('trusted_users.form_errors.phone'))
+      .required(t('trusted_users.form_warnings.phone')),
+    email: Yup.string()
+      .email(t('trusted_users.form_errors.email'))
+      .required(t('trusted_users.form_warnings.email')),
     password: Yup.string()
-      .min(6, 'invalide password')
-      .max(48, 'invalide password')
-      .required('Password is required!')
-      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, 'invalide password'),
+      .min(6, t('trusted_users.form_errors.password'))
+      .max(48, t('trusted_users.form_errors.password'))
+      .required(t('trusted_users.form_warnings.password'))
+      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('trusted_users.form_errors.password')),
     passConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], 'passwords aren"t the same')
-      .required('Password confirmation is required!'),
+      .oneOf([Yup.ref('password')], t('trusted_users.form_errors.conf_password'))
+      .required(t('trusted_users.form_warnings.conf_password')),
   })
 
   const handleSubmit = values => {
@@ -95,6 +100,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                   />
 
                   <CustomPhoneInput
+                    label={requiredLabel(t('trusted_users.form.phone'))}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
@@ -103,8 +109,8 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
                   <InputField
                     dataTestid="input_password"
-                    label={requiredLabel('Пароль:')}
-                    placeholder={'Введите пароль'}
+                    label={requiredLabel(t('trusted_users.form.password'))}
+                    placeholder={t('trusted_users.form_placeholders.password')}
                     name="password"
                     error={!!errors.password}
                     touched={!!touched.password}
@@ -116,8 +122,8 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
                   <InputField
                     dataTestid="input_passConfirmation"
-                    label={requiredLabel('Подтверждение пароля:')}
-                    placeholder={'Подтвердите пароль'}
+                    label={requiredLabel(t('trusted_users.form.conf_password'))}
+                    placeholder={t('trusted_users.form_placeholders.conf_password')}
                     name="passConfirmation"
                     error={!!errors.passConfirmation}
                     touched={!!touched.passConfirmation}
@@ -130,7 +136,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                     dataTestid="btn_form_submit"
                     size="large"
                     className={s.submit_btn}
-                    label={'Save'.toUpperCase()}
+                    label={t('trusted_users.form.submit_btn').toUpperCase()}
                     type="submit"
                   />
                 </Form>

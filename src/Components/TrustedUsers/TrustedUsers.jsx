@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,88 @@ import { usersOperations } from '../../Redux/users/usersOperations'
 import { usersSelectors } from '../../Redux/users/usersSelectors'
 
 import s from './TrustedUsers.module.scss'
+import AccessRights from './AccessRights/AccessRights'
+
+const clientRightsList = [
+  {
+    element: { text: 'Allow all' },
+  },
+  {
+    element: { text: 'Create' },
+  },
+  {
+    title: 'Change',
+    children: [
+      {
+        element: {
+          text: 'Редактирование информации о пользователе с доступом к чтению данных формы',
+        },
+      },
+      {
+        element: {
+          text: 'Редактирование информации о пользователе с доступом к сохранению данных',
+        },
+      },
+    ],
+  },
+  {
+    element: { text: 'Remove' },
+  },
+  {
+    element: { text: 'Turn on' },
+  },
+  {
+    element: { text: 'Turn off' },
+  },
+
+  {
+    title: 'Rights',
+    children: [
+      {
+        element: {
+          text: 'Turn on',
+        },
+      },
+      {
+        element: {
+          text: 'Turn off',
+        },
+      },
+
+      {
+        title: 'Functions',
+        children: [
+          {
+            element: {
+              text: 'Turn on',
+            },
+          },
+          {
+            element: {
+              text: 'Turn off',
+            },
+          },
+          {
+            element: {
+              text: 'Filter',
+            },
+          },
+        ],
+      },
+      {
+        element: {
+          text: 'Filter',
+        },
+      },
+    ],
+  },
+  {
+    element: { text: 'History' },
+  },
+  {
+    element: { text: 'Filter' },
+  },
+]
 
 export default function TrustedUsers() {
   const { t } = useTranslation('trusted_users')
@@ -29,7 +111,6 @@ export default function TrustedUsers() {
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const subtitleText = t('trusted_users.subtitle')
-  // const slicedSubtitle = subtitleText.split('').slice(0, 85).join('') + '...'
   const subtitleWrap = useRef(null)
 
   const handleUserRolesData = () => {
@@ -114,6 +195,13 @@ export default function TrustedUsers() {
           dataTestid="trusted_form"
         />
       )}
+
+      <AccessRights
+        userId={1}
+        userName={'Someone'}
+        alert={true}
+        items={clientRightsList}
+      />
     </Container>
   )
 }

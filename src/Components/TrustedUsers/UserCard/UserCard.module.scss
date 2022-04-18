@@ -67,6 +67,13 @@
   align-items: center;
 }
 
+.toggle_status_wrapper_lg {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .table_row {
   display: grid;
   grid-template-columns: repeat(5, 130px);
@@ -86,6 +93,7 @@
 @media screen and (min-width: 1024px) {
   .table_row {
     grid-template-columns: repeat(5, 150px);
+    justify-content: space-between;
   }
 }
 @media screen and (min-width: 1550px) {
