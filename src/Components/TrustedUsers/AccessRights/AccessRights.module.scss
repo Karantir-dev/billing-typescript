@@ -1,0 +1,22 @@
+.sub_list {
+  margin-left: 23px;
+  display: none;
+
+  &.opened {
+    display: block;
+  }
+}
+
+.list_item_wrapper {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title_inside_wrapper {
+  display: flex;
+}
+
+.arrow_show_more {
+  margin-left: 40px;
+}

@@ -10,7 +10,6 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
-import { usersActions } from '../../../Redux/users/usersActions'
 
 export default function UserCard({
   name,
@@ -30,6 +29,7 @@ export default function UserCard({
   const dispatch = useDispatch()
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
+  const laptopOrHigher = useMediaQuery({ query: '(min-width: 1024px)' })
 
   const handleControlDotsClick = () => {
     setAreControlDotsActive(!areControlDotsActive)
@@ -45,7 +45,6 @@ export default function UserCard({
   const handleAccessClick = () => {
     const switchAccess = hasAccess ? 'off' : 'on'
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
-    dispatch(usersActions.setUsers({ test: 'user test rights' }))
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
   }
 
@@ -143,7 +142,14 @@ export default function UserCard({
                 isOwner={isOwner}
               />
             </div>
-            <div className={s.toggle_wrapper_lg}>
+            <div className={s.toggle_status_wrapper_lg}>
+              {laptopOrHigher && (
+                <p className={s.user_status_lg}>
+                  {status === 'on'
+                    ? t('trusted_users.user_cards.active')
+                    : t('trusted_users.user_cards.inactive')}
+                </p>
+              )}
               <ToggleButton
                 toggleName="status"
                 initialState={status === 'on'}

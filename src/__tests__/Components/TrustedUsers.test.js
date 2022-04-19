@@ -8,7 +8,7 @@ import entireStore from '../../Redux/store'
 
 import i18n from '../../i18n'
 import { Button, TrustedUsers } from '../../Components'
-
+import { mockedAxiosInstance } from '../../config/axiosInstance'
 
 describe('TrustedUsers Component', () => {
   const component = create(
@@ -31,6 +31,10 @@ describe('TrustedUsers Component', () => {
 
   test('Component will open form if btn add clicked', async () => {
     const handleClick = jest.fn()
+
+    await mockedAxiosInstance.onPost('/').reply(200, {
+      doc: { elem: [] },
+    })
 
     render(
       <Provider store={entireStore.store}>

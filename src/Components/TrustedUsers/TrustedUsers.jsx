@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,87 @@ import { usersOperations } from '../../Redux/users/usersOperations'
 import { usersSelectors } from '../../Redux/users/usersSelectors'
 
 import s from './TrustedUsers.module.scss'
+// import AccessRights from './AccessRights/AccessRights'
+
+// const clientRightsList = [
+//   {
+//     title: 'Allow all',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Create',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Change',
+//     children: [
+//       {
+//         title:
+//           'Редактирование информации о пользователе с доступом к чтению данных формы',
+//         btn: 'toggle',
+//       },
+//       {
+//         title: 'Редактирование информации о пользователе с доступом к сохранению данных',
+//       },
+//     ],
+//   },
+//   {
+//     title: 'Remove',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Turn on',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Turn off',
+//     btn: 'toggle',
+//   },
+
+//   {
+//     title: 'Rights',
+//     children: [
+//       {
+//         title: 'Turn on',
+//         btn: 'toggle',
+//       },
+//       {
+//         title: 'Turn off',
+//         btn: 'toggle',
+//       },
+
+//       {
+//         title: 'Functions',
+//         children: [
+//           {
+//             title: 'Turn on',
+//             btn: 'toggle',
+//           },
+//           {
+//             title: 'Turn off',
+//             btn: 'toggle',
+//           },
+//           {
+//             title: 'Filter',
+//             btn: 'toggle',
+//           },
+//         ],
+//       },
+//       {
+//         title: 'Filter',
+//         btn: 'toggle',
+//       },
+//     ],
+//   },
+//   {
+//     title: 'History',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Filter',
+//     btn: 'toggle',
+//   },
+// ]
 
 export default function TrustedUsers() {
   const { t } = useTranslation('trusted_users')
@@ -29,7 +110,6 @@ export default function TrustedUsers() {
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const subtitleText = t('trusted_users.subtitle')
-  // const slicedSubtitle = subtitleText.split('').slice(0, 85).join('') + '...'
   const subtitleWrap = useRef(null)
 
   const handleUserRolesData = () => {
@@ -114,6 +194,13 @@ export default function TrustedUsers() {
           dataTestid="trusted_form"
         />
       )}
+
+      {/* <AccessRights
+        userId={1}
+        userName={'Someone'}
+        alert={true}
+        items={clientRightsList}
+      /> */}
     </Container>
   )
 }

@@ -5,21 +5,29 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { Button } from '../../Components'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
-import i18n from '../../i18n'
 import AddUserForm from '../../Components/TrustedUsers/AddUserForm/AddUserForm'
+import { mockedAxiosInstance } from '../../config/axiosInstance'
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => {
+    return {
+      t: str => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    }
+  },
+}))
 
 describe('AddUserForm Component', () => {
   const component = create(
     <Provider store={entireStore.store}>
-      <I18nextProvider i18n={i18n}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<AddUserForm />}></Route>
-          </Routes>
-        </BrowserRouter>
-      </I18nextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<AddUserForm />}></Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>,
   )
   const root = component.root
@@ -37,15 +45,15 @@ describe('AddUserForm Component', () => {
   test('rendering and submitting creatingUserForm (Formik)', async () => {
     const handleSubmit = jest.fn()
 
+    await mockedAxiosInstance.onPost('/').reply(200, { doc: {} })
+
     render(
       <Provider store={entireStore.store}>
-        <I18nextProvider i18n={i18n}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="*" element={<AddUserForm onSubmit={handleSubmit} />} />
-            </Routes>
-          </BrowserRouter>
-        </I18nextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<AddUserForm onSubmit={handleSubmit} />} />
+          </Routes>
+        </BrowserRouter>
       </Provider>,
     )
     const user = userEvent.setup()

@@ -9,12 +9,11 @@ import i18n from 'i18next'
 
 import { returnLanguage } from './langimport'
 import { selectors } from '../../../Redux/selectors'
-import { requiredLabel } from '../../TrustedUsers/AddUserForm/AddUserForm'
 
 import s from './CustomPhoneInput.module.scss'
 
 export default function CustomPhoneInput(props) {
-  const { handleBlur, setFieldValue, name, ...restProps } = props
+  const { handleBlur, setFieldValue, label, name, ...restProps } = props
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
@@ -30,7 +29,7 @@ export default function CustomPhoneInput(props) {
 
   return (
     <div className={s.wrapper}>
-      <p className={s.phone_label}> {requiredLabel('Номер телефона:')}</p>
+      <p className={s.phone_label}> {label}</p>
       <PhoneInput
         {...restProps}
         country={'ua'}
@@ -82,4 +81,5 @@ CustomPhoneInput.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
   handleBlur: PropTypes.func.isRequired,
+  label: PropTypes.object,
 }

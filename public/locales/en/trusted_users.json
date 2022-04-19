@@ -61,32 +61,32 @@
     "form": {
       "title": "New user",
       "email": "Email",
-      "full_name": "ФИО",
-      "phone": "Номер телефона",
-      "password": "Пароль",
-      "conf_password": "Подтверждение пароля",
-      "submit_btn": "Сохранить"
+      "full_name": "Full name",
+      "phone": "Phone number",
+      "password": "Password",
+      "conf_password": "Password confirmation",
+      "submit_btn": "Save"
     },
     "form_placeholders": {
-      "email": "Введите данные",
-      "full_name": "Введите данные",
+      "email": "Enter data",
+      "full_name": "Enter data",
       "phone": "",
-      "password": "Введите пароль",
-      "conf_password": "Подтвердите пароль"
+      "password": "Enter password",
+      "conf_password": "Confirm password"
     },
     "form_errors": {
-      "email": "Неверный email",
-      "full_name": "Недопустимые символы",
-      "phone": "Номер должен содержать минимум 4 цифры",
-      "password": "Пароль должен содержать минимум 5 символов",
-      "conf_password": "Пароли не совпадают"
+      "email": "Incorrect email",
+      "full_name": "Unacceptable symbols",
+      "phone": "Number must contain at least 4 digits",
+      "password": "Password must contain at least 5 characters",
+      "conf_password": "Passwords do not match"
     },
     "form_warnings": {
-      "email": "Обязательное поле для заполнения",
-      "full_name": "Обязательное поле для заполнения",
-      "phone": "Обязательное поле для заполнения",
-      "password": "Обязательное поле для заполнения",
-      "conf_password": "Обязательное поле для заполнения"
+      "email": "Required field",
+      "full_name": "Required field",
+      "phone": "Required field",
+      "password": "Required field",
+      "conf_password": "Required field"
     }
   }
 }
