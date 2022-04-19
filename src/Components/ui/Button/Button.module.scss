@@ -8,11 +8,11 @@
   &.shadow {
     box-shadow: var(--buttons_shadow);
   }
-  &.block {
-    width: auto;
-  }
 }
 
+.block {
+  width: auto;
+}
 .small {
   max-width: 220px;
 }

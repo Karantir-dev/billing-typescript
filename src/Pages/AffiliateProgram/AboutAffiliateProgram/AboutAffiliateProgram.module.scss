@@ -1,13 +1,14 @@
 .description_title {
-  margin-bottom: 20px;
+  margin-top: 25px;
   font-weight: 600;
   font-size: 18px;
 }
 
-.title {
-  font-weight: 600;
-  font-size: 20px;
-}
+// .title {
+//   margin-bottom: 30px;
+//   font-weight: 600;
+//   font-size: 20px;
+// }
 
 .btn_more {
   margin-bottom: 10px;
@@ -19,6 +20,7 @@
   position: relative;
   height: 80px;
   overflow: hidden;
+  padding-top: 16px;
   transition: height 0.15s;
 
   &::after {
@@ -37,6 +39,7 @@
 }
 
 .paragraph {
+  font-size: 16px;
   font-weight: 300;
 
   &:first-child {
@@ -44,13 +47,14 @@
   }
 }
 
-.percents_list {
+.tablet_wrapper {
   margin-bottom: 30px;
 }
 
 .percent {
   width: 54px;
   margin-right: 15px;
+  flex: none;
   font-weight: 900;
   font-size: 25px;
   background: var(--accent-gradient);
@@ -66,13 +70,14 @@
   height: 50px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #e4dfec;
+    border-bottom: 1px solid var(--dividing_line);
   }
 }
 
 .percents_categories {
   font-weight: 600;
   font-size: 14px;
+  line-height: 1.3;
   text-transform: uppercase;
 }
 
@@ -93,6 +98,10 @@
 .field_wrapper {
   width: 100%;
   margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 35px;
+  }
 }
 
 .copy_field {
@@ -106,6 +115,7 @@
   border-radius: 5px;
   box-shadow: var(--forms_shadow);
   background-color: var(--elements-bgc);
+  cursor: pointer;
 }
 
 .field_text {
@@ -131,10 +141,127 @@
 
 .copy_prompt {
   position: absolute;
+  top: calc(100% - 5px);
+  right: 0;
+  pointer-events: none;
+  padding: 12px 40px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  z-index: 1;
+  background-color: var(--popup_prompt);
+}
+
+.prompt_pointer {
+  position: absolute;
+  bottom: 100%;
+  right: 17px;
+
+  border: 10px solid transparent;
+  border-bottom-color: var(--popup_prompt);
+}
+
+@media screen and (min-width: 768px) {
+  .tablet_wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 650px;
+  }
+
+  .description_wrapper {
+    height: fit-content;
+    flex-basis: 60%;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .percents_item {
+    max-width: 172px;
+    height: 67px;
+  }
+
+  .fields_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(246px, 1fr));
+    column-gap: 20px;
+    max-width: 1000px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .tablet_wrapper {
+    flex-direction: column;
+    max-width: 980px;
+    width: fit-content;
+  }
+
+  .percents_list {
+    display: flex;
+  }
+
+  .percents_item {
+    margin-right: 30px;
+    padding-right: 30px;
+    height: fit-content;
+    width: fit-content;
+    max-width: min-content;
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--dividing_line);
+      border-bottom: none;
+    }
+  }
 }
 
 @media screen and (min-width: 1550px) {
-  .title {
-    font-size: 22px;
+  // .title {
+  //   font-size: 22px;
+  // }
+
+  .notebook_wrapper {
+    display: flex;
+    column-gap: 60px;
+    max-width: 1300px;
+    margin-bottom: 50px;
+  }
+
+  .description_title {
+    margin-top: 35px;
+    margin-bottom: 25px;
+    font-size: 20px;
+  }
+
+  .description_wrapper {
+    padding: 0;
+    flex: none;
+  }
+
+  .link_title {
+    margin-bottom: 35px;
+    font-size: 20px;
+  }
+
+  .paragraph {
+    font-size: 18px;
+
+    &:first-child {
+      margin-bottom: 25px;
+    }
+  }
+
+  .percent {
+    width: 70px;
+    font-size: 35px;
+  }
+
+  .percents_categories {
+    font-size: 16px;
+  }
+
+  .field_text {
+    font-size: 18px;
   }
 }

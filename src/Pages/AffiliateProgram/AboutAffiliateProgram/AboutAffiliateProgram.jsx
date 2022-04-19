@@ -1,18 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
-import ServicesSelect from './ServicesSelect/ServicesSelect'
-
-import s from './AboutAffiliateProgram.module.scss'
-import { PageTabBar } from '../../../Components'
-import { Copy } from '../../../images'
+import { CSSTransition } from 'react-transition-group'
 import { useDispatch } from 'react-redux'
+import cn from 'classnames'
+import { useMediaQuery } from 'react-responsive'
+
+import { ServicesSelect, FilesBanner } from '../../../Components'
+import { Copy } from '../../../images'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
-import * as route from '../../../routes'
+
+import animations from './animations.module.scss'
+import s from './AboutAffiliateProgram.module.scss'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
+  const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+  const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
   const descrWrapper = useRef(null)
   const refLinkEl = useRef(null)
   const promocodeEl = useRef(null)
@@ -20,12 +24,21 @@ export default function AboutAffiliateProgram() {
   const [referralLink, setReferralLink] = useState('')
   const [promocode, setPromocode] = useState('')
   const [isDescrOpened, setIsDescrOpened] = useState(false)
-
   const [serviceSelected, setServiceSelected] = useState(false)
+  const [promocodeCopied, setPromocodeCopied] = useState(false)
+  const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   useEffect(() => {
     dispatch(affiliateProgramOperations.getReferralLink(setReferralLink, setPromocode))
   }, [])
+
+  const showPrompt = fn => {
+    fn(true)
+
+    setTimeout(() => {
+      fn(false)
+    }, 2000)
+  }
 
   const toggleDescrHeight = () => {
     if (!isDescrOpened) {
@@ -49,53 +62,63 @@ export default function AboutAffiliateProgram() {
         return
       }
 
+      showPrompt(setRefLinkCopied)
       navigator.clipboard.writeText(el.current.textContent)
     } else {
+      showPrompt(setPromocodeCopied)
       navigator.clipboard.writeText(el.current.textContent)
     }
   }
 
-  const navBarSections = [
-    { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
-    { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
-    { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
-  ]
   return (
     <>
-      <div style={{ padding: '30px' }}>
-        <h2 className={s.title}> {t('page_title')} </h2>
-        <PageTabBar sections={navBarSections} />
-        <p className={s.description_title}> {t('about_section_title')} </p>
-        <div className={s.description_wrapper} ref={descrWrapper}>
-          <p className={s.paragraph}> {t('about_section.description_1')} </p>
-          <p className={s.paragraph}> {t('about_section.description_2')} </p>
+      <p className={s.description_title}> {t('about_section_title')} </p>
+
+      <div className={s.notebook_wrapper}>
+        <div className={s.tablet_wrapper}>
+          <div className={s.description_wrapper} ref={descrWrapper}>
+            <p className={s.paragraph}> {t('about_section.description_1')} </p>
+            <p className={s.paragraph}> {t('about_section.description_2')} </p>
+          </div>
+
+          {!higherThanMobile && (
+            <button
+              className={s.btn_more}
+              type="button"
+              onClick={toggleDescrHeight}
+              data-testid="btn_more"
+            >
+              {t('about_section.read_more')}
+            </button>
+          )}
+
+          <ul className={s.percents_list}>
+            <li className={s.percents_item}>
+              <span className={s.percent}>15%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.virtual_servers')}
+              </span>
+            </li>
+            <li className={s.percents_item}>
+              <span className={s.percent}>40%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.shared_hosting')}
+              </span>
+            </li>
+            <li className={s.percents_item}>
+              <span className={s.percent}>15%</span>
+              <span className={s.percents_categories}>
+                {t('about_section.dedicated_servers')}
+              </span>
+            </li>
+          </ul>
         </div>
-        <button className={s.btn_more} type="button" onClick={toggleDescrHeight}>
-          {t('about_section.read_more')}
-        </button>
-        <ul className={s.percents_list}>
-          <li className={s.percents_item}>
-            <span className={s.percent}>15%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.virtual_servers')}
-            </span>
-          </li>
-          <li className={s.percents_item}>
-            <span className={s.percent}>40%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.shared_hosting')}
-            </span>
-          </li>
-          <li className={s.percents_item}>
-            <span className={s.percent}>15%</span>
-            <span className={s.percents_categories}>
-              {t('about_section.dedicated_servers')}
-            </span>
-          </li>
-        </ul>
+        {higherThan1550px && <FilesBanner dataTestid="descktop_banner" />}
+      </div>
 
-        <p className={s.link_title}>{t('about_section.referral_link')}</p>
+      <p className={s.link_title}>{t('about_section.referral_link')}</p>
 
+      <div className={s.fields_list}>
         <div className={s.field_wrapper}>
           <label className={s.label}> {t('about_section.service')}: </label>
           <ServicesSelect setServiseName={handleRefLinkCreating} />
@@ -120,7 +143,17 @@ export default function AboutAffiliateProgram() {
               className={cn({ [s.copy_icon]: true, [s.selected]: serviceSelected })}
             />
 
-            <div className={s.copy_prompt}>{t('about_section.link_copied')}</div>
+            <CSSTransition
+              in={refLinkCopied}
+              classNames={animations}
+              timeout={150}
+              unmountOnExit
+            >
+              <div className={s.copy_prompt}>
+                <div className={s.prompt_pointer}></div>
+                {t('about_section.link_copied')}
+              </div>
+            </CSSTransition>
           </div>
         </div>
 
@@ -140,11 +173,22 @@ export default function AboutAffiliateProgram() {
               {promocode}
             </span>
             <Copy className={cn({ [s.copy_icon]: true, [s.selected]: true })} />
-
-            <div className={s.copy_prompt}>{t('about_section.promocode_copied')}</div>
+            <CSSTransition
+              in={promocodeCopied}
+              classNames={animations}
+              timeout={150}
+              unmountOnExit
+            >
+              <div className={s.copy_prompt}>
+                <div className={s.prompt_pointer}></div>
+                {t('about_section.promocode_copied')}
+              </div>
+            </CSSTransition>
           </div>
         </div>
       </div>
+
+      {!higherThan1550px && <FilesBanner dataTestid="mobile_banner" />}
     </>
   )
 }
