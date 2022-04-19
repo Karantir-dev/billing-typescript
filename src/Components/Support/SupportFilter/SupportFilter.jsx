@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Button, IconButton } from '../..'
+import { Button, IconButton, Portal, CreateTicketModal } from '../..'
 import { supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
 export default function Component({ selctedTicket }) {
   const { t } = useTranslation(['support', 'other'])
+  const [createTicketModal, setCreateTicketModal] = useState(false)
   const dispatch = useDispatch()
   const params = useParams()
 
@@ -34,7 +35,13 @@ export default function Component({ selctedTicket }) {
           size="medium"
           label={t('new ticket')}
           type="button"
+          onClick={() => setCreateTicketModal(true)}
         />
+      )}
+      {createTicketModal && (
+        <Portal>
+          <CreateTicketModal setCreateTicketModal={setCreateTicketModal} />
+        </Portal>
       )}
     </div>
   )

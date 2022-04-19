@@ -14,5 +14,14 @@
   "Rate the answer": "Rate the answer",
   "The maximum number of files is 5.": "The maximum number of files is 5.",
   "Maximum size - 95.5 MB": "Maximum size - 95.5 MB",
-  "Enter your message...": "Enter your message..."
+  "Enter your message...": "Enter your message...",
+  "Technical department": "Technical department",
+  "Sales department": "Sales department",
+  "New support request": "New support request",
+  "Request subject:": "Request subject:",
+  "Enter the subject of your request": "Enter the subject of your request",
+  "Specify what the question is about": "Specify what the question is about",
+  "Is a required field": "Is a required field",
+  "This ticket is not associated with a service": "This ticket is not associated with a service",
+  "Message": "Message"
 }

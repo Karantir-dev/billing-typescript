@@ -8,6 +8,8 @@ const initialState = {
   ticketCount: 0,
   ticketArchiveCount: 0,
   ticket: null,
+  departmentsList: [],
+  serviceList: [],
 }
 
 const ticketList = createReducer(initialState.ticketList, {
@@ -35,12 +37,22 @@ const ticket = createReducer(initialState.ticket, {
   [supportActions.clearTicket]: () => null,
 })
 
+const departmentsList = createReducer(initialState.departmentsList, {
+  [supportActions.getDepartments]: (state, { payload }) => payload,
+})
+
+const serviceList = createReducer(initialState.serviceList, {
+  [supportActions.getServices]: (state, { payload }) => payload,
+})
+
 const supportReducer = combineReducers({
   ticketList,
   ticketCount,
   ticketArchiveCount,
   ticketArchiveList,
   ticket,
+  departmentsList,
+  serviceList,
 })
 
 export default supportReducer

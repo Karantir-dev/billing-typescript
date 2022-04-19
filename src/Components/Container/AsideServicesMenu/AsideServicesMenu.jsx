@@ -58,7 +58,7 @@ const AsideServicesMenu = () => {
         </li>
         <li className={s.item}>
           <NavLink
-            to={routes.REGISTRATION}
+            to={routes.AFFILIATE_PROGRAM}
             className={({ isActive }) => (isActive ? s.active : s.inactive)}
             style={pinnedStyle}
           >

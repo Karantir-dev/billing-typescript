@@ -13,6 +13,7 @@ export default function Component(props) {
     itemsList,
     getElement,
     value,
+    height,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -51,6 +52,7 @@ export default function Component(props) {
       {label && <label className={s.label}>{label}</label>}
       <button
         type="button"
+        style={{ height }}
         className={s.input_wrapper}
         onClick={isOpened ? null : openHandler}
       >
@@ -96,6 +98,7 @@ Component.propTypes = {
     PropTypes.array,
   ]),
   getElement: PropTypes.func,
+  height: PropTypes.number,
 }
 Component.defaultProps = {
   isShadow: false,
