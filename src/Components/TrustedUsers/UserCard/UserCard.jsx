@@ -1,6 +1,6 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,8 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
+import AccessRights from '../AccessRights/AccessRights'
+import { usersSelectors } from '../../../Redux/users/usersSelectors'
 
 export default function UserCard({
   name,
@@ -27,6 +29,8 @@ export default function UserCard({
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
 
   const dispatch = useDispatch()
+  const rightsList = useSelector(usersSelectors.getRights)
+  console.log(rightsList)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 1024px)' })
@@ -53,6 +57,11 @@ export default function UserCard({
     setIsStatusAlertOpened(!isStatusAlertOpened)
     dispatch(usersOperations.changeUserStatus(userId, changeStatus, handleUserRolesData))
   }
+
+  useEffect(() => {
+    dispatch(usersOperations.getRights(userId))
+    console.log('dispatch rights in userCard')
+  }, [])
 
   return (
     <>
@@ -82,6 +91,7 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
             </div>
           </div>
@@ -106,6 +116,7 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
             </div>
           </div>
@@ -140,6 +151,7 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
             </div>
             <div className={s.toggle_status_wrapper_lg}>
@@ -158,6 +170,7 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
             </div>
 
@@ -172,6 +185,8 @@ export default function UserCard({
           </div>
         </div>
       )}
+
+      <AccessRights items={rightsList} userId={userId} />
     </>
   )
 }

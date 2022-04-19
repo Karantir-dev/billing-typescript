@@ -15,6 +15,7 @@ export default function ToggleButton({
   email,
   handleAlert,
   isOwner,
+  hasAlert,
 }) {
   const { t } = useTranslation('trusted_users')
 
@@ -22,6 +23,10 @@ export default function ToggleButton({
 
   const getUsersResponse = () => {
     func()
+    setIsToggled(!isToggled)
+  }
+
+  const handleBtnNoAlert = () => {
     setIsToggled(!isToggled)
   }
 
@@ -51,7 +56,7 @@ export default function ToggleButton({
           [s.owner]: isOwner,
         })}
         type="button"
-        onClick={handleAlert}
+        onClick={hasAlert ? handleAlert : handleBtnNoAlert}
       >
         <p className={cn({ [s.circle]: true, [s.active]: isToggled })}></p>
       </button>
@@ -122,4 +127,5 @@ ToggleButton.propTypes = {
   toggleName: PropTypes.string,
   email: PropTypes.string,
   handleAlert: PropTypes.func,
+  hasAlert: PropTypes.bool,
 }

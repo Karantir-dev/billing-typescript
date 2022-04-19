@@ -6,7 +6,7 @@ import React from 'react'
 import s from './AccessRights.module.scss'
 import AccessRightsListItem from './AccessRightsListItem/AccessRightsListItem'
 
-export default function AccessRights({ items }) {
+export default function AccessRights({ items, userId }) {
   // const [isMenuOpened, setIsMenuOpened] = useState(false)
 
   // const handleClick = () => {
@@ -18,7 +18,7 @@ export default function AccessRights({ items }) {
       {items.map((item, index) => {
         return (
           <div className={s.access_rights} key={index}>
-            <AccessRightsListItem item={item} />
+            <AccessRightsListItem item={item} userId={userId} />
           </div>
         )
       })}

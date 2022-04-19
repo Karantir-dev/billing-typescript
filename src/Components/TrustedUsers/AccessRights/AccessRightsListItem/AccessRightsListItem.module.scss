@@ -1,0 +1,22 @@
+.list_item_title {
+  font-weight: 800;
+}
+
+.list_item {
+  display: flex;
+
+  //   &.opened {
+  //     display: block;
+  //     background-color: gray;
+  //   }
+}
+
+.sub_list {
+  margin-left: 20px;
+  background-color: rgb(206, 180, 180);
+}
+
+.shevron {
+  stroke: gray;
+  transform: rotateZ(180deg);
+}

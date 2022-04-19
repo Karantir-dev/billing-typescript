@@ -1,74 +1,71 @@
 // import classNames from 'classnames'
+import cn from 'classnames'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
+import { Shevron } from '../../../../images'
+import { authSelectors } from '../../../../Redux/auth/authSelectors'
+import { usersOperations } from '../../../../Redux/users/usersOperations'
+import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
 
-// import { ToggleButton } from '../../..'
-// import AccessRights from '../AccessRights'
+import s from './AccessRightsListItem.module.scss'
 
-// import s from './AccessRightsListItem.module.scss'
-
-export default function AccessRightsListItem({ item }) {
+export default function AccessRightsListItem({ item, userId }) {
   const [open, setOpen] = useState(false)
+  const sessionId = useSelector(authSelectors.getSessionId)
+  const [subList, setSubList] = useState([])
+  // const [subList2, setSubList2] = useState([])
+
+  // const dispatch = useDispatch()
 
   const handleClick = () => {
-    setOpen(!setOpen)
+    const res = usersOperations.getSubRights(userId, item.name.$, sessionId)
+
+    res.then(data => {
+      try {
+        const { elem } = data.doc
+        if (elem) {
+          setSubList(elem)
+          setOpen(!open)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    })
   }
 
-  if (item.children) {
+  const hasSubItems = item?.hassubitems?.$ === 'on'
+
+  if (Object.hasOwn(item, 'active')) {
     return (
-      <div className={open ? 'sidebar-item open' : 'sidebar-item'}>
-        <div className="sidebar-title">
-          <span>
-            {/* {item.icon && <i className={item.icon}></i>} */}
-            {item.title}
-          </span>
-          <button className="bi-chevron-down toggle-btn" onClick={handleClick}></button>
-        </div>
-        <div className="sidebar-content">
-          {item.childrens.map((child, index) => (
-            <AccessRightsListItem key={index} item={child} />
-          ))}
-        </div>
-      </div>
+      <li>
+        <button
+          onClick={hasSubItems ? handleClick : null}
+          className={cn({ [s.list_item]: true, [s.opened]: open })}
+        >
+          <p>{item.caption.$}</p>
+          {hasSubItems ? (
+            <Shevron className={s.shevron} />
+          ) : (
+            <ToggleButton hasAlert={false} />
+          )}
+        </button>
+
+        {open && subList && (
+          <div className={s.sub_list}>
+            {subList.map((child, index) => {
+              console.log(child)
+              return <AccessRightsListItem key={index} item={child} userId={userId} />
+            })}
+          </div>
+        )}
+      </li>
     )
   } else {
     return (
-      <li className="sidebar-item plain">
-        {/* {item.icon && <i className={item.icon}></i>} */}
-        {item.title}
+      <li className={s.list_item_title}>
+        <p>{item.caption.$}</p>
       </li>
     )
   }
-
-  // return itemTitle ? (
-  //   <div>
-  //     <button
-  //       className={classNames({
-  //         [s.title_inside_wrapper]: true,
-  //         [s.opened]: open,
-  //       })}
-  //       onClick={handleClick}
-  //     >
-  //       <h5>{itemTitle}</h5>
-  //       <span className={s.arrow_show_more}>&lt;</span>
-  //     </button>
-  //     <ul
-  //       className={classNames({
-  //         [s.sub_list]: true,
-  //         [s.opened]: open,
-  //       })}
-  //     >
-  //       {itemChildren && <AccessRights items={itemChildren} />}
-  //     </ul>
-  //   </div>
-  // ) : (
-  //   <>
-  //     <div className={s.list_item_wrapper}>
-  //       <p>{itemText}</p>
-  //       <ToggleButton />
-  //     </div>
-  //     {/* <ul className={s.sub_list}>
-  //                   <li> {item.children && <AccessRights items={item.children} />}</li>
-  //                 </ul> */}
-  //   </>
-  // )
 }
