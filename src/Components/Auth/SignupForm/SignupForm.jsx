@@ -118,6 +118,7 @@ export default function SignupForm() {
                 error={!!errors.email}
                 touched={!!touched.email}
                 className={s.input_field_wrapper}
+                autoComplete
               />
 
               <InputField
@@ -145,6 +146,7 @@ export default function SignupForm() {
               />
 
               <SelectOfCountries
+                setErrMsg={setErrMsg}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 errors={errors}

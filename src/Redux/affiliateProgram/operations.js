@@ -17,7 +17,8 @@ const getReferralLink = (setReferralLink, setPromocode) => (dispatch, getState) 
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      // console.log('data getReferralLink', data)
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
       setPromocode(data.doc.promocode.$ || 'promocode stub')
       setReferralLink(data.doc.url.$)
       dispatch(actions.hideLoader())
