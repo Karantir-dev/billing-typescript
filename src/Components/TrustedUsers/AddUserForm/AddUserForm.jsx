@@ -44,6 +44,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
 
   const handleSubmit = values => {
     const { email, name, phone, password } = values
+
     dispatch(
       usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
     )

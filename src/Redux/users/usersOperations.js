@@ -10,7 +10,6 @@ const getUsers = () => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
-  console.log(sessionId)
 
   axiosInstance
     .post(
@@ -24,7 +23,7 @@ const getUsers = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { elem } = data.doc
-      console.log(data)
+
       dispatch(usersActions.setUsers(elem))
       dispatch(actions.hideLoader())
     })
@@ -104,6 +103,8 @@ const createNewUser =
       auth: { sessionId },
     } = getState()
 
+    console.log('create user')
+
     axiosInstance
       .post(
         '/',
@@ -119,6 +120,7 @@ const createNewUser =
         }),
       )
       .then(({ data }) => {
+        console.log(data)
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         console.log('user created', data)
         updateListFunc()

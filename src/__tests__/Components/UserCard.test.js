@@ -10,6 +10,7 @@ import i18n from '../../i18n'
 import { ToggleButton } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
 import ControlBtn from '../../Components/TrustedUsers/ControlBtn/ControlBtn'
+import { mockedAxiosInstance } from '../../config/axiosInstance'
 
 describe('UserCard Component', () => {
   const component = create(
@@ -35,6 +36,9 @@ describe('UserCard Component', () => {
     expect(controlBtns).toHaveLength(1)
   })
 
+  mockedAxiosInstance.onPost('/').reply(200, {
+    doc: { elem: [] },
+  })
   beforeEach(() => {
     render(
       <Provider store={entireStore.store}>

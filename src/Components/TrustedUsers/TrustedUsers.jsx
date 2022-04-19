@@ -12,88 +12,87 @@ import { usersOperations } from '../../Redux/users/usersOperations'
 import { usersSelectors } from '../../Redux/users/usersSelectors'
 
 import s from './TrustedUsers.module.scss'
-import AccessRights from './AccessRights/AccessRights'
+// import AccessRights from './AccessRights/AccessRights'
 
-const clientRightsList = [
-  {
-    element: { text: 'Allow all' },
-  },
-  {
-    element: { text: 'Create' },
-  },
-  {
-    title: 'Change',
-    children: [
-      {
-        element: {
-          text: 'Редактирование информации о пользователе с доступом к чтению данных формы',
-        },
-      },
-      {
-        element: {
-          text: 'Редактирование информации о пользователе с доступом к сохранению данных',
-        },
-      },
-    ],
-  },
-  {
-    element: { text: 'Remove' },
-  },
-  {
-    element: { text: 'Turn on' },
-  },
-  {
-    element: { text: 'Turn off' },
-  },
+// const clientRightsList = [
+//   {
+//     title: 'Allow all',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Create',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Change',
+//     children: [
+//       {
+//         title:
+//           'Редактирование информации о пользователе с доступом к чтению данных формы',
+//         btn: 'toggle',
+//       },
+//       {
+//         title: 'Редактирование информации о пользователе с доступом к сохранению данных',
+//       },
+//     ],
+//   },
+//   {
+//     title: 'Remove',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Turn on',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Turn off',
+//     btn: 'toggle',
+//   },
 
-  {
-    title: 'Rights',
-    children: [
-      {
-        element: {
-          text: 'Turn on',
-        },
-      },
-      {
-        element: {
-          text: 'Turn off',
-        },
-      },
+//   {
+//     title: 'Rights',
+//     children: [
+//       {
+//         title: 'Turn on',
+//         btn: 'toggle',
+//       },
+//       {
+//         title: 'Turn off',
+//         btn: 'toggle',
+//       },
 
-      {
-        title: 'Functions',
-        children: [
-          {
-            element: {
-              text: 'Turn on',
-            },
-          },
-          {
-            element: {
-              text: 'Turn off',
-            },
-          },
-          {
-            element: {
-              text: 'Filter',
-            },
-          },
-        ],
-      },
-      {
-        element: {
-          text: 'Filter',
-        },
-      },
-    ],
-  },
-  {
-    element: { text: 'History' },
-  },
-  {
-    element: { text: 'Filter' },
-  },
-]
+//       {
+//         title: 'Functions',
+//         children: [
+//           {
+//             title: 'Turn on',
+//             btn: 'toggle',
+//           },
+//           {
+//             title: 'Turn off',
+//             btn: 'toggle',
+//           },
+//           {
+//             title: 'Filter',
+//             btn: 'toggle',
+//           },
+//         ],
+//       },
+//       {
+//         title: 'Filter',
+//         btn: 'toggle',
+//       },
+//     ],
+//   },
+//   {
+//     title: 'History',
+//     btn: 'toggle',
+//   },
+//   {
+//     title: 'Filter',
+//     btn: 'toggle',
+//   },
+// ]
 
 export default function TrustedUsers() {
   const { t } = useTranslation('trusted_users')
@@ -196,12 +195,12 @@ export default function TrustedUsers() {
         />
       )}
 
-      <AccessRights
+      {/* <AccessRights
         userId={1}
         userName={'Someone'}
         alert={true}
         items={clientRightsList}
-      />
+      /> */}
     </Container>
   )
 }
