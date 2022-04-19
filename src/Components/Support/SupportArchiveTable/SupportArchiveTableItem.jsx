@@ -1,16 +1,15 @@
 import React from 'react'
-import s from './SupportTable.module.scss'
+import s from './SupportArchiveTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import { Chats } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import * as route from '../../../routes'
 
 export default function Component(props) {
-  const { id, theme, date, status, unread, setSelctedTicket, selected } = props
+  const { id, theme, date, setSelctedTicket, selected } = props
   const { t } = useTranslation(['support', 'other'])
   const navigate = useNavigate()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -29,7 +28,7 @@ export default function Component(props) {
       role="button"
       tabIndex={0}
       onKeyDown={() => null}
-      onDoubleClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+      onDoubleClick={() => navigate(`${route.SUPPORT}/requests_archive/${id}`)}
       onClick={() => setSelctedTicket(id)}
       className={cn(s.item, { [s.selected]: selected })}
     >
@@ -48,16 +47,6 @@ export default function Component(props) {
           <span className={s.item_text_time}>{datetimeSeparate(date)?.time}</span>
         </span>
       </span>
-      <span className={s.tableBlockFourth}>
-        {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}
-        <span className={cn(s.item_text, s.fourth_item)}>{t(status)}</span>
-      </span>
-      <div className={s.tableBlockFifth}>
-        {mobile && <div className={s.line} />}
-        <span className={cn(s.item_text, s.fifth_item)}>
-          <Chats className={cn({ [s.unread]: unread })} />
-        </span>
-      </div>
     </div>
   )
 }
@@ -65,8 +54,6 @@ Component.propTypes = {
   id: PropTypes.string,
   theme: PropTypes.string,
   date: PropTypes.string,
-  status: PropTypes.string,
-  unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
   selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
 }
@@ -75,8 +62,6 @@ Component.defaultProps = {
   id: '',
   theme: '',
   date: '',
-  status: '',
-  unread: false,
   setSelctedTicket: () => null,
   selected: null,
 }
