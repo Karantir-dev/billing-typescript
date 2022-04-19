@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import { Shevron, Search } from '../../images'
-import { SelectOfRegions } from '../'
-import { authOperations } from '../../Redux/auth/authOperations'
+import { Shevron, Search } from '../../../images'
+import { SelectOfRegions } from '../../'
+import { authOperations } from '../../../Redux/auth/authOperations'
 import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({
+  setErrMsg,
   setFieldValue,
   setFieldTouched,
   errors,
@@ -33,7 +35,7 @@ export default function SelectOfCountries({
   const [currentRegions, setCurrentRegions] = useState([])
 
   useEffect(() => {
-    dispatch(authOperations.getCountries(setCountries, setRegions))
+    dispatch(authOperations.getCountries(setCountries, setRegions, setErrMsg))
   }, [dispatch])
 
   const countriesWithRegions = regions.reduce((acc, { $depend }) => {
@@ -116,7 +118,7 @@ export default function SelectOfCountries({
           {currentFlag ? (
             <img
               className={s.field_icon}
-              src={require(`../../images/countryFlags/${currentFlag}.png`)}
+              src={require(`../../../images/countryFlags/${currentFlag}.png`)}
               width={20}
               height={14}
               alt="flag"
@@ -155,7 +157,7 @@ export default function SelectOfCountries({
                       >
                         <img
                           className={s.country_img}
-                          src={require(`../../images/countryFlags/${countryCode}.png`)}
+                          src={require(`../../../images/countryFlags/${countryCode}.png`)}
                           width={20}
                           height={14}
                           alt="flag"
@@ -183,4 +185,12 @@ export default function SelectOfCountries({
       )}
     </>
   )
+}
+
+SelectOfCountries.propTypes = {
+  setErrMsg: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
 }

@@ -10,7 +10,7 @@ import s from './AffiliateProgram.module.scss'
 export default function AffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
   const params = useParams()
-
+  console.log('params.chapter', params.chapter)
   const renderPage = () => {
     switch (params.chapter) {
       case route.AFFILIATE_PROGRAM_ABOUT:

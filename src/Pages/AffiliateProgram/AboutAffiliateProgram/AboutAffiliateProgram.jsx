@@ -3,19 +3,19 @@ import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
+import { useMediaQuery } from 'react-responsive'
 
 import { ServicesSelect, FilesBanner } from '../../../Components'
 import { Copy } from '../../../images'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
-// import * as route from '../../../routes'
+
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
-import { useMediaQuery } from 'react-responsive'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
-  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
   const descrWrapper = useRef(null)
   const refLinkEl = useRef(null)
@@ -70,17 +70,8 @@ export default function AboutAffiliateProgram() {
     }
   }
 
-  // const navBarSections = [
-  //   { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
-  //   { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
-  //   { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
-  // ]
-
   return (
     <>
-      {/* <h2 className={s.title}> {t('page_title')} </h2>
-      <PageTabBar sections={navBarSections} /> */}
-
       <p className={s.description_title}> {t('about_section_title')} </p>
 
       <div className={s.notebook_wrapper}>
@@ -90,8 +81,13 @@ export default function AboutAffiliateProgram() {
             <p className={s.paragraph}> {t('about_section.description_2')} </p>
           </div>
 
-          {!tabletOrHigher && (
-            <button className={s.btn_more} type="button" onClick={toggleDescrHeight}>
+          {!higherThanMobile && (
+            <button
+              className={s.btn_more}
+              type="button"
+              onClick={toggleDescrHeight}
+              data-testid="btn_more"
+            >
               {t('about_section.read_more')}
             </button>
           )}
@@ -117,7 +113,7 @@ export default function AboutAffiliateProgram() {
             </li>
           </ul>
         </div>
-        {higherThan1550px && <FilesBanner />}
+        {higherThan1550px && <FilesBanner dataTestid="descktop_banner" />}
       </div>
 
       <p className={s.link_title}>{t('about_section.referral_link')}</p>
@@ -192,7 +188,7 @@ export default function AboutAffiliateProgram() {
         </div>
       </div>
 
-      {!higherThan1550px && <FilesBanner />}
+      {!higherThan1550px && <FilesBanner dataTestid="mobile_banner" />}
     </>
   )
 }

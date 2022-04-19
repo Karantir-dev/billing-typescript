@@ -1,6 +1,3 @@
-export { default as SelectOfCountries } from './SelectOfCountries/SelectOfCountries'
-export { default as SelectOfRegions } from './SelectOfRegions/SelectOfRegions'
-
 export { default as ServicesSelect } from './affiliateProgram/ServicesSelect/ServicesSelect'
 export { default as FilesBanner } from './affiliateProgram/FilesBanner/FilesBanner'
 
@@ -11,6 +8,8 @@ export { default as LoginForm } from './Auth/LoginForm/LoginForm'
 export { default as SignupForm } from './Auth/SignupForm/SignupForm'
 export { default as PasswordChange } from './Auth/PasswordChange/PasswordChange'
 export { default as PasswordReset } from './Auth/PasswordReset/PasswordReset'
+export { default as SelectOfCountries } from './Auth/SelectOfCountries/SelectOfCountries'
+export { default as SelectOfRegions } from './Auth/SelectOfRegions/SelectOfRegions'
 
 //==========================================ROUTES==========================================//
 export { default as PrivateRoute } from './Routes/PrivateRoute'
@@ -40,4 +39,3 @@ export { default as AccessLogsFilter } from './accessLogs/AccessLogsFilter/Acces
 //==========================================SUPPORT==========================================//
 export { default as SupportFilter } from './Support/SupportFilter/SupportFilter'
 export { default as SupportTable } from './Support/SupportTable/SupportTable'
-

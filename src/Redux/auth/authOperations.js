@@ -3,6 +3,8 @@ import { authActions } from './authActions'
 import { actions } from '../actions'
 import { axiosInstance } from './../../config/axiosInstance'
 
+const SERVER_ERR_MSG = 'auth_error'
+
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
 
@@ -56,6 +58,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     .catch(error => {
       resetRecaptcha()
       dispatch(actions.hideLoader())
+      setErrMsg(SERVER_ERR_MSG)
       console.log('auth -', error.message)
     })
 }
@@ -200,7 +203,7 @@ const logout = () => (dispatch, getState) => {
     })
 }
 
-const getCountries = (setCountries, setStates) => dispatch => {
+const getCountries = (setCountries, setStates, setErrMsg) => dispatch => {
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -227,6 +230,7 @@ const getCountries = (setCountries, setStates) => dispatch => {
     })
     .catch(err => {
       dispatch(actions.hideLoader())
+      setErrMsg(SERVER_ERR_MSG)
       console.log('getCountries - ', err.message)
     })
 }
@@ -265,6 +269,7 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     .catch(err => {
       resetRecaptcha()
       dispatch(actions.hideLoader())
+      setErrMsg(SERVER_ERR_MSG)
       console.log('registration - ', err.message)
     })
 }
