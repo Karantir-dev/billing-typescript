@@ -1,8 +1,79 @@
-@media screen and (max-width: 1077px) {
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
 }
 
-@media screen and (max-width: 871px) {
+.tickerCount {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 130.5%;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0;
+  color: var(--support-title-color);
 }
 
-@media screen and (max-width: 752px) {
+.count {
+  color: var(--transparent-color);
+  font-size: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+  .tickerCount {
+    margin-top: 33px;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+  .count {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pagination {
+    margin-top: 25px;
+  }
+  .tickerCount {
+    margin-top: 33px;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+  .count {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .pagination {
+    margin-top: 30px;
+  }
+  .tickerCount {
+    margin-top: 33px;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .count {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .pagination {
+    margin-top: 40px;
+  }
+  .tickerCount {
+    margin-top: 33px;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .count {
+    font-size: 16px;
+  }
 }

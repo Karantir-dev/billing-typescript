@@ -30,10 +30,6 @@
   &.fourth_item {
     color: #45a884;
   }
-  &.fifth_item {
-    display: flex;
-    justify-content: flex-end;
-  }
 }
 
 .title_text {
@@ -45,19 +41,13 @@
   align-items: center;
   margin-right: 20px;
   &.first_item {
-    flex-basis: 17.8%;
+    flex-basis: 22.5%;
   }
   &.second_item {
-    flex-basis: 36.5%;
+    flex-basis: 48.9%;
   }
   &.third_item {
-    flex-basis: 20.19%;
-  }
-  &.fourth_item {
-    flex-basis: 19.7%;
-  }
-  &.fifth_item {
-    flex-basis: 5%;
+    flex-basis: 26.19%;
   }
 }
 
@@ -73,7 +63,8 @@
   margin-bottom: 7px;
   cursor: pointer;
   position: relative;
-  &:hover::before, &.selected::before {
+  &:hover::before,
+  &.selected::before {
     content: '';
     width: 3px;
     height: 100%;
@@ -164,19 +155,13 @@
     margin-right: 20px;
   }
   .tableBlockFirst {
-    flex-basis: 17.8%;
+    flex-basis: 22.5%;
   }
   .tableBlockSecond {
-    flex-basis: 36.5%;
+    flex-basis: 48.9%;
   }
   .tableBlockThird {
-    flex-basis: 20.19%;
-  }
-  .tableBlockFourth {
-    flex-basis: 19.7%;
-  }
-  .tableBlockFifth {
-    flex-basis: 5%;
+    flex-basis: 26.19%;
   }
   .item_text {
     font-style: normal;

@@ -1,9 +1,9 @@
 import React from 'react'
-import SupportTableItem from './SupportTableItem'
+import SupportArchiveTableItem from './SupportArchiveTableItem'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import s from './SupportTable.module.scss'
+import s from './SupportArchiveTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['support', 'other'])
@@ -18,17 +18,14 @@ export default function Component(props) {
         <span className={cn(s.title_text, s.third_item)}>
           {t('date', { ns: 'other' })}:
         </span>
-        <span className={cn(s.title_text, s.fourth_item)}>
-          {t('status', { ns: 'other' })}:
-        </span>
-        <span className={cn(s.title_text, s.fifth_item)} />
       </div>
+      
       {list?.map(el => {
         const { tstatus, last_message, name, id, unread } = el
         let onItemClick = () => setSelctedTicket(el)
 
         return (
-          <SupportTableItem
+          <SupportArchiveTableItem
             key={id?.$}
             theme={name?.$}
             date={last_message?.$}
