@@ -9,6 +9,7 @@ import {
   PrivateRoute,
   PublicRoute,
   Portal,
+  TrustedUsers,
 } from './Components'
 
 import { Provider } from 'react-redux'
@@ -126,6 +127,12 @@ export default function App() {
                     children={<AboutAffiliateProgram />}
                     redirectTo={route.LOGIN}
                   />
+                }
+              />
+              <Route
+                path={route.TRUSTED_USERS}
+                element={
+                  <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
                 }
               />
             </Routes>

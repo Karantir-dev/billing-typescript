@@ -16,6 +16,7 @@ import { authReducer } from './auth/authReducer'
 import { supportReducer } from '.'
 import { accessLogsReducer } from './accessLogs/accessLogsReducer'
 import { userReducer } from './userInfo/userReducer'
+import { usersReducer } from './users/usersReducer'
 import { theme, isLoading, pinned } from './reducer'
 
 const rootPersistConfig = {
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   access_logs: accessLogsReducer,
   currentUserInfo: userReducer,
+  users: usersReducer,
   support: supportReducer,
   theme,
   isLoading,
