@@ -1,5 +1,11 @@
 import React, { Suspense } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { useTranslation } from 'react-i18next'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
+
 import {
   Loader,
   LoginForm,
@@ -9,18 +15,15 @@ import {
   PrivateRoute,
   PublicRoute,
   Portal,
+  TrustedUsers,
 } from './Components'
-
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
-
 import entireStore from './Redux/store'
-
 import { AuthPage, MainPage, AccessLogPage, AffiliateProgram, SupportPage } from './Pages'
-
 import * as route from './routes'
 
 export default function App() {
+  const { i18n } = useTranslation()
+  dayjs.locale(i18n.language)
   return (
     <Provider store={entireStore.store}>
       <PersistGate loading={null} persistor={entireStore.persistor}>
@@ -91,6 +94,7 @@ export default function App() {
                   element={<PrivateRoute children={<SupportPage />} />}
                 />
               </Route>
+
               <Route
                 path={route.AFFILIATE_PROGRAM}
                 element={
@@ -103,10 +107,20 @@ export default function App() {
                 <Route
                   path={':chapter'}
                   element={
-                    <PrivateRoute children={<SupportPage />} redirectTo={route.LOGIN} />
+                    <PrivateRoute
+                      children={<AffiliateProgram />}
+                      redirectTo={route.LOGIN}
+                    />
                   }
                 />
               </Route>
+
+              <Route
+                path={route.TRUSTED_USERS}
+                element={
+                  <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+                }
+              />
             </Routes>
           </Suspense>
 

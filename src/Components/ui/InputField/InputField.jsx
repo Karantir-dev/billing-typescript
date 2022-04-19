@@ -20,6 +20,7 @@ export default function Component(props) {
     className,
     autoComplete,
     height,
+    background, // input bgc
     dataTestid,
   } = props
 
@@ -77,6 +78,7 @@ export default function Component(props) {
             [s.iconLeft]: iconLeft,
             [s.iconRight]: iconRight,
             [s.shadow]: isShadow,
+            [s.field_bgc]: background,
             [s.error]: error && touched,
           })}
           style={{ height }}
@@ -96,7 +98,7 @@ export default function Component(props) {
 }
 
 Component.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   placeholder: PropTypes.string,
@@ -109,6 +111,7 @@ Component.propTypes = {
   isShadow: PropTypes.bool.isRequired,
   autoComplete: PropTypes.bool,
   height: PropTypes.number,
+  background: PropTypes.bool,
 }
 
 Component.defaultProps = {

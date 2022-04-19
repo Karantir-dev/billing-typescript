@@ -3,5 +3,8 @@
   "new ticket": "New ticket",
   "requests": "Requests",
   "request archive": "Request archive",
-  "request_id": "Request id"
+  "request_id": "Request id",
+  "In progress": "Opened",
+  "New replies": "New replies",
+  "Waiting to reply ": "Waiting to reply"
 }

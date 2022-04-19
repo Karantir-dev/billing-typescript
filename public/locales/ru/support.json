@@ -3,5 +3,8 @@
   "new ticket": "Новый тикет",
   "requests": "Запросы",
   "request archive": "Архив запросов",
-  "request_id": "id запроса"
+  "request_id": "id запроса",
+  "In progress": "Открыт",
+  "New replies": "Есть новые сообщения",
+  "Waiting to reply ": "Ожидает вашего ответа"
 }

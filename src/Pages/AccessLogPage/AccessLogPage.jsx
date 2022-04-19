@@ -46,7 +46,7 @@ export default function MainPage() {
               <Pagination
                 currentPage={currentPage}
                 totalCount={Number(logsCount)}
-                pageSize={15}
+                pageSize={30}
                 onPageChange={page => setCurrentPage(page)}
               />
             </div>

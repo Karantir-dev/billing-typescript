@@ -15,7 +15,6 @@
   max-width: 630px;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
 }
 
 .searchInput {
@@ -27,4 +26,21 @@
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+  .filterBlock {
+    flex-direction: column-reverse;
+  }
+  .searchInput {
+    max-width: 100%;
+    margin-right: 20px;
+  }
+  .form {
+    max-width: 100%;
+  }
+  .newTicketBtn {
+    margin-bottom: 30px;
+    max-width: 100%;
+  }
 }
