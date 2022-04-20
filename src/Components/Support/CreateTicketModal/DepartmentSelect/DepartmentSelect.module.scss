@@ -5,7 +5,8 @@
   box-shadow: var(--forms_shadow);
   border-radius: 3px;
   background: var(--elements-bgc);
-  flex-basis: 49%;
+  flex-basis: 100%;
+  width: 100%;
   margin-top: 10px;
   &.selected {
     .checkIcon {
@@ -33,7 +34,7 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 70.9%;
+  line-height: 102.9%;
   color: var(--main-text);
 }
 
@@ -42,4 +43,10 @@
   margin-left: auto;
   padding: 12px 12px 12px 0px;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .select {
+    flex-basis: 49%;
+  }
 }

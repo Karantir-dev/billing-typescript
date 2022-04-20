@@ -62,7 +62,7 @@ export default function Component(props) {
             [s.shadow]: isShadow,
           })}
         >
-          {selectedItem?.label}
+          <span>{selectedItem?.label}</span>
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>

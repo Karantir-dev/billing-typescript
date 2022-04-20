@@ -194,6 +194,7 @@ const setRate = (type, elid, plid, setStatus) => (dispatch, getState) => {
 }
 
 const sendMessage = (elid, data) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
   const {
     auth: { sessionId },
   } = getState()
@@ -218,6 +219,7 @@ const sendMessage = (elid, data) => (dispatch, getState) => {
       dispatch(getTicketByIdHandler(elid))
     })
     .catch(error => {
+      dispatch(actions.hideLoader())
       console.log('support rate-', error.message)
     })
 }
@@ -286,7 +288,8 @@ const getServiceList = () => (dispatch, getState) => {
     })
 }
 
-const createTicket = (data, setCreateTicketModal) => (dispatch, getState) => {
+const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
   const {
     auth: { sessionId },
   } = getState()
@@ -311,10 +314,12 @@ const createTicket = (data, setCreateTicketModal) => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
       dispatch(getTicketsHandler())
+      resetForm()
       setCreateTicketModal(false)
     })
     .catch(error => {
       console.log('support rate-', error.message)
+      dispatch(actions.hideLoader())
       setCreateTicketModal(false)
     })
 }

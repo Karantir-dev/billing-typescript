@@ -1,11 +1,11 @@
 import React from 'react'
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
-import cn from 'classnames'
-import { Cross, Clip } from '../../../images'
+import MessageInput from '../MessageInput/MessageInput'
+import { Cross } from '../../../images'
 import { Button, Select, InputField } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { supportSelectors, supportOperations } from '../../../Redux'
 import * as Yup from 'yup'
 import s from './CreateTicketModal.module.scss'
@@ -24,8 +24,7 @@ export default function Component(props) {
   })
 
   const sendMessageHandle = (values, { resetForm }) => {
-    dispatch(supportOperations.createTicket(values, setCreateTicketModal))
-    resetForm()
+    dispatch(supportOperations.createTicket(values, setCreateTicketModal, resetForm))
   }
 
   return (
@@ -50,6 +49,7 @@ export default function Component(props) {
           onSubmit={sendMessageHandle}
         >
           {({ values, setFieldValue, errors, touched }) => {
+            let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
             return (
               <Form className={s.form}>
                 <div className={s.departmentSelect}>
@@ -89,67 +89,13 @@ export default function Component(props) {
                 <label htmlFor={'message'} className={s.label}>
                   {t('Message')}:
                 </label>
-                <div className={s.fieldsBlock}>
-                  <Field
-                    className={s.textarea}
-                    type="text"
-                    id="message"
-                    name="message"
-                    placeholder={t('Enter your message...')}
-                    as="textarea"
-                  />
-                  <div className={s.filesContainer}>
-                    <label htmlFor="files">
-                      <div
-                        className={cn(s.filesBlock, {
-                          [s.notEmpty]: values?.files?.length > 0,
-                        })}
-                      >
-                        <Clip />
-                        {values?.files?.length === 0 ? (
-                          <div className={s.filesInfo}>
-                            <span>{t('The maximum number of files is 5.')}</span>
-                            <span>{t('Maximum size - 95.5 MB')}</span>
-                          </div>
-                        ) : null}
-                      </div>
-                      <input
-                        hidden
-                        disabled={values?.files?.length === 5}
-                        id="files"
-                        name="files"
-                        type="file"
-                        onChange={e =>
-                          e?.target?.files?.length !== 0 &&
-                          setFieldValue('files', values.files.concat(e.target.files[0]))
-                        }
-                      />
-                    </label>
-                    {values?.files?.map((el, index) => (
-                      <div className={s.fileItem} key={index}>
-                        {el?.name}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            let newArr = values.files
-                              .slice(0, index)
-                              .concat(values.files.slice(index + 1, values.files.length))
-                            setFieldValue('files', newArr)
-                          }}
-                          className={s.fileDeleteItem}
-                        >
-                          <Cross />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  {/* <ErrorMessage
-                    className={s.error_message}
-                    name={'message'}
-                    component="span"
-                  /> */}
-                </div>
+                <MessageInput
+                  filesError={checkItemSize.length !== 0}
+                  files={values.files}
+                  onChangeFiles={value => setFieldValue('files', value)}
+                />
                 <Button
+                  disabled={checkItemSize.length !== 0}
                   size="large"
                   className={s.submit_btn}
                   label={t('Send', { ns: 'other' })}
