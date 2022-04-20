@@ -18,6 +18,7 @@ import { accessLogsReducer } from './accessLogs/accessLogsReducer'
 import { userReducer } from './userInfo/userReducer'
 import { usersReducer } from './users/usersReducer'
 import { theme, isLoading, pinned } from './reducer'
+import { affiliateProgram } from './affiliateProgram/reducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   currentUserInfo: userReducer,
   users: usersReducer,
   support: supportReducer,
+  affiliateProgram,
   theme,
   isLoading,
   pinned,

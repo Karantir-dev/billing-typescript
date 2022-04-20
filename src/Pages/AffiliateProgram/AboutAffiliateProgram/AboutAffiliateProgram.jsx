@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import { ServicesSelect, FilesBanner } from '../../../Components'
 import { Copy } from '../../../images'
+import { affiliateSelectors } from '../../../Redux'
 import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
 
 import animations from './animations.module.scss'
@@ -20,16 +21,19 @@ export default function AboutAffiliateProgram() {
   const descrWrapper = useRef(null)
   const refLinkEl = useRef(null)
   const promocodeEl = useRef(null)
+  const referralLink = useSelector(affiliateSelectors.getRefLink)
+  const promocode = useSelector(affiliateSelectors.getPromocode)
 
-  const [referralLink, setReferralLink] = useState('')
-  const [promocode, setPromocode] = useState('')
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [serviceSelected, setServiceSelected] = useState(false)
   const [promocodeCopied, setPromocodeCopied] = useState(false)
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   useEffect(() => {
-    dispatch(affiliateProgramOperations.getReferralLink(setReferralLink, setPromocode))
+    if (referralLink) {
+      return
+    }
+    dispatch(affiliateProgramOperations.getReferralLink())
   }, [])
 
   const showPrompt = fn => {
@@ -132,16 +136,15 @@ export default function AboutAffiliateProgram() {
             role="button"
             tabIndex={0}
             onKeyUp={() => null}
+            data-testid={'ref_link_field'}
           >
             <span
-              className={cn({ [s.field_text]: true, [s.selected]: serviceSelected })}
+              className={cn(s.field_text, { [s.selected]: serviceSelected })}
               ref={refLinkEl}
             >
               {t('about_section.referral_link')}
             </span>
-            <Copy
-              className={cn({ [s.copy_icon]: true, [s.selected]: serviceSelected })}
-            />
+            <Copy className={cn(s.copy_icon, { [s.selected]: serviceSelected })} />
 
             <CSSTransition
               in={refLinkCopied}
@@ -158,21 +161,19 @@ export default function AboutAffiliateProgram() {
         </div>
 
         <div className={s.field_wrapper}>
-          <label className={s.label}> {t('about_section.promocode')}: </label>
+          <label className={s.label}>{t('about_section.promocode')}:</label>
           <div
             className={s.copy_field}
             onClick={() => handleCopyText(promocodeEl)}
             role="button"
             tabIndex={0}
             onKeyUp={() => null}
+            data-testid="promocode_field"
           >
-            <span
-              className={cn({ [s.field_text]: true, [s.selected]: true })}
-              ref={promocodeEl}
-            >
+            <span className={cn(s.field_text, s.selected)} ref={promocodeEl}>
               {promocode}
             </span>
-            <Copy className={cn({ [s.copy_icon]: true, [s.selected]: true })} />
+            <Copy className={cn(s.copy_icon, s.selected)} />
             <CSSTransition
               in={promocodeCopied}
               classNames={animations}

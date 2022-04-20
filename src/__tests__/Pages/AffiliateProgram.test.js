@@ -31,6 +31,5 @@ describe('AffiliateProgram Page jsx', () => {
         <BrowserRouter>{/* <AffiliateProgram /> */}</BrowserRouter>
       </Provider>,
     )
-    // screen.debug()
   })
 })
