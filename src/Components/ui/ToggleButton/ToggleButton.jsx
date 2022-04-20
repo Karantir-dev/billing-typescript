@@ -27,6 +27,7 @@ export default function ToggleButton({
   }
 
   const handleBtnNoAlert = () => {
+    func()
     setIsToggled(!isToggled)
   }
 
@@ -63,6 +64,7 @@ export default function ToggleButton({
 
       {toggleName === 'access' && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_access"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
@@ -91,6 +93,7 @@ export default function ToggleButton({
 
       {toggleName === 'status' && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_status"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}

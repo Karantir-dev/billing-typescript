@@ -4,6 +4,10 @@ body {
   --accent-color-light: #ff50bf;
   --input-border-icon: #c4c4c4;
 
+  // borders
+
+  --center-border-color: #cfc1eb;
+
   // variables that will be changed on the dark theme
   --main-bgc: #fdfcff;
   --main-text: #392955;
@@ -14,6 +18,7 @@ body {
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
   --burger-menu-bgc: var(--main-bgc);
+  --sublist-bgd: rgba(196, 196, 196, 0.05);
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -21,13 +26,13 @@ body {
   --auth-placeholder-color: #c4c4c4;
   --eye-color: #777;
   --icon-color: #d9d0eb;
+  --scrollbar-track-color: #ebebeb;
   // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --background-color: #fefdff;
   --transparent-color: #b3a9c1;
   --forms-bg-2-color: #ffffff;
   --forms-drop-down: #514a5f;
   --inactive_icon_color: #e1daeb;
-
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -43,15 +48,20 @@ body {
 
 // dark theme variables
 body.dark-theme {
+  // borders
+
+  --center-border-color: #decbfe;
+
   --main-bgc: #21192e;
   --main-text: #fff;
   --menu-text-3: #ffffff;
   --link-text: #8ab7fa;
-  --support-title-color: #FFFFFF;
+  --support-title-color: #ffffff;
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
   --burger-menu-bgc: var(--elements-bgc);
+  --sublist-bgd: #3f384b;
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;
@@ -59,6 +69,7 @@ body.dark-theme {
   --auth-placeholder-color: #6e6977;
   --eye-color: #c4c4c4;
   --icon-color: #75707e;
+  --scrollbar-track-color: #4b4556;
   // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --background-color: #201a2a;
   --transparent-color: #716d79;

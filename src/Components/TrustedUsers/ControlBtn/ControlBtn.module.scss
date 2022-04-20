@@ -12,8 +12,8 @@
   &::after {
     content: '';
     display: block;
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     margin-left: 5px;
     border-radius: 50%;
     background-color: var(--main-text);
@@ -69,7 +69,8 @@
   margin-left: 22px;
 }
 
-.remove_btn {
+.remove_btn,
+.access_rights_btn {
   &.owner {
     opacity: 0.3;
     &:hover {

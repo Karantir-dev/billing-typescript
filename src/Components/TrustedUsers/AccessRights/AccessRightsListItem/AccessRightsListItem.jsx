@@ -14,7 +14,9 @@ export default function AccessRightsListItem({ item, userId }) {
   const [open, setOpen] = useState(false)
   const sessionId = useSelector(authSelectors.getSessionId)
   const [subList, setSubList] = useState([])
-  // const [subList2, setSubList2] = useState([])
+  const currentRightState = item?.active?.$ === 'on'
+
+  console.log(item?.active?.$)
 
   // const dispatch = useDispatch()
 
@@ -29,7 +31,23 @@ export default function AccessRightsListItem({ item, userId }) {
           setOpen(!open)
         }
       } catch (e) {
-        console.log(e)
+        console.log('Error in AccessRightsListItem - ', e.message)
+      }
+    })
+  }
+
+  const handleToggleBtns = () => {
+    const act = currentRightState ? 'suspend' : 'resume'
+    const type = item.name.$.split('.').slice(0, 1).join('')
+    console.log('TYPE', type)
+
+    const res = usersOperations.manageUserRight(userId, item.name.$, sessionId, act, type)
+
+    res.then(data => {
+      try {
+        console.log('rights changed successfully', data)
+      } catch (e) {
+        console.log('Error in AccessRightsListItem - ', e.message)
       }
     })
   }
@@ -38,19 +56,24 @@ export default function AccessRightsListItem({ item, userId }) {
 
   if (Object.hasOwn(item, 'active')) {
     return (
-      <li>
+      <li className={cn({ [s.list_item_wrapper]: true, [s.opened]: open })}>
         <button
           onClick={hasSubItems ? handleClick : null}
           className={cn({ [s.list_item]: true, [s.opened]: open })}
         >
-          <p>{item.caption.$}</p>
-          {hasSubItems ? (
-            <Shevron className={s.shevron} />
-          ) : (
-            <ToggleButton hasAlert={false} />
-          )}
+          <p className={s.list_item_subtitle}>{item.caption.$}</p>
+          <div>
+            {hasSubItems ? (
+              <Shevron className={s.shevron} />
+            ) : (
+              <ToggleButton
+                hasAlert={false}
+                initialState={currentRightState}
+                func={handleToggleBtns}
+              />
+            )}
+          </div>
         </button>
-
         {open && subList && (
           <div className={s.sub_list}>
             {subList.map((child, index) => {
@@ -64,7 +87,7 @@ export default function AccessRightsListItem({ item, userId }) {
   } else {
     return (
       <li className={s.list_item_title}>
-        <p>{item.caption.$}</p>
+        <p className={s.list_item_title_text}>{item.caption.$}</p>
       </li>
     )
   }

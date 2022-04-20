@@ -9,9 +9,11 @@ import { usersOperations } from '../../../Redux/users/usersOperations'
 import { Delete, Key, Settings } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
 import Alert from '../../ui/Alert/Alert'
+import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
 import { Button } from '../..'
 
 import s from './ControlBtn.module.scss'
+import AccessRights from '../AccessRights/AccessRights'
 
 export default function ControlBtn({
   handleControlDotsClick,
@@ -20,10 +22,12 @@ export default function ControlBtn({
   userId,
   handleUserRolesData,
   userName,
+  rightsList,
 }) {
   const { t } = useTranslation('trusted_users')
 
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
+  const [showRightsAlert, setShowRightsAlert] = useState(false)
 
   const dropDownEl = useRef()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -32,8 +36,11 @@ export default function ControlBtn({
 
   const dispatch = useDispatch()
 
-  const showAlert = () => {
+  const handleRemoveAlert = () => {
     setShowRemoveAlert(!showRemoveAlert)
+  }
+  const handleRightsAlert = () => {
+    setShowRightsAlert(!showRightsAlert)
   }
 
   const removeUser = () => {
@@ -72,7 +79,11 @@ export default function ControlBtn({
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
           </button>
-          <button className={s.access_rights_btn}>
+          <button
+            disabled={isOwner}
+            className={cn({ [s.access_rights_btn]: true, [s.owner]: isOwner })}
+            onClick={handleRightsAlert}
+          >
             <Key className={s.icon} />
             <p className={s.access_text}>
               {t('trusted_users.user_cards.drop_list.access_rights')}
@@ -83,7 +94,7 @@ export default function ControlBtn({
             data-testid="show_removing_alert"
             disabled={isOwner}
             className={cn({ [s.remove_btn]: true, [s.owner]: isOwner })}
-            onClick={showAlert}
+            onClick={handleRemoveAlert}
           >
             <Delete className={s.icon} />
             <p className={s.delete_text}>
@@ -95,9 +106,10 @@ export default function ControlBtn({
 
       {showRemoveAlert && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_status"
           isOpened={showRemoveAlert}
-          controlAlert={showAlert}
+          controlAlert={handleRemoveAlert}
           title={t('trusted_users.alerts.remove.title')}
           text={`${t('trusted_users.alerts.remove.text')} ${userName}?`}
           mainBtn={
@@ -112,6 +124,16 @@ export default function ControlBtn({
           }
         />
       )}
+      {showRightsAlert && (
+        <AccessRightsAlert
+          dataTestid="trusted_users_rights_alert"
+          isOpened={showRightsAlert}
+          controlAlert={handleRightsAlert}
+          title={mobile ? 'Права доступа' : 'Права доступа доверенного пользователя'}
+          list1={<AccessRights items={rightsList.slice(0, 20)} userId={userId} />}
+          list2={<AccessRights items={rightsList.slice(20, 37)} userId={userId} />}
+        />
+      )}
     </>
   )
 }
@@ -122,4 +144,5 @@ ControlBtn.propTypes = {
   areControlDotsActive: PropTypes.bool,
   userId: PropTypes.string,
   handleUserRolesData: PropTypes.func,
+  rightsList: PropTypes.array,
 }

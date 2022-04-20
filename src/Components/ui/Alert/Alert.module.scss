@@ -26,12 +26,18 @@
   padding: 19px;
   background-color: var(--elements-bgc);
   border-radius: 5px;
+  max-height: 830px;
+  overflow: scroll;
 }
 
 .title_wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.text_wrapper {
+  display: flex;
 }
 
 .alert_text {

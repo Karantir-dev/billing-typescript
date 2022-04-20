@@ -195,12 +195,6 @@ const getRights = userId => (dispatch, getState) => {
 }
 
 const getSubRights = (userId, name, sessionId) => {
-  // dispatch(actions.showLoader())
-
-  // const {
-  //   auth: { sessionId },
-  // } = getState()
-
   console.log('user id - ', userId)
   console.log('name - ', name)
   console.log('sessionId - ', sessionId)
@@ -229,6 +223,31 @@ const getSubRights = (userId, name, sessionId) => {
     })
 }
 
+const manageUserRight = (userId, funcName, sessionId, act, type) => {
+  return axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: `rights2.user.${act}`,
+        out: 'json',
+        auth: sessionId,
+        elid: funcName,
+        plid: `${userId}/${type}`,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log('managed users right from ajax', data)
+
+      // dispatch(actions.hideLoader())
+      return data
+    })
+    .catch(error => {
+      console.log('error', error)
+      // dispatch(actions.hideLoader())
+    })
+}
+
 export const usersOperations = {
   getUsers,
   changeUserRights,
@@ -237,4 +256,5 @@ export const usersOperations = {
   removeUser,
   getRights,
   getSubRights,
+  manageUserRight,
 }

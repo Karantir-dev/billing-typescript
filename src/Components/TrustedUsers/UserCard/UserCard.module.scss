@@ -1,5 +1,7 @@
 .min_card_wrapper {
   box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--elements-bgc);
+  border-radius: 5px;
   padding: 14px 21px 18px 18px;
   margin-bottom: 15px;
   position: relative;
@@ -77,6 +79,7 @@
 .table_row {
   display: grid;
   grid-template-columns: repeat(5, 130px);
+  align-items: center;
   padding: 18px 27px 16px 0;
   box-shadow: var(--elements-shadow);
   background-color: var(--elements-bgc);
@@ -87,6 +90,7 @@
 
 .user_email_lg {
   padding-left: 27px;
+  word-wrap: break-word;
 }
 
 // ADAPTIVE

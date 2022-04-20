@@ -10,7 +10,7 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations } from '../../../Redux/users/usersOperations'
 
 import s from './UserCard.module.scss'
-import AccessRights from '../AccessRights/AccessRights'
+// import AccessRights from '../AccessRights/AccessRights'
 import { usersSelectors } from '../../../Redux/users/usersSelectors'
 
 export default function UserCard({
@@ -128,6 +128,7 @@ export default function UserCard({
             userId={userId}
             userName={name}
             handleUserRolesData={handleUserRolesData}
+            rightsList={rightsList}
           />
         </div>
       )}
@@ -181,12 +182,11 @@ export default function UserCard({
               userName={name}
               userId={userId}
               handleUserRolesData={handleUserRolesData}
+              rightsList={rightsList}
             />
           </div>
         </div>
       )}
-
-      <AccessRights items={rightsList} userId={userId} />
     </>
   )
 }
