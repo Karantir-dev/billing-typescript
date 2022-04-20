@@ -119,24 +119,14 @@ export default function App() {
                 }
               />
               <Route
-                path={route.AFFILIATE_PROGRAM}
+                path={`${route.AFFILIATE_PROGRAM}/*`}
                 element={
                   <PrivateRoute
                     children={<AffiliateProgram />}
                     redirectTo={route.LOGIN}
                   />
                 }
-              >
-                <Route
-                  path={':chapter'}
-                  element={
-                    <PrivateRoute
-                      children={<AffiliateProgram />}
-                      redirectTo={route.LOGIN}
-                    />
-                  }
-                />
-              </Route>
+              />
 
               <Route
                 path={route.TRUSTED_USERS}
