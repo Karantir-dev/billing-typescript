@@ -28,11 +28,15 @@ body {
   --icon-color: #d9d0eb;
   --scrollbar-track-color: #ebebeb;
   // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
+  --dividing_line: #e4dfec;
   --background-color: #fefdff;
   --transparent-color: #b3a9c1;
   --forms-bg-2-color: #ffffff;
   --forms-drop-down: #514a5f;
   --inactive_icon_color: #e1daeb;
+  --popup_prompt: #ede7f4;
+
+  --border-color: #f4f4f4;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -71,11 +75,15 @@ body.dark-theme {
   --icon-color: #75707e;
   --scrollbar-track-color: #4b4556;
   // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+  --dividing_line: #4d4855;
   --background-color: #201a2a;
   --transparent-color: #716d79;
   --forms-bg-2-color: #342f3f;
   --forms-drop-down: #514a5f;
   --inactive_icon_color: #5c5865;
+  --popup_prompt: #4f4a5b;
+
+  --border-color: #5a5663;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

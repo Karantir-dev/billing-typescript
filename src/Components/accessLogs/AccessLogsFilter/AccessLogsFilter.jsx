@@ -18,6 +18,7 @@ export default function Component({ setCurrentPage }) {
 
   const logsFilterList = useSelector(accessLogsSelectors.getLogsFilters)
   const logsCurrentFilter = useSelector(accessLogsSelectors.getCurrentLogsFilters)
+  const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
   const dropdownCalendar = useRef(null)
 
@@ -173,7 +174,7 @@ export default function Component({ setCurrentPage }) {
         }}
       </Formik>
       <IconButton
-        onClick={() => dispatch(accessLogsOperations.getAccessLogsCvs())}
+        onClick={() => dispatch(accessLogsOperations.getAccessLogsCvs(logsCount))}
         className={s.csvBtn}
         icon="csv"
       />

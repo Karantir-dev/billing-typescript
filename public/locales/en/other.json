@@ -4,5 +4,8 @@
   "time": "Time",
   "date": "Date",
   "status": "Status",
-  "theme": "Theme"
+  "theme": "Theme",
+  "Send": "Send",
+  "Back": "Back",
+  "Cancel": "Cancel"
 }

@@ -1,47 +1,31 @@
 import React from 'react'
-import { Formik, Form } from 'formik'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Button, InputField, IconButton } from '../..'
+import { Button, IconButton } from '../..'
+import { supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
-export default function MainPage() {
+export default function Component({ selctedTicket }) {
   const { t } = useTranslation(['support', 'other'])
+  const dispatch = useDispatch()
   const params = useParams()
 
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
-        <Formik
-          enableReinitialize
-          initialValues={{
-            search: '',
-          }}
-          onSubmit={() => null}
-        >
-          {({ errors, touched }) => {
-            return (
-              <Form className={s.form}>
-                <InputField
-                  name="search"
-                  placeholder={t('search', { ns: 'other' })}
-                  isShadow
-                  height={46}
-                  iconRight="search"
-                  className={s.searchInput}
-                  //   onChange={e => console.log(e.target.value)}
-                  error={!!errors.email}
-                  touched={!!touched.email}
-                />
-                <IconButton
-                  onClick={() => null}
-                  icon="filter"
-                  className={s.calendarBtn}
-                />
-              </Form>
-            )
-          }}
-        </Formik>
+        <IconButton onClick={() => null} icon="filter" className={s.calendarBtn} />
+        {params?.path === 'requests' && (
+          <IconButton
+            disabled={selctedTicket?.toarchive?.$ !== 'on'}
+            onClick={() =>
+              dispatch(supportOperations.archiveTicketsHandler(selctedTicket?.id?.$))
+            }
+            icon="archive"
+            className={s.archiveBtn}
+          />
+        )}
       </div>
       {params?.path === 'requests' && (
         <Button
@@ -54,4 +38,12 @@ export default function MainPage() {
       )}
     </div>
   )
+}
+
+Component.propTypes = {
+  selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+}
+
+Component.defaultProps = {
+  selctedTicket: null,
 }

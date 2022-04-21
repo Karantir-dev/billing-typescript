@@ -2,9 +2,17 @@
   "support": "Support",
   "new ticket": "New ticket",
   "requests": "Requests",
-  "request archive": "Request archive",
   "request_id": "Request id",
   "In progress": "Opened",
   "New replies": "New replies",
-  "Waiting to reply ": "Waiting to reply"
+  "Waiting to reply ": "Waiting to reply",
+  "all_requests": "All requests",
+  "request_archive": "Request archive",
+  "closed": "Closed",
+  "created": "Created",
+  "Service related": "Service related",
+  "Rate the answer": "Rate the answer",
+  "The maximum number of files is 5.": "The maximum number of files is 5.",
+  "Maximum size - 95.5 MB": "Maximum size - 95.5 MB",
+  "Enter your message...": "Enter your message..."
 }

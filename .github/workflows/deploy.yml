@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm install
+      - run: npm install -f
       - run: npm run test
       - name: test status
         uses: 8398a7/action-slack@v3

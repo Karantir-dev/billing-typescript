@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-import { useOutsideAlerter } from '../../../../utils'
-import { Shevron } from '../../../../images'
+import { useOutsideAlerter } from '../../../utils'
+import { Shevron } from '../../../images'
 
 import s from './ServicesSelect.module.scss'
 
@@ -23,12 +23,14 @@ export default function ServicesSelect({ setServiseName }) {
 
   const handleBackdropClick = () => {
     setDropdownOpened(false)
-    dropdownEl.current.removeAttribute('style')
+    dropdownEl.current.style.height = 0
+    dropdownEl.current.style.visibility = 'hidden'
   }
 
   const handleServiceClick = (linkName, text) => {
     setDropdownOpened(false)
-    dropdownEl.current.removeAttribute('style')
+    dropdownEl.current.style.height = 0
+    dropdownEl.current.style.visibility = 'hidden'
 
     if (!currentServiceEl.current.classList.contains(s.selected)) {
       currentServiceEl.current.classList.add(s.selected)
@@ -39,7 +41,10 @@ export default function ServicesSelect({ setServiseName }) {
   }
 
   const handleSelectClick = () => {
-    dropdownEl.current.style.height = dropdownEl.current.scrollHeight + 'px'
+    const elem = dropdownEl.current
+    elem.style.height = elem.scrollHeight + 'px'
+    elem.style.visibility = 'visible'
+
     setDropdownOpened(true)
   }
 
@@ -53,6 +58,7 @@ export default function ServicesSelect({ setServiseName }) {
         tabIndex={0}
         onKeyUp={() => null}
         onClick={handleSelectClick}
+        data-testid="custom_select"
       >
         <span className={s.placeholder} ref={currentServiceEl}>
           {t('service_placeholder')}
@@ -60,7 +66,12 @@ export default function ServicesSelect({ setServiseName }) {
         <Shevron className={s.icon} />
       </div>
 
-      <div className={s.dropdown} ref={dropdownEl}>
+      <div
+        style={{ visibility: 'hidden' }}
+        className={s.dropdown}
+        ref={dropdownEl}
+        data-testid="services_dropdown"
+      >
         {servicesList.map(({ linkName, text }) => {
           return (
             <div

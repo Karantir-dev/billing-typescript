@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 import { ErrorMessage } from 'formik'
-import { Search, Shevron } from '../../images'
+import { Search, Shevron } from '../../../images'
 import s from '../SelectOfCountries/SignupSelects.module.scss'
 
 export default function SelectOfRegions({

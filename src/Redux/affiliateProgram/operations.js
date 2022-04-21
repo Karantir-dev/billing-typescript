@@ -2,8 +2,9 @@ import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
 import { authSelectors } from '../auth/authSelectors'
 import { actions } from '../actions'
+import { affiliateActions } from './actions'
 
-const getReferralLink = (setReferralLink, setPromocode) => (dispatch, getState) => {
+const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -17,9 +18,12 @@ const getReferralLink = (setReferralLink, setPromocode) => (dispatch, getState) 
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      setPromocode(data.doc.promocode.$ || 'promocode stub')
-      setReferralLink(data.doc.url.$)
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const refLink = data.doc.url.$
+      const promocode = data.doc.promocode.$ || 'promocode will be here'
+
+      dispatch(affiliateActions.setReferralLink({ refLink, promocode }))
       dispatch(actions.hideLoader())
     })
     .catch(err => {

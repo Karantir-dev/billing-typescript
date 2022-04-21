@@ -63,12 +63,10 @@ describe('Register Component', () => {
     let password = screen.getByTestId('input_password')
     let passConfirmation = screen.getByTestId('input_passConfirmation')
 
-    fireEvent.change(name, {target: {value: 'John'}})
-    fireEvent.change(email, {target: {value: 'john.dee@someemail.com'}})
-    fireEvent.change(password, {target: {value: 'test123'}})
-    fireEvent.change(passConfirmation, {target: {value: 'test123'}})
-
-
+    fireEvent.change(name, { target: { value: 'John' } })
+    fireEvent.change(email, { target: { value: 'john.dee@someemail.com' } })
+    fireEvent.change(password, { target: { value: 'test123' } })
+    fireEvent.change(passConfirmation, { target: { value: 'test123' } })
 
     expect(name.value).toMatch('John')
     expect(email.value).toMatch('john.dee@someemail.com')

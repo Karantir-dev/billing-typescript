@@ -5,11 +5,14 @@ import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Chats } from '../../../images'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import * as route from '../../../routes'
 
 export default function Component(props) {
-  const { id, theme, date, status, unread } = props
+  const { id, theme, date, status, unread, setSelctedTicket, selected } = props
   const { t } = useTranslation(['support', 'other'])
+  const navigate = useNavigate()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const datetimeSeparate = string => {
@@ -22,7 +25,14 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.item}>
+    <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={() => null}
+      onDoubleClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+      onClick={() => setSelctedTicket(id)}
+      className={cn(s.item, { [s.selected]: selected })}
+    >
       <span className={s.tableBlockFirst}>
         {mobile && <div className={s.item_title}>{t('request_id')}:</div>}
         <span className={cn(s.item_text, s.first_item)}>{id}</span>
@@ -45,9 +55,7 @@ export default function Component(props) {
       <div className={s.tableBlockFifth}>
         {mobile && <div className={s.line} />}
         <span className={cn(s.item_text, s.fifth_item)}>
-          <button className={s.chatBtn}>
-            <Chats className={cn({ [s.unread]: unread })} />
-          </button>
+          <Chats className={cn({ [s.unread]: unread })} />
         </span>
       </div>
     </div>
@@ -59,6 +67,8 @@ Component.propTypes = {
   date: PropTypes.string,
   status: PropTypes.string,
   unread: PropTypes.bool,
+  setSelctedTicket: PropTypes.func,
+  selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
 }
 
 Component.defaultProps = {
@@ -67,4 +77,6 @@ Component.defaultProps = {
   date: '',
   status: '',
   unread: false,
+  setSelctedTicket: () => null,
+  selected: null,
 }
