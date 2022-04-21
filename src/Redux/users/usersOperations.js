@@ -177,6 +177,7 @@ const getRights = userId => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         elid: userId,
+        lang: 'en',
         // sok: 'ok',
       }),
     )
@@ -208,6 +209,7 @@ const getSubRights = (userId, name, sessionId) => {
         auth: sessionId,
         elid: name,
         plid: userId,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -233,6 +235,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => {
         auth: sessionId,
         elid: funcName,
         plid: `${userId}/${type}`,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {

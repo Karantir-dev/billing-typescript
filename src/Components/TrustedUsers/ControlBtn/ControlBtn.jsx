@@ -130,8 +130,8 @@ export default function ControlBtn({
           isOpened={showRightsAlert}
           controlAlert={handleRightsAlert}
           title={mobile ? 'Права доступа' : 'Права доступа доверенного пользователя'}
-          list1={<AccessRights items={rightsList.slice(0, 20)} userId={userId} />}
-          list2={<AccessRights items={rightsList.slice(20, 37)} userId={userId} />}
+          list1={<AccessRights items={rightsList.slice(0, 21)} userId={userId} />}
+          list2={<AccessRights items={rightsList.slice(21, 38)} userId={userId} />}
         />
       )}
     </>

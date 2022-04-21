@@ -16,6 +16,7 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 22px;
+  cursor: pointer;
 
   &.opened {
     & .shevron {
@@ -38,6 +39,7 @@
   line-height: 115%;
   text-align: start;
   color: var(--main-text);
+  // cursor: pointer;
 }
 
 .sub_list {
@@ -61,6 +63,7 @@
   stroke: var(--main-text);
   transform: rotateZ(180deg);
   transition: transform 0.2s ease;
+  // cursor: pointer;
 }
 
 // ADAPTIVE

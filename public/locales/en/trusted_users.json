@@ -87,6 +87,134 @@
       "phone": "Required field",
       "password": "Required field",
       "conf_password": "Required field"
+    },
+
+    "rights_alert": {
+      "title_short": "Права доступа",
+      "title_long": "Права доступа доверенного пользователя",
+
+      "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
+      "clients": {
+        "client": "Client",
+        "profile": {
+          "profile": "Profile",
+          "profile_reading": "Client profile (data reading is available)",
+          "profile_writable": "Client profile (data saving is available)"
+        },
+        "users": {
+          "users": "Users",
+          "edit_reading": "Edit properties of the selected user (data reading is available)",
+          "edit_writable": "Edit properties of the selected user (data saving is available)"
+        },
+        "payers": {
+          "payers": "Payers",
+          "edit_reading": "Edit properties of the selected payer (data reading is available)",
+          "edit_writable": "Edit properties of the selected payer (data saving is available)",
+          "Reconciliation report": "Reconciliation report",
+          "Print the reconciliation report_writable": "Print the reconciliation report (data saving is available)",
+          "Print the reconciliation report_reading": "Print the reconciliation report (data reading is available)"
+        },
+        "affiliate_program": {
+          "Reward": "Reward",
+          "Affiliate_program": "Affiliate program",
+          "Affiliate program_writable": "Affiliate program (data saving is available)",
+          "Affiliate program_reading": "Affiliate program (data reading is available)"
+        },
+        "cart": {
+          "Cart_writable": "Cart (data saving is available)",
+          "Cart_reading": "Cart (data reading is available)"
+        },
+        "orders": {
+          "Orders_writable": "Orders (data saving is available)",
+          "Orders_reading": "Orders (data reading is available)"
+        },
+        "payment_methods": {
+          "Payment_methods": "Payment methods",
+          "Change the payment method_writable": "Change the payment method (data saving is available)",
+          "Change the payment method_reading": "Change the payment method (data reading is available)",
+          "Re-configure": "Re-configure"
+        },
+        "Discounts": "Discounts",
+        "User_settings": "User settings",
+        "User_settings_writable": "User settings (data saving is available)",
+        "User_settings_reading": "User settings (data reading is available)"
+      },
+
+      "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
+      "products_services": {
+        "Products/Services": "Products/Services",
+        "Dedicated servers": "Dedicated servers",
+        "Shared hosting": "Shared hosting",
+        "Virtual private servers": "Virtual private servers",
+        "forexbox": "Forexbox",
+
+        "services_sub_text": {
+          "Edit properties of the selected service_reading": "Edit properties of the selected service (data reading is available)",
+          "Edit properties of the selected service_writable": "Edit properties of the selected service (data saving is available)",
+          "Change password_reading": "Change password (data reading is available)",
+          "Change password_writable": "Change password (data saving is available)",
+          "edit_IP addresses_reading": "IP addresses (data reading is available)",
+          "edit_IP addresses_writable": "IP addresses (data saving is available)",
+          "Renew the selected service_reading": "Renew the selected service (data reading is available)",
+          "Renew the selected service_writable": "Renew the selected service (data saving is available)",
+          "Go to the control panel_reading": "Go to the control panel (data reading is available)",
+          "Go to the control panel_writable": "Go to the control panel (data saving is available)"
+        },
+        "Web-console": "Web-console"
+      },
+
+      "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
+      "billing": {
+        "Billing": "Billing",
+        "Auto payment": "Auto payment",
+        "Payments": "Payments",
+        "Expenses": "Expenses",
+        "Promised payment": "Promised payment",
+        "Automatic renewal of services": "Automatic renewal of services"
+      },
+
+      "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
+      "support": {
+        "Support": "Support",
+        "Support tickets": "Support tickets",
+        "Archived tickets": "Archived tickets",
+        "Notifications": "Notifications"
+      },
+
+      "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
+      "tools": {
+        "Tools": "Tools",
+        "Add a new user": "Add a new user",
+        "Add a payer": "Add a payer"
+      },
+
+      "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
+      "statistics": {
+        "Access log": "Access log"
+      },
+
+      "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
+      "help": {
+        "Help": "Help"
+      },
+
+      "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
+      "dashboard": {
+        "Dashboard": "Dashboard",
+        "Information": "Information",
+        "Providers": "Providers"
+      },
+
+      "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
+      "promised_payments": {
+        "Promised payments": "Promised payments"
+      },
+
+      "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
+      "reselling_service": {
+        "Service reselling": "Service reselling",
+        "Service reselling functions": "Service reselling functions"
+      }
     }
   }
 }

@@ -1,16 +1,19 @@
 // import classNames from 'classnames'
 import cn from 'classnames'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors } from '../../../../Redux/auth/authSelectors'
 import { usersOperations } from '../../../../Redux/users/usersOperations'
 import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
+import getCurrentTranslation from '../../translationCases'
 
 import s from './AccessRightsListItem.module.scss'
 
 export default function AccessRightsListItem({ item, userId }) {
+  const { t } = useTranslation(['trusted_users', 'other'])
   const [open, setOpen] = useState(false)
   const sessionId = useSelector(authSelectors.getSessionId)
   const [subList, setSubList] = useState([])
@@ -61,7 +64,10 @@ export default function AccessRightsListItem({ item, userId }) {
           onClick={hasSubItems ? handleClick : null}
           className={cn({ [s.list_item]: true, [s.opened]: open })}
         >
-          <p className={s.list_item_subtitle}>{item.caption.$}</p>
+          <p className={s.list_item_subtitle}>
+            {getCurrentTranslation(item.name.$, t)}
+            {/* {item.caption.$} */}
+          </p>
           <div>
             {hasSubItems ? (
               <Shevron className={s.shevron} />
@@ -87,7 +93,9 @@ export default function AccessRightsListItem({ item, userId }) {
   } else {
     return (
       <li className={s.list_item_title}>
-        <p className={s.list_item_title_text}>{item.caption.$}</p>
+        <p className={s.list_item_title_text}>
+          {`${getCurrentTranslation(item.name.$, t)}:`}
+        </p>
       </li>
     )
   }

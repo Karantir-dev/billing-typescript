@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 // import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
@@ -15,23 +15,30 @@ export default function AccessRightsAlert({
   controlAlert,
   dataTestid,
 }) {
-  //   const { t } = useTranslation('trusted_users')
   const getAlerEl = useRef(null)
-  // const getAlerElTitle = useRef(null)
+  const getAlerElTitle = useRef(null)
 
   useOutsideAlerter(getAlerEl, isOpened, controlAlert)
 
-  // const onScroll = e => {
-  //   console.log(e.target.scrollHeight)
-  //   getAlerElTitle.current.style.top = getAlerElTitle.current.scrollHeight + 200 + 'px'
-  //   console.log(getAlerElTitle.current.style.top)
-  // }
+  const handleScroll = e => {
+    const alertScroll = e.target.scrollTop
+    const pos = alertScroll + 'px'
+    getAlerElTitle.current.style.top = pos
+  }
+
+  useEffect(() => {
+    getAlerEl.current.addEventListener('scroll', handleScroll)
+
+    return () => {
+      getAlerEl.current.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <>
       <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
         <div className={s.alert} ref={getAlerEl} data-testid={dataTestid}>
-          <div className={s.title_wrapper}>
+          <div className={s.title_wrapper} ref={getAlerElTitle}>
             <h5 className={s.title}>{title}</h5>
             <div className={s.close_btn_wrapper}>
               <button className={s.close_btn} onClick={controlAlert}></button>

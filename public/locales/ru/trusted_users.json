@@ -86,6 +86,134 @@
       "phone": "Обязательное поле для заполнения",
       "password": "Обязательное поле для заполнения",
       "conf_password": "Обязательное поле для заполнения"
+    },
+
+    "rights_alert": {
+      "title_short": "Права доступа ",
+      "title_long": "Права доступа доверенного пользователя",
+
+      "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
+      "clients": {
+        "client": "Клиент",
+        "profile": {
+          "profile": "Профиль",
+          "profile_reading": "Профиль с доступом к чтению данных формы",
+          "profile_writable": "Профиль с доступом к сохранению данных"
+        },
+        "users": {
+          "users": "Пользователи",
+          "edit_reading": "Редактирование информации о пользователе с доступом к чтению данных формы",
+          "edit_writable": "Редактирование информации о пользователе с доступом к сохранению данных"
+        },
+        "payers": {
+          "payers": "Плательщики",
+          "edit_reading": "Редактирование информации о плательщике (доступ к чтению данных формы)",
+          "edit_writable": "Редактирование информации о плательщике (доступ к сохранению данных)",
+          "Reconciliation report": "Акт сверки",
+          "Print the reconciliation report_reading": "Печать для сверки (доступ к чтению данных формы)",
+          "Print the reconciliation report_writable": "Печать для сверки (доступ к сохранению данных)"
+        },
+        "affiliate_program": {
+          "Reward": "Reward???",
+          "Affiliate_program": "Реферальная программа",
+          "Affiliate program_writable": "Реферальная программа (доступно сохранение данных)",
+          "Affiliate program_reading": "Реферальная программа (доступно чтение данных форм)"
+        },
+        "cart": {
+          "Cart_writable": "Корзина (доступно сохранение данных)",
+          "Cart_reading": "Корзина  (доступно чтение данных форм)"
+        },
+        "orders": {
+          "Orders_writable": "Заказы (доступно сохранение данных)",
+          "Orders_reading": "Заказы (доступно чтение данных форм)"
+        },
+        "payment_methods": {
+          "Payment_methods": "Способы оплаты",
+          "Change the payment method_writable": "Изменить способ оплаты (доступно сохранение данных)",
+          "Change the payment method_reading": "Изменить способ оплаты (доступно чтение данных форм)",
+          "Re-configure": "Настроить повторно"
+        },
+        "Discounts": "Скидки",
+        "User_settings": "Настойки пользователя",
+        "User_settings_writable": "Настройки пользователя(доступно сохранение данных)",
+        "User_settings_reading": "Настройки пользователя (доступно чтение данных форм)"
+      },
+
+      "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
+      "products_services": {
+        "Products/Services": "Товары/Услуги",
+        "Dedicated servers": "Выделенные серверы",
+        "Shared hosting": "Виртуальный хостинг",
+        "Virtual private servers": "Виртуальные серверы",
+        "forexbox": "Сервер для Forex",
+
+        "services_sub_text": {
+          "Edit properties of the selected service_reading": "Редактирование услуги (доступно чтение данных формы)",
+          "Edit properties of the selected service_writable": "Редактирование услуги (доступно сохранение данных)",
+          "Change password_reading": "Смена пароля (доступ к чтению данных формы)",
+          "Change password_writable": "Смена пароля (доступ к сохранению данных)",
+          "edit_IP addresses_reading": "IP-адрес (доступно чтение данных формы)",
+          "edit_IP addresses_writable": "IP-адрес (доступно сохранение данных)",
+          "Renew the selected service_reading": "Продление услуги (доступно чтение данных формы)",
+          "Renew the selected service_writable": "Продление услуги (доступно сохранение данных)",
+          "Go to the control panel_reading": "Переход в панель управления (доступ к чтению данных формы)",
+          "Go to the control panel_writable": "Переход в панель управления (доступ к сохранению данных)"
+        },
+        "Web-console": "Консоль"
+      },
+
+      "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
+      "billing": {
+        "Billing": "Финансы",
+        "Auto payment": "Автоплатеж",
+        "Payments": "Платежи",
+        "Expenses": "Расходы",
+        "Promised payment": "Обещанный платеж",
+        "Automatic renewal of services": "Автопродление услуг"
+      },
+
+      "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
+      "support": {
+        "Support": "Поддержка",
+        "Support tickets": "Запросы",
+        "Archived tickets": "Архив запросов",
+        "Notifications": "Уведомления"
+      },
+
+      "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
+      "tools": {
+        "Tools": "Инструменты",
+        "Add a new user": "Добавить пользователя",
+        "Add a payer": "Добавить плательщика"
+      },
+
+      "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
+      "statistics": {
+        "Access log": "Журнал посещений"
+      },
+
+      "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
+      "help": {
+        "Help": "Справка"
+      },
+
+      "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
+      "dashboard": {
+        "Dashboard": "Главная",
+        "Information": "Информация",
+        "Providers": "Провайдеры"
+      },
+
+      "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
+      "promised_payments": {
+        "Promised payments": "Обещанный платеж"
+      },
+
+      "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
+      "reselling_service": {
+        "Service reselling": "Перепродажа услуг",
+        "Service reselling functions": "Функции перепродажи услуг"
+      }
     }
   }
 }
