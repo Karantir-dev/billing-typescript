@@ -1,22 +1,38 @@
+.messageContainer {
+  display: flex;
+  width: 100%;
+  &.outcoming {
+    align-self: flex-start;
+  }
+  &.incoming {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+}
+
 .messageBlock {
-  padding: 16px 24px;
+  padding: 16px 20px;
   background: #ffffff;
   box-shadow: var(--forms_shadow);
   margin-bottom: 16px;
   border-radius: 3px;
   background: var(--forms-bg-2-color);
   position: relative;
+  width: 100%;
+  &.incoming {
+    background-color: var(--message-bg);
+  }
   &.incoming::before {
     content: '';
     width: 3px;
     height: 100%;
     position: absolute;
     background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
-    left: 0;
+    right: 0;
     top: 0;
     box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
   &.outcoming::before {
     content: '';
@@ -33,11 +49,14 @@
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 100px;
-  margin-right: 10px;
-  background-color: #e1e7ec;
+  display: none;
+}
+
+.incoming {
+  .avatar {
+    margin-left: 25px;
+    margin-right: 0px;
+  }
 }
 
 .userInfo {
@@ -51,6 +70,7 @@
 }
 
 .datetime {
+  margin-top: 14px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -61,8 +81,13 @@
 .messageHeader {
   display: flex;
   width: 100%;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+}
+
+.incoming {
+  .messageHeader {
+    flex-direction: column;
+  }
 }
 
 .messageBody {
@@ -75,16 +100,30 @@
   font-size: 18px;
   line-height: 130.5%;
   color: var(--main-text);
+  word-break: break-word;
 }
 
 .fileBlock {
-  display: flex;
+  display: block;
   margin-top: 10px;
-  flex-wrap: wrap;
+}
+
+.avatarSmall {
+  display: block;
+  width: 35px;
+  height: 35px;
+  background-color: #e1e7ec;
+  border-radius: 100px;
+  margin-right: 12px;
+}
+
+.headerWithPhoto {
+  display: flex;
+  align-items: center;
 }
 
 .file {
-  padding: 12px 16px;
+  padding: 12px;
   background-color: rgba(217, 208, 235, 0.2);
   border-radius: 3px;
   font-style: normal;
@@ -93,12 +132,13 @@
   line-height: 120%;
   align-items: center;
   display: flex;
-  margin-right: 10px;
+  margin-right: 0px;
   cursor: pointer;
   user-select: none;
   margin-top: 5px;
   svg {
     margin-left: 15px;
+    width: 30px;
   }
 }
 
@@ -157,5 +197,79 @@
 .disLikeAnsw {
   path {
     fill: var(--error-color);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .avatarSmall {
+    display: none;
+  }
+  .messageBlock {
+    padding: 16px 24px;
+  }
+  .fileBlock {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .datetime {
+    margin-top: 0px;
+  }
+  .avatar {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    margin-right: 10px;
+    background-color: #e1e7ec;
+  }
+  .messageContainer {
+    width: 100%;
+  }
+  .messageHeader {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .incoming {
+    .messageHeader {
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .file {
+    padding: 12px 16px;
+    margin-right: 10px;
+    svg {
+      margin-left: 15px;
+      width: auto;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .avatar {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .avatar {
+    width: 70px;
+    height: 70px;
+    margin-right: 25px;
+  }
+  .messageContainer {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .avatar {
+    width: 80px;
+    height: 80px;
   }
 }

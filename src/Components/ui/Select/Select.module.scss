@@ -26,6 +26,12 @@
   justify-self: flex-start;
   caret-color: transparent;
   cursor: pointer;
+  span {
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .right_icon {

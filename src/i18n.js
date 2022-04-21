@@ -10,9 +10,6 @@ use(Backend)
   // модуль инициализации
   .use(initReactI18next)
   .init({
-    react: {
-      useSuspense: false,
-    },
     ns: ['auth'],
     // Стандартный язык
     fallbackLng: 'en',

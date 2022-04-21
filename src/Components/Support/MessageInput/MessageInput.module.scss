@@ -1,0 +1,123 @@
+.fieldsBlock {
+  padding: 17px 13px;
+  background: var(--forms-bg-2-color);
+  box-shadow: var(--forms_shadow);
+  border-radius: 3px;
+}
+
+.messageBlock {
+  display: flex;
+}
+
+.filesBlock {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  svg {
+    path {
+      fill: var(--transparent-color);
+    }
+  }
+  &.notEmpty {
+    svg {
+      path {
+        fill: var(--main-text);
+      }
+    }
+  }
+}
+
+.textarea {
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: none;
+  resize: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  &::placeholder {
+    color: var(--transparent-color);
+  }
+}
+
+.filesInfo {
+  display: flex;
+  flex-direction: column;
+  color: var(--transparent-color);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  margin-left: 17.75px;
+}
+
+.fileItem {
+  margin-top: 15px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 120%;
+  color: var(--main-text);
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  &.bigfile {
+    color: var(--error-color);
+  }
+}
+
+.fileError {
+  color: var(--error-color);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 130%;
+  margin-top: 12px;
+  background-color: rgba(255, 0, 0, 0.05);
+  width: 100%;
+  padding: 6px 12px;
+}
+
+.fileDeleteItem {
+  transform: scale(0.7);
+  margin-left: 10px;
+  svg {
+    path {
+      fill: var(--main-text);
+    }
+  }
+  cursor: pointer;
+  &:active {
+    transform: scale(0.65);
+  }
+}
+
+.filesContainer {
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 768px) {
+  .fileItem {
+    margin-top: 0px;
+  }
+  .fileError {
+    background-color: transparent;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1550px) {
+}
+
+@media screen and (min-width: 1918px) {
+}
