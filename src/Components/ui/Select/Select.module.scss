@@ -21,6 +21,10 @@
 
 .input {
   @extend %input;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
   display: flex;
   align-items: center;
   justify-self: flex-start;
