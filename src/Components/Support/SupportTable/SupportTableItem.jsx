@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Chats } from '../../../images'
+import { Button } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -57,6 +58,14 @@ export default function Component(props) {
         <span className={cn(s.item_text, s.fifth_item)}>
           <Chats className={cn({ [s.unread]: unread })} />
         </span>
+        <Button
+          className={s.openTicket}
+          isShadow
+          size="medium"
+          label={t('Open', { ns: 'other' })}
+          type="button"
+          onClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+        />
       </div>
     </div>
   )

@@ -5,16 +5,18 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import { userOperations } from '../../../Redux/userInfo/userOperations'
-import { authSelectors } from '../../../Redux/auth/authSelectors'
+import {
+  userOperations,
+  userSelectors,
+  authOperations,
+  authSelectors,
+} from '../../../Redux'
 import { selectors } from '../../../Redux/selectors'
-import { userSelectors } from '../../../Redux/userInfo/userSelectors'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
-import { authOperations } from '../../../Redux/auth/authOperations'
 import { useOutsideAlerter } from '../../../utils'
 
 export default function Header() {

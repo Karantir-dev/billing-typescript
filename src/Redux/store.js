@@ -12,11 +12,13 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import { authReducer } from './auth/authReducer'
-import { supportReducer } from '.'
-import { accessLogsReducer } from './accessLogs/accessLogsReducer'
-import { userReducer } from './userInfo/userReducer'
-import { usersReducer } from './users/usersReducer'
+import {
+  supportReducer,
+  userReducer,
+  authReducer,
+  accessLogsReducer,
+  usersReducer,
+} from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
 

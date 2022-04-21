@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { authOperations } from '../../../Redux/auth/authOperations'
+import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button } from '../..'
 import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'

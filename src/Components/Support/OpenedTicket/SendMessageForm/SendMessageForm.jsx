@@ -37,6 +37,7 @@ export default function Component() {
           <Form className={s.form}>
             <div className={s.fieldsBlock}>
               <MessageInput
+                message={values?.message}
                 filesError={checkItemSize.length !== 0}
                 files={values.files}
                 onChangeFiles={value => setFieldValue('files', value)}

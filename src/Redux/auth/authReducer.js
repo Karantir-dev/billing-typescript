@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import { authActions } from './authActions'
+import authActions from './authActions'
 
 const initialState = {
   sessionId: null,
@@ -25,8 +25,10 @@ const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
   [authActions.closeTotpForm]: () => 'hidden',
 })
 
-export const authReducer = combineReducers({
+const authReducer = combineReducers({
   sessionId,
   temporaryId,
   totpFormVisibility,
 })
+
+export default authReducer

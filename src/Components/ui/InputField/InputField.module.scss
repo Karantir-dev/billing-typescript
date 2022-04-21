@@ -14,13 +14,16 @@
 
 .input_wrapper {
   width: 100%;
-  height: 50px;
+  height: 45px;
   position: relative;
 }
 
 .input {
   @extend %input;
-  height: 50px;
+  height: 45px;
+  &:focus {
+    border: 1px solid #ff42a8;
+  }
 }
 
 .field_icon_left {
@@ -73,18 +76,29 @@
   background-color: var(--nearby-elements-bgc);
 }
 
+.input {
+  &.iconRight {
+    padding-right: 40px;
+  }
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
-  .input_wrapper {
-    height: 50px;
-  }
-
   .input {
     &.iconLeft {
       padding-left: 36px;
     }
-    &.iconLeft {
+    &.iconRight {
       padding-right: 36px;
     }
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .input_wrapper {
+    height: 50px;
+  }
+  .input {
+    height: 50px;
   }
 }

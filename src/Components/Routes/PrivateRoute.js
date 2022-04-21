@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { authSelectors } from '../../Redux/auth/authSelectors'
+import { authSelectors } from '../../Redux'
 /**
  * - If the route is private and the user is logged in, render the component
  * - Otherwise render Redirect to /auth
