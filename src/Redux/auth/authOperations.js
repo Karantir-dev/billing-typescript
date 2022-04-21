@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { authActions } from './authActions'
+import authActions from './authActions'
 import { actions } from '../actions'
 import { axiosInstance } from './../../config/axiosInstance'
 
@@ -274,7 +274,7 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     })
 }
 
-export const authOperations = {
+export default {
   login,
   register,
   reset,

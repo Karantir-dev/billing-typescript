@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
-import accessLogsOperations from '../../../Redux/accessLogs/accessLogsOperations'
-import accessLogsSelectors from '../../../Redux/accessLogs/accessLogsSelectors'
+import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -23,9 +22,7 @@ export default function Component({ setCurrentPage }) {
   const dropdownCalendar = useRef(null)
 
   const clickOutside = () => {
-    setTimeout(() => {
-      setIsOpenedCalendar(false)
-    }, 100)
+    setIsOpenedCalendar(false)
   }
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutside)

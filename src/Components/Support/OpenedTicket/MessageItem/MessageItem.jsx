@@ -10,6 +10,7 @@ import { BASE_URL } from '../../../../config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
 
+
 export default function Component(props) {
   const dispatch = useDispatch()
   const params = useParams()

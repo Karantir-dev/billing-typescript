@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 
 import { Shevron, Search } from '../../../images'
 import { SelectOfRegions } from '../../'
-import { authOperations } from '../../../Redux/auth/authOperations'
+import { authOperations } from '../../../Redux'
 import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({

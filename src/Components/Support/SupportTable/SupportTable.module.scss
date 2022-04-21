@@ -31,9 +31,14 @@
     color: #45a884;
   }
   &.fifth_item {
-    display: flex;
-    justify-content: flex-end;
+    display: none;
   }
+}
+
+.openTicket {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
 }
 
 .title_text {
@@ -73,7 +78,8 @@
   margin-bottom: 7px;
   cursor: pointer;
   position: relative;
-  &:hover::before, &.selected::before {
+  &:hover::before,
+  &.selected::before {
     content: '';
     width: 3px;
     height: 100%;
@@ -141,6 +147,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .openTicket {
+    display: none;
+  }
   .item {
     flex-direction: row;
     align-items: center;
