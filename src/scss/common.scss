@@ -10,24 +10,7 @@ body {
   background-color: var(--main-bgc);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: #e72690;
-  }
+  overflow: hidden;
 }
 
 // ------- reset styles -------

@@ -16,6 +16,8 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(supportOperations.getTicketsHandler())
+    dispatch(supportOperations.getDepartmenList())
+    dispatch(supportOperations.getServiceList())
   }, [])
 
   useEffect(() => {
