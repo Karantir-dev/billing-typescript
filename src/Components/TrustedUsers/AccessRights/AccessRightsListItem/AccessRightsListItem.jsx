@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
 import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
-import getCurrentTranslation from '../../translationCases'
+// import getCurrentTranslation from '../../translationCases'
 
 import s from './AccessRightsListItem.module.scss'
 
 export default function AccessRightsListItem({ item, userId }) {
-  const { t } = useTranslation(['trusted_users', 'other'])
+  const { t } = useTranslation('trusted_users')
   const [open, setOpen] = useState(false)
   const sessionId = useSelector(authSelectors.getSessionId)
   const [subList, setSubList] = useState([])
@@ -54,6 +54,9 @@ export default function AccessRightsListItem({ item, userId }) {
     })
   }
 
+  const nameWithoutDots = item.name.$.replaceAll('.', '_')
+  console.log(nameWithoutDots)
+
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   if (Object.hasOwn(item, 'active')) {
@@ -64,8 +67,7 @@ export default function AccessRightsListItem({ item, userId }) {
           className={cn({ [s.list_item]: true, [s.opened]: open })}
         >
           <p className={s.list_item_subtitle}>
-            {getCurrentTranslation(item.name.$, t)}
-            {/* {item.caption.$} */}
+            {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
           </p>
           <div>
             {hasSubItems ? (
@@ -93,7 +95,7 @@ export default function AccessRightsListItem({ item, userId }) {
     return (
       <li className={s.list_item_title}>
         <p className={s.list_item_title_text}>
-          {`${getCurrentTranslation(item.name.$, t)}:`}
+          {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
         </p>
       </li>
     )

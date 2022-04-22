@@ -1,0 +1,263 @@
+{
+  "trusted_users": {
+    "title": "Доверенные пользователи",
+    "subtitle": "Доверенные пользователи — лица, которым вы доверяете доступ к вашему личному кабинету. Это может быть полезно, когда, например, несколько человек управляет серверами или доменами вашего аккаунта. Вы можете управлять их правами доступа к функциональности личного кабинета.",
+    "button": "Добавить",
+    "read_more": "Читать больше",
+    "read_less": "Скрыть",
+    "users_title": "Ваши пользователи",
+
+    "table_header": {
+      "email": "Email",
+      "name": "ФИО или название",
+      "full_access": "Полный доступ",
+      "status": "Статус"
+    },
+
+    "user_cards": {
+      "turn_on_field": "Вкл.",
+      "turn_off_field": "Выкл.",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "yes": "Да",
+      "no": "Нет",
+
+      "drop_list": {
+        "settings": "Настройки",
+        "access_rights": "Права доступа",
+        "delete": "Удалить"
+      }
+    },
+
+    "alerts": {
+      "remove": {
+        "title": "Удаление пользователя",
+        "text": "Вы действительно хотите удалить пользователя",
+        "btn_text_ok": "Удалить",
+        "btn_text_cancel": "Отмена"
+      },
+      "access": {
+        "title": "Включение пользователя",
+        "title2": "Отключение пользователя",
+        "text": "После того, как вы включите доступ,",
+        "text2": "получит доступ в ваш личный кабинет.",
+        "text3": "После того, как вы выключите доступ,",
+        "text4": "потеряет доступ к вашему линому кабинету.",
+        "btn_text_ok": "Включить",
+        "btn_text_ok2": "Отключить",
+        "btn_text_cancel": "Отмена"
+      },
+      "status": {
+        "title": "Активация пользователя",
+        "title2": "Деактивация пользователя",
+        "text": "Вы действительно хотите активировать пользователя",
+        "text2": "Вы действительно хотите деактивировать пользователя",
+        "btn_text_ok": "Активировать",
+        "btn_text_ok2": "Деактивировать",
+        "btn_text_cancel": "Отмена"
+      }
+    },
+    "form": {
+      "title": "Новый пользователь",
+      "email": "Email",
+      "full_name": "ФИО",
+      "phone": "Номер телефона",
+      "password": "Пароль",
+      "conf_password": "Подтверждение пароля",
+      "submit_btn": "Сохранить"
+    },
+    "form_placeholders": {
+      "email": "Введите данные",
+      "full_name": "Введите данные",
+      "phone": "",
+      "password": "Введите пароль",
+      "conf_password": "Подтвердите пароль"
+    },
+    "form_errors": {
+      "email": "Неверный email",
+      "full_name": "Недопустимые символы",
+      "phone": "Номер должен содержать минимум 4 цифры",
+      "password": "Пароль должен содержать минимум 5 символов",
+      "conf_password": "Пароли не совпадают"
+    },
+    "form_warnings": {
+      "email": "Обязательное поле для заполнения",
+      "full_name": "Обязательное поле для заполнения",
+      "phone": "Обязательное поле для заполнения",
+      "password": "Обязательное поле для заполнения",
+      "conf_password": "Обязательное поле для заполнения"
+    },
+
+    "rights_alert": {
+      "title_short": "Права доступа ",
+      "title_long": "Права доступа доверенного пользователя",
+
+      "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
+      "clients": {
+        "client": "Клиент",
+        "profile": {
+          "profile": "Профиль",
+          "profile_reading": "Профиль с доступом к чтению данных формы",
+          "profile_writable": "Профиль с доступом к сохранению данных"
+        },
+        "users": {
+          "users": "Пользователи",
+          "edit_reading": "Редактирование информации о пользователе с доступом к чтению данных формы",
+          "edit_writable": "Редактирование информации о пользователе с доступом к сохранению данных"
+        },
+        "payers": {
+          "payers": "Плательщики",
+          "edit_reading": "Редактирование информации о плательщике (доступ к чтению данных формы)",
+          "edit_writable": "Редактирование информации о плательщике (доступ к сохранению данных)",
+          "Reconciliation report": "Акт сверки",
+          "Print the reconciliation report_reading": "Печать для сверки (доступ к чтению данных формы)",
+          "Print the reconciliation report_writable": "Печать для сверки (доступ к сохранению данных)"
+        },
+        "affiliate_program": {
+          "Reward": "Reward???",
+          "Affiliate_program": "Реферальная программа",
+          "Affiliate program_writable": "Реферальная программа (доступно сохранение данных)",
+          "Affiliate program_reading": "Реферальная программа (доступно чтение данных форм)"
+        },
+        "cart": {
+          "Cart_writable": "Корзина (доступно сохранение данных)",
+          "Cart_reading": "Корзина  (доступно чтение данных форм)"
+        },
+        "orders": {
+          "Orders_writable": "Заказы (доступно сохранение данных)",
+          "Orders_reading": "Заказы (доступно чтение данных форм)"
+        },
+        "payment_methods": {
+          "Payment_methods": "Способы оплаты",
+          "Change the payment method_writable": "Изменить способ оплаты (доступно сохранение данных)",
+          "Change the payment method_reading": "Изменить способ оплаты (доступно чтение данных форм)",
+          "Re-configure": "Настроить повторно"
+        },
+        "Discounts": "Скидки",
+        "User_settings": "Настойки пользователя",
+        "User_settings_writable": "Настройки пользователя(доступно сохранение данных)",
+        "User_settings_reading": "Настройки пользователя (доступно чтение данных форм)"
+      },
+
+      "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
+      "products_services": {
+        "Products/Services": "Товары/Услуги",
+        "Dedicated servers": "Выделенные серверы",
+        "Shared hosting": "Виртуальный хостинг",
+        "Virtual private servers": "Виртуальные серверы",
+        "forexbox": "Сервер для Forex",
+
+        "services_sub_text": {
+          "Edit properties of the selected service_reading": "Редактирование услуги (доступно чтение данных формы)",
+          "Edit properties of the selected service_writable": "Редактирование услуги (доступно сохранение данных)",
+          "Change password_reading": "Смена пароля (доступ к чтению данных формы)",
+          "Change password_writable": "Смена пароля (доступ к сохранению данных)",
+          "edit_IP addresses_reading": "IP-адрес (доступно чтение данных формы)",
+          "edit_IP addresses_writable": "IP-адрес (доступно сохранение данных)",
+          "Renew the selected service_reading": "Продление услуги (доступно чтение данных формы)",
+          "Renew the selected service_writable": "Продление услуги (доступно сохранение данных)",
+          "Go to the control panel_reading": "Переход в панель управления (доступ к чтению данных формы)",
+          "Go to the control panel_writable": "Переход в панель управления (доступ к сохранению данных)"
+        },
+        "Web-console": "Консоль"
+      },
+
+      "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
+      "billing": {
+        "Billing": "Финансы",
+        "Auto payment": "Автоплатеж",
+        "Payments": "Платежи",
+        "Expenses": "Расходы",
+        "Promised payment": "Обещанный платеж",
+        "Automatic renewal of services": "Автопродление услуг",
+
+        "billing_sub_text": {
+          "Auto payment_reading": "Автоплатеж (доступно чтение данных форм)",
+          "Auto payment_writable": "Автоплатеж (доступно сохранение данных)",
+          "Payment properties_reading": "Свойства платежа (доступно чтение данных форм)",
+          "Payment properties_writable": "Свойства платежа (доступно сохранение данных)",
+          "Payment_reading": "Оплата (доступно чтение данных форм)",
+          "Payment_writable": "Оплата (доступно сохранение данных)",
+          "Edit the invoice_reading": "Изменение содержания счета (доступно чтение данных форм)",
+          "Edit the invoice_writable": "Изменение содержания счета (доступно сохранение данных)",
+          "Edit the selected expense_reading": "Редактирование раcхода (доступно чтение данных форм)",
+          "Edit the selected expense_writable": "Редактирование раcхода (доступно сохранение данных)",
+          "Activation of promised payment_reading": "Activation of promised payment (data reading is available)",
+          "Activation of promised payment_writable": "Activation of promised payment (data saving is available)",
+          "Choosing a payment method_reading": "Выбор способа оплаты (доступно чтение данных форм)",
+          "Choosing a payment method_writable": "Выбор способа оплаты (доступно сохранение данных)"
+        }
+      },
+
+      "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
+      "support": {
+        "Support": "Поддержка",
+        "Support tickets": "Запросы",
+        "Archived tickets": "Архив запросов",
+        "Notifications": "Уведомления"
+      },
+
+      "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
+      "tools": {
+        "Tools": "Инструменты",
+        "Add a new user": "Добавить пользователя",
+        "Add a payer": "Добавить плательщика"
+      },
+
+      "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
+      "statistics": {
+        "Access log": "Журнал посещений"
+      },
+
+      "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
+      "help": {
+        "Help": "Справка"
+      },
+
+      "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
+      "dashboard": {
+        "Dashboard": "Главная",
+        "Information": "Информация",
+        "Providers": "Провайдеры"
+      },
+
+      "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
+      "promised_payments": {
+        "Promised payments": "Обещанный платеж"
+      },
+
+      "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
+      "reselling_service": {
+        "Service reselling": "Перепродажа услуг",
+        "Service reselling functions": "Функции перепродажи услуг"
+      }
+    },
+    "Add": "Добавить",
+    "Delete": "Удалить",
+    "Enable": "Активировать",
+    "Disable": "Деактивировать",
+    "History": "История",
+    "Filter": "Фильтр",
+    "Functions": "Функции",
+    "Permissions": "Разрешения",
+    "Edit": "Редактировать",
+    "Statistics": "Статистика",
+    "Cart": "Корзина",
+    "Orders": "Заказы",
+    "Order": "Заказать",
+    "Start": "Запустить",
+    "Stop": "Остановить",
+    "Reboot": "Перезагрузка",
+    "Question": "Вопрос",
+    "Change tariff": "Смена тарифа",
+    "Renew": "Продлить",
+    "Hard reboot": "Принудительная перезагрузка",
+    "Instructions": "Инструкция",
+    "IP addresses": "IP-адреса",
+    "Password change": "Изменение пароля",
+    "To panel": "Перейти",
+    "Print": "Печатать",
+    "Details": "Детали",
+    "Pay": "Оплатить"
+  }
+}
