@@ -33,7 +33,7 @@ const getTicketsHandler =
           dispatch(supportActions.getTickets(elem))
           const count = data?.doc?.p_elems?.$ || 0
           dispatch(supportActions.getTicketCount(count))
-          dispatch(actions.hideLoader())
+          dispatch(getTicketsFiltersSettingsHandler())
         })
         .catch(error => {
           console.log('support -', error.message)
@@ -52,7 +52,6 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.edit',
-        // sok: 'ok',
         out: 'json',
         auth: sessionId,
         clickstat: 'yes',
@@ -132,7 +131,7 @@ const getTicketsArchiveHandler =
           dispatch(supportActions.getTicketsArchive(elem))
           const count = data?.doc?.p_elems?.$ || 0
           dispatch(supportActions.getTicketArchiveCount(count))
-          dispatch(actions.hideLoader())
+          dispatch(getTicketsFiltersSettingsHandler())
         })
         .catch(error => {
           console.log('support -', error.message)
@@ -324,6 +323,33 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
     })
 }
 
+const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+      console.log(data.doc)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTicketsHandler,
   archiveTicketsHandler,
@@ -335,4 +361,5 @@ export default {
   getDepartmenList,
   getServiceList,
   createTicket,
+  getTicketsFiltersSettingsHandler,
 }

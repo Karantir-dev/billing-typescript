@@ -90,6 +90,9 @@
 .searchInput {
   max-width: 260px;
   margin-right: 20px;
+  div {
+    height: 46px;
+  }
 }
 
 .selectAndBtn {
@@ -155,6 +158,9 @@
   .searchInput {
     max-width: 255px;
     margin-right: 15px;
+    div {
+      height: 46px;
+    }
   }
 
   .selectAndBtn {
@@ -284,6 +290,10 @@
   }
 
   .searchInput {
+    div {
+      height: 46px;
+    }
+
     max-width: 100%;
     margin-right: 0;
   }

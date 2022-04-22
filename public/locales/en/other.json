@@ -8,5 +8,11 @@
   "Send": "Send",
   "Back": "Back",
   "Cancel": "Cancel",
-  "Open": "Open"
+  "Open": "Open",
+  "Clear filter": "Clear filter",
+  "Period": "Period",
+  "Enter id": "Enter id",
+  "Enter text": "Enter text",
+  "Not chosen": "Not chosen",
+  "Select status": "Select status"
 }

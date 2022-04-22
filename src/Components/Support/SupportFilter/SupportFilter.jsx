@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import FilterModal from './FilterModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -10,13 +11,28 @@ import s from './SupportFilter.module.scss'
 export default function Component({ selctedTicket }) {
   const { t } = useTranslation(['support', 'other'])
   const [createTicketModal, setCreateTicketModal] = useState(false)
+  const [filterModal, setFilterModal] = useState(false)
   const dispatch = useDispatch()
   const params = useParams()
 
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
-        <IconButton onClick={() => null} icon="filter" className={s.calendarBtn} />
+        <div className={s.filterBtnBlock}>
+          <IconButton
+            onClick={() => setFilterModal(true)}
+            icon="filter"
+            className={s.calendarBtn}
+          />
+          {filterModal && (
+            <>
+              <Portal>
+                <div className={s.bg} />
+              </Portal>
+              <FilterModal setFilterModal={setFilterModal} />
+            </>
+          )}
+        </div>
         {params?.path === 'requests' && (
           <IconButton
             disabled={selctedTicket?.toarchive?.$ !== 'on'}
