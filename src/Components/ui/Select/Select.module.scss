@@ -21,11 +21,21 @@
 
 .input {
   @extend %input;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
   display: flex;
   align-items: center;
   justify-self: flex-start;
   caret-color: transparent;
   cursor: pointer;
+  span {
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .right_icon {
@@ -57,7 +67,7 @@
   height: fit-content;
   border-radius: 3px;
   z-index: 1;
-  box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
+  box-shadow: var(--burger-menu-elem-box-shadow);
   background-color: var(--nearby-elements-bgc);
 
   &.opened {

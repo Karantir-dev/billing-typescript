@@ -45,14 +45,14 @@ export default function Component() {
           <h1 className={s.ticketSubj}>{ticket?.subject?.$}</h1>
           <div className={s.infoContainer}>
             <div className={s.infoBlock}>
-              <span>{t('created')}: </span>
+              <span className={s.infoitemName}>{t('created')}: </span>
               <span>
                 {dayjs(ticket?.mlist[0]?.fm_date_post?.$).format('DD MMM YYYY HH:mm')}
               </span>
             </div>
             {ticket?.mlist[0]?.message[0]?.$type === 'info' ? (
               <div className={s.infoBlock}>
-                <span>{t('Service related')}: </span>
+                <span className={s.infoitemName}>{t('Service related')}: </span>
                 <span>{ticket?.mlist[0]?.message[0]?.rowgroup[0]?.row[0]?.$}</span>
               </div>
             ) : null}

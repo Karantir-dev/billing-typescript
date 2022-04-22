@@ -1,9 +1,8 @@
 import qs from 'qs'
 import i18n from 'i18next'
 
-import { userActions } from './userActions'
+import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
-import { actions } from '../actions'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone } = data.doc.user
@@ -23,7 +22,7 @@ const userNotifications = (data, dispatch) => {
 const funcsArray = [userInfo, userTickets, userNotifications]
 
 const getUserInfo = sessionId => dispatch => {
-  dispatch(actions.showLoader())
+  dispatch(userActions.showUserInfoLoading())
   Promise.all([
     axiosInstance.post(
       '/',
@@ -57,10 +56,10 @@ const getUserInfo = sessionId => dispatch => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         funcsArray[i](data, dispatch)
       })
-      dispatch(actions.hideLoader())
+      dispatch(userActions.hideUserInfoLoading())
     })
     .catch(err => {
-      dispatch(actions.hideLoader())
+      dispatch(userActions.hideUserInfoLoading())
       console.log('getUserInfo - ', err.message)
     })
 }
@@ -85,7 +84,7 @@ const removeItems = (sessionId, id) => {
     })
 }
 
-export const userOperations = {
+export default {
   getUserInfo,
   removeItems,
 }

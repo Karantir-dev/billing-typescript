@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import accessLogsSelectors from '../../Redux/accessLogs/accessLogsSelectors'
-import accessLogsOperations from '../../Redux/accessLogs/accessLogsOperations'
+import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 import {
   AccessLogsTable,
@@ -20,7 +19,7 @@ export default function MainPage() {
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(accessLogsOperations.getAccessLogsHandler())
     dispatch(accessLogsOperations.getAccessLogsFiltersHandler())
   }, [])

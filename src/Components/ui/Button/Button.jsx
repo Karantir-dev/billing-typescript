@@ -4,7 +4,17 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 export default function Component(props) {
-  const { label, type, onClick, disabled, size, isShadow, className, dataTestid } = props
+  const {
+    label,
+    type,
+    onClick,
+    disabled,
+    size,
+    isShadow,
+    className,
+    dataTestid,
+    loading,
+  } = props
 
   return (
     <button
@@ -22,7 +32,15 @@ export default function Component(props) {
       type={type}
       onClick={onClick}
     >
-      <span className={s.btn_text}>{label}</span>
+      {loading ? (
+        <div className={s.loader}>
+          <div className={cn(s.loader_circle, s.first)}></div>
+          <div className={cn(s.loader_circle, s.second)}></div>
+          <div className={s.loader_circle}></div>
+        </div>
+      ) : (
+        <span className={s.btn_text}>{label}</span>
+      )}
     </button>
   )
 }
@@ -36,6 +54,7 @@ Component.propTypes = {
   disabled: PropTypes.bool,
   isShadow: PropTypes.bool,
   size: PropTypes.oneOf(['block', 'small', 'medium', 'large']),
+  loading: PropTypes.bool,
 }
 
 Component.defaultProps = {
@@ -46,4 +65,5 @@ Component.defaultProps = {
   size: 'block',
   isShadow: false,
   dataTestid: null,
+  loading: false,
 }

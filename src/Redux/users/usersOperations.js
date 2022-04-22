@@ -2,7 +2,7 @@ import qs from 'qs'
 import { actions } from '../actions'
 
 import { axiosInstance } from './../../config/axiosInstance'
-import { usersActions } from './usersActions'
+import usersActions from './usersActions'
 
 const getUsers = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -251,7 +251,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => {
     })
 }
 
-export const usersOperations = {
+export default {
   getUsers,
   changeUserRights,
   changeUserStatus,

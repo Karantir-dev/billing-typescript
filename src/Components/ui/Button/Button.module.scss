@@ -25,14 +25,53 @@
 
 .btn_text {
   @extend %btn-text;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.loader {
+  --delayRange: 0.32s;
+  --size: 15px;
+  display: flex;
+  justify-content: space-between;
+  width: calc(var(--size) * 2);
+  text-align: center;
+}
+
+.loader_circle {
+  width: calc(var(--size) / 2);
+  height: calc(var(--size) / 2);
+  background-color: #ff50bf;
+  border-radius: 100%;
+  display: inline-block;
+  animation: three-bounce 1.4s ease-in-out 0s infinite both;
+
+  &.first {
+    animation-delay: var(--delayRange);
+  }
+
+  &.second {
+    animation-delay: calc(var(--delayRange) / 2);
+  }
+}
+
+@keyframes three-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
 }
 
 @media screen and (min-width: 768px) {
-  .submit_btn {
-    padding: 20px;
+  .btn_text {
+    font-size: 16px;
   }
+}
 
+@media screen and (min-width: 1281px) {
   .btn_text {
     font-size: 20px;
   }

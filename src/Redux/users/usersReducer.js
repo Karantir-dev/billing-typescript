@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import { usersActions } from './usersActions'
+import usersActions from './usersActions'
 
 const initialState = {
   users: [],
@@ -15,7 +15,9 @@ const rights = createReducer(initialState.rights, {
   [usersActions.setRights]: (_, { payload }) => payload,
 })
 
-export const usersReducer = combineReducers({
+const usersReducer = combineReducers({
   users,
   rights,
 })
+
+export default usersReducer

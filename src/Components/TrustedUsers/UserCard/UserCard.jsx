@@ -7,11 +7,10 @@ import { useTranslation } from 'react-i18next'
 
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
-import { usersOperations } from '../../../Redux/users/usersOperations'
+import { usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
 // import AccessRights from '../AccessRights/AccessRights'
-import { usersSelectors } from '../../../Redux/users/usersSelectors'
 
 export default function UserCard({
   name,

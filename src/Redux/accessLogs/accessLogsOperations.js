@@ -1,11 +1,13 @@
 import qs from 'qs'
 import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
+import { actions } from '../actions'
 import i18n from 'i18next';
 
 
 
 const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
   const {
     auth: { sessionId },
   } = getState()
@@ -33,10 +35,11 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
       dispatch(accessLogsActions.getAccessLogs(elem))
       const count = data?.doc?.p_elems?.$ || 0
       dispatch(accessLogsActions.getAccessLogsCount(count))
-
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('logs -', error.message)
+      dispatch(actions.hideLoader())
     })
 }
 

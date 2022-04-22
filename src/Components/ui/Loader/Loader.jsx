@@ -3,14 +3,22 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { selectors } from '../../../Redux/selectors'
+import { userSelectors } from '../../../Redux'
 import { Logo } from './../../../images'
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false }) {
   const isLoading = useSelector(selectors.getIsLoadding)
+  const userInfoLoading = useSelector(userSelectors.getUserInfoLoading)
 
   return (
-    <div className={cn({ [s.backdrop]: true, [s.main]: logo, [s.shown]: isLoading })}>
+    <div
+      className={cn({
+        [s.backdrop]: true,
+        [s.main]: logo,
+        [s.shown]: isLoading || userInfoLoading,
+      })}
+    >
       {logo && <Logo />}
 
       <div className={s.loader}>

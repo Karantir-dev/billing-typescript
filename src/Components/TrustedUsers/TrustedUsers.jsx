@@ -8,8 +8,7 @@ import { Button } from '..'
 import UserCard from './UserCard/UserCard'
 import Container from '../Container/Container'
 import AddUserForm from './AddUserForm/AddUserForm'
-import { usersOperations } from '../../Redux/users/usersOperations'
-import { usersSelectors } from '../../Redux/users/usersSelectors'
+import { usersOperations, usersSelectors } from '../../Redux'
 
 import s from './TrustedUsers.module.scss'
 
