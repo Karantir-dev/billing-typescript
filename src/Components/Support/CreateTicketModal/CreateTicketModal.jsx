@@ -59,7 +59,8 @@ export default function Component(props) {
                         key={el.$key}
                         selected={values?.client_department === el.$key}
                         value={el.$key}
-                        title={el.$}
+                        title={el.$plainval}
+                        description={el.$}
                         setValue={value => setFieldValue('client_department', value)}
                       />
                     )
@@ -90,6 +91,7 @@ export default function Component(props) {
                   {t('Message')}:
                 </label>
                 <MessageInput
+                  message={values.message}
                   filesError={checkItemSize.length !== 0}
                   files={values.files}
                   onChangeFiles={value => setFieldValue('files', value)}

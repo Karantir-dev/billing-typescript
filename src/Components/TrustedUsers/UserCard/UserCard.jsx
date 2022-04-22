@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import ToggleButton from '../../ui/ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
-import { usersOperations } from '../../../Redux/users/usersOperations'
+import { usersOperations } from '../../../Redux'
 
 import s from './UserCard.module.scss'
 

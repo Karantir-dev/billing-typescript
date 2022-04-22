@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
-import { usersOperations } from '../../../Redux/users/usersOperations'
+import { usersOperations } from '../../../Redux'
 import { Delete, Key, Settings } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
 import Alert from '../../ui/Alert/Alert'

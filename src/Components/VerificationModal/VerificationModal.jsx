@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 
-import { authSelectors } from '../../Redux/auth/authSelectors'
+import { authSelectors, authActions, authOperations } from '../../Redux'
 
 import { Cross } from './../../images'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
-import { authActions } from '../../Redux/auth/authActions'
-import { authOperations } from '../../Redux/auth/authOperations'
 
 export default function VerificationModal({ resetRecaptcha }) {
   const [totp, setTotp] = useState('')

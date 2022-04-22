@@ -4,16 +4,17 @@ import cn from 'classnames'
 import { Clip, Cross } from '../../../images'
 import { Field, ErrorMessage } from 'formik'
 import s from './MessageInput.module.scss'
-import autosize from 'autosize'
 
 export default function Component(props) {
-  const { files, onChangeFiles, filesError } = props
+  const { files, message, onChangeFiles, filesError } = props
   const { t } = useTranslation(['support', 'other'])
 
   const textarea = useRef(null)
   useEffect(() => {
-    autosize(textarea?.current)
-  }, [])
+    textarea.current.style.height = '0px'
+    const scrollHeight = textarea.current.scrollHeight
+    textarea.current.style.height = scrollHeight + 'px'
+  }, [message])
 
   return (
     <div className={s.fieldsBlock}>

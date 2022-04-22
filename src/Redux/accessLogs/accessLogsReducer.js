@@ -29,9 +29,11 @@ const accessLogsCurrentFilters = createReducer(initialState.accessLogsCurrentFil
   [accessLogsActions.clearCurrentFilters]: () => null,
 })
 
-export const accessLogsReducer = combineReducers({
+const accessLogsReducer = combineReducers({
   accessLogsList,
   accessLogsFilters,
   accessLogsCurrentFilters,
   accessLogsCount,
 })
+
+export default accessLogsReducer

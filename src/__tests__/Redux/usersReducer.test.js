@@ -1,5 +1,4 @@
-import { usersReducer } from '../../Redux/users/usersReducer'
-import { usersActions } from '../../Redux/users/usersActions'
+import { usersReducer, usersActions } from '../../Redux'
 
 test('GET USERS', () => {
   const initialState = []

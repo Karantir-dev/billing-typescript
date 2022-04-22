@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import { Envelope } from '../../../images'
 
-import { authOperations } from '../../../Redux/auth/authOperations'
+import { authOperations } from '../../../Redux'
 import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import cn from 'classnames'
