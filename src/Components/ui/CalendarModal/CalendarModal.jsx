@@ -1,14 +1,17 @@
 import React from 'react'
 import './Calendar.scss'
 import Calendar from 'react-calendar'
-import { CalendarArrowRight, CalendarArrowLeft } from '../../../images'
+import cn from 'classnames'
+import { CalendarArrowDouble, CalendarArrow } from '../../../images'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 const dateFormat = 'YYYY-MM-DD'
 
 export default function Component(props) {
-  const { range, setStartDate, setEndDate, value } = props
+  const { range, setStartDate, setEndDate, value, pointerClassName } = props
+  const { i18n } = useTranslation()
 
   const changeDatehandle = value => {
     if (range) {
@@ -21,15 +24,19 @@ export default function Component(props) {
 
   return (
     <div className="calendar_block">
+      <div className={cn('calendar_pointer-wrapper', pointerClassName)}>
+        <div className="calendar_pointer"></div>
+      </div>
       <Calendar
-        nextLabel={<CalendarArrowRight />}
-        next2Label={null}
-        prevLabel={<CalendarArrowLeft />}
-        prev2Label={null}
+        nextLabel={<CalendarArrow className="calendar__arrow" />}
+        next2Label={<CalendarArrowDouble className="calendar__arrow" />}
+        prevLabel={<CalendarArrow className="calendar__arrow left" />}
+        prev2Label={<CalendarArrowDouble className="calendar__arrow left" />}
         view={'month'}
         formatShortWeekday={(locale, date) => {
           return dayjs(date).format('dd')
         }}
+        locale={i18n.language}
         selectRange={range}
         onChange={changeDatehandle}
         value={value ? value : null}

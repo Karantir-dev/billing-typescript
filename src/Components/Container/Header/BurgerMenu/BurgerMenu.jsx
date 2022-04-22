@@ -58,7 +58,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const refProgrammMenuList = [
     {
       name: t('burger_menu.ref_program.ref_program_list.about_program'),
-      routeName: routes.HOME,
+      routeName: `${routes.AFFILIATE_PROGRAM}/${routes.AFFILIATE_PROGRAM_ABOUT}`,
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.incomes'),

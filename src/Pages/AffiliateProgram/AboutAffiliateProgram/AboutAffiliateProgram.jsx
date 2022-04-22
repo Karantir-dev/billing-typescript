@@ -14,7 +14,7 @@ import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
 
 export default function AboutAffiliateProgram() {
-  const { t } = useTranslation('affiliate_program')
+  const { t } = useTranslation(['affiliate_program'])
   const dispatch = useDispatch()
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -92,7 +92,7 @@ export default function AboutAffiliateProgram() {
               onClick={toggleDescrHeight}
               data-testid="btn_more"
             >
-              {t('about_section.read_more')}
+              {t('read_more', { ns: 'other' })}
             </button>
           )}
 

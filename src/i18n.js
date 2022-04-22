@@ -1,4 +1,4 @@
-import i18n, { use, loadNamespaces } from 'i18next'
+import i18n, { use } from 'i18next'
 import Backend from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
@@ -11,9 +11,10 @@ use(Backend)
   .use(initReactI18next)
   .init({
     react: {
-      useSuspense: false,
+      useSuspense: process.env.NODE_ENV === 'test' ? false : true,
     },
     ns: ['auth'],
+    defaultNS: 'other',
     // Стандартный язык
     fallbackLng: 'en',
     debug: false,
@@ -23,7 +24,5 @@ use(Backend)
       cache: ['localStorage'],
     },
   })
-
-loadNamespaces(['other', 'access_log', 'support'])
 
 export default i18n

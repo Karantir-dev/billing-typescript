@@ -17,8 +17,30 @@
     "dedicated_servers": "Dedicated servers",
     "shared_hosting": "Shared hosting",
     "virtual_servers": "Virtual servers",
-    "read_more": "Read more",
     "link_copied": "Link copied",
     "promocode_copied": "Promo code copied"
+  },
+  "income_section": {
+    "description": "This report shows the amount of funds you get for referring new clients. Funds are credited on the 1st of every month. Your reward will be displayed here only after this date. To view a detailed report, click the amount for the selected month.",
+    "periods": {
+      "current_year": "Current year",
+      "current_month": "Current month",
+      "current_week": "Current week",
+      "current_day": "Current day",
+      "previous_year": "Previous year",
+      "previous_month": "Previous month",
+      "previous_week": "Previous week",
+      "previous_day": "Previous day",
+      "year": "Year",
+      "half_a_year": "Half a year",
+      "quarter": "Quarter",
+      "month": "Month",
+      "week": "Week",
+      "whole_period": "Whole period",
+      "any_period": "Any period"
+    },
+    "chart": "Chart",
+    "table": "Table",
+    "income_amount": "Income amount"
   }
 }

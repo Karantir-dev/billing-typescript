@@ -17,7 +17,7 @@ import s from './SignupForm.module.scss'
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
 export default function SignupForm() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const recaptchaEl = useRef()
