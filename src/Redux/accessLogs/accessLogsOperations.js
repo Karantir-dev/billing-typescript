@@ -20,7 +20,6 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         auth: sessionId,
-        lang: i18n.language,
         p_cnt: 30,
         p_col: '+time',
         clickstat: 'yes',
@@ -54,7 +53,6 @@ const getAccessLogsFiltersHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
-        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -85,7 +83,6 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
-        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -103,7 +100,6 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             func: 'authlog',
             sok: 'ok',
             out: 'json',
-            lang: i18n.language,
             auth: sessionId,
             p_cnt: 30,
             p_col: '+time',

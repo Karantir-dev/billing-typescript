@@ -1,42 +1,78 @@
 import React, { useState, useRef } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-// import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '../../../utils'
+import { useParams } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
+import {
+  InputField,
+  Select,
+  IconButton,
+  CalendarModal,
+  Button,
+  SelectMultiple,
+} from '../..'
+import { supportSelectors, supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
 export default function Component(props) {
-  const { setFilterModal } = props
+  const { setFilterModal, setCurrentPage, filterModal } = props
   const { t } = useTranslation(['support', 'other'])
-  //   const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const params = useParams()
+
+  const abuseFilterList = useSelector(supportSelectors.getAbuseFilterList)
+  const statusFilterList = useSelector(supportSelectors.getTstatusFilterList)
+  const timeFilterList = useSelector(supportSelectors.getTimeFilterList)
+  const currentFilters = useSelector(supportSelectors.getCurrentFilters)
 
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
   const dropdownCalendar = useRef(null)
+  const modal = useRef(null)
 
-  const clickOutside = () => {
+  const clickOutsideCalendar = () => {
     setIsOpenedCalendar(false)
   }
 
-  useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutside)
+  const clickOutsideModal = () => {
+    setFilterModal(false)
+  }
+
+  useOutsideAlerter(modal, filterModal, clickOutsideModal)
+
+  useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutsideCalendar)
+
+  const filterHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    if (params?.path === 'requests') {
+      dispatch(supportOperations.getTicketsFiltersHandler(values))
+    } else if (params?.path === 'requests_archive') {
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(values))
+    }
+  }
 
   const resetFilterHandler = setValues => {
     const clearField = {
       id: '',
       message: '',
       name: '',
-      abuse: '',
+      abuse: 'null',
       tstatus: '',
-      time: 'nodate',
+      message_post: 'nodate',
       message_poststart: '',
       message_postend: '',
     }
-    // setCurrentPage(1)
+    setCurrentPage(1)
     setValues({ ...clearField })
     setFilterModal(false)
-    // dispatch(accessLogsOperations.filterDataHandler(clearField))
+    if (params?.path === 'requests') {
+      dispatch(supportOperations.getTicketsFiltersHandler(clearField))
+    } else if (params?.path === 'requests_archive') {
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(clearField))
+    }
   }
 
   return (
@@ -44,24 +80,24 @@ export default function Component(props) {
       <Formik
         enableReinitialize
         initialValues={{
-          id: '',
-          message: '',
-          name: '',
-          abuse: '',
-          tstatus: '',
-          time: 'nodate',
-          message_poststart: '',
-          message_postend: '',
+          id: currentFilters?.id || '',
+          message: currentFilters?.message || '',
+          name: currentFilters?.name || '',
+          abuse: currentFilters?.abuse || 'null',
+          tstatus: currentFilters?.tstatus || '',
+          message_post: currentFilters?.message_post || 'nodate',
+          message_poststart: currentFilters?.message_poststart || '',
+          message_postend: currentFilters?.message_postend || '',
         }}
-        onSubmit={values => console.log(values)}
+        onSubmit={filterHandler}
       >
         {({ errors, touched, setFieldValue, values, setValues }) => {
-          //   let dates = null
-          //   if (values.timestart && values.timeend) {
-          //     dates = [new Date(values.timestart), new Date(values.timeend)]
-          //   } else if (values.timestart) {
-          //     dates = new Date(values.timestart)
-          //   }
+          let dates = null
+          if (values.message_poststart && values.message_postend) {
+            dates = [new Date(values.message_poststart), new Date(values.message_postend)]
+          } else if (values.message_poststart) {
+            dates = new Date(values.message_poststart)
+          }
           return (
             <Form className={s.form}>
               <div className={s.inputRow}>
@@ -100,45 +136,56 @@ export default function Component(props) {
                   value={values.abuse}
                   getElement={item => setFieldValue('abuse', item)}
                   isShadow
-                  itemsList={[]}
+                  itemsList={abuseFilterList.map(({ label, value }) => ({
+                    label: t(`${label.trim()}`, { ns: 'other' }),
+                    value,
+                  }))}
                   className={s.select}
                 />
-                <Select
+                <SelectMultiple
                   placeholder={t('Select status', { ns: 'other' })}
                   label={t('status', { ns: 'other' })}
                   value={values.tstatus}
                   getElement={item => setFieldValue('tstatus', item)}
                   isShadow
-                  itemsList={[]}
+                  itemsList={statusFilterList.map(({ label, value }) => ({
+                    label: t(`${label.trim()}`),
+                    value,
+                  }))}
                   className={s.select}
                 />
-                <Select
-                  label={t('Period', { ns: 'other' })}
-                  value={values.time}
-                  getElement={item => setFieldValue('time', item)}
-                  isShadow
-                  itemsList={[]}
-                  className={cn(s.select, s.dateSelect)}
-                />
-                <div className={s.calendarBlock}>
-                  <IconButton
-                    onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
-                    icon="calendar"
-                    className={s.calendarBtn}
+                <div className={s.timeSelectBlock}>
+                  <Select
+                    label={t('Period', { ns: 'other' })}
+                    value={values.message_post}
+                    getElement={item => setFieldValue('message_post', item)}
+                    isShadow
+                    itemsList={timeFilterList.map(({ label, value }) => ({
+                      label: t(`${label.trim()}`, { ns: 'other' }),
+                      value,
+                    }))}
+                    className={cn(s.select, s.dateSelect)}
                   />
-                  <div
-                    ref={dropdownCalendar}
-                    className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
-                  >
-                    <CalendarModal
-                      value={''}
-                      setStartDate={item => {
-                        setFieldValue('timestart', item)
-                        setFieldValue('time', 'other')
-                      }}
-                      setEndDate={item => setFieldValue('timeend', item)}
-                      range={values?.timestart?.length !== 0}
+                  <div className={s.calendarBlock}>
+                    <IconButton
+                      onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
+                      icon="calendar"
+                      className={s.calendarBtn}
                     />
+                    <div
+                      ref={dropdownCalendar}
+                      className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
+                    >
+                      <CalendarModal
+                        value={dates}
+                        setStartDate={item => {
+                          setFieldValue('message_poststart', item)
+                          setFieldValue('message_post', 'other')
+                        }}
+                        setEndDate={item => setFieldValue('message_postend', item)}
+                        range={values?.message_poststart?.length !== 0}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -166,6 +213,13 @@ export default function Component(props) {
   )
 }
 
-Component.propTypes = {}
+Component.propTypes = {
+  setFilterModal: PropTypes.func,
+  setCurrentPage: PropTypes.func,
+  filterModal: PropTypes.bool,
+}
 
-Component.defaultProps = {}
+Component.defaultProps = {
+  setFilterModal: () => null,
+  setCurrentPage: () => null,
+}

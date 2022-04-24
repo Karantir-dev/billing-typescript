@@ -26,5 +26,7 @@
   "The size of the collected file should not exceed 10.0 MB": "The size of the collected file should not exceed 10.0 MB",
   "Contains text": "Contains text",
   "The request is related to a violation": "The request is related to a violation",
-  "Enter request subject": "Enter request subject"
+  "Enter request subject": "Enter request subject",
+  "Waiting to reply": "Waiting to reply",
+  "In archive": "In archive"
 }

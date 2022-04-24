@@ -8,7 +8,7 @@ import { Button, IconButton, Portal, CreateTicketModal } from '../..'
 import { supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
-export default function Component({ selctedTicket }) {
+export default function Component({ selctedTicket, setCurrentPage }) {
   const { t } = useTranslation(['support', 'other'])
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
@@ -29,7 +29,11 @@ export default function Component({ selctedTicket }) {
               <Portal>
                 <div className={s.bg} />
               </Portal>
-              <FilterModal setFilterModal={setFilterModal} />
+              <FilterModal
+                setCurrentPage={setCurrentPage}
+                filterModal={filterModal}
+                setFilterModal={setFilterModal}
+              />
             </>
           )}
         </div>

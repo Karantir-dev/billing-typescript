@@ -17,6 +17,7 @@ export default function Component(props) {
       return
     }
     setStartDate(dayjs(value).format(dateFormat))
+    setEndDate('')
   }
 
   return (

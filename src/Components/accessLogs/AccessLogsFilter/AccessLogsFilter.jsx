@@ -124,7 +124,10 @@ export default function Component({ setCurrentPage }) {
                   value={values.time}
                   getElement={item => setFieldValue('time', item)}
                   isShadow
-                  itemsList={logsFilterList}
+                  itemsList={logsFilterList.map(({ label, value }) => ({
+                    label: t(`${label.trim()}`, { ns: 'other' }),
+                    value,
+                  }))}
                   className={s.select}
                 />
                 <div className={s.calendarBlock}>

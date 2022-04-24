@@ -10,6 +10,12 @@ const initialState = {
   ticket: null,
   departmentsList: [],
   serviceList: [],
+
+  abuseFilterList: [],
+  tstatusFilterList: [],
+  timeFilterList: [],
+
+  currentFilters: null,
 }
 
 const ticketList = createReducer(initialState.ticketList, {
@@ -45,6 +51,22 @@ const serviceList = createReducer(initialState.serviceList, {
   [supportActions.getServices]: (state, { payload }) => payload,
 })
 
+const abuseFilterList = createReducer(initialState.abuseFilterList, {
+  [supportActions.getAbuseFilterList]: (state, { payload }) => payload,
+})
+
+const tstatusFilterList = createReducer(initialState.tstatusFilterList, {
+  [supportActions.getTstatusFilterList]: (state, { payload }) => payload,
+})
+
+const timeFilterList = createReducer(initialState.timeFilterList, {
+  [supportActions.getTimeFilterList]: (state, { payload }) => payload,
+})
+
+const currentFilters = createReducer(initialState.currentFilters, {
+  [supportActions.getCurrentFilters]: (state, { payload }) => payload,
+})
+
 const supportReducer = combineReducers({
   ticketList,
   ticketCount,
@@ -53,6 +75,10 @@ const supportReducer = combineReducers({
   ticket,
   departmentsList,
   serviceList,
+  abuseFilterList,
+  tstatusFilterList,
+  timeFilterList,
+  currentFilters,
 })
 
 export default supportReducer

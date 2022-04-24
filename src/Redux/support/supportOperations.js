@@ -131,7 +131,7 @@ const getTicketsArchiveHandler =
           dispatch(supportActions.getTicketsArchive(elem))
           const count = data?.doc?.p_elems?.$ || 0
           dispatch(supportActions.getTicketArchiveCount(count))
-          dispatch(getTicketsFiltersSettingsHandler())
+          dispatch(getTicketsArchiveFiltersSettingsHandler())
         })
         .catch(error => {
           console.log('support -', error.message)
@@ -341,8 +341,215 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
       if (data.doc.error) {
         throw new Error(data.doc.error.msg.$)
       }
-      console.log(data.doc)
+      data?.doc?.slist?.map(el => {
+        if (el?.$name === 'abuse') {
+          const abuse = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getAbuseFilterList(abuse))
+        } else if (el?.$name === 'tstatus') {
+          const tstatus = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTstatusFilterList(tstatus))
+        } else if (el?.$name === 'message_post') {
+          const message_post = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTimeFilterList(message_post))
+        }
+
+        let statuses
+        if (Array.isArray(data?.doc?.tstatus)) {
+          let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+          statuses = statusList.join(',')
+        } else {
+          statuses = data?.doc?.tstatus?.$
+        }
+
+        console.log(statuses)
+
+        const currentFilter = {
+          id: data?.doc?.id?.$ || '',
+          message: data?.doc?.message?.$ || '',
+          name: data?.doc?.name?.$ || '',
+          abuse: data?.doc?.abuse?.$ || '',
+          tstatus: statuses || '',
+          message_post: data?.doc?.message_post?.$ || 'nodate',
+          message_poststart: data?.doc?.message_poststart?.$ || '',
+          message_postend: data?.doc?.message_postend?.$ || '',
+        }
+        dispatch(supportActions.getCurrentFilters(currentFilter))
+      })
+
       dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsFiltersHandler = data => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket.filter',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
+        ...data,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      let statuses
+      if (Array.isArray(data?.doc?.tstatus)) {
+        let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+        statuses = statusList.join(',')
+      } else {
+        statuses = data?.doc?.tstatus?.$
+      }
+
+      console.log(statuses)
+
+      const currentFilter = {
+        id: data?.doc?.id?.$ || '',
+        message: data?.doc?.message?.$ || '',
+        name: data?.doc?.name?.$ || '',
+        abuse: data?.doc?.abuse?.$ || '',
+        tstatus: statuses || '',
+        message_post: data?.doc?.message_post?.$ || 'nodate',
+        message_poststart: data?.doc?.message_poststart?.$ || '',
+        message_postend: data?.doc?.message_postend?.$ || '',
+      }
+      dispatch(supportActions.getCurrentFilters(currentFilter))
+
+      dispatch(getTicketsHandler())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket_archive.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+      data?.doc?.slist?.map(el => {
+        if (el?.$name === 'abuse') {
+          const abuse = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getAbuseFilterList(abuse))
+        } else if (el?.$name === 'tstatus') {
+          const tstatus = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTstatusFilterList(tstatus))
+        } else if (el?.$name === 'message_post') {
+          const message_post = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTimeFilterList(message_post))
+        }
+
+        let statuses
+        if (Array.isArray(data?.doc?.tstatus)) {
+          let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+          statuses = statusList.join(',')
+        } else {
+          statuses = data?.doc?.tstatus?.$
+        }
+
+        const currentFilter = {
+          id: data?.doc?.id?.$ || '',
+          message: data?.doc?.message?.$ || '',
+          name: data?.doc?.name?.$ || '',
+          abuse: data?.doc?.abuse?.$ || '',
+          tstatus: statuses || '',
+          message_post: data?.doc?.message_post?.$ || 'nodate',
+          message_poststart: data?.doc?.message_poststart?.$ || '',
+          message_postend: data?.doc?.message_postend?.$ || '',
+        }
+        dispatch(supportActions.getCurrentFilters(currentFilter))
+      })
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket_archive.filter',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
+        ...data,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      let statuses
+      if (Array.isArray(data?.doc?.tstatus)) {
+        let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+        statuses = statusList.join(',')
+      } else {
+        statuses = data?.doc?.tstatus?.$
+      }
+
+      const currentFilter = {
+        id: data?.doc?.id?.$ || '',
+        message: data?.doc?.message?.$ || '',
+        name: data?.doc?.name?.$ || '',
+        abuse: data?.doc?.abuse?.$ || '',
+        tstatus: statuses || '',
+        message_post: data?.doc?.message_post?.$ || 'nodate',
+        message_poststart: data?.doc?.message_poststart?.$ || '',
+        message_postend: data?.doc?.message_postend?.$ || '',
+      }
+      dispatch(supportActions.getCurrentFilters(currentFilter))
+
+      dispatch(getTicketsArchiveHandler())
     })
     .catch(error => {
       console.log('support -', error.message)
@@ -362,4 +569,7 @@ export default {
   getServiceList,
   createTicket,
   getTicketsFiltersSettingsHandler,
+  getTicketsFiltersHandler,
+  getTicketsArchiveFiltersHandler,
+  getTicketsArchiveFiltersSettingsHandler,
 }
