@@ -39,6 +39,7 @@ export default function Component({ selctedTicket, setCurrentPage }) {
         </div>
         {params?.path === 'requests' && (
           <IconButton
+            dataTestid={'archiveBtn'}
             disabled={selctedTicket?.toarchive?.$ !== 'on'}
             onClick={() =>
               dispatch(supportOperations.archiveTicketsHandler(selctedTicket?.id?.$))
@@ -50,6 +51,7 @@ export default function Component({ selctedTicket, setCurrentPage }) {
       </div>
       {params?.path === 'requests' && (
         <Button
+          dataTestid={'new_ticket_btn'}
           className={s.newTicketBtn}
           isShadow
           size="medium"

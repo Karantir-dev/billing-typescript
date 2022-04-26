@@ -4,12 +4,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
-import {
-  Container,
-  OpenedTicketMessages,
-  SendMessageForm,
-  Button,
-} from '../../../Components'
+import { OpenedTicketMessages, SendMessageForm, Button } from '../../../Components'
 import { supportSelectors, supportOperations, supportActions } from '../../../Redux'
 import * as route from '../../../routes'
 import s from './OpenedTicket.module.scss'
@@ -30,7 +25,7 @@ export default function Component() {
   const archivePage = ticket?.closed_ticket_user?.$ === 'on'
 
   return (
-    <Container>
+    <>
       <div className={s.breadCrumb}>
         <span className={s.linkText}>
           <NavLink className={s.link} to={`${route.SUPPORT}/${params.path}`}>
@@ -63,6 +58,7 @@ export default function Component() {
           <OpenedTicketMessages messages={ticket?.mlist[0]?.message || []} />
           {archivePage ? (
             <Button
+              dataTestid={'back_btn'}
               size="large"
               className={s.backBtn}
               label={t('Back', { ns: 'other' })}
@@ -74,6 +70,6 @@ export default function Component() {
           )}
         </div>
       )}
-    </Container>
+    </>
   )
 }

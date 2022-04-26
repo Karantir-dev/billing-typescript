@@ -45,6 +45,7 @@ export default function Component() {
             </div>
             <div className={s.btnsBlock}>
               <Button
+                dataTestid='btn_form_submit'
                 disabled={checkItemSize.length !== 0}
                 size="large"
                 className={s.submit_btn}
