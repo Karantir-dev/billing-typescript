@@ -1,25 +1,28 @@
 import React, { useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
-// import { CSSTransition } from 'react-transition-group'
+import { CSSTransition } from 'react-transition-group'
 
 import { Button, CalendarModal, IconButton, Select } from '../../../Components'
 import { useOutsideAlerter } from '../../../utils'
 
-// import animations from './animations.module.scss'
+import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
 
-export default function Page() {
+export default function AffiliateProgramIncome() {
   const { t } = useTranslation('affiliate_program')
   const descrWrapper = useRef(null)
   const dropdownCalendar = useRef(null)
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
-  console.log(dropdownCalendar.current)
+
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => {
-    console.log('outside click')
+    if (dropdownCalendar?.current.className.includes(animations.enterActive)) {
+      return
+    }
+
     setIsOpenedCalendar(false)
   })
 
@@ -81,19 +84,16 @@ export default function Page() {
             }}
             icon="calendar"
           />
-          {/* <CSSTransition
+          <CSSTransition
             in={isOpenedCalendar}
-            nodeRef={dropdownCalendar}
             classNames={animations}
-            timeout={2000}
+            timeout={150}
             unmountOnExit
-          > */}
-          {isOpenedCalendar && (
+          >
             <div className={s.calendarModal} ref={dropdownCalendar}>
               <CalendarModal pointerClassName={s.calendar_pointer} />
             </div>
-          )}
-          {/* </CSSTransition> */}
+          </CSSTransition>
         </div>
       </div>
 
