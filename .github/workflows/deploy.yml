@@ -68,7 +68,7 @@ jobs:
       - run: npm install
       - run: snyk monitor
   deploy:
-    needs: [eslint, security, jest]
+    needs: [eslint, jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:
