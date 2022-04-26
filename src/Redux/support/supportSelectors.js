@@ -9,6 +9,12 @@ const getTicket = state => state.support.ticket
 const getDepartments = state => state.support.departmentsList
 const getServices = state => state.support.serviceList
 
+const getAbuseFilterList = state => state.support.abuseFilterList
+const getTstatusFilterList = state => state.support.tstatusFilterList
+const getTimeFilterList = state => state.support.timeFilterList
+
+const getCurrentFilters = state => state.support.currentFilters
+
 export default {
   getTicketList,
   getTicketCount,
@@ -17,4 +23,8 @@ export default {
   getTicket,
   getDepartments,
   getServices,
+  getAbuseFilterList,
+  getTstatusFilterList,
+  getTimeFilterList,
+  getCurrentFilters,
 }

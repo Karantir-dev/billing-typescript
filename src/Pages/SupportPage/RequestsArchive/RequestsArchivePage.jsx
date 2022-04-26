@@ -26,7 +26,7 @@ export default function Component() {
 
   return (
     <>
-      <SupportFilter />
+      <SupportFilter setCurrentPage={setCurrentPage} />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
       </h2>

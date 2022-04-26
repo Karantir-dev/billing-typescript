@@ -14,6 +14,7 @@ export default function Component(props) {
     getElement,
     value,
     height,
+    placeholder,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -62,7 +63,9 @@ export default function Component(props) {
             [s.shadow]: isShadow,
           })}
         >
-          <span>{selectedItem?.label}</span>
+          <span className={cn({ [s.placeholder]: !selectedItem?.label })}>
+            {selectedItem?.label || placeholder}
+          </span>
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
@@ -99,9 +102,11 @@ Component.propTypes = {
   ]),
   getElement: PropTypes.func,
   height: PropTypes.number,
+  placeholder: PropTypes.string,
 }
 Component.defaultProps = {
   isShadow: false,
   getElement: () => null,
   itemsList: [],
+  placeholder: '',
 }

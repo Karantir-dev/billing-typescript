@@ -27,7 +27,7 @@ export default function Component() {
 
   return (
     <>
-      <SupportFilter selctedTicket={selctedTicket} />
+      <SupportFilter selctedTicket={selctedTicket} setCurrentPage={setCurrentPage} />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
       </h2>

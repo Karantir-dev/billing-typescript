@@ -114,7 +114,6 @@ export default function Component({ setCurrentPage }) {
                 name="ip"
                 placeholder={t('remote_ip_address')}
                 isShadow
-                height={46}
                 iconRight="search"
                 className={s.searchInput}
                 error={!!errors.email}
@@ -125,7 +124,10 @@ export default function Component({ setCurrentPage }) {
                   value={values.time}
                   getElement={item => setFieldValue('time', item)}
                   isShadow
-                  itemsList={logsFilterList}
+                  itemsList={logsFilterList.map(({ label, value }) => ({
+                    label: t(`${label.trim()}`, { ns: 'other' }),
+                    value,
+                  }))}
                   className={s.select}
                 />
                 <div className={s.calendarBlock}>
@@ -163,7 +165,7 @@ export default function Component({ setCurrentPage }) {
                   type="button"
                   className={s.clearFilters}
                 >
-                  {t('clear_filter')}
+                  {t('Clear filter', { ns: 'other' })}
                 </button>
               </div>
             </Form>

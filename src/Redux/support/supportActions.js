@@ -16,6 +16,12 @@ const getServices = createAction('GET_SERVICES')
 const getTicketCount = createAction('GET_TICKETS_COUNT')
 const clearTicketCount = createAction('CLEAR_TICKETS_COUNT')
 
+const getAbuseFilterList = createAction('GET_ABUSE_FILTER_LIST')
+const getTstatusFilterList = createAction('GET_TSTATUS_FILTER_LIST')
+const getTimeFilterList = createAction('GET_TIME_FILTER_LIST')
+
+const getCurrentFilters = createAction('GET_CURRENT_FILTERS')
+
 export default {
   getTickets,
   clearTickets,
@@ -28,4 +34,8 @@ export default {
   clearTicket,
   getDepartments,
   getServices,
+  getAbuseFilterList,
+  getTstatusFilterList,
+  getTimeFilterList,
+  getCurrentFilters,
 }
