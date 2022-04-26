@@ -196,9 +196,9 @@ const getRights = userId => (dispatch, getState) => {
 }
 
 const getSubRights = (userId, name, sessionId) => {
-  console.log('user id - ', userId)
-  console.log('name - ', name)
-  console.log('sessionId - ', sessionId)
+  // console.log('user id - ', userId)
+  // console.log('name - ', name)
+  // console.log('sessionId - ', sessionId)
 
   return axiosInstance
     .post(

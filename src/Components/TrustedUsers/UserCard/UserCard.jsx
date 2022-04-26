@@ -29,7 +29,6 @@ export default function UserCard({
 
   const dispatch = useDispatch()
   const rightsList = useSelector(usersSelectors.getRights)
-  console.log(rightsList)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 1024px)' })

@@ -7,35 +7,49 @@ import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
 import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
-// import getCurrentTranslation from '../../translationCases'
 
 import s from './AccessRightsListItem.module.scss'
 
-export default function AccessRightsListItem({ item, userId }) {
+export default function AccessRightsListItem({ item, userId, handleSelect, selected }) {
+  console.log('selected, new rerender after state changes in parent', selected)
+
   const { t } = useTranslation('trusted_users')
-  const [open, setOpen] = useState(false)
+  const [selectedSub, setSelectedSub] = useState(selected)
   const sessionId = useSelector(authSelectors.getSessionId)
   const [subList, setSubList] = useState([])
   const currentRightState = item?.active?.$ === 'on'
 
-  console.log(item?.active?.$)
+  const modifiedList = subList.map(item => {
+    const newObj = JSON.parse(JSON.stringify(item))
 
-  // const dispatch = useDispatch()
+    newObj.isSelected = false
+
+    return newObj
+  })
 
   const handleClick = () => {
-    const res = usersOperations.getSubRights(userId, item.name.$, sessionId)
+    // selectedSub.length > 0 ? handleSubSelect(item) : handleSelect(item)
+    handleSubSelect(item)
+    handleSelect(item)
+    if (!selected) {
+      const res = usersOperations.getSubRights(userId, item.name.$, sessionId)
 
-    res.then(data => {
-      try {
-        const { elem } = data.doc
-        if (elem) {
+      res.then(data => {
+        try {
+          const { elem } = data.doc
+          setSelectedSub(elem)
           setSubList(elem)
-          setOpen(!open)
+
+          // setOpen(!open)
+        } catch (e) {
+          console.log('Error in AccessRightsListItem - ', e.message)
         }
-      } catch (e) {
-        console.log('Error in AccessRightsListItem - ', e.message)
-      }
-    })
+      })
+    } else {
+      handleSubSelect(item)
+      handleSelect(item)
+      // selectedSub.length > 0 ? handleSubSelect(item) : handleSelect(item)
+    }
   }
 
   const handleToggleBtns = () => {
@@ -54,17 +68,36 @@ export default function AccessRightsListItem({ item, userId }) {
     })
   }
 
+  const handleSubSelect = newItem => {
+    const filter = modifiedList.map(el => {
+      if (newItem.name.$ === el.name.$) {
+        const act = newItem.name.$
+        console.log(act)
+        return { ...el, isSelected: !el.isSelected }
+      } else {
+        return { ...el, isSelected: false }
+      }
+    })
+
+    console.log(filter)
+    setSelectedSub([...filter])
+  }
+
   const nameWithoutDots = item.name.$.replaceAll('.', '_')
-  console.log(nameWithoutDots)
 
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   if (Object.hasOwn(item, 'active')) {
     return (
-      <li className={cn({ [s.list_item_wrapper]: true, [s.opened]: open })}>
+      <li
+        className={cn({
+          [s.list_item_wrapper]: true,
+          [s.opened]: selected,
+        })}
+      >
         <button
           onClick={hasSubItems ? handleClick : null}
-          className={cn({ [s.list_item]: true, [s.opened]: open })}
+          className={cn({ [s.list_item]: true, [s.opened]: selected })}
         >
           <p className={s.list_item_subtitle}>
             {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
@@ -81,14 +114,38 @@ export default function AccessRightsListItem({ item, userId }) {
             )}
           </div>
         </button>
-        {open && subList && (
-          <div className={s.sub_list}>
-            {subList.map((child, index) => {
-              console.log(child)
-              return <AccessRightsListItem key={index} item={child} userId={userId} />
+
+        {selectedSub && modifiedList && (
+          <div className={cn({ [s.sub_list]: true, [s.selected]: selectedSub })}>
+            {modifiedList.map((child, index) => {
+              return (
+                <AccessRightsListItem
+                  key={index}
+                  item={child}
+                  userId={userId}
+                  handleSelect={handleSubSelect}
+                  selected={child.isSelected}
+                />
+              )
             })}
           </div>
         )}
+
+        {/* {selectedSub && modifiedList && (
+          <div className={cn({ [s.sub_list]: true, [s.selected]: selectedSub })}>
+            {modifiedList.map((child, index) => {
+              return (
+                <AccessRightsListItem
+                  key={index}
+                  item={child}
+                  userId={userId}
+                  handleSelect={handleSubSelect}
+                  selected={child.isSelected}
+                />
+              )
+            })}
+          </div>
+        )} */}
       </li>
     )
   } else {

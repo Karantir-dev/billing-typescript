@@ -292,7 +292,7 @@
 
       "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
       "stat": "$t(Statistics)",
-      "authlog": "authlog",
+      "authlog": "Access log",
       "authlog_filter#create": "$t(Filter)",
 
       "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",

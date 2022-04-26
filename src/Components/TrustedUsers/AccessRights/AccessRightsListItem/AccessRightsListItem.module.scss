@@ -44,6 +44,11 @@
 
 .sub_list {
   position: relative;
+  display: none;
+
+  &.selected {
+    display: block;
+  }
 
   & li {
     margin-left: 16px;

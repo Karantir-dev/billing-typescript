@@ -18,7 +18,7 @@ const AsideServicesMenu = () => {
 
   const dispatch = useDispatch()
 
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   const pinnedStyle = {
     paddingBottom: pinnedStatus ? '0px' : '23px',
