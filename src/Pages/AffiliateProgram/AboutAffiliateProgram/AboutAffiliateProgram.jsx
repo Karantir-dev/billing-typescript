@@ -7,8 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import { ServicesSelect, FilesBanner } from '../../../Components'
 import { Copy } from '../../../images'
-import { affiliateSelectors } from '../../../Redux'
-import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
+import { affiliateSelectors, affiliateOperations } from '../../../Redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
@@ -33,7 +32,7 @@ export default function AboutAffiliateProgram() {
     if (referralLink) {
       return
     }
-    dispatch(affiliateProgramOperations.getReferralLink())
+    dispatch(affiliateOperations.getReferralLink())
   }, [])
 
   const showPrompt = fn => {

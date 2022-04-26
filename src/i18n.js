@@ -12,10 +12,10 @@ use(Backend)
   .init({
     ns: ['auth'],
     defaultNS: 'other',
-    // Стандартный язык
     react: {
       useSuspense: process.env.NODE_ENV === 'test' ? false : true,
     },
+    // Стандартный язык
     fallbackLng: 'en',
     debug: false,
     // Распознавание и кэширование языковых кук

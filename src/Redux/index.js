@@ -30,3 +30,4 @@ export { default as accessLogsSelectors } from './accessLogs/accessLogsSelectors
 
 //===========================================AFFILIATE=================================//
 export { default as affiliateSelectors } from './affiliateProgram/selectors'
+export { default as affiliateOperations } from './affiliateProgram/operations'

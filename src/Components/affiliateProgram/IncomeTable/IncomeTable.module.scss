@@ -1,0 +1,50 @@
+.table_head_row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.table_head {
+  width: 100px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.table_row {
+  width: 100%;
+  height: 50px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.table_btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: start;
+  border-radius: 3px;
+  background: var(--elements-bgc);
+  box-shadow: var(--forms2_shadow);
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.table_date {
+  width: 100px;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--link-text);
+}
+
+.table_amount {
+  width: 100px;
+  font-weight: 400;
+  font-size: 16px;
+}
