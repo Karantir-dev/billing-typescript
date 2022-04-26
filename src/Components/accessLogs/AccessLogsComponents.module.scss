@@ -116,11 +116,16 @@
 .calendarModal {
   position: absolute;
   display: none;
-  left: -140%;
-  transform: translate(10px, 15px);
+  right: 0;
+  top: calc(100% + 15px);
+
   &.opened {
     display: block;
   }
+}
+
+.pointer {
+  right: 25px;
 }
 
 .btnBlock {
@@ -154,6 +159,33 @@
 
 // ADAPTIVE
 
+@media screen and (min-width: 900px) {
+  .calendarModal {
+    right: -50px;
+  }
+
+  .pointer {
+    right: 75px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .calendarModal {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .pointer {
+    right: calc(50% - 5px);
+  }
+}
+
+@media screen and (min-width: 1191px) {
+  .pointer {
+    right: 144px;
+  }
+}
+
 @media screen and (max-width: 1191px) {
   .searchInput {
     max-width: 255px;
@@ -174,10 +206,6 @@
 
   .calendarBtn {
     margin: 0 0 0 10px;
-  }
-
-  .calendarModal {
-    left: -215%;
   }
 }
 
@@ -230,15 +258,6 @@
 }
 
 @media screen and (max-width: 871px) {
-  .calendarModal {
-    left: -400%;
-    div {
-      &::after {
-        left: 84%;
-      }
-    }
-  }
-
   .btnBlock {
     margin-top: 25px;
   }
