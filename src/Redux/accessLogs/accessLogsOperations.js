@@ -1,11 +1,13 @@
 import qs from 'qs'
 import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
+import { actions } from '../actions'
 import i18n from 'i18next';
 
 
 
 const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
   const {
     auth: { sessionId },
   } = getState()
@@ -18,7 +20,6 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         auth: sessionId,
-        lang: i18n.language,
         p_cnt: 30,
         p_col: '+time',
         clickstat: 'yes',
@@ -33,10 +34,11 @@ const getAccessLogsHandler = (body = {}) => (dispatch, getState) => {
       dispatch(accessLogsActions.getAccessLogs(elem))
       const count = data?.doc?.p_elems?.$ || 0
       dispatch(accessLogsActions.getAccessLogsCount(count))
-
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('logs -', error.message)
+      dispatch(actions.hideLoader())
     })
 }
 
@@ -51,7 +53,6 @@ const getAccessLogsFiltersHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
-        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -82,7 +83,6 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
       qs.stringify({
         func: 'authlog.filter',
         sok: 'ok',
-        lang: i18n.language,
         out: 'json',
         auth: sessionId,
         ...body
@@ -100,7 +100,6 @@ const filterDataHandler = (body = {}) => (dispatch, getState) => {
             func: 'authlog',
             sok: 'ok',
             out: 'json',
-            lang: i18n.language,
             auth: sessionId,
             p_cnt: 30,
             p_col: '+time',

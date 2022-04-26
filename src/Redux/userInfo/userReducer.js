@@ -1,11 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import { userActions } from './userActions'
+import userActions from './userActions'
 
 const initialState = {
   userInfo: {},
   userTickets: [],
   userItems: { bitem: [] },
+  userInfoLoading: false,
 }
 
 const userInfo = createReducer(initialState.userInfo, {
@@ -18,8 +19,16 @@ const userItems = createReducer(initialState.userItems, {
   [userActions.setItems]: (_, { payload }) => payload,
 })
 
-export const userReducer = combineReducers({
+const userInfoLoading = createReducer(initialState.userInfoLoading, {
+  [userActions.showUserInfoLoading]: () => true,
+  [userActions.hideUserInfoLoading]: () => false,
+})
+
+const userReducer = combineReducers({
   userInfo,
   userTickets,
   userItems,
+  userInfoLoading,
 })
+
+export default userReducer

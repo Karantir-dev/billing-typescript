@@ -40,11 +40,16 @@
 .infoContainer {
   margin-top: 25px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.infoitemName {
+  color: var(--transparent-color);
 }
 
 .infoBlock {
-  margin-right: 30px;
+  margin-right: 0px;
+  margin-top: 10px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -66,6 +71,13 @@
 }
 
 @media screen and (min-width: 768px) {
+  .infoContainer {
+    flex-direction: row;
+  }
+  .infoBlock {
+    margin-top: 0px;
+    margin-right: 30px;
+  }
 }
 
 @media screen and (min-width: 1024px) {

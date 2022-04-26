@@ -10,12 +10,12 @@ use(Backend)
   // модуль инициализации
   .use(initReactI18next)
   .init({
-    react: {
-      useSuspense: process.env.NODE_ENV === 'test' ? false : true,
-    },
     ns: ['auth'],
     defaultNS: 'other',
     // Стандартный язык
+    react: {
+      useSuspense: process.env.NODE_ENV === 'test' ? false : true,
+    },
     fallbackLng: 'en',
     debug: false,
     // Распознавание и кэширование языковых кук

@@ -1,5 +1,5 @@
 const getUsers = state => state.users.users
 
-export const usersSelectors = {
+export default {
   getUsers,
 }

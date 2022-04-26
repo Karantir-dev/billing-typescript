@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
-import accessLogsOperations from '../../../Redux/accessLogs/accessLogsOperations'
-import accessLogsSelectors from '../../../Redux/accessLogs/accessLogsSelectors'
+import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -23,9 +22,7 @@ export default function Component({ setCurrentPage }) {
   const dropdownCalendar = useRef(null)
 
   const clickOutside = () => {
-    setTimeout(() => {
-      setIsOpenedCalendar(false)
-    }, 100)
+    setIsOpenedCalendar(false)
   }
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutside)
@@ -117,7 +114,6 @@ export default function Component({ setCurrentPage }) {
                 name="ip"
                 placeholder={t('remote_ip_address')}
                 isShadow
-                height={46}
                 iconRight="search"
                 className={s.searchInput}
                 error={!!errors.email}
@@ -128,7 +124,10 @@ export default function Component({ setCurrentPage }) {
                   value={values.time}
                   getElement={item => setFieldValue('time', item)}
                   isShadow
-                  itemsList={logsFilterList}
+                  itemsList={logsFilterList.map(({ label, value }) => ({
+                    label: t(`${label.trim()}`, { ns: 'other' }),
+                    value,
+                  }))}
                   className={s.select}
                 />
                 <div className={s.calendarBlock}>
@@ -166,7 +165,7 @@ export default function Component({ setCurrentPage }) {
                   type="button"
                   className={s.clearFilters}
                 >
-                  {t('clear_filter')}
+                  {t('Clear filter', { ns: 'other' })}
                 </button>
               </div>
             </Form>

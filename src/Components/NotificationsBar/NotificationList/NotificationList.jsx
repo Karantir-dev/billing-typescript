@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { userOperations } from '../../../Redux/userInfo/userOperations'
-import { authSelectors } from '../../../Redux/auth/authSelectors'
+import { userOperations, authSelectors } from '../../../Redux'
 import NotificationListItem from '../NotificationListItem/NotificationListItem'
 
 import s from './NotificationList.module.scss'

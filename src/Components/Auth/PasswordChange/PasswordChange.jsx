@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import cn from 'classnames'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { EyeClosed, Eye, Padlock } from '../../../images'
-import { authOperations } from '../../../Redux/auth/authOperations'
+import { authOperations } from '../../../Redux'
 import * as routes from '../../../routes'
 
 import s from './PasswordChange.module.scss'

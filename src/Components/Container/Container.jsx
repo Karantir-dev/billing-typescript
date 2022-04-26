@@ -4,7 +4,7 @@ import Header from './Header/Header'
 
 import s from './Container.module.scss'
 
-export default function MainPage({ children }) {
+export default function Component({ children }) {
   return (
     <>
       <div className={s.aside_menu_container}>

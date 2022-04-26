@@ -5,7 +5,7 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { authOperations } from '../../../Redux/auth/authOperations'
+import { authOperations } from '../../../Redux'
 import { VerificationModal, Button, InputField } from '../..'
 import * as routes from '../../../routes'
 import { RECAPTCHA_KEY } from '../../../config/config'
@@ -71,6 +71,7 @@ export default function LoginForm() {
                 )}
 
                 <InputField
+                  dataTestid="input_email"
                   label={t('email_label')}
                   placeholder={t('email_placeholder')}
                   iconLeft="envelope"
@@ -82,6 +83,7 @@ export default function LoginForm() {
                 />
 
                 <InputField
+                  dataTestid="input_password"
                   label={t('password_label')}
                   placeholder={t('password_placeholder')}
                   name="password"
@@ -107,7 +109,12 @@ export default function LoginForm() {
                   component="span"
                 />
 
-                <Button className={s.submit_btn} label={t('logIn')} type="submit" />
+                <Button
+                  dataTestid="btn_form_submit"
+                  className={s.submit_btn}
+                  label={t('logIn')}
+                  type="submit"
+                />
 
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>
                   {t('forgot_password')}

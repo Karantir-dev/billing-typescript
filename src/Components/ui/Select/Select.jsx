@@ -14,6 +14,8 @@ export default function Component(props) {
     itemsList,
     getElement,
     value,
+    height,
+    placeholder,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -45,14 +47,18 @@ export default function Component(props) {
   }
 
   const openHandler = () => {
-    console.log('icon click')
     setIsOpened(true)
   }
 
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && <label className={s.label}>{label}</label>}
-      <button type="button" className={s.input_wrapper} onClick={openHandler}>
+      <button
+        type="button"
+        style={{ height }}
+        className={s.input_wrapper}
+        onClick={openHandler}
+      >
         <div
           className={cn(
             {
@@ -62,7 +68,9 @@ export default function Component(props) {
             inputClassName,
           )}
         >
-          {selectedItem?.label}
+          <span className={cn({ [s.placeholder]: !selectedItem?.label })}>
+            {selectedItem?.label || placeholder}
+          </span>
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
@@ -99,9 +107,12 @@ Component.propTypes = {
     PropTypes.array,
   ]),
   getElement: PropTypes.func,
+  height: PropTypes.number,
+  placeholder: PropTypes.string,
 }
 Component.defaultProps = {
   isShadow: false,
   getElement: () => null,
   itemsList: [],
+  placeholder: '',
 }

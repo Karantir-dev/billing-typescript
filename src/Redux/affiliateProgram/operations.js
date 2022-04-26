@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
-import { authSelectors } from '../auth/authSelectors'
+import authSelectors from '../auth/authSelectors'
 import { actions } from '../actions'
 import { affiliateActions } from './actions'
 

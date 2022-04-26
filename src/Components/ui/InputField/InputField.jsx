@@ -76,7 +76,7 @@ export default function Component(props) {
           className={cn({
             [s.input]: true,
             [s.iconLeft]: iconLeft,
-            [s.iconRight]: iconRight,
+            [s.iconRight]: iconRight || type === 'password',
             [s.shadow]: isShadow,
             [s.field_bgc]: background,
             [s.error]: error && touched,

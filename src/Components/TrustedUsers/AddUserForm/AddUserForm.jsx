@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import { InputField, Button } from '../..'
 import CustomPhoneInput from '../../ui/CustomPhoneInput/CustomPhoneInput'
-import { usersOperations } from '../../../Redux/users/usersOperations'
+import { usersOperations } from '../../../Redux'
 
 import s from './AddUserForm.module.scss'
 

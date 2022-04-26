@@ -10,6 +10,7 @@ import { BASE_URL } from '../../../../config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
 
+
 export default function Component(props) {
   const dispatch = useDispatch()
   const params = useParams()
@@ -23,49 +24,64 @@ export default function Component(props) {
   return (
     <div
       className={cn(
-        s.messageBlock,
+        s.messageContainer,
         message?.$type === 'outcoming' ? s.outcoming : s.incoming,
       )}
     >
-      <div className={s.messageHeader}>
-        <div className={s.userInfo}>
+      <img
+        className={s.avatar}
+        src={`${BASE_URL}${message.avatar?.$}`}
+        alt={message.avatar?.$name}
+      />
+
+      <div
+        className={cn(
+          s.messageBlock,
+          message?.$type === 'outcoming' ? s.outcoming : s.incoming,
+        )}
+      >
+        <div className={s.headerWithPhoto}>
           <img
-            className={s.avatar}
+            className={s.avatarSmall}
             src={`${BASE_URL}${message.avatar?.$}`}
             alt={message.avatar?.$name}
           />
-          <span>{message?.user?.realname?.$}</span>
-        </div>
-        <div className={s.datetime}>
-          {dayjs(message?.date_post?.$).format('DD MMMM YYYY HH:mm')}
-        </div>
-      </div>
-      <div className={s.messageBody}>
-        <div className={s.messageText}>{message?.body?.$}</div>
-        {message?.file && (
-          <div className={s.fileBlock}>
-            {message?.file?.map(el => {
-              return (
-                <button
-                  onClick={() => downloadFileHandler(el?.name?.$, el?.param?.$)}
-                  className={s.file}
-                  key={el?.param?.$}
-                >
-                  {el?.name?.$}
-                  <Download />
-                </button>
-              )
-            })}
+          <div className={s.messageHeader}>
+            <div className={s.userInfo}>
+              <span>{message?.user?.realname?.$}</span>
+            </div>
+            <div className={s.datetime}>
+              {dayjs(message?.date_post?.$).format('DD MMMM YYYY HH:mm')}
+            </div>
           </div>
+        </div>
+        <div className={s.messageBody}>
+          <div className={s.messageText}>{message?.body?.$}</div>
+          {message?.file && (
+            <div className={s.fileBlock}>
+              {message?.file?.map(el => {
+                return (
+                  <button
+                    onClick={() => downloadFileHandler(el?.name?.$, el?.param?.$)}
+                    className={s.file}
+                    key={el?.param?.$}
+                  >
+                    <span>{el?.name?.$}</span>
+                    <Download />
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+        {message?.rates && (
+          <MessageRate
+            postId={params?.id}
+            messageId={message?.$id}
+            rateStatus={message?.rates?.rate?.$name}
+          />
         )}
       </div>
-      {message?.rates && (
-        <MessageRate
-          postId={params?.id}
-          messageId={message?.$id}
-          rateStatus={message?.rates?.rate?.$name}
-        />
-      )}
     </div>
   )
 }
