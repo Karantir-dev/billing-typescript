@@ -40,7 +40,6 @@ export default function Component(props) {
 
   useEffect(() => {
     let valuesList = value?.split(',')
-    console.log(valuesList, 'valuesListvaluesList')
     if (itemsList && (value || valuesList)) {
       itemsList?.forEach(el => {
         valuesList?.forEach(e => {
@@ -63,7 +62,8 @@ export default function Component(props) {
       setSelectedItem(selectedItem.filter(el => el.value !== item.value))
       listOfValues = selectedItem.filter(el => el.value !== item.value)
     }
-    let valuesString = listOfValues?.map(el => `${el.value}`)
+    let valuesString = listOfValues?.map(el => `${el.value}`) || ''
+    console.log(valuesString, 'valuesString')
     getElement(valuesString?.join(','))
   }
 
@@ -73,7 +73,10 @@ export default function Component(props) {
 
   const deleteItem = (item, event) => {
     event.stopPropagation()
-    setSelectedItem(selectedItem.filter(el => el.value !== item.value))
+    let listOfValues = selectedItem.filter(el => el.value !== item.value)
+    setSelectedItem(listOfValues)
+    let valuesString = listOfValues?.map(el => `${el.value}`) || ''
+    getElement(valuesString?.join(','))
   }
 
   const calculateTop = () => {
