@@ -15,6 +15,7 @@ import {
   PublicRoute,
   Portal,
   TrustedUsers,
+  Container,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -131,15 +132,17 @@ const SupportScreen = () => {
   }
 
   return (
-    <Routes>
-      <Route
-        path=":path/*"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
-      />
-      <Route
-        path=":path/:id"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
-      />
-    </Routes>
+    <Container>
+      <Routes>
+        <Route
+          path=":path/*"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
+        />
+        <Route
+          path=":path/:id"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+        />
+      </Routes>
+    </Container>
   )
 }

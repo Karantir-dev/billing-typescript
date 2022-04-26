@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { Calendar, CsvDoc, Filter, SendArchive } from '../../../images'
 
 export default function Component(props) {
-  const { type, onClick, disabled, icon, className } = props
+  const { type, onClick, disabled, icon, className, dataTestid } = props
 
   const renderIcon = name => {
     switch (name) {
@@ -24,6 +24,7 @@ export default function Component(props) {
 
   return (
     <button
+      data-testid={dataTestid}
       disabled={disabled}
       className={cn({
         [s.icon_btn]: true,
@@ -43,6 +44,7 @@ Component.propTypes = {
   disabled: PropTypes.bool,
   icon: PropTypes.oneOf(['calendar', 'csv', 'filter', 'archive']),
   className: PropTypes.string,
+  dataTestid: PropTypes.string,
 }
 
 Component.defaultProps = {

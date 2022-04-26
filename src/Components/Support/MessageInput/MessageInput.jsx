@@ -20,6 +20,7 @@ export default function Component(props) {
     <div className={s.fieldsBlock}>
       <div className={s.messageBlock}>
         <Field
+          data-testid="input_message"
           innerRef={textarea}
           className={s.textarea}
           type="text"
