@@ -24,5 +24,10 @@
   "Is a required field": "Обязательное поле",
   "This ticket is not associated with a service": "Этот билет не связан с услугой",
   "Message": "Сообщение",
-  "The size of the collected file should not exceed 10.0 MB": "Размер собираемого файла не должен превышать 10,0 Мб"
+  "The size of the collected file should not exceed 10.0 MB": "Размер собираемого файла не должен превышать 10,0 Мб",
+  "Contains text": "Содержит текст",
+  "The request is related to a violation": "Запрос связан с нарушением",
+  "Enter request subject": "Введите тему запроса",
+  "Waiting to reply": "Ожидает вашего ответа",
+  "In archive": "В архиве"
 }

@@ -3,6 +3,7 @@
 .field_wrapper {
   width: 100%;
   position: relative;
+  height: fit-content;
 }
 
 .label {
@@ -16,7 +17,24 @@
 .input_wrapper {
   width: 100%;
   position: relative;
-  height: 46px;
+  min-height: 46px;
+  height: fit-content;
+}
+
+.checkBox {
+  border: 1px solid var(--transparent-color);
+  box-sizing: border-box;
+  border-radius: 3px;
+  width: 25px;
+  height: 25px;
+  margin-right: 12px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  &.selected {
+    border-color: var(--main-text);
+  }
 }
 
 .input {
@@ -26,9 +44,12 @@
   bottom: 1px;
   left: 1px;
   display: flex;
-  align-items: center;
-  justify-self: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   caret-color: transparent;
+  min-height: 46px;
+  height: fit-content;
   cursor: pointer;
   span {
     max-width: 90%;
@@ -38,13 +59,40 @@
   }
 }
 
+.checkImg {
+  path {
+    stroke: var(--main-text);
+  }
+}
+
+.selected_item {
+  margin: 5px 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  span {
+    max-width: 90%;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+    margin-right: 6px;
+  }
+}
+
+.cross {
+  transform: scale(0.7);
+  fill: var(--transparent-color);
+}
+
 .placeholder {
   color: #ccc7d2;
 }
 
 .right_icon {
   position: absolute;
-  top: 50%;
+  top: 23px;
   right: 20px;
   z-index: 1;
   pointer-events: none;
@@ -126,7 +174,10 @@
 
 .list_item {
   cursor: pointer;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
   text-align: start;
   &:not(:last-child) {
     margin-bottom: 8px;
@@ -147,7 +198,8 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .input_wrapper {
-    height: 46px;
+    min-height: 46px;
+    height: fit-content;
   }
 
   .input {
