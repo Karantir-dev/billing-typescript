@@ -76,7 +76,7 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.filterModal}>
+    <div ref={modal} className={s.filterModal}>
       <Formik
         enableReinitialize
         initialValues={{
