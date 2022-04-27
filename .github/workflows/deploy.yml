@@ -64,10 +64,11 @@ jobs:
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
+      - run: npm install -g npm
+      - run: npm install
+      - run: snyk monitor
   deploy:
-    needs: [eslint, security, jest]
+    needs: [eslint, jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:
