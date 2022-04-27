@@ -27,10 +27,14 @@ export default function AffiliateProgramIncome() {
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
 
-  const [selectedPeriod, setSelectedPeriod] = useState('')
+  const [fixedPeriod, setFixedPeriod] = useState('')
+  const [periodStart, setPeriodStart] = useState('')
+  const [periodEnd, setPeriodEnd] = useState('')
 
-  const [periods, setPeriods] = useState([])
+  const [formOptions, setFormOptions] = useState([])
   const [tableData, setTableData] = useState([])
+
+  const [error, setError] = useState(false)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => {
     if (dropdownCalendar?.current.className.includes(animations.enterActive)) {
@@ -41,7 +45,13 @@ export default function AffiliateProgramIncome() {
   })
 
   useEffect(() => {
-    dispatch(affiliateOperations.getInitialIncomeInfo(setPeriods, setTableData))
+    dispatch(
+      affiliateOperations.getInitialIncomeInfo(
+        setFormOptions,
+        setTableData,
+        setFixedPeriod,
+      ),
+    )
   }, [])
 
   const toggleDescrHeight = () => {
@@ -54,8 +64,26 @@ export default function AffiliateProgramIncome() {
   }
 
   const handleSearch = () => {
-    dispatch(affiliateOperations.getChartInfo(setTableData, selectedPeriod))
+    console.log(periodStart, periodEnd)
+    if ((fixedPeriod && fixedPeriod !== 'other') || (periodStart && periodEnd)) {
+      dispatch(
+        affiliateOperations.getChartInfo(
+          setTableData,
+          fixedPeriod,
+          periodStart,
+          periodEnd,
+        ),
+      )
+    } else {
+      setError(true)
+    }
   }
+
+  const calendarValue = periodEnd
+    ? [new Date(periodStart), new Date(periodEnd)]
+    : periodStart
+    ? new Date(periodStart)
+    : null
 
   return (
     <>
@@ -76,23 +104,22 @@ export default function AffiliateProgramIncome() {
         <Select
           inputClassName={s.select}
           isShadow
-          itemsList={periods.map(({ label, value }) => ({
+          itemsList={formOptions.map(({ label, value }) => ({
             label: t(`${label.trim()}`, { ns: 'other' }),
             value,
           }))}
-          value={typeof selectedPeriod === 'object' ? 'other' : ''}
-          getElement={setSelectedPeriod}
+          value={fixedPeriod}
+          getElement={value => {
+            setError(false)
+            setFixedPeriod(value)
+            setPeriodStart('')
+            setPeriodEnd('')
+          }}
           placeholder={t('income_section.select_placeholder')}
         />
 
         <div className={s.calendarBlock}>
-          <IconButton
-            onClick={() => {
-              console.log('icon click')
-              setIsOpenedCalendar(true)
-            }}
-            icon="calendar"
-          />
+          <IconButton onClick={() => setIsOpenedCalendar(true)} icon="calendar" />
           <CSSTransition
             in={isOpenedCalendar}
             classNames={animations}
@@ -100,17 +127,35 @@ export default function AffiliateProgramIncome() {
             unmountOnExit
           >
             <div className={s.calendarModal} ref={dropdownCalendar}>
-              <CalendarModal pointerClassName={s.calendar_pointer} />
+              <CalendarModal
+                pointerClassName={s.calendar_pointer}
+                setStartDate={date => {
+                  setError(false)
+                  setPeriodStart(date)
+                  setPeriodEnd('')
+                  setFixedPeriod('other')
+                }}
+                setEndDate={date => {
+                  setError(false)
+                  setPeriodEnd(date)
+                }}
+                range={Boolean(periodStart)}
+                value={calendarValue}
+              />
             </div>
           </CSSTransition>
         </div>
       </div>
+      {error && (
+        <span className={s.error_msg}>{t('income_section.select_placeholder')}</span>
+      )}
 
       <Button
         className={s.btn_search}
         label={t('search', { ns: 'other' })}
         onClick={handleSearch}
       />
+
       {tableData.length > 0 && (
         <>
           <p className={s.table_title}>{t('income_section.table')}</p>

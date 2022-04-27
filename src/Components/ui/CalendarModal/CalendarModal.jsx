@@ -51,6 +51,7 @@ Component.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.any]),
   setStartDate: PropTypes.func,
   setEndDate: PropTypes.func,
+  pointerClassName: PropTypes.string,
 }
 
 Component.defaultProps = {

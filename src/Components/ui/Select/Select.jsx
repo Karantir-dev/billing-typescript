@@ -24,7 +24,6 @@ export default function Component(props) {
   const dropdown = useRef(null)
 
   const clickOutside = () => {
-    console.log('outside click')
     setIsOpened(false)
   }
 

@@ -34,7 +34,6 @@
 .filter_wrapper {
   display: flex;
   column-gap: 15px;
-  margin-bottom: 25px;
 }
 
 .select {
@@ -58,13 +57,20 @@
 .btn_search {
   width: 100%;
   max-width: 280px;
-  margin-bottom: 30px;
+  margin: 30px 0;
 }
 
 .table_title {
   font-weight: 600;
   font-size: 18px;
   margin-bottom: 30px;
+}
+
+.error_msg {
+  display: inline-block;
+  margin: 5px 0 0 10px;
+  color: var(--error-color);
+  font-size: 16px;
 }
 
 @media screen and (min-width: 768px) {
