@@ -1,6 +1,7 @@
 import React from 'react'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
+import { Portal } from '../../'
 
 import s from './IncomeTable.module.scss'
 
@@ -30,6 +31,7 @@ export default function IncomeTable({ list }) {
         <span className={s.income_sum}></span>
         <span className={s.income_sum}>{incomeSum.toFixed(2) + ' EUR'}</span>
       </p>
+      <Portal></Portal>
     </>
   )
 }
