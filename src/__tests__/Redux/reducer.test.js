@@ -1,6 +1,5 @@
 import { theme, pinned, isLoading } from '../../Redux/reducer'
-import { actions } from '../../Redux/actions'
-import { authActions } from '../../Redux'
+import { authActions, actions } from '../../Redux'
 
 describe('dataloader reducers', () => {
   test('CHANGE THEME REQUEST', () => {
