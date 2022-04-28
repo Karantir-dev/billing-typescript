@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import { Profile } from '../../../images'
 import { InputField, CustomPhoneInput, Select, Toggle, Button } from '../../../Components'
-
+import { BASE_URL } from '../../../config/config'
 import { Form, Formik } from 'formik'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -29,7 +29,7 @@ export default function Component() {
         telegram_id: userParams?.telegram_id || '',
         timezone: userParams?.timezone || '',
       }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={values => console.log(values)}
     >
       {({ values, errors, touched, handleBlur, setFieldValue }) => {
         return (
@@ -38,7 +38,16 @@ export default function Component() {
               <h2 className={s.settingsTitle}>{t('User Settings')}</h2>
               <label className={s.avatarBlock} htmlFor="avatar">
                 <div className={s.iconBlock}>
-                  <Profile className={s.icon} />
+                  {userParams?.avatar_view === '/manimg/userdata/img/customer.png' ||
+                  !userParams?.avatar_view ? (
+                    <Profile className={s.icon} />
+                  ) : (
+                    <img
+                      className={s.img}
+                      alt="avatar"
+                      src={`${BASE_URL}${userParams?.avatar_view}`}
+                    />
+                  )}
                 </div>
                 <div className={s.downloadText}>{t('Upload a photo')}</div>
                 <div className={s.downloadParams}>
@@ -108,7 +117,7 @@ export default function Component() {
                   target="_blank"
                   rel="noreferrer"
                   className={s.telegramLink}
-                  href="https://t.me/testzomro_bot"
+                  href={userParams?.telegramLink}
                 >
                   ZomroNotifier_bot
                 </a>

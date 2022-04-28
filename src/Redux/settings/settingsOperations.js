@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions } from '../actions'
+import { actions } from '../'
 
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
@@ -84,12 +84,18 @@ const getUserParams = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // const data = data.doc
+      const telegram = data?.doc?.messages?.msg?.instruction?.match(/(https?:\/\/[^ ]*)/)
+      let telegramLink = ''
+      if (telegram?.length > 0) {
+        telegramLink = telegram[0].slice(0, -1)
+      }
       const elem = {
         timezone: data?.doc?.timezone?.$ || '',
         time: data?.doc?.time?.$ || '',
         telegram_id: data?.doc?.telegram_id?.$ || '',
         email: data?.doc?.email?.$ || '',
+        avatar_view: data?.doc?.avatar_view?.$ || '',
+        telegramLink: telegramLink || '',
         listCheckBox: [
           {
             name: 'Financial notices',
