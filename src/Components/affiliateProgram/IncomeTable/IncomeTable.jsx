@@ -6,7 +6,7 @@ import s from './IncomeTable.module.scss'
 
 export default function IncomeTable({ list }) {
   const { t } = useTranslation(['affiliate_program', 'other'])
-
+  let incomeSum = 0
   return (
     <>
       <div className={s.table_head_row}>
@@ -15,6 +15,7 @@ export default function IncomeTable({ list }) {
       </div>
       <ul>
         {list.map(({ amount, date }) => {
+          incomeSum += Number(amount.replace(' EUR', ''))
           return (
             <li className={s.table_row} key={nanoid()}>
               <button className={s.table_btn} type="button">
@@ -25,6 +26,10 @@ export default function IncomeTable({ list }) {
           )
         })}
       </ul>
+      <p className={s.table_footer}>
+        <span className={s.income_sum}></span>
+        <span className={s.income_sum}>{incomeSum.toFixed(2) + ' EUR'}</span>
+      </p>
     </>
   )
 }

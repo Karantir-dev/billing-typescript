@@ -30,10 +30,11 @@
   border-radius: 3px;
   background: var(--elements-bgc);
   box-shadow: var(--forms2_shadow);
+  transition: transform 0.15s;
   cursor: pointer;
 
   &:active {
-    transform: scale(0.97);
+    transform: scale(0.98);
   }
 }
 
@@ -50,13 +51,37 @@
   font-size: 16px;
 }
 
+.table_footer {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.income_sum {
+  width: 100px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
 @media screen and (min-width: 767px) {
   .table_head_row {
     justify-content: space-between;
     padding: 0 80px 10px;
   }
-  .table_btn {
+
+  .table_btn,
+  .table_footer {
     justify-content: space-between;
     padding: 0 80px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .table_date,
+  .table_amount,
+  .income_sum {
+    font-size: 18px;
   }
 }

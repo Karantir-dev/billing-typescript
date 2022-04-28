@@ -173,6 +173,7 @@ export default function SignupForm() {
                 className={s.submit_btn}
                 label={t('register')}
                 type="submit"
+                isShadow
               />
             </Form>
           )

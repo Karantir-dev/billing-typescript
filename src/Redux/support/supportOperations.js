@@ -1,45 +1,45 @@
 import qs from 'qs'
 import supportActions from './supportActions'
 import { axiosInstance } from '../../config/axiosInstance'
-import { actions } from '../actions'
+import { actions } from '../'
 
 const getTicketsHandler =
   (body = {}) =>
-    (dispatch, getState) => {
-      dispatch(actions.showLoader())
-      const {
-        auth: { sessionId },
-      } = getState()
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'clientticket',
-            sok: 'ok',
-            out: 'json',
-            auth: sessionId,
-            p_cnt: 30,
-            p_col: '+time',
-            clickstat: 'yes',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) {
-            throw new Error(data.doc.error.msg.$)
-          }
-          const elem = data?.doc?.elem || []
-          dispatch(supportActions.getTickets(elem))
-          const count = data?.doc?.p_elems?.$ || 0
-          dispatch(supportActions.getTicketCount(count))
-          dispatch(getTicketsFiltersSettingsHandler())
-        })
-        .catch(error => {
-          console.log('support -', error.message)
-          dispatch(actions.hideLoader())
-        })
-    }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        const elem = data?.doc?.elem || []
+        dispatch(supportActions.getTickets(elem))
+        const count = data?.doc?.p_elems?.$ || 0
+        dispatch(supportActions.getTicketCount(count))
+        dispatch(getTicketsFiltersSettingsHandler())
+      })
+      .catch(error => {
+        console.log('support -', error.message)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getTicketByIdHandler = idTicket => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -103,41 +103,41 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
 
 const getTicketsArchiveHandler =
   (body = {}) =>
-    (dispatch, getState) => {
-      dispatch(actions.showLoader())
-      const {
-        auth: { sessionId },
-      } = getState()
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'clientticket_archive',
-            sok: 'ok',
-            out: 'json',
-            auth: sessionId,
-            p_cnt: 30,
-            p_col: '+time',
-            clickstat: 'yes',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) {
-            throw new Error(data.doc.error.msg.$)
-          }
-          const elem = data?.doc?.elem || []
-          dispatch(supportActions.getTicketsArchive(elem))
-          const count = data?.doc?.p_elems?.$ || 0
-          dispatch(supportActions.getTicketArchiveCount(count))
-          dispatch(getTicketsArchiveFiltersSettingsHandler())
-        })
-        .catch(error => {
-          console.log('support -', error.message)
-          dispatch(actions.hideLoader())
-        })
-    }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket_archive',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        const elem = data?.doc?.elem || []
+        dispatch(supportActions.getTicketsArchive(elem))
+        const count = data?.doc?.p_elems?.$ || 0
+        dispatch(supportActions.getTicketArchiveCount(count))
+        dispatch(getTicketsArchiveFiltersSettingsHandler())
+      })
+      .catch(error => {
+        console.log('support -', error.message)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getFile = (name, elid) => (dispatch, getState) => {
   const {

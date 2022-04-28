@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
 import authSelectors from '../auth/authSelectors'
-import { actions } from '../actions'
+import { actions } from '../'
 import { affiliateActions } from './actions'
 
 const getReferralLink = () => (dispatch, getState) => {
@@ -48,18 +48,21 @@ const getInitialIncomeInfo =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
         console.log(data.doc)
         const periods = data.doc.slist[0].val.map(({ $, $key }) => {
           return { label: $, value: $key }
         })
         setFormOptions(periods)
         const tableData = data.doc?.reportdata?.reward?.elem
+        if (data.doc?.period?.$) {
+          setFixedPeriod(data.doc.period.$)
+        }
         if (tableData) {
           const modifiedTableData = tableData.map(({ amount }) => {
             return { amount: amount.$, date: amount.$id }
           })
           setTableData(modifiedTableData)
-          setFixedPeriod(data.doc.period.$)
         }
 
         dispatch(actions.hideLoader())
@@ -91,10 +94,10 @@ const getChartInfo =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         console.log(data.doc)
-        const tableData = data.doc?.reportdata?.reward?.elem.map(({ amount }) => {
+        const tableData = data.doc?.reportdata?.reward?.elem?.map(({ amount }) => {
           return { amount: amount.$, date: amount.$id }
         })
-        setTableData(tableData)
+        setTableData(tableData ? tableData : [])
 
         dispatch(actions.hideLoader())
       })

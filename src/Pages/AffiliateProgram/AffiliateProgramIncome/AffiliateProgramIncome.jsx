@@ -11,6 +11,7 @@ import {
   IconButton,
   Select,
   IncomeTable,
+  IncomeChart,
 } from '../../../Components'
 import { useOutsideAlerter } from '../../../utils'
 
@@ -32,8 +33,8 @@ export default function AffiliateProgramIncome() {
   const [periodEnd, setPeriodEnd] = useState('')
 
   const [formOptions, setFormOptions] = useState([])
-  const [tableData, setTableData] = useState([])
-
+  const [incomeData, setIncomeData] = useState([])
+  console.log(incomeData)
   const [error, setError] = useState(false)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => {
@@ -48,7 +49,7 @@ export default function AffiliateProgramIncome() {
     dispatch(
       affiliateOperations.getInitialIncomeInfo(
         setFormOptions,
-        setTableData,
+        setIncomeData,
         setFixedPeriod,
       ),
     )
@@ -68,7 +69,7 @@ export default function AffiliateProgramIncome() {
     if ((fixedPeriod && fixedPeriod !== 'other') || (periodStart && periodEnd)) {
       dispatch(
         affiliateOperations.getChartInfo(
-          setTableData,
+          setIncomeData,
           fixedPeriod,
           periodStart,
           periodEnd,
@@ -100,68 +101,79 @@ export default function AffiliateProgramIncome() {
           {t('read_more', { ns: 'other' })}
         </button>
       )}
-      <div className={s.filter_wrapper}>
-        <Select
-          inputClassName={s.select}
-          isShadow
-          itemsList={formOptions.map(({ label, value }) => ({
-            label: t(`${label.trim()}`, { ns: 'other' }),
-            value,
-          }))}
-          value={fixedPeriod}
-          getElement={value => {
-            setError(false)
-            setFixedPeriod(value)
-            setPeriodStart('')
-            setPeriodEnd('')
-          }}
-          placeholder={t('income_section.select_placeholder')}
-        />
 
-        <div className={s.calendarBlock}>
-          <IconButton onClick={() => setIsOpenedCalendar(true)} icon="calendar" />
-          <CSSTransition
-            in={isOpenedCalendar}
-            classNames={animations}
-            timeout={150}
-            unmountOnExit
-          >
-            <div className={s.calendarModal} ref={dropdownCalendar}>
-              <CalendarModal
-                pointerClassName={s.calendar_pointer}
-                setStartDate={date => {
-                  setError(false)
-                  setPeriodStart(date)
-                  setPeriodEnd('')
-                  setFixedPeriod('other')
-                }}
-                setEndDate={date => {
-                  setError(false)
-                  setPeriodEnd(date)
-                }}
-                range={Boolean(periodStart)}
-                value={calendarValue}
-              />
+      <div className={s.max_content_width}>
+        <div className={s.tablet_wrapper}>
+          <div className={s.filter_wrapper}>
+            <Select
+              inputClassName={s.select}
+              isShadow
+              itemsList={formOptions.map(({ label, value }) => ({
+                label: t(`${label.trim()}`, { ns: 'other' }),
+                value,
+              }))}
+              value={fixedPeriod}
+              getElement={value => {
+                setError(false)
+                setFixedPeriod(value)
+                setPeriodStart('')
+                setPeriodEnd('')
+              }}
+              placeholder={t('income_section.select_placeholder')}
+            />
+
+            <div className={s.calendarBlock}>
+              <IconButton onClick={() => setIsOpenedCalendar(true)} icon="calendar" />
+              <CSSTransition
+                in={isOpenedCalendar}
+                classNames={animations}
+                timeout={150}
+                unmountOnExit
+              >
+                <div className={s.calendarModal} ref={dropdownCalendar}>
+                  <CalendarModal
+                    pointerClassName={s.calendar_pointer}
+                    setStartDate={date => {
+                      setError(false)
+                      setPeriodStart(date)
+                      setPeriodEnd('')
+                      setFixedPeriod('other')
+                    }}
+                    setEndDate={date => {
+                      setError(false)
+                      setPeriodEnd(date)
+                    }}
+                    range={Boolean(periodStart)}
+                    value={calendarValue}
+                  />
+                </div>
+              </CSSTransition>
             </div>
-          </CSSTransition>
+          </div>
+          {error && (
+            <span className={s.error_msg}>{t('income_section.select_placeholder')}</span>
+          )}
+
+          <Button
+            className={s.btn_search}
+            label={t('search', { ns: 'other' })}
+            isShadow
+            onClick={handleSearch}
+          />
         </div>
+
+        <p className={s.table_title}>{t('income_section.chart')}</p>
+        <div className={s.chart_wrapper}>
+          <IncomeChart incomeData={incomeData} />
+        </div>
+
+        {incomeData.length > 0 && (
+          <>
+            <p className={s.table_title}>{t('income_section.table')}</p>
+            <IncomeTable list={incomeData} />
+          </>
+        )}
       </div>
-      {error && (
-        <span className={s.error_msg}>{t('income_section.select_placeholder')}</span>
-      )}
-
-      <Button
-        className={s.btn_search}
-        label={t('search', { ns: 'other' })}
-        onClick={handleSearch}
-      />
-
-      {tableData.length > 0 && (
-        <>
-          <p className={s.table_title}>{t('income_section.table')}</p>
-          <IncomeTable list={tableData} />
-        </>
-      )}
     </>
   )
 }

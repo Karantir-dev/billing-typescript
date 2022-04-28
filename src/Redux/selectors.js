@@ -2,7 +2,7 @@ const getTheme = state => state.theme
 const getIsPinned = state => state.pinned
 const getIsLoadding = state => state.isLoading
 
-export const selectors = {
+export default {
   getTheme,
   getIsLoadding,
   getIsPinned,

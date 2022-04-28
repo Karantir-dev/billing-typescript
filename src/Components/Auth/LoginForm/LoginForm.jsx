@@ -114,6 +114,7 @@ export default function LoginForm() {
                   className={s.submit_btn}
                   label={t('logIn')}
                   type="submit"
+                  isShadow
                 />
 
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>

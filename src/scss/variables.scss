@@ -30,7 +30,7 @@ body {
   --inactive_icon_color: #e1daeb;
   --popup_prompt: #ede7f4;
 
-  --message-bg: #F6EBFF;
+  --message-bg: #f6ebff;
 
   --border-color: #f4f4f4;
 
@@ -44,6 +44,8 @@ body {
   --forms_shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --forms2_shadow: 0px 1px 8px 0px rgba(65, 38, 114, 0.15);
   --buttons_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #fff;
+  --buttons_shadow_active: 2px 4px 5px rgba(98, 0, 54, 0.25),
+    inset 2px 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 // dark theme variables
