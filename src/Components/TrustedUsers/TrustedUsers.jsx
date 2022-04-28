@@ -156,6 +156,7 @@ export default function TrustedUsers() {
           type="button"
           className={s.add_btn}
           onClick={handleUserForm}
+          isShadow
         />
 
         <h4 className={s.users_title}>{t('trusted_users.users_title')}</h4>

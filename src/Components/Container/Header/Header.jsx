@@ -10,8 +10,8 @@ import {
   userSelectors,
   authOperations,
   authSelectors,
+  selectors,
 } from '../../../Redux'
-import { selectors } from '../../../Redux/selectors'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'

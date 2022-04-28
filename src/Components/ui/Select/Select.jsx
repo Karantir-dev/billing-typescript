@@ -10,6 +10,7 @@ export default function Component(props) {
     label,
     isShadow, // shadow or border
     className,
+    inputClassName,
     itemsList,
     getElement,
     value,
@@ -45,7 +46,7 @@ export default function Component(props) {
   }
 
   const openHandler = () => {
-    setIsOpened(!isOpened)
+    setIsOpened(true)
   }
 
   return (
@@ -55,13 +56,16 @@ export default function Component(props) {
         type="button"
         style={{ height }}
         className={s.input_wrapper}
-        onClick={isOpened ? null : openHandler}
+        onClick={openHandler}
       >
         <div
-          className={cn({
-            [s.input]: true,
-            [s.shadow]: isShadow,
-          })}
+          className={cn(
+            {
+              [s.input]: true,
+              [s.shadow]: isShadow,
+            },
+            inputClassName,
+          )}
         >
           <span className={cn({ [s.placeholder]: !selectedItem?.label })}>
             {selectedItem?.label || placeholder}
@@ -69,6 +73,7 @@ export default function Component(props) {
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
+
       {itemsList.length !== 0 && (
         <div ref={dropdown} className={cn(s.dropdown, { [s.opened]: isOpened })}>
           <div className={s.list}>

@@ -8,7 +8,7 @@ import { ErrorMessage } from 'formik'
 import i18n from 'i18next'
 
 import { returnLanguage } from './langimport'
-import { selectors } from '../../../Redux/selectors'
+import { selectors } from '../../../Redux'
 
 import s from './CustomPhoneInput.module.scss'
 

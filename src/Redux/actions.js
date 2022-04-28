@@ -6,9 +6,4 @@ const changeIsPinned = createAction('CHANGE_PINNED')
 const showLoader = createAction('SHOW_LOADER')
 const hideLoader = createAction('HIDE_LOADER')
 
-export const actions = {
-  changeTheme,
-  showLoader,
-  hideLoader,
-  changeIsPinned,
-}
+export default { changeTheme, showLoader, hideLoader, changeIsPinned }

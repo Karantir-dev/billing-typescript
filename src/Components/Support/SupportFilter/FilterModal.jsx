@@ -177,6 +177,7 @@ export default function Component(props) {
                       className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
                     >
                       <CalendarModal
+                        pointerClassName={s.calendar_pointer}
                         value={dates}
                         setStartDate={item => {
                           setFieldValue('message_poststart', item)

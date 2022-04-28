@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
-import { Routes, Route, BrowserRouter, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
 
 import {
   Loader,

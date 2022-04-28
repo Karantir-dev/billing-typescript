@@ -1,0 +1,143 @@
+.btn_more {
+  margin-bottom: 30px;
+  font-size: 18px;
+  border-bottom: 1px solid;
+}
+
+.description_wrapper {
+  position: relative;
+  height: 80px;
+  overflow: hidden;
+  padding-top: 16px;
+  transition: height 0.15s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background-image: linear-gradient(
+      0deg,
+      var(--main-bgc) 30%,
+      rgba(0, 0, 0, 0.001) 100%
+    );
+  }
+}
+
+.paragraph {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.filter_wrapper {
+  display: flex;
+  column-gap: 15px;
+}
+
+.select {
+  background-color: var(--forms-bg-2-color);
+  font-size: 16px;
+}
+
+.icon_btn {
+  background-color: var(--forms-bg-2-color);
+}
+
+.calendarBlock {
+  position: relative;
+}
+
+.calendarModal {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+}
+
+.calendar_pointer {
+  right: 24px;
+}
+
+.btn_search {
+  width: 100%;
+  height: 50px;
+  max-width: 280px;
+  margin: 30px 0;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.table_title {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.error_msg {
+  display: inline-block;
+  margin: 5px 0 0 10px;
+  color: var(--error-color);
+  font-size: 16px;
+}
+
+.chart_wrapper {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  .description_wrapper {
+    height: fit-content;
+    max-width: 1240px;
+    margin-bottom: 38px;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .filter_wrapper {
+    width: 345px;
+  }
+
+  .paragraph {
+    font-weight: 300;
+  }
+
+  .max_content_width {
+    max-width: 930px;
+  }
+
+  .tablet_wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .btn_search {
+    width: 230px;
+    margin: 0;
+  }
+
+  .select {
+    width: 280px;
+    font-size: 18px;
+  }
+
+  .calendarModal {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .calendar_pointer {
+    right: 50%;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .paragraph {
+    font-size: 18px;
+  }
+}

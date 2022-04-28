@@ -1,6 +1,6 @@
 import qs from 'qs'
 import authActions from './authActions'
-import { actions } from '../actions'
+import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
 
 const SERVER_ERR_MSG = 'auth_error'

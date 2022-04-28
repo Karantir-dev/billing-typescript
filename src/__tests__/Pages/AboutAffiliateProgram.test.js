@@ -43,14 +43,14 @@ describe('AboutAffiliateProgram Page jsx', () => {
     renderComponent(1920)
 
     expect(screen.getByTestId('descktop_banner')).toBeInTheDocument()
-    expect(screen.queryByText('about_section.read_more')).toBeNull()
+    expect(screen.queryByText('read_more')).toBeNull()
     expect(screen.queryByTestId('mobile_banner')).toBeNull()
   })
 
   test('mobile render with btn_more and mobile banner', () => {
     renderComponent(767)
 
-    expect(screen.getByText('about_section.read_more')).toBeInTheDocument()
+    expect(screen.getByText('read_more')).toBeInTheDocument()
     expect(screen.getByTestId('mobile_banner')).toBeInTheDocument()
     expect(screen.queryByTestId('descktop_banner')).toBeNull()
   })

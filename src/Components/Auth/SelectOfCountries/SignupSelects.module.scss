@@ -21,6 +21,10 @@
 
 .input {
   @extend %input;
+
+  &:focus {
+    border-color: transparent;
+  }
 }
 
 .field_icon {
