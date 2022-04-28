@@ -22,6 +22,7 @@ export default function Component(props) {
     height,
     background, // input bgc
     dataTestid,
+    disabled,
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -72,6 +73,7 @@ export default function Component(props) {
       )}
       <div className={s.input_wrapper}>
         <Field
+          disabled={disabled}
           data-testid={dataTestid}
           className={cn({
             [s.input]: true,
@@ -112,6 +114,7 @@ Component.propTypes = {
   autoComplete: PropTypes.bool,
   height: PropTypes.number,
   background: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 Component.defaultProps = {
@@ -119,4 +122,5 @@ Component.defaultProps = {
   isShadow: false,
   autoComplete: false,
   dataTestid: null,
+  disabled: false,
 }

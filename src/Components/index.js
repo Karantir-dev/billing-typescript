@@ -33,6 +33,7 @@ export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
 export { default as ToggleButton } from './ui/ToggleButton/ToggleButton'
+export { default as Toggle } from './ui/Toggle/Toggle'
 
 export { default as Alert } from './ui/Alert/Alert'
 
