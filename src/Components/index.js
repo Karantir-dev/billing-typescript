@@ -1,7 +1,8 @@
+//==========================================AFFILIATE==========================================//
 export { default as ServicesSelect } from './affiliateProgram/ServicesSelect/ServicesSelect'
 export { default as FilesBanner } from './affiliateProgram/FilesBanner/FilesBanner'
-
-export { default as VerificationModal } from './VerificationModal/VerificationModal'
+export { default as IncomeTable } from './affiliateProgram/IncomeTable/IncomeTable'
+export { default as IncomeChart } from './affiliateProgram/IncomeChart/IncomeChart'
 
 //==========================================AUTH==========================================//
 export { default as LoginForm } from './Auth/LoginForm/LoginForm'
@@ -10,6 +11,7 @@ export { default as PasswordChange } from './Auth/PasswordChange/PasswordChange'
 export { default as PasswordReset } from './Auth/PasswordReset/PasswordReset'
 export { default as SelectOfCountries } from './Auth/SelectOfCountries/SelectOfCountries'
 export { default as SelectOfRegions } from './Auth/SelectOfRegions/SelectOfRegions'
+export { default as VerificationModal } from './Auth/VerificationModal/VerificationModal'
 
 //==========================================ROUTES==========================================//
 export { default as PrivateRoute } from './Routes/PrivateRoute'

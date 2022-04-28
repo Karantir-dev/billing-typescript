@@ -14,7 +14,7 @@ import { Facebook, Google, Vk } from '../../../images'
 import s from './LoginForm.module.scss'
 
 export default function LoginForm() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
   const dispatch = useDispatch()
 
   const recaptchaEl = useRef()
@@ -32,7 +32,7 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email(t('warnings.invalid_email'))
+      // .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().required(t('warnings.recaptcha')),
@@ -114,6 +114,7 @@ export default function LoginForm() {
                   className={s.submit_btn}
                   label={t('logIn')}
                   type="submit"
+                  isShadow
                 />
 
                 <Link className={s.reset_pass_link} to={routes.RESET_PASSWORD}>

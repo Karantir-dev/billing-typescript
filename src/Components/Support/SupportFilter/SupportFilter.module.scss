@@ -8,6 +8,7 @@
 }
 
 .newTicketBtn {
+  height: 50px;
   text-transform: uppercase;
   max-width: 230px;
   max-height: 53px;
@@ -78,11 +79,16 @@
 .calendarModal {
   position: absolute;
   display: none;
-  right: 0;
-  transform: translate(10px, 15px);
+  right: -10px;
+  top: calc(100% + 15px);
+
   &.opened {
     display: block;
   }
+}
+
+.calendar_pointer {
+  right: 34px;
 }
 
 .form {
@@ -145,7 +151,10 @@
 }
 
 .searchBtn {
+  height: 50px;
   max-width: 100%;
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 767px) {
@@ -217,9 +226,6 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .calendarModal {
-    right: -230%;
-  }
   .select {
     max-width: 287px;
     margin-right: 0px;
@@ -261,6 +267,14 @@
 }
 
 @media screen and (min-width: 1550px) {
+  .calendarModal {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .calendar_pointer {
+    right: 50%;
+  }
 }
 
 @media screen and (min-width: 1918px) {

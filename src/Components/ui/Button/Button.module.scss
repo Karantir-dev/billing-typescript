@@ -1,12 +1,18 @@
 @import '../../../scss/placeholders.scss';
 
-.submit_btn {
+.btn {
   @extend %btn;
-  padding: 20px;
+  padding: 10px 20px;
   border-width: 0;
   width: 100%;
+  // font-size: 16px;
+
   &.shadow {
     box-shadow: var(--buttons_shadow);
+
+    &:hover {
+      box-shadow: var(--buttons_shadow_active);
+    }
   }
 }
 
@@ -25,7 +31,6 @@
 
 .btn_text {
   @extend %btn-text;
-  font-size: 16px;
 }
 
 .loader {
@@ -65,14 +70,14 @@
   }
 }
 
-@media screen and (min-width: 768px) {
-  .btn_text {
-    font-size: 16px;
-  }
-}
+// @media screen and (min-width: 768px) {
+//   .btn_text {
+//     font-size: 16px;
+//   }
+// }
 
-@media screen and (min-width: 1281px) {
-  .btn_text {
-    font-size: 20px;
-  }
-}
+// @media screen and (min-width: 1281px) {
+//   .btn_text {
+//     font-size: 20px;
+//   }
+// }

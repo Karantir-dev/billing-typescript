@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 
-import { authSelectors, authActions, authOperations } from '../../Redux'
+import { authSelectors, authActions, authOperations } from '../../../Redux'
 
-import { Cross } from './../../images'
+import { Cross } from '../../../images'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'

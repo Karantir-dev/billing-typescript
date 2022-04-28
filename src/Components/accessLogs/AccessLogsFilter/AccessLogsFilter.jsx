@@ -141,6 +141,7 @@ export default function Component({ setCurrentPage }) {
                     className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
                   >
                     <CalendarModal
+                      pointerClassName={s.pointer}
                       value={dates || parseCurrentFilter()?.dates}
                       setStartDate={item => {
                         setFieldValue('timestart', item)

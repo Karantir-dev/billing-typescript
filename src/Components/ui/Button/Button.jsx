@@ -21,7 +21,7 @@ export default function Component(props) {
       data-testid={dataTestid}
       disabled={disabled}
       className={cn({
-        [s.submit_btn]: true,
+        [s.btn]: true,
         [s.shadow]: isShadow,
         [s.block]: size === 'block',
         [s.small]: size === 'small',

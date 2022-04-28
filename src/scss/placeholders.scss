@@ -10,7 +10,7 @@
   align-items: center;
   border-radius: 99px;
   background: var(--btn-bgc);
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  // box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   transition: transform 0.1s;
 
@@ -82,7 +82,6 @@
   }
   &:focus {
     outline: transparent;
-    // border-color: transparent;
 
     & ~ .input_border {
       position: absolute;

@@ -2,8 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { selectors } from '../../../Redux/selectors'
-import { userSelectors } from '../../../Redux'
+import { userSelectors, selectors } from '../../../Redux'
 import { Logo } from './../../../images'
 import s from './Loader.module.scss'
 

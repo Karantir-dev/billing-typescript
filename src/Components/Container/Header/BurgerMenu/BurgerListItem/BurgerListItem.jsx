@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 
-import { selectors } from '../../../../../Redux/selectors'
+import { selectors } from '../../../../../Redux'
 import s from './BurgerListItem.module.scss'
 
 export default function BurgerListItem({

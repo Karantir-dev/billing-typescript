@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { Container, PageTabBar } from '../../Components/'
 import * as route from '../../routes'
 import { AboutAffiliateProgram, AffiliateProgramIncome } from '../'
@@ -9,6 +9,14 @@ import s from './AffiliateProgram.module.scss'
 
 export default function AffiliateProgram() {
   const { t } = useTranslation('affiliate_program')
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (location.pathname === route.AFFILIATE_PROGRAM) {
+      navigate(route.AFFILIATE_PROGRAM_ABOUT, { replace: true })
+    }
+  }, [])
 
   const navBarSections = [
     { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
