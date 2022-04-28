@@ -16,7 +16,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 export default function IncomeChart({ incomeData }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  ChartJS.defaults.borderColor = darkTheme ? '#4D4855' : '#4D4855'
+  ChartJS.defaults.borderColor = darkTheme ? '#4D4855' : 'rgba(0,0,0,0.1)'
   let labels = []
   let data = []
   if (incomeData.length > 1) {
@@ -31,9 +31,9 @@ export default function IncomeChart({ incomeData }) {
         plugins: {
           tooltip: {
             displayColors: false,
-            // bodyColor: '#ff50bf',
-            // titleColor: '#ff50bf',
-            backgroundColor: '#2e273b',
+            bodyColor: darkTheme ? '#fff' : '#392955',
+            titleColor: darkTheme ? '#fff' : '#392955',
+            backgroundColor: darkTheme ? '#3B3447' : '#E8E0F5',
           },
         },
       }}

@@ -123,7 +123,11 @@ export default function AffiliateProgramIncome() {
             />
 
             <div className={s.calendarBlock}>
-              <IconButton onClick={() => setIsOpenedCalendar(true)} icon="calendar" />
+              <IconButton
+                className={s.icon_btn}
+                onClick={() => setIsOpenedCalendar(true)}
+                icon="calendar"
+              />
               <CSSTransition
                 in={isOpenedCalendar}
                 classNames={animations}
