@@ -3,6 +3,11 @@ body {
   --accent-gradient: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
   --accent-color-light: #ff50bf;
   --input-border-icon: #c4c4c4;
+  --forms2-border-gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    #ffffff 92.92%
+  );
 
   // borders
 
@@ -37,7 +42,7 @@ body {
   --inactive_icon_color: #e1daeb;
   --popup_prompt: #ede7f4;
 
-  --message-bg: #F6EBFF;
+  --message-bg: #f6ebff;
 
   --border-color: #f4f4f4;
 
@@ -58,6 +63,11 @@ body.dark-theme {
   // borders
 
   --center-border-color: #decbfe;
+  --forms2-border-gradient: linear-gradient(
+    184.22deg,
+    rgba(46, 39, 59, 0) 3.44%,
+    #2e273b 89.97%
+  );
 
   --main-bgc: #21192e;
   --main-text: #fff;

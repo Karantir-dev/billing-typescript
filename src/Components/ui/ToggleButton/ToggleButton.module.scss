@@ -9,6 +9,12 @@
   }
 }
 
+.small_btn {
+  height: 21px;
+  width: 40px;
+  flex: none;
+}
+
 .circle {
   position: absolute;
   top: 0;
@@ -43,7 +49,45 @@
     &::before {
       transition: 0.4s ease;
       transform: translateX(25px);
-      // left: unset;
+      background-color: #fff;
+    }
+  }
+}
+
+.circle.small_btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 21px;
+  width: 40px;
+  background-color: #e1dfdf;
+  border-radius: 25px;
+
+  &.active {
+    background: var(--accent-gradient);
+  }
+
+  &::before {
+    position: absolute;
+    content: '';
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: white;
+    transform: translateX(0px);
+    transition: 0.4s ease;
+  }
+
+  &.active {
+    &::before {
+      transition: 0.4s ease;
+      transform: translateX(19px);
       background-color: #fff;
     }
   }

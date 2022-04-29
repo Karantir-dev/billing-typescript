@@ -1,6 +1,5 @@
 .list_item_title {
   margin-bottom: 18px;
-  // margin-top: 25px;
 }
 
 .list_item_title_text {
@@ -39,7 +38,6 @@
   line-height: 115%;
   text-align: start;
   color: var(--main-text);
-  // cursor: pointer;
 }
 
 .sub_list {
@@ -52,6 +50,13 @@
 
   & li {
     margin-left: 16px;
+  }
+
+  & .allow_all_item {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 16px;
+    margin-bottom: 22px;
   }
 
   &::before {

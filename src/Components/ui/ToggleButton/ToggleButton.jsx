@@ -16,6 +16,7 @@ export default function ToggleButton({
   handleAlert,
   isOwner,
   hasAlert,
+  size,
 }) {
   const { t } = useTranslation('trusted_users')
 
@@ -53,13 +54,20 @@ export default function ToggleButton({
         disabled={isOwner}
         className={cn({
           [s.btn]: true,
+          [s.small_btn]: size === 'small',
           [s.active]: isToggled,
           [s.owner]: isOwner,
         })}
         type="button"
         onClick={hasAlert ? handleAlert : handleBtnNoAlert}
       >
-        <p className={cn({ [s.circle]: true, [s.active]: isToggled })}></p>
+        <p
+          className={cn({
+            [s.circle]: true,
+            [s.small_btn]: size === 'small',
+            [s.active]: isToggled,
+          })}
+        ></p>
       </button>
 
       {toggleName === 'access' && (

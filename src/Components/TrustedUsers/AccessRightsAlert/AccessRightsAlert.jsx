@@ -1,9 +1,7 @@
 import cn from 'classnames'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-
-import { useOutsideAlerter } from '../../../utils'
 
 import s from './AccessRightsAlert.module.scss'
 
@@ -16,14 +14,18 @@ export default function AccessRightsAlert({
   dataTestid,
 }) {
   const getAlerEl = useRef(null)
-  const getAlerElTitle = useRef(null)
-
-  useOutsideAlerter(getAlerEl, isOpened, controlAlert)
+  const [scrolledDown, setScrolledDown] = useState(false)
 
   const handleScroll = e => {
-    const alertScroll = e.target.scrollTop
-    const pos = alertScroll + 'px'
-    getAlerElTitle.current.style.top = pos
+    const alertScrollTop = e.target.scrollTop
+    const alertOffsetHeight = e.target.offsetHeight
+    const alertScrollHeight = e.target.scrollHeight
+
+    if (alertScrollTop + alertOffsetHeight >= alertScrollHeight) {
+      setScrolledDown(!scrolledDown)
+    } else {
+      setScrolledDown(false)
+    }
   }
 
   useEffect(() => {
@@ -37,17 +39,20 @@ export default function AccessRightsAlert({
   return (
     <>
       <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
-        <div className={s.alert} ref={getAlerEl} data-testid={dataTestid}>
-          <div className={s.title_wrapper} ref={getAlerElTitle}>
+        <div
+          className={cn({ [s.alert]: true, [s.scrolled]: scrolledDown })}
+          data-testid={dataTestid}
+        >
+          <div className={s.title_wrapper}>
             <h5 className={s.title}>{title}</h5>
             <div className={s.close_btn_wrapper}>
               <button className={s.close_btn} onClick={controlAlert}></button>
             </div>
           </div>
 
-          <div className={s.text_wrapper}>
-            {list1}
-            {list2}
+          <div className={s.text_wrapper} ref={getAlerEl}>
+            <div className={s.list_one}>{list1}</div>
+            <div className={s.list_two}>{list2}</div>
           </div>
         </div>
       </div>

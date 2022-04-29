@@ -226,6 +226,12 @@ const getSubRights = (userId, name, sessionId) => {
 }
 
 const manageUserRight = (userId, funcName, sessionId, act, type) => {
+  console.log('userid - ', userId)
+  console.log('funcName - ', funcName)
+  console.log('sessionId - ', sessionId)
+  console.log('act - ', act)
+  console.log('type - ', type)
+
   return axiosInstance
     .post(
       '/',

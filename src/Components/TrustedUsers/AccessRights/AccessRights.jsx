@@ -1,14 +1,9 @@
-// import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
-// import ToggleButton from '../../ui/ToggleButton/ToggleButton'
-// import ControlBtn from '../ControlBtn/ControlBtn'
+import React, { useState } from 'react'
 
 import s from './AccessRights.module.scss'
 import AccessRightsListItem from './AccessRightsListItem/AccessRightsListItem'
 
 export default function AccessRights({ items, userId }) {
-  // const [isMenuOpened, setIsMenuOpened] = useState(false)
-
   const modifiedList = items.map(item => {
     const newObj = JSON.parse(JSON.stringify(item))
 
@@ -17,7 +12,6 @@ export default function AccessRights({ items, userId }) {
     return newObj
   })
 
-  // const [selected, setSelected] = useState(false)
   const [listArr, setListArr] = useState(modifiedList)
 
   const handleSelect = item => {
@@ -34,10 +28,6 @@ export default function AccessRights({ items, userId }) {
     setListArr([...filter])
   }
 
-  useEffect(() => {
-    console.log(listArr)
-  }, [listArr])
-
   return (
     <ul className={s.list}>
       {listArr.map((item, index) => {
@@ -48,6 +38,7 @@ export default function AccessRights({ items, userId }) {
               item={item}
               userId={userId}
               selected={item.isSelected}
+              allowAll={true}
             />
           </div>
         )
