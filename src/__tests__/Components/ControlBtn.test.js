@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
