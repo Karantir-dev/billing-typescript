@@ -103,12 +103,38 @@ const getChartInfo =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('getInitialIncomeInfo - ', err.message)
+        console.log('getChartInfo - ', err.message)
       })
   }
 
+const getDayDetails = (date, setDetails) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.reward.detail',
+        auth: sessionId,
+        elid: date,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data)
+      setDetails(data.doc.reportdata.reward.elem)
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('getDayDetails - ', err.message)
+    })
+}
 export default {
   getReferralLink,
   getInitialIncomeInfo,
   getChartInfo,
+  getDayDetails,
 }

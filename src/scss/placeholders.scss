@@ -80,8 +80,10 @@
     font-size: 16px;
     color: var(--auth-placeholder-color);
   }
+
   &:focus {
     outline: transparent;
+    border: none;
 
     & ~ .input_border {
       position: absolute;

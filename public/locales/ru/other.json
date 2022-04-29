@@ -33,5 +33,11 @@
   "any period": "Произвольный диапазон",
   "-- none --": "Не выбрано",
   "Yes": "Да",
-  "No": "Нет"
+  "No": "Нет",
+  "services": {
+    "Virtual server": "Виртуальный сервер",
+    "Shared hosting": "Виртуальный хостинг",
+    "Dedicated server": "Выделенный сервер",
+    "All services": "Все услуги"
+  }
 }

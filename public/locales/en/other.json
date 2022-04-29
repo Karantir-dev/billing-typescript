@@ -33,5 +33,11 @@
   "any period": "Any period",
   "-- none --": "Not chosen",
   "Yes": "Yes",
-  "No": "No"
+  "No": "No",
+  "services": {
+    "Virtual server": "Virtual server",
+    "Shared hosting": "Shared hosting",
+    "Dedicated server": "Dedicated server",
+    "All services": "All services"
+  }
 }

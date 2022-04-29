@@ -62,7 +62,7 @@ Component.defaultProps = {
   type: 'button',
   onClick: () => null,
   disabled: false,
-  size: 'block',
+  size: '',
   isShadow: false,
   dataTestid: null,
   loading: false,

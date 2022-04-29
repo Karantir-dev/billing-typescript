@@ -1,5 +1,71 @@
+import cn from 'classnames'
+import { nanoid } from 'nanoid'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
-export default function DetailsModal() {
-  return <div></div>
+import { Cross } from '../../../images'
+
+import s from './DetailsModal.module.scss'
+
+export default function DetailsModal({ details, closeModal }) {
+  const { t } = useTranslation(['affiliate_program', 'other'])
+  let daySum = 0
+
+  const onBackdropClick = e => {
+    if (e.target === e.currentTarget) {
+      closeModal()
+    }
+  }
+
+  return (
+    <div
+      tabIndex={0}
+      onKeyUp={() => {}}
+      role="button"
+      className={cn(s.backdrop, { [s.opened]: details.length > 0 })}
+      onClick={onBackdropClick}
+    >
+      <div className={cn(s.modal_window, { [s.opened]: details.length > 0 })}>
+        <div className={s.heading_wrapper}>
+          <p className={s.heading}>
+            {t('income_section.detailed_statistics')}{' '}
+            <span className={s.date}>{details[0]?.cdate?.$}</span>
+          </p>
+          <button type="button" onClick={closeModal}>
+            <Cross className={s.icon_cross} />
+          </button>
+        </div>
+
+        <div className={s.blur}>
+          <ul className={s.list}>
+            {details.map(({ amount, name, referal, reward }) => {
+              daySum += Number(amount.$.replace(' EUR', ''))
+              return (
+                <li className={s.list_item} key={nanoid()}>
+                  <span className={s.label}>{t('income_section.service')}:</span>
+                  <span className={s.value}>
+                    {t(`services.${name.$.trim()}`, { ns: 'other' })}
+                  </span>
+
+                  <span className={s.label}>{t('income_section.rate')}:</span>
+                  <span className={s.value}>{reward.$}</span>
+
+                  <span className={s.label}>{t('income_section.income')}:</span>
+                  <span className={s.value}>{amount.$}</span>
+
+                  <span className={s.label}>{t('income_section.referral')}:</span>
+                  <span className={s.value}>{referal.$}</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+
+        <p className={s.total}>
+          <span className={s.total_label}>{t('income_section.total')}:</span>{' '}
+          {daySum.toFixed(2)} EUR
+        </p>
+      </div>
+    </div>
+  )
 }
