@@ -1,1 +1,2 @@
 export { default as useOutsideAlerter } from './hooks/outsideClick'
+export { default as isBase64 } from './isBase64'

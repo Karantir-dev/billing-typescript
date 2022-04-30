@@ -57,3 +57,6 @@ export { default as SupportArchiveTable } from './Support/SupportArchiveTable/Su
 export { default as OpenedTicketMessages } from './Support/OpenedTicket/OpenedTicketMessages/OpenedTicketMessages'
 export { default as SendMessageForm } from './Support/OpenedTicket/SendMessageForm/SendMessageForm'
 export { default as CreateTicketModal } from './Support/CreateTicketModal/CreateTicketModal'
+
+//==========================================SETTINGS==========================================//
+export { default as ModalPickPhoto } from './Settings/ModalPickPhoto/ModalPickPhoto'

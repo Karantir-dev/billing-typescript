@@ -68,6 +68,35 @@ const getUserEdit = elid => (dispatch, getState) => {
     })
 }
 
+const setUserAvatar =
+  (elid, avatar, fileName, successfullLoading) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    var d = new FormData()
+    d.append('func', 'user.edit')
+    d.append('out', 'json')
+    d.append('sok', 'ok')
+    d.append('auth', sessionId)
+    d.append('elid', elid)
+    d.append('avatar_file_upload', avatar, fileName)
+
+    axiosInstance
+      .post('/', d)
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        successfullLoading()
+      })
+      .then(() => dispatch(actions.hideLoader()))
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 const getUserParams = () => (dispatch, getState) => {
   const {
     auth: { sessionId },
@@ -143,7 +172,116 @@ const getUserParams = () => (dispatch, getState) => {
     })
 }
 
+const getTimeByTimeZone =
+  (timezone = null) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'usrparam',
+          out: 'json',
+          auth: sessionId,
+          timezone: timezone,
+          sv_field: 'time',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(settingsActions.setUpdateTime(data.doc?.time?.$ || ''))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const setPersonalSettings = (elid, data) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const userEditData = {
+    email: data?.email || null,
+    realname: data?.realname || null,
+    phone: data?.phone || null,
+  }
+
+  const userParamsData = {
+    email: data?.email_notif || null,
+    telegram_id: data?.telegram_id || null,
+    timezone: data?.timezone || null,
+
+    service_notice_ntemail: data?.service_notice_ntemail ? 'on' : 'off',
+    service_notice_ntmessenger: data?.service_notice_ntmessenger ? 'on' : 'off',
+    service_notice_ntsms: data?.service_notice_ntsms ? 'on' : 'off',
+
+    support_notice_ntemail: data?.support_notice_ntemail ? 'on' : 'off',
+    support_notice_ntmessenger: data?.support_notice_ntmessenger ? 'on' : 'off',
+    support_notice_ntsms: data?.support_notice_ntsms ? 'on' : 'off',
+
+    news_notice_ntemail: data?.news_notice_ntemail ? 'on' : 'off',
+    news_notice_ntmessenger: data?.news_notice_ntmessenger ? 'on' : 'off',
+    news_notice_ntsms: data?.news_notice_ntsms ? 'on' : 'off',
+
+    finance_notice_ntemail: data?.finance_notice_ntemail ? 'on' : 'off',
+    finance_notice_ntmessenger: data?.finance_notice_ntmessenger ? 'on' : 'off',
+    finance_notice_ntsms: data?.finance_notice_ntsms ? 'on' : 'off',
+  }
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.edit',
+        sok: 'ok',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        ...userEditData,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'usrparam',
+            out: 'json',
+            sok: 'ok',
+            elid,
+            auth: sessionId,
+            ...userParamsData,
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc.error) throw new Error(data.doc.error.msg.$)
+          dispatch(getUserEdit(elid))
+        })
+        .catch(error => {
+          console.log('error', error)
+          dispatch(actions.hideLoader())
+        })
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getUserEdit,
   getUserParams,
+  setPersonalSettings,
+  getTimeByTimeZone,
+  setUserAvatar,
 }

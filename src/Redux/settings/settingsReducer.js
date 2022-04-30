@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import settingsActions from './settingsActions'
 
@@ -13,6 +13,10 @@ const userEditInfo = createReducer(initialState.userEditInfo, {
 
 const userParamsInfo = createReducer(initialState.userParamsInfo, {
   [settingsActions.setUsersParams]: (_, { payload }) => payload,
+  [settingsActions.setUpdateTime]: (state, { payload }) =>
+    (state = { ...current(state), time: payload }),
+  [settingsActions.setUpdateAvatar]: (state, { payload }) =>
+    (state = { ...current(state), avatar_view: payload }),
 })
 
 const usersReducer = combineReducers({
