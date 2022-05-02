@@ -124,6 +124,7 @@ const getUserParams = () => (dispatch, getState) => {
         telegram_id: data?.doc?.telegram_id?.$ || '',
         email: data?.doc?.email?.$ || '',
         avatar_view: data?.doc?.avatar_view?.$ || '',
+        email_confirmed_status: data?.doc?.email_confirmed_status?.$ || '',
         telegramLink: telegramLink || '',
         listCheckBox: [
           {

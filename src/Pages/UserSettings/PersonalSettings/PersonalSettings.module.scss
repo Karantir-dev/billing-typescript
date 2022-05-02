@@ -17,26 +17,28 @@
   position: relative;
 }
 
+.input {
+  margin-top: 15px;
+}
+
 .avatarBlock {
-  max-width: 130px;
-  position: absolute;
-  top: -75px;
+  position: relative;
+  top: 0;
   right: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  align-items: flex-start;
+  flex-direction: row;
+  margin-top: 25px;
 }
 
 .downloadText {
-  text-align: center;
+  text-align: start;
   font-style: normal;
   font-weight: 300;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 130%;
   text-decoration-line: underline;
   color: var(--link-text);
-  margin: 11px 0;
   cursor: pointer;
 }
 
@@ -45,14 +47,20 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 113.9%;
-  text-align: center;
+  text-align: start;
   color: var(--transparent-color);
+  max-width: 132px;
+  margin-top: 5px;
+}
+
+.downloadBlockText {
+  margin-left: 20px;
 }
 
 .settingsTitle {
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 113%;
   color: var(--main-text);
   margin-bottom: 10px;
@@ -60,7 +68,7 @@
 
 .formRow {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   max-width: 700px;
   margin-top: 15px;
 }
@@ -68,11 +76,11 @@
 .phoneInput {
   width: 100%;
   margin-bottom: 0;
-  margin-right: 36px;
+  margin-right: 0px;
 }
 
 .emailInput {
-  margin-right: 36px;
+  margin-right: 0px;
 }
 
 .phoneInputLabel {
@@ -112,27 +120,14 @@
   flex-direction: row;
   align-items: center;
   padding: 17px 0;
-  border-bottom: 1px solid #e8e2f3;
-}
-
-.checkRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 17px 0;
-}
-
-.notifName {
-  font-style: normal;
-  font-weight: 300;
-  font-size: 17px;
-  line-height: 130.5%;
-  color: var(--main-text);
-  flex-basis: 43%;
+  border-bottom: none;
+  .column {
+    display: none;
+  }
 }
 
 .checkBlock {
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .rowMessages {
@@ -145,11 +140,16 @@
   font-size: 17px;
   line-height: 130.5%;
   color: var(--main-text);
-  flex-basis: 43%;
+  flex-basis: 100%;
+}
+
+.columnBlock {
+  flex-basis: 57%;
+  display: flex;
 }
 
 .column {
-  flex-basis: 19%;
+  flex-basis: 33%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,8 +167,13 @@
   }
 }
 
-.saveBtn {
-  margin-top: 35px;
+.phoneInputContainer {
+  height: 50px;
+  position: relative;
+}
+
+.phoneInputClass {
+  height: 50px;
 }
 
 .cancel {
@@ -177,15 +182,23 @@
   font-size: 18px;
   line-height: 130%;
   text-decoration-line: underline;
-  margin-left: 20px;
+  margin-top: 22px;
   color: var(--main-text);
   cursor: pointer;
 }
 
 .saveBtn {
-  width: 240px;
+  width: 100%;
   max-width: 100%;
   text-transform: uppercase;
+  height: 55px;
+}
+
+.confirmBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  margin-top: 22px;
   height: 55px;
 }
 
@@ -194,4 +207,127 @@
   height: 56px;
   cursor: pointer;
   border-radius: 100px;
+}
+
+.btnBlock {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+
+  .confirmBtn {
+    width: 280px;
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+
+  .saveBtn {
+    width: 240px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .emailInput {
+    margin-right: 36px;
+  }
+
+  .phoneInput {
+    margin-right: 36px;
+  }
+
+  .checkBlock {
+    max-width: 500px;
+  }
+
+  .formRow {
+    flex-direction: row;
+  }
+
+  .input {
+    margin-top: 0px;
+  }
+
+  .settingsTitle {
+    font-size: 20px;
+  }
+
+  .checkTitle {
+    border-bottom: 1px solid #e8e2f3;
+    .column {
+      display: flex;
+    }
+  }
+
+  .notifTitle {
+    flex-basis: 43%;
+  }
+}
+
+.emailStatus {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin: 25px 0;
+}
+
+@media screen and (min-width: 1124px) {
+  .avatarBlock {
+    max-width: 130px;
+    position: absolute;
+    top: -75px;
+    right: 0;
+    display: flex;
+    margin-top: 0px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .downloadText {
+    text-align: center;
+    font-size: 18px;
+    line-height: 130%;
+    margin: 11px 0;
+    cursor: pointer;
+  }
+
+  .downloadParams {
+    text-align: center;
+    margin-top: 0px;
+  }
+
+  .downloadBlockText {
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .select {
+    button {
+      height: 45px;
+    }
+  }
+  .phoneInputContainer {
+    height: 45px;
+  }
+
+  .phoneInputClass {
+    height: 45px !important;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+}
+
+@media screen and (min-width: 1918px) {
 }

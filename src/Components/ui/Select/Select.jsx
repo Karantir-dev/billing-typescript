@@ -17,6 +17,7 @@ export default function Component(props) {
     height,
     placeholder,
     additionalPlaceHolder,
+    background,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -64,6 +65,7 @@ export default function Component(props) {
             {
               [s.input]: true,
               [s.shadow]: isShadow,
+              [s.field_bgc]: background,
             },
             inputClassName,
           )}
@@ -117,6 +119,7 @@ Component.propTypes = {
   getElement: PropTypes.func,
   height: PropTypes.number,
   placeholder: PropTypes.string,
+  background: PropTypes.bool,
 }
 Component.defaultProps = {
   isShadow: false,
