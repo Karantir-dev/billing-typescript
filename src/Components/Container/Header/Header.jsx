@@ -95,7 +95,10 @@ export default function Header() {
                 >
                   <div className={s.balance_wrapper}>
                     <p className={s.balance_text}>
-                      {t('balance')} <span className={s.balance_sum}>{$balance} EUR</span>
+                      {t('balance')}{' '}
+                      <span className={s.balance_sum}>
+                        {$balance && Number($balance)?.toFixed(2)} EUR
+                      </span>
                     </p>
                   </div>
                 </li>

@@ -59,9 +59,16 @@ const getInitialIncomeInfo =
           setFixedPeriod(data.doc.period.$)
         }
         if (tableData) {
-          const modifiedTableData = tableData.map(({ amount }) => {
-            return { amount: amount.$, date: amount.$id }
-          })
+          let modifiedTableData = []
+          if (Array.isArray(tableData)) {
+            modifiedTableData = tableData.map(({ amount }) => {
+              return { amount: amount.$, date: amount.$id }
+            })
+          } else {
+            modifiedTableData = [
+              { amount: tableData.amount.$, date: tableData.amount.$id },
+            ]
+          }
           setTableData(modifiedTableData)
         }
 
