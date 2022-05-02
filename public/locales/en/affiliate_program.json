@@ -31,6 +31,7 @@
     "rate": "Rate",
     "income": "Income",
     "referral": "Referral",
-    "total": "Total"
+    "total": "Total",
+    "chart_placeholder": "Insufficient data for chart"
   }
 }

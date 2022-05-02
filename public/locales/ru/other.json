@@ -38,6 +38,7 @@
     "Virtual server": "Виртуальный сервер",
     "Shared hosting": "Виртуальный хостинг",
     "Dedicated server": "Выделенный сервер",
+    "External FTP-storage": "Внешнее FTP-хранилище",
     "All services": "Все услуги"
   }
 }

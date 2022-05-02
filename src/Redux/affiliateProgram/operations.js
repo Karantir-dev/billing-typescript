@@ -49,7 +49,6 @@ const getInitialIncomeInfo =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
         const periods = data.doc.slist[0].val.map(({ $, $key }) => {
           return { label: $, value: $key }
         })
@@ -100,11 +99,22 @@ const getChartInfo =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-        const tableData = data.doc?.reportdata?.reward?.elem?.map(({ amount }) => {
-          return { amount: amount.$, date: amount.$id }
-        })
-        setTableData(tableData ? tableData : [])
+        const tableData = data.doc?.reportdata?.reward?.elem
+
+        if (tableData) {
+          let modifiedTableData = []
+          if (Array.isArray(tableData)) {
+            modifiedTableData = tableData.map(({ amount }) => {
+              return { amount: amount.$, date: amount.$id }
+            })
+          } else {
+            modifiedTableData = [
+              { amount: tableData.amount.$, date: tableData.amount.$id },
+            ]
+          }
+
+          setTableData(modifiedTableData)
+        }
 
         dispatch(actions.hideLoader())
       })
