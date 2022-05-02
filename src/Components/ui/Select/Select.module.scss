@@ -26,9 +26,11 @@
   bottom: 1px;
   left: 1px;
   display: flex;
-  align-items: center;
-  justify-self: flex-start;
+  align-items: flex-start;
+  justify-content: center;
+  justify-self: center;
   caret-color: transparent;
+  flex-direction: column;
   cursor: pointer;
   span {
     max-width: 90%;
@@ -40,6 +42,15 @@
 
 .placeholder {
   color: #ccc7d2;
+}
+
+.additionalPlaceHolder {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+  margin-top: 5px;
 }
 
 .right_icon {

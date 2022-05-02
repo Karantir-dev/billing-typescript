@@ -26,6 +26,7 @@ import {
   AffiliateProgram,
   SupportPage,
   OpenedTicker,
+  UserSettings,
 } from './Pages'
 import { useTranslation } from 'react-i18next'
 
@@ -95,6 +96,26 @@ export default function App() {
                   <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
                 }
               />
+              <Route
+                path={`${route.USER_SETTINGS}`}
+                element={
+                  <PrivateRoute
+                    redirectTo={route.LOGIN}
+                    children={
+                      <Container>
+                        <UserSettings />
+                      </Container>
+                    }
+                  />
+                }
+              >
+                <Route
+                  path=":path/"
+                  element={
+                    <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
+                  }
+                />
+              </Route>
               <Route
                 path={`${route.AFFILIATE_PROGRAM}/*`}
                 element={

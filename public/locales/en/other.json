@@ -33,5 +33,10 @@
   "any period": "Any period",
   "-- none --": "Not chosen",
   "Yes": "Yes",
-  "No": "No"
+  "No": "No",
+  "Timezone": "Timezone",
+  "Phone": "Phone",
+  "Enter your details": "Enter your details",
+  "Full name": "Full name",
+  "Save": "Save"
 }

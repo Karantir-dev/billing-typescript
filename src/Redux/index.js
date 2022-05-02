@@ -30,6 +30,12 @@ export { default as accessLogsSelectors } from './accessLogs/accessLogsSelectors
 
 //===========================================AFFILIATE=================================//
 export { default as affiliateSelectors } from './affiliateProgram/selectors'
+
+//===========================================SETTINGS=================================//
+export { default as settingsActions } from './settings/settingsActions'
+export { default as settingsOperations } from './settings/settingsOperations'
+export { default as settingsReducer } from './settings/settingsReducer'
+export { default as settingsSelectors } from './settings/settingsSelectors'
 export { default as affiliateOperations } from './affiliateProgram/operations'
 
 //===========================================COMMON=================================//

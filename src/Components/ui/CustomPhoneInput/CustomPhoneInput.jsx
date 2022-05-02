@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
-import classNames from 'classnames'
+import cn from 'classnames'
 import 'react-phone-input-2/lib/style.css'
 import { ErrorMessage } from 'formik'
 import i18n from 'i18next'
@@ -13,7 +13,15 @@ import { selectors } from '../../../Redux'
 import s from './CustomPhoneInput.module.scss'
 
 export default function CustomPhoneInput(props) {
-  const { handleBlur, setFieldValue, label, name, ...restProps } = props
+  const {
+    handleBlur,
+    setFieldValue,
+    label,
+    name,
+    labelClass,
+    wrapperClass,
+    ...restProps
+  } = props
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
@@ -28,8 +36,8 @@ export default function CustomPhoneInput(props) {
   }, [])
 
   return (
-    <div className={s.wrapper}>
-      <p className={s.phone_label}> {label}</p>
+    <div className={cn(s.wrapper, wrapperClass)}>
+      <p className={cn(s.phone_label, labelClass)}> {label}</p>
       <PhoneInput
         {...restProps}
         country={'ua'}
@@ -39,24 +47,24 @@ export default function CustomPhoneInput(props) {
         name={name}
         className={s.field_input}
         containerClass={s.lang_container}
-        inputClass={classNames({
+        inputClass={cn({
           [s.react_phone_input]: true,
           [s.lang]: true,
           [s.field_input]: true,
         })}
-        buttonClass={classNames({
+        buttonClass={cn({
           [s.lang_btn]: true,
           [s.extra_style]: true,
           [s.opened]: true,
           [s.lightTheme]: !darkTheme,
         })}
-        dropdownClass={classNames({
+        dropdownClass={cn({
           [s.drop_down]: true,
           [s.list]: true,
           [s.list_hover]: true,
           [s.lightThemeDrop]: !darkTheme,
         })}
-        searchClass={classNames({
+        searchClass={cn({
           [s.drop_search]: true,
           [s.list]: true,
         })}
@@ -78,8 +86,10 @@ CustomPhoneInput.defaultProps = {
 CustomPhoneInput.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
+  wrapperClass: PropTypes.string,
   type: PropTypes.string,
   className: PropTypes.string,
   handleBlur: PropTypes.func.isRequired,
-  label: PropTypes.object,
+  label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  labelClass: PropTypes.string,
 }

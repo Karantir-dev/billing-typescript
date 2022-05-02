@@ -6,3 +6,4 @@ export { default as OpenedTicker } from './SupportPage/OpenedTicket/OpenedTicket
 export { default as AffiliateProgram } from './AffiliateProgram/AffiliateProgram'
 export { default as AboutAffiliateProgram } from './AffiliateProgram/AboutAffiliateProgram/AboutAffiliateProgram'
 export { default as AffiliateProgramIncome } from './AffiliateProgram/AffiliateProgramIncome/AffiliateProgramIncome'
+export { default as UserSettings } from './UserSettings/UserSettings'

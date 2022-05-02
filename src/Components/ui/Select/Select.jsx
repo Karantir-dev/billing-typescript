@@ -16,6 +16,7 @@ export default function Component(props) {
     value,
     height,
     placeholder,
+    additionalPlaceHolder,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -67,9 +68,17 @@ export default function Component(props) {
             inputClassName,
           )}
         >
-          <span className={cn({ [s.placeholder]: !selectedItem?.label })}>
+          <span
+            className={cn({
+              [s.placeholder]: !selectedItem?.label,
+              [s.additionalField]: additionalPlaceHolder,
+            })}
+          >
             {selectedItem?.label || placeholder}
           </span>
+          {additionalPlaceHolder && (
+            <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
+          )}
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
