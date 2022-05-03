@@ -56,17 +56,17 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always()
 
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - run: npm install -g npm
-      - run: npm install
-      - run: snyk monitor
+  #security:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@master
+  #    - name: Run Snyk to check for vulnerabilities
+  #      uses: snyk/actions/node@master
+  #      env:
+  #        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #    - run: npm install -g npm
+  #    - run: npm install
+  #    - run: snyk monitor
   deploy:
     needs: [eslint, jest]
     name: Deploy image to server
