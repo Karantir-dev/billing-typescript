@@ -17,6 +17,8 @@ const userParamsInfo = createReducer(initialState.userParamsInfo, {
     (state = { ...current(state), time: payload }),
   [settingsActions.setUpdateAvatar]: (state, { payload }) =>
     (state = { ...current(state), avatar_view: payload }),
+  [settingsActions.emailStatusUpadate]: (state, { payload }) =>
+    (state = { ...current(state), email_confirmed_status: payload }),
 })
 
 const usersReducer = combineReducers({

@@ -20,7 +20,7 @@
   &.extra_style.opened {
     background-color: var(--nearby-elements-bgc);
     border: none;
-
+    z-index: 8;
     &.opened {
       background-color: var(--nearby-elements-bgc);
     }
@@ -48,10 +48,10 @@
   width: 100%;
   border: none;
   box-shadow: var(--forms_shadow);
-  height: 50px;
   background-color: var(--nearby-elements-bgc);
 
   @extend %input;
+  height: 50px;
   position: static;
   padding-left: 40px;
 }

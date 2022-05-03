@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import FilterModal from './FilterModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, CreateTicketModal } from '../..'
 import { supportOperations } from '../../../Redux'
@@ -10,6 +11,7 @@ import s from './SupportFilter.module.scss'
 
 export default function Component({ selctedTicket, setCurrentPage }) {
   const { t } = useTranslation(['support', 'other'])
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
   const dispatch = useDispatch()
@@ -25,16 +27,26 @@ export default function Component({ selctedTicket, setCurrentPage }) {
             className={s.calendarBtn}
           />
           {filterModal && (
-            <>
+            <div>
               <Portal>
-                <div className={s.bg} />
+                <div className={s.bg}>
+                  {mobile && (
+                    <FilterModal
+                      setCurrentPage={setCurrentPage}
+                      filterModal={filterModal}
+                      setFilterModal={setFilterModal}
+                    />
+                  )}
+                </div>
               </Portal>
-              <FilterModal
-                setCurrentPage={setCurrentPage}
-                filterModal={filterModal}
-                setFilterModal={setFilterModal}
-              />
-            </>
+              {!mobile && (
+                <FilterModal
+                  setCurrentPage={setCurrentPage}
+                  filterModal={filterModal}
+                  setFilterModal={setFilterModal}
+                />
+              )}
+            </div>
           )}
         </div>
         {params?.path === 'requests' && (

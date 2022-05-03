@@ -16,6 +16,7 @@ import {
 } from '../..'
 import { supportSelectors, supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
+import { Cross } from '../../../images'
 
 export default function Component(props) {
   const { setFilterModal, setCurrentPage, filterModal } = props
@@ -100,10 +101,15 @@ export default function Component(props) {
           }
           return (
             <Form className={s.form}>
+              <div className={s.formHeader}>
+                <h2>{t('Filter', { ns: 'other' })}</h2>
+                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+              </div>
               <div className={s.inputRow}>
                 <InputField
+                  inputWrapperClass={s.inputHeight}
                   name="id"
-                  label={t('request_id')}
+                  label={`${t('request_id')}:`}
                   placeholder={t('Enter id', { ns: 'other' })}
                   isShadow
                   className={s.searchInput}
@@ -111,8 +117,9 @@ export default function Component(props) {
                   touched={!!touched.email}
                 />
                 <InputField
+                  inputWrapperClass={s.inputHeight}
                   name="message"
-                  label={t('Contains text')}
+                  label={`${t('Contains text')}:`}
                   placeholder={t('Enter text', { ns: 'other' })}
                   isShadow
                   className={s.searchInput}
@@ -120,8 +127,9 @@ export default function Component(props) {
                   touched={!!touched.email}
                 />
                 <InputField
+                  inputWrapperClass={s.inputHeight}
                   name="name"
-                  label={t('theme', { ns: 'other' })}
+                  label={`${t('theme', { ns: 'other' })}:`}
                   placeholder={t('Enter request subject')}
                   isShadow
                   className={s.searchInput}
@@ -132,7 +140,7 @@ export default function Component(props) {
               <div className={s.selectAndBtn}>
                 <Select
                   placeholder={t('Not chosen', { ns: 'other' })}
-                  label={t('The request is related to a violation')}
+                  label={`${t('The request is related to a violation')}:`}
                   value={values.abuse}
                   getElement={item => setFieldValue('abuse', item)}
                   isShadow
@@ -144,7 +152,7 @@ export default function Component(props) {
                 />
                 <SelectMultiple
                   placeholder={t('Select status', { ns: 'other' })}
-                  label={t('status', { ns: 'other' })}
+                  label={`${t('status', { ns: 'other' })}:`}
                   value={values.tstatus}
                   getElement={item => setFieldValue('tstatus', item)}
                   isShadow
@@ -156,7 +164,7 @@ export default function Component(props) {
                 />
                 <div className={s.timeSelectBlock}>
                   <Select
-                    label={t('Period', { ns: 'other' })}
+                    label={`${t('Period', { ns: 'other' })}:`}
                     value={values.message_post}
                     getElement={item => setFieldValue('message_post', item)}
                     isShadow

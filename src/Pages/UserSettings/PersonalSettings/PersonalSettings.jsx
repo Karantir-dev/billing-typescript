@@ -9,10 +9,10 @@ import {
   InputField,
   CustomPhoneInput,
   Select,
-  Toggle,
   Button,
   Portal,
   ModalPickPhoto,
+  ToggleBlock,
 } from '../../../Components'
 import { BASE_URL } from '../../../config/config'
 import { Form, Formik } from 'formik'
@@ -37,11 +37,56 @@ export default function Component() {
     dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values))
   }
 
+  const confirmEmailHandler = values => {
+    dispatch(settingsOperations?.setupEmailConfirm(userInfo?.$id, values))
+  }
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email(t('warnings.invalid_email')),
     email_notif: Yup.string().email(t('warnings.invalid_email')),
   })
 
+  const emailStatusRender = statusText => {
+    let newText = statusText?.toLowerCase()
+
+    if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('is not confirmed')
+    ) {
+      newText = (
+        <>
+          <p className={s.emailError}>
+            Email {userParams?.email} {t('is not confirmed')}.{' '}
+            {t('All notifications are disabled')}.
+          </p>
+          <p>
+            {t('The confirmation email has been sent to')} {userParams?.email}.
+          </p>
+          <p>{t('Click \'send confirmation\' for resending')}.</p>
+        </>
+      )
+    } else if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('is confirmed')
+    ) {
+      newText = (
+        <p className={s.emailSucces}>
+          Email {userParams?.email} {t('is confirmed')}.
+        </p>
+      )
+    } else if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('has been sent')
+    ) {
+      newText = (
+        <p>
+          {t('The confirmation email has been sent to')} {userParams?.email}.
+        </p>
+      )
+    }
+
+    return newText
+  }
   return (
     <>
       <Formik
@@ -84,9 +129,11 @@ export default function Component() {
                       />
                     )}
                   </div>
-                  <div className={s.downloadText}>{t('Upload a photo')}</div>
-                  <div className={s.downloadParams}>
-                    {t('jpg, png, gif 80x80 up to 64 Kb')}
+                  <div className={s.downloadBlockText}>
+                    <div className={s.downloadText}>{t('Upload a photo')}</div>
+                    <div className={s.downloadParams}>
+                      {t('jpg, png, gif 80x80 up to 64 Kb')}
+                    </div>
                   </div>
                   <input
                     hidden
@@ -102,39 +149,44 @@ export default function Component() {
                 </label>
                 <div className={s.formRow}>
                   <InputField
+                    background
                     disabled={userEdit?.email?.readonly}
                     name="email"
-                    label={requiredLabel(t('Email'))}
+                    label={requiredLabel(`${t('Email')}:`)}
                     placeholder={t('email_placeholder', { ns: 'auth' })}
                     isShadow
-                    className={s.emailInput}
+                    className={cn(s.emailInput, s.input)}
                     error={!!errors.email}
                     touched={!!touched.email}
                   />
                   <InputField
+                    background
                     disabled={userEdit?.realname?.readonly}
                     name="realname"
-                    label={t('Full name', { ns: 'other' })}
+                    label={`${t('Full name', { ns: 'other' })}:`}
                     placeholder={t('Enter your details', { ns: 'other' })}
                     isShadow
+                    className={s.input}
                     error={!!errors.email}
                     touched={!!touched.email}
                   />
                 </div>
                 <div className={s.formRow}>
                   <CustomPhoneInput
+                    containerClass={s.phoneInputContainer}
+                    inputClass={s.phoneInputClass}
                     disabled={userEdit?.phone?.readonly}
                     value={values.phone}
                     wrapperClass={s.phoneInput}
                     labelClass={s.phoneInputLabel}
-                    label={t('Phone', { ns: 'other' })}
+                    label={`${t('Phone', { ns: 'other' })}:`}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
                     name="phone"
                   />
                   <Select
-                    label={t('Timezone', { ns: 'other' })}
+                    label={`${t('Timezone', { ns: 'other' })}:`}
                     value={values.timezone}
                     getElement={item => getTime(item)}
                     placeholder={t('Timezone', { ns: 'other' })}
@@ -142,7 +194,7 @@ export default function Component() {
                       label: t(`${$.trim()}`, { ns: 'other' }),
                       value: $key,
                     }))}
-                    className={s.select}
+                    className={cn(s.select, s.input)}
                     isShadow
                     additionalPlaceHolder={
                       userParams?.time
@@ -151,6 +203,7 @@ export default function Component() {
                           ).format('HH:mm')}`
                         : null
                     }
+                    background
                   />
                 </div>
               </div>
@@ -172,7 +225,7 @@ export default function Component() {
                 <div className={cn(s.formRow, s.rowMessages)}>
                   <InputField
                     name="email_notif"
-                    label={t('Email')}
+                    label={`${t('Email')}:`}
                     placeholder={t('email_placeholder', { ns: 'auth' })}
                     isShadow
                     className={s.emailInput}
@@ -181,60 +234,52 @@ export default function Component() {
                   />
                   <InputField
                     name="telegram_id"
-                    label={t('Telegram')}
+                    label={`${t('Telegram')}:`}
                     placeholder={t('Enter your telegram')}
                     isShadow
+                    className={s.input}
                     error={!!errors.email}
                     touched={!!touched.email}
                   />
+                </div>
+                <div className={s.emailStatus}>
+                  {emailStatusRender(userParams?.email_confirmed_status)}
                 </div>
                 {userParams?.listCheckBox && (
                   <div className={s.checkBlock}>
                     <div className={s.checkTitle}>
                       <div className={s.notifTitle}>{t('Notification methods')}:</div>
-                      <div className={s.column}>email</div>
-                      <div className={s.column}>messenger</div>
-                      <div className={s.column}>sms</div>
+                      <div className={s.columnBlock}>
+                        <div className={s.column}>email</div>
+                        <div className={s.column}>messenger</div>
+                        <div className={s.column}>sms</div>
+                      </div>
                     </div>
                     {userParams?.listCheckBox?.map(el => (
-                      <div key={el.name} className={s.checkRow}>
-                        <div className={s.notifName}>{t(el.name)}</div>
-                        <div className={s.column}>
-                          <Toggle
-                            setValue={value =>
-                              setFieldValue(`${el.fieldName}_notice_ntemail`, value)
-                            }
-                            initialState={el?.emailValue === 'on'}
-                          />
-                        </div>
-                        <div className={s.column}>
-                          <Toggle
-                            setValue={value =>
-                              setFieldValue(`${el.fieldName}_notice_ntmessenger`, value)
-                            }
-                            initialState={el?.messengerValue === 'on'}
-                          />
-                        </div>
-                        <div className={s.column}>
-                          <Toggle
-                            setValue={value =>
-                              setFieldValue(`${el.fieldName}_notice_ntsms`, value)
-                            }
-                            initialState={el?.smsValue === 'on'}
-                          />
-                        </div>
-                      </div>
+                      <ToggleBlock
+                        key={el.name}
+                        item={el}
+                        setFieldValue={setFieldValue}
+                      />
                     ))}
                   </div>
                 )}
               </div>
-              <div>
+              <div className={s.btnBlock}>
                 <Button
                   className={s.saveBtn}
                   isShadow
                   size="medium"
                   label={t('Save', { ns: 'other' })}
                   type="submit"
+                />
+                <Button
+                  className={s.confirmBtn}
+                  isShadow
+                  size="medium"
+                  label={t('Send confirmation', { ns: 'other' })}
+                  onClick={() => confirmEmailHandler(values)}
+                  type="button"
                 />
                 <button
                   onClick={() => navigate(routes?.HOME)}

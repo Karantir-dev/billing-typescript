@@ -11,5 +11,10 @@
   "Notification methods": "Способы уведомлений",
   "Service notices": "Уведомления по услугам",
   "Financial notices": "Финансовые уведомления",
-  "News notifications": "Новостные уведомления"
+  "News notifications": "Новостные уведомления",
+  "is not confirmed": "не подтвержден",
+  "All notifications are disabled": "Все уведомления отключены",
+  "The confirmation email has been sent to": "Запрос на подтверждение отправлен на адрес",
+  "Click 'send confirmation' for resending": "Для отправки повторного запроса используйте кнопку \"Выслать подтверждение\"",
+  "is confirmed": "подтвержден"
 }
