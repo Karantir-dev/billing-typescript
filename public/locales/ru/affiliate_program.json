@@ -25,6 +25,13 @@
     "chart": "График",
     "table": "Таблица",
     "income_amount": "Сумма дохода",
-    "select_placeholder": "Выберите период"
+    "select_placeholder": "Выберите период",
+    "detailed_statistics": "Подробная статистика за",
+    "service": "$t(about_section.service)",
+    "rate": "Ставка",
+    "income": "Доход",
+    "referral": "Реферал",
+    "total": "Всего",
+    "chart_placeholder": "Не достаточно данных для отрисовки графика"
   }
 }

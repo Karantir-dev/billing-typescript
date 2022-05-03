@@ -28,7 +28,7 @@ export default function Component(props) {
       data-testid="archive_item"
       role="button"
       tabIndex={0}
-      onKeyDown={() => null}
+      onKeyDown={() => {}}
       onDoubleClick={() => navigate(`${route.SUPPORT}/requests_archive/${id}`)}
       onClick={() => setSelctedTicket(id)}
       className={cn(s.item, { [s.selected]: selected })}

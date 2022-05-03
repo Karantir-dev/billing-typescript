@@ -34,6 +34,13 @@
   "-- none --": "Не выбрано",
   "Yes": "Да",
   "No": "Нет",
+  "services": {
+    "Virtual server": "Виртуальный сервер",
+    "Shared hosting": "Виртуальный хостинг",
+    "Dedicated server": "Выделенный сервер",
+    "External FTP-storage": "Внешнее FTP-хранилище",
+    "All services": "Все услуги"
+  },
   "Timezone": "Часовой пояс",
   "Phone": "Телефон",
   "Enter your details": "Введите ваши данные",

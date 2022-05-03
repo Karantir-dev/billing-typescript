@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
-import { Portal } from '../../'
+import { useDispatch } from 'react-redux'
+
+import { DetailsModal } from '../../'
+import { affiliateOperations } from '../../../Redux'
 
 import s from './IncomeTable.module.scss'
 
 export default function IncomeTable({ list }) {
   const { t } = useTranslation(['affiliate_program', 'other'])
+  const dispatch = useDispatch()
   let incomeSum = 0
+
+  const [details, setDetails] = useState([])
+
+  const onDayClick = date => {
+    dispatch(affiliateOperations.getDayDetails(date, setDetails))
+  }
+
   return (
     <>
       <div className={s.table_head_row}>
@@ -19,7 +30,11 @@ export default function IncomeTable({ list }) {
           incomeSum += Number(amount.replace(' EUR', ''))
           return (
             <li className={s.table_row} key={nanoid()}>
-              <button className={s.table_btn} type="button">
+              <button
+                className={s.table_btn}
+                type="button"
+                onClick={() => onDayClick(date)}
+              >
                 <span className={s.table_date}>{date}</span>
                 <span className={s.table_amount}>{amount}</span>
               </button>
@@ -31,7 +46,8 @@ export default function IncomeTable({ list }) {
         <span className={s.income_sum}></span>
         <span className={s.income_sum}>{incomeSum.toFixed(2) + ' EUR'}</span>
       </p>
-      <Portal></Portal>
+
+      <DetailsModal details={details} closeModal={() => setDetails([])} />
     </>
   )
 }

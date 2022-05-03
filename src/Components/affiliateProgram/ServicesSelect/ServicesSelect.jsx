@@ -56,7 +56,7 @@ export default function ServicesSelect({ setServiseName }) {
         className={cn({ [s.select]: true, [s.opened]: dropdownOpened })}
         role="button"
         tabIndex={0}
-        onKeyUp={() => null}
+        onKeyUp={() => {}}
         onClick={handleSelectClick}
         data-testid="custom_select"
       >
@@ -79,7 +79,7 @@ export default function ServicesSelect({ setServiseName }) {
               key={linkName}
               role="button"
               tabIndex={0}
-              onKeyUp={() => null}
+              onKeyUp={() => {}}
               onClick={() => handleServiceClick(linkName, text)}
             >
               {text}

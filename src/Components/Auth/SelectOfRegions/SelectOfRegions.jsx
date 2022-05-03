@@ -76,7 +76,7 @@ export default function SelectOfRegions({
           <div
             role="button"
             tabIndex={-1}
-            onKeyDown={() => null}
+            onKeyDown={() => {}}
             className={s.backdrop}
             onClick={handleBackdropClick}
           ></div>

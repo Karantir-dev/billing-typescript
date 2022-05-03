@@ -42,7 +42,7 @@ export default function BurgerListItem({
       <div
         role="button"
         tabIndex={0}
-        onKeyDown={() => null}
+        onKeyDown={() => {}}
         onClick={e => e.stopPropagation()}
       >
         <ul
@@ -57,7 +57,7 @@ export default function BurgerListItem({
                 <div
                   role="button"
                   tabIndex={0}
-                  onKeyDown={() => null}
+                  onKeyDown={() => {}}
                   onClick={controlMenu}
                 >
                   <NavLink to={item.routeName}>

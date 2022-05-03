@@ -49,19 +49,28 @@ const getInitialIncomeInfo =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
         const periods = data.doc.slist[0].val.map(({ $, $key }) => {
           return { label: $, value: $key }
         })
         setFormOptions(periods)
-        const tableData = data.doc?.reportdata?.reward?.elem
+
         if (data.doc?.period?.$) {
           setFixedPeriod(data.doc.period.$)
         }
+
+        const tableData = data.doc?.reportdata?.reward?.elem
+        console.log(tableData)
         if (tableData) {
-          const modifiedTableData = tableData.map(({ amount }) => {
-            return { amount: amount.$, date: amount.$id }
-          })
+          let modifiedTableData = []
+          if (Array.isArray(tableData)) {
+            modifiedTableData = tableData.map(({ amount }) => {
+              return { amount: amount.$, date: amount.$id }
+            })
+          } else {
+            modifiedTableData = [
+              { amount: tableData.amount.$, date: tableData.amount.$id },
+            ]
+          }
           setTableData(modifiedTableData)
         }
 
@@ -93,22 +102,59 @@ const getChartInfo =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-        const tableData = data.doc?.reportdata?.reward?.elem?.map(({ amount }) => {
-          return { amount: amount.$, date: amount.$id }
-        })
-        setTableData(tableData ? tableData : [])
+        const tableData = data.doc?.reportdata?.reward?.elem
+
+        if (tableData) {
+          let modifiedTableData = []
+          if (Array.isArray(tableData)) {
+            modifiedTableData = tableData.map(({ amount }) => {
+              return { amount: amount.$, date: amount.$id }
+            })
+          } else {
+            modifiedTableData = [
+              { amount: tableData.amount.$, date: tableData.amount.$id },
+            ]
+          }
+
+          setTableData(modifiedTableData)
+        }
 
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('getInitialIncomeInfo - ', err.message)
+        console.log('getChartInfo - ', err.message)
       })
   }
 
+const getDayDetails = (date, setDetails) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.reward.detail',
+        auth: sessionId,
+        elid: date,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data)
+      setDetails(data.doc.reportdata.reward.elem)
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('getDayDetails - ', err.message)
+    })
+}
 export default {
   getReferralLink,
   getInitialIncomeInfo,
   getChartInfo,
+  getDayDetails,
 }

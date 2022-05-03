@@ -170,7 +170,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 className={s.exit_wrapper}
                 role="button"
                 tabIndex={0}
-                onKeyDown={() => null}
+                onKeyDown={() => {}}
                 onClick={logOut}
               >
                 <ExitSign className={s.icon} />
