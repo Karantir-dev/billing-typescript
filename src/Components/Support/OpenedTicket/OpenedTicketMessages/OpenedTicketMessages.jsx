@@ -6,12 +6,17 @@ import s from './OpenedTicketMessages.module.scss'
 export default function Component(props) {
   const { messages } = props
 
+  console.log(messages)
   return (
     <div className={s.messagesBlock}>
       {messages?.map(el => {
         if (el.$type !== 'info') {
           if (el.$type === 'system') {
-            return <div className={s.archiveTicket}>{el?.body?.$} </div>
+            return (
+              <div key={el?.$id} className={s.archiveTicket}>
+                {el?.body?.$}
+              </div>
+            )
           }
           return <MessageItem key={el?.$id} message={el} />
         }

@@ -11,7 +11,7 @@ export default function Component(props) {
 
   const textarea = useRef(null)
   useEffect(() => {
-    textarea.current.style.height = '0px'
+    textarea.current.style.height = '30px'
     const scrollHeight = textarea.current.scrollHeight
     textarea.current.style.height = scrollHeight + 'px'
   }, [message])

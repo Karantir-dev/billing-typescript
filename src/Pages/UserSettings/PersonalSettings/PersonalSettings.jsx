@@ -42,8 +42,8 @@ export default function Component() {
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('warnings.invalid_email')),
-    email_notif: Yup.string().email(t('warnings.invalid_email')),
+    email: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
+    email_notif: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
   })
 
   const emailStatusRender = statusText => {
@@ -87,6 +87,19 @@ export default function Component() {
 
     return newText
   }
+
+  const confirmEmailBtnRender = (statusText, email) => {
+    if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('is confirmed') &&
+      userParams?.email === email
+    ) {
+      return false
+    }
+
+    return true
+  }
+
   return (
     <>
       <Formik
@@ -273,14 +286,19 @@ export default function Component() {
                   label={t('Save', { ns: 'other' })}
                   type="submit"
                 />
-                <Button
-                  className={s.confirmBtn}
-                  isShadow
-                  size="medium"
-                  label={t('Send confirmation', { ns: 'other' })}
-                  onClick={() => confirmEmailHandler(values)}
-                  type="button"
-                />
+                {confirmEmailBtnRender(
+                  userParams?.email_confirmed_status,
+                  values.email_notif,
+                ) && (
+                  <Button
+                    className={s.confirmBtn}
+                    isShadow
+                    size="medium"
+                    label={t('Send confirmation', { ns: 'other' })}
+                    onClick={() => confirmEmailHandler(values)}
+                    type="button"
+                  />
+                )}
                 <button
                   onClick={() => navigate(routes?.HOME)}
                   type="button"
