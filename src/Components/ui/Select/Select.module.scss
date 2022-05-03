@@ -87,6 +87,7 @@
 
   &.opened {
     display: block;
+    z-index: 9;
   }
 
   &::after {

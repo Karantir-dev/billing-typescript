@@ -71,7 +71,7 @@ export default function Component(props) {
                   value={values.ticket_item}
                   getElement={item => setFieldValue('ticket_item', item)}
                   isShadow
-                  label={t('Specify what the question is about')}
+                  label={`${t('Specify what the question is about')}:`}
                   itemsList={servicesList.map(el => {
                     return { label: t(el.label), value: el.value }
                   })}
