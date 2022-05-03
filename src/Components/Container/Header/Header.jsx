@@ -192,7 +192,7 @@ export default function Header() {
                           <div
                             role="button"
                             tabIndex={0}
-                            onKeyDown={() => null}
+                            onKeyDown={() => {}}
                             onClick={() => setIsProfileOpened(!isProfileOpened)}
                           >
                             <NavLink to={item.routeName}>
@@ -206,7 +206,7 @@ export default function Header() {
                       <div
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => null}
+                        onKeyDown={() => {}}
                         onClick={logOut}
                       >
                         <NavLink to={routes.LOGIN}>

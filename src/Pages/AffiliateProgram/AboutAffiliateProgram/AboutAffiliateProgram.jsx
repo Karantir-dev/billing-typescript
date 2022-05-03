@@ -134,7 +134,7 @@ export default function AboutAffiliateProgram() {
             onClick={() => handleCopyText(refLinkEl)}
             role="button"
             tabIndex={0}
-            onKeyUp={() => null}
+            onKeyUp={() => {}}
             data-testid={'ref_link_field'}
           >
             <span
@@ -166,7 +166,7 @@ export default function AboutAffiliateProgram() {
             onClick={() => handleCopyText(promocodeEl)}
             role="button"
             tabIndex={0}
-            onKeyUp={() => null}
+            onKeyUp={() => {}}
             data-testid="promocode_field"
           >
             <span className={cn(s.field_text, s.selected)} ref={promocodeEl}>

@@ -53,10 +53,13 @@ const getInitialIncomeInfo =
           return { label: $, value: $key }
         })
         setFormOptions(periods)
-        const tableData = data.doc?.reportdata?.reward?.elem
+
         if (data.doc?.period?.$) {
           setFixedPeriod(data.doc.period.$)
         }
+
+        const tableData = data.doc?.reportdata?.reward?.elem
+        console.log(tableData)
         if (tableData) {
           let modifiedTableData = []
           if (Array.isArray(tableData)) {

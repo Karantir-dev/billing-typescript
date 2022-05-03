@@ -57,6 +57,7 @@ export default function Component(props) {
         style={{ height }}
         className={s.input_wrapper}
         onClick={openHandler}
+        data-testid="period_select"
       >
         <div
           className={cn(
@@ -75,7 +76,11 @@ export default function Component(props) {
       </button>
 
       {itemsList.length !== 0 && (
-        <div ref={dropdown} className={cn(s.dropdown, { [s.opened]: isOpened })}>
+        <div
+          ref={dropdown}
+          className={cn(s.dropdown, { [s.opened]: isOpened })}
+          data-testid="wrapper"
+        >
           <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
@@ -84,6 +89,7 @@ export default function Component(props) {
                   type="button"
                   key={index}
                   className={s.list_item}
+                  data-testid={`qwe${index}`}
                 >
                   <span className={s.name}>{el.label}</span>
                 </button>

@@ -34,7 +34,7 @@ export default function AffiliateProgramIncome() {
 
   const [formOptions, setFormOptions] = useState([])
   const [incomeData, setIncomeData] = useState([])
-  console.log(incomeData)
+
   const [error, setError] = useState(false)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => {
