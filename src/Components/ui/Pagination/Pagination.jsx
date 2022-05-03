@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './Pagination.module.scss'
+import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
   const { onPageChange, totalCount, currentPage, pageSize, className } = props
+
+  const { t } = useTranslation('other')
 
   const [pageNumber, setPageNumber] = useState(currentPage)
 
@@ -64,7 +67,7 @@ export default function Component(props) {
             onChange={e => onInputChange(e.target.value)}
           />
         </div>
-        из
+        {t('of')}
         <div className={s.totalPages}>{lastPage}</div>
         <div
           className={cn(s.paginationItem, s.arrow, {
@@ -80,7 +83,7 @@ export default function Component(props) {
         </div>
       </div>
       <button onClick={goToPage} className={s.btn}>
-        перейти
+        {t('follow')}
       </button>
     </div>
   )
