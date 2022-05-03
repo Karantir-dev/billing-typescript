@@ -139,7 +139,7 @@ export default function SelectOfCountries({
             <div
               role="button"
               tabIndex={-1}
-              onKeyDown={() => null}
+              onKeyDown={() => {}}
               className={s.backdrop}
               onClick={handleBackdropClick}
             ></div>

@@ -53,7 +53,7 @@ Component.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   isShadow: PropTypes.bool,
-  size: PropTypes.oneOf(['block', 'small', 'medium', 'large']),
+  size: PropTypes.oneOf(['block', 'small', 'medium', 'large', '']),
   loading: PropTypes.bool,
 }
 
@@ -62,7 +62,7 @@ Component.defaultProps = {
   type: 'button',
   onClick: () => null,
   disabled: false,
-  size: 'block',
+  size: '',
   isShadow: false,
   dataTestid: null,
   loading: false,

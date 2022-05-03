@@ -34,6 +34,13 @@
   "-- none --": "Not chosen",
   "Yes": "Yes",
   "No": "No",
+  "services": {
+    "Virtual server": "Virtual server",
+    "Shared hosting": "Shared hosting",
+    "Dedicated server": "Dedicated server",
+    "External FTP-storage": "External FTP-storage",
+    "All services": "All services"
+  },
   "Timezone": "Timezone",
   "Phone": "Phone",
   "Enter your details": "Enter your details",

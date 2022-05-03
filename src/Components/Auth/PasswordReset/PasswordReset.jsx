@@ -3,19 +3,19 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
+import cn from 'classnames'
+import * as Yup from 'yup'
 
 import { Envelope } from '../../../images'
-
 import { authOperations } from '../../../Redux'
-import * as Yup from 'yup'
 import * as routes from '../../../routes'
-import cn from 'classnames'
+import { Button } from '../../'
 import s from './PasswordReset.module.scss'
 
 export default function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
 
   const [email, setEmail] = useState('')
   const [isValid, setIsValid] = useState('')
@@ -65,11 +65,11 @@ export default function PasswordReset() {
           </a>
           {t('reset.description_2')}
         </p>
+
         <div className={s.field_wrapper}>
           <label htmlFor="email" className={s.label}>
             {t('email_label')}
           </label>
-
           <div className={s.input_wrapper}>
             <input
               className={cn({ [s.input]: true, [s.error]: isValid === 'invalid' })}
@@ -88,9 +88,13 @@ export default function PasswordReset() {
             <span className={s.error_message}>{t('warnings.invalid_email')}</span>
           )}
         </div>
-        <button className={s.submit_btn} type="submit">
-          <span className={s.btn_text}>{t('reset.send_btn')}</span>
-        </button>
+        <Button
+          className={s.submit_btn}
+          type="submit"
+          label={t('reset.send_btn')}
+          isShadow
+        />
+
         <Link className={s.reset_pass_link} to={routes.LOGIN}>
           {t('reset.cancel_link')}
         </Link>

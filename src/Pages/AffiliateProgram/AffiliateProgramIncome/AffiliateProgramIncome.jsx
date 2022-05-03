@@ -34,7 +34,7 @@ export default function AffiliateProgramIncome() {
 
   const [formOptions, setFormOptions] = useState([])
   const [incomeData, setIncomeData] = useState([])
-  console.log(incomeData)
+
   const [error, setError] = useState(false)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => {
@@ -168,6 +168,9 @@ export default function AffiliateProgramIncome() {
 
         <p className={s.table_title}>{t('income_section.chart')}</p>
         <div className={s.chart_wrapper}>
+          {incomeData.length < 2 && (
+            <p className={s.chart_placeholder}>{t('income_section.chart_placeholder')}</p>
+          )}
           <IncomeChart incomeData={incomeData} />
         </div>
 

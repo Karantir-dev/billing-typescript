@@ -13,7 +13,7 @@ body {
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
-  --burger-menu-bgc: var(--main-bgc);
+  --modal_bgc: var(--main-bgc);
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -29,9 +29,7 @@ body {
   --forms-drop-down: #ffffff;
   --inactive_icon_color: #e1daeb;
   --popup_prompt: #ede7f4;
-
   --message-bg: #f6ebff;
-
   --border-color: #f4f4f4;
 
   --switchers-bg: #e1dfdf;
@@ -66,7 +64,7 @@ body.dark-theme {
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
-  --burger-menu-bgc: var(--elements-bgc);
+  --modal_bgc: var(--elements-bgc);
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;
@@ -76,7 +74,7 @@ body.dark-theme {
   --icon-color: #75707e;
   --dividing_line: #4d4855;
   --background-color: #201a2a;
-  --transparent-color: #716d79;
+  --transparent-color: #878290;
   --forms-bg-2-color: #342f3f;
   --forms-bg-3-color: #3a3347;
   --forms-drop-down: #514a5f;
