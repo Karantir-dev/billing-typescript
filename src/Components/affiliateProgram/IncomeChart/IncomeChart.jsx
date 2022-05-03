@@ -15,7 +15,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 
 export default function IncomeChart({ incomeData }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  console.log('CHART')
+
   ChartJS.defaults.borderColor = darkTheme ? '#4D4855' : 'rgba(0,0,0,0.1)'
   let labels = []
   let data = []

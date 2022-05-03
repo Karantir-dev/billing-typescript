@@ -50,6 +50,7 @@
   height: 19px;
   flex: none;
   fill: var(--main-text);
+  cursor: pointer;
 }
 
 .blur {
@@ -58,7 +59,7 @@
     content: '';
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 5px;
     left: 0;
     height: 30px;
     background-image: linear-gradient(0deg, var(--modal_bgc) 20%, rgba(0, 0, 0, 0.001));
@@ -70,7 +71,20 @@
   overflow-y: scroll;
   height: 70vh;
   margin-bottom: 20px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
+
 .list_item {
   display: grid;
   grid-template-columns: 80px 1fr;

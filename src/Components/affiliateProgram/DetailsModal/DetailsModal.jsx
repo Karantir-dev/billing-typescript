@@ -19,6 +19,10 @@ export default function DetailsModal({ details, closeModal }) {
     }
   }
 
+  const sortedItems = details.sort((a, b) => {
+    return b.reward.$.replace('%', '') - a.reward.$.replace('%', '')
+  })
+
   return (
     <div
       tabIndex={0}
@@ -48,11 +52,11 @@ export default function DetailsModal({ details, closeModal }) {
             </div>
           )}
           <ul className={s.list}>
-            {details.map(({ amount, name, referal, reward }) => {
+            {sortedItems.map(({ amount, name, referal, reward }, index) => {
               daySum += Number(amount.$.replace(' EUR', ''))
 
               return widerThanMobile ? (
-                <li className={s.list_item}>
+                <li className={s.list_item} key={index}>
                   <span className={s.row_value}>
                     {t(`services.${name.$.trim()}`, { ns: 'other' })}
                   </span>
