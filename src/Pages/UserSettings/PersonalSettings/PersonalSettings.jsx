@@ -80,7 +80,7 @@ export default function Component() {
     ) {
       newText = (
         <p>
-          {t('The confirmation email has been sent to')} {userParams?.email} .
+          {t('The confirmation email has been sent to')} {userParams?.email}.
         </p>
       )
     }
