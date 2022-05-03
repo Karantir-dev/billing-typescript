@@ -367,8 +367,6 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
           statuses = data?.doc?.tstatus?.$
         }
 
-        console.log(statuses)
-
         const currentFilter = {
           id: data?.doc?.id?.$ || '',
           message: data?.doc?.message?.$ || '',
@@ -419,8 +417,6 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
       } else {
         statuses = data?.doc?.tstatus?.$
       }
-
-      console.log(statuses)
 
       const currentFilter = {
         id: data?.doc?.id?.$ || '',

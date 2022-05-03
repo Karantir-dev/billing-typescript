@@ -83,6 +83,7 @@ export default function Component(props) {
             [s.shadow]: isShadow,
             [s.field_bgc]: background,
             [s.error]: error && touched,
+            [s.disabled]: disabled,
           })}
           style={{ height }}
           id={name}

@@ -19,7 +19,7 @@ export default function Component(props) {
   const servicesList = useSelector(supportSelectors.getServices)
 
   const validationSchema = Yup.object().shape({
-    message: Yup.string().required(),
+    message: Yup.string().required(t('Is a required field')),
     subject: Yup.string().required(t('Is a required field')),
   })
 

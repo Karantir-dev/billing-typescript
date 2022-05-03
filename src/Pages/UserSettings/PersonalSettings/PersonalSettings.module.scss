@@ -273,11 +273,20 @@
 
 .emailStatus {
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 16px;
   line-height: 130%;
   color: var(--main-text);
   margin: 25px 0;
+  p {
+    margin: 5px 0;
+  }
+  .emailError {
+    color: var(--error-color);
+  }
+  .emailSucces {
+    color: var(--success-color);
+  }
 }
 
 @media screen and (min-width: 1124px) {

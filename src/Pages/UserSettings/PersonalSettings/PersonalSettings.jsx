@@ -37,11 +37,56 @@ export default function Component() {
     dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values))
   }
 
+  const confirmEmailHandler = values => {
+    dispatch(settingsOperations?.setupEmailConfirm(userInfo?.$id, values))
+  }
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email(t('warnings.invalid_email')),
     email_notif: Yup.string().email(t('warnings.invalid_email')),
   })
 
+  const emailStatusRender = statusText => {
+    let newText = statusText?.toLowerCase()
+
+    if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('is not confirmed')
+    ) {
+      newText = (
+        <>
+          <p className={s.emailError}>
+            Email {userParams?.email} {t('is not confirmed')}.{' '}
+            {t('All notifications are disabled')}.
+          </p>
+          <p>
+            {t('The confirmation email has been sent to')} {userParams?.email}.
+          </p>
+          <p>{t('Click \'send confirmation\' for resending')}.</p>
+        </>
+      )
+    } else if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('is confirmed')
+    ) {
+      newText = (
+        <p className={s.emailSucces}>
+          Email {userParams?.email} {t('is confirmed')}.
+        </p>
+      )
+    } else if (
+      statusText?.toLowerCase().includes('email') &&
+      statusText?.toLowerCase().includes('has been sent')
+    ) {
+      newText = (
+        <p>
+          {t('The confirmation email has been sent to')} {userParams?.email} .
+        </p>
+      )
+    }
+
+    return newText
+  }
   return (
     <>
       <Formik
@@ -197,10 +242,9 @@ export default function Component() {
                     touched={!!touched.email}
                   />
                 </div>
-                <div
-                  className={s.emailStatus}
-                  dangerouslySetInnerHTML={{ __html: userParams?.email_confirmed_status }}
-                />
+                <div className={s.emailStatus}>
+                  {emailStatusRender(userParams?.email_confirmed_status)}
+                </div>
                 {userParams?.listCheckBox && (
                   <div className={s.checkBlock}>
                     <div className={s.checkTitle}>
@@ -234,7 +278,8 @@ export default function Component() {
                   isShadow
                   size="medium"
                   label={t('Send confirmation', { ns: 'other' })}
-                  type="submit"
+                  onClick={() => confirmEmailHandler(values)}
+                  type="button"
                 />
                 <button
                   onClick={() => navigate(routes?.HOME)}
