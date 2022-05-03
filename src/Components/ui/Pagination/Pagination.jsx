@@ -1,105 +1,101 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { usePagination, DOTS } from './usePagination'
 import s from './Pagination.module.scss'
 
 export default function Component(props) {
-  const {
-    onPageChange,
-    totalCount,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-    className,
-  } = props
+  const { onPageChange, totalCount, currentPage, pageSize, className } = props
 
-  const paginationRange = usePagination({
-    currentPage,
-    totalCount,
-    siblingCount,
-    pageSize,
-  })
+  const [pageNumber, setPageNumber] = useState(currentPage)
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  let lastPage = Math.ceil(totalCount / pageSize)
+
+  if (currentPage === 0 || lastPage < 2) {
     return null
   }
 
   const onNext = () => {
     onPageChange(currentPage + 1)
+    setPageNumber(currentPage + 1)
   }
 
   const onPrevious = () => {
     onPageChange(currentPage - 1)
+    setPageNumber(currentPage - 1)
   }
 
-  let lastPage = paginationRange[paginationRange.length - 1]
-  return (
-    <ul className={cn(s.paginationContainer, { [className]: className })}>
-      <div
-        className={cn(s.paginationItem, {
-          [s.disabled]: currentPage === 1,
-        })}
-        role="button"
-        tabIndex={0}
-        disabled={currentPage === 1}
-        onClick={onPrevious}
-        onKeyDown={null}
-      >
-        <div className={cn(s.arrow, s.left)} />
-      </div>
-      {paginationRange.map(pageNumber => {
-        if (pageNumber === DOTS) {
-          return (
-            <div key={pageNumber} className={cn(s.paginationItem, s.dots)}>
-              &#8230;
-            </div>
-          )
-        }
+  const goToPage = () => {
+    onPageChange(Number(pageNumber))
+  }
 
-        return (
-          <div
-            key={pageNumber}
-            className={cn(s.paginationItem, {
-              [s.selected]: pageNumber === currentPage,
-            })}
-            role="button"
-            tabIndex={0}
-            onClick={() => onPageChange(pageNumber)}
-            onKeyDown={null}
-          >
-            {pageNumber}
-          </div>
-        )
-      })}
-      <div
-        className={cn(s.paginationItem, {
-          [s.disabled]: currentPage === lastPage,
-        })}
-        role="button"
-        disabled={currentPage === lastPage}
-        tabIndex={0}
-        onClick={onNext}
-        onKeyDown={null}
-      >
-        <div className={cn(s.arrow, s.right)} />
+  const onInputChange = text => {
+    let value = text.replace(/\D/g, '')
+    if (value.length === 0) {
+      value = ''
+    }
+    if (Number(value) < 1 && value.length !== 0) {
+      value = 1
+    }
+    if (Number(value) > lastPage) {
+      value = lastPage
+    }
+    setPageNumber(value)
+  }
+
+  return (
+    <div className={cn(s.blockPagination, { [className]: className })}>
+      <div className={s.paginationContainer}>
+        <div
+          className={cn(s.paginationItem, s.arrow, {
+            [s.disabled]: currentPage === 1,
+          })}
+          role="button"
+          tabIndex={0}
+          disabled={currentPage === 1}
+          onClick={onPrevious}
+          onKeyDown={null}
+        >
+          <div className={cn(s.arrow, s.left)} />
+        </div>
+        <div className={s.paginationItem}>
+          <input
+            className={s.input}
+            value={pageNumber}
+            onChange={e => onInputChange(e.target.value)}
+          />
+        </div>
+        из
+        <div className={s.totalPages}>{lastPage}</div>
+        <div
+          className={cn(s.paginationItem, s.arrow, {
+            [s.disabled]: currentPage === lastPage,
+          })}
+          role="button"
+          disabled={currentPage === lastPage}
+          tabIndex={0}
+          onClick={onNext}
+          onKeyDown={null}
+        >
+          <div className={cn(s.arrow, s.right)} />
+        </div>
       </div>
-    </ul>
+      <button onClick={goToPage} className={s.btn}>
+        перейти
+      </button>
+    </div>
   )
 }
-
-
 
 Component.propTypes = {
   className: PropTypes.string,
   onPageChange: PropTypes.func,
-  pageSize:  PropTypes.number,
-  currentPage:  PropTypes.number,
+  pageSize: PropTypes.number,
+  currentPage: PropTypes.number,
   siblingCount: PropTypes.number,
   totalCount: PropTypes.number,
 }
 
 Component.defaultProps = {
   onPageChange: () => null,
-  siblingCount: 1
+  siblingCount: 1,
 }

@@ -10,7 +10,6 @@ import { BASE_URL } from '../../../../config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
 
-
 export default function Component(props) {
   const dispatch = useDispatch()
   const params = useParams()
@@ -20,6 +19,8 @@ export default function Component(props) {
   const downloadFileHandler = (fileName, fileId) => {
     dispatch(supportOperations.getFile(fileName, fileId))
   }
+
+  console.log(message?.body?.$)
 
   return (
     <div
@@ -56,7 +57,12 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.messageBody}>
-          <div className={s.messageText}>{message?.body?.$}</div>
+          <div
+            className={s.messageText}
+            dangerouslySetInnerHTML={{
+              __html: message?.body?.$?.replace(/(?:\r\n|\r|\n)/g, '</br>'),
+            }}
+          />
           {message?.file && (
             <div className={s.fileBlock}>
               {message?.file?.map(el => {
