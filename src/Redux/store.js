@@ -18,6 +18,7 @@ import {
   authReducer,
   accessLogsReducer,
   usersReducer,
+  settingsReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   currentUserInfo: userReducer,
   users: usersReducer,
   support: supportReducer,
+  settings: settingsReducer,
   affiliateProgram,
   theme,
   isLoading,

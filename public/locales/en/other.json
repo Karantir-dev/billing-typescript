@@ -40,5 +40,10 @@
     "Dedicated server": "Dedicated server",
     "External FTP-storage": "External FTP-storage",
     "All services": "All services"
-  }
+  },
+  "Timezone": "Timezone",
+  "Phone": "Phone",
+  "Enter your details": "Enter your details",
+  "Full name": "Full name",
+  "Save": "Save"
 }

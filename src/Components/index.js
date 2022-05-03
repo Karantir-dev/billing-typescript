@@ -36,6 +36,7 @@ export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
 export { default as ToggleButton } from './ui/ToggleButton/ToggleButton'
+export { default as Toggle } from './ui/Toggle/Toggle'
 
 export { default as Alert } from './ui/Alert/Alert'
 
@@ -56,3 +57,6 @@ export { default as SupportArchiveTable } from './Support/SupportArchiveTable/Su
 export { default as OpenedTicketMessages } from './Support/OpenedTicket/OpenedTicketMessages/OpenedTicketMessages'
 export { default as SendMessageForm } from './Support/OpenedTicket/SendMessageForm/SendMessageForm'
 export { default as CreateTicketModal } from './Support/CreateTicketModal/CreateTicketModal'
+
+//==========================================SETTINGS==========================================//
+export { default as ModalPickPhoto } from './Settings/ModalPickPhoto/ModalPickPhoto'
