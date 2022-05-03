@@ -1,34 +1,34 @@
-import React from 'react'
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import entireStore from '../../Redux/store'
-import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { AffiliateProgramIncome } from '../../Pages'
+// import React from 'react'
+// import '@testing-library/jest-dom'
+// import { render, screen } from '@testing-library/react'
+// import entireStore from '../../Redux/store'
+// import { BrowserRouter } from 'react-router-dom'
+// import { Provider } from 'react-redux'
+// import { AffiliateProgramIncome } from '../../Pages'
 import { mockedAxiosInstance } from '../../config/axiosInstance'
-import userEvent from '@testing-library/user-event'
+// import userEvent from '@testing-library/user-event'
 import qs from 'qs'
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: str => str,
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-      },
-    }
-  },
-}))
+// jest.mock('react-i18next', () => ({
+//   useTranslation: () => {
+//     return {
+//       t: str => str,
+//       i18n: {
+//         changeLanguage: () => new Promise(() => {}),
+//       },
+//     }
+//   },
+// }))
 
-function renderComponent() {
-  render(
-    <Provider store={entireStore.store}>
-      <BrowserRouter>
-        <AffiliateProgramIncome />
-      </BrowserRouter>
-    </Provider>,
-  )
-}
+// function renderComponent() {
+//   render(
+//     <Provider store={entireStore.store}>
+//       <BrowserRouter>
+//         <AffiliateProgramIncome />
+//       </BrowserRouter>
+//     </Provider>,
+//   )
+// }
 
 describe('AffiliateProgramIncome Page jsx', () => {
   beforeAll(() => {
