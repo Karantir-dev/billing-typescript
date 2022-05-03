@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './Toggle.module.scss'
-import { useEffect } from 'react'
 
 export default function Component({ initialState, setValue, disabled }) {
   const [isToggled, setIsToggled] = useState(initialState || false)
