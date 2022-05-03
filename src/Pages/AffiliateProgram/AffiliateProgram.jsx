@@ -3,7 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { Container, PageTabBar } from '../../Components/'
 import * as route from '../../routes'
-import { AboutAffiliateProgram, AffiliateProgramIncome } from '../'
+import {
+  AboutAffiliateProgram,
+  AffiliateProgramIncome,
+  AffiliateProgramStatistics,
+} from '../'
 
 import s from './AffiliateProgram.module.scss'
 
@@ -25,7 +29,7 @@ export default function AffiliateProgram() {
   ]
   return (
     <Container>
-      <h2 className={s.title}> {t('page_title')} </h2>
+      <h2 className={s.title}>{t('page_title')}</h2>
       <PageTabBar sections={navBarSections} />
 
       <Routes>
@@ -39,7 +43,7 @@ export default function AffiliateProgram() {
         ></Route>
         <Route
           path={route.AFFILIATE_PROGRAM_STATISTICS}
-          element={<AffiliateProgramIncome />}
+          element={<AffiliateProgramStatistics />}
         ></Route>
       </Routes>
     </Container>

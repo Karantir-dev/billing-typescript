@@ -1,0 +1,48 @@
+@import '../../../scss/mixin.scss';
+
+.content {
+  margin-top: 20px;
+}
+
+.icon_filter {
+  margin-bottom: 25px;
+}
+
+.list {
+  margin-bottom: 25px;
+}
+
+.list_item {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  column-gap: 15px;
+  row-gap: 10px;
+  width: 100%;
+  height: fit-content;
+  padding: 15px;
+  background-color: var(--forms-bg-3-color);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 5px;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.label {
+  font-size: 14px;
+  color: var(--transparent-color);
+}
+
+.value {
+  @include truncate-text(2);
+}
+
+.icon_check {
+  stroke: var(--success-color);
+}
+
+.stub {
+  font-size: 14px;
+  color: var(--transparent-color);
+}

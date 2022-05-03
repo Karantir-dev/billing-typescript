@@ -45,5 +45,7 @@
   "Phone": "Телефон",
   "Enter your details": "Введите ваши данные",
   "Full name": "ФИО",
-  "Save": "Сохранить"
+  "Save": "Сохранить",
+  "total": "Всего",
+  "short_year": "г."
 }

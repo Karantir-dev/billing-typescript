@@ -152,6 +152,10 @@
 }
 
 @media screen and (min-width: 1024px) {
+  .description_wrapper {
+    padding-top: 30px;
+  }
+
   .chart_placeholder {
     font-size: 18px;
   }

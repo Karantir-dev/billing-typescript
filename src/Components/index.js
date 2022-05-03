@@ -4,6 +4,7 @@ export { default as FilesBanner } from './affiliateProgram/FilesBanner/FilesBann
 export { default as IncomeTable } from './affiliateProgram/IncomeTable/IncomeTable'
 export { default as IncomeChart } from './affiliateProgram/IncomeChart/IncomeChart'
 export { default as DetailsModal } from './affiliateProgram/DetailsModal/DetailsModal'
+export { default as StatisticsFilterModal } from './affiliateProgram/StatisticsFilterModal/StatisticsFilterModal'
 
 //==========================================AUTH==========================================//
 export { default as LoginForm } from './Auth/LoginForm/LoginForm'

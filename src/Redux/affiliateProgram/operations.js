@@ -152,9 +152,42 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
       console.log('getDayDetails - ', err.message)
     })
 }
+
+const getInitialStatistics =
+  (setItems, setTotal, setPageNumber, setpageCount) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click',
+          auth: sessionId,
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data)
+
+        setItems(data.doc.elem)
+        setTotal(data.doc.p_elems.$)
+        setPageNumber(data.doc.p_num.$)
+        setpageCount(data.doc.page.length)
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
+        console.log('getInitialStatistics - ', err.message)
+      })
+  }
+
 export default {
   getReferralLink,
   getInitialIncomeInfo,
   getChartInfo,
   getDayDetails,
+  getInitialStatistics,
 }
