@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 
-import { selectors } from '../../../../../Redux/selectors'
+import { selectors } from '../../../../../Redux'
 import s from './BurgerListItem.module.scss'
 
 export default function BurgerListItem({
@@ -42,7 +42,7 @@ export default function BurgerListItem({
       <div
         role="button"
         tabIndex={0}
-        onKeyDown={() => null}
+        onKeyDown={() => {}}
         onClick={e => e.stopPropagation()}
       >
         <ul
@@ -57,7 +57,7 @@ export default function BurgerListItem({
                 <div
                   role="button"
                   tabIndex={0}
-                  onKeyDown={() => null}
+                  onKeyDown={() => {}}
                   onClick={controlMenu}
                 >
                   <NavLink to={item.routeName}>

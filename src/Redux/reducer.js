@@ -1,7 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { actions } from './actions'
-import { authActions } from '.'
+import { actions, authActions } from './'
 
 const initialState = {
   theme: 'light',

@@ -3,7 +3,7 @@
 .form_wrapper {
   height: fit-content;
   width: fit-content;
-  margin-top: 30px;
+  margin: 30px 0;
 }
 
 .auth_links_wrapper {
@@ -43,7 +43,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  width: 260px;
+  width: 270px;
 
   height: fit-content;
   padding: 18px;
@@ -67,7 +67,7 @@
 }
 
 .captcha {
-  transform: scale(0.74);
+  transform: scale(0.78);
   transform-origin: 0 0;
   margin-bottom: -15px;
   min-height: 61px;
@@ -83,6 +83,7 @@
 .submit_btn {
   height: 43px;
   margin-top: 10px;
+  font-size: 16px;
 }
 
 .btn_text {
@@ -141,6 +142,7 @@
 
   .submit_btn {
     height: 55px;
+    font-size: 20px;
   }
 
   .btn_text {

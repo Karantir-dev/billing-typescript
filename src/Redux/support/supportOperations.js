@@ -1,45 +1,45 @@
 import qs from 'qs'
 import supportActions from './supportActions'
 import { axiosInstance } from '../../config/axiosInstance'
-import { actions } from '../actions'
+import { actions } from '../'
 
 const getTicketsHandler =
   (body = {}) =>
-    (dispatch, getState) => {
-      dispatch(actions.showLoader())
-      const {
-        auth: { sessionId },
-      } = getState()
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'clientticket',
-            sok: 'ok',
-            out: 'json',
-            auth: sessionId,
-            p_cnt: 30,
-            p_col: '+time',
-            clickstat: 'yes',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) {
-            throw new Error(data.doc.error.msg.$)
-          }
-          const elem = data?.doc?.elem || []
-          dispatch(supportActions.getTickets(elem))
-          const count = data?.doc?.p_elems?.$ || 0
-          dispatch(supportActions.getTicketCount(count))
-          dispatch(actions.hideLoader())
-        })
-        .catch(error => {
-          console.log('support -', error.message)
-          dispatch(actions.hideLoader())
-        })
-    }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        const elem = data?.doc?.elem || []
+        dispatch(supportActions.getTickets(elem))
+        const count = data?.doc?.p_elems?.$ || 0
+        dispatch(supportActions.getTicketCount(count))
+        dispatch(getTicketsFiltersSettingsHandler())
+      })
+      .catch(error => {
+        console.log('support -', error.message)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getTicketByIdHandler = idTicket => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -52,7 +52,6 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.edit',
-        // sok: 'ok',
         out: 'json',
         auth: sessionId,
         clickstat: 'yes',
@@ -104,41 +103,41 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
 
 const getTicketsArchiveHandler =
   (body = {}) =>
-    (dispatch, getState) => {
-      dispatch(actions.showLoader())
-      const {
-        auth: { sessionId },
-      } = getState()
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'clientticket_archive',
-            sok: 'ok',
-            out: 'json',
-            auth: sessionId,
-            p_cnt: 30,
-            p_col: '+time',
-            clickstat: 'yes',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) {
-            throw new Error(data.doc.error.msg.$)
-          }
-          const elem = data?.doc?.elem || []
-          dispatch(supportActions.getTicketsArchive(elem))
-          const count = data?.doc?.p_elems?.$ || 0
-          dispatch(supportActions.getTicketArchiveCount(count))
-          dispatch(actions.hideLoader())
-        })
-        .catch(error => {
-          console.log('support -', error.message)
-          dispatch(actions.hideLoader())
-        })
-    }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket_archive',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        const elem = data?.doc?.elem || []
+        dispatch(supportActions.getTicketsArchive(elem))
+        const count = data?.doc?.p_elems?.$ || 0
+        dispatch(supportActions.getTicketArchiveCount(count))
+        dispatch(getTicketsArchiveFiltersSettingsHandler())
+      })
+      .catch(error => {
+        console.log('support -', error.message)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getFile = (name, elid) => (dispatch, getState) => {
   const {
@@ -324,6 +323,236 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
     })
 }
 
+const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+      data?.doc?.slist?.map(el => {
+        if (el?.$name === 'abuse') {
+          const abuse = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getAbuseFilterList(abuse))
+        } else if (el?.$name === 'tstatus') {
+          const tstatus = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTstatusFilterList(tstatus))
+        } else if (el?.$name === 'message_post') {
+          const message_post = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTimeFilterList(message_post))
+        }
+
+        let statuses
+        if (Array.isArray(data?.doc?.tstatus)) {
+          let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+          statuses = statusList.join(',')
+        } else {
+          statuses = data?.doc?.tstatus?.$
+        }
+
+        const currentFilter = {
+          id: data?.doc?.id?.$ || '',
+          message: data?.doc?.message?.$ || '',
+          name: data?.doc?.name?.$ || '',
+          abuse: data?.doc?.abuse?.$ || '',
+          tstatus: statuses || '',
+          message_post: data?.doc?.message_post?.$ || 'nodate',
+          message_poststart: data?.doc?.message_poststart?.$ || '',
+          message_postend: data?.doc?.message_postend?.$ || '',
+        }
+        dispatch(supportActions.getCurrentFilters(currentFilter))
+      })
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsFiltersHandler = data => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket.filter',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
+        ...data,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      let statuses
+      if (Array.isArray(data?.doc?.tstatus)) {
+        let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+        statuses = statusList.join(',')
+      } else {
+        statuses = data?.doc?.tstatus?.$
+      }
+
+      const currentFilter = {
+        id: data?.doc?.id?.$ || '',
+        message: data?.doc?.message?.$ || '',
+        name: data?.doc?.name?.$ || '',
+        abuse: data?.doc?.abuse?.$ || '',
+        tstatus: statuses || '',
+        message_post: data?.doc?.message_post?.$ || 'nodate',
+        message_poststart: data?.doc?.message_poststart?.$ || '',
+        message_postend: data?.doc?.message_postend?.$ || '',
+      }
+      dispatch(supportActions.getCurrentFilters(currentFilter))
+
+      dispatch(getTicketsHandler())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket_archive.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+      data?.doc?.slist?.map(el => {
+        if (el?.$name === 'abuse') {
+          const abuse = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getAbuseFilterList(abuse))
+        } else if (el?.$name === 'tstatus') {
+          const tstatus = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTstatusFilterList(tstatus))
+        } else if (el?.$name === 'message_post') {
+          const message_post = el?.val?.map(({ $key, $ }) => {
+            return { label: $, value: $key }
+          })
+          dispatch(supportActions.getTimeFilterList(message_post))
+        }
+
+        let statuses
+        if (Array.isArray(data?.doc?.tstatus)) {
+          let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+          statuses = statusList.join(',')
+        } else {
+          statuses = data?.doc?.tstatus?.$
+        }
+
+        const currentFilter = {
+          id: data?.doc?.id?.$ || '',
+          message: data?.doc?.message?.$ || '',
+          name: data?.doc?.name?.$ || '',
+          abuse: data?.doc?.abuse?.$ || '',
+          tstatus: statuses || '',
+          message_post: data?.doc?.message_post?.$ || 'nodate',
+          message_poststart: data?.doc?.message_poststart?.$ || '',
+          message_postend: data?.doc?.message_postend?.$ || '',
+        }
+        dispatch(supportActions.getCurrentFilters(currentFilter))
+      })
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'clientticket_archive.filter',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
+        ...data,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      let statuses
+      if (Array.isArray(data?.doc?.tstatus)) {
+        let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+        statuses = statusList.join(',')
+      } else {
+        statuses = data?.doc?.tstatus?.$
+      }
+
+      const currentFilter = {
+        id: data?.doc?.id?.$ || '',
+        message: data?.doc?.message?.$ || '',
+        name: data?.doc?.name?.$ || '',
+        abuse: data?.doc?.abuse?.$ || '',
+        tstatus: statuses || '',
+        message_post: data?.doc?.message_post?.$ || 'nodate',
+        message_poststart: data?.doc?.message_poststart?.$ || '',
+        message_postend: data?.doc?.message_postend?.$ || '',
+      }
+      dispatch(supportActions.getCurrentFilters(currentFilter))
+
+      dispatch(getTicketsArchiveHandler())
+    })
+    .catch(error => {
+      console.log('support -', error.message)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTicketsHandler,
   archiveTicketsHandler,
@@ -335,4 +564,8 @@ export default {
   getDepartmenList,
   getServiceList,
   createTicket,
+  getTicketsFiltersSettingsHandler,
+  getTicketsFiltersHandler,
+  getTicketsArchiveFiltersHandler,
+  getTicketsArchiveFiltersSettingsHandler,
 }

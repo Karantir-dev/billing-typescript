@@ -14,8 +14,8 @@
   "Rate the answer": "Rate the answer",
   "Maximum size - 95.5 MB": "Maximum size - 95.5 MB",
   "Enter your message...": "Enter your message...",
-  "Technical department": "Technical department",
-  "Sales department": "Sales department",
+  "Technical support department": "Technical support department",
+  "Customer care department": "Sales department",
   "New support request": "New support request",
   "Request subject:": "Request subject:",
   "Enter the subject of your request": "Enter the subject of your request",
@@ -23,5 +23,10 @@
   "Is a required field": "Is a required field",
   "This ticket is not associated with a service": "This ticket is not associated with a service",
   "Message": "Message",
-  "The size of the collected file should not exceed 10.0 MB": "The size of the collected file should not exceed 10.0 MB"
+  "The size of the collected file should not exceed 10.0 MB": "The size of the collected file should not exceed 10.0 MB",
+  "Contains text": "Contains text",
+  "The request is related to a violation": "The request is related to a violation",
+  "Enter request subject": "Enter request subject",
+  "Waiting to reply": "Waiting to reply",
+  "In archive": "In archive"
 }

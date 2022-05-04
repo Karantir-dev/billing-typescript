@@ -61,7 +61,7 @@ export default function ListItems(props) {
       className={s.list_items_wrapper}
       role="button"
       tabIndex={0}
-      onKeyDown={() => null}
+      onKeyDown={() => {}}
       onClick={() => setIsOpened(!isOpened)}
     >
       <BurgerListItem

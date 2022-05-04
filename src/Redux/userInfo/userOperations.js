@@ -5,8 +5,8 @@ import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 
 const userInfo = (data, dispatch) => {
-  const { $realname, $balance, $email, $phone } = data.doc.user
-  dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
+  const { $realname, $balance, $email, $phone, $id } = data.doc.user
+  dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
 }
 
 const userTickets = (data, dispatch) => {

@@ -10,10 +10,14 @@ export default function Component(props) {
     label,
     isShadow, // shadow or border
     className,
+    inputClassName,
     itemsList,
     getElement,
     value,
     height,
+    placeholder,
+    additionalPlaceHolder,
+    background,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -44,7 +48,7 @@ export default function Component(props) {
   }
 
   const openHandler = () => {
-    setIsOpened(!isOpened)
+    setIsOpened(true)
   }
 
   return (
@@ -54,20 +58,40 @@ export default function Component(props) {
         type="button"
         style={{ height }}
         className={s.input_wrapper}
-        onClick={isOpened ? null : openHandler}
+        onClick={openHandler}
+        data-testid="period_select"
       >
         <div
-          className={cn({
-            [s.input]: true,
-            [s.shadow]: isShadow,
-          })}
+          className={cn(
+            {
+              [s.input]: true,
+              [s.shadow]: isShadow,
+              [s.field_bgc]: background,
+            },
+            inputClassName,
+          )}
         >
-          <span>{selectedItem?.label}</span>
+          <span
+            className={cn({
+              [s.placeholder]: !selectedItem?.label,
+              [s.additionalField]: additionalPlaceHolder,
+            })}
+          >
+            {selectedItem?.label || placeholder}
+          </span>
+          {additionalPlaceHolder && (
+            <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
+          )}
           <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
       </button>
+
       {itemsList.length !== 0 && (
-        <div ref={dropdown} className={cn(s.dropdown, { [s.opened]: isOpened })}>
+        <div
+          ref={dropdown}
+          className={cn(s.dropdown, { [s.opened]: isOpened })}
+          data-testid="wrapper"
+        >
           <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
@@ -76,6 +100,7 @@ export default function Component(props) {
                   type="button"
                   key={index}
                   className={s.list_item}
+                  data-testid={`qwe${index}`}
                 >
                   <span className={s.name}>{el.label}</span>
                 </button>
@@ -99,9 +124,12 @@ Component.propTypes = {
   ]),
   getElement: PropTypes.func,
   height: PropTypes.number,
+  placeholder: PropTypes.string,
+  background: PropTypes.bool,
 }
 Component.defaultProps = {
   isShadow: false,
   getElement: () => null,
   itemsList: [],
+  placeholder: '',
 }

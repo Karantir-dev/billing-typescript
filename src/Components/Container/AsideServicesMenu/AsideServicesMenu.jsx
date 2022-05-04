@@ -5,12 +5,11 @@ import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectors } from '../../../Redux/selectors'
+import { selectors, actions } from '../../../Redux'
 import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
 import * as routes from '../../../routes'
 
 import s from './AsideServicesMenu.module.scss'
-import { actions } from '../../../Redux/actions'
 
 const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)

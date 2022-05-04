@@ -10,8 +10,8 @@ import {
   userSelectors,
   authOperations,
   authSelectors,
+  selectors,
 } from '../../../Redux'
-import { selectors } from '../../../Redux/selectors'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
@@ -22,7 +22,7 @@ import { useOutsideAlerter } from '../../../utils'
 export default function Header() {
   const { t } = useTranslation('container')
   const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.HOME },
+    { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
     { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
     { name: t('profile.payers'), routeName: routes.HOME },
@@ -95,7 +95,10 @@ export default function Header() {
                 >
                   <div className={s.balance_wrapper}>
                     <p className={s.balance_text}>
-                      {t('balance')} <span className={s.balance_sum}>{$balance} EUR</span>
+                      {t('balance')}{' '}
+                      <span className={s.balance_sum}>
+                        {$balance && Number($balance)?.toFixed(2)} EUR
+                      </span>
                     </p>
                   </div>
                 </li>
@@ -189,7 +192,7 @@ export default function Header() {
                           <div
                             role="button"
                             tabIndex={0}
-                            onKeyDown={() => null}
+                            onKeyDown={() => {}}
                             onClick={() => setIsProfileOpened(!isProfileOpened)}
                           >
                             <NavLink to={item.routeName}>
@@ -203,7 +206,7 @@ export default function Header() {
                       <div
                         role="button"
                         tabIndex={0}
-                        onKeyDown={() => null}
+                        onKeyDown={() => {}}
                         onClick={logOut}
                       >
                         <NavLink to={routes.LOGIN}>

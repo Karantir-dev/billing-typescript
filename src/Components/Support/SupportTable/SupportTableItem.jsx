@@ -27,6 +27,7 @@ export default function Component(props) {
 
   return (
     <div
+      data-testid="request_item"
       role="button"
       tabIndex={0}
       onKeyDown={() => null}

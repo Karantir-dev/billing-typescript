@@ -52,13 +52,9 @@
 }
 
 .submit_btn {
-  height: 43px;
+  height: 50px;
   margin: 10px 0 15px 0;
-}
-
-.btn_text {
-  @extend %btn-text;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .reset_pass_link {
@@ -154,9 +150,6 @@
   .submit_btn {
     margin: 20px 0;
     height: 55px;
-  }
-
-  .btn_text {
     font-size: 20px;
   }
 

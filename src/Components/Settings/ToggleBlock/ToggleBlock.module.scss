@@ -1,0 +1,116 @@
+.checkRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px 0;
+}
+
+.notifName {
+  width: 100%;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  flex-basis: 100%;
+  padding: 15px 20px;
+  border-radius: 3px;
+  background-color: var(--forms-bg-2-color);
+  box-shadow: var(--forms2_shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.columnBlock {
+  flex-basis: 100%;
+  width: 100%;
+  display: flex;
+  padding: 15px 10px 17px 10px;
+  border-radius: 3px;
+  background-color: var(--forms-bg-2-color);
+  box-shadow: var(--forms2_shadow);
+  margin-top: 5px;
+}
+
+.column {
+  flex-basis: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  flex-direction: column;
+}
+
+.toggleName {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin-bottom: 17px;
+}
+
+.shevron {
+  stroke: var(--main-text);
+  pointer-events: none;
+  cursor: pointer;
+  stroke: var(--eye-color);
+  transform: rotateZ(180deg);
+  transition: transform 0.15s;
+
+  &.opened {
+    transform: rotate(0);
+  }
+}
+
+.mobileColumnBlock {
+  opacity: 0;
+  max-height: 0px;
+  padding: 0;
+  transition: all 0.5s;
+}
+
+.mobileColumnBlockOpened {
+  opacity: 1;
+  max-height: 300px;
+  height: 100%;
+  padding: 15px 10px 17px 10px;
+  transition: all 0.5s;
+}
+
+@media screen and (min-width: 768px) {
+  .shevron {
+    display: none;
+  }
+  .columnBlock {
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    flex-basis: 57%;
+    margin-top: 0;
+  }
+  .checkRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 17px 0;
+  }
+
+  .notifName {
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    flex-basis: 43%;
+  }
+
+  .toggleName {
+    display: none;
+  }
+}

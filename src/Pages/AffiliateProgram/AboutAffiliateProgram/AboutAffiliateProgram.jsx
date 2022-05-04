@@ -7,14 +7,13 @@ import { useMediaQuery } from 'react-responsive'
 
 import { ServicesSelect, FilesBanner } from '../../../Components'
 import { Copy } from '../../../images'
-import { affiliateSelectors } from '../../../Redux'
-import { affiliateProgramOperations } from '../../../Redux/affiliateProgram/operations'
+import { affiliateSelectors, affiliateOperations } from '../../../Redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
 
 export default function AboutAffiliateProgram() {
-  const { t } = useTranslation('affiliate_program')
+  const { t } = useTranslation(['affiliate_program'])
   const dispatch = useDispatch()
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -33,7 +32,7 @@ export default function AboutAffiliateProgram() {
     if (referralLink) {
       return
     }
-    dispatch(affiliateProgramOperations.getReferralLink())
+    dispatch(affiliateOperations.getReferralLink())
   }, [])
 
   const showPrompt = fn => {
@@ -92,7 +91,7 @@ export default function AboutAffiliateProgram() {
               onClick={toggleDescrHeight}
               data-testid="btn_more"
             >
-              {t('about_section.read_more')}
+              {t('read_more', { ns: 'other' })}
             </button>
           )}
 
@@ -135,7 +134,7 @@ export default function AboutAffiliateProgram() {
             onClick={() => handleCopyText(refLinkEl)}
             role="button"
             tabIndex={0}
-            onKeyUp={() => null}
+            onKeyUp={() => {}}
             data-testid={'ref_link_field'}
           >
             <span
@@ -167,7 +166,7 @@ export default function AboutAffiliateProgram() {
             onClick={() => handleCopyText(promocodeEl)}
             role="button"
             tabIndex={0}
-            onKeyUp={() => null}
+            onKeyUp={() => {}}
             data-testid="promocode_field"
           >
             <span className={cn(s.field_text, s.selected)} ref={promocodeEl}>

@@ -21,7 +21,7 @@ export default function Component(props) {
       data-testid={dataTestid}
       disabled={disabled}
       className={cn({
-        [s.submit_btn]: true,
+        [s.btn]: true,
         [s.shadow]: isShadow,
         [s.block]: size === 'block',
         [s.small]: size === 'small',
@@ -53,7 +53,7 @@ Component.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   isShadow: PropTypes.bool,
-  size: PropTypes.oneOf(['block', 'small', 'medium', 'large']),
+  size: PropTypes.oneOf(['block', 'small', 'medium', 'large', '']),
   loading: PropTypes.bool,
 }
 
@@ -62,7 +62,7 @@ Component.defaultProps = {
   type: 'button',
   onClick: () => null,
   disabled: false,
-  size: 'block',
+  size: '',
   isShadow: false,
   dataTestid: null,
   loading: false,

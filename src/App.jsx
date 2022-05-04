@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
-import { Routes, Route, BrowserRouter, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
 
 import {
   Loader,
@@ -15,6 +15,7 @@ import {
   PublicRoute,
   Portal,
   TrustedUsers,
+  Container,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -25,6 +26,7 @@ import {
   AffiliateProgram,
   SupportPage,
   OpenedTicker,
+  UserSettings,
 } from './Pages'
 import { useTranslation } from 'react-i18next'
 
@@ -95,6 +97,26 @@ export default function App() {
                 }
               />
               <Route
+                path={`${route.USER_SETTINGS}`}
+                element={
+                  <PrivateRoute
+                    redirectTo={route.LOGIN}
+                    children={
+                      <Container>
+                        <UserSettings />
+                      </Container>
+                    }
+                  />
+                }
+              >
+                <Route
+                  path=":path/"
+                  element={
+                    <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
+                  }
+                />
+              </Route>
+              <Route
                 path={`${route.AFFILIATE_PROGRAM}/*`}
                 element={
                   <PrivateRoute
@@ -131,15 +153,17 @@ const SupportScreen = () => {
   }
 
   return (
-    <Routes>
-      <Route
-        path=":path/*"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
-      />
-      <Route
-        path=":path/:id"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
-      />
-    </Routes>
+    <Container>
+      <Routes>
+        <Route
+          path=":path/*"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
+        />
+        <Route
+          path=":path/:id"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+        />
+      </Routes>
+    </Container>
   )
 }

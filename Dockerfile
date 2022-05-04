@@ -9,7 +9,7 @@ RUN cd /usr/local/src && \
 
 FROM nginx:1.21.4-alpine
 
-RUN apk add --no-cache apache2-utils openssl && \
+RUN apk add --no-cache apache2-utils openssl g++ make && \
     echo 'admin:$apr1$kme5sfz3$je0SQadFV7bUoX0dtFSEB0' > /etc/nginx/.htpasswd && \
     mkdir -p /etc/nginx/ssl/ && \
     openssl req -x509 -nodes -days 365 \

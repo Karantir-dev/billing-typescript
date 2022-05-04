@@ -25,8 +25,8 @@ export default function Component() {
   }, [currentPage])
 
   return (
-    <>
-      <SupportFilter />
+    <div data-testid="request_archive">
+      <SupportFilter setCurrentPage={setCurrentPage} />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
       </h2>
@@ -45,6 +45,6 @@ export default function Component() {
           />
         </div>
       )}
-    </>
+    </div>
   )
 }

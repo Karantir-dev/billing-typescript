@@ -2,13 +2,24 @@
 
 .paginationContainer {
   display: flex;
+  align-items: center;
   list-style-type: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+
+  .totalPages {
+    color: var(--transparent-color);
+    padding: 0 8px;
+  }
 
   .paginationItem {
-    padding: 0 12px;
+    padding: 0 8px;
     height: 35px;
     text-align: center;
-    margin: auto 4px;
+    margin: auto 0;
     color: var(--main-text);
     display: flex;
     box-sizing: border-box;
@@ -23,6 +34,10 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
+    &.arrow {
+      margin: 0 20px;
+    }
 
     &.dots:hover {
       background-color: transparent;
@@ -42,14 +57,14 @@
         content: '';
         /* By using an em scale, the arrows will size with the font */
         display: inline-block;
-        width: 0.4em;
-        height: 0.4em;
-        border-right: 0.12em solid var(--main-text);
-        border-top: 0.12em solid var(--main-text);
+        width: 14px;
+        height: 14px;
+        border-right: 2px solid var(--main-text);
+        border-top: 2px solid var(--main-text);
       }
 
       &.left {
-        transform: rotate(-135deg) translate(-50%);
+        transform: rotate(-135deg);
       }
 
       &.right {
@@ -61,8 +76,8 @@
       pointer-events: none;
 
       .arrow::before {
-        border-right: 0.12em solid var(--transparent-color);
-        border-top: 0.12em solid var(--transparent-color);
+        border-right: 2px solid var(--transparent-color);
+        border-top: 2px solid var(--transparent-color);
       }
 
       &:hover {
@@ -70,5 +85,48 @@
         cursor: default;
       }
     }
+  }
+}
+
+.input {
+  padding: 11px 15px;
+  border-radius: 2px;
+  border: none;
+  max-width: 65px;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  outline: none;
+  line-height: 70.9%;
+  max-height: 34px;
+  color: var(--main-text);
+  background: var(--forms-bg-2-color);
+  box-shadow: var(--forms_shadow);
+}
+
+.blockPagination {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  text-decoration-line: underline;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .blockPagination {
+    flex-direction: row;
+  }
+
+  .btn {
+    margin-top: 0;
   }
 }

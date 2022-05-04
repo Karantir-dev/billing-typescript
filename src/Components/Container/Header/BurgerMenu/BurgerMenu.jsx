@@ -8,8 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { ThemeBtn, LangBtn } from '../../../../Components'
 import { ExitSign } from '../../../../images'
 import ListItems from './ListItems/ListItems'
-import { selectors } from '../../../../Redux/selectors'
-import { userSelectors, authOperations } from '../../../../Redux'
+import { userSelectors, authOperations, selectors } from '../../../../Redux'
 import { useOutsideAlerter } from '../../../../utils'
 import * as routes from '../../../../routes'
 
@@ -57,7 +56,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const refProgrammMenuList = [
     {
       name: t('burger_menu.ref_program.ref_program_list.about_program'),
-      routeName: routes.HOME,
+      routeName: `${routes.AFFILIATE_PROGRAM}/${routes.AFFILIATE_PROGRAM_ABOUT}`,
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.incomes'),
@@ -171,7 +170,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 className={s.exit_wrapper}
                 role="button"
                 tabIndex={0}
-                onKeyDown={() => null}
+                onKeyDown={() => {}}
                 onClick={logOut}
               >
                 <ExitSign className={s.icon} />

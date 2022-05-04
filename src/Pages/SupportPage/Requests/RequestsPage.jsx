@@ -26,8 +26,8 @@ export default function Component() {
   }, [currentPage])
 
   return (
-    <>
-      <SupportFilter selctedTicket={selctedTicket} />
+    <div data-testid='request_support'>
+      <SupportFilter selctedTicket={selctedTicket} setCurrentPage={setCurrentPage} />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
       </h2>
@@ -46,6 +46,6 @@ export default function Component() {
           />
         </div>
       )}
-    </>
+    </div>
   )
 }

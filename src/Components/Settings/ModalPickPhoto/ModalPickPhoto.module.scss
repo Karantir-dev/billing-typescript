@@ -1,0 +1,110 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 17px 12px;
+  margin: 0 30px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  h2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130.5%;
+    color: #392955;
+  }
+}
+
+.cross {
+  fill: var(--main-text);
+  cursor: pointer;
+}
+
+.cropBlock {
+  display: flex;
+  flex-direction: column;
+  svg {
+    display: none;
+  }
+}
+
+.cropPreview {
+  width: 121px;
+  height: 121px;
+}
+
+.rightBlock {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.saveBtn {
+  text-transform: uppercase;
+  height: 55px;
+  min-width: 216px;
+  margin-top: 20px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 12px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .cropPreview {
+    width: 171px;
+    height: 171px;
+  }
+
+  .modalHeader {
+    margin-bottom: 35px;
+    h2 {
+      font-size: 20;
+    }
+  }
+
+  .modalBlock {
+    padding: 31px 38px 45px 37px;
+  }
+
+  .cropBlock {
+    flex-direction: row;
+  }
+
+  .rightBlock {
+    margin-left: 20px;
+    margin-top: 0;
+  }
+
+  .saveBtn {
+    margin-top: 40px;
+  }
+}

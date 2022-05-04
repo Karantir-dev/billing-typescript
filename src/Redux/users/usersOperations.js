@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions } from '../actions'
+import { actions } from '../'
 
 import { axiosInstance } from './../../config/axiosInstance'
 import usersActions from './usersActions'

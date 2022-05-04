@@ -31,11 +31,19 @@ jobs:
         if: always()
   eslint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
-      - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          files: src/
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install -g npm
+      - run: npm install
+      - run: npm run lint
       - name: linter status
         uses: 8398a7/action-slack@v3
         with:
@@ -48,18 +56,19 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always()
 
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
+  #security:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@master
+  #    - name: Run Snyk to check for vulnerabilities
+  #      uses: snyk/actions/node@master
+  #      env:
+  #        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #    - run: npm install -g npm
+  #    - run: npm install
+  #    - run: snyk monitor
   deploy:
-    needs: [eslint, security, jest]
+    needs: [eslint, jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:

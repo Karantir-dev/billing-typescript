@@ -17,7 +17,7 @@ export default function SelectOfCountries({
   errors,
   touched,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
   const dispatch = useDispatch()
 
   const [countrySearchQuery, setCountrySearchQuery] = useState('')
@@ -139,7 +139,7 @@ export default function SelectOfCountries({
             <div
               role="button"
               tabIndex={-1}
-              onKeyDown={() => null}
+              onKeyDown={() => {}}
               className={s.backdrop}
               onClick={handleBackdropClick}
             ></div>
