@@ -61,3 +61,4 @@ export { default as CreateTicketModal } from './Support/CreateTicketModal/Create
 //==========================================SETTINGS==========================================//
 export { default as ModalPickPhoto } from './Settings/ModalPickPhoto/ModalPickPhoto'
 export { default as ToggleBlock } from './Settings/ToggleBlock/ToggleBlock'
+export { default as SocialButton } from './Settings/SocialButton/SocialButton'

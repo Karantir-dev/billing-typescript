@@ -1,0 +1,162 @@
+.personalBlock {
+  position: relative;
+}
+
+.block {
+  margin-bottom: 40px;
+}
+
+.settingsTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  margin-top: 15px;
+}
+
+.oldpassInput {
+  margin-right: 0px;
+}
+
+.input {
+  margin-top: 15px;
+  max-width: 322px;
+}
+
+.btnBlock {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+.select {
+  z-index: 8;
+  button {
+    height: 52px;
+  }
+}
+
+.bindIp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 25px;
+
+  .bindIpText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-right: 34px;
+  }
+}
+
+.verification {
+  margin-top: 15px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 130.5%;
+  text-decoration-line: underline;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.securNotification {
+  display: flex;
+  flex-direction: row;
+  margin-top: 25px;
+
+  .securNotifnEmailBlock {
+    display: flex;
+    align-items: center;
+  }
+
+  .securNotifnGeoBlock {
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+  }
+
+  .securNotifText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 130.5%;
+    color: var(--main-text);
+    margin-right: 10px;
+    max-width: 230px;
+  }
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+}
+
+@media screen and (min-width: 768px) {
+  .settingsTitle {
+    font-size: 20px;
+  }
+
+  .formRow {
+    flex-direction: row;
+  }
+
+  .oldpassInput {
+    margin-right: 25px;
+  }
+
+  .input {
+    margin-top: 0px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 240px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .select {
+    button {
+      height: 45px;
+    }
+  }
+}

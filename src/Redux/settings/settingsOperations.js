@@ -1,8 +1,9 @@
 import qs from 'qs'
-import { actions } from '../'
-
+import { actions, authOperations } from '../'
+import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
+import i18n from './../../i18n'
 
 const getUserEdit =
   (elid, checkEmail = false) =>
@@ -117,14 +118,24 @@ const getUserParams =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+
         const telegram =
           data?.doc?.messages?.msg?.instruction?.match(/(https?:\/\/[^ ]*)/)
+
         let telegramLink = ''
+
         if (telegram?.length > 0) {
           telegramLink = telegram[0].slice(0, -1)
         }
+
         const elem = {
           timezone: data?.doc?.timezone?.$ || '',
+          atype: data?.doc?.atype?.$ || '',
+          secureip: data?.doc?.secureip?.$ || '',
+          setgeoip: data?.doc?.setgeoip?.$ || '',
+          sendemail: data?.doc?.sendemail?.$ || '',
           time: data?.doc?.time?.$ || '',
           telegram_id: data?.doc?.telegram_id?.$ || '',
           email: data?.doc?.email?.$ || '',
@@ -166,6 +177,9 @@ const getUserParams =
         data?.doc?.slist?.forEach(el => {
           if (el.$name === 'timezone') {
             elem['timezoneList'] = el?.val
+          }
+          if (el.$name === 'atype') {
+            elem['ipTypeList'] = el?.val
           }
         })
 
@@ -368,6 +382,57 @@ const sendEmailConfirm = () => (dispatch, getState) => {
     })
 }
 
+const setPasswordAccess = (elid, d) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  const userParamsData = {
+    old_passwd: d.old_passwd,
+    passwd: d.passwd,
+    confirm: d.confirm,
+    atype: d.atype,
+    secureip: d?.secureip ? 'on' : 'off',
+    sendemail: d?.sendemail ? 'on' : 'off',
+    setgeoip: d?.setgeoip ? 'on' : 'off',
+  }
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'usrparam',
+        out: 'json',
+        sok: 'ok',
+        elid,
+        auth: sessionId,
+        ...userParamsData,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) {
+        if (data?.doc?.error?.$object === 'old_passwd') {
+          toast.error(i18n.t('Wrong old password', { ns: 'other' }), {
+            position: 'bottom-right',
+          })
+        }
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      if (d?.secureip) {
+        return dispatch(authOperations.logout())
+      }
+
+      dispatch(getUserEdit(elid))
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getUserEdit,
   getUserParams,
@@ -375,4 +440,5 @@ export default {
   getTimeByTimeZone,
   setUserAvatar,
   setupEmailConfirm,
+  setPasswordAccess,
 }
