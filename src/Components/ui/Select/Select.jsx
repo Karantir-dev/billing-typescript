@@ -4,9 +4,10 @@ import PropTypes from 'prop-types'
 import { Shevron } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
 import s from './Select.module.scss'
+import { useTranslation } from 'react-i18next'
 
-export default function Component(props) {
-  const {
+export default function Select(props) {
+  let {
     label,
     isShadow, // shadow or border
     className,
@@ -18,11 +19,36 @@ export default function Component(props) {
     placeholder,
     additionalPlaceHolder,
   } = props
+  const { t } = useTranslation('other')
 
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState()
 
   const dropdown = useRef(null)
+
+  const defaultItemsList = [
+    { label: t('current year'), value: 'currentyear' },
+    { label: t('current month'), value: 'currentmonth' },
+    { label: t('current week'), value: 'currentweek' },
+    { label: t('current day'), value: 'today' },
+    { label: t('previous year'), value: 'lastyear' },
+    { label: t('previous month'), value: 'lastmonth' },
+    { label: t('previous week'), value: 'lastweek' },
+    { label: t('previous day'), value: 'lastday' },
+    { label: t('year'), value: 'year' },
+    { label: t('half a year'), value: 'halfyear' },
+    { label: t('quarter'), value: 'quarter' },
+    { label: t('month'), value: 'month' },
+    { label: t('week'), value: 'week' },
+    { label: t('whole period'), value: 'nodate' },
+    { label: t('any period'), value: 'other' },
+  ]
+  if (!itemsList) {
+    itemsList = defaultItemsList
+  }
+  if (!placeholder) {
+    placeholder = t('select_placeholder')
+  }
 
   const clickOutside = () => {
     setIsOpened(false)
@@ -38,7 +64,7 @@ export default function Component(props) {
         }
       })
     }
-  }, [value, itemsList])
+  }, [value])
 
   const itemSelectHandler = item => {
     setSelectedItem(item)
@@ -111,7 +137,7 @@ export default function Component(props) {
   )
 }
 
-Component.propTypes = {
+Select.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
   isShadow: PropTypes.bool.isRequired,
@@ -124,9 +150,8 @@ Component.propTypes = {
   height: PropTypes.number,
   placeholder: PropTypes.string,
 }
-Component.defaultProps = {
+Select.defaultProps = {
   isShadow: false,
   getElement: () => null,
-  itemsList: [],
   placeholder: '',
 }

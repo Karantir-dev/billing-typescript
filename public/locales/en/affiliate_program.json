@@ -43,6 +43,9 @@
     "apply": "Search",
     "client": "Client",
     "payment": "Payment",
-    "not_registered": "Not registered"
+    "not_registered": "Not registered",
+    "unknown_source": "Unknown source",
+    "not_paid": "Not paid",
+    "website_url": "Website URL"
   }
 }

@@ -16,6 +16,7 @@
   "Enter text": "Введите текст",
   "Not chosen": "Не выбрано",
   "Select status": "Выберите статус",
+  "select_placeholder": "Выберите период",
   "whole period": "За все время",
   "current day": "Сегодня",
   "current week": "Текущая неделя",

@@ -8,3 +8,59 @@
     opacity: 1;
   }
 }
+
+.modal_window {
+  width: 90vw;
+  height: fit-content;
+  max-height: 80vh;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+  background-color: var(--modal_bgc);
+}
+
+.heading_wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.heading {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.icon_cross {
+  fill: var(--main-text);
+}
+
+.dates_wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.calendarBlock {
+  position: relative;
+}
+
+.calendarModal {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  z-index: 2;
+}
+
+.calendar_pointer {
+  right: 24px !important;
+}
+
+.form_field {
+  margin-bottom: 15px;
+}
+
+.submit_btn {
+  height: 50px;
+  text-transform: uppercase;
+}

@@ -154,7 +154,8 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
 }
 
 const getInitialStatistics =
-  (setItems, setTotal, setPageNumber, setpageCount) => (dispatch, getState) => {
+  (setItems, setTotal, setPageNumber, setpageCount, setInitialFilters) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -171,8 +172,13 @@ const getInitialStatistics =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         console.log(data)
+        const date = data.doc.p_filter.$.match(/date = ([\s\S]+?),/)?.[1]
+        const site = data.doc.p_filter.$.match(/site ~ ([\s\S]+?),/)?.[1]
+        const registered = data.doc.p_filter.$.match(/registered = ([\s\S]+?),/)?.[1]
+        const payed = data.doc.p_filter.$.match(/payment = ([\s\S]+?)$/)?.[1]
 
-        setItems(data.doc.elem)
+        setInitialFilters({ date, site, registered, payed })
+        data.doc?.elem && setItems(data.doc?.elem)
         setTotal(data.doc.p_elems.$)
         setPageNumber(data.doc.p_num.$)
         setpageCount(data.doc.page.length)
@@ -184,10 +190,74 @@ const getInitialStatistics =
       })
   }
 
+const getFilteredStatistics =
+  (date, dateStart, dateEnd, site, registered, payed) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click.filter',
+          auth: sessionId,
+          cdate: date,
+          cdatestart: dateStart,
+          cdateend: dateEnd,
+          site: site,
+          referal: registered,
+          payed: payed,
+          out: 'json',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
+        console.log('getFilteredStatistics - ', err.message)
+      })
+  }
+
+const dropFilters = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.click.filter',
+        auth: sessionId,
+        drop: 'on',
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('dropFilters - ', err.message)
+    })
+}
+
 export default {
   getReferralLink,
   getInitialIncomeInfo,
   getChartInfo,
   getDayDetails,
   getInitialStatistics,
+  getFilteredStatistics,
+  dropFilters,
 }

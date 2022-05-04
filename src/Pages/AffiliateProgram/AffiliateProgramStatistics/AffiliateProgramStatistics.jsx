@@ -9,6 +9,7 @@ import { affiliateOperations } from '../../../Redux'
 import { Check } from '../../../images'
 
 import s from './AffiliateProgramStatistics.module.scss'
+import cn from 'classnames'
 
 export default function AffiliateProgramStatistics() {
   const dispatch = useDispatch()
@@ -20,6 +21,12 @@ export default function AffiliateProgramStatistics() {
   const [total, setTotal] = useState(0)
   const [pageNumber, setPageNumber] = useState(0)
   const [pageCount, setpageCount] = useState(0)
+  const [initialFilters, setInitialFilters] = useState({
+    date: '',
+    site: '',
+    registered: '',
+    payed: '',
+  })
 
   useEffect(() => {
     dispatch(
@@ -28,6 +35,7 @@ export default function AffiliateProgramStatistics() {
         setTotal,
         setPageNumber,
         setpageCount,
+        setInitialFilters,
       ),
     )
   }, [])
@@ -41,22 +49,56 @@ export default function AffiliateProgramStatistics() {
       />
 
       <StatisticsFilterModal
+        initialFilters={initialFilters}
         opened={isFilterOpened}
         closeFn={() => setIsFilterOpened(false)}
+        setItems={setItems}
+        setTotal={setTotal}
       />
+
+      {widerThanMobile && (
+        <div className={s.table_head_row}>
+          <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
+          <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
+          <span className={s.table_head}>{t('statistics_section.client')}:</span>
+          <span className={cn(s.table_head, s.centered)}>
+            {t('statistics_section.payment')}:
+          </span>
+        </div>
+      )}
 
       <ul className={s.list}>
         {items.map(({ cdate, payed, site, referal }, index) => {
           return widerThanMobile ? (
             <li className={s.list_item} key={index}>
-              <span className={s.row_value}>{cdate.$}</span>
+              <span className={s.row_value}>
+                {dayjs(cdate.$).format('DD MMM YYYY')} {t('short_year', { ns: 'other' })}
+                <span className={s.time}>{dayjs(cdate.$).format('hh:mm')}</span>
+              </span>
 
-              <span className={s.row_value}>{site?.$}</span>
-
-              <span className={s.row_value}>{referal?.$}</span>
+              <span className={cn(s.row_value, s.website)}>
+                {site?.$ ? (
+                  <span className={s.website_url}>{site?.$}</span>
+                ) : (
+                  <span className={s.stub}>{t('statistics_section.unknown_source')}</span>
+                )}
+                {site?.$ && <div className={s.full_text}>{site?.$}</div>}
+              </span>
 
               <span className={s.row_value}>
-                {payed?.$ === 'on' && <Check className={s.icon_check} />}
+                {referal?.$ || (
+                  <span className={s.stub}>{t('statistics_section.not_registered')}</span>
+                )}
+              </span>
+
+              <span className={s.row_value}>
+                {payed?.$ === 'on' ? (
+                  <Check className={s.icon_check} />
+                ) : (
+                  <span className={cn(s.stub, s.centered)}>
+                    {t('statistics_section.not_paid')}
+                  </span>
+                )}
               </span>
             </li>
           ) : (
@@ -67,7 +109,14 @@ export default function AffiliateProgramStatistics() {
               </span>
 
               <span className={s.label}>{t('statistics_section.from_site')}:</span>
-              <span className={s.value}>{site?.$}</span>
+              <span className={cn(s.value, s.website)}>
+                {site?.$ ? (
+                  <span className={s.website_url}>{site?.$}</span>
+                ) : (
+                  <span className={s.stub}>{t('statistics_section.unknown_source')}</span>
+                )}
+                {site?.$ && <div className={s.full_text}>{site?.$}</div>}
+              </span>
 
               <span className={s.label}>{t('statistics_section.client')}:</span>
               <span className={s.value}>
@@ -78,13 +127,19 @@ export default function AffiliateProgramStatistics() {
 
               <span className={s.label}>{t('statistics_section.payment')}:</span>
               <span className={s.value}>
-                {payed?.$ !== 'off' && <Check className={s.icon_check} />}
+                {payed?.$ === 'on' ? (
+                  <Check className={s.icon_check} />
+                ) : (
+                  <span className={s.stub}>{t('statistics_section.not_paid')}</span>
+                )}
               </span>
             </li>
           )
         })}
       </ul>
-      <span>{total}</span>
+      <p>
+        {t('total', { ns: 'other' })}: {total}
+      </p>
       <ul>
         pagination pageNumber {pageNumber} pageCount {pageCount}
       </ul>
