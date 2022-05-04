@@ -10,7 +10,8 @@ import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
-// import AccessRights from '../AccessRights/AccessRights'
+import AccessRights from '../AccessRights/AccessRights'
+import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
 
 export default function UserCard({
   name,
@@ -26,9 +27,16 @@ export default function UserCard({
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
+  const [showRightsAlert, setShowRightsAlert] = useState(false)
+
+  const rightsList = useSelector(usersSelectors.getRights)
+  const listWithoutProfile = rightsList.filter(item => item.name.$ !== 'clientoption')
+
+  const handleRightsAlert = () => {
+    setShowRightsAlert(!showRightsAlert)
+  }
 
   const dispatch = useDispatch()
-  const rightsList = useSelector(usersSelectors.getRights)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 1024px)' })
@@ -57,9 +65,10 @@ export default function UserCard({
   }
 
   useEffect(() => {
-    dispatch(usersOperations.getRights(userId))
-    console.log('dispatch rights in userCard')
-  }, [])
+    if (!isOwner) {
+      dispatch(usersOperations.getRights(userId, isOwner))
+    }
+  }, [showRightsAlert])
 
   return (
     <>
@@ -127,6 +136,9 @@ export default function UserCard({
             userName={name}
             handleUserRolesData={handleUserRolesData}
             rightsList={rightsList}
+            email={email}
+            handleRightsAlert={handleRightsAlert}
+            hasAccess={hasAccess}
           />
         </div>
       )}
@@ -170,6 +182,7 @@ export default function UserCard({
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
                 hasAlert={true}
+                handleRightsAlert={handleRightsAlert}
               />
             </div>
 
@@ -180,10 +193,30 @@ export default function UserCard({
               userName={name}
               userId={userId}
               handleUserRolesData={handleUserRolesData}
+              handleRightsAlert={handleRightsAlert}
               rightsList={rightsList}
+              email={email}
+              hasAccess={hasAccess}
             />
           </div>
         </div>
+      )}
+
+      {showRightsAlert && (
+        <AccessRightsAlert
+          dataTestid="trusted_users_rights_alert"
+          isOpened={showRightsAlert}
+          controlAlert={handleRightsAlert}
+          title={
+            mobile
+              ? t('trusted_users.rights_alert.title_short')
+              : t('trusted_users.rights_alert.title_long')
+          }
+          list1={<AccessRights items={listWithoutProfile.slice(0, 20)} userId={userId} />}
+          list2={
+            <AccessRights items={listWithoutProfile.slice(20, 38)} userId={userId} />
+          }
+        />
       )}
     </>
   )

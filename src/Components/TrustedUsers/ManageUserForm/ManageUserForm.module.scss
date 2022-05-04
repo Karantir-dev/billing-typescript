@@ -24,6 +24,11 @@
   margin-bottom: 20px;
 }
 
+.title_wrapper {
+  margin-top: 9px;
+  color: #b3a9c1;
+}
+
 .form_title {
   font-weight: 600;
   font-size: 20px;
@@ -50,8 +55,10 @@
   font-size: 20px;
 }
 
-.submit_btn {
+.submit_btn.btn {
   margin-top: 20px;
+  padding-bottom: 22px;
+  padding-top: 22px;
 }
 
 .close_btn_wrapper {
@@ -178,7 +185,9 @@
     margin-bottom: 25px;
   }
 
-  .submit_btn {
+  .submit_btn.btn {
     margin-top: 25px;
+    padding-bottom: 21px;
+    padding-top: 21px;
   }
 }

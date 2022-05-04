@@ -7,13 +7,14 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '..'
 import UserCard from './UserCard/UserCard'
 import Container from '../Container/Container'
-import AddUserForm from './AddUserForm/AddUserForm'
+import ManageUserForm from './ManageUserForm/ManageUserForm'
 import { usersOperations, usersSelectors } from '../../Redux'
 
 import s from './TrustedUsers.module.scss'
 
 export default function TrustedUsers() {
   const { t } = useTranslation('trusted_users')
+
   const dispatch = useDispatch()
 
   const [readMore, setReadMore] = useState(false)
@@ -48,6 +49,15 @@ export default function TrustedUsers() {
   }
 
   const users = useSelector(usersSelectors.getUsers)
+
+  const handleSubmit = values => {
+    const { email, name, phone, password } = values
+
+    dispatch(
+      usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
+    )
+    handleUserForm()
+  }
 
   useEffect(() => {
     dispatch(usersOperations.getUsers())
@@ -106,20 +116,15 @@ export default function TrustedUsers() {
           )
         })}
       </section>
+
       {isUserFormActive && (
-        <AddUserForm
+        <ManageUserForm
           controlForm={handleUserForm}
-          checkIfCreatedUser={checkIfCreatedUser}
+          handleSubmit={handleSubmit}
+          title={t('trusted_users.form.title')}
           dataTestid="trusted_form"
         />
       )}
-
-      {/* <AccessRights
-        userId={1}
-        userName={'Someone'}
-        alert={true}
-        items={clientRightsList}
-      /> */}
     </Container>
   )
 }

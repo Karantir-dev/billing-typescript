@@ -17,8 +17,6 @@ export default function AccessRights({ items, userId }) {
   const handleSelect = item => {
     const filter = listArr.map(el => {
       if (item.name.$ === el.name.$) {
-        const act = item.name.$
-        console.log(act)
         return { ...el, isSelected: !el.isSelected }
       } else {
         return { ...el, isSelected: false }
@@ -29,7 +27,7 @@ export default function AccessRights({ items, userId }) {
   }
 
   return (
-    <ul className={s.list}>
+    <div className={s.list}>
       {listArr.map((item, index) => {
         return (
           <div className={s.access_rights} key={index}>
@@ -43,8 +41,6 @@ export default function AccessRights({ items, userId }) {
           </div>
         )
       })}
-    </ul>
+    </div>
   )
 }
-
-// activation promised payment

@@ -1,27 +1,36 @@
 import React from 'react'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import { InputField, Button } from '../..'
 import CustomPhoneInput from '../../ui/CustomPhoneInput/CustomPhoneInput'
-import { usersOperations } from '../../../Redux'
 
-import s from './AddUserForm.module.scss'
+import s from './ManageUserForm.module.scss'
+import classNames from 'classnames'
 
-export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTestid }) {
+export default function ManageUserForm({
+  controlForm,
+  dataTestid,
+  handleSubmit,
+  title,
+  subtitle,
+  formName,
+  email,
+  userName,
+}) {
   const { t } = useTranslation('trusted_users')
-  const dispatch = useDispatch()
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .matches(
-        /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
-        t('trusted_users.form_errors.full_name'),
-      )
-      .required(t('trusted_users.form_warnings.full_name')),
+    name:
+      formName !== 'settings' &&
+      Yup.string()
+        .matches(
+          /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+          t('trusted_users.form_errors.full_name'),
+        )
+        .required(t('trusted_users.form_warnings.full_name')),
     phone: Yup.string()
       .matches(
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
@@ -29,12 +38,14 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       )
       .min(7, t('trusted_users.form_errors.phone'))
       .required(t('trusted_users.form_warnings.phone')),
-    email: Yup.string()
-      .email(t('trusted_users.form_errors.email'))
-      .required(t('trusted_users.form_warnings.email')),
+    email:
+      formName !== 'settings' &&
+      Yup.string()
+        .email(t('trusted_users.form_errors.email'))
+        .required(t('trusted_users.form_warnings.email')),
     password: Yup.string()
       .min(6, t('trusted_users.form_errors.password'))
-      .max(48, t('trusted_users.form_errors.password'))
+      .max(48, t('trusted_users.form_errors.password_toolong'))
       .required(t('trusted_users.form_warnings.password'))
       .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('trusted_users.form_errors.password')),
     passConfirmation: Yup.string()
@@ -42,21 +53,15 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
       .required(t('trusted_users.form_warnings.conf_password')),
   })
 
-  const handleSubmit = values => {
-    const { email, name, phone, password } = values
-
-    dispatch(
-      usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
-    )
-    controlForm()
-  }
-
   return (
     <div data-testid={dataTestid}>
       <div className={s.form_wrapper}>
         <div className={s.form}>
           <div className={s.form_title_wrapper}>
-            <p className={s.form_title}>{t('trusted_users.form.title')}</p>
+            <div className={s.title_wrapper}>
+              <p className={s.form_title}>{title}</p>
+              <p className={s.form_subtitle}>{subtitle}</p>
+            </div>
             <div className={s.close_btn_wrapper}>
               <button className={s.close_btn} onClick={controlForm}></button>
             </div>
@@ -78,7 +83,11 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                   <InputField
                     dataTestid="input_email"
                     label={requiredLabel(t('trusted_users.form.email'))}
-                    placeholder={t('trusted_users.form_placeholders.email')}
+                    placeholder={
+                      formName === 'settings'
+                        ? email
+                        : t('trusted_users.form_placeholders.email')
+                    }
                     name="email"
                     error={!!errors.email}
                     touched={!!touched.email}
@@ -86,18 +95,24 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                     isShadow={true}
                     background={true}
                     autoComplete
+                    disabled={formName === 'settings'}
                   />
 
                   <InputField
                     dataTestid="input_name"
                     label={requiredLabel(t('trusted_users.form.full_name'))}
-                    placeholder={t('trusted_users.form_placeholders.full_name')}
+                    placeholder={
+                      formName === 'settings'
+                        ? userName
+                        : t('trusted_users.form_placeholders.full_name')
+                    }
                     name="name"
                     error={!!errors.name}
                     touched={!!touched.name}
                     className={s.field_input}
                     isShadow={true}
                     background={true}
+                    disabled={formName === 'settings'}
                   />
 
                   <CustomPhoneInput
@@ -136,7 +151,7 @@ export default function AddUserForm({ controlForm, checkIfCreatedUser, dataTesti
                   <Button
                     dataTestid="btn_form_submit"
                     size="large"
-                    className={s.submit_btn}
+                    className={classNames({ [s.submit_btn]: true, [s.btn]: true })}
                     label={t('trusted_users.form.submit_btn').toUpperCase()}
                     type="submit"
                   />
@@ -158,8 +173,10 @@ export function requiredLabel(labelName) {
   )
 }
 
-AddUserForm.propTypes = {
+ManageUserForm.propTypes = {
   controlForm: PropTypes.func,
   dataTestid: PropTypes.string,
-  checkIfCreatedUser: PropTypes.func,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  name: PropTypes.string,
 }

@@ -7,13 +7,12 @@ import PropTypes from 'prop-types'
 
 import { usersOperations } from '../../../Redux'
 import { Delete, Key, Settings } from '../../../images'
+import ManageUserForm from '../ManageUserForm/ManageUserForm'
 import { useOutsideAlerter } from '../../../utils'
 import Alert from '../../ui/Alert/Alert'
-import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
 import { Button } from '../..'
 
 import s from './ControlBtn.module.scss'
-import AccessRights from '../AccessRights/AccessRights'
 
 export default function ControlBtn({
   handleControlDotsClick,
@@ -22,12 +21,15 @@ export default function ControlBtn({
   userId,
   handleUserRolesData,
   userName,
-  rightsList,
+  handleRightsAlert,
+  email,
+  hasAccess,
 }) {
   const { t } = useTranslation('trusted_users')
-
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
-  const [showRightsAlert, setShowRightsAlert] = useState(false)
+
+  const [settingsForm, setSettingForm] = useState(false)
+  const [hovered, setHovered] = useState(false)
 
   const dropDownEl = useRef()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -39,8 +41,24 @@ export default function ControlBtn({
   const handleRemoveAlert = () => {
     setShowRemoveAlert(!showRemoveAlert)
   }
-  const handleRightsAlert = () => {
-    setShowRightsAlert(!showRightsAlert)
+
+  const handleSettingsForm = () => {
+    setSettingForm(!settingsForm)
+  }
+
+  const handleSubmit = values => {
+    const { email, name, phone, password } = values
+
+    dispatch(
+      usersOperations.editUserInfo(
+        password,
+        email,
+        phone,
+        name,
+        userId,
+        handleSettingsForm,
+      ),
+    )
   }
 
   const removeUser = () => {
@@ -73,21 +91,38 @@ export default function ControlBtn({
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn}>
+          <button className={s.settings_btn} onClick={handleSettingsForm}>
             <Settings className={s.icon} />{' '}
             <p className={s.setting_text}>
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
           </button>
           <button
-            disabled={isOwner}
-            className={cn({ [s.access_rights_btn]: true, [s.owner]: isOwner })}
+            disabled={isOwner || hasAccess}
+            className={cn({
+              [s.access_rights_btn]: true,
+              [s.owner]: isOwner || hasAccess,
+            })}
             onClick={handleRightsAlert}
+            // onMouseOverCapture={() => setHovered(!hovered)}
+            // onMouseLeave={() => setHovered(false)}
           >
             <Key className={s.icon} />
             <p className={s.access_text}>
               {t('trusted_users.user_cards.drop_list.access_rights')}
             </p>
+
+            <div
+              className={cn({
+                [s.full]: hasAccess && hovered,
+                [s.has_access]: true,
+              })}
+            >
+              <p>
+                This user has already have full access. If you want to manage exact
+                rights, please turn off full access
+              </p>
+            </div>
           </button>
 
           <button
@@ -118,20 +153,23 @@ export default function ControlBtn({
               size="small"
               label={t('trusted_users.alerts.remove.btn_text_ok').toUpperCase()}
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.remove_btn]: true, [s.btn]: true })}
               onClick={removeUser}
             />
           }
         />
       )}
-      {showRightsAlert && (
-        <AccessRightsAlert
-          dataTestid="trusted_users_rights_alert"
-          isOpened={showRightsAlert}
-          controlAlert={handleRightsAlert}
-          title={mobile ? 'Права доступа' : 'Права доступа доверенного пользователя'}
-          list1={<AccessRights items={rightsList.slice(0, 21)} userId={userId} />}
-          list2={<AccessRights items={rightsList.slice(21, 38)} userId={userId} />}
+
+      {settingsForm && (
+        <ManageUserForm
+          formName="settings"
+          title={t('trusted_users.rights_alert.usrparam')}
+          subtitle={email}
+          handleSubmit={handleSubmit}
+          controlForm={handleSettingsForm}
+          dataTestid="settings_form"
+          email={email}
+          userName={userName}
         />
       )}
     </>
@@ -145,4 +183,5 @@ ControlBtn.propTypes = {
   userId: PropTypes.string,
   handleUserRolesData: PropTypes.func,
   rightsList: PropTypes.array,
+  email: PropTypes.string,
 }

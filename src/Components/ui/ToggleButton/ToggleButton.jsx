@@ -92,7 +92,7 @@ export default function ToggleButton({
                   : t('trusted_users.alerts.access.btn_text_ok').toUpperCase()
               }
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
             />
           }
@@ -121,7 +121,7 @@ export default function ToggleButton({
                   : t('trusted_users.alerts.status.btn_text_ok').toUpperCase()
               }
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
             />
           }

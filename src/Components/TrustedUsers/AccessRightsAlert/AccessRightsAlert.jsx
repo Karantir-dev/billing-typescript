@@ -1,6 +1,5 @@
 import cn from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
-// import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
@@ -32,7 +31,9 @@ export default function AccessRightsAlert({
     getAlerEl.current.addEventListener('scroll', handleScroll)
 
     return () => {
-      getAlerEl.current.removeEventListener('scroll', handleScroll)
+      if (getAlerEl.current) {
+        getAlerEl.current.removeEventListener('scroll', handleScroll)
+      }
     }
   }, [])
 

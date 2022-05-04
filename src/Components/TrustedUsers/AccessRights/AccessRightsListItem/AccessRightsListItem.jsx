@@ -1,14 +1,16 @@
-// import classNames from 'classnames'
 import cn from 'classnames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
 import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
 
 import s from './AccessRightsListItem.module.scss'
+
+const callBack = data => {
+  return data
+}
 
 export default function AccessRightsListItem({
   item,
@@ -23,6 +25,7 @@ export default function AccessRightsListItem({
   const [subList, setSubList] = useState([])
   let rightState = item?.active?.$ === 'on'
   const [currentRightState, setCurrentRightState] = useState(rightState)
+  const dispatch = useDispatch()
 
   const modifiedList = subList.map(item => {
     const newObj = JSON.parse(JSON.stringify(item))
@@ -52,7 +55,9 @@ export default function AccessRightsListItem({
           ? `${userId}/user/rights2.user`
           : userId
 
-      const res = usersOperations.getSubRights(changedUserId, item.name.$, sessionId)
+      const res = dispatch(
+        usersOperations.getSubRights(changedUserId, item.name.$, sessionId, callBack),
+      )
 
       res.then(data => {
         try {
@@ -65,6 +70,7 @@ export default function AccessRightsListItem({
       })
     } else {
       handleSubSelect(item)
+      handleSelect(item)
     }
   }
 
@@ -74,24 +80,34 @@ export default function AccessRightsListItem({
     if (type === 'promisepayment') {
       type = type + '.add'
     }
-    console.log('TYPE', type)
 
-    const res = usersOperations.manageUserRight(userId, item.name.$, sessionId, act, type)
+    console.log(type)
 
-    res.then(data => {
+    const res = dispatch(
+      usersOperations.manageUserRight(
+        userId,
+        item.name.$,
+        sessionId,
+        act,
+        type,
+        callBack,
+      ),
+    )
+
+    res.then(() => {
       try {
-        console.log('rights changed successfully', data)
-
         if (allowAll) {
           const map = selectedSub.map(el => {
-            if (el?.active?.$ === 'on') {
+            if (currentRightState) {
               el.active.$ = 'off'
-            } else if (el?.active?.$ === 'off') {
+            } else if (!currentRightState) {
               el.active.$ = 'on'
             }
 
             return el
           })
+
+          console.log(map)
 
           setSelectedSub([])
           setCurrentRightState(!currentRightState)
@@ -109,13 +125,16 @@ export default function AccessRightsListItem({
 
   if (Object.hasOwn(item, 'active')) {
     return (
-      <li
+      <div
         className={cn({
           [s.list_item_wrapper]: true,
           [s.opened]: selected,
         })}
       >
-        <button
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={() => null}
           onClick={hasSubItems ? handleClick : null}
           className={cn({ [s.list_item]: true, [s.opened]: selected })}
         >
@@ -134,23 +153,21 @@ export default function AccessRightsListItem({
               />
             )}
           </div>
-        </button>
+        </div>
 
         {selectedSub && (
           <div className={cn({ [s.sub_list]: true, [s.selected]: selected })}>
             {allowAll && (
-              <>
-                <div className={cn({ [s.allow_all_item]: true })}>
-                  <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
+              <div className={cn({ [s.allow_all_item]: true })}>
+                <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
 
-                  <ToggleButton
-                    hasAlert={false}
-                    initialState={currentRightState}
-                    func={handleToggleBtns}
-                    size="small"
-                  />
-                </div>
-              </>
+                <ToggleButton
+                  hasAlert={false}
+                  initialState={currentRightState}
+                  func={handleToggleBtns}
+                  size="small"
+                />
+              </div>
             )}
 
             {selectedSub.map((child, index) => {
@@ -166,15 +183,15 @@ export default function AccessRightsListItem({
             })}
           </div>
         )}
-      </li>
+      </div>
     )
   } else {
     return (
-      <li className={s.list_item_title}>
+      <div className={s.list_item_title}>
         <p className={s.list_item_title_text}>
           {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
         </p>
-      </li>
+      </div>
     )
   }
 }
