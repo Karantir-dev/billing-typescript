@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '..'
-import UserCard from './UserCard/UserCard'
-import Container from '../Container/Container'
-import ManageUserForm from './ManageUserForm/ManageUserForm'
+import { Button } from '../../Components'
+import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
+import Container from '../../Components/Container/Container'
+import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
 import { usersOperations, usersSelectors } from '../../Redux'
 
 import s from './TrustedUsers.module.scss'
@@ -83,7 +83,7 @@ export default function TrustedUsers() {
           size="large"
           label={`${t('trusted_users.button')}`.toUpperCase()}
           type="button"
-          className={s.add_btn}
+          className={classNames({ [s.add_btn]: true, [s.btn]: true })}
           onClick={handleUserForm}
           isShadow
         />
@@ -117,14 +117,13 @@ export default function TrustedUsers() {
         })}
       </section>
 
-      {isUserFormActive && (
-        <ManageUserForm
-          controlForm={handleUserForm}
-          handleSubmit={handleSubmit}
-          title={t('trusted_users.form.title')}
-          dataTestid="trusted_form"
-        />
-      )}
+      <ManageUserForm
+        isUserFormActive={isUserFormActive}
+        controlForm={handleUserForm}
+        handleSubmit={handleSubmit}
+        title={t('trusted_users.form.title')}
+        dataTestid="trusted_form"
+      />
     </Container>
   )
 }

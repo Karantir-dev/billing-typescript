@@ -19,44 +19,76 @@ export default function ManageUserForm({
   formName,
   email,
   userName,
+  isUserFormActive,
 }) {
   const { t } = useTranslation('trusted_users')
 
-  const validationSchema = Yup.object().shape({
-    name:
-      formName !== 'settings' &&
-      Yup.string()
-        .matches(
-          /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
-          t('trusted_users.form_errors.full_name'),
-        )
-        .required(t('trusted_users.form_warnings.full_name')),
-    phone: Yup.string()
-      .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        t('trusted_users.form_errors.phone'),
-      )
-      .min(7, t('trusted_users.form_errors.phone'))
-      .required(t('trusted_users.form_warnings.phone')),
-    email:
-      formName !== 'settings' &&
-      Yup.string()
-        .email(t('trusted_users.form_errors.email'))
-        .required(t('trusted_users.form_warnings.email')),
-    password: Yup.string()
-      .min(6, t('trusted_users.form_errors.password'))
-      .max(48, t('trusted_users.form_errors.password_toolong'))
-      .required(t('trusted_users.form_warnings.password'))
-      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('trusted_users.form_errors.password')),
-    passConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], t('trusted_users.form_errors.conf_password'))
-      .required(t('trusted_users.form_warnings.conf_password')),
-  })
+  const validationSchema =
+    formName === 'settings'
+      ? Yup.object().shape({
+          name: Yup.string()
+            .matches(
+              /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+              t('trusted_users.form_errors.full_name'),
+            )
+            .required(t('trusted_users.form_warnings.full_name')),
+          phone: Yup.string()
+            .matches(
+              /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+              t('trusted_users.form_errors.phone'),
+            )
+            .min(7, t('trusted_users.form_errors.phone')),
+          email: Yup.string()
+            .email(t('trusted_users.form_errors.email'))
+            .required(t('trusted_users.form_warnings.email')),
+          password: Yup.string()
+            .min(6, t('trusted_users.form_errors.password'))
+            .max(48, t('trusted_users.form_errors.password_toolong'))
+            .matches(
+              /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+              t('trusted_users.form_errors.password'),
+            ),
+          passConfirmation: Yup.string().oneOf(
+            [Yup.ref('password')],
+            t('trusted_users.form_errors.conf_password'),
+          ),
+        })
+      : Yup.object().shape({
+          name: Yup.string()
+            .matches(
+              /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+              t('trusted_users.form_errors.full_name'),
+            )
+            .required(t('trusted_users.form_warnings.full_name')),
+          phone: Yup.string()
+            .matches(
+              /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+              t('trusted_users.form_errors.phone'),
+            )
+            .min(7, t('trusted_users.form_errors.phone'))
+            .required(t('trusted_users.form_warnings.phone')),
+          email: Yup.string()
+            .email(t('trusted_users.form_errors.email'))
+            .required(t('trusted_users.form_warnings.email')),
+          password: Yup.string()
+            .min(6, t('trusted_users.form_errors.password'))
+            .max(48, t('trusted_users.form_errors.password_toolong'))
+            .required(t('trusted_users.form_warnings.password'))
+            .matches(
+              /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+              t('trusted_users.form_errors.password'),
+            ),
+          passConfirmation: Yup.string()
+            .oneOf([Yup.ref('password')], t('trusted_users.form_errors.conf_password'))
+            .required(t('trusted_users.form_warnings.conf_password')),
+        })
 
   return (
     <div data-testid={dataTestid}>
-      <div className={s.form_wrapper}>
-        <div className={s.form}>
+      <div
+        className={classNames({ [s.form_wrapper]: true, [s.active]: isUserFormActive })}
+      >
+        <div className={classNames({ [s.form]: true, [s.active]: isUserFormActive })}>
           <div className={s.form_title_wrapper}>
             <div className={s.title_wrapper}>
               <p className={s.form_title}>{title}</p>
@@ -82,7 +114,11 @@ export default function ManageUserForm({
                 <Form>
                   <InputField
                     dataTestid="input_email"
-                    label={requiredLabel(t('trusted_users.form.email'))}
+                    label={
+                      formName === 'settings'
+                        ? t('trusted_users.form.email')
+                        : requiredLabel(t('trusted_users.form.email'))
+                    }
                     placeholder={
                       formName === 'settings'
                         ? email
@@ -100,7 +136,11 @@ export default function ManageUserForm({
 
                   <InputField
                     dataTestid="input_name"
-                    label={requiredLabel(t('trusted_users.form.full_name'))}
+                    label={
+                      formName === 'settings'
+                        ? t('trusted_users.form.full_name')
+                        : requiredLabel(t('trusted_users.form.full_name'))
+                    }
                     placeholder={
                       formName === 'settings'
                         ? userName
@@ -116,7 +156,11 @@ export default function ManageUserForm({
                   />
 
                   <CustomPhoneInput
-                    label={requiredLabel(t('trusted_users.form.phone'))}
+                    label={
+                      formName === 'settings'
+                        ? t('trusted_users.form.phone')
+                        : requiredLabel(t('trusted_users.form.phone'))
+                    }
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
@@ -125,7 +169,11 @@ export default function ManageUserForm({
 
                   <InputField
                     dataTestid="input_password"
-                    label={requiredLabel(t('trusted_users.form.password'))}
+                    label={
+                      formName === 'settings'
+                        ? t('trusted_users.form.password')
+                        : requiredLabel(t('trusted_users.form.password'))
+                    }
                     placeholder={t('trusted_users.form_placeholders.password')}
                     name="password"
                     error={!!errors.password}
@@ -138,7 +186,11 @@ export default function ManageUserForm({
 
                   <InputField
                     dataTestid="input_passConfirmation"
-                    label={requiredLabel(t('trusted_users.form.conf_password'))}
+                    label={
+                      formName === 'settings'
+                        ? t('trusted_users.form.conf_password')
+                        : requiredLabel(t('trusted_users.form.conf_password'))
+                    }
                     placeholder={t('trusted_users.form_placeholders.conf_password')}
                     name="passConfirmation"
                     error={!!errors.passConfirmation}
@@ -178,5 +230,8 @@ ManageUserForm.propTypes = {
   dataTestid: PropTypes.string,
   title: PropTypes.string,
   subtitle: PropTypes.string,
-  name: PropTypes.string,
+  userName: PropTypes.string,
+  email: PropTypes.string,
+  isUserFormActive: PropTypes.bool,
+  formName: PropTypes.string,
 }

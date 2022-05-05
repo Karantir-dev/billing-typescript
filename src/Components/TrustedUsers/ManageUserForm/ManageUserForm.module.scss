@@ -11,9 +11,17 @@
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
+  opacity: 0;
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
+  transition: opacity 0.1s ease-in;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .form_title_wrapper {
@@ -44,6 +52,12 @@
   margin-top: 125px;
   margin-bottom: 125px;
   width: 100%;
+  transform: scale(0.5);
+  transition: transform 0.2s ease-out;
+
+  &.active {
+    transform: scale(1);
+  }
 }
 
 .field_input {

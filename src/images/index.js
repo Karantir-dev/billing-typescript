@@ -25,6 +25,7 @@ export { default as Shevron } from './svg/Shevron.jsx'
 export { default as Search } from './svg/Search.jsx'
 export { default as Envelope } from './svg/Envelope.jsx'
 export { default as Padlock } from './svg/Padlock.jsx'
+export { default as WanrningSign } from './svg/WarningSign.jsx'
 
 export { default as CalendarArrowDouble } from './svg/CalendarArrowDouble.jsx'
 export { default as CalendarArrow } from './svg/CalendarArrow.jsx'

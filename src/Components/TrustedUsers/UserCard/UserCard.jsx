@@ -5,13 +5,14 @@ import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import ToggleButton from '../../ui/ToggleButton/ToggleButton'
+import ToggleButton from '../ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
 import { usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
+import { WanrningSign } from '../../../images'
 
 export default function UserCard({
   name,
@@ -35,6 +36,8 @@ export default function UserCard({
   const handleRightsAlert = () => {
     setShowRightsAlert(!showRightsAlert)
   }
+
+  const [hovered, setHovered] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -100,6 +103,26 @@ export default function UserCard({
                 isOwner={isOwner}
                 hasAlert={true}
               />
+
+              {hasAccess && !isOwner && (
+                <div
+                  className={s.warning_sign_wrapper}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <WanrningSign className={s.warning_sign} />
+                  <p
+                    className={cn({
+                      [s.warning_text]: true,
+                      [s.mobile]: mobile,
+                      [s.hovered]: hovered,
+                    })}
+                  >
+                    This user has full access, if you wanna manage exact rights, plz turn
+                    off full access
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div className={s.status_wrapper}>
@@ -164,6 +187,20 @@ export default function UserCard({
                 isOwner={isOwner}
                 hasAlert={true}
               />
+
+              {hasAccess && !isOwner && (
+                <div
+                  className={s.warning_sign_wrapper}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <WanrningSign className={s.warning_sign} />
+                  <p className={cn({ [s.warning_text]: true, [s.hovered]: hovered })}>
+                    This user has full access, if you wanna manage exact rights, plz turn
+                    off full access
+                  </p>
+                </div>
+              )}
             </div>
             <div className={s.toggle_status_wrapper_lg}>
               {laptopOrHigher && (

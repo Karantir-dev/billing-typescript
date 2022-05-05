@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
-import ToggleButton from '../../../ui/ToggleButton/ToggleButton'
+import ToggleButton from '../../ToggleButton/ToggleButton'
 
 import s from './AccessRightsListItem.module.scss'
 
@@ -107,8 +107,6 @@ export default function AccessRightsListItem({
             return el
           })
 
-          console.log(map)
-
           setSelectedSub([])
           setCurrentRightState(!currentRightState)
           setSelectedSub([...map])
@@ -126,6 +124,7 @@ export default function AccessRightsListItem({
   if (Object.hasOwn(item, 'active')) {
     return (
       <div
+        data-testid="modal_rihgts_list_item"
         className={cn({
           [s.list_item_wrapper]: true,
           [s.opened]: selected,
@@ -156,7 +155,10 @@ export default function AccessRightsListItem({
         </div>
 
         {selectedSub && (
-          <div className={cn({ [s.sub_list]: true, [s.selected]: selected })}>
+          <div
+            data-testid="modal_rihgts_sub_list"
+            className={cn({ [s.sub_list]: true, [s.selected]: selected })}
+          >
             {allowAll && (
               <div className={cn({ [s.allow_all_item]: true })}>
                 <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
@@ -187,7 +189,7 @@ export default function AccessRightsListItem({
     )
   } else {
     return (
-      <div className={s.list_item_title}>
+      <div data-testid="modal_rihgts_list_item" className={s.list_item_title}>
         <p className={s.list_item_title_text}>
           {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
         </p>

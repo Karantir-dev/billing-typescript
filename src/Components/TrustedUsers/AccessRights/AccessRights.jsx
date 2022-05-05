@@ -27,10 +27,15 @@ export default function AccessRights({ items, userId }) {
   }
 
   return (
-    <div className={s.list}>
+    <div role="list" aria-labelledby="rights-heading" className={s.list}>
       {listArr.map((item, index) => {
         return (
-          <div className={s.access_rights} key={index}>
+          <div
+            role="listitem"
+            data-testid="trusted_users_rights_item"
+            className={s.access_rights}
+            key={index}
+          >
             <AccessRightsListItem
               handleSelect={handleSelect}
               item={item}

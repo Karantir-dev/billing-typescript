@@ -29,7 +29,6 @@ export default function ControlBtn({
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
 
   const [settingsForm, setSettingForm] = useState(false)
-  const [hovered, setHovered] = useState(false)
 
   const dropDownEl = useRef()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -104,25 +103,11 @@ export default function ControlBtn({
               [s.owner]: isOwner || hasAccess,
             })}
             onClick={handleRightsAlert}
-            // onMouseOverCapture={() => setHovered(!hovered)}
-            // onMouseLeave={() => setHovered(false)}
           >
             <Key className={s.icon} />
             <p className={s.access_text}>
               {t('trusted_users.user_cards.drop_list.access_rights')}
             </p>
-
-            <div
-              className={cn({
-                [s.full]: hasAccess && hovered,
-                [s.has_access]: true,
-              })}
-            >
-              <p>
-                This user has already have full access. If you want to manage exact
-                rights, please turn off full access
-              </p>
-            </div>
           </button>
 
           <button
@@ -159,19 +144,17 @@ export default function ControlBtn({
           }
         />
       )}
-
-      {settingsForm && (
-        <ManageUserForm
-          formName="settings"
-          title={t('trusted_users.rights_alert.usrparam')}
-          subtitle={email}
-          handleSubmit={handleSubmit}
-          controlForm={handleSettingsForm}
-          dataTestid="settings_form"
-          email={email}
-          userName={userName}
-        />
-      )}
+      <ManageUserForm
+        isUserFormActive={settingsForm}
+        formName="settings"
+        title={t('trusted_users.rights_alert.usrparam')}
+        subtitle={email}
+        handleSubmit={handleSubmit}
+        controlForm={handleSettingsForm}
+        dataTestid="settings_form"
+        email={email}
+        userName={userName}
+      />
     </>
   )
 }
