@@ -40,12 +40,14 @@ export default function StatisticsFilterModal({
     }
   }
 
-  const onSubmit = () => {
-    dispatch(affiliateOperations.getFilteredStatistics(setItems, setTotal))
+  const onSubmit = values => {
+    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal))
+    closeFn()
   }
+
   const optionsList = [
     { label: t('Yes', { ns: 'other' }), value: 'on' },
-    { label: t('-- none --', { ns: 'other' }), value: 'off' },
+    { label: t('-- none --', { ns: 'other' }), value: 'null' },
   ]
 
   return (
@@ -66,17 +68,23 @@ export default function StatisticsFilterModal({
 
         <Formik
           initialValues={{
-            date: initialFilters.date || '',
+            date: initialFilters.date || 'nodate',
             dateStart: '',
             dateEnd: '',
             site: initialFilters.site || '',
-            registered: initialFilters.registered || '',
-            payed: initialFilters.payed || '',
+            registered: initialFilters.registered || 'null',
+            payed: initialFilters.payed || 'null',
           }}
           onSubmit={onSubmit}
+          enableReinitialize
         >
           {({ values, setFieldValue }) => {
-            console.log('values', values)
+            const calendarValue = values.dateEnd
+              ? [new Date(values.dateStart), new Date(values.dateEnd)]
+              : values.dateStart
+              ? new Date(values.dateStart)
+              : null
+
             return (
               <>
                 <Form className={s.form}>
@@ -103,18 +111,16 @@ export default function StatisticsFilterModal({
                         <div className={s.calendarModal} ref={dropdownCalendar}>
                           <CalendarModal
                             pointerClassName={s.calendar_pointer}
-                            // setStartDate={date => {
-                            //   setError(false)
-                            //   setPeriodStart(date)
-                            //   setPeriodEnd('')
-                            //   setFixedPeriod('other')
-                            // }}
-                            // setEndDate={date => {
-                            //   setError(false)
-                            //   setPeriodEnd(date)
-                            // }}
-                            // range={Boolean(periodStart)}
-                            // value={calendarValue}
+                            setStartDate={date => {
+                              setFieldValue('dateStart', date)
+                              setFieldValue('dateEnd', '')
+                              setFieldValue('date', 'other')
+                            }}
+                            setEndDate={date => {
+                              setFieldValue('dateEnd', date)
+                            }}
+                            range={Boolean(values.dateStart)}
+                            value={calendarValue}
                           />
                         </div>
                       </CSSTransition>

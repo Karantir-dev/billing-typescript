@@ -174,8 +174,9 @@ const getInitialStatistics =
         console.log(data)
         const date = data.doc.p_filter.$.match(/date = ([\s\S]+?),/)?.[1]
         const site = data.doc.p_filter.$.match(/site ~ ([\s\S]+?),/)?.[1]
-        const registered = data.doc.p_filter.$.match(/registered = ([\s\S]+?),/)?.[1]
-        const payed = data.doc.p_filter.$.match(/payment = ([\s\S]+?)$/)?.[1]
+        const registered =
+          data.doc.p_filter.$.match(/registered = ([\s\S]+?),/)?.[1] && 'on'
+        const payed = data.doc.p_filter.$.match(/payment = ([\s\S]+?)$/)?.[1] && 'on'
 
         setInitialFilters({ date, site, registered, payed })
         data.doc?.elem && setItems(data.doc?.elem)
@@ -191,10 +192,11 @@ const getInitialStatistics =
   }
 
 const getFilteredStatistics =
-  (date, dateStart, dateEnd, site, registered, payed) => (dispatch, getState) => {
+  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
-
+    console.log('registered', registered)
     axiosInstance
       .post(
         '/',
@@ -214,9 +216,24 @@ const getFilteredStatistics =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data)
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'affiliate.client.click',
+              auth: sessionId,
+              out: 'json',
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        dispatch(actions.hideLoader())
+            console.log(data)
+            data.doc?.elem && setItems(data.doc?.elem)
+            setTotal(data.doc.p_elems.$)
+
+            dispatch(actions.hideLoader())
+          })
       })
       .catch(err => {
         dispatch(actions.hideLoader())
