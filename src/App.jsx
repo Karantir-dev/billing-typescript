@@ -2,9 +2,8 @@ import React, { Suspense } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import dayjs from 'dayjs'
-import 'dayjs/locale/ru'
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
-
+import { ToastContainer } from 'react-toastify'
 import {
   Loader,
   LoginForm,
@@ -29,6 +28,8 @@ import {
   UserSettings,
 } from './Pages'
 import { useTranslation } from 'react-i18next'
+import 'dayjs/locale/ru'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function App() {
   return (
@@ -134,7 +135,7 @@ export default function App() {
               />
             </Routes>
           </Suspense>
-
+          <ToastContainer />
           <Portal>
             <Loader />
           </Portal>

@@ -1,7 +1,7 @@
 .btn {
   position: relative;
-  height: 27px;
-  width: 52px;
+  height: 23px;
+  width: 44px;
   cursor: pointer;
   &.disabled {
     opacity: 0.5;
@@ -14,8 +14,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 27px;
-  width: 52px;
+  height: 23px;
+  width: 44px;
   background-color: var(--switchers-bg);
   border-radius: 25px;
   box-shadow: var(--switchers-shadow);
@@ -32,8 +32,8 @@
     left: 3px;
     right: 3px;
     bottom: 3px;
-    width: 21px;
-    height: 21px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background-color: var(--switchers-dot-bg);
     box-shadow: var(--switchers-dot-shadow);
@@ -44,7 +44,7 @@
   &.active {
     &::before {
       transition: 0.4s ease;
-      transform: translateX(25px);
+      transform: translateX(22px);
       box-shadow: var(--switchers-dot-shadow-active);
       background-color: #ffffff;
     }

@@ -49,5 +49,11 @@
   "Send confirmation": "Send confirmation",
   "Filter": "Filter",
   "follow": "follow",
-  "of": "of"
+  "of": "of",
+  "Password must contain at least 6 characters": "Password must contain at least 6 characters",
+  "Password must contain no more than 48 characters": "Password must contain no more than 48 characters",
+  "Password must contain at least one uppercase and lowercase letter": "Password must contain at least one uppercase and lowercase letter",
+  "Passwords do not match": "Passwords do not match",
+  "Wrong old password": "Wrong old password",
+  "Changes saved successfully": "Changes saved successfully"
 }
