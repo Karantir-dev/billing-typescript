@@ -4,15 +4,18 @@ import PropTypes from 'prop-types'
 import s from './Toggle.module.scss'
 
 export default function Component({ initialState, setValue, disabled }) {
-  const [isToggled, setIsToggled] = useState(initialState || false)
+  const [isToggled, setIsToggled] = useState(false)
 
   useEffect(() => {
     setIsToggled(initialState)
   }, [initialState])
 
+  useEffect(() => {
+    setValue && setValue(isToggled)
+  }, [isToggled])
+
   const toggleHandler = val => {
     setIsToggled(!val)
-    setValue && setValue(!val)
   }
 
   return (

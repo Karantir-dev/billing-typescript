@@ -20,6 +20,7 @@ export default function CustomPhoneInput(props) {
     name,
     labelClass,
     wrapperClass,
+    inputClass,
     ...restProps
   } = props
 
@@ -39,7 +40,6 @@ export default function CustomPhoneInput(props) {
     <div className={cn(s.wrapper, wrapperClass)}>
       <p className={cn(s.phone_label, labelClass)}> {label}</p>
       <PhoneInput
-        {...restProps}
         country={'ua'}
         localization={lang}
         onChange={onValueChange}
@@ -51,6 +51,7 @@ export default function CustomPhoneInput(props) {
           [s.react_phone_input]: true,
           [s.lang]: true,
           [s.field_input]: true,
+          [inputClass]: inputClass,
         })}
         buttonClass={cn({
           [s.lang_btn]: true,
@@ -69,6 +70,7 @@ export default function CustomPhoneInput(props) {
           [s.list]: true,
         })}
         searchStyle={{ backgroundColor: 'red' }}
+        {...restProps}
       />
 
       <ErrorMessage name="phone" component="span" className={s.error_message} />
@@ -92,4 +94,5 @@ CustomPhoneInput.propTypes = {
   handleBlur: PropTypes.func.isRequired,
   label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   labelClass: PropTypes.string,
+  inputClass: PropTypes.string,
 }

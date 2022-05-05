@@ -48,5 +48,9 @@
   "Full name": "ФИО",
   "Save": "Сохранить",
   "total": "Всего",
-  "short_year": "г."
+  "short_year": "г.",
+  "Send confirmation": "Выслать подтверждение",
+  "Filter": "Фильтр",
+  "follow": "перейти",
+  "of": "из"
 }

@@ -39,7 +39,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           }),
         )
         .then(({ data }) => {
-          if (data.doc.error) {
+          if (data.doc?.error) {
             if (data.doc.error.$type === 'extraconfirm') {
               dispatch(authActions.setTemporaryId(sessionId))
 

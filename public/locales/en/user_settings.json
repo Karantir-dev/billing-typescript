@@ -11,5 +11,10 @@
   "Notification methods": "Notification methods",
   "Service notices": "Service notices",
   "Financial notices": "Financial notices",
-  "News notifications": "News notifications"
+  "News notifications": "News notifications",
+  "is not confirmed": "is not confirmed",
+  "All notifications are disabled": "All notifications are disabled",
+  "The confirmation email has been sent to": "The confirmation email has been sent to",
+  "Click 'send confirmation' for resending": "Click \"Send confirmation\" for resending",
+  "is confirmed": "is confirmed"
 }

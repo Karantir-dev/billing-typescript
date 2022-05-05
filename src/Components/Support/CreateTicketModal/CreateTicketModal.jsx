@@ -19,7 +19,7 @@ export default function Component(props) {
   const servicesList = useSelector(supportSelectors.getServices)
 
   const validationSchema = Yup.object().shape({
-    message: Yup.string().required(),
+    message: Yup.string().required(t('Is a required field')),
     subject: Yup.string().required(t('Is a required field')),
   })
 
@@ -71,7 +71,7 @@ export default function Component(props) {
                   value={values.ticket_item}
                   getElement={item => setFieldValue('ticket_item', item)}
                   isShadow
-                  label={t('Specify what the question is about')}
+                  label={`${t('Specify what the question is about')}:`}
                   itemsList={servicesList.map(el => {
                     return { label: t(el.label), value: el.value }
                   })}

@@ -48,7 +48,7 @@
   align-items: flex-start;
   justify-content: center;
   caret-color: transparent;
-  min-height: 46px;
+  min-height: 44px;
   height: fit-content;
   cursor: pointer;
   span {
@@ -124,6 +124,7 @@
 
   &.opened {
     display: block;
+    z-index: 9;
   }
 
   &::after {
@@ -189,6 +190,10 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 130.5%;
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--main-text);
   &:hover {
     font-weight: 600;
@@ -198,7 +203,7 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .input_wrapper {
-    min-height: 46px;
+    min-height: 44px;
     height: fit-content;
   }
 

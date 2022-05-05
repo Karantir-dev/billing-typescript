@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
-import { IconButton, StatisticsFilterModal } from '../../../Components'
+import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
 import { affiliateOperations } from '../../../Redux'
 import { Check } from '../../../images'
 
@@ -47,7 +47,6 @@ export default function AffiliateProgramStatistics() {
         onClick={() => setIsFilterOpened(true)}
         icon="filter"
       />
-
       <StatisticsFilterModal
         initialFilters={initialFilters}
         opened={isFilterOpened}
@@ -55,7 +54,6 @@ export default function AffiliateProgramStatistics() {
         setItems={setItems}
         setTotal={setTotal}
       />
-
       {widerThanMobile && (
         <div className={s.table_head_row}>
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
@@ -66,7 +64,6 @@ export default function AffiliateProgramStatistics() {
           </span>
         </div>
       )}
-
       <ul className={s.list}>
         {items.map(({ cdate, payed, site, referal }, index) => {
           return widerThanMobile ? (
@@ -140,6 +137,7 @@ export default function AffiliateProgramStatistics() {
       <p>
         {t('total', { ns: 'other' })}: {total}
       </p>
+      <Pagination />
       <ul>
         pagination pageNumber {pageNumber} pageCount {pageCount}
       </ul>

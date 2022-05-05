@@ -18,6 +18,7 @@ export default function Select(props) {
     height,
     placeholder,
     additionalPlaceHolder,
+    background,
   } = props
   const { t } = useTranslation('other')
 
@@ -91,6 +92,7 @@ export default function Select(props) {
             {
               [s.input]: true,
               [s.shadow]: isShadow,
+              [s.field_bgc]: background,
             },
             inputClassName,
           )}
@@ -149,6 +151,7 @@ Select.propTypes = {
   getElement: PropTypes.func,
   height: PropTypes.number,
   placeholder: PropTypes.string,
+  background: PropTypes.bool,
 }
 Select.defaultProps = {
   isShadow: false,

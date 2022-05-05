@@ -87,6 +87,7 @@
 
   &.opened {
     display: block;
+    z-index: 9;
   }
 
   &::after {
@@ -153,6 +154,10 @@
   &:hover {
     font-weight: 600;
   }
+}
+
+.field_bgc {
+  background-color: var(--nearby-elements-bgc);
 }
 
 // ADAPTIVE
