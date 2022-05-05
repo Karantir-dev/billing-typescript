@@ -49,5 +49,11 @@
   "Send confirmation": "Выслать подтверждение",
   "Filter": "Фильтр",
   "follow": "перейти",
-  "of": "из"
+  "of": "из",
+  "Password must contain at least 6 characters": "Пароль должен содержать не менее 6 символов",
+  "Password must contain no more than 48 characters": "Пароль должен содержать не более 48 символов",
+  "Password must contain at least one uppercase and lowercase letter": "Пароль должен содержать хотя бы одну строчную и заглавную буквы",
+  "Passwords do not match": "Пароли не совпадают",
+  "Wrong old password": "Неверный старый пароль",
+  "Changes saved successfully": "Изменения успешно сохранены"
 }

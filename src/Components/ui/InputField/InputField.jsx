@@ -24,6 +24,7 @@ export default function Component(props) {
     dataTestid,
     disabled,
     inputWrapperClass,
+    onKeyDown,
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -90,6 +91,7 @@ export default function Component(props) {
           name={name}
           type={passShown ? 'text' : type}
           placeholder={placeholder}
+          onKeyDown={onKeyDown}
           autoComplete={autoComplete ? 1 : 0}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
@@ -118,6 +120,7 @@ Component.propTypes = {
   background: PropTypes.bool,
   disabled: PropTypes.bool,
   inputWrapperClass: PropTypes.string,
+  onKeyDown: PropTypes.func,
 }
 
 Component.defaultProps = {
@@ -126,4 +129,5 @@ Component.defaultProps = {
   autoComplete: false,
   dataTestid: null,
   disabled: false,
+  onKeyDown: () => null,
 }

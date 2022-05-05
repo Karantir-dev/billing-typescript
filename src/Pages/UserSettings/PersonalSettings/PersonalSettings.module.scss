@@ -195,11 +195,13 @@
 }
 
 .confirmBtn {
-  width: 100%;
-  max-width: 100%;
-  text-transform: uppercase;
-  margin-top: 22px;
-  height: 55px;
+  margin: 0 0 40px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  text-decoration-line: underline;
+  color: var(--link-text);
 }
 
 .img {
@@ -221,12 +223,6 @@
     margin-left: 20px;
   }
 
-  .confirmBtn {
-    width: 280px;
-    margin-top: 0px;
-    margin-left: 20px;
-  }
-
   .saveBtn {
     width: 240px;
   }
@@ -236,11 +232,11 @@
   }
 
   .emailInput {
-    margin-right: 36px;
+    margin-right: 25px;
   }
 
   .phoneInput {
-    margin-right: 36px;
+    margin-right: 25px;
   }
 
   .checkBlock {
@@ -261,6 +257,7 @@
 
   .checkTitle {
     border-bottom: 1px solid #e8e2f3;
+    margin-bottom: 8px;
     .column {
       display: flex;
     }
@@ -273,7 +270,7 @@
 
 .emailStatus {
   font-style: normal;
-  
+
   font-weight: 300;
   font-size: 16px;
   line-height: 130%;
