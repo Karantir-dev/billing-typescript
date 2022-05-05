@@ -46,6 +46,7 @@
     "not_registered": "Не зарегистрирован",
     "unknown_source": "Неизвестный источник",
     "not_paid": "Не оплачено",
-    "website_url": "URL сайта"
+    "website_url": "URL сайта",
+    "no_result": "Нет результатов"
   }
 }

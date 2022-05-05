@@ -19,8 +19,8 @@ export default function AffiliateProgramStatistics() {
   const [isFilterOpened, setIsFilterOpened] = useState(false)
   const [items, setItems] = useState([])
   const [total, setTotal] = useState(0)
-  const [pageNumber, setPageNumber] = useState(0)
-  const [pageCount, setpageCount] = useState(0)
+  const [pageNumber, setPageNumber] = useState(1)
+  console.log('pageNumber', pageNumber)
   const [initialFilters, setInitialFilters] = useState({
     date: '',
     site: '',
@@ -34,27 +34,32 @@ export default function AffiliateProgramStatistics() {
         setItems,
         setTotal,
         setPageNumber,
-        setpageCount,
         setInitialFilters,
       ),
     )
   }, [])
 
+  const onPageChange = pageNum => {
+    setPageNumber(pageNum)
+    dispatch(affiliateOperations.getNextPageStatistics(setItems, setTotal, pageNum))
+  }
+
   return (
     <div className={s.content}>
-      <IconButton
-        className={s.icon_filter}
-        onClick={() => setIsFilterOpened(true)}
-        icon="filter"
-      />
-      <StatisticsFilterModal
-        initialFilters={initialFilters}
-        opened={isFilterOpened}
-        closeFn={() => setIsFilterOpened(false)}
-        setItems={setItems}
-        setTotal={setTotal}
-      />
-      {widerThanMobile && (
+      <div className={s.filter_wrapper}>
+        <IconButton onClick={() => setIsFilterOpened(true)} icon="filter" />
+
+        <StatisticsFilterModal
+          initialFilters={initialFilters}
+          opened={isFilterOpened}
+          closeFn={() => setIsFilterOpened(false)}
+          setItems={setItems}
+          setTotal={setTotal}
+          setPageNumber={setPageNumber}
+        />
+      </div>
+
+      {widerThanMobile && items.length > 0 && (
         <div className={s.table_head_row}>
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
           <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
@@ -64,6 +69,11 @@ export default function AffiliateProgramStatistics() {
           </span>
         </div>
       )}
+
+      {items.length === 0 && (
+        <p className={s.no_results}>{t('statistics_section.no_result')}</p>
+      )}
+
       <ul className={s.list}>
         {items.map(({ cdate, payed, site, referal }, index) => {
           return widerThanMobile ? (
@@ -134,13 +144,19 @@ export default function AffiliateProgramStatistics() {
           )
         })}
       </ul>
-      <p>
-        {t('total', { ns: 'other' })}: {total}
-      </p>
-      <Pagination />
-      <ul>
-        pagination pageNumber {pageNumber} pageCount {pageCount}
-      </ul>
+
+      <div className={s.footer_wrapper}>
+        <p className={s.total}>
+          {t('total', { ns: 'other' })}: {total}
+        </p>
+
+        <Pagination
+          currentPage={Number(pageNumber)}
+          totalCount={Number(total)}
+          pageSize={20}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   )
 }

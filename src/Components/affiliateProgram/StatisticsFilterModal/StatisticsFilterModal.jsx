@@ -2,12 +2,12 @@ import cn from 'classnames'
 import { Form, Formik } from 'formik'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMediaQuery } from 'react-responsive'
+import { useDispatch } from 'react-redux'
+import { CSSTransition } from 'react-transition-group'
 import { Cross } from '../../../images'
 import { Button, Select, CalendarModal, IconButton, InputField } from '../..'
 import { affiliateOperations } from '../../../Redux'
-
-import { useDispatch } from 'react-redux'
-import { CSSTransition } from 'react-transition-group'
 import { useOutsideAlerter } from '../../../utils'
 
 import animations from './animations.module.scss'
@@ -18,10 +18,12 @@ export default function StatisticsFilterModal({
   closeFn,
   setItems,
   setTotal,
+  setPageNumber,
   initialFilters,
 }) {
   const dispatch = useDispatch()
   const { t } = useTranslation(['affiliate_program', 'other'])
+  const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownCalendar = useRef(null)
 
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
@@ -45,22 +47,35 @@ export default function StatisticsFilterModal({
     closeFn()
   }
 
+  const onClearFilter = () => {
+    dispatch(affiliateOperations.dropFilters(setItems, setTotal))
+    setPageNumber(1)
+    closeFn()
+  }
+
   const optionsList = [
     { label: t('Yes', { ns: 'other' }), value: 'on' },
     { label: t('-- none --', { ns: 'other' }), value: 'null' },
   ]
 
   return (
-    <div
-      tabIndex={0}
-      onKeyUp={() => {}}
-      role="button"
-      className={cn(s.backdrop, { [s.opened]: opened })}
-      onClick={onBackdropClick}
-    >
+    <>
+      <div
+        tabIndex={0}
+        onKeyUp={() => {}}
+        role="button"
+        className={cn(s.backdrop, { [s.opened]: opened })}
+        onClick={onBackdropClick}
+      ></div>
+
       <div className={cn(s.modal_window, { [s.opened]: opened })}>
+        <div className={s.pointer_wrapper}>
+          <div className={s.pointer}></div>
+        </div>
         <div className={s.heading_wrapper}>
-          <p className={s.heading}>{t('statistics_section.filter')}</p>
+          {!widerThanMobile && (
+            <p className={s.heading}>{t('statistics_section.filter')}</p>
+          )}
           <button type="button" onClick={closeFn}>
             <Cross className={s.icon_cross} />
           </button>
@@ -78,7 +93,7 @@ export default function StatisticsFilterModal({
           onSubmit={onSubmit}
           enableReinitialize
         >
-          {({ values, setFieldValue }) => {
+          {({ values, setFieldValue, resetForm }) => {
             const calendarValue = values.dateEnd
               ? [new Date(values.dateStart), new Date(values.dateEnd)]
               : values.dateStart
@@ -90,6 +105,7 @@ export default function StatisticsFilterModal({
                 <Form className={s.form}>
                   <div className={s.dates_wrapper}>
                     <Select
+                      className={s.select_bgc}
                       name="date"
                       label={`${t('statistics_section.transition_date')}:`}
                       value={values.date}
@@ -164,12 +180,23 @@ export default function StatisticsFilterModal({
                     type="submit"
                     isShadow
                   />
+
+                  <button
+                    className={s.clear_btn}
+                    onClick={() => {
+                      resetForm()
+                      onClearFilter()
+                    }}
+                    type="button"
+                  >
+                    {t('Clear filter', { ns: 'other' })}
+                  </button>
                 </Form>
               </>
             )
           }}
         </Formik>
       </div>
-    </div>
+    </>
   )
 }

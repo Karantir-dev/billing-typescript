@@ -46,7 +46,7 @@
 
     &.selected {
       box-shadow: var(--forms_shadow);
-      background: var(--forms-bg-2-color);
+      background: var(--forms_bgc_2);
       border-radius: 3px;
     }
 
@@ -101,7 +101,7 @@
   line-height: 70.9%;
   max-height: 34px;
   color: var(--main-text);
-  background: var(--forms-bg-2-color);
+  background: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
 }
 

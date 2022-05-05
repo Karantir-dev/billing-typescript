@@ -46,6 +46,7 @@
     "not_registered": "Not registered",
     "unknown_source": "Unknown source",
     "not_paid": "Not paid",
-    "website_url": "Website URL"
+    "website_url": "Website URL",
+    "no_result": "No results"
   }
 }

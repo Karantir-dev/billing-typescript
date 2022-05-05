@@ -154,40 +154,49 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
 }
 
 const getInitialStatistics =
-  (setItems, setTotal, setPageNumber, setpageCount, setInitialFilters) =>
-  (dispatch, getState) => {
+  (setItems, setTotal, setPageNumber, setInitialFilters) => (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
-      .post(
+    const responses = Promise.all([
+      axiosInstance.post(
         '/',
         qs.stringify({
           func: 'affiliate.client.click',
           auth: sessionId,
+          p_cnt: 20,
           out: 'json',
         }),
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click.filter',
+          auth: sessionId,
+          out: 'json',
+        }),
+      ),
+    ])
 
-        console.log(data)
-        const date = data.doc.p_filter.$.match(/date = ([\s\S]+?),/)?.[1]
-        const site = data.doc.p_filter.$.match(/site ~ ([\s\S]+?),/)?.[1]
-        const registered =
-          data.doc.p_filter.$.match(/registered = ([\s\S]+?),/)?.[1] && 'on'
-        const payed = data.doc.p_filter.$.match(/payment = ([\s\S]+?)$/)?.[1] && 'on'
+    responses
+      .then(([items, filters]) => {
+        if (items.data.doc?.error) throw new Error(items.data.doc.error.msg.$)
 
+        items.data.doc?.elem && setItems(items.data.doc?.elem)
+        setTotal(items.data.doc.p_elems.$)
+        setPageNumber(items.data.doc.p_num.$)
+
+        const date = filters.data.doc.cdate?.$
+        const site = filters.data.doc.site?.$
+        const registered = filters.data.doc.referal?.$
+        const payed = filters.data.doc.payed?.$
         setInitialFilters({ date, site, registered, payed })
-        data.doc?.elem && setItems(data.doc?.elem)
-        setTotal(data.doc.p_elems.$)
-        setPageNumber(data.doc.p_num.$)
-        setpageCount(data.doc.page.length)
+
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('getInitialStatistics - ', err.message)
+        console.log('getInitialStatistics - ', err)
       })
   }
 
@@ -196,7 +205,7 @@ const getFilteredStatistics =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
-    console.log('registered', registered)
+
     axiosInstance
       .post(
         '/',
@@ -222,13 +231,13 @@ const getFilteredStatistics =
             qs.stringify({
               func: 'affiliate.client.click',
               auth: sessionId,
+              p_cnt: 20,
               out: 'json',
             }),
           )
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-            console.log(data)
             data.doc?.elem && setItems(data.doc?.elem)
             setTotal(data.doc.p_elems.$)
 
@@ -241,7 +250,36 @@ const getFilteredStatistics =
       })
   }
 
-const dropFilters = () => (dispatch, getState) => {
+const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.click',
+        auth: sessionId,
+        p_num: pageNum,
+        p_cnt: 20,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      data.doc?.elem && setItems(data.doc?.elem)
+      setTotal(data.doc.p_elems.$)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('getNextPageStatistics - ', err.message)
+    })
+}
+
+const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -259,9 +297,24 @@ const dropFilters = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data)
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'affiliate.client.click',
+            auth: sessionId,
+            p_cnt: 20,
+            out: 'json',
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(actions.hideLoader())
+          data.doc?.elem && setItems(data.doc?.elem)
+          setTotal(data.doc.p_elems.$)
+
+          dispatch(actions.hideLoader())
+        })
     })
     .catch(err => {
       dispatch(actions.hideLoader())
@@ -277,4 +330,5 @@ export default {
   getInitialStatistics,
   getFilteredStatistics,
   dropFilters,
+  getNextPageStatistics,
 }

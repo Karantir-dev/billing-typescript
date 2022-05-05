@@ -28,20 +28,9 @@
   width: 284px;
   padding: 5px 15px 15px;
   border-radius: 5px;
-  background: var(--forms-bg-2-color);
+  background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
-  // &::after {
-  //   content: '';
-  //   position: absolute;
-  //   left: 47%;
-  //   top: -3%;
-  //   width: 0;
-  //   height: 0;
-  //   border-left: 10px solid transparent;
-  //   border-right: 10px solid transparent;
-  //   border-bottom: 10px solid var(--forms-bg-2-color);
-  //   clear: both;
-  // }
+
 }
 
 .calendar_pointer-wrapper {

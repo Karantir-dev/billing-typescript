@@ -100,7 +100,7 @@
   transform: translateX(-50%) rotateZ(45deg);
   width: 14px;
   height: 14px;
-  background-color: #fff;
+  background-color: var(--elements-bgc);
   box-shadow: 3px 2px 12px rgba(57, 41, 85, 0.25);
 }
 
