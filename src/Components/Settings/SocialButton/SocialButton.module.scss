@@ -18,18 +18,29 @@
 .socialItem {
   display: flex;
   align-items: center;
-  &:not(:first-child) {
-    margin-left: 20px;
-  }
+  margin-top: 15px;
 }
 
 .linkTo {
   font-style: normal;
   font-weight: 300;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 130.5%;
   text-decoration-line: underline;
   color: var(--link-color);
   margin-left: 15px;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .socialItem {
+    margin-top: 0px;
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+
+  .linkTo {
+    font-size: 17px;
+  }
 }

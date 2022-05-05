@@ -31,8 +31,11 @@
   "Enable 2-Step Verification": "Включить двухэтапную аутентификацию",
   "Security notification settings": "Настройки уведомлений безопасности",
   "Send e-mail messages about authorization": "Присылать на e-mail сообщения об авторизации",
-  "Use GeoIP (region tracking by IP)": "Использовать GeoIP (отслеживание региона по IP)",
+  "Use GeoIP (region tracking by IP)": "Использовать GeoIP\n(отслеживание региона по IP)",
   "From any IP": "С любого IP",
   "Only IP addresses from the list": "Только IP-адреса из списка",
-  "Link to": "Привязать к"
+  "Link to": "Привязать к",
+  "Set trusted IPs": "Задать доверительные IP",
+  "You have entered an invalid IP address": "Вы ввели неверный IP-адрес",
+  "Value cannot be repeated": "Значение не может повторяться"
 }

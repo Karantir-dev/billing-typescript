@@ -258,6 +258,18 @@ export default function Component() {
                 <div className={s.emailStatus}>
                   {emailStatusRender(userParams?.email_confirmed_status)}
                 </div>
+                {confirmEmailBtnRender(
+                  userParams?.email_confirmed_status,
+                  values.email_notif,
+                ) && (
+                  <button
+                    className={s.confirmBtn}
+                    onClick={() => confirmEmailHandler(values)}
+                    type="button"
+                  >
+                    {t('Send confirmation', { ns: 'other' })}
+                  </button>
+                )}
                 {userParams?.listCheckBox && (
                   <div className={s.checkBlock}>
                     <div className={s.checkTitle}>
@@ -286,19 +298,6 @@ export default function Component() {
                   label={t('Save', { ns: 'other' })}
                   type="submit"
                 />
-                {confirmEmailBtnRender(
-                  userParams?.email_confirmed_status,
-                  values.email_notif,
-                ) && (
-                  <Button
-                    className={s.confirmBtn}
-                    isShadow
-                    size="medium"
-                    label={t('Send confirmation', { ns: 'other' })}
-                    onClick={() => confirmEmailHandler(values)}
-                    type="button"
-                  />
-                )}
                 <button
                   onClick={() => navigate(routes?.HOME)}
                   type="button"

@@ -31,8 +31,11 @@
   "Enable 2-Step Verification": "Enable 2-Step Verification",
   "Security notification settings": "Security notification settings",
   "Send e-mail messages about authorization": "Send e-mail messages about authorization",
-  "Use GeoIP (region tracking by IP)": "Use GeoIP (region tracking by IP)",
+  "Use GeoIP (region tracking by IP)": "Use GeoIP\n(region tracking by IP)",
   "From any IP": "From any IP",
   "Only IP addresses from the list": "Only IP addresses from the list",
-  "Link to": "Link to"
+  "Link to": "Link to",
+  "Set trusted IPs": "Set trusted IPs",
+  "You have entered an invalid IP address": "You have entered an invalid IP address",
+  "Value cannot be repeated": "Value cannot be repeated"
 }

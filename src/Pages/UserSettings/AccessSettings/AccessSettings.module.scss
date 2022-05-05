@@ -3,7 +3,7 @@
 }
 
 .block {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .settingsTitle {
@@ -19,7 +19,6 @@
   display: flex;
   flex-direction: column;
   max-width: 700px;
-  margin-top: 15px;
 }
 
 .oldpassInput {
@@ -28,7 +27,7 @@
 
 .input {
   margin-top: 15px;
-  max-width: 322px;
+  max-width: 100%;
 }
 
 .btnBlock {
@@ -58,6 +57,7 @@
 .select {
   z-index: 8;
   button {
+    width: 100%;
     height: 52px;
   }
 }
@@ -66,7 +66,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-left: 25px;
+  margin-left: 0px;
+  height: 50px;
 
   .bindIpText {
     font-style: normal;
@@ -74,15 +75,16 @@
     font-size: 18px;
     line-height: 70.9%;
     color: var(--main-text);
-    margin-right: 34px;
+    margin-right: 0px;
   }
 }
 
 .verification {
+  text-align: start;
   margin-top: 15px;
   font-style: normal;
   font-weight: 300;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 130.5%;
   text-decoration-line: underline;
   color: var(--link-color);
@@ -91,44 +93,130 @@
 
 .securNotification {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 25px;
 
   .securNotifnEmailBlock {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .securNotifnGeoBlock {
     display: flex;
     align-items: center;
-    margin-left: 50px;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-left: 0px;
   }
 
   .securNotifText {
     font-style: normal;
     font-weight: 300;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 130.5%;
     color: var(--main-text);
-    margin-right: 10px;
+    margin-right: 15px;
     max-width: 230px;
+    min-width: 215px;
+    white-space: pre-line;
   }
 }
 
 .socialRow {
+  flex-direction: column;
+}
+
+.ipsForm {
+  width: 100%;
+  max-width: 100%;
+}
+
+.trustedIp {
+  margin-top: 5px;
+}
+
+.selectedIp {
   display: flex;
-  align-items: center;
-  margin-top: 25px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+  max-width: 700px;
+
+  .selectedItem {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-right: 20px;
+  }
+
+  svg {
+    fill: var(--transparent-color);
+    margin-left: 5px;
+    transform: scale(0.7);
+    cursor: pointer;
+    &:active {
+      transform: scale(0.65);
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
+  .block {
+    margin-bottom: 40px;
+  }
+
+  .verification {
+    font-size: 17px;
+  }
+
+  .ipsForm {
+    max-width: 322px;
+  }
+
+  .input {
+    max-width: 322px;
+  }
+
+  .bindIp {
+    margin-left: 25px;
+    .bindIpText {
+      margin-right: 34px;
+    }
+  }
+
+  .securNotification {
+    flex-direction: row;
+
+    .securNotifnGeoBlock {
+      margin-left: 50px;
+      margin-top: 0px;
+    }
+
+    .securNotifText {
+      min-width: 230px;
+      font-size: 17px;
+    }
+  }
+
+  .socialRow {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
   .settingsTitle {
     font-size: 20px;
   }
 
   .formRow {
     flex-direction: row;
+    margin-top: 15px;
   }
 
   .oldpassInput {

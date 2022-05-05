@@ -6,10 +6,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
+import { ipRegex } from '../../../utils'
 import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import s from './AccessSettings.module.scss'
-import { FacebookSmall, GoogleSmall, VkSmall } from '../../../images'
+import { Cross, FacebookSmall, GoogleSmall, VkSmall } from '../../../images'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -39,6 +40,12 @@ export default function Component() {
     ),
   })
 
+  const onKeyDown = keyEvent => {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault()
+    }
+  }
+
   return (
     <Formik
       enableReinitialize
@@ -48,12 +55,43 @@ export default function Component() {
         passwd: '',
         confirm: '',
         atype: userParams?.atype || '',
+
+        atallowIp: '',
+        allowIpList: userParams?.addr?.length > 0 ? userParams?.addr?.split(' ') : [],
       }}
       onSubmit={setSettingsHandler}
     >
-      {({ errors, touched, values, setFieldValue }) => {
+      {({ errors, touched, values, setFieldValue, setFieldError, setFieldTouched }) => {
+        const addIpHandler = event => {
+          setFieldTouched('atallowIp', true, false)
+          if (event.key === 'Enter') {
+            if (values.allowIpList.indexOf(event.target.value) != -1) {
+              setFieldError('atallowIp', `${t('Value cannot be repeated')}`)
+              return
+            }
+
+            if (ipRegex().test(event.target.value)) {
+              setFieldValue('atallowIp', '')
+              setFieldValue('allowIpList', values.allowIpList.concat(event.target.value))
+              return
+            }
+
+            return setFieldError(
+              'atallowIp',
+              `${t('You have entered an invalid IP address')}`,
+            )
+          }
+        }
+
+        const deleteIpHandler = index => {
+          let newArr = values.allowIpList
+            .slice(0, index)
+            .concat(values.allowIpList.slice(index + 1, values.allowIpList.length))
+          setFieldValue('allowIpList', newArr)
+        }
+
         return (
-          <Form className={s.personalBlock}>
+          <Form onKeyDown={onKeyDown} className={s.personalBlock}>
             <div className={s.block}>
               <h2 className={s.settingsTitle}>{t('Change Password')}</h2>
               <div className={s.formRow}>
@@ -97,17 +135,31 @@ export default function Component() {
             <div className={s.block}>
               <h2 className={s.settingsTitle}>{t('Access limitation')}</h2>
               <div className={s.formRow}>
-                <Select
-                  value={values.atype}
-                  getElement={item => setFieldValue('atype', item)}
-                  itemsList={userParams?.ipTypeList?.map(({ $, $key }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={cn(s.select, s.input)}
-                  isShadow
-                  background
-                />
+                <div className={s.ipsForm}>
+                  <Select
+                    value={values.atype}
+                    getElement={item => setFieldValue('atype', item)}
+                    itemsList={userParams?.ipTypeList?.map(({ $, $key }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                    className={cn(s.select, s.input)}
+                    isShadow
+                    background
+                  />
+                  {values.atype === 'atallow' && (
+                    <InputField
+                      background
+                      name="atallowIp"
+                      placeholder={t('Set trusted IPs')}
+                      isShadow
+                      className={s.trustedIp}
+                      error={!!errors.atallowIp}
+                      touched={!!touched.atallowIp}
+                      onKeyDown={addIpHandler}
+                    />
+                  )}
+                </div>
                 <div className={s.bindIp}>
                   <div className={s.bindIpText}>{t('Bind session to IP')}</div>
                   <Toggle
@@ -116,6 +168,18 @@ export default function Component() {
                   />
                 </div>
               </div>
+              {values.atype === 'atallow' && (
+                <div className={s.selectedIp}>
+                  {values?.allowIpList?.map((el, index) => {
+                    return (
+                      <div className={s.selectedItem} key={index}>
+                        <div>{el}</div>
+                        <Cross onClick={() => deleteIpHandler(index)} />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
             <div className={s.block}>
               <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
@@ -123,10 +187,10 @@ export default function Component() {
                 <SocialButton isNotConnected platform="Google">
                   <GoogleSmall />
                 </SocialButton>
-                <SocialButton isNotConnected platform="Facebook"> 
+                <SocialButton isNotConnected platform="Facebook">
                   <FacebookSmall />
                 </SocialButton>
-                <SocialButton isNotConnected platform="Vk">
+                <SocialButton isNotConnected platform="Вконтакте">
                   <VkSmall />
                 </SocialButton>
               </div>

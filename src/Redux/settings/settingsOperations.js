@@ -135,6 +135,7 @@ const getUserParams =
           atype: data?.doc?.atype?.$ || '',
           secureip: data?.doc?.secureip?.$ || '',
           setgeoip: data?.doc?.setgeoip?.$ || '',
+          addr: data?.doc?.addr?.$ || '',
           sendemail: data?.doc?.sendemail?.$ || '',
           time: data?.doc?.time?.$ || '',
           telegram_id: data?.doc?.telegram_id?.$ || '',
@@ -290,6 +291,9 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
         )
         .then(({ data }) => {
           if (data.doc.error) throw new Error(data.doc.error.msg.$)
+          toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+            position: 'bottom-right',
+          })
           dispatch(getUserEdit(elid))
         })
         .catch(error => {
@@ -389,6 +393,8 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     auth: { sessionId },
   } = getState()
 
+  let addr = d?.allowIpList?.join(' ')
+
   const userParamsData = {
     old_passwd: d.old_passwd,
     passwd: d.passwd,
@@ -397,6 +403,7 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     secureip: d?.secureip ? 'on' : 'off',
     sendemail: d?.sendemail ? 'on' : 'off',
     setgeoip: d?.setgeoip ? 'on' : 'off',
+    addr: addr,
   }
 
   axiosInstance
@@ -420,6 +427,10 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
         }
         throw new Error(data.doc.error.msg.$)
       }
+
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
 
       if (d?.secureip) {
         return dispatch(authOperations.logout())
