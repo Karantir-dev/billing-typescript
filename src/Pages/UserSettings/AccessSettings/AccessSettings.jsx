@@ -10,7 +10,7 @@ import { ipRegex } from '../../../utils'
 import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import s from './AccessSettings.module.scss'
-import { Cross, FacebookSmall, GoogleSmall, VkSmall } from '../../../images'
+import { Cross, FacebookSmall, Google, VkSmall } from '../../../images'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -185,7 +185,7 @@ export default function Component() {
               <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
               <div className={s.socialRow}>
                 <SocialButton isNotConnected platform="Google">
-                  <GoogleSmall />
+                  <Google className={s.googleIcon} />
                 </SocialButton>
                 <SocialButton isNotConnected platform="Facebook">
                   <FacebookSmall />

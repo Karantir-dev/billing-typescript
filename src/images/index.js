@@ -17,7 +17,6 @@ export { default as Google } from './svg/Google.jsx'
 export { default as Vk } from './svg/Vk.jsx'
 
 export { default as FacebookSmall } from './svg/FacebookSmall.jsx'
-export { default as GoogleSmall } from './svg/GoogleSmall.jsx'
 export { default as VkSmall } from './svg/VkSmall.jsx'
 
 export { default as Moon } from './svg/Moon.jsx'
