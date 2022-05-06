@@ -30,11 +30,11 @@
 .list {
   position: absolute;
   width: 210px;
-  background-color: var(--nearby-elements-bgc);
+  background-color: var(--form-bg-4-color);
   top: 40px;
   right: -21px;
   padding: 31px 16px 23px 16px;
-  box-shadow: var(--burger-menu-elem-box-shadow);
+  box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
   z-index: 10;
@@ -44,7 +44,7 @@
     position: absolute;
     width: 15px;
     height: 15px;
-    background: var(--nearby-elements-bgc);
+    background: var(--form-bg-4-color);
     transform: rotate(45deg);
     top: -7px;
     right: 27px;

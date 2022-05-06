@@ -8,10 +8,6 @@ import ToggleButton from '../../ToggleButton/ToggleButton'
 
 import s from './AccessRightsListItem.module.scss'
 
-const callBack = data => {
-  return data
-}
-
 export default function AccessRightsListItem({
   item,
   userId,
@@ -52,19 +48,25 @@ export default function AccessRightsListItem({
           ? `${userId}/user/rights2.user`
           : userId
 
-      const res = dispatch(
-        usersOperations.getSubRights(changedUserId, item.name.$, sessionId, callBack),
+      dispatch(
+        usersOperations.getSubRights(
+          changedUserId,
+          item.name.$,
+          sessionId,
+          setSelectedSub,
+          setSubList,
+        ),
       )
 
-      res.then(data => {
-        try {
-          const { elem } = data.doc
-          setSelectedSub(elem)
-          setSubList(elem)
-        } catch (e) {
-          console.log('Error in AccessRightsListItem - ', e.message)
-        }
-      })
+      // res.then(data => {
+      //   try {
+      //     const { elem } = data.doc
+      //     setSelectedSub(elem)
+      //     setSubList(elem)
+      //   } catch (e) {
+      //     console.log('Error in AccessRightsListItem - ', e.message)
+      //   }
+      // })
     } else {
       handleSubSelect(item)
       handleSelect(item)
@@ -78,17 +80,8 @@ export default function AccessRightsListItem({
       type = type + '.add'
     }
 
-    console.log(type)
-
     const res = dispatch(
-      usersOperations.manageUserRight(
-        userId,
-        item.name.$,
-        sessionId,
-        act,
-        type,
-        callBack,
-      ),
+      usersOperations.manageUserRight(userId, item.name.$, sessionId, act, type),
     )
 
     res.then(() => {

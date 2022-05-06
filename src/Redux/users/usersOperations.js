@@ -226,32 +226,35 @@ const getRights = (userId, isOwner) => (dispatch, getState) => {
     })
 }
 
-const getSubRights = (userId, name, sessionId, callback) => dispatch => {
-  dispatch(actions.showLoader())
+const getSubRights =
+  (userId, name, sessionId, setSubListOne, setSubListTwo) => dispatch => {
+    dispatch(actions.showLoader())
 
-  return axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'rights2.user',
-        out: 'json',
-        auth: sessionId,
-        elid: name,
-        plid: userId,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log('get rights sublist', data)
-      dispatch(actions.hideLoader())
-      return callback(data)
-    })
-    .catch(error => {
-      console.log('error', error)
-      dispatch(actions.hideLoader())
-    })
-}
+    return axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'rights2.user',
+          out: 'json',
+          auth: sessionId,
+          elid: name,
+          plid: userId,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        // console.log('get rights sublist', data)
+        const { elem } = data.doc
+        setSubListOne(elem)
+        setSubListTwo(elem)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const manageUserRight =
   (userId, funcName, sessionId, act, type, callback) => dispatch => {

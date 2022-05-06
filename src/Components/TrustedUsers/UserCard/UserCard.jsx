@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import ToggleButton from '../ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
-import { usersOperations, usersSelectors } from '../../../Redux'
+import { selectors, usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
 import AccessRights from '../AccessRights/AccessRights'
@@ -24,6 +24,7 @@ export default function UserCard({
   isOwner,
 }) {
   const { t } = useTranslation('trusted_users')
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
@@ -115,6 +116,7 @@ export default function UserCard({
                     className={cn({
                       [s.warning_text]: true,
                       [s.mobile]: mobile,
+                      [s.light]: !darkTheme,
                       [s.hovered]: hovered,
                     })}
                   >
@@ -194,7 +196,13 @@ export default function UserCard({
                   onMouseLeave={() => setHovered(false)}
                 >
                   <WanrningSign className={s.warning_sign} />
-                  <p className={cn({ [s.warning_text]: true, [s.hovered]: hovered })}>
+                  <p
+                    className={cn({
+                      [s.warning_text]: true,
+                      [s.light]: !darkTheme,
+                      [s.hovered]: hovered,
+                    })}
+                  >
                     {t('trusted_users.user_cards.warning_message')}
                   </p>
                 </div>
