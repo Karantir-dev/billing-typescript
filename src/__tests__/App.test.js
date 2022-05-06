@@ -5,6 +5,7 @@ import App from '../App'
 import entireStore from '../Redux/store'
 
 jest.mock('react-i18next', () => ({
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
   useTranslation: () => {
     return {
       t: str => str,
