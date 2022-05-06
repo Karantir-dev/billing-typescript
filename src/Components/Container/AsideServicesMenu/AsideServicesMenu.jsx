@@ -34,7 +34,9 @@ const AsideServicesMenu = () => {
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
-        <Logo className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })} />
+        <div className={s.logo_container}>
+          <Logo className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })} />
+        </div>
         <li className={s.item}>
           <NavLink
             to={routes.HOME}
