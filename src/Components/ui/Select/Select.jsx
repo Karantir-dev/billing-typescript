@@ -121,15 +121,17 @@ export default function Select(props) {
           <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
-                <button
+                <div
+                  tabIndex={0}
+                  onKeyDown={null}
                   onClick={() => itemSelectHandler(el)}
-                  type="button"
+                  role="button"
                   key={index}
                   className={s.list_item}
                   data-testid={`qwe${index}`}
                 >
                   <span className={s.name}>{el.label}</span>
-                </button>
+                </div>
               )
             })}
           </div>

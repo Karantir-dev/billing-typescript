@@ -140,15 +140,16 @@
   cursor: pointer;
   align-items: flex-start;
   text-align: start;
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  padding: 8px 0;
+  // &:not(:last-child) {
+  //   margin-bottom: 8px;
+  // }
 }
 
 .name {
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 130.5%;
   color: var(--main-text);
   &:hover {

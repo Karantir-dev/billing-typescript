@@ -57,12 +57,7 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.messageBody}>
-          <div
-            className={s.messageText}
-            dangerouslySetInnerHTML={{
-              __html: message?.body?.$?.replace(/(?:\r\n|\r|\n)/g, '</br>'),
-            }}
-          />
+          <div className={s.messageText}>{message?.body?.$}</div>
           {message?.file && (
             <div className={s.fileBlock}>
               {message?.file?.map(el => {

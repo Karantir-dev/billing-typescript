@@ -10,6 +10,7 @@ import AddUserForm from '../../Components/TrustedUsers/AddUserForm/AddUserForm'
 import { mockedAxiosInstance } from '../../config/axiosInstance'
 
 jest.mock('react-i18next', () => ({
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
   useTranslation: () => {
     return {
       t: str => str,
