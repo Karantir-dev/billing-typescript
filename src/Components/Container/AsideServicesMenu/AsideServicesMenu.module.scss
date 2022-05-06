@@ -10,8 +10,6 @@
   transition: width 0.25s;
   z-index: 10;
   width: 117px;
-  padding-left: 14px;
-  padding-right: 14px;
   user-select: none;
 }
 
@@ -29,9 +27,11 @@
 
 .logo {
   margin: 14px 0px 60px 0px;
-  // width: 40px;
-  // height: 40px;
+  width: 89px;
+  height: 48px;
   transition: margin 0.15s;
+  padding-left: 14px;
+  padding-right: 14px;
 }
 
 .pinned_logo {
@@ -64,6 +64,8 @@
   margin-bottom: 21px;
   margin-top: 10px;
   text-align: center;
+  padding-left: 14px;
+  padding-right: 14px;
 
   &_inactive {
     display: none;
