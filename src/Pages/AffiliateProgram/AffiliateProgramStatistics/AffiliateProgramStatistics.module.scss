@@ -175,3 +175,9 @@
     height: fit-content;
   }
 }
+
+@media screen and (min-width: 1300px) {
+  .list_item {
+    gap: 30px;
+  }
+}

@@ -20,7 +20,7 @@ export default function AffiliateProgramStatistics() {
   const [items, setItems] = useState([])
   const [total, setTotal] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
-  console.log('pageNumber', pageNumber)
+
   const [initialFilters, setInitialFilters] = useState({
     date: '',
     site: '',

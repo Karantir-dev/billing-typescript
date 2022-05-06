@@ -238,7 +238,7 @@ const getFilteredStatistics =
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-            data.doc?.elem && setItems(data.doc?.elem)
+            setItems(data.doc?.elem || [])
             setTotal(data.doc.p_elems.$)
 
             dispatch(actions.hideLoader())
@@ -268,7 +268,7 @@ const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getSta
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      data.doc?.elem && setItems(data.doc?.elem)
+      setItems(data.doc?.elem || [])
       setTotal(data.doc.p_elems.$)
 
       dispatch(actions.hideLoader())
@@ -310,7 +310,7 @@ const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
         .then(({ data }) => {
           if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-          data.doc?.elem && setItems(data.doc?.elem)
+          setItems(data.doc?.elem || [])
           setTotal(data.doc.p_elems.$)
 
           dispatch(actions.hideLoader())

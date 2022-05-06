@@ -72,7 +72,7 @@ export default function InputField(props) {
           {label}
         </label>
       )}
-      <div className={cn(s.input_wrapper, inputWrapperClass)}>
+      <div className={cn(s.input_wrapper, inputWrapperClass)} style={{ height }}>
         <Field
           disabled={disabled}
           data-testid={dataTestid}
@@ -85,7 +85,6 @@ export default function InputField(props) {
             [s.error]: error && touched,
             [s.disabled]: disabled,
           })}
-          style={{ height }}
           id={name}
           name={name}
           type={passShown ? 'text' : type}

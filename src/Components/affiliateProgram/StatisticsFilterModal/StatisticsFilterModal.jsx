@@ -105,7 +105,7 @@ export default function StatisticsFilterModal({
                 <Form className={s.form}>
                   <div className={s.dates_wrapper}>
                     <Select
-                      className={s.select_bgc}
+                      inputClassName={s.select_bgc}
                       name="date"
                       label={`${t('statistics_section.transition_date')}:`}
                       value={values.date}
@@ -115,6 +115,7 @@ export default function StatisticsFilterModal({
 
                     <div className={s.calendarBlock}>
                       <IconButton
+                        className={s.icon_calendar}
                         onClick={() => setIsOpenedCalendar(true)}
                         icon="calendar"
                       />
@@ -152,10 +153,13 @@ export default function StatisticsFilterModal({
                     error={false}
                     autoComplete
                     isShadow
+                    height={44}
+                    background={true}
                   />
 
                   <Select
                     name="registered"
+                    inputClassName={s.select_bgc}
                     className={s.form_field}
                     label={`${t('statistics_section.client_registered')}:`}
                     value={values.registered}
@@ -166,6 +170,7 @@ export default function StatisticsFilterModal({
 
                   <Select
                     name="payed"
+                    inputClassName={s.select_bgc}
                     className={s.form_field}
                     label={`${t('statistics_section.client_payed')}:`}
                     value={values.payed}

@@ -44,6 +44,7 @@
 
 .icon_cross {
   fill: var(--main-text);
+  cursor: pointer;
 }
 
 .dates_wrapper {
@@ -54,7 +55,11 @@
 }
 
 .select_bgc {
-  background-color: var(--forms_bgc_4);
+  background-color: var(--nearby-elements-bgc) !important;
+}
+
+.icon_calendar {
+  background-color: var(--nearby-elements-bgc) !important;
 }
 
 .calendarBlock {
@@ -87,6 +92,13 @@
   height: fit-content;
   margin: 0 auto;
   border-bottom: 1px solid var(--main-text);
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 150ms;
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 @media screen and (min-width: 768px) {
