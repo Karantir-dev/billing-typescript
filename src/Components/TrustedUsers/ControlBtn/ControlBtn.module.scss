@@ -30,7 +30,7 @@
 .list {
   position: absolute;
   width: 210px;
-  background-color: var(--form-bg-4-color);
+  background-color: var(--forms_bgc_4);
   top: 40px;
   right: -21px;
   padding: 31px 16px 23px 16px;
@@ -44,7 +44,7 @@
     position: absolute;
     width: 15px;
     height: 15px;
-    background: var(--form-bg-4-color);
+    background: var(--forms_bgc_4);
     transform: rotate(45deg);
     top: -7px;
     right: 27px;

@@ -33,5 +33,20 @@
     "referral": "Referral",
     "total": "Total",
     "chart_placeholder": "Insufficient data for chart"
+  },
+  "statistics_section": {
+    "filter": "Filter",
+    "transition_date": "Click date",
+    "from_site": "From web-site",
+    "client_registered": "Client has been registered",
+    "client_payed": "Client made a payment",
+    "apply": "Search",
+    "client": "Client",
+    "payment": "Payment",
+    "not_registered": "Not registered",
+    "unknown_source": "Unknown source",
+    "not_paid": "Not paid",
+    "website_url": "Website URL",
+    "no_result": "No results"
   }
 }

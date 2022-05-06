@@ -76,6 +76,13 @@
     justify-content: space-between;
     padding: 0 80px;
   }
+
+  .table_head,
+  .table_date,
+  .table_amount,
+  .income_sum {
+    width: 120px;
+  }
 }
 
 @media screen and (min-width: 1550px) {

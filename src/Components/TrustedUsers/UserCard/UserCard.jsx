@@ -60,6 +60,10 @@ export default function UserCard({
     const switchAccess = hasAccess ? 'off' : 'on'
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
+
+    if (switchAccess === 'off') {
+      dispatch(usersOperations.getRights(userId, isOwner))
+    }
   }
 
   const handleStatusClick = () => {

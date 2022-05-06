@@ -9,6 +9,7 @@ import entireStore from '../../Redux/store'
 import { Alert } from '../../Components'
 
 jest.mock('react-i18next', () => ({
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
   useTranslation: () => {
     return {
       t: str => str,

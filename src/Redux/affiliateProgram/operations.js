@@ -152,9 +152,183 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
       console.log('getDayDetails - ', err.message)
     })
 }
+
+const getInitialStatistics =
+  (setItems, setTotal, setPageNumber, setInitialFilters) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    const responses = Promise.all([
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click',
+          auth: sessionId,
+          p_cnt: 20,
+          out: 'json',
+        }),
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click.filter',
+          auth: sessionId,
+          out: 'json',
+        }),
+      ),
+    ])
+
+    responses
+      .then(([items, filters]) => {
+        if (items.data.doc?.error) throw new Error(items.data.doc.error.msg.$)
+
+        items.data.doc?.elem && setItems(items.data.doc?.elem)
+        setTotal(items.data.doc.p_elems.$)
+        setPageNumber(items.data.doc.p_num.$)
+
+        const date = filters.data.doc.cdate?.$
+        const site = filters.data.doc.site?.$
+        const registered = filters.data.doc.referal?.$
+        const payed = filters.data.doc.payed?.$
+        setInitialFilters({ date, site, registered, payed })
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
+        console.log('getInitialStatistics - ', err)
+      })
+  }
+
+const getFilteredStatistics =
+  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click.filter',
+          auth: sessionId,
+          cdate: date,
+          cdatestart: dateStart,
+          cdateend: dateEnd,
+          site: site,
+          referal: registered,
+          payed: payed,
+          out: 'json',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'affiliate.client.click',
+              auth: sessionId,
+              p_cnt: 20,
+              out: 'json',
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+            setItems(data.doc?.elem || [])
+            setTotal(data.doc.p_elems.$)
+
+            dispatch(actions.hideLoader())
+          })
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
+        console.log('getFilteredStatistics - ', err.message)
+      })
+  }
+
+const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.click',
+        auth: sessionId,
+        p_num: pageNum,
+        p_cnt: 20,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      setItems(data.doc?.elem || [])
+      setTotal(data.doc.p_elems.$)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('getNextPageStatistics - ', err.message)
+    })
+}
+
+const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'affiliate.client.click.filter',
+        auth: sessionId,
+        drop: 'on',
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'affiliate.client.click',
+            auth: sessionId,
+            p_cnt: 20,
+            out: 'json',
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+          setItems(data.doc?.elem || [])
+          setTotal(data.doc.p_elems.$)
+
+          dispatch(actions.hideLoader())
+        })
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log('dropFilters - ', err.message)
+    })
+}
+
 export default {
   getReferralLink,
   getInitialIncomeInfo,
   getChartInfo,
   getDayDetails,
+  getInitialStatistics,
+  getFilteredStatistics,
+  dropFilters,
+  getNextPageStatistics,
 }
