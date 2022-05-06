@@ -11,7 +11,7 @@ import s from './ListItems.module.scss'
 export default function ListItems(props) {
   const { name, email, isProfile, subList, controlMenu } = props
   const [isOpened, setIsOpened] = useState(false)
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   const renderIcon = name => {
     switch (name) {

@@ -11,7 +11,7 @@ import { useOutsideAlerter } from '../../utils'
 
 export default function NotificationsBar({ handler, isBarOpened, removedNotification }) {
   const messages = useSelector(userSelectors.getUserItems)
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   let mes = 0
 

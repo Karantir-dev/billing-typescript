@@ -11,9 +11,17 @@
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
+  opacity: 0;
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
+  transition: opacity 0.1s ease-in;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .form_title_wrapper {
@@ -22,6 +30,11 @@
   align-items: center;
   position: relative;
   margin-bottom: 20px;
+}
+
+.title_wrapper {
+  margin-top: 9px;
+  color: #b3a9c1;
 }
 
 .form_title {
@@ -39,6 +52,12 @@
   margin-top: 125px;
   margin-bottom: 125px;
   width: 100%;
+  transform: scale(0.5);
+  transition: transform 0.2s ease-out;
+
+  &.active {
+    transform: scale(1);
+  }
 }
 
 .field_input {
@@ -50,8 +69,10 @@
   font-size: 20px;
 }
 
-.submit_btn {
+.submit_btn.btn {
   margin-top: 20px;
+  padding-bottom: 22px;
+  padding-top: 22px;
 }
 
 .close_btn_wrapper {
@@ -178,7 +199,9 @@
     margin-bottom: 25px;
   }
 
-  .submit_btn {
+  .submit_btn.btn {
     margin-top: 25px;
+    padding-bottom: 21px;
+    padding-top: 21px;
   }
 }

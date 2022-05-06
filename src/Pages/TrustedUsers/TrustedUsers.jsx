@@ -4,97 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '..'
-import UserCard from './UserCard/UserCard'
-import Container from '../Container/Container'
-import AddUserForm from './AddUserForm/AddUserForm'
+import { Button } from '../../Components'
+import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
+import Container from '../../Components/Container/Container'
+import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
 import { usersOperations, usersSelectors } from '../../Redux'
 
 import s from './TrustedUsers.module.scss'
-// import AccessRights from './AccessRights/AccessRights'
-
-// const clientRightsList = [
-//   {
-//     title: 'Allow all',
-//     btn: 'toggle',
-//   },
-//   {
-//     title: 'Create',
-//     btn: 'toggle',
-//   },
-//   {
-//     title: 'Change',
-//     children: [
-//       {
-//         title:
-//           'Редактирование информации о пользователе с доступом к чтению данных формы',
-//         btn: 'toggle',
-//       },
-//       {
-//         title: 'Редактирование информации о пользователе с доступом к сохранению данных',
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Remove',
-//     btn: 'toggle',
-//   },
-//   {
-//     title: 'Turn on',
-//     btn: 'toggle',
-//   },
-//   {
-//     title: 'Turn off',
-//     btn: 'toggle',
-//   },
-
-//   {
-//     title: 'Rights',
-//     children: [
-//       {
-//         title: 'Turn on',
-//         btn: 'toggle',
-//       },
-//       {
-//         title: 'Turn off',
-//         btn: 'toggle',
-//       },
-
-//       {
-//         title: 'Functions',
-//         children: [
-//           {
-//             title: 'Turn on',
-//             btn: 'toggle',
-//           },
-//           {
-//             title: 'Turn off',
-//             btn: 'toggle',
-//           },
-//           {
-//             title: 'Filter',
-//             btn: 'toggle',
-//           },
-//         ],
-//       },
-//       {
-//         title: 'Filter',
-//         btn: 'toggle',
-//       },
-//     ],
-//   },
-//   {
-//     title: 'History',
-//     btn: 'toggle',
-//   },
-//   {
-//     title: 'Filter',
-//     btn: 'toggle',
-//   },
-// ]
 
 export default function TrustedUsers() {
   const { t } = useTranslation('trusted_users')
+
   const dispatch = useDispatch()
 
   const [readMore, setReadMore] = useState(false)
@@ -130,6 +50,15 @@ export default function TrustedUsers() {
 
   const users = useSelector(usersSelectors.getUsers)
 
+  const handleSubmit = values => {
+    const { email, name, phone, password } = values
+
+    dispatch(
+      usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
+    )
+    handleUserForm()
+  }
+
   useEffect(() => {
     dispatch(usersOperations.getUsers())
   }, [changeUserRoles, createdNewUser])
@@ -154,7 +83,7 @@ export default function TrustedUsers() {
           size="large"
           label={`${t('trusted_users.button')}`.toUpperCase()}
           type="button"
-          className={s.add_btn}
+          className={classNames({ [s.add_btn]: true, [s.btn]: true })}
           onClick={handleUserForm}
           isShadow
         />
@@ -187,20 +116,14 @@ export default function TrustedUsers() {
           )
         })}
       </section>
-      {isUserFormActive && (
-        <AddUserForm
-          controlForm={handleUserForm}
-          checkIfCreatedUser={checkIfCreatedUser}
-          dataTestid="trusted_form"
-        />
-      )}
 
-      {/* <AccessRights
-        userId={1}
-        userName={'Someone'}
-        alert={true}
-        items={clientRightsList}
-      /> */}
+      <ManageUserForm
+        isUserFormActive={isUserFormActive}
+        controlForm={handleUserForm}
+        handleSubmit={handleSubmit}
+        title={t('trusted_users.form.title')}
+        dataTestid="trusted_form"
+      />
     </Container>
   )
 }

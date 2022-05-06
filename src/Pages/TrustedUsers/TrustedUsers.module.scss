@@ -7,7 +7,7 @@
 }
 
 .subtitle {
-  font-weight: 400;
+  font-weight: 300;
   font-size: 16px;
   line-height: 113%;
   color: var(--main-text);
@@ -45,9 +45,10 @@
   cursor: pointer;
 }
 
-.add_btn {
-  height: 50px;
+.add_btn.btn {
   margin-bottom: 40px;
+  padding-top: 21px;
+  padding-bottom: 21px;
 }
 
 .users_title {
@@ -60,7 +61,7 @@
 
 .table_header {
   display: grid;
-  grid-template-columns: repeat(5, 130px);
+  grid-template-columns: repeat(4, 130px);
   column-gap: 28px;
   margin-bottom: 15px;
 }
@@ -86,8 +87,10 @@
   .show_more_btn {
     display: none;
   }
-  .add_btn {
+  .add_btn.btn {
     width: 260px;
+    padding-top: 21px;
+    padding-bottom: 21px;
   }
   .table_wrapper {
     display: block;
@@ -102,11 +105,14 @@
   .users_title {
     margin-bottom: 30px;
   }
+  .user_status_lg {
+    padding-left: 30px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
   .table_header {
-    grid-template-columns: repeat(5, 150px);
+    grid-template-columns: repeat(4, 150px) 50px;
     justify-content: space-between;
   }
   .section_title {
@@ -115,20 +121,25 @@
   .subtitle {
     margin-bottom: 30px;
   }
+  .user_status_lg {
+    padding-left: 0px;
+  }
 }
 
 @media screen and (min-width: 1550px) {
   .section_title {
     font-size: 22px;
   }
-  .add_btn {
+  .add_btn.btn {
     margin-bottom: 50px;
+    padding-top: 21px;
+    padding-bottom: 21px;
   }
   .subtitle {
     font-size: 18px;
     line-height: 130.5%;
   }
   .table_header {
-    grid-template-columns: repeat(5, 190px);
+    grid-template-columns: repeat(4, 150px) 220px;
   }
 }

@@ -4,12 +4,6 @@ import i18n from 'i18next'
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 
-const userRights = data => {
-  // const { $realname, $balance, $email, $phone } = data.doc.user
-  console.log(data)
-  // dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
-}
-
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
   dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
@@ -25,9 +19,9 @@ const userNotifications = (data, dispatch) => {
   dispatch(userActions.setItems({ bitem }))
 }
 
-const funcsArray = [userInfo, userTickets, userNotifications, userRights]
+const funcsArray = [userInfo, userTickets, userNotifications]
 
-const getUserInfo = (sessionId, userId) => dispatch => {
+const getUserInfo = sessionId => dispatch => {
   dispatch(userActions.showUserInfoLoading())
   Promise.all([
     axiosInstance.post(
@@ -52,16 +46,6 @@ const getUserInfo = (sessionId, userId) => dispatch => {
       qs.stringify({
         func: 'notify',
         out: 'json',
-        lang: i18n.language,
-        auth: sessionId,
-      }),
-    ),
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'rights2.user',
-        out: 'json',
-        elid: userId,
         lang: i18n.language,
         auth: sessionId,
       }),

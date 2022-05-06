@@ -85,7 +85,7 @@ const changeUserStatus = (id, changeStatus, updateStatusFunc) => (dispatch, getS
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data)
+      // console.log(data)
       updateStatusFunc()
       dispatch(actions.hideLoader())
     })
@@ -103,8 +103,6 @@ const createNewUser =
       auth: { sessionId },
     } = getState()
 
-    console.log('create user')
-
     axiosInstance
       .post(
         '/',
@@ -120,11 +118,45 @@ const createNewUser =
         }),
       )
       .then(({ data }) => {
-        console.log(data)
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
         console.log('user created', data)
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
         updateListFunc()
         dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const editUserInfo =
+  (password, email, phone, realname, elid, controlForm) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'user.edit',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          passwd: password,
+          email,
+          phone,
+          realname,
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        console.log('user infor edited successfully', data)
+        dispatch(actions.hideLoader())
+        controlForm()
       })
       .catch(error => {
         console.log('error', error)
@@ -152,7 +184,7 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log('user removed', data)
+      // console.log('user removed', data)
       updateUsersListFunc()
       dispatch(actions.hideLoader())
     })
@@ -162,10 +194,111 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
     })
 }
 
+const getRights = (userId, isOwner) => (dispatch, getState) => {
+  !isOwner && dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'rights2.user',
+        out: 'json',
+        auth: sessionId,
+        elid: userId,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const { elem } = data.doc
+
+      dispatch(usersActions.setRights(elem))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getSubRights =
+  (userId, name, sessionId, setSubListOne, setSubListTwo) => dispatch => {
+    dispatch(actions.showLoader())
+
+    return axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'rights2.user',
+          out: 'json',
+          auth: sessionId,
+          elid: name,
+          plid: userId,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        // console.log('get rights sublist', data)
+        const { elem } = data.doc
+        setSubListOne(elem)
+        setSubListTwo(elem)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const manageUserRight =
+  (userId, funcName, sessionId, act, type, callback) => dispatch => {
+    // console.log('userid - ', userId)
+    // console.log('funcName - ', funcName)
+    // console.log('sessionId - ', sessionId)
+    // console.log('act - ', act)
+    // console.log('type - ', type)
+
+    dispatch(actions.showLoader())
+
+    return axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `rights2.user.${act}`,
+          out: 'json',
+          auth: sessionId,
+          elid: funcName,
+          plid: `${userId}/${type}`,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        // console.log('managed users right from ajax', data)
+
+        dispatch(actions.hideLoader())
+        return callback(data)
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getUsers,
   changeUserRights,
   changeUserStatus,
   createNewUser,
+  editUserInfo,
   removeUser,
+  getRights,
+  getSubRights,
+  manageUserRight,
 }

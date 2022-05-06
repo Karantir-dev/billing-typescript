@@ -1,15 +1,18 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import ToggleButton from '../../ui/ToggleButton/ToggleButton'
+import ToggleButton from '../ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
-import { usersOperations } from '../../../Redux'
+import { selectors, usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
+import AccessRights from '../AccessRights/AccessRights'
+import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
+import { WanrningSign } from '../../../images'
 
 export default function UserCard({
   name,
@@ -21,10 +24,21 @@ export default function UserCard({
   isOwner,
 }) {
   const { t } = useTranslation('trusted_users')
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
+  const [showRightsAlert, setShowRightsAlert] = useState(false)
+
+  const rightsList = useSelector(usersSelectors.getRights)
+  const listWithoutProfile = rightsList.filter(item => item.name.$ !== 'clientoption')
+
+  const handleRightsAlert = () => {
+    setShowRightsAlert(!showRightsAlert)
+  }
+
+  const [hovered, setHovered] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -46,6 +60,10 @@ export default function UserCard({
     const switchAccess = hasAccess ? 'off' : 'on'
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
+
+    if (switchAccess === 'off') {
+      dispatch(usersOperations.getRights(userId, isOwner))
+    }
   }
 
   const handleStatusClick = () => {
@@ -53,6 +71,12 @@ export default function UserCard({
     setIsStatusAlertOpened(!isStatusAlertOpened)
     dispatch(usersOperations.changeUserStatus(userId, changeStatus, handleUserRolesData))
   }
+
+  useEffect(() => {
+    if (!isOwner) {
+      dispatch(usersOperations.getRights(userId, isOwner))
+    }
+  }, [showRightsAlert])
 
   return (
     <>
@@ -82,7 +106,28 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
+
+              {hasAccess && !isOwner && (
+                <div
+                  className={s.warning_sign_wrapper}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <WanrningSign className={s.warning_sign} />
+                  <p
+                    className={cn({
+                      [s.warning_text]: true,
+                      [s.mobile]: mobile,
+                      [s.light]: !darkTheme,
+                      [s.hovered]: hovered,
+                    })}
+                  >
+                    {t('trusted_users.user_cards.warning_message')}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div className={s.status_wrapper}>
@@ -106,6 +151,7 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
             </div>
           </div>
@@ -117,6 +163,10 @@ export default function UserCard({
             userId={userId}
             userName={name}
             handleUserRolesData={handleUserRolesData}
+            rightsList={rightsList}
+            email={email}
+            handleRightsAlert={handleRightsAlert}
+            hasAccess={hasAccess}
           />
         </div>
       )}
@@ -140,7 +190,27 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
+                hasAlert={true}
               />
+
+              {hasAccess && !isOwner && (
+                <div
+                  className={s.warning_sign_wrapper}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <WanrningSign className={s.warning_sign} />
+                  <p
+                    className={cn({
+                      [s.warning_text]: true,
+                      [s.light]: !darkTheme,
+                      [s.hovered]: hovered,
+                    })}
+                  >
+                    {t('trusted_users.user_cards.warning_message')}
+                  </p>
+                </div>
+              )}
             </div>
             <div className={s.toggle_status_wrapper_lg}>
               {laptopOrHigher && (
@@ -158,6 +228,8 @@ export default function UserCard({
                 email={email}
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
+                hasAlert={true}
+                handleRightsAlert={handleRightsAlert}
               />
             </div>
 
@@ -168,9 +240,30 @@ export default function UserCard({
               userName={name}
               userId={userId}
               handleUserRolesData={handleUserRolesData}
+              handleRightsAlert={handleRightsAlert}
+              rightsList={rightsList}
+              email={email}
+              hasAccess={hasAccess}
             />
           </div>
         </div>
+      )}
+
+      {showRightsAlert && (
+        <AccessRightsAlert
+          dataTestid="trusted_users_rights_alert"
+          isOpened={showRightsAlert}
+          controlAlert={handleRightsAlert}
+          title={
+            mobile
+              ? t('trusted_users.rights_alert.title_short')
+              : t('trusted_users.rights_alert.title_long')
+          }
+          list1={<AccessRights items={listWithoutProfile.slice(0, 20)} userId={userId} />}
+          list2={
+            <AccessRights items={listWithoutProfile.slice(20, 38)} userId={userId} />
+          }
+        />
       )}
     </>
   )

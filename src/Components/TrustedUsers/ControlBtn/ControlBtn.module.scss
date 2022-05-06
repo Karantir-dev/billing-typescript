@@ -1,9 +1,16 @@
 .control_btn {
   position: absolute;
   display: flex;
+  align-items: center;
   right: 21px;
-  top: 23px;
+  top: 6px;
+  height: 30px;
   cursor: pointer;
+}
+
+.remove_btn.btn {
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 .dot {
@@ -12,8 +19,8 @@
   &::after {
     content: '';
     display: block;
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     margin-left: 5px;
     border-radius: 50%;
     background-color: var(--main-text);
@@ -23,11 +30,11 @@
 .list {
   position: absolute;
   width: 210px;
-  background-color: var(--nearby-elements-bgc);
-  top: 25px;
+  background-color: var(--forms_bgc_4);
+  top: 40px;
   right: -21px;
   padding: 31px 16px 23px 16px;
-  box-shadow: var(--burger-menu-elem-box-shadow);
+  box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
   z-index: 10;
@@ -37,7 +44,7 @@
     position: absolute;
     width: 15px;
     height: 15px;
-    background: var(--nearby-elements-bgc);
+    background: var(--forms_bgc_4);
     transform: rotate(45deg);
     top: -7px;
     right: 27px;
@@ -69,7 +76,16 @@
   margin-left: 22px;
 }
 
-.remove_btn {
+.has_access {
+  display: none;
+
+  &.full {
+    display: block;
+  }
+}
+
+.remove_btn,
+.access_rights_btn {
   &.owner {
     opacity: 0.3;
     &:hover {
@@ -103,8 +119,14 @@
 .control_btn_lg {
   position: absolute;
   display: flex;
+  align-items: center;
+  height: 30px;
   right: 21px;
-  top: 50%;
+
+  & .list {
+    top: 40px;
+  }
+
   cursor: pointer;
 }
 

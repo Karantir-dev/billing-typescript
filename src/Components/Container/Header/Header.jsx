@@ -20,7 +20,7 @@ import s from './Header.module.scss'
 import { useOutsideAlerter } from '../../../utils'
 
 export default function Header() {
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
   const profileMenuList = [
     { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },

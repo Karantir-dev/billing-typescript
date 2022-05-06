@@ -7,7 +7,7 @@ import entireStore from '../../Redux/store'
 import { render, screen, fireEvent } from '@testing-library/react'
 
 import i18n from '../../i18n'
-import { ToggleButton } from '../../Components'
+import ToggleButton from '../../Components/TrustedUsers/ToggleButton/ToggleButton'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
 import ControlBtn from '../../Components/TrustedUsers/ControlBtn/ControlBtn'
 import { mockedAxiosInstance } from '../../config/axiosInstance'

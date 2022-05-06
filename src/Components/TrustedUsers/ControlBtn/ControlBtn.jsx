@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 
 import { usersOperations } from '../../../Redux'
 import { Delete, Key, Settings } from '../../../images'
+import ManageUserForm from '../ManageUserForm/ManageUserForm'
 import { useOutsideAlerter } from '../../../utils'
 import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
@@ -20,10 +21,14 @@ export default function ControlBtn({
   userId,
   handleUserRolesData,
   userName,
+  handleRightsAlert,
+  email,
+  hasAccess,
 }) {
   const { t } = useTranslation('trusted_users')
-
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
+
+  const [settingsForm, setSettingForm] = useState(false)
 
   const dropDownEl = useRef()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -32,8 +37,27 @@ export default function ControlBtn({
 
   const dispatch = useDispatch()
 
-  const showAlert = () => {
+  const handleRemoveAlert = () => {
     setShowRemoveAlert(!showRemoveAlert)
+  }
+
+  const handleSettingsForm = () => {
+    setSettingForm(!settingsForm)
+  }
+
+  const handleSubmit = values => {
+    const { email, name, phone, password } = values
+
+    dispatch(
+      usersOperations.editUserInfo(
+        password,
+        email,
+        phone,
+        name,
+        userId,
+        handleSettingsForm,
+      ),
+    )
   }
 
   const removeUser = () => {
@@ -66,13 +90,20 @@ export default function ControlBtn({
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn}>
+          <button className={s.settings_btn} onClick={handleSettingsForm}>
             <Settings className={s.icon} />{' '}
             <p className={s.setting_text}>
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
           </button>
-          <button className={s.access_rights_btn}>
+          <button
+            disabled={isOwner || hasAccess}
+            className={cn({
+              [s.access_rights_btn]: true,
+              [s.owner]: isOwner || hasAccess,
+            })}
+            onClick={handleRightsAlert}
+          >
             <Key className={s.icon} />
             <p className={s.access_text}>
               {t('trusted_users.user_cards.drop_list.access_rights')}
@@ -83,7 +114,7 @@ export default function ControlBtn({
             data-testid="show_removing_alert"
             disabled={isOwner}
             className={cn({ [s.remove_btn]: true, [s.owner]: isOwner })}
-            onClick={showAlert}
+            onClick={handleRemoveAlert}
           >
             <Delete className={s.icon} />
             <p className={s.delete_text}>
@@ -95,9 +126,10 @@ export default function ControlBtn({
 
       {showRemoveAlert && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_status"
           isOpened={showRemoveAlert}
-          controlAlert={showAlert}
+          controlAlert={handleRemoveAlert}
           title={t('trusted_users.alerts.remove.title')}
           text={`${t('trusted_users.alerts.remove.text')} ${userName}?`}
           mainBtn={
@@ -106,12 +138,24 @@ export default function ControlBtn({
               size="small"
               label={t('trusted_users.alerts.remove.btn_text_ok').toUpperCase()}
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.remove_btn]: true, [s.btn]: true })}
               onClick={removeUser}
             />
           }
         />
       )}
+
+      <ManageUserForm
+        isUserFormActive={settingsForm}
+        formName="settings"
+        title={t('trusted_users.rights_alert.usrparam')}
+        subtitle={email}
+        handleSubmit={handleSubmit}
+        controlForm={handleSettingsForm}
+        dataTestid="settings_form"
+        email={email}
+        userName={userName}
+      />
     </>
   )
 }
@@ -122,4 +166,6 @@ ControlBtn.propTypes = {
   areControlDotsActive: PropTypes.bool,
   userId: PropTypes.string,
   handleUserRolesData: PropTypes.func,
+  rightsList: PropTypes.array,
+  email: PropTypes.string,
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import s from './ToggleButton.module.scss'
-import Alert from '../Alert/Alert'
+import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
 
 export default function ToggleButton({
@@ -15,12 +15,19 @@ export default function ToggleButton({
   email,
   handleAlert,
   isOwner,
+  hasAlert,
+  size,
 }) {
   const { t } = useTranslation('trusted_users')
 
   const [isToggled, setIsToggled] = useState(initialState || false)
 
   const getUsersResponse = () => {
+    func()
+    setIsToggled(!isToggled)
+  }
+
+  const handleBtnNoAlert = () => {
     func()
     setIsToggled(!isToggled)
   }
@@ -47,17 +54,25 @@ export default function ToggleButton({
         disabled={isOwner}
         className={cn({
           [s.btn]: true,
+          [s.small_btn]: size === 'small',
           [s.active]: isToggled,
           [s.owner]: isOwner,
         })}
         type="button"
-        onClick={handleAlert}
+        onClick={hasAlert ? handleAlert : handleBtnNoAlert}
       >
-        <p className={cn({ [s.circle]: true, [s.active]: isToggled })}></p>
+        <p
+          className={cn({
+            [s.circle]: true,
+            [s.small_btn]: size === 'small',
+            [s.active]: isToggled,
+          })}
+        ></p>
       </button>
 
       {toggleName === 'access' && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_access"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
@@ -77,7 +92,7 @@ export default function ToggleButton({
                   : t('trusted_users.alerts.access.btn_text_ok').toUpperCase()
               }
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
             />
           }
@@ -86,6 +101,7 @@ export default function ToggleButton({
 
       {toggleName === 'status' && (
         <Alert
+          hasControlBtns={true}
           dataTestid="trusted_users_alert_status"
           isOpened={isAlertOpened}
           controlAlert={handleAlert}
@@ -105,7 +121,7 @@ export default function ToggleButton({
                   : t('trusted_users.alerts.status.btn_text_ok').toUpperCase()
               }
               type="button"
-              className={s.add_btn}
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
             />
           }
@@ -122,4 +138,5 @@ ToggleButton.propTypes = {
   toggleName: PropTypes.string,
   email: PropTypes.string,
   handleAlert: PropTypes.func,
+  hasAlert: PropTypes.bool,
 }
