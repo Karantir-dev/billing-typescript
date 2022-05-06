@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './Pagination.module.scss'
@@ -10,6 +10,10 @@ export default function Component(props) {
   const { t } = useTranslation('other')
 
   const [pageNumber, setPageNumber] = useState(currentPage)
+
+  useEffect(() => {
+    setPageNumber(currentPage)
+  }, [currentPage])
 
   let lastPage = Math.ceil(totalCount / pageSize)
 
@@ -94,11 +98,9 @@ Component.propTypes = {
   onPageChange: PropTypes.func,
   pageSize: PropTypes.number,
   currentPage: PropTypes.number,
-  siblingCount: PropTypes.number,
   totalCount: PropTypes.number,
 }
 
 Component.defaultProps = {
   onPageChange: () => null,
-  siblingCount: 1,
 }

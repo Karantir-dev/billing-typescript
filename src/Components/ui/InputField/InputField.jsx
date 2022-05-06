@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { EyeClosed, Eye, Envelope, Padlock, Search, Person } from '../../../images'
 import s from './InputField.module.scss'
 
-export default function Component(props) {
+export default function InputField(props) {
   const {
     label,
     iconRight, // icon type
@@ -73,7 +73,7 @@ export default function Component(props) {
           {label}
         </label>
       )}
-      <div className={cn(s.input_wrapper, inputWrapperClass)}>
+      <div className={cn(s.input_wrapper, inputWrapperClass)} style={{ height }}>
         <Field
           disabled={disabled}
           data-testid={dataTestid}
@@ -86,7 +86,6 @@ export default function Component(props) {
             [s.error]: error && touched,
             [s.disabled]: disabled,
           })}
-          style={{ height }}
           id={name}
           name={name}
           type={passShown ? 'text' : type}
@@ -103,7 +102,7 @@ export default function Component(props) {
   )
 }
 
-Component.propTypes = {
+InputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
@@ -123,7 +122,7 @@ Component.propTypes = {
   onKeyDown: PropTypes.func,
 }
 
-Component.defaultProps = {
+InputField.defaultProps = {
   type: 'text',
   isShadow: false,
   autoComplete: false,

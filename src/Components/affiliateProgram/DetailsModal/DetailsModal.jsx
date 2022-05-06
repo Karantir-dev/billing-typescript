@@ -70,18 +70,16 @@ export default function DetailsModal({ details, closeModal }) {
               ) : (
                 <li className={s.list_item} key={nanoid()}>
                   <span className={s.label}>{t('income_section.service')}:</span>
-                  <span className={s.value}>
-                    {t(`services.${name.$.trim()}`, { ns: 'other' })}
-                  </span>
+                  <span>{t(`services.${name.$.trim()}`, { ns: 'other' })}</span>
 
                   <span className={s.label}>{t('income_section.rate')}:</span>
-                  <span className={s.value}>{reward.$}</span>
+                  <span>{reward.$}</span>
 
                   <span className={s.label}>{t('income_section.income')}:</span>
-                  <span className={s.value}>{amount.$}</span>
+                  <span>{amount.$}</span>
 
                   <span className={s.label}>{t('income_section.referral')}:</span>
-                  <span className={s.value}>{referal.$}</span>
+                  <span>{referal.$}</span>
                 </li>
               )
             })}

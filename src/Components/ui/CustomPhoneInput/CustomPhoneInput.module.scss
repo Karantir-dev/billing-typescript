@@ -26,7 +26,7 @@
     }
 
     & > div[aria-expanded] {
-      background-color: var(--forms-drop-down);
+      background-color: var(--forms_bgc_4);
     }
     &.lightTheme > div[aria-expanded] {
       background-color: var(--btn-bgc);
@@ -39,7 +39,7 @@
     }
 
     &:hover > div {
-      background-color: var(--forms-drop-down);
+      background-color: var(--forms_bgc_4);
     }
   }
 }
@@ -105,10 +105,10 @@
       }
 
       & li[aria-selected] {
-        background-color: var(--forms-drop-down);
+        background-color: var(--forms_bgc_4);
       }
       & li:hover {
-        background-color: var(--forms-drop-down);
+        background-color: var(--forms_bgc_4);
       }
 
       & span:last-child {
