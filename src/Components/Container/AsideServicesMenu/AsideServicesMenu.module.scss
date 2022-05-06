@@ -10,6 +10,8 @@
   transition: width 0.25s;
   z-index: 10;
   width: 117px;
+  padding-left: 14px;
+  padding-right: 14px;
   user-select: none;
 }
 
@@ -21,9 +23,14 @@
   width: 100%;
 }
 
+// .logo_container {
+//   display: flex;
+// }
+
 .logo {
-  margin: 14px 24px 60px 14px;
-  transform: scale(0.88);
+  margin: 14px 0px 60px 0px;
+  // width: 40px;
+  // height: 40px;
   transition: margin 0.15s;
 }
 
