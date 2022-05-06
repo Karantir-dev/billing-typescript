@@ -44,7 +44,7 @@
   font-size: 16px;
   line-height: 130%;
   color: var(--main-text);
-  background-color: var(--nearby-elements-bgc);
+  background-color: var(--icon-color);
   top: 33px;
   left: -50px;
   padding: 18px 14px 18px 14px;
@@ -62,7 +62,7 @@
     position: absolute;
     width: 15px;
     height: 15px;
-    background: var(--nearby-elements-bgc);
+    background-color: var(--icon-color);
     transform: rotate(45deg);
     top: -7px;
     left: 52px;

@@ -21,6 +21,7 @@
       "inactive": "Inactive",
       "yes": "Yes",
       "no": "No",
+      "warning_message": "This user has full access, if you wanna manage exact rights, plz turn off full access",
 
       "drop_list": {
         "settings": "Settings",

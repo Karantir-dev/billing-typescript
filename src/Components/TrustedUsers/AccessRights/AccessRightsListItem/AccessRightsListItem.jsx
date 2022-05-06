@@ -28,10 +28,7 @@ export default function AccessRightsListItem({
   const dispatch = useDispatch()
 
   const modifiedList = subList.map(item => {
-    const newObj = JSON.parse(JSON.stringify(item))
-    newObj.isSelected = false
-
-    return newObj
+    return { ...item, isSelected: false }
   })
 
   const handleSubSelect = newItem => {

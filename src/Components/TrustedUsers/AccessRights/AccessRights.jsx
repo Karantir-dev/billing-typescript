@@ -5,11 +5,7 @@ import AccessRightsListItem from './AccessRightsListItem/AccessRightsListItem'
 
 export default function AccessRights({ items, userId }) {
   const modifiedList = items.map(item => {
-    const newObj = JSON.parse(JSON.stringify(item))
-
-    newObj.isSelected = false
-
-    return newObj
+    return { ...item, isSelected: false }
   })
 
   const [listArr, setListArr] = useState(modifiedList)

@@ -23,9 +23,9 @@ describe('ControlBtn Component', () => {
   )
   const root = component.root
 
-  test('Component has 3 buttons tags', async () => {
+  test('Component has 7 buttons tags', async () => {
     const buttons = await root.findAllByType('button')
-    expect(buttons).toHaveLength(3)
+    expect(buttons).toHaveLength(7)
   })
 
   beforeEach(() => {

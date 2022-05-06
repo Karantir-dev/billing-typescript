@@ -1,14 +1,11 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, within, waitFor, screen } from '@testing-library/react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import entireStore from '../../Redux/store'
-// import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { mockedAxiosInstance } from '../../config/axiosInstance'
 import AccessRights from '../../Components/TrustedUsers/AccessRights/AccessRights'
-// import AccessRightsListItem from '../../Components/TrustedUsers/AccessRights/AccessRightsListItem/AccessRightsListItem'
-// import { create } from 'react-test-renderer'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
@@ -19,10 +16,14 @@ jest.mock('react-i18next', () => ({
       },
     }
   },
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
 }))
 
+const baseList = []
+baseList.fill({ name: { $: 'testName' } }, 0, 20)
+
 mockedAxiosInstance.onPost('/').reply(200, {
-  doc: { elem: [] },
+  doc: { elem: baseList },
 })
 
 function renderComponent(fakeList) {
@@ -44,16 +45,15 @@ describe('Render Rights Lists', () => {
 
     renderComponent(baseList)
 
-    // const res = await waitFor(async () => {
-    //   screen.getByRole('list')
+    const newList = await waitFor(async () => {
+      screen.getByRole('list')
+    })
 
-    //   return await screen.getByTestId('trusted_users_rights_item')
-    // })
-
-    // expect(res.length).toEqual(2)
+    // expect(newList.length).toEqual(2)
 
     // const { getAllByRole } = within(newList)
     // const items = getAllByRole('listitem')
+
     // expect(items.length).toBe(20)
   })
 })

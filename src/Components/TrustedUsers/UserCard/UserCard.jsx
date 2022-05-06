@@ -118,8 +118,7 @@ export default function UserCard({
                       [s.hovered]: hovered,
                     })}
                   >
-                    This user has full access, if you wanna manage exact rights, plz turn
-                    off full access
+                    {t('trusted_users.user_cards.warning_message')}
                   </p>
                 </div>
               )}
@@ -196,8 +195,7 @@ export default function UserCard({
                 >
                   <WanrningSign className={s.warning_sign} />
                   <p className={cn({ [s.warning_text]: true, [s.hovered]: hovered })}>
-                    This user has full access, if you wanna manage exact rights, plz turn
-                    off full access
+                    {t('trusted_users.user_cards.warning_message')}
                   </p>
                 </div>
               )}
