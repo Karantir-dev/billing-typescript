@@ -18,7 +18,6 @@ jest.mock('react-i18next', () => ({
       },
     }
   },
-  initReactI18next: { type: '3rdParty', init: jest.fn() },
 }))
 
 describe('Alert Component', () => {

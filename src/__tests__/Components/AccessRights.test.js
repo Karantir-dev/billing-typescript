@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render, within, waitFor, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import entireStore from '../../Redux/store'
 import { Provider } from 'react-redux'
@@ -45,9 +45,9 @@ describe('Render Rights Lists', () => {
 
     renderComponent(baseList)
 
-    const newList = await waitFor(async () => {
-      screen.getByRole('list')
-    })
+    // const newList = await waitFor(async () => {
+    //   screen.getByRole('list')
+    // })
 
     // expect(newList.length).toEqual(2)
 
