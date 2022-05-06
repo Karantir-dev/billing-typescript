@@ -107,7 +107,7 @@ export default function AccessRightsListItem({
     })
   }
 
-  const nameWithoutDots = item.name.$.replaceAll('.', '_')
+  const nameWithoutDots = item.name.$.replace(/./g, '_')
 
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
