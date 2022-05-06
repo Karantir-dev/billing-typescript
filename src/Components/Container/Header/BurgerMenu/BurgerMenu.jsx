@@ -15,7 +15,7 @@ import * as routes from '../../../../routes'
 import s from './BurgerMenu.module.scss'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   const profileMenuList = [
     { name: t('profile.user_settings'), routeName: routes.HOME },
