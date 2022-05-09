@@ -23,10 +23,6 @@
   padding-bottom: 19px;
 }
 
-.logo {
-  transform: scale(0.8);
-}
-
 .balance_text {
   font-size: 17px;
   line-height: 70.9%;
@@ -177,6 +173,10 @@
   &:hover {
     fill: url(#gradient);
   }
+
+  &.bell {
+    margin-right: 40px;
+  }
 }
 
 .arrow_icon {
@@ -184,6 +184,7 @@
   transform: rotateZ(180deg);
   margin-left: 15px;
   transition: transform 0.3s;
+  flex: none;
 
   &.active {
     transform: rotateZ(0deg);
@@ -201,6 +202,10 @@
   cursor: pointer;
 }
 
+.item.profile_item {
+  display: none;
+}
+
 .balance_item {
   display: none;
 }
@@ -215,21 +220,6 @@
   display: none;
   width: 61px;
   height: 33px;
-}
-
-.profile_item {
-  position: relative;
-  cursor: pointer;
-
-  &:hover {
-    .arrow_icon {
-      cursor: pointer;
-      stroke: url(#gradient);
-    }
-    .icon {
-      fill: url(#gradient);
-    }
-  }
 }
 
 .item_bell {
@@ -303,16 +293,22 @@ $hamburger-layer-color: var(--icon-color);
 $hamburger-layer-border-radius: 99px;
 
 .header_menuburger {
-  position: fixed;
+  position: absolute;
   width: 43px;
   height: 28px;
-  right: 15px;
-  top: 30px;
+  right: 30px;
+  top: 25px;
   align-items: center;
   cursor: pointer;
   transition-property: opacity;
   transition-duration: 0.15s;
-  z-index: 120;
+  z-index: 111;
+
+  &.hamburger_spin {
+    &.opened {
+      right: 20px;
+    }
+  }
 }
 
 .hamburger_spin {
@@ -454,16 +450,24 @@ $hamburger-layer-border-radius: 99px;
     padding-right: 60px;
   }
 
+  .icon {
+    &.bell {
+      margin-right: 10px;
+    }
+  }
+
   .burger_menu {
     width: 403px;
   }
 
   .header_menuburger {
-    right: 75px;
-    top: 30px;
+    right: 60px;
+    top: 23px;
 
-    &.opened {
-      right: 55px;
+    &.hamburger_spin {
+      &.opened {
+        right: 55px;
+      }
     }
   }
 
@@ -479,6 +483,26 @@ $hamburger-layer-border-radius: 99px;
 }
 
 @media screen and (min-width: 1024px) {
+  .item.profile_item {
+    display: block;
+    margin-right: 0;
+  }
+
+  .profile_item {
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      .arrow_icon {
+        cursor: pointer;
+        stroke: url(#gradient);
+      }
+      .icon {
+        fill: url(#gradient);
+      }
+    }
+  }
+
   .theme_item {
     display: block;
   }
@@ -489,7 +513,7 @@ $hamburger-layer-border-radius: 99px;
     display: none;
   }
   .logo {
-    transform: scale(1);
+    // transform: scale(1);
     display: none;
   }
   .header_menuburger {
@@ -499,7 +523,7 @@ $hamburger-layer-border-radius: 99px;
     display: flex;
   }
   .item_bell {
-    margin-right: 25px;
+    margin-right: 10px;
   }
 
   .header {

@@ -14,7 +14,7 @@ export default function AuthPage({ children }) {
     <div className={cn({ [s.wrapper]: true, [s.dt]: darkTheme })}>
       <header className={s.header}>
         <div className={`container ${s.flex}`}>
-          <Logo />
+          <Logo svgwidth="105" svgheight="48" />
           <div className={s.btns_wrapper}>
             <ThemeBtn authType />
             <LangBtn authType />

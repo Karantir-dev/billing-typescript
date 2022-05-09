@@ -35,7 +35,11 @@ const AsideServicesMenu = () => {
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
         <div className={s.logo_container}>
-          <Logo className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })} />
+          <Logo
+            svgWidth={!pinnedStatus ? '74' : '91'}
+            svgHeight="40"
+            className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
+          />
         </div>
         <li className={s.item}>
           <NavLink

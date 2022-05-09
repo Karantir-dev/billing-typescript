@@ -83,7 +83,7 @@ export default function Header() {
       <header className={s.main_header}>
         <div className={s.container}>
           <div className={s.header}>
-            <Logo className={s.logo} />
+            <Logo svgwidth="93" svgheight="41" className={s.logo} />
 
             <nav className={s.main_nav}>
               <ul className={s.list}>
@@ -132,7 +132,7 @@ export default function Header() {
                       })
                     }
                   >
-                    <FilledEnvelope className={s.icon} />
+                    <FilledEnvelope svgwidth="21" svgheight="16" className={s.icon} />
                   </NavLink>
                 </li>
 
@@ -144,7 +144,11 @@ export default function Header() {
                   })}
                 >
                   <button onClick={handleBellClick}>
-                    <Bell className={s.icon} />
+                    <Bell
+                      svgheight="22"
+                      svgwidth="18"
+                      className={cn({ [s.icon]: true, [s.bell]: true })}
+                    />
                     {mesAmount > 0 && (
                       <span className={s.notification_messages_counter}>{mesAmount}</span>
                     )}
@@ -155,7 +159,7 @@ export default function Header() {
                     className={s.profile_btn}
                     onClick={() => setIsProfileOpened(!isProfileOpened)}
                   >
-                    <Profile className={s.icon} />
+                    <Profile svgheight="23" svgwidth="23" className={s.icon} />
                     <Shevron
                       className={cn({
                         [s.arrow_icon]: true,
@@ -166,7 +170,6 @@ export default function Header() {
 
                   <ul
                     className={cn({
-                      [s.profile_list]: true,
                       [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
                       [s.opened]: isProfileOpened,
                     })}
@@ -234,6 +237,7 @@ export default function Header() {
           <span className={s.hamburger_inner}></span>
         </span>
       </button>
+
       <BurgerMenu
         isOpened={isMenuOpened}
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}
