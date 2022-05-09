@@ -14,6 +14,7 @@ import {
   Portal,
   TrustedUsers,
   Container,
+  EmailConfirmation,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -138,6 +139,15 @@ export default function App() {
                 //   <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
                 // }
                 element={<PublicRoute children={<TrustedUsers />} />}
+              />
+              <Route
+                path={route.CONFIRM_EMAIL}
+                element={
+                  <PrivateRoute
+                    children={<EmailConfirmation />}
+                    redirectTo={route.LOGIN}
+                  />
+                }
               />
             </Routes>
           </Suspense>

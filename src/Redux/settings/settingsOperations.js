@@ -583,6 +583,54 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
     })
 }
 
+const confirmEmail = key => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'notice.confirm',
+        sok: 'ok',
+        out: 'json',
+        auth: sessionId,
+        key,
+      }),
+    )
+    .then(({ data }) => {
+      console.log(data?.doc)
+      if (data?.doc?.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      data?.doc?.metadata?.form?.field?.forEach(field => {
+        if (field?.$name === 'confirmation') {
+          field?.textdata?.forEach(textdata => {
+            if (textdata?.$name === 'confirmation_key_error') {
+              toast.error(i18n.t('Confirmation key error', { ns: 'other' }), {
+                position: 'bottom-right',
+              })
+            } else if (textdata?.$name === 'confirmation_info') {
+              toast.success(i18n.t('Email confirmation successfully', { ns: 'other' }), {
+                position: 'bottom-right',
+              })
+            }
+          })
+        }
+      })
+
+      // dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      // dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getUserEdit,
   getUserParams,
@@ -595,4 +643,5 @@ export default {
   getQR,
   getSecretKeyFile,
   setTotpPassword,
+  confirmEmail,
 }
