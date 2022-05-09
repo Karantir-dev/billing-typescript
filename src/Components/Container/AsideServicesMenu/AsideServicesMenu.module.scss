@@ -21,26 +21,23 @@
   width: 100%;
 }
 
-// .logo_container {
-//   display: flex;
-// }
+.logo_container {
+  display: flex;
+  justify-content: center;
+}
 
 .logo {
   margin: 14px 0px 60px 0px;
-  width: 89px;
-  height: 48px;
   transition: margin 0.15s;
-  padding-left: 14px;
-  padding-right: 14px;
 }
 
 .pinned_logo {
   width: auto;
-  margin-right: -24px;
-  margin-left: -18px;
-  padding-left: 4px;
-  padding-right: 4px;
-  transform: scale(0.65);
+  // margin-right: -24px;
+  // margin-left: -18px;
+  // padding-left: 4px;
+  // padding-right: 4px;
+  // transform: scale(0.65);
   transition: margin 0.15s;
 }
 

@@ -129,9 +129,10 @@ export default function App() {
 
               <Route
                 path={route.TRUSTED_USERS}
-                element={
-                  <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
-                }
+                // element={
+                //   <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+                // }
+                element={<PublicRoute children={<TrustedUsers />} />}
               />
             </Routes>
           </Suspense>

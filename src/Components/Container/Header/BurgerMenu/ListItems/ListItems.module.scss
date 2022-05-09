@@ -2,6 +2,7 @@
   fill: var(--icon-color);
   margin-right: 18px;
   cursor: pointer;
+  flex: none;
 
   &.active {
     fill: url(#gradient);

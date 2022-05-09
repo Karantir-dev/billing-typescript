@@ -52,7 +52,7 @@ export default function ListItems(props) {
           />
         )
       default:
-        return <Profile className={s.profile_icon} />
+        return <Profile svgwidth="31" svgheight="31" className={s.profile_icon} />
     }
   }
 
