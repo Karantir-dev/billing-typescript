@@ -58,5 +58,7 @@
   "Password must contain at least one uppercase and lowercase letter": "Password must contain at least one uppercase and lowercase letter",
   "Passwords do not match": "Passwords do not match",
   "Wrong old password": "Wrong old password",
-  "Changes saved successfully": "Changes saved successfully"
+  "Changes saved successfully": "Changes saved successfully",
+  "Confirmation key error": "Confirmation key error",
+  "Email confirmation successfully": "Email confirmation successfully"
 }
