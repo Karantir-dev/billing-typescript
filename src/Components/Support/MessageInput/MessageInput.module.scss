@@ -97,10 +97,10 @@
   font-weight: 300;
   font-size: 14px;
   line-height: 130%;
-  margin-top: 12px;
   background-color: rgba(255, 0, 0, 0.05);
   width: 100%;
   padding: 6px 12px;
+  display: flex;
 }
 
 .fileDeleteItem {
@@ -129,5 +129,6 @@
   }
   .fileError {
     background-color: transparent;
+    padding: 6px 0;
   }
 }

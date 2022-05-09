@@ -17,66 +17,68 @@ export default function Component(props) {
   }, [message])
 
   return (
-    <div className={s.fieldsBlock}>
-      <div className={s.messageBlock}>
-        <Field
-          data-testid="input_message"
-          innerRef={textarea}
-          className={s.textarea}
-          type="text"
-          name="message"
-          placeholder={t('Enter your message...')}
-          as="textarea"
-        />
-        <label htmlFor="files">
-          <div
-            className={cn(s.filesBlock, {
-              [s.notEmpty]: files?.length > 0,
-            })}
-          >
-            <Clip />
-          </div>
-          <input
-            hidden
-            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, .pptx, .docx,
-             application/pdf, image/*, audio/*, video/*, .zip, .rar, .html, .csv"
-            disabled={files?.length === 5}
-            id="files"
-            name="files"
-            type="file"
-            onChange={e =>
-              e?.target?.files?.length !== 0 &&
-              onChangeFiles(files.concat(e.target.files[0]))
-            }
+    <div>
+      <div className={s.fieldsBlock}>
+        <div className={s.messageBlock}>
+          <Field
+            data-testid="input_message"
+            innerRef={textarea}
+            className={s.textarea}
+            type="text"
+            name="message"
+            placeholder={t('Enter your message...')}
+            as="textarea"
           />
-        </label>
-      </div>
-      {files.length > 0 && (
-        <div className={s.filesContainer}>
-          {files?.map((el, index) => {
-            return (
-              <div
-                className={cn(s.fileItem, { [s.bigfile]: el?.size >= 10000000 })}
-                key={index}
-              >
-                {el?.name}
-                <button
-                  type="button"
-                  onClick={() => {
-                    let newArr = files
-                      .slice(0, index)
-                      .concat(files.slice(index + 1, files.length))
-                    onChangeFiles(newArr)
-                  }}
-                  className={s.fileDeleteItem}
-                >
-                  <Cross />
-                </button>
-              </div>
-            )
-          })}
+          <label htmlFor="files">
+            <div
+              className={cn(s.filesBlock, {
+                [s.notEmpty]: files?.length > 0,
+              })}
+            >
+              <Clip />
+            </div>
+            <input
+              hidden
+              accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, .pptx, .docx,
+             application/pdf, image/*, audio/*, video/*, .zip, .rar, .html, .csv"
+              disabled={files?.length === 5}
+              id="files"
+              name="files"
+              type="file"
+              onChange={e =>
+                e?.target?.files?.length !== 0 &&
+                onChangeFiles(files.concat(e.target.files[0]))
+              }
+            />
+          </label>
         </div>
-      )}
+        {files.length > 0 && (
+          <div className={s.filesContainer}>
+            {files?.map((el, index) => {
+              return (
+                <div
+                  className={cn(s.fileItem, { [s.bigfile]: el?.size >= 10000000 })}
+                  key={index}
+                >
+                  {el?.name}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      let newArr = files
+                        .slice(0, index)
+                        .concat(files.slice(index + 1, files.length))
+                      onChangeFiles(newArr)
+                    }}
+                    className={s.fileDeleteItem}
+                  >
+                    <Cross />
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
       {filesError && (
         <div className={s.fileError}>
           {t('The size of the collected file should not exceed 10.0 MB')}
