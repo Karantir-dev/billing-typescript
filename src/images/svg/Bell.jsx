@@ -2,12 +2,15 @@ import * as React from 'react'
 import Gradient from './Gradient'
 
 export default function SvgComponent(props) {
+  const { svgwidth, svgheight } = props
+
   const { className } = props
   return (
     <svg
       className={className}
-      width={21}
-      height={24}
+      viewBox="0 0 21 24"
+      width={svgwidth}
+      height={svgheight}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}

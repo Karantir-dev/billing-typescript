@@ -217,6 +217,7 @@ const getRights = (userId, isOwner) => (dispatch, getState) => {
 
       const { elem } = data.doc
 
+      console.log(elem)
       dispatch(usersActions.setRights(elem))
       dispatch(actions.hideLoader())
     })

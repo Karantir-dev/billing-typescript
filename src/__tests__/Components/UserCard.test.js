@@ -37,8 +37,17 @@ describe('UserCard Component', () => {
   })
 
   mockedAxiosInstance.onPost('/').reply(200, {
-    doc: { elem: [] },
+    doc: {
+      elem: [
+        {
+          active: { $: 'on' },
+          hassubitems: { $: 'on' },
+          name: { $: 'services.autoprolong' },
+        },
+      ],
+    },
   })
+
   beforeEach(() => {
     render(
       <Provider store={entireStore.store}>

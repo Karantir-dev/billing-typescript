@@ -5,6 +5,8 @@ import { selectors } from '../../Redux'
 export default function SvgComponent(props) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
+  const { svgheight, svgwidth } = props
+
   const renderDark = () => {
     return (
       <>
@@ -222,8 +224,11 @@ export default function SvgComponent(props) {
 
   return (
     <svg
-      width={105}
-      height={48}
+      // width={105}
+      // height={48}
+      width={svgwidth}
+      height={svgheight}
+      viewBox="0 0 105 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
