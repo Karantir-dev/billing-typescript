@@ -1,7 +1,8 @@
 {
   "Payments": "Payments",
   "Expenses": "Expenses",
-  "Automatic renewal of services": "Automatic renewal of services",
   "Auto payment": "Auto payment",
-  "Finance": "Finance"
+  "Finance": "Finance",
+  "AutoPaymentText": "You can configure automatic payments for your account. You don't need to make payments yourself, funds will be added automatically. You will have enough funds to pay for services during one month. Payment limits can be configured in the Auto payment configuration form.\n\nAutomatic payment may be added in to a list only after a while, only when all required operations are completed",
+  "Configure": "Configure"
 }

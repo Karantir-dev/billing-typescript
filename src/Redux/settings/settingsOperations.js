@@ -622,12 +622,9 @@ const confirmEmail = key => (dispatch, getState) => {
           })
         }
       })
-
-      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
-      // dispatch(actions.hideLoader())
     })
 }
 
