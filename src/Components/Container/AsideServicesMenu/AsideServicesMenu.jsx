@@ -5,8 +5,9 @@ import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectors, actions } from '../../../Redux'
+import { selectors, actions, usersSelectors } from '../../../Redux'
 import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
+import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
 import * as routes from '../../../routes'
 
 import s from './AsideServicesMenu.module.scss'
@@ -14,6 +15,17 @@ import s from './AsideServicesMenu.module.scss'
 const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)
   const tabletOrHigher = useMediaQuery({ query: '(max-width: 1023px)' })
+
+  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+
+  const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'affiliate.client',
+  )
+  const isSupportAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'clientticket',
+  )
 
   const dispatch = useDispatch()
 
@@ -61,26 +73,34 @@ const AsideServicesMenu = () => {
             {pinnedStatus && <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>}
           </NavLink>
         </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.AFFILIATE_PROGRAM}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Social className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.referal_program')}</p>}
-          </NavLink>
-        </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.SUPPORT}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Support className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}
-          </NavLink>
-        </li>
+
+        {isAffiliateProgramAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.AFFILIATE_PROGRAM}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Social className={s.img} />
+              {pinnedStatus && (
+                <p className={s.text}>{t('aside_menu.referal_program')}</p>
+              )}
+            </NavLink>
+          </li>
+        )}
+
+        {isSupportAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.SUPPORT}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Support className={s.img} />
+              {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}
+            </NavLink>
+          </li>
+        )}
       </ul>
 
       <button

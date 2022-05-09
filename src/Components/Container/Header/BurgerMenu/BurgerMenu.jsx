@@ -8,11 +8,17 @@ import { useTranslation } from 'react-i18next'
 import { ThemeBtn, LangBtn } from '../../../../Components'
 import { ExitSign } from '../../../../images'
 import ListItems from './ListItems/ListItems'
-import { userSelectors, authOperations, selectors } from '../../../../Redux'
+import {
+  userSelectors,
+  authOperations,
+  selectors,
+  usersSelectors,
+} from '../../../../Redux'
 import { useOutsideAlerter } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './BurgerMenu.module.scss'
+import checkIfComponentShouldRender from '../../../../checkIfComponentShouldRender'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
@@ -95,6 +101,16 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { name: t('burger_menu.finance.finance_list.auto_renewal'), routeName: routes.HOME },
   ]
 
+  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'notification',
+  )
+  const isSupportAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'clientticket',
+  )
+
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
 
@@ -150,20 +166,25 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
               subList={financeMenuList}
             />
           </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'ref_program'}
-              subList={refProgrammMenuList}
-            />
-          </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'support'}
-              subList={supportMenuList}
-            />
-          </li>
+          {isAffiliateProgramAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'ref_program'}
+                subList={refProgrammMenuList}
+              />
+            </li>
+          )}
+          {isSupportAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'support'}
+                subList={supportMenuList}
+              />
+            </li>
+          )}
+
           <li className={s.exit_list_item}>
             <NavLink to={routes.LOGIN}>
               <div

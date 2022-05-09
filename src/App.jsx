@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Provider } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import dayjs from 'dayjs'
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
@@ -13,8 +13,9 @@ import {
   PrivateRoute,
   PublicRoute,
   Portal,
-  TrustedUsers,
+  // TrustedUsers,
   Container,
+  TrustedUsers,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -31,118 +32,137 @@ import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
 
-export default function App() {
-  return (
-    <Provider store={entireStore.store}>
-      <PersistGate loading={null} persistor={entireStore.persistor}>
-        <BrowserRouter>
-          <Suspense fallback={<Loader />}>
-            <Routes>
-              <Route
-                path={route.LOGIN}
-                element={
-                  <PublicRoute
-                    children={<AuthPage children={<LoginForm />} />}
-                    restricted
-                    redirectTo={route.HOME}
-                  />
-                }
-              />
-              <Route
-                path={route.REGISTRATION}
-                element={
-                  <PublicRoute
-                    children={<AuthPage children={<SignupForm />} />}
-                    restricted
-                    redirectTo={route.HOME}
-                  />
-                }
-              />
+import checkIfComponentShouldRender from './checkIfComponentShouldRender'
+import { usersSelectors } from './Redux'
+import InsufficientRightsToAccess from './Pages/InsufficientRightsToAccess/InsufficientRightsToAccess'
 
-              <Route
-                path={route.RESET_PASSWORD}
-                element={
-                  <PublicRoute
-                    children={<AuthPage children={<PasswordReset />} />}
-                    restricted
-                    redirectTo={route.HOME}
-                  />
-                }
-              />
-              <Route
-                path={route.CHANGE_PASSWORD}
-                element={
-                  <PublicRoute
-                    children={<AuthPage children={<PasswordChange />} />}
-                    restricted
-                    redirectTo={route.HOME}
-                  />
-                }
-              />
-              <Route
-                path={route.HOME}
-                element={
-                  <PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />
-                }
-              />
-              <Route
-                path={route.ACCESS_LOG}
-                element={
-                  <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
-                }
-              />
-              <Route
-                path={`${route.SUPPORT}/*`}
-                element={
-                  <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
-                }
-              />
-              <Route
-                path={`${route.USER_SETTINGS}`}
-                element={
-                  <PrivateRoute
-                    redirectTo={route.LOGIN}
-                    children={
-                      <Container>
-                        <UserSettings />
-                      </Container>
-                    }
-                  />
-                }
-              >
-                <Route
-                  path=":path/"
-                  element={
-                    <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
+export default function App() {
+  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const isComponentAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'affiliate.client',
+  )
+
+  return (
+    <PersistGate loading={null} persistor={entireStore.persistor}>
+      <BrowserRouter>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route
+              path={route.LOGIN}
+              element={
+                <PublicRoute
+                  children={<AuthPage children={<LoginForm />} />}
+                  restricted
+                  redirectTo={route.HOME}
+                />
+              }
+            />
+            <Route
+              path={route.REGISTRATION}
+              element={
+                <PublicRoute
+                  children={<AuthPage children={<SignupForm />} />}
+                  restricted
+                  redirectTo={route.HOME}
+                />
+              }
+            />
+
+            <Route
+              path={route.RESET_PASSWORD}
+              element={
+                <PublicRoute
+                  children={<AuthPage children={<PasswordReset />} />}
+                  restricted
+                  redirectTo={route.HOME}
+                />
+              }
+            />
+            <Route
+              path={route.CHANGE_PASSWORD}
+              element={
+                <PublicRoute
+                  children={<AuthPage children={<PasswordChange />} />}
+                  restricted
+                  redirectTo={route.HOME}
+                />
+              }
+            />
+            <Route
+              path={route.HOME}
+              element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
+            />
+            <Route
+              path={route.ACCESS_LOG}
+              element={
+                <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
+              }
+            />
+            <Route
+              path={`${route.SUPPORT}/*`}
+              element={
+                <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
+              }
+            />
+            <Route
+              path={`${route.USER_SETTINGS}`}
+              element={
+                <PrivateRoute
+                  redirectTo={route.LOGIN}
+                  children={
+                    <Container>
+                      <UserSettings />
+                    </Container>
                   }
                 />
-              </Route>
+              }
+            >
               <Route
-                path={`${route.AFFILIATE_PROGRAM}/*`}
+                path=":path/"
                 element={
-                  <PrivateRoute
-                    children={<AffiliateProgram />}
-                    redirectTo={route.LOGIN}
-                  />
+                  <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
                 }
               />
+            </Route>
+            <Route
+              path={`${route.AFFILIATE_PROGRAM}/*`}
+              element={
+                <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
+              }
+            />
 
-              <Route
-                path={route.TRUSTED_USERS}
-                // element={
-                //   <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
-                // }
-                element={<PublicRoute children={<TrustedUsers />} />}
-              />
-            </Routes>
-          </Suspense>
-          <ToastContainer />
-          <Portal>
-            <Loader />
-          </Portal>
-        </BrowserRouter>
-      </PersistGate>
-    </Provider>
+            {/* <InsufficientRightsRoute
+                children={<TrustedUsers />}
+                children2={<InsufficientRightsToAccess />}
+              /> */}
+            <Route
+              path={
+                isComponentAllowedToRender
+                  ? route.TRUSTED_USERS
+                  : route.INSUFFICIENT_RIGHTS
+              }
+              element={
+                <PrivateRoute
+                  children={
+                    isComponentAllowedToRender ? (
+                      <TrustedUsers />
+                    ) : (
+                      <InsufficientRightsToAccess />
+                    )
+                  }
+                  redirectTo={route.LOGIN}
+                />
+              }
+            />
+          </Routes>
+        </Suspense>
+        <ToastContainer />
+        <Portal>
+          <Loader />
+        </Portal>
+      </BrowserRouter>
+    </PersistGate>
   )
 }
 

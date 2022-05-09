@@ -11,6 +11,8 @@ import {
   authOperations,
   authSelectors,
   selectors,
+  usersOperations,
+  usersSelectors,
 } from '../../../Redux'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
@@ -18,6 +20,7 @@ import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
 import { useOutsideAlerter } from '../../../utils'
+import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
 
 export default function Header() {
   const { t } = useTranslation('container')
@@ -30,13 +33,15 @@ export default function Header() {
   ]
 
   const sessionId = useSelector(authSelectors.getSessionId)
+  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const isEnvelopeAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'notification',
+  )
+
   const [removeNotification, setRemoveNotification] = useState(false)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(userOperations.getUserInfo(sessionId))
-  }, [removeNotification])
 
   const handleRemoveNotif = () => {
     setRemoveNotification(!removeNotification)
@@ -78,6 +83,14 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
+  useEffect(() => {
+    dispatch(usersOperations.currentSessionRights())
+  }, [])
+
+  useEffect(() => {
+    dispatch(userOperations.getUserInfo(sessionId))
+  }, [removeNotification])
+
   return (
     <>
       <header className={s.main_header}>
@@ -118,23 +131,25 @@ export default function Header() {
                 >
                   <LangBtn mainType={true} />
                 </li>
-                <li
-                  className={cn({
-                    [s.item]: true,
-                    [s.active_notification]: areNewTickets,
-                  })}
-                >
-                  <NavLink
-                    to={routes.SUPPORT}
-                    className={({ isActive }) =>
-                      cn(s.link, {
-                        [s.active]: isActive,
-                      })
-                    }
+                {isEnvelopeAllowedToRender && (
+                  <li
+                    className={cn({
+                      [s.item]: true,
+                      [s.active_notification]: areNewTickets,
+                    })}
                   >
-                    <FilledEnvelope svgwidth="21" svgheight="16" className={s.icon} />
-                  </NavLink>
-                </li>
+                    <NavLink
+                      to={routes.SUPPORT}
+                      className={({ isActive }) =>
+                        cn(s.link, {
+                          [s.active]: isActive,
+                        })
+                      }
+                    >
+                      <FilledEnvelope svgwidth="21" svgheight="16" className={s.icon} />
+                    </NavLink>
+                  </li>
+                )}
 
                 <li
                   className={cn({
@@ -154,6 +169,7 @@ export default function Header() {
                     )}
                   </button>
                 </li>
+
                 <li className={cn({ [s.item]: true, [s.profile_item]: true })}>
                   <button
                     className={s.profile_btn}
