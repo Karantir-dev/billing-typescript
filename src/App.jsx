@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import dayjs from 'dayjs'
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import {
@@ -26,8 +25,8 @@ import {
   SupportPage,
   OpenedTicker,
   UserSettings,
+  BillingPage,
 } from './Pages'
-import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -98,6 +97,12 @@ export default function App() {
                 }
               />
               <Route
+                path={`${route.BILLING}/*`}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />
+                }
+              />
+              <Route
                 path={`${route.USER_SETTINGS}`}
                 element={
                   <PrivateRoute
@@ -148,8 +153,7 @@ export default function App() {
 
 const SupportScreen = () => {
   const location = useLocation()
-  const { i18n } = useTranslation()
-  dayjs.locale(i18n.language)
+
   if (location.pathname === route.SUPPORT) {
     return <Navigate to={`${route.SUPPORT}/requests`} />
   }
@@ -164,6 +168,29 @@ const SupportScreen = () => {
         <Route
           path=":path/:id"
           element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+        />
+      </Routes>
+    </Container>
+  )
+}
+
+const BillingScreen = () => {
+  const location = useLocation()
+
+  if (location.pathname === route.BILLING) {
+    return <Navigate to={`${route.BILLING}/payments`} />
+  }
+
+  return (
+    <Container>
+      <Routes>
+        <Route
+          path=":path/*"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
+        />
+        <Route
+          path=":path/:id"
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
         />
       </Routes>
     </Container>

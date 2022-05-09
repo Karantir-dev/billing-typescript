@@ -65,7 +65,7 @@
 }
 
 .blur {
-  width: 123%;
+  width: 117%;
   left: -30px;
   position: relative;
   &::before {
@@ -82,8 +82,8 @@
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
-    width: 30px;
+    right: 0px;
+    width: 35px;
     height: 30px;
     background: linear-gradient(270deg, var(--main-bgc) 30%, rgba(0, 0, 0, 0.001) 100%);
   }

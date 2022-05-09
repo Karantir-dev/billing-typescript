@@ -8,3 +8,4 @@ export { default as AboutAffiliateProgram } from './AffiliateProgram/AboutAffili
 export { default as AffiliateProgramIncome } from './AffiliateProgram/AffiliateProgramIncome/AffiliateProgramIncome'
 export { default as AffiliateProgramStatistics } from './AffiliateProgram/AffiliateProgramStatistics/AffiliateProgramStatistics'
 export { default as UserSettings } from './UserSettings/UserSettings'
+export { default as BillingPage } from './BillingPage/BillingPage'
