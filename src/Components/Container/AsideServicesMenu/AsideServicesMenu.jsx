@@ -36,8 +36,8 @@ const AsideServicesMenu = () => {
       <ul className={s.list}>
         <div className={s.logo_container}>
           <Logo
-            svgWidth={!pinnedStatus ? '74' : '91'}
-            svgHeight="40"
+            svgwidth={!pinnedStatus ? '74' : '91'}
+            svgheight="40"
             className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
           />
         </div>
