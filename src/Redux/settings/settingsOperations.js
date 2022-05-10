@@ -575,7 +575,6 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
       setModal(false)
 
       dispatch(getUserEdit(elid))
-      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
@@ -622,12 +621,9 @@ const confirmEmail = key => (dispatch, getState) => {
           })
         }
       })
-
-      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
-      // dispatch(actions.hideLoader())
     })
 }
 
