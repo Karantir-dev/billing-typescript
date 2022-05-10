@@ -16,8 +16,8 @@ export default function Component() {
 
   return (
     <>
+      <BillingFilter />
       <div className={s.pagination}>
-        <BillingFilter />
         <Pagination
           currentPage={currentPage}
           totalCount={Number(0)}
