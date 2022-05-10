@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react'
-import { useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import dayjs from 'dayjs'
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
@@ -13,7 +12,6 @@ import {
   PrivateRoute,
   PublicRoute,
   Portal,
-  // TrustedUsers,
   Container,
   TrustedUsers,
 } from './Components'
@@ -32,17 +30,7 @@ import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
 
-import checkIfComponentShouldRender from './checkIfComponentShouldRender'
-import { usersSelectors } from './Redux'
-import InsufficientRightsToAccess from './Pages/InsufficientRightsToAccess/InsufficientRightsToAccess'
-
 export default function App() {
-  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'affiliate.client',
-  )
-
   return (
     <PersistGate loading={null} persistor={entireStore.persistor}>
       <BrowserRouter>
@@ -132,27 +120,10 @@ export default function App() {
               }
             />
 
-            {/* <InsufficientRightsRoute
-                children={<TrustedUsers />}
-                children2={<InsufficientRightsToAccess />}
-              /> */}
             <Route
-              path={
-                isComponentAllowedToRender
-                  ? route.TRUSTED_USERS
-                  : route.INSUFFICIENT_RIGHTS
-              }
+              path={route.TRUSTED_USERS}
               element={
-                <PrivateRoute
-                  children={
-                    isComponentAllowedToRender ? (
-                      <TrustedUsers />
-                    ) : (
-                      <InsufficientRightsToAccess />
-                    )
-                  }
-                  redirectTo={route.LOGIN}
-                />
+                <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
               }
             />
           </Routes>

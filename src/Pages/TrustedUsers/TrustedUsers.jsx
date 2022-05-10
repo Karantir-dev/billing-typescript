@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
+import { Navigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { Button } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
@@ -10,9 +12,20 @@ import Container from '../../Components/Container/Container'
 import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
 import { usersOperations, usersSelectors } from '../../Redux'
 
+import * as routes from '../../routes'
+import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
+
 import s from './TrustedUsers.module.scss'
 
 export default function TrustedUsers() {
+  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const isComponentAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'user',
+  )
+
+  console.log('isComponentAllowedToRender,  static code', isComponentAllowedToRender)
+
   const { t } = useTranslation('trusted_users')
 
   const dispatch = useDispatch()
@@ -60,8 +73,20 @@ export default function TrustedUsers() {
   }
 
   useEffect(() => {
-    dispatch(usersOperations.getUsers())
+    if (isComponentAllowedToRender) dispatch(usersOperations.getUsers())
   }, [changeUserRoles, createdNewUser])
+
+  useEffect(() => {
+    if (!isComponentAllowedToRender) {
+      toast.error(t('insufficient_rights'), {
+        position: 'bottom-right',
+      })
+    }
+  }, [])
+
+  if (!isComponentAllowedToRender) {
+    return <Navigate to={routes.HOME} />
+  }
 
   return (
     <Container>
