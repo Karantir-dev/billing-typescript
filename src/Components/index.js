@@ -64,3 +64,6 @@ export { default as ToggleBlock } from './Settings/ToggleBlock/ToggleBlock'
 export { default as SocialButton } from './Settings/SocialButton/SocialButton'
 export { default as ModalTwoStepVerification } from './Settings/ModalTwoStepVerification/ModalTwoStepVerification'
 export { default as EmailConfirmation } from './Settings/EmailConfirmation/EmailConfirmation'
+
+//==========================================BILLING==========================================//
+export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
