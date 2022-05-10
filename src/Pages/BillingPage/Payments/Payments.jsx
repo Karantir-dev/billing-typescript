@@ -1,30 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useTranslation } from 'react-i18next'
-import { Pagination, BillingFilter } from '../../../Components/'
+import { Pagination, BillingFilter, PaymentsTable } from '../../../Components/'
 import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './Payments.module.scss'
 
 export default function Component() {
   const dispatch = useDispatch()
-  //   const { t } = useTranslation(['billing', 'other'])
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
-  console.log(paymentsList)
-
   const [currentPage, setCurrentPage] = useState(1)
+  const [selctedPayment, setSelctedPayment] = useState(null)
 
   useEffect(() => {
     dispatch(billingOperations.getPayments())
   }, [])
 
-  useEffect(() => {}, [currentPage])
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(billingOperations.getPayments(data))
+  }, [currentPage])
+
+  const downloadPdfHandler = (id, name) => {
+    dispatch(billingOperations.getPaymentPdf(id, name))
+  }
+
+  const deletePayment = id => {
+    dispatch(billingOperations.deletePayment(id))
+  }
 
   return (
     <>
-      <BillingFilter />
+      <BillingFilter
+        downloadPdfHandler={downloadPdfHandler}
+        selctedPayment={selctedPayment}
+      />
+      <PaymentsTable
+        list={paymentsList}
+        setSelctedPayment={setSelctedPayment}
+        selctedPayment={selctedPayment}
+        downloadPdfHandler={downloadPdfHandler}
+        deletePayment={deletePayment}
+      />
       <div className={s.pagination}>
         <Pagination
           currentPage={currentPage}

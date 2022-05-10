@@ -25,7 +25,7 @@ export default function Component(props) {
       </div>
       {list?.map(el => {
         const { tstatus, last_message, name, id, unread } = el
-        let onItemClick = () => setSelctedTicket(el)
+        const onItemClick = () => setSelctedTicket(el)
 
         return (
           <SupportTableItem

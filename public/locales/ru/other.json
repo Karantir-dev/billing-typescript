@@ -60,5 +60,10 @@
   "Wrong old password": "Неверный старый пароль",
   "Changes saved successfully": "Изменения успешно сохранены",
   "Confirmation key error": "Ошибка ключа подтверждения",
-  "Email confirmation successfully": "Подтверждение электронной почты успешно"
+  "Email confirmation successfully": "Подтверждение электронной почты успешно",
+  "Number": "Номер",
+  "Payer": "Плательщик",
+  "Sum": "Сумма",
+  "Payment method": "Метод оплаты",
+  "Insufficient privileges to access": "Недостаточно прав для доступа"
 }

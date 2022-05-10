@@ -60,5 +60,10 @@
   "Wrong old password": "Wrong old password",
   "Changes saved successfully": "Changes saved successfully",
   "Confirmation key error": "Confirmation key error",
-  "Email confirmation successfully": "Email confirmation successfully"
+  "Email confirmation successfully": "Email confirmation successfully",
+  "Number": "Number",
+  "Payer": "Payer",
+  "Sum": "Sum",
+  "Payment method": "Payment method",
+  "Insufficient privileges to access": "Insufficient privileges to access"
 }

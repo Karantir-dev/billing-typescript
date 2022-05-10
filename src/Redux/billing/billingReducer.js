@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import billingActions from './billingActions'
 
@@ -9,6 +9,8 @@ const initialState = {
 
 const paymentsList = createReducer(initialState.paymentsList, {
   [billingActions.setPaymentsList]: (_, { payload }) => payload,
+  [billingActions.deletePayment]: (state, { payload }) =>
+    (state = current(state)?.filter(el => el?.id?.$ !== payload)),
   [billingActions.clearPaymentsList]: () => [],
 })
 

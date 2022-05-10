@@ -53,3 +53,6 @@ export { default as Clip } from './svg/Clip.jsx'
 export { default as Check } from './svg/Check.jsx'
 export { default as Info } from './svg/Info.jsx'
 export { default as Pdf } from './svg/Pdf.jsx'
+export { default as MoreDots } from './svg/MoreDots.jsx'
+
+export { default as Pay } from './svg/Pay.jsx'

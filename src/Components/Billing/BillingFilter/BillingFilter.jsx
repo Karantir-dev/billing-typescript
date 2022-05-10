@@ -1,16 +1,23 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-// import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton } from '../..'
-// import { supportOperations } from '../../../Redux'
+import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
 
-export default function Component() {
+export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
   const params = useParams()
+
+  const { selctedPayment, downloadPdfHandler } = props
+
+  const downloadCsvHandler = count => {
+    dispatch(billingOperations.getPaymentCsv(count))
+  }
 
   return (
     <div className={s.filterBlock}>
@@ -18,9 +25,20 @@ export default function Component() {
         <div className={s.filterBtnBlock}>
           <IconButton onClick={() => null} icon="filter" className={s.calendarBtn} />
         </div>
-        <IconButton onClick={() => null} icon="csv" className={s.archiveBtn} />
+        <IconButton
+          onClick={() => downloadCsvHandler(paymentsCount)}
+          icon="csv"
+          className={s.archiveBtn}
+        />
         {params?.path === 'payments' && (
-          <IconButton onClick={() => null} icon="pdf" className={s.archiveBtn} />
+          <IconButton
+            disabled={!selctedPayment}
+            onClick={() =>
+              downloadPdfHandler(selctedPayment?.id?.$, selctedPayment?.number?.$)
+            }
+            icon="pdf"
+            className={s.archiveBtn}
+          />
         )}
       </div>
       {params?.path === 'payments' && (
@@ -37,6 +55,8 @@ export default function Component() {
   )
 }
 
-Component.propTypes = {}
+Component.propTypes = {
+  selctedPayment: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+}
 
 Component.defaultProps = {}
