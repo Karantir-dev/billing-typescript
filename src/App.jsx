@@ -29,8 +29,40 @@ import {
 import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { authSelectors, userOperations, userSelectors } from './Redux'
+// import checkIfComponentShouldRender from './checkIfComponentShouldRender'
 
 export default function App() {
+  // const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+
+  // const isComponentAllowedToRender = checkIfComponentShouldRender(
+  //   currentSessionRights,
+  //   'user',
+  // )
+
+  // const dispatch = useDispatch()
+  // const sessionId = useSelector(authSelectors.getSessionId)
+  // console.log(sessionId)
+
+  // const [loading, setIsLoading] = useState(true)
+
+  // const handleLoader = () => {
+  //   setIsLoading(false)
+  // }
+
+  // console.log('from app ', isComponentAllowedToRender)
+
+  // useEffect(() => {
+  //   if (sessionId) {
+  //     dispatch(userOperations.getUserInfo(sessionId, handleLoader))
+  //   }
+  // }, [])
+
+  // if (loading) {
+  //   return <p>render loader</p>
+  // }
+
   return (
     <PersistGate loading={null} persistor={entireStore.persistor}>
       <BrowserRouter>

@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectors, actions, usersSelectors } from '../../../Redux'
+import { selectors, actions, userSelectors } from '../../../Redux'
 import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
 import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
 import * as routes from '../../../routes'
@@ -16,7 +16,7 @@ const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)
   const tabletOrHigher = useMediaQuery({ query: '(max-width: 1023px)' })
 
-  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
 
   const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,

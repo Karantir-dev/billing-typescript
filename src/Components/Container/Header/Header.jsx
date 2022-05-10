@@ -6,13 +6,11 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
 import {
-  userOperations,
   userSelectors,
   authOperations,
-  authSelectors,
   selectors,
-  usersOperations,
-  usersSelectors,
+  userOperations,
+  authSelectors,
 } from '../../../Redux'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
@@ -24,24 +22,72 @@ import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
 
 export default function Header() {
   const { t } = useTranslation('container')
-  const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
-    { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
-    { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.payers'), routeName: routes.HOME },
-    { name: t('profile.contracts'), routeName: routes.HOME },
-  ]
+  // loader
+  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+  const [loading, setIsLoading] = useState(true)
+  // const loading = useSelector(userSelectors.getUserInfoLoading)
 
+  const isComponentAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'user',
+  )
+
+  const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
-  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+
+  console.log('from app ', isComponentAllowedToRender)
+
+  useEffect(() => {
+    dispatch(userOperations.getUserInfo(sessionId, setIsLoading))
+  }, [])
+
+  // loader
+
   const isEnvelopeAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
     'notification',
   )
+  const isTrustedUsersAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'user',
+  )
+
+  const isAuthLogAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'authlog',
+  )
+
+  const profileMenuList = [
+    {
+      name: t('profile.user_settings'),
+      routeName: routes.USER_SETTINGS,
+      allowedToRender: true,
+    },
+    {
+      name: t('profile.trusted_users'),
+      routeName: routes.TRUSTED_USERS,
+      allowedToRender: isTrustedUsersAllowedToRender,
+    },
+    {
+      name: t('profile.visiting_log'),
+      routeName: routes.ACCESS_LOG,
+      allowedToRender: isAuthLogAllowedToRender,
+    },
+    {
+      name: t('profile.payers'),
+      routeName: routes.HOME,
+      allowedToRender: true,
+    },
+    {
+      name: t('profile.contracts'),
+      routeName: routes.HOME,
+      allowedToRender: true,
+    },
+  ]
+
+  const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const [removeNotification, setRemoveNotification] = useState(false)
-
-  const dispatch = useDispatch()
 
   const handleRemoveNotif = () => {
     setRemoveNotification(!removeNotification)
@@ -83,13 +129,9 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
-  useEffect(() => {
-    dispatch(usersOperations.currentSessionRights())
-  }, [])
-
-  useEffect(() => {
-    dispatch(userOperations.getUserInfo(sessionId))
-  }, [removeNotification])
+  if (loading) {
+    return <p>render loader</p>
+  }
 
   return (
     <>
@@ -205,7 +247,7 @@ export default function Header() {
                       </div>
                     </li>
 
-                    {profileMenuList.map(item => {
+                    {profileMenuListToRender.map(item => {
                       return (
                         <li key={nanoid()} className={s.profile_list_item}>
                           <div

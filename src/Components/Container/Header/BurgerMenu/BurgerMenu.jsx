@@ -8,12 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { ThemeBtn, LangBtn } from '../../../../Components'
 import { ExitSign } from '../../../../images'
 import ListItems from './ListItems/ListItems'
-import {
-  userSelectors,
-  authOperations,
-  selectors,
-  usersSelectors,
-} from '../../../../Redux'
+import { userSelectors, authOperations, selectors } from '../../../../Redux'
 import { useOutsideAlerter } from '../../../../utils'
 import * as routes from '../../../../routes'
 
@@ -23,13 +18,34 @@ import checkIfComponentShouldRender from '../../../../checkIfComponentShouldRend
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
 
+  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+
+  const isTrustedUsersAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'user',
+  )
+  const isAuthLogAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'authlog',
+  )
+
   const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.HOME },
-    { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
-    { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.payers'), routeName: routes.HOME },
-    { name: t('profile.contracts'), routeName: routes.HOME },
+    { name: t('profile.user_settings'), routeName: routes.HOME, allowedToRender: true },
+    {
+      name: t('profile.trusted_users'),
+      routeName: routes.TRUSTED_USERS,
+      allowedToRender: isTrustedUsersAllowedToRender,
+    },
+    {
+      name: t('profile.visiting_log'),
+      routeName: routes.ACCESS_LOG,
+      allowedToRender: isAuthLogAllowedToRender,
+    },
+    { name: t('profile.payers'), routeName: routes.HOME, allowedToRender: true },
+    { name: t('profile.contracts'), routeName: routes.HOME, allowedToRender: true },
   ]
+
+  const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const servicesMenuList = [
     { name: t('burger_menu.services.services_list.domains'), routeName: routes.HOME },
@@ -101,7 +117,6 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { name: t('burger_menu.finance.finance_list.auto_renewal'), routeName: routes.HOME },
   ]
 
-  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
   const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
     'notification',
@@ -138,7 +153,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
             <ListItems
               controlMenu={controlMenu}
               name={$realname}
-              subList={profileMenuList}
+              subList={profileMenuListToRender}
               isProfile
               email={$email}
             />

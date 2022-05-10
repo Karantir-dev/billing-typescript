@@ -10,7 +10,7 @@ import { Button } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
 import Container from '../../Components/Container/Container'
 import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
-import { usersOperations, usersSelectors } from '../../Redux'
+import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
 
 import * as routes from '../../routes'
 import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
@@ -18,13 +18,12 @@ import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import s from './TrustedUsers.module.scss'
 
 export default function TrustedUsers() {
-  const currentSessionRights = useSelector(usersSelectors.getCurrentSessionRights)
+  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
     'user',
   )
-
-  console.log('isComponentAllowedToRender,  static code', isComponentAllowedToRender)
 
   const { t } = useTranslation('trusted_users')
 
