@@ -575,7 +575,6 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
       setModal(false)
 
       dispatch(getUserEdit(elid))
-      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)

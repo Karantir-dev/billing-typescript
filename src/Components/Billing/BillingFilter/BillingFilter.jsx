@@ -8,7 +8,7 @@ import { Button, IconButton } from '../..'
 import s from './BillingFilter.module.scss'
 
 export default function Component() {
-  const { t } = useTranslation(['support', 'other'])
+  const { t } = useTranslation(['billing', 'other'])
   // const dispatch = useDispatch()
   const params = useParams()
 
@@ -28,7 +28,7 @@ export default function Component() {
           className={s.newTicketBtn}
           isShadow
           size="medium"
-          label={t('new ticket')}
+          label={t('Create')}
           type="button"
           onClick={() => null}
         />
