@@ -4,18 +4,35 @@ import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { settingsOperations, userSelectors } from '../../Redux'
+import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
 import { PageTabBar } from '../../Components/'
 import s from './UserSettings.module.scss'
 import * as route from '../../routes'
+import { toast } from 'react-toastify'
 
 export default function Component() {
-  const { t } = useTranslation(['user_settings', 'other'])
+  const { t } = useTranslation(['user_settings', 'other', 'trusted_users'])
   const dispatch = useDispatch()
   const params = useParams()
   const location = useLocation()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
+
+  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+
+  const isComponentAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'usrparam',
+  )
+
+  const tavBarSections = [
+    { route: `${route.USER_SETTINGS}/personal`, label: t('Personal settings') },
+    { route: `${route.USER_SETTINGS}/access`, label: t('Password and access') },
+  ]
+
+  console.log('allow to render', isComponentAllowedToRender)
+  // func doesn't have any differences
 
   useEffect(() => {
     if (userInfo?.$id) {
@@ -23,21 +40,30 @@ export default function Component() {
     }
   }, [userInfo])
 
+  useEffect(() => {
+    if (!isComponentAllowedToRender) {
+      toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
+        position: 'bottom-right',
+      })
+    }
+  }, [])
+
   if (location.pathname === route.USER_SETTINGS) {
     return <Navigate to={`${route.USER_SETTINGS}/personal`} />
   }
 
-  const tavBarSections = [
-    { route: `${route.USER_SETTINGS}/personal`, label: t('Personal settings') },
-    { route: `${route.USER_SETTINGS}/access`, label: t('Password and access') },
-  ]
-
   const renderPage = path => {
-    if (path === 'personal') {
+    if (path === 'personal' && isComponentAllowedToRender) {
       return <PersonalSettings />
-    } else if (path === 'access') {
+    } else if (path === 'access' && isComponentAllowedToRender) {
       return <AccessSettings />
+    } else {
+      return <Navigate to={route.HOME} />
     }
+  }
+
+  if (!isComponentAllowedToRender) {
+    return <Navigate to={route.HOME} />
   }
 
   return (

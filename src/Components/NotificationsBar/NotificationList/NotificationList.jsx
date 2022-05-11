@@ -9,7 +9,7 @@ import s from './NotificationList.module.scss'
 
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   let shortNotificationsList = notifications
 

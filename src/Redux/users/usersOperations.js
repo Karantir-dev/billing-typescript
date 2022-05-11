@@ -23,6 +23,7 @@ const getUsers = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { elem } = data.doc
+      console.log('users from test 11.05', data.doc)
 
       dispatch(usersActions.setUsers(elem))
       dispatch(actions.hideLoader())
@@ -217,7 +218,7 @@ const getRights = (userId, isOwner) => (dispatch, getState) => {
 
       const { elem } = data.doc
 
-      console.log(elem)
+      console.log('gotten rights', elem)
       dispatch(usersActions.setRights(elem))
       dispatch(actions.hideLoader())
     })

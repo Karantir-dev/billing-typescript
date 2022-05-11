@@ -8,7 +8,6 @@ import { toast } from 'react-toastify'
 
 import { Button } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
-import Container from '../../Components/Container/Container'
 import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
 import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
 
@@ -23,6 +22,11 @@ export default function TrustedUsers() {
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
     'user',
+  )
+
+  const isCreatingUsersAvailable = checkIfComponentShouldRender(
+    currentSessionRights,
+    'user.edit',
   )
 
   const { t } = useTranslation('trusted_users')
@@ -62,6 +66,8 @@ export default function TrustedUsers() {
 
   const users = useSelector(usersSelectors.getUsers)
 
+  console.log(users)
+
   const handleSubmit = values => {
     const { email, name, phone, password } = values
 
@@ -88,7 +94,7 @@ export default function TrustedUsers() {
   }
 
   return (
-    <Container>
+    <>
       <section>
         <div>
           <h3 className={s.section_title}>{t('trusted_users.title')}</h3>
@@ -107,7 +113,11 @@ export default function TrustedUsers() {
           size="large"
           label={`${t('trusted_users.button')}`.toUpperCase()}
           type="button"
-          className={classNames({ [s.add_btn]: true, [s.btn]: true })}
+          className={classNames({
+            [s.add_btn]: true,
+            [s.btn]: true,
+            [s.shown]: isCreatingUsersAvailable,
+          })}
           onClick={handleUserForm}
           isShadow
         />
@@ -148,6 +158,6 @@ export default function TrustedUsers() {
         title={t('trusted_users.form.title')}
         dataTestid="trusted_form"
       />
-    </Container>
+    </>
   )
 }

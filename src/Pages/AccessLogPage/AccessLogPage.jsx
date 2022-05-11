@@ -2,12 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { accessLogsSelectors, accessLogsOperations, userSelectors } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  AccessLogsTable,
-  AccessLogsFilter,
-  Pagination,
-  Container,
-} from '../../Components'
+import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components'
 import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import * as routes from '../../routes'
 
@@ -20,6 +15,7 @@ export default function MainPage() {
   const dispatch = useDispatch()
 
   const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
     'authlog',
@@ -58,28 +54,26 @@ export default function MainPage() {
   }
 
   return (
-    <Container>
-      <div className={s.body}>
-        <div className={s.content}>
-          <h1 className={s.pageTitle}>{t('access_log')}</h1>
-          <AccessLogsFilter setCurrentPage={setCurrentPage} />
-          {logsList.length !== 0 ? (
-            <AccessLogsTable list={logsList} />
-          ) : (
-            <span className={s.noResults}>{t('nothing_found')}</span>
-          )}
-          {logsList.length !== 0 && (
-            <div className={s.pagination}>
-              <Pagination
-                currentPage={currentPage}
-                totalCount={Number(logsCount)}
-                pageSize={30}
-                onPageChange={page => setCurrentPage(page)}
-              />
-            </div>
-          )}
-        </div>
+    <div className={s.body}>
+      <div className={s.content}>
+        <h1 className={s.pageTitle}>{t('access_log')}</h1>
+        <AccessLogsFilter setCurrentPage={setCurrentPage} />
+        {logsList.length !== 0 ? (
+          <AccessLogsTable list={logsList} />
+        ) : (
+          <span className={s.noResults}>{t('nothing_found')}</span>
+        )}
+        {logsList.length !== 0 && (
+          <div className={s.pagination}>
+            <Pagination
+              currentPage={currentPage}
+              totalCount={Number(logsCount)}
+              pageSize={30}
+              onPageChange={page => setCurrentPage(page)}
+            />
+          </div>
+        )}
       </div>
-    </Container>
+    </div>
   )
 }

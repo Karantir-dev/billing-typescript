@@ -29,45 +29,17 @@ import {
 import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { authSelectors, userOperations, userSelectors } from './Redux'
-// import checkIfComponentShouldRender from './checkIfComponentShouldRender'
 
 export default function App() {
-  // const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  // const isComponentAllowedToRender = checkIfComponentShouldRender(
-  //   currentSessionRights,
-  //   'user',
-  // )
-
-  // const dispatch = useDispatch()
-  // const sessionId = useSelector(authSelectors.getSessionId)
-  // console.log(sessionId)
-
-  // const [loading, setIsLoading] = useState(true)
-
-  // const handleLoader = () => {
-  //   setIsLoading(false)
-  // }
-
-  // console.log('from app ', isComponentAllowedToRender)
-
-  // useEffect(() => {
-  //   if (sessionId) {
-  //     dispatch(userOperations.getUserInfo(sessionId, handleLoader))
-  //   }
-  // }, [])
-
-  // if (loading) {
-  //   return <p>render loader</p>
-  // }
-
   return (
     <PersistGate loading={null} persistor={entireStore.persistor}>
       <BrowserRouter>
         <Suspense fallback={<Loader />}>
           <Routes>
+            <Route
+              path={route.HOME}
+              element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
+            />
             <Route
               path={route.LOGIN}
               element={
@@ -109,56 +81,59 @@ export default function App() {
                 />
               }
             />
-            <Route
-              path={route.HOME}
-              element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
-            />
-            <Route
-              path={route.ACCESS_LOG}
-              element={
-                <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
-              }
-            />
-            <Route
-              path={`${route.SUPPORT}/*`}
-              element={
-                <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
-              }
-            />
-            <Route
-              path={`${route.USER_SETTINGS}`}
-              element={
-                <PrivateRoute
-                  redirectTo={route.LOGIN}
-                  children={
-                    <Container>
-                      <UserSettings />
-                    </Container>
-                  }
-                />
-              }
-            >
+          </Routes>
+
+          <Container>
+            <Routes>
               <Route
-                path=":path/"
+                path={route.HOME}
+                element={
+                  <PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />
+                }
+              />
+              <Route
+                path={route.ACCESS_LOG}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
+                }
+              />
+              <Route
+                path={`${route.SUPPORT}/*`}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />
+                }
+              />
+              <Route
+                path={`${route.USER_SETTINGS}`}
                 element={
                   <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
                 }
+              >
+                <Route
+                  path=":path/"
+                  element={
+                    <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
+                  }
+                />
+              </Route>
+              <Route
+                path={`${route.AFFILIATE_PROGRAM}/*`}
+                element={
+                  <PrivateRoute
+                    children={<AffiliateProgram />}
+                    redirectTo={route.LOGIN}
+                  />
+                }
               />
-            </Route>
-            <Route
-              path={`${route.AFFILIATE_PROGRAM}/*`}
-              element={
-                <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
-              }
-            />
 
-            <Route
-              path={route.TRUSTED_USERS}
-              element={
-                <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
-              }
-            />
-          </Routes>
+              <Route
+                path={route.TRUSTED_USERS}
+                element={
+                  <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+                }
+              />
+            </Routes>
+          </Container>
         </Suspense>
         <ToastContainer />
         <Portal>
@@ -178,17 +153,15 @@ const SupportScreen = () => {
   }
 
   return (
-    <Container>
-      <Routes>
-        <Route
-          path=":path/*"
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
-        />
-        <Route
-          path=":path/:id"
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
-        />
-      </Routes>
-    </Container>
+    <Routes>
+      <Route
+        path=":path/*"
+        element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
+      />
+      <Route
+        path=":path/:id"
+        element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+      />
+    </Routes>
   )
 }

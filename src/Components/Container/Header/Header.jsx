@@ -1,17 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import {
-  userSelectors,
-  authOperations,
-  selectors,
-  userOperations,
-  authSelectors,
-} from '../../../Redux'
+import { userSelectors, authOperations, selectors } from '../../../Redux'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
@@ -22,26 +16,8 @@ import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
 
 export default function Header() {
   const { t } = useTranslation('container')
-  // loader
   const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-  const [loading, setIsLoading] = useState(true)
-  // const loading = useSelector(userSelectors.getUserInfoLoading)
-
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'user',
-  )
-
   const dispatch = useDispatch()
-  const sessionId = useSelector(authSelectors.getSessionId)
-
-  console.log('from app ', isComponentAllowedToRender)
-
-  useEffect(() => {
-    dispatch(userOperations.getUserInfo(sessionId, setIsLoading))
-  }, [])
-
-  // loader
 
   const isEnvelopeAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
@@ -127,10 +103,6 @@ export default function Header() {
 
   const logOut = () => {
     dispatch(authOperations.logout())
-  }
-
-  if (loading) {
-    return <p>render loader</p>
   }
 
   return (

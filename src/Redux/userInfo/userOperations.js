@@ -32,7 +32,7 @@ const currentSessionRights = (data, dispatch) => {
 
 const funcsArray = [userInfo, userNotifications, currentSessionRights, userTickets]
 
-const getUserInfo = (sessionId, setIsLoading) => dispatch => {
+const getUserInfo = (sessionId, setLoading) => dispatch => {
   dispatch(userActions.showUserInfoLoading())
   Promise.all([
     axiosInstance.post(
@@ -82,10 +82,11 @@ const getUserInfo = (sessionId, setIsLoading) => dispatch => {
       })
       dispatch(userActions.hideUserInfoLoading())
       console.log('before handle loader')
-      setIsLoading(false)
+      setLoading(false)
     })
     .catch(err => {
       dispatch(userActions.hideUserInfoLoading())
+      setLoading(false)
       console.log('getUserInfo - ', err.message)
     })
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { Container, PageTabBar } from '../../Components/'
+import { PageTabBar } from '../../Components/'
 import * as route from '../../routes'
 import {
   AboutAffiliateProgram,
@@ -28,7 +28,7 @@ export default function AffiliateProgram() {
     { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
   ]
   return (
-    <Container>
+    <>
       <h2 className={s.title}>{t('page_title')}</h2>
       <PageTabBar sections={navBarSections} />
 
@@ -46,6 +46,6 @@ export default function AffiliateProgram() {
           element={<AffiliateProgramStatistics />}
         ></Route>
       </Routes>
-    </Container>
+    </>
   )
 }
