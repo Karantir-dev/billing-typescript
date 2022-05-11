@@ -15,8 +15,6 @@ export default function Component(props) {
     date,
     status,
     payer,
-    setSelctedPayment,
-    selected,
     sum,
     paymethod,
     downloadPdfHandler,
@@ -65,14 +63,64 @@ export default function Component(props) {
     setIsOpened(false)
   }
 
+  const renderDesktopLastColumn = () => {
+    return (
+      <div className={cn(s.item_text, s.eighth_item)}>
+        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={() => null}
+          onClick={e => e.stopPropagation()}
+          className={cn({
+            [s.list]: true,
+            [s.opened]: isOpened,
+          })}
+          ref={dropDownEl}
+        >
+          <button className={s.settings_btn} onClick={() => null}>
+            <Pay />
+            <p className={s.setting_text}>{t('Pay')}</p>
+          </button>
+          <button className={s.settings_btn} onClick={downloadHandler}>
+            <Download />
+            <p className={s.setting_text}>{t('Download')}</p>
+          </button>
+          {status.trim() === 'New' && (
+            <button className={s.settings_btn} onClick={deleteHandler}>
+              <Delete />
+              <p className={s.setting_text}>{t('Delete')}</p>
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderMobileLastColumn = () => {
+    return (
+      <div className={s.btnsBlock}>
+        <button className={s.mobileBtn}>
+          <Pay />
+          <div>{t('Pay')}</div>
+        </button>
+        <button onClick={downloadHandler} className={s.mobileBtn}>
+          <Download />
+          <div>{t('Download')}</div>
+        </button>
+        {status.trim() === 'New' && (
+          <button onClick={deleteHandler} className={s.mobileBtn}>
+            <Delete />
+            <div>{t('Delete')}</div>
+          </button>
+        )}
+      </div>
+    )
+  }
+
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onKeyDown={() => null}
-      onClick={() => setSelctedPayment(id)}
-      className={cn(s.item, { [s.selected]: selected })}
-    >
+    <div className={s.item}>
       <div className={s.tableBlockFirst}>
         {mobile && <div className={s.item_title}>{t('Id')}:</div>}
         <div className={cn(s.item_text, s.first_item)}>{id}</div>
@@ -109,37 +157,14 @@ export default function Component(props) {
         </div>
       </div>
       <div className={s.tableBlockEighth}>
-        {mobile && <div className={s.line} />}
-        <div className={cn(s.item_text, s.eighth_item)}>
-          <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
-
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() => null}
-            onClick={e => e.stopPropagation()}
-            className={cn({
-              [s.list]: true,
-              [s.opened]: isOpened,
-            })}
-            ref={dropDownEl}
-          >
-            <button className={s.settings_btn} onClick={() => null}>
-              <Pay />
-              <p className={s.setting_text}>{t('Pay')}</p>
-            </button>
-            <button className={s.settings_btn} onClick={downloadHandler}>
-              <Download />
-              <p className={s.setting_text}>{t('Download')}</p>
-            </button>
-            {status.trim() === 'New' && (
-              <button className={s.settings_btn} onClick={deleteHandler}>
-                <Delete />
-                <p className={s.setting_text}>{t('Delete')}</p>
-              </button>
-            )}
+        {mobile ? (
+          <div className={s.mobileBlock}>
+            <div className={s.line} />
+            {renderMobileLastColumn()}
           </div>
-        </div>
+        ) : (
+          renderDesktopLastColumn()
+        )}
       </div>
     </div>
   )

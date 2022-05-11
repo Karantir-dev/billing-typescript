@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { useTranslation } from 'react-i18next'
-import { Pagination, BillingFilter } from '../../../Components/'
+import { useDispatch, useSelector } from 'react-redux'
+import { Pagination, BillingFilter, ExpensesTable } from '../../../Components/'
+import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './Expenses.module.scss'
 
 export default function Component() {
-  //   const dispatch = useDispatch()
-  //   const { t } = useTranslation(['billing', 'other'])
+  const dispatch = useDispatch()
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  useEffect(() => {}, [])
+  const expensesList = useSelector(billingSelectors.getExpensesList)
+  const expensesCount = useSelector(billingSelectors.getExpensesCount)
 
-  useEffect(() => {}, [currentPage])
+  console.log(expensesList, expensesCount)
+
+  useEffect(() => {
+    dispatch(billingOperations.getExpenses())
+  }, [])
+
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(billingOperations.getExpenses(data))
+  }, [currentPage])
 
   return (
     <>
       <BillingFilter />
+      <ExpensesTable list={expensesList} />
       <div className={s.pagination}>
         <Pagination
           currentPage={currentPage}
-          totalCount={Number(0)}
+          totalCount={Number(expensesCount)}
           pageSize={30}
           onPageChange={page => setCurrentPage(page)}
         />

@@ -13,5 +13,22 @@
   "Pay": "Оплатить",
   "Download": "Скачать",
   "Delete": "Удалить",
-  "Payment deleted successfully": "Платеж успешно удален"
+  "Payment deleted successfully": "Платеж успешно удален",
+  "Payment number": "Номер платежа",
+  "Enter payment number": "Введите номер платежа",
+  "Payer": "Плательщик",
+  "Not selected": "Не установлен",
+  "Recipient": "Получатель",
+  "Payer codes": "Коды плательщиков",
+  "Enter codes": "Введите коды",
+  "Payment method": "Метод оплаты",
+  "Refund": "Возврат",
+  "Awaiting refund": "Ожидание возврата",
+  "Canceled": "Отменено",
+  "Initiated": "Инициировано",
+  "Reserved payment": "Зарезервированный платеж",
+  "Suspect": "Предложение",
+  "Forbidden": "Запрещен",
+  "Allowed": "Разрешен",
+  "-- none --": "Не выбрано"
 }

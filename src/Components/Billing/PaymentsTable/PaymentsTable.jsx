@@ -7,8 +7,7 @@ import s from './PaymentsTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])
-  const { list, selctedPayment, setSelctedPayment, downloadPdfHandler, deletePayment } =
-    props
+  const { list, downloadPdfHandler, deletePayment } = props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
@@ -44,12 +43,8 @@ export default function Component(props) {
           paymethod_name,
         } = el
 
-        const onItemClick = () => setSelctedPayment(el)
-
         return (
           <PaymentsTableItem
-            selected={selctedPayment?.id?.$ === id?.$}
-            setSelctedPayment={onItemClick}
             key={id?.$}
             id={id?.$}
             number={number?.$}

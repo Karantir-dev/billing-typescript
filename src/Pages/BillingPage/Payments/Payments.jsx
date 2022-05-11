@@ -11,7 +11,6 @@ export default function Component() {
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [selctedPayment, setSelctedPayment] = useState(null)
 
   useEffect(() => {
     dispatch(billingOperations.getPayments())
@@ -33,13 +32,11 @@ export default function Component() {
   return (
     <>
       <BillingFilter
+        setCurrentPage={setCurrentPage}
         downloadPdfHandler={downloadPdfHandler}
-        selctedPayment={selctedPayment}
       />
       <PaymentsTable
         list={paymentsList}
-        setSelctedPayment={setSelctedPayment}
-        selctedPayment={selctedPayment}
         downloadPdfHandler={downloadPdfHandler}
         deletePayment={deletePayment}
       />

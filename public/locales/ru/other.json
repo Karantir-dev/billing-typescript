@@ -65,5 +65,6 @@
   "Payer": "Плательщик",
   "Sum": "Сумма",
   "Payment method": "Метод оплаты",
-  "Insufficient privileges to access": "Недостаточно прав для доступа"
+  "Insufficient privileges to access": "Недостаточно прав для доступа",
+  "-- without payment method --": "Без способа оплаты"
 }

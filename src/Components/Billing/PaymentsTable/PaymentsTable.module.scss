@@ -1,10 +1,12 @@
 .table {
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tableHeader {
   display: none;
-  padding: 12px 23px;
+  padding: 20px 23px;
   width: 100%;
 }
 
@@ -45,7 +47,7 @@
 .item {
   user-select: none;
   flex-direction: column;
-  padding: 20px 23px;
+  padding: 15px 17px;
   width: 100%;
   display: flex;
   align-items: flex-start;
@@ -53,21 +55,7 @@
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
   margin-bottom: 7px;
-  cursor: pointer;
   position: relative;
-  &:hover::before,
-  &.selected::before {
-    content: '';
-    width: 3px;
-    height: 100%;
-    position: absolute;
-    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
-    left: 0;
-    top: 0;
-    box-shadow: 0px 1px 8px rgb(65 38 114 / 15%);
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
 }
 
 .tableBlockFirst,
@@ -179,10 +167,87 @@
   }
 }
 
+.line {
+  border: 1px solid #e1daea;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.mobileBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.btnsBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileBtn {
+  flex-basis: 32%;
+  padding: 10px 0;
+  background: var(--forms_bgc_4);
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 120%;
+
+  color: var(--main-text);
+  box-shadow: var(--forms2_shadow);
+
+  svg {
+    width: 16px;
+    margin-bottom: 5px;
+  }
+
+  svg,
+  path {
+    fill: var(--transparent-color);
+  }
+
+  &:hover {
+    svg,
+    path {
+      fill: url(#gradient);
+    }
+  }
+
+  &:not(:last-child) {
+    margin-right: 6px;
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .item {
+    flex-basis: 48%;
+    margin-right: 0;
+
+    &:nth-child(2n) {
+      margin-right: 15px;
+    }
+  }
+
+  .item_text {
+    font-size: 16px;
+
+    &.second_item {
+      max-width: 130px;
+    }
+
+    &.sixth_item {
+      max-width: 130px;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {
+  .table {
+    display: block;
+  }
+
   .dotIcons {
     display: flex;
     cursor: pointer;
@@ -194,7 +259,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 11px 40px;
+    padding: 20px 26px;
   }
 
   .item {
@@ -258,11 +323,11 @@
     }
 
     &.second_item {
-      max-width: 130px;
+      max-width: 90px;
     }
 
     &.third_item {
-      max-width: 80px;
+      max-width: 70px;
       word-break: break-word;
       white-space: break-spaces;
     }
@@ -280,14 +345,14 @@
     }
 
     &.seventh_item {
-      max-width: 90px;
+      max-width: 75px;
     }
   }
 }
 
 @media screen and (min-width: 1550px) {
   .tableHeader {
-    padding: 12px 45px;
+    padding: 22px 27px;
   }
 
   .item {
@@ -324,14 +389,14 @@
     }
 
     &.seventh_item {
-      max-width: 160px;
+      max-width: 130px;
     }
   }
 }
 
 @media screen and (min-width: 1918px) {
   .tableHeader {
-    padding: 12px 52px;
+    padding: 22px 27px;
   }
 
   .item_text {

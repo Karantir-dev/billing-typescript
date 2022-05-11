@@ -33,7 +33,86 @@ const getPayments =
 
         dispatch(billingActions.setPaymentsList(elem))
         dispatch(billingActions.setPaymentsCount(count))
+        dispatch(getPaymentsFilters())
+      })
+      .catch(error => {
+        console.log('error', error)
         dispatch(actions.hideLoader())
+      })
+  }
+
+const getPaymentsFilters = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      let filters = {}
+
+      data?.doc?.slist?.forEach(el => {
+        filters[el.$name] = el.val
+      })
+
+      let currentFilters = {
+        id: data.doc?.id?.$ || '',
+        number: data.doc?.number?.$ || '',
+        restrictrefund: data.doc?.restrictrefund?.$ || '',
+        sender: data.doc?.sender?.$ || '',
+        sender_id: data.doc?.sender_id?.$ || '',
+        createdate: data.doc?.createdate?.$ || '',
+        status: data.doc?.status?.$ || '',
+        paymethod: data.doc?.paymethod?.$ || '',
+        recipient: data.doc?.recipient?.$ || '',
+        createdatestart: data.doc?.createdatestart?.$ || '',
+        createdateend: data.doc?.createdateend?.$ || '',
+      }
+
+      dispatch(billingActions.setPaymentsFilters(currentFilters))
+      dispatch(billingActions.setPaymentsFiltersLists(filters))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const setPaymentsFilters =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.filter',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(getPayments(body))
       })
       .catch(error => {
         console.log('error', error)
@@ -159,9 +238,85 @@ const deletePayment = elid => (dispatch, getState) => {
     })
 }
 
+const getExpenses =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'expense',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const elem = data?.doc?.elem || []
+        const count = data?.doc?.p_elems?.$ || 0
+
+        dispatch(billingActions.setExpensesList(elem))
+        dispatch(billingActions.setExpensesCount(count))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getExpensesCsv = p_cnt => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'expense',
+        out: 'csv',
+        auth: sessionId,
+        p_cnt,
+      }),
+      { responseType: 'blob' },
+    )
+    .then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'var_expense.csv')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getPayments,
   getPaymentPdf,
   getPaymentCsv,
   deletePayment,
+  setPaymentsFilters,
+
+  getExpenses,
+  getExpensesCsv,
 }

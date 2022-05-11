@@ -65,5 +65,6 @@
   "Payer": "Payer",
   "Sum": "Sum",
   "Payment method": "Payment method",
-  "Insufficient privileges to access": "Insufficient privileges to access"
+  "Insufficient privileges to access": "Insufficient privileges to access",
+  "-- without payment method --": "Without payment method"
 }

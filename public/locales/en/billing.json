@@ -13,5 +13,22 @@
   "Pay": "Pay",
   "Download": "Download",
   "Delete": "Delete",
-  "Payment deleted successfully": "Payment deleted successfully"
+  "Payment deleted successfully": "Payment deleted successfully",
+  "Payment number": "Payment number",
+  "Enter payment number": "Enter payment number",
+  "Payer": "Payer",
+  "Not selected": "Not selected",
+  "Recipient": "Recipient",
+  "Payer codes": "Payer codes",
+  "Enter codes": "Enter codes",
+  "Payment method": "Payment method",
+  "Refund": "Refund",
+  "Awaiting refund": "Awaiting refund",
+  "Canceled": "Canceled",
+  "Initiated": "Initiated",
+  "Reserved payment": "Reserved payment",
+  "Suspect": "Suspect",
+  "Forbidden": "Forbidden",
+  "Allowed": "Allowed",
+  "-- none --": "Not chosen"
 }
