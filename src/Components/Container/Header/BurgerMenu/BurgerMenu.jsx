@@ -18,7 +18,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
 
   const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.HOME },
+    { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
     { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
     { name: t('profile.payers'), routeName: routes.HOME },
@@ -71,26 +71,26 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const supportMenuList = [
     {
       name: t('burger_menu.support.support_list.requests'),
-      routeName: routes.HOME,
+      routeName: `${routes.SUPPORT}/requests`,
     },
     {
       name: t('burger_menu.support.support_list.requests_archieve'),
-      routeName: routes.HOME,
+      routeName: `${routes.SUPPORT}/requests_archive`,
     },
   ]
 
   const financeMenuList = [
     {
       name: t('burger_menu.finance.finance_list.automatic_payment'),
-      routeName: routes.HOME,
+      routeName: `${routes.BILLING}/auto_payment`,
     },
     {
       name: t('burger_menu.finance.finance_list.payments'),
-      routeName: routes.HOME,
+      routeName: `${routes.BILLING}/payments`,
     },
     {
       name: t('burger_menu.finance.finance_list.expenses'),
-      routeName: routes.HOME,
+      routeName: `${routes.BILLING}/expenses`,
     },
     { name: t('burger_menu.finance.finance_list.auto_renewal'), routeName: routes.HOME },
   ]
