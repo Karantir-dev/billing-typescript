@@ -14,12 +14,6 @@
   max-height: 53px;
 }
 
-.searchInput {
-  min-width: 233px;
-  margin-right: 0px;
-  margin-top: 15px;
-}
-
 .inputHeight {
   height: 45px;
 }
@@ -43,17 +37,17 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100vh;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.15);
   z-index: 140;
+  overflow-y: auto;
 }
 
 .calendarBlock {
-  margin-top: 17px;
+  margin-top: 35px;
   position: relative;
 }
 
@@ -63,6 +57,7 @@
   box-shadow: var(--forms2_shadow);
   background: var(--elements-bgc);
   border-radius: 3px;
+  margin: 20px;
   z-index: 141;
 }
 
@@ -71,6 +66,10 @@
   display: none;
   right: -10px;
   top: calc(100% + 15px);
+
+  &.expenses {
+    right: -500%;
+  }
 
   &.opened {
     display: block;
@@ -87,10 +86,11 @@
   min-width: 261px;
 }
 
-.inputRow {
+.fieldsBlock {
   display: flex;
+  align-items: center;
   width: 100%;
-  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .selectAndBtn {
@@ -100,15 +100,21 @@
   width: 100%;
 }
 
-.select {
-  margin-top: 15px;
-  max-width: 295px;
+.input {
+  max-width: 100%;
+  margin-top: 20px;
   margin-right: 0px;
 }
 
-.dateSelect {
-  max-width: 216px;
-  margin-right: 15px;
+.select {
+  max-width: 100%;
+  margin-top: 20px;
+  margin-right: 0px;
+
+  &.dateSelect {
+    width: 195px;
+    margin-right: 20px;
+  }
 }
 
 .btnBlock {
@@ -137,7 +143,6 @@
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  width: 100%;
 }
 
 .searchBtn {
@@ -177,6 +182,16 @@
 }
 
 @media screen and (min-width: 768px) {
+  .calendarModal {
+    &.expenses {
+      right: -10px;
+    }
+  }
+
+  .bg {
+    align-items: center;
+  }
+
   .formHeader {
     display: none;
   }
@@ -184,18 +199,21 @@
   .searchBtn {
     max-width: 230px;
   }
+
   .clearFilters {
     margin-left: 40px;
     margin-top: 0px;
   }
+
   .btnBlock {
     flex-direction: row;
     justify-content: flex-start;
   }
+
   .filterModal {
     padding: 20px;
-    top: calc(120% + 10px);
-    left: -15px;
+    top: calc(90% + 10px);
+    left: -35px;
     &::after {
       content: '';
       position: absolute;
@@ -209,90 +227,90 @@
       clear: both;
     }
   }
+
   .form {
     min-width: 645px;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .searchInput {
-    min-width: 285px;
-    margin-right: 15px;
-    margin-top: 15px;
-    &:first-child {
-      margin-top: 0px;
+    &.expenses {
+      min-width: 600px;
     }
   }
+
+  .input {
+    max-width: 280px;
+    margin-top: 20px;
+    margin-right: 15px;
+  }
+
+  .select {
+    max-width: 280px;
+    margin-top: 20px;
+    margin-right: 15px;
+
+    &.dateSelect {
+      max-width: 220px;
+      width: 220px;
+      margin-right: 10px;
+    }
+  }
+
   .timeSelectBlock {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin-top: 12px;
-    width: 94%;
-  }
-  .inputRow {
-    flex-direction: column;
-    max-width: 47%;
-  }
-  .selectAndBtn {
-    max-width: 47%;
-    flex-direction: column;
-  }
-  .select {
-    max-width: 287px;
-    margin-right: 0px;
-    margin-top: 15px;
-    &:first-child {
-      margin-top: 0px;
-    }
-  }
-  .dateSelect {
-    margin-right: 15px;
-    width: 100%;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .select {
-    max-width: 287px;
-    margin-right: 0px;
-    margin-top: 10px;
-    &:first-child {
-      margin-top: 10px;
-    }
-  }
   .form {
     min-width: 768px;
-    flex-direction: column;
+    &.expenses {
+      min-width: 730px;
+    }
   }
-  .searchInput {
-    min-width: 232px;
-    margin-right: 10px;
-    margin-top: 0px;
+
+  .input {
+    max-width: 228px;
+    margin-top: 20px;
+    margin-right: 15px;
   }
-  .timeSelectBlock {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-  }
-  .inputRow {
-    max-width: 100%;
-    flex-direction: row;
-  }
-  .selectAndBtn {
-    max-width: 100%;
-    flex-direction: row;
-  }
+
   .select {
-    max-width: 246px;
-    margin-right: 10px;
-  }
-  .dateSelect {
-    max-width: 190px;
-    width: 190px;
+    max-width: 228px;
+    margin-top: 20px;
+    margin-right: 15px;
+
+    &.dateSelect {
+      max-width: 175px;
+      width: 175px;
+    }
   }
 }
 
 @media screen and (min-width: 1550px) {
+  .form {
+    min-width: 1070px;
+    &.expenses {
+      min-width: 770px;
+    }
+  }
+
+  .input {
+    max-width: 240px;
+    margin-top: 13px;
+    margin-right: 15px;
+  }
+
+  .select {
+    max-width: 240px;
+    margin-top: 13px;
+    margin-right: 15px;
+
+    &.dateSelect {
+      max-width: 185px;
+      width: 185px;
+    }
+  }
+
   .calendarModal {
     right: 50%;
     transform: translateX(50%);
@@ -307,19 +325,8 @@
   .filterModal {
     padding: 26px 31px;
   }
+
   .form {
-    min-width: 950px;
-  }
-  .searchInput {
-    min-width: 280px;
-    margin-right: 22px;
-  }
-  .select {
-    max-width: 295px;
-    margin-right: 22px;
-  }
-  .dateSelect {
-    max-width: 225px;
-    width: 225px;
+    min-width: 1300px;
   }
 }

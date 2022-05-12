@@ -29,10 +29,10 @@ const twoStepVerif = createReducer(initialState.twoStepVerif, {
   [settingsActions.clearTwoStepVerif]: () => null,
 })
 
-const usersReducer = combineReducers({
+const settingsReducer = combineReducers({
   userEditInfo,
   userParamsInfo,
   twoStepVerif,
 })
 
-export default usersReducer
+export default settingsReducer

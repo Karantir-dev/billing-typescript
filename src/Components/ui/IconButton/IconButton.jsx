@@ -44,7 +44,7 @@ Component.propTypes = {
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
-  icon: PropTypes.oneOf(['calendar', 'csv', 'filter', 'archive']),
+  icon: PropTypes.oneOf(['calendar', 'csv', 'filter', 'archive', 'pdf']),
   className: PropTypes.string,
   dataTestid: PropTypes.string,
 }

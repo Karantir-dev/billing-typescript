@@ -74,6 +74,7 @@
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
+  background-color: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
   margin-bottom: 7px;
   cursor: pointer;
@@ -153,13 +154,9 @@
   .item {
     flex-direction: row;
     align-items: center;
-  }
-  .item_text {
-    font-size: 14px;
-  }
-  .item {
     padding: 23px 35px;
   }
+
   .tableHeader {
     display: flex;
     padding: 10px 35px;
@@ -190,7 +187,7 @@
   .item_text {
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 130%;
     max-width: 150px;
     color: var(--main-text);
@@ -222,9 +219,6 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .item_text {
-    font-size: 16px;
-  }
   .item {
     padding: 20px 40px;
   }
@@ -232,6 +226,7 @@
     padding: 11px 40px;
   }
   .item_text {
+    font-size: 16px;
     &.third_item {
       flex-direction: row;
     }
