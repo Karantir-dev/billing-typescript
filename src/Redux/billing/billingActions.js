@@ -14,6 +14,9 @@ const clearPaymentsCount = createAction('CLEAR_PAYMENTS_COUNT')
 const setExpensesList = createAction('SET_EXPENSES_LIST')
 const setExpensesCount = createAction('SET_EXPENSES_COUNT')
 
+const setExpensesFiltersLists = createAction('SET_EXPENSES_FILTERS_LISTS')
+const setExpensesFilters = createAction('SET_EXPENSES_FILTERS')
+
 const clearExpensesList = createAction('CLEAR_EXPENSES_LIST')
 const clearExpensesCount = createAction('CLEAR_EXPENSES_COUNT')
 
@@ -31,4 +34,7 @@ export default {
 
   setPaymentsFiltersLists,
   setPaymentsFilters,
+
+  setExpensesFiltersLists,
+  setExpensesFilters,
 }

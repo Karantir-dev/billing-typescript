@@ -1,23 +1,24 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '../../../utils'
-// import { useParams } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
-import { supportSelectors } from '../../../Redux'
+import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
-import {} from '../../../images'
+import { Cross } from '../../../images'
 
 export default function Component(props) {
   const { setFilterModal, setCurrentPage, filterModal } = props
   const { t } = useTranslation(['billing', 'other'])
-  // const dispatch = useDispatch()
-  // const params = useParams()
+  const dispatch = useDispatch()
 
-  const timeFilterList = useSelector(supportSelectors.getTimeFilterList)
+  const expensesFilterList = useSelector(billingSelectors.getExpensesFiltersList)
+  const expensesFilter = useSelector(billingSelectors.getExpensesFilters)
+
+  console.log(expensesFilter)
 
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
   const dropdownCalendar = useRef(null)
@@ -38,25 +39,23 @@ export default function Component(props) {
   const filterHandler = values => {
     setCurrentPage(1)
     setFilterModal(false)
-    console.log(values)
+    dispatch(billingOperations.setExpensesFilters(values))
   }
 
   const resetFilterHandler = setValues => {
     const clearField = {
       id: '',
-      number: '',
-      sender: '',
-      sender_id: '',
-      recipient: '',
-      paymethod: '',
-      status: '',
-      createdate: 'nodate',
-      createdatestart: '',
-      createdateend: '',
+      locale_name: '',
+      item: '',
+      compare_type: 'null',
+      amount: '',
+      fromdate: '',
+      todate: '',
     }
     setCurrentPage(1)
     setValues({ ...clearField })
     setFilterModal(false)
+    dispatch(billingOperations.setExpensesFilters(clearField))
   }
 
   return (
@@ -64,29 +63,29 @@ export default function Component(props) {
       <Formik
         enableReinitialize
         initialValues={{
-          id: '',
-          number: '',
-          sender: '',
-          sender_id: '',
-          recipient: '',
-          paymethod: '',
-          status: '',
-          createdate: 'nodate',
-          createdatestart: '',
-          createdateend: '',
-          restrictrefund: '',
+          id: expensesFilter?.id || '',
+          locale_name: expensesFilter?.locale_name || '',
+          item: expensesFilter?.item || '',
+          compare_type: expensesFilter?.compare_type || 'null',
+          amount: expensesFilter?.amount || '',
+          fromdate: expensesFilter?.fromdate || '',
+          todate: expensesFilter?.todate || '',
         }}
         onSubmit={filterHandler}
       >
         {({ setFieldValue, setValues, values, errors, touched }) => {
           let dates = null
-          if (values.message_poststart && values.message_postend) {
-            dates = [new Date(values.message_poststart), new Date(values.message_postend)]
-          } else if (values.message_poststart) {
-            dates = new Date(values.message_poststart)
+          if (values.fromdate && values.todate) {
+            dates = [new Date(values.fromdate), new Date(values.todate)]
+          } else if (values.fromdate) {
+            dates = new Date(values.fromdate)
           }
           return (
             <Form className={cn(s.form, s.expenses)}>
+              <div className={s.formHeader}>
+                <h2>{t('Filter', { ns: 'other' })}</h2>
+                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+              </div>
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
@@ -101,42 +100,42 @@ export default function Component(props) {
 
                 <InputField
                   inputWrapperClass={s.inputHeight}
-                  name="number"
-                  label={`${t('Payment number')}:`}
-                  placeholder={t('Enter payment number')}
+                  name="locale_name"
+                  label={`${t('Name')}:`}
+                  placeholder={t('Enter the title')}
                   isShadow
                   className={s.input}
-                  error={!!errors.number}
-                  touched={!!touched.number}
+                  error={!!errors.locale_name}
+                  touched={!!touched.locale_name}
                 />
 
                 <InputField
                   inputWrapperClass={s.inputHeight}
-                  name="sender"
-                  label={`${t('Payer')}:`}
-                  placeholder={t('Not selected')}
+                  name="item"
+                  label={`${t('Service code')}:`}
+                  placeholder={t('Enter code')}
                   isShadow
                   className={s.input}
-                  error={!!errors.sender}
-                  touched={!!touched.sender}
+                  error={!!errors.item}
+                  touched={!!touched.item}
                 />
 
                 <Select
-                  label={`${t('status', { ns: 'other' })}:`}
+                  label={`${t('Sum comparison type')}:`}
                   placeholder={t('Not selected')}
-                  value={values.message_post}
-                  getElement={item => setFieldValue('status', item)}
+                  value={values.compare_type}
+                  getElement={item => setFieldValue('compare_type', item)}
                   isShadow
-                  itemsList={timeFilterList.map(({ label, value }) => ({
-                    label: t(`${label.trim()}`, { ns: 'other' }),
-                    value,
+                  itemsList={expensesFilterList?.compare_type?.map(({ $key, $ }) => ({
+                    label: t(`${$.trim()}`),
+                    value: $key,
                   }))}
                   className={s.select}
                 />
 
                 <InputField
                   inputWrapperClass={s.inputHeight}
-                  name="sum"
+                  name="amount"
                   label={`${t('Sum', { ns: 'other' })}:`}
                   placeholder={t('Not selected')}
                   isShadow
@@ -146,17 +145,6 @@ export default function Component(props) {
                 />
 
                 <div className={s.timeSelectBlock}>
-                  <Select
-                    label={`${t('Period', { ns: 'other' })}:`}
-                    value={values.message_post}
-                    getElement={item => setFieldValue('message_post', item)}
-                    isShadow
-                    itemsList={timeFilterList.map(({ label, value }) => ({
-                      label: t(`${label.trim()}`, { ns: 'other' }),
-                      value,
-                    }))}
-                    className={cn(s.select, s.dateSelect)}
-                  />
                   <div className={s.calendarBlock}>
                     <IconButton
                       onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
@@ -165,17 +153,18 @@ export default function Component(props) {
                     />
                     <div
                       ref={dropdownCalendar}
-                      className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
+                      className={cn(s.calendarModal, s.expenses, {
+                        [s.opened]: isOpenedCalendar,
+                      })}
                     >
                       <CalendarModal
                         pointerClassName={s.calendar_pointer}
                         value={dates}
                         setStartDate={item => {
-                          setFieldValue('message_poststart', item)
-                          setFieldValue('message_post', 'other')
+                          setFieldValue('fromdate', item)
                         }}
-                        setEndDate={item => setFieldValue('message_postend', item)}
-                        range={values?.message_poststart?.length !== 0}
+                        setEndDate={item => setFieldValue('todate', item)}
+                        range={values?.fromdate?.length !== 0}
                       />
                     </div>
                   </div>

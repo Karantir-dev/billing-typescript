@@ -77,6 +77,7 @@ const getPaymentsFilters = () => (dispatch, getState) => {
         recipient: data.doc?.recipient?.$ || '',
         createdatestart: data.doc?.createdatestart?.$ || '',
         createdateend: data.doc?.createdateend?.$ || '',
+        saamount_from: data.doc?.saamount_from?.$ || '',
       }
 
       dispatch(billingActions.setPaymentsFilters(currentFilters))
@@ -267,7 +268,84 @@ const getExpenses =
 
         dispatch(billingActions.setExpensesList(elem))
         dispatch(billingActions.setExpensesCount(count))
+        dispatch(getExpensesFilters())
+      })
+      .catch(error => {
+        console.log('error', error)
         dispatch(actions.hideLoader())
+      })
+  }
+
+const getExpensesFilters = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'expense.filter',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      let filters = {}
+
+      data?.doc?.slist?.forEach(el => {
+        filters[el.$name] = el.val
+      })
+
+      let currentFilters = {
+        id: data.doc?.id?.$ || '',
+        locale_name: data.doc?.locale_name?.$ || '',
+        item: data.doc?.item?.$ || '',
+        compare_type: data.doc?.compare_type?.$ || '',
+        amount: data.doc?.amount?.$ || '',
+        fromdate: data.doc?.fromdate?.$ || '',
+        todate: data.doc?.todate?.$ || '',
+      }
+
+      console.log(data.doc)
+      dispatch(billingActions.setExpensesFilters(currentFilters))
+      dispatch(billingActions.setExpensesFiltersLists(filters))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const setExpensesFilters =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'expense.filter',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(getExpenses(body))
       })
       .catch(error => {
         console.log('error', error)
@@ -319,4 +397,5 @@ export default {
 
   getExpenses,
   getExpensesCsv,
+  setExpensesFilters,
 }

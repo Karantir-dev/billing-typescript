@@ -30,5 +30,13 @@
   "Suspect": "Suspect",
   "Forbidden": "Forbidden",
   "Allowed": "Allowed",
-  "-- none --": "Not chosen"
+  "-- none --": "Not chosen",
+  "Service code": "Service code",
+  "Name": "Name",
+  "Sum comparison type": "Sum comparison type",
+  "Enter code": "Enter code",
+  "Enter the title": "Enter the title",
+  "Less than or equal": "Less than or equal",
+  "Equal": "Equal",
+  "Greater than or equals": "Greater than or equals"
 }

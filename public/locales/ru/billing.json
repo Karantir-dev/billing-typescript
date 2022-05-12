@@ -17,7 +17,7 @@
   "Payment number": "Номер платежа",
   "Enter payment number": "Введите номер платежа",
   "Payer": "Плательщик",
-  "Not selected": "Не установлен",
+  "Not selected": "Не установлено",
   "Recipient": "Получатель",
   "Payer codes": "Коды плательщиков",
   "Enter codes": "Введите коды",
@@ -30,5 +30,13 @@
   "Suspect": "Предложение",
   "Forbidden": "Запрещен",
   "Allowed": "Разрешен",
-  "-- none --": "Не выбрано"
+  "-- none --": "Не выбрано",
+  "Service code": "Код услуги",
+  "Name": "Название",
+  "Sum comparison type": "Тип сравнения суммы",
+  "Enter code": "Введите код",
+  "Enter the title": "Введите название",
+  "Less than or equal": "Меньше или равно",
+  "Equal": "Равный",
+  "Greater than or equals": "Больше или равно"
 }

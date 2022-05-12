@@ -12,8 +12,6 @@ export default function Component() {
   const expensesList = useSelector(billingSelectors.getExpensesList)
   const expensesCount = useSelector(billingSelectors.getExpensesCount)
 
-  console.log(expensesList, expensesCount)
-
   useEffect(() => {
     dispatch(billingOperations.getExpenses())
   }, [])

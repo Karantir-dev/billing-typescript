@@ -39,6 +39,9 @@ export default function Component(props) {
   const filterHandler = values => {
     setCurrentPage(1)
     setFilterModal(false)
+
+    values.saamount_from = values.sum
+    values.saamount_to = values.sum
     dispatch(billingOperations.setPaymentsFilters(values))
   }
 
@@ -54,6 +57,8 @@ export default function Component(props) {
       createdate: 'nodate',
       createdatestart: '',
       createdateend: '',
+      saamount_from: '',
+      saamount_to: '',
     }
     setCurrentPage(1)
     setValues({ ...clearField })
@@ -77,6 +82,7 @@ export default function Component(props) {
           createdatestart: paymentsFilter?.createdatestart || '',
           createdateend: paymentsFilter?.createdateend || '',
           restrictrefund: paymentsFilter?.restrictrefund || '',
+          sum: paymentsFilter?.saamount_from || '',
         }}
         onSubmit={filterHandler}
       >
@@ -171,8 +177,8 @@ export default function Component(props) {
                   placeholder={t('Not selected')}
                   isShadow
                   className={s.input}
-                  error={!!errors.email}
-                  touched={!!touched.email}
+                  error={!!errors.sum}
+                  touched={!!touched.sum}
                 />
 
                 <Select
