@@ -45,7 +45,6 @@
 }
 
 .item {
-  user-select: none;
   flex-direction: column;
   padding: 15px 17px;
   width: 100%;
@@ -250,6 +249,8 @@
 
   .dotIcons {
     display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     fill: var(--main-text);
     &:active {

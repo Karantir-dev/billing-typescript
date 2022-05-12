@@ -66,7 +66,10 @@ export default function Component(props) {
   const renderDesktopLastColumn = () => {
     return (
       <div className={cn(s.item_text, s.eighth_item)}>
-        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+        <MoreDots
+          onClick={() => setIsOpened(!isOpened)}
+          className={s.dotIcons}
+        />
 
         <div
           role="button"
