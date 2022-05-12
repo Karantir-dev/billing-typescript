@@ -1,3 +1,5 @@
+@import '../../../scss/mixin.scss';
+
 .table {
   margin-top: 20px;
   display: flex;
@@ -92,10 +94,8 @@
 
   &.second_item {
     max-width: 130px;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+
+    @include truncate-text(2);
     white-space: break-spaces;
   }
 }
@@ -167,10 +167,7 @@
     &.second_item {
       max-width: 130px;
       //   max-height: 40px;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      @include truncate-text(2);
       white-space: break-spaces;
     }
 
@@ -202,10 +199,7 @@
 
     &.second_item {
       max-width: 297px;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
+      @include truncate-text(1);
       white-space: break-spaces;
     }
 
