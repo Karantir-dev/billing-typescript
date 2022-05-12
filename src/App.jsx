@@ -37,10 +37,6 @@ export default function App() {
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route
-              path={route.HOME}
-              element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
-            />
-            <Route
               path={route.LOGIN}
               element={
                 <PublicRoute
@@ -125,7 +121,6 @@ export default function App() {
                   />
                 }
               />
-
               <Route
                 path={route.TRUSTED_USERS}
                 element={

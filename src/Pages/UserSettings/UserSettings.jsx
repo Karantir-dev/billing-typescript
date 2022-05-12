@@ -23,8 +23,10 @@ export default function Component() {
 
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'customer',
     'usrparam',
   )
+  console.log('component in user settings')
 
   const tavBarSections = [
     { route: `${route.USER_SETTINGS}/personal`, label: t('Personal settings') },

@@ -18,6 +18,7 @@ export default function MainPage() {
 
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'stat',
     'authlog',
   )
 

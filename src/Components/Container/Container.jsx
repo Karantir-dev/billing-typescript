@@ -8,9 +8,9 @@ import s from './Container.module.scss'
 import {
   authSelectors,
   userOperations,
-  userSelectors,
-  usersOperations,
-  usersSelectors,
+  // userSelectors,
+  // usersOperations,
+  // usersSelectors,
 } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -21,18 +21,9 @@ export default function Component({ children }) {
 
   const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
-  const { $id } = useSelector(userSelectors.getUserInfo)
-  const rights = useSelector(usersSelectors.getRights)
 
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
-  }, [])
-
-  useEffect(() => {
-    if ($id) {
-      dispatch(usersOperations.getRights($id))
-      console.log('rights', rights)
-    }
   }, [])
 
   //cannot modify rights for itself//

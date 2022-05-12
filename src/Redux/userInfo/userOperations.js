@@ -5,26 +5,21 @@ import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 
 const userInfo = (data, dispatch) => {
-  console.log('curr userInfo ajax')
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
   dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
 }
 
 const userTickets = (data, dispatch) => {
-  console.log('curr tickets ajax')
   const { elem } = data.doc
   dispatch(userActions.setTickets(elem))
 }
 
 const userNotifications = (data, dispatch) => {
-  console.log('curr notifications ajax')
-
   const { bitem } = data.doc.notify.item[0]
   dispatch(userActions.setItems({ bitem }))
 }
 
 const currentSessionRights = (data, dispatch) => {
-  console.log('curr rights ajax')
   const { node } = data.doc.mainmenu
 
   dispatch(userActions.setCurrentSessionRihgts(node))
@@ -74,19 +69,16 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
   ])
     .then(responses => {
       responses.forEach(({ data }, i) => {
-        console.log(data)
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(i)
         funcsArray[i](data, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
-      console.log('before handle loader')
-      setLoading(false)
+      setLoading && setLoading(false)
     })
     .catch(err => {
       dispatch(userActions.hideUserInfoLoading())
-      setLoading(false)
+      setLoading && setLoading(false)
       console.log('getUserInfo - ', err.message)
     })
 }

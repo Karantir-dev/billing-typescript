@@ -21,6 +21,7 @@ export default function TrustedUsers() {
 
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'customer',
     'user',
   )
 
@@ -65,8 +66,6 @@ export default function TrustedUsers() {
   }
 
   const users = useSelector(usersSelectors.getUsers)
-
-  console.log(users)
 
   const handleSubmit = values => {
     const { email, name, phone, password } = values

@@ -21,23 +21,45 @@ export default function Header() {
 
   const isEnvelopeAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'support',
+    'clientticket',
+  )
+
+  const isBellAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'support',
     'notification',
   )
+
   const isTrustedUsersAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'customer',
     'user',
+  )
+
+  const areUserSettingsAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'customer',
+    'usrparam',
   )
 
   const isAuthLogAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'stat',
     'authlog',
+  )
+
+  const arePayersAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'customer',
+    'profile',
   )
 
   const profileMenuList = [
     {
       name: t('profile.user_settings'),
       routeName: routes.USER_SETTINGS,
-      allowedToRender: true,
+      allowedToRender: areUserSettingsAllowedToRender,
     },
     {
       name: t('profile.trusted_users'),
@@ -52,7 +74,7 @@ export default function Header() {
     {
       name: t('profile.payers'),
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: arePayersAllowedToRender,
     },
     {
       name: t('profile.contracts'),
@@ -165,24 +187,28 @@ export default function Header() {
                   </li>
                 )}
 
-                <li
-                  className={cn({
-                    [s.item]: true,
-                    [s.item_bell]: true,
-                    [s.notification_messages]: mesAmount > 0,
-                  })}
-                >
-                  <button onClick={handleBellClick}>
-                    <Bell
-                      svgheight="22"
-                      svgwidth="18"
-                      className={cn({ [s.icon]: true, [s.bell]: true })}
-                    />
-                    {mesAmount > 0 && (
-                      <span className={s.notification_messages_counter}>{mesAmount}</span>
-                    )}
-                  </button>
-                </li>
+                {isBellAllowedToRender && (
+                  <li
+                    className={cn({
+                      [s.item]: true,
+                      [s.item_bell]: true,
+                      [s.notification_messages]: mesAmount > 0,
+                    })}
+                  >
+                    <button onClick={handleBellClick}>
+                      <Bell
+                        svgheight="22"
+                        svgwidth="18"
+                        className={cn({ [s.icon]: true, [s.bell]: true })}
+                      />
+                      {mesAmount > 0 && (
+                        <span className={s.notification_messages_counter}>
+                          {mesAmount}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                )}
 
                 <li className={cn({ [s.item]: true, [s.profile_item]: true })}>
                   <button

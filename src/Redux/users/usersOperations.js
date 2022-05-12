@@ -23,7 +23,6 @@ const getUsers = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { elem } = data.doc
-      console.log('users from test 11.05', data.doc)
 
       dispatch(usersActions.setUsers(elem))
       dispatch(actions.hideLoader())
@@ -293,36 +292,35 @@ const manageUserRight =
       })
   }
 
-// const currentSessionRights = () => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+const getAvailableRights = (funcName, setRights) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'menu',
-//         out: 'json',
-//         auth: sessionId,
-//         sok: 'ok',
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: funcName,
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//       const { node } = data.doc.mainmenu
-//       // console.log('log, rights for current page =', node)
-//       dispatch(usersActions.setCurrentSessionRihgts(node))
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+      const { metadata } = data.doc
+
+      setRights(metadata)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
 
 export default {
   getUsers,
@@ -334,5 +332,6 @@ export default {
   getRights,
   getSubRights,
   manageUserRight,
+  getAvailableRights,
   // currentSessionRights,
 }

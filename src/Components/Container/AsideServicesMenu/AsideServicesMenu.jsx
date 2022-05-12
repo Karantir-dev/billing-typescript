@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectors, actions, userSelectors } from '../../../Redux'
 import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
 import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
+// import checkIfSubComponentShouldRender from '../../../checkIfComponentShouldRender'
 import * as routes from '../../../routes'
 
 import s from './AsideServicesMenu.module.scss'
@@ -20,11 +21,22 @@ const AsideServicesMenu = () => {
 
   const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'customer',
     'affiliate.client',
   )
+
   const isSupportAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
-    'clientticket',
+    'support',
+  )
+  const areServicesAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'mainmenuservice',
+  )
+
+  const isFinanceAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'finance',
   )
 
   const dispatch = useDispatch()
@@ -53,26 +65,33 @@ const AsideServicesMenu = () => {
             className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
           />
         </div>
-        <li className={s.item}>
-          <NavLink
-            to={routes.HOME}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Box className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
-          </NavLink>
-        </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.RESET_PASSWORD}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Wallet className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>}
-          </NavLink>
-        </li>
+        {areServicesAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.HOME}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Box className={s.img} />
+              {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
+            </NavLink>
+          </li>
+        )}
+
+        {isFinanceAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.RESET_PASSWORD}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Wallet className={s.img} />
+              {pinnedStatus && (
+                <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>
+              )}
+            </NavLink>
+          </li>
+        )}
 
         {isAffiliateProgramAllowedToRender && (
           <li className={s.item}>
@@ -88,7 +107,6 @@ const AsideServicesMenu = () => {
             </NavLink>
           </li>
         )}
-
         {isSupportAllowedToRender && (
           <li className={s.item}>
             <NavLink

@@ -21,12 +21,19 @@ export default function Component() {
 
   const isComponentAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
-    'clientticket',
+    'support',
   )
 
   const isArchiveAllowedToRender = checkIfComponentShouldRender(
     currentSessionRights,
+    'support',
     'clientticket_archive',
+  )
+
+  const isRequestsAllowedToRender = checkIfComponentShouldRender(
+    currentSessionRights,
+    'support',
+    'clientticket',
   )
 
   const tostId = useRef(null)
@@ -35,12 +42,12 @@ export default function Component() {
     {
       route: `${route.SUPPORT}/requests`,
       label: t('requests'),
-      allowToRender: isComponentAllowedToRender,
+      allowToRender: isComponentAllowedToRender && isRequestsAllowedToRender,
     },
     {
       route: `${route.SUPPORT}/requests_archive`,
       label: t('request_archive'),
-      allowToRender: isArchiveAllowedToRender,
+      allowToRender: isComponentAllowedToRender && isArchiveAllowedToRender,
     },
   ]
 
