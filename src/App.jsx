@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
-import dayjs from 'dayjs'
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import {
@@ -14,6 +13,7 @@ import {
   Portal,
   Container,
   TrustedUsers,
+  EmailConfirmation,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -25,8 +25,8 @@ import {
   SupportPage,
   OpenedTicker,
   UserSettings,
+  BillingPage,
 } from './Pages'
-import { useTranslation } from 'react-i18next'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -100,6 +100,12 @@ export default function App() {
                 }
               />
               <Route
+                path={`${route.BILLING}/*`}
+                element={
+                  <PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />
+                }
+              />
+              <Route
                 path={`${route.USER_SETTINGS}`}
                 element={
                   <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
@@ -127,6 +133,15 @@ export default function App() {
                   <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
                 }
               />
+              <Route
+                path={route.CONFIRM_EMAIL}
+                element={
+                  <PrivateRoute
+                    children={<EmailConfirmation />}
+                    redirectTo={route.LOGIN}
+                  />
+                }
+              />
             </Routes>
           </Container>
         </Suspense>
@@ -141,8 +156,7 @@ export default function App() {
 
 const SupportScreen = () => {
   const location = useLocation()
-  const { i18n } = useTranslation()
-  dayjs.locale(i18n.language)
+
   if (location.pathname === route.SUPPORT) {
     return <Navigate to={`${route.SUPPORT}/requests`} />
   }
@@ -156,6 +170,27 @@ const SupportScreen = () => {
       <Route
         path=":path/:id"
         element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+      />
+    </Routes>
+  )
+}
+
+const BillingScreen = () => {
+  const location = useLocation()
+
+  if (location.pathname === route.BILLING) {
+    return <Navigate to={`${route.BILLING}/payments`} />
+  }
+
+  return (
+    <Routes>
+      <Route
+        path=":path/*"
+        element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
+      />
+      <Route
+        path=":path/:id"
+        element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
       />
     </Routes>
   )

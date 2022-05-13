@@ -1,7 +1,7 @@
 .icon {
   fill: var(--icon-color);
   cursor: pointer;
-  transform: scale(1.8);
+  transform: scale(1);
   background-color: var(--main-bgc);
 }
 
@@ -202,6 +202,7 @@
   line-height: 130.5%;
   text-decoration-line: underline;
   color: var(--link-text);
+  cursor: pointer;
 }
 
 .img {

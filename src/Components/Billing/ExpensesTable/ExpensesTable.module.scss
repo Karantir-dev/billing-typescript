@@ -1,0 +1,259 @@
+@import '../../../scss/mixin.scss';
+
+.table {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tableHeader {
+  display: none;
+  padding: 20px 23px;
+  width: 100%;
+}
+
+.title_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--menu-text-3);
+  align-items: center;
+  margin-right: 20px;
+  &.first_item {
+    flex-basis: 9.2%;
+  }
+  &.second_item {
+    flex-basis: 33.9%;
+  }
+  &.third_item {
+    flex-basis: 12%;
+  }
+  &.fourth_item {
+    flex-basis: 10.5%;
+  }
+  &.fifth_item {
+    flex-basis: 22.6%;
+  }
+  &.sixth_item {
+    flex-basis: 11.5%;
+  }
+}
+
+.item {
+  flex-direction: column;
+  padding: 20px 23px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+  margin-bottom: 7px;
+  position: relative;
+}
+
+.tableBlockFirst,
+.tableBlockSecond,
+.tableBlockThird,
+.tableBlockFourth,
+.tableBlockFifth,
+.tableBlockSixth,
+.tableBlockSeventh,
+.tableBlockEighth {
+  flex-direction: row;
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  align-items: baseline;
+}
+
+.item_title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+  margin-bottom: 10px;
+  flex-basis: 35%;
+  min-width: 35%;
+  margin-right: 20px;
+}
+
+.item_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+
+  &.second_item {
+    max-width: 130px;
+
+    @include truncate-text(2);
+    white-space: break-spaces;
+  }
+}
+
+.dotIcons {
+  display: none;
+}
+
+.list {
+  position: absolute;
+  width: 210px;
+  background-color: var(--forms_bgc_4);
+  top: calc(50% + 20px);
+  right: 23px;
+  padding: 18px 18px;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 5px;
+  display: none;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--forms_bgc_4);
+    transform: rotate(45deg);
+    top: -7px;
+    right: 27px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .item {
+    flex-basis: 48%;
+    margin-right: 0;
+
+    &:nth-child(2n) {
+      margin-right: 15px;
+    }
+  }
+
+  .item_text {
+    font-size: 16px;
+
+    &.fifth_item {
+      max-width: 220px;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .item {
+    flex-basis: 30%;
+
+    &:not(:nth-child(1)) {
+      margin-right: 15px;
+    }
+  }
+
+  .item_text {
+    font-size: 16px;
+
+    &.second_item {
+      max-width: 130px;
+      //   max-height: 40px;
+      @include truncate-text(2);
+      white-space: break-spaces;
+    }
+
+    &.fifth_item {
+      max-width: 220px;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .table {
+    margin-top: 20px;
+    display: block;
+  }
+
+  .tableHeader {
+    display: flex;
+    padding: 22px 27px;
+  }
+
+  .item {
+    padding: 22px 27px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .item_text {
+    font-size: 16px;
+
+    &.second_item {
+      max-width: 297px;
+      @include truncate-text(1);
+      white-space: break-spaces;
+    }
+
+    &.fifth_item {
+      max-width: 220px;
+    }
+  }
+
+  .tableBlockFirst,
+  .tableBlockSecond,
+  .tableBlockThird,
+  .tableBlockFourth,
+  .tableBlockFifth,
+  .tableBlockSixth,
+  .tableBlockSeventh,
+  .tableBlockEighth {
+    margin-top: 0px;
+    margin-right: 20px;
+  }
+
+  .tableBlockFirst {
+    flex-basis: 9.2%;
+  }
+
+  .tableBlockSecond {
+    flex-basis: 33.9%;
+  }
+
+  .tableBlockThird {
+    flex-basis: 12%;
+  }
+
+  .tableBlockFourth {
+    flex-basis: 10.5%;
+  }
+
+  .tableBlockFifth {
+    flex-basis: 22.6%;
+  }
+
+  .tableBlockSixth {
+    flex-basis: 11.5%;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .tableHeader {
+    padding: 22px 27px;
+  }
+
+  .item_text {
+    font-size: 17px;
+
+    &.second_item {
+      max-width: 350px;
+    }
+  }
+}

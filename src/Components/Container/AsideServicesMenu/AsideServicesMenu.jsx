@@ -81,7 +81,7 @@ const AsideServicesMenu = () => {
         {isFinanceAllowedToRender && (
           <li className={s.item}>
             <NavLink
-              to={routes.RESET_PASSWORD}
+              to={routes.BILLING}
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >

@@ -11,4 +11,6 @@ export const AFFILIATE_PROGRAM = '/affiliate'
 export const AFFILIATE_PROGRAM_ABOUT = 'about'
 export const AFFILIATE_PROGRAM_INCOME = 'income'
 export const AFFILIATE_PROGRAM_STATISTICS = 'statistics'
-export const INSUFFICIENT_RIGHTS = '/insufficient_rights'
+export const BILLING = '/billing'
+
+export const CONFIRM_EMAIL = '/confrim_email'

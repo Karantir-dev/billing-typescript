@@ -5,6 +5,7 @@ import settingsActions from './settingsActions'
 const initialState = {
   userEditInfo: null,
   userParamsInfo: null,
+  twoStepVerif: null,
 }
 
 const userEditInfo = createReducer(initialState.userEditInfo, {
@@ -21,9 +22,17 @@ const userParamsInfo = createReducer(initialState.userParamsInfo, {
     (state = { ...current(state), email_confirmed_status: payload }),
 })
 
-const usersReducer = combineReducers({
-  userEditInfo,
-  userParamsInfo,
+const twoStepVerif = createReducer(initialState.twoStepVerif, {
+  [settingsActions.setTwoStepVerif]: (_, { payload }) => payload,
+  [settingsActions.updateTwoStepVerif]: (state, { payload }) =>
+    (state = { ...current(state), qrimage: payload }),
+  [settingsActions.clearTwoStepVerif]: () => null,
 })
 
-export default usersReducer
+const settingsReducer = combineReducers({
+  userEditInfo,
+  userParamsInfo,
+  twoStepVerif,
+})
+
+export default settingsReducer

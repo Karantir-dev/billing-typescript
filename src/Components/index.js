@@ -62,3 +62,11 @@ export { default as CreateTicketModal } from './Support/CreateTicketModal/Create
 export { default as ModalPickPhoto } from './Settings/ModalPickPhoto/ModalPickPhoto'
 export { default as ToggleBlock } from './Settings/ToggleBlock/ToggleBlock'
 export { default as SocialButton } from './Settings/SocialButton/SocialButton'
+export { default as ModalTwoStepVerification } from './Settings/ModalTwoStepVerification/ModalTwoStepVerification'
+export { default as EmailConfirmation } from './Settings/EmailConfirmation/EmailConfirmation'
+
+//==========================================BILLING==========================================//
+export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
+export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
+
+export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'

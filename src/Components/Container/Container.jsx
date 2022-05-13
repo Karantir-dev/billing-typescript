@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import AsideServicesMenu from './AsideServicesMenu/AsideServicesMenu'
 import Header from './Header/Header'
-import i18next from 'i18next'
 import dayjs from 'dayjs'
 
 import s from './Container.module.scss'
-import {
-  authSelectors,
-  userOperations,
-  // userSelectors,
-  // usersOperations,
-  // usersSelectors,
-} from '../../Redux'
+import { authSelectors, userOperations } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 export default function Component({ children }) {
-  dayjs.locale(i18next.language)
+  const { i18n } = useTranslation()
+
+  dayjs.locale(i18n.language)
 
   const [loading, setLoading] = useState(true)
 
