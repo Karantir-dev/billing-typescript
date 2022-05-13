@@ -20,27 +20,24 @@ export default function ManageUserForm({
   email,
   userName,
   isUserFormActive,
+  isEditUserAllowedToChange,
 }) {
   const { t } = useTranslation('trusted_users')
 
   const validationSchema =
     formName === 'settings'
       ? Yup.object().shape({
-          name: Yup.string()
-            .matches(
-              /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
-              t('trusted_users.form_errors.full_name'),
-            )
-            .required(t('trusted_users.form_warnings.full_name')),
+          name: Yup.string().matches(
+            /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+            t('trusted_users.form_errors.full_name'),
+          ),
           phone: Yup.string()
             .matches(
               /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
               t('trusted_users.form_errors.phone'),
             )
             .min(7, t('trusted_users.form_errors.phone')),
-          email: Yup.string()
-            .email(t('trusted_users.form_errors.email'))
-            .required(t('trusted_users.form_warnings.email')),
+          email: Yup.string().email(t('trusted_users.form_errors.email')),
           password: Yup.string()
             .min(6, t('trusted_users.form_errors.password'))
             .max(48, t('trusted_users.form_errors.password_toolong'))
@@ -200,12 +197,19 @@ export default function ManageUserForm({
                     isShadow={true}
                     background={true}
                   />
+
                   <Button
                     dataTestid="btn_form_submit"
                     size="large"
-                    className={classNames({ [s.submit_btn]: true, [s.btn]: true })}
+                    className={classNames({
+                      [s.submit_btn]: true,
+                      [s.btn]: true,
+                      [s.shown]:
+                        formName === 'settings' ? isEditUserAllowedToChange : true,
+                    })}
                     label={t('trusted_users.form.submit_btn').toUpperCase()}
                     type="submit"
+                    disabled={!isEditUserAllowedToChange}
                   />
                 </Form>
               )
@@ -234,4 +238,5 @@ ManageUserForm.propTypes = {
   email: PropTypes.string,
   isUserFormActive: PropTypes.bool,
   formName: PropTypes.string,
+  isEditUserAllowedToChange: PropTypes.bool,
 }

@@ -17,6 +17,9 @@ export default function ToggleButton({
   isOwner,
   hasAlert,
   size,
+  disabled,
+  // isTurnOnUserAllowed,
+  // isTurnOffUserAllowed,
 }) {
   const { t } = useTranslation('trusted_users')
 
@@ -51,12 +54,12 @@ export default function ToggleButton({
   return (
     <>
       <button
-        disabled={isOwner}
+        disabled={isOwner || disabled}
         className={cn({
           [s.btn]: true,
           [s.small_btn]: size === 'small',
           [s.active]: isToggled,
-          [s.owner]: isOwner,
+          [s.owner]: isOwner || disabled,
         })}
         type="button"
         onClick={hasAlert ? handleAlert : handleBtnNoAlert}
@@ -139,4 +142,11 @@ ToggleButton.propTypes = {
   email: PropTypes.string,
   handleAlert: PropTypes.func,
   hasAlert: PropTypes.bool,
+  isTurnOnUserAllowed: PropTypes.bool,
+  isTurnOffUserAllowed: PropTypes.bool,
+}
+
+ToggleButton.defaultProps = {
+  isTurnOnUserAllowed: false,
+  isTurnOffUserAllowed: false,
 }

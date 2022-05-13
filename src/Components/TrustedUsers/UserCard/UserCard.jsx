@@ -22,14 +22,66 @@ export default function UserCard({
   userId,
   handleUserRolesData,
   isOwner,
+  hasPageOwnerFullAccess,
 }) {
   const { t } = useTranslation('trusted_users')
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
+
+  // const {$id} = useSelector(userSelectors.getUserInfo)
+  // console.log(allSelectors)
 
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)
   const [showRightsAlert, setShowRightsAlert] = useState(false)
+
+  const [availableRights, setAvailabelRights] = useState({})
+  const [availableEditRights, setAvailableEditRights] = useState([])
+  const [rightsToRender, setRightsToRender] = useState([])
+
+  const checkIfHasArr = availableRights?.toolbar?.toolgrp
+
+  const isTurnOnUserAllowed = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'resume')
+    : false
+  const isTurnOffUserAllowed = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'suspend')
+    : false
+  const isDeleteUserAllowedToRender = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'delete')
+    : false
+
+  const isEditUserAllowed = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'edit')
+    : false
+
+  const isEditUserAllowedToChange = availableEditRights?.form?.buttons?.button?.some(
+    button => button.$name === 'ok',
+  )
+
+  const hasAccessToResumeRights = rightsToRender?.toolbar?.toolgrp
+    ?.find(el => {
+      return el.$name === 'resume'
+    })
+    ?.toolbtn?.some(func => {
+      return func.$name === 'resume'
+    })
+
+  const hasAccessToSuspendRights = rightsToRender?.toolbar?.toolgrp
+    ?.find(el => {
+      return el.$name === 'resume'
+    })
+    ?.toolbtn?.some(func => {
+      return func.$name === 'suspend'
+    })
+
+  const hasAccessToSuspendRightsOnly = rightsToRender?.toolbar?.toolgrp?.some(el => {
+    return el.$name === 'suspend'
+  })
+
+  const isRightsComponentAllowedToRender = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp?.some(el => el?.$name === 'rights')
+    : false
 
   const rightsList = useSelector(usersSelectors.getRights)
   const listWithoutProfile = rightsList.filter(item => item.name.$ !== 'clientoption')
@@ -73,10 +125,26 @@ export default function UserCard({
   }
 
   useEffect(() => {
-    if (!isOwner) {
+    if (!isOwner && !hasAccess) {
       dispatch(usersOperations.getRights(userId, isOwner))
     }
   }, [showRightsAlert])
+
+  useEffect(() => {
+    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))
+  }, [])
+
+  useEffect(() => {
+    if (isEditUserAllowed) {
+      dispatch(usersOperations.getAvailableRights('user.edit', setAvailableEditRights))
+    }
+  }, [isEditUserAllowed])
+
+  useEffect(() => {
+    if (!isOwner && !hasAccess) {
+      dispatch(usersOperations.getRights(userId, isOwner, setRightsToRender))
+    }
+  }, [isRightsComponentAllowedToRender])
 
   return (
     <>
@@ -98,6 +166,7 @@ export default function UserCard({
                   ? t('trusted_users.user_cards.yes')
                   : t('trusted_users.user_cards.no')}
               </p>
+
               <ToggleButton
                 toggleName="access"
                 func={handleAccessClick}
@@ -107,6 +176,7 @@ export default function UserCard({
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
                 hasAlert={true}
+                disabled={!hasPageOwnerFullAccess}
               />
 
               {hasAccess && !isOwner && (
@@ -152,6 +222,10 @@ export default function UserCard({
                 handleAlert={handleStatusAlert}
                 isOwner={isOwner}
                 hasAlert={true}
+                disabled={
+                  (!isTurnOnUserAllowed && status === 'off') ||
+                  (!isTurnOffUserAllowed && status === 'on')
+                }
               />
             </div>
           </div>
@@ -167,6 +241,10 @@ export default function UserCard({
             email={email}
             handleRightsAlert={handleRightsAlert}
             hasAccess={hasAccess}
+            isDeleteUserAllowedToRender={isDeleteUserAllowedToRender}
+            isEditUserAllowedToChange={isEditUserAllowedToChange}
+            isEditUserAllowed={isEditUserAllowed}
+            isRightsComponentAllowedToRender={isRightsComponentAllowedToRender}
           />
         </div>
       )}
@@ -191,6 +269,7 @@ export default function UserCard({
                 handleAlert={handleAccessAlert}
                 isOwner={isOwner}
                 hasAlert={true}
+                disabled={!hasPageOwnerFullAccess}
               />
 
               {hasAccess && !isOwner && (
@@ -230,6 +309,10 @@ export default function UserCard({
                 isOwner={isOwner}
                 hasAlert={true}
                 handleRightsAlert={handleRightsAlert}
+                disabled={
+                  (!isTurnOnUserAllowed && status === 'off') ||
+                  (!isTurnOffUserAllowed && status === 'on')
+                }
               />
             </div>
 
@@ -244,6 +327,10 @@ export default function UserCard({
               rightsList={rightsList}
               email={email}
               hasAccess={hasAccess}
+              isDeleteUserAllowedToRender={isDeleteUserAllowedToRender}
+              isEditUserAllowedToChange={isEditUserAllowedToChange}
+              isEditUserAllowed={isEditUserAllowed}
+              isRightsComponentAllowedToRender={isRightsComponentAllowedToRender}
             />
           </div>
         </div>
@@ -259,9 +346,23 @@ export default function UserCard({
               ? t('trusted_users.rights_alert.title_short')
               : t('trusted_users.rights_alert.title_long')
           }
-          list1={<AccessRights items={listWithoutProfile.slice(0, 20)} userId={userId} />}
+          list1={
+            <AccessRights
+              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
+              hasAccessToSuspendRights={hasAccessToSuspendRights}
+              hasAccessToResumeRights={hasAccessToResumeRights}
+              items={listWithoutProfile.slice(0, 20)}
+              userId={userId}
+            />
+          }
           list2={
-            <AccessRights items={listWithoutProfile.slice(20, 38)} userId={userId} />
+            <AccessRights
+              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
+              hasAccessToSuspendRights={hasAccessToSuspendRights}
+              hasAccessToResumeRights={hasAccessToResumeRights}
+              items={listWithoutProfile.slice(20, 38)}
+              userId={userId}
+            />
           }
         />
       )}
@@ -277,4 +378,5 @@ UserCard.propTypes = {
   userId: PropTypes.string,
   handleUserRolesData: PropTypes.func,
   isOwner: PropTypes.bool,
+  hasPageOwnerFullAccess: PropTypes.bool,
 }

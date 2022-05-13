@@ -24,6 +24,10 @@ export default function ControlBtn({
   handleRightsAlert,
   email,
   hasAccess,
+  isDeleteUserAllowedToRender,
+  isEditUserAllowedToChange,
+  isEditUserAllowed,
+  isRightsComponentAllowedToRender,
 }) {
   const { t } = useTranslation('trusted_users')
   const [showRemoveAlert, setShowRemoveAlert] = useState(false)
@@ -90,17 +94,21 @@ export default function ControlBtn({
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={handleSettingsForm}>
+          <button
+            className={cn({ [s.settings_btn]: true, [s.shown]: isEditUserAllowed })}
+            onClick={handleSettingsForm}
+          >
             <Settings className={s.icon} />{' '}
             <p className={s.setting_text}>
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
           </button>
+
           <button
-            disabled={isOwner || hasAccess}
+            disabled={isOwner || hasAccess || !isRightsComponentAllowedToRender}
             className={cn({
               [s.access_rights_btn]: true,
-              [s.owner]: isOwner || hasAccess,
+              [s.owner]: isOwner || hasAccess || !isRightsComponentAllowedToRender,
             })}
             onClick={handleRightsAlert}
           >
@@ -112,8 +120,11 @@ export default function ControlBtn({
 
           <button
             data-testid="show_removing_alert"
-            disabled={isOwner}
-            className={cn({ [s.remove_btn]: true, [s.owner]: isOwner })}
+            disabled={isOwner || !isDeleteUserAllowedToRender}
+            className={cn({
+              [s.remove_btn]: true,
+              [s.owner]: isOwner || !isDeleteUserAllowedToRender,
+            })}
             onClick={handleRemoveAlert}
           >
             <Delete className={s.icon} />
@@ -155,6 +166,7 @@ export default function ControlBtn({
         dataTestid="settings_form"
         email={email}
         userName={userName}
+        isEditUserAllowedToChange={isEditUserAllowedToChange}
       />
     </>
   )
@@ -168,4 +180,12 @@ ControlBtn.propTypes = {
   handleUserRolesData: PropTypes.func,
   rightsList: PropTypes.array,
   email: PropTypes.string,
+  isDeleteUserAllowedToRender: PropTypes.bool,
+  isEditUserAllowedToChange: PropTypes.bool,
+  isEditUserAllowed: PropTypes.bool,
+  isRightsComponentAllowedToRender: PropTypes.bool,
+}
+
+ControlBtn.defaultProps = {
+  isDeleteUserAllowedToRender: false,
 }

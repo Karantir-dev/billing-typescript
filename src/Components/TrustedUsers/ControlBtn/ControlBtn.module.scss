@@ -56,10 +56,18 @@
   }
 }
 
-.settings_btn,
 .access_rights_btn {
   display: flex;
   margin-bottom: 27px;
+}
+
+.settings_btn {
+  display: none;
+  margin-bottom: 27px;
+
+  &.shown {
+    display: flex;
+  }
 }
 
 .remove_btn {

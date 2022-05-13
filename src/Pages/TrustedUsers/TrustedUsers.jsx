@@ -25,11 +25,6 @@ export default function TrustedUsers() {
     'user',
   )
 
-  const isCreatingUsersAvailable = checkIfComponentShouldRender(
-    currentSessionRights,
-    'user.edit',
-  )
-
   const { t } = useTranslation('trusted_users')
 
   const dispatch = useDispatch()
@@ -42,6 +37,13 @@ export default function TrustedUsers() {
   const handleUserForm = () => {
     setIsUserFormActive(!isUserFormActive)
   }
+
+  const [availableRights, setAvailabelRights] = useState({})
+
+  const checkIfHasArr = availableRights?.toolbar?.toolgrp
+  const isCreatingNewUserAllowed = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'new')
+    : false
 
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -66,6 +68,11 @@ export default function TrustedUsers() {
   }
 
   const users = useSelector(usersSelectors.getUsers)
+  const { $id: pageOwnerId } = useSelector(userSelectors.getUserInfo)
+
+  const hasPageOwnerFullAccess = users.some(user => {
+    return user.id.$ === pageOwnerId && user.default_access_allow
+  })
 
   const handleSubmit = values => {
     const { email, name, phone, password } = values
@@ -86,6 +93,10 @@ export default function TrustedUsers() {
         position: 'bottom-right',
       })
     }
+  }, [])
+
+  useEffect(() => {
+    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))
   }, [])
 
   if (!isComponentAllowedToRender) {
@@ -115,7 +126,7 @@ export default function TrustedUsers() {
           className={classNames({
             [s.add_btn]: true,
             [s.btn]: true,
-            [s.shown]: isCreatingUsersAvailable,
+            [s.shown]: isCreatingNewUserAllowed,
           })}
           onClick={handleUserForm}
           isShadow
@@ -145,6 +156,7 @@ export default function TrustedUsers() {
               userId={user.id.$}
               handleUserRolesData={handleUserRolesData}
               isOwner={user.self.$ === 'on'}
+              hasPageOwnerFullAccess={hasPageOwnerFullAccess}
             />
           )
         })}

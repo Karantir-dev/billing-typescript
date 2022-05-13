@@ -24,7 +24,6 @@ export default function AffiliateProgram() {
   const [availableRights, setAvailabelRights] = useState({})
 
   const checkIfHasArr = availableRights?.toolbar?.toolgrp
-  console.log(checkIfHasArr)
 
   const isStatisticsAllowedToRender = Array.isArray(checkIfHasArr)
     ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'click')

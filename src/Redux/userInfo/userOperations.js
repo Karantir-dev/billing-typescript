@@ -6,6 +6,7 @@ import { axiosInstance } from './../../config/axiosInstance'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
+  console.log(data.doc)
   dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
 }
 
@@ -21,7 +22,6 @@ const userNotifications = (data, dispatch) => {
 
 const currentSessionRights = (data, dispatch) => {
   const { node } = data.doc.mainmenu
-
   dispatch(userActions.setCurrentSessionRihgts(node))
 }
 

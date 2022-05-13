@@ -41,6 +41,11 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .cancel {
@@ -179,7 +184,7 @@
   .twoStepVerif {
     max-width: 320px;
   }
-  
+
   .block {
     margin-bottom: 40px;
   }

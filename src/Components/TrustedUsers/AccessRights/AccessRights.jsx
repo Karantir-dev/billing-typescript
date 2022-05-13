@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import s from './AccessRights.module.scss'
 import AccessRightsListItem from './AccessRightsListItem/AccessRightsListItem'
 
-export default function AccessRights({ items, userId }) {
+export default function AccessRights({
+  items,
+  userId,
+  hasAccessToResumeRights,
+  hasAccessToSuspendRights,
+  hasAccessToSuspendRightsOnly,
+}) {
   const modifiedList = items.map(item => {
     return { ...item, isSelected: false }
   })
@@ -33,6 +40,9 @@ export default function AccessRights({ items, userId }) {
             key={index}
           >
             <AccessRightsListItem
+              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
+              hasAccessToResumeRights={hasAccessToResumeRights}
+              hasAccessToSuspendRights={hasAccessToSuspendRights}
               handleSelect={handleSelect}
               item={item}
               userId={userId}
@@ -44,4 +54,12 @@ export default function AccessRights({ items, userId }) {
       })}
     </div>
   )
+}
+
+AccessRights.propTypes = {
+  items: PropTypes.array,
+  userId: PropTypes.string,
+  hasAccessToResumeRights: PropTypes.bool,
+  hasAccessToSuspendRights: PropTypes.bool,
+  hasAccessToSuspendRightsOnly: PropTypes.bool,
 }

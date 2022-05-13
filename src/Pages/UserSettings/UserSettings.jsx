@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonalSettings from './PersonalSettings/PersonalSettings'
 import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { settingsOperations, userSelectors } from '../../Redux'
+import { settingsOperations, userSelectors, usersOperations } from '../../Redux'
 import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
 import { PageTabBar } from '../../Components/'
@@ -18,6 +18,7 @@ export default function Component() {
   const location = useLocation()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
+  const [availableEditRights, setAvailableEditRights] = useState({})
 
   const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
 
@@ -26,14 +27,24 @@ export default function Component() {
     'customer',
     'usrparam',
   )
-  console.log('component in user settings')
+
+  const isComponentAllowedToEdit = availableEditRights?.form?.buttons?.button?.some(
+    button => button.$name === 'ok',
+  )
 
   const tavBarSections = [
-    { route: `${route.USER_SETTINGS}/personal`, label: t('Personal settings') },
-    { route: `${route.USER_SETTINGS}/access`, label: t('Password and access') },
+    {
+      route: `${route.USER_SETTINGS}/personal`,
+      label: t('Personal settings'),
+      allowToRender: isComponentAllowedToRender,
+    },
+    {
+      route: `${route.USER_SETTINGS}/access`,
+      label: t('Password and access'),
+      allowToRender: isComponentAllowedToRender,
+    },
   ]
 
-  console.log('allow to render', isComponentAllowedToRender)
   // func doesn't have any differences
 
   useEffect(() => {
@@ -50,15 +61,21 @@ export default function Component() {
     }
   }, [])
 
+  useEffect(() => {
+    if (isComponentAllowedToRender) {
+      dispatch(usersOperations.getAvailableRights('usrparam', setAvailableEditRights))
+    }
+  }, [isComponentAllowedToRender])
+
   if (location.pathname === route.USER_SETTINGS) {
     return <Navigate to={`${route.USER_SETTINGS}/personal`} />
   }
 
   const renderPage = path => {
     if (path === 'personal' && isComponentAllowedToRender) {
-      return <PersonalSettings />
+      return <PersonalSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else if (path === 'access' && isComponentAllowedToRender) {
-      return <AccessSettings />
+      return <AccessSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else {
       return <Navigate to={route.HOME} />
     }
