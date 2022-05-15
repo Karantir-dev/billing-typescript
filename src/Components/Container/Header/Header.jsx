@@ -25,7 +25,7 @@ export default function Header() {
     { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
     { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
     { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.payers'), routeName: routes.HOME },
+    { name: t('profile.payers'), routeName: routes.PAYERS },
     { name: t('profile.contracts'), routeName: routes.HOME },
   ]
 

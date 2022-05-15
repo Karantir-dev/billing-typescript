@@ -9,3 +9,4 @@ export { default as AffiliateProgramIncome } from './AffiliateProgram/AffiliateP
 export { default as AffiliateProgramStatistics } from './AffiliateProgram/AffiliateProgramStatistics/AffiliateProgramStatistics'
 export { default as UserSettings } from './UserSettings/UserSettings'
 export { default as BillingPage } from './BillingPage/BillingPage'
+export { default as PayersPage } from './PayersPage/PayersPage'

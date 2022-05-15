@@ -1,0 +1,128 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 38px 50px;
+  margin: 0 30px;
+  max-width: 640px;
+  width: 100%;
+}
+
+.modalHeader {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.formBlock {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formBlockTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  margin-bottom: 5px;
+  color: var(--main-text);
+}
+
+.formFieldsBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input {
+  max-width: 250px;
+  margin-right: 20px;
+  margin-top: 13px;
+}
+
+.select {
+  max-width: 250px;
+  margin-top: 13px;
+  margin-right: 20px;
+}
+
+.phoneInput {
+  width: 100%;
+  max-width: 250px;
+  margin: 13px 20px 0 0;
+}
+
+.btnBlock {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 254px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+}

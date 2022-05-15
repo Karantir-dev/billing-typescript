@@ -1,0 +1,16 @@
+{
+  "Payers": "Payers",
+  "Add": "Add",
+  "Name": "Name",
+  "Payer status": "Payer status",
+  "Individual": "Individual",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "Are you sure you want to remove {{name}} from your list of payers?": "Are you sure you want to remove {{name}} from your list of payers?",
+  "Adding a payer": "Adding a payer",
+  "Main": "Main",
+  "Actual address": "Actual address",
+  "Data for the contract": "Data for the contract",
+  "The contact person": "The contact person",
+  "Receive documents": "Receive documents"
+}

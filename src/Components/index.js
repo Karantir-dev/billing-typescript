@@ -70,3 +70,7 @@ export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
 export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
 
 export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
+
+//==========================================PAYERS==========================================//
+export { default as PayersTable } from './Payers/PayersTable/PayersTable'
+export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'

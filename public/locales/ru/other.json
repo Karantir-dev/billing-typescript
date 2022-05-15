@@ -66,5 +66,17 @@
   "Sum": "Сумма",
   "Payment method": "Метод оплаты",
   "Insufficient privileges to access": "Недостаточно прав для доступа",
-  "-- without payment method --": "Без способа оплаты"
+  "-- without payment method --": "Без способа оплаты",
+  "Create": "Создать",
+  "Enter data": "Введите данные",
+  "Enter email": "Введите email",
+  "The country": "Страна",
+  "Index": "Индекс",
+  "Enter index": "Введите индекс",
+  "City": "Город",
+  "Enter city": "Введите город",
+  "The address": "Адрес",
+  "Enter address": "Введите адрес",
+  "Passport": "Паспорт",
+  "Series and passport number": "Серия и номер паспорта"
 }
