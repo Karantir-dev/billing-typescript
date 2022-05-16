@@ -12,18 +12,13 @@ import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageU
 import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
 
 import * as routes from '../../routes'
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
+// import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 
 import s from './TrustedUsers.module.scss'
+import usePageRender from '../../Components/hooks/usePageRender'
 
 export default function TrustedUsers() {
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'user',
-  )
+  const isComponentAllowedToRender = usePageRender('customer', 'user')
 
   const { t } = useTranslation('trusted_users')
 

@@ -5,35 +5,22 @@ import { PageTabBar } from '../../Components/'
 import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
 import AutoPayment from './AutoPayment/AutoPayment'
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import s from './BillingPgae.module.scss'
 
 import * as route from '../../routes'
-import { useSelector } from 'react-redux'
-import { userSelectors } from '../../Redux'
+import usePageRender from '../../Components/hooks/usePageRender'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
   const params = useParams()
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  const isExpensesComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'finance',
-    'expense',
-  )
-
-  const isPaymentsComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'finance',
-    'payment',
-  )
-  const isAutoPaymentComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
+  const isExpensesComponentAllowedToRender = usePageRender('finance', 'expense')
+  const isPaymentsComponentAllowedToRender = usePageRender('finance', 'payment')
+  const isAutoPaymentComponentAllowedToRender = usePageRender(
     'finance',
     'payment.recurring.settings',
   )
+
   const tavBarSections = [
     {
       route: `${route.BILLING}/payments`,

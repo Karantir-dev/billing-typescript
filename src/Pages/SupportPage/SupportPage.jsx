@@ -1,14 +1,12 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import Requests from './Requests/RequestsPage'
 import RequestsArchive from './RequestsArchive/RequestsArchivePage'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
 import * as route from '../../routes'
 
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
-import { userSelectors } from '../../Redux'
 import { PageTabBar } from '../../Components/'
+import usePageRender from '../../Components/hooks/usePageRender'
 
 import s from './SupportPage.module.scss'
 import { toast } from 'react-toastify'
@@ -17,24 +15,9 @@ export default function Component() {
   const { t } = useTranslation(['support', 'other', 'trusted_users'])
   const params = useParams()
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-  )
-
-  const isArchiveAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'clientticket_archive',
-  )
-
-  const isRequestsAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'clientticket',
-  )
+  const isComponentAllowedToRender = usePageRender('support')
+  const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
+  const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
 
   const tostId = useRef(null)
 

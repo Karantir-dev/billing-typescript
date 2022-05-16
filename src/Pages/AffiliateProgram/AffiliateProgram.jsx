@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { userSelectors, usersOperations } from '../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import { usersOperations } from '../../Redux'
+import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { PageTabBar } from '../../Components/'
 import * as route from '../../routes'
@@ -12,9 +12,8 @@ import {
   AffiliateProgramStatistics,
 } from '../'
 
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
-
 import s from './AffiliateProgram.module.scss'
+import usePageRender from '../../Components/hooks/usePageRender'
 
 export default function AffiliateProgram() {
   const { t } = useTranslation(['affiliate_program', 'trusted_users'])
@@ -33,12 +32,7 @@ export default function AffiliateProgram() {
     ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'reward')
     : false
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'affiliate.client',
-  )
+  const isComponentAllowedToRender = usePageRender('customer', 'affiliate.client')
 
   const dispatch = useDispatch()
 

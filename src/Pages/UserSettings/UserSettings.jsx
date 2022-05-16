@@ -4,7 +4,7 @@ import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { settingsOperations, userSelectors, usersOperations } from '../../Redux'
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
+import usePageRender from '../../Components/hooks/usePageRender'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
 import { PageTabBar } from '../../Components/'
 import s from './UserSettings.module.scss'
@@ -20,13 +20,7 @@ export default function Component() {
   const userInfo = useSelector(userSelectors.getUserInfo)
   const [availableEditRights, setAvailableEditRights] = useState({})
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'usrparam',
-  )
+  const isComponentAllowedToRender = usePageRender('customer', 'usrparam')
 
   const isComponentAllowedToEdit = availableEditRights?.form?.buttons?.button?.some(
     button => button.$name === 'ok',

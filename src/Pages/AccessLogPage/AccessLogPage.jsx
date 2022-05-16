@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { accessLogsSelectors, accessLogsOperations, userSelectors } from '../../Redux'
+import usePageRender from '../../Components/hooks/usePageRender'
+import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components'
-import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 import * as routes from '../../routes'
 
 import s from './AccessLogPage.module.scss'
@@ -14,13 +14,7 @@ export default function MainPage() {
   const { t } = useTranslation(['access_log', 'other', 'trusted_users'])
   const dispatch = useDispatch()
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
-
-  const isComponentAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'stat',
-    'authlog',
-  )
+  const isComponentAllowedToRender = usePageRender('stat', 'authlog')
 
   const tostId = useRef(null)
 

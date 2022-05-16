@@ -215,6 +215,8 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+      console.log('check funcs for translate', data.doc)
+
       const { elem } = data.doc
       const { metadata } = data.doc
 
@@ -246,6 +248,8 @@ const getSubRights =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log('check funcs for subrights translate', data.doc)
         // console.log('get rights sublist', data)
         const { elem } = data.doc
         setSubListOne(elem)

@@ -27,9 +27,6 @@ export default function UserCard({
   const { t } = useTranslation('trusted_users')
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  // const {$id} = useSelector(userSelectors.getUserInfo)
-  // console.log(allSelectors)
-
   const [areControlDotsActive, setAreControlDotsActive] = useState(false)
   const [isSuccessAlertOpened, setIsSuccessAlertOpened] = useState(false)
   const [isStatusAlertOpened, setIsStatusAlertOpened] = useState(false)

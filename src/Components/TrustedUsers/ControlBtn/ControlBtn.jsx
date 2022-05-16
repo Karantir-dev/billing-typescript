@@ -95,7 +95,8 @@ export default function ControlBtn({
           ref={dropDownEl}
         >
           <button
-            className={cn({ [s.settings_btn]: true, [s.shown]: isEditUserAllowed })}
+            disabled={!isEditUserAllowed}
+            className={cn({ [s.settings_btn]: true, [s.owner]: !isEditUserAllowed })}
             onClick={handleSettingsForm}
           >
             <Settings className={s.icon} />{' '}
