@@ -4,7 +4,7 @@ import Header from './Header/Header'
 import dayjs from 'dayjs'
 
 import s from './Container.module.scss'
-import { authSelectors, userOperations } from '../../Redux'
+import { authOperations, authSelectors, userOperations } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -22,7 +22,31 @@ export default function Component({ children }) {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
   }, [])
 
-  //cannot modify rights for itself//
+  //check if current session is active
+  const events = ['click', 'load', 'scroll']
+  const [eventChange, setEventChange] = useState(0)
+
+  const handleActive = () => {
+    setEventChange(eventChange + 1)
+  }
+
+  useEffect(() => {
+    events.forEach(event => {
+      window.addEventListener(event, handleActive)
+    })
+
+    return () => {
+      window.removeEventListener('load', handleActive)
+      window.removeEventListener('click', handleActive)
+      window.removeEventListener('scroll', handleActive)
+    }
+  })
+
+  useEffect(() => {
+    if (sessionId) {
+      dispatch(authOperations.getCurrentSessionStatus())
+    }
+  }, [eventChange])
 
   if (loading) {
     return <></>

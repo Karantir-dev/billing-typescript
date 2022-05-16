@@ -65,6 +65,41 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     })
 }
 
+const getCurrentSessionStatus = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'keepalive',
+        auth: sessionId,
+        sok: 'ok',
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(data => {
+      if (data.status === 200) {
+        console.log('data status 200', data)
+        if (data?.data?.doc?.error?.$type === 'access') {
+          console.log('current session is not active')
+          dispatch(authActions.logoutSuccess())
+        } else {
+          console.log('curr session is active')
+        }
+        dispatch(actions.hideLoader())
+      } else {
+        throw new Error(data.doc.error.msg.$)
+      }
+    })
+    .catch(e => {
+      console.log('error during current session out', e.message)
+    })
+}
+
 const sendTotp = (totp, setError) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
@@ -284,4 +319,5 @@ export default {
   sendTotp,
   logout,
   getCountries,
+  getCurrentSessionStatus,
 }
