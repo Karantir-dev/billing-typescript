@@ -6,31 +6,25 @@ import { userOperations, authSelectors } from '../../../Redux'
 import NotificationListItem from '../NotificationListItem/NotificationListItem'
 
 import s from './NotificationList.module.scss'
+import classNames from 'classnames'
 
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
   const { t } = useTranslation('container')
+  let shortNotificationsList = notifications.slice(0, 3)
 
-  let shortNotificationsList = notifications
+  const [click, setClick] = useState(false)
 
-  const [showMore, setShowMore] = useState({
-    isClicked: false,
-    messages: shortNotificationsList,
-  })
-
-  const [currentNotifList, setCurrentNotifList] = useState(showMore.messages)
+  const [currentNotifList, setCurrentNotifList] = useState(shortNotificationsList)
 
   const handleShowMoreClick = () => {
-    setShowMore({
-      isClicked: true,
-      messages: notifications,
-    })
+    setCurrentNotifList(notifications)
+    setClick(true)
   }
 
   const removeItem = id => {
     userOperations.removeItems(isAuthenticated, id)
-    console.log(`it was removed notification on ${id} id`)
-    console.log(showMore.messages)
+
     setCurrentNotifList(() => {
       if (Array.isArray(currentNotifList)) {
         return currentNotifList.filter(item => item.$id !== id)
@@ -42,7 +36,7 @@ export default function NotificationList({ notifications, removedNotification })
 
   return (
     <>
-      {notifications ? (
+      {shortNotificationsList ? (
         <NotificationListItem
           removedNotification={removedNotification}
           arr={currentNotifList}
@@ -51,8 +45,12 @@ export default function NotificationList({ notifications, removedNotification })
       ) : (
         <p className={s.no_messages}>{t('notification_bar.no_messages')}</p>
       )}
-      {notifications?.length > 3 && !showMore.isClicked && (
-        <button onClick={handleShowMoreClick}>
+
+      {notifications?.length > 3 && (
+        <button
+          className={classNames({ [s.btn]: true, [s.hidden]: click })}
+          onClick={handleShowMoreClick}
+        >
           <p className={s.show_more}>{t('notification_bar.show_more')}</p>
         </button>
       )}

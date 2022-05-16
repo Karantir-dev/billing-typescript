@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import usePageRender from '../../Components/hooks/usePageRender'
+import usePageRender from '../../utils/hooks/usePageRender'
 import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'

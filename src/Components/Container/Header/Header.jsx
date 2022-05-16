@@ -12,7 +12,7 @@ import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
 import { useOutsideAlerter } from '../../../utils'
-import usePageRender from '../../hooks/usePageRender'
+import usePageRender from '../../../utils/hooks/usePageRender'
 
 export default function Header() {
   const { t } = useTranslation('container')
@@ -168,7 +168,7 @@ export default function Header() {
                       [s.notification_messages]: mesAmount > 0,
                     })}
                   >
-                    <button onClick={handleBellClick}>
+                    <button onClick={handleBellClick} className={s.btn}>
                       <Bell
                         svgheight="22"
                         svgwidth="18"

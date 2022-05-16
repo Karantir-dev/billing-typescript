@@ -15,7 +15,7 @@ import * as routes from '../../routes'
 // import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 
 import s from './TrustedUsers.module.scss'
-import usePageRender from '../../Components/hooks/usePageRender'
+import usePageRender from '../../utils/hooks/usePageRender'
 
 export default function TrustedUsers() {
   const isComponentAllowedToRender = usePageRender('customer', 'user')
