@@ -139,7 +139,7 @@ export default function ControlBtn({
       {showRemoveAlert && (
         <Alert
           hasControlBtns={true}
-          dataTestid="trusted_users_alert_status"
+          dataTestid="trusted_users_alert_remove"
           isOpened={showRemoveAlert}
           controlAlert={handleRemoveAlert}
           title={t('trusted_users.alerts.remove.title')}
