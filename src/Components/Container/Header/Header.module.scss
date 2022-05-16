@@ -193,6 +193,8 @@
   margin-left: 15px;
   transition: transform 0.3s;
   flex: none;
+  height: 8px;
+  width: 11px;
 
   &.active {
     transform: rotateZ(0deg);

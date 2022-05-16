@@ -168,6 +168,7 @@ export default function ControlBtn({
         email={email}
         userName={userName}
         isEditUserAllowedToChange={isEditUserAllowedToChange}
+        userId={userId}
       />
     </>
   )
