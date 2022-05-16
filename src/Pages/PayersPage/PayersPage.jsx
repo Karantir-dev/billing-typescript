@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Button,
-  Container,
-  Pagination,
-  PayersTable,
-  Portal,
-  ModalAddPayer,
-} from '../../Components'
+import { Button, Pagination, PayersTable, Portal, ModalAddPayer } from '../../Components'
 import { payersActions, payersOperations, payersSelectors } from '../../Redux'
 import s from './PayersPage.module.scss'
 
@@ -45,7 +38,7 @@ export default function Component() {
   }
 
   return (
-    <Container>
+    <>
       <div className={s.body}>
         <h1 className={s.pageTitle}>{t('Payers')}</h1>
         <Button
@@ -70,6 +63,6 @@ export default function Component() {
           <ModalAddPayer elid={elid} closeAddModalHandler={closeAddModalHandler} />
         )}
       </Portal>
-    </Container>
+    </>
   )
 }
