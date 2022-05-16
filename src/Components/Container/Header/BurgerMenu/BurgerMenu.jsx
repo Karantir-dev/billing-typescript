@@ -13,66 +13,22 @@ import { useOutsideAlerter } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './BurgerMenu.module.scss'
-import checkIfComponentShouldRender from '../../../../checkIfComponentShouldRender'
+import usePageRender from '../../../../utils/hooks/usePageRender'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
 
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
 
-  const isTrustedUsersAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'user',
-  )
-
-  const isAuthLogAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'stat',
-    'authlog',
-  )
-  const areServicesAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'mainmenuservice',
-  )
-
-  const isFinanceAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'finance',
-  )
-
-  const areUserSettingsAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'usrparam',
-  )
-
-  const isAffiliateProgramAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'affiliate.client',
-  )
-
-  const isSupportAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-  )
-  const isArchiveAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'clientticket_archive',
-  )
-
-  const isRequestsAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'clientticket',
-  )
-  const arePayersAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'profile',
-  )
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
+  const areServicesAllowedToRender = usePageRender('mainmenuservice')
+  const isFinanceAllowedToRender = usePageRender('finance')
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
+  const isAffiliateProgramAllowedToRender = usePageRender('customer', 'affiliate.client')
+  const isSupportAllowedToRender = usePageRender('support')
+  const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
+  const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
+  const arePayersAllowedToRender = usePageRender('customer', 'profile')
 
   const profileMenuList = [
     {
@@ -274,4 +230,5 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
 BurgerMenu.propTypes = {
   classes: PropTypes.string.isRequired,
   isOpened: PropTypes.bool.isRequired,
+  controlMenu: PropTypes.func.isRequired,
 }

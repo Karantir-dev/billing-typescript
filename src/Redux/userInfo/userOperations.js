@@ -6,7 +6,6 @@ import { axiosInstance } from './../../config/axiosInstance'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
-  console.log(data.doc)
   dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
 }
 
