@@ -3,16 +3,23 @@ import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
+import { Navigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { Button } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
-import Container from '../../Components/Container/Container'
 import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
-import { usersOperations, usersSelectors } from '../../Redux'
+import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
+
+import * as routes from '../../routes'
+// import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 
 import s from './TrustedUsers.module.scss'
+import usePageRender from '../../utils/hooks/usePageRender'
 
 export default function TrustedUsers() {
+  const isComponentAllowedToRender = usePageRender('customer', 'user')
+
   const { t } = useTranslation('trusted_users')
 
   const dispatch = useDispatch()
@@ -25,6 +32,13 @@ export default function TrustedUsers() {
   const handleUserForm = () => {
     setIsUserFormActive(!isUserFormActive)
   }
+
+  const [availableRights, setAvailabelRights] = useState({})
+
+  const checkIfHasArr = availableRights?.toolbar?.toolgrp
+  const isCreatingNewUserAllowed = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'new')
+    : false
 
   const laptopOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -49,6 +63,11 @@ export default function TrustedUsers() {
   }
 
   const users = useSelector(usersSelectors.getUsers)
+  const { $id: pageOwnerId } = useSelector(userSelectors.getUserInfo)
+
+  const hasPageOwnerFullAccess = users.some(user => {
+    return user.id.$ === pageOwnerId && user.default_access_allow
+  })
 
   const handleSubmit = values => {
     const { email, name, phone, password } = values
@@ -60,11 +79,27 @@ export default function TrustedUsers() {
   }
 
   useEffect(() => {
-    dispatch(usersOperations.getUsers())
+    if (isComponentAllowedToRender) dispatch(usersOperations.getUsers())
   }, [changeUserRoles, createdNewUser])
 
+  useEffect(() => {
+    if (!isComponentAllowedToRender) {
+      toast.error(t('insufficient_rights'), {
+        position: 'bottom-right',
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))
+  }, [])
+
+  if (!isComponentAllowedToRender) {
+    return <Navigate to={routes.HOME} />
+  }
+
   return (
-    <Container>
+    <>
       <section>
         <div>
           <h3 className={s.section_title}>{t('trusted_users.title')}</h3>
@@ -83,7 +118,11 @@ export default function TrustedUsers() {
           size="large"
           label={`${t('trusted_users.button')}`.toUpperCase()}
           type="button"
-          className={classNames({ [s.add_btn]: true, [s.btn]: true })}
+          className={classNames({
+            [s.add_btn]: true,
+            [s.btn]: true,
+            [s.shown]: isCreatingNewUserAllowed,
+          })}
           onClick={handleUserForm}
           isShadow
         />
@@ -112,6 +151,7 @@ export default function TrustedUsers() {
               userId={user.id.$}
               handleUserRolesData={handleUserRolesData}
               isOwner={user.self.$ === 'on'}
+              hasPageOwnerFullAccess={hasPageOwnerFullAccess}
             />
           )
         })}
@@ -124,6 +164,6 @@ export default function TrustedUsers() {
         title={t('trusted_users.form.title')}
         dataTestid="trusted_form"
       />
-    </Container>
+    </>
   )
 }

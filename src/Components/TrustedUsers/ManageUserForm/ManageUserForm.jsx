@@ -20,57 +20,55 @@ export default function ManageUserForm({
   email,
   userName,
   isUserFormActive,
+  isEditUserAllowedToChange,
+  userId,
 }) {
   const { t } = useTranslation('trusted_users')
 
   const validationSchema =
     formName === 'settings'
       ? Yup.object().shape({
-          name: Yup.string()
-            .matches(
-              /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
-              t('trusted_users.form_errors.full_name'),
-            )
-            .required(t('trusted_users.form_warnings.full_name')),
-          phone: Yup.string()
+          ['name' + userId]: Yup.string().matches(
+            /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
+            t('trusted_users.form_errors.full_name'),
+          ),
+          ['phone' + userId]: Yup.string()
             .matches(
               /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
               t('trusted_users.form_errors.phone'),
             )
             .min(7, t('trusted_users.form_errors.phone')),
-          email: Yup.string()
-            .email(t('trusted_users.form_errors.email'))
-            .required(t('trusted_users.form_warnings.email')),
-          password: Yup.string()
+          ['email' + userId]: Yup.string().email(t('trusted_users.form_errors.email')),
+          ['password' + userId]: Yup.string()
             .min(6, t('trusted_users.form_errors.password'))
             .max(48, t('trusted_users.form_errors.password_toolong'))
             .matches(
               /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
               t('trusted_users.form_errors.password'),
             ),
-          passConfirmation: Yup.string().oneOf(
+          ['passConfirmation' + userId]: Yup.string().oneOf(
             [Yup.ref('password')],
             t('trusted_users.form_errors.conf_password'),
           ),
         })
       : Yup.object().shape({
-          name: Yup.string()
+          ['name' + userId]: Yup.string()
             .matches(
               /^[^!@#$%^&*()\]~+/}[{=?|".':;]+$/g,
               t('trusted_users.form_errors.full_name'),
             )
             .required(t('trusted_users.form_warnings.full_name')),
-          phone: Yup.string()
+          ['phone' + userId]: Yup.string()
             .matches(
               /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
               t('trusted_users.form_errors.phone'),
             )
             .min(7, t('trusted_users.form_errors.phone'))
             .required(t('trusted_users.form_warnings.phone')),
-          email: Yup.string()
+          ['email' + userId]: Yup.string()
             .email(t('trusted_users.form_errors.email'))
             .required(t('trusted_users.form_warnings.email')),
-          password: Yup.string()
+          ['password' + userId]: Yup.string()
             .min(6, t('trusted_users.form_errors.password'))
             .max(48, t('trusted_users.form_errors.password_toolong'))
             .required(t('trusted_users.form_warnings.password'))
@@ -78,7 +76,7 @@ export default function ManageUserForm({
               /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
               t('trusted_users.form_errors.password'),
             ),
-          passConfirmation: Yup.string()
+          ['passConfirmation' + userId]: Yup.string()
             .oneOf([Yup.ref('password')], t('trusted_users.form_errors.conf_password'))
             .required(t('trusted_users.form_warnings.conf_password')),
         })
@@ -100,11 +98,11 @@ export default function ManageUserForm({
           </div>
           <Formik
             initialValues={{
-              email: '',
-              name: '',
-              phone: '',
-              password: '',
-              passConfirmation: '',
+              ['email' + userId]: '',
+              ['name' + userId]: '',
+              ['phone' + userId]: '',
+              ['password' + userId]: '',
+              ['passConfirmation' + userId]: '',
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -124,9 +122,9 @@ export default function ManageUserForm({
                         ? email
                         : t('trusted_users.form_placeholders.email')
                     }
-                    name="email"
-                    error={!!errors.email}
-                    touched={!!touched.email}
+                    name={'email' + userId}
+                    error={!!errors['email' + userId]}
+                    touched={!!touched['email' + userId]}
                     className={s.field_input}
                     isShadow={true}
                     background={true}
@@ -146,9 +144,9 @@ export default function ManageUserForm({
                         ? userName
                         : t('trusted_users.form_placeholders.full_name')
                     }
-                    name="name"
-                    error={!!errors.name}
-                    touched={!!touched.name}
+                    name={'name' + userId}
+                    error={!!errors['name' + userId]}
+                    touched={!!touched['name' + userId]}
                     className={s.field_input}
                     isShadow={true}
                     background={true}
@@ -164,7 +162,8 @@ export default function ManageUserForm({
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
-                    name="phone"
+                    name={'phone' + userId}
+                    userId={userId}
                   />
 
                   <InputField
@@ -175,9 +174,9 @@ export default function ManageUserForm({
                         : requiredLabel(t('trusted_users.form.password'))
                     }
                     placeholder={t('trusted_users.form_placeholders.password')}
-                    name="password"
-                    error={!!errors.password}
-                    touched={!!touched.password}
+                    name={'password' + userId}
+                    error={!!errors['password' + userId]}
+                    touched={!!touched['password' + userId]}
                     type="password"
                     className={s.field_input}
                     isShadow={true}
@@ -192,20 +191,27 @@ export default function ManageUserForm({
                         : requiredLabel(t('trusted_users.form.conf_password'))
                     }
                     placeholder={t('trusted_users.form_placeholders.conf_password')}
-                    name="passConfirmation"
-                    error={!!errors.passConfirmation}
-                    touched={!!touched.passConfirmation}
+                    name={'passConfirmation' + userId}
+                    error={!!errors['passConfirmation' + userId]}
+                    touched={!!touched['passConfirmation' + userId]}
                     type="password"
                     className={s.field_input}
                     isShadow={true}
                     background={true}
                   />
+
                   <Button
                     dataTestid="btn_form_submit"
                     size="large"
-                    className={classNames({ [s.submit_btn]: true, [s.btn]: true })}
+                    className={classNames({
+                      [s.submit_btn]: true,
+                      [s.btn]: true,
+                      [s.shown]:
+                        formName === 'settings' ? isEditUserAllowedToChange : true,
+                    })}
                     label={t('trusted_users.form.submit_btn').toUpperCase()}
                     type="submit"
+                    disabled={!isEditUserAllowedToChange}
                   />
                 </Form>
               )
@@ -234,4 +240,11 @@ ManageUserForm.propTypes = {
   email: PropTypes.string,
   isUserFormActive: PropTypes.bool,
   formName: PropTypes.string,
+  isEditUserAllowedToChange: PropTypes.bool,
+  userId: PropTypes.string,
+}
+
+ManageUserForm.defaultProps = {
+  userId: '',
+  isEditUserAllowedToChange: true,
 }

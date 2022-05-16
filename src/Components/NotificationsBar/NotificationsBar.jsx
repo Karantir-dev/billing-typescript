@@ -27,10 +27,6 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
 
   const getNotifBarEl = useRef()
 
-  // const clickOutside = () => {
-  //   setIsProfileOpened(!isProfileOpened)
-  // }
-
   useOutsideAlerter(getNotifBarEl, isBarOpened, handler)
 
   const notifications = messages.bitem
@@ -52,6 +48,7 @@ export default function NotificationsBar({ handler, isBarOpened, removedNotifica
             <button className={s.close_btn} onClick={handler}></button>
           </div>
         </div>
+
         {isBarOpened && (
           <NotificationList
             notifications={notifications}

@@ -6,6 +6,7 @@ const initialState = {
   userInfo: {},
   userTickets: [],
   userItems: { bitem: [] },
+  currentSessionRights: [],
   userInfoLoading: false,
 }
 
@@ -24,11 +25,16 @@ const userInfoLoading = createReducer(initialState.userInfoLoading, {
   [userActions.hideUserInfoLoading]: () => false,
 })
 
+const currentSessionRights = createReducer(initialState.currentSessionRights, {
+  [userActions.setCurrentSessionRihgts]: (_, { payload }) => payload,
+})
+
 const userReducer = combineReducers({
   userInfo,
   userTickets,
   userItems,
   userInfoLoading,
+  currentSessionRights,
 })
 
 export default userReducer

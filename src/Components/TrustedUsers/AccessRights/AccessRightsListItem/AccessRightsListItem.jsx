@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
@@ -14,6 +15,9 @@ export default function AccessRightsListItem({
   handleSelect,
   selected,
   allowAll,
+  hasAccessToResumeRights,
+  hasAccessToSuspendRights,
+  hasAccessToSuspendRightsOnly,
 }) {
   const { t } = useTranslation('trusted_users')
   const [selectedSub, setSelectedSub] = useState([])
@@ -57,16 +61,6 @@ export default function AccessRightsListItem({
           setSubList,
         ),
       )
-
-      // res.then(data => {
-      //   try {
-      //     const { elem } = data.doc
-      //     setSelectedSub(elem)
-      //     setSubList(elem)
-      //   } catch (e) {
-      //     console.log('Error in AccessRightsListItem - ', e.message)
-      //   }
-      // })
     } else {
       handleSubSelect(item)
       handleSelect(item)
@@ -135,6 +129,12 @@ export default function AccessRightsListItem({
               <Shevron className={s.shevron} />
             ) : (
               <ToggleButton
+                disabled={
+                  (!hasAccessToResumeRights && !currentRightState) ||
+                  (!hasAccessToSuspendRights &&
+                    currentRightState &&
+                    !hasAccessToSuspendRightsOnly)
+                }
                 hasAlert={false}
                 initialState={currentRightState}
                 func={handleToggleBtns}
@@ -154,6 +154,12 @@ export default function AccessRightsListItem({
                 <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
 
                 <ToggleButton
+                  disabled={
+                    (!hasAccessToResumeRights && !currentRightState) ||
+                    (!hasAccessToSuspendRights &&
+                      currentRightState &&
+                      !hasAccessToSuspendRightsOnly)
+                  }
                   hasAlert={false}
                   initialState={currentRightState}
                   func={handleToggleBtns}
@@ -170,6 +176,9 @@ export default function AccessRightsListItem({
                   userId={userId}
                   handleSelect={handleSubSelect}
                   selected={child.isSelected}
+                  hasAccessToResumeRights={hasAccessToResumeRights}
+                  hasAccessToSuspendRights={hasAccessToSuspendRights}
+                  hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
                 />
               )
             })}
@@ -186,4 +195,15 @@ export default function AccessRightsListItem({
       </div>
     )
   }
+}
+
+AccessRightsListItem.propTypes = {
+  item: PropTypes.object,
+  handleSelect: PropTypes.func,
+  userId: PropTypes.string,
+  hasAccessToResumeRights: PropTypes.bool,
+  hasAccessToSuspendRights: PropTypes.bool,
+  selected: PropTypes.bool,
+  allowAll: PropTypes.bool,
+  hasAccessToSuspendRightsOnly: PropTypes.bool,
 }

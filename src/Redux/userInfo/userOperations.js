@@ -19,9 +19,14 @@ const userNotifications = (data, dispatch) => {
   dispatch(userActions.setItems({ bitem }))
 }
 
-const funcsArray = [userInfo, userTickets, userNotifications]
+const currentSessionRights = (data, dispatch) => {
+  const { node } = data.doc.mainmenu
+  dispatch(userActions.setCurrentSessionRihgts(node))
+}
 
-const getUserInfo = sessionId => dispatch => {
+const funcsArray = [userInfo, userNotifications, currentSessionRights, userTickets]
+
+const getUserInfo = (sessionId, setLoading) => dispatch => {
   dispatch(userActions.showUserInfoLoading())
   Promise.all([
     axiosInstance.post(
@@ -30,6 +35,25 @@ const getUserInfo = sessionId => dispatch => {
         func: 'whoami',
         out: 'json',
         auth: sessionId,
+      }),
+    ),
+
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'notify',
+        out: 'json',
+        lang: i18n.language,
+        auth: sessionId,
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'menu',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
       }),
     ),
     axiosInstance.post(
@@ -41,25 +65,19 @@ const getUserInfo = sessionId => dispatch => {
         auth: sessionId,
       }),
     ),
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'notify',
-        out: 'json',
-        lang: i18n.language,
-        auth: sessionId,
-      }),
-    ),
   ])
     .then(responses => {
       responses.forEach(({ data }, i) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
         funcsArray[i](data, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
+      setLoading && setLoading(false)
     })
     .catch(err => {
       dispatch(userActions.hideUserInfoLoading())
+      setLoading && setLoading(false)
       console.log('getUserInfo - ', err.message)
     })
 }

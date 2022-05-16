@@ -43,6 +43,9 @@
 }
 
 .link {
+  display: flex;
+  align-items: center;
+
   &.active {
     path {
       fill: url(#gradient);
@@ -179,12 +182,19 @@
   }
 }
 
+.btn {
+  display: flex;
+  align-items: center;
+}
+
 .arrow_icon {
   stroke: var(--icon-color);
   transform: rotateZ(180deg);
   margin-left: 15px;
   transition: transform 0.3s;
   flex: none;
+  height: 8px;
+  width: 11px;
 
   &.active {
     transform: rotateZ(0deg);
@@ -275,12 +285,15 @@
 }
 
 .notification_messages {
+  position: relative;
   color: var(--main-text);
   font-size: 12px;
 }
 
 .notification_messages_counter {
   position: absolute;
+  right: 7px;
+  top: 0;
   color: var(--main-text);
 }
 

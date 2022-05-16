@@ -10,10 +10,16 @@ import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
 import * as routes from '../../../routes'
 
 import s from './AsideServicesMenu.module.scss'
+import usePageRender from '../../../utils/hooks/usePageRender'
 
 const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)
   const tabletOrHigher = useMediaQuery({ query: '(max-width: 1023px)' })
+
+  const isAffiliateProgramAllowedToRender = usePageRender('customer', 'affiliate.client')
+  const isSupportAllowedToRender = usePageRender('support')
+  const areServicesAllowedToRender = usePageRender('mainmenuservice')
+  const isFinanceAllowedToRender = usePageRender('finance')
 
   const dispatch = useDispatch()
 
@@ -41,46 +47,60 @@ const AsideServicesMenu = () => {
             className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
           />
         </div>
-        <li className={s.item}>
-          <NavLink
-            to={routes.HOME}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Box className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
-          </NavLink>
-        </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.BILLING}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Wallet className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>}
-          </NavLink>
-        </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.AFFILIATE_PROGRAM}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Social className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.referal_program')}</p>}
-          </NavLink>
-        </li>
-        <li className={s.item}>
-          <NavLink
-            to={routes.SUPPORT}
-            className={({ isActive }) => (isActive ? s.active : s.inactive)}
-            style={pinnedStyle}
-          >
-            <Support className={s.img} />
-            {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}
-          </NavLink>
-        </li>
+        {areServicesAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.HOME}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Box className={s.img} />
+              {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
+            </NavLink>
+          </li>
+        )}
+
+        {isFinanceAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.BILLING}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Wallet className={s.img} />
+              {pinnedStatus && (
+                <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>
+              )}
+            </NavLink>
+          </li>
+        )}
+
+        {isAffiliateProgramAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.AFFILIATE_PROGRAM}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Social className={s.img} />
+              {pinnedStatus && (
+                <p className={s.text}>{t('aside_menu.referal_program')}</p>
+              )}
+            </NavLink>
+          </li>
+        )}
+        {isSupportAllowedToRender && (
+          <li className={s.item}>
+            <NavLink
+              to={routes.SUPPORT}
+              className={({ isActive }) => (isActive ? s.active : s.inactive)}
+              style={pinnedStyle}
+            >
+              <Support className={s.img} />
+              {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}
+            </NavLink>
+          </li>
+        )}
       </ul>
 
       <button
