@@ -13,17 +13,48 @@ import { useOutsideAlerter } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './BurgerMenu.module.scss'
+import usePageRender from '../../../../utils/hooks/usePageRender'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
 
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
+
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
+  const areServicesAllowedToRender = usePageRender('mainmenuservice')
+  const isFinanceAllowedToRender = usePageRender('finance')
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
+  const isAffiliateProgramAllowedToRender = usePageRender('customer', 'affiliate.client')
+  const isSupportAllowedToRender = usePageRender('support')
+  const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
+  const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
+  const arePayersAllowedToRender = usePageRender('customer', 'profile')
+
   const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
-    { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
-    { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.payers'), routeName: routes.PAYERS },
-    { name: t('profile.contracts'), routeName: routes.HOME },
+    {
+      name: t('profile.user_settings'),
+      routeName: routes.USER_SETTINGS,
+      allowedToRender: areUserSettingsAllowedToRender,
+    },
+    {
+      name: t('profile.trusted_users'),
+      routeName: routes.TRUSTED_USERS,
+      allowedToRender: isTrustedUsersAllowedToRender,
+    },
+    {
+      name: t('profile.visiting_log'),
+      routeName: routes.ACCESS_LOG,
+      allowedToRender: isAuthLogAllowedToRender,
+    },
+    {
+      name: t('profile.payers'),
+      routeName: routes.PAYERS,
+      allowedToRender: arePayersAllowedToRender,
+    },
+    { name: t('profile.contracts'), routeName: routes.HOME, allowedToRender: true },
   ]
+
+  const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const servicesMenuList = [
     { name: t('burger_menu.services.services_list.domains'), routeName: routes.HOME },
@@ -72,10 +103,13 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     {
       name: t('burger_menu.support.support_list.requests'),
       routeName: `${routes.SUPPORT}/requests`,
+      allowedToRender: isRequestsAllowedToRender,
     },
+
     {
       name: t('burger_menu.support.support_list.requests_archieve'),
       routeName: `${routes.SUPPORT}/requests_archive`,
+      allowedToRender: isArchiveAllowedToRender,
     },
   ]
 
@@ -122,7 +156,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
             <ListItems
               controlMenu={controlMenu}
               name={$realname}
-              subList={profileMenuList}
+              subList={profileMenuListToRender}
               isProfile
               email={$email}
             />
@@ -136,34 +170,43 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
             <p className={s.balance_text}>{t('balance')}</p>
             <p className={s.balance_sum}>{$balance} EUR</p>
           </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'services'}
-              subList={servicesMenuList}
-            />
-          </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'finance'}
-              subList={financeMenuList}
-            />
-          </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'ref_program'}
-              subList={refProgrammMenuList}
-            />
-          </li>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={'support'}
-              subList={supportMenuList}
-            />
-          </li>
+          {areServicesAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'services'}
+                subList={servicesMenuList}
+              />
+            </li>
+          )}
+          {isFinanceAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'finance'}
+                subList={financeMenuList}
+              />
+            </li>
+          )}
+
+          {isAffiliateProgramAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'ref_program'}
+                subList={refProgrammMenuList}
+              />
+            </li>
+          )}
+          {isSupportAllowedToRender && (
+            <li className={s.list_item}>
+              <ListItems
+                controlMenu={controlMenu}
+                name={'support'}
+                subList={supportMenuList}
+              />
+            </li>
+          )}
           <li className={s.exit_list_item}>
             <NavLink to={routes.LOGIN}>
               <div
@@ -187,4 +230,5 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
 BurgerMenu.propTypes = {
   classes: PropTypes.string.isRequired,
   isOpened: PropTypes.bool.isRequired,
+  controlMenu: PropTypes.func.isRequired,
 }

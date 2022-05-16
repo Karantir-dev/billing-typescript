@@ -20,7 +20,7 @@ import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import s from './AccessSettings.module.scss'
 
-export default function Component() {
+export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
@@ -272,11 +272,15 @@ export default function Component() {
               </div>
               <div className={s.btnBlock}>
                 <Button
-                  className={s.saveBtn}
+                  className={cn({
+                    [s.saveBtn]: true,
+                    [s.shown]: isComponentAllowedToEdit,
+                  })}
                   isShadow
                   size="medium"
                   label={t('Save', { ns: 'other' })}
                   type="submit"
+                  disabled={!isComponentAllowedToEdit}
                 />
                 <button
                   onClick={() => navigate(routes?.HOME)}

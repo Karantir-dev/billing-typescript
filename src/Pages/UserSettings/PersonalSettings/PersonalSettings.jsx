@@ -22,7 +22,7 @@ import { settingsSelectors, settingsOperations, userSelectors } from '../../../R
 import { isBase64 } from '../../../utils'
 import s from './PersonalSettings.module.scss'
 
-export default function Component() {
+export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
@@ -62,7 +62,7 @@ export default function Component() {
           <p>
             {t('The confirmation email has been sent to')} {userParams?.email}.
           </p>
-          <p>{t('Click \'send confirmation\' for resending')}.</p>
+          <p>{t('Click "send confirmation" for resending')}.</p>
         </>
       )
     } else if (
@@ -293,11 +293,15 @@ export default function Component() {
               </div>
               <div className={s.btnBlock}>
                 <Button
-                  className={s.saveBtn}
+                  className={cn({
+                    [s.saveBtn]: true,
+                    [s.shown]: isComponentAllowedToEdit,
+                  })}
                   isShadow
                   size="medium"
                   label={t('Save', { ns: 'other' })}
                   type="submit"
+                  disabled={!isComponentAllowedToEdit}
                 />
                 <button
                   onClick={() => navigate(routes?.HOME)}

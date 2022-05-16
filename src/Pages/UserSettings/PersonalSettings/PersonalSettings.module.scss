@@ -192,6 +192,11 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .confirmBtn {

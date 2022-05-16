@@ -21,6 +21,7 @@ export default function CustomPhoneInput(props) {
     labelClass,
     wrapperClass,
     inputClass,
+    userId,
     ...restProps
   } = props
 
@@ -29,7 +30,7 @@ export default function CustomPhoneInput(props) {
   const lang = returnLanguage(i18n.language === 'en' ? 'es' : i18n.language)
 
   const onValueChange = value => {
-    setFieldValue('phone', value)
+    setFieldValue('phone' + userId, value)
   }
 
   useEffect(() => {
@@ -73,7 +74,11 @@ export default function CustomPhoneInput(props) {
         {...restProps}
       />
 
-      <ErrorMessage name="phone" component="span" className={s.error_message} />
+      <ErrorMessage
+        name={'phone' + userId}
+        component="span"
+        className={s.error_message}
+      />
     </div>
   )
 }
@@ -83,6 +88,7 @@ CustomPhoneInput.defaultProps = {
   placeholder: '',
   name: '',
   className: '',
+  userId: '',
 }
 
 CustomPhoneInput.propTypes = {

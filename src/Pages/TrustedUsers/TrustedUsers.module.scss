@@ -49,6 +49,11 @@
   margin-bottom: 40px;
   padding-top: 21px;
   padding-bottom: 21px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .users_title {

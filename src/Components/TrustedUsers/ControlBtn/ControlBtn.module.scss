@@ -56,10 +56,10 @@
   }
 }
 
-.settings_btn,
-.access_rights_btn {
+.access_rights_btn,
+.settings_btn {
   display: flex;
-  margin-bottom: 27px;
+  margin-bottom: 25px;
 }
 
 .remove_btn {
@@ -84,11 +84,26 @@
   }
 }
 
+.setting_text,
+.delete_text,
+.access_text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+}
+
 .remove_btn,
-.access_rights_btn {
+.access_rights_btn,
+.settings_btn {
   &.owner {
     opacity: 0.3;
+
     &:hover {
+      & .setting_text,
+      .delete_text,
+      .access_text {
+        font-weight: 300;
+      }
       & .icon {
         fill: var(--icon-color);
       }
@@ -101,13 +116,14 @@
   cursor: pointer;
 
   &:hover {
-    & .icon {
-      fill: url(#gradient);
-    }
     & .setting_text,
     .delete_text,
     .access_text {
       font-weight: 400;
+    }
+
+    & .icon {
+      fill: url(#gradient);
     }
   }
 }
@@ -132,4 +148,12 @@
 
 .user_email_lg {
   padding-left: 27px;
+}
+
+// ADAPTIVE
+
+@media screen and (min-width: 768px) {
+  .list {
+    width: 193px;
+  }
 }

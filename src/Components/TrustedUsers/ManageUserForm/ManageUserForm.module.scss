@@ -73,6 +73,11 @@
   margin-top: 20px;
   padding-bottom: 22px;
   padding-top: 22px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .close_btn_wrapper {
