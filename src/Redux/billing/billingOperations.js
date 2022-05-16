@@ -310,7 +310,6 @@ const getExpensesFilters = () => (dispatch, getState) => {
         todate: data.doc?.todate?.$ || '',
       }
 
-      console.log(data.doc)
       dispatch(billingActions.setExpensesFilters(currentFilters))
       dispatch(billingActions.setExpensesFiltersLists(filters))
 

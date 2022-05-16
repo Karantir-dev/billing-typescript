@@ -45,6 +45,8 @@ export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'
 
+export { default as CheckBox } from './ui/CheckBox/CheckBox'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'

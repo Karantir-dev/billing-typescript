@@ -11,7 +11,7 @@ import { payersOperations } from '../../../Redux'
 import { useDispatch } from 'react-redux'
 
 export default function Component(props) {
-  const { id, name, status } = props
+  const { id, name, status, editHanler } = props
 
   const dispatch = useDispatch()
 
@@ -60,7 +60,7 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={() => null}>
+          <button className={s.settings_btn} onClick={editHanler}>
             <Settings />
             <p className={s.setting_text}>{t('Edit')}</p>
           </button>

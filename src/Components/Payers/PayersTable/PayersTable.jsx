@@ -7,7 +7,7 @@ import s from './PayersTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['payers', 'other'])
-  const { list } = props
+  const { list, openEditModalHandler } = props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
@@ -18,8 +18,15 @@ export default function Component(props) {
       </div>
       {list?.map(el => {
         const { profiletype, name, id } = el
+        const editHanler = () => openEditModalHandler(id?.$)
         return (
-          <PayersTableItem key={id?.$} name={name?.$} status={profiletype?.$} id={id?.$} />
+          <PayersTableItem
+            key={id?.$}
+            name={name?.$}
+            status={profiletype?.$}
+            id={id?.$}
+            editHanler={editHanler}
+          />
         )
       })}
     </div>

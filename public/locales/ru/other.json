@@ -78,5 +78,6 @@
   "The address": "Адрес",
   "Enter address": "Введите адрес",
   "Passport": "Паспорт",
-  "Series and passport number": "Серия и номер паспорта"
+  "Series and passport number": "Серия и номер паспорта",
+  "Is a required field": "Обязательное поле"
 }

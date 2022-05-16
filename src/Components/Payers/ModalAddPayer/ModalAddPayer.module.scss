@@ -72,16 +72,41 @@
   margin-top: 13px;
 }
 
+.inputHeight {
+  height: 46px;
+}
+
+.phoneInputLabel {
+  margin: 0 0 5px 10px;
+}
+
 .select {
   max-width: 250px;
   margin-top: 13px;
   margin-right: 20px;
+
+  span {
+    font-size: 16px;
+  }
+
+  div {
+    font-size: 16px;
+  }
 }
 
 .phoneInput {
   width: 100%;
   max-width: 250px;
   margin: 13px 20px 0 0;
+
+  input {
+    height: 46px !important;
+    background-color: var(--elements-bgc) !important;
+  }
+
+  div {
+    background-color: var(--elements-bgc) !important;
+  }
 }
 
 .btnBlock {
@@ -110,6 +135,40 @@
   &:active {
     transform: scale(0.95);
   }
+}
+
+.countrySelectItem {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 13px;
+  }
+}
+
+.offerBlock {
+  display: flex;
+  align-items: center;
+  margin-top: 33px;
+  max-width: 270px;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.offerBlockText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--main-text);
+}
+
+.offerBlockLink {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {

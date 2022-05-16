@@ -9,7 +9,7 @@ import {
   Portal,
   ModalAddPayer,
 } from '../../Components'
-import { payersOperations, payersSelectors } from '../../Redux'
+import { payersActions, payersOperations, payersSelectors } from '../../Redux'
 import s from './PayersPage.module.scss'
 
 export default function Component() {
@@ -19,6 +19,7 @@ export default function Component() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [addPayerModal, setAddPayerModal] = useState(false)
+  const [elid, setElid] = useState(null)
 
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersCount = useSelector(payersSelectors.getPayersCount)
@@ -32,6 +33,17 @@ export default function Component() {
     dispatch(payersOperations.getPayers(data))
   }, [currentPage])
 
+  const closeAddModalHandler = () => {
+    setElid(null)
+    dispatch(payersActions.setPayersSelectedFields(null))
+    setAddPayerModal(false)
+  }
+
+  const openEditModalHandler = id => {
+    setElid(id)
+    setAddPayerModal(true)
+  }
+
   return (
     <Container>
       <div className={s.body}>
@@ -41,7 +53,7 @@ export default function Component() {
           label={t('Add')}
           className={s.addBtn}
         />
-        <PayersTable list={payersList} />
+        <PayersTable openEditModalHandler={openEditModalHandler} list={payersList} />
         <div className={s.content}>
           <div className={s.pagination}>
             <Pagination
@@ -54,7 +66,9 @@ export default function Component() {
         </div>
       </div>
       <Portal>
-        {addPayerModal && <ModalAddPayer setAddPayerModal={setAddPayerModal} />}
+        {addPayerModal && (
+          <ModalAddPayer elid={elid} closeAddModalHandler={closeAddModalHandler} />
+        )}
       </Portal>
     </Container>
   )
