@@ -12,48 +12,21 @@ import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
 import { useOutsideAlerter } from '../../../utils'
-import checkIfComponentShouldRender from '../../../checkIfComponentShouldRender'
+import usePageRender from '../../hooks/usePageRender'
 
 export default function Header() {
   const { t } = useTranslation('container')
-  const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
   const dispatch = useDispatch()
 
-  const isEnvelopeAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'clientticket',
-  )
+  const isEnvelopeAllowedToRender = usePageRender('support', 'clientticket')
+  const isBellAllowedToRender = usePageRender('support', 'notification')
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
 
-  const isBellAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'support',
-    'notification',
-  )
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
 
-  const isTrustedUsersAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'user',
-  )
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
 
-  const areUserSettingsAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'usrparam',
-  )
-
-  const isAuthLogAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'stat',
-    'authlog',
-  )
-
-  const arePayersAllowedToRender = checkIfComponentShouldRender(
-    currentSessionRights,
-    'customer',
-    'profile',
-  )
+  const arePayersAllowedToRender = usePageRender('customer', 'profile')
 
   const profileMenuList = [
     {
