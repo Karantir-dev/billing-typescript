@@ -2,9 +2,7 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
-  height: 100vh;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -16,8 +14,8 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 38px 50px;
-  margin: 0 30px;
+  padding: 21px 22px;
+  margin: 20px 30px;
   max-width: 640px;
   width: 100%;
 }
@@ -67,8 +65,7 @@
 }
 
 .input {
-  max-width: 250px;
-  margin-right: 20px;
+  max-width: 100%;
   margin-top: 13px;
 }
 
@@ -81,9 +78,8 @@
 }
 
 .select {
-  max-width: 250px;
+  max-width: 100%;
   margin-top: 13px;
-  margin-right: 20px;
 
   span {
     font-size: 16px;
@@ -96,8 +92,8 @@
 
 .phoneInput {
   width: 100%;
-  max-width: 250px;
-  margin: 13px 20px 0 0;
+  max-width: 100%;
+  margin: 13px 0 0 0;
 
   input {
     height: 46px !important;
@@ -172,6 +168,31 @@
 }
 
 @media screen and (min-width: 768px) {
+  .modalBg {
+    align-items: center;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    padding: 38px 50px;
+    margin: 0 30px;
+  }
+
+  .phoneInput {
+    max-width: 250px;
+    margin: 13px 20px 0 0;
+  }
+
+  .input {
+    max-width: 250px;
+    margin-right: 20px;
+  }
+
+  .select {
+    max-width: 250px;
+    margin-right: 20px;
+  }
+
   .btnBlock {
     flex-direction: row;
   }

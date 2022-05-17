@@ -131,9 +131,18 @@ const getPayerModalInfo =
 
         let linkName = ''
 
+        let passportField = false
+
         data.doc?.metadata?.form?.page?.forEach(e => {
           if (e?.$name === 'offer' && e?.field && e?.field?.length !== 0) {
             linkName = e?.field[0]?.$name
+          }
+          if (e?.$name === 'contract' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'passport') {
+                passportField = true
+              }
+            })
           }
         })
 
@@ -154,6 +163,7 @@ const getPayerModalInfo =
           offer_link: link || '',
           offer_name: linkText || '',
           offer_field: linkName || '',
+          passport_field: passportField,
         }
 
         const filters = {}
@@ -201,6 +211,25 @@ const getPayerEditInfo =
           return dispatch(getPayers())
         }
 
+        let passportField = false
+
+        data.doc?.metadata?.form?.page?.forEach(e => {
+          if (e?.$name === 'contract' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'passport') {
+                passportField = true
+              }
+            })
+          }
+        })
+
+        let mailDocs = ''
+        if (Array.isArray(data.doc?.maildocs)) {
+          mailDocs = data.doc?.maildocs.map(doc => doc.$).join(',')
+        } else {
+          mailDocs = data.doc?.maildocs?.$
+        }
+
         const selectedFields = {
           country: data.doc?.country?.$ || '',
           country_physical: data.doc?.country_physical?.$ || '',
@@ -208,10 +237,12 @@ const getPayerEditInfo =
           address_physical: data.doc?.address_physical?.$ || '',
           city_physical: data.doc?.city_physical?.$ || '',
           email: data.doc?.email?.$ || '',
-          maildocs: data.doc?.maildocs || '',
+          maildocs: mailDocs || '',
           person: data.doc?.person?.$ || '',
           phone: data.doc?.phone?.$ || '',
           postcode_physical: data.doc?.postcode_physical?.$ || '',
+          passport: data.doc?.passport?.$ || '',
+          passport_field: passportField,
         }
 
         const filters = {}

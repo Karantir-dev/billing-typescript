@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
 import { Cross } from '../../../images'
-import { Select, InputField, CustomPhoneInput, Button, CheckBox } from '../..'
+import {
+  Select,
+  InputField,
+  CustomPhoneInput,
+  Button,
+  CheckBox,
+  SelectMultiple,
+} from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
 import { BASE_URL } from '../../../config/config'
 import s from './ModalAddPayer.module.scss'
@@ -46,12 +53,6 @@ export default function Component(props) {
     ),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     [payersSelectedFields?.offer_field]: elid ? null : Yup.bool().oneOf([true]),
-    phone: Yup.string()
-      .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        t('trusted_users.form_errors.phone', { ns: 'trusted_users' }),
-      )
-      .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' })),
   })
 
   const createPayerHandler = values => {
@@ -95,7 +96,7 @@ export default function Component(props) {
               payersSelectedFields?.country_physical ||
               '',
             profiletype: payersSelectedFields?.profiletype || '',
-            maildocs: '',
+            maildocs: payersSelectedFields?.maildocs || '',
             email: payersSelectedFields?.email || '',
             phone: payersSelectedFields?.phone || '',
             person: payersSelectedFields?.person || '',
@@ -159,7 +160,7 @@ export default function Component(props) {
                       error={!!errors.email}
                       touched={!!touched.email}
                     />
-                    <Select
+                    <SelectMultiple
                       placeholder={t('Not chosen', { ns: 'other' })}
                       label={`${t('Receive documents')}:`}
                       value={values.maildocs}
@@ -227,44 +228,50 @@ export default function Component(props) {
                     />
                   </div>
                 </div>
-                <div className={s.formBlock}>
-                  <div className={s.formBlockTitle}>3. {t('Data for the contract')}</div>
-                  <div className={s.formFieldsBlock}>
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="passport"
-                      label={`${t('Passport', { ns: 'other' })}:`}
-                      placeholder={t('Series and passport number', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.passport}
-                      touched={!!touched.passport}
-                    />
-                    {payersSelectedFields?.offer_link && (
-                      <div className={s.offerBlock}>
-                        <CheckBox
-                          initialState={values[payersSelectedFields?.offer_field]}
-                          setValue={item =>
-                            setFieldValue(`${payersSelectedFields?.offer_field}`, item)
-                          }
-                          className={s.checkbox}
-                          error={!!errors[payersSelectedFields?.offer_field]}
+                {(payersSelectedFields?.passport_field || !elid) && (
+                  <div className={s.formBlock}>
+                    <div className={s.formBlockTitle}>
+                      3. {t('Data for the contract')}
+                    </div>
+                    <div className={s.formFieldsBlock}>
+                      {payersSelectedFields?.passport_field && (
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="passport"
+                          label={`${t('Passport', { ns: 'other' })}:`}
+                          placeholder={t('Series and passport number', { ns: 'other' })}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.passport}
+                          touched={!!touched.passport}
                         />
-                        <div className={s.offerBlockText}>
-                          {t('I agree with the terms of the offer')}
-                          <br />
-                          <button
-                            onClick={offerTextHandler}
-                            type="button"
-                            className={s.offerBlockLink}
-                          >
-                            {payersSelectedFields?.offer_name}
-                          </button>
+                      )}
+                      {payersSelectedFields?.offer_link && (
+                        <div className={s.offerBlock}>
+                          <CheckBox
+                            initialState={values[payersSelectedFields?.offer_field]}
+                            setValue={item =>
+                              setFieldValue(`${payersSelectedFields?.offer_field}`, item)
+                            }
+                            className={s.checkbox}
+                            error={!!errors[payersSelectedFields?.offer_field]}
+                          />
+                          <div className={s.offerBlockText}>
+                            {t('I agree with the terms of the offer')}
+                            <br />
+                            <button
+                              onClick={offerTextHandler}
+                              type="button"
+                              className={s.offerBlockLink}
+                            >
+                              {payersSelectedFields?.offer_name}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className={s.btnBlock}>
                   <Button
                     className={s.saveBtn}
