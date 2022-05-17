@@ -13,7 +13,7 @@ import {
 } from '../'
 
 import s from './AffiliateProgram.module.scss'
-import usePageRender from '../../utils/hooks/usePageRender'
+import { usePageRender } from '../../utils'
 
 export default function AffiliateProgram() {
   const { t } = useTranslation(['affiliate_program', 'trusted_users'])

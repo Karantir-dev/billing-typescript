@@ -10,7 +10,7 @@ import { Logo, Pin, Box, Wallet, Social, Support } from './../../../images'
 import * as routes from '../../../routes'
 
 import s from './AsideServicesMenu.module.scss'
-import usePageRender from '../../../utils/hooks/usePageRender'
+import { usePageRender } from '../../../utils'
 
 const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)

@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { actions } from '../'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 import { axiosInstance } from './../../config/axiosInstance'
 import usersActions from './usersActions'

@@ -25,6 +25,7 @@ export default function InputField(props) {
     disabled,
     inputWrapperClass,
     onKeyDown,
+    isRequired,
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -70,7 +71,7 @@ export default function InputField(props) {
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && (
         <label htmlFor={name} className={s.label}>
-          {label}
+          {isRequired ? requiredLabel(label) : label}
         </label>
       )}
       <div className={cn(s.input_wrapper, inputWrapperClass)} style={{ height }}>
@@ -102,6 +103,14 @@ export default function InputField(props) {
   )
 }
 
+export function requiredLabel(labelName) {
+  return (
+    <>
+      {labelName} {<span className={s.required_star}>*</span>}
+    </>
+  )
+}
+
 InputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
@@ -118,6 +127,7 @@ InputField.propTypes = {
   height: PropTypes.number,
   background: PropTypes.bool,
   disabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
   inputWrapperClass: PropTypes.string,
   onKeyDown: PropTypes.func,
 }
@@ -128,5 +138,6 @@ InputField.defaultProps = {
   autoComplete: false,
   dataTestid: null,
   disabled: false,
+  isRequired: false,
   onKeyDown: () => null,
 }

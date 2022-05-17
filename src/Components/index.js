@@ -45,6 +45,8 @@ export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'
 
+export { default as CheckBox } from './ui/CheckBox/CheckBox'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
@@ -70,3 +72,7 @@ export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
 export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
 
 export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
+
+//==========================================PAYERS==========================================//
+export { default as PayersTable } from './Payers/PayersTable/PayersTable'
+export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'

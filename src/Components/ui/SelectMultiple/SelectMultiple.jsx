@@ -87,7 +87,10 @@ export default function Component(props) {
   }
 
   return (
-    <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
+    <div
+      style={{ marginBottom: calculateTop() - 70 }}
+      className={cn({ [s.field_wrapper]: true, [className]: className })}
+    >
       {label && <label className={s.label}>{label}</label>}
       <button
         type="button"

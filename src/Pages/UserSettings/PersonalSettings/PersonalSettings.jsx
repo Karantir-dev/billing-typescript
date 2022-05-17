@@ -165,12 +165,13 @@ export default function Component({ isComponentAllowedToEdit }) {
                     background
                     disabled={userEdit?.email?.readonly}
                     name="email"
-                    label={requiredLabel(`${t('Email')}:`)}
+                    label={`${t('Email')}:`}
                     placeholder={t('email_placeholder', { ns: 'auth' })}
                     isShadow
                     className={cn(s.emailInput, s.input)}
                     error={!!errors.email}
                     touched={!!touched.email}
+                    isRequired
                   />
                   <InputField
                     background
@@ -319,14 +320,6 @@ export default function Component({ isComponentAllowedToEdit }) {
           <ModalPickPhoto avatarFile={avatarFile} setAvatarFile={setAvatarFile} />
         )}
       </Portal>
-    </>
-  )
-}
-
-export function requiredLabel(labelName) {
-  return (
-    <>
-      {labelName} {<span className={s.required_star}>*</span>}
     </>
   )
 }

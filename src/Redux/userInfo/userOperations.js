@@ -3,7 +3,7 @@ import i18n from 'i18next'
 
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user

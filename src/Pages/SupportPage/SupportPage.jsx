@@ -6,7 +6,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import * as route from '../../routes'
 
 import { PageTabBar } from '../../Components/'
-import usePageRender from '../../utils/hooks/usePageRender'
+import { usePageRender } from '../../utils'
 
 import s from './SupportPage.module.scss'
 import { toast } from 'react-toastify'

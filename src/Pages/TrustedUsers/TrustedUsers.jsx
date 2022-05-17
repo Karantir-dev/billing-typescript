@@ -12,10 +12,9 @@ import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageU
 import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
 
 import * as routes from '../../routes'
-// import checkIfComponentShouldRender from '../../checkIfComponentShouldRender'
 
 import s from './TrustedUsers.module.scss'
-import usePageRender from '../../utils/hooks/usePageRender'
+import { usePageRender } from '../../utils'
 
 export default function TrustedUsers() {
   const isComponentAllowedToRender = usePageRender('customer', 'user')
