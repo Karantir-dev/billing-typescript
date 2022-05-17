@@ -87,7 +87,7 @@ jobs:
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
       - name: Update Version
         run: |
-          sed -i "s|$DOCKER_USERNAME/zomro-bill-dev|$DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|zomrocom/zomro-bill-dev|zomrocom/zomro-bill-dev:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
