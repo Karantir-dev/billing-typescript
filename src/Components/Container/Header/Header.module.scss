@@ -291,9 +291,20 @@
 }
 
 .notification_messages_counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 25px;
   position: absolute;
+  background: var(--accent-gradient);
+  border: 2px solid var(--elements-bgc);
   right: 7px;
   top: 0;
+  font-weight: 700;
+  font-size: 4px;
+  line-height: 130%;
   color: var(--main-text);
 }
 
