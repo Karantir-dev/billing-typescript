@@ -14,3 +14,5 @@ export const AFFILIATE_PROGRAM_STATISTICS = 'statistics'
 export const BILLING = '/billing'
 
 export const CONFIRM_EMAIL = '/confrim_email'
+
+export const ERROR_PAGE = '/error_page'

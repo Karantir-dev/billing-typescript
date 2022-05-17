@@ -3,6 +3,7 @@ import { axiosInstance } from './../../config/axiosInstance'
 import authSelectors from '../auth/authSelectors'
 import { actions } from '../'
 import { affiliateActions } from './actions'
+import errorHandler from '../../utils/errorHandler'
 
 const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -27,6 +28,7 @@ const getReferralLink = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getReferralLink - ', err.message)
     })
@@ -77,6 +79,7 @@ const getInitialIncomeInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialIncomeInfo - ', err.message)
       })
@@ -101,7 +104,7 @@ const getChartInfo =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
+        console.log(data)
         const tableData = data.doc?.reportdata?.reward?.elem
 
         if (tableData) {
@@ -122,6 +125,7 @@ const getChartInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getChartInfo - ', err.message)
       })
@@ -148,6 +152,7 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getDayDetails - ', err.message)
     })
@@ -195,6 +200,7 @@ const getInitialStatistics =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialStatistics - ', err)
       })
@@ -245,6 +251,7 @@ const getFilteredStatistics =
           })
       })
       .catch(err => {
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getFilteredStatistics - ', err.message)
       })
@@ -274,6 +281,7 @@ const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getSta
       dispatch(actions.hideLoader())
     })
     .catch(err => {
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getNextPageStatistics - ', err.message)
     })
@@ -317,6 +325,7 @@ const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
         })
     })
     .catch(err => {
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('dropFilters - ', err.message)
     })

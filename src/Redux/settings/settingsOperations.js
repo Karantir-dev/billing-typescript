@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
 import i18n from './../../i18n'
+import errorHandler from '../../utils/errorHandler'
 
 const getUserEdit =
   (elid, checkEmail = false) =>
@@ -67,6 +68,7 @@ const getUserEdit =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -96,6 +98,7 @@ const setUserAvatar =
       .then(() => dispatch(actions.hideLoader()))
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -193,6 +196,7 @@ const getUserParams =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -223,6 +227,7 @@ const getTimeByTimeZone =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -297,11 +302,13 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
         })
         .catch(error => {
           console.log('error', error)
+          errorHandler(error.message, dispatch)
           dispatch(actions.hideLoader())
         })
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -354,6 +361,7 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
 
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -381,6 +389,7 @@ const sendEmailConfirm = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -445,6 +454,7 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -482,6 +492,7 @@ const setTotp = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -506,6 +517,7 @@ const getQR = link => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -535,6 +547,7 @@ const getSecretKeyFile = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -578,6 +591,7 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -624,6 +638,7 @@ const confirmEmail = key => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
     })
 }
 
