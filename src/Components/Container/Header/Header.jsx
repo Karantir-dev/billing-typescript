@@ -175,9 +175,9 @@ export default function Header() {
                         className={cn({ [s.icon]: true, [s.bell]: true })}
                       />
                       {mesAmount > 0 && (
-                        <span className={s.notification_messages_counter}>
-                          {mesAmount}
-                        </span>
+                        <div className={s.notification_counter_wrapper}>
+                          <p className={s.notification_messages_counter}>{mesAmount}</p>
+                        </div>
                       )}
                     </button>
                   </li>

@@ -37,6 +37,8 @@ const AsideServicesMenu = () => {
     return null
   }
 
+  //added error page test one first link
+
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
@@ -47,10 +49,11 @@ const AsideServicesMenu = () => {
             className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
           />
         </div>
+
         {areServicesAllowedToRender && (
           <li className={s.item}>
             <NavLink
-              to={routes.HOME}
+              to={routes.ERROR_PAGE}
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >

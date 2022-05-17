@@ -3,6 +3,7 @@ import i18n from 'i18next'
 
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
+import errorHandler from '../../utils/errorHandler'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
@@ -79,10 +80,11 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       dispatch(userActions.hideUserInfoLoading())
       setLoading && setLoading(false)
       console.log('getUserInfo - ', err.message)
+      errorHandler(err.message, dispatch)
     })
 }
 
-const removeItems = (sessionId, id) => {
+const removeItems = (sessionId, id) => dispatch => {
   axiosInstance
     .post(
       '/',
@@ -99,6 +101,7 @@ const removeItems = (sessionId, id) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
     })
 }
 

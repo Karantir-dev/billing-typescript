@@ -31,6 +31,7 @@ import {
 } from './Pages'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
+import ErrorPage from './Pages/ErrorPage/ErrorPage'
 
 export default function App() {
   return (
@@ -152,6 +153,12 @@ export default function App() {
                       children={<EmailConfirmation />}
                       redirectTo={route.LOGIN}
                     />
+                  }
+                />
+                <Route
+                  path={`${route.ERROR_PAGE}/*`}
+                  element={
+                    <PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />
                   }
                 />
               </Routes>

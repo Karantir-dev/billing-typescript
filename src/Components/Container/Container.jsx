@@ -22,8 +22,6 @@ export default function Component({ children }) {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
   }, [])
 
-  //cannot modify rights for itself//
-
   if (loading) {
     return <></>
   }
