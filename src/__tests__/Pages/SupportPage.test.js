@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { Route, MemoryRouter, Routes } from 'react-router-dom'
 import OpenedTicket from '../../Pages/SupportPage/OpenedTicket/OpenedTicket'
-import { SupportPage } from '../../Pages'
+
 import {
   SupportTable,
   SupportArchiveTable,
