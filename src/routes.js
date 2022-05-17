@@ -16,3 +16,4 @@ export const BILLING = '/billing'
 export const CONFIRM_EMAIL = '/confrim_email'
 
 export const ERROR_PAGE = '/error_page'
+export const SERVICES = '/services'

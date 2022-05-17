@@ -301,7 +301,7 @@
   position: absolute;
   background: var(--accent-gradient);
   border: 2px solid var(--elements-bgc);
-  right: 2px;
+  right: 32px;
   top: -2px;
   font-weight: 700;
   font-size: 7px;
@@ -486,6 +486,11 @@ $hamburger-layer-border-radius: 99px;
     &.bell {
       margin-right: 10px;
     }
+  }
+
+  .notification_counter_wrapper {
+    right: 2px;
+    top: -2px;
   }
 
   .burger_menu {

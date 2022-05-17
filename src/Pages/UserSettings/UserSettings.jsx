@@ -71,7 +71,7 @@ export default function Component() {
     } else if (path === 'access' && isComponentAllowedToRender) {
       return <AccessSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else {
-      return <Navigate to={route.HOME} />
+      return <Navigate to={route.ERROR_PAGE} />
     }
   }
 

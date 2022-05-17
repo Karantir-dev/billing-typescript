@@ -27,6 +27,7 @@ import {
   OpenedTicker,
   UserSettings,
   BillingPage,
+  ServicesPage,
 } from './Pages'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
@@ -152,6 +153,12 @@ export default function App() {
                   path={`${route.ERROR_PAGE}/*`}
                   element={
                     <PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />
+                  }
+                />
+                <Route
+                  path={`${route.SERVICES}/*`}
+                  element={
+                    <PrivateRoute children={<ServicesPage />} redirectTo={route.LOGIN} />
                   }
                 />
               </Routes>
