@@ -1,0 +1,155 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 21px 22px;
+  margin: 20px 30px;
+  max-width: 690px;
+  width: 100%;
+}
+
+.modalHeader {
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.formBlock {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+
+  &.last {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e1daea;
+  }
+}
+
+.formBlockTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  margin-bottom: 5px;
+  color: var(--main-text);
+}
+
+.formFieldsBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btnBlock {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+}
+
+.select {
+  max-width: 313px;
+  margin-top: 15px;
+}
+
+.input {
+  margin-top: 15px;
+  flex-basis: 30%;
+}
+
+.paymentMethodBtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-basis: 30%;
+  margin: 15px 15px 0 0;
+  padding: 14px;
+  box-shadow: var(--forms2_shadow);
+  background-color: var(--forms_bgc_3);
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130.5%;
+    color: var(--main-text);
+    margin-left: 14px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.infotext {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--main-text);
+  margin-top: 17px;
+
+  span {
+    color: var(--error-color)
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    align-items: center;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    padding: 38px 50px;
+    margin: 0 30px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 254px;
+  }
+}

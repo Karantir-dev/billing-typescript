@@ -13,6 +13,9 @@ const initialState = {
 
   expensesFiltersList: null,
   expensesFilters: null,
+
+  paymentsMethodList: [],
+  paymentsCurrencyList: [],
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -53,6 +56,14 @@ const expensesFilters = createReducer(initialState.expensesFilters, {
   [billingActions.setExpensesFilters]: (_, { payload }) => payload,
 })
 
+const paymentsMethodList = createReducer(initialState.paymentsMethodList, {
+  [billingActions.setPaymentMethodsList]: (_, { payload }) => payload,
+})
+
+const paymentsCurrencyList = createReducer(initialState.paymentsCurrencyList, {
+  [billingActions.setPaymentCurrencyList]: (_, { payload }) => payload,
+})
+
 const billingReducer = combineReducers({
   paymentsList,
   paymentsCount,
@@ -64,6 +75,9 @@ const billingReducer = combineReducers({
 
   expensesFiltersList,
   expensesFilters,
+
+  paymentsMethodList,
+  paymentsCurrencyList,
 })
 
 export default billingReducer

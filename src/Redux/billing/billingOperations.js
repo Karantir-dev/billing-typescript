@@ -398,6 +398,48 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
     })
 }
 
+const getPaymentMethod =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add.method',
+          out: 'json',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'methodlist') {
+            dispatch(billingActions.setPaymentMethodsList(el?.elem))
+          }
+        })
+
+        data.doc?.slist?.forEach(el => {
+          if (el.$name === 'payment_currency') {
+            dispatch(billingActions.setPaymentCurrencyList(el?.val))
+          }
+        })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -408,4 +450,5 @@ export default {
   getExpenses,
   getExpensesCsv,
   setExpensesFilters,
+  getPaymentMethod,
 }
