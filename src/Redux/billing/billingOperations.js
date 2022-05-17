@@ -3,6 +3,7 @@ import { actions, billingActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
+import logout from '../../utils/logout'
 
 const getPayments =
   (body = {}) =>
@@ -37,6 +38,7 @@ const getPayments =
       })
       .catch(error => {
         console.log('error', error)
+        logout(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -86,6 +88,7 @@ const getPaymentsFilters = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -117,6 +120,7 @@ const setPaymentsFilters =
       })
       .catch(error => {
         console.log('error', error)
+        logout(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -152,6 +156,7 @@ const getPaymentPdf = (elid, name) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -187,6 +192,7 @@ const getPaymentCsv = p_cnt => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -235,6 +241,7 @@ const deletePayment = elid => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -272,6 +279,7 @@ const getExpenses =
       })
       .catch(error => {
         console.log('error', error)
+        logout(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -318,6 +326,7 @@ const getExpensesFilters = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -349,6 +358,7 @@ const setExpensesFilters =
       })
       .catch(error => {
         console.log('error', error)
+        logout(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -384,6 +394,7 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      logout(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

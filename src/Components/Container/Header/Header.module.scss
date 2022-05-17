@@ -290,7 +290,8 @@
   font-size: 12px;
 }
 
-.notification_messages_counter {
+.notification_counter_wrapper {
+  box-sizing: content-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -300,12 +301,19 @@
   position: absolute;
   background: var(--accent-gradient);
   border: 2px solid var(--elements-bgc);
-  right: 7px;
-  top: 0;
+  right: 2px;
+  top: -2px;
   font-weight: 700;
-  font-size: 4px;
-  line-height: 130%;
+  font-size: 7px;
   color: var(--main-text);
+}
+
+.notification_messages_counter {
+  font-weight: 700;
+  font-size: 7px;
+  max-height: fit-content;
+  line-height: 100%;
+  color: white;
 }
 
 //burger menu

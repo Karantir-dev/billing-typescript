@@ -54,6 +54,8 @@ export default function Component() {
       return <Expenses />
     } else if (path === 'auto_payment' && isAutoPaymentComponentAllowedToRender) {
       return <AutoPayment />
+    } else {
+      return <Navigate to={route.HOME} />
     }
   }
 
