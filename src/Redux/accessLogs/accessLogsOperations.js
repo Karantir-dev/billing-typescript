@@ -3,7 +3,7 @@ import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
 import { actions } from '../'
 import i18n from 'i18next'
-import logout from '../../utils/logout'
+import errorHandler from '../../utils/errorHandler'
 
 const getAccessLogsHandler =
   (body = {}) =>
@@ -39,7 +39,7 @@ const getAccessLogsHandler =
       })
       .catch(error => {
         console.log('logs -', error.message)
-        logout(error.message, dispatch)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -73,7 +73,7 @@ const getAccessLogsFiltersHandler =
         dispatch(accessLogsActions.getCurrentFilters(data?.doc?.filter?.param))
       })
       .catch(error => {
-        logout(error.message, dispatch)
+        errorHandler(error.message, dispatch)
         console.log('logs -', error.message)
       })
   }
@@ -123,7 +123,7 @@ const filterDataHandler =
             dispatch(accessLogsActions.getAccessLogs(elem))
           })
           .catch(error => {
-            logout(error.message, dispatch)
+            errorHandler(error.message, dispatch)
             console.log('logs -', error.message)
           })
       })

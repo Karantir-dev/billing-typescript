@@ -2,7 +2,7 @@ import qs from 'qs'
 import supportActions from './supportActions'
 import { axiosInstance } from '../../config/axiosInstance'
 import { actions } from '../'
-import logout from '../../utils/logout'
+import errorHandler from '../../utils/errorHandler'
 
 const getTicketsHandler =
   (body = {}) =>
@@ -38,7 +38,7 @@ const getTicketsHandler =
       })
       .catch(error => {
         console.log('support -', error.message)
-        logout(error.message, dispatch)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -69,7 +69,7 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -100,7 +100,7 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support archive -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -139,7 +139,7 @@ const getTicketsArchiveHandler =
       })
       .catch(error => {
         console.log('support -', error.message)
-        logout(error.message, dispatch)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -194,7 +194,7 @@ const setRate = (type, elid, plid, setStatus) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support rate-', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
     })
 }
 
@@ -226,7 +226,7 @@ const sendMessage = (elid, data) => (dispatch, getState) => {
     .catch(error => {
       dispatch(actions.hideLoader())
       console.log('support rate-', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
     })
 }
 
@@ -256,7 +256,7 @@ const getDepartmenList = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support rate-', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
     })
 }
 
@@ -292,7 +292,7 @@ const getServiceList = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support rate-', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
     })
 }
 
@@ -328,7 +328,7 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
     .catch(error => {
       console.log('support rate-', error.message)
       dispatch(actions.hideLoader())
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       setCreateTicketModal(false)
     })
 }
@@ -394,7 +394,7 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -445,7 +445,7 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -511,7 +511,7 @@ const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -562,7 +562,7 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('support -', error.message)
-      logout(error.message, dispatch)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

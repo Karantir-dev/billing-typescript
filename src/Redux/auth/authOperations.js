@@ -76,9 +76,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       qs.stringify({
         func: 'keepalive',
         auth: sessionId,
-        sok: 'ok',
         out: 'json',
-        lang: 'en',
       }),
     )
     .then(data => {

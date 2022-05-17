@@ -3,7 +3,7 @@ import { axiosInstance } from './../../config/axiosInstance'
 import authSelectors from '../auth/authSelectors'
 import { actions } from '../'
 import { affiliateActions } from './actions'
-import logout from '../../utils/logout'
+import errorHandler from '../../utils/errorHandler'
 
 const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -28,7 +28,7 @@ const getReferralLink = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      logout(err.message, dispatch)
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getReferralLink - ', err.message)
     })
@@ -79,7 +79,7 @@ const getInitialIncomeInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        logout(err.message, dispatch)
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialIncomeInfo - ', err.message)
       })
@@ -125,7 +125,7 @@ const getChartInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        logout(err.message, dispatch)
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getChartInfo - ', err.message)
       })
@@ -152,7 +152,7 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      logout(err.message, dispatch)
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getDayDetails - ', err.message)
     })
@@ -200,7 +200,7 @@ const getInitialStatistics =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        logout(err.message, dispatch)
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialStatistics - ', err)
       })
@@ -251,7 +251,7 @@ const getFilteredStatistics =
           })
       })
       .catch(err => {
-        logout(err.message, dispatch)
+        errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getFilteredStatistics - ', err.message)
       })
@@ -281,7 +281,7 @@ const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getSta
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      logout(err.message, dispatch)
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getNextPageStatistics - ', err.message)
     })
@@ -325,7 +325,7 @@ const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
         })
     })
     .catch(err => {
-      logout(err.message, dispatch)
+      errorHandler(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('dropFilters - ', err.message)
     })
