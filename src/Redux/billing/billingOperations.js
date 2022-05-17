@@ -3,7 +3,7 @@ import { actions, billingActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getPayments =
   (body = {}) =>

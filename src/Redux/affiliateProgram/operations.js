@@ -3,7 +3,7 @@ import { axiosInstance } from './../../config/axiosInstance'
 import authSelectors from '../auth/authSelectors'
 import { actions } from '../'
 import { affiliateActions } from './actions'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())

@@ -3,7 +3,7 @@ import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
 import { actions } from '../'
 import i18n from 'i18next'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getAccessLogsHandler =
   (body = {}) =>

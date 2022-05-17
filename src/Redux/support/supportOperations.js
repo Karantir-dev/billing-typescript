@@ -2,7 +2,7 @@ import qs from 'qs'
 import supportActions from './supportActions'
 import { axiosInstance } from '../../config/axiosInstance'
 import { actions } from '../'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getTicketsHandler =
   (body = {}) =>

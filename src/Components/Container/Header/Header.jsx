@@ -11,8 +11,7 @@ import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
-import { useOutsideAlerter } from '../../../utils'
-import usePageRender from '../../../utils/hooks/usePageRender'
+import { useOutsideAlerter, usePageRender } from '../../../utils'
 
 export default function Header() {
   const { t } = useTranslation('container')

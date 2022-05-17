@@ -8,7 +8,7 @@ import AutoPayment from './AutoPayment/AutoPayment'
 import s from './BillingPgae.module.scss'
 
 import * as route from '../../routes'
-import usePageRender from '../../utils/hooks/usePageRender'
+import { usePageRender } from '../../utils'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])

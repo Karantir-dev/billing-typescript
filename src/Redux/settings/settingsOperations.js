@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
 import i18n from './../../i18n'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getUserEdit =
   (elid, checkEmail = false) =>

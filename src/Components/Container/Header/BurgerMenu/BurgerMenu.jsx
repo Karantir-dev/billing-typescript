@@ -9,11 +9,10 @@ import { ThemeBtn, LangBtn } from '../../../../Components'
 import { ExitSign } from '../../../../images'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '../../../../Redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { useOutsideAlerter, usePageRender } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './BurgerMenu.module.scss'
-import usePageRender from '../../../../utils/hooks/usePageRender'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
