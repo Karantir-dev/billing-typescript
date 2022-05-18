@@ -28,6 +28,7 @@ import {
   UserSettings,
   BillingPage,
   ServicesPage,
+  PayersPage,
 } from './Pages'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
@@ -107,6 +108,12 @@ export default function App() {
                   path={`${route.BILLING}/*`}
                   element={
                     <PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />
+                  }
+                />
+                <Route
+                  path={route.PAYERS}
+                  element={
+                    <PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />
                   }
                 />
                 <Route

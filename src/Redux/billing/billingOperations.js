@@ -3,7 +3,7 @@ import { actions, billingActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
-import errorHandler from '../../utils/errorHandler'
+import { errorHandler } from '../../utils'
 
 const getPayments =
   (body = {}) =>
@@ -318,7 +318,6 @@ const getExpensesFilters = () => (dispatch, getState) => {
         todate: data.doc?.todate?.$ || '',
       }
 
-      console.log(data.doc)
       dispatch(billingActions.setExpensesFilters(currentFilters))
       dispatch(billingActions.setExpensesFiltersLists(filters))
 

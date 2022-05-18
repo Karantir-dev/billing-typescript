@@ -66,5 +66,18 @@
   "Sum": "Sum",
   "Payment method": "Payment method",
   "Insufficient privileges to access": "Insufficient privileges to access",
-  "-- without payment method --": "Without payment method"
+  "-- without payment method --": "Without payment method",
+  "Create": "Create",
+  "Enter data": "Enter data",
+  "Enter email": "Enter email",
+  "The country": "The country",
+  "Index": "Index",
+  "Enter index": "Enter index",
+  "City": "City",
+  "Enter city": "Enter city",
+  "The address": "The address",
+  "Enter address": "Enter address",
+  "Passport": "Passport",
+  "Series and passport number": "Series and passport number",
+  "Is a required field": "Is a required field"
 }
