@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { Bell } from '../../../images'
 import * as routes from '../../../routes'
 import ServiceCard from '../ServiceCard/ServiceCard'
-
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react'
 // import { useTranslation } from 'react-i18next'
 // import { useSelector } from 'react-redux'
 
@@ -70,27 +68,19 @@ export default function ServicesList() {
   return (
     <div className={s.wrapper}>
       <ul className={s.list}>
-        <Swiper
-          spaceBetween={50}
-          slidesPerView={3}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={swiper => console.log(swiper)}
-        >
-          {servicesMenuList.map(item => {
-            const { id, name, routeName, allowedToRender, icon } = item
+        {servicesMenuList.map(item => {
+          const { id, name, routeName, allowedToRender, icon } = item
 
-            return (
-              <SwiperSlide key={id}>
-                <ServiceCard
-                  title={name}
-                  route={routeName}
-                  allowedToRender={allowedToRender}
-                  icon={icon}
-                />
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
+          return (
+            <ServiceCard
+              key={id}
+              title={name}
+              route={routeName}
+              allowedToRender={allowedToRender}
+              icon={icon}
+            />
+          )
+        })}
       </ul>
     </div>
   )
