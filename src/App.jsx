@@ -27,6 +27,7 @@ import {
   OpenedTicker,
   UserSettings,
   BillingPage,
+  ServicesPage,
   PayersPage,
 } from './Pages'
 import 'dayjs/locale/ru'
@@ -159,6 +160,12 @@ export default function App() {
                   path={`${route.ERROR_PAGE}/*`}
                   element={
                     <PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />
+                  }
+                />
+                <Route
+                  path={`${route.SERVICES}/*`}
+                  element={
+                    <PrivateRoute children={<ServicesPage />} redirectTo={route.LOGIN} />
                   }
                 />
               </Routes>

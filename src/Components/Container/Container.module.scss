@@ -2,6 +2,7 @@
   padding: 117px 30px 87px 30px;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
   &::-webkit-scrollbar {
     width: 5px;
   }
