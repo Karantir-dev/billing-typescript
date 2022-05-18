@@ -8,7 +8,7 @@ import s from './ErrorPage.module.scss'
 
 export default function ErrorPage() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const { t } = useTranslation('error_404')
+  const { t } = useTranslation('other')
 
   return (
     <div className={s.error_page}>
