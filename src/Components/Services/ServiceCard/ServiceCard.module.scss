@@ -1,7 +1,122 @@
 .card {
   min-width: 237px;
   height: 289px;
-  background-color: var(--forms_bgc_2);
+  background-color: var(--carousel-elements-bgc);
   box-shadow: var(--forms2_shadow);
-  margin-right: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  padding: 29px 25px 0 25px;
+}
+
+.card_numeric {
+  display: block;
+  font-size: 18px;
+  line-height: 113%;
+  color: #b3a9c1;
+  margin-bottom: 30px;
+}
+
+.card_title {
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-bottom: 30px;
+}
+
+.goto {
+  font-size: 18px;
+  line-height: 113%;
+  text-decoration: underline;
+  color: #b3a9c1;
+  padding-right: 13px;
+}
+
+.triangle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 237px;
+  height: 140px;
+  background: linear-gradient(
+    to bottom right,
+    var(--carousel-elements-bgc) 0%,
+    var(--carousel-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 100%
+  );
+  z-index: -1;
+}
+
+.icon_domains,
+.icon_vds,
+.icon_dedicated,
+.icon_dns_hosting,
+.icon_dns_hosting_min,
+.icon_ftp_storage,
+.icon_care,
+.icon_forexbox,
+.icon_virtual_hosting {
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+}
+
+.icon_domains {
+  bottom: -4px;
+}
+
+.icon_dedicated {
+  bottom: -6px;
+}
+
+.icon_virtual_hosting {
+  bottom: 15px;
+}
+
+.icon_forexbox {
+  bottom: 15px;
+}
+
+.forexbox_graphic {
+  position: absolute;
+  top: -8px;
+  left: 58px;
+}
+
+@media screen and (min-width: 768px) {
+  .card {
+    width: 306px;
+    height: 160px;
+  }
+
+  .card_numeric {
+    margin-bottom: 20px;
+  }
+  .card_title {
+    margin-bottom: 20px;
+  }
+  .link {
+    margin-bottom: 30px;
+    color: #b3a9c1;
+  }
+
+  .triangle {
+    left: unset;
+    right: 0;
+    width: 206px;
+    height: 160px;
+  }
+
+  .container {
+    max-width: 170px;
+  }
+
+  .forexbox_graphic {
+    position: absolute;
+    top: 2px;
+    left: 46px;
+  }
 }
