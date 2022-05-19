@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: zomro-bill
-        image: zomrocom/zomro-bill-dev:release-2022-05-18-09
+        image: zomrocom/zomro-bill-dev
         resources:
           requests:
             memory: "64Mi"
