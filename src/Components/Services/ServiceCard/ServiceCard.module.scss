@@ -1,29 +1,40 @@
 .card {
-  min-width: 237px;
-  height: 289px;
+  // overflow: hidden;
+  overflow: hidden;
   background-color: var(--carousel-elements-bgc);
   box-shadow: var(--forms2_shadow);
   position: relative;
   z-index: 1;
 }
 
+.card_container {
+  min-width: 237px;
+  height: 289px;
+}
+
 .container {
+  height: 146px;
   padding: 29px 25px 0 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card_numeric {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 113%;
   color: #b3a9c1;
-  margin-bottom: 30px;
+  transition: color 0.2s;
+  // margin-bottom: 30px;
 }
 
 .card_title {
   font-size: 20px;
   line-height: 113%;
   color: var(--main-text);
-  margin-bottom: 30px;
+  transition: font-size 0.2s, color 0.2s;
+  // margin-bottom: 30px;
 }
 
 .goto {
@@ -32,6 +43,14 @@
   text-decoration: underline;
   color: #b3a9c1;
   padding-right: 13px;
+  transition: color 0.2s;
+}
+
+.arrow {
+  font-size: 18px;
+  line-height: 113%;
+  color: #b3a9c1;
+  transition: color 0.2s;
 }
 
 .triangle {
@@ -87,20 +106,42 @@
 }
 
 @media screen and (min-width: 768px) {
-  .card {
+  .card_container {
     width: 306px;
     height: 160px;
+    transition: transform 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.05);
+
+      .card_numeric {
+        color: var(--main-text);
+      }
+      .card_title {
+        // font-weight: 700;
+        // font-size: 25px;
+        // line-height: 113%;
+        background: var(--accent-text-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .goto {
+        color: var(--main-text);
+      }
+      .arrow {
+        color: var(--main-text);
+      }
+    }
   }
 
-  .card_numeric {
-    margin-bottom: 20px;
+  .icon_virtual_hosting {
+    bottom: 10px;
+    right: 10px;
   }
-  .card_title {
-    margin-bottom: 20px;
-  }
-  .link {
-    margin-bottom: 30px;
-    color: #b3a9c1;
+  .icon_ftp_storage {
+    right: 10px;
   }
 
   .triangle {
@@ -111,12 +152,141 @@
   }
 
   .container {
-    max-width: 170px;
+    max-width: 190px;
+    height: 140px;
   }
 
   .forexbox_graphic {
     position: absolute;
-    top: 2px;
-    left: 46px;
+    top: 10px;
+    left: 52px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .card_container {
+    width: 260px;
+    height: 280px;
+  }
+
+  .triangle {
+    left: unset;
+    width: 260px;
+    height: 136px;
+  }
+
+  //icons
+  .icon_domains {
+    width: 115;
+    height: 125;
+  }
+  .icon_vds {
+    width: 93px;
+    height: 109px;
+  }
+  .icon_dedicated {
+    width: 96px;
+    height: 146px;
+  }
+
+  .icon_virtual_hosting {
+    width: 128px;
+    height: 98px;
+    right: 20px;
+    bottom: 15px;
+  }
+
+  .icon_dns_hosting {
+    width: 212px;
+    height: 105px;
+  }
+
+  .icon_ftp_storage {
+    width: 129px;
+    height: 112px;
+    right: 20px;
+  }
+  .icon_care {
+    width: 128px;
+    height: 118px;
+  }
+  .icon_forexbox {
+    width: 124px;
+    height: 92px;
+  }
+
+  .forexbox_graphic {
+    position: absolute;
+    top: -38px;
+    left: 0px;
+  }
+
+  .card_numeric {
+    font-size: 18px;
+  }
+  .card_title {
+    font-size: 21px;
+  }
+  .goto {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .card_numeric {
+    font-size: 23px;
+  }
+  .card_container {
+    width: 268px;
+    height: 285px;
+  }
+
+  .triangle {
+    left: unset;
+    width: 268px;
+    height: 142px;
+  }
+  .forexbox_graphic {
+    position: absolute;
+    top: -34px;
+    left: 0px;
+  }
+
+  //icons
+
+  .icon_domains {
+    width: 118;
+    height: 128;
+  }
+  .icon_vds {
+    width: 96px;
+    height: 112px;
+  }
+  .icon_dedicated {
+    width: 99px;
+    height: 151px;
+  }
+
+  .icon_virtual_hosting {
+    width: 132px;
+    height: 101px;
+  }
+
+  .icon_dns_hosting {
+    width: 219px;
+    height: 108px;
+  }
+
+  .icon_ftp_storage {
+    width: 133px;
+    height: 116px;
+  }
+  .icon_care {
+    width: 132px;
+    height: 122px;
+  }
+  .icon_forexbox {
+    width: 127px;
+    height: 94px;
   }
 }

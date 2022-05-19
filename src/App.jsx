@@ -15,6 +15,7 @@ import {
   Container,
   TrustedUsers,
   EmailConfirmation,
+  ServicesList,
 } from './Components'
 import entireStore from './Redux/store'
 import * as route from './routes'
@@ -165,7 +166,10 @@ export default function App() {
                 <Route
                   path={`${route.SERVICES}/*`}
                   element={
-                    <PrivateRoute children={<ServicesPage />} redirectTo={route.LOGIN} />
+                    <PrivateRoute
+                      children={<ServicesPage children={<ServicesList />} />}
+                      redirectTo={route.LOGIN}
+                    />
                   }
                 />
               </Routes>

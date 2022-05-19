@@ -8,27 +8,36 @@ import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
-// import { useTranslation } from 'react-i18next'
-// import { useSelector } from 'react-redux'
-
-// import { selectors } from '../../Redux'
 
 import './ServicesList.scss'
 import { useMediaQuery } from 'react-responsive'
+import { usePageRender } from '../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
 export default function ServicesList() {
   const { t } = useTranslation('container')
-  const tabletOrLower = useMediaQuery({ query: '(max-width: 1023px)' })
+  const tabletOrLower = useMediaQuery({ query: '(max-width: 1199px)' })
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain')
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds')
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic')
+  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost')
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage')
+  const isWebsitecareAllowedToRender = usePageRender(
+    'zabota-o-servere',
+    'clientticket_archive',
+  ) // this func is not provided in mainmenuservice, needs to be checked
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'wuwuwuw')
 
   const servicesMenuList = [
     {
       name: t('burger_menu.services.services_list.domains'),
       id: 1,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isDomainsAllowedToRender,
       icon_name: 'domains',
       icon_width: '97',
       icon_height: '117',
@@ -37,7 +46,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.virtual_servers'),
       id: 2,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isVdsAllowedToRender,
       icon_name: 'vds',
       icon_width: '99',
       icon_height: '115',
@@ -46,7 +55,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.dedicated_servers'),
       id: 3,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isDedicactedAllowedToRender,
       icon_name: 'dedicated',
       icon_width: '106',
       icon_height: '154',
@@ -55,7 +64,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.virtual_hosting'),
       id: 4,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isVirtualHostAllowedToRender,
       icon_name: 'virtual_hosting',
       icon_width: '118',
       icon_height: '90',
@@ -64,7 +73,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.dns_hosting'),
       id: 5,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isDnsAllowedToRender,
       icon_name: tabletOrLower ? 'dns_hosting_min' : 'dns_hosting',
       icon_width: '84',
       icon_height: '93',
@@ -73,7 +82,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.external_ftp'),
       id: 6,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isFtpAllowedToRender,
       icon_name: 'ftp_storage',
       icon_width: '111',
       icon_height: '97',
@@ -82,7 +91,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.wetsite_care'),
       id: 7,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isWebsitecareAllowedToRender,
       icon_name: 'care',
       icon_width: '115',
       icon_height: '106',
@@ -91,34 +100,27 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.forex_server'),
       id: 8,
       routeName: routes.HOME,
-      allowedToRender: true,
+      allowedToRender: isForexServerAllowedToRender,
       icon_name: 'forexbox',
       icon_width: '109',
       icon_height: '81',
     },
   ]
 
+  const filteredServicesMenuList = servicesMenuList.filter(item => item.allowedToRender)
+
   return (
     <ul className="swiper_services_list">
       {laptopAndHigher ? (
-        servicesMenuList.map(item => {
-          const {
-            id,
-            name,
-            routeName,
-            allowedToRender,
-            icon_name,
-            icon_height,
-            icon_width,
-          } = item
+        filteredServicesMenuList.map((item, index) => {
+          const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
           return (
             <ServiceCard
               key={id}
               title={name}
-              id={id}
+              index={index + 1}
               route={routeName}
-              allowedToRender={allowedToRender}
               iconName={icon_name}
               className="swiper-item"
               iconWidth={icon_width}
@@ -130,13 +132,7 @@ export default function ServicesList() {
         <Swiper
           spaceBetween={0}
           slidesPerView={'auto'}
-          // centeredSlides={false}
-          onSlideChange={() => {
-            console.log('slide change')
-          }}
-          onSwiper={swiper => {
-            console.log(swiper)
-          }}
+          centeredSlides={true}
           pagination={{
             clickable: true,
           }}
