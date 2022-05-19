@@ -43,5 +43,10 @@
   "Replenishment": "Пополнение",
   "Payer's choice": "Выбор плательщика",
   "Top-up amount": "Сумма пополнения",
-  "Payment using text": "Оплата с помощью банковских карт VISA, MasterCard и American Express. При заказе услуги с включенным автопродлением, карта будет сохранена для дальнейшей оплаты."
+  "Payment using text": "Оплата с помощью банковских карт VISA, MasterCard и American Express. При заказе услуги с включенным автопродлением, карта будет сохранена для дальнейшей оплаты.",
+  "Minimum payment amount": "Минимальная сумма платежа",
+  "Enter amount": "Введите сумму",
+  "The amount must be greater than": "Сумма должна быть больше",
+  "Select a Payment Method": "Выберите метод оплаты",
+  "Choose payer": "Выберите плательщика"
 }

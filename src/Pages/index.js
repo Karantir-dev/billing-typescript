@@ -10,3 +10,4 @@ export { default as AffiliateProgramStatistics } from './AffiliateProgram/Affili
 export { default as UserSettings } from './UserSettings/UserSettings'
 export { default as BillingPage } from './BillingPage/BillingPage'
 export { default as PayersPage } from './PayersPage/PayersPage'
+export { default as ErrorPage } from './ErrorPage/ErrorPage'

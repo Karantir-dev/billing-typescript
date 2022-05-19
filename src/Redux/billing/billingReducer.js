@@ -14,8 +14,8 @@ const initialState = {
   expensesFiltersList: null,
   expensesFilters: null,
 
-  paymentsMethodList: [],
-  paymentsCurrencyList: [],
+  paymentsMethodList: null,
+  paymentsCurrencyList: null,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {

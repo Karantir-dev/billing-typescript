@@ -27,6 +27,7 @@ export default function InputField(props) {
     onKeyDown,
     isRequired,
     inputAuth,
+    ...anotherProps
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -95,6 +96,7 @@ export default function InputField(props) {
           placeholder={placeholder}
           onKeyDown={onKeyDown}
           autoComplete={autoComplete ? 1 : 0}
+          {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
         {tabletOrHigher && type !== 'password' && renderIcon(iconRight, 'right')}

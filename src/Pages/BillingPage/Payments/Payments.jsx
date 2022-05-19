@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Pagination, BillingFilter, PaymentsTable } from '../../../Components/'
-import { billingOperations, billingSelectors } from '../../../Redux'
+import {
+  billingOperations,
+  billingSelectors,
+  payersOperations,
+  payersSelectors,
+} from '../../../Redux'
 import s from './Payments.module.scss'
 
 export default function Component() {
@@ -10,16 +15,27 @@ export default function Component() {
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
+  const payersCount = useSelector(payersSelectors.getPayersCount)
+
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
+    const dataPayers = {
+      p_cnt: payersCount,
+    }
     dispatch(billingOperations.getPayments())
+
+    dispatch(payersOperations.getPayers(dataPayers))
   }, [])
 
   useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(billingOperations.getPayments(data))
   }, [currentPage])
+
+  const payHandler = (id, name) => {
+    dispatch(billingOperations.getPaymentRedirect(id, name))
+  }
 
   const downloadPdfHandler = (id, name) => {
     dispatch(billingOperations.getPaymentPdf(id, name))
@@ -39,6 +55,7 @@ export default function Component() {
         list={paymentsList}
         downloadPdfHandler={downloadPdfHandler}
         deletePayment={deletePayment}
+        payHandler={payHandler}
       />
       <div className={s.pagination}>
         <Pagination
