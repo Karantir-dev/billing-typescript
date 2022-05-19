@@ -47,9 +47,15 @@
 
 .add_btn.btn {
   margin-bottom: 40px;
-  padding-top: 21px;
-  padding-bottom: 21px;
+  padding-top: 20px;
+  padding-bottom: 19px;
   display: none;
+
+  & span {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 66.3%;
+  }
 
   &.shown {
     display: block;
@@ -66,13 +72,16 @@
 
 .table_header {
   display: grid;
-  grid-template-columns: repeat(4, 130px);
-  column-gap: 28px;
+  grid-template-columns: 137px 127px 103px 50px 30px;
+  justify-content: space-between;
+  column-gap: 40px;
   margin-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-.user_email_lg {
-  padding-left: 27px;
-}
+// .user_email_lg {
+//   padding-left: 27px;
+// }
 
 .user_name_lg {
   // padding-left: 15px;
@@ -87,47 +96,49 @@
   .subtitle {
     font-weight: 300;
     line-height: 130%;
-    margin-bottom: 25px;
+    margin-bottom: unset;
   }
   .show_more_btn {
     display: none;
   }
+
   .add_btn.btn {
-    width: 260px;
-    padding-top: 21px;
-    padding-bottom: 21px;
+    width: 300px;
+    margin-top: 25px;
   }
+
   .table_wrapper {
     display: block;
   }
   .subtitle_wrapper::after {
-    height: unset;
     content: none;
   }
+
   .subtitle_wrapper {
-    margin-bottom: 25px;
+    height: unset;
   }
+
   .users_title {
     margin-bottom: 30px;
-  }
-  .user_status_lg {
-    padding-left: 30px;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .table_header {
-    grid-template-columns: repeat(4, 150px) 50px;
+    grid-template-columns: 138px 127px 103px 140px 22px;
     justify-content: space-between;
+    padding-left: 34px;
+    padding-right: 34px;
   }
   .section_title {
     margin-bottom: 30px;
   }
-  .subtitle {
-    margin-bottom: 30px;
-  }
+
   .user_status_lg {
     padding-left: 0px;
+  }
+  .add_btn.btn {
+    width: 256px;
   }
 }
 
@@ -137,14 +148,23 @@
   }
   .add_btn.btn {
     margin-bottom: 50px;
-    padding-top: 21px;
-    padding-bottom: 21px;
+    width: 300px;
   }
   .subtitle {
     font-size: 18px;
     line-height: 130.5%;
   }
   .table_header {
-    grid-template-columns: repeat(4, 150px) 220px;
+    max-width: 1085px;
+    grid-template-columns: 149px 127px 143px 140px 22px;
+    gap: 100px;
+    padding-right: 55px;
+    padding-left: 50px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .table_header {
+    gap: 120px;
   }
 }

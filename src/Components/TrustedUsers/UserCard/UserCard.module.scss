@@ -146,8 +146,9 @@
 .table_wrapper {
   position: relative;
 }
+
 .toggle_wrapper_lg {
-  width: 130px;
+  // width: 130px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -155,7 +156,7 @@
 }
 
 .toggle_status_wrapper_lg {
-  width: 150px;
+  // width: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,18 +164,18 @@
 
 .table_row {
   display: grid;
-  grid-template-columns: repeat(4, 130px);
+  grid-template-columns: 137px 127px 103px 50px 30px;
   align-items: center;
-  padding: 18px 27px 16px 0;
+  justify-content: space-between;
+  padding: 18px 20px 16px 20px;
   box-shadow: var(--elements-shadow);
   background-color: var(--elements-bgc);
   margin-bottom: 10px;
-  column-gap: 28px;
+  column-gap: 40px;
   border-radius: 5px;
 }
 
 .user_email_lg {
-  padding-left: 27px;
   word-wrap: break-word;
 }
 
@@ -193,28 +194,69 @@
 }
 
 @media screen and (min-width: 768px) {
-  .toggle_status_wrapper_lg {
-    padding-left: 30px;
+  .warning_sign_wrapper {
+    right: 30px;
+    top: 56%;
+  }
+  // .toggle_status_wrapper_lg {
+  //   padding-left: 30px;
+  // }
+  .control_btn {
+    position: relative;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .table_row {
-    grid-template-columns: repeat(4, 150px) 20px;
+    grid-template-columns: 138px 127px 103px 140px 22px;
+    padding-left: 34px;
+    padding-right: 34px;
     justify-content: space-between;
   }
-  .toggle_status_wrapper_lg {
-    padding-left: 0px;
+  // .toggle_status_wrapper_lg {
+  //   padding-left: 0px;
+  // }
+  .warning_sign_wrapper {
+    right: -25px;
   }
+
   .warning_text {
     width: 315px;
   }
 }
 
 @media screen and (min-width: 1550px) {
-  .table_row {
-    grid-template-columns: repeat(5, 190px);
+  .table_wrapper {
+    max-width: 1085px;
   }
+
+  .table_row {
+    grid-template-columns: 149px 127px 143px 140px 22px;
+    gap: 100px;
+    justify-content: start;
+    padding-right: 55px;
+    padding-left: 50px;
+  }
+
+  .warning_sign_wrapper {
+    right: -31px;
+  }
+
+  .warning_text {
+    width: 423px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .table_wrapper {
+    max-width: 1182px;
+  }
+
+  .table_row {
+    gap: 120px;
+    justify-content: start;
+  }
+
   .warning_text {
     width: 423px;
   }

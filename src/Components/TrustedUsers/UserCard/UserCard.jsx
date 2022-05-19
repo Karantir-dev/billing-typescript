@@ -252,11 +252,14 @@ export default function UserCard({
             <p className={s.user_email_lg}>{email}</p>
             <p className={s.user_name_lg}>{name}</p>
             <div className={s.toggle_wrapper_lg}>
-              <p className={s.user_access_lg}>
-                {hasAccess
-                  ? t('trusted_users.user_cards.turn_off_field')
-                  : t('trusted_users.user_cards.turn_on_field')}
-              </p>
+              {laptopOrHigher && (
+                <p className={s.user_access_lg}>
+                  {hasAccess
+                    ? t('trusted_users.user_cards.turn_off_field')
+                    : t('trusted_users.user_cards.turn_on_field')}
+                </p>
+              )}
+
               <ToggleButton
                 toggleName="access"
                 func={handleAccessClick}
@@ -312,23 +315,24 @@ export default function UserCard({
                 }
               />
             </div>
-
-            <ControlBtn
-              handleControlDotsClick={handleControlDotsClick}
-              areControlDotsActive={areControlDotsActive}
-              isOwner={isOwner}
-              userName={name}
-              userId={userId}
-              handleUserRolesData={handleUserRolesData}
-              handleRightsAlert={handleRightsAlert}
-              rightsList={rightsList}
-              email={email}
-              hasAccess={hasAccess}
-              isDeleteUserAllowedToRender={isDeleteUserAllowedToRender}
-              isEditUserAllowedToChange={isEditUserAllowedToChange}
-              isEditUserAllowed={isEditUserAllowed}
-              isRightsComponentAllowedToRender={isRightsComponentAllowedToRender}
-            />
+            <div className={s.control_btn}>
+              <ControlBtn
+                handleControlDotsClick={handleControlDotsClick}
+                areControlDotsActive={areControlDotsActive}
+                isOwner={isOwner}
+                userName={name}
+                userId={userId}
+                handleUserRolesData={handleUserRolesData}
+                handleRightsAlert={handleRightsAlert}
+                rightsList={rightsList}
+                email={email}
+                hasAccess={hasAccess}
+                isDeleteUserAllowedToRender={isDeleteUserAllowedToRender}
+                isEditUserAllowedToChange={isEditUserAllowedToChange}
+                isEditUserAllowed={isEditUserAllowed}
+                isRightsComponentAllowedToRender={isRightsComponentAllowedToRender}
+              />
+            </div>
           </div>
         </div>
       )}
