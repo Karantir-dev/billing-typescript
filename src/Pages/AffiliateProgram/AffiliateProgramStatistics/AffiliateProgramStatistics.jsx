@@ -47,7 +47,11 @@ export default function AffiliateProgramStatistics() {
   return (
     <div className={s.content}>
       <div className={s.filter_wrapper}>
-        <IconButton onClick={() => setIsFilterOpened(true)} icon="filter" />
+        <IconButton
+          className={s.icon_filter}
+          onClick={() => setIsFilterOpened(true)}
+          icon="filter"
+        />
 
         <StatisticsFilterModal
           initialFilters={initialFilters}

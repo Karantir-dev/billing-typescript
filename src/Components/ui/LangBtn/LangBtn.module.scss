@@ -77,7 +77,7 @@
   height: fit-content;
   padding: 10px 0;
   border-radius: 8px;
-  background-color: var(--elements-bgc);
+  background-color: var(--forms_bgc_4);
   box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
   transform: translateY(calc(-100% - 20px));
   transition: transform 0.15s;
@@ -100,7 +100,7 @@
   transform: translateX(-50%) rotateZ(45deg);
   width: 14px;
   height: 14px;
-  background-color: var(--elements-bgc);
+  background-color: var(--forms_bgc_4);
   box-shadow: 3px 2px 12px rgba(57, 41, 85, 0.25);
 }
 
