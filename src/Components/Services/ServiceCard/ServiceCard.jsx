@@ -1,23 +1,13 @@
 import React from 'react'
-import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import s from './ServiceCard.module.scss'
+import { useTranslation } from 'react-i18next'
 
 export default function ServiceCard(props) {
   const { title, index, route, iconName, iconWidth, iconHeight } = props
-
-  const tabletOrHigher = useMediaQuery({ query: '(min-width: 1200px)' })
-  const desktopOrHigher = useMediaQuery({ query: '(min-width: 1550px)' })
-
-  let graphicIcon = require('../../../images/services/forexbox_graphic.png')
-
-  if (desktopOrHigher) {
-    graphicIcon = require('../../../images/services/forexbox_graphic_large.png')
-  } else if (tabletOrHigher) {
-    graphicIcon = require('../../../images/services/forexbox_graphic_middle.png')
-  }
+  const { t } = useTranslation('other')
 
   return (
     <li className={s.card}>
@@ -26,7 +16,7 @@ export default function ServiceCard(props) {
           <span className={s.card_numeric}>{'0' + index}</span>
           <h3 className={s.card_title}>{title}</h3>
           <Link to={route}>
-            <span className={s.goto}>Go to</span>
+            <span className={s.goto}>{t('follow')}</span>
             <span className={s.arrow}>&#10230;</span>
           </Link>
 
@@ -34,14 +24,17 @@ export default function ServiceCard(props) {
             {iconName === 'forexbox' && (
               <img
                 alt="forexbox_graphic"
-                src={iconName && graphicIcon}
+                src={
+                  iconName &&
+                  require('../../../images/services/forexbox_graphic_large.webp')
+                }
                 className={s.forexbox_graphic}
               />
             )}
 
             <img
               alt={iconName}
-              src={iconName && require(`../../../images/services/${iconName}.png`)}
+              src={iconName && require(`../../../images/services/${iconName}.webp`)}
               className={s['icon_' + iconName]}
               width={iconWidth}
               height={iconHeight}

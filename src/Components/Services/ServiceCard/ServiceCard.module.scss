@@ -1,5 +1,4 @@
 .card {
-  // overflow: hidden;
   overflow: hidden;
   background-color: var(--carousel-elements-bgc);
   box-shadow: var(--forms2_shadow);
@@ -26,7 +25,6 @@
   line-height: 113%;
   color: #b3a9c1;
   transition: color 0.2s;
-  // margin-bottom: 30px;
 }
 
 .card_title {
@@ -34,7 +32,6 @@
   line-height: 113%;
   color: var(--main-text);
   transition: font-size 0.2s, color 0.2s;
-  // margin-bottom: 30px;
 }
 
 .goto {
@@ -101,8 +98,8 @@
 
 .forexbox_graphic {
   position: absolute;
-  top: -8px;
-  left: 58px;
+  top: -40px;
+  left: -5px;
 }
 
 @media screen and (min-width: 768px) {
@@ -119,9 +116,6 @@
         color: var(--main-text);
       }
       .card_title {
-        // font-weight: 700;
-        // font-size: 25px;
-        // line-height: 113%;
         background: var(--accent-text-gradient);
         background-clip: text;
         -webkit-background-clip: text;
@@ -152,14 +146,14 @@
   }
 
   .container {
-    max-width: 190px;
+    max-width: 180px;
     height: 140px;
   }
 
   .forexbox_graphic {
-    position: absolute;
-    top: 10px;
-    left: 52px;
+    clip: rect(20px, 240px, 220px, 80px);
+    top: -25px;
+    left: -20px;
   }
 }
 
@@ -216,8 +210,8 @@
   }
 
   .forexbox_graphic {
-    position: absolute;
-    top: -38px;
+    clip: unset;
+    top: -50px;
     left: 0px;
   }
 
@@ -247,9 +241,7 @@
     height: 142px;
   }
   .forexbox_graphic {
-    position: absolute;
-    top: -34px;
-    left: 0px;
+    top: -40px;
   }
 
   //icons

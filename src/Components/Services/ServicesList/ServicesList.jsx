@@ -1,6 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
+import { usePageRender } from '../../../utils'
 import ServiceCard from '../ServiceCard/ServiceCard'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -10,8 +12,6 @@ import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
 import './ServicesList.scss'
-import { useMediaQuery } from 'react-responsive'
-import { usePageRender } from '../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -26,10 +26,8 @@ export default function ServicesList() {
   const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost')
   const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
   const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage')
-  const isWebsitecareAllowedToRender = usePageRender(
-    'zabota-o-servere',
-    'clientticket_archive',
-  ) // this func is not provided in mainmenuservice, needs to be checked
+  const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage')
+  // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
   const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'wuwuwuw')
 
   const servicesMenuList = [
@@ -118,7 +116,7 @@ export default function ServicesList() {
           return (
             <ServiceCard
               key={id}
-              title={name}
+              title={name.toUpperCase()}
               index={index + 1}
               route={routeName}
               iconName={icon_name}
@@ -143,7 +141,7 @@ export default function ServicesList() {
             return (
               <SwiperSlide key={id}>
                 <ServiceCard
-                  title={name}
+                  title={name.toUpperCase()}
                   index={index + 1}
                   route={routeName}
                   iconName={icon_name}
