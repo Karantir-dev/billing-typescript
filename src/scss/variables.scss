@@ -14,7 +14,7 @@ body {
   --center-border-color: #cfc1eb;
 
   // variables that will be changed on the dark theme
-  --main-bgc: #fdfcff;
+  --main-bgc: #fefdff;
   --main-text: #392955;
   --menu-text-3: #523e75;
   --link-text: #4c75a3;
@@ -33,12 +33,11 @@ body {
   --404-color: #ece7f8;
   // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --dividing_line: #e4dfec;
-  --background-color: #fefdff;
   --transparent-color: #b3a9c1;
   --forms_bgc_1: #fdfcff;
-  --forms_bgc_2: #fdfcff;
-  --forms_bgc_3: #fdfcff;
-  --forms_bgc_4: #ffffff;
+  --forms_bgc_2: #fff;
+  --forms_bgc_3: #fff;
+  --forms_bgc_4: #fff;
   --inactive_icon_color: #e1daeb;
   --popup_prompt: #ede7f4;
   --message-bg: #f6ebff;
@@ -78,7 +77,7 @@ body.dark-theme {
     #2e273b 89.97%
   );
 
-  --main-bgc: #21192e;
+  --main-bgc: #201a2a;
   --main-text: #fff;
   --menu-text-3: #ffffff;
   --link-text: #8ab7fa;
@@ -97,7 +96,6 @@ body.dark-theme {
   --404-color: #4d4954;
   // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --dividing_line: #4d4855;
-  --background-color: #201a2a;
   --transparent-color: #878290;
   --forms_bgc_1: #2e273b;
   --forms_bgc_2: #342f3f;
@@ -125,6 +123,6 @@ body.dark-theme {
   --menu_shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
-  --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.3);
+  --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.8), inset 3px 3px 4px #585165;
   --404-text-shadow: 6px 3px 10px #000000;
 }

@@ -137,10 +137,11 @@
   }
 
   .select {
-    width: 280px;
     font-size: 18px;
   }
-
+  .select_wrapper {
+    width: 280px;
+  }
   .calendarModal {
     right: 50%;
     transform: translateX(50%);

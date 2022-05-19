@@ -106,6 +106,7 @@ export default function AffiliateProgramIncome() {
         <div className={s.tablet_wrapper}>
           <div className={s.filter_wrapper}>
             <Select
+              className={s.select_wrapper}
               inputClassName={s.select}
               isShadow
               itemsList={formOptions.map(({ label, value }) => ({
