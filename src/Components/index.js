@@ -76,3 +76,6 @@ export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
 //==========================================PAYERS==========================================//
 export { default as PayersTable } from './Payers/PayersTable/PayersTable'
 export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
+
+//==========================================SERVICES==========================================//
+export { default as ServicesList } from './Services/ServicesList/ServicesList'
