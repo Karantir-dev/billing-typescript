@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -56,17 +56,6 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always()
 
-  #security:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: actions/checkout@master
-  #    - name: Run Snyk to check for vulnerabilities
-  #      uses: snyk/actions/node@master
-  #      env:
-  #        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #    - run: npm install -g npm
-  #    - run: npm install
-  #    - run: snyk monitor
   deploy:
     needs: [eslint, jest]
     name: Deploy image to server
@@ -78,6 +67,7 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H')"
+      
       - name: Test with environment variables
         run: echo $TAG_NAME - $RELEASE_NAME
         env:
@@ -95,21 +85,24 @@ jobs:
           docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:$RELEASE_NAME
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
-
-      - name: Run playbook
-        uses: arillso/action.playbook@master
+      - name: Update Version
+        run: |
+          sed -i "s|zomrocom/zomro-bill-dev|zomrocom/zomro-bill-dev:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          playbook: deployment/playbooks/initial.yml
-          inventory: deployment/host.ini
-          galaxy_file: deployment/playbooks/requirements.yml
-          vault_password: ${{secrets.ANSIBLE_VAULET}}
-          user: git
-          private_key: ${{secrets.SSH_PRIVATE_KEY}}
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: 'false'
-          ANSIBLE_DEPRECATION_WARNINGS: 'false'
-          ANSIBLE_ENABLE_TASK_DEBUGGER: 'true'
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run:
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/zomro-bill-deployment -n dev
+      
       - name: Deploy status
         uses: 8398a7/action-slack@v3
         with:

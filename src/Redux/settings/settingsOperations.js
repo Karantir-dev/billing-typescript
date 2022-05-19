@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
 import i18n from './../../i18n'
+import { errorHandler } from '../../utils'
 
 const getUserEdit =
   (elid, checkEmail = false) =>
@@ -67,6 +68,7 @@ const getUserEdit =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -96,6 +98,7 @@ const setUserAvatar =
       .then(() => dispatch(actions.hideLoader()))
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -119,8 +122,6 @@ const getUserParams =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-
         const telegram =
           data?.doc?.messages?.msg?.instruction?.match(/(https?:\/\/[^ ]*)/)
 
@@ -139,6 +140,7 @@ const getUserParams =
           sendemail: data?.doc?.sendemail?.$ || '',
           time: data?.doc?.time?.$ || '',
           telegram_id: data?.doc?.telegram_id?.$ || '',
+          status_totp: data?.doc?.status_totp?.$ || '',
           email: data?.doc?.email?.$ || '',
           avatar_view: data?.doc?.avatar_view?.$ || '',
           email_confirmed_status: data?.doc?.email_confirmed_status?.$ || '',
@@ -194,6 +196,7 @@ const getUserParams =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -224,6 +227,7 @@ const getTimeByTimeZone =
       })
       .catch(error => {
         console.log('error', error)
+        errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -298,11 +302,13 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
         })
         .catch(error => {
           console.log('error', error)
+          errorHandler(error.message, dispatch)
           dispatch(actions.hideLoader())
         })
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -355,6 +361,7 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
 
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -382,6 +389,7 @@ const sendEmailConfirm = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -404,6 +412,7 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     sendemail: d?.sendemail ? 'on' : 'off',
     setgeoip: d?.setgeoip ? 'on' : 'off',
     addr: addr,
+    disable_totp: d.disable_totp,
   }
 
   axiosInstance
@@ -425,6 +434,11 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
             position: 'bottom-right',
           })
         }
+        if (data?.doc?.error?.$object === 'disable_totp') {
+          toast.error(i18n.t(data.doc.error.msg.$.trim(), { ns: 'user_settings' }), {
+            position: 'bottom-right',
+          })
+        }
         throw new Error(data.doc.error.msg.$)
       }
 
@@ -440,7 +454,191 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
+    })
+}
+
+const setTotp = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'totp.new',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const elem = {
+        actualtime: data?.doc?.actualtime?.$,
+        servertime: data?.doc?.actualtime?.$,
+        qrimage: data?.doc?.qrimage?.$,
+        qrimage_download_link: data?.doc?.qrimage_download_link?.$,
+        secret: data?.doc?.secret?.$,
+        secret_download_link: data?.doc?.secret_download_link?.$,
+      }
+
+      dispatch(settingsActions.setTwoStepVerif(elem))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getQR = link => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .get(`${link}&auth=${sessionId}`, { responseType: 'blob' })
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const qrimage = window.URL.createObjectURL(new Blob([data]))
+
+      dispatch(settingsActions.updateTwoStepVerif(qrimage))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getSecretKeyFile = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .get(`/?auth=${sessionId}&func=totp.new.file`, { responseType: 'blob' })
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const secretKey = window.URL.createObjectURL(new Blob([data]))
+
+      const link = document.createElement('a')
+      link.href = secretKey
+      link.setAttribute('download', 'secretKey.txt')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'totp.new',
+        qrcode: d?.qrcode,
+        sok: 'ok',
+        out: 'json',
+        show_actualtime: 'show',
+        login: 'test.hardsoft.cf(mikhail.tatochenko+1@zomro.org)',
+        secret: d?.secret,
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) {
+        toast.error(i18n.t('Wrong password', { ns: 'other' }), {
+          position: 'bottom-right',
+        })
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
+
+      setModal(false)
+
+      dispatch(getUserEdit(elid))
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const confirmEmail = key => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'notice.confirm',
+        sok: 'ok',
+        out: 'json',
+        auth: sessionId,
+        key,
+      }),
+    )
+    .then(({ data }) => {
+      console.log(data?.doc)
+      if (data?.doc?.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      data?.doc?.metadata?.form?.field?.forEach(field => {
+        if (field?.$name === 'confirmation') {
+          field?.textdata?.forEach(textdata => {
+            if (textdata?.$name === 'confirmation_key_error') {
+              toast.error(i18n.t('Confirmation key error', { ns: 'other' }), {
+                position: 'bottom-right',
+              })
+            } else if (textdata?.$name === 'confirmation_info') {
+              toast.success(i18n.t('Email confirmation successfully', { ns: 'other' }), {
+                position: 'bottom-right',
+              })
+            }
+          })
+        }
+      })
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
     })
 }
 
@@ -452,4 +650,9 @@ export default {
   setUserAvatar,
   setupEmailConfirm,
   setPasswordAccess,
+  setTotp,
+  getQR,
+  getSecretKeyFile,
+  setTotpPassword,
+  confirmEmail,
 }

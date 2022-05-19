@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import { Button } from '../../Components'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import entireStore from '../../Redux/store'
-import AddUserForm from '../../Components/TrustedUsers/AddUserForm/AddUserForm'
+import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
 import { mockedAxiosInstance } from '../../config/axiosInstance'
 
 jest.mock('react-i18next', () => ({
@@ -26,7 +26,7 @@ describe('AddUserForm Component', () => {
     <Provider store={entireStore.store}>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<AddUserForm />}></Route>
+          <Route path="*" element={<ManageUserForm />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>,
@@ -52,7 +52,7 @@ describe('AddUserForm Component', () => {
       <Provider store={entireStore.store}>
         <BrowserRouter>
           <Routes>
-            <Route path="*" element={<AddUserForm onSubmit={handleSubmit} />} />
+            <Route path="*" element={<ManageUserForm onSubmit={handleSubmit} />} />
           </Routes>
         </BrowserRouter>
       </Provider>,

@@ -1,0 +1,21 @@
+{
+  "Payers": "Плательщики",
+  "Add": "Добавить",
+  "Name": "Наименование",
+  "Payer status": "Статус плательщика",
+  "Individual": "Физическое лицо",
+  "Edit": "Изменить",
+  "Delete": "Удалить",
+  "Are you sure you want to remove {{name}} from your list of payers?": "Вы действительно хотите удалить {{name}} из списк своих плательщиков?",
+  "Adding a payer": "Добавление плательщика",
+  "Main": "Основное",
+  "Actual address": "Фактический адрес",
+  "Data for the contract": "Данные для договора",
+  "The contact person": "Контактное лицо",
+  "Receive documents": "Получать документы",
+  "I agree with the terms of the offer": "Согласен с условиями оферты",
+  "Edit the selected payer": "Изменить выбранного плательщика",
+  "In Client area": "В клиентской зоне",
+  "By post": "Почтой",
+  "By email": "По электронной почте"
+}

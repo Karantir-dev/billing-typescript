@@ -52,20 +52,24 @@ export default function BurgerListItem({
           })}
         >
           {subList.map(item => {
-            return (
-              <li key={nanoid()} className={s.list_item}>
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={() => {}}
-                  onClick={controlMenu}
-                >
-                  <NavLink to={item.routeName}>
-                    <p className={s.list_item_name}>{item.name}</p>
-                  </NavLink>
-                </div>
-              </li>
-            )
+            if (item.allowedToRender) {
+              return (
+                <li key={nanoid()} className={s.list_item}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={() => {}}
+                    onClick={controlMenu}
+                  >
+                    <NavLink to={item.routeName}>
+                      <p className={s.list_item_name}>{item.name}</p>
+                    </NavLink>
+                  </div>
+                </li>
+              )
+            } else {
+              return null
+            }
           })}
         </ul>
       </div>

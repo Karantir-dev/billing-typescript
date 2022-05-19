@@ -1,10 +1,12 @@
+.list {
+  // max-height: 700px;
+  // display: flex;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+}
+
 .sub_list {
   margin-left: 23px;
-  display: none;
-
-  &.opened {
-    display: block;
-  }
 }
 
 .list_item_wrapper {
@@ -19,4 +21,17 @@
 
 .arrow_show_more {
   margin-left: 40px;
+}
+
+// ADAPTIVE
+@media screen and (min-width: 768px) {
+  .access_rights {
+    width: 226px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .access_rights {
+    width: 100%;
+  }
 }

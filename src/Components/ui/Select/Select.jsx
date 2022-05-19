@@ -155,6 +155,7 @@ Select.propTypes = {
   placeholder: PropTypes.string,
   background: PropTypes.bool,
 }
+
 Select.defaultProps = {
   isShadow: false,
   getElement: () => null,

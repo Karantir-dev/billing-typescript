@@ -1,7 +1,7 @@
 .icon {
   fill: var(--icon-color);
   cursor: pointer;
-  transform: scale(1.8);
+  transform: scale(1);
   background-color: var(--main-bgc);
 }
 
@@ -192,6 +192,11 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .confirmBtn {
@@ -202,6 +207,7 @@
   line-height: 130.5%;
   text-decoration-line: underline;
   color: var(--link-text);
+  cursor: pointer;
 }
 
 .img {

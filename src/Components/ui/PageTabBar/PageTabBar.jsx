@@ -5,11 +5,13 @@ import PropTypes from 'prop-types'
 import s from './PageTabBar.module.scss'
 
 export default function Component({ sections }) {
+  const sectionsToRender = sections.filter(item => item.allowToRender)
+
   return (
     <div className={s.nav_bar}>
       <div className={s.blur}>
         <div className={s.scroll_area}>
-          {sections.map(({ route, label }) => {
+          {sectionsToRender.map(({ route, label }) => {
             return (
               <NavLink
                 key={route}

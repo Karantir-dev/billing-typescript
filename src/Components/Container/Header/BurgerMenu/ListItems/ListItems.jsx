@@ -11,7 +11,7 @@ import s from './ListItems.module.scss'
 export default function ListItems(props) {
   const { name, email, isProfile, subList, controlMenu } = props
   const [isOpened, setIsOpened] = useState(false)
-  const { t } = useTranslation('main')
+  const { t } = useTranslation('container')
 
   const renderIcon = name => {
     switch (name) {
@@ -52,7 +52,7 @@ export default function ListItems(props) {
           />
         )
       default:
-        return <Profile className={s.profile_icon} />
+        return <Profile svgwidth="31" svgheight="31" className={s.profile_icon} />
     }
   }
 

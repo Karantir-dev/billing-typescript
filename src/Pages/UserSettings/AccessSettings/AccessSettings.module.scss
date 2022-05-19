@@ -41,6 +41,11 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
 }
 
 .cancel {
@@ -169,7 +174,17 @@
   transform: scale(0.55);
 }
 
+.twoStepVerif {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+}
+
 @media screen and (min-width: 768px) {
+  .twoStepVerif {
+    max-width: 320px;
+  }
+
   .block {
     margin-bottom: 40px;
   }

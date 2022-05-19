@@ -1,42 +1,63 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import {
-  userOperations,
-  userSelectors,
-  authOperations,
-  authSelectors,
-  selectors,
-} from '../../../Redux'
+import { userSelectors, authOperations, selectors } from '../../../Redux'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
 
 import s from './Header.module.scss'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter, usePageRender } from '../../../utils'
 
 export default function Header() {
-  const { t } = useTranslation('main')
-  const profileMenuList = [
-    { name: t('profile.user_settings'), routeName: routes.USER_SETTINGS },
-    { name: t('profile.trusted_users'), routeName: routes.TRUSTED_USERS },
-    { name: t('profile.visiting_log'), routeName: routes.ACCESS_LOG },
-    { name: t('profile.payers'), routeName: routes.HOME },
-    { name: t('profile.contracts'), routeName: routes.HOME },
-  ]
-
-  const sessionId = useSelector(authSelectors.getSessionId)
-  const [removeNotification, setRemoveNotification] = useState(false)
-
+  const { t } = useTranslation('container')
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(userOperations.getUserInfo(sessionId))
-  }, [removeNotification])
+  const isEnvelopeAllowedToRender = usePageRender('support', 'clientticket')
+  const isBellAllowedToRender = usePageRender('support', 'notification')
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
+
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
+
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
+
+  const arePayersAllowedToRender = usePageRender('customer', 'profile')
+
+  const profileMenuList = [
+    {
+      name: t('profile.user_settings'),
+      routeName: routes.USER_SETTINGS,
+      allowedToRender: areUserSettingsAllowedToRender,
+    },
+    {
+      name: t('profile.trusted_users'),
+      routeName: routes.TRUSTED_USERS,
+      allowedToRender: isTrustedUsersAllowedToRender,
+    },
+    {
+      name: t('profile.visiting_log'),
+      routeName: routes.ACCESS_LOG,
+      allowedToRender: isAuthLogAllowedToRender,
+    },
+    {
+      name: t('profile.payers'),
+      routeName: routes.PAYERS,
+      allowedToRender: arePayersAllowedToRender,
+    },
+    {
+      name: t('profile.contracts'),
+      routeName: routes.HOME,
+      allowedToRender: true,
+    },
+  ]
+
+  const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
+
+  const [removeNotification, setRemoveNotification] = useState(false)
 
   const handleRemoveNotif = () => {
     setRemoveNotification(!removeNotification)
@@ -83,7 +104,7 @@ export default function Header() {
       <header className={s.main_header}>
         <div className={s.container}>
           <div className={s.header}>
-            <Logo className={s.logo} />
+            <Logo svgwidth="93" svgheight="41" className={s.logo} />
 
             <nav className={s.main_nav}>
               <ul className={s.list}>
@@ -118,44 +139,55 @@ export default function Header() {
                 >
                   <LangBtn mainType={true} />
                 </li>
-                <li
-                  className={cn({
-                    [s.item]: true,
-                    [s.active_notification]: areNewTickets,
-                  })}
-                >
-                  <NavLink
-                    to={routes.SUPPORT}
-                    className={({ isActive }) =>
-                      cn(s.link, {
-                        [s.active]: isActive,
-                      })
-                    }
+                {isEnvelopeAllowedToRender && (
+                  <li
+                    className={cn({
+                      [s.item]: true,
+                      [s.active_notification]: areNewTickets,
+                    })}
                   >
-                    <FilledEnvelope className={s.icon} />
-                  </NavLink>
-                </li>
+                    <NavLink
+                      to={routes.SUPPORT}
+                      className={({ isActive }) =>
+                        cn(s.link, {
+                          [s.active]: isActive,
+                        })
+                      }
+                    >
+                      <FilledEnvelope svgwidth="21" svgheight="16" className={s.icon} />
+                    </NavLink>
+                  </li>
+                )}
 
-                <li
-                  className={cn({
-                    [s.item]: true,
-                    [s.item_bell]: true,
-                    [s.notification_messages]: mesAmount > 0,
-                  })}
-                >
-                  <button onClick={handleBellClick}>
-                    <Bell className={s.icon} />
-                    {mesAmount > 0 && (
-                      <span className={s.notification_messages_counter}>{mesAmount}</span>
-                    )}
-                  </button>
-                </li>
+                {isBellAllowedToRender && (
+                  <li
+                    className={cn({
+                      [s.item]: true,
+                      [s.item_bell]: true,
+                      [s.notification_messages]: mesAmount > 0,
+                    })}
+                  >
+                    <button onClick={handleBellClick} className={s.btn}>
+                      <Bell
+                        svgheight="22"
+                        svgwidth="18"
+                        className={cn({ [s.icon]: true, [s.bell]: true })}
+                      />
+                      {mesAmount > 0 && (
+                        <div className={s.notification_counter_wrapper}>
+                          <p className={s.notification_messages_counter}>{mesAmount}</p>
+                        </div>
+                      )}
+                    </button>
+                  </li>
+                )}
+
                 <li className={cn({ [s.item]: true, [s.profile_item]: true })}>
                   <button
                     className={s.profile_btn}
                     onClick={() => setIsProfileOpened(!isProfileOpened)}
                   >
-                    <Profile className={s.icon} />
+                    <Profile svgheight="23" svgwidth="23" className={s.icon} />
                     <Shevron
                       className={cn({
                         [s.arrow_icon]: true,
@@ -166,7 +198,6 @@ export default function Header() {
 
                   <ul
                     className={cn({
-                      [s.profile_list]: true,
                       [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
                       [s.opened]: isProfileOpened,
                     })}
@@ -186,7 +217,7 @@ export default function Header() {
                       </div>
                     </li>
 
-                    {profileMenuList.map(item => {
+                    {profileMenuListToRender.map(item => {
                       return (
                         <li key={nanoid()} className={s.profile_list_item}>
                           <div
@@ -234,6 +265,7 @@ export default function Header() {
           <span className={s.hamburger_inner}></span>
         </span>
       </button>
+
       <BurgerMenu
         isOpened={isMenuOpened}
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}

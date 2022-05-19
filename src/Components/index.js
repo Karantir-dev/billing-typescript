@@ -20,7 +20,7 @@ export { default as PrivateRoute } from './Routes/PrivateRoute'
 export { default as PublicRoute } from './Routes/PublicRoute'
 
 export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
-export { default as TrustedUsers } from './TrustedUsers/TrustedUsers'
+export { default as TrustedUsers } from '../Pages/TrustedUsers/TrustedUsers'
 
 export { default as Container } from './Container/Container'
 
@@ -36,7 +36,6 @@ export { default as CalendarModal } from './ui/CalendarModal/CalendarModal'
 export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
-export { default as ToggleButton } from './ui/ToggleButton/ToggleButton'
 export { default as Toggle } from './ui/Toggle/Toggle'
 
 export { default as Alert } from './ui/Alert/Alert'
@@ -45,6 +44,8 @@ export { default as Pagination } from './ui/Pagination/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'
+
+export { default as CheckBox } from './ui/CheckBox/CheckBox'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -63,3 +64,15 @@ export { default as CreateTicketModal } from './Support/CreateTicketModal/Create
 export { default as ModalPickPhoto } from './Settings/ModalPickPhoto/ModalPickPhoto'
 export { default as ToggleBlock } from './Settings/ToggleBlock/ToggleBlock'
 export { default as SocialButton } from './Settings/SocialButton/SocialButton'
+export { default as ModalTwoStepVerification } from './Settings/ModalTwoStepVerification/ModalTwoStepVerification'
+export { default as EmailConfirmation } from './Settings/EmailConfirmation/EmailConfirmation'
+
+//==========================================BILLING==========================================//
+export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
+export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
+
+export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
+
+//==========================================PAYERS==========================================//
+export { default as PayersTable } from './Payers/PayersTable/PayersTable'
+export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'

@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { Container, PageTabBar } from '../../Components/'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { usersOperations } from '../../Redux'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { PageTabBar } from '../../Components/'
 import * as route from '../../routes'
 import {
   AboutAffiliateProgram,
@@ -10,11 +13,28 @@ import {
 } from '../'
 
 import s from './AffiliateProgram.module.scss'
+import { usePageRender } from '../../utils'
 
 export default function AffiliateProgram() {
-  const { t } = useTranslation('affiliate_program')
+  const { t } = useTranslation(['affiliate_program', 'trusted_users'])
   const location = useLocation()
   const navigate = useNavigate()
+
+  const [availableRights, setAvailabelRights] = useState({})
+
+  const checkIfHasArr = availableRights?.toolbar?.toolgrp
+
+  const isStatisticsAllowedToRender = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'click')
+    : false
+
+  const isIncomesAllowedToRender = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'reward')
+    : false
+
+  const isComponentAllowedToRender = usePageRender('customer', 'affiliate.client')
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (location.pathname === route.AFFILIATE_PROGRAM) {
@@ -22,13 +42,42 @@ export default function AffiliateProgram() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!isComponentAllowedToRender) {
+      toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
+        position: 'bottom-right',
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    dispatch(usersOperations.getAvailableRights('affiliate.client', setAvailabelRights))
+  }, [])
+
   const navBarSections = [
-    { route: route.AFFILIATE_PROGRAM_ABOUT, label: t('about_section_title') },
-    { route: route.AFFILIATE_PROGRAM_INCOME, label: t('income_section_title') },
-    { route: route.AFFILIATE_PROGRAM_STATISTICS, label: t('statistics_section_title') },
+    {
+      route: route.AFFILIATE_PROGRAM_ABOUT,
+      label: t('about_section_title'),
+      allowToRender: true,
+    },
+    {
+      route: route.AFFILIATE_PROGRAM_INCOME,
+      label: t('income_section_title'),
+      allowToRender: isIncomesAllowedToRender,
+    },
+    {
+      route: route.AFFILIATE_PROGRAM_STATISTICS,
+      label: t('statistics_section_title'),
+      allowToRender: isStatisticsAllowedToRender,
+    },
   ]
+
+  if (!isComponentAllowedToRender) {
+    return <Navigate to={route.HOME} />
+  }
+
   return (
-    <Container>
+    <>
       <h2 className={s.title}>{t('page_title')}</h2>
       <PageTabBar sections={navBarSections} />
 
@@ -46,6 +95,6 @@ export default function AffiliateProgram() {
           element={<AffiliateProgramStatistics />}
         ></Route>
       </Routes>
-    </Container>
+    </>
   )
 }

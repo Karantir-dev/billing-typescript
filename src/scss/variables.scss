@@ -3,6 +3,15 @@ body {
   --accent-gradient: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
   --accent-color-light: #ff50bf;
   --input-border-icon: #c4c4c4;
+  --forms2-border-gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    #ffffff 92.92%
+  );
+
+  // borders
+
+  --center-border-color: #cfc1eb;
 
   // variables that will be changed on the dark theme
   --main-bgc: #fdfcff;
@@ -20,6 +29,9 @@ body {
   --auth-placeholder-color: #c4c4c4;
   --eye-color: #777;
   --icon-color: #d9d0eb;
+  --scrollbar-track-color: #ebebeb;
+  --404-color: #ece7f8;
+  // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --dividing_line: #e4dfec;
   --background-color: #fefdff;
   --transparent-color: #b3a9c1;
@@ -33,6 +45,7 @@ body {
   --border-color: #f4f4f4;
   --switchers-bg: #e1dfdf;
   --switchers-dot-bg: #ffffff;
+  --switchers-dot-bg-active: linear-gradient(251.29deg, #ffffff 11.47%, #fafafa 89.97%);
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -51,10 +64,20 @@ body {
   --buttons_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #fff;
   --buttons_shadow_active: 2px 4px 5px rgba(98, 0, 54, 0.25),
     inset 2px 2px 6px rgba(0, 0, 0, 0.15);
+  --404-text-shadow: 3px 3px 4px rgba(78, 37, 119, 0.3);
 }
 
 // dark theme variables
 body.dark-theme {
+  // borders
+
+  --center-border-color: #decbfe;
+  --forms2-border-gradient: linear-gradient(
+    184.22deg,
+    rgba(46, 39, 59, 0) 3.44%,
+    #2e273b 89.97%
+  );
+
   --main-bgc: #21192e;
   --main-text: #fff;
   --menu-text-3: #ffffff;
@@ -70,6 +93,9 @@ body.dark-theme {
   --auth-placeholder-color: #6e6977;
   --eye-color: #c4c4c4;
   --icon-color: #75707e;
+  --scrollbar-track-color: #4b4556;
+  --404-color: #4d4954;
+  // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --dividing_line: #4d4855;
   --background-color: #201a2a;
   --transparent-color: #878290;
@@ -83,6 +109,7 @@ body.dark-theme {
   --border-color: #5a5663;
   --switchers-bg: #6f687c;
   --switchers-dot-bg: #aaa4b6;
+  --switchers-dot-bg-active: linear-gradient(251.29deg, #ffffff 11.47%, #fafafa 89.97%);
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
@@ -99,4 +126,5 @@ body.dark-theme {
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.3);
+  --404-text-shadow: 6px 3px 10px #000000;
 }

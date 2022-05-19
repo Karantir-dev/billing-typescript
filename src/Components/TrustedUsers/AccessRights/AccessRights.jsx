@@ -1,27 +1,65 @@
-// import classNames from 'classnames'
-import React from 'react'
-// import ToggleButton from '../../ui/ToggleButton/ToggleButton'
-// import ControlBtn from '../ControlBtn/ControlBtn'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import s from './AccessRights.module.scss'
 import AccessRightsListItem from './AccessRightsListItem/AccessRightsListItem'
 
-export default function AccessRights({ items }) {
-  // const [isMenuOpened, setIsMenuOpened] = useState(false)
+export default function AccessRights({
+  items,
+  userId,
+  hasAccessToResumeRights,
+  hasAccessToSuspendRights,
+  hasAccessToSuspendRightsOnly,
+}) {
+  const modifiedList = items.map(item => {
+    return { ...item, isSelected: false }
+  })
 
-  // const handleClick = () => {
-  //   setIsMenuOpened(!isMenuOpened)
-  // }
+  const [listArr, setListArr] = useState(modifiedList)
+
+  const handleSelect = item => {
+    const filter = listArr.map(el => {
+      if (item.name.$ === el.name.$) {
+        return { ...el, isSelected: !el.isSelected }
+      } else {
+        return { ...el, isSelected: false }
+      }
+    })
+
+    setListArr([...filter])
+  }
 
   return (
-    <ul className={s.list}>
-      {items.map((item, index) => {
+    <div role="list" aria-labelledby="rights-heading" className={s.list}>
+      {listArr.map((item, index) => {
         return (
-          <div className={s.access_rights} key={index}>
-            <AccessRightsListItem item={item} />
+          <div
+            role="listitem"
+            data-testid="trusted_users_rights_item"
+            className={s.access_rights}
+            key={index}
+          >
+            <AccessRightsListItem
+              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
+              hasAccessToResumeRights={hasAccessToResumeRights}
+              hasAccessToSuspendRights={hasAccessToSuspendRights}
+              handleSelect={handleSelect}
+              item={item}
+              userId={userId}
+              selected={item.isSelected}
+              allowAll={true}
+            />
           </div>
         )
       })}
-    </ul>
+    </div>
   )
+}
+
+AccessRights.propTypes = {
+  items: PropTypes.array,
+  userId: PropTypes.string,
+  hasAccessToResumeRights: PropTypes.bool,
+  hasAccessToSuspendRights: PropTypes.bool,
+  hasAccessToSuspendRightsOnly: PropTypes.bool,
 }

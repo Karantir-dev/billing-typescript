@@ -2,6 +2,7 @@ import qs from 'qs'
 import authActions from './authActions'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
+import userOperations from '../userInfo/userOperations'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -53,6 +54,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           }
 
           dispatch(authActions.loginSuccess(sessionId))
+          dispatch(userOperations.getUserInfo(sessionId))
         })
     })
     .catch(error => {
@@ -60,6 +62,34 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       dispatch(actions.hideLoader())
       setErrMsg(SERVER_ERR_MSG)
       console.log('auth -', error.message)
+    })
+}
+
+const getCurrentSessionStatus = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'keepalive',
+        auth: sessionId,
+        out: 'json',
+      }),
+    )
+    .then(data => {
+      if (data.status === 200) {
+        if (data?.data?.doc?.error?.$type === 'access') {
+          dispatch(authActions.logoutSuccess())
+        }
+      } else {
+        throw new Error(data.doc.error.msg.$)
+      }
+    })
+    .catch(e => {
+      console.log('error during getCurrentSessionStatus', e.message)
     })
 }
 
@@ -282,4 +312,5 @@ export default {
   sendTotp,
   logout,
   getCountries,
+  getCurrentSessionStatus,
 }

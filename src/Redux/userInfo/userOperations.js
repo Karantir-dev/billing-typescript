@@ -3,12 +3,7 @@ import i18n from 'i18next'
 
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
-
-const userRights = data => {
-  // const { $realname, $balance, $email, $phone } = data.doc.user
-  console.log(data)
-  // dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone }))
-}
+import { errorHandler } from '../../utils'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
@@ -25,9 +20,14 @@ const userNotifications = (data, dispatch) => {
   dispatch(userActions.setItems({ bitem }))
 }
 
-const funcsArray = [userInfo, userTickets, userNotifications, userRights]
+const currentSessionRights = (data, dispatch) => {
+  const { node } = data.doc.mainmenu
+  dispatch(userActions.setCurrentSessionRihgts(node))
+}
 
-const getUserInfo = (sessionId, userId) => dispatch => {
+const funcsArray = [userInfo, userNotifications, currentSessionRights, userTickets]
+
+const getUserInfo = (sessionId, setLoading) => dispatch => {
   dispatch(userActions.showUserInfoLoading())
   Promise.all([
     axiosInstance.post(
@@ -38,15 +38,7 @@ const getUserInfo = (sessionId, userId) => dispatch => {
         auth: sessionId,
       }),
     ),
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'dashboard.tickets',
-        out: 'json',
-        lang: 'en',
-        auth: sessionId,
-      }),
-    ),
+
     axiosInstance.post(
       '/',
       qs.stringify({
@@ -59,10 +51,18 @@ const getUserInfo = (sessionId, userId) => dispatch => {
     axiosInstance.post(
       '/',
       qs.stringify({
-        func: 'rights2.user',
+        func: 'menu',
         out: 'json',
-        elid: userId,
-        lang: i18n.language,
+        auth: sessionId,
+        sok: 'ok',
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.tickets',
+        out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     ),
@@ -70,17 +70,21 @@ const getUserInfo = (sessionId, userId) => dispatch => {
     .then(responses => {
       responses.forEach(({ data }, i) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
         funcsArray[i](data, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
+      setLoading && setLoading(false)
     })
     .catch(err => {
       dispatch(userActions.hideUserInfoLoading())
+      setLoading && setLoading(false)
       console.log('getUserInfo - ', err.message)
+      errorHandler(err.message, dispatch)
     })
 }
 
-const removeItems = (sessionId, id) => {
+const removeItems = (sessionId, id) => dispatch => {
   axiosInstance
     .post(
       '/',
@@ -97,6 +101,7 @@ const removeItems = (sessionId, id) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
     })
 }
 

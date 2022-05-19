@@ -3,7 +3,6 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { Route, MemoryRouter, Routes } from 'react-router-dom'
 import OpenedTicket from '../../Pages/SupportPage/OpenedTicket/OpenedTicket'
-import { SupportPage } from '../../Pages'
 import {
   SupportTable,
   SupportArchiveTable,
@@ -32,29 +31,29 @@ mockedAxiosInstance.onPost('/').reply(200, {
   doc: { elem: [] },
 })
 
-describe('Support Page jsx', () => {
-  function renderComponent(path) {
-    render(
-      <Provider store={entireStore.store}>
-        <MemoryRouter initialEntries={[`/support/${path}`]}>
-          <Routes>
-            <Route path="/support/:path" element={<SupportPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-    )
-  }
+// describe('Support Page jsx', () => {
+//   function renderComponent(path) {
+//     render(
+//       <Provider store={entireStore.store}>
+//         <MemoryRouter initialEntries={[`/support/${path}`]}>
+//           <Routes>
+//             <Route path="/support/:path" element={<SupportPage />} />
+//           </Routes>
+//         </MemoryRouter>
+//       </Provider>,
+//     )
+//   }
 
-  test('render support requests', () => {
-    renderComponent('requests')
-    expect(screen.queryByTestId('request_support')).toBeInTheDocument()
-  })
+//   test('render support requests', () => {
+//     renderComponent('requests')
+//     expect(screen.queryByTestId('request_support')).toBeInTheDocument()
+//   })
 
-  test('render support archive requests', () => {
-    renderComponent('requests_archive')
-    expect(screen.queryByTestId('request_archive')).toBeInTheDocument()
-  })
-})
+//   test('render support archive requests', () => {
+//     renderComponent('requests_archive')
+//     expect(screen.queryByTestId('request_archive')).toBeInTheDocument()
+//   })
+// })
 
 describe('Opened Ticket jsx', () => {
   function renderComponent(path) {

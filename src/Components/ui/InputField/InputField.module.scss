@@ -23,6 +23,11 @@
   background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
 }
 
+.required_star {
+  color: #d93f21;
+  font-size: 14px;
+}
+
 .input {
   @extend %input;
   height: 100%;
