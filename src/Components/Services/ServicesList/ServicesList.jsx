@@ -137,24 +137,15 @@ export default function ServicesList() {
             clickable: true,
           }}
         >
-          {servicesMenuList.map(item => {
-            const {
-              id,
-              name,
-              routeName,
-              allowedToRender,
-              icon_name,
-              icon_height,
-              icon_width,
-            } = item
+          {servicesMenuList.map((item, index) => {
+            const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
             return (
               <SwiperSlide key={id}>
                 <ServiceCard
                   title={name}
-                  id={id}
+                  index={index + 1}
                   route={routeName}
-                  allowedToRender={allowedToRender}
                   iconName={icon_name}
                   className="swiper-item"
                   iconWidth={icon_width}
