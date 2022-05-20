@@ -84,16 +84,15 @@
 .select {
   margin-top: 20px;
   z-index: 9;
-}
-.input_field_wrapper {
-  margin-top: 20px;
-  input {
+
+  div {
     font-size: 18px;
   }
 }
 
-.select {
-  div {
+.input_field_wrapper {
+  margin-top: 20px;
+  input {
     font-size: 18px;
   }
 }

@@ -13,6 +13,9 @@ const getExpensesFilters = state => state.billing.expensesFilters
 const getPaymentsMethodList = state => state.billing.paymentsMethodList
 const getPaymentsCurrencyList = state => state.billing.paymentsCurrencyList
 
+const getAutoPaymentsList = state => state.billing.autoPaymentsList
+const getAutoPaymentConfig = state => state.billing.autoPaymentConfig
+
 export default {
   getPaymentsList,
   getPaymentsCount,
@@ -28,4 +31,7 @@ export default {
 
   getPaymentsMethodList,
   getPaymentsCurrencyList,
+
+  getAutoPaymentsList,
+  getAutoPaymentConfig,
 }
