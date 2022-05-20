@@ -21,7 +21,6 @@ import entireStore from './Redux/store'
 import * as route from './routes'
 import {
   AuthPage,
-  MainPage,
   AccessLogPage,
   AffiliateProgram,
   SupportPage,
@@ -90,7 +89,10 @@ export default function App() {
                 <Route
                   path={route.HOME}
                   element={
-                    <PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />
+                    <PrivateRoute
+                      children={<ServicesPage children={<ServicesList />} />}
+                      redirectTo={route.LOGIN}
+                    />
                   }
                 />
                 <Route
@@ -161,15 +163,6 @@ export default function App() {
                   path={`${route.ERROR_PAGE}/*`}
                   element={
                     <PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />
-                  }
-                />
-                <Route
-                  path={`${route.SERVICES}/*`}
-                  element={
-                    <PrivateRoute
-                      children={<ServicesPage children={<ServicesList />} />}
-                      redirectTo={route.LOGIN}
-                    />
                   }
                 />
               </Routes>

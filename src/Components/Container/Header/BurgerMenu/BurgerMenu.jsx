@@ -157,6 +157,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   useOutsideAlerter(getBurgerEl, isOpened, controlMenu)
 
   const logOut = () => {
+    controlMenu()
     dispatch(authOperations.logout())
   }
 
