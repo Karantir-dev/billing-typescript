@@ -56,45 +56,58 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const servicesMenuList = [
-    { name: t('burger_menu.services.services_list.domains'), routeName: routes.HOME },
+    {
+      name: t('burger_menu.services.services_list.domains'),
+      routeName: routes.HOME,
+      allowedToRender: true,
+    },
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.services.services_list.dedicated_servers'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     { name: t('burger_menu.services.services_list.dns_hosting'), routeName: routes.HOME },
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.services.services_list.wetsite_care'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.services.services_list.forex_server'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
   ]
   const refProgrammMenuList = [
     {
       name: t('burger_menu.ref_program.ref_program_list.about_program'),
       routeName: `${routes.AFFILIATE_PROGRAM}/${routes.AFFILIATE_PROGRAM_ABOUT}`,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.incomes'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.statistic'),
       routeName: routes.HOME,
+      allowedToRender: true,
     },
   ]
 
@@ -116,16 +129,23 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     {
       name: t('burger_menu.finance.finance_list.automatic_payment'),
       routeName: `${routes.BILLING}/auto_payment`,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.finance.finance_list.payments'),
       routeName: `${routes.BILLING}/payments`,
+      allowedToRender: true,
     },
     {
       name: t('burger_menu.finance.finance_list.expenses'),
       routeName: `${routes.BILLING}/expenses`,
+      allowedToRender: true,
     },
-    { name: t('burger_menu.finance.finance_list.auto_renewal'), routeName: routes.HOME },
+    {
+      name: t('burger_menu.finance.finance_list.auto_renewal'),
+      routeName: routes.HOME,
+      allowedToRender: true,
+    },
   ]
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'

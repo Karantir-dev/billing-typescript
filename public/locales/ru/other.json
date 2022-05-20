@@ -79,5 +79,7 @@
   "Enter address": "Введите адрес",
   "Passport": "Паспорт",
   "Series and passport number": "Серия и номер паспорта",
-  "Is a required field": "Обязательное поле"
+  "Is a required field": "Обязательное поле",
+  "error_type": "Страница не найдена",
+  "error_text": "Похоже, что-то пошло не так. Приносим извинения за неудобства"
 }

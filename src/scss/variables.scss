@@ -30,6 +30,10 @@ body {
   --eye-color: #777;
   --icon-color: #d9d0eb;
   --scrollbar-track-color: #ebebeb;
+  --404-color: #ece7f8;
+  --carousel-elements-bgc: #ffffff;
+  --carousel-nearby-elements-bgc: #fef7fe;
+  --carousel-dots-elements-bgc: #e4e2e8;
   // --input-btn-shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --dividing_line: #e4dfec;
   --background-color: #fefdff;
@@ -63,6 +67,7 @@ body {
   --buttons_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #fff;
   --buttons_shadow_active: 2px 4px 5px rgba(98, 0, 54, 0.25),
     inset 2px 2px 6px rgba(0, 0, 0, 0.15);
+  --404-text-shadow: 3px 3px 4px rgba(78, 37, 119, 0.3);
 }
 
 // dark theme variables
@@ -92,6 +97,10 @@ body.dark-theme {
   --eye-color: #c4c4c4;
   --icon-color: #75707e;
   --scrollbar-track-color: #4b4556;
+  --404-color: #4d4954;
+  --carousel-elements-bgc: #342f3f;
+  --carousel-nearby-elements-bgc: #3e3949;
+  --carousel-dots-elements-bgc: #3e3949;
   // --input-btn-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --dividing_line: #4d4855;
   --background-color: #201a2a;
@@ -123,4 +132,5 @@ body.dark-theme {
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.3);
+  --404-text-shadow: 6px 3px 10px #000000;
 }
