@@ -153,8 +153,6 @@ export default function Component(props) {
             }
           }
 
-          console.log(errors)
-
           return (
             <Form className={s.form}>
               <div className={cn(s.formFieldsBlock, s.first)}>
