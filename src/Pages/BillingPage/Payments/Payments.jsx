@@ -23,8 +23,6 @@ export default function Component() {
     const dataPayers = {
       p_cnt: payersCount,
     }
-    dispatch(billingOperations.getPayments())
-
     dispatch(payersOperations.getPayers(dataPayers))
   }, [])
 

@@ -15,7 +15,6 @@ export default function Component() {
   const [selctedTicket, setSelctedTicket] = useState(null)
 
   useEffect(() => {
-    dispatch(supportOperations.getTicketsHandler())
     dispatch(supportOperations.getDepartmenList())
     dispatch(supportOperations.getServiceList())
   }, [])
