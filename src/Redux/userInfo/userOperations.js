@@ -44,7 +44,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       qs.stringify({
         func: 'notify',
         out: 'json',
-        lang: i18n.language,
+        lang: 'en',
         auth: sessionId,
       }),
     ),
@@ -85,6 +85,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
 }
 
 const removeItems = (sessionId, id) => dispatch => {
+  console.log('remove items ajax')
   axiosInstance
     .post(
       '/',
@@ -97,6 +98,7 @@ const removeItems = (sessionId, id) => dispatch => {
       }),
     )
     .then(({ data }) => {
+      console.log('id deleted', id)
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
     })
     .catch(error => {

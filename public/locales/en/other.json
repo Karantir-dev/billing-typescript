@@ -81,5 +81,6 @@
   "Series and passport number": "Series and passport number",
   "Is a required field": "Is a required field",
   "error_type": "Page not found",
-  "error_text": "Looks like something has gone wrong. Sorry for the inconveniences"
+  "error_text": "Looks like something has gone wrong. Sorry for the inconveniences",
+  "service": "Service"
 }

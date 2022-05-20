@@ -114,8 +114,8 @@ export default function ManageUserForm({
                     dataTestid="input_email"
                     label={
                       formName === 'settings'
-                        ? t('trusted_users.form.email')
-                        : requiredLabel(t('trusted_users.form.email'))
+                        ? `${t('trusted_users.form.email')}:`
+                        : requiredLabel(`${t('trusted_users.form.email')}:`)
                     }
                     placeholder={
                       formName === 'settings'
@@ -136,8 +136,8 @@ export default function ManageUserForm({
                     dataTestid="input_name"
                     label={
                       formName === 'settings'
-                        ? t('trusted_users.form.full_name')
-                        : requiredLabel(t('trusted_users.form.full_name'))
+                        ? `${t('trusted_users.form.full_name')}:`
+                        : requiredLabel(`${t('trusted_users.form.full_name')}:`)
                     }
                     placeholder={
                       formName === 'settings'
@@ -156,8 +156,8 @@ export default function ManageUserForm({
                   <CustomPhoneInput
                     label={
                       formName === 'settings'
-                        ? t('trusted_users.form.phone')
-                        : requiredLabel(t('trusted_users.form.phone'))
+                        ? `${t('trusted_users.form.phone')}:`
+                        : requiredLabel(`${t('trusted_users.form.phone')}:`)
                     }
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
@@ -170,8 +170,8 @@ export default function ManageUserForm({
                     dataTestid="input_password"
                     label={
                       formName === 'settings'
-                        ? t('trusted_users.form.password')
-                        : requiredLabel(t('trusted_users.form.password'))
+                        ? `${t('trusted_users.form.password')}:`
+                        : requiredLabel(`${t('trusted_users.form.password')}:`)
                     }
                     placeholder={t('trusted_users.form_placeholders.password')}
                     name={'password' + userId}
@@ -187,8 +187,8 @@ export default function ManageUserForm({
                     dataTestid="input_passConfirmation"
                     label={
                       formName === 'settings'
-                        ? t('trusted_users.form.conf_password')
-                        : requiredLabel(t('trusted_users.form.conf_password'))
+                        ? `${t('trusted_users.form.conf_password')}:`
+                        : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
                     }
                     placeholder={t('trusted_users.form_placeholders.conf_password')}
                     name={'passConfirmation' + userId}
