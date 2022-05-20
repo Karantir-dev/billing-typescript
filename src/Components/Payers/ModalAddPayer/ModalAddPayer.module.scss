@@ -106,7 +106,7 @@
 }
 
 .btnBlock {
-  margin-top: 35px;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
 }
@@ -164,7 +164,7 @@
 .offerBlockLink {
   color: var(--link-color);
   text-decoration: underline;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
@@ -178,18 +178,22 @@
     margin: 0 30px;
   }
 
+  .formBlock {
+    margin-top: 25px;
+  }
+
   .phoneInput {
-    max-width: 250px;
+    max-width: 48%;
     margin: 13px 20px 0 0;
   }
 
   .input {
-    max-width: 250px;
+    max-width: 48%;
     margin-right: 20px;
   }
 
   .select {
-    max-width: 250px;
+    max-width: 48%;
     margin-right: 20px;
   }
 
@@ -204,5 +208,9 @@
   .cancel {
     margin-top: 0px;
     margin-left: 20px;
+  }
+
+  .formFieldsBlock > div:nth-child(2n) {
+    margin-right: 0px;
   }
 }

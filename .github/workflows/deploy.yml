@@ -86,6 +86,8 @@ jobs:
           docker push $DOCKER_USERNAME/zomro-bill-dev:latest
           docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
       - name: Update Version
+        env:
+          RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
           sed -i "s|zomrocom/zomro-bill-dev|zomrocom/zomro-bill-dev:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
       - name: Install doctl

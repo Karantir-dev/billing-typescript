@@ -56,6 +56,5 @@ export { default as Pdf } from './svg/Pdf.jsx'
 export { default as MoreDots } from './svg/MoreDots.jsx'
 export { default as Error404_dt } from './svg/Error404_dt.jsx'
 export { default as Error404_lt } from './svg/Error404_lt.jsx'
-export { default as Error404 } from './svg/Erorr404.jsx'
 
 export { default as Pay } from './svg/Pay.jsx'

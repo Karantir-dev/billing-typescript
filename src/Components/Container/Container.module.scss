@@ -3,6 +3,8 @@
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: var(--main-bgc);
+
   &::-webkit-scrollbar {
     width: 5px;
   }
@@ -47,7 +49,7 @@
 
 @media screen and (min-width: 1550px) {
   .container {
-    padding: 137px 135px 188px 290px;
+    padding: 137px 135px 188px 259px;
   }
 }
 

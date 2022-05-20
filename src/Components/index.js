@@ -70,9 +70,12 @@ export { default as EmailConfirmation } from './Settings/EmailConfirmation/Email
 //==========================================BILLING==========================================//
 export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
 export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
-
+export { default as ModalCreatePayment } from './Billing/ModalCreatePayment/ModalCreatePayment'
 export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
 
 //==========================================PAYERS==========================================//
 export { default as PayersTable } from './Payers/PayersTable/PayersTable'
 export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
+
+//==========================================SERVICES==========================================//
+export { default as ServicesList } from './Services/ServicesList/ServicesList'

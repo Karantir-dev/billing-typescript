@@ -79,6 +79,7 @@ export default function LoginForm() {
                   error={!!errors.email}
                   touched={!!touched.email}
                   className={s.input_field_wrapper}
+                  inputAuth
                   autoComplete
                 />
 
@@ -91,6 +92,7 @@ export default function LoginForm() {
                   iconLeft="padlock"
                   className={s.input_field_wrapper}
                   error={!!errors.password}
+                  inputAuth
                   touched={!!touched.password}
                 />
 

@@ -16,10 +16,6 @@ export default function Component() {
   const [selctedTicket, setSelctedTicket] = useState(null)
 
   useEffect(() => {
-    dispatch(supportOperations.getTicketsArchiveHandler())
-  }, [])
-
-  useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(supportOperations.getTicketsArchiveHandler(data))
   }, [currentPage])

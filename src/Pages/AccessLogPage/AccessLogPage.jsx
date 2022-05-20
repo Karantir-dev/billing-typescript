@@ -24,7 +24,6 @@ export default function MainPage() {
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
   useEffect(async () => {
-    dispatch(accessLogsOperations.getAccessLogsHandler())
     dispatch(accessLogsOperations.getAccessLogsFiltersHandler())
   }, [])
 

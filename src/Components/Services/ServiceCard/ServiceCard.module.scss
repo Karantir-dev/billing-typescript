@@ -1,7 +1,284 @@
 .card {
+  overflow: hidden;
+  background-color: var(--carousel-elements-bgc);
+  box-shadow: var(--forms2_shadow);
+  position: relative;
+  z-index: 1;
+}
+
+.card_container {
   min-width: 237px;
   height: 289px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms2_shadow);
-  margin-right: 20px;
+}
+
+.container {
+  height: 146px;
+  padding: 29px 25px 0 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card_numeric {
+  display: block;
+  font-size: 16px;
+  line-height: 113%;
+  color: #b3a9c1;
+  transition: color 0.2s;
+}
+
+.card_title {
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  transition: font-size 0.2s, color 0.2s;
+}
+
+.goto {
+  font-size: 18px;
+  line-height: 113%;
+  text-decoration: underline;
+  color: #b3a9c1;
+  padding-right: 13px;
+  transition: color 0.2s;
+}
+
+.arrow {
+  font-size: 18px;
+  line-height: 113%;
+  color: #b3a9c1;
+  transition: color 0.2s;
+}
+
+.triangle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 237px;
+  height: 140px;
+  background: linear-gradient(
+    to bottom right,
+    var(--carousel-elements-bgc) 0%,
+    var(--carousel-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 100%
+  );
+  z-index: -1;
+}
+
+.icon_domains,
+.icon_vds,
+.icon_dedicated,
+.icon_dns_hosting,
+.icon_dns_hosting_min,
+.icon_ftp_storage,
+.icon_care,
+.icon_forexbox,
+.icon_virtual_hosting {
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+}
+
+.icon_domains {
+  bottom: -4px;
+}
+
+.icon_dedicated {
+  bottom: -6px;
+}
+
+.icon_virtual_hosting {
+  bottom: 15px;
+}
+
+.icon_forexbox {
+  bottom: 15px;
+}
+
+.forexbox_graphic {
+  position: absolute;
+  top: -40px;
+  left: -5px;
+}
+
+@media screen and (min-width: 768px) {
+  .card_container {
+    width: 306px;
+    height: 160px;
+    transition: transform 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.05);
+
+      .card_numeric {
+        color: var(--main-text);
+      }
+      .card_title {
+        background: var(--accent-text-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .goto {
+        color: var(--main-text);
+      }
+      .arrow {
+        color: var(--main-text);
+      }
+    }
+  }
+
+  .icon_virtual_hosting {
+    bottom: 10px;
+    right: 10px;
+  }
+  .icon_ftp_storage {
+    right: 10px;
+  }
+
+  .triangle {
+    left: unset;
+    right: 0;
+    width: 206px;
+    height: 160px;
+  }
+
+  .container {
+    max-width: 180px;
+    height: 140px;
+  }
+
+  .forexbox_graphic {
+    clip: rect(20px, 240px, 220px, 80px);
+    top: -25px;
+    left: -20px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .card_container {
+    width: 260px;
+    height: 280px;
+  }
+
+  .triangle {
+    left: unset;
+    width: 260px;
+    height: 136px;
+  }
+
+  //icons
+  .icon_domains {
+    width: 115;
+    height: 125;
+  }
+  .icon_vds {
+    width: 93px;
+    height: 109px;
+  }
+  .icon_dedicated {
+    width: 96px;
+    height: 146px;
+  }
+
+  .icon_virtual_hosting {
+    width: 128px;
+    height: 98px;
+    right: 20px;
+    bottom: 15px;
+  }
+
+  .icon_dns_hosting {
+    width: 212px;
+    height: 105px;
+  }
+
+  .icon_ftp_storage {
+    width: 129px;
+    height: 112px;
+    right: 20px;
+  }
+  .icon_care {
+    width: 128px;
+    height: 118px;
+  }
+  .icon_forexbox {
+    width: 124px;
+    height: 92px;
+  }
+
+  .forexbox_graphic {
+    clip: unset;
+    top: -50px;
+    left: 0px;
+  }
+
+  .card_numeric {
+    font-size: 18px;
+  }
+  .card_title {
+    font-size: 21px;
+  }
+  .goto {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .card_numeric {
+    font-size: 23px;
+  }
+  .card_container {
+    width: 268px;
+    height: 285px;
+  }
+
+  .triangle {
+    left: unset;
+    width: 268px;
+    height: 142px;
+  }
+  .forexbox_graphic {
+    top: -40px;
+  }
+
+  //icons
+
+  .icon_domains {
+    width: 118;
+    height: 128;
+  }
+  .icon_vds {
+    width: 96px;
+    height: 112px;
+  }
+  .icon_dedicated {
+    width: 99px;
+    height: 151px;
+  }
+
+  .icon_virtual_hosting {
+    width: 132px;
+    height: 101px;
+  }
+
+  .icon_dns_hosting {
+    width: 219px;
+    height: 108px;
+  }
+
+  .icon_ftp_storage {
+    width: 133px;
+    height: 116px;
+  }
+  .icon_care {
+    width: 132px;
+    height: 122px;
+  }
+  .icon_forexbox {
+    width: 127px;
+    height: 94px;
+  }
 }

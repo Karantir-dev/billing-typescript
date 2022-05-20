@@ -27,6 +27,8 @@ export default function InputField(props) {
     inputClassName,
     onKeyDown,
     isRequired,
+    inputAuth,
+    ...anotherProps
   } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -81,6 +83,7 @@ export default function InputField(props) {
           data-testid={dataTestid}
           className={cn({
             [s.input]: true,
+            [s.inputAuth]: inputAuth,
             [s.iconLeft]: iconLeft,
             [s.iconRight]: iconRight || type === 'password',
             [s.shadow]: isShadow,
@@ -95,6 +98,7 @@ export default function InputField(props) {
           placeholder={placeholder}
           onKeyDown={onKeyDown}
           autoComplete={autoComplete ? 1 : 0}
+          {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
         {tabletOrHigher && type !== 'password' && renderIcon(iconRight, 'right')}
@@ -130,6 +134,7 @@ InputField.propTypes = {
   background: PropTypes.bool,
   disabled: PropTypes.bool,
   isRequired: PropTypes.bool,
+  inputAuth: PropTypes.bool,
   inputWrapperClass: PropTypes.string,
   inputClassName: PropTypes.string,
   onKeyDown: PropTypes.func,
@@ -142,5 +147,6 @@ InputField.defaultProps = {
   dataTestid: null,
   disabled: false,
   isRequired: false,
+  inputAuth: false,
   onKeyDown: () => null,
 }
