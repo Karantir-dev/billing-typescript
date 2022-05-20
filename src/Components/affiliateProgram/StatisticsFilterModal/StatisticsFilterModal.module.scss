@@ -55,11 +55,11 @@
 }
 
 .select_bgc {
-  background-color: var(--nearby-elements-bgc) !important;
+  background-color: var(--forms_bgc_3) !important;
 }
 
 .icon_calendar {
-  background-color: var(--nearby-elements-bgc) !important;
+  background-color: var(--forms_bgc_3) !important;
 }
 
 .calendarBlock {
@@ -79,6 +79,10 @@
 
 .form_field {
   margin-bottom: 15px;
+}
+
+.input_bgc {
+  background-color: var(--forms_bgc_3) !important;
 }
 
 .submit_btn {

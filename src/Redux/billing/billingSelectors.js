@@ -10,6 +10,9 @@ const getExpensesCount = state => state.billing.expensesCount
 const getExpensesFiltersList = state => state.billing.expensesFiltersList
 const getExpensesFilters = state => state.billing.expensesFilters
 
+const getPaymentsMethodList = state => state.billing.paymentsMethodList
+const getPaymentsCurrencyList = state => state.billing.paymentsCurrencyList
+
 export default {
   getPaymentsList,
   getPaymentsCount,
@@ -22,4 +25,7 @@ export default {
 
   getExpensesFiltersList,
   getExpensesFilters,
+
+  getPaymentsMethodList,
+  getPaymentsCurrencyList,
 }

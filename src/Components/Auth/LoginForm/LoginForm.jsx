@@ -32,10 +32,10 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      // .email(t('warnings.invalid_email'))
+      .matches(/^[^!#$%^&*()\]~+/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
-    reCaptcha: Yup.string().required(t('warnings.recaptcha')),
+    reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
   })
 
   return (
@@ -79,6 +79,7 @@ export default function LoginForm() {
                   error={!!errors.email}
                   touched={!!touched.email}
                   className={s.input_field_wrapper}
+                  inputAuth
                   autoComplete
                 />
 
@@ -91,6 +92,7 @@ export default function LoginForm() {
                   iconLeft="padlock"
                   className={s.input_field_wrapper}
                   error={!!errors.password}
+                  inputAuth
                   touched={!!touched.password}
                 />
 

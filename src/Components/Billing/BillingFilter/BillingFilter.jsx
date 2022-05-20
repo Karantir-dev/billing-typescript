@@ -5,7 +5,7 @@ import FilterExpensesModal from './FilterExpensesModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Button, IconButton, Portal } from '../..'
+import { Button, IconButton, Portal, ModalCreatePayment } from '../..'
 import { useMediaQuery } from 'react-responsive'
 import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
@@ -23,6 +23,7 @@ export default function Component(props) {
   const params = useParams()
 
   const [filterModal, setFilterModal] = useState(false)
+  const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
   const downloadPaymentsCsvHandler = count => {
     dispatch(billingOperations.getPaymentCsv(count))
@@ -89,14 +90,21 @@ export default function Component(props) {
         />
       </div>
       {params?.path === 'payments' && (
-        <Button
-          className={s.newTicketBtn}
-          isShadow
-          size="medium"
-          label={t('Create')}
-          type="button"
-          onClick={() => null}
-        />
+        <>
+          <Button
+            className={s.newTicketBtn}
+            isShadow
+            size="medium"
+            label={t('Create')}
+            type="button"
+            onClick={() => setCreatePaymentModal(!createPaymentModal)}
+          />
+          <Portal>
+            {createPaymentModal && (
+              <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+            )}
+          </Portal>
+        </>
       )}
     </div>
   )

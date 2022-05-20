@@ -398,6 +398,183 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
     })
 }
 
+const getPaymentMethod =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add.method',
+          out: 'json',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'methodlist') {
+            dispatch(billingActions.setPaymentMethodsList(el?.elem))
+          }
+        })
+
+        dispatch(billingActions.setPaymentCurrencyList(data.doc?.payment_currency?.$))
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const createPaymentMethod =
+  (body = {}, setCreatePaymentModal, newPayer = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    const createPayment = () => {
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'payment.add.method',
+            out: 'json',
+            auth: sessionId,
+            sok: 'ok',
+            ...body,
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+          if (data.doc.ok) {
+            dispatch(getPaymentMethodPage(data.doc.ok.$))
+            setCreatePaymentModal(false)
+          }
+        })
+        .catch(error => {
+          console.log('error', error)
+          errorHandler(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        })
+    }
+
+    const createPayer = () => {
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'payment.add.profile',
+            out: 'json',
+            auth: sessionId,
+            sok: 'ok',
+            ...body,
+          }),
+        )
+        .then(({ data }) => {
+          if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+          if (data.doc.ok) {
+            dispatch(getPaymentMethodPage(data.doc.ok.$))
+            setCreatePaymentModal(false)
+          }
+        })
+        .catch(error => {
+          console.log('error', error)
+          errorHandler(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        })
+    }
+
+    if (newPayer) {
+      return createPayer()
+    }
+    createPayment()
+  }
+
+const getPaymentMethodPage = link => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      link,
+      qs.stringify({
+        auth: sessionId,
+        lang: 'en',
+      }),
+      { responseType: 'blob' },
+    )
+    .then(response => {
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'text/html' }),
+      )
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('target', '__blank')
+      link.setAttribute('rel', 'noopener noreferrer')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+
+      dispatch(actions.hideLoader())
+      dispatch(getPayments())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.add.redirect',
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+        elid,
+        elname,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      if (data.doc.ok) {
+        dispatch(getPaymentMethodPage(data.doc.ok.$))
+      }
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -408,4 +585,8 @@ export default {
   getExpenses,
   getExpensesCsv,
   setExpensesFilters,
+  getPaymentMethod,
+  createPaymentMethod,
+  getPaymentMethodPage,
+  getPaymentRedirect,
 }

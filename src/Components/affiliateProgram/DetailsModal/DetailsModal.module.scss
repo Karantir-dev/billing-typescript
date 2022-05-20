@@ -69,7 +69,8 @@
 .list {
   padding: 10px 18px 30px;
   overflow-y: scroll;
-  height: 70vh;
+  height: fit-content;
+  max-height: 70vh;
   margin-bottom: 20px;
 
   &::-webkit-scrollbar {
@@ -166,7 +167,7 @@
 
   .list {
     padding: 10px 30px 30px;
-    height: 60vh;
+    max-height: 60vh;
   }
 
   .list_item {

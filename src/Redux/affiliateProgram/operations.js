@@ -61,7 +61,7 @@ const getInitialIncomeInfo =
         }
 
         const tableData = data.doc?.reportdata?.reward?.elem
-        console.log(tableData)
+
         if (tableData) {
           let modifiedTableData = []
           if (Array.isArray(tableData)) {

@@ -147,6 +147,7 @@ export default function StatisticsFilterModal({
                   <InputField
                     name="site"
                     className={s.form_field}
+                    inputClassName={s.input_bgc}
                     label={`${t('statistics_section.from_site')}:`}
                     placeholder={t('statistics_section.website_url')}
                     touched={false}
@@ -154,7 +155,6 @@ export default function StatisticsFilterModal({
                     autoComplete
                     isShadow
                     height={44}
-                    background={true}
                   />
 
                   <Select

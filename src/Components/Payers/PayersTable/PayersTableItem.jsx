@@ -61,11 +61,15 @@ export default function Component(props) {
           ref={dropDownEl}
         >
           <button className={s.settings_btn} onClick={editHanler}>
-            <Settings />
+            <div className={s.iconContainer}>
+              <Settings />
+            </div>
             <p className={s.setting_text}>{t('Edit')}</p>
           </button>
           <button className={s.settings_btn} onClick={() => setIsDeleteModal(true)}>
-            <Delete />
+            <div className={s.iconContainer}>
+              <Delete />
+            </div>
             <p className={s.setting_text}>{t('Delete')}</p>
           </button>
         </div>
