@@ -25,6 +25,8 @@ export default function AccessRightsListItem({
   const [subList, setSubList] = useState([])
   let rightState = item?.active?.$ === 'on'
   const [currentRightState, setCurrentRightState] = useState(rightState)
+  const [allowAllRightState, setAllowAllRightState] = useState(rightState)
+
   const dispatch = useDispatch()
 
   const modifiedList = subList.map(item => {
@@ -67,7 +69,7 @@ export default function AccessRightsListItem({
     }
   }
 
-  const handleToggleBtns = () => {
+  const handleAllowAllBtn = () => {
     const act = currentRightState ? 'suspend' : 'resume'
     let type = item.name.$.split('.').slice(0, 1).join('')
     if (type === 'promisepayment') {
@@ -80,25 +82,71 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
-        if (allowAll) {
-          const map = selectedSub.map(el => {
-            if (currentRightState) {
-              el.active.$ = 'off'
-            } else if (!currentRightState) {
-              el.active.$ = 'on'
-            }
+        const map = selectedSub.map(el => {
+          if (currentRightState) {
+            el.active.$ = 'off'
+          } else if (!currentRightState) {
+            el.active.$ = 'on'
+          }
 
-            return el
-          })
+          return el
+        })
 
-          setSelectedSub([])
-          setCurrentRightState(!currentRightState)
-          setSelectedSub([...map])
-        }
+        console.log(map)
+
+        setSelectedSub([])
+        setCurrentRightState(!currentRightState)
+        setSelectedSub([...map])
       } catch (e) {
         console.log('Error in AccessRightsListItem - ', e.message)
       }
     })
+  }
+
+  const handleToggleBtns = () => {
+    const act = currentRightState ? 'suspend' : 'resume'
+    let type = item.name.$.split('.').slice(0, 1).join('')
+    if (type === 'promisepayment') {
+      type = type + '.add'
+    }
+
+    const res = dispatch(
+      usersOperations.manageUserRight(userId, item.name.$, sessionId, act, type),
+    )
+
+    res.then(() => {
+      if (act === 'suspend' && allowAllRightState) {
+        setAllowAllRightState(false)
+      }
+
+      setCurrentRightState(!currentRightState)
+    })
+
+    // res.then(() => {
+    //   try {
+    //     if (allowAll) {
+    //       const map = selectedSub.map(el => {
+    //         if (currentRightState) {
+    //           el.active.$ = 'off'
+    //         } else if (!currentRightState) {
+    //           el.active.$ = 'on'
+    //         }
+
+    //         return el
+    //       })
+
+    //       console.log(map)
+
+    //       setSelectedSub([])
+    //       setCurrentRightState(!currentRightState)
+    //       setSelectedSub([...map])
+    //     } else {
+    //       setCurrentRightState(!currentRightState)
+    //     }
+    //   } catch (e) {
+    //     console.log('Error in AccessRightsListItem - ', e.message)
+    //   }
+    // })
   }
 
   const nameWithoutDots = item.name.$.replaceAll('.', '_')
@@ -161,8 +209,8 @@ export default function AccessRightsListItem({
                       !hasAccessToSuspendRightsOnly)
                   }
                   hasAlert={false}
-                  initialState={currentRightState}
-                  func={handleToggleBtns}
+                  initialState={allowAllRightState}
+                  func={handleAllowAllBtn}
                   size="small"
                 />
               </div>
