@@ -131,7 +131,6 @@
 
 .list {
   position: absolute;
-  width: 210px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: -25px;
@@ -168,13 +167,13 @@
     margin-bottom: 18px;
   }
 
-  svg {
+  .iconContainer {
     width: 16px;
   }
 
   svg,
   path {
-    fill: var(--transparent-color);
+    fill: var(--icon-color);
   }
   &:hover {
     .setting_text {
@@ -290,7 +289,6 @@
   .tableBlockFourth,
   .tableBlockFifth {
     margin-top: 0px;
-    margin-right: 20px;
   }
   .tableBlockFirst {
     flex-basis: 26.8%;
@@ -307,6 +305,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    right: 0;
+    margin-right: 0;
   }
   .item_text {
     font-style: normal;

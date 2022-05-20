@@ -13,10 +13,6 @@ export default function Component() {
   const expensesCount = useSelector(billingSelectors.getExpensesCount)
 
   useEffect(() => {
-    dispatch(billingOperations.getExpenses())
-  }, [])
-
-  useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(billingOperations.getExpenses(data))
   }, [currentPage])

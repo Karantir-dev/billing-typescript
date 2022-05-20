@@ -44,6 +44,7 @@ export default function Component() {
         <Button
           onClick={() => setAddPayerModal(!addPayerModal)}
           label={t('Add')}
+          isShadow
           className={s.addBtn}
         />
         <PayersTable openEditModalHandler={openEditModalHandler} list={payersList} />

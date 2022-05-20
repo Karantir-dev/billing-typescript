@@ -107,6 +107,7 @@ export default function SignupForm() {
                 error={!!errors.name}
                 touched={!!touched.name}
                 className={s.input_field_wrapper}
+                inputAuth
               />
 
               <InputField
@@ -119,6 +120,7 @@ export default function SignupForm() {
                 touched={!!touched.email}
                 className={s.input_field_wrapper}
                 autoComplete
+                inputAuth
               />
 
               <InputField
@@ -131,6 +133,7 @@ export default function SignupForm() {
                 touched={!!touched.password}
                 type="password"
                 className={s.input_field_wrapper}
+                inputAuth
               />
 
               <InputField
@@ -143,6 +146,7 @@ export default function SignupForm() {
                 touched={!!touched.passConfirmation}
                 type="password"
                 className={s.input_field_wrapper}
+                inputAuth
               />
 
               <SelectOfCountries

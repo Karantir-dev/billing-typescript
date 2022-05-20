@@ -39,5 +39,14 @@
   "Less than or equal": "Less than or equal",
   "Equal": "Equal",
   "Greater than or equals": "Greater than or equals",
-  "Awaiting sending": "Awaiting sending"
+  "Awaiting sending": "Awaiting sending",
+  "Replenishment": "Replenishment",
+  "Payer's choice": "Payer's choice",
+  "Top-up amount": "Top-up amount",
+  "Payment using text": "Payment using VISA, MasterCard and American Express bank cards. When ordering a service with auto-renewal enabled, the card will be saved for further payment.",
+  "Minimum payment amount": "Minimum payment amount",
+  "Enter amount": "Enter amount",
+  "The amount must be greater than": "The amount must be greater than",
+  "Select a Payment Method": "Select a Payment Method",
+  "Choose payer": "Choose payer"
 }

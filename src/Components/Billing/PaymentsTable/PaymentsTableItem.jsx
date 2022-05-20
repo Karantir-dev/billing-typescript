@@ -19,6 +19,7 @@ export default function Component(props) {
     paymethod,
     downloadPdfHandler,
     deletePayment,
+    payHandler,
   } = props
   const { t } = useTranslation(['billing', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
@@ -63,13 +64,15 @@ export default function Component(props) {
     setIsOpened(false)
   }
 
+  const payRedirectHandler = () => {
+    payHandler(id, number)
+    setIsOpened(false)
+  }
+
   const renderDesktopLastColumn = () => {
     return (
       <div className={cn(s.item_text, s.eighth_item)}>
-        <MoreDots
-          onClick={() => setIsOpened(!isOpened)}
-          className={s.dotIcons}
-        />
+        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
 
         <div
           role="button"
@@ -82,10 +85,12 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={() => null}>
-            <Pay />
-            <p className={s.setting_text}>{t('Pay')}</p>
-          </button>
+          {status.trim() !== 'Paid' && (
+            <button className={s.settings_btn} onClick={payRedirectHandler}>
+              <Pay />
+              <p className={s.setting_text}>{t('Pay')}</p>
+            </button>
+          )}
           <button className={s.settings_btn} onClick={downloadHandler}>
             <Download />
             <p className={s.setting_text}>{t('Download')}</p>
@@ -104,10 +109,12 @@ export default function Component(props) {
   const renderMobileLastColumn = () => {
     return (
       <div className={s.btnsBlock}>
-        <button className={s.mobileBtn}>
-          <Pay />
-          <div>{t('Pay')}</div>
-        </button>
+        {status.trim() !== 'Paid' && (
+          <button onClick={payRedirectHandler} className={s.mobileBtn}>
+            <Pay />
+            <div>{t('Pay')}</div>
+          </button>
+        )}
         <button onClick={downloadHandler} className={s.mobileBtn}>
           <Download />
           <div>{t('Download')}</div>
