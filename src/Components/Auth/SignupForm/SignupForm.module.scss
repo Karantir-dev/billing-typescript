@@ -107,8 +107,12 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .form {
-    width: 304px;
+    width: 313px;
     padding: 25px 40px;
+  }
+
+  .captcha {
+    transform: scale(0.77);
   }
 }
 
