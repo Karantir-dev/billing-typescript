@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
@@ -17,7 +17,7 @@ export default function NotificationsBar({
   const messages = useSelector(userSelectors.getUserItems)
   const { t } = useTranslation('container')
 
-  const getNotifBarEl = useRef()
+  // const getNotifBarEl = useRef()
 
   // useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
 
@@ -27,31 +27,30 @@ export default function NotificationsBar({
 
   return (
     <>
-      <div className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}>
-        <div ref={getNotifBarEl}>
-          <div
-            className={cn({
-              [s.notificatonbar_container]: true,
-              [s.opened]: isBarOpened,
-            })}
-          >
-            <div className={s.notification_title_container}>
-              <p className={s.notification_title}>{`${t(
-                'notification_bar.notifications',
-              )} (${countNotification})`}</p>
-              <div className={s.close_btn_wrapper}>
-                <button className={s.close_btn} onClick={handler}></button>
-              </div>
-            </div>
-
-            {isBarOpened && (
-              <NotificationList
-                notifications={notifications}
-                removedNotification={removedNotification}
-              />
-            )}
+      <div
+        className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}
+      ></div>
+      <div
+        className={cn({
+          [s.notificatonbar_container]: true,
+          [s.opened]: isBarOpened,
+        })}
+      >
+        <div className={s.notification_title_container}>
+          <p className={s.notification_title}>{`${t(
+            'notification_bar.notifications',
+          )} (${countNotification})`}</p>
+          <div className={s.close_btn_wrapper}>
+            <button className={s.close_btn} onClick={handler}></button>
           </div>
         </div>
+
+        {isBarOpened && (
+          <NotificationList
+            notifications={notifications}
+            removedNotification={removedNotification}
+          />
+        )}
       </div>
     </>
   )
