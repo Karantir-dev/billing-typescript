@@ -57,12 +57,6 @@ export default function Header() {
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
-  const [removeNotification, setRemoveNotification] = useState(false)
-
-  const handleRemoveNotif = () => {
-    setRemoveNotification(!removeNotification)
-  }
-
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const messages = useSelector(userSelectors.getUserItems)
 
@@ -71,6 +65,13 @@ export default function Header() {
       ? messages.bitem.length
       : 1
     : 0
+
+  const [notifications, setNotifications] = useState(mesAmount)
+
+  const handleRemoveNotif = () => {
+    let newNotifications = notifications === 0 ? 0 : notifications - 1
+    setNotifications(newNotifications)
+  }
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -164,7 +165,7 @@ export default function Header() {
                     className={cn({
                       [s.item]: true,
                       [s.item_bell]: true,
-                      [s.notification_messages]: mesAmount > 0,
+                      [s.notification_messages]: notifications > 0,
                     })}
                   >
                     <button onClick={handleBellClick} className={s.btn}>
@@ -173,9 +174,11 @@ export default function Header() {
                         svgwidth="18"
                         className={cn({ [s.icon]: true, [s.bell]: true })}
                       />
-                      {mesAmount > 0 && (
+                      {notifications > 0 && (
                         <div className={s.notification_counter_wrapper}>
-                          <p className={s.notification_messages_counter}>{mesAmount}</p>
+                          <p className={s.notification_messages_counter}>
+                            {notifications}
+                          </p>
                         </div>
                       )}
                     </button>
@@ -252,6 +255,7 @@ export default function Header() {
           </div>
         </div>
       </header>
+
       <button
         className={cn({
           [s.header_menuburger]: true,
@@ -271,8 +275,8 @@ export default function Header() {
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}
         controlMenu={handleClick}
       />
-
       <NotificationsBar
+        countNotification={notifications}
         removedNotification={handleRemoveNotif}
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}

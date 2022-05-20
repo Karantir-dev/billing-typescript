@@ -56,6 +56,8 @@
   "notification_bar": {
     "no_messages": "There are no notifications",
     "show_more": "Show all notifications",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "has been prolonged": "has been prolonged",
+    "is ready for use": "is ready for use"
   }
 }
