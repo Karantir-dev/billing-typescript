@@ -4,6 +4,7 @@ import {
   Container,
   EmailConfirmation,
   PrivateRoute,
+  ServicesList,
   TrustedUsers,
 } from '../../Components'
 import {
@@ -11,7 +12,6 @@ import {
   AffiliateProgram,
   BillingPage,
   ErrorPage,
-  MainPage,
   OpenedTicker,
   PayersPage,
   SupportPage,
@@ -26,7 +26,7 @@ const Component = () => {
       <Routes>
         <Route
           path={route.HOME}
-          element={<PrivateRoute children={<MainPage />} redirectTo={route.LOGIN} />}
+          element={<PrivateRoute children={<ServicesList />} redirectTo={route.LOGIN} />}
         />
         <Route
           path={route.ACCESS_LOG}

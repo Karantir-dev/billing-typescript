@@ -37,6 +37,11 @@
 }
 
 .swiper-slide {
+  & li {
+    opacity: 0.4;
+    visibility: visible;
+  }
+
   &.swiper-slide-active {
     & li {
       opacity: 1;
@@ -54,11 +59,6 @@
         color: var(--main-text);
       }
     }
-  }
-
-  & li {
-    opacity: 0.4;
-    visibility: visible;
   }
 }
 

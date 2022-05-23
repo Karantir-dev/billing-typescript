@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { userOperations, authSelectors } from '../../../Redux'
@@ -11,10 +11,12 @@ import classNames from 'classnames'
 export default function NotificationList({ notifications, removedNotification }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
   const { t } = useTranslation('container')
-  let shortNotificationsList = notifications.slice(0, 3)
+  const dispatch = useDispatch()
+
+  let shortNotificationsList =
+    notifications > 0 ? notifications.slice(0, 3) : notifications
 
   const [click, setClick] = useState(false)
-
   const [currentNotifList, setCurrentNotifList] = useState(shortNotificationsList)
 
   const handleShowMoreClick = () => {
@@ -23,7 +25,7 @@ export default function NotificationList({ notifications, removedNotification })
   }
 
   const removeItem = id => {
-    userOperations.removeItems(isAuthenticated, id)
+    dispatch(userOperations.removeItems(isAuthenticated, id))
 
     setCurrentNotifList(() => {
       if (Array.isArray(currentNotifList)) {
@@ -33,6 +35,10 @@ export default function NotificationList({ notifications, removedNotification })
       }
     })
   }
+
+  useEffect(() => {
+    console.log(currentNotifList)
+  })
 
   return (
     <>

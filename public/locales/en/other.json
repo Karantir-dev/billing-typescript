@@ -84,5 +84,6 @@
   "error_text": "Looks like something has gone wrong. Sorry for the inconveniences",
   "Active": "Active",
   "Disable": "Disable",
-  "Confirm": "Confirm"
+  "Confirm": "Confirm",
+  "service": "Service"
 }

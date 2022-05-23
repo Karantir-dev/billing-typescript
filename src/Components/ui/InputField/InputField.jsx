@@ -24,6 +24,7 @@ export default function InputField(props) {
     dataTestid,
     disabled,
     inputWrapperClass,
+    inputClassName,
     onKeyDown,
     isRequired,
     inputAuth,
@@ -89,6 +90,7 @@ export default function InputField(props) {
             [s.field_bgc]: background,
             [s.error]: error && touched,
             [s.disabled]: disabled,
+            [inputClassName]: inputClassName,
           })}
           id={name}
           name={name}
@@ -134,6 +136,7 @@ InputField.propTypes = {
   isRequired: PropTypes.bool,
   inputAuth: PropTypes.bool,
   inputWrapperClass: PropTypes.string,
+  inputClassName: PropTypes.string,
   onKeyDown: PropTypes.func,
 }
 

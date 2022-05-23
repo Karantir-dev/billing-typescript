@@ -20,7 +20,7 @@ export default function DetailsModal({ details, closeModal }) {
   }
 
   const sortedItems = details.sort((a, b) => {
-    return b.reward.$.replace('%', '') - a.reward.$.replace('%', '')
+    return b?.reward?.$?.replace('%', '') - a?.reward?.$?.replace('%', '')
   })
 
   return (

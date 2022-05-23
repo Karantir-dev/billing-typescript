@@ -23,9 +23,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     )
     .then(({ data }) => {
       if (data.doc.error) {
-        setErrMsg(data.doc.error.$object)
-
-        throw new Error(data.doc.error.msg.$)
+        throw data.doc.error
       }
       const sessionId = data.doc.auth.$id
 
@@ -60,8 +58,15 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     .catch(error => {
       resetRecaptcha()
       dispatch(actions.hideLoader())
-      setErrMsg(SERVER_ERR_MSG)
-      console.log('auth -', error.message)
+      const errText =
+        error?.response?.status === 403
+          ? 'blocked_ip'
+          : error?.$object
+          ? error.$object
+          : SERVER_ERR_MSG
+
+      setErrMsg(errText)
+      console.log('auth -', error?.msg?.$ || error.message)
     })
 }
 
