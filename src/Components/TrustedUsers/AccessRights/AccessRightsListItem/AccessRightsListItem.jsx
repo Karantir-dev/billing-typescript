@@ -1,15 +1,18 @@
 import cn from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
 import ToggleButton from '../../ToggleButton/ToggleButton'
+import ToggleButtonAll from '../../ToggleButton/ToggleButtonAll'
 
 import s from './AccessRightsListItem.module.scss'
 
 export default function AccessRightsListItem({
+  allRightsState,
+  setAllRightsState,
   item,
   userId,
   handleSelect,
@@ -18,15 +21,22 @@ export default function AccessRightsListItem({
   hasAccessToResumeRights,
   hasAccessToSuspendRights,
   hasAccessToSuspendRightsOnly,
+  selectedSubList,
+  setSelectedSubList,
+  mainFunc,
 }) {
   const { t } = useTranslation('trusted_users')
-  const [selectedSub, setSelectedSub] = useState([])
   const sessionId = useSelector(authSelectors.getSessionId)
-  const [subList, setSubList] = useState([])
   let rightState = item?.active?.$ === 'on'
-  const [currentRightState, setCurrentRightState] = useState(rightState)
-  const [allowAllRightState, setAllowAllRightState] = useState(rightState)
 
+  const [isAllTurnedOn, setIsAllTurnedOn] = useState(rightState)
+  const [currentRightState, setCurrentRightState] = useState(rightState)
+
+  const [selectedSub, setSelectedSub] = useState([])
+  const [subList, setSubList] = useState([])
+
+  const [mainFuncName, setMainFuncName] = useState('')
+  console.log(setMainFuncName)
   const dispatch = useDispatch()
 
   const modifiedList = subList.map(item => {
@@ -46,6 +56,8 @@ export default function AccessRightsListItem({
   }
 
   const handleClick = () => {
+    allowAll && setMainFuncName(item.name.$)
+
     handleSelect(item)
 
     if (!selected) {
@@ -69,9 +81,15 @@ export default function AccessRightsListItem({
     }
   }
 
-  const handleAllowAllBtn = () => {
-    const act = currentRightState ? 'suspend' : 'resume'
+  // item.name.$
+
+  const handleToggleBtns = () => {
+    const actSingleBtn = currentRightState ? 'suspend' : 'resume'
+    const actTurnAllBtns = isAllTurnedOn || allRightsState ? 'suspend' : 'resume'
+    const act = allowAll ? actTurnAllBtns : actSingleBtn
     let type = item.name.$.split('.').slice(0, 1).join('')
+    let subType = item.name.$.split('#').slice(-1).join('')
+
     if (type === 'promisepayment') {
       type = type + '.add'
     }
@@ -82,78 +100,76 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
-        const map = selectedSub.map(el => {
-          if (currentRightState) {
-            el.active.$ = 'off'
-          } else if (!currentRightState) {
-            el.active.$ = 'on'
+        if (allowAll) {
+          const map = selectedSub.map(el => {
+            if (allRightsState || isAllTurnedOn) {
+              el.active.$ = 'off'
+            } else if (!allRightsState || !isAllTurnedOn) {
+              el.active.$ = 'on'
+            }
+
+            return el
+          })
+
+          setSelectedSub([])
+          setCurrentRightState(!currentRightState)
+          setSelectedSub([...map])
+
+          setAllRightsState
+            ? setAllRightsState(!allRightsState)
+            : setIsAllTurnedOn(!isAllTurnedOn)
+        } else {
+          setCurrentRightState(!currentRightState)
+
+          if (allRightsState || isAllTurnedOn) {
+            setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
           }
 
-          return el
-        })
+          if (subType === 'read' && act === 'suspend') {
+            let list = selectedSub.length > 0 ? selectedSub : selectedSubList
 
-        console.log(map)
+            const filteredArray = list.map(el => {
+              el.active.$ = 'off'
+              return el
+            })
 
-        setSelectedSub([])
-        setCurrentRightState(!currentRightState)
-        setSelectedSub([...map])
+            if (selectedSub.length > 0) {
+              setSelectedSub([])
+              setSelectedSub([...filteredArray])
+            } else {
+              setSelectedSubList([])
+              setSelectedSubList([...filteredArray])
+            }
+          }
+
+          if (act === 'resume') {
+            let currentFuncName =
+              typeof mainFuncName === mainFuncName ? mainFuncName : mainFunc
+
+            console.log('mainFuncName', currentFuncName)
+
+            res.then(() => {
+              dispatch(
+                usersOperations.manageUserRight(
+                  userId,
+                  currentFuncName,
+                  sessionId,
+                  act,
+                  type,
+                ),
+              )
+            })
+          }
+        }
       } catch (e) {
         console.log('Error in AccessRightsListItem - ', e.message)
       }
     })
   }
 
-  const handleToggleBtns = () => {
-    const act = currentRightState ? 'suspend' : 'resume'
-    let type = item.name.$.split('.').slice(0, 1).join('')
-    if (type === 'promisepayment') {
-      type = type + '.add'
-    }
-
-    const res = dispatch(
-      usersOperations.manageUserRight(userId, item.name.$, sessionId, act, type),
-    )
-
-    res.then(() => {
-      setAllowAllRightState(false)
-
-      // setCurrentRightState(!currentRightState)
-    })
-
-    // res.then(() => {
-    //   try {
-    //     if (allowAll) {
-    //       const map = selectedSub.map(el => {
-    //         if (currentRightState) {
-    //           el.active.$ = 'off'
-    //         } else if (!currentRightState) {
-    //           el.active.$ = 'on'
-    //         }
-
-    //         return el
-    //       })
-
-    //       console.log(map)
-
-    //       setSelectedSub([])
-    //       setCurrentRightState(!currentRightState)
-    //       setSelectedSub([...map])
-    //     } else {
-    //       setCurrentRightState(!currentRightState)
-    //     }
-    //   } catch (e) {
-    //     console.log('Error in AccessRightsListItem - ', e.message)
-    //   }
-    // })
-  }
-
   const nameWithoutDots = item.name.$.replaceAll('.', '_')
 
   const hasSubItems = item?.hassubitems?.$ === 'on'
-
-  useEffect(() => {
-    console.log(allowAllRightState)
-  }, [allowAllRightState])
 
   if (Object.hasOwn(item, 'active')) {
     return (
@@ -203,7 +219,7 @@ export default function AccessRightsListItem({
               <div className={cn({ [s.allow_all_item]: true })}>
                 <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
 
-                <ToggleButton
+                <ToggleButtonAll
                   disabled={
                     (!hasAccessToResumeRights && !currentRightState) ||
                     (!hasAccessToSuspendRights &&
@@ -211,9 +227,10 @@ export default function AccessRightsListItem({
                       !hasAccessToSuspendRightsOnly)
                   }
                   hasAlert={false}
-                  initialState={allowAllRightState}
-                  func={handleAllowAllBtn}
+                  initialState={allRightsState || isAllTurnedOn}
+                  func={handleToggleBtns}
                   size="small"
+                  id={'123123'}
                 />
               </div>
             )}
@@ -221,6 +238,8 @@ export default function AccessRightsListItem({
             {selectedSub.map((child, index) => {
               return (
                 <AccessRightsListItem
+                  allRightsState={allRightsState || isAllTurnedOn}
+                  setAllRightsState={setAllRightsState || setIsAllTurnedOn}
                   key={index}
                   item={child}
                   userId={userId}
@@ -229,6 +248,9 @@ export default function AccessRightsListItem({
                   hasAccessToResumeRights={hasAccessToResumeRights}
                   hasAccessToSuspendRights={hasAccessToSuspendRights}
                   hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
+                  selectedSubList={selectedSub}
+                  setSelectedSubList={setSelectedSub}
+                  mainFunc={mainFuncName}
                 />
               )
             })}

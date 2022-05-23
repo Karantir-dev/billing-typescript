@@ -8,6 +8,7 @@ import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
 
 export default function ToggleButton({
+  id,
   func,
   initialState,
   isAlertOpened,
@@ -35,8 +36,6 @@ export default function ToggleButton({
     setIsToggled(!isToggled)
   }
 
-  console.log('initialState after off child', initialState)
-
   let alertAccessText
 
   if (!initialState) {
@@ -56,6 +55,7 @@ export default function ToggleButton({
   return (
     <>
       <button
+        id={id}
         disabled={isOwner || disabled}
         className={cn({
           [s.btn]: true,
