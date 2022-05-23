@@ -70,7 +70,10 @@ export default function Component(props) {
   }
 
   const payers = newPayer
-    ? [...payersList, { name: { $: t('Add new payer') }, id: { $: 'add_new' } }]
+    ? [
+        ...payersList,
+        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+      ]
     : payersList
 
   const validationSchema = Yup.object().shape({
@@ -174,7 +177,7 @@ export default function Component(props) {
                     type="button"
                     className={s.addNewPayerBtn}
                   >
-                    {t('Add new payer')}
+                    {t('Add new payer', { ns: 'payers' })}
                   </button>
                 )}
               </div>
