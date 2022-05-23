@@ -53,7 +53,7 @@ const AsideServicesMenu = () => {
         {areServicesAllowedToRender && (
           <li className={s.item}>
             <NavLink
-              to={routes.HOME}
+              to={routes.SERVICES}
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >

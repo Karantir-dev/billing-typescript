@@ -10,7 +10,7 @@ import s from './AccessLogPage.module.scss'
 import { toast } from 'react-toastify'
 import { Navigate } from 'react-router-dom'
 
-export default function MainPage() {
+export default function Component() {
   const { t } = useTranslation(['access_log', 'other', 'trusted_users'])
   const dispatch = useDispatch()
 
