@@ -1,0 +1,36 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: var(--elements-bgc);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 21px 22px;
+  margin: auto 30px;
+  max-width: 690px;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    align-items: center;
+    background-image: var(--auth-lines);
+    background-repeat: no-repeat;
+    background-position: 50% 60%;
+  }
+
+  .modalBlock {
+    padding: 38px 50px;
+    margin: 0 30px;
+  }
+}

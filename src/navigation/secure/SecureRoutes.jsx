@@ -116,7 +116,7 @@ const BillingScreen = () => {
         element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
       />
       <Route
-        path=":path/:id"
+        path=":path/:result"
         element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
       />
     </Routes>

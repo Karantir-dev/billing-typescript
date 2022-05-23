@@ -113,7 +113,7 @@ export default function Component(props) {
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
-      person: values?.person || '',
+      person: values?.person?.length > 0 ? values?.person : null,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
         : 'off',
@@ -137,7 +137,7 @@ export default function Component(props) {
         initialValues={{
           profile: payersList[payersList?.length - 1]?.id?.$ || 'add_new',
           person: '',
-          maxamount: '',
+          maxamount: autoPaymentConfig?.maxamount || '',
           paymethod: selectedMethod?.paymethod?.$ || '',
           [payersSelectedFields?.offer_field]: false,
         }}
