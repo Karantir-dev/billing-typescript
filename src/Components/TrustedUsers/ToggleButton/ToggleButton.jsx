@@ -35,6 +35,8 @@ export default function ToggleButton({
     setIsToggled(!isToggled)
   }
 
+  console.log('initialState after off child', initialState)
+
   let alertAccessText
 
   if (!initialState) {

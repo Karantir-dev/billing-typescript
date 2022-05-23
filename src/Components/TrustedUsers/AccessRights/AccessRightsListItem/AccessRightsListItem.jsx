@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -115,11 +115,9 @@ export default function AccessRightsListItem({
     )
 
     res.then(() => {
-      if (act === 'suspend' && allowAllRightState) {
-        setAllowAllRightState(false)
-      }
+      setAllowAllRightState(false)
 
-      setCurrentRightState(!currentRightState)
+      // setCurrentRightState(!currentRightState)
     })
 
     // res.then(() => {
@@ -152,6 +150,10 @@ export default function AccessRightsListItem({
   const nameWithoutDots = item.name.$.replaceAll('.', '_')
 
   const hasSubItems = item?.hassubitems?.$ === 'on'
+
+  useEffect(() => {
+    console.log(allowAllRightState)
+  }, [allowAllRightState])
 
   if (Object.hasOwn(item, 'active')) {
     return (
