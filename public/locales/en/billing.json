@@ -59,5 +59,8 @@
   "Payment amount from": "Payment amount from",
   "Payment approved": "Payment approved",
   "Payment was completed successfully": "Payment was completed successfully",
-  "Back to billing": "Back to billing"
+  "Back to billing": "Back to billing",
+  "An error occurred while processing the payment. If you have any questions, please contact support.": "An error occurred while processing the payment. If you have any questions, please contact support.",
+  "Support service": "Support service",
+  "Payment error": "Payment error"
 }

@@ -59,5 +59,8 @@
   "Payment amount from": "Сумма платежа от",
   "Payment approved": "Платеж одобрен",
   "Payment was completed successfully": "Оплата была успешно завершена",
-  "Back to billing": "Вернуться в билинг"
+  "Back to billing": "Вернуться в билинг",
+  "An error occurred while processing the payment. If you have any questions, please contact support.": "При обработке платежа произошла ошибка. Если у вас возникли вопросы, обратитесь в поддержку. ",
+  "Support service": "Служба поддержки",
+  "Payment error": "Ошибка оплаты"
 }

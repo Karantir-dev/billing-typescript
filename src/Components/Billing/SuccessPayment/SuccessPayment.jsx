@@ -2,7 +2,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
-import {} from '../..'
 import * as routes from '../../../routes'
 import s from './SuccessPayment.module.scss'
 
