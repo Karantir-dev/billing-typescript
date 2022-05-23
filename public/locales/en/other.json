@@ -82,5 +82,8 @@
   "Is a required field": "Is a required field",
   "error_type": "Page not found",
   "error_text": "Looks like something has gone wrong. Sorry for the inconveniences",
+  "Active": "Active",
+  "Disable": "Disable",
+  "Confirm": "Confirm",
   "service": "Service"
 }

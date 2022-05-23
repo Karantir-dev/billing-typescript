@@ -48,5 +48,19 @@
   "Enter amount": "Enter amount",
   "The amount must be greater than": "The amount must be greater than",
   "Select a Payment Method": "Select a Payment Method",
-  "Choose payer": "Choose payer"
+  "Choose payer": "Choose payer",
+  "The amount must be less than": "The amount must be less than",
+  "Maximum payment amount per month": "Maximum payment amount per month",
+  "Amount left for the month": "Amount left for the month",
+  "Auto payment deleted successfully": "Auto payment deleted successfully",
+  "Auto payment form instruction": "Enter the maximum payment amount per month. We cannot create automatic payments with larger amounts. Recommended maximum payment amount is {{max_pay_amount}} EUR. It is calculated based on expected expenses + 10%. According to existing services and auto-renewal settings, the minimum amount that will be charged from a client's account per month is {{min_amount}} EUR. The maximum amount - {{max_amount}} EUR.\n\nNote: if you haven't specified the maximum, amount the total number and amount of automatic payment per month will be unlimited.",
+  "Amount of payment": "Amount of payment",
+  "Not limited": "Not limited",
+  "Payment amount from": "Payment amount from",
+  "Payment approved": "Payment approved",
+  "Payment was completed successfully": "Payment was completed successfully",
+  "Back to billing": "Back to billing",
+  "An error occurred while processing the payment. If you have any questions, please contact support.": "An error occurred while processing the payment. If you have any questions, please contact support.",
+  "Support service": "Support service",
+  "Payment error": "Payment error"
 }

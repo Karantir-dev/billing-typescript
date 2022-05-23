@@ -72,6 +72,10 @@ export { default as BillingFilter } from './Billing/BillingFilter/BillingFilter'
 export { default as PaymentsTable } from './Billing/PaymentsTable/PaymentsTable'
 export { default as ModalCreatePayment } from './Billing/ModalCreatePayment/ModalCreatePayment'
 export { default as ExpensesTable } from './Billing/ExpensesTable/ExpensesTable'
+export { default as CurrentAutoPayments } from './Billing/CurrentAutoPayments/CurrentAutoPayments'
+export { default as AutoPaymentForm } from './Billing/AutoPaymentForm/AutoPaymentForm'
+export { default as SuccessPayment } from './Billing/SuccessPayment/SuccessPayment'
+export { default as ErrorPayment } from './Billing/ErrorPayment/ErrorPayment'
 
 //==========================================PAYERS==========================================//
 export { default as PayersTable } from './Payers/PayersTable/PayersTable'

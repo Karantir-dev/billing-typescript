@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   margin-top: 15px;
-  flex-basis: 30%;
+  flex-basis: 100%;
   position: relative;
 
   .input {
@@ -133,7 +133,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  flex-basis: 30%;
+  flex-basis: 100%;
   margin: 15px 15px 0 0;
   padding: 14px;
   box-shadow: var(--forms2_shadow);
@@ -239,6 +239,14 @@
 }
 
 @media screen and (min-width: 768px) {
+  .paymentMethodBtn {
+    flex-basis: 30%;
+  }
+
+  .inputAmountBlock {
+    flex-basis: 30%;
+  }
+
   .addNewPayerBtn {
     width: auto;
     margin: 13px 0 0 0;

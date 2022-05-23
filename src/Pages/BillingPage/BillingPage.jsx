@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
-import { PageTabBar } from '../../Components/'
+import { PageTabBar, Portal, SuccessPayment, ErrorPayment } from '../../Components/'
 import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
 import AutoPayment from './AutoPayment/AutoPayment'
@@ -65,6 +65,12 @@ export default function Component() {
         <h1 className={s.pageTitle}>{t('Finance')}</h1>
         <PageTabBar sections={tavBarSections} />
         <div className={s.content}>{renderPage(params?.path)}</div>
+        {params?.result && (
+          <Portal>
+            {params?.result === 'success' && <SuccessPayment />}{' '}
+            {params?.result === 'error' && <ErrorPayment />}
+          </Portal>
+        )}
       </div>
     </>
   )
