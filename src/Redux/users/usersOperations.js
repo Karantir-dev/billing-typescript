@@ -269,11 +269,11 @@ const getSubRights =
   }
 
 const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => {
-  // console.log('userid - ', userId)
-  // console.log('funcName - ', funcName)
-  // console.log('sessionId - ', sessionId)
-  // console.log('act - ', act)
-  // console.log('type - ', type)
+  console.log('userid - ', userId)
+  console.log('funcName - ', funcName)
+  console.log('sessionId - ', sessionId)
+  console.log('act - ', act)
+  console.log('type - ', type)
 
   dispatch(actions.showLoader())
 
