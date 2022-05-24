@@ -1,0 +1,174 @@
+.card {
+  position: relative;
+  padding: 14px 10px 20px;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms_bgc_2);
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  &:hover::before,
+  &.selected::before {
+    content: '';
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    left: 0;
+    top: 0;
+    box-shadow: 0px 1px 8px rgb(65 38 114 / 15%);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+}
+
+.three_dots {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 18px;
+  top: 9px;
+  height: 30px;
+  cursor: pointer;
+
+  &.mobile {
+    display: none;
+  }
+}
+
+.dot {
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: var(--main-text);
+  }
+
+  &.active {
+    &::after {
+      background: var(--accent-gradient);
+    }
+  }
+}
+
+.list {
+  position: absolute;
+  width: 150px;
+  background-color: var(--forms_bgc_4);
+  top: 35px;
+  right: -19px;
+  padding: 29px 23px 22px;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 5px;
+  display: none;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--forms_bgc_4);
+    transform: rotate(45deg);
+    top: -7px;
+    right: 24px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-bottom: 25px;
+  }
+
+  &:hover {
+    & .btn_text {
+      font-weight: 400;
+    }
+    & .icon {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.btn_text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+  margin-left: 16px;
+  color: var(--main-text);
+  transition: font-weight 0.1s ease;
+}
+
+.card_item_wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 11px;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+.item_title {
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--transparent-color);
+}
+
+.item_text {
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+
+.status {
+  color: var(--success-color);
+}
+
+@media screen and (min-width: 1024px) {
+  .card {
+    max-width: 292px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .card {
+    max-width: unset;
+    width: 100%;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 50px;
+  }
+  .card_item_wrapper {
+    display: flex;
+    align-items: center;
+
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .card {
+    max-width: 1258px;
+  }
+}
