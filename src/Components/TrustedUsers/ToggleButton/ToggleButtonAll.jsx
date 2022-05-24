@@ -12,8 +12,6 @@ export default function ToggleButtonAll({
   size,
   disabled,
 }) {
-  //   console.log('--------', 'initialState -', initialState)
-
   return (
     <button
       id={id}

@@ -19,8 +19,6 @@ export default function ToggleButton({
   hasAlert,
   size,
   disabled,
-  // isTurnOnUserAllowed,
-  // isTurnOffUserAllowed,
 }) {
   const { t } = useTranslation('trusted_users')
 

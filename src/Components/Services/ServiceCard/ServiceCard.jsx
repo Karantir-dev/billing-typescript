@@ -11,37 +11,40 @@ export default function ServiceCard(props) {
 
   return (
     <li className={s.card}>
-      <div className={s.card_container}>
-        <div className={s.container}>
-          <span className={s.card_numeric}>{'0' + index}</span>
-          <h3 className={s.card_title}>{title}</h3>
-          <Link to={route}>
-            <span className={s.goto}>{t('follow')}</span>
-            <span className={s.arrow}>&#10230;</span>
-          </Link>
+      <Link to={route}>
+        <div className={s.card_container}>
+          <div className={s.container}>
+            <span className={s.card_numeric}>{'0' + index}</span>
+            <h3 className={s.card_title}>{title}</h3>
 
-          <div className={s.triangle}>
-            {iconName === 'forexbox' && (
+            <div>
+              <span className={s.goto}>{t('follow')}</span>
+              <span className={s.arrow}>&#10230;</span>
+            </div>
+
+            <div className={s.triangle}>
+              {iconName === 'forexbox' && (
+                <img
+                  alt="forexbox_graphic"
+                  src={
+                    iconName &&
+                    require('../../../images/services/forexbox_graphic_large.webp')
+                  }
+                  className={s.forexbox_graphic}
+                />
+              )}
+
               <img
-                alt="forexbox_graphic"
-                src={
-                  iconName &&
-                  require('../../../images/services/forexbox_graphic_large.webp')
-                }
-                className={s.forexbox_graphic}
+                alt={iconName}
+                src={iconName && require(`../../../images/services/${iconName}.webp`)}
+                className={s['icon_' + iconName]}
+                width={iconWidth}
+                height={iconHeight}
               />
-            )}
-
-            <img
-              alt={iconName}
-              src={iconName && require(`../../../images/services/${iconName}.webp`)}
-              className={s['icon_' + iconName]}
-              width={iconWidth}
-              height={iconHeight}
-            />
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </li>
   )
 }
