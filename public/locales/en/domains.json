@@ -1,4 +1,13 @@
 {
-    "New domain": "New domain"
-  }
-  
+  "New domain": "New domain",
+  "Domain name": "Domain name",
+  "Tariff": "Tariff",
+  "Valid until": "Valid until",
+  "State": "State",
+  "Price": "Price",
+  "Domain name order": "Domain name order",
+  "Pick up": "Pick up",
+  "Enter domain name": "Enter domain name",
+  "Domain zones": "Domain zones",
+  "Desirable areas for searching for free domain names": "Desirable areas for searching for free domain names"
+}

@@ -20,4 +20,4 @@ export const ERROR_PAGE = '/error_page'
 
 export const SERVICES = '/services'
 export const DOMAINS = '/services/domains'
-
+export const DOMAINS_ORDERS = '/services/domains/domain_orders'

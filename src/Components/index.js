@@ -85,3 +85,5 @@ export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
 //==========================================SERVICES==========================================//
 export { default as ServicesList } from './Services/ServicesList/ServicesList'
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
+export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
+export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'

@@ -1,0 +1,57 @@
+.domainsZone {
+  margin-top: 40px;
+}
+
+.domainsZoneTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.domainsZoneText {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  margin-top: 30px;
+}
+
+.domainItem {
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  flex-basis: 18%;
+  margin-right: 25px;
+  margin-top: 15px;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms_bgc_2);
+}
+
+.domainsBlock {
+  display: flex;
+  max-width: 1250px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.domainName {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-left: 25px;
+}
+
+.domainPrice {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+  margin-left: auto;
+}

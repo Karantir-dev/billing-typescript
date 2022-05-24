@@ -6,34 +6,38 @@
   color: var(--main-text);
 }
 
-.pagination {
-  width: 100%;
+.form {
   display: flex;
-  justify-content: center;
   margin-top: 30px;
+  max-width: 540px;
 }
 
+.inputHeight {
+  height: 55px;
+}
+
+.searchBtn {
+  height: 53px;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+
 @media screen and (min-width: 768px) {
-  .pagination {
-    justify-content: flex-end;
-    margin-top: 30px;
+  .form {
+    align-items: center;
+  }
+
+  .input {
+    margin-right: 25px;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .pagination {
-    margin-top: 25px;
-  }
 }
 
 @media screen and (min-width: 1550px) {
-  .pagination {
-    margin-top: 30px;
-  }
 }
 
 @media screen and (min-width: 1918px) {
-  .pagination {
-    margin-top: 40px;
-  }
 }
