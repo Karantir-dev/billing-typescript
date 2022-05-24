@@ -34,7 +34,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.domains'),
       id: 1,
-      routeName: routes.HOME,
+      routeName: routes.DOMAINS,
       allowedToRender: isDomainsAllowedToRender,
       icon_name: 'domains',
       icon_width: '97',
