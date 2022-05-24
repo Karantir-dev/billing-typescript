@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
@@ -17,13 +17,11 @@ export default function NotificationsBar({
   const messages = useSelector(userSelectors.getUserItems)
   const { t } = useTranslation('container')
 
-  // const getNotifBarEl = useRef()
+  const getNotifBarEl = useRef()
 
   // useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
 
   const notifications = messages.bitem
-
-  console.log(messages)
 
   return (
     <>
@@ -31,6 +29,7 @@ export default function NotificationsBar({
         className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}
       ></div>
       <div
+        ref={getNotifBarEl}
         className={cn({
           [s.notificatonbar_container]: true,
           [s.opened]: isBarOpened,

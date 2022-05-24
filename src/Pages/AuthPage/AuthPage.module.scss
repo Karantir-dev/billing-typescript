@@ -43,13 +43,9 @@
 @media screen and (min-width: 768px) {
   .wrapper {
     padding-top: 74px;
-    background-image: url('../../images/auth_lines.svg');
+    background-image: var(--auth-lines);
     background-repeat: no-repeat;
     background-position: 50% 60%;
-
-    &.dt {
-      background-image: url('../../images/auth_lines_dt.svg');
-    }
   }
 
   .header {

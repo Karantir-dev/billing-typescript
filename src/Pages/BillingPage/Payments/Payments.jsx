@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Pagination, BillingFilter, PaymentsTable } from '../../../Components/'
-import {
-  billingOperations,
-  billingSelectors,
-  payersOperations,
-  payersSelectors,
-} from '../../../Redux'
+import { billingOperations, billingSelectors, payersOperations } from '../../../Redux'
 import s from './Payments.module.scss'
 
 export default function Component() {
@@ -15,15 +10,10 @@ export default function Component() {
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
-  const payersCount = useSelector(payersSelectors.getPayersCount)
-
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    const dataPayers = {
-      p_cnt: payersCount,
-    }
-    dispatch(payersOperations.getPayers(dataPayers))
+    dispatch(payersOperations.getPayers())
   }, [])
 
   useEffect(() => {

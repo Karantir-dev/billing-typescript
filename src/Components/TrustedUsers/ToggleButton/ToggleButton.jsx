@@ -8,6 +8,7 @@ import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
 
 export default function ToggleButton({
+  id,
   func,
   initialState,
   isAlertOpened,
@@ -18,8 +19,6 @@ export default function ToggleButton({
   hasAlert,
   size,
   disabled,
-  // isTurnOnUserAllowed,
-  // isTurnOffUserAllowed,
 }) {
   const { t } = useTranslation('trusted_users')
 
@@ -54,6 +53,7 @@ export default function ToggleButton({
   return (
     <>
       <button
+        id={id}
         disabled={isOwner || disabled}
         className={cn({
           [s.btn]: true,

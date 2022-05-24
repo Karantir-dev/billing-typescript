@@ -17,4 +17,7 @@ export const PAYERS = '/payers'
 export const CONFIRM_EMAIL = '/confrim_email'
 
 export const ERROR_PAGE = '/error_page'
+
 export const SERVICES = '/services'
+export const DOMAINS = '/services/domains'
+

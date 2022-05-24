@@ -31,6 +31,7 @@ export default function Component(props) {
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
 
   const [minAmount, setMinAmount] = useState(0)
+  const [maxAmount, setMaxAmount] = useState(0)
   const [newPayer, setNewPayer] = useState(false)
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function Component(props) {
         : 'off',
     }
 
-    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal, newPayer))
+    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
   const validationSchema = Yup.object().shape({
@@ -71,6 +72,10 @@ export default function Component(props) {
     amount: Yup.number()
       .positive(`${t('The amount must be greater than')} ${minAmount} EUR`)
       .min(minAmount, `${t('The amount must be greater than')} ${minAmount} EUR`)
+      .max(
+        maxAmount > 0 ? maxAmount : null,
+        maxAmount > 0 ? `${t('The amount must be less than')} ${maxAmount} EUR` : null,
+      )
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     person: newPayer
@@ -79,10 +84,9 @@ export default function Component(props) {
     [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
 
-  const payers = [
-    ...payersList,
-    { name: { $: t('Add new payer') }, id: { $: 'add_new' } },
-  ]
+  const payers = newPayer
+    ? [...payersList, { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } }]
+    : payersList
 
   return (
     <div className={s.modalBg}>
@@ -105,7 +109,7 @@ export default function Component(props) {
         >
           {({ values, setFieldValue, touched, errors }) => {
             const setPayerHandler = val => {
-              setFieldValue('profile', 'add_new')
+              setFieldValue('profile', val)
               if (val === 'add_new') {
                 setNewPayer(true)
               } else {
@@ -129,19 +133,21 @@ export default function Component(props) {
                         value: id?.$,
                       }))}
                     />
-                    {!newPayer && <button
-                      onClick={() => setPayerHandler('add_new')}
-                      type="button"
-                      className={s.addNewPayerBtn}
-                    >
-                      {t('Add new payer')}
-                    </button>}
+                    {!newPayer && (
+                      <button
+                        onClick={() => setPayerHandler('add_new')}
+                        type="button"
+                        className={s.addNewPayerBtn}
+                      >
+                        {t('Add new payer', { ns: 'payers' })}
+                      </button>
+                    )}
                     {newPayer && (
                       <>
                         <InputField
                           inputWrapperClass={s.inputHeight}
                           name="person"
-                          label={`${t('The contact person', {ns: 'payers'})}:`}
+                          label={`${t('The contact person', { ns: 'payers' })}:`}
                           placeholder={t('Enter data', { ns: 'other' })}
                           isShadow
                           className={s.inputPerson}
@@ -163,7 +169,7 @@ export default function Component(props) {
                               error={!!errors[payersSelectedFields?.offer_field]}
                             />
                             <div className={s.offerBlockText}>
-                              {t('I agree with the terms of the offer')}
+                              {t('I agree with the terms of the offer', { ns: 'payers' })}
                               <br />
                               <button
                                 onClick={offerTextHandler}
@@ -183,12 +189,19 @@ export default function Component(props) {
                   <div className={s.formBlockTitle}>2. {t('Payment method')}</div>
                   <div className={s.formFieldsBlock}>
                     {paymentsMethodList?.map(method => {
-                      const { paymethod, image, name, payment_minamount } = method
+                      const {
+                        paymethod,
+                        image,
+                        name,
+                        payment_minamount,
+                        payment_maxamount,
+                      } = method
                       return (
                         <button
                           onClick={() => {
                             setFieldValue('slecetedPayMethod', method)
                             setMinAmount(Number(payment_minamount?.$))
+                            setMaxAmount(Number(payment_maxamount?.$))
                           }}
                           type="button"
                           className={cn(s.paymentMethodBtn, {

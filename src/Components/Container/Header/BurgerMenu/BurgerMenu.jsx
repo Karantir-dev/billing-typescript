@@ -58,7 +58,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const servicesMenuList = [
     {
       name: t('burger_menu.services.services_list.domains'),
-      routeName: routes.HOME,
+      routeName: routes.DOMAINS,
       allowedToRender: true,
     },
     {

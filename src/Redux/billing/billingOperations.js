@@ -438,7 +438,7 @@ const getPaymentMethod =
   }
 
 const createPaymentMethod =
-  (body = {}, setCreatePaymentModal, newPayer = false) =>
+  (body = {}, setCreatePaymentModal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -446,64 +446,30 @@ const createPaymentMethod =
       auth: { sessionId },
     } = getState()
 
-    const createPayment = () => {
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'payment.add.method',
-            out: 'json',
-            auth: sessionId,
-            sok: 'ok',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add.method',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-          if (data.doc.ok) {
-            dispatch(getPaymentMethodPage(data.doc.ok.$))
-            setCreatePaymentModal(false)
-          }
-        })
-        .catch(error => {
-          console.log('error', error)
-          errorHandler(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        })
-    }
-
-    const createPayer = () => {
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'payment.add.profile',
-            out: 'json',
-            auth: sessionId,
-            sok: 'ok',
-            ...body,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-          if (data.doc.ok) {
-            dispatch(getPaymentMethodPage(data.doc.ok.$))
-            setCreatePaymentModal(false)
-          }
-        })
-        .catch(error => {
-          console.log('error', error)
-          errorHandler(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        })
-    }
-
-    if (newPayer) {
-      return createPayer()
-    }
-    createPayment()
+        if (data.doc.ok) {
+          dispatch(getPaymentMethodPage(data.doc.ok.$))
+          setCreatePaymentModal(false)
+        }
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
   }
 
 const getPaymentMethodPage = link => (dispatch, getState) => {
@@ -575,6 +541,149 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
     })
 }
 
+const getAutoPayments = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.recurring.settings',
+        auth: sessionId,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      data.doc?.list?.forEach(e => {
+        if (e?.$name === 'methodlist') {
+          dispatch(billingActions.setAutoPaymentsList(e?.elem))
+        }
+      })
+
+      dispatch(getAutoPaymentsAdd())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getAutoPaymentsAdd = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.recurring.add',
+        auth: sessionId,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const config = {
+        info: data?.doc?.info?.$ || '',
+        maxamount: data?.doc?.maxamount?.$ || '',
+      }
+
+      data.doc?.list?.forEach(e => {
+        if (e?.$name === 'methodlist') {
+          config['elem'] = e?.elem
+        }
+      })
+
+      dispatch(billingActions.setAutoPaymentConfig(config))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const stopAutoPayments = id => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.recurring.settings',
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+        clicked_button: 'stop',
+        id,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+      if (data?.doc?.ok) {
+        dispatch(billingActions.deleteAutoPayment(id))
+        toast.success(i18n.t('Auto payment deleted successfully', { ns: 'billing' }), {
+          position: 'bottom-right',
+        })
+      }
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const createAutoPayment =
+  (body = {}, setIsConfigure) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.recurring.add.pay',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (data.doc.ok) {
+          dispatch(getPaymentMethodPage(data.doc.ok.$))
+          setIsConfigure(false)
+        }
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -589,4 +698,7 @@ export default {
   createPaymentMethod,
   getPaymentMethodPage,
   getPaymentRedirect,
+  getAutoPayments,
+  stopAutoPayments,
+  createAutoPayment,
 }

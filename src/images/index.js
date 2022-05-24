@@ -58,3 +58,12 @@ export { default as Error404_dt } from './svg/Error404_dt.jsx'
 export { default as Error404_lt } from './svg/Error404_lt.jsx'
 
 export { default as Pay } from './svg/Pay.jsx'
+export { default as SuccessPay } from './svg/SuccessPay.jsx'
+export { default as ErrorPay } from './svg/ErrorPay.jsx'
+
+export { default as Edit } from './svg/Edit.jsx'
+export { default as Clock } from './svg/Clock.jsx'
+export { default as Refund } from './svg/Refund.jsx'
+export { default as Transfer } from './svg/Transfer.jsx'
+export { default as Whois } from './svg/Whois.jsx'
+export { default as DomainsListName } from './svg/DomainsListName.jsx'

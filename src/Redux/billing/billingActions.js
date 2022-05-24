@@ -23,6 +23,10 @@ const clearExpensesCount = createAction('CLEAR_EXPENSES_COUNT')
 const setPaymentMethodsList = createAction('SET_PAYMENT_METHODS_LIST')
 const setPaymentCurrencyList = createAction('SET_PAYMENT_CURRENCY_LIST')
 
+const setAutoPaymentsList = createAction('SET_AUTO_PAYMENTS_LIST')
+const setAutoPaymentConfig = createAction('SET_AUTO_PAYMENT_CONFIG')
+const deleteAutoPayment = createAction('DELETE_AUTO_PAYMENT')
+
 export default {
   setPaymentsList,
   setPaymentsCount,
@@ -43,4 +47,8 @@ export default {
 
   setPaymentMethodsList,
   setPaymentCurrencyList,
+
+  setAutoPaymentsList,
+  deleteAutoPayment,
+  setAutoPaymentConfig,
 }

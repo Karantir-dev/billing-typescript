@@ -270,10 +270,10 @@ const getSubRights =
 
 const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => {
   // console.log('userid - ', userId)
-  // console.log('funcName - ', funcName)
+  console.log('funcName - ', funcName)
   // console.log('sessionId - ', sessionId)
   // console.log('act - ', act)
-  // console.log('type - ', type)
+  console.log('type - ', type)
 
   dispatch(actions.showLoader())
 
@@ -291,7 +291,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log('managed users right from ajax', data)
+      console.log('managed users right from ajax', data)
 
       dispatch(actions.hideLoader())
     })
