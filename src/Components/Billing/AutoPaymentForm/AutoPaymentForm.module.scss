@@ -1,0 +1,157 @@
+.autoPayTitle {
+  white-space: pre-line;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  max-width: 920px;
+}
+
+.form {
+  margin-top: 30px;
+}
+
+.configureBtn {
+  height: 53px;
+  max-width: 258px;
+  text-transform: uppercase;
+  margin-top: 36px;
+}
+
+.formFieldsBlock {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.first {
+    align-items: center;
+  }
+}
+
+.select {
+  max-width: 100%;
+  margin-top: 20px;
+
+  button {
+    height: 57px;
+  }
+}
+
+.selectPlatform {
+  max-width: 100%;
+  margin-top: 20px;
+
+  button {
+    height: 57px;
+    align-items: flex-start;
+    text-align: start;
+
+    span {
+      max-width: 100%;
+    }
+  }
+}
+
+.addNewPayerBtn {
+  margin: 20px 15px;
+  display: flex;
+  width: 100%;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  letter-spacing: -0.01em;
+  text-decoration-line: underline;
+
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.inputPerson {
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+.offerBlock {
+  display: flex;
+  align-items: center;
+  margin-top: 13px;
+  max-width: 270px;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.offerBlockText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--main-text);
+}
+
+.offerBlockLink {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.inputHeight {
+  height: 55px;
+}
+
+.selectedItem {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    span {
+      font-style: normal;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 130.5%;
+      color: var(--main-text);
+    }
+    span:first-child {
+      font-weight: 400;
+      font-size: 18px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .addNewPayerBtn {
+    width: auto;
+    margin: 33px 0 0 0;
+  }
+
+  .select {
+    max-width: 280px;
+    margin-right: 20px;
+  }
+
+  .selectPlatform {
+    max-width: 280px;
+    margin-right: 20px;
+    margin-top: 40px;
+  }
+
+  .inputPerson {
+    max-width: 280px;
+    margin-right: 20px;
+  }
+
+  .offerBlock {
+    margin-top: 33px;
+  }
+}

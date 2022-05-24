@@ -9,6 +9,9 @@ body {
     #ffffff 92.92%
   );
 
+  // images
+  --auth-lines: url('../images/auth_lines.svg');
+
   // borders
 
   --center-border-color: #cfc1eb;
@@ -71,6 +74,9 @@ body {
 
 // dark theme variables
 body.dark-theme {
+  // images
+  --auth-lines: url('../images/auth_lines_dt.svg');
+
   // borders
 
   --center-border-color: #decbfe;
