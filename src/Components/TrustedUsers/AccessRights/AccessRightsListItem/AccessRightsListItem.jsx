@@ -81,8 +81,6 @@ export default function AccessRightsListItem({
     }
   }
 
-  // item.name.$
-
   const handleToggleBtns = () => {
     const actSingleBtn = currentRightState ? 'suspend' : 'resume'
     const actTurnAllBtns = isAllTurnedOn || allRightsState ? 'suspend' : 'resume'
@@ -130,6 +128,23 @@ export default function AccessRightsListItem({
 
             const filteredArray = list.map(el => {
               el.active.$ = 'off'
+              return el
+            })
+
+            if (selectedSub.length > 0) {
+              setSelectedSub([])
+              setSelectedSub([...filteredArray])
+            } else {
+              setSelectedSubList([])
+              setSelectedSubList([...filteredArray])
+            }
+          }
+
+          if (subType === 'write' && act === 'resume') {
+            let list = selectedSub.length > 0 ? selectedSub : selectedSubList
+
+            const filteredArray = list.map(el => {
+              el.active.$ = 'on'
               return el
             })
 
