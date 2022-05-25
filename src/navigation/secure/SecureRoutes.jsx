@@ -19,6 +19,7 @@ import {
   DomainsPage,
   ServicesPage,
   Contracts,
+  DedicatedServersPage,
 } from '../../Pages'
 
 import * as route from '../../routes'
@@ -39,6 +40,12 @@ const Component = () => {
         <Route
           path={route.DOMAINS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
+        />
+        <Route
+          path={route.DEDICATED_SERVERS}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
+          }
         />
 
         <Route

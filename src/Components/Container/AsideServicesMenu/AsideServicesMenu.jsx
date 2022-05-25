@@ -37,8 +37,6 @@ const AsideServicesMenu = () => {
     return null
   }
 
-  //added error page test one first link
-
   return (
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
