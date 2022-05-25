@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { BreadCrumbs, Button, DomainsZone, InputField } from '../../../../Components'
+import {
+  BreadCrumbs,
+  Button,
+  DomainsZone,
+  InputField,
+  DomainsPickUpZones,
+} from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
@@ -15,10 +21,10 @@ export default function ServicesPage() {
   const location = useLocation()
 
   const [domains, setDomains] = useState([])
+  const [pickUpDomains, setPickUpDomains] = useState([])
 
   const [selectedDomains, setSelectedDomains] = useState([])
-
-  console.log(selectedDomains)
+  const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
 
   useEffect(() => {
     dispatch(domainsOperations.getDomainsOrderName(setDomains))
@@ -37,8 +43,10 @@ export default function ServicesPage() {
   })
 
   const setDomainsNameHandler = values => {
-    values['selected_pricelist'] = selectedDomains?.join(',')
-    dispatch(domainsOperations.setDomainsOrderName(values))
+    values['selected_pricelist'] = selectedDomains?.join(', ')
+    values['sv_field'] = 'ok_whois'
+    selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+    dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
   }
 
   return (
@@ -77,11 +85,19 @@ export default function ServicesPage() {
           )
         }}
       </Formik>
-      <DomainsZone
-        setSelectedDomains={setSelectedDomains}
-        selectedDomains={selectedDomains}
-        domains={domains}
-      />
+      {pickUpDomains.length > 0 ? (
+        <DomainsPickUpZones
+          setSelectedDomains={setSelectedDomainsNames}
+          selectedDomains={selectedDomainsNames}
+          domains={pickUpDomains}
+        />
+      ) : (
+        <DomainsZone
+          setSelectedDomains={setSelectedDomains}
+          selectedDomains={selectedDomains}
+          domains={domains}
+        />
+      )}
     </div>
   )
 }

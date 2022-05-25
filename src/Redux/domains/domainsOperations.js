@@ -1,6 +1,8 @@
 import qs from 'qs'
+import i18n from './../../i18n'
 import { actions, domainsActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
+import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
 
 const getDomains =
@@ -42,50 +44,8 @@ const getDomains =
       })
   }
 
-const getDomainsOrderName = setDomains => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-
-  const {
-    auth: { sessionId },
-  } = getState()
-
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'domain.order.name',
-        out: 'json',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-      const domains = []
-
-      data?.doc?.list?.forEach(l => {
-        if (l?.$name === 'pricelist_info') {
-          l?.elem.forEach(e => {
-            if (e?.id) {
-              domains.push(e)
-            }
-          })
-        }
-      })
-
-      setDomains(domains)
-
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
-
-const setDomainsOrderName =
-  (body = {}, setDomains) =>
+const getDomainsOrderName =
+  (setDomains, body = {}, search = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -100,20 +60,45 @@ const setDomainsOrderName =
           func: 'domain.order.name',
           out: 'json',
           auth: sessionId,
-          sv_field: 'ok_whois',
-          checked_domain: '',
           ...body,
         }),
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-
         const domains = []
+        if (!search) {
+          data?.doc?.list?.forEach(l => {
+            if (l?.$name === 'pricelist_info') {
+              l?.elem.forEach(e => {
+                if (e?.id) {
+                  domains.push(e)
+                }
+              })
+            }
+          })
+
+          setDomains(domains)
+          return dispatch(actions.hideLoader())
+        }
+
+        data?.doc?.list?.forEach(l => {
+          if (l?.$name === 'domain_list') {
+            l?.elem.forEach(e => {
+              if (e?.id) {
+                domains.push(e)
+              }
+            })
+          }
+        })
+
+        if (!data?.doc?.list) {
+          toast.error(`${i18n.t('No matching options', { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+        }
 
         setDomains(domains)
-
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -126,5 +111,4 @@ const setDomainsOrderName =
 export default {
   getDomains,
   getDomainsOrderName,
-  setDomainsOrderName,
 }

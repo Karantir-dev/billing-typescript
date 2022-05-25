@@ -23,9 +23,19 @@ export default function ServicesPage(props) {
       return
     }
 
-    let amoumt = amounts[amounts.length - 1] + ' ' + `EUR/${t('year', { ns: 'other' })}`
+    let amoumt = (
+      <span>
+        {amounts[amounts.length - 1] + ' ' + 'EUR/'}
+        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+      </span>
+    )
     let percent = amounts[0] + '%'
-    let sale = amounts[1] + ' ' + `EUR/${t('year', { ns: 'other' })}`
+    let sale = (
+      <span>
+        {amounts[1] + ' ' + 'EUR/'}
+        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+      </span>
+    )
     return {
       amoumt,
       percent,
