@@ -14,7 +14,7 @@ export default function SelectOfRegions({
   errors,
   touched,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
 
   const [regionSearchQuery, setRegionSearchQuery] = useState('')
   const [regionsListOpened, setRegionsListOpened] = useState(false)
