@@ -5,14 +5,31 @@ import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
-import { affiliateOperations } from '../../../Redux'
+import { affiliateOperations, usersOperations } from '../../../Redux'
 import { Check } from '../../../images'
+import * as route from '../../../routes'
 
 import s from './AffiliateProgramStatistics.module.scss'
 import cn from 'classnames'
+import { Navigate } from 'react-router-dom'
 
-export default function AffiliateProgramStatistics() {
+export default function AffiliateProgramStatistics({ allowToRender }) {
+  if (!allowToRender) {
+    return <Navigate replace to={route.SERVICES} />
+  }
   const dispatch = useDispatch()
+
+  const [availableRights, setAvailabelRights] = useState({})
+  useEffect(() => {
+    dispatch(
+      usersOperations.getAvailableRights('affiliate.client.click', setAvailabelRights),
+    )
+  }, [])
+  const checkIfHasArr = availableRights?.toolbar?.toolgrp
+  const isFilterAllowedToRender = Array.isArray(checkIfHasArr)
+    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'filter')
+    : false
+
   const { t } = useTranslation(['affiliate_program', 'other'])
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -46,23 +63,24 @@ export default function AffiliateProgramStatistics() {
 
   return (
     <div className={s.content}>
-      <div className={s.filter_wrapper}>
-        <IconButton
-          className={s.icon_filter}
-          onClick={() => setIsFilterOpened(true)}
-          icon="filter"
-        />
+      {isFilterAllowedToRender && (
+        <div className={s.filter_wrapper}>
+          <IconButton
+            className={s.icon_filter}
+            onClick={() => setIsFilterOpened(true)}
+            icon="filter"
+          />
 
-        <StatisticsFilterModal
-          initialFilters={initialFilters}
-          opened={isFilterOpened}
-          closeFn={() => setIsFilterOpened(false)}
-          setItems={setItems}
-          setTotal={setTotal}
-          setPageNumber={setPageNumber}
-        />
-      </div>
-
+          <StatisticsFilterModal
+            initialFilters={initialFilters}
+            opened={isFilterOpened}
+            closeFn={() => setIsFilterOpened(false)}
+            setItems={setItems}
+            setTotal={setTotal}
+            setPageNumber={setPageNumber}
+          />
+        </div>
+      )}
       {widerThanMobile && items.length > 0 && (
         <div className={s.table_head_row}>
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
@@ -73,11 +91,9 @@ export default function AffiliateProgramStatistics() {
           </span>
         </div>
       )}
-
       {items.length === 0 && (
         <p className={s.no_results}>{t('statistics_section.no_result')}</p>
       )}
-
       <ul className={s.list}>
         {items.map(({ cdate, payed, site, referal }, index) => {
           return widerThanMobile ? (
@@ -148,7 +164,6 @@ export default function AffiliateProgramStatistics() {
           )
         })}
       </ul>
-
       <div className={s.footer_wrapper}>
         <p className={s.total}>
           {t('total', { ns: 'other' })}: {total}

@@ -42,11 +42,13 @@
       color: var(--auth-placeholder-color);
     }
   }
-  
+
   &:focus {
     height: calc(100% - 2px);
     min-width: calc(100% - 2px);
     border: none;
+    top: 1px;
+    left: 1px;
   }
   &.iconRight {
     padding-right: 40px;
@@ -78,7 +80,10 @@
 
 .pass_show_btn {
   display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
+  height: 60%;
   top: 50%;
   right: 16px;
   transform: translateY(-50%);

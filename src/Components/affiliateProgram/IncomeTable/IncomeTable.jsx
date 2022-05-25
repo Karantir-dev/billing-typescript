@@ -7,11 +7,13 @@ import { DetailsModal } from '../../'
 import { affiliateOperations } from '../../../Redux'
 
 import s from './IncomeTable.module.scss'
+import dayjs from 'dayjs'
 
 export default function IncomeTable({ list }) {
   const { t } = useTranslation(['affiliate_program', 'other'])
   const dispatch = useDispatch()
   let incomeSum = 0
+  const sortedList = [...list].sort((a, b) => dayjs(b.date) - dayjs(a.date))
 
   const [details, setDetails] = useState([])
 
@@ -26,7 +28,7 @@ export default function IncomeTable({ list }) {
         <span className={s.table_head}>{t('income_section.income_amount')}:</span>
       </div>
       <ul>
-        {list.map(({ amount, date }) => {
+        {sortedList.map(({ amount, date }) => {
           incomeSum += Number(amount.replace(' EUR', ''))
           return (
             <li className={s.table_row} key={nanoid()}>

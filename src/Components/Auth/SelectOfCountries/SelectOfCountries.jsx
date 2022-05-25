@@ -143,6 +143,7 @@ export default function SelectOfCountries({
               className={s.backdrop}
               onClick={handleBackdropClick}
             ></div>
+
             <div className={s.countries_dropdown}>
               <ul className={s.countries_list}>
                 {filteredCountries.map(({ $key, $image, $: countryName }) => {

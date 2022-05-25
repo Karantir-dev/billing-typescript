@@ -14,7 +14,7 @@ import s from './PasswordChange.module.scss'
 
 export default function PasswordChange() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation()
+  const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()

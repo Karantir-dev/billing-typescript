@@ -11,6 +11,10 @@ const LANGUAGES = ['en', 'ru', 'kz']
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()
 
+  if (!LANGUAGES.includes(i18n.language.slice(0, 2))) {
+    i18n.changeLanguage('en')
+  }
+
   const availableLangs = LANGUAGES.filter(lang => i18n.language !== lang)
 
   return (

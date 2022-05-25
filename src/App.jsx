@@ -17,6 +17,7 @@ export default function App() {
           <Suspense fallback={<Loader />}>
             <Navigation />
           </Suspense>
+
           <ToastContainer />
           <Portal>
             <Loader />
