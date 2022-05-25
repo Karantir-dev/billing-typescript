@@ -50,7 +50,7 @@ export default function Header() {
     },
     {
       name: t('profile.contracts'),
-      routeName: routes.HOME,
+      routeName: routes.CONTRACTS,
       allowedToRender: true,
     },
   ]

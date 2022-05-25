@@ -138,7 +138,7 @@
       "service_profile_edit#write": "Contact parameters (data saving is available)",
 
       "affiliate_client": "Affiliate program",
-      "affiliate_client_reward": "Reward",
+      "affiliate_client_reward": "Income",
       "affiliate_client#read": "Affiliate program (data saving is available)",
       "affiliate_client#write": "Affiliate program (data reading is available)",
       "affiliate_client_click": "$t(Statistics)",

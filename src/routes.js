@@ -20,4 +20,5 @@ export const ERROR_PAGE = '/error_page'
 
 export const SERVICES = '/services'
 export const DOMAINS = '/services/domains'
-
+export const CONTRACTS = '/contracts'
+export const DEDICATED_SERVERS = '/dedicated_services'

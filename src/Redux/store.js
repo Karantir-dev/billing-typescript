@@ -21,6 +21,7 @@ import {
   settingsReducer,
   billingReducer,
   payersReducer,
+  contractsReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   settings: settingsReducer,
   billing: billingReducer,
   payers: payersReducer,
+  contracts: contractsReducer,
   affiliateProgram,
   theme,
   isLoading,

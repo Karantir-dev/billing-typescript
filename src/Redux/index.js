@@ -48,10 +48,11 @@ export { default as billingOperations } from './billing/billingOperations'
 export { default as billingReducer } from './billing/billingReducer'
 export { default as billingSelectors } from './billing/billingSelectors'
 
-
 //===========================================PAYERS=================================//
 export { default as payersActions } from './payers/payersActions'
 export { default as payersOperations } from './payers/payersOperations'
 export { default as payersReducer } from './payers/payersReducer'
 export { default as payersSelectors } from './payers/payersSelectors'
 
+//===========================================CONTRACTS=================================//
+export { default as contractsReducer } from './contracts/contractsReducer'

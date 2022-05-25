@@ -44,11 +44,4 @@ ToggleButtonAll.propTypes = {
   email: PropTypes.string,
   handleAlert: PropTypes.func,
   hasAlert: PropTypes.bool,
-  isTurnOnUserAllowed: PropTypes.bool,
-  isTurnOffUserAllowed: PropTypes.bool,
-}
-
-ToggleButtonAll.defaultProps = {
-  isTurnOnUserAllowed: false,
-  isTurnOffUserAllowed: false,
 }
