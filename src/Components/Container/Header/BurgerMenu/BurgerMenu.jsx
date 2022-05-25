@@ -68,7 +68,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.dedicated_servers'),
-      routeName: routes.HOME,
+      routeName: routes.DEDICATED_SERVERS,
       allowedToRender: true,
     },
     {

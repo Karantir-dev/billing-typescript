@@ -28,7 +28,7 @@ export default function ServicesList() {
   const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage')
   const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage')
   // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'wuwuwuw')
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'storage') //funcname wuwuwuw
 
   const servicesMenuList = [
     {
@@ -52,7 +52,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.dedicated_servers'),
       id: 3,
-      routeName: routes.HOME,
+      routeName: routes.DEDICATED_SERVERS,
       allowedToRender: isDedicactedAllowedToRender,
       icon_name: 'dedicated',
       icon_width: '106',

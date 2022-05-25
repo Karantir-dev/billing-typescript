@@ -21,8 +21,9 @@ export default function DedicatedServersPage() {
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>
-        {t('burger_menu.services.services_list.dedicated')}
+        {t('burger_menu.services.services_list.dedicated_servers')}
       </h1>
+
       <DomainFilters />
     </div>
   )

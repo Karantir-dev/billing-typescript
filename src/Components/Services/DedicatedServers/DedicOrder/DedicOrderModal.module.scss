@@ -1,0 +1,39 @@
+.tarif_card {
+  width: 100px;
+  height: 100px;
+}
+
+.datacenter_block {
+  display: flex;
+  flex-direction: column;
+}
+
+.datacenter_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //   justify-content: center;
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 11px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+
+  &.selected {
+    background-color: red;
+  }
+}
+
+.flag_icon {
+  border-radius: 5px;
+}
+
+.country_name {
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
