@@ -11,27 +11,22 @@ import { IconButton } from '../../Components'
 export default function Contracts() {
   const contracts = useSelector(contractsSelectors.getContractsList)
   const dispatch = useDispatch()
-  const { t } = useTranslation('container', 'contracts', 'other', 'billing')
+  const { t } = useTranslation(['container', 'contracts', 'other', 'billing'])
 
   const [selectedContract, setSelectedContract] = useState(null)
 
   const handlePrintBtn = () => {
-    dispatch(contractOperations.getFile(selectedContract?.id?.$))
-    console.log('printed')
+    dispatch(contractOperations.getPrintFile(selectedContract?.id?.$))
   }
   const handleDownloadBtn = () => {
-    dispatch(contractOperations.getFile(selectedContract?.id?.$))
-    console.log('downloaded')
+    dispatch(
+      contractOperations.getPdfFile(selectedContract?.id?.$, selectedContract?.number?.$),
+    )
   }
 
   useEffect(() => {
     dispatch(contractOperations.getContracts())
   }, [])
-
-  useEffect(() => {
-    console.log('contracts in useeff', contracts)
-    console.log(selectedContract)
-  }, [selectedContract])
 
   return (
     <>

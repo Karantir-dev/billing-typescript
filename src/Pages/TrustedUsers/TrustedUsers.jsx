@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import { Button } from '../../Components'
 import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
@@ -80,14 +79,6 @@ export default function TrustedUsers() {
   useEffect(() => {
     if (isComponentAllowedToRender) dispatch(usersOperations.getUsers())
   }, [changeUserRoles, createdNewUser])
-
-  useEffect(() => {
-    if (!isComponentAllowedToRender) {
-      toast.error(t('insufficient_rights'), {
-        position: 'bottom-right',
-      })
-    }
-  }, [])
 
   useEffect(() => {
     dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))

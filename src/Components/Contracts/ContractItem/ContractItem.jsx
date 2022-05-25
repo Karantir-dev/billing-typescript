@@ -1,8 +1,10 @@
 import cn from 'classnames'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { DownloadWithFolder, Print } from '../../../images'
+import contractOperations from '../../../Redux/contracts/contractOperations'
 import { useOutsideAlerter } from '../../../utils'
 
 import s from './ContractItem.module.scss'
@@ -26,6 +28,15 @@ export default function ContractItem(props) {
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
   const desktop = useMediaQuery({ query: '(max-width: 1549px)' })
 
+  const dispatch = useDispatch()
+
+  const handlePrintBtn = () => {
+    dispatch(contractOperations.getPrintFile(id))
+  }
+  const handleDownloadBtn = () => {
+    dispatch(contractOperations.getPdfFile(id, contractNumber))
+  }
+
   const dropDownRef = useRef(null)
 
   const dropdownHandler = () => {
@@ -35,6 +46,8 @@ export default function ContractItem(props) {
   useOutsideAlerter(dropDownRef, dropDown, dropdownHandler)
 
   const { t } = useTranslation(['contracts', 'other', 'billing'])
+  const typeOfContract = contractName.split('|')[0]
+  const slicedContractName = contractName.split('|')[1]
 
   return (
     <>
@@ -67,12 +80,13 @@ export default function ContractItem(props) {
             })}
             ref={dropDownRef}
           >
-            <button className={cn({ [s.btn]: true })}>
+            <button className={cn({ [s.btn]: true })} onClick={handlePrintBtn}>
               <Print className={s.icon} />
               <p className={s.btn_text}>{t('print')}</p>
             </button>
 
             <button
+              onClick={handleDownloadBtn}
               className={cn({
                 [s.btn]: true,
               })}
@@ -109,7 +123,9 @@ export default function ContractItem(props) {
         </div>
         <div className={cn({ [s.card_item_wrapper]: true, [s.sixth_cell]: true })}>
           {desktop && <span className={s.item_title}>{t('contract_name')}:</span>}
-          <span className={s.item_text}>{contractName}</span>
+          <span className={s.item_text}>{`${t(typeOfContract.trim())} ${
+            slicedContractName?.length > 0 ? `| ${slicedContractName}` : ''
+          }`}</span>
         </div>
         <div className={cn({ [s.card_item_wrapper]: true, [s.seventh_cell]: true })}>
           {desktop && (
