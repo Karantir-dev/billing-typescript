@@ -137,7 +137,7 @@
       "service_profile_edit#write": "Параметры контакта (доступ к сохранению данных)",
 
       "affiliate_client": "Реферальная программа",
-      "affiliate_client_reward": "Награда",
+      "affiliate_client_reward": "Доход",
       "affiliate_client#read": "Реферальная программа (доступно чтение данных форм)",
       "affiliate_client#write": "Реферальная программа (доступно сохранение данных)",
       "affiliate_client_click": "$t(Статистика)",

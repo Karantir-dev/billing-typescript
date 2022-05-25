@@ -14,11 +14,16 @@ import {
   IncomeChart,
 } from '../../../Components'
 import { useOutsideAlerter } from '../../../utils'
-
+import * as route from '../../../routes'
 import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
+import { Navigate } from 'react-router-dom'
 
-export default function AffiliateProgramIncome() {
+export default function AffiliateProgramIncome({ allowToRender }) {
+  if (!allowToRender) {
+    return <Navigate replace to={route.SERVICES} />
+  }
+
   const dispatch = useDispatch()
   const { t } = useTranslation(['affiliate_program', 'other'])
   const descrWrapper = useRef(null)

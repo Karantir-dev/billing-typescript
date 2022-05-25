@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePageRender } from '../../utils'
 import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'
@@ -7,7 +7,6 @@ import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components'
 import * as routes from '../../routes'
 
 import s from './AccessLogPage.module.scss'
-import { toast } from 'react-toastify'
 import { Navigate } from 'react-router-dom'
 
 export default function Component() {
@@ -15,8 +14,6 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const isComponentAllowedToRender = usePageRender('stat', 'authlog')
-
-  const tostId = useRef(null)
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -31,17 +28,6 @@ export default function Component() {
     const data = { p_num: currentPage }
     dispatch(accessLogsOperations.getAccessLogsHandler(data))
   }, [currentPage])
-
-  useEffect(() => {
-    if (!isComponentAllowedToRender) {
-      if (!toast.isActive(tostId.current)) {
-        toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
-          position: 'bottom-right',
-          toastId: 'customId',
-        })
-      }
-    }
-  }, [])
 
   if (!isComponentAllowedToRender) {
     return <Navigate to={routes.HOME} />

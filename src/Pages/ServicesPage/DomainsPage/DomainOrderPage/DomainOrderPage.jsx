@@ -3,9 +3,10 @@ import { BreadCrumbs, Button, DomainsZone, InputField } from '../../../../Compon
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import s from './DomainOrderPage.module.scss'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
+import * as Yup from 'yup'
+import s from './DomainOrderPage.module.scss'
 
 export default function ServicesPage() {
   const { t } = useTranslation(['domains', 'other'])
@@ -15,8 +16,12 @@ export default function ServicesPage() {
 
   const [domains, setDomains] = useState([])
 
+  const [selectedDomains, setSelectedDomains] = useState([])
+
+  console.log(selectedDomains)
+
   useEffect(() => {
-    dispatch(domainsOperations.getDomainsOrderInfo(setDomains))
+    dispatch(domainsOperations.getDomainsOrderName(setDomains))
   }, [])
 
   const parseLocations = () => {
@@ -27,28 +32,38 @@ export default function ServicesPage() {
     return pathnames
   }
 
+  const validationSchema = Yup.object().shape({
+    domain_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
+  })
+
+  const setDomainsNameHandler = values => {
+    values['selected_pricelist'] = selectedDomains?.join(',')
+    dispatch(domainsOperations.setDomainsOrderName(values))
+  }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('Domain name order')}</h1>
       <Formik
+        validationSchema={validationSchema}
         initialValues={{
-          value: '',
+          domain_name: '',
         }}
-        onSubmit={values => console.log(values)}
+        onSubmit={setDomainsNameHandler}
       >
         {({ errors, touched }) => {
           return (
             <Form className={s.form}>
               <InputField
-                name="value"
+                name="domain_name"
                 type="text"
                 label={`${t('Domain name')}:`}
                 placeholder={t('Enter domain name')}
                 className={s.input}
                 inputWrapperClass={s.inputHeight}
-                error={!!errors.value}
-                touched={!!touched.value}
+                error={!!errors.domain_name}
+                touched={!!touched.domain_name}
                 isShadow
               />
               <Button
@@ -62,7 +77,11 @@ export default function ServicesPage() {
           )
         }}
       </Formik>
-      <DomainsZone domains={domains} />
+      <DomainsZone
+        setSelectedDomains={setSelectedDomains}
+        selectedDomains={selectedDomains}
+        domains={domains}
+      />
     </div>
   )
 }

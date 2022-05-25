@@ -18,6 +18,9 @@ import {
   UserSettings,
   DomainsPage,
   DomainOrderPage,
+  ServicesPage,
+  Contracts,
+  DedicatedServersPage,
 } from '../../Pages'
 
 import * as route from '../../routes'
@@ -28,7 +31,12 @@ const Component = () => {
       <Routes>
         <Route
           path={route.SERVICES}
-          element={<PrivateRoute children={<ServicesList />} redirectTo={route.LOGIN} />}
+          element={
+            <PrivateRoute
+              children={<ServicesPage children={<ServicesList />} />}
+              redirectTo={route.LOGIN}
+            />
+          }
         />
         <Route
           path={route.DOMAINS}
@@ -38,6 +46,12 @@ const Component = () => {
           path={route.DOMAINS_ORDERS}
           element={
             <PrivateRoute redirectTo={route.LOGIN} children={<DomainOrderPage />} />
+          }
+        />
+        <Route
+          path={route.DEDICATED_SERVERS}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
           }
         />
 
@@ -59,6 +73,11 @@ const Component = () => {
         <Route
           path={route.PAYERS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />}
+        />
+
+        <Route
+          path={route.CONTRACTS}
+          element={<PrivateRoute children={<Contracts />} redirectTo={route.LOGIN} />}
         />
 
         <Route

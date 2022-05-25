@@ -42,7 +42,7 @@ const getDomains =
       })
   }
 
-const getDomainsOrderInfo = setDomains => (dispatch, getState) => {
+const getDomainsOrderName = setDomains => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -84,7 +84,47 @@ const getDomainsOrderInfo = setDomains => (dispatch, getState) => {
     })
 }
 
+const setDomainsOrderName =
+  (body = {}, setDomains) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'domain.order.name',
+          out: 'json',
+          auth: sessionId,
+          sv_field: 'ok_whois',
+          checked_domain: '',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+
+        const domains = []
+
+        setDomains(domains)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getDomains,
-  getDomainsOrderInfo,
+  getDomainsOrderName,
+  setDomainsOrderName,
 }

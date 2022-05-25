@@ -59,3 +59,6 @@ export { default as domainsActions } from './domains/domainsActions'
 export { default as domainsOperations } from './domains/domainsOperations'
 export { default as domainsReducer } from './domains/domainsReducer'
 export { default as domainsSelectors } from './domains/domainsSelectors'
+
+//===========================================CONTRACTS=================================//
+export { default as contractsReducer } from './contracts/contractsReducer'
