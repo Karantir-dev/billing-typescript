@@ -35,8 +35,6 @@ const getTarifs = () => (dispatch, getState) => {
         period,
       }
 
-      console.log(data)
-
       dispatch(dedicActions.setTarifList(orderData))
 
       dispatch(actions.hideLoader())
@@ -138,8 +136,87 @@ const getUpdatedPeriod = (period, setNewPeriod) => (dispatch, getState) => {
     })
 }
 
+const getParameters =
+  (period, datacenter, pricelist, setParameters) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          period,
+          datacenter,
+          pricelist,
+          snext: 'ok',
+          sok: 'ok',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        console.log(data)
+
+        setParameters(data.doc.slist)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderServer =
+  (period, datacenter, pricelist, autoprolong, domain, setParameters) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order.param',
+          out: 'json',
+          auth: sessionId,
+          period,
+          datacenter,
+          pricelist,
+          snext: 'ok',
+          sok: 'ok',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        console.log(data)
+
+        setParameters(data.doc.slist)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
   getUpdatedPeriod,
+  getParameters,
+  orderServer,
 }

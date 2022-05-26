@@ -1,0 +1,34 @@
+{
+  "page_title": "Dedicated server order",
+  "processor": "Processor",
+  "Netherlands": "Netherlands",
+  "tariff_plan": "Tariff plan",
+  "payment_period": "Payment period",
+  "parameters": "Parameters",
+  "autoprolong": "Autoprolong",
+  "domain_name": "Domain name",
+  "os": "Operating system",
+  "recipe": "Pre-installed software",
+  "manage_panel": "Server control panel",
+  "port_speed": "Port speed",
+  "count_ip": "Number of IP addresses",
+  "terms": "I have read and agree with",
+  "terms_2": "Terms of Service",
+
+  "domain_placeholder": "Enter domain name",
+  "recipe_placeholder": "Not installed",
+
+  "Month": "Month",
+  "Three months": "Three months",
+  "Half a year": "Half a year",
+  "Year": "Year",
+  "Two years": "Two years",
+  "Three years": "Three years",
+
+  "Disabled": "Disabled",
+  "per month": "/month",
+  "Without a licence": "Without a licence",
+  "Unlimited domains": "Unlimited domains",
+  "domains": "domains",
+  "unlimited traffic": "unlimited traffic"
+}

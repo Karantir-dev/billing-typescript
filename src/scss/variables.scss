@@ -22,6 +22,7 @@ body {
   --menu-text-3: #523e75;
   --link-text: #4c75a3;
   --support-title-color: #392952;
+  --servers_tariff_color: #7c66a4;
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
@@ -63,6 +64,8 @@ body {
   --switchers-shadow-active: 1px 1px 5px rgba(0, 0, 0, 0.2);
   --switchers-dot-shadow-active: 1px 1px 10px rgba(57, 19, 40, 0.4);
 
+  --forms2_pink_shadow: 0px 1px 13px rgba(228, 51, 190, 0.2);
+
   --menu_shadow: 4px 4px 10px rgba(213, 201, 236, 0.25);
   --forms_shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --forms2_shadow: 0px 1px 8px 0px rgba(65, 38, 114, 0.15);
@@ -91,6 +94,7 @@ body.dark-theme {
   --menu-text-3: #ffffff;
   --link-text: #8ab7fa;
   --support-title-color: #ffffff;
+  --servers_tariff_color: #c7aff1;
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
@@ -131,6 +135,8 @@ body.dark-theme {
   --switchers-dot-shadow: -3px 2px 5px #332f3a;
   --switchers-shadow-active: 1px 1px 4px #1b1820, inset 2px 3px 5px #ac2487;
   --switchers-dot-shadow-active: 3px 1px 5px #931d73;
+
+  --forms2_pink_shadow: 0px 1px 15px #8a1a72;
 
   --menu_shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
