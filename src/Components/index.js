@@ -89,3 +89,7 @@ export { default as DomainFilters } from './Services/Domains/DomainFilters/Domai
 //==========================================VDS==========================================//
 export { default as VDSItem } from './vds/VDSItem/VDSItem'
 export { default as VDSList } from './vds/VDSList/VDSList'
+
+export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
+export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
+export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'

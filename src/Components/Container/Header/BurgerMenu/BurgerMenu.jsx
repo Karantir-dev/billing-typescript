@@ -50,7 +50,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
       routeName: routes.PAYERS,
       allowedToRender: arePayersAllowedToRender,
     },
-    { name: t('profile.contracts'), routeName: routes.HOME, allowedToRender: true },
+    { name: t('profile.contracts'), routeName: routes.CONTRACTS, allowedToRender: true },
   ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)

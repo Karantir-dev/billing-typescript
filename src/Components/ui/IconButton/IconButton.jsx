@@ -14,6 +14,7 @@ import {
   Transfer,
   Whois,
   DomainsListName,
+  Print,
 } from '../../../images'
 
 export default function Component(props) {
@@ -43,6 +44,8 @@ export default function Component(props) {
         return <Whois />
       case 'server-cloud':
         return <DomainsListName />
+      case 'print':
+        return <Print />
 
       default:
         return null
@@ -81,6 +84,7 @@ Component.propTypes = {
     'transfer',
     'whois',
     'server-cloud',
+    'print',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,

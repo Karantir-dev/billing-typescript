@@ -1,0 +1,43 @@
+.page_title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.form {
+  display: flex;
+  margin-top: 30px;
+  max-width: 540px;
+}
+
+.inputHeight {
+  height: 55px;
+}
+
+.searchBtn {
+  height: 53px;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+
+@media screen and (min-width: 768px) {
+  .form {
+    align-items: center;
+  }
+
+  .input {
+    margin-right: 25px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1550px) {
+}
+
+@media screen and (min-width: 1918px) {
+}

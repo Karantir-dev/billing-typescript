@@ -14,6 +14,11 @@
       box-shadow: var(--buttons_shadow_active);
     }
   }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 }
 
 .block {

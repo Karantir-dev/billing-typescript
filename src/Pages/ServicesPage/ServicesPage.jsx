@@ -1,22 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import { usePageRender } from '../../utils'
 
 import s from './ServicesPage.module.scss'
 
 export default function ServicesPage({ children }) {
   const { t } = useTranslation(['container', 'trusted_users'])
 
-  const isComponentAllowedToRender = usePageRender('mainmenuservice')
-
-  useEffect(() => {
-    if (!isComponentAllowedToRender) {
-      toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
-        position: 'bottom-right',
-      })
-    }
-  }, [])
+  // const isComponentAllowedToRender = usePageRender('mainmenuservice')
 
   return (
     <div className={s.page_wrapper}>

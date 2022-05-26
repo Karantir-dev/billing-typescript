@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import Requests from './Requests/RequestsPage'
 import RequestsArchive from './RequestsArchive/RequestsArchivePage'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,6 @@ import { PageTabBar } from '../../Components/'
 import { usePageRender } from '../../utils'
 
 import s from './SupportPage.module.scss'
-import { toast } from 'react-toastify'
 
 export default function Component() {
   const { t } = useTranslation(['support', 'other', 'trusted_users'])
@@ -18,8 +17,6 @@ export default function Component() {
   const isComponentAllowedToRender = usePageRender('support')
   const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
   const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
-
-  const tostId = useRef(null)
 
   const tavBarSections = [
     {
@@ -38,26 +35,11 @@ export default function Component() {
     if (path === 'requests') {
       return <Requests />
     } else if (path === 'requests_archive' && !isArchiveAllowedToRender) {
-      if (!toast.isActive(tostId.current)) {
-        toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
-          position: 'bottom-right',
-          toastId: 'customId',
-        })
-      }
-
       return <Navigate to={route.HOME} />
     } else if (path === 'requests_archive') {
       return <RequestsArchive />
     }
   }
-
-  useEffect(() => {
-    if (!isComponentAllowedToRender) {
-      toast.error(t('insufficient_rights', { ns: 'trusted_users' }), {
-        position: 'bottom-right',
-      })
-    }
-  }, [])
 
   if (!isComponentAllowedToRender) {
     return <Navigate to={route.HOME} />

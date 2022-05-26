@@ -1,4 +1,6 @@
 import React from 'react'
+import { Provider } from 'react-redux'
+import entireStore from '../Redux/store'
 import { IconButton } from '../Components'
 
 export default {
@@ -6,7 +8,11 @@ export default {
   component: IconButton,
 }
 
-const Template = args => <IconButton {...args} />
+const Template = args => (
+  <Provider store={entireStore.store}>
+    <IconButton {...args} />
+  </Provider>
+)
 
 export const ButtonLight = Template.bind({})
 
