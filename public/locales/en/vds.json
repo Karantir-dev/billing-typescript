@@ -1,0 +1,18 @@
+{
+  "servers_title": "Servers VDS/VPS",
+  "domain_name": "Domain name",
+  "ip_address": "IP address",
+  "ip_addresses": "IP addresses",
+  "OS_template": "OS template",
+  "tariff": "Tariff plan",
+  "data_center": "Data center",
+  "status": "Status",
+  "created": "Creation date",
+  "password_change": "Password change",
+  "reload": "Reboot",
+  "prolong": "Renew",
+  "history": "History",
+  "instruction": "Instructions",
+  "go_to_panel": "To panel",
+  "valid_until": "End date"
+}

@@ -85,3 +85,7 @@ export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
 //==========================================SERVICES==========================================//
 export { default as ServicesList } from './Services/ServicesList/ServicesList'
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
+
+//==========================================VDS==========================================//
+export { default as VDSItem } from './vds/VDSItem/VDSItem'
+export { default as VDSList } from './vds/VDSList/VDSList'

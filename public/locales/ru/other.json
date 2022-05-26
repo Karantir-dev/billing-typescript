@@ -85,5 +85,10 @@
   "Active": "Активный",
   "Disable": "Отключить",
   "Confirm": "Подтвердить",
-  "service": "Услуга"
+  "service": "Услуга",
+  "breadcrumbs_services": "Услуги",
+  "to_order": "Заказать",
+  "edit": "Изменить",
+  "delete": "Удалить",
+  "short_month": "мес."
 }

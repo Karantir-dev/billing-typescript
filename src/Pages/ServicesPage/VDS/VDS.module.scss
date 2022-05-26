@@ -1,0 +1,31 @@
+.breadcrumbs_link {
+  font-weight: 300;
+  font-size: 16px;
+
+  &.disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+  }
+}
+
+.breadcrumbs_separator {
+  font-weight: 300;
+  font-size: 16px;
+  margin: 0 8px;
+}
+
+.title {
+  margin: 25px 0;
+}
+
+.mobile_filter_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn_order {
+  text-transform: uppercase;
+  font-size: 18px;
+  height: 53px;
+}

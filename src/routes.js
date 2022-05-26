@@ -20,4 +20,5 @@ export const ERROR_PAGE = '/error_page'
 
 export const SERVICES = '/services'
 export const DOMAINS = '/services/domains'
-
+export const VDS = '/services/vds'
+export const VDS_ORDER = '/services/vds/order'

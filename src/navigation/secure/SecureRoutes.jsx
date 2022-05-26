@@ -18,6 +18,7 @@ import {
   UserSettings,
   DomainsPage,
   ServicesPage,
+  VDS,
 } from '../../Pages'
 
 import * as route from '../../routes'
@@ -38,6 +39,14 @@ const Component = () => {
         <Route
           path={route.DOMAINS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
+        />
+        <Route
+          path={route.VDS}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+        />
+        <Route
+          path={route.VDS_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
         />
 
         <Route

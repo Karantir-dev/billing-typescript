@@ -23,6 +23,10 @@
   padding-bottom: 19px;
 }
 
+.logo {
+  line-height: 0;
+}
+
 .balance_text {
   font-size: 17px;
   line-height: 70.9%;
@@ -550,7 +554,6 @@ $hamburger-layer-border-radius: 99px;
     display: none;
   }
   .logo {
-    // transform: scale(1);
     display: none;
   }
   .header_menuburger {
