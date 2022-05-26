@@ -17,6 +17,7 @@ import {
   SupportPage,
   UserSettings,
   DomainsPage,
+  DomainOrderPage,
   ServicesPage,
   Contracts,
   DedicatedServersPage,
@@ -40,6 +41,12 @@ const Component = () => {
         <Route
           path={route.DOMAINS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
+        />
+        <Route
+          path={route.DOMAINS_ORDERS}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<DomainOrderPage />} />
+          }
         />
         <Route
           path={route.DEDICATED_SERVERS}

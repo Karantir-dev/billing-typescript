@@ -85,5 +85,7 @@
   "Active": "Активный",
   "Disable": "Отключить",
   "Confirm": "Подтвердить",
-  "service": "Услуга"
+  "service": "Услуга",
+  "Choose all": "Выбрать все",
+  "No matching options": "Нет подходящих вариантов"
 }

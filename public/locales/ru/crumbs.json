@@ -1,4 +1,5 @@
 {
   "services": "Услуги",
-  "domains": "Домены"
+  "domains": "Домены",
+  "domain_orders": "Заказ доменного имени"
 }

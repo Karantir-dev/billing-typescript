@@ -1,3 +1,15 @@
 {
-  "New domain": "Новый домен"
+  "New domain": "Новый домен",
+  "Domain name": "Имя домена",
+  "Tariff": "Тариф",
+  "Valid until": "Действует до",
+  "State": "Состояние",
+  "Price": "Стоимость",
+  "Domain name order": "Заказ доменного имени",
+  "Pick up": "Подобрать",
+  "Enter domain name": "Введите доменное имя",
+  "Domain zones": "Доменные зоны",
+  "All results": "Все результаты",
+  "Selected domains in the amount of": "Выбранные домены на",
+  "Register": "Зарегистрировать"
 }
