@@ -1,13 +1,19 @@
 import React from 'react'
-import { VDSItem } from '../..'
+import { VDSmobileItem } from '../..'
 
 import s from './VDSList.module.scss'
 
-export default function VDSList({ servers }) {
+export default function VDSList({ servers, setElidForEditModal }) {
   return (
     <ul className={s.list}>
       {servers?.map(el => {
-        return <VDSItem key={el.id.$} server={el} />
+        return (
+          <VDSmobileItem
+            key={el.id.$}
+            server={el}
+            setElidForEditModal={setElidForEditModal}
+          />
+        )
       })}
     </ul>
   )

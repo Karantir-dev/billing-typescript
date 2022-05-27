@@ -12,7 +12,7 @@ import { selectors, usersOperations, usersSelectors } from '../../../Redux'
 import s from './UserCard.module.scss'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
-import { WanrningSign } from '../../../images'
+import { Info } from '../../../images'
 
 export default function UserCard({
   name,
@@ -182,7 +182,7 @@ export default function UserCard({
                   onMouseEnter={() => setHovered(true)}
                   onMouseLeave={() => setHovered(false)}
                 >
-                  <WanrningSign className={s.warning_sign} />
+                  <Info className={s.warning_sign} />
                   <p
                     className={cn({
                       [s.warning_text]: true,
@@ -278,7 +278,7 @@ export default function UserCard({
                   onMouseEnter={() => setHovered(true)}
                   onMouseLeave={() => setHovered(false)}
                 >
-                  <WanrningSign className={s.warning_sign} />
+                  <Info className={s.warning_sign} />
                   <p
                     className={cn({
                       [s.warning_text]: true,

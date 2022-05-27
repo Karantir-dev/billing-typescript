@@ -87,6 +87,7 @@ export { default as ServicesList } from './Services/ServicesList/ServicesList'
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
 
 //==========================================VDS==========================================//
+export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
 export { default as VDSItem } from './vds/VDSItem/VDSItem'
 export { default as VDSList } from './vds/VDSList/VDSList'
 

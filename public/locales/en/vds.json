@@ -14,5 +14,11 @@
   "history": "History",
   "instruction": "Instructions",
   "go_to_panel": "To panel",
-  "valid_until": "End date"
+  "valid_until": "End date",
+  "auto_prolong": "Auto-renewal enabled",
+  "active": "Active",
+  "stopped_by_admin": "Suspended by administrator",
+  "stopped": "Suspended",
+  "ordered": "Ordered",
+  "in_progress": "Being processed"
 }

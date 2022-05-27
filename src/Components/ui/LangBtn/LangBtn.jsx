@@ -10,12 +10,13 @@ const LANGUAGES = ['en', 'ru', 'kz']
 
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()
+  const currentLang = i18n.language?.slice(0, 2)
 
-  if (!LANGUAGES?.includes(i18n?.language?.slice(0, 2))) {
+  if (!LANGUAGES.includes(currentLang)) {
     i18n.changeLanguage('en')
   }
 
-  const availableLangs = LANGUAGES.filter(lang => i18n.language !== lang)
+  const availableLangs = LANGUAGES.filter(lang => currentLang !== lang)
 
   return (
     <div
@@ -27,7 +28,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       })}
     >
       <div className={s.current_lang}>
-        {i18n.language}
+        {currentLang}
         <Shevron className={s.icon} />
       </div>
 

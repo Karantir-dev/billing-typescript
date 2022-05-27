@@ -15,6 +15,7 @@ export default function VDS() {
   const navigate = useNavigate()
 
   const [servers, setServers] = useState()
+  const [elidForEditModal, setElidForEditModal] = useState(false)
 
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
@@ -51,7 +52,8 @@ export default function VDS() {
         />
       </div>
 
-      <VDSList servers={servers} />
+      <VDSList servers={servers} setElidForEditModal={setElidForEditModal} />
+      {elidForEditModal && <h1>EDIT MODAL</h1>}
     </>
   )
 }

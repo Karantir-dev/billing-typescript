@@ -5,15 +5,10 @@
   column-gap: 15px;
   row-gap: 10px;
   width: 100%;
-  height: fit-content;
   padding: 26px 15px;
   background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
 }
 
 .label {
@@ -38,9 +33,9 @@
   height: 20px;
 }
 
-.on_off_icon {
-  fill: var(--error-color);
-}
+// .on_off_icon {
+//   fill: var(--error-color);
+// }
 
 .dots_wrapper {
   position: absolute;
@@ -48,12 +43,23 @@
   right: 15px;
 }
 
+.dots_btn {
+  transform: scale(1);
+  transition: transform 150ms;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
 .dropdown {
   position: absolute;
   right: -10px;
+  width: 240px;
   top: calc(100% + 10px);
   padding: 30px 10px 20px 20px;
   border-radius: 3px;
+  z-index: 1;
   background-color: var(--forms_bgc_4);
   box-shadow: var(--forms2_shadow);
 }
@@ -78,10 +84,71 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.tool_item:not(:last-child) {
+  margin-bottom: 15px;
+}
+
 .tool_btn {
   display: flex;
+  width: 100%;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 300;
+
+  &:hover {
+    font-weight: 400;
+    svg {
+      fill: url('#gradient');
+    }
+  }
+
+  &:disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
 }
 
 .tool_icon {
   margin-right: 12px;
+  width: 20px;
+}
+
+.hint_wrapper {
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+
+  &:hover .hint_popup {
+    opacity: 1;
+  }
+}
+
+.hint_popup {
+  opacity: 0;
+  transition: opacity 150ms;
+  position: absolute;
+  bottom: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 20px;
+  word-break: initial;
+  pointer-events: none;
+  text-align: center;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+}
+
+.hint_pointer_wrapper {
+  @extend .pointer_wrapper;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) rotateZ(180deg);
+}
+
+.check_icon {
+  stroke: var(--forms_bgc_2);
 }
