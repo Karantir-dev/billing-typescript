@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import s from './DedicOrderModal.module.scss'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
 import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
+// import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import Select from '../../../ui/Select/Select'
 import InputField from '../../../ui/InputField/InputField'
@@ -14,6 +13,33 @@ import classNames from 'classnames'
 
 import { BreadCrumbs, Button, CheckBox, Toggle } from '../../..'
 import { useLocation } from 'react-router-dom'
+import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+
+const parsePrice = price => {
+  const words = price?.match(/[\d|.|\\+]+/g)
+  const amounts = []
+
+  if (words.length > 0) {
+    words.forEach(w => {
+      if (!isNaN(w)) {
+        amounts.push(w)
+      }
+    })
+  } else {
+    return
+  }
+
+  let amoumt = amounts[amounts.length - 1] + ' ' + 'EUR/' + '.'
+  let percent = amounts[0] + '%'
+  let sale = amounts[1] + ' ' + 'EUR/'
+
+  return {
+    amoumt,
+    percent,
+    sale,
+    length: amounts.length,
+  }
+}
 
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
@@ -24,6 +50,36 @@ export default function DedicOrderModal() {
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
   const [datacenter, setDatacenter] = useState('2')
+  const [paymentPeriod, setPaymentPeriod] = useState('1')
+  const [price, setPrice] = useState(0)
+  const [ordered, setOrdered] = useState(false)
+  const [filters, setFilters] = useState([])
+
+  let filteredTariffList = tarifList?.tarifList?.filter(el => {
+    if (Array.isArray(el.filter.tag)) {
+      let filterList = el.filter.tag
+      console.log(filterList)
+      let hasListFilter = filterList.some(filter => filters.includes(filter.$))
+      return hasListFilter
+    } else {
+      return filters?.includes(el.filter.tag.$)
+    }
+  })
+
+  let tariffsListToRender = []
+
+  if (filters.length === 0) {
+    tariffsListToRender = tarifList?.tarifList
+  } else {
+    tariffsListToRender = filteredTariffList
+  }
+
+  console.log('ordered', ordered)
+
+  // let priceDigit = price
+  //   .split('')
+  //   .filter(item => item === '.' || !isNaN(item))
+  //   .join('')
 
   const ostempl = parameters?.filter(item => item.$name === 'ostempl')
   const recipe = parameters?.filter(item => item.$name === 'recipe')
@@ -50,10 +106,10 @@ export default function DedicOrderModal() {
     console.log(tarifList)
   }, [tarifsList])
 
-  const validationSchema = Yup.object().shape({
-    message: Yup.string().required(t('Is a required field')),
-    subject: Yup.string().required(t('Is a required field')),
-  })
+  // const validationSchema = Yup.object().shape({
+  //   message: Yup.string().required(t('Is a required field')),
+  //   subject: Yup.string().required(t('Is a required field')),
+  // })
 
   return (
     <div className={s.modalHeader}>
@@ -61,13 +117,16 @@ export default function DedicOrderModal() {
       <h2 className={s.page_title}>{t('page_title')}</h2>
 
       <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
+        // enableReinitialize
+        // validationSchema={validationSchema}
         initialValues={{
           datacenter: datacenter,
           tarif: undefined,
           period: '1',
+          managePanelName: managePanel?.[0]?.$name,
           processor: '',
+          portSpeedName: portSpeed?.[1]?.$name,
+          ipName: '',
 
           parameters: {
             autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : null,
@@ -77,6 +136,7 @@ export default function DedicOrderModal() {
             managePanel: '',
             ipTotal: '',
             portSpeed: '',
+            price: '',
           },
         }}
         // onSubmit={() => {
@@ -84,7 +144,27 @@ export default function DedicOrderModal() {
         // }}
       >
         {({ values, setFieldValue }) => {
-          console.log(values)
+          // console.log(values)
+
+          const handleSubmit = () => {
+            dispatch(
+              dedicOperations.orderServer(
+                values.parameters.autoprolong,
+                values.datacenter,
+                values.period,
+                values.tarif,
+                values.parameters.domenname,
+                values.parameters.OS,
+                values.parameters.recipe,
+                values.parameters.portSpeed,
+                values.managePanelName,
+                values.portSpeedName,
+                values.parameters.ipTotal,
+                setOrdered,
+              ),
+            )
+          }
+
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -140,6 +220,11 @@ export default function DedicOrderModal() {
                       <Toggle
                         setValue={() => {
                           setFieldValue('processor', item?.$key)
+                          if (filters.includes(item?.$key)) {
+                            setFilters([...filters.filter(el => el !== item?.$key)])
+                          } else {
+                            setFilters([...filters, item?.$key])
+                          }
                         }}
                       />
                     </div>
@@ -154,7 +239,14 @@ export default function DedicOrderModal() {
                 value={''}
                 getElement={item => {
                   setFieldValue('period', item)
-                  dispatch(dedicOperations.getUpdatedPeriod(item, setTarifList))
+                  setPaymentPeriod(item)
+                  dispatch(
+                    dedicOperations.getUpdatedPeriod(
+                      item,
+                      values.datacenter,
+                      setTarifList,
+                    ),
+                  )
                 }}
                 isShadow
                 label={`${t('payment_period')}:`}
@@ -165,14 +257,22 @@ export default function DedicOrderModal() {
               />
 
               <div className={s.tarifs_block}>
-                {tarifList?.tarifList?.map(item => {
+                {tariffsListToRender?.map(item => {
                   const descriptionBlocks = item?.desc?.$.split('/')
                   const cardTitle = descriptionBlocks[0]
+
+                  const parsedPrice = parsePrice(item?.price?.$)
+
+                  const priceAmount = parsedPrice.amoumt
+                  const pricePercent = parsedPrice.percent
+                  const priceSale = parsedPrice.sale
 
                   return (
                     <button
                       onClick={() => {
                         setFieldValue('tarif', item?.pricelist?.$)
+                        // setFieldValue('price', item?.price?.$)
+                        setPrice(priceAmount)
                         dispatch(
                           dedicOperations.getParameters(
                             values.period,
@@ -188,8 +288,31 @@ export default function DedicOrderModal() {
                       })}
                       key={item?.desc?.$}
                     >
+                      {paymentPeriod > 1 && (
+                        <span
+                          className={classNames({ [s.sale_percent]: paymentPeriod > 1 })}
+                        >
+                          {pricePercent}
+                        </span>
+                      )}
+
                       <span className={s.card_title}>{cardTitle}</span>
-                      <span className={s.price}>{item?.price?.$}</span>
+                      <div className={s.price_wrapper}>
+                        <span
+                          className={classNames({
+                            [s.price]: true,
+                            [s.selected]: item?.pricelist?.$ === values.tarif,
+                          })}
+                        >
+                          {priceAmount}
+                        </span>
+                        {paymentPeriod > 1 && (
+                          <span
+                            className={s.sale_price}
+                          >{`sale price ${priceSale}`}</span>
+                        )}
+                      </div>
+
                       {descriptionBlocks.slice(1).map((el, i) => (
                         <span key={i} className={s.card_subtitles}>
                           {el}
@@ -271,7 +394,9 @@ export default function DedicOrderModal() {
                   <Select
                     height={52}
                     value={''}
-                    getElement={item => setFieldValue('parameters.managePanel', item)}
+                    getElement={item => {
+                      setFieldValue('parameters.recipe', item)
+                    }}
                     isShadow
                     label={t('manage_panel')}
                     itemsList={managePanel[0]?.val?.map(el => {
@@ -307,13 +432,11 @@ export default function DedicOrderModal() {
                   {values.datacenter === '2' && (
                     <Select
                       height={52}
-                      value={values}
                       getElement={item => setFieldValue('parameters.portSpeed', item)}
                       isShadow
                       label={t('port_speed')}
                       itemsList={portSpeed[1]?.val?.map(el => {
                         let labelText = el.$
-
                         if (labelText.includes('per month')) {
                           labelText = labelText.replace('per month', t('per month'))
                         }
@@ -355,16 +478,24 @@ export default function DedicOrderModal() {
                 </div>
               )}
 
-              <Button
-                className={s.newTicketBtn}
-                isShadow
-                size="medium"
-                label={t('Buy')}
-                type="submit"
-                onClick={() => {
-                  console.log('submited', values)
-                }}
-              />
+              <div className={s.buy_btn_block}>
+                <div className={s.sum_price_wrapper}>
+                  <span className={s.btn_price}> &euro;{price}</span>
+                  <span className={s.btn_period}>{`1 ${t('per month').slice(
+                    0,
+                    3,
+                  )}.`}</span>
+                </div>
+
+                <Button
+                  className={s.buy_btn}
+                  isShadow
+                  size="medium"
+                  label={t('Buy')}
+                  type="submit"
+                  onClick={handleSubmit}
+                />
+              </div>
             </Form>
           )
         }}

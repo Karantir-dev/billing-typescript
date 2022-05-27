@@ -35,8 +35,8 @@ const getTarifs = () => (dispatch, getState) => {
         period,
       }
 
+      console.log('tariffs, first page', data)
       dispatch(dedicActions.setTarifList(orderData))
-
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -91,7 +91,7 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
     })
 }
 
-const getUpdatedPeriod = (period, setNewPeriod) => (dispatch, getState) => {
+const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -106,6 +106,7 @@ const getUpdatedPeriod = (period, setNewPeriod) => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         period,
+        datacenter,
         lang: 'en',
       }),
     )
@@ -124,9 +125,6 @@ const getUpdatedPeriod = (period, setNewPeriod) => (dispatch, getState) => {
       }
 
       setNewPeriod(orderData)
-
-      console.log('orderData', orderData)
-
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -161,10 +159,7 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data)
-
         setParameters(data.doc.slist)
-
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -175,7 +170,20 @@ const getParameters =
   }
 
 const orderServer =
-  (period, datacenter, pricelist, autoprolong, domain, setParameters) =>
+  (
+    autoprolong,
+    datacenter,
+    period,
+    pricelist,
+    domain,
+    ostempl,
+    recipe,
+    portSpeed,
+    portSpeedName,
+    managePanelName,
+    // ipTotal,
+    setParameters,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -193,6 +201,12 @@ const orderServer =
           period,
           datacenter,
           pricelist,
+          autoprolong,
+          domain,
+          ostempl,
+          [portSpeedName]: recipe,
+          [managePanelName]: portSpeed,
+          licence_agreement: 'on',
           snext: 'ok',
           sok: 'ok',
           lang: 'en',
@@ -200,10 +214,9 @@ const orderServer =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data)
+        console.log(data, 'ordering server')
 
-        setParameters(data.doc.slist)
-
+        setParameters(false)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
