@@ -47,6 +47,7 @@ export { default as Loader } from './ui/Loader/Loader'
 
 export { default as CheckBox } from './ui/CheckBox/CheckBox'
 export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'
+export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
 
 //==========================================ACCESS LOGS==========================================//
 

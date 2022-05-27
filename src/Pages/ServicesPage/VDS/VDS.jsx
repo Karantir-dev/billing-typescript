@@ -5,18 +5,22 @@ import * as route from '../../../routes'
 
 import cn from 'classnames'
 import s from './VDS.module.scss'
-import { Button, IconButton, VDSList } from '../../../Components'
+import { Button, IconButton, VDSList, HintWrapper } from '../../../Components'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '../../../Redux'
+import { useMediaQuery } from 'react-responsive'
 
 export default function VDS() {
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
 
   const [servers, setServers] = useState()
   const [elidForEditModal, setElidForEditModal] = useState(false)
+  const [activeServer, setActiveServer] = useState(null)
 
+  console.log(activeServer)
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
   }, [])
@@ -41,8 +45,25 @@ export default function VDS() {
       </div>
 
       <h2 className={s.title}>{t('servers_title')}</h2>
-      <div className={s.mobile_filter_wrapper}>
-        <IconButton icon="filter" />
+      <div className={s.tools_wrapper}>
+        <HintWrapper>
+          <IconButton className={s.tools_icon} icon="filter" />
+        </HintWrapper>
+        {widerThan1550 && (
+          <>
+            <div className={s.edit_wrapper}>
+              <IconButton className={s.tools_icon} icon="edit" />
+              <IconButton className={s.tools_icon} icon="delete" />
+            </div>
+            <IconButton className={s.tools_icon} icon="passChange" />
+            <IconButton className={s.tools_icon} icon="reload" />
+            <IconButton className={s.tools_icon} icon="ip" />
+            <IconButton className={s.tools_icon} icon="clock" />
+            <IconButton className={s.tools_icon} icon="refund" />
+            <IconButton className={s.tools_icon} icon="info" />
+            <IconButton className={s.tools_icon} icon="exitSign" />
+          </>
+        )}
         <Button
           className={s.btn_order}
           isShadow
@@ -52,7 +73,11 @@ export default function VDS() {
         />
       </div>
 
-      <VDSList servers={servers} setElidForEditModal={setElidForEditModal} />
+      <VDSList
+        servers={servers}
+        setElidForEditModal={setElidForEditModal}
+        setActiveServer={setActiveServer}
+      />
       {elidForEditModal && <h1>EDIT MODAL</h1>}
     </>
   )

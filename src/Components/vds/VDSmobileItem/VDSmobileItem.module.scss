@@ -27,16 +27,6 @@
   color: var(--transparent-color);
 }
 
-.clock_icon {
-  fill: var(--success-color);
-  width: 20px;
-  height: 20px;
-}
-
-// .on_off_icon {
-//   fill: var(--error-color);
-// }
-
 .dots_wrapper {
   position: absolute;
   top: 15px;
@@ -117,38 +107,12 @@
   width: 20px;
 }
 
-.hint_wrapper {
-  display: inline-block;
-  position: relative;
-  width: fit-content;
-
-  &:hover .hint_popup {
-    opacity: 1;
-  }
-}
-
-.hint_popup {
-  opacity: 0;
-  transition: opacity 150ms;
-  position: absolute;
-  bottom: calc(100% + 15px);
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 20px;
-  word-break: initial;
-  pointer-events: none;
-  text-align: center;
-  background-color: var(--forms_bgc_4);
-  box-shadow: var(--forms2_shadow);
-}
-
-.hint_pointer_wrapper {
-  @extend .pointer_wrapper;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) rotateZ(180deg);
-}
-
 .check_icon {
   stroke: var(--forms_bgc_2);
+}
+
+.green_icon {
+  fill: var(--success-color);
+  width: 20px;
+  height: 20px;
 }

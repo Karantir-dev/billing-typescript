@@ -18,14 +18,34 @@
   margin: 25px 0;
 }
 
-.mobile_filter_wrapper {
+.tools_wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .btn_order {
   text-transform: uppercase;
   font-size: 18px;
   height: 53px;
+  max-width: 240px;
+}
+
+.edit_wrapper {
+  display: flex;
+  gap: 15px;
+  margin: 0 25px;
+}
+
+.tools_icon svg {
+  min-width: 18px;
+  max-width: 25px;
+  min-height: 18px;
+  max-height: 20px;
+}
+
+@media screen and (min-width: 1550px) {
+  .btn_order {
+    margin-left: auto;
+  }
 }

@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
-  On_Off,
   MoreDots,
   Edit,
   PassChange,
@@ -12,11 +11,13 @@ import {
   Info,
   Delete,
   ExitSign,
+  On_Off,
   CheckCircle,
   InProgress,
   Attention,
 } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
+import { HintWrapper } from '../..'
 
 import s from './VDSmobileItem.module.scss'
 
@@ -145,61 +146,36 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
       <span className={s.label}>{t('data_center')}:</span>
       <span className={s.value}>{server?.datacentername?.$}</span>
       <span className={s.label}>{t('status')}:</span>
-      <span className={s.value}>
-        {server?.status?.$ === '2' && (
-          <div className={s.hint_wrapper}>
-            <On_Off />
-            <div className={s.hint_popup}>
-              <div className={s.hint_pointer_wrapper}>
-                <div className={s.pointer}></div>
-              </div>
-              {t('active')}
-            </div>
-          </div>
-        )}{' '}
-        {server?.status?.$ === '1' && (
-          <div className={s.hint_wrapper}>
+      <span>
+        {server?.item_status?.$orig === '2' && (
+          <HintWrapper label={t('active')}>
+            <On_Off className={s.green_icon} />
+          </HintWrapper>
+        )}
+        {server?.item_status?.$orig === '1' && (
+          <HintWrapper label={t('ordered')}>
             <CheckCircle className={s.check_icon} />
-            <div className={s.hint_popup}>
-              <div className={s.hint_pointer_wrapper}>
-                <div className={s.pointer}></div>
-              </div>
-              {t('ordered')}
-            </div>
-          </div>
-        )}{' '}
-        {server?.status?.$ === '5_open' && (
-          <div className={s.hint_wrapper}>
+          </HintWrapper>
+        )}
+        {server?.item_status?.$orig === '5_open' && (
+          <HintWrapper label={t('in_progress')}>
             <InProgress />
-            <div className={s.hint_popup}>
-              <div className={s.hint_pointer_wrapper}>
-                <div className={s.pointer}></div>
-              </div>
-              {t('in_progress')}
-            </div>
-          </div>
-        )}{' '}
-        {server?.status?.$ === '3_employeesuspend' && (
-          <div className={s.hint_wrapper}>
+          </HintWrapper>
+        )}
+        {server?.item_status?.$orig === '3_employeesuspend' && (
+          <HintWrapper label={t('stopped_by_admin')}>
             <Attention />
-            <div className={s.hint_popup}>
-              <div className={s.hint_pointer_wrapper}>
-                <div className={s.pointer}></div>
-              </div>
-              {t('stopped_by_admin')}
-            </div>
-          </div>
-        )}{' '}
+          </HintWrapper>
+        )}
+        {server?.item_status?.$orig === '3_autosuspend' && (
+          <HintWrapper label={t('stopped')}>
+            <Attention />
+          </HintWrapper>
+        )}
         {server?.autoprolong?.$ && (
-          <div className={s.hint_wrapper}>
-            <Clock className={s.clock_icon} />
-            <div className={s.hint_popup}>
-              <div className={s.hint_pointer_wrapper}>
-                <div className={s.pointer}></div>
-              </div>
-              {t('auto_prolong')}
-            </div>
-          </div>
+          <HintWrapper label={t('auto_prolong')}>
+            <Clock className={s.green_icon} />
+          </HintWrapper>
         )}
       </span>
       <span className={s.label}>{t('created')}:</span>
