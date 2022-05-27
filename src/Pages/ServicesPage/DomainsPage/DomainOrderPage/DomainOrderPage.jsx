@@ -49,6 +49,27 @@ export default function ServicesPage() {
     dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
   }
 
+  const registerDomainHandler = () => {
+    const selected_domain = selectedDomainsNames?.map(d => d?.domain?.$)
+    const selected_domain_names = selectedDomainsNames?.map(
+      d => d?.checkbox?.input?.$name,
+    )
+
+    const data = {
+      domain_name: pickUpDomains?.domain_name,
+      'zoom-domain_name': pickUpDomains?.domain_name,
+      checked_domain: pickUpDomains?.checked_domain?.$,
+      selected_domain: selected_domain.join(', '),
+      sv_field: selected_domain_names.join(', '),
+    }
+
+    selected_domain_names?.forEach(n => {
+      data[n] = 'on'
+    })
+
+    dispatch(domainsOperations.registerDomainsOrderName(data))
+  }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -85,11 +106,13 @@ export default function ServicesPage() {
           )
         }}
       </Formik>
-      {pickUpDomains.length > 0 ? (
+      {pickUpDomains?.list?.length > 0 ? (
         <DomainsPickUpZones
           setSelectedDomains={setSelectedDomainsNames}
           selectedDomains={selectedDomainsNames}
-          domains={pickUpDomains}
+          domains={pickUpDomains?.list}
+          selected={pickUpDomains?.selected}
+          registerDomainHandler={registerDomainHandler}
         />
       ) : (
         <DomainsZone
