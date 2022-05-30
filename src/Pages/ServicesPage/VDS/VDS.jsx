@@ -46,7 +46,7 @@ export default function VDS() {
 
       <h2 className={s.title}>{t('servers_title')}</h2>
       <div className={s.tools_wrapper}>
-        <HintWrapper>
+        <HintWrapper label="">
           <IconButton className={s.tools_icon} icon="filter" />
         </HintWrapper>
         {widerThan1550 && (

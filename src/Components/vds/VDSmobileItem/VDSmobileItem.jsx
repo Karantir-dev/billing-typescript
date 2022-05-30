@@ -11,13 +11,9 @@ import {
   Info,
   Delete,
   ExitSign,
-  On_Off,
-  CheckCircle,
-  InProgress,
-  Attention,
 } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
-import { HintWrapper } from '../..'
+import { ServerState } from '../..'
 
 import s from './VDSmobileItem.module.scss'
 
@@ -127,7 +123,6 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
           </div>
         )}
       </div>
-
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
@@ -146,38 +141,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
       <span className={s.label}>{t('data_center')}:</span>
       <span className={s.value}>{server?.datacentername?.$}</span>
       <span className={s.label}>{t('status')}:</span>
-      <span>
-        {server?.item_status?.$orig === '2' && (
-          <HintWrapper label={t('active')}>
-            <On_Off className={s.green_icon} />
-          </HintWrapper>
-        )}
-        {server?.item_status?.$orig === '1' && (
-          <HintWrapper label={t('ordered')}>
-            <CheckCircle className={s.check_icon} />
-          </HintWrapper>
-        )}
-        {server?.item_status?.$orig === '5_open' && (
-          <HintWrapper label={t('in_progress')}>
-            <InProgress />
-          </HintWrapper>
-        )}
-        {server?.item_status?.$orig === '3_employeesuspend' && (
-          <HintWrapper label={t('stopped_by_admin')}>
-            <Attention />
-          </HintWrapper>
-        )}
-        {server?.item_status?.$orig === '3_autosuspend' && (
-          <HintWrapper label={t('stopped')}>
-            <Attention />
-          </HintWrapper>
-        )}
-        {server?.autoprolong?.$ && (
-          <HintWrapper label={t('auto_prolong')}>
-            <Clock className={s.green_icon} />
-          </HintWrapper>
-        )}
-      </span>
+      <ServerState server={server} />
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>

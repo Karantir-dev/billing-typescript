@@ -6,7 +6,7 @@ import s from './VDSItem.module.scss'
 
 export default function VDSItem({ server, setActiveServer }) {
   const { t } = useTranslation(['vds', 'other'])
-  console.log(server)
+
   return (
     <li className={s.item}>
       <button
@@ -25,7 +25,7 @@ export default function VDSItem({ server, setActiveServer }) {
           </span>
         </span>
         <span className={s.value}>{server?.datacentername?.$}</span>
-        <ServerState className={s.value} server={server} />
+        <ServerState server={server} />
         <span className={s.value}>{server?.createdate?.$}</span>
         <span className={s.value}>{server?.expiredate?.$}</span>
       </button>

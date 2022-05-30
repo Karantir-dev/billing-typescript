@@ -91,6 +91,7 @@ export { default as DomainFilters } from './Services/Domains/DomainFilters/Domai
 export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
 export { default as VDSItem } from './vds/VDSItem/VDSItem'
 export { default as VDSList } from './vds/VDSList/VDSList'
+export { default as ServerState } from './vds/ServerState/ServerState'
 
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
