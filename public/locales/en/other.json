@@ -87,5 +87,11 @@
   "Confirm": "Confirm",
   "service": "Service",
   "Choose all": "Choose all",
-  "No matching options": "No matching options"
+  "No matching options": "No matching options",
+  "Name": "Name",
+  "Surname": "Surname",
+  "Middle name": "Middle name",
+  "Region": "Region",
+  "Enter region": "Enter region",
+  "Proceed": "Proceed"
 }

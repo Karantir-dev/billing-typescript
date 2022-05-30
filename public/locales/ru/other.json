@@ -87,5 +87,11 @@
   "Confirm": "Подтвердить",
   "service": "Услуга",
   "Choose all": "Выбрать все",
-  "No matching options": "Нет подходящих вариантов"
+  "No matching options": "Нет подходящих вариантов",
+  "Name": "Имя",
+  "Surname": "Фамилия",
+  "Middle name": "Отчество",
+  "Region": "Регион",
+  "Enter region": "Введите регион",
+  "Proceed": "Продолжить"
 }

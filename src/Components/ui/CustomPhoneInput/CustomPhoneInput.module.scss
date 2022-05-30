@@ -54,6 +54,10 @@
   height: 50px;
   position: static;
   padding-left: 40px;
+
+  &:disabled {
+    color: var(--transparent-color);
+  }
 }
 
 .drop_down {

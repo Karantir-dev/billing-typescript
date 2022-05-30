@@ -13,6 +13,8 @@ export { default as ErrorPage } from './ErrorPage/ErrorPage'
 export { default as ServicesPage } from './ServicesPage/ServicesPage'
 export { default as DomainsPage } from './ServicesPage/DomainsPage/DomainsPage'
 export { default as DomainOrderPage } from './ServicesPage/DomainsPage/DomainOrderPage/DomainOrderPage'
+export { default as DomainContactInfoPage } from './ServicesPage/DomainsPage/DomainContactInfoPage/DomainContactInfoPage'
+
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
 
 export { default as PayersPage } from './PayersPage/PayersPage'

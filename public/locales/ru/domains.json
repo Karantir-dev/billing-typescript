@@ -12,5 +12,17 @@
   "All results": "Все результаты",
   "Selected domains in the amount of": "Выбранные домены на",
   "Register": "Зарегистрировать",
-  "Suggested Results": "Предлагаемые результаты"
+  "Suggested Results": "Предлагаемые результаты",
+  "Contact Information": "Контактная информация",
+  "Owner contacts": "Контакты владельца",
+  "Contact person details": "Данные контактного лица",
+  "Contact address": "Адрес контакта",
+  "Use contact": "Использовать контакт",
+  "Profile name": "Название профиля",
+  "Contact type": "Тип контакта",
+  "Administrative contact": "Административный контакт",
+  "Use \"Contact Owner\"": "Использовать \"Контакт владельца\"",
+  "-- select a country --": "Выберите страну",
+  "Technical contact": "Технический контакт",
+  "Financial contact": "Финансовый контакт"
 }

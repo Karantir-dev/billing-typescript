@@ -8,7 +8,7 @@ import {
 } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
 import * as Yup from 'yup'
@@ -19,6 +19,7 @@ export default function ServicesPage() {
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [domains, setDomains] = useState([])
   const [pickUpDomains, setPickUpDomains] = useState([])
@@ -67,7 +68,7 @@ export default function ServicesPage() {
       data[n] = 'on'
     })
 
-    dispatch(domainsOperations.registerDomainsOrderName(data))
+    dispatch(domainsOperations.registerDomainsOrderName(data, navigate))
   }
 
   return (

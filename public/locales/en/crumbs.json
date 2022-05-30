@@ -1,5 +1,6 @@
 {
   "services": "Services",
   "domains": "Domains",
-  "domain_orders": "Domain name order"
+  "domain_orders": "Domain name order",
+  "contact_info": "Contact Information"
 }

@@ -21,6 +21,7 @@ import {
   ServicesPage,
   Contracts,
   DedicatedServersPage,
+  DomainContactInfoPage,
 } from '../../Pages'
 
 import * as route from '../../routes'
@@ -49,37 +50,38 @@ const Component = () => {
           }
         />
         <Route
+          path={route.DOMAINS_CONTACT_INFO}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<DomainContactInfoPage />} />
+          }
+        />
+
+        <Route
           path={route.DEDICATED_SERVERS}
           element={
             <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
           }
         />
-
         <Route
           path={route.ACCESS_LOG}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />}
         />
-
         <Route
           path={`${route.SUPPORT}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />}
         />
-
         <Route
           path={`${route.BILLING}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />}
         />
-
         <Route
           path={route.PAYERS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />}
         />
-
         <Route
           path={route.CONTRACTS}
           element={<PrivateRoute children={<Contracts />} redirectTo={route.LOGIN} />}
         />
-
         <Route
           path={`${route.USER_SETTINGS}`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />}
@@ -91,31 +93,26 @@ const Component = () => {
             }
           />
         </Route>
-
         <Route
           path={`${route.AFFILIATE_PROGRAM}/*`}
           element={
             <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
           }
         />
-
         <Route
           path={route.TRUSTED_USERS}
           element={<PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />}
         />
-
         <Route
           path={route.CONFIRM_EMAIL}
           element={
             <PrivateRoute children={<EmailConfirmation />} redirectTo={route.LOGIN} />
           }
         />
-
         <Route
           path={`${route.ERROR_PAGE}/*`}
           element={<PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />}
         />
-
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
     </Container>
