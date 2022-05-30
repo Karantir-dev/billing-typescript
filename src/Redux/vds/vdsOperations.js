@@ -31,6 +31,34 @@ const getVDS = setServers => (dispatch, getState) => {
     })
 }
 
+const editVDS = elid => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.edit',
+        auth: sessionId,
+        elid,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('editVDS - ', err.message)
+    })
+}
+
 export default {
   getVDS,
+  editVDS,
 }

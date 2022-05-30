@@ -2,7 +2,7 @@
   height: 62px;
   background: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .item_btn {
@@ -12,6 +12,20 @@
   height: 100%;
   padding: 0 30px;
   gap: 30px;
+  cursor: pointer;
+  position: relative;
+
+  &.active_server::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-image: var(--accent-gradient);
+  }
 }
 
 .value {

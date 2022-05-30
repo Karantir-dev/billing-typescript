@@ -5,7 +5,12 @@ import { VDSmobileItem, VDSItem } from '../..'
 
 import s from './VDSList.module.scss'
 
-export default function VDSList({ servers, setElidForEditModal, setActiveServer }) {
+export default function VDSList({
+  servers,
+  setElidForEditModal,
+  setActiveServer,
+  activeServerID,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
@@ -27,7 +32,12 @@ export default function VDSList({ servers, setElidForEditModal, setActiveServer 
       <ul className={s.list}>
         {servers?.map(el => {
           return widerThan1550 ? (
-            <VDSItem key={el.id.$} server={el} setActiveServer={setActiveServer} />
+            <VDSItem
+              key={el.id.$}
+              server={el}
+              activeServerID={activeServerID}
+              setActiveServer={setActiveServer}
+            />
           ) : (
             <VDSmobileItem
               key={el.id.$}

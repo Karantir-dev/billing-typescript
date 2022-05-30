@@ -1,3 +1,8 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+}
+
 .check_icon {
   stroke: var(--forms_bgc_2);
 }

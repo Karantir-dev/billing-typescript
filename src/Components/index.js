@@ -48,6 +48,7 @@ export { default as Loader } from './ui/Loader/Loader'
 export { default as CheckBox } from './ui/CheckBox/CheckBox'
 export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'
 export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
+export { default as Backdrop } from './ui/Backdrop/Backdrop'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -92,6 +93,7 @@ export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
 export { default as VDSItem } from './vds/VDSItem/VDSItem'
 export { default as VDSList } from './vds/VDSList/VDSList'
 export { default as ServerState } from './vds/ServerState/ServerState'
+export { default as EditModal } from './vds/EditModal/EditModal'
 
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'

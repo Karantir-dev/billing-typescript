@@ -37,11 +37,22 @@
   margin: 0 25px;
 }
 
-.tools_icon svg {
-  min-width: 18px;
-  max-width: 25px;
-  min-height: 18px;
-  max-height: 20px;
+.tools_icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
+
+  &:disabled {
+    pointer-events: none;
+
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
 }
 
 @media screen and (min-width: 1550px) {

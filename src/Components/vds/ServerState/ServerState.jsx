@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Clock, On_Off, CheckCircle, InProgress, Attention } from '../../../images'
@@ -9,7 +10,7 @@ export default function ServerState({ className, server }) {
   const { t } = useTranslation('vds')
 
   return (
-    <span className={className}>
+    <span className={cn(s.wrapper, className)}>
       {server?.item_status?.$orig === '2' && (
         <HintWrapper label={t('active')}>
           <On_Off className={s.green_icon} />

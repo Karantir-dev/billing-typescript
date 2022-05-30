@@ -1,16 +1,19 @@
+import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ServerState } from '../..'
 
 import s from './VDSItem.module.scss'
 
-export default function VDSItem({ server, setActiveServer }) {
+export default function VDSItem({ server, setActiveServer, activeServerID }) {
   const { t } = useTranslation(['vds', 'other'])
 
   return (
     <li className={s.item}>
       <button
-        className={s.item_btn}
+        className={cn(s.item_btn, {
+          [s.active_server]: activeServerID === server?.id?.$,
+        })}
         type="button"
         onClick={() => setActiveServer(server)}
       >
@@ -25,7 +28,7 @@ export default function VDSItem({ server, setActiveServer }) {
           </span>
         </span>
         <span className={s.value}>{server?.datacentername?.$}</span>
-        <ServerState server={server} />
+        <ServerState className={s.value} server={server} />
         <span className={s.value}>{server?.createdate?.$}</span>
         <span className={s.value}>{server?.expiredate?.$}</span>
       </button>
