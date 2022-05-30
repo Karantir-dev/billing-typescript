@@ -28,6 +28,7 @@ export default function InputField(props) {
     onKeyDown,
     isRequired,
     inputAuth,
+    as,
     ...anotherProps
   } = props
 
@@ -98,6 +99,7 @@ export default function InputField(props) {
           placeholder={placeholder}
           onKeyDown={onKeyDown}
           autoComplete={autoComplete ? 1 : 0}
+          as={as}
           {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
@@ -125,6 +127,7 @@ InputField.propTypes = {
   className: PropTypes.string,
   dataTestid: PropTypes.string,
   type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
+  as: PropTypes.string,
   name: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,

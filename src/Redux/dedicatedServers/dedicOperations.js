@@ -23,16 +23,19 @@ const getTarifs = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log('got tariffs', data)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
       const { val: datacenter } = data.doc.slist[0]
       const { val: period } = data.doc.slist[1]
+      const { $: currentDatacenter } = data.doc.datacenter
 
       const orderData = {
         fpricelist,
         tarifList,
         datacenter,
         period,
+        currentDatacenter,
       }
 
       console.log('tariffs, first page', data)
@@ -159,7 +162,22 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        setParameters(data.doc.slist)
+
+        console.log('params', data)
+        const IP = Object.keys(data.doc)
+        const currentSumIp = IP.filter(
+          item => item.includes('addon') && item.includes('current_value'),
+        )
+
+        // console.log(...currentSumIp.join('').slice(0, 10))
+
+        //fix trouble with IP
+
+        console.log(data.doc.slist)
+        setParameters([
+          ...data.doc.slist,
+          {$name: ...currentSumIp.join('').slice(0, 10)}
+        ])
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -181,7 +199,7 @@ const orderServer =
     portSpeed,
     portSpeedName,
     managePanelName,
-    // ipTotal,
+    ipTotal,
     setParameters,
   ) =>
   (dispatch, getState) => {
@@ -210,11 +228,11 @@ const orderServer =
           snext: 'ok',
           sok: 'ok',
           lang: 'en',
+          ipTotal,
         }),
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data, 'ordering server')
 
         setParameters(false)
         dispatch(actions.hideLoader())

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import s from './DedicOrderModal.module.scss'
 import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
 import { Form, Formik } from 'formik'
-// import * as Yup from 'yup'
+import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import Select from '../../../ui/Select/Select'
 import InputField from '../../../ui/InputField/InputField'
@@ -14,6 +14,7 @@ import classNames from 'classnames'
 import { BreadCrumbs, Button, CheckBox, Toggle } from '../../..'
 import { useLocation } from 'react-router-dom'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { useMediaQuery } from 'react-responsive'
 
 const parsePrice = price => {
   const words = price?.match(/[\d|.|\\+]+/g)
@@ -46,11 +47,12 @@ export default function DedicOrderModal() {
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation('dedicated_servers')
+  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
-  const [datacenter, setDatacenter] = useState('2')
-  const [paymentPeriod, setPaymentPeriod] = useState('1')
+  const [datacenter, setDatacenter] = useState(tarifsList.currentDatacenter)
+  const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState(0)
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
@@ -74,7 +76,7 @@ export default function DedicOrderModal() {
     tariffsListToRender = filteredTariffList
   }
 
-  console.log('ordered', ordered)
+  console.log(ordered)
 
   // let priceDigit = price
   //   .split('')
@@ -103,13 +105,48 @@ export default function DedicOrderModal() {
 
   useEffect(() => {
     setTarifList(tarifsList)
-    console.log(tarifList)
   }, [tarifsList])
 
-  // const validationSchema = Yup.object().shape({
-  //   message: Yup.string().required(t('Is a required field')),
-  //   subject: Yup.string().required(t('Is a required field')),
-  // })
+  const validationSchema = Yup.object().shape({
+    tarif: Yup.string().required('tariff is required'),
+    license: Yup.boolean()
+      .required('The terms and conditions must be accepted.')
+      .oneOf([true], 'The terms and conditions must be accepted.'),
+  })
+
+  const handleSubmit = values => {
+    console.log('submit working')
+    const {
+      datacenter,
+      tarif,
+      period,
+      managePanelName,
+      portSpeedName,
+      autoprolong,
+      domainname,
+      OS,
+      recipe,
+      portSpeed,
+      ipTotal,
+    } = values
+
+    dispatch(
+      dedicOperations.orderServer(
+        autoprolong,
+        datacenter,
+        period,
+        tarif,
+        domainname,
+        OS,
+        recipe,
+        portSpeed,
+        managePanelName,
+        portSpeedName,
+        ipTotal,
+        setOrdered,
+      ),
+    )
+  }
 
   return (
     <div className={s.modalHeader}>
@@ -117,53 +154,33 @@ export default function DedicOrderModal() {
       <h2 className={s.page_title}>{t('page_title')}</h2>
 
       <Formik
-        // enableReinitialize
-        // validationSchema={validationSchema}
+        enableReinitialize
+        validationSchema={validationSchema}
         initialValues={{
           datacenter: datacenter,
-          tarif: undefined,
-          period: '1',
+          tarif: null,
+          period: paymentPeriod || '1',
           managePanelName: managePanel?.[0]?.$name,
           processor: '',
           portSpeedName: portSpeed?.[1]?.$name,
           ipName: '',
 
-          parameters: {
-            autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : null,
-            domenname: '',
-            OS: 'ISPsystem__CentOS-7-amd64',
-            recipe: '',
-            managePanel: '',
-            ipTotal: '',
-            portSpeed: '',
-            price: '',
-          },
+          autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : null,
+          domainname: '',
+          OS: ostempl ? ostempl[0]?.val[0]?.$key : null,
+          recipe: '',
+          managePanel: '',
+          ipTotal: '',
+          portSpeed: '',
+          price: '',
+          license: '',
         }}
-        // onSubmit={() => {
-        //   onSubmitt()
-        // }}
+        onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue }) => {
-          // console.log(values)
+        {({ values, setFieldValue, touched, errors }) => {
+          console.log(values)
 
-          const handleSubmit = () => {
-            dispatch(
-              dedicOperations.orderServer(
-                values.parameters.autoprolong,
-                values.datacenter,
-                values.period,
-                values.tarif,
-                values.parameters.domenname,
-                values.parameters.OS,
-                values.parameters.recipe,
-                values.parameters.portSpeed,
-                values.managePanelName,
-                values.portSpeedName,
-                values.parameters.ipTotal,
-                setOrdered,
-              ),
-            )
-          }
+          console.log(errors)
 
           return (
             <Form className={s.form}>
@@ -176,10 +193,13 @@ export default function DedicOrderModal() {
                     <button
                       onClick={() => {
                         setFieldValue('datacenter', item?.$key)
+                        setPrice(0)
                         setDatacenter(item?.$key)
+                        setPaymentPeriod('1')
                         dispatch(
                           dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
                         )
+                        setParameters(null)
                       }}
                       type="button"
                       className={classNames(s.datacenter_card, {
@@ -192,9 +212,9 @@ export default function DedicOrderModal() {
                           [s.flag_icon]: true,
                           [s.selected]: item?.$key === values.datacenter,
                         })}
-                        src={require('../../../../images/countryFlags/nl.png')}
+                        src={require('../../../../images/countryFlags/netherlands_flag.webp')}
                         width={36}
-                        height={24}
+                        height={36}
                         alt="flag"
                       />
 
@@ -205,40 +225,55 @@ export default function DedicOrderModal() {
                 })}
               </div>
 
-              <div className={s.processors_block}>
-                <span className={s.processor}>{t('processor')}:</span>
-
-                {tarifList?.fpricelist?.map(item => {
-                  return (
-                    <div
-                      className={classNames(s.processor_card, {
-                        [s.selected]: true,
-                      })}
-                      key={item?.$key}
-                    >
-                      <span className={s.processor_name}>{item?.$}</span>
-                      <Toggle
-                        setValue={() => {
-                          setFieldValue('processor', item?.$key)
-                          if (filters.includes(item?.$key)) {
-                            setFilters([...filters.filter(el => el !== item?.$key)])
-                          } else {
-                            setFilters([...filters, item?.$key])
-                          }
-                        }}
-                      />
-                    </div>
-                  )
+              <div
+                className={classNames({
+                  [s.processors_block]: true,
+                  [s.datacenter2]: datacenter === '2',
                 })}
+              >
+                {datacenter === '2' && (
+                  <span className={s.processor}>{t('processor')}:</span>
+                )}
+
+                <div
+                  className={classNames({
+                    [s.processors_list]: true,
+                    [s.datacenter2]: datacenter === '2',
+                  })}
+                >
+                  {tarifList?.fpricelist?.map(item => {
+                    return (
+                      <div
+                        className={classNames(s.processor_card, {
+                          [s.selected]: true,
+                        })}
+                        key={item?.$key}
+                      >
+                        <span className={s.processor_name}>{item?.$}</span>
+                        <Toggle
+                          setValue={() => {
+                            setFieldValue('processor', item?.$key)
+                            if (filters.includes(item?.$key)) {
+                              setFilters([...filters.filter(el => el !== item?.$key)])
+                            } else {
+                              setFilters([...filters, item?.$key])
+                            }
+                          }}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
 
               <h3 className={s.tariff_title}>{t('tariff_plan')}:</h3>
-
               <Select
-                height={52}
-                value={''}
+                height={50}
+                value={values.period}
                 getElement={item => {
                   setFieldValue('period', item)
+                  setParameters(null)
+                  setPrice(0)
                   setPaymentPeriod(item)
                   dispatch(
                     dedicOperations.getUpdatedPeriod(
@@ -253,7 +288,7 @@ export default function DedicOrderModal() {
                 itemsList={tarifList?.period?.map(el => {
                   return { label: t(el.$), value: el.$key }
                 })}
-                className={s.select}
+                className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
 
               <div className={s.tarifs_block}>
@@ -271,7 +306,6 @@ export default function DedicOrderModal() {
                     <button
                       onClick={() => {
                         setFieldValue('tarif', item?.pricelist?.$)
-                        // setFieldValue('price', item?.price?.$)
                         setPrice(priceAmount)
                         dispatch(
                           dedicOperations.getParameters(
@@ -296,7 +330,14 @@ export default function DedicOrderModal() {
                         </span>
                       )}
 
-                      <span className={s.card_title}>{cardTitle}</span>
+                      <span
+                        className={classNames({
+                          [s.card_title]: true,
+                          [s.selected]: item?.pricelist?.$ === values.tarif,
+                        })}
+                      >
+                        {cardTitle}
+                      </span>
                       <div className={s.price_wrapper}>
                         <span
                           className={classNames({
@@ -326,146 +367,155 @@ export default function DedicOrderModal() {
               {parameters && (
                 <div className={s.parameters_block}>
                   <h3 className={s.params}>{t('parameters')}</h3>
-                  <Select
-                    height={52}
-                    value={values.parameters.autoprolong}
-                    label={t('autoprolong')}
-                    getElement={item => setFieldValue('parameters.autoprolong', item)}
-                    isShadow
-                    itemsList={autoprolong[0]?.val?.map(el => {
-                      let labeltext = ''
-                      if (el.$.includes('per month')) {
-                        labeltext = el.$.replace('per month', t('per month'))
-                      } else {
-                        labeltext = t(el.$)
-                      }
+                  <div className={s.parameters_wrapper}>
+                    <Select
+                      height={50}
+                      value={values.autoprolong}
+                      label={t('autoprolong')}
+                      getElement={item => setFieldValue('autoprolong', item)}
+                      isShadow
+                      itemsList={autoprolong[0]?.val?.map(el => {
+                        let labeltext = ''
+                        if (el.$.includes('per month')) {
+                          labeltext = el.$.replace('per month', t('per month'))
+                        } else {
+                          labeltext = t(el.$)
+                        }
 
-                      return {
-                        label: labeltext,
-                        value: el.$key,
-                      }
-                    })}
-                    className={s.select}
-                  />
-                  <InputField
-                    label={t('domain_name')}
-                    placeholder={t('domain_placeholder')}
-                    name="parameters.domenname"
-                    isShadow
-                    // error={!!errors.domenname}
-                    // touched={!!touched.domenname}
-                    className={s.input_field_wrapper}
-                    autoComplete
-                  />
-
-                  <Select
-                    height={52}
-                    getElement={item => setFieldValue('parameters.OS', item)}
-                    isShadow
-                    label={t('os')}
-                    value={values.parameters.OS}
-                    itemsList={ostempl[0]?.val?.map(el => {
-                      return { label: t(el.$), value: el.$key }
-                    })}
-                    className={s.select}
-                  />
-
-                  <Select
-                    height={52}
-                    getElement={item => setFieldValue('parameters.recipe', item)}
-                    isShadow
-                    label={t('recipe')}
-                    value={values.parameters.previewPS}
-                    placeholder={t('recipe_placeholder')}
-                    itemsList={recipe[0]?.val
-                      ?.filter(e => {
-                        return e.$depend === values.parameters.OS
-                      })
-                      .map(el => {
                         return {
-                          label:
-                            el.$ === '-- none --' ? t('recipe_placeholder') : t(el.$),
+                          label: labeltext,
                           value: el.$key,
                         }
                       })}
-                    className={s.select}
-                  />
-
-                  <Select
-                    height={52}
-                    value={''}
-                    getElement={item => {
-                      setFieldValue('parameters.recipe', item)
-                    }}
-                    isShadow
-                    label={t('manage_panel')}
-                    itemsList={managePanel[0]?.val?.map(el => {
-                      let labelText = el.$
-
-                      if (labelText.includes('Without a license')) {
-                        labelText = labelText.replace(
-                          'Without a license',
-                          t('Without a license'),
-                        )
-                      }
-
-                      if (labelText.includes('per month')) {
-                        labelText = labelText.replace('per month', t('per month'))
-                      }
-
-                      if (labelText.includes('Unlimited domains')) {
-                        labelText = labelText.replace(
-                          'Unlimited domains',
-                          t('Unlimited domains'),
-                        )
-                      }
-
-                      if (labelText.includes('domains')) {
-                        labelText = labelText.replace('domains', t('domains'))
-                      }
-
-                      return { label: labelText, value: el.$key }
-                    })}
-                    className={s.select}
-                  />
-
-                  {values.datacenter === '2' && (
-                    <Select
-                      height={52}
-                      getElement={item => setFieldValue('parameters.portSpeed', item)}
+                      className={s.select}
+                    />
+                    <InputField
+                      label={t('domain_name')}
+                      placeholder={t('domain_placeholder')}
+                      name="domainname"
                       isShadow
-                      label={t('port_speed')}
-                      itemsList={portSpeed[1]?.val?.map(el => {
+                      error={!!errors.domainname}
+                      touched={!!touched.domainname}
+                      className={s.input_field_wrapper}
+                      inputClassName={s.text_area}
+                      autoComplete
+                      type="text"
+                      as="textarea"
+                    />
+
+                    <Select
+                      height={50}
+                      getElement={item => setFieldValue('OS', item)}
+                      isShadow
+                      label={t('os')}
+                      value={values.OS}
+                      itemsList={ostempl[0]?.val?.map(el => {
+                        return { label: t(el.$), value: el.$key }
+                      })}
+                      className={s.select}
+                    />
+
+                    <Select
+                      height={50}
+                      getElement={item => setFieldValue('recipe', item)}
+                      isShadow
+                      label={t('recipe')}
+                      value={values.previewPS}
+                      placeholder={t('recipe_placeholder')}
+                      itemsList={recipe[0]?.val
+                        ?.filter(e => {
+                          return e.$depend === values.OS
+                        })
+                        .map(el => {
+                          return {
+                            label:
+                              el.$ === '-- none --' ? t('recipe_placeholder') : t(el.$),
+                            value: el.$key,
+                          }
+                        })}
+                      className={s.select}
+                    />
+
+                    <Select
+                      height={50}
+                      value={''}
+                      getElement={item => {
+                        setFieldValue('recipe', item)
+                      }}
+                      isShadow
+                      label={t('manage_panel')}
+                      itemsList={managePanel[0]?.val?.map(el => {
                         let labelText = el.$
+
+                        if (labelText.includes('Without a license')) {
+                          labelText = labelText.replace(
+                            'Without a license',
+                            t('Without a license'),
+                          )
+                        }
+
                         if (labelText.includes('per month')) {
                           labelText = labelText.replace('per month', t('per month'))
                         }
 
-                        if (labelText.includes('unlimited traffic')) {
+                        if (labelText.includes('Unlimited domains')) {
                           labelText = labelText.replace(
-                            'unlimited traffic',
-                            t('unlimited traffic'),
+                            'Unlimited domains',
+                            t('Unlimited domains'),
                           )
+                        }
+
+                        if (labelText.includes('domains')) {
+                          labelText = labelText.replace('domains', t('domains'))
                         }
 
                         return { label: labelText, value: el.$key }
                       })}
                       className={s.select}
                     />
-                  )}
 
-                  <InputField
-                    label={t('count_ip')}
-                    name="parameters.ipTotal"
-                    isShadow
-                    className={s.input_field_wrapper}
-                    autoComplete
-                  />
+                    {values.datacenter === '2' && (
+                      <Select
+                        height={50}
+                        getElement={item => setFieldValue('portSpeed', item)}
+                        isShadow
+                        label={t('port_speed')}
+                        itemsList={portSpeed[1]?.val?.map(el => {
+                          let labelText = el.$
+                          if (labelText.includes('per month')) {
+                            labelText = labelText.replace('per month', t('per month'))
+                          }
+
+                          if (labelText.includes('unlimited traffic')) {
+                            labelText = labelText.replace(
+                              'unlimited traffic',
+                              t('unlimited traffic'),
+                            )
+                          }
+
+                          return { label: labelText, value: el.$key }
+                        })}
+                        className={s.select}
+                      />
+                    )}
+
+                    <Select
+                      height={50}
+                      getElement={item => setFieldValue('ipTotal', item)}
+                      isShadow
+                      label={t('count_ip')}
+                      itemsList={[1, 2].map(el => {
+                        return { label: el, value: el }
+                      })}
+                      className={s.select}
+                    />
+                  </div>
 
                   <div className={s.terms_block}>
                     <CheckBox
-                      setValue={item => setFieldValue('parameters.licence', item)}
+                      setValue={item => setFieldValue('license', item)}
                       className={s.checkbox}
+                      error={!!errors.license}
                     />
                     <div className={s.terms_text}>
                       {t('terms')}
@@ -479,22 +529,24 @@ export default function DedicOrderModal() {
               )}
 
               <div className={s.buy_btn_block}>
-                <div className={s.sum_price_wrapper}>
-                  <span className={s.btn_price}> &euro;{price}</span>
-                  <span className={s.btn_period}>{`1 ${t('per month').slice(
-                    0,
-                    3,
-                  )}.`}</span>
-                </div>
+                <div className={s.container}>
+                  <div className={s.sum_price_wrapper}>
+                    {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                    <span className={s.btn_price}>&euro;{price}</span>
+                    <span className={s.btn_period}>{`1 ${t('per month').slice(
+                      0,
+                      3,
+                    )}.`}</span>
+                  </div>
 
-                <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Buy')}
-                  type="submit"
-                  onClick={handleSubmit}
-                />
+                  <Button
+                    className={s.buy_btn}
+                    isShadow
+                    size="medium"
+                    label={t('Buy')}
+                    type="submit"
+                  />
+                </div>
               </div>
             </Form>
           )
