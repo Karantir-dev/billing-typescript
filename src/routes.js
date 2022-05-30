@@ -19,7 +19,10 @@ export const CONFIRM_EMAIL = '/confrim_email'
 export const ERROR_PAGE = '/error_page'
 
 export const SERVICES = '/services'
+
 export const DOMAINS = '/services/domains'
+export const DOMAINS_ORDERS = '/services/domains/domain_orders'
+
 export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'
 export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'

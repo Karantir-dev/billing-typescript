@@ -54,6 +54,12 @@ export { default as payersOperations } from './payers/payersOperations'
 export { default as payersReducer } from './payers/payersReducer'
 export { default as payersSelectors } from './payers/payersSelectors'
 
+//===========================================DOMAINS=================================//
+export { default as domainsActions } from './domains/domainsActions'
+export { default as domainsOperations } from './domains/domainsOperations'
+export { default as domainsReducer } from './domains/domainsReducer'
+export { default as domainsSelectors } from './domains/domainsSelectors'
+
 //===========================================CONTRACTS=================================//
 export { default as contractsReducer } from './contracts/contractsReducer'
 

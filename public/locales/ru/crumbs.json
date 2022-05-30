@@ -1,5 +1,6 @@
 {
   "services": "Услуги",
   "domains": "Домены",
-  "dedicated_servers": "Выделенные серверы"
+  "dedicated_servers": "Выделенные серверы",
+  "domain_orders": "Заказ доменного имени"
 }

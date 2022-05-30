@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button, IconButton } from '../../..'
+import * as routes from '../../../../routes'
 import s from './DomainFilters.module.scss'
 
 export default function Component() {
   const { t } = useTranslation(['domains', 'other'])
+  const navigate = useNavigate()
   //   const [filterModal, setFilterModal] = useState(false)
   //   const dispatch = useDispatch()
 
@@ -29,7 +32,7 @@ export default function Component() {
         size="medium"
         label={t('New domain')}
         type="button"
-        onClick={() => null}
+        onClick={() => navigate(routes.DOMAINS_ORDERS)}
       />
     </div>
   )

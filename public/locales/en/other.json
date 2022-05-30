@@ -85,5 +85,7 @@
   "Active": "Active",
   "Disable": "Disable",
   "Confirm": "Confirm",
-  "service": "Service"
+  "service": "Service",
+  "Choose all": "Choose all",
+  "No matching options": "No matching options"
 }

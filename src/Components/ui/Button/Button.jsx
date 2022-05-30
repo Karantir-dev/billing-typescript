@@ -22,6 +22,7 @@ export default function Component(props) {
       disabled={disabled}
       className={cn({
         [s.btn]: true,
+        [s.disabled]: disabled,
         [s.shadow]: isShadow,
         [s.block]: size === 'block',
         [s.small]: size === 'small',

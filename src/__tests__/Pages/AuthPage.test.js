@@ -5,18 +5,25 @@ import { Provider } from 'react-redux'
 import { ThemeBtn, LangBtn } from '../../Components'
 import { Logo } from '../../images'
 import configureStore from 'redux-mock-store'
-import { I18nextProvider } from 'react-i18next'
-import i18n from '../../i18n'
-
 const mockStore = configureStore([])
 const store = mockStore({ contacts: [] })
+
+jest.mock('react-i18next', () => ({
+  initReactI18next: { type: '3rdParty', init: jest.fn() },
+  useTranslation: () => {
+    return {
+      t: str => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    }
+  },
+}))
 
 describe('Auth Pages Component', () => {
   const component = create(
     <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <AuthPage />
-      </I18nextProvider>
+      <AuthPage />
     </Provider>,
   )
   const root = component.root

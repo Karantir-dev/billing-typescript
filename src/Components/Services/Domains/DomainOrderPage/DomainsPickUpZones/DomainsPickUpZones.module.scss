@@ -1,0 +1,224 @@
+.domainsZone {
+  margin-top: 40px;
+}
+
+.domainsZoneTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.domainItem {
+  padding: 19px 25px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms_bgc_2);
+  position: relative;
+  flex-basis: 100%;
+  margin-top: 10px;
+
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    background: var(--icon-color);
+    left: 0;
+    top: 0;
+    box-shadow: var(--line-shadow);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &:hover::before,
+  &.selected::before {
+    content: '';
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(180deg, #50d394 0%, #45a884 100%);
+    left: 0;
+    top: 0;
+    box-shadow: var(--line-shadow);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &.selected {
+    .domainName {
+      font-weight: 400;
+    }
+    .domainPrice {
+      font-weight: 400;
+    }
+  }
+}
+
+.domainsBlock {
+  display: flex;
+  max-width: 560px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.domainName {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  flex-basis: 33%;
+}
+
+.domainPrice {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.pricesBlock {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 33%;
+}
+
+.sale {
+  position: absolute;
+  right: 11px;
+  top: -12px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 120%;
+  color: #ffffff;
+  min-width: 56px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e57862;
+  border-radius: 2px;
+}
+
+.saleEur {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 70.9%;
+  text-decoration-line: line-through;
+  color: var(--transparent-color);
+  margin-top: 11px;
+}
+
+.year {
+  text-transform: lowercase;
+}
+
+.selectBtn {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100.9%;
+  text-decoration-line: underline;
+  color: var(--main-text);
+  flex-basis: 33%;
+  text-align: right;
+
+  &.selected {
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    text-decoration-line: underline;
+  }
+}
+
+.selectedDomainsBlock {
+  margin-top: 22px;
+}
+
+.sum {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  color: var(--main-text);
+
+  display: flex;
+  align-items: center;
+
+  span {
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    margin-left: 10px;
+  }
+}
+
+.selectedDomains {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.selectedItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 450px;
+  width: 100%;
+
+  margin-top: 17px;
+
+  div {
+    font-size: 16px;
+  }
+
+  .cross {
+    fill: var(--main-text);
+    transform: scale(0.85);
+    cursor: pointer;
+  }
+}
+
+.btnBlock {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.clearFilters {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-left: 20px;
+  color: var(--main-text);
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  cursor: pointer;
+}
+
+.searchBtn {
+  height: 50px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
