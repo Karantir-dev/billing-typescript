@@ -129,66 +129,8 @@ const getDomainsOrderName =
       })
   }
 
-const registerDomainsOrderName =
-  (body = {}, navigate) =>
-  (dispatch, getState) => {
-    dispatch(actions.showLoader())
-
-    const {
-      auth: { sessionId },
-    } = getState()
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'domain.order.name',
-          out: 'json',
-          auth: sessionId,
-          sok: 'ok',
-          snext: 'ok',
-          ...body,
-        }),
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        delete body['sv_field']
-
-        body['checked_domain'] = data?.doc?.checked_domain?.$
-
-        axiosInstance
-          .post(
-            '/',
-            qs.stringify({
-              func: 'domain.order.name',
-              out: 'json',
-              auth: sessionId,
-              sok: 'ok',
-              snext: 'ok',
-              ...body,
-            }),
-          )
-          .then(r => {
-            if (r.data.doc.error) throw new Error(r.data.doc.error.msg.$)
-
-            navigate &&
-              navigate(route.DOMAINS_CONTACT_INFO, { state: { domainInfo: body } })
-            dispatch(actions.hideLoader())
-          })
-          .catch(error => {
-            errorHandler(error.message, dispatch)
-            dispatch(actions.hideLoader())
-          })
-      })
-      .catch(error => {
-        errorHandler(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
-
 const getDomainsContacts =
-  (setDomains, body = {}) =>
+  (setDomains, body = {}, navigate) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -320,6 +262,77 @@ const getDomainsContacts =
         })
 
         setDomains && setDomains(d)
+        if (body?.sok === 'ok') {
+          delete body['sok']
+          delete body['snext']
+          navigate && navigate(route.DOMAINS_NS, { state: { contacts: body } })
+        }
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getDomainsNS =
+  (setNS, body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'domain.order.ns',
+          out: 'json',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const domainData = data.doc
+
+        setNS && setNS(domainData)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getDomainPaymentInfo =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.order.payment',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -411,6 +424,7 @@ export default {
   getDomains,
   getDomainsOrderName,
   createDomain,
-  registerDomainsOrderName,
   getDomainsContacts,
+  getDomainsNS,
+  getDomainPaymentInfo,
 }

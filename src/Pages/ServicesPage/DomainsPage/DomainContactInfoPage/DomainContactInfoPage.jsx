@@ -10,17 +10,19 @@ import {
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
-// import * as Yup from 'yup'
-import s from './DomainContactInfoPage.module.scss'
 import { Shevron } from '../../../../images'
 import { BASE_URL } from '../../../../config/config'
+import * as Yup from 'yup'
+import s from './DomainContactInfoPage.module.scss'
 
 export default function ServicesPage() {
-  const { t } = useTranslation(['domains', 'other'])
+  const { t } = useTranslation(['domains', 'other', 'trusted_users'])
   const dispatch = useDispatch()
+
+  const navigate = useNavigate()
 
   const location = useLocation()
 
@@ -31,10 +33,7 @@ export default function ServicesPage() {
 
   const [domainsContacts, setDomainsContacts] = useState(null)
 
-  console.log(domainsContacts)
-
   const { state } = location
-  console.log(state)
 
   useEffect(() => {
     dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo))
@@ -46,6 +45,212 @@ export default function ServicesPage() {
     pathnames = pathnames.filter(p => p.length !== 0)
 
     return pathnames
+  }
+
+  const validationSchema = Yup.object().shape({
+    owner_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_firstname: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_firstname_locale: Yup.string().required(
+      t('Is a required field', { ns: 'other' }),
+    ),
+    owner_lastname: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_lastname_locale: Yup.string().required(
+      t('Is a required field', { ns: 'other' }),
+    ),
+    owner_email: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_phone: Yup.string()
+      .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+      .required(t('Is a required field', { ns: 'other' })),
+
+    owner_location_country: Yup.string()
+      .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
+    owner_location_postcode: Yup.string().required(
+      t('Is a required field', { ns: 'other' }),
+    ),
+    owner_location_state: Yup.string().required(
+      t('Is a required field', { ns: 'other' }),
+    ),
+    owner_location_city: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_location_address: Yup.string().required(
+      t('Is a required field', { ns: 'other' }),
+    ),
+
+    /*============================================ADMIN============================================*/
+
+    admin_name: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_firstname: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_firstname_locale: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_lastname: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_lastname_locale: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_email: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_phone: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    admin_location_country: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    admin_location_postcode: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_location_state: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_location_city: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    admin_location_address: Yup.string().when('admin_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    /*============================================TECH============================================*/
+
+    tech_name: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_firstname: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_firstname_locale: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_lastname: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_lastname_locale: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_email: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_phone: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    tech_location_country: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    tech_location_postcode: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_location_state: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_location_city: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    tech_location_address: Yup.string().when('tech_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    /*============================================BILL============================================*/
+
+    bill_name: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_firstname: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_firstname_locale: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_lastname: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_lastname_locale: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_email: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_phone: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    bill_location_country: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string()
+        .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
+    bill_location_postcode: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_location_state: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_location_city: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+    bill_location_address: Yup.string().when('bill_contact_use_first', {
+      is: 'off',
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
+  })
+
+  const setContactsHandler = values => {
+    const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
+    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate))
   }
 
   return (
@@ -61,7 +266,7 @@ export default function ServicesPage() {
       </button>
       <Formik
         enableReinitialize
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         initialValues={{
           owner_contact_select: domainsContacts?.owner_contact_select || '',
           owner_name: domainsContacts?.owner_name?.$ || '',
@@ -142,7 +347,7 @@ export default function ServicesPage() {
           bill_location_city: domainsContacts?.bill_location_city?.$ || '',
           bill_location_address: domainsContacts?.bill_location_address?.$ || '',
         }}
-        onSubmit={values => console.log(values)}
+        onSubmit={setContactsHandler}
       >
         {({ errors, touched, values, handleBlur, setFieldValue }) => {
           const onOwnerContactChange = item => {
@@ -360,6 +565,7 @@ export default function ServicesPage() {
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
                       name="owner_phone"
+                      isRequired
                       disabled={domainsContacts?.owner_email?.$readonly === 'yes'}
                     />
                   </div>
@@ -388,6 +594,8 @@ export default function ServicesPage() {
                           value: $key,
                         }),
                       )}
+                      isRequired
+                      error={errors?.owner_location_country}
                     />
                     <InputField
                       inputWrapperClass={s.inputHeight}
@@ -652,6 +860,8 @@ export default function ServicesPage() {
                             value: $key,
                           }),
                         )}
+                        isRequired
+                        error={errors?.admin_location_country}
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}
@@ -919,6 +1129,8 @@ export default function ServicesPage() {
                             value: $key,
                           }),
                         )}
+                        isRequired
+                        error={errors?.tech_location_country}
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}
@@ -1186,6 +1398,8 @@ export default function ServicesPage() {
                             value: $key,
                           }),
                         )}
+                        isRequired
+                        error={errors?.bill_location_country}
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}

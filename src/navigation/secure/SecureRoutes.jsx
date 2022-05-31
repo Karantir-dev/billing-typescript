@@ -22,6 +22,7 @@ import {
   Contracts,
   DedicatedServersPage,
   DomainContactInfoPage,
+  DomainsNsPage,
 } from '../../Pages'
 
 import * as route from '../../routes'
@@ -54,6 +55,10 @@ const Component = () => {
           element={
             <PrivateRoute redirectTo={route.LOGIN} children={<DomainContactInfoPage />} />
           }
+        />
+        <Route
+          path={route.DOMAINS_NS}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsNsPage />} />}
         />
 
         <Route

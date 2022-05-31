@@ -109,7 +109,7 @@ export default function InputField(props) {
   )
 }
 
-export function requiredLabel(labelName) {
+function requiredLabel(labelName) {
   return (
     <>
       {labelName} {<span className={s.required_star}>*</span>}

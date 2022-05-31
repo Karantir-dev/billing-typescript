@@ -2,5 +2,6 @@
   "services": "Услуги",
   "domains": "Домены",
   "domain_orders": "Заказ доменного имени",
-  "contact_info": "Контактная информация"
+  "contact_info": "Контактная информация",
+  "domain_params": "Параметры услуги"
 }

@@ -24,5 +24,9 @@
   "Use \"Contact Owner\"": "Use \"Contact Owner\"",
   "-- select a country --": "Select a country",
   "Technical contact": "Technical contact",
-  "Financial contact": "Financial contact"
+  "Financial contact": "Financial contact",
+  "Name servers": "Name servers",
+  "Instruction NS": "To delegate a domain, you must specify at least two nameservers. If the domain name of the name server is a subdomain of the registered domain, you must also specify the v4 or v6 IP address corresponding to the specified domain name. Please note that some registrars may not support IPv6.",
+  "Private name servers for each domain": "Private name servers for each domain",
+  "Service parameters": "Service parameters"
 }
