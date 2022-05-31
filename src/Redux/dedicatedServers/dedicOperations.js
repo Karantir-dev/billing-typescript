@@ -27,7 +27,7 @@ const getTarifs = () => (dispatch, getState) => {
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
       const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
+      const { val: period } = data.doc.slist[0]
       const { $: currentDatacenter } = data.doc.datacenter
 
       const orderData = {
@@ -71,13 +71,11 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
+      const { val: period } = data.doc.slist[0]
 
       const orderData = {
         fpricelist,
         tarifList,
-        datacenter,
         period,
       }
 
@@ -117,13 +115,12 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
+      // const { val: datacenter } = data.doc.slist[0]
+      const { val: period } = data.doc.slist[0]
 
       const orderData = {
         fpricelist,
         tarifList,
-        datacenter,
         period,
       }
 
@@ -138,7 +135,7 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
 }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters) => (dispatch, getState) => {
+  (period, datacenter, pricelist, setFieldValue) => (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -162,22 +159,101 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
         console.log('params', data)
         const IP = Object.keys(data.doc)
         const currentSumIp = IP.filter(
           item => item.includes('addon') && item.includes('current_value'),
         )
 
-        // console.log(...currentSumIp.join('').slice(0, 10))
+        // setParameters([
+        //   ...data.doc.slist,
+        //   ...[{ $name: currentSumIp.join('').slice(0, 10) }],
+        // ])
 
-        //fix trouble with IP
+        const { slist: paramsList } = data.doc
 
-        console.log(data.doc.slist)
-        setParameters([
-          ...data.doc.slist,
-          {$name: ...currentSumIp.join('').slice(0, 10)}
-        ])
+        const ostempl = paramsList?.filter(item => item.$name === 'ostempl')
+        const recipe = paramsList?.filter(item => item.$name === 'recipe')
+        const managePanel = paramsList?.filter(item => item.$name.includes('addon'))
+        const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
+        const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
+        const ipName = currentSumIp.join('').slice(0, 10).slice(-1)[0]?.$name
+
+        // setParameters([
+        //   ...data.doc.slist,
+        //   ...[{ $name: currentSumIp.join('').slice(0, 10) }],
+        // ])
+
+        setFieldValue('ostemplList', ostempl[0].val)
+        setFieldValue('recipelList', recipe[0].val)
+        setFieldValue('managePanellList', managePanel[0].val)
+        setFieldValue('portSpeedlList', portSpeed[0].val)
+        setFieldValue('autoprolonglList', autoprolong[0].val)
+        setFieldValue('ipName', ipName)
+        // setFieldValue('ostemplList', ostempl)
+        // setFieldValue('ostemplList', ostempl)
+
+        dispatch(actions.hideLoader())
+      })
+
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const updatePrice =
+  (
+    datacenter,
+    period,
+    pricelist,
+    domain,
+    ostempl,
+    recipe,
+    portSpeed,
+    portSpeedName,
+    managePanelName,
+    ipTotal,
+    ipName,
+    managePanel,
+    updatePrice,
+  ) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    console.log('managePanelName', managePanelName)
+    console.log('ipName', ipName)
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          period,
+          datacenter,
+          pricelist,
+          [managePanelName]: managePanel,
+          // licence_agreement: 'on',
+          snext: 'ok',
+          sok: 'ok',
+          lang: 'en',
+          [ipName]: ipTotal,
+        }),
+      )
+      .then(({ data }) => {
+        console.log(data, 'newPrice')
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
+
+        updatePrice(price)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -200,6 +276,7 @@ const orderServer =
     portSpeedName,
     managePanelName,
     ipTotal,
+    ipName,
     setParameters,
   ) =>
   (dispatch, getState) => {
@@ -228,7 +305,7 @@ const orderServer =
           snext: 'ok',
           sok: 'ok',
           lang: 'en',
-          ipTotal,
+          [ipName]: ipTotal,
         }),
       )
       .then(({ data }) => {
@@ -250,4 +327,5 @@ export default {
   getUpdatedPeriod,
   getParameters,
   orderServer,
+  updatePrice,
 }

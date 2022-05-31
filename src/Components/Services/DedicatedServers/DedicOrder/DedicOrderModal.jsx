@@ -16,38 +16,58 @@ import { useLocation } from 'react-router-dom'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 import { useMediaQuery } from 'react-responsive'
 
-const parsePrice = price => {
-  const words = price?.match(/[\d|.|\\+]+/g)
-  const amounts = []
-
-  if (words.length > 0) {
-    words.forEach(w => {
-      if (!isNaN(w)) {
-        amounts.push(w)
-      }
-    })
-  } else {
-    return
-  }
-
-  let amoumt = amounts[amounts.length - 1] + ' ' + 'EUR/' + '.'
-  let percent = amounts[0] + '%'
-  let sale = amounts[1] + ' ' + 'EUR/'
-
-  return {
-    amoumt,
-    percent,
-    sale,
-    length: amounts.length,
-  }
-}
-
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
-  const { t } = useTranslation('dedicated_servers')
+  const { t } = useTranslation(['dedicated_servers', 'other'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const parsePrice = price => {
+    const words = price?.match(/[\d|.|\\+]+/g)
+    const amounts = []
+
+    let period
+
+    if (price.includes('for three months')) {
+      period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('for two years')) {
+      period = t('for two years', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('for three years')) {
+      period = t('for three years', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('half a year')) {
+      period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('year')) {
+      period = t('year', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('years')) {
+      period = t('years', { ns: 'other' }).toLocaleLowerCase()
+    } else if (price.includes('month')) {
+      period = t('month', { ns: 'other' }).toLocaleLowerCase()
+    } else {
+      period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
+    }
+
+    if (words.length > 0) {
+      words.forEach(w => {
+        if (!isNaN(w)) {
+          amounts.push(w)
+        }
+      })
+    } else {
+      return
+    }
+
+    let amoumt = amounts[amounts.length - 1] + ' ' + 'EUR/' + period
+    let percent = amounts[0] + '%'
+    let sale = amounts[1] + ' ' + 'EUR/' + period
+
+    return {
+      amoumt,
+      percent,
+      sale,
+      length: amounts.length,
+    }
+  }
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
@@ -57,10 +77,13 @@ export default function DedicOrderModal() {
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
+  const datacenterList = [{ $: 'Netherlands Oude Meer [NL]', $key: '7' }]
+
+  console.log(ordered)
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
       let filterList = el.filter.tag
-      console.log(filterList)
+
       let hasListFilter = filterList.some(filter => filters.includes(filter.$))
       return hasListFilter
     } else {
@@ -76,18 +99,12 @@ export default function DedicOrderModal() {
     tariffsListToRender = filteredTariffList
   }
 
-  console.log(ordered)
-
-  // let priceDigit = price
-  //   .split('')
-  //   .filter(item => item === '.' || !isNaN(item))
-  //   .join('')
-
-  const ostempl = parameters?.filter(item => item.$name === 'ostempl')
-  const recipe = parameters?.filter(item => item.$name === 'recipe')
-  const managePanel = parameters?.filter(item => item.$name.includes('addon'))
-  const portSpeed = parameters?.filter(item => item.$name.includes('addon'))
-  const autoprolong = parameters?.filter(item => item.$name === 'autoprolong')
+  // const ostempl = parameters?.filter(item => item.$name === 'ostempl')
+  // const recipe = parameters?.filter(item => item.$name === 'recipe')
+  // const managePanel = parameters?.filter(item => item.$name.includes('addon'))
+  // const portSpeed = parameters?.filter(item => item.$name.includes('addon'))
+  // const autoprolong = parameters?.filter(item => item.$name === 'autoprolong')
+  // const ipName = parameters?.slice(-1)[0]?.$name
 
   const location = useLocation()
 
@@ -128,6 +145,7 @@ export default function DedicOrderModal() {
       recipe,
       portSpeed,
       ipTotal,
+      ipName,
     } = values
 
     dispatch(
@@ -143,6 +161,7 @@ export default function DedicOrderModal() {
         managePanelName,
         portSpeedName,
         ipTotal,
+        ipName,
         setOrdered,
       ),
     )
@@ -158,19 +177,19 @@ export default function DedicOrderModal() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: datacenter,
-          tarif: null,
+          tarif: '',
           period: paymentPeriod || '1',
-          managePanelName: managePanel?.[0]?.$name,
+          // managePanelName: managePanel?.[0]?.$name,
           processor: '',
-          portSpeedName: portSpeed?.[1]?.$name,
-          ipName: '',
+          // portSpeedName: portSpeed?.[1]?.$name,
+          // ipName: ipName ? ipName : '',
 
-          autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : null,
+          // autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : '',
           domainname: '',
-          OS: ostempl ? ostempl[0]?.val[0]?.$key : null,
-          recipe: '',
-          managePanel: '',
-          ipTotal: '',
+          // OS: ostempl ? ostempl[0]?.val[0]?.$key : '',
+          // recipe: recipe ? recipe[0]?.val[0]?.$key : '',
+          // managePanel: managePanel ? managePanel[0]?.val[0]?.$key : '',
+          ipTotal: '1',
           portSpeed: '',
           price: '',
           license: '',
@@ -178,14 +197,12 @@ export default function DedicOrderModal() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors }) => {
-          console.log(values)
-
-          console.log(errors)
+          console.log('values', values)
 
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
-                {tarifList?.datacenter?.map(item => {
+                {datacenterList.map(item => {
                   let country = item?.$?.split(',')[0]
                   let centerName = item?.$?.split(',')[1]
 
@@ -312,7 +329,8 @@ export default function DedicOrderModal() {
                             values.period,
                             values.datacenter,
                             item?.pricelist?.$,
-                            setParameters,
+                            // setParameters,
+                            setFieldValue,
                           ),
                         )
                       }}
@@ -374,7 +392,7 @@ export default function DedicOrderModal() {
                       label={t('autoprolong')}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={autoprolong[0]?.val?.map(el => {
+                      itemsList={values.autoprolong?.val?.map(el => {
                         let labeltext = ''
                         if (el.$.includes('per month')) {
                           labeltext = el.$.replace('per month', t('per month'))
@@ -400,16 +418,20 @@ export default function DedicOrderModal() {
                       inputClassName={s.text_area}
                       autoComplete
                       type="text"
-                      as="textarea"
+                      value={values?.domainname}
                     />
 
                     <Select
                       height={50}
-                      getElement={item => setFieldValue('OS', item)}
+                      getElement={item => {
+                        setFieldValue('OS', item)
+                        setFieldValue('recipe', values?.recipe[0]?.val[0]?.$key)
+                        // updatePrice(values, dispatch, setPrice)
+                      }}
                       isShadow
                       label={t('os')}
                       value={values.OS}
-                      itemsList={ostempl[0]?.val?.map(el => {
+                      itemsList={values?.ostemplList?.map(el => {
                         return { label: t(el.$), value: el.$key }
                       })}
                       className={s.select}
@@ -422,7 +444,7 @@ export default function DedicOrderModal() {
                       label={t('recipe')}
                       value={values.previewPS}
                       placeholder={t('recipe_placeholder')}
-                      itemsList={recipe[0]?.val
+                      itemsList={values?.recipelList
                         ?.filter(e => {
                           return e.$depend === values.OS
                         })
@@ -438,13 +460,14 @@ export default function DedicOrderModal() {
 
                     <Select
                       height={50}
-                      value={''}
+                      value={values.managePanel}
                       getElement={item => {
-                        setFieldValue('recipe', item)
+                        setFieldValue('managePanel', item)
+                        updatePrice(values, dispatch, setPrice)
                       }}
                       isShadow
                       label={t('manage_panel')}
-                      itemsList={managePanel[0]?.val?.map(el => {
+                      itemsList={values?.managePanel?.val?.map(el => {
                         let labelText = el.$
 
                         if (labelText.includes('Without a license')) {
@@ -477,10 +500,13 @@ export default function DedicOrderModal() {
                     {values.datacenter === '2' && (
                       <Select
                         height={50}
-                        getElement={item => setFieldValue('portSpeed', item)}
+                        getElement={item => {
+                          setFieldValue('portSpeed', item)
+                          updatePrice(values, dispatch, setPrice)
+                        }}
                         isShadow
                         label={t('port_speed')}
-                        itemsList={portSpeed[1]?.val?.map(el => {
+                        itemsList={values?.portSpeed[1]?.val?.map(el => {
                           let labelText = el.$
                           if (labelText.includes('per month')) {
                             labelText = labelText.replace('per month', t('per month'))
@@ -501,7 +527,10 @@ export default function DedicOrderModal() {
 
                     <Select
                       height={50}
-                      getElement={item => setFieldValue('ipTotal', item)}
+                      getElement={item => {
+                        setFieldValue('ipTotal', item)
+                        updatePrice(values, dispatch, setPrice)
+                      }}
                       isShadow
                       label={t('count_ip')}
                       itemsList={[1, 2].map(el => {
@@ -554,4 +583,42 @@ export default function DedicOrderModal() {
       </Formik>
     </div>
   )
+}
+
+function updatePrice(formValues, dispatch, setNewPrice) {
+  dispatch(
+    dedicOperations.updatePrice(
+      formValues.datacenter,
+      formValues.period,
+      formValues.tarif,
+      formValues.domainname,
+      formValues.OS,
+      formValues.recipe,
+      formValues.portSpeed,
+      formValues.portSpeedName,
+      formValues.managePanelName,
+      formValues.ipTotal,
+      formValues.ipName,
+      formValues.managePanel,
+      setNewPrice,
+    ),
+  )
+
+  // dispatch(
+  //   dedicOperations.updatePrice(
+  //     values.datacenter,
+  //     values.period,
+  //     values.tarif,
+  //     values.domainname,
+  //     values.OS,
+  //     values.recipe,
+  //     values.portSpeed,
+  //     values.portSpeedName,
+  //     values.managePanelName,
+  //     values.ipTotal,
+  //     values.ipName,
+  //     values.managePanel,
+  //     setPrice,
+  //   ),
+  // )
 }
