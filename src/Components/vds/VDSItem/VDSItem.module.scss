@@ -15,7 +15,8 @@
   cursor: pointer;
   position: relative;
 
-  &.active_server::after {
+  &.active_server::after,
+  &:hover::after {
     content: '';
     position: absolute;
     top: 0;

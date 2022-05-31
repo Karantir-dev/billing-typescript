@@ -24,6 +24,11 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
   const [toolsOpened, setToolsOpened] = useState(false)
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
+  const handleToolBtnClick = (fn, id) => {
+    fn(id)
+    setToolsOpened(false)
+  }
+
   return (
     <li className={s.item}>
       <div className={s.dots_wrapper}>
@@ -41,7 +46,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
-                  onClick={() => setElidForEditModal(server.id.$)}
+                  onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
                 >
                   <Edit className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}

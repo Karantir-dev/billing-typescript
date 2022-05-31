@@ -1,12 +1,16 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../Redux'
 
 export default function SvgComponent(props) {
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
+
   return (
     <svg
       width={16}
       height={16}
       viewBox="0 0 16 16"
-      fill="orange"
+      fill={darkTheme ? '#fff' : '#392955'}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

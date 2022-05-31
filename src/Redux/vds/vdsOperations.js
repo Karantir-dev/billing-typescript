@@ -31,7 +31,7 @@ const getVDS = setServers => (dispatch, getState) => {
     })
 }
 
-const editVDS = elid => (dispatch, getState) => {
+const editVDS = (elid, setInitialState) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -47,7 +47,7 @@ const editVDS = elid => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+      setInitialState(data.doc)
 
       dispatch(actions.hideLoader())
     })

@@ -20,5 +20,8 @@
   "stopped_by_admin": "Suspended by administrator",
   "stopped": "Suspended",
   "ordered": "Ordered",
-  "in_progress": "Being processed"
+  "in_progress": "Being processed",
+  "edit_title": "Редактирование услуги",
+  "main": "Main settings",
+  "additionally": "Add-ons"
 }
