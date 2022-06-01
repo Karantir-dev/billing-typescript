@@ -149,7 +149,13 @@ const getDomainsContacts =
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$, { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
 
         const domainData = data.doc
 
@@ -417,8 +423,6 @@ const createDomain =
 
 const getTermsOfConditionalText = link => (dispatch, getState) => {
   dispatch(actions.showLoader())
-
-  console.log(link)
 
   const {
     auth: { sessionId },
