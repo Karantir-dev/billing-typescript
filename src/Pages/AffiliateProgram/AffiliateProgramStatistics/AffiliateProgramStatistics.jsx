@@ -131,12 +131,12 @@ export default function AffiliateProgramStatistics({ allowToRender }) {
           ) : (
             <li className={s.list_item} key={nanoid()}>
               <span className={s.label}>{t('date', { ns: 'other' })}:</span>
-              <span className={s.value}>
+              <span>
                 {dayjs(cdate.$).format('DD MMM YYYY')} {t('short_year', { ns: 'other' })}
               </span>
 
               <span className={s.label}>{t('statistics_section.from_site')}:</span>
-              <span className={cn(s.value, s.website)}>
+              <span className={ s.website}>
                 {site?.$ ? (
                   <span className={s.website_url}>{site?.$}</span>
                 ) : (
@@ -146,14 +146,14 @@ export default function AffiliateProgramStatistics({ allowToRender }) {
               </span>
 
               <span className={s.label}>{t('statistics_section.client')}:</span>
-              <span className={s.value}>
+              <span>
                 {referal?.$ || (
                   <span className={s.stub}>{t('statistics_section.not_registered')}</span>
                 )}
               </span>
 
               <span className={s.label}>{t('statistics_section.payment')}:</span>
-              <span className={s.value}>
+              <span>
                 {payed?.$ === 'on' ? (
                   <Check className={s.icon_check} />
                 ) : (

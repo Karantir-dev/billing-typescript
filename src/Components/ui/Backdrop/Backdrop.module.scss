@@ -1,0 +1,10 @@
+@import '../../../scss/placeholders.scss';
+
+.backdrop {
+  @extend %backdrop;
+
+  &.opened {
+    pointer-events: initial;
+    opacity: 1;
+  }
+}

@@ -207,11 +207,26 @@ export const defaultStyle = () => (
       <IconItem name={'Wallet.jsx'}>
         <Icons.Wallet className={s.icon} />
       </IconItem>
-      <IconItem name={'WanrningSign.jsx'}>
-        <Icons.WanrningSign className={s.icon} />
-      </IconItem>
       <IconItem name={'Whois.jsx'}>
         <Icons.Whois className={s.icon} />
+      </IconItem>
+      <IconItem name={'IP.jsx'}>
+        <Icons.IP />
+      </IconItem>
+      <IconItem name={'PassChange.jsx'}>
+        <Icons.PassChange />
+      </IconItem>
+      <IconItem name={'Reload.jsx'}>
+        <Icons.Reload />
+      </IconItem>
+      <IconItem name={'Attention.jsx'}>
+        <Icons.Attention />
+      </IconItem>
+      <IconItem name={'InProgress.jsx'}>
+        <Icons.InProgress />
+      </IconItem>
+      <IconItem name={'CheckCircle.jsx'}>
+        <Icons.CheckCircle />
       </IconItem>
     </IconGallery>
   </Provider>
