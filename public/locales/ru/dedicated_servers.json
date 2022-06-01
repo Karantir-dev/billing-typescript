@@ -31,5 +31,11 @@
   "Unlimited domains": "Безлимитные домены",
   "domains": "домены",
   "unlimited traffic": "безлимитный трафик",
-  "topay": "К оплате"
+  "topay": "К оплате",
+  "for three months": "три месяца",
+  "for two years": "два года",
+  "for three years": "три года",
+
+  "licence_error": "доменное имя должно включать суффикс после точки (пример: domain.co)",
+  "toaster_text": "Сервер успешно заказан"
 }

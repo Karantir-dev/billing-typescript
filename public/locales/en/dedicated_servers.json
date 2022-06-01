@@ -31,5 +31,11 @@
   "Unlimited domains": "Unlimited domains",
   "domains": "domains",
   "unlimited traffic": "unlimited traffic",
-  "topay": "To pay"
+  "topay": "To pay",
+  "for three months": "three months",
+  "for two years": "two years",
+  "for three years": "three years",
+
+  "licence_error": "domain name must include suffix after dot (example: domain.co)",
+  "toaster_text": "The severs is ordered"
 }

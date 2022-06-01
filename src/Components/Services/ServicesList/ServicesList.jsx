@@ -20,15 +20,15 @@ export default function ServicesList() {
   const tabletOrLower = useMediaQuery({ query: '(max-width: 1199px)' })
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
-  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain')
-  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds')
-  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic')
-  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost')
-  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
-  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage')
-  const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage')
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
+  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
   // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'storage') //funcname wuwuwuw
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'storage', false) //funcname wuwuwuw
 
   const servicesMenuList = [
     {

@@ -60,24 +60,35 @@
   color: var(--main-text);
 }
 
-// .processors_block {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   // flex-wrap: wrap;
-//   margin-bottom: 30px;
-// }
+.processors_block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.first_processors_block {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.second_processors_block {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 
 .processor_card {
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  justify-content: space-between;
   margin-bottom: 27px;
 }
 
 .processor,
 .processor_name {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
 }
@@ -87,23 +98,13 @@
 }
 
 .processor_name {
-  margin-right: 13px;
+  margin-right: 5px;
 }
 .select {
   margin-bottom: 15px;
 }
 
 //tariffs
-.tariff_title {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 113%;
-  color: var(--main-text);
-  margin-bottom: 25px;
-}
-
-.tarifs_block {
-}
 
 .tarif_card {
   width: 100%;
@@ -117,6 +118,8 @@
   padding-top: 23px;
   position: relative;
   border-radius: 3px;
+  transition: font-weight 0.2s;
+  cursor: pointer;
 
   &:not(:last-child) {
     margin-bottom: 15px;
@@ -131,6 +134,15 @@
     border-image: var(--line-gradient) 1;
     box-shadow: var(--forms2_pink_shadow);
     border-radius: 3px;
+  }
+
+  &:hover {
+    .card_title {
+      font-weight: 600;
+    }
+    .price {
+      font-weight: 800;
+    }
   }
 }
 
@@ -230,6 +242,7 @@
 .turn_link {
   color: var(--link-color);
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .buy_btn_block {
@@ -239,17 +252,21 @@
   right: 0;
   background-color: var(--forms_bgc_2);
   z-index: 250;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-top: 11px;
   padding-bottom: 16px;
   box-shadow: var(--menu_down_black_shadow);
+  width: 100%;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sum_price_wrapper {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .buy_btn {
@@ -273,19 +290,6 @@
 .btn_period {
   color: var(--main-text);
   font-size: 14px;
-}
-
-.processors_block {
-  &.datacenter2 {
-    display: flex;
-  }
-}
-
-.processors_list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: start;
 }
 
 .text_area {
@@ -344,7 +348,7 @@
   .parameters_wrapper {
     display: grid;
     grid-template-columns: repeat(2, 241px);
-    align-items: center;
+    align-items: start;
     grid-auto-rows: max-content;
     grid-column-gap: 24px;
     grid-row-gap: 5px;
@@ -360,12 +364,10 @@
     margin-left: 5px;
   }
 
-  .processors_block {
-    margin-bottom: 30px;
-  }
   .processor_card {
     margin-bottom: 0;
   }
+
   .tariff_title {
     margin-bottom: 30px;
   }
@@ -400,6 +402,39 @@
     line-height: 120%;
     color: var(--main-text);
     display: block;
+  }
+
+  .processors_block {
+    width: 397px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 30px;
+  }
+
+  .first_processors_block {
+    width: 156px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .second_processors_block {
+    height: 62px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    & .processor_card {
+      &:last-child {
+        margin-left: 25px;
+      }
+    }
+  }
+
+  .processor_name {
+    font-size: 18px;
   }
 }
 

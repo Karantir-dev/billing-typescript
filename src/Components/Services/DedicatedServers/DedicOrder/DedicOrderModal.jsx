@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import s from './DedicOrderModal.module.scss'
@@ -30,11 +29,11 @@ export default function DedicOrderModal() {
     let period
 
     if (price.includes('for three months')) {
-      period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
+      period = t('for three months').toLocaleLowerCase()
     } else if (price.includes('for two years')) {
-      period = t('for two years', { ns: 'other' }).toLocaleLowerCase()
+      period = t('for two years').toLocaleLowerCase()
     } else if (price.includes('for three years')) {
-      period = t('for three years', { ns: 'other' }).toLocaleLowerCase()
+      period = t('for three years').toLocaleLowerCase()
     } else if (price.includes('half a year')) {
       period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
     } else if (price.includes('year')) {
@@ -57,10 +56,11 @@ export default function DedicOrderModal() {
       return
     }
 
-    let amoumt = amounts[amounts.length - 1] + ' ' + 'EUR/' + period
-    let percent = amounts[0] + '%'
-    let sale = amounts[1] + ' ' + 'EUR/' + period
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR/' + period
+    let percent = Number(amounts[0]) + '%'
+    let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR/' + period
 
+    console.log('amout in func', Number(amounts[amounts.length - 1]).toFixed(2))
     return {
       amoumt,
       percent,
@@ -71,13 +71,13 @@ export default function DedicOrderModal() {
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
-  const [datacenter, setDatacenter] = useState(tarifsList.currentDatacenter)
+  const [datacenter] = useState('7')
   const [paymentPeriod, setPaymentPeriod] = useState(null)
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState('-')
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
-  const datacenterList = [{ $: 'Netherlands Oude Meer [NL]', $key: '7' }]
+  // const datacenterList = [{ $: 'Netherlands Oude Meer [NL]', $key: '7' }]
 
   console.log(ordered)
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
@@ -99,13 +99,6 @@ export default function DedicOrderModal() {
     tariffsListToRender = filteredTariffList
   }
 
-  // const ostempl = parameters?.filter(item => item.$name === 'ostempl')
-  // const recipe = parameters?.filter(item => item.$name === 'recipe')
-  // const managePanel = parameters?.filter(item => item.$name.includes('addon'))
-  // const portSpeed = parameters?.filter(item => item.$name.includes('addon'))
-  // const autoprolong = parameters?.filter(item => item.$name === 'autoprolong')
-  // const ipName = parameters?.slice(-1)[0]?.$name
-
   const location = useLocation()
 
   const parseLocations = () => {
@@ -126,13 +119,16 @@ export default function DedicOrderModal() {
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
+    domainname: Yup.string().matches(
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/,
+      t('licence_error'),
+    ),
     license: Yup.boolean()
       .required('The terms and conditions must be accepted.')
       .oneOf([true], 'The terms and conditions must be accepted.'),
   })
 
   const handleSubmit = values => {
-    console.log('submit working')
     const {
       datacenter,
       tarif,
@@ -141,11 +137,12 @@ export default function DedicOrderModal() {
       portSpeedName,
       autoprolong,
       domainname,
-      OS,
+      ostempl,
       recipe,
       portSpeed,
       ipTotal,
       ipName,
+      managePanel,
     } = values
 
     dispatch(
@@ -155,13 +152,14 @@ export default function DedicOrderModal() {
         period,
         tarif,
         domainname,
-        OS,
+        ostempl,
         recipe,
         portSpeed,
-        managePanelName,
         portSpeedName,
+        managePanelName,
         ipTotal,
         ipName,
+        managePanel,
         setOrdered,
       ),
     )
@@ -177,88 +175,50 @@ export default function DedicOrderModal() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: datacenter,
-          tarif: '',
-          period: paymentPeriod || '1',
-          // managePanelName: managePanel?.[0]?.$name,
-          processor: '',
-          // portSpeedName: portSpeed?.[1]?.$name,
-          // ipName: ipName ? ipName : '',
-
-          // autoprolong: autoprolong ? autoprolong[0]?.val[1]?.$key : '',
+          tarif: null,
+          period: '1',
+          processor: null,
           domainname: '',
-          // OS: ostempl ? ostempl[0]?.val[0]?.$key : '',
-          // recipe: recipe ? recipe[0]?.val[0]?.$key : '',
-          // managePanel: managePanel ? managePanel[0]?.val[0]?.$key : '',
           ipTotal: '1',
-          portSpeed: '',
-          price: '',
-          license: '',
+          price: null,
+          license: false,
         }}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors }) => {
-          console.log('values', values)
-
           return (
             <Form className={s.form}>
-              <div className={s.datacenter_block}>
-                {datacenterList.map(item => {
-                  let country = item?.$?.split(',')[0]
-                  let centerName = item?.$?.split(',')[1]
-
-                  return (
-                    <button
-                      onClick={() => {
-                        setFieldValue('datacenter', item?.$key)
-                        setPrice(0)
-                        setDatacenter(item?.$key)
-                        setPaymentPeriod('1')
-                        dispatch(
-                          dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
-                        )
-                        setParameters(null)
-                      }}
-                      type="button"
-                      className={classNames(s.datacenter_card, {
-                        [s.selected]: item?.$key === values.datacenter,
-                      })}
-                      key={item?.$key}
-                    >
-                      <img
-                        className={classNames({
-                          [s.flag_icon]: true,
-                          [s.selected]: item?.$key === values.datacenter,
-                        })}
-                        src={require('../../../../images/countryFlags/netherlands_flag.webp')}
-                        width={36}
-                        height={36}
-                        alt="flag"
-                      />
-
-                      <span className={s.country_name}>{t(country)}</span>
-                      <span className={s.datacenter}>{centerName}</span>
-                    </button>
-                  )
-                })}
-              </div>
-
               <div
                 className={classNames({
                   [s.processors_block]: true,
-                  [s.datacenter2]: datacenter === '2',
                 })}
               >
-                {datacenter === '2' && (
-                  <span className={s.processor}>{t('processor')}:</span>
-                )}
-
-                <div
-                  className={classNames({
-                    [s.processors_list]: true,
-                    [s.datacenter2]: datacenter === '2',
+                <div className={s.first_processors_block}>
+                  {tarifList?.fpricelist?.slice(0, 2).map(item => {
+                    return (
+                      <div
+                        className={classNames(s.processor_card, {
+                          [s.selected]: true,
+                        })}
+                        key={item?.$key}
+                      >
+                        <span className={s.processor_name}>{item?.$}</span>
+                        <Toggle
+                          setValue={() => {
+                            setFieldValue('processor', item?.$key)
+                            if (filters.includes(item?.$key)) {
+                              setFilters([...filters.filter(el => el !== item?.$key)])
+                            } else {
+                              setFilters([...filters, item?.$key])
+                            }
+                          }}
+                        />
+                      </div>
+                    )
                   })}
-                >
-                  {tarifList?.fpricelist?.map(item => {
+                </div>
+                <div className={s.second_processors_block}>
+                  {tarifList?.fpricelist?.slice(2).map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -283,7 +243,6 @@ export default function DedicOrderModal() {
                 </div>
               </div>
 
-              <h3 className={s.tariff_title}>{t('tariff_plan')}:</h3>
               <Select
                 height={50}
                 value={values.period}
@@ -322,6 +281,7 @@ export default function DedicOrderModal() {
                   return (
                     <button
                       onClick={() => {
+                        setParameters(null)
                         setFieldValue('tarif', item?.pricelist?.$)
                         setPrice(priceAmount)
                         dispatch(
@@ -329,7 +289,7 @@ export default function DedicOrderModal() {
                             values.period,
                             values.datacenter,
                             item?.pricelist?.$,
-                            // setParameters,
+                            setParameters,
                             setFieldValue,
                           ),
                         )
@@ -366,9 +326,7 @@ export default function DedicOrderModal() {
                           {priceAmount}
                         </span>
                         {paymentPeriod > 1 && (
-                          <span
-                            className={s.sale_price}
-                          >{`sale price ${priceSale}`}</span>
+                          <span className={s.sale_price}>{`${priceSale}`}</span>
                         )}
                       </div>
 
@@ -392,7 +350,7 @@ export default function DedicOrderModal() {
                       label={t('autoprolong')}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={values.autoprolong?.val?.map(el => {
+                      itemsList={values?.autoprolonglList?.map(el => {
                         let labeltext = ''
                         if (el.$.includes('per month')) {
                           labeltext = el.$.replace('per month', t('per month'))
@@ -424,13 +382,12 @@ export default function DedicOrderModal() {
                     <Select
                       height={50}
                       getElement={item => {
-                        setFieldValue('OS', item)
-                        setFieldValue('recipe', values?.recipe[0]?.val[0]?.$key)
-                        // updatePrice(values, dispatch, setPrice)
+                        setFieldValue('ostempl', item)
+                        setFieldValue('recipe', 'null')
                       }}
                       isShadow
                       label={t('os')}
-                      value={values.OS}
+                      value={values?.ostempl}
                       itemsList={values?.ostemplList?.map(el => {
                         return { label: t(el.$), value: el.$key }
                       })}
@@ -442,11 +399,11 @@ export default function DedicOrderModal() {
                       getElement={item => setFieldValue('recipe', item)}
                       isShadow
                       label={t('recipe')}
-                      value={values.previewPS}
+                      value={values?.recipe}
                       placeholder={t('recipe_placeholder')}
                       itemsList={values?.recipelList
                         ?.filter(e => {
-                          return e.$depend === values.OS
+                          return e.$depend === values.ostempl
                         })
                         .map(el => {
                           return {
@@ -460,14 +417,15 @@ export default function DedicOrderModal() {
 
                     <Select
                       height={50}
-                      value={values.managePanel}
+                      value={values?.managePanel}
                       getElement={item => {
                         setFieldValue('managePanel', item)
-                        updatePrice(values, dispatch, setPrice)
+                        updatePrice({ ...values, managePanel: item }, dispatch, setPrice)
                       }}
                       isShadow
                       label={t('manage_panel')}
-                      itemsList={values?.managePanel?.val?.map(el => {
+                      itemsList={values?.managePanellList?.map(el => {
+                        console.log(el.$)
                         let labelText = el.$
 
                         if (labelText.includes('Without a license')) {
@@ -506,7 +464,7 @@ export default function DedicOrderModal() {
                         }}
                         isShadow
                         label={t('port_speed')}
-                        itemsList={values?.portSpeed[1]?.val?.map(el => {
+                        itemsList={values?.portSpeed[1]?.map(el => {
                           let labelText = el.$
                           if (labelText.includes('per month')) {
                             labelText = labelText.replace('per month', t('per month'))
@@ -527,13 +485,14 @@ export default function DedicOrderModal() {
 
                     <Select
                       height={50}
+                      value={values?.ipTotal}
                       getElement={item => {
                         setFieldValue('ipTotal', item)
-                        updatePrice(values, dispatch, setPrice)
+                        updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
                       }}
                       isShadow
                       label={t('count_ip')}
-                      itemsList={[1, 2].map(el => {
+                      itemsList={['1', '2'].map(el => {
                         return { label: el, value: el }
                       })}
                       className={s.select}
@@ -545,11 +504,18 @@ export default function DedicOrderModal() {
                       setValue={item => setFieldValue('license', item)}
                       className={s.checkbox}
                       error={!!errors.license}
+                      touched={!!errors.license}
                     />
                     <div className={s.terms_text}>
                       {t('terms')}
                       <br />
-                      <button type="button" className={s.turn_link}>
+                      <button
+                        type="button"
+                        className={s.turn_link}
+                        onClick={() => {
+                          dispatch(dedicOperations.getPrintLicense(values.tarif))
+                        }}
+                      >
                         {`"${t('terms_2')}"`}
                       </button>
                     </div>
@@ -561,11 +527,7 @@ export default function DedicOrderModal() {
                 <div className={s.container}>
                   <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                    <span className={s.btn_price}>&euro;{price}</span>
-                    <span className={s.btn_period}>{`1 ${t('per month').slice(
-                      0,
-                      3,
-                    )}.`}</span>
+                    <span className={s.btn_price}>{price}</span>
                   </div>
 
                   <Button
@@ -586,13 +548,14 @@ export default function DedicOrderModal() {
 }
 
 function updatePrice(formValues, dispatch, setNewPrice) {
+  console.log(formValues.ipTotal)
   dispatch(
     dedicOperations.updatePrice(
       formValues.datacenter,
       formValues.period,
       formValues.tarif,
       formValues.domainname,
-      formValues.OS,
+      formValues.ostempl,
       formValues.recipe,
       formValues.portSpeed,
       formValues.portSpeedName,
@@ -603,22 +566,4 @@ function updatePrice(formValues, dispatch, setNewPrice) {
       setNewPrice,
     ),
   )
-
-  // dispatch(
-  //   dedicOperations.updatePrice(
-  //     values.datacenter,
-  //     values.period,
-  //     values.tarif,
-  //     values.domainname,
-  //     values.OS,
-  //     values.recipe,
-  //     values.portSpeed,
-  //     values.portSpeedName,
-  //     values.managePanelName,
-  //     values.ipTotal,
-  //     values.ipName,
-  //     values.managePanel,
-  //     setPrice,
-  //   ),
-  // )
 }

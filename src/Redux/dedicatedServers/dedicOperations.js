@@ -1,8 +1,10 @@
 import qs from 'qs'
+import { toast } from 'react-toastify'
 import { actions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import dedicActions from './dedicActions'
+import i18n from './../../i18n'
 
 const getTarifs = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -115,7 +117,7 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
-      // const { val: datacenter } = data.doc.slist[0]
+
       const { val: period } = data.doc.slist[0]
 
       const orderData = {
@@ -135,7 +137,8 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
 }
 
 const getParameters =
-  (period, datacenter, pricelist, setFieldValue) => (dispatch, getState) => {
+  (period, datacenter, pricelist, setParameters, setFieldValue) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -165,11 +168,6 @@ const getParameters =
           item => item.includes('addon') && item.includes('current_value'),
         )
 
-        // setParameters([
-        //   ...data.doc.slist,
-        //   ...[{ $name: currentSumIp.join('').slice(0, 10) }],
-        // ])
-
         const { slist: paramsList } = data.doc
 
         const ostempl = paramsList?.filter(item => item.$name === 'ostempl')
@@ -177,12 +175,9 @@ const getParameters =
         const managePanel = paramsList?.filter(item => item.$name.includes('addon'))
         const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
-        const ipName = currentSumIp.join('').slice(0, 10).slice(-1)[0]?.$name
+        const ipName = currentSumIp.join('').slice(0, 10)
 
-        // setParameters([
-        //   ...data.doc.slist,
-        //   ...[{ $name: currentSumIp.join('').slice(0, 10) }],
-        // ])
+        // fields
 
         setFieldValue('ostemplList', ostempl[0].val)
         setFieldValue('recipelList', recipe[0].val)
@@ -190,8 +185,15 @@ const getParameters =
         setFieldValue('portSpeedlList', portSpeed[0].val)
         setFieldValue('autoprolonglList', autoprolong[0].val)
         setFieldValue('ipName', ipName)
-        // setFieldValue('ostemplList', ostempl)
-        // setFieldValue('ostemplList', ostempl)
+
+        setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
+        setFieldValue('ostempl', ostempl[0]?.val[0]?.$key)
+        setFieldValue('recipe', recipe[0]?.val[0]?.$key)
+        setFieldValue('managePanel', managePanel[0]?.val[0]?.$key)
+        setFieldValue('managePanelName', managePanel?.[0]?.$name)
+        setFieldValue('portSpeedName', portSpeed?.[1]?.$name)
+
+        setParameters(true)
 
         dispatch(actions.hideLoader())
       })
@@ -251,6 +253,8 @@ const updatePrice =
         console.log(data, 'newPrice')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+        console.log({ [ipName]: ipTotal })
+
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
         updatePrice(price)
@@ -277,6 +281,7 @@ const orderServer =
     managePanelName,
     ipTotal,
     ipName,
+    managePanel,
     setParameters,
   ) =>
   (dispatch, getState) => {
@@ -299,8 +304,8 @@ const orderServer =
           autoprolong,
           domain,
           ostempl,
-          [portSpeedName]: recipe,
-          [managePanelName]: portSpeed,
+          recipe,
+          [managePanelName]: managePanel,
           licence_agreement: 'on',
           snext: 'ok',
           sok: 'ok',
@@ -311,7 +316,11 @@ const orderServer =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        setParameters(false)
+        setParameters(null)
+        toast.success(i18n.t('toaster_text', { ns: 'dedicated_servers' }), {
+          position: 'bottom-right',
+          toastId: 'customId',
+        })
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -321,6 +330,44 @@ const orderServer =
       })
   }
 
+const getPrintLicense = priceId => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'license.print',
+        out: 'doc_print',
+        auth: sessionId,
+        elid: priceId,
+      }),
+      { responseType: 'blob' },
+    )
+    .then(response => {
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'text/html' }),
+      )
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('target', '_blank')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -328,4 +375,5 @@ export default {
   getParameters,
   orderServer,
   updatePrice,
+  getPrintLicense,
 }
