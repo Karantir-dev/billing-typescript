@@ -26,6 +26,7 @@ import {
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
+import dedicReducer from './dedicatedServers/dedicReducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -53,6 +54,7 @@ const rootReducer = combineReducers({
   theme,
   isLoading,
   pinned,
+  dedic: dedicReducer,
 })
 
 const store = configureStore({

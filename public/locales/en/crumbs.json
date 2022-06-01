@@ -3,5 +3,7 @@
   "domains": "Domains",
   "domain_orders": "Domain name order",
   "contact_info": "Contact Information",
-  "domain_params": "Service parameters"
+  "domain_params": "Service parameters",
+  "dedicated_servers": "Dedicated servers",
+  "order": "Dedicated server order"
 }

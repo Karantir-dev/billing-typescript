@@ -125,6 +125,7 @@ InputField.propTypes = {
   className: PropTypes.string,
   dataTestid: PropTypes.string,
   type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
+  as: PropTypes.string,
   name: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,

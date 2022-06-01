@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Container,
+  DedicOrderModal,
   EmailConfirmation,
   PrivateRoute,
   ServicesList,
@@ -76,6 +77,13 @@ const Component = () => {
             <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
           }
         />
+        <Route
+          path={route.DEDICATED_SERVERS_ORDER}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderModal />} />
+          }
+        />
+
         <Route
           path={route.ACCESS_LOG}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />}

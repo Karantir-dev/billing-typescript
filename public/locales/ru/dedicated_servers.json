@@ -1,0 +1,41 @@
+{
+  "page_title": "Заказ выделенного сервера",
+  "processor": "Процессор",
+  "Netherlands": "Нидерланды",
+  "tariff_plan": "Тарифный план",
+  "payment_period": "Период оплаты",
+  "parameters": "Параметры",
+  "autoprolong": "Автопродление",
+  "domain_name": "Доменное имя",
+  "os": "Операционная система",
+  "recipe": "Предустановленное ПО",
+  "manage_panel": "Панель управления сервером",
+  "port_speed": "Скорость портов",
+  "count_ip": "Кол-во IP-адресов",
+  "terms": "Я прочитал и согласен с",
+  "terms_2": "Условиями предоставления услуг",
+
+  "domain_placeholder": "Введите доменное имя",
+  "recipe_placeholder": "Не установлено",
+
+  "Month": "Месяц",
+  "Three months": "Три месяца",
+  "Half a year": "Пол года",
+  "Year": "Год",
+  "Two years": "Два года",
+  "Three years": "Три года",
+
+  "Disabled": "Выключено",
+  "per month": "месяц",
+  "Without a license": "Без лицензии",
+  "Unlimited domains": "Безлимитные домены",
+  "domains": "домены",
+  "unlimited traffic": "безлимитный трафик",
+  "topay": "К оплате",
+  "for three months": "три месяца",
+  "for two years": "два года",
+  "for three years": "три года",
+
+  "licence_error": "доменное имя должно включать суффикс после точки (пример: domain.co)",
+  "toaster_text": "Сервер успешно заказан"
+}
