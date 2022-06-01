@@ -137,7 +137,10 @@ export default function VDS() {
         setActiveServer={setActiveServer}
       />
 
-      <Backdrop isOpened={elidForEditModal} onClick={() => setElidForEditModal(0)}>
+      <Backdrop
+        isOpened={Boolean(elidForEditModal)}
+        onClick={() => setElidForEditModal(0)}
+      >
         <EditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
     </>
