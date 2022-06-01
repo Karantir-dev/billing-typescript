@@ -28,7 +28,6 @@ export default function InputField(props) {
     onKeyDown,
     isRequired,
     inputAuth,
-    as,
     ...anotherProps
   } = props
 
@@ -99,7 +98,6 @@ export default function InputField(props) {
           placeholder={placeholder}
           onKeyDown={onKeyDown}
           autoComplete={autoComplete ? 1 : 0}
-          as={as}
           {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}

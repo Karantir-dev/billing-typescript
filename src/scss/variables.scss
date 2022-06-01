@@ -29,7 +29,7 @@ body {
   --btn-bgc: #f9f2ff;
   --elements-bgc: #fff;
   --nearby-elements-bgc: #fff;
-  --sales-bgd: rgba(255, 75, 36, 0.15);
+  --sales-bgc: rgba(255, 75, 36, 0.15);
   --error-color: #d93f21;
   --success-bgc: #fcfcfc;
   --success-color: #45a884;
@@ -58,7 +58,7 @@ body {
   --switchers-bg: #e1dfdf;
   --switchers-dot-bg: #ffffff;
   --switchers-dot-bg-active: linear-gradient(251.29deg, #ffffff 11.47%, #fafafa 89.97%);
-  --severs_price_bgc: linear-gradient(
+  --servers_price_bgc: linear-gradient(
     180deg,
     rgba(146, 78, 232, 0.03) 0%,
     rgba(198, 48, 187, 0.03) 100%
@@ -112,7 +112,7 @@ body.dark-theme {
   --btn-bgc: #3d3649;
   --elements-bgc: #2e273b;
   --nearby-elements-bgc: #3b3447;
-  --sales-bgd: #d35757;
+  --sales-bgc: #d35757;
   --error-color: #ff4466;
   --success-bgc: #433d4f;
   --success-color: #38d49c;
@@ -141,7 +141,7 @@ body.dark-theme {
   --switchers-bg: #6f687c;
   --switchers-dot-bg: #aaa4b6;
   --switchers-dot-bg-active: linear-gradient(251.29deg, #ffffff 11.47%, #fafafa 89.97%);
-  --severs_price_bgc: #484452;
+  --servers_price_bgc: #484452;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

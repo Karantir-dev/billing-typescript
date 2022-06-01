@@ -249,7 +249,7 @@ export default function DedicOrderModal() {
                 getElement={item => {
                   setFieldValue('period', item)
                   setParameters(null)
-                  setPrice(0)
+                  setPrice('-')
                   setPaymentPeriod(item)
                   dispatch(
                     dedicOperations.getUpdatedPeriod(
