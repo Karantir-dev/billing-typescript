@@ -27,7 +27,7 @@ export default function ServicesPage() {
 
   useEffect(() => {
     const data = {}
-    if (selectedDomain.length > 1 && differentNS) {
+    if (selectedDomain?.length > 1 && differentNS) {
       selectedDomain.forEach(el => {
         data[`domainparam_${el}_ns0`] = ''
         data[`domainparam_${el}_ns1`] = ''
@@ -58,7 +58,7 @@ export default function ServicesPage() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('Name servers')}</h1>
       <div className={s.instructionNS}>{t('Instruction NS')}</div>
-      {selectedDomain.length > 1 && (
+      {selectedDomain?.length > 1 && (
         <div className={s.useFirstCheck}>
           <CheckBox
             initialState={differentNS}
@@ -202,7 +202,7 @@ export default function ServicesPage() {
                   )}
                   <div className={s.formBlock}>
                     <h1 className={s.page_title}>{t('Service parameters')}</h1>
-                    <div className={s.formFieldsBlock}>
+                    {/* <div className={s.formFieldsBlock}>
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name={'ns0'}
@@ -253,7 +253,7 @@ export default function ServicesPage() {
                         error={!!errors['ns_additional']}
                         touched={!!touched['ns_additional']}
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div className={s.btnBlock}>
                     <Button
