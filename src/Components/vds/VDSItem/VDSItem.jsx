@@ -2,6 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ServerState } from '../..'
+import PropTypes from 'prop-types'
 
 import s from './VDSItem.module.scss'
 
@@ -34,4 +35,10 @@ export default function VDSItem({ server, setActiveServer, activeServerID }) {
       </button>
     </li>
   )
+}
+
+VDSItem.propTypes = {
+  server: PropTypes.object,
+  setActiveServer: PropTypes.func,
+  activeServerID: PropTypes.string,
 }

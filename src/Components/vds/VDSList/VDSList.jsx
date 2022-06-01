@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { VDSmobileItem, VDSItem } from '../..'
+import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
 
@@ -49,4 +50,11 @@ export default function VDSList({
       </ul>
     </>
   )
+}
+
+VDSList.propTypes = {
+  servers: PropTypes.arrayOf(PropTypes.object),
+  setElidForEditModal: PropTypes.func,
+  setActiveServer: PropTypes.func,
+  activeServerID: PropTypes.string,
 }

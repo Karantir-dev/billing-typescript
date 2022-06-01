@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Clock, On_Off, CheckCircle, InProgress, Attention } from '../../../images'
 import HintWrapper from '../../ui/HintWrapper/HintWrapper'
+import PropTypes from 'prop-types'
 
 import s from './ServerState.module.scss'
 
@@ -43,4 +44,9 @@ export default function ServerState({ className, server }) {
       )}
     </span>
   )
+}
+
+ServerState.propTypes = {
+  className: PropTypes.string,
+  server: PropTypes.object,
 }

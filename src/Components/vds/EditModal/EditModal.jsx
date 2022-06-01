@@ -12,6 +12,7 @@ export default function EditModal({ elid, closeFn }) {
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   console.log(initialState)
+
   useEffect(() => {
     dispatch(vdsOperations.editVDS(elid, setInitialState))
   }, [])
@@ -38,7 +39,7 @@ export default function EditModal({ elid, closeFn }) {
       <p className={s.chapter_title}>1. {t('main')}</p>
 
       {/* <Formik initialValues={{}} onSubmit={() => {}}>
-        {({ setFormikState }) => {
+        {() => {
           return <Form></Form>
         }}
       </Formik> */}

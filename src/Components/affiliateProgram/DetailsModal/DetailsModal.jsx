@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-
+import PropTypes from 'prop-types'
 import { Cross } from '../../../images'
 
 import s from './DetailsModal.module.scss'
@@ -93,4 +93,9 @@ export default function DetailsModal({ details, closeModal }) {
       </div>
     </div>
   )
+}
+
+DetailsModal.propTypes = {
+  details: PropTypes.arrayOf(PropTypes.object),
+  closeModal: PropTypes.func,
 }

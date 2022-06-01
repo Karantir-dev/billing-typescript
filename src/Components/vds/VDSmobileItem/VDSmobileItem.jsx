@@ -14,6 +14,7 @@ import {
 } from '../../../images'
 import { useOutsideAlerter } from '../../../utils'
 import { ServerState } from '../..'
+import PropTypes from 'prop-types'
 
 import s from './VDSmobileItem.module.scss'
 
@@ -153,4 +154,9 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
       <span className={s.value}>{server?.expiredate?.$}</span>
     </li>
   )
+}
+
+VDSmobileItem.propTypes = {
+  server: PropTypes.object,
+  setElidForEditModal: PropTypes.func,
 }
