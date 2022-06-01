@@ -27,4 +27,5 @@ export const VDS = '/services/vds'
 export const VDS_ORDER = '/services/vds/order'
 
 export const CONTRACTS = '/contracts'
-export const DEDICATED_SERVERS = '/dedicated_services'
+export const DEDICATED_SERVERS = '/services/dedicated_servers'
+export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'

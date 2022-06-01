@@ -65,3 +65,6 @@ export { default as domainsSelectors } from './domains/domainsSelectors'
 
 //===========================================CONTRACTS=================================//
 export { default as contractsReducer } from './contracts/contractsReducer'
+
+//===========================================SERVICES=================================//
+export { default as dedicReducer } from './dedicatedServers/dedicReducer'

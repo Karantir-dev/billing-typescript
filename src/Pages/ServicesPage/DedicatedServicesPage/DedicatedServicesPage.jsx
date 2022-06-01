@@ -1,8 +1,9 @@
 import React from 'react'
-import { BreadCrumbs, DomainFilters } from '../../../Components'
+import { BreadCrumbs } from '../../../Components'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import s from './DedicatedServicesPage.module.scss'
+import DedicatedServersFilters from '../../../Components/Services/DedicatedServers/DedicatedServersFilters/DedicatedServersFilters'
 
 export default function DedicatedServersPage() {
   const { t } = useTranslation(['container', 'trusted_users'])
@@ -21,9 +22,10 @@ export default function DedicatedServersPage() {
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>
-        {t('burger_menu.services.services_list.dedicated')}
+        {t('burger_menu.services.services_list.dedicated_servers')}
       </h1>
-      <DomainFilters />
+
+      <DedicatedServersFilters />
     </div>
   )
 }

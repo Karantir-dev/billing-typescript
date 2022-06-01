@@ -17,17 +17,21 @@ import s from './BurgerMenu.module.scss'
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
 
-  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user', false)
 
-  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
-  const areServicesAllowedToRender = usePageRender('mainmenuservice')
-  const isFinanceAllowedToRender = usePageRender('finance')
-  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
-  const isAffiliateProgramAllowedToRender = usePageRender('customer', 'affiliate.client')
-  const isSupportAllowedToRender = usePageRender('support')
-  const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
-  const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
-  const arePayersAllowedToRender = usePageRender('customer', 'profile')
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog', false)
+  const areServicesAllowedToRender = usePageRender('mainmenuservice', null, false)
+  const isFinanceAllowedToRender = usePageRender('finance', null, false)
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam', false)
+  const isAffiliateProgramAllowedToRender = usePageRender(
+    'customer',
+    'affiliate.client',
+    false,
+  )
+  const isSupportAllowedToRender = usePageRender('support', null, false)
+  const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive', false)
+  const isRequestsAllowedToRender = usePageRender('support', 'clientticket', false)
+  const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
 
   const profileMenuList = [
     {
@@ -68,7 +72,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.dedicated_servers'),
-      routeName: routes.HOME,
+      routeName: routes.DEDICATED_SERVERS,
       allowedToRender: true,
     },
     {
