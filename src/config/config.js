@@ -5,3 +5,6 @@
 // ---- production ------
 export const BASE_URL = 'https://cp.zomro.com'
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
+
+// export const BASE_URL = 'https://billmgr.had.su'
+// export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'

@@ -15,6 +15,12 @@ import {
   Whois,
   DomainsListName,
   Print,
+  Delete,
+  PassChange,
+  Reload,
+  IP,
+  Info,
+  ExitSign,
 } from '../../../images'
 
 export default function Component(props) {
@@ -46,6 +52,18 @@ export default function Component(props) {
         return <DomainsListName />
       case 'print':
         return <Print />
+      case 'delete':
+        return <Delete />
+      case 'passChange':
+        return <PassChange />
+      case 'reload':
+        return <Reload />
+      case 'ip':
+        return <IP />
+      case 'info':
+        return <Info />
+      case 'exitSign':
+        return <ExitSign />
 
       default:
         return null
@@ -85,6 +103,14 @@ Component.propTypes = {
     'whois',
     'server-cloud',
     'print',
+    'delete',
+    'passChange',
+    'reload',
+    'ip',
+    'clock',
+    'refund',
+    'info',
+    'exitSign',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,

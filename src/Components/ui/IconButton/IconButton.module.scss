@@ -1,7 +1,7 @@
 @import '../../../scss/placeholders.scss';
 
 .icon_btn {
-  background-color: var(--elements-bgc);
+  background-color: var(--forms_bgc_2);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,7 @@
   cursor: pointer;
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.5;
     cursor: auto;
   }
   &:active {

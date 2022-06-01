@@ -43,7 +43,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
       id: 2,
-      routeName: routes.HOME,
+      routeName: routes.VDS,
       allowedToRender: isVdsAllowedToRender,
       icon_name: 'vds',
       icon_width: '99',

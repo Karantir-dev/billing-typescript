@@ -105,12 +105,12 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.incomes'),
-      routeName: routes.HOME,
+      routeName: `${routes.AFFILIATE_PROGRAM}/${routes.AFFILIATE_PROGRAM_INCOME}`,
       allowedToRender: true,
     },
     {
       name: t('burger_menu.ref_program.ref_program_list.statistic'),
-      routeName: routes.HOME,
+      routeName: `${routes.AFFILIATE_PROGRAM}/${routes.AFFILIATE_PROGRAM_STATISTICS}`,
       allowedToRender: true,
     },
   ]
