@@ -8,8 +8,6 @@ import { useTranslation } from 'react-i18next'
 export default function usePageRender(sectionName, funcName, hasToaster = true) {
   const { t } = useTranslation('trusted_users')
 
-  console.log(hasToaster)
-
   const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
 
   const shouldComponentRender = checkIfComponentShouldRender(

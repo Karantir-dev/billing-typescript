@@ -1,9 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
+  Cart,
   Container,
   DedicOrderModal,
   EmailConfirmation,
+  Portal,
   PrivateRoute,
   ServicesList,
   TrustedUsers,
@@ -26,10 +29,13 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
 } from '../../Pages'
+import { cartSelectors } from '../../Redux'
 
 import * as route from '../../routes'
 
 const Component = () => {
+  const cartIsOpened = useSelector(cartSelectors?.getCartIsOpened)
+
   return (
     <Container>
       <Routes>
@@ -137,6 +143,12 @@ const Component = () => {
         />
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
+
+      {cartIsOpened && (
+        <Portal>
+          <Cart />
+        </Portal>
+      )}
     </Container>
   )
 }
