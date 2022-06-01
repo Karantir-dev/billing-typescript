@@ -277,7 +277,7 @@ const getDomainsContacts =
   }
 
 const getDomainsNS =
-  (setNS, body = {}) =>
+  (body = {}, setNS) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -292,6 +292,7 @@ const getDomainsNS =
           func: 'domain.order.ns',
           out: 'json',
           auth: sessionId,
+          hfields: 'bill_company',
           ...body,
         }),
       )
@@ -311,7 +312,7 @@ const getDomainsNS =
   }
 
 const getDomainPaymentInfo =
-  (body = {}) =>
+  (body = {}, setData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -332,7 +333,39 @@ const getDomainPaymentInfo =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
+        const selectedDomains = body?.selected_domain?.split(', ')
+
+        const paymentData = {}
+
+        selectedDomains?.forEach(selected => {
+          paymentData[`autoprolong_${selected}`] = data?.doc[`autoprolong_${selected}`]
+
+          paymentData[`licence_link_${selected}`] = data?.doc[`licence_link_${selected}`]
+
+          paymentData[`licence_agreement_${selected}`] =
+            data?.doc[`licence_agreement_${selected}`]
+
+          paymentData[`domain_${selected}_details`] =
+            data?.doc[`domain_${selected}_details`]
+
+          paymentData[`domain_${selected}_details`] =
+            data?.doc[`domain_${selected}_details`]
+
+          data?.doc?.slist?.forEach(s => {
+            if (s?.$name === `autoprolong_${selected}`) {
+              paymentData[`autoprolong_${selected}_list`] = s?.val
+            }
+          })
+        })
+
+        data?.doc?.metadata?.form?.field?.forEach(field => {
+          if (field?.$name?.includes('addon')) {
+            paymentData[field?.$name] = data?.doc[field?.$name]
+            paymentData[`${field?.$name}_sum`] = data?.doc?.messages?.msg[field?.$name]
+          }
+        })
+
+        setData && setData(paymentData)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -343,7 +376,7 @@ const getDomainPaymentInfo =
   }
 
 const createDomain =
-  (body = {}) =>
+  (body = {}, navigate) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -359,66 +392,59 @@ const createDomain =
           func: 'domain.order.payment',
           sok: 'ok',
           out: 'json',
-          checked_domain: body?.checked_domain,
-          admin_contact_use_first: 'on',
-          admin_fax: '+380',
-          admin_fax_country: '230',
-          admin_phone: '+380',
-          admin_phone_country: '230',
-          bill_contact_use_first: 'on',
-          bill_fax: '+380',
-          bill_fax_country: '230',
-          bill_phone: '+380',
-          bill_phone_country: '230',
-          domain_action: 'register',
-          domain_name: body?.domain_name,
-          skipbasket: 'on',
-          ns0: 'ns1.zomro.com',
-          ns1: 'ns1.zomro.com',
-          ns2: '',
-          ns3: '',
-          ns_additional: '',
-          owner_contact_select: '1',
-          owner_email: 'mikhail.tatochenko@zomro.org',
-          owner_firstname: 'Mykhailo',
-          owner_firstname_locale: 'Mykhailo',
-          owner_lastname: 'Tatochenko',
-          owner_lastname_locale: 'Tatochenko',
-          owner_location_address: 'Kyiv',
-          owner_location_city: 'Kyiv',
-          owner_location_country: '230',
-          owner_location_postcode: '321323',
-          owner_location_state: 'Kyiv',
-          owner_middlename: '',
-          owner_middlename_locale: '',
-          owner_name: 'BlaBlaBLa',
-          owner_phone: '+380 (66) 666-66-66',
-          owner_phone_country: '230',
-          owner_private: 'off',
-          owner_profiletype: '1',
-          period: '12',
-          selected_domain: body?.selected_domain,
-          tech_contact_use_first: 'on',
-          tech_fax: '+380',
-          tech_fax_country: '230',
-          tech_phone: '+380',
-          tech_phone_country: '230',
-          use_specific: 'off',
-          'zoom-domain_name': body?.domain_name,
+          ...body,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$, { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
 
-        console.log(data.doc)
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        navigate && navigate(route.DOMAINS)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
+        console.log(error)
+
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
+
+const getTermsOfConditionalText = link => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  console.log(link)
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .get(`${link}&auth=${sessionId}`, { responseType: 'blob' })
+    .then(response => {
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'text/html' }),
+      )
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('target', '__blank')
+      link.setAttribute('rel', 'noopener noreferrer')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
 
 export default {
   getDomains,
@@ -427,4 +453,5 @@ export default {
   getDomainsContacts,
   getDomainsNS,
   getDomainPaymentInfo,
+  getTermsOfConditionalText,
 }

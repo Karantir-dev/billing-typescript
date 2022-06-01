@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import { BreadCrumbs, InputField, Button, CheckBox } from '../../../../Components'
+import cn from 'classnames'
+import { BreadCrumbs, InputField, Button, CheckBox, Select } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import s from './DomainsNsPage.module.scss'
 import { domainsOperations } from '../../../../Redux'
+import s from './DomainsNsPage.module.scss'
 
 export default function ServicesPage() {
   const { t } = useTranslation(['domains', 'trusted_users'])
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [selectedDomain, setSelectedDomain] = useState([])
   const [initialValues, setInitialValues] = useState({})
 
   const [differentNS, setDifferentNS] = useState(false)
 
+  const [paymentData, setPaymentData] = useState(null)
+
   const { state } = location
 
   useEffect(() => {
     setSelectedDomain(state?.contacts?.selected_domain?.split(', '))
-    dispatch(domainsOperations.getDomainPaymentInfo(state?.contacts))
+    dispatch(domainsOperations.getDomainsNS(state?.contacts))
+    dispatch(domainsOperations.getDomainPaymentInfo(state?.contacts, setPaymentData))
   }, [])
 
   useEffect(() => {
@@ -42,8 +47,25 @@ export default function ServicesPage() {
       data['ns3'] = ''
       data['ns_additional'] = ''
     }
+
+    if (paymentData) {
+      selectedDomain?.forEach(select => {
+        data[`autoprolong_${select}`] = paymentData[`autoprolong_${select}`]?.$
+        data[`licence_agreement_${select}`] =
+          paymentData[`licence_agreement_${select}`]?.$
+
+        const keys = Object.keys(paymentData)
+
+        keys.forEach(key => {
+          if (key?.includes('addon') && !key?.includes('sum')) {
+            data[key] = paymentData[key]?.$
+          }
+        })
+      })
+    }
+
     setInitialValues(data)
-  }, [selectedDomain, differentNS])
+  }, [selectedDomain, differentNS, paymentData])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -51,6 +73,16 @@ export default function ServicesPage() {
     pathnames = pathnames.filter(p => p.length !== 0)
 
     return pathnames
+  }
+
+  const sendPaymentDataHandler = values => {
+    const data = { ...values, ...state?.contacts }
+
+    dispatch(domainsOperations.createDomain(data, navigate))
+  }
+
+  const openTermsHandler = link => {
+    dispatch(domainsOperations?.getTermsOfConditionalText(link))
   }
 
   return (
@@ -72,9 +104,9 @@ export default function ServicesPage() {
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          onSubmit={values => console.log(values)}
+          onSubmit={sendPaymentDataHandler}
         >
-          {({ errors, touched }) => {
+          {({ errors, touched, values, setFieldValue }) => {
             return (
               <Form className={s.form}>
                 <>
@@ -190,7 +222,7 @@ export default function ServicesPage() {
                         <InputField
                           inputWrapperClass={s.inputHeight}
                           name={'ns_additional'}
-                          label={`${t('NS')}:`}
+                          label={`${t('Additional NS')}:`}
                           placeholder={t('Enter text', { ns: 'other' })}
                           isShadow
                           className={s.input}
@@ -202,58 +234,120 @@ export default function ServicesPage() {
                   )}
                   <div className={s.formBlock}>
                     <h1 className={s.page_title}>{t('Service parameters')}</h1>
-                    {/* <div className={s.formFieldsBlock}>
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'ns0'}
-                        label={`${t('NS')}:`}
-                        placeholder={t('Enter text', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors['s0']}
-                        touched={!!touched['ns0']}
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'ns1'}
-                        label={`${t('NS')}:`}
-                        placeholder={t('Enter text', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors['ns1']}
-                        touched={!!touched['ns1']}
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'ns2'}
-                        label={`${t('NS')}:`}
-                        placeholder={t('Enter text', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors['ns2']}
-                        touched={!!touched['ns2']}
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'ns3'}
-                        label={`${t('NS')}:`}
-                        placeholder={t('Enter text', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors['ns3']}
-                        touched={!!touched['ns3']}
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'ns_additional'}
-                        label={`${t('NS')}:`}
-                        placeholder={t('Enter text', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors['ns_additional']}
-                        touched={!!touched['ns_additional']}
-                      />
-                    </div> */}
+
+                    {paymentData &&
+                      selectedDomain?.map((select, index) => {
+                        let defenseSum = '0'
+                        let checkBoxName = ''
+
+                        const keys = Object.keys(paymentData)
+
+                        keys.forEach(key => {
+                          if (
+                            key?.includes('addon') &&
+                            key?.includes('sum') &&
+                            key?.includes(select)
+                          ) {
+                            defenseSum = paymentData[key]?.match(/[\d|.|\\+]+/g)[0]
+                          } else if (
+                            key?.includes('addon') &&
+                            !key?.includes('sum') &&
+                            key?.includes(select)
+                          ) {
+                            checkBoxName = key
+                          }
+                        })
+
+                        const domenName =
+                          state?.contacts?.selected_domain_real_name?.split(', ')[index]
+
+                        const sums =
+                          paymentData[`domain_${select}_details`]?.$?.match(
+                            /[\d|.|\\+]+/g,
+                          )
+
+                        return (
+                          <div key={select} className={s.formBlock}>
+                            <div className={s.formBlockTitle}>{domenName}</div>
+                            <div className={s.formFieldsBlock}>
+                              <Select
+                                placeholder={t('Not chosen', { ns: 'other' })}
+                                label={`${t('Auto renewal')}:`}
+                                value={values[`autoprolong_${select}`]}
+                                getElement={item =>
+                                  setFieldValue(`autoprolong_${select}`, item)
+                                }
+                                isShadow
+                                className={s.select}
+                                itemsList={paymentData[`autoprolong_${select}_list`]?.map(
+                                  ({ $key, $ }) => ({
+                                    label: t(`${$.trim()}`),
+                                    value: $key,
+                                  }),
+                                )}
+                              />
+                              <div className={s.useFirstCheck}>
+                                <CheckBox
+                                  initialState={values[checkBoxName] === 'on'}
+                                  setValue={item => {
+                                    setFieldValue(checkBoxName, item ? 'on' : 'off')
+                                  }}
+                                  className={s.checkbox}
+                                />
+                                <span>
+                                  {t('Data protection ({{sum}} EUR per year)', {
+                                    sum: defenseSum,
+                                  })}
+                                </span>
+                              </div>
+                            </div>
+                            <div className={s.formBlock}>
+                              <h1 className={s.page_title}>{t('Order Details')}</h1>
+                              <div className={cn(s.formFieldsBlock, s.flexStart)}>
+                                <div className={s.details}>
+                                  <div>
+                                    {domenName} - {sums[2]} EUR {t('per year')}
+                                  </div>
+                                  <div>
+                                    {t('Data protection')}:{' '}
+                                    {`(${t(values[checkBoxName])})`}
+                                  </div>
+
+                                  <div className={s.totalAmount}>
+                                    {t('Total payable')}: {sums[3]} EUR
+                                  </div>
+                                </div>
+                                <div className={s.useFirstCheck}>
+                                  <CheckBox
+                                    initialState={
+                                      values[`licence_agreement_${select}`] === 'on'
+                                    }
+                                    setValue={item => {
+                                      setFieldValue(
+                                        `licence_agreement_${select}`,
+                                        item ? 'on' : 'off',
+                                      )
+                                    }}
+                                    className={s.checkbox}
+                                  />
+                                  <span className={s.agreeTerms}>
+                                    {t('I have read and agree to the')}
+                                    {'\n'}
+                                    <button
+                                      onClick={() =>
+                                        openTermsHandler(
+                                          paymentData[`licence_link_${select}`]?.$,
+                                        )
+                                      }
+                                      type="button"
+                                    >{`"${t('Terms of Service')}"`}</button>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
                   </div>
                   <div className={s.btnBlock}>
                     <Button
@@ -276,9 +370,3 @@ export default function ServicesPage() {
     </div>
   )
 }
-
-// domainparam_bla_loo____________ac_ns0:
-// domainparam_bla_loo____________ac_ns1:
-// domainparam_bla_loo____________ac_ns2:
-// domainparam_bla_loo____________ac_ns3:
-// domainparam_bla_loo____________ac_ns_additional:

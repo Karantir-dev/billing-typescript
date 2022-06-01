@@ -98,5 +98,7 @@
   "Middle name": "Middle name",
   "Region": "Region",
   "Enter region": "Enter region",
-  "Proceed": "Proceed"
+  "Proceed": "Proceed",
+  "You must agree to the terms of the Service Agreement to be able to proceed": "You must agree to the \"Terms of the Service Agreement\" to be able to proceed",
+  "The 'NS' field has invalid value. The value cannot be empty": "The 'NS' field has invalid value. The value cannot be empty"
 }
