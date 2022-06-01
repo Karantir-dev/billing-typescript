@@ -1,0 +1,42 @@
+.modal {
+  width: 90vw;
+  max-height: 90vh;
+  border-radius: 3px;
+  padding: 14px;
+  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+}
+
+.title_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.tariff_name {
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.dates_wrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.date {
+  display: block;
+  font-weight: 400;
+}
+
+.chapter_title {
+}

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
@@ -105,7 +105,9 @@ export default function Header() {
       <header className={s.main_header}>
         <div className={s.container}>
           <div className={s.header}>
-            <Logo svgwidth="93" svgheight="41" className={s.logo} />
+            <Link to={routes.SERVICES} className={s.logo}>
+              <Logo svgwidth="93" svgheight="41" />
+            </Link>
 
             <nav className={s.main_nav}>
               <ul className={s.list}>

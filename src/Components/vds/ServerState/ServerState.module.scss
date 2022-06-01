@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.check_icon {
+  stroke: var(--forms_bgc_2);
+}
+
+.green_icon {
+  fill: var(--success-color);
+  width: 20px;
+  height: 20px;
+}
