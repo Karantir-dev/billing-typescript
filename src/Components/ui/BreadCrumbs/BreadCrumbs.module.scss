@@ -1,17 +1,19 @@
 .crumbs {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 40px;
 }
 
 .linksBlock {
+  margin-top: 10px;
   &:not(:first-child) {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 
   &:not(:last-child) {
     .links {
-      margin-right: 10px;
+      margin-right: 5px;
     }
   }
 

@@ -22,6 +22,7 @@ export default function CustomPhoneInput(props) {
     wrapperClass,
     inputClass,
     userId,
+    isRequired,
     ...restProps
   } = props
 
@@ -30,7 +31,7 @@ export default function CustomPhoneInput(props) {
   const lang = returnLanguage(i18n.language === 'en' ? 'es' : i18n.language)
 
   const onValueChange = value => {
-    setFieldValue('phone' + userId, value)
+    setFieldValue(userId ? 'phone' + userId : name, value)
   }
 
   useEffect(() => {
@@ -39,7 +40,9 @@ export default function CustomPhoneInput(props) {
 
   return (
     <div className={cn(s.wrapper, wrapperClass)}>
-      <p className={cn(s.phone_label, labelClass)}> {label}</p>
+      <p className={cn(s.phone_label, labelClass)}>
+        {isRequired ? requiredLabel(label) : label}
+      </p>
       <PhoneInput
         country={'ua'}
         localization={lang}
@@ -75,11 +78,19 @@ export default function CustomPhoneInput(props) {
       />
 
       <ErrorMessage
-        name={'phone' + userId}
+        name={userId ? 'phone' + userId : name}
         component="span"
         className={s.error_message}
       />
     </div>
+  )
+}
+
+function requiredLabel(labelName) {
+  return (
+    <>
+      {labelName} {<span className={s.required_star}>*</span>}
+    </>
   )
 }
 
@@ -89,6 +100,7 @@ CustomPhoneInput.defaultProps = {
   name: '',
   className: '',
   userId: '',
+  isRequired: false,
 }
 
 CustomPhoneInput.propTypes = {
@@ -101,4 +113,5 @@ CustomPhoneInput.propTypes = {
   label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   labelClass: PropTypes.string,
   inputClass: PropTypes.string,
+  isRequired: PropTypes.bool,
 }

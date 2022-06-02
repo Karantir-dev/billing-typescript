@@ -58,6 +58,10 @@
       font-weight: 400;
     }
   }
+
+  &.notAvailable {
+    pointer-events: none;
+  }
 }
 
 .domainsBlock {
@@ -65,8 +69,12 @@
   max-width: 560px;
   margin-top: 20px;
   flex-wrap: wrap;
-  padding-bottom: 28px;
+  padding-bottom: 30px;
   border-bottom: 1px solid var(--border-color);
+
+  &.suggested {
+    border-bottom: none;
+  }
 }
 
 .domainName {
@@ -140,6 +148,11 @@
     background-clip: text;
     text-fill-color: transparent;
     text-decoration-line: underline;
+  }
+
+  &.notAvailable {
+    text-decoration-line: none;
+    color: var(--error-color);
   }
 }
 

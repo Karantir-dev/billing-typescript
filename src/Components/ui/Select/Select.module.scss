@@ -40,6 +40,18 @@
   }
 }
 
+.error_message {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px !important;
+  line-height: 1.2;
+}
+
+.required_star {
+  color: #d93f21;
+  font-size: 14px;
+}
+
 .placeholder {
   color: #ccc7d2;
 }

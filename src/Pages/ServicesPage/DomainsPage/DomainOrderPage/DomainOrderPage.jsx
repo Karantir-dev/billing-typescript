@@ -8,9 +8,10 @@ import {
 } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
+import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
 
@@ -19,6 +20,7 @@ export default function ServicesPage() {
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [domains, setDomains] = useState([])
   const [pickUpDomains, setPickUpDomains] = useState([])
@@ -47,6 +49,43 @@ export default function ServicesPage() {
     values['sv_field'] = 'ok_whois'
     selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
     dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
+  }
+
+  const registerDomainHandler = () => {
+    const selected_domain_names = selectedDomainsNames?.map(
+      d => d?.checkbox?.input?.$name,
+    )
+
+    const checkedDomain = pickUpDomains?.checked_domain?.$?.split(', ')
+    const newCheckedDomains = []
+
+    const selected_domain = []
+    selected_domain_names?.forEach(el => {
+      const newString = el.replace('select_domain_', '')
+      selected_domain?.push(newString)
+      checkedDomain.forEach(checked => {
+        const check = checked.substring(0, checked.length - 1) + '1'
+        if (checked?.includes(newString)) {
+          newCheckedDomains.push(check)
+        }
+      })
+    })
+
+    const selected_domain_real_name = selectedDomainsNames?.map(d => d?.domain?.$)
+
+    const data = {
+      domain_name: pickUpDomains?.domain_name,
+      'zoom-domain_name': pickUpDomains?.domain_name,
+      checked_domain: newCheckedDomains?.join(', '),
+      selected_domain: selected_domain.join(', '),
+      selected_domain_real_name: selected_domain_real_name.join(', '),
+    }
+
+    selected_domain_names?.forEach(n => {
+      data[n] = 'on'
+    })
+
+    navigate && navigate(route.DOMAINS_CONTACT_INFO, { state: { domainInfo: data } })
   }
 
   return (
@@ -85,11 +124,13 @@ export default function ServicesPage() {
           )
         }}
       </Formik>
-      {pickUpDomains.length > 0 ? (
+      {pickUpDomains?.list?.length > 0 ? (
         <DomainsPickUpZones
           setSelectedDomains={setSelectedDomainsNames}
           selectedDomains={selectedDomainsNames}
-          domains={pickUpDomains}
+          domains={pickUpDomains?.list}
+          selected={pickUpDomains?.selected}
+          registerDomainHandler={registerDomainHandler}
         />
       ) : (
         <DomainsZone

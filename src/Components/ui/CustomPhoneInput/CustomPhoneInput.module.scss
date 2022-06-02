@@ -44,6 +44,11 @@
   }
 }
 
+.required_star {
+  color: #d93f21;
+  font-size: 14px;
+}
+
 .react_phone_input.lang {
   width: 100%;
   border: none;
@@ -54,6 +59,10 @@
   height: 50px;
   position: static;
   padding-left: 40px;
+
+  &:disabled {
+    color: var(--transparent-color);
+  }
 }
 
 .drop_down {

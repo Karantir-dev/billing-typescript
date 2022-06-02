@@ -92,5 +92,13 @@
   "delete": "Удалить",
   "short_month": "мес.",
   "Choose all": "Выбрать все",
-  "No matching options": "Нет подходящих вариантов"
+  "No matching options": "Нет подходящих вариантов",
+  "Name": "Имя",
+  "Surname": "Фамилия",
+  "Middle name": "Отчество",
+  "Region": "Регион",
+  "Enter region": "Введите регион",
+  "Proceed": "Продолжить",
+  "You must agree to the terms of the Service Agreement to be able to proceed": "Вы должны согласиться с условиями \"Соглашения о предоставлении услуг\", чтобы иметь возможность продолжить",
+  "The 'NS' field has invalid value. The value cannot be empty": "Поле 'NS' имеет недопустимое значение. Значение не может быть пустым"
 }

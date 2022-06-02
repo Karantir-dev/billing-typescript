@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Cross } from '../../../../../images'
 import { Button } from '../../../../'
@@ -8,7 +8,15 @@ import s from './DomainsPickUpZones.module.scss'
 export default function ServicesPage(props) {
   const { t } = useTranslation(['domains', 'other'])
 
-  const { domains, selectedDomains, setSelectedDomains } = props
+  const {
+    domains,
+    selectedDomains,
+    setSelectedDomains,
+    selected,
+    registerDomainHandler,
+  } = props
+
+  const [domainsList, setDomainsList] = useState(null)
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -82,39 +90,110 @@ export default function ServicesPage(props) {
     return sum.toFixed(2)
   }
 
+  useEffect(() => {
+    const suggested = []
+    const allResults = []
+    domains?.forEach(d => {
+      if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
+        suggested.push(d)
+        setIsSelectedHandler(d)
+      } else {
+        allResults.push(d)
+      }
+    })
+    setDomainsList({ suggested, allResults })
+  }, [domains])
+
   return (
     <div className={s.domainsZone}>
-      <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
-      <div className={s.domainsBlock}>
-        {domains?.map(d => {
-          const { id, domain, price } = d
+      {domainsList?.suggested?.length > 0 && (
+        <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
+      )}
 
-          return (
-            <div
-              tabIndex={0}
-              role="button"
-              onKeyDown={null}
-              key={id?.$}
-              className={cn(s.domainItem, { [s.selected]: itemIsSelected(d) })}
-              onClick={() => setIsSelectedHandler(d)}
-            >
-              {parsePrice(price?.$)?.length > 1 && (
-                <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
-              )}
-              <div className={s.domainName}>{domain?.$}</div>
-              <div className={s.pricesBlock}>
-                <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+      {domainsList?.suggested?.length > 0 && (
+        <div className={cn(s.domainsBlock, s.suggested)}>
+          {domainsList?.suggested?.map(d => {
+            const { id, domain, price } = d
+
+            return (
+              <div
+                tabIndex={0}
+                role="button"
+                onKeyDown={null}
+                key={id?.$}
+                className={cn(s.domainItem, { [s.selected]: itemIsSelected(d) })}
+                onClick={() => setIsSelectedHandler(d)}
+              >
                 {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
+                <div className={s.domainName}>{domain?.$}</div>
+                <div className={s.pricesBlock}>
+                  <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+                  {parsePrice(price?.$)?.length > 1 && (
+                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  )}
+                </div>
+                <div className={cn(s.selectBtn, { [s.selected]: itemIsSelected(d) })}>
+                  {itemIsSelected(d) ? t('Selected') : t('Select')}
+                </div>
               </div>
-              <div className={cn(s.selectBtn, { [s.selected]: itemIsSelected(d) })}>
-                {itemIsSelected(d) ? t('Selected') : t('Select')}
+            )
+          })}
+        </div>
+      )}
+
+      {domainsList?.allResults?.length > 0 && (
+        <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
+      )}
+
+      {domainsList?.allResults?.length > 0 && (
+        <div className={s.domainsBlock}>
+          {domainsList?.allResults?.map(d => {
+            const { id, domain, price } = d
+
+            const notAvailable = d?.desc?.$.includes('Not available')
+
+            return (
+              <div
+                tabIndex={0}
+                role="button"
+                onKeyDown={null}
+                key={id?.$}
+                className={cn(s.domainItem, {
+                  [s.selected]: itemIsSelected(d),
+                  [s.notAvailable]: notAvailable,
+                })}
+                onClick={() => !notAvailable && setIsSelectedHandler(d)}
+              >
+                {parsePrice(price?.$)?.length > 1 && (
+                  <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+                )}
+                <div className={s.domainName}>{domain?.$}</div>
+                <div className={s.pricesBlock}>
+                  <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+                  {parsePrice(price?.$)?.length > 1 && (
+                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  )}
+                </div>
+                <div
+                  className={cn(s.selectBtn, {
+                    [s.selected]: itemIsSelected(d),
+                    [s.notAvailable]: notAvailable,
+                  })}
+                >
+                  {notAvailable
+                    ? t('Not available')
+                    : itemIsSelected(d)
+                    ? t('Selected')
+                    : t('Select')}
+                </div>
               </div>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
+
       <div className={s.selectedDomainsBlock}>
         <div className={s.sum}>
           {t('Selected domains in the amount of')}{' '}
@@ -140,6 +219,7 @@ export default function ServicesPage(props) {
             size="medium"
             label={t('Register')}
             type="button"
+            onClick={registerDomainHandler}
             disabled={selectedDomains.length === 0}
           />
           <button onClick={() => null} type="button" className={s.clearFilters}>
