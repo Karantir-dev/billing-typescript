@@ -1,0 +1,58 @@
+.form {
+  width: 261px;
+  background-color: var(--main-bgc);
+  padding: 14px 15px 30px 15px;
+  overflow-y: auto;
+  height: 80vh;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-gradient);
+    border-radius: 5px;
+  }
+}
+
+.header_block {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.page_title {
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+.order_id {
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+
+.creation_date_wrapper {
+  margin-bottom: 20px;
+}
+.label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 115%;
+}
+.value {
+  margin-left: 5px;
+  font-size: 14px;
+  line-height: 115%;
+}
+
+.select {
+  margin-bottom: 12px;
+}
+
+.input_field_wrapper {
+  margin-bottom: 12px;
+}

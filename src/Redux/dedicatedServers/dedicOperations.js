@@ -6,6 +6,41 @@ import { errorHandler } from '../../utils'
 import dedicActions from './dedicActions'
 import i18n from './../../i18n'
 
+//GET SERVERS OPERATIONS
+
+const getServersList = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dedic',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        clickstat: 'yes',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log('servers list', data.doc.elem)
+      dispatch(dedicActions.setServersList(data.doc.elem))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+//ORDER NEW SERVER OPERATIONS
 const getTarifs = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
@@ -82,9 +117,6 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
       }
 
       setNewTariffs(orderData)
-
-      // dispatch(dedicActions.setTarifList(orderData))
-
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -242,7 +274,6 @@ const updatePrice =
           datacenter,
           pricelist,
           [managePanelName]: managePanel,
-          // licence_agreement: 'on',
           snext: 'ok',
           sok: 'ok',
           lang: 'en',
@@ -368,6 +399,159 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
 }
 
+//EDIT SERVERS OPERATIONS
+const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dedic.edit',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        sok: 'ok',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      console.log('data.doc to find manage panel', data.doc.doc)
+
+      const IP = Object.keys(data.doc.doc)
+      const currentSumIp = IP.filter(
+        item => item.includes('addon') && item.includes('current_value'),
+      )
+      const ipamount = data.doc.doc[currentSumIp[0]]
+
+      const findPanelName = Object.keys(data.doc.doc)
+      let addonsNames = findPanelName.filter(item => item.includes('addon'))
+      let panelName = addonsNames[1]
+      let currentPanelValue = data.doc.doc[panelName].$
+      console.log(panelName)
+      console.log(currentPanelValue)
+
+      const { slist: paramsList } = data.doc.doc
+      const {
+        domain,
+        expiredate,
+        cost,
+        createdate,
+        pricelist,
+        recipe,
+        period,
+        status,
+        autoprolong,
+        ostempl,
+        id,
+      } = data.doc.doc
+
+      const amountIPName = currentSumIp.join('').slice(0, 10)
+
+      const ostemplL = paramsList?.filter(item => item.$name === 'ostempl')
+      const recipeL = paramsList?.filter(item => item.$name === 'recipe')
+      const managePanelL = paramsList?.filter(item => item.$name.includes('addon'))
+      const autoprolongL = paramsList?.filter(item => item.$name === 'autoprolong')
+
+      // initial form data
+      const editModalData = {
+        ostemplList: ostemplL[0].val,
+        recipelList: recipeL[0].val,
+        managePanellList: managePanelL[0].val,
+        autoprolonglList: autoprolongL[0].val,
+
+        amountIPName: amountIPName,
+        autoprolong,
+        ostempl,
+        recipe,
+        managePanel: currentPanelValue,
+        managePanelName: panelName,
+
+        ipamount,
+        domain,
+        expiredate,
+        cost,
+        createdate,
+        pricelist,
+        period,
+        status,
+        id,
+      }
+
+      setInitialParams(editModalData)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const editDedicServer =
+  (
+    elid,
+    autoprolong,
+    domain,
+    ostempl,
+    recipe,
+    managePanel,
+    managePanelName,
+    ipTotal,
+    ipName,
+    handleModal,
+  ) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          sok: 'ok',
+          elid,
+          autoprolong,
+          domain,
+          ostempl,
+          recipe,
+          [managePanelName]: managePanel,
+          [ipName]: ipTotal,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        console.log('edited successfully!!!!!')
+
+        console.log('info after success edition', data)
+
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+          toastId: 'customId',
+        })
+        handleModal()
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -376,4 +560,7 @@ export default {
   orderServer,
   updatePrice,
   getPrintLicense,
+  getServersList,
+  getCurrentDedicInfo,
+  editDedicServer,
 }

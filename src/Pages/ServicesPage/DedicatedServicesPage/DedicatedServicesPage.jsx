@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
@@ -13,14 +13,20 @@ import {
 import { useMediaQuery } from 'react-responsive'
 import s from './DedicatedServicesPage.module.scss'
 import DedicList from '../../../Components/Services/DedicatedServers/DedicList/DedicList'
+import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
+import { useDispatch, useSelector } from 'react-redux'
+import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
+import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const servers = [{ id: { $: '1' } }, { id: { $: '1' } }, { id: { $: '1' } }]
+  const serversList = useSelector(dedicSelectors.getServersList)
+  const [activeServer, setActiveServer] = useState(null)
+  const [elidForEditModal, setElidForEditModal] = useState(0)
 
   const location = useLocation()
 
@@ -31,6 +37,12 @@ export default function DedicatedServersPage() {
 
     return pathnames
   }
+
+  useEffect(() => {
+    dispatch(dedicOperations.getServersList())
+  }, [])
+
+  // console.log(activeServer, 'activeServer')
 
   return (
     <>
@@ -50,28 +62,48 @@ export default function DedicatedServersPage() {
               <HintWrapper label={t('edit', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
-                  onClick={() => console.log('tools icon clicked')}
-                  disabled={false}
+                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
+                  disabled={!activeServer}
                   icon="edit"
                 />
               </HintWrapper>
               <HintWrapper label={t('reload')}>
-                <IconButton className={s.tools_icon} disabled={false} icon="reload" />
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.show_reboot?.$ !== 'on'}
+                  icon="reload"
+                />
               </HintWrapper>
               <HintWrapper label={t('ip_addresses')}>
-                <IconButton className={s.tools_icon} disabled={false} icon="ip" />
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                  icon="ip"
+                />
               </HintWrapper>
               <HintWrapper label={t('prolong')}>
-                <IconButton className={s.tools_icon} disabled={false} icon="clock" />
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.status?.$ !== '2'}
+                  icon="clock"
+                />
               </HintWrapper>
               <HintWrapper label={t('history')}>
                 <IconButton className={s.tools_icon} icon="refund" />
               </HintWrapper>
               <HintWrapper label={t('instruction')}>
-                <IconButton className={s.tools_icon} disabled={false} icon="info" />
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.status?.$ !== '2'}
+                  icon="info"
+                />
               </HintWrapper>
               <HintWrapper label={t('go_to_panel')}>
-                <IconButton className={s.tools_icon} disabled={false} icon="exitSign" />
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.transition?.$ !== 'on'}
+                  icon="exitSign"
+                />
               </HintWrapper>
             </div>
           )}
@@ -85,16 +117,18 @@ export default function DedicatedServersPage() {
           onClick={() => navigate(route.DEDICATED_SERVERS_ORDER)}
         />
       </div>
-
       <DedicList
-        servers={servers}
-        activeServerID={'1'}
-        setElidForEditModal={() => null}
-        setActiveServer={() => null}
+        servers={serversList}
+        activeServerID={activeServer?.id.$}
+        setElidForEditModal={setElidForEditModal}
+        setActiveServer={setActiveServer}
       />
-
-      <Backdrop isOpened={Boolean(false)} onClick={() => console.log('modalclik')}>
-        <p>some text</p>
+      {/* () => handleToolBtnClick(setElidForEditModal, server.id.$) */}
+      <Backdrop
+        isOpened={Boolean(elidForEditModal)}
+        // onClick={() => setElidForEditModal(0)}
+      >
+        <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
     </>
   )

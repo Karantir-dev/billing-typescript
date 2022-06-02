@@ -1,7 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-// import { VDSmobileItem } from '../..'
 import PropTypes from 'prop-types'
 
 import s from './DedicList.module.scss'
@@ -26,12 +25,12 @@ export default function DedicList({
           <li className={s.table_head}>{t('ip_address')}:</li>
           <li className={s.table_head}>{t('OS_template')}:</li>
           <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>{t('data_center')}:</li>
           <li className={s.table_head}>{t('status')}:</li>
           <li className={s.table_head}>{t('created')}:</li>
           <li className={s.table_head}>{t('valid_until')}:</li>
         </ul>
       )}
+
       <ul className={s.list}>
         {servers?.map(el => {
           return widerThan1550 ? (

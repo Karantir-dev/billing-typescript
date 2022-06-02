@@ -1,10 +1,10 @@
 import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-// import { ServerState } from '../..'
 import PropTypes from 'prop-types'
 
 import s from './DedicItem.module.scss'
+import ServerState from '../../../vds/ServerState/ServerState'
 
 export default function DedicItem({ server, setActiveServer, activeServerID }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -28,8 +28,8 @@ export default function DedicItem({ server, setActiveServer, activeServerID }) {
             {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
           </span>
         </span>
-        <span className={s.value}>{server?.datacentername?.$}</span>
-        {/* <ServerState className={s.value} server={server} /> */}
+        {/* <span className={s.value}>{server?.datacentername?.$}</span> */}
+        <ServerState className={s.value} server={server} />
         <span className={s.value}>{server?.createdate?.$}</span>
         <span className={s.value}>{server?.expiredate?.$}</span>
       </button>

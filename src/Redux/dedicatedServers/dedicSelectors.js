@@ -1,11 +1,7 @@
 const getTafifList = state => state.dedic.tarifList
-// const getFilterList = state => state.dedic.tarifList.fpriceList
-// const dataCenter = state => state.dedic.tarifList.datacenter
-// const period = state => state.dedic.tarifList.period
+const getServersList = state => state.dedic.serversList
 
 export default {
   getTafifList,
-  // getFilterList,
-  // dataCenter,
-  // period,
+  getServersList,
 }

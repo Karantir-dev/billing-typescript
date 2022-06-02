@@ -4,25 +4,24 @@ import {
   Clock,
   MoreDots,
   Edit,
-  PassChange,
   Reload,
   Refund,
   IP,
   Info,
-  Delete,
   ExitSign,
 } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
-// import { ServerState } from '../..'
 import PropTypes from 'prop-types'
 
 import s from './DedicMobileItem.module.scss'
+import ServerState from '../../../vds/ServerState/ServerState'
 
 export default function DedicMobileItem({ server, setElidForEditModal }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
+
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const handleToolBtnClick = (fn, id) => {
@@ -53,16 +52,7 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   {t('edit', { ns: 'other' })}
                 </button>
               </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={server.allow_changepassword?.$ !== 'on'}
-                >
-                  <PassChange className={s.tool_icon} />
-                  {t('password_change')}
-                </button>
-              </li>
+
               <li className={s.tool_item}>
                 <button
                   className={s.tool_btn}
@@ -119,16 +109,11 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   {t('go_to_panel')}
                 </button>
               </li>
-              <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
-                  <Delete className={s.tool_icon} />
-                  {t('delete', { ns: 'other' })}
-                </button>
-              </li>
             </ul>
           </div>
         )}
       </div>
+
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
@@ -144,10 +129,9 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
           {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
         </span>
       </span>
-      <span className={s.label}>{t('data_center')}:</span>
-      <span className={s.value}>{server?.datacentername?.$}</span>
+
       <span className={s.label}>{t('status')}:</span>
-      {/* <ServerState server={server} /> */}
+      <ServerState className={s.value} server={server} />
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>
