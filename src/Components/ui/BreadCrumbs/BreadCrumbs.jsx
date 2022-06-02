@@ -12,15 +12,17 @@ export default function Component({ pathnames }) {
     <div className={s.crumbs}>
       {pathnames?.map((e, index) => {
         const disabled = pathnames?.length === index + 1
+
         const renderPath = () => {
+          let pathes = pathnames.slice()
           if (index === 0) {
             return `/${e}`
           } else if (disabled) {
             return '#'
           }
-          return `/${pathnames[index - 1] || ''}/${e}`
+          pathes?.pop()
+          return `/${pathes?.join('/')}`
         }
-
         return (
           <div className={s.linksBlock} key={e}>
             <Link className={cn(s.links, { [s.disabled]: disabled })} to={renderPath()}>

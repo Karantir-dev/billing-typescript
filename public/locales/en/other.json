@@ -92,5 +92,13 @@
   "delete": "Delete",
   "short_month": "mon.",
   "Choose all": "Choose all",
-  "No matching options": "No matching options"
+  "No matching options": "No matching options",
+  "Name": "Name",
+  "Surname": "Surname",
+  "Middle name": "Middle name",
+  "Region": "Region",
+  "Enter region": "Enter region",
+  "Proceed": "Proceed",
+  "You must agree to the terms of the Service Agreement to be able to proceed": "You must agree to the \"Terms of the Service Agreement\" to be able to proceed",
+  "The 'NS' field has invalid value. The value cannot be empty": "The 'NS' field has invalid value. The value cannot be empty"
 }
