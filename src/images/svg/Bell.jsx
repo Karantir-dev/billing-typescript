@@ -4,10 +4,10 @@ import Gradient from './Gradient'
 export default function SvgComponent(props) {
   const { svgwidth, svgheight } = props
 
-  const { className } = props
+
   return (
     <svg
-      className={className}
+
       viewBox="0 0 21 24"
       width={svgwidth}
       height={svgheight}

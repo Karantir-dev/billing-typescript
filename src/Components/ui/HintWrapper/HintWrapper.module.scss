@@ -1,7 +1,7 @@
 .hint_wrapper {
   display: inline-block;
   position: relative;
-  width: fit-content;
+  // width: fit-content;
 
   &:hover .hint_popup {
     animation: popup 1s forwards;
@@ -10,7 +10,6 @@
 
 .hint_popup {
   opacity: 0;
-  // transition: opacity 150ms;
   position: absolute;
   bottom: calc(100% + 15px);
   left: 50%;
@@ -22,6 +21,7 @@
   box-shadow: var(--forms2_shadow);
   white-space: nowrap;
   border-radius: 3px;
+  z-index: 1;
 }
 
 .hint_pointer_wrapper {
