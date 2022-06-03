@@ -422,8 +422,6 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log('data.doc to find manage panel', data.doc.doc)
-
       const IP = Object.keys(data.doc.doc)
       const currentSumIp = IP.filter(
         item => item.includes('addon') && item.includes('current_value'),
@@ -450,7 +448,13 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         autoprolong,
         ostempl,
         id,
+        ip,
+        username,
+        userpassword,
+        password,
       } = data.doc.doc
+
+      console.log('data.doc.doc to find manage panel', data.doc.doc)
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
 
@@ -482,6 +486,10 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         period,
         status,
         id,
+        ip,
+        username,
+        userpassword,
+        password,
       }
 
       setInitialParams(editModalData)
@@ -494,7 +502,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
     })
 }
 
-const editDedicServer =
+const editDedicServerDataNoExtraCosts =
   (
     elid,
     autoprolong,
@@ -505,6 +513,10 @@ const editDedicServer =
     managePanelName,
     ipTotal,
     ipName,
+    ip,
+    username,
+    userpassword,
+    password,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -522,7 +534,6 @@ const editDedicServer =
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          sok: 'ok',
           elid,
           autoprolong,
           domain,
@@ -530,19 +541,107 @@ const editDedicServer =
           recipe,
           [managePanelName]: managePanel,
           [ipName]: ipTotal,
+          ip,
+          username,
+          userpassword,
+          password,
+          clicked_button: 'basket',
+          sok: 'ok',
         }),
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log('edited successfully!!!!!')
+        console.log('editDedicServerDataNoExtraCosts')
 
-        console.log('info after success edition', data)
+        const billorder = data?.doc?.billorder?.$
+
+        console.log('look for price price', data)
+        console.log(billorder, 'billorder')
 
         toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
           position: 'bottom-right',
           toastId: 'customId',
         })
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'basket',
+              auth: sessionId,
+              billorder,
+              sok: 'ok',
+            }),
+          )
+          .then(data => {
+            console.log(data)
+            dispatch(actions.hideLoader())
+          })
+
         handleModal()
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const updatePriceEditModal =
+  (
+    elid,
+    autoprolong,
+    domain,
+    ostempl,
+    recipe,
+    managePanel,
+    managePanelName,
+    ipTotal,
+    ipName,
+    ip,
+    username,
+    userpassword,
+    password,
+    currentOrder,
+    setCurrentAmout,
+  ) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          autoprolong,
+          domain,
+          ostempl,
+          recipe,
+          [managePanelName]: managePanel,
+          [ipName]: ipTotal,
+          ip,
+          username,
+          userpassword,
+          password,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const billorder = data?.doc?.billorder?.$
+
+        console.log('look for price price', data)
+        console.log(data.doc.orderinfo)
+        console.log(billorder, 'billorder')
+
+        setCurrentAmout({ ...currentOrder, ...data.doc.orderinfo })
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -562,5 +661,7 @@ export default {
   getPrintLicense,
   getServersList,
   getCurrentDedicInfo,
-  editDedicServer,
+  editDedicServerDataNoExtraCosts,
+  updatePriceEditModal,
+  // editDedicServerWithExtraCosts,
 }

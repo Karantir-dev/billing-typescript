@@ -35,18 +35,44 @@
   color: var(--main-text);
 }
 
-.creation_date_wrapper {
+.icon_cross {
+  cursor: pointer;
+}
+
+.status_wrapper {
+  display: flex;
   margin-bottom: 20px;
 }
+
+.creation_date_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+.expiration_date_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .label {
-  font-weight: 600;
+  font-weight: 800;
   font-size: 14px;
   line-height: 115%;
 }
+
 .value {
-  margin-left: 5px;
+  font-weight: 400;
   font-size: 14px;
   line-height: 115%;
+}
+
+.main_title,
+.additional_title {
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 130.5%;
+  color: var(--main-text);
 }
 
 .select {
@@ -55,4 +81,111 @@
 
 .input_field_wrapper {
   margin-bottom: 12px;
+}
+
+.input {
+  height: 50px;
+}
+
+.total_amount {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+}
+
+.price {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+}
+
+.order_description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  margin-bottom: 20px;
+  color: var(--main-text);
+}
+
+.btns_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buy_btn {
+  width: 230px;
+  height: 55px;
+  font-weight: 800;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.cancel_btn {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  text-decoration: underline;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    width: 594px;
+    padding: 31px 51px 42px 51px;
+  }
+
+  .header_block {
+    margin-bottom: 16px;
+  }
+
+  .page_title {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .creation_date_wrapper {
+    flex-direction: row;
+  }
+  .expiration_date_wrapper {
+    flex-direction: row;
+  }
+
+  .value {
+    display: block;
+    margin-left: 5px;
+  }
+
+  .main_block {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .input_field_wrapper,
+  .select {
+    min-width: 230px;
+    max-width: 230px;
+    padding-bottom: 0px;
+  }
+
+  .additional_block {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btns_wrapper {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .cancel_btn {
+    margin-left: 30px;
+  }
 }
