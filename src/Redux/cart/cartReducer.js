@@ -3,15 +3,15 @@ import { combineReducers } from 'redux'
 import cartActions from './cartActions'
 
 const initialState = {
-  isOpened: true,
+  cartState: { isOpened: false, redirectPath: '' },
 }
 
-const isOpened = createReducer(initialState.isOpened, {
+const cartState = createReducer(initialState.cartState, {
   [cartActions.setCartIsOpenedState]: (_, { payload }) => payload,
 })
 
 const cartReducer = combineReducers({
-  isOpened,
+  cartState,
 })
 
 export default cartReducer

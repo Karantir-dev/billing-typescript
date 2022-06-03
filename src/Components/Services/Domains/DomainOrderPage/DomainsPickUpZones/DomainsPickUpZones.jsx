@@ -3,6 +3,8 @@ import cn from 'classnames'
 import { Cross } from '../../../../../images'
 import { Button } from '../../../../'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import * as route from '../../../../../routes'
 import s from './DomainsPickUpZones.module.scss'
 
 export default function ServicesPage(props) {
@@ -17,6 +19,8 @@ export default function ServicesPage(props) {
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
+
+  const navigate = useNavigate()
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -169,7 +173,13 @@ export default function ServicesPage(props) {
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
-                <div className={s.domainName}>{domain?.$}</div>
+                <div className={s.domainName}>
+                  <div>{domain?.$}</div>
+                  <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
+                  {parsePrice(price?.$)?.length > 1 && (
+                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  )}
+                </div>
                 <div className={s.pricesBlock}>
                   <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
                   {parsePrice(price?.$)?.length > 1 && (
@@ -222,8 +232,12 @@ export default function ServicesPage(props) {
             onClick={registerDomainHandler}
             disabled={selectedDomains.length === 0}
           />
-          <button onClick={() => null} type="button" className={s.clearFilters}>
-            {t('Clear filter', { ns: 'other' })}
+          <button
+            onClick={() => navigate(route.DOMAINS)}
+            type="button"
+            className={s.clearFilters}
+          >
+            {t('Cancel', { ns: 'other' })}
           </button>
         </div>
       </div>

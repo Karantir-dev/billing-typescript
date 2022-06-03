@@ -1,0 +1,119 @@
+.domainItem {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+  background: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow);
+  padding: 19px 25px;
+
+  img {
+    width: 31px;
+    height: 37px;
+  }
+
+  position: relative;
+}
+
+.priceList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.domainInfo {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.domainName {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+  margin-bottom: 4px;
+}
+
+.domainProtect {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--transparent-color);
+}
+
+.costBlock {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.cost {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+  margin-bottom: 4px;
+}
+
+.discountBlock {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+
+  .discountPerCent {
+    color: var(--error-color);
+    margin-right: 5px;
+  }
+
+  .fullcost {
+    text-decoration: line-through;
+    color: var(--transparent-color);
+  }
+}
+
+.deleteIcon {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  margin-left: 40px;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .domainItem {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .priceList {
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .costBlock {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 0;
+  }
+
+  .deleteIcon {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
+}

@@ -15,6 +15,7 @@ import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
 import { Shevron } from '../../../../images'
 import { BASE_URL } from '../../../../config/config'
+import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainContactInfoPage.module.scss'
 
@@ -1469,7 +1470,11 @@ export default function ServicesPage() {
                   label={t('Proceed', { ns: 'other' })}
                   type="submit"
                 />
-                <button onClick={() => null} type="button" className={s.cancel}>
+                <button
+                  onClick={() => navigate(route.DOMAINS)}
+                  type="button"
+                  className={s.cancel}
+                >
                   {t('Cancel', { ns: 'other' })}
                 </button>
               </div>

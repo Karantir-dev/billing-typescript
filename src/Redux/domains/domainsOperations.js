@@ -1,6 +1,6 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, domainsActions } from '..'
+import { actions, domainsActions, cartActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
@@ -382,7 +382,7 @@ const getDomainPaymentInfo =
   }
 
 const createDomain =
-  (body = {}, navigate) =>
+  (body = {}) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -410,7 +410,12 @@ const createDomain =
           throw new Error(data.doc.error.msg.$)
         }
 
-        navigate && navigate(route.DOMAINS)
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: route.DOMAINS,
+          }),
+        )
         dispatch(actions.hideLoader())
       })
       .catch(error => {
