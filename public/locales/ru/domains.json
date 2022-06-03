@@ -40,5 +40,8 @@
   "I have read and agree to the": "Я прочитал и согласен с",
   "Terms of Service": "Условиями предоставления услуг",
   "Total payable": "Итого к оплате",
-  "Disabled": "Отключить"
+  "Disabled": "Отключить",
+  "Transfer": "Трансфер",
+  "Getting information about a domain using the whois protocol": "Получение информации о домене по протоколу whois",
+  "View/change the list of nameservers": "Просмотреть/изменить список серверов имен"
 }

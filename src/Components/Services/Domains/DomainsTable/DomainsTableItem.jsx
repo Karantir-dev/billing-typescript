@@ -2,34 +2,29 @@ import React from 'react'
 import s from './DomainsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-// import dayjs from 'dayjs'
+// import { CheckCircle } from '../../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
+import ServerState from '../../../vds/ServerState/ServerState'
 
 export default function Component(props) {
-  const { id, domain, tariff, expiredate, status, cost, setSelctedItem, selected } = props
+  const { id, domain, tariff, expiredate, cost, setSelctedItem, selected, el } = props
   const { t } = useTranslation(['domains', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
 
-  // const datetimeSeparate = string => {
-  //   let date = dayjs(string).format('DD MMM YYYY')
-  //   return date
-  // }
-
   // const renderStatus = string => {
-  //   const status = t(string.trim())
-  //   let color = '#11A63A'
-  //   if (string.trim() === 'Payment in progress') {
-  //     color = '#ED801B'
-  //   } else if (string.trim() === 'Paid') {
-  //     color = '#45A884'
-  //   } else if (string.trim() === 'Refunded') {
-  //     color = '#D93F21'
+  //   const status = string.trim()
+
+  //   let icons = []
+  //   if (status === 'Active') {
+  //     icons?.push(<CheckCircle key={Math.random()} className={s.check_icon} />)
   //   }
-  //   return {
-  //     status,
-  //     color,
+
+  //   if (status === 'Activation in progres') {
+  //     icons?.push(<CheckCircle key={Math.random()} className={s.check_icon} />)
   //   }
+
+  //   return icons
   // }
 
   return (
@@ -59,7 +54,7 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockFifth}>
         {mobile && <div className={s.item_title}>{t('State')}:</div>}
-        <div className={cn(s.item_text, s.sixth_item)}>{t(status)}</div>
+        <ServerState server={el} />
       </div>
       <div className={s.tableBlockSixth}>
         {mobile && <div className={s.item_title}>{t('Price')}:</div>}

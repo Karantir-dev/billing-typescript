@@ -10,7 +10,7 @@ import {
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
 import { Shevron } from '../../../../images'
@@ -37,7 +37,11 @@ export default function ServicesPage() {
   const { state } = location
 
   useEffect(() => {
-    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo))
+    if (state?.domainInfo) {
+      dispatch(
+        domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo),
+      )
+    }
   }, [])
 
   const parseLocations = () => {
@@ -252,6 +256,10 @@ export default function ServicesPage() {
   const setContactsHandler = values => {
     const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
     dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate))
+  }
+
+  if (!state?.domainInfo) {
+    return <Navigate to={route.DOMAINS_ORDERS} />
   }
 
   return (
