@@ -103,7 +103,11 @@ export default function VDS() {
               />
             </HintWrapper>
             <HintWrapper label={t('history')}>
-              <IconButton className={s.tools_icon} icon="refund" />
+              <IconButton
+                className={s.tools_icon}
+                disabled={!activeServer}
+                icon="refund"
+              />
             </HintWrapper>
             <HintWrapper label={t('instruction')}>
               <IconButton
@@ -138,6 +142,7 @@ export default function VDS() {
       />
 
       <Backdrop
+        className={s.backdrop}
         isOpened={Boolean(elidForEditModal)}
         onClick={() => setElidForEditModal(0)}
       >
