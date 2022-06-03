@@ -156,15 +156,6 @@ export default function EditServerModal({ elid, closeFn }) {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={initialState?.autoprolonglList?.map(el => {
-                        // let labeltext = translatePeriod(el.$, t)
-
-                        // let labeltext = ''
-                        // if (el.$.includes('per month')) {
-                        //   labeltext = el.$.replace('per month', t('per month'))
-                        // } else {
-                        //   labeltext = t(el.$)
-                        // }
-
                         return {
                           label: translatePeriod(el?.$, t),
                           value: el.$key,
@@ -298,7 +289,6 @@ export default function EditServerModal({ elid, closeFn }) {
                           setCurrentOrder,
                         ),
                       )
-                      // updatePrice({ ...values, managePanel: item }, dispatch, setPrice)
                     }}
                     isShadow
                     label={t('manage_panel')}
@@ -358,7 +348,6 @@ export default function EditServerModal({ elid, closeFn }) {
                           setCurrentOrder,
                         ),
                       )
-                      // updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
                     }}
                     isShadow
                     label={t('count_ip')}
@@ -374,7 +363,14 @@ export default function EditServerModal({ elid, closeFn }) {
             <p className={s.total_amount}>
               {`${t('topay')}:`} <span className={s.price}>{price} EUR</span>
             </p>
-            <p className={s.order_description}>{currentOrder?.$}</p>
+            <p className={s.order_description}>
+              {currentOrder?.$?.replaceAll(
+                'for order and then',
+                t('for order and then', { ns: 'vds' }),
+              )
+                .replaceAll('per month', t('per month'))
+                .replace('Total amount', t('Total amount'))}
+            </p>
 
             <div className={s.btns_wrapper}>
               {(initialIP === currentIP || currentIP === undefined) && (
