@@ -85,6 +85,7 @@ body {
   --buttons_shadow_active: 2px 4px 5px rgba(98, 0, 54, 0.25),
     inset 2px 2px 6px rgba(0, 0, 0, 0.15);
   --404-text-shadow: 3px 3px 4px rgba(78, 37, 119, 0.3);
+  --modal_header_shadow: 0px 2px 4px 0 rgba(65, 38, 114, 0.15);
 }
 
 // dark theme variables
@@ -162,4 +163,5 @@ body.dark-theme {
   --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.8), inset 3px 3px 4px #585165;
   --404-text-shadow: 6px 3px 10px #000000;
+  --modal_header_shadow: 0px 2px 4px 0 rgba(0, 0, 0, 50%);
 }
