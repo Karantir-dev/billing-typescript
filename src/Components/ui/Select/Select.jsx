@@ -19,6 +19,7 @@ export default function Select(props) {
     placeholder,
     additionalPlaceHolder,
     background,
+    disabled,
   } = props
   const { t } = useTranslation('other')
 
@@ -65,7 +66,7 @@ export default function Select(props) {
         }
       })
     }
-  }, [value])
+  }, [value, itemsList])
 
   const itemSelectHandler = item => {
     setSelectedItem(item)
@@ -86,6 +87,7 @@ export default function Select(props) {
         className={s.input_wrapper}
         onClick={openHandler}
         data-testid="period_select"
+        disabled={disabled}
       >
         <div
           className={cn(
@@ -93,6 +95,7 @@ export default function Select(props) {
               [s.input]: true,
               [s.shadow]: isShadow,
               [s.field_bgc]: background,
+              [s.disabled]: disabled,
             },
             inputClassName,
           )}
@@ -154,6 +157,8 @@ Select.propTypes = {
   height: PropTypes.number,
   placeholder: PropTypes.string,
   background: PropTypes.bool,
+  inputClassName: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 Select.defaultProps = {

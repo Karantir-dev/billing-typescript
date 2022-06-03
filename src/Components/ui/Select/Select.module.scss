@@ -16,7 +16,7 @@
 .input_wrapper {
   width: 100%;
   position: relative;
-  height: 46px;
+  height: 47px;
 }
 
 .input {
@@ -32,6 +32,12 @@
   caret-color: transparent;
   flex-direction: column;
   cursor: pointer;
+
+  &.disabled {
+    color: var(--transparent-color);
+    cursor: initial;
+  }
+
   span {
     max-width: 90%;
     white-space: nowrap;
@@ -112,6 +118,7 @@
   height: fit-content;
   padding-left: 16px;
   padding-bottom: 12px;
+  padding-right: 10px;
   max-height: 260px;
 
   &::-webkit-scrollbar {
@@ -163,10 +170,6 @@
 
 // ADAPTIVE
 @media screen and (min-width: 768px) {
-  .input_wrapper {
-    height: 46px;
-  }
-
   .input {
     &.iconLeft {
       padding-left: 36px;
@@ -174,5 +177,11 @@
     &.iconLeft {
       padding-right: 36px;
     }
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .input_wrapper {
+    height: 52px;
   }
 }
