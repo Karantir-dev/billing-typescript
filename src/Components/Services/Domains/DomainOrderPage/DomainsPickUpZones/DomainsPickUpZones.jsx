@@ -177,7 +177,7 @@ export default function ServicesPage(props) {
                   <div>{domain?.$}</div>
                   <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
                   {parsePrice(price?.$)?.length > 1 && (
-                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                    <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
                   )}
                 </div>
                 <div className={s.pricesBlock}>

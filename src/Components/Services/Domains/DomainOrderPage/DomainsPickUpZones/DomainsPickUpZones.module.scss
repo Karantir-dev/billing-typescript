@@ -131,6 +131,16 @@
   margin-top: 11px;
 }
 
+.saleEurMobile {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 70.9%;
+  text-decoration-line: line-through;
+  color: var(--transparent-color);
+  margin-top: 11px;
+}
+
 .year {
   text-transform: lowercase;
 }
@@ -249,5 +259,13 @@
 
   .domainName {
     flex-basis: 34%;
+  }
+
+  .domainPriceMobile {
+    display: none;
+  }
+
+  .saleEurMobile {
+    display: none;
   }
 }
