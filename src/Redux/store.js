@@ -23,9 +23,11 @@ import {
   payersReducer,
   domainsReducer,
   contractsReducer,
+  cartReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
+import dedicReducer from './dedicatedServers/dedicReducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -49,10 +51,12 @@ const rootReducer = combineReducers({
   payers: payersReducer,
   domains: domainsReducer,
   contracts: contractsReducer,
+  cart: cartReducer,
   affiliateProgram,
   theme,
   isLoading,
   pinned,
+  dedic: dedicReducer,
 })
 
 const store = configureStore({

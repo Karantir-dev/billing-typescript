@@ -63,5 +63,14 @@ export { default as domainsOperations } from './domains/domainsOperations'
 export { default as domainsReducer } from './domains/domainsReducer'
 export { default as domainsSelectors } from './domains/domainsSelectors'
 
+//===========================================CART=================================//
+export { default as cartActions } from './cart/cartActions'
+export { default as cartOperations } from './cart/cartOperations'
+export { default as cartReducer } from './cart/cartReducer'
+export { default as cartSelectors } from './cart/cartSelectors'
+
 //===========================================CONTRACTS=================================//
 export { default as contractsReducer } from './contracts/contractsReducer'
+
+//===========================================SERVICES=================================//
+export { default as dedicReducer } from './dedicatedServers/dedicReducer'

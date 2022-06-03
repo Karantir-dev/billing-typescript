@@ -17,15 +17,15 @@ export default function Header() {
   const { t } = useTranslation('container')
   const dispatch = useDispatch()
 
-  const isEnvelopeAllowedToRender = usePageRender('support', 'clientticket')
-  const isBellAllowedToRender = usePageRender('support', 'notification')
-  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user')
+  const isEnvelopeAllowedToRender = usePageRender('support', 'clientticket', false)
+  const isBellAllowedToRender = usePageRender('support', 'notification', false)
+  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user', false)
 
-  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam')
+  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam', false)
 
-  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog')
+  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog', false)
 
-  const arePayersAllowedToRender = usePageRender('customer', 'profile')
+  const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
 
   const profileMenuList = [
     {

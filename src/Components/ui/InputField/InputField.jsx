@@ -109,7 +109,7 @@ export default function InputField(props) {
   )
 }
 
-export function requiredLabel(labelName) {
+function requiredLabel(labelName) {
   return (
     <>
       {labelName} {<span className={s.required_star}>*</span>}
@@ -125,6 +125,7 @@ InputField.propTypes = {
   className: PropTypes.string,
   dataTestid: PropTypes.string,
   type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
+  as: PropTypes.string,
   name: PropTypes.string.isRequired,
   error: PropTypes.bool,
   touched: PropTypes.bool,

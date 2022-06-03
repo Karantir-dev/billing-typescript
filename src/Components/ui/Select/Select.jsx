@@ -20,6 +20,8 @@ export default function Select(props) {
     additionalPlaceHolder,
     background,
     disabled,
+    isRequired,
+    error,
   } = props
   const { t } = useTranslation('other')
 
@@ -80,7 +82,9 @@ export default function Select(props) {
 
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
-      {label && <label className={s.label}>{label}</label>}
+      {label && (
+        <label className={s.label}> {isRequired ? requiredLabel(label) : label}</label>
+      )}
       <button
         type="button"
         style={{ height }}
@@ -140,7 +144,16 @@ export default function Select(props) {
           </div>
         </div>
       )}
+      {error?.length > 0 && <span className={s.error_message}>{error}</span>}
     </div>
+  )
+}
+
+function requiredLabel(labelName) {
+  return (
+    <>
+      {labelName} {<span className={s.required_star}>*</span>}
+    </>
   )
 }
 
@@ -159,10 +172,14 @@ Select.propTypes = {
   background: PropTypes.bool,
   inputClassName: PropTypes.string,
   disabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
+  error: PropTypes.string,
 }
 
 Select.defaultProps = {
   isShadow: false,
   getElement: () => null,
   placeholder: '',
+  isRequired: false,
+  error: '',
 }

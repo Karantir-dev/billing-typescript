@@ -87,6 +87,12 @@ export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
 //==========================================SERVICES==========================================//
 export { default as ServicesList } from './Services/ServicesList/ServicesList'
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
+export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
+export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
+export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
+
+//==========================================Dedicated_Servers==========================================//
+export { default as DedicOrderModal } from './Services/DedicatedServers/DedicOrder/DedicOrderModal'
 
 //==========================================VDS==========================================//
 export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
@@ -95,6 +101,5 @@ export { default as VDSList } from './vds/VDSList/VDSList'
 export { default as ServerState } from './vds/ServerState/ServerState'
 export { default as EditModal } from './vds/EditModal/EditModal'
 
-export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
-export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
-export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
+//==========================================CART==========================================//
+export { default as Cart } from './Cart/Cart'

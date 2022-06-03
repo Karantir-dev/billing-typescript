@@ -16,10 +16,14 @@ const AsideServicesMenu = () => {
   const pinnedStatus = useSelector(selectors.getIsPinned)
   const tabletOrHigher = useMediaQuery({ query: '(max-width: 1023px)' })
 
-  const isAffiliateProgramAllowedToRender = usePageRender('customer', 'affiliate.client')
-  const isSupportAllowedToRender = usePageRender('support')
-  const areServicesAllowedToRender = usePageRender('mainmenuservice')
-  const isFinanceAllowedToRender = usePageRender('finance')
+  const isAffiliateProgramAllowedToRender = usePageRender(
+    'customer',
+    'affiliate.client',
+    false,
+  )
+  const isSupportAllowedToRender = usePageRender('support', null, false)
+  const areServicesAllowedToRender = usePageRender('mainmenuservice', null, false)
+  const isFinanceAllowedToRender = usePageRender('finance', null, false)
 
   const dispatch = useDispatch()
 
