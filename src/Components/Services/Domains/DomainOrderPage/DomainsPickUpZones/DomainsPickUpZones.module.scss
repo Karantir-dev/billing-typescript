@@ -83,7 +83,9 @@
   font-size: 20px;
   line-height: 113%;
   color: var(--main-text);
-  flex-basis: 33%;
+  flex-basis: 70%;
+
+  margin-right: 20px;
 }
 
 .domainPrice {
@@ -94,10 +96,12 @@
   color: var(--main-text);
 }
 
+.domainPriceMobile {
+  margin-top: 10px;
+}
+
 .pricesBlock {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 33%;
+  display: none;
 }
 
 .sale {
@@ -118,6 +122,16 @@
 }
 
 .saleEur {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 70.9%;
+  text-decoration-line: line-through;
+  color: var(--transparent-color);
+  margin-top: 11px;
+}
+
+.saleEurMobile {
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
@@ -234,4 +248,24 @@
   height: 50px;
   font-size: 18px;
   text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .pricesBlock {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 33%;
+  }
+
+  .domainName {
+    flex-basis: 34%;
+  }
+
+  .domainPriceMobile {
+    display: none;
+  }
+
+  .saleEurMobile {
+    display: none;
+  }
 }
