@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox, Toggle } from '../../../../Components'
 import { useLocation } from 'react-router-dom'
@@ -13,13 +13,13 @@ import Select from '../../../../Components/ui/Select/Select'
 import InputField from '../../../../Components/ui/InputField/InputField'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 
-import s from './DedicOrder.module.scss'
+import s from './DedicOrderPage.module.scss'
 
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
 
   const licenceCheck = useRef()
-  const secondTarrif = useRef()
+  const secondTarrif = useRef(null)
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -116,8 +116,11 @@ export default function DedicOrderModal() {
 
   useEffect(() => {
     setTarifList(tarifsList)
-    secondTarrif && secondTarrif?.current?.click()
   }, [tarifsList])
+
+  useLayoutEffect(() => {
+    secondTarrif?.current?.click() ///// to prevent rerendering...find way how to click only once
+  })
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),

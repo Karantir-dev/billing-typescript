@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import cn from 'classnames'
+import { useMediaQuery } from 'react-responsive'
+
 import {
   Button,
   IconButton,
@@ -10,13 +12,13 @@ import {
   Backdrop,
   BreadCrumbs,
 } from '../../../Components'
-import { useMediaQuery } from 'react-responsive'
-import s from './DedicatedServicesPage.module.scss'
 import DedicList from '../../../Components/Services/DedicatedServers/DedicList/DedicList'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
 import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
 import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
+
+import s from './DedicatedServicesPage.module.scss'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -41,8 +43,6 @@ export default function DedicatedServersPage() {
   useEffect(() => {
     dispatch(dedicOperations.getServersList())
   }, [])
-
-  // console.log(activeServer, 'activeServer')
 
   return (
     <>
@@ -123,11 +123,7 @@ export default function DedicatedServersPage() {
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}
       />
-      {/* () => handleToolBtnClick(setElidForEditModal, server.id.$) */}
-      <Backdrop
-        isOpened={Boolean(elidForEditModal)}
-        // onClick={() => setElidForEditModal(0)}
-      >
+      <Backdrop isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
     </>
