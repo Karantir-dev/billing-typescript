@@ -28,6 +28,7 @@ import {
   DedicatedServersPage,
   DomainContactInfoPage,
   DomainsNsPage,
+  DedicIPpage,
 } from '../../Pages'
 import { cartSelectors } from '../../Redux'
 
@@ -88,6 +89,11 @@ const Component = () => {
           element={
             <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
           }
+        />
+
+        <Route
+          path={route.DEDICATED_SERVERS_IP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
         />
 
         <Route

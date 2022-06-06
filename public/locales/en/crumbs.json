@@ -5,5 +5,6 @@
   "contact_info": "Contact Information",
   "domain_params": "Service parameters",
   "dedicated_servers": "Dedicated servers",
-  "order": "Dedicated server order"
+  "order": "Dedicated server order",
+  "ip": "IP-address"
 }

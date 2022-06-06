@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox, Toggle } from '../../../../Components'
 import { useLocation } from 'react-router-dom'
@@ -118,9 +118,9 @@ export default function DedicOrderModal() {
     setTarifList(tarifsList)
   }, [tarifsList])
 
-  useLayoutEffect(() => {
-    secondTarrif?.current?.click() ///// to prevent rerendering...find way how to click only once
-  })
+  // useLayoutEffect(() => {
+  //   secondTarrif?.current?.click() ///// to prevent rerendering...find way how to click only once
+  // })
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),

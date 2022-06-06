@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
@@ -75,11 +75,13 @@ export default function DedicatedServersPage() {
                 />
               </HintWrapper>
               <HintWrapper label={t('ip_addresses')}>
-                <IconButton
-                  className={s.tools_icon}
-                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
-                  icon="ip"
-                />
+                <NavLink to={route.DEDICATED_SERVERS_IP}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                    icon="ip"
+                  />
+                </NavLink>
               </HintWrapper>
               <HintWrapper label={t('prolong')}>
                 <IconButton
