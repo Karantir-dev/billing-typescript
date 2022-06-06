@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Cart,
   Container,
-  DedicOrderModal,
+  DedicOrderPage,
   EmailConfirmation,
   Portal,
   PrivateRoute,
@@ -86,7 +86,7 @@ const Component = () => {
         <Route
           path={route.DEDICATED_SERVERS_ORDER}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderModal />} />
+            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
           }
         />
 

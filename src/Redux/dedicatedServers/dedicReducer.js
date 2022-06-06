@@ -5,6 +5,7 @@ import dedicActions from './dedicActions'
 const initialState = {
   tarifList: [],
   filterList: [],
+  serversList: [],
 }
 
 const tarifList = createReducer(initialState.tarifList, {
@@ -13,7 +14,10 @@ const tarifList = createReducer(initialState.tarifList, {
 const filterList = createReducer(initialState.filterList, {
   [dedicActions.setFilterList]: (_, { payload }) => payload,
 })
+const serversList = createReducer(initialState.serversList, {
+  [dedicActions.setServersList]: (_, { payload }) => payload,
+})
 
-const dedicReducer = combineReducers({ tarifList, filterList })
+const dedicReducer = combineReducers({ tarifList, filterList, serversList })
 
 export default dedicReducer

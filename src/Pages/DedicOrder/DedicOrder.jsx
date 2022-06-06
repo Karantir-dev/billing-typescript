@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import s from './DedicOrderModal.module.scss'
-import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
+import { BreadCrumbs, Button, CheckBox, Toggle } from '../../../../Components'
+import { useLocation } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import Select from '../../../ui/Select/Select'
-import InputField from '../../../ui/InputField/InputField'
-import classNames from 'classnames'
 
-import { BreadCrumbs, Button, CheckBox, Toggle } from '../../..'
-import { useLocation } from 'react-router-dom'
+import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
+import Select from '../../../../Components/ui/Select/Select'
+import InputField from '../../../../Components/ui/InputField/InputField'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
-import { useMediaQuery } from 'react-responsive'
+
+import s from './DedicOrder.module.scss'
 
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
+
+  const licenceCheck = useRef()
+  const secondTarrif = useRef()
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -60,7 +63,6 @@ export default function DedicOrderModal() {
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR/' + period
 
-    console.log('amout in func', Number(amounts[amounts.length - 1]).toFixed(2))
     return {
       amoumt,
       percent,
@@ -77,9 +79,8 @@ export default function DedicOrderModal() {
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
-  // const datacenterList = [{ $: 'Netherlands Oude Meer [NL]', $key: '7' }]
+  console.log(ordered, 'needing to show payment modal')
 
-  console.log(ordered)
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
       let filterList = el.filter.tag
@@ -115,6 +116,7 @@ export default function DedicOrderModal() {
 
   useEffect(() => {
     setTarifList(tarifsList)
+    secondTarrif && secondTarrif?.current?.click()
   }, [tarifsList])
 
   const validationSchema = Yup.object().shape({
@@ -268,7 +270,7 @@ export default function DedicOrderModal() {
               />
 
               <div className={s.tarifs_block}>
-                {tariffsListToRender?.map(item => {
+                {tariffsListToRender?.map((item, index) => {
                   const descriptionBlocks = item?.desc?.$.split('/')
                   const cardTitle = descriptionBlocks[0]
 
@@ -280,6 +282,7 @@ export default function DedicOrderModal() {
 
                   return (
                     <button
+                      ref={index === 2 ? secondTarrif : null}
                       onClick={() => {
                         setParameters(null)
                         setFieldValue('tarif', item?.pricelist?.$)
@@ -425,7 +428,6 @@ export default function DedicOrderModal() {
                       isShadow
                       label={t('manage_panel')}
                       itemsList={values?.managePanellList?.map(el => {
-                        console.log(el.$)
                         let labelText = el.$
 
                         if (labelText.includes('Without a license')) {
@@ -499,13 +501,14 @@ export default function DedicOrderModal() {
                     />
                   </div>
 
-                  <div className={s.terms_block}>
+                  <div className={s.terms_block} ref={licenceCheck}>
                     <CheckBox
                       setValue={item => setFieldValue('license', item)}
                       className={s.checkbox}
                       error={!!errors.license}
                       touched={!!errors.license}
                     />
+
                     <div className={s.terms_text}>
                       {t('terms')}
                       <br />
@@ -536,6 +539,9 @@ export default function DedicOrderModal() {
                     size="medium"
                     label={t('Buy')}
                     type="submit"
+                    onClick={() =>
+                      licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
+                    }
                   />
                 </div>
               </div>
@@ -548,7 +554,6 @@ export default function DedicOrderModal() {
 }
 
 function updatePrice(formValues, dispatch, setNewPrice) {
-  console.log(formValues.ipTotal)
   dispatch(
     dedicOperations.updatePrice(
       formValues.datacenter,
