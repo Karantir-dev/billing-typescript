@@ -15,7 +15,7 @@ import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 
 import s from './DedicOrderPage.module.scss'
 
-export default function DedicOrderModal() {
+export default function DedicOrderPage() {
   const dispatch = useDispatch()
 
   const licenceCheck = useRef()

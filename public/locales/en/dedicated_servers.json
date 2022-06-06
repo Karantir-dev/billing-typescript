@@ -40,5 +40,11 @@
   "for": "for",
 
   "licence_error": "domain name must include suffix after dot (example: domain.co)",
-  "toaster_text": "The severs is ordered"
+  "toaster_text": "The severs is ordered",
+
+  "mask": "Mask",
+  "gateway": "Gateway",
+  "type": "Type",
+  "domain": "Domain",
+  "IP-addresses count": "IP-addresses count"
 }

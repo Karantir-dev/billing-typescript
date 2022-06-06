@@ -21,6 +21,7 @@ import {
   IP,
   Info,
   ExitSign,
+  Settings,
 } from '../../../images'
 
 export default function Component(props) {
@@ -64,6 +65,8 @@ export default function Component(props) {
         return <Info />
       case 'exitSign':
         return <ExitSign />
+      case 'settings':
+        return <Settings />
 
       default:
         return null

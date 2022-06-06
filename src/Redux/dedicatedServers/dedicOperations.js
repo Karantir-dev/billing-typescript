@@ -652,6 +652,7 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         elid,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {

@@ -1,0 +1,24 @@
+.tools_icon svg {
+  fill: var(--icon-color_2);
+}
+
+.tools_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ip_title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-bottom: 25px;
+}
+
+.order_btn {
+  width: 260px;
+  height: 53px;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 66.3%;
+}

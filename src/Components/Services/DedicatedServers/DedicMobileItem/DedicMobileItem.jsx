@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
 import {
   Clock,
   MoreDots,
@@ -23,7 +21,6 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
-  const navigate = useNavigate()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
@@ -71,7 +68,6 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   disabled={server.has_ip_pricelist?.$ !== 'on'}
-                  onClick={() => navigate(route.DEDICATED_SERVERS_IP)}
                 >
                   <IP className={s.tool_icon} />
                   {t('ip_addresses')}
