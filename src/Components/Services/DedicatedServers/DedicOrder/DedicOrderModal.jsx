@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import s from './DedicOrderModal.module.scss'
@@ -17,6 +17,8 @@ import { useMediaQuery } from 'react-responsive'
 
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
+
+  const licenceCheck = useRef()
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -60,7 +62,6 @@ export default function DedicOrderModal() {
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR/' + period
 
-    console.log('amout in func', Number(amounts[amounts.length - 1]).toFixed(2))
     return {
       amoumt,
       percent,
@@ -77,9 +78,8 @@ export default function DedicOrderModal() {
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
-  // const datacenterList = [{ $: 'Netherlands Oude Meer [NL]', $key: '7' }]
+  console.log(ordered, 'needing to show payment modal')
 
-  console.log(ordered)
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
       let filterList = el.filter.tag
@@ -127,6 +127,14 @@ export default function DedicOrderModal() {
       .required('The terms and conditions must be accepted.')
       .oneOf([true], 'The terms and conditions must be accepted.'),
   })
+
+  // const scrollTo = () => {
+  //   scroller.scrollTo('scroll-to-element', {
+  //     duration: 800,
+  //     delay: 0,
+  //     smooth: 'easeInOutQuart',
+  //   })
+  // }
 
   const handleSubmit = values => {
     const {
@@ -425,7 +433,6 @@ export default function DedicOrderModal() {
                       isShadow
                       label={t('manage_panel')}
                       itemsList={values?.managePanellList?.map(el => {
-                        console.log(el.$)
                         let labelText = el.$
 
                         if (labelText.includes('Without a license')) {
@@ -499,13 +506,14 @@ export default function DedicOrderModal() {
                     />
                   </div>
 
-                  <div className={s.terms_block}>
+                  <div className={s.terms_block} ref={licenceCheck}>
                     <CheckBox
                       setValue={item => setFieldValue('license', item)}
                       className={s.checkbox}
                       error={!!errors.license}
                       touched={!!errors.license}
                     />
+
                     <div className={s.terms_text}>
                       {t('terms')}
                       <br />
@@ -536,6 +544,9 @@ export default function DedicOrderModal() {
                     size="medium"
                     label={t('Buy')}
                     type="submit"
+                    onClick={() =>
+                      licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
+                    }
                   />
                 </div>
               </div>
@@ -548,7 +559,6 @@ export default function DedicOrderModal() {
 }
 
 function updatePrice(formValues, dispatch, setNewPrice) {
-  console.log(formValues.ipTotal)
   dispatch(
     dedicOperations.updatePrice(
       formValues.datacenter,

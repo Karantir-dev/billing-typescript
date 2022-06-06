@@ -15,19 +15,28 @@ export default function EditServerModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
-  const [price, setPrice] = useState()
   const [currentIP, setCurrentIP] = useState()
   const [currentManagePanel, setCurrentManagePanel] = useState()
 
   const [currentOrder, setCurrentOrder] = useState('')
 
-  console.log(currentOrder)
+  const orderText = currentOrder?.$?.split('<br/>')
+    ?.filter(item => item)
+    ?.slice(1)
+
+  let controlPanelText = orderText?.filter(item => item.includes('Control panel'))
+  let ipAdressesText = orderText?.filter(item => item.includes('IP-addresses'))
+  let totalAmountText = orderText?.filter(item => item.includes('Total amount'))
+
+  let amountToPay =
+    totalAmountText &&
+    totalAmountText[0]
+      ?.split(' ')
+      ?.filter(item => !isNaN(item))
+      .join('')
 
   const initialIP = initialState?.ipamount?.$
   const initialManagePanel = initialState?.managePanel
-
-  console.log(price, currentIP, currentManagePanel)
-  console.log(initialIP, initialManagePanel)
 
   const handleEditionModal = () => {
     closeFn()
@@ -36,12 +45,6 @@ export default function EditServerModal({ elid, closeFn }) {
   useEffect(() => {
     dispatch(dedicOperations.getCurrentDedicInfo(elid, setInitialState))
   }, [])
-
-  useEffect(() => {
-    setPrice(initialState?.cost?.$)
-  }, [initialState])
-
-  // console.log(initialState)
 
   const handleSubmit = values => {
     const {
@@ -61,7 +64,7 @@ export default function EditServerModal({ elid, closeFn }) {
     } = values
 
     dispatch(
-      dedicOperations.editDedicServerDataNoExtraCosts(
+      dedicOperations.editDedicServer(
         elid,
         autoprolong,
         domainname,
@@ -112,10 +115,7 @@ export default function EditServerModal({ elid, closeFn }) {
       }}
       onSubmit={handleSubmit}
     >
-      {({ values, setFieldValue, errors }) => {
-        console.log(values)
-        console.log(errors)
-
+      {({ values, setFieldValue }) => {
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>
@@ -205,6 +205,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           }
                         })}
                       className={s.select}
+                      disabled
                     />
                   </div>
                   <div>
@@ -255,6 +256,7 @@ export default function EditServerModal({ elid, closeFn }) {
                         return { label: t(el.$), value: el.$key }
                       })}
                       className={s.select}
+                      disabled
                     />
                   </div>
                 </div>
@@ -355,40 +357,68 @@ export default function EditServerModal({ elid, closeFn }) {
                       return { label: el, value: el }
                     })}
                     className={s.select}
+                    disabled={initialIP === '2'}
                   />
                 </div>
               </div>
             </div>
 
-            <p className={s.total_amount}>
-              {`${t('topay')}:`} <span className={s.price}>{price} EUR</span>
-            </p>
-            <p className={s.order_description}>
-              {currentOrder?.$?.replaceAll(
-                'for order and then',
-                t('for order and then', { ns: 'vds' }),
-              )
-                .replaceAll('per month', t('per month'))
-                .replace('Total amount', t('Total amount'))}
-            </p>
+            {((initialIP !== currentIP && currentIP !== undefined) ||
+              (initialManagePanel !== currentManagePanel &&
+                currentManagePanel !== undefined &&
+                currentManagePanel !== '97')) && (
+              <p className={s.total_amount}>
+                {`${t('topay')}:`}{' '}
+                <span className={s.price}>{`${Number(amountToPay).toFixed(2)} EUR`}</span>
+              </p>
+            )}
+
+            {((initialIP !== currentIP && currentIP !== undefined) ||
+              (initialManagePanel !== currentManagePanel &&
+                currentManagePanel !== undefined &&
+                currentManagePanel !== '97')) && (
+              <p className={s.order_description}>
+                <p className={s.panel_order}>
+                  {controlPanelText
+                    ? controlPanelText[0]
+                        ?.replaceAll(
+                          'for order and then',
+                          t('for order and then', { ns: 'vds' }),
+                        )
+                        ?.replaceAll('per month', t('per month'))
+                    : null}
+                </p>
+
+                <p className={s.ipadresses_order}>
+                  {ipAdressesText &&
+                    ipAdressesText[0]
+                      ?.replaceAll(
+                        'for order and then',
+                        t('for order and then', { ns: 'vds' }),
+                      )
+                      ?.replaceAll('per month', t('per month'))}
+                </p>
+              </p>
+            )}
 
             <div className={s.btns_wrapper}>
-              {(initialIP === currentIP || currentIP === undefined) && (
+              {(initialIP !== currentIP && currentIP !== undefined) ||
+              (initialManagePanel !== currentManagePanel &&
+                currentManagePanel !== undefined &&
+                currentManagePanel !== '97') ? (
+                <Button
+                  className={s.buy_btn}
+                  isShadow
+                  size="medium"
+                  label={t('to_order', { ns: 'other' })}
+                  type="submit"
+                />
+              ) : (
                 <Button
                   className={s.buy_btn}
                   isShadow
                   size="medium"
                   label={t('Save', { ns: 'other' })}
-                  type="submit"
-                />
-              )}
-
-              {initialIP !== currentIP && currentIP !== undefined && (
-                <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Order', { ns: 'other' })}
                   type="submit"
                 />
               )}
@@ -407,16 +437,21 @@ export default function EditServerModal({ elid, closeFn }) {
 function translatePeriod(string, t) {
   let period = ''
 
-  if (string.includes('for three months')) {
-    period = string.replace('for three months', t('for three months'))
+  if (string.includes('three months')) {
+    period = string
+      .replace('three months', t('for three months'))
+      .replace('for', t('for'))
   } else if (string.includes('month')) {
-    period = string.replace('month', t('month'))
-  } else if (string.includes('for three years')) {
-    period = string.replace('for three years', t('for three years'))
-  } else if (string.includes('for two years')) {
-    period = string.replace('for two years', t('for two years'))
+    period = string.replace('month', t('month')).replace('per', t('for'))
+  } else if (string.includes('three years')) {
+    period = string.replace('three years', t('for three years')).replace('for', t('for'))
+  } else if (string.includes('two years')) {
+    period = string.replace('two years', t('for two years')).replace('for', t('for'))
   } else if (string.includes('half a year')) {
-    period = string.replace('half a year', t('half a year'))
+    period = string.replace(
+      'half a year',
+      t('half a year', { ns: 'other' }).toLowerCase(),
+    )
   } else if (string.includes('per year')) {
     period = string.replace('per year', t('per year'))
   } else if (string.includes('Disabled')) {

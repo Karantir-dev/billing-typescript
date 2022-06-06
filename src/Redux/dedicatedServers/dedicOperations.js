@@ -29,7 +29,7 @@ const getServersList = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log('servers list', data.doc.elem)
+
       dispatch(dedicActions.setServersList(data.doc.elem))
       dispatch(actions.hideLoader())
     })
@@ -75,7 +75,6 @@ const getTarifs = () => (dispatch, getState) => {
         currentDatacenter,
       }
 
-      console.log('tariffs, first page', data)
       dispatch(dedicActions.setTarifList(orderData))
       dispatch(actions.hideLoader())
     })
@@ -194,7 +193,7 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log('params', data)
+
         const IP = Object.keys(data.doc)
         const currentSumIp = IP.filter(
           item => item.includes('addon') && item.includes('current_value'),
@@ -259,9 +258,6 @@ const updatePrice =
     const {
       auth: { sessionId },
     } = getState()
-
-    console.log('managePanelName', managePanelName)
-    console.log('ipName', ipName)
 
     axiosInstance
       .post(
@@ -432,8 +428,6 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
       let addonsNames = findPanelName.filter(item => item.includes('addon'))
       let panelName = addonsNames[1]
       let currentPanelValue = data.doc.doc[panelName].$
-      console.log(panelName)
-      console.log(currentPanelValue)
 
       const { slist: paramsList } = data.doc.doc
       const {
@@ -453,8 +447,6 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         userpassword,
         password,
       } = data.doc.doc
-
-      console.log('data.doc.doc to find manage panel', data.doc.doc)
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
 
@@ -502,7 +494,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
     })
 }
 
-const editDedicServerDataNoExtraCosts =
+const editDedicServer =
   (
     elid,
     autoprolong,
@@ -551,12 +543,8 @@ const editDedicServerDataNoExtraCosts =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log('editDedicServerDataNoExtraCosts')
 
         const billorder = data?.doc?.billorder?.$
-
-        console.log('look for price price', data)
-        console.log(billorder, 'billorder')
 
         toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
           position: 'bottom-right',
@@ -576,6 +564,8 @@ const editDedicServerDataNoExtraCosts =
           .then(data => {
             console.log(data)
             dispatch(actions.hideLoader())
+
+            //open modal for ordering, need to add
           })
 
         handleModal()
@@ -635,11 +625,6 @@ const updatePriceEditModal =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        const billorder = data?.doc?.billorder?.$
-
-        console.log('look for price price', data)
-        console.log(data.doc.orderinfo)
-        console.log(billorder, 'billorder')
 
         setCurrentAmout({ ...currentOrder, ...data.doc.orderinfo })
         dispatch(actions.hideLoader())
@@ -661,7 +646,6 @@ export default {
   getPrintLicense,
   getServersList,
   getCurrentDedicInfo,
-  editDedicServerDataNoExtraCosts,
+  editDedicServer,
   updatePriceEditModal,
-  // editDedicServerWithExtraCosts,
 }
