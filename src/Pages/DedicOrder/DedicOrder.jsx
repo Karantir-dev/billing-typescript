@@ -1,24 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import s from './DedicOrderModal.module.scss'
-import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
+import { BreadCrumbs, Button, CheckBox, Toggle } from '../../Components'
+import { useLocation } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import Select from '../../../ui/Select/Select'
-import InputField from '../../../ui/InputField/InputField'
-import classNames from 'classnames'
 
-import { BreadCrumbs, Button, CheckBox, Toggle } from '../../..'
-import { useLocation } from 'react-router-dom'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
-import { useMediaQuery } from 'react-responsive'
+import dedicSelectors from '../../Redux/dedicatedServers/dedicSelectors'
+import Select from '../../Components/ui/Select/Select'
+import InputField from '../../Components/ui/InputField/InputField'
+import dedicOperations from '../../Redux/dedicatedServers/dedicOperations'
+
+import s from './DedicOrder.module.scss'
 
 export default function DedicOrderModal() {
   const dispatch = useDispatch()
 
   const licenceCheck = useRef()
+  const secondTarrif = useRef()
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -117,6 +118,10 @@ export default function DedicOrderModal() {
     setTarifList(tarifsList)
   }, [tarifsList])
 
+  useEffect(() => {
+    secondTarrif.current.click()
+  }, [])
+
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
     domainname: Yup.string().matches(
@@ -127,14 +132,6 @@ export default function DedicOrderModal() {
       .required('The terms and conditions must be accepted.')
       .oneOf([true], 'The terms and conditions must be accepted.'),
   })
-
-  // const scrollTo = () => {
-  //   scroller.scrollTo('scroll-to-element', {
-  //     duration: 800,
-  //     delay: 0,
-  //     smooth: 'easeInOutQuart',
-  //   })
-  // }
 
   const handleSubmit = values => {
     const {
@@ -276,7 +273,7 @@ export default function DedicOrderModal() {
               />
 
               <div className={s.tarifs_block}>
-                {tariffsListToRender?.map(item => {
+                {tariffsListToRender?.map((item, index) => {
                   const descriptionBlocks = item?.desc?.$.split('/')
                   const cardTitle = descriptionBlocks[0]
 
@@ -288,6 +285,7 @@ export default function DedicOrderModal() {
 
                   return (
                     <button
+                      ref={index === 2 ? secondTarrif : null}
                       onClick={() => {
                         setParameters(null)
                         setFieldValue('tarif', item?.pricelist?.$)
