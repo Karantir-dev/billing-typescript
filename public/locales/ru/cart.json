@@ -1,3 +1,15 @@
 {
-  "Payment": "Оплата"
+  "Payment": "Оплата",
+  "Account balance": "Лицевой счет",
+  "Payment method": "Способ оплаты",
+  "Payer": "Плательщик",
+  "Payment using text": "Оплата с помощью банковских карт VISA, MasterCard и American Express. При заказе услуги с включенным автопродлением, карта будет сохранена для дальнейшей оплаты.",
+  "Payment amount": "Сумма платежа от",
+  "Promo code": "Промокод",
+  "Total": "Всего",
+  "Domain registration": "Регистрация домена",
+  "Data protection": "Защита данных",
+  "(Disable)": "(Выкл.)",
+  "(Enable)": "(Вкл.)",
+  "After closing your order will be automatically deleted": "После закрытия ваш заказ будет автоматически удален"
 }

@@ -34,7 +34,7 @@ import { cartSelectors } from '../../Redux'
 import * as route from '../../routes'
 
 const Component = () => {
-  const cartIsOpened = useSelector(cartSelectors?.getCartIsOpened)
+  const cartState = useSelector(cartSelectors?.getCartIsOpened)
 
   return (
     <Container>
@@ -144,7 +144,7 @@ const Component = () => {
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
 
-      {cartIsOpened && (
+      {cartState?.isOpened && (
         <Portal>
           <Cart />
         </Portal>
