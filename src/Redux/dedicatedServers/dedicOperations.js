@@ -636,6 +636,38 @@ const updatePriceEditModal =
       })
   }
 
+// IP-addresses
+const getIPList = (elid, setIPlist) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.ip',
+        out: 'json',
+        auth: sessionId,
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data)
+      setIPlist(data.doc.elem)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -648,4 +680,5 @@ export default {
   getCurrentDedicInfo,
   editDedicServer,
   updatePriceEditModal,
+  getIPList,
 }

@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useDispatch } from 'react-redux'
 import { BreadCrumbs } from '../../../../Components'
 import { useLocation } from 'react-router-dom'
 
 import s from './DedicIPPage.module.scss'
+import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { useDispatch } from 'react-redux'
+import DedicIPList from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPList/DedicIPList'
 
 export default function DedicIPpage() {
-  //   const dispatch = useDispatch()
-
   const location = useLocation()
 
   const parseLocations = () => {
@@ -18,14 +19,17 @@ export default function DedicIPpage() {
     return pathnames
   }
 
+  const dispatch = useDispatch()
+  const [IPList, setIPList] = useState([])
+
   useEffect(() => {
-    console.log('first render')
+    dispatch(dedicOperations.getIPList('3568378', setIPList)) // to get ID
   }, [])
 
   return (
-    <div className={s.modalHeader}>
+    <div className={s.page_container}>
       <BreadCrumbs pathnames={parseLocations()} />
-      {/* <h2 className={s.page_title}>{t('page_title')}</h2> */}
+      <DedicIPList IPList={IPList} />
     </div>
   )
 }

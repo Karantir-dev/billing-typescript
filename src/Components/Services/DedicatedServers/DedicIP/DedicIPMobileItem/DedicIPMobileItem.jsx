@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
+import * as route from '../../../../../routes'
 import {
   Clock,
   MoreDots,
@@ -11,14 +11,13 @@ import {
   IP,
   Info,
   ExitSign,
-} from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+} from '../../../../../images'
+import { useOutsideAlerter } from '../../../../../utils'
 import PropTypes from 'prop-types'
 
-import s from './DedicMobileItem.module.scss'
-import ServerState from '../../../vds/ServerState/ServerState'
+import s from './DedicIPMobileItem.module.scss'
 
-export default function DedicMobileItem({ server, setElidForEditModal }) {
+export default function DedicIPMobileItem({ server, setElidForEditModal }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
@@ -135,7 +134,7 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
       </span>
 
       <span className={s.label}>{t('status')}:</span>
-      <ServerState className={s.value} server={server} />
+
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>
@@ -144,7 +143,7 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
   )
 }
 
-DedicMobileItem.propTypes = {
+DedicIPMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
 }
