@@ -3,7 +3,7 @@
   "domain_name": "Domain name",
   "ip_address": "IP address",
   "ip_addresses": "IP addresses",
-  "OS_template": "OS template",
+  "ostempl": "OS template",
   "tariff": "Tariff plan",
   "data_center": "Data center",
   "status": "Status",
@@ -52,5 +52,10 @@
   "payment_method": "Payment method",
   "total_amount": "Total amount",
   "for order and then": "for order and then",
-  "Personal account": "Personal account"
+  "Personal account": "Personal account",
+  "Серверы с NVMe дисками": "Servers with NVMe drives",
+  "Серверы с SSD дисками": "Servers with SSD disks",
+  "Серверы с защитой от DDoS": "DDoS protected servers",
+  "tariffs": "Tariffs",
+  "characteristics": "Characteristics"
 }

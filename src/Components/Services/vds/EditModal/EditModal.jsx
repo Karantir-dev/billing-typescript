@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../Redux'
-import { Cross, ArrowSign } from '../../../images'
+import { vdsOperations } from '../../../../Redux'
+import { Cross, ArrowSign } from '../../../../images'
 import { Formik, Form } from 'formik'
 import cn from 'classnames'
 
 import s from './EditModal.module.scss'
-import InputField from '../../ui/InputField/InputField'
-import { Select, Button } from '../../'
+import InputField from '../../../ui/InputField/InputField'
+import { Select, Button } from '../../..'
 
 export default function EditModal({ elid, closeFn }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -231,7 +231,7 @@ export default function EditModal({ elid, closeFn }) {
                   className={s.mb}
                   inputClassName={s.bgc}
                   name="ostempl"
-                  label={`${t('OS_template')}:`}
+                  label={`${t('ostempl')}:`}
                   isShadow
                   disabled
                 />

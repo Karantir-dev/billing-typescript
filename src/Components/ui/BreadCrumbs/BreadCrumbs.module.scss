@@ -2,11 +2,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .linksBlock {
-  margin-top: 10px;
   &:not(:first-child) {
     margin-left: 5px;
   }
@@ -28,5 +27,11 @@
       color: var(--transparent-color);
       cursor: default;
     }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .crumbs {
+    margin-bottom: 40px;
   }
 }

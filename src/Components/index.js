@@ -95,11 +95,11 @@ export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPag
 export { default as DedicOrderModal } from './Services/DedicatedServers/DedicOrder/DedicOrderModal'
 
 //==========================================VDS==========================================//
-export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
-export { default as VDSItem } from './vds/VDSItem/VDSItem'
-export { default as VDSList } from './vds/VDSList/VDSList'
-export { default as ServerState } from './vds/ServerState/ServerState'
-export { default as EditModal } from './vds/EditModal/EditModal'
+export { default as VDSmobileItem } from './Services/vds/VDSmobileItem/VDSmobileItem'
+export { default as VDSItem } from './Services/vds/VDSItem/VDSItem'
+export { default as VDSList } from './Services/vds/VDSList/VDSList'
+export { default as ServerState } from './Services/vds/ServerState/ServerState'
+export { default as EditModal } from './Services/vds/EditModal/EditModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
