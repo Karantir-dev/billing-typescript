@@ -46,5 +46,9 @@
   "gateway": "Gateway",
   "type": "Type",
   "domain": "Domain",
-  "IP-addresses count": "IP-addresses count"
+  "IP-addresses count": "IP-addresses count",
+  "limit_ip": "The limit of available IP addresses for ordering has been reached",
+  "After accepting your IP-address will be automatically deleted": "After confirmation, your IP address will be automatically deleted",
+  "Resource change is forbidden by provider. Contact technical support": "Resource change is forbidden by provider. Contact technical support",
+  "main_ip": "Main IP"
 }

@@ -11,24 +11,23 @@ import DedicIPMobileItem from '../DedicIPMobileItem/DedicIPMobileItem'
 export default function DedicIPList({
   IPList,
   setElidForEditModal,
+  setElidForDeleteModal,
   setActiveIP,
   activeIP,
 }) {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
-  console.log(IPList)
-
   return (
     <>
       {widerThan1550 && (
         <ul className={s.head_row}>
-          <li className={s.label}>{t('ip_address')}:</li>
-          <li className={s.label}>{t('mask', { ns: 'dedicated_servers' })}:</li>
-          <li className={s.label}>{t('gateway', { ns: 'dedicated_servers' })}:</li>
-          <li className={s.label}>{t('domain', { ns: 'dedicated_servers' })}:</li>
-          <li className={s.label}>{t('type', { ns: 'dedicated_servers' })}:</li>
-          <li className={s.label}>{t('status', { ns: 'other' })}:</li>
+          <li className={s.table_head}>{t('ip_address')}:</li>
+          <li className={s.table_head}>{t('mask', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('gateway', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('domain', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('type', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
         </ul>
       )}
 
@@ -45,7 +44,9 @@ export default function DedicIPList({
             <DedicIPMobileItem
               key={el.id.$}
               ip={el}
+              setActiveIP={setActiveIP}
               setElidForEditModal={setElidForEditModal}
+              setElidForDeleteModal={setElidForDeleteModal}
             />
           )
         })}

@@ -115,7 +115,7 @@ export default function DedicatedServersPage() {
           className={s.order_btn}
           isShadow
           type="button"
-          label={t('to_order', { ns: 'other' })}
+          label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
           onClick={() => navigate(route.DEDICATED_SERVERS_ORDER)}
         />
       </div>

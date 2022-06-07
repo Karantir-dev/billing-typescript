@@ -2,13 +2,18 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 // import { useNavigate } from 'react-router-dom'
 // import * as route from '../../../../../routes'
-import { MoreDots, Delete, Settings } from '../../../../../images'
+import { MoreDots, Delete, Settings, Flag } from '../../../../../images'
 import { useOutsideAlerter } from '../../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './DedicIPMobileItem.module.scss'
+import HintWrapper from '../../../../ui/HintWrapper/HintWrapper'
 
-export default function DedicIPMobileItem({ ip, setElidForEditModal }) {
+export default function DedicIPMobileItem({
+  ip,
+  setElidForEditModal,
+  setElidForDeleteModal,
+}) {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
   const dropdownEl = useRef()
 
@@ -22,7 +27,7 @@ export default function DedicIPMobileItem({ ip, setElidForEditModal }) {
     setToolsOpened(false)
   }
 
-  console.log(ip?.ip_status?.$)
+  console.log(ip)
 
   return (
     <li className={s.item}>
@@ -41,7 +46,7 @@ export default function DedicIPMobileItem({ ip, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
-                  onClick={() => handleToolBtnClick(setElidForEditModal, ip.id.$)}
+                  onClick={() => handleToolBtnClick(setElidForEditModal, ip?.id.$)}
                 >
                   <Settings className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
@@ -52,7 +57,8 @@ export default function DedicIPMobileItem({ ip, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={ip.transition?.$ !== 'on'}
+                  disabled={ip?.no_delete?.$ === 'on'}
+                  onClick={() => handleToolBtnClick(setElidForDeleteModal, ip?.id.$)}
                 >
                   <Delete className={s.tool_icon} />
                   {t('Remove')}
@@ -62,6 +68,14 @@ export default function DedicIPMobileItem({ ip, setElidForEditModal }) {
           </div>
         )}
       </div>
+
+      {ip?.is_main?.$ === 'on' && (
+        <div className={s.hint_wrapper}>
+          <HintWrapper label={t('main_ip', { ns: 'dedicated_servers' })}>
+            <Flag className={s.flag_icon} />
+          </HintWrapper>
+        </div>
+      )}
 
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{ip?.name?.$}</span>

@@ -107,3 +107,17 @@
   width: 20px;
   fill: var(--icon-color_2);
 }
+
+.flag_icon {
+  fill: #ad9acc;
+
+  &:hover {
+    fill: url(#gradient);
+  }
+}
+
+.hint_wrapper {
+  position: absolute;
+  top: 0px;
+  left: 15px;
+}
