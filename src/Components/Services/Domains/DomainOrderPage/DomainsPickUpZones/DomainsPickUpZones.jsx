@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Cross } from '../../../../../images'
-import { Button } from '../../../../'
+import { Button, CheckBox } from '../../../../'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '../../../../../routes'
@@ -16,11 +16,30 @@ export default function ServicesPage(props) {
     setSelectedDomains,
     selected,
     registerDomainHandler,
+    transfer,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!transfer) {
+      const suggested = []
+      const allResults = []
+      domains?.forEach(d => {
+        if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
+          suggested.push(d)
+          setIsSelectedHandler(d)
+        } else {
+          allResults.push(d)
+        }
+      })
+      setDomainsList({ suggested, allResults })
+    } else {
+      setDomainsList(domains)
+    }
+  }, [domains])
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -38,15 +57,21 @@ export default function ServicesPage(props) {
 
     let amoumt = (
       <span>
-        {amounts[amounts.length - 1] + ' ' + 'EUR/'}
-        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+        {amounts[amounts.length - 1] + ' ' + 'EUR'}
+        <span className={s.year}>
+          {transfer ? ' ' : '/'}
+          {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
+        </span>
       </span>
     )
     let percent = amounts[0] + '%'
     let sale = (
       <span>
-        {amounts[1] + ' ' + 'EUR/'}
-        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+        {amounts[1] + ' ' + 'EUR'}
+        <span className={s.year}>
+          {transfer ? ' ' : '/'}
+          {t(transfer ? '' : 'year', { ns: 'other' })}
+        </span>
       </span>
     )
     return {
@@ -94,27 +119,9 @@ export default function ServicesPage(props) {
     return sum.toFixed(2)
   }
 
-  useEffect(() => {
-    const suggested = []
-    const allResults = []
-    domains?.forEach(d => {
-      if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
-        suggested.push(d)
-        setIsSelectedHandler(d)
-      } else {
-        allResults.push(d)
-      }
-    })
-    setDomainsList({ suggested, allResults })
-  }, [domains])
-
-  return (
-    <div className={s.domainsZone}>
-      {domainsList?.suggested?.length > 0 && (
-        <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
-      )}
-
-      {domainsList?.suggested?.length > 0 && (
+  const renderDomainSuggested = () => {
+    return (
+      domainsList?.suggested?.length > 0 && (
         <div className={cn(s.domainsBlock, s.suggested)}>
           {domainsList?.suggested?.map(d => {
             const { id, domain, price } = d
@@ -131,7 +138,15 @@ export default function ServicesPage(props) {
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
-                <div className={s.domainName}>{domain?.$}</div>
+                <div className={s.domainName}>
+                  <div>{domain?.$}</div>
+                  <div className={s.domainPriceMobile}>
+                    {parsePrice(price?.$)?.amoumt}
+                  </div>
+                  {parsePrice(price?.$)?.length > 1 && (
+                    <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
+                  )}
+                </div>
                 <div className={s.pricesBlock}>
                   <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
                   {parsePrice(price?.$)?.length > 1 && (
@@ -145,13 +160,13 @@ export default function ServicesPage(props) {
             )
           })}
         </div>
-      )}
+      )
+    )
+  }
 
-      {domainsList?.allResults?.length > 0 && (
-        <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
-      )}
-
-      {domainsList?.allResults?.length > 0 && (
+  const renderDomainAll = () => {
+    return (
+      domainsList?.allResults?.length > 0 && (
         <div className={s.domainsBlock}>
           {domainsList?.allResults?.map(d => {
             const { id, domain, price } = d
@@ -175,7 +190,9 @@ export default function ServicesPage(props) {
                 )}
                 <div className={s.domainName}>
                   <div>{domain?.$}</div>
-                  <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
+                  <div className={s.domainPriceMobile}>
+                    {parsePrice(price?.$)?.amoumt}
+                  </div>
                   {parsePrice(price?.$)?.length > 1 && (
                     <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
                   )}
@@ -202,6 +219,81 @@ export default function ServicesPage(props) {
             )
           })}
         </div>
+      )
+    )
+  }
+
+  const renderDomainTransferAll = () => {
+    return (
+      Array.isArray(domainsList) &&
+      domainsList?.length > 0 && (
+        <div className={s.domainsBlockTransfer}>
+          {domainsList?.map(d => {
+            const { id, domain, price } = d
+
+            const notAvailable = d?.desc?.$.includes('Not registered')
+
+            return (
+              <div
+                key={id?.$}
+                className={cn(s.domainItemTransfer, {
+                  [s.selected]: itemIsSelected(d),
+                  [s.notAvailable]: notAvailable,
+                })}
+                // onClick={() => !notAvailable && setIsSelectedHandler(d)}
+              >
+                {parsePrice(price?.$)?.length > 1 && (
+                  <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+                )}
+                <CheckBox
+                  setValue={isChecked => {
+                    if (isChecked) {
+                      setIsSelectedHandler(d)
+                    } else if (itemIsSelected(d)) {
+                      setIsSelectedHandler(d)
+                    }
+                  }}
+                  className={s.checkbox}
+                />
+                <div className={s.domainNameTransfer}>{domain?.$}</div>
+                <div className={s.pricesBlockTransfer}>
+                  {parsePrice(price?.$)?.length > 1 && (
+                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  )}
+                  <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )
+    )
+  }
+
+  return (
+    <div className={s.domainsZone}>
+      {transfer ? (
+        <>
+          {Array.isArray(domainsList) && domainsList?.length > 0 && (
+            <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
+          )}
+
+          {renderDomainTransferAll()}
+        </>
+      ) : (
+        <>
+          {domainsList?.suggested?.length > 0 && (
+            <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
+          )}
+
+          {renderDomainSuggested()}
+
+          {domainsList?.allResults?.length > 0 && (
+            <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
+          )}
+
+          {renderDomainAll}
+        </>
       )}
 
       <div className={s.selectedDomainsBlock}>

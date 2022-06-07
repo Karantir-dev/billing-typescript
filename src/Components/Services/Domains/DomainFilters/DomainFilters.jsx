@@ -21,7 +21,10 @@ export default function Component(props) {
           <IconButton onClick={() => null} icon="filter" className={s.calendarBtn} />
         </div>
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('Transfer')}>
-          <IconButton onClick={() => null} icon="transfer" />
+          <IconButton
+            onClick={() => navigate(routes.DOMAINS_TRANSFER_ORDERS)}
+            icon="transfer"
+          />
         </HintWrapper>
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
           <IconButton disabled={!selctedItem} onClick={() => null} icon="edit" />

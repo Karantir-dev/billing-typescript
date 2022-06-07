@@ -43,5 +43,7 @@
   "Disabled": "Отключить",
   "Transfer": "Трансфер",
   "Getting information about a domain using the whois protocol": "Получение информации о домене по протоколу whois",
-  "View/change the list of nameservers": "Просмотреть/изменить список серверов имен"
+  "View/change the list of nameservers": "Просмотреть/изменить список серверов имен",
+  "Domain name transfer": "Трансфер доменного имени",
+  "Check": "Проверить"
 }

@@ -23,7 +23,9 @@ export default function Component(props) {
 
         let onItemClick = () => setSelctedItem(el)
 
-        console.log(el)
+        if (domain?.$ === 'rwer.ac') {
+          console.log(el)
+        }
         return (
           <PaymentsTableItem
             key={id?.$}

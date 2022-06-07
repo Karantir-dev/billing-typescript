@@ -64,9 +64,43 @@
   }
 }
 
+.domainItemTransfer {
+  padding: 19px 25px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms_bgc_2);
+  position: relative;
+  flex-basis: 100%;
+  margin-top: 10px;
+
+  &.selected {
+    .domainName {
+      font-weight: 400;
+    }
+    .domainPrice {
+      font-weight: 400;
+    }
+  }
+}
+
 .domainsBlock {
   display: flex;
   max-width: 560px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--border-color);
+
+  &.suggested {
+    border-bottom: none;
+  }
+}
+
+.domainsBlockTransfer {
+  display: flex;
+  max-width: 920px;
   margin-top: 20px;
   flex-wrap: wrap;
   padding-bottom: 30px;
@@ -88,6 +122,18 @@
   margin-right: 20px;
 }
 
+.domainNameTransfer {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  flex-basis: 33%;
+
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 .domainPrice {
   font-style: normal;
   font-weight: 300;
@@ -98,10 +144,37 @@
 
 .domainPriceMobile {
   margin-top: 10px;
+  span {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+  }
 }
 
 .pricesBlock {
   display: none;
+}
+
+.pricesBlockTransfer {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 33%;
+
+  .saleEur {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+  }
+
+  .domainPrice {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+  }
 }
 
 .sale {
@@ -204,7 +277,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  max-width: 450px;
+  max-width: 550px;
   width: 100%;
 
   margin-top: 17px;
@@ -255,6 +328,25 @@
     display: flex;
     flex-direction: column;
     flex-basis: 33%;
+  }
+
+  .pricesBlockTransfer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-basis: 33%;
+
+    .saleEur {
+      white-space: nowrap;
+      margin-top: 0;
+      margin-right: 5px;
+    }
+
+    .domainPrice {
+      white-space: nowrap;
+      margin-top: 0;
+      margin-right: 5px;
+    }
   }
 
   .domainName {
