@@ -100,5 +100,10 @@
   "Enter region": "Введите регион",
   "Proceed": "Продолжить",
   "You must agree to the terms of the Service Agreement to be able to proceed": "Вы должны согласиться с условиями \"Соглашения о предоставлении услуг\", чтобы иметь возможность продолжить",
-  "The 'NS' field has invalid value. The value cannot be empty": "Поле 'NS' имеет недопустимое значение. Значение не может быть пустым"
+  "The 'NS' field has invalid value. The value cannot be empty": "Поле 'NS' имеет недопустимое значение. Значение не может быть пустым",
+  "Editing a service": "Редактирование услуги",
+  "Enter promo code": "Введите промокод",
+  "Apply": "Применить",
+  "Invalid promo code": "Недействительный промо-код",
+  "Close": "Закрыть"
 }

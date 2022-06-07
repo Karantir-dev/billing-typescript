@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
+import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
 export default function ServicesPage() {
@@ -357,7 +358,11 @@ export default function ServicesPage() {
                       label={t('Proceed', { ns: 'other' })}
                       type="submit"
                     />
-                    <button onClick={() => null} type="button" className={s.cancel}>
+                    <button
+                      onClick={() => navigate(route.DOMAINS)}
+                      type="button"
+                      className={s.cancel}
+                    >
                       {t('Cancel', { ns: 'other' })}
                     </button>
                   </div>

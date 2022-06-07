@@ -10,11 +10,12 @@ import {
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations } from '../../../../Redux'
 import { Shevron } from '../../../../images'
 import { BASE_URL } from '../../../../config/config'
+import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainContactInfoPage.module.scss'
 
@@ -36,7 +37,11 @@ export default function ServicesPage() {
   const { state } = location
 
   useEffect(() => {
-    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo))
+    if (state?.domainInfo) {
+      dispatch(
+        domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo),
+      )
+    }
   }, [])
 
   const parseLocations = () => {
@@ -251,6 +256,10 @@ export default function ServicesPage() {
   const setContactsHandler = values => {
     const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
     dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate))
+  }
+
+  if (!state?.domainInfo) {
+    return <Navigate to={route.DOMAINS_ORDERS} />
   }
 
   return (
@@ -1469,7 +1478,11 @@ export default function ServicesPage() {
                   label={t('Proceed', { ns: 'other' })}
                   type="submit"
                 />
-                <button onClick={() => null} type="button" className={s.cancel}>
+                <button
+                  onClick={() => navigate(route.DOMAINS)}
+                  type="button"
+                  className={s.cancel}
+                >
                   {t('Cancel', { ns: 'other' })}
                 </button>
               </div>

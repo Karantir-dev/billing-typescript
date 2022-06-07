@@ -20,8 +20,10 @@ export default function Component(props) {
       </div>
       {list?.map(el => {
         const { id, domain, pricelist, real_expiredate, item_status, cost } = el
+
         let onItemClick = () => setSelctedItem(el)
 
+        console.log(el)
         return (
           <PaymentsTableItem
             key={id?.$}
@@ -33,6 +35,7 @@ export default function Component(props) {
             cost={cost?.$}
             setSelctedItem={onItemClick}
             selected={selctedItem?.id?.$ === id?.$}
+            el={el}
           />
         )
       })}

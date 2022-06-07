@@ -27,8 +27,7 @@
 }
 
 .domainItemBg {
-  flex-basis: 20%;
-  margin-right: 25px;
+  flex-basis: 100%;
   margin-top: 20px;
   border-radius: 3px;
   background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
@@ -150,4 +149,11 @@
 
 .year {
   text-transform: lowercase;
+}
+
+@media screen and (min-width: 768px) {
+  .domainItemBg {
+    flex-basis: 20%;
+    margin-right: 25px;
+  }
 }

@@ -1,11 +1,54 @@
 import qs from 'qs'
-import { actions } from '..'
+import i18n from './../../i18n'
+import { actions, cartActions, billingOperations } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
+import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
 
-const getBasket =
-  (body = {}) =>
-  (dispatch, getState) => {
+const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'basket',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const cartData = {
+        total_sum: data.doc?.total_sum?.$,
+        full_discount: data.doc?.total_sum?.$,
+        billorder: data?.doc?.billorder?.$,
+      }
+
+      data.doc?.list?.forEach(el => {
+        if (el.$name === 'itemlist') {
+          cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
+        }
+      })
+
+      setCartData && setCartData(cartData)
+      setPaymentsMethodList &&
+        dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const setBasketPromocode =
+  (promocode, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -19,17 +62,20 @@ const getBasket =
           func: 'basket',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
-          p_col: '+time',
-          clickstat: 'yes',
-          ...body,
+          sok: 'ok',
+          promocode,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
 
-        console.log(data.doc)
-        dispatch(getPaymentMethods(data?.doc?.billorder?.$))
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
         console.log('error', error)
@@ -38,7 +84,71 @@ const getBasket =
       })
   }
 
-const getPaymentMethods = billorder => (dispatch, getState) => {
+const deleteBasketItem =
+  (id, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'basket',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          id,
+          clicked_button: 'delete',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(getBasket(setCartData, setPaymentsMethodList))
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const clearBasket = id => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'basket',
+        out: 'json',
+        auth: sessionId,
+        sok: 'ok',
+        id,
+        clicked_button: 'clearbasket',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -58,7 +168,11 @@ const getPaymentMethods = billorder => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
+      data.doc?.list?.forEach(el => {
+        if (el.$name === 'methodlist') {
+          setPaymentsMethodList && setPaymentsMethodList(el?.elem)
+        }
+      })
 
       dispatch(actions.hideLoader())
     })
@@ -69,6 +183,54 @@ const getPaymentMethods = billorder => (dispatch, getState) => {
     })
 }
 
+const setPaymentMethods =
+  (body = {}, navigate) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+      cart: { cartState },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add.method',
+          out: 'json',
+          sok: 'ok',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+          dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
+        }
+
+        navigate && navigate(cartState?.redirectPath)
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: false,
+            redirectPath: '',
+          }),
+        )
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getBasket,
+  setBasketPromocode,
+  deleteBasketItem,
+  clearBasket,
+  setPaymentMethods,
 }

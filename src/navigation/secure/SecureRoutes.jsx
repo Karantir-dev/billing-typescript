@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Cart,
   Container,
-  DedicOrderModal,
+  DedicOrderPage,
   EmailConfirmation,
   Portal,
   PrivateRoute,
@@ -29,13 +29,14 @@ import {
   DedicatedServersPage,
   DomainContactInfoPage,
   DomainsNsPage,
+  DedicIPpage,
 } from '../../Pages'
 import { cartSelectors } from '../../Redux'
 
 import * as route from '../../routes'
 
 const Component = () => {
-  const cartIsOpened = useSelector(cartSelectors?.getCartIsOpened)
+  const cartState = useSelector(cartSelectors?.getCartIsOpened)
 
   return (
     <Container>
@@ -91,8 +92,13 @@ const Component = () => {
         <Route
           path={route.DEDICATED_SERVERS_ORDER}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderModal />} />
+            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
           }
+        />
+
+        <Route
+          path={route.DEDICATED_SERVERS_IP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
         />
 
         <Route
@@ -149,7 +155,7 @@ const Component = () => {
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
 
-      {cartIsOpened && (
+      {cartState?.isOpened && (
         <Portal>
           <Cart />
         </Portal>
