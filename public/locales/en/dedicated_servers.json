@@ -24,6 +24,8 @@
   "Year": "Year",
   "Two years": "Two years",
   "Three years": "Three years",
+  "per year": "per year",
+  "month": "month",
 
   "Disabled": "Disabled",
   "per month": "month",
@@ -35,6 +37,7 @@
   "for three months": "three months",
   "for two years": "two years",
   "for three years": "three years",
+  "for": "for",
 
   "licence_error": "domain name must include suffix after dot (example: domain.co)",
   "toaster_text": "The severs is ordered"

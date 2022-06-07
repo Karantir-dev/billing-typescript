@@ -6,5 +6,6 @@
   "domain_params": "Параметры услуги",
   "dedicated_servers": "Выделенные серверы",
   "order": "Заказ выделенного сервера",
-  "domain_transfer_orders": "Трансфер доменного имени"
+  "domain_transfer_orders": "Трансфер доменного имени",
+  "ip": "IP-адрес"
 }
