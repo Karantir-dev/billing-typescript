@@ -55,7 +55,7 @@ jobs:
         if: always()
 
   deploy:
-    needs: [eslint, jest]
+    needs: [jest]
     name: Deploy image to server
     runs-on: ubuntu-latest
     steps:
