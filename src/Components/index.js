@@ -100,6 +100,7 @@ export { default as VDSItem } from './Services/vds/VDSItem/VDSItem'
 export { default as VDSList } from './Services/vds/VDSList/VDSList'
 export { default as ServerState } from './Services/vds/ServerState/ServerState'
 export { default as EditModal } from './Services/vds/EditModal/EditModal'
+export { default as OstemplVDSbtn } from './Services/vds/OstemplVDSbtn/OstemplVDSbtn'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

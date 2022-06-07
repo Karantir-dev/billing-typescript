@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom'
-import { BreadCrumbs, Select } from '../../../Components'
+import { BreadCrumbs, Select, OstemplVDSbtn } from '../../../Components'
 import { vdsOperations } from '../../../Redux'
 
 import s from './VDSOrder.module.scss'
@@ -59,7 +59,7 @@ export default function VDSOrder() {
     return { percent, oldPrice, newPrice }
   }
 
-  const renderMultiField = name => {
+  const renderOstemplFields = (name, setFieldValue) => {
     const dataArr = parametersInfo.slist.find(el => el.$name === name).val
 
     const elemsData = {}
@@ -76,9 +76,23 @@ export default function VDSOrder() {
 
     return Object.values(elemsData).map(el => {
       if (el.length > 1) {
-        return <Select isShadow />
+        const optionsList = el.map(({ $key, $ }) => ({
+          value: $key,
+          label: $,
+        }))
+
+        return (
+          <Select
+            isShadow
+            itemsList={optionsList}
+            value={optionsList[0].value}
+            getElement={value => {
+              setFieldValue('ostempl', value)
+            }}
+          />
+        )
       } else {
-        return
+        return <OstemplVDSbtn />
       }
     })
   }
@@ -191,7 +205,7 @@ export default function VDSOrder() {
                     <p className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
-                    {renderMultiField('ostempl')}
+                    {renderOstemplFields('ostempl', setFieldValue)}
                     <p className={s.section_title}>
                       {t('recipe', { ns: 'dedicated_servers' })}
                     </p>
