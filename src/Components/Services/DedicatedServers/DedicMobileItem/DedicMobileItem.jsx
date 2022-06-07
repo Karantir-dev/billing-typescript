@@ -16,7 +16,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './DedicMobileItem.module.scss'
-import ServerState from '../../../vds/ServerState/ServerState'
+import { ServerState } from '../../../'
 
 export default function DedicMobileItem({ server, setElidForEditModal }) {
   const { t } = useTranslation(['vds', 'other'])

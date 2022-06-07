@@ -6,5 +6,7 @@
   "domain_params": "Service parameters",
   "dedicated_servers": "Dedicated servers",
   "order": "Dedicated server order",
+  "vds": "Servers VDS/VPS",
+  "vds_order": "Ordering a virtual server",
   "ip": "IP-address"
 }

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DedicItem.module.scss'
-import ServerState from '../../../vds/ServerState/ServerState'
+import { ServerState } from '../../../'
 
 export default function DedicItem({ server, setActiveServer, activeServerID }) {
   const { t } = useTranslation(['vds', 'other'])
