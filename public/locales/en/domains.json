@@ -45,5 +45,9 @@
   "Getting information about a domain using the whois protocol": "Getting information about a domain using the whois protocol",
   "View/change the list of nameservers": "View/change the list of nameservers",
   "Domain name transfer": "Domain name transfer",
-  "Check": "Check"
+  "Check": "Check",
+  "Registered": "Registered",
+  "Not registered": "Not registered",
+  "Confirmation code": "Confirmation code",
+  "conf_code_instruction": "To perform a domain transfer, you need to obtain a domain transfer confirmation code from your current registrar"
 }

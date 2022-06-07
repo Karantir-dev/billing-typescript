@@ -232,6 +232,7 @@ export default function ServicesPage(props) {
             const { id, domain, price } = d
 
             const notAvailable = d?.desc?.$.includes('Not registered')
+            const available = d?.desc?.$.includes('Registered')
 
             return (
               <div
@@ -240,22 +241,31 @@ export default function ServicesPage(props) {
                   [s.selected]: itemIsSelected(d),
                   [s.notAvailable]: notAvailable,
                 })}
-                // onClick={() => !notAvailable && setIsSelectedHandler(d)}
               >
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
-                <CheckBox
-                  setValue={isChecked => {
-                    if (isChecked) {
-                      setIsSelectedHandler(d)
-                    } else if (itemIsSelected(d)) {
-                      setIsSelectedHandler(d)
-                    }
-                  }}
-                  className={s.checkbox}
-                />
+                {available && (
+                  <CheckBox
+                    setValue={isChecked => {
+                      if (isChecked) {
+                        setIsSelectedHandler(d)
+                      } else if (itemIsSelected(d)) {
+                        setIsSelectedHandler(d)
+                      }
+                    }}
+                    className={s.checkbox}
+                  />
+                )}
                 <div className={s.domainNameTransfer}>{domain?.$}</div>
+                <div
+                  className={cn(s.domainavailability, {
+                    [s.available]: available,
+                    [s.notAvailable]: notAvailable,
+                  })}
+                >
+                  {available && t('Registered')} {notAvailable && t('Not registered')}
+                </div>
                 <div className={s.pricesBlockTransfer}>
                   {parsePrice(price?.$)?.length > 1 && (
                     <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
@@ -319,7 +329,7 @@ export default function ServicesPage(props) {
             className={s.searchBtn}
             isShadow
             size="medium"
-            label={t('Register')}
+            label={t(transfer ? 'Transfer' : 'Register')}
             type="button"
             onClick={registerDomainHandler}
             disabled={selectedDomains.length === 0}

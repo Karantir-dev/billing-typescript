@@ -19,7 +19,7 @@ import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainContactInfoPage.module.scss'
 
-export default function ServicesPage() {
+export default function ServicesPage({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other', 'trusted_users'])
   const dispatch = useDispatch()
 
@@ -255,7 +255,9 @@ export default function ServicesPage() {
 
   const setContactsHandler = values => {
     const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
-    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate))
+    dispatch(
+      domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate, transfer),
+    )
   }
 
   if (!state?.domainInfo) {

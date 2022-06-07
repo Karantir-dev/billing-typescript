@@ -45,5 +45,9 @@
   "Getting information about a domain using the whois protocol": "Получение информации о домене по протоколу whois",
   "View/change the list of nameservers": "Просмотреть/изменить список серверов имен",
   "Domain name transfer": "Трансфер доменного имени",
-  "Check": "Проверить"
+  "Check": "Проверить",
+  "Registered": "Зарегистрировано",
+  "Not registered": "Не зарегистрирован",
+  "Confirmation code": "Код подтверждения",
+  "conf_code_instruction": "Для выполнения трансфера домена Вам необходимо получить код подтверждения переноса домена у текущего регистратора"
 }

@@ -130,7 +130,7 @@ const getDomainsOrderName =
   }
 
 const getDomainsContacts =
-  (setDomains, body = {}, navigate) =>
+  (setDomains, body = {}, navigate, transfer) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -271,7 +271,10 @@ const getDomainsContacts =
         if (body?.sok === 'ok') {
           delete body['sok']
           delete body['snext']
-          navigate && navigate(route.DOMAINS_NS, { state: { contacts: body } })
+          navigate &&
+            navigate(transfer ? route.DOMAINS_TRANSFER_NS : route.DOMAINS_NS, {
+              state: { contacts: body },
+            })
         }
         dispatch(actions.hideLoader())
       })

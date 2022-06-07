@@ -107,5 +107,7 @@
   "Apply": "Применить",
   "Invalid promo code": "Недействительный промо-код",
   "Close": "Закрыть",
-  "for the transfer": "за перенос"
+  "for the transfer": "за перенос",
+  "Enter code": "Введите код",
+  "The '' field has invalid value. The value cannot be empty": "Поле кода имеет недопустимое значение. Значение не может быть пустым"
 }
