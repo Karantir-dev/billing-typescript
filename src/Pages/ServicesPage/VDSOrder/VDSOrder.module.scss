@@ -117,3 +117,9 @@
 .percent {
   font-weight: 600;
 }
+
+.software_OS_List {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}

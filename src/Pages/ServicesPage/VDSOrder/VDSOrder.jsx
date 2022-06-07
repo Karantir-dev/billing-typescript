@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom'
-import { BreadCrumbs, Select, OstemplVDSbtn } from '../../../Components'
+import { BreadCrumbs, Select, SoftwareOSBtn, SoftwareOSSelect } from '../../../Components'
 import { vdsOperations } from '../../../Redux'
 
 import s from './VDSOrder.module.scss'
@@ -59,8 +59,8 @@ export default function VDSOrder() {
     return { percent, oldPrice, newPrice }
   }
 
-  const renderOstemplFields = (name, setFieldValue) => {
-    const dataArr = parametersInfo.slist.find(el => el.$name === name).val
+  const renderOstemplFields = (fieldName, setFieldValue, state) => {
+    const dataArr = parametersInfo.slist.find(el => el.$name === fieldName).val
 
     const elemsData = {}
     dataArr.forEach(element => {
@@ -74,7 +74,7 @@ export default function VDSOrder() {
     })
     console.log(elemsData)
 
-    return Object.values(elemsData).map(el => {
+    return Object.entries(elemsData).map(([name, el]) => {
       if (el.length > 1) {
         const optionsList = el.map(({ $key, $ }) => ({
           value: $key,
@@ -82,17 +82,27 @@ export default function VDSOrder() {
         }))
 
         return (
-          <Select
-            isShadow
+          <SoftwareOSSelect
+            key={optionsList[0].value}
+            iconName={name}
             itemsList={optionsList}
-            value={optionsList[0].value}
+            state={state}
             getElement={value => {
-              setFieldValue('ostempl', value)
+              setFieldValue(fieldName, value)
             }}
           />
         )
       } else {
-        return <OstemplVDSbtn />
+        return (
+          <SoftwareOSBtn
+            key={el[0].$key}
+            value={el[0].$key}
+            state={state}
+            iconName={name}
+            label={el[0].$}
+            onClick={value => setFieldValue(fieldName, value)}
+          />
+        )
       }
     })
   }
@@ -205,7 +215,9 @@ export default function VDSOrder() {
                     <p className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
-                    {renderOstemplFields('ostempl', setFieldValue)}
+                    <div className={s.software_OS_List}>
+                      {renderOstemplFields('ostempl', setFieldValue, values.ostempl)}
+                    </div>
                     <p className={s.section_title}>
                       {t('recipe', { ns: 'dedicated_servers' })}
                     </p>
