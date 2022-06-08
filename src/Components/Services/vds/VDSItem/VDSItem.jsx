@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ServerState } from '../..'
+import { ServerState } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSItem.module.scss'

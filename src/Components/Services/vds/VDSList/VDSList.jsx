@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { VDSmobileItem, VDSItem } from '../..'
+import { VDSmobileItem, VDSItem } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
@@ -22,7 +22,7 @@ export default function VDSList({
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('domain_name')}:</li>
           <li className={s.table_head}>{t('ip_address')}:</li>
-          <li className={s.table_head}>{t('OS_template')}:</li>
+          <li className={s.table_head}>{t('ostempl')}:</li>
           <li className={s.table_head}>{t('tariff')}:</li>
           <li className={s.table_head}>{t('data_center')}:</li>
           <li className={s.table_head}>{t('status')}:</li>

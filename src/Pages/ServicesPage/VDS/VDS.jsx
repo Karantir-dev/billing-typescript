@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
-import cn from 'classnames'
 import {
   Button,
   IconButton,
@@ -10,6 +9,7 @@ import {
   HintWrapper,
   EditModal,
   Backdrop,
+  BreadCrumbs,
 } from '../../../Components'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '../../../Redux'
@@ -33,22 +33,7 @@ export default function VDS() {
 
   return (
     <>
-      <div>
-        <NavLink to={route.SERVICES} className={s.breadcrumbs_link}>
-          {t('breadcrumbs_services', { ns: 'other' })}
-        </NavLink>
-        <span className={s.breadcrumbs_separator}>{'>'}</span>
-        <NavLink
-          to={route.VDS}
-          className={({ isActive }) =>
-            cn(s.breadcrumbs_link, {
-              [s.disabled]: isActive,
-            })
-          }
-        >
-          {t('servers_title')}
-        </NavLink>
-      </div>
+      <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <h2 className={s.title}>{t('servers_title')}</h2>
       <div className={s.tools_wrapper}>
@@ -133,14 +118,12 @@ export default function VDS() {
           onClick={() => navigate(route.VDS_ORDER)}
         />
       </div>
-
       <VDSList
         servers={servers}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}
       />
-
       <Backdrop
         className={s.backdrop}
         isOpened={Boolean(elidForEditModal)}

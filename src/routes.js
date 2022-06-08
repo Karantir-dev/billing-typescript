@@ -26,9 +26,9 @@ export const DOMAINS_CONTACT_INFO = '/services/domains/domain_orders/contact_inf
 export const DOMAINS_NS = '/services/domains/domain_orders/contact_info/domain_params'
 
 export const VDS = '/services/vds'
-export const VDS_ORDER = '/services/vds/order'
+export const VDS_ORDER = '/services/vds/vds_order'
 
 export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'
 export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'
-export const DEDICATED_SERVERS_IP = '/services/dedicated_servers/ip'
+export const DEDICATED_SERVERS_IP = '/services/dedicated_servers/ips'

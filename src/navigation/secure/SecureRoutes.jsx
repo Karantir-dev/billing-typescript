@@ -24,6 +24,7 @@ import {
   DomainOrderPage,
   ServicesPage,
   VDS,
+  VDSOrder,
   Contracts,
   DedicatedServersPage,
   DomainContactInfoPage,
@@ -56,6 +57,10 @@ const Component = () => {
         <Route
           path={route.VDS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+        />
+        <Route
+          path={route.VDS_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />}
         />
         <Route
           path={route.VDS_ORDER}

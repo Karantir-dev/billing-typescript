@@ -7,6 +7,7 @@ import s from './BreadCrumbs.module.scss'
 
 export default function Component({ pathnames }) {
   const { t } = useTranslation('crumbs')
+  pathnames = pathnames.filter(p => p.length !== 0)
 
   return (
     <div className={s.crumbs}>

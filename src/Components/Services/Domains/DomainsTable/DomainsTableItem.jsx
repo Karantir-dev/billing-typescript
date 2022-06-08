@@ -5,7 +5,7 @@ import cn from 'classnames'
 // import { CheckCircle } from '../../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import ServerState from '../../../vds/ServerState/ServerState'
+import { ServerState } from '../../../'
 
 export default function Component(props) {
   const { id, domain, tariff, expiredate, cost, setSelctedItem, selected, el } = props
