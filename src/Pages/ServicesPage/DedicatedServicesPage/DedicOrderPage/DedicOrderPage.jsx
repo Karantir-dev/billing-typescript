@@ -15,7 +15,7 @@ import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 
 import s from './DedicOrderPage.module.scss'
 
-export default function DedicOrderModal() {
+export default function DedicOrderPage() {
   const dispatch = useDispatch()
 
   const licenceCheck = useRef()
@@ -73,13 +73,14 @@ export default function DedicOrderModal() {
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
-  const [datacenter] = useState('7')
+  const [datacenter] = useState(tarifList?.currentDatacenter)
   const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState('-')
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
   console.log(ordered, 'needing to show payment modal')
+  console.log(tarifList)
 
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
@@ -193,9 +194,43 @@ export default function DedicOrderModal() {
         {({ values, setFieldValue, touched, errors }) => {
           return (
             <Form className={s.form}>
+              <div className={s.datacenter_block}>
+                {tarifList?.datacenter?.map(item => {
+                  return (
+                    <button
+                      onClick={() => {
+                        setParameters(null)
+                        setFieldValue('datacenter', item?.$key)
+                        setPrice('-')
+                        setFieldValue('period', '1')
+                        setPaymentPeriod(item)
+                        dispatch(
+                          dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
+                        )
+                      }}
+                      type="button"
+                      className={classNames(s.datacenter_card, {
+                        [s.selected]: item?.$key === values?.datacenter,
+                      })}
+                      key={item?.$key}
+                    >
+                      <img
+                        className={classNames({
+                          [s.flag_icon]: true,
+                          [s.selected]: item?.$key === values?.datacenter,
+                        })}
+                        src={require('../../../../images/countryFlags/netherlands_flag.webp')}
+                        alt="nth_flag"
+                      />
+                      <p className={s.country_name}>{item?.$}</p>
+                      <span className={s.datacenter}>{item?.$}</span>
+                    </button>
+                  )
+                })}
+              </div>
               <div
                 className={classNames({
-                  [s.processors_block]: true,
+                  [s.datacenter_block]: true,
                 })}
               >
                 <div className={s.first_processors_block}>

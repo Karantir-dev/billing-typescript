@@ -40,5 +40,15 @@
   "for": "за",
 
   "licence_error": "доменное имя должно включать суффикс после точки (пример: domain.co)",
-  "toaster_text": "Сервер успешно заказан"
+  "toaster_text": "Сервер успешно заказан",
+
+  "mask": "Маска",
+  "gateway": "Шлюз",
+  "type": "Тип",
+  "domain": "Домен",
+  "IP-addresses count": "Количество IP-адресов",
+  "limit_ip": "Достигнут лимит доступных для заказа IP адресов",
+  "After accepting your IP-address will be automatically deleted": "После подтверждения ваш IP-адрес будет автоматически удален",
+  "Resource change is forbidden by provider. Contact technical support": "Изменение ресурса запрещено провайдером. Свяжитесь с техподдержкой",
+  "main_ip": "Основной IP"
 }

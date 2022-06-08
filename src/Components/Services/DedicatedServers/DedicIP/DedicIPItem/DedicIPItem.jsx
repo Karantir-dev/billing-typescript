@@ -4,33 +4,36 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DedicIPItem.module.scss'
+import { Flag } from '../../../../../images'
+import HintWrapper from '../../../../ui/HintWrapper/HintWrapper'
 
-export default function DedicIPItem({ server, setActiveServer, activeServerID }) {
-  const { t } = useTranslation(['vds', 'other'])
+export default function DedicIPItem({ ip, activeIP, setActiveIP }) {
+  const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
 
+  console.log(ip)
   return (
     <li className={s.item}>
+      {ip?.is_main?.$ === 'on' && (
+        <div className={s.hint_wrapper}>
+          <HintWrapper label={t('main_ip', { ns: 'dedicated_servers' })}>
+            <Flag className={s.flag_icon} />
+          </HintWrapper>
+        </div>
+      )}
+
       <button
         className={cn(s.item_btn, {
-          [s.active_server]: activeServerID === server?.id?.$,
+          [s.active_ip]: activeIP?.id?.$ === ip?.id?.$,
         })}
         type="button"
-        onClick={() => setActiveServer(server)}
+        onClick={() => setActiveIP(ip)}
       >
-        <span className={s.value}>{server?.id?.$}</span>
-        <span className={s.value}>{server?.domain?.$}</span>
-        <span className={s.value}>{server?.ip?.$}</span>
-        <span className={s.value}>{server?.ostempl?.$}</span>
-        <span className={s.value}>
-          {server?.pricelist?.$}
-          <span className={s.price}>
-            {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
-          </span>
-        </span>
-        {/* <span className={s.value}>{server?.datacentername?.$}</span> */}
-
-        <span className={s.value}>{server?.createdate?.$}</span>
-        <span className={s.value}>{server?.expiredate?.$}</span>
+        <span className={s.value}>{ip?.name?.$}</span>
+        <span className={s.value}>{ip?.mask?.$}</span>
+        <span className={s.value}>{ip?.gateway?.$}</span>
+        <span className={s.value}>{ip?.domain?.$}</span>
+        <span className={s.value}>{t(ip?.type?.$, { ns: 'dedicated_servers' })}</span>
+        <span className={s.value}>{t(ip?.ip_status?.$?.trim(), { ns: 'other' })}</span>
       </button>
     </li>
   )

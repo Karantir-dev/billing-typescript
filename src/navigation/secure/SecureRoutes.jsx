@@ -89,6 +89,7 @@ const Component = () => {
             <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
           }
         />
+
         <Route
           path={route.DEDICATED_SERVERS_ORDER}
           element={
@@ -184,6 +185,23 @@ const SupportScreen = () => {
     </Routes>
   )
 }
+
+// const DedicatedServersScreen = () => {
+//   return (
+//     <Routes>
+//       <Route
+//         path=":path/*"
+//         element={
+//           <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
+//         }
+//       />
+//       <Route
+//         path=":path/:id"
+//         element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
+//       />
+//     </Routes>
+//   )
+// }
 
 const BillingScreen = () => {
   const location = useLocation()

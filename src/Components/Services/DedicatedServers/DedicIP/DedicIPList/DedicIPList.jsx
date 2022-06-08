@@ -11,26 +11,23 @@ import DedicIPMobileItem from '../DedicIPMobileItem/DedicIPMobileItem'
 export default function DedicIPList({
   IPList,
   setElidForEditModal,
-  setActiveServer,
-  activeServerID,
+  setElidForDeleteModal,
+  setActiveIP,
+  activeIP,
 }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
-
-  console.log(IPList)
 
   return (
     <>
       {widerThan1550 && (
         <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('domain_name')}:</li>
           <li className={s.table_head}>{t('ip_address')}:</li>
-          <li className={s.table_head}>{t('OS_template')}:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>{t('status')}:</li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
+          <li className={s.table_head}>{t('mask', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('gateway', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('domain', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('type', { ns: 'dedicated_servers' })}:</li>
+          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
         </ul>
       )}
 
@@ -39,15 +36,17 @@ export default function DedicIPList({
           return widerThan1550 ? (
             <DedicIPItem
               key={el.id.$}
-              server={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              ip={el}
+              activeIP={activeIP}
+              setActiveIP={setActiveIP}
             />
           ) : (
             <DedicIPMobileItem
               key={el.id.$}
-              server={el}
+              ip={el}
+              setActiveIP={setActiveIP}
               setElidForEditModal={setElidForEditModal}
+              setElidForDeleteModal={setElidForDeleteModal}
             />
           )
         })}

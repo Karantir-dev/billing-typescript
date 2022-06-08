@@ -64,8 +64,11 @@ const getTarifs = () => (dispatch, getState) => {
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
       const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[0]
+      const { val: period } = data.doc.slist[1]
       const { $: currentDatacenter } = data.doc.datacenter
+      console.log(datacenter)
+
+      console.log(data)
 
       const orderData = {
         fpricelist,
@@ -91,6 +94,7 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
   const {
     auth: { sessionId },
   } = getState()
+  console.log(datacenterId)
 
   axiosInstance
     .post(
@@ -107,12 +111,19 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
-      const { val: period } = data.doc.slist[0]
+      const { val: datacenter } = data.doc.slist[0]
+      const { val: period } = data.doc.slist[1]
+      const { $: currentDatacenter } = data.doc.datacenter
+      console.log(datacenter)
+
+      console.log(data)
 
       const orderData = {
         fpricelist,
         tarifList,
+        datacenter,
         period,
+        currentDatacenter,
       }
 
       setNewTariffs(orderData)
@@ -148,13 +159,19 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
+      const { val: datacenter } = data.doc.slist[0]
+      const { val: period } = data.doc.slist[1]
+      const { $: currentDatacenter } = data.doc.datacenter
+      console.log(datacenter)
 
-      const { val: period } = data.doc.slist[0]
+      console.log(data)
 
       const orderData = {
         fpricelist,
         tarifList,
+        datacenter,
         period,
+        currentDatacenter,
       }
 
       setNewPeriod(orderData)
@@ -652,6 +669,7 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         elid,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -663,6 +681,134 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getInfoEditIP = (elid, plid, elname, setInitialState) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.ip.edit',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        plid,
+        elname,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const { domain, domain_name, gateway, mask } = data.doc
+
+      setInitialState({ domain, domain_name, gateway, mask })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const editIP =
+  (elid, plid, mask, gateway, domain, handleEditionModal) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.ip.edit',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          plid,
+          mask,
+          gateway,
+          domain,
+          sok: 'ok',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        handleEditionModal()
+
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+          toastId: 'customId',
+        })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.ip.delete',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        plid,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      console.log(data, 'maybe error')
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+      handleRemoveIPModal()
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      if (
+        error.message.trim() ===
+        'Resource change is forbidden by provider. Contact technical support'
+      ) {
+        toast.error(
+          i18n.t('Resource change is forbidden by provider. Contact technical support', {
+            ns: 'dedicated_servers',
+          }),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+        handleRemoveIPModal()
+      }
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -681,4 +827,7 @@ export default {
   editDedicServer,
   updatePriceEditModal,
   getIPList,
+  getInfoEditIP,
+  editIP,
+  removeIP,
 }
