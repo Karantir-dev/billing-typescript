@@ -16,9 +16,11 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import DedicIPEditModal from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPEditModal'
 import { Attention } from '../../../../images'
+import DedicIPOrder from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPOrder/DedicIPOrder'
 
 export default function DedicIPpage() {
   const location = useLocation()
+  const ipPlid = location.state.plid
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -39,17 +41,20 @@ export default function DedicIPpage() {
 
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForDeleteModal, setElidForDeleteModal] = useState(0)
+  const [orderModalOpened, setOrderModalOpened] = useState(false)
+
+  console.log('elidForEditModal', elidForEditModal)
 
   const handleRemoveIPModal = () => {
     setElidForDeleteModal(0)
   }
 
   const handleRemoveIPBtn = () => {
-    dispatch(dedicOperations.removeIP(activeIP?.id?.$, '3570712', handleRemoveIPModal))
+    dispatch(dedicOperations.removeIP(elidForDeleteModal, ipPlid, handleRemoveIPModal))
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getIPList('3570712', setIPList)) // to get ID
+    dispatch(dedicOperations.getIPList(ipPlid, setIPList)) // to get ID
   }, [])
 
   return (
@@ -99,7 +104,7 @@ export default function DedicIPpage() {
             isShadow
             type="button"
             label={t('to_order', { ns: 'other' }).toUpperCase()}
-            onClick={() => null}
+            onClick={() => setOrderModalOpened(true)}
             disabled={isMaxAmountIP}
           />
         </div>
@@ -118,8 +123,8 @@ export default function DedicIPpage() {
         onClick={() => setElidForEditModal(0)}
       >
         <DedicIPEditModal
-          activeIP={activeIP}
-          plid={'3568378'} //to change from URL id
+          elid={elidForEditModal}
+          plid={ipPlid}
           closeFn={() => setElidForEditModal(0)}
         />
       </Backdrop>
@@ -143,7 +148,10 @@ export default function DedicIPpage() {
               type="button"
             />
             <button
-              onClick={() => setElidForDeleteModal(0)}
+              onClick={e => {
+                e.preventDefault()
+                setElidForDeleteModal(0)
+              }}
               type="button"
               className={s.close}
             >
@@ -151,6 +159,18 @@ export default function DedicIPpage() {
             </button>
           </div>
         </div>
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={orderModalOpened}
+        onClick={() => setOrderModalOpened(false)}
+      >
+        <DedicIPOrder
+          closeFn={() => {
+            setOrderModalOpened(false)
+          }}
+        />
       </Backdrop>
     </div>
   )

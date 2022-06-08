@@ -11,6 +11,7 @@ import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL } from '../../config/config'
+import DedicItem from './DedicItem/DedicItem'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -102,6 +103,10 @@ export default function Component() {
       elem => elem['item.type']?.$ === 'domain',
     )
 
+    const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
+
+    console.log(cartData?.elemList)
+
     return (
       <>
         {domainsList?.length > 0 && (
@@ -118,6 +123,29 @@ export default function Component() {
                   discount_percent={discount_percent?.$}
                   deleteItemHandler={
                     domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                  }
+                />
+              )
+            })}
+          </>
+        )}
+
+        {dedicList?.length > 0 && (
+          <>
+            <div className={s.formBlockTitle}>{t('Dedic payment')}:</div>
+            {dedicList?.map(el => {
+              console.log(el)
+              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              return (
+                <DedicItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  fullcost={fullcost?.$}
+                  discount_percent={discount_percent?.$}
+                  pricelist_name={pricelist_name?.$}
+                  deleteItemHandler={
+                    dedicList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
                   }
                 />
               )

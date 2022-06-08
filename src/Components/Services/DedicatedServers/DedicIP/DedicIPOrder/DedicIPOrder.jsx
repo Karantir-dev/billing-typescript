@@ -1,62 +1,73 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { Cross } from '../../../../../images'
+import dedicOperations from '../../../../../Redux/dedicatedServers/dedicOperations'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
-import s from './DedicIPEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-
-import { Button } from '../../..'
+import InputField from '../../../../ui/InputField/InputField'
+import { Button } from '../../../..'
 import { useLocation } from 'react-router-dom'
+import Select from '../../../../ui/Select/Select'
+import s from './DedicIPOrder.module.scss'
 
-export default function DedicIPEditModal({ elid, closeFn }) {
+export default function DedicIPOrder({ closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
-  const [initialState, setInitialState] = useState()
-
   const location = useLocation()
   const ipPlid = location.state.plid
 
-  console.log(ipPlid, 'ipPlid')
+  const [initialValues, setInitialValues] = useState()
+  console.log(initialValues, 'initialValues')
 
   const handleEditionModal = () => {
     closeFn()
   }
 
-  useEffect(() => {
-    dispatch(dedicOperations.getInfoEditIP(elid, ipPlid, setInitialState))
-  }, [])
-
   const handleSubmit = values => {
-    const { mask, gateway, domainname } = values
+    const { domain, ipAmout } = values
 
     dispatch(
-      dedicOperations.editIP(elid, ipPlid, mask, gateway, domainname, handleEditionModal),
+      dedicOperations.orderNewIP(
+        ipPlid,
+        initialValues?.typeList[0]?.$name,
+        initialValues?.maxcount?.$,
+        ipAmout,
+        domain,
+        handleEditionModal,
+      ),
     )
   }
 
+  const maxIPAmountList = []
+  for (let i = 1; i <= initialValues?.maxcount?.$; i++) {
+    maxIPAmountList.push(i)
+  }
+
   const validationSchema = Yup.object().shape({
-    domainname: Yup.string().matches(
+    domain: Yup.string().matches(
       /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/,
       t('licence_error'),
     ),
   })
+
+  useEffect(() => {
+    dispatch(dedicOperations.orderIPInfo(ipPlid, setInitialValues))
+  }, [])
 
   return (
     <Formik
       enableReinitialize
       validationSchema={validationSchema}
       initialValues={{
-        domainname: initialState?.domain?.$ || '',
-        mask: initialState?.mask?.$ || '',
-        gateway: initialState?.gateway?.$ || '',
+        domain: initialValues?.domain?.$ || '',
+        ipType: initialValues?.typeList[0]?.$ || '',
+        ipAmount: initialValues?.count?.$ || '',
       }}
       onSubmit={handleSubmit}
     >
-      {({ values, errors, touched }) => {
+      {({ values, errors, touched, setFieldValue }) => {
         console.log(values)
         return (
           <Form className={s.form}>
@@ -64,9 +75,8 @@ export default function DedicIPEditModal({ elid, closeFn }) {
               <div className={s.header_block}>
                 <div className={s.title_wrapper}>
                   <h2 className={s.page_title}>
-                    {t('Editing a service', { ns: 'other' })}
+                    {t('Add IP-address', { ns: 'dedicated_servers' })}
                   </h2>
-                  <span className={s.ip_id}>{initialState?.domain_name?.$}</span>
                 </div>
                 <Cross
                   className={s.icon_cross}
@@ -79,40 +89,41 @@ export default function DedicIPEditModal({ elid, closeFn }) {
               <div className={s.parameters_wrapper}>
                 <div className={s.main_block}>
                   <InputField
-                    label={t('domain_name')}
-                    placeholder={t('domain_placeholder')}
-                    name="domainname"
-                    isShadow
-                    error={!!errors.domainname}
-                    touched={!!touched.domainname}
-                    className={s.input_field_wrapper}
-                    inputClassName={s.text_area}
-                    autoComplete
-                    type="text"
-                    value={values?.domainname}
-                  />
-                  <InputField
-                    label={`${t('mask')}:`}
-                    name="mask"
+                    label={`${t('type')}:`}
+                    name="ipType"
                     isShadow
                     className={s.input_field_wrapper}
                     inputClassName={s.input}
                     autoComplete
                     type="text"
-                    value={values?.mask}
+                    value={t(values?.ipType)}
                     disabled
+                  />
+                  <InputField
+                    label={`${t('domain')}:`}
+                    name="domain"
+                    error={!!errors.domain}
+                    touched={!!touched.domain}
+                    isShadow
+                    className={s.input_field_wrapper}
+                    inputClassName={s.input}
+                    autoComplete
+                    type="text"
+                    value={values?.domain}
                   />
 
-                  <InputField
-                    label={`${t('gateway')}:`}
-                    name="gateway"
+                  <Select
+                    height={50}
+                    value={values?.ipAmount}
+                    getElement={item => {
+                      setFieldValue('ipAmount', item)
+                    }}
                     isShadow
-                    className={s.input_field_wrapper}
-                    inputClassName={s.input}
-                    autoComplete
-                    type="text"
-                    value={values?.gateway}
-                    disabled
+                    label={t('count_ip')}
+                    itemsList={maxIPAmountList.map(el => {
+                      return { label: el, value: el.toString() }
+                    })}
+                    className={s.select}
                   />
                 </div>
 

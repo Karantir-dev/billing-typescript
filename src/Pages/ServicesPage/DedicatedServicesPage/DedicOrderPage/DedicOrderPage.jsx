@@ -73,14 +73,16 @@ export default function DedicOrderPage() {
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
-  const [datacenter] = useState(tarifList?.currentDatacenter)
+  // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
   const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState('-')
   const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
 
-  console.log(ordered, 'needing to show payment modal')
-  console.log(tarifList)
+  // console.log(datacenter)
+
+  console.log(ordered)
+  // console.log(tarifList)
 
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
@@ -180,7 +182,7 @@ export default function DedicOrderPage() {
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          datacenter: datacenter,
+          datacenter: tarifList?.currentDatacenter,
           tarif: null,
           period: '1',
           processor: null,
@@ -192,10 +194,14 @@ export default function DedicOrderPage() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors }) => {
+          console.log(values)
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
                 {tarifList?.datacenter?.map(item => {
+                  let countryName = item?.$?.split(',')[0]
+                  let datacenterName = item?.$?.split(',')[1]
+
                   return (
                     <button
                       onClick={() => {
@@ -222,8 +228,8 @@ export default function DedicOrderPage() {
                         src={require('../../../../images/countryFlags/netherlands_flag.webp')}
                         alt="nth_flag"
                       />
-                      <p className={s.country_name}>{item?.$}</p>
-                      <span className={s.datacenter}>{item?.$}</span>
+                      <p className={s.country_name}>{countryName}</p>
+                      <span className={s.datacenter}>{datacenterName}</span>
                     </button>
                   )
                 })}
@@ -495,16 +501,16 @@ export default function DedicOrderPage() {
                       className={s.select}
                     />
 
-                    {values.datacenter === '2' && (
+                    {values.datacenter === '8' && values?.portSpeedlList?.length > 0 && (
                       <Select
                         height={50}
                         getElement={item => {
                           setFieldValue('portSpeed', item)
-                          updatePrice(values, dispatch, setPrice)
+                          updatePrice({ ...values, portSpeed: item }, dispatch, setPrice)
                         }}
                         isShadow
                         label={t('port_speed')}
-                        itemsList={values?.portSpeed[1]?.map(el => {
+                        itemsList={values?.portSpeedlList?.map(el => {
                           let labelText = el.$
                           if (labelText.includes('per month')) {
                             labelText = labelText.replace('per month', t('per month'))

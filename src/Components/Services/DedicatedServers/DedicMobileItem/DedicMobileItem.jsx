@@ -15,12 +15,15 @@ import PropTypes from 'prop-types'
 
 import s from './DedicMobileItem.module.scss'
 import { ServerState } from '../../../'
+import { useNavigate } from 'react-router-dom'
+import * as route from '../../../../routes'
 
 export default function DedicMobileItem({ server, setElidForEditModal }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
+  const navigate = useNavigate()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
@@ -68,6 +71,11 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   disabled={server.has_ip_pricelist?.$ !== 'on'}
+                  onClick={() =>
+                    navigate(route.DEDICATED_SERVERS_IP, {
+                      state: { plid: server?.id?.$ },
+                    })
+                  }
                 >
                   <IP className={s.tool_icon} />
                   {t('ip_addresses')}

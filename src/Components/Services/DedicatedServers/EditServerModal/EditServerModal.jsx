@@ -63,25 +63,52 @@ export default function EditServerModal({ elid, closeFn }) {
       password,
     } = values
 
-    dispatch(
-      dedicOperations.editDedicServer(
-        elid,
-        autoprolong,
-        domainname,
-        ostempl,
-        recipe,
-        managePanel,
-        managePanelName,
-        ipTotal,
-        ipName,
-        ip,
-        username,
-        userpassword,
-        password,
+    if (
+      (initialIP !== currentIP && currentIP !== undefined) ||
+      (initialManagePanel !== currentManagePanel &&
+        currentManagePanel !== undefined &&
+        currentManagePanel !== '97')
+    ) {
+      dispatch(
+        dedicOperations.editDedicServer(
+          elid,
+          autoprolong,
+          domainname,
+          ostempl,
+          recipe,
+          managePanel,
+          managePanelName,
+          ipTotal,
+          ipName,
+          ip,
+          username,
+          userpassword,
+          password,
 
-        handleEditionModal,
-      ),
-    )
+          handleEditionModal,
+        ),
+      )
+    } else {
+      dispatch(
+        dedicOperations.editDedicServerNoExtraPay(
+          elid,
+          autoprolong,
+          domainname,
+          ostempl,
+          recipe,
+          managePanel,
+          managePanelName,
+          ipTotal,
+          ipName,
+          ip,
+          username,
+          userpassword,
+          password,
+
+          handleEditionModal,
+        ),
+      )
+    }
   }
 
   const validationSchema = Yup.object().shape({

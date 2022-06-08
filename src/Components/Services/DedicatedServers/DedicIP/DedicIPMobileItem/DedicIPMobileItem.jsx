@@ -18,7 +18,7 @@ export default function DedicIPMobileItem({
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
-  //   const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
