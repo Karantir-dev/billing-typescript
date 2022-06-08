@@ -45,11 +45,11 @@ export default function DedicIPpage() {
   }
 
   const handleRemoveIPBtn = () => {
-    dispatch(dedicOperations.removeIP(activeIP?.id?.$, '3568378', handleRemoveIPModal))
+    dispatch(dedicOperations.removeIP(activeIP?.id?.$, '3570712', handleRemoveIPModal))
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getIPList('3568378', setIPList)) // to get ID
+    dispatch(dedicOperations.getIPList('3570712', setIPList)) // to get ID
   }, [])
 
   return (
