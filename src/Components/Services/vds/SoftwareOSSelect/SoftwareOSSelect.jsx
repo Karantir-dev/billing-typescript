@@ -43,7 +43,7 @@ export default function SoftwareOSSelect({
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
         <img
           className={s.img}
-          src={require(`../../../../images/software_os/${
+          src={require(`../../../../images/soft_os/${
             darkTheme ? iconName + '_dt' : iconName
           }.png`)}
           alt="icon"
@@ -68,7 +68,7 @@ export default function SoftwareOSSelect({
                 >
                   <img
                     className={cn(s.img, s.left, s.grey)}
-                    src={require(`../../../../images/software_os/${
+                    src={require(`../../../../images/soft_os/${
                       darkTheme ? iconName + '_dt' : iconName
                     }.png`)}
                     alt="icon"

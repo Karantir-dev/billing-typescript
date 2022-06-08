@@ -8,6 +8,7 @@
 
 .section_title {
   margin-bottom: 25px;
+  margin-top: 25px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -16,7 +17,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 30px;
 }
 
 .category_item {
@@ -68,7 +68,6 @@
 .tariffs_list {
   display: grid;
   gap: 15px;
-  margin-bottom: 30px;
 }
 
 .tariff_item {
@@ -119,6 +118,12 @@
 }
 
 .software_OS_List {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.parameters_list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;

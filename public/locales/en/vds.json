@@ -57,5 +57,6 @@
   "Серверы с SSD дисками": "Servers with SSD disks",
   "Серверы с защитой от DDoS": "DDoS protected servers",
   "tariffs": "Tariffs",
-  "characteristics": "Characteristics"
+  "characteristics": "Characteristics",
+  "without_software": "Without software"
 }

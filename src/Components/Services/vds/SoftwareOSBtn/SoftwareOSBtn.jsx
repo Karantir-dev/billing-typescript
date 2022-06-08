@@ -13,7 +13,7 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         <img
           className={s.img}
-          src={require(`../../../../images/software_os/${
+          src={require(`../../../../images/soft_os/${
             darkTheme ? iconName + '_dt' : iconName
           }.png`)}
           alt="icon"

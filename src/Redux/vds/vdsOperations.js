@@ -2,7 +2,7 @@ import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
 import { actions } from '../'
 import authSelectors from '../auth/authSelectors'
-import { errorHandler } from '../../utils'
+import { errorHandler, renameAddonFields } from '../../utils'
 
 const getVDS = setServers => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -183,16 +183,16 @@ const getTariffParameters =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
 
-        setParametersInfo(data.doc)
+        console.log(data.doc)
+        setParametersInfo(renameAddonFields(data.doc))
 
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getTariffParameters - ', err.message)
+        console.log('getTariffParameters - ', err)
       })
   }
 

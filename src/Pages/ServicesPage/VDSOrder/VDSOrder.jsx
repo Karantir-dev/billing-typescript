@@ -1,11 +1,18 @@
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
+
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom'
-import { BreadCrumbs, Select, SoftwareOSBtn, SoftwareOSSelect } from '../../../Components'
+import {
+  BreadCrumbs,
+  Select,
+  InputField,
+  SoftwareOSBtn,
+  SoftwareOSSelect,
+} from '../../../Components'
 import { vdsOperations } from '../../../Redux'
 
 import s from './VDSOrder.module.scss'
@@ -44,6 +51,37 @@ export default function VDSOrder() {
       }))
   }
 
+  const translatePeriodText = sentence => {
+    const labelArr = sentence.split('EUR ')
+
+    return (
+      labelArr[0] +
+      'EUR ' +
+      t(labelArr[1].replace(')', '')) +
+      (sentence.includes(')') ? ')' : '')
+    )
+  }
+
+  const getOptionsListExtended = fieldName => {
+    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName).val
+    // if (fieldName === 'autoprolong' && !optionsList.find(el => el.$key === 'null')) {
+    //   optionsList.unshift({ $key: 'null', $: 'Disabled' })
+    // }
+
+    return optionsList
+      .filter(el => el?.$)
+      .map(({ $key, $ }) => {
+        let label = ''
+
+        if ($.includes('EUR ')) {
+          label = translatePeriodText($.trim())
+        } else {
+          label = t($.trim())
+        }
+        return { value: $key, label: label }
+      })
+  }
+
   const translate = string => {
     return string.split('EUR ')[0] + 'EUR ' + t(string.split('EUR ')[1])
   }
@@ -59,12 +97,16 @@ export default function VDSOrder() {
     return { percent, oldPrice, newPrice }
   }
 
-  const renderOstemplFields = (fieldName, setFieldValue, state) => {
-    const dataArr = parametersInfo.slist.find(el => el.$name === fieldName).val
-
+  const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
+    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName).val
     const elemsData = {}
+    if (fieldName === 'recipe') {
+      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      elemsData.null = [{ $key: 'null', $: t('without_software') }]
+    }
+
     dataArr.forEach(element => {
-      const itemName = element.$.match(/^(.+?)(?=-|\s)/g)
+      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
       if (!Object.hasOwn(elemsData, itemName)) {
         elemsData[itemName] = [element]
@@ -72,7 +114,6 @@ export default function VDSOrder() {
         elemsData[itemName].push(element)
       }
     })
-    console.log(elemsData)
 
     return Object.entries(elemsData).map(([name, el]) => {
       if (el.length > 1) {
@@ -140,12 +181,14 @@ export default function VDSOrder() {
             autoprolong: parametersInfo?.autoprolong?.$,
             domain: parametersInfo?.domain?.$,
             recipe: parametersInfo?.recipe?.$,
-            processors: parametersInfo?.addon_5842?.$,
-            memory: parametersInfo?.addon_5837?.$,
-            storageSize: parametersInfo?.addon_5835?.$,
-            portSpeed: parametersInfo?.addon_5777?.$,
-            license: parametersInfo?.addon_5838?.$,
+            CPU_count: parametersInfo?.CPU_count,
+            Memory: parametersInfo?.Memory,
+            Disk_space: parametersInfo?.Disk_space,
+            Port_speed: parametersInfo?.Port_speed,
+            Control_panel: parametersInfo?.Control_panel,
+            IP_addresses_count: parametersInfo?.IP_addresses_count,
           }}
+          onSubmit={() => {}}
         >
           {({ values, setFieldValue }) => {
             return (
@@ -216,12 +259,57 @@ export default function VDSOrder() {
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>
-                      {renderOstemplFields('ostempl', setFieldValue, values.ostempl)}
+                      {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
                     </div>
+
                     <p className={s.section_title}>
                       {t('recipe', { ns: 'dedicated_servers' })}
                     </p>
+                    <div className={s.software_OS_List}>
+                      {renderSoftwareOSFields(
+                        'recipe',
+                        setFieldValue,
+                        values.recipe,
+                        values.ostempl,
+                      )}
+                    </div>
+
                     <p className={s.section_title}>{t('characteristics')}</p>
+                    <div className={s.parameters_list}>
+                      <Select
+                        itemsList={getOptionsListExtended('Memory')}
+                        value={values.Memory}
+                        label={t(`${t('memory')}:`)}
+                        getElement={value => setFieldValue('Memory', value)}
+                        isShadow
+                      />
+                      <Select
+                        value={values.Disk_space}
+                        itemsList={getOptionsListExtended('Disk_space')}
+                        getElement={value => setFieldValue('Disk_space', value)}
+                        label={t(`${t('disk_space')}:`)}
+                        isShadow
+                      />
+                      <Select
+                        value={values.CPU_count}
+                        itemsList={getOptionsListExtended('CPU_count')}
+                        getElement={value => setFieldValue('CPU_count', value)}
+                        label={t(`${t('processors')}:`)}
+                        isShadow
+                      />
+                      <InputField
+                        name="Port_speed"
+                        label={t(`${t('port_speed')}:`)}
+                        isShadow
+                      />
+                      <Select
+                        value={values.autoprolong}
+                        itemsList={getOptionsListExtended('autoprolong')}
+                        getElement={value => setFieldValue('autoprolong', value)}
+                        label={t(`${t('autoprolong')}:`)}
+                        isShadow
+                      />
+                    </div>
                   </>
                 )}
               </Form>
