@@ -968,6 +968,42 @@ const orderNewIP =
       })
   }
 
+// PROLONG
+const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
+  console.log(elid)
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.prolong',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const { slist } = data.doc
+
+      console.log(data)
+      setInitialState({ slist })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -987,4 +1023,5 @@ export default {
   orderIPInfo,
   orderNewIP,
   editDedicServerNoExtraPay,
+  getProlongInfo,
 }

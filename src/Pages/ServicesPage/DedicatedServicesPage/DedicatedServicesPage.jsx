@@ -19,6 +19,7 @@ import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
 import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './DedicatedServicesPage.module.scss'
+import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -29,6 +30,7 @@ export default function DedicatedServersPage() {
   const serversList = useSelector(dedicSelectors.getServersList)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
+  const [elidForProlongModal, setElidForProlongModal] = useState(0)
 
   const location = useLocation()
 
@@ -88,6 +90,7 @@ export default function DedicatedServersPage() {
               </HintWrapper>
               <HintWrapper label={t('prolong')}>
                 <IconButton
+                  onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
                   icon="clock"
@@ -126,10 +129,18 @@ export default function DedicatedServersPage() {
         servers={serversList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
+        setElidForProlongModal={setElidForProlongModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+      </Backdrop>
+
+      <Backdrop isOpened={Boolean(elidForProlongModal)}>
+        <ProlongModal
+          elid={elidForProlongModal}
+          closeFn={() => setElidForProlongModal(0)}
+        />
       </Backdrop>
     </>
   )

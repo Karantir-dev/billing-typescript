@@ -18,7 +18,11 @@ import { ServerState } from '../../../'
 import { useNavigate } from 'react-router-dom'
 import * as route from '../../../../routes'
 
-export default function DedicMobileItem({ server, setElidForEditModal }) {
+export default function DedicMobileItem({
+  server,
+  setElidForEditModal,
+  setElidForProlongModal,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
@@ -86,6 +90,7 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   disabled={server?.status?.$ !== '2'}
+                  onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
                   {t('prolong')}
