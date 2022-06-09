@@ -17,6 +17,11 @@
   }
 }
 
+.title_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .header_block {
   display: flex;
   justify-content: space-between;
@@ -29,14 +34,36 @@
   line-height: 130%;
   color: var(--main-text);
 }
-.ip_id {
+
+.first_row,
+.second_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.first_row {
+  margin-bottom: 10px;
+}
+.second_row {
+  margin-bottom: 20px;
+}
+
+.label,
+.value {
   font-size: 14px;
-  line-height: 130%;
+  line-height: 120%;
   color: var(--main-text);
 }
 
 .icon_cross {
   cursor: pointer;
+  flex: none;
+}
+
+.tarif_name {
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--transparent-color);
 }
 
 .select {
@@ -91,11 +118,6 @@
     font-size: 20px;
     display: inline-block;
     margin-right: 10px;
-  }
-
-  .value {
-    display: block;
-    margin-left: 5px;
   }
 
   .input_field_wrapper,

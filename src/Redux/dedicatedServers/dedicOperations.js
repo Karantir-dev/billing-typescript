@@ -952,7 +952,7 @@ const orderNewIP =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         dispatch(actions.hideLoader())
-        console.log(data, 'order cart')
+
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
@@ -991,11 +991,85 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist } = data.doc
+      const { slist, expiredate, period, title_name, newexpiredate } = data.doc
 
       console.log(data)
-      setInitialState({ slist })
+      setInitialState({ slist, expiredate, newexpiredate, period, title_name })
       dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getState) => {
+  console.log(elid)
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.prolong',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        period,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc.period.$)
+      setNewExpireDate(data.doc.newexpiredate.$)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const payProlongPeriod = (elid, period, handleModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.prolong',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        period,
+        clicked_button: 'basket',
+        sok: 'ok',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      handleModal()
+      dispatch(actions.hideLoader())
+      dispatch(
+        cartActions.setCartIsOpenedState({
+          isOpened: true,
+          redirectPath: route.DEDICATED_SERVERS,
+        }),
+      )
     })
     .catch(error => {
       console.log('error', error)
@@ -1024,4 +1098,6 @@ export default {
   orderNewIP,
   editDedicServerNoExtraPay,
   getProlongInfo,
+  getUpdateProlongInfo,
+  payProlongPeriod,
 }

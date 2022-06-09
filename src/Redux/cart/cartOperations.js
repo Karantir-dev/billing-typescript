@@ -37,8 +37,6 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         }
       })
 
-      console.log(cartData)
-
       setCartData && setCartData(cartData)
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))

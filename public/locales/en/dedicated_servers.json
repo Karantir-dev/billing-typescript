@@ -54,5 +54,8 @@
   "Add IP-address": "Add IP-address",
   "Unit": "Unit",
   "current value": "current value",
-  "dedicated_server": "Dedicated server"
+  "dedicated_server": "Dedicated server",
+  "Service active until": "Service active until",
+  "Service extended until": "Service extended until",
+  "Prolong service": "Prolong service"
 }

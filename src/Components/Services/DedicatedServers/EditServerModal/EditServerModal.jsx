@@ -461,7 +461,7 @@ export default function EditServerModal({ elid, closeFn }) {
   )
 }
 
-function translatePeriod(string, t) {
+export function translatePeriod(string, t) {
   let period = ''
 
   if (string.includes('three months')) {

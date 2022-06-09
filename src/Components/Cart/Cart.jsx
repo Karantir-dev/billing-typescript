@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
-import DomainItem from './DomainItem/DomainItem'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Cross, Check } from '../../images'
-import { Select, InputField, Button, CheckBox } from '..'
+import { Select, InputField, Button, CheckBox, DomainItem, DedicItem } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL } from '../../config/config'
-import DedicItem from './DedicItem/DedicItem'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -111,8 +109,6 @@ export default function Component() {
 
     const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
 
-    console.log(cartData?.elemList)
-
     return (
       <>
         {domainsList?.length > 0 && (
@@ -142,7 +138,6 @@ export default function Component() {
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
             {dedicList?.map(el => {
-              console.log(el)
               const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
               return (
                 <DedicItem

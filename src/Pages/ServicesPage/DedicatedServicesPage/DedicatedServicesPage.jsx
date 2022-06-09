@@ -132,11 +132,17 @@ export default function DedicatedServersPage() {
         setElidForProlongModal={setElidForProlongModal}
         setActiveServer={setActiveServer}
       />
-      <Backdrop isOpened={Boolean(elidForEditModal)}>
+      <Backdrop
+        onClick={() => setElidForEditModal(0)}
+        isOpened={Boolean(elidForEditModal)}
+      >
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
-      <Backdrop isOpened={Boolean(elidForProlongModal)}>
+      <Backdrop
+        onClick={() => setElidForProlongModal(0)}
+        isOpened={Boolean(elidForProlongModal)}
+      >
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}

@@ -54,5 +54,8 @@
   "Add IP-address": "Добавить IP-адрес",
   "Unit": "шт.",
   "current value": "текущее значение",
-  "dedicated_server": "Выделенный сервер"
+  "dedicated_server": "Выделенный сервер",
+  "Service active until": "Услуга активна до",
+  "Service extended until": "Услуга продлена до",
+  "Prolong service": "Продление услуги"
 }
