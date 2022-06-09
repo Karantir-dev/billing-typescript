@@ -1078,6 +1078,37 @@ const payProlongPeriod = (elid, period, handleModal) => (dispatch, getState) => 
     })
 }
 
+const getServiceHistory = (elid, setHistoryList) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.history',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      setHistoryList(data)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -1100,4 +1131,5 @@ export default {
   getProlongInfo,
   getUpdateProlongInfo,
   payProlongPeriod,
+  getServiceHistory,
 }

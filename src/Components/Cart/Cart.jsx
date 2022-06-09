@@ -341,7 +341,7 @@ export default function Component() {
                     {values?.slecetedPayMethod &&
                       values?.slecetedPayMethod?.payment_minamount && (
                         <span>
-                          {t('Payment amount')}{' '}
+                          {t('Payment amount')}
                           {values?.slecetedPayMethod?.payment_minamount?.$} EUR
                         </span>
                       )}
