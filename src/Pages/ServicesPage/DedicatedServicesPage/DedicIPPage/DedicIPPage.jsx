@@ -6,7 +6,8 @@ import {
   HintWrapper,
   IconButton,
 } from '../../../../Components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import * as route from '../../../../routes'
 
 import s from './DedicIPPage.module.scss'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
@@ -34,6 +35,7 @@ export default function DedicIPpage() {
   const [IPList, setIPList] = useState([])
   const [activeIP, setActiveIP] = useState(null)
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const navigate = useNavigate()
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
 
@@ -43,14 +45,16 @@ export default function DedicIPpage() {
   const [elidForDeleteModal, setElidForDeleteModal] = useState(0)
   const [orderModalOpened, setOrderModalOpened] = useState(false)
 
-  console.log('elidForEditModal', elidForEditModal)
-
   const handleRemoveIPModal = () => {
     setElidForDeleteModal(0)
   }
 
   const handleRemoveIPBtn = () => {
     dispatch(dedicOperations.removeIP(elidForDeleteModal, ipPlid, handleRemoveIPModal))
+  }
+
+  if (!ipPlid) {
+    navigate(route.DEDICATED_SERVERS_ORDER)
   }
 
   useEffect(() => {

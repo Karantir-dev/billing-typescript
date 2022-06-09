@@ -19,6 +19,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         func: 'basket',
         out: 'json',
         auth: sessionId,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -35,6 +36,8 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
           cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
         }
       })
+
+      console.log(cartData)
 
       setCartData && setCartData(cartData)
       setPaymentsMethodList &&

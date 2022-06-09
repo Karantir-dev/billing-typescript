@@ -18,7 +18,13 @@ export default function Component() {
 
   const navigate = useNavigate()
 
-  const { t } = useTranslation(['cart', 'other', 'payers', 'billing'])
+  const { t } = useTranslation([
+    'cart',
+    'other',
+    'payers',
+    'billing',
+    'dedicated_servers',
+  ])
 
   const [newPayer, setNewPayer] = useState(false)
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -132,7 +138,9 @@ export default function Component() {
 
         {dedicList?.length > 0 && (
           <>
-            <div className={s.formBlockTitle}>{t('Dedic payment')}:</div>
+            <div className={s.formBlockTitle}>
+              {t('dedicated_server', { ns: 'dedicated_servers' })}:
+            </div>
             {dedicList?.map(el => {
               console.log(el)
               const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el

@@ -61,16 +61,15 @@ const getTarifs = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
+      console.log(data, 'dedics')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log('got tariffs', data)
+
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
+      const { val: datacenter } = data.doc.slist.length > 1 ? data.doc.slist[0] : []
+      const { val: period } =
+        data.doc.slist.length > 1 ? data.doc.slist[1] : data.doc.slist[0]
       const { $: currentDatacenter } = data.doc.datacenter
-      // console.log(datacenter)
-
-      // console.log(data)
 
       const orderData = {
         fpricelist,

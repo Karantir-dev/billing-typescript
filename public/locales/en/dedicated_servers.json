@@ -51,5 +51,8 @@
   "After accepting your IP-address will be automatically deleted": "After confirmation, your IP address will be automatically deleted",
   "Resource change is forbidden by provider. Contact technical support": "Resource change is forbidden by provider. Contact technical support",
   "main_ip": "Main IP",
-  "Add IP-address": "Add IP-address"
+  "Add IP-address": "Add IP-address",
+  "Unit": "Unit",
+  "current value": "current value",
+  "dedicated_server": "Dedicated server"
 }

@@ -30,6 +30,13 @@
 }
 
 .service_name {
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--main-text);
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .priceList {
@@ -107,13 +114,16 @@
   margin-right: 15px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  order: 3;
+  align-self: center;
+  transform: rotateX(180deg);
 
   &:hover {
     stroke: var(--transparent-color);
   }
 
   &.opened {
-    transform: rotateX(180deg);
+    transform: rotateX(360deg);
   }
 }
 
@@ -121,6 +131,11 @@
   .server_item {
     flex-direction: row;
     align-items: center;
+  }
+
+  .shevron {
+    order: unset;
+    align-self: unset;
   }
 
   .priceList {

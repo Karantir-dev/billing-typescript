@@ -209,6 +209,7 @@ export default function DedicOrderPage() {
                         setFieldValue('datacenter', item?.$key)
                         setPrice('-')
                         setFieldValue('period', '1')
+                        setFieldValue('tarif', null)
                         setPaymentPeriod(item)
                         dispatch(
                           dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
