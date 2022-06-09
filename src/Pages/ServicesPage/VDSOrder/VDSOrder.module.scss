@@ -84,20 +84,25 @@
 
     .tariff_btn {
       cursor: initial;
+      pointer-events: none;
       width: calc(100% - 4px);
       height: calc(100% - 4px);
       justify-content: space-between;
       font-weight: 600;
+      &:active {
+        transform: scale(1);
+      }
     }
   }
 }
 
 .tariff_btn {
   @extend .category_btn;
-  padding: 14px;
+  padding: 14px !important;
   flex-direction: column;
   justify-content: space-evenly;
   gap: 6px;
+  text-align: center;
 }
 
 .tariff_name {
@@ -127,4 +132,187 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+}
+
+.agreement_wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.agreement_text {
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.link {
+  color: var(--link-text);
+  text-decoration: underline;
+}
+
+.checkbox_wrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+
+.checkbox {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+  appearance: none;
+  transform: scale(1);
+  transition: transform 80ms;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.icon_check {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  stroke: url('#gradient');
+}
+
+.buying_panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75px;
+  z-index: 1;
+  padding: 15px 30px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--menu_down_black_shadow);
+}
+
+.btn_buy {
+  max-width: 230px;
+  height: 45px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.price_wrapper {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.price {
+  @extend %accent-text-gradient;
+  display: block;
+  font-weight: 600;
+  font-size: 21px;
+}
+
+.increment_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+}
+
+.count_btn {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  pointer-events: initial;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &.decrement::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% - 1px);
+    height: 2px;
+    background-color: var(--main-text);
+  }
+
+  &.increment {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: var(--main-text);
+    }
+    &::before {
+      left: 0;
+      right: 0;
+      top: calc(50% - 1px);
+      height: 2px;
+    }
+    &::after {
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      left: calc(50% - 1px);
+    }
+  }
+
+  &:disabled::before {
+    background-color: var(--transparent-color);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .page_title {
+    font-size: 22px;
+  }
+
+  .categories_list {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .category_item {
+    width: 100%;
+  }
+
+  .category_btn {
+    padding: 0 8px;
+  }
+
+  .period_select {
+    width: 220px;
+  }
+
+  .tariffs_list {
+    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .software_OS_List {
+    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .parameters_list {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, 280px);
+  }
+
+  .agreement_wrapper {
+    margin-top: 25px;
+  }
+
+  .tariff_item.selected > .tariff_btn {
+    justify-content: space-evenly;
+  }
 }

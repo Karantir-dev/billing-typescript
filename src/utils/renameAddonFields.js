@@ -1,19 +1,14 @@
 export default function renameAddonFields(data) {
-  for (const key in data.messages.msg) {
+  for (const key in data?.messages?.msg) {
     if (key.match(/^(addon_\d+)$/g)) {
       if (!data.register) {
         data.register = {}
       }
 
       const newKey = data.messages.msg[key].replace(' ', '_').replace('-', '_')
-      data.register[key] = newKey
+      data.register[newKey] = key
 
       data[newKey] = data[key].$
-      if (data.Outgoing_traffic) {
-        const value = data.Outgoing_traffic
-        data.Port_speed = value
-        delete data.Outgoing_traffic
-      }
 
       data.slist.find(el => {
         const desiredEl = el.$name === key
@@ -25,6 +20,15 @@ export default function renameAddonFields(data) {
       })
     }
   }
+
+  data.slist.find(el => {
+    const desiredElIs = el.$name === 'Outgoing_traffic'
+    if (desiredElIs) {
+      el.$name = 'Port_speed'
+    }
+
+    return desiredElIs
+  })
 
   return data
 }

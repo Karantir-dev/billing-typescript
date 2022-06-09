@@ -75,14 +75,12 @@ export default function EditModal({ elid, closeFn }) {
   }
 
   const mutateOptionsListData = list => {
-    let index
-    initialState.slist.forEach((el, idx) => {
+    initialState.slist.forEach(el => {
       if (el.$name === 'autoprolong') {
-        index = idx
+        el.val = list
       }
     })
 
-    initialState.slist[index].val = list
     setInitialState({ ...initialState })
   }
 

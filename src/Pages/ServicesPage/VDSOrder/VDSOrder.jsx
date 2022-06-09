@@ -12,7 +12,9 @@ import {
   InputField,
   SoftwareOSBtn,
   SoftwareOSSelect,
+  Button,
 } from '../../../Components'
+import { Check } from '../../../images'
 import { vdsOperations } from '../../../Redux'
 
 import s from './VDSOrder.module.scss'
@@ -26,7 +28,7 @@ export default function VDSOrder() {
   const [formInfo, setFormInfo] = useState(null)
   const [tariffsList, setTariffsList] = useState([])
   const [tariffCategory, setTariffCategory] = useState()
-  const [selectedTariff, setSelectedTariff] = useState()
+  const [selectedTariffId, setSelectedTariffId] = useState()
   const [parametersInfo, setParametersInfo] = useState()
 
   useEffect(() => {
@@ -34,10 +36,20 @@ export default function VDSOrder() {
   }, [])
 
   const handleTariffClick = (period, pricelist) => {
-    if (selectedTariff !== pricelist) {
+    if (selectedTariffId !== pricelist) {
       dispatch(vdsOperations.getTariffParameters(period, pricelist, setParametersInfo))
-      setSelectedTariff(pricelist)
+      setSelectedTariffId(pricelist)
     }
+  }
+
+  const mutateOptionsListData = list => {
+    parametersInfo.slist.forEach(el => {
+      if (el.$name === 'autoprolong') {
+        el.val = list
+      }
+    })
+
+    setParametersInfo({ ...parametersInfo })
   }
 
   const getOptionsList = fieldName => {
@@ -63,14 +75,14 @@ export default function VDSOrder() {
   }
 
   const getOptionsListExtended = fieldName => {
-    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName).val
+    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
     // if (fieldName === 'autoprolong' && !optionsList.find(el => el.$key === 'null')) {
     //   optionsList.unshift({ $key: 'null', $: 'Disabled' })
     // }
 
     return optionsList
-      .filter(el => el?.$)
-      .map(({ $key, $ }) => {
+      ?.filter(el => el?.$)
+      ?.map(({ $key, $ }) => {
         let label = ''
 
         if ($.includes('EUR ')) {
@@ -80,6 +92,17 @@ export default function VDSOrder() {
         }
         return { value: $key, label: label }
       })
+  }
+
+  const getControlPanelList = fieldName => {
+    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
+
+    return optionsList?.map(({ $key, $ }) => {
+      let label = translatePeriodText($.trim())
+
+      label = t(label.split(' (')[0]) + ' (' + label.split(' (')[1]
+      return { value: $key, label: label }
+    })
   }
 
   const translate = string => {
@@ -151,6 +174,7 @@ export default function VDSOrder() {
   return (
     <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
+
       <h2 className={s.page_title}>{t('vds_order', { ns: 'crumbs' })}</h2>
       <ul className={s.categories_list}>
         {formInfo?.flist.val.map(({ $key, $ }) => {
@@ -177,16 +201,22 @@ export default function VDSOrder() {
           enableReinitialize
           initialValues={{
             period: formInfo.period.$,
-            ostempl: parametersInfo?.ostempl?.$,
-            autoprolong: parametersInfo?.autoprolong?.$,
-            domain: parametersInfo?.domain?.$,
-            recipe: parametersInfo?.recipe?.$,
-            CPU_count: parametersInfo?.CPU_count,
-            Memory: parametersInfo?.Memory,
-            Disk_space: parametersInfo?.Disk_space,
-            Port_speed: parametersInfo?.Port_speed,
-            Control_panel: parametersInfo?.Control_panel,
-            IP_addresses_count: parametersInfo?.IP_addresses_count,
+            ostempl: parametersInfo?.ostempl?.$ || '',
+            autoprolong: parametersInfo?.autoprolong?.$ || '',
+            domain: parametersInfo?.domain?.$ || '',
+            recipe: parametersInfo?.recipe?.$ || '',
+            CPU_count: parametersInfo?.CPU_count || '',
+            Memory: parametersInfo?.Memory || '',
+            Disk_space: parametersInfo?.Disk_space || '',
+            Port_speed:
+              parametersInfo?.slist.find(el => el.$name === 'Port_speed').val[0].$ || '',
+            Control_panel: parametersInfo?.Control_panel || '',
+            IP_addresses_count: parametersInfo?.IP_addresses_count || '',
+            agreement: 'off',
+            totalPrice: parametersInfo?.orderinfo.$.match(
+              /(?<=Total amount: )(.+?)(?= EUR)/g,
+            ),
+            count: 1,
           }}
           onSubmit={() => {}}
         >
@@ -219,13 +249,15 @@ export default function VDSOrder() {
                       return (
                         <li
                           className={cn(s.tariff_item, {
-                            [s.selected]: selectedTariff === pricelist.$,
+                            [s.selected]: selectedTariffId === pricelist.$,
                           })}
                           key={pricelist.$}
                         >
-                          <button
+                          <div
                             className={s.tariff_btn}
-                            type="button"
+                            tabIndex={0}
+                            onKeyUp={null}
+                            role="button"
                             onClick={() => handleTariffClick(values.period, pricelist.$)}
                           >
                             <span className={s.tariff_name}>{desc.$}</span>
@@ -244,10 +276,23 @@ export default function VDSOrder() {
                             ) : (
                               translate(price.$)
                             )}
-                            {!widerThanMobile && selectedTariff === pricelist.$ && (
-                              <div>- tool + </div>
+                            {!widerThanMobile && selectedTariffId === pricelist.$ && (
+                              <div className={s.increment_wrapper}>
+                                <button
+                                  className={cn(s.count_btn, s.decrement)}
+                                  type="button"
+                                  onClick={() => setFieldValue('count', values.count - 1)}
+                                  disabled={values.count === 1}
+                                ></button>
+                                <span>{values.count}</span>
+                                <button
+                                  className={cn(s.count_btn, s.increment)}
+                                  type="button"
+                                  onClick={() => setFieldValue('count', values.count + 1)}
+                                ></button>
+                              </div>
                             )}
-                          </button>
+                          </div>
                         </li>
                       )
                     })}
@@ -279,7 +324,7 @@ export default function VDSOrder() {
                       <Select
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
-                        label={t(`${t('memory')}:`)}
+                        label={`${t('memory')}:`}
                         getElement={value => setFieldValue('Memory', value)}
                         isShadow
                       />
@@ -287,26 +332,94 @@ export default function VDSOrder() {
                         value={values.Disk_space}
                         itemsList={getOptionsListExtended('Disk_space')}
                         getElement={value => setFieldValue('Disk_space', value)}
-                        label={t(`${t('disk_space')}:`)}
+                        label={`${t('disk_space')}:`}
                         isShadow
                       />
                       <Select
                         value={values.CPU_count}
                         itemsList={getOptionsListExtended('CPU_count')}
                         getElement={value => setFieldValue('CPU_count', value)}
-                        label={t(`${t('processors')}:`)}
+                        label={`${t('processors')}:`}
                         isShadow
                       />
                       <InputField
                         name="Port_speed"
-                        label={t(`${t('port_speed')}:`)}
+                        label={`${t('port_speed')}:`}
+                        isShadow
+                        disabled
+                      />
+                      {values.autoprolong && (
+                        <Select
+                          value={values.autoprolong}
+                          itemsList={getOptionsListExtended('autoprolong')}
+                          getElement={value => setFieldValue('autoprolong', value)}
+                          label={`${t('autoprolong')}:`}
+                          isShadow
+                        />
+                      )}
+                      <InputField
+                        name="domain"
+                        label={`${t('domain_name', { ns: 'dedicated_servers' })}:`}
+                        placeholder={t('domain_placeholder', { ns: 'dedicated_servers' })}
                         isShadow
                       />
+                      <InputField
+                        name="IP_addresses_count"
+                        label={`${t('count_ip', { ns: 'dedicated_servers' })}:`}
+                        isShadow
+                        disabled
+                      />
                       <Select
-                        value={values.autoprolong}
-                        itemsList={getOptionsListExtended('autoprolong')}
-                        getElement={value => setFieldValue('autoprolong', value)}
-                        label={t(`${t('autoprolong')}:`)}
+                        value={values.Control_panel}
+                        itemsList={getControlPanelList('Control_panel')}
+                        getElement={value => {
+                          setFieldValue('Control_panel', value)
+                          dispatch(
+                            vdsOperations.changeControlPanelField(
+                              values.period,
+                              value,
+                              selectedTariffId,
+                              parametersInfo.register.Control_panel,
+                              mutateOptionsListData,
+                            ),
+                          )
+                        }}
+                        label={`${t('license_to_panel')}:`}
+                        isShadow
+                      />
+                    </div>
+                    <div className={s.agreement_wrapper}>
+                      <div className={s.checkbox_wrapper}>
+                        <input
+                          className={s.checkbox}
+                          type="checkbox"
+                          onClick={() =>
+                            setFieldValue(
+                              'agreement',
+                              values.agreement === 'on' ? 'off' : 'on',
+                            )
+                          }
+                        />
+                        {values.agreement === 'on' && <Check className={s.icon_check} />}
+                      </div>
+                      <p className={s.agreement_text}>
+                        {t('terms', { ns: 'dedicated_servers' })}{' '}
+                        <a className={s.link} href={parametersInfo.licence_link.$}>
+                          &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
+                        </a>
+                      </p>
+                    </div>
+
+                    <div className={s.buying_panel}>
+                      <p className={s.price_wrapper}>
+                        <span className={s.price}>€{values.totalPrice}</span>
+                        {t(
+                          parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g),
+                        )}
+                      </p>
+                      <Button
+                        className={s.btn_buy}
+                        label={t('buy', { ns: 'other' })}
                         isShadow
                       />
                     </div>

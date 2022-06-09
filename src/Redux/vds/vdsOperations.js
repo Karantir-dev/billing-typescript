@@ -196,6 +196,40 @@ const getTariffParameters =
       })
   }
 
+const changeControlPanelField =
+  (period, value, pricelist, fieldName, mutateOptionsListData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.param',
+          auth: sessionId,
+          out: 'json',
+          period: period,
+          pricelist: pricelist,
+          sv_field: fieldName,
+          [fieldName]: value,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+        mutateOptionsListData(data.doc.slist[0].val)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('changeControlPanelField - ', err)
+      })
+  }
+
 export default {
   getVDS,
   getEditFieldsVDS,
@@ -203,4 +237,5 @@ export default {
   getVDSOrderInfo,
   getNewPeriodInfo,
   getTariffParameters,
+  changeControlPanelField,
 }
