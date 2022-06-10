@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
@@ -19,6 +19,7 @@ import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
 import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './DedicatedServicesPage.module.scss'
+import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -29,6 +30,7 @@ export default function DedicatedServersPage() {
   const serversList = useSelector(dedicSelectors.getServersList)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
+  const [elidForProlongModal, setElidForProlongModal] = useState(0)
 
   const location = useLocation()
 
@@ -75,16 +77,20 @@ export default function DedicatedServersPage() {
                 />
               </HintWrapper>
               <HintWrapper label={t('ip_addresses')}>
-                <NavLink to={route.DEDICATED_SERVERS_IP}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
-                    icon="ip"
-                  />
-                </NavLink>
+                <IconButton
+                  onClick={() =>
+                    navigate(route.DEDICATED_SERVERS_IP, {
+                      state: { plid: activeServer?.id?.$ },
+                    })
+                  }
+                  className={s.tools_icon}
+                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                  icon="ip"
+                />
               </HintWrapper>
               <HintWrapper label={t('prolong')}>
                 <IconButton
+                  onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
                   icon="clock"
@@ -123,10 +129,24 @@ export default function DedicatedServersPage() {
         servers={serversList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
+        setElidForProlongModal={setElidForProlongModal}
         setActiveServer={setActiveServer}
       />
-      <Backdrop isOpened={Boolean(elidForEditModal)}>
+      <Backdrop
+        onClick={() => setElidForEditModal(0)}
+        isOpened={Boolean(elidForEditModal)}
+      >
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForProlongModal(0)}
+        isOpened={Boolean(elidForProlongModal)}
+      >
+        <ProlongModal
+          elid={elidForProlongModal}
+          closeFn={() => setElidForProlongModal(0)}
+        />
       </Backdrop>
     </>
   )

@@ -50,5 +50,12 @@
   "limit_ip": "Достигнут лимит доступных для заказа IP адресов",
   "After accepting your IP-address will be automatically deleted": "После подтверждения ваш IP-адрес будет автоматически удален",
   "Resource change is forbidden by provider. Contact technical support": "Изменение ресурса запрещено провайдером. Свяжитесь с техподдержкой",
-  "main_ip": "Основной IP"
+  "main_ip": "Основной IP",
+  "Add IP-address": "Добавить IP-адрес",
+  "Unit": "шт.",
+  "current value": "текущее значение",
+  "dedicated_server": "Выделенный сервер",
+  "Service active until": "Услуга активна до",
+  "Service extended until": "Услуга продлена до",
+  "Prolong service": "Продление услуги"
 }

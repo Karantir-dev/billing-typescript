@@ -44,7 +44,6 @@ export default function DedicIPList({
             <DedicIPMobileItem
               key={el.id.$}
               ip={el}
-              setActiveIP={setActiveIP}
               setElidForEditModal={setElidForEditModal}
               setElidForDeleteModal={setElidForDeleteModal}
             />

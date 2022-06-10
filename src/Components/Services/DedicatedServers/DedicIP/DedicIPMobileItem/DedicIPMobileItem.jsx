@@ -2,12 +2,11 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 // import { useNavigate } from 'react-router-dom'
 // import * as route from '../../../../../routes'
-import { MoreDots, Delete, Settings, Flag } from '../../../../../images'
+import { MoreDots, Delete, Settings } from '../../../../../images'
 import { useOutsideAlerter } from '../../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './DedicIPMobileItem.module.scss'
-import HintWrapper from '../../../../ui/HintWrapper/HintWrapper'
 
 export default function DedicIPMobileItem({
   ip,
@@ -18,7 +17,7 @@ export default function DedicIPMobileItem({
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
-  //   const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
@@ -70,10 +69,8 @@ export default function DedicIPMobileItem({
       </div>
 
       {ip?.is_main?.$ === 'on' && (
-        <div className={s.hint_wrapper}>
-          <HintWrapper label={t('main_ip', { ns: 'dedicated_servers' })}>
-            <Flag className={s.flag_icon} />
-          </HintWrapper>
+        <div className={s.main_ip}>
+          <div className={s.triangle}></div>
         </div>
       )}
 

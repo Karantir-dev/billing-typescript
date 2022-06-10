@@ -7,6 +7,25 @@
   position: relative;
 }
 
+.main_ip {
+  display: block;
+  width: 15px;
+  height: 17px;
+  left: 13px;
+  background: var(--accent-gradient);
+  position: absolute;
+}
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+  border-bottom: 5px solid #fff;
+}
+
 .item_btn {
   display: flex;
   align-items: center;
@@ -23,7 +42,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 4px;
     height: 100%;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
