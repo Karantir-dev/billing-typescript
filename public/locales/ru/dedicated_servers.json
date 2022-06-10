@@ -57,5 +57,7 @@
   "dedicated_server": "Выделенный сервер",
   "Service active until": "Услуга активна до",
   "Service extended until": "Услуга продлена до",
-  "Prolong service": "Продление услуги"
+  "Prolong service": "Продление услуги",
+  "Not provided": "Не указан",
+  "Provider employee or system": "Сотрудник провайдера или система"
 }

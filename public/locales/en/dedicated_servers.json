@@ -57,5 +57,7 @@
   "dedicated_server": "Dedicated server",
   "Service active until": "Service active until",
   "Service extended until": "Service extended until",
-  "Prolong service": "Prolong service"
+  "Prolong service": "Prolong service",
+  "Not provided": "Not provided",
+  "Provider employee or system": "Provider's employee or system"
 }

@@ -1078,28 +1078,69 @@ const payProlongPeriod = (elid, period, handleModal) => (dispatch, getState) => 
     })
 }
 
-const getServiceHistory = (elid, setHistoryList) => (dispatch, getState) => {
+const getServiceHistory =
+  (elid, currentPage, setHistoryList, setHistoryElems) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.history',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          p_cnt: 10,
+          p_num: currentPage || null,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const { elem, p_elems } = data.doc
+        console.log('history data loaded', data)
+        setHistoryList(elem)
+        setHistoryElems(p_elems)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
   } = getState()
 
+  console.log(elid)
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
-        func: 'service.history',
+        func: 'service.instruction.html',
         out: 'json',
         auth: sessionId,
-        elid,
         lang: 'en',
+        elid,
       }),
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      setHistoryList(data)
+      console.log(data)
+      setInstructionLink(data.doc.body)
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -1132,4 +1173,5 @@ export default {
   getUpdateProlongInfo,
   payProlongPeriod,
   getServiceHistory,
+  getServiceInstruction,
 }

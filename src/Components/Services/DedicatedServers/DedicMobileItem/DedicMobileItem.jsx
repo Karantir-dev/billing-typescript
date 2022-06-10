@@ -22,6 +22,8 @@ export default function DedicMobileItem({
   server,
   setElidForEditModal,
   setElidForProlongModal,
+  setElidForHistoryModal,
+  setElidForInstructionModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -97,7 +99,11 @@ export default function DedicMobileItem({
                 </button>
               </li>
               <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  onClick={() => handleToolBtnClick(setElidForHistoryModal, server.id.$)}
+                >
                   <Refund className={s.tool_icon} />
                   {t('history')}
                 </button>
@@ -107,6 +113,9 @@ export default function DedicMobileItem({
                   className={s.tool_btn}
                   type="button"
                   disabled={server?.status?.$ !== '2'}
+                  onClick={() =>
+                    handleToolBtnClick(setElidForInstructionModal, server.id.$)
+                  }
                 >
                   <Info className={s.tool_icon} />
                   {t('instruction')}

@@ -41,6 +41,11 @@
   color: var(--transparent-color);
 }
 
+.server_info {
+  display: flex;
+  flex-direction: column;
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;

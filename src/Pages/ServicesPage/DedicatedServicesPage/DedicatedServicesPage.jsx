@@ -20,6 +20,8 @@ import EditServerModal from '../../../Components/Services/DedicatedServers/EditS
 
 import s from './DedicatedServicesPage.module.scss'
 import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
+import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
+import InstructionModal from '../../../Components/Services/DedicatedServers/InstructionModal/InstructionModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -31,6 +33,8 @@ export default function DedicatedServersPage() {
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
+  const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
+  const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
 
   const location = useLocation()
 
@@ -97,13 +101,18 @@ export default function DedicatedServersPage() {
                 />
               </HintWrapper>
               <HintWrapper label={t('history')}>
-                <IconButton className={s.tools_icon} icon="refund" />
+                <IconButton
+                  onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
+                  className={s.tools_icon}
+                  icon="refund"
+                />
               </HintWrapper>
               <HintWrapper label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
                   icon="info"
+                  onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
               <HintWrapper label={t('go_to_panel')}>
@@ -130,6 +139,8 @@ export default function DedicatedServersPage() {
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
+        setElidForHistoryModal={setElidForHistoryModal}
+        setElidForInstructionModal={setElidForInstructionModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
@@ -146,6 +157,27 @@ export default function DedicatedServersPage() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+        />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForHistoryModal(0)}
+        isOpened={Boolean(elidForHistoryModal)}
+      >
+        <DedicsHistoryModal
+          elid={elidForHistoryModal}
+          serviceName={elidForHistoryModal}
+          closeFn={() => setElidForHistoryModal(0)}
+        />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForInstructionModal(0)}
+        isOpened={Boolean(elidForInstructionModal)}
+      >
+        <InstructionModal
+          elid={elidForInstructionModal}
+          closeFn={() => setElidForInstructionModal(0)}
         />
       </Backdrop>
     </>
