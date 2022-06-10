@@ -17,6 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 800px;
 }
 
 .category_item {
@@ -44,6 +45,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+
   height: 100%;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
@@ -68,6 +70,7 @@
 .tariffs_list {
   display: grid;
   gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
 .tariff_item {
@@ -169,6 +172,10 @@
   transition: transform 80ms;
   cursor: pointer;
 
+  &.error {
+    border: 1px solid var(--error-color);
+  }
+
   &:active {
     transform: scale(0.9);
   }
@@ -196,6 +203,12 @@
   padding: 15px 30px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--menu_down_black_shadow);
+  transform: translateY(100%);
+  transition: transform 150ms;
+
+  &.opened {
+    transform: translateY(0);
+  }
 }
 
 .btn_buy {
@@ -271,6 +284,28 @@
   }
 }
 
+.tablet_price_wrapper {
+  font-size: 14px;
+}
+
+.tablet_price_sentence {
+  @extend %accent-text-gradient;
+  display: block;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tablet_price {
+  font-size: 25px;
+}
+
+.error_message {
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--error-color);
+}
+
 @media screen and (min-width: 768px) {
   .page_title {
     font-size: 22px;
@@ -295,7 +330,6 @@
 
   .tariffs_list {
     gap: 18px;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 
   .software_OS_List {
@@ -314,5 +348,35 @@
 
   .tariff_item.selected > .tariff_btn {
     justify-content: space-evenly;
+  }
+
+  .btn_buy {
+    height: 50px;
+  }
+
+  .buying_panel {
+    height: 85px;
+    padding: 15px 60px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .buying_panel {
+    left: 117px;
+    padding: 15px 60px 15px 80px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .buying_panel {
+    padding: 15px 140px 15px 128px;
+    left: 130px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .buying_panel {
+    padding: 15px 160px 15px 160px;
+    left: 130px;
   }
 }

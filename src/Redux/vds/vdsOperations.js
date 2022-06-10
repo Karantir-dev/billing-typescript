@@ -196,7 +196,7 @@ const getTariffParameters =
       })
   }
 
-const changeControlPanelField =
+const changeOrderFormField =
   (period, value, pricelist, fieldName, mutateOptionsListData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -219,14 +219,23 @@ const changeControlPanelField =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         console.log(data.doc)
-        mutateOptionsListData(data.doc.slist[0].val)
+        let autoprolongList
+        let orderinfo
+        if (data.doc.slist) {
+          autoprolongList = data.doc.slist[0].val
+          orderinfo = data.doc.orderinfo.$
+        } else {
+          autoprolongList = data.doc.doc.slist[0].val
+          orderinfo = data.doc.doc.orderinfo.$
+        }
+        mutateOptionsListData(autoprolongList, orderinfo)
 
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('changeControlPanelField - ', err)
+        console.log('changeOrderFormField - ', err)
       })
   }
 
@@ -237,5 +246,5 @@ export default {
   getVDSOrderInfo,
   getNewPeriodInfo,
   getTariffParameters,
-  changeControlPanelField,
+  changeOrderFormField,
 }

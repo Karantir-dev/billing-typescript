@@ -1,6 +1,6 @@
 import cn from 'classnames'
-import { Form, Formik } from 'formik'
-
+import { ErrorMessage, Form, Formik } from 'formik'
+import * as Yup from 'yup'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -26,6 +26,7 @@ export default function VDSOrder() {
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
 
   const [formInfo, setFormInfo] = useState(null)
+  const [period, setPeriod] = useState('1')
   const [tariffsList, setTariffsList] = useState([])
   const [tariffCategory, setTariffCategory] = useState()
   const [selectedTariffId, setSelectedTariffId] = useState()
@@ -42,13 +43,14 @@ export default function VDSOrder() {
     }
   }
 
-  const mutateOptionsListData = list => {
+  const mutateOptionsListData = (list, orderinfo, fieldForChange, value) => {
     parametersInfo.slist.forEach(el => {
       if (el.$name === 'autoprolong') {
         el.val = list
       }
     })
-
+    parametersInfo.orderinfo.$ = orderinfo
+    parametersInfo[fieldForChange] = value
     setParametersInfo({ ...parametersInfo })
   }
 
@@ -76,9 +78,6 @@ export default function VDSOrder() {
 
   const getOptionsListExtended = fieldName => {
     const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
-    // if (fieldName === 'autoprolong' && !optionsList.find(el => el.$key === 'null')) {
-    //   optionsList.unshift({ $key: 'null', $: 'Disabled' })
-    // }
 
     return optionsList
       ?.filter(el => el?.$)
@@ -153,6 +152,9 @@ export default function VDSOrder() {
             state={state}
             getElement={value => {
               setFieldValue(fieldName, value)
+              if (fieldName === 'ostempl') parametersInfo.recipe.$ = 'null'
+              parametersInfo[fieldName].$ = value
+              setParametersInfo({ ...parametersInfo })
             }}
           />
         )
@@ -164,18 +166,44 @@ export default function VDSOrder() {
             state={state}
             iconName={name}
             label={el[0].$}
-            onClick={value => setFieldValue(fieldName, value)}
+            onClick={value => {
+              setFieldValue(fieldName, value)
+              if (fieldName === 'ostempl') parametersInfo.recipe.$ = 'null'
+
+              parametersInfo[fieldName].$ = value
+
+              setParametersInfo({ ...parametersInfo })
+            }}
           />
         )
       }
     })
   }
 
+  const onChangeField = (period, value, fieldName) => {
+    dispatch(
+      vdsOperations.changeOrderFormField(
+        period,
+        value,
+        selectedTariffId,
+        parametersInfo.register[fieldName],
+        (list, orderinfo) => mutateOptionsListData(list, orderinfo, fieldName, value),
+      ),
+    )
+  }
+
+  const validationSchema = Yup.object().shape({
+    agreement: Yup.string().oneOf(
+      ['on'],
+      t('agreement_warning', { ns: 'dedicated_servers' }),
+    ),
+  })
+
   return (
     <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.page_title}>{t('vds_order', { ns: 'crumbs' })}</h2>
+      <h2 className={s.page_title}>{t('vds_order', { ns: 'crumbs' })} </h2>
       <ul className={s.categories_list}>
         {formInfo?.flist.val.map(({ $key, $ }) => {
           return (
@@ -200,7 +228,6 @@ export default function VDSOrder() {
         <Formik
           enableReinitialize
           initialValues={{
-            period: formInfo.period.$,
             ostempl: parametersInfo?.ostempl?.$ || '',
             autoprolong: parametersInfo?.autoprolong?.$ || '',
             domain: parametersInfo?.domain?.$ || '',
@@ -213,14 +240,19 @@ export default function VDSOrder() {
             Control_panel: parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
             agreement: 'off',
-            totalPrice: parametersInfo?.orderinfo.$.match(
+            totalPrice: Number(
+              parametersInfo?.orderinfo.$.match(/(?<=Total amount: )(.+?)(?= EUR)/g),
+            ),
+            finalTotalPrice: parametersInfo?.orderinfo.$.match(
               /(?<=Total amount: )(.+?)(?= EUR)/g,
             ),
             count: 1,
           }}
+          validationSchema={validationSchema}
           onSubmit={() => {}}
         >
-          {({ values, setFieldValue }) => {
+          {({ values, setFieldValue, errors }) => {
+            console.log(values)
             return (
               <Form>
                 <Select
@@ -228,10 +260,19 @@ export default function VDSOrder() {
                   inputClassName={s.select_bgc}
                   label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
                   itemsList={getOptionsList('period')}
-                  value={values.period}
+                  value={period}
                   getElement={period => {
-                    setFieldValue('period', period)
+                    setPeriod(period)
                     dispatch(vdsOperations.getNewPeriodInfo(period, setTariffsList))
+                    if (selectedTariffId) {
+                      dispatch(
+                        vdsOperations.getTariffParameters(
+                          period,
+                          selectedTariffId,
+                          setParametersInfo,
+                        ),
+                      )
+                    }
                   }}
                   isShadow
                 />
@@ -258,7 +299,7 @@ export default function VDSOrder() {
                             tabIndex={0}
                             onKeyUp={null}
                             role="button"
-                            onClick={() => handleTariffClick(values.period, pricelist.$)}
+                            onClick={() => handleTariffClick(period, pricelist.$)}
                           >
                             <span className={s.tariff_name}>{desc.$}</span>
                             {parsedPrice ? (
@@ -281,14 +322,26 @@ export default function VDSOrder() {
                                 <button
                                   className={cn(s.count_btn, s.decrement)}
                                   type="button"
-                                  onClick={() => setFieldValue('count', values.count - 1)}
+                                  onClick={() => {
+                                    setFieldValue('count', values.count - 1)
+                                    setFieldValue(
+                                      'finalTotalPrice',
+                                      values.totalPrice * (values.count - 1),
+                                    )
+                                  }}
                                   disabled={values.count === 1}
                                 ></button>
                                 <span>{values.count}</span>
                                 <button
                                   className={cn(s.count_btn, s.increment)}
                                   type="button"
-                                  onClick={() => setFieldValue('count', values.count + 1)}
+                                  onClick={() => {
+                                    setFieldValue('count', values.count + 1)
+                                    setFieldValue(
+                                      'finalTotalPrice',
+                                      values.totalPrice * (values.count + 1),
+                                    )
+                                  }}
                                 ></button>
                               </div>
                             )}
@@ -325,20 +378,29 @@ export default function VDSOrder() {
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
                         label={`${t('memory')}:`}
-                        getElement={value => setFieldValue('Memory', value)}
+                        getElement={value => {
+                          setFieldValue('Memory', value)
+                          onChangeField(period, value, 'Memory')
+                        }}
                         isShadow
                       />
                       <Select
                         value={values.Disk_space}
                         itemsList={getOptionsListExtended('Disk_space')}
-                        getElement={value => setFieldValue('Disk_space', value)}
+                        getElement={value => {
+                          setFieldValue('Disk_space', value)
+                          onChangeField(period, value, 'Disk_space')
+                        }}
                         label={`${t('disk_space')}:`}
                         isShadow
                       />
                       <Select
                         value={values.CPU_count}
                         itemsList={getOptionsListExtended('CPU_count')}
-                        getElement={value => setFieldValue('CPU_count', value)}
+                        getElement={value => {
+                          setFieldValue('CPU_count', value)
+                          onChangeField(period, value, 'CPU_count')
+                        }}
                         label={`${t('processors')}:`}
                         isShadow
                       />
@@ -374,24 +436,17 @@ export default function VDSOrder() {
                         itemsList={getControlPanelList('Control_panel')}
                         getElement={value => {
                           setFieldValue('Control_panel', value)
-                          dispatch(
-                            vdsOperations.changeControlPanelField(
-                              values.period,
-                              value,
-                              selectedTariffId,
-                              parametersInfo.register.Control_panel,
-                              mutateOptionsListData,
-                            ),
-                          )
+                          onChangeField(period, value, 'Control_panel')
                         }}
                         label={`${t('license_to_panel')}:`}
                         isShadow
                       />
                     </div>
+
                     <div className={s.agreement_wrapper}>
                       <div className={s.checkbox_wrapper}>
                         <input
-                          className={s.checkbox}
+                          className={cn(s.checkbox, { [s.error]: errors.agreement })}
                           type="checkbox"
                           onClick={() =>
                             setFieldValue(
@@ -402,6 +457,7 @@ export default function VDSOrder() {
                         />
                         {values.agreement === 'on' && <Check className={s.icon_check} />}
                       </div>
+
                       <p className={s.agreement_text}>
                         {t('terms', { ns: 'dedicated_servers' })}{' '}
                         <a className={s.link} href={parametersInfo.licence_link.$}>
@@ -409,22 +465,39 @@ export default function VDSOrder() {
                         </a>
                       </p>
                     </div>
-
-                    <div className={s.buying_panel}>
-                      <p className={s.price_wrapper}>
-                        <span className={s.price}>€{values.totalPrice}</span>
+                    <ErrorMessage
+                      className={s.error_message}
+                      name="agreement"
+                      component="p"
+                    />
+                  </>
+                )}
+                <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
+                  {widerThanMobile ? (
+                    <p className={s.tablet_price_wrapper}>
+                      {t('topay', { ns: 'dedicated_servers' })}:
+                      <span className={s.tablet_price_sentence}>
+                        <span className={s.tablet_price}>
+                          {values.finalTotalPrice} EUR
+                        </span>{' '}
                         {t(
                           parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g),
                         )}
-                      </p>
-                      <Button
-                        className={s.btn_buy}
-                        label={t('buy', { ns: 'other' })}
-                        isShadow
-                      />
-                    </div>
-                  </>
-                )}
+                      </span>
+                    </p>
+                  ) : (
+                    <p className={s.price_wrapper}>
+                      <span className={s.price}>€{values.finalTotalPrice}</span>
+                      {t(parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g))}
+                    </p>
+                  )}
+                  <Button
+                    className={s.btn_buy}
+                    label={t('buy', { ns: 'other' })}
+                    type="submit"
+                    isShadow
+                  />
+                </div>
               </Form>
             )
           }}
