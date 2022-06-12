@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import domainsActions from './domainsActions'
 
@@ -9,6 +9,8 @@ const initialState = {
 
 const domainsList = createReducer(initialState.domainsList, {
   [domainsActions.setDomainsList]: (_, { payload }) => payload,
+  [domainsActions.deleteDomain]: (state, { payload }) =>
+    (state = current(state)?.filter(el => el?.id?.$ !== payload)),
 })
 
 const domainsCount = createReducer(initialState.domainsCount, {

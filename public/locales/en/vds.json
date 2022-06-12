@@ -21,6 +21,7 @@
   "stopped": "Suspended",
   "ordered": "Ordered",
   "in_progress": "Being processed",
+  "in_progress_transfer": "Transfer in progress",
   "deletion_in_progress": "Deletion in progress",
   "edit_title": "Service editing",
   "main": "Main settings",

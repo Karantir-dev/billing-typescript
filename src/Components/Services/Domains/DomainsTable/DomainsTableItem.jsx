@@ -2,7 +2,6 @@ import React from 'react'
 import s from './DomainsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-// import { CheckCircle } from '../../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import ServerState from '../../../vds/ServerState/ServerState'
@@ -11,21 +10,6 @@ export default function Component(props) {
   const { id, domain, tariff, expiredate, cost, setSelctedItem, selected, el } = props
   const { t } = useTranslation(['domains', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
-
-  // const renderStatus = string => {
-  //   const status = string.trim()
-
-  //   let icons = []
-  //   if (status === 'Active') {
-  //     icons?.push(<CheckCircle key={Math.random()} className={s.check_icon} />)
-  //   }
-
-  //   if (status === 'Activation in progres') {
-  //     icons?.push(<CheckCircle key={Math.random()} className={s.check_icon} />)
-  //   }
-
-  //   return icons
-  // }
 
   return (
     <div

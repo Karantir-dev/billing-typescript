@@ -458,6 +458,240 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
     })
 }
 
+const renewService =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.prolong',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The service can be renewed only after')) {
+            let date = ''
+
+            data.doc.error?.param?.forEach(el => {
+              if (el?.$name === 'value') {
+                date = el?.$
+              }
+            })
+
+            toast.error(
+              `${i18n.t('The service can be renewed only after {{date}}', {
+                ns: 'other',
+                date: date,
+              })}`,
+              {
+                position: 'bottom-right',
+              },
+            )
+          } else {
+            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+              position: 'bottom-right',
+            })
+          }
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const deleteDomain =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.delete',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        toast.success(i18n.t('Domain deleted successfully', { ns: 'domains' }), {
+          position: 'bottom-right',
+        })
+
+        dispatch(domainsActions.deleteDomain(body?.elid))
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getHistoryDomain =
+  (body = {}, setHistoryModal, setHistoryList) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.history',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        setHistoryList && setHistoryList(data?.doc?.elem)
+        setHistoryModal && setHistoryModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getWhoisDomain =
+  (body = {}, setWhoisModal, setWhoisData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.whois',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        setWhoisData && setWhoisData(data?.doc?.whois_data?.$)
+        setWhoisModal && setWhoisModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const editDomainNS =
+  (body = {}, setNSModal, setNSData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.ns',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        console.log(data?.doc)
+
+        const d = {
+          ns0: data?.doc?.ns0?.$,
+          ns1: data?.doc?.ns1?.$,
+          ns2: data?.doc?.ns2?.$,
+          ns3: data?.doc?.ns3?.$,
+          ns_additional: data?.doc?.ns_additional?.$,
+        }
+        setNSData && setNSData(d)
+        setNSModal && setNSModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getDomains,
   getDomainsOrderName,
@@ -466,4 +700,9 @@ export default {
   getDomainsNS,
   getDomainPaymentInfo,
   getTermsOfConditionalText,
+  renewService,
+  deleteDomain,
+  getHistoryDomain,
+  getWhoisDomain,
+  editDomainNS,
 }

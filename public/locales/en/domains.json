@@ -49,5 +49,13 @@
   "Registered": "Registered",
   "Not registered": "Not registered",
   "Confirmation code": "Confirmation code",
-  "conf_code_instruction": "To perform a domain transfer, you need to obtain a domain transfer confirmation code from your current registrar"
+  "conf_code_instruction": "To perform a domain transfer, you need to obtain a domain transfer confirmation code from your current registrar",
+  "Hide data in WHOIS": "Hide data in WHOIS",
+  "Domain deleted successfully": "Domain deleted successfully",
+  "Service change history": "Service change history",
+  "Date of change": "Date of change",
+  "Change": "Change",
+  "Username": "Username",
+  "IP address": "IP address",
+  "Domain Information": "Domain Information"
 }

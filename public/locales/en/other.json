@@ -109,5 +109,8 @@
   "Close": "Close",
   "for the transfer": "for the transfer",
   "Enter code": "Enter code",
-  "The '' field has invalid value. The value cannot be empty": "The code field has invalid value. The value cannot be empty"
+  "The '' field has invalid value. The value cannot be empty": "The code field has invalid value. The value cannot be empty",
+  "Domain has not been registered yet": "Domain has not been registered yet",
+  "Changing registrar for this domain": "Changing registrar for this domain",
+  "The service can be renewed only after {{date}}": "The service can be renewed only after {{date}}"
 }

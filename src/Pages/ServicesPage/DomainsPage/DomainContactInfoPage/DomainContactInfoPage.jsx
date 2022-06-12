@@ -285,6 +285,8 @@ export default function ServicesPage({ transfer = false }) {
           owner_email: domainsContacts?.owner_email?.$ || '',
           owner_phone: domainsContacts?.owner_phone || '',
 
+          owner_private: domainsContacts?.owner_private || 'off',
+
           owner_firstname: domainsContacts?.owner_firstname?.$ || '',
           owner_firstname_locale: domainsContacts?.owner_firstname_locale?.$ || '',
           owner_lastname: domainsContacts?.owner_lastname?.$ || '',
@@ -304,6 +306,8 @@ export default function ServicesPage({ transfer = false }) {
           admin_profiletype: domainsContacts?.admin_profiletype || '',
           admin_email: domainsContacts?.admin_email?.$ || '',
           admin_phone: domainsContacts?.admin_phone || '',
+
+          admin_private: domainsContacts?.admin_private || 'off',
 
           admin_firstname: domainsContacts?.admin_firstname?.$ || '',
           admin_firstname_locale: domainsContacts?.admin_firstname_locale?.$ || '',
@@ -325,6 +329,8 @@ export default function ServicesPage({ transfer = false }) {
           tech_email: domainsContacts?.tech_email?.$ || '',
           tech_phone: domainsContacts?.tech_phone || '',
 
+          tech_private: domainsContacts?.tech_private || 'off',
+
           tech_firstname: domainsContacts?.tech_firstname?.$ || '',
           tech_firstname_locale: domainsContacts?.tech_firstname_locale?.$ || '',
           tech_lastname: domainsContacts?.tech_lastname?.$ || '',
@@ -344,6 +350,8 @@ export default function ServicesPage({ transfer = false }) {
           bill_profiletype: domainsContacts?.bill_profiletype || '',
           bill_email: domainsContacts?.bill_email?.$ || '',
           bill_phone: domainsContacts?.bill_phone || '',
+
+          bill_private: domainsContacts?.bill_private || 'off',
 
           bill_firstname: domainsContacts?.bill_firstname?.$ || '',
           bill_firstname_locale: domainsContacts?.bill_firstname_locale?.$ || '',
@@ -471,6 +479,16 @@ export default function ServicesPage({ transfer = false }) {
                         }),
                       )}
                     />
+                    <div className={s.useFirstCheck}>
+                      <CheckBox
+                        initialState={values?.owner_private === 'on'}
+                        setValue={item => {
+                          setFieldValue('owner_private', item ? 'on' : 'off')
+                        }}
+                        className={s.checkbox}
+                      />
+                      <span>{t('Hide data in WHOIS')}</span>
+                    </div>
                   </div>
                 </div>
 
@@ -738,6 +756,16 @@ export default function ServicesPage({ transfer = false }) {
                           }),
                         )}
                       />
+                      <div className={s.useFirstCheck}>
+                        <CheckBox
+                          initialState={values?.admin_private === 'on'}
+                          setValue={item => {
+                            setFieldValue('admin_private', item ? 'on' : 'off')
+                          }}
+                          className={s.checkbox}
+                        />
+                        <span>{t('Hide data in WHOIS')}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -1007,6 +1035,16 @@ export default function ServicesPage({ transfer = false }) {
                           }),
                         )}
                       />
+                      <div className={s.useFirstCheck}>
+                        <CheckBox
+                          initialState={values?.tech_private === 'on'}
+                          setValue={item => {
+                            setFieldValue('tech_private', item ? 'on' : 'off')
+                          }}
+                          className={s.checkbox}
+                        />
+                        <span>{t('Hide data in WHOIS')}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -1276,6 +1314,16 @@ export default function ServicesPage({ transfer = false }) {
                           }),
                         )}
                       />
+                      <div className={s.useFirstCheck}>
+                        <CheckBox
+                          initialState={values?.bill_private === 'on'}
+                          setValue={item => {
+                            setFieldValue('bill_private', item ? 'on' : 'off')
+                          }}
+                          className={s.checkbox}
+                        />
+                        <span>{t('Hide data in WHOIS')}</span>
+                      </div>
                     </div>
                   </div>
 
