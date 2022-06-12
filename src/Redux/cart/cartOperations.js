@@ -19,6 +19,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         func: 'basket',
         out: 'json',
         auth: sessionId,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {

@@ -1,8 +1,8 @@
 import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, On_Off, CheckCircle, InProgress, Attention } from '../../../images'
-import HintWrapper from '../../ui/HintWrapper/HintWrapper'
+import { Clock, On_Off, CheckCircle, InProgress, Attention } from '../../../../images'
+import { HintWrapper } from '../../../'
 import PropTypes from 'prop-types'
 
 import s from './ServerState.module.scss'

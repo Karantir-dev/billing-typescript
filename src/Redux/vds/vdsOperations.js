@@ -47,7 +47,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+
       setInitialState(data.doc)
 
       dispatch(actions.hideLoader())
@@ -81,7 +81,6 @@ const editVDS =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
 
         const newAutoprolongList = data.doc?.slist?.[0]?.val
         mutateOptionsListData && mutateOptionsListData(newAutoprolongList)
@@ -107,8 +106,101 @@ const editVDS =
       })
   }
 
+const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.order',
+        auth: sessionId,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
+
+      setFormInfo(data.doc)
+      setTariffsList(data.doc.list[0].elem)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('getVDSOrderInfo - ', err.message)
+    })
+}
+
+const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.order.pricelist',
+        auth: sessionId,
+        out: 'json',
+        period: period,
+        sv_field: 'period',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
+      setTariffsList(data.doc.list[0].elem)
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('getNewPeriodInfo - ', err.message)
+    })
+}
+
+const getTariffParameters =
+  (period, pricelist, setParametersInfo) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.pricelist',
+          auth: sessionId,
+          out: 'json',
+          snext: 'ok',
+          sok: 'ok',
+          period: period,
+          pricelist: pricelist,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log(data.doc)
+
+        setParametersInfo(data.doc)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('getTariffParameters - ', err.message)
+      })
+  }
+
 export default {
   getVDS,
   getEditFieldsVDS,
   editVDS,
+  getVDSOrderInfo,
+  getNewPeriodInfo,
+  getTariffParameters,
 }

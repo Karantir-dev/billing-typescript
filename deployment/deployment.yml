@@ -6,7 +6,7 @@ metadata:
     app: zomro-bill
   namespace: dev
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: zomro-bill
@@ -22,35 +22,35 @@ spec:
         app: zomro-bill
     spec:
       containers:
-      - name: zomro-bill
-        image: zomrocom/zomro-bill-dev
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "400m"
-        ports:
-          - name: http
-            protocol: TCP
-            containerPort: 8080
-          - name: https
-            protocol: TCP
-            containerPort: 8443
-        readinessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        imagePullPolicy: Always
+        - name: zomro-bill
+          image: zomrocom/zomro-bill-dev
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '400m'
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+            - name: https
+              protocol: TCP
+              containerPort: 8443
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          imagePullPolicy: Always
       imagePullSecrets:
-      - name: regcred
+        - name: regcred
 
 ---
 apiVersion: v1
@@ -62,11 +62,11 @@ spec:
   selector:
     app: zomro-bill
   ports:
-  - name: http
-    protocol: TCP
-    port: 80
-    targetPort: http
-  - name: https
-    protocol: TCP
-    port: 443
-    targetPort: https
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: https

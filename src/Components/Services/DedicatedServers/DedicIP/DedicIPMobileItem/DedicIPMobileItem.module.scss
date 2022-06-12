@@ -1,0 +1,142 @@
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  column-gap: 15px;
+  row-gap: 10px;
+  width: 100%;
+  padding: 26px 15px;
+  background: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+}
+
+.main_ip {
+  display: block;
+  width: 15px;
+  height: 17px;
+  left: 15px;
+  background: var(--accent-gradient);
+  position: absolute;
+}
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+  border-bottom: 5px solid #fff;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--transparent-color);
+}
+
+.value {
+  font-size: 15px;
+  word-break: break-all;
+}
+
+.price {
+  display: block;
+  font-size: 14px;
+  color: var(--transparent-color);
+}
+
+.dots_wrapper {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.dots_btn {
+  transform: scale(1);
+  transition: transform 150ms;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  right: -10px;
+  width: 240px;
+  top: calc(100% + 10px);
+  padding: 30px 10px 20px 20px;
+  border-radius: 3px;
+  z-index: 1;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+}
+
+.pointer_wrapper {
+  position: absolute;
+  width: 30px;
+  height: 20px;
+  top: -20px;
+  right: 6px;
+  overflow: hidden;
+}
+
+.pointer {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  transform: translateX(-50%) rotateZ(45deg);
+  width: 14px;
+  height: 14px;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+}
+
+.tool_item:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.tool_btn {
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 300;
+
+  &:hover {
+    font-weight: 400;
+    svg {
+      fill: url('#gradient');
+    }
+  }
+
+  &:disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
+}
+
+.tool_icon {
+  margin-right: 12px;
+  width: 20px;
+  fill: var(--icon-color_2);
+}
+
+.flag_icon {
+  fill: #ad9acc;
+
+  &:hover {
+    fill: url(#gradient);
+  }
+}
+
+.hint_wrapper {
+  position: absolute;
+  top: 0px;
+  left: 15px;
+}

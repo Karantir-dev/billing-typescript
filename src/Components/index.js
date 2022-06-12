@@ -100,11 +100,14 @@ export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPag
 export { default as DedicOrderPage } from '../Pages/ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 
 //==========================================VDS==========================================//
-export { default as VDSmobileItem } from './vds/VDSmobileItem/VDSmobileItem'
-export { default as VDSItem } from './vds/VDSItem/VDSItem'
-export { default as VDSList } from './vds/VDSList/VDSList'
-export { default as ServerState } from './vds/ServerState/ServerState'
-export { default as EditModal } from './vds/EditModal/EditModal'
+export { default as VDSmobileItem } from './Services/vds/VDSmobileItem/VDSmobileItem'
+export { default as VDSItem } from './Services/vds/VDSItem/VDSItem'
+export { default as VDSList } from './Services/vds/VDSList/VDSList'
+export { default as ServerState } from './Services/vds/ServerState/ServerState'
+export { default as EditModal } from './Services/vds/EditModal/EditModal'
+export { default as OstemplVDSbtn } from './Services/vds/OstemplVDSbtn/OstemplVDSbtn'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
+export { default as DedicItem } from './Cart/DedicItem/DedicItem'
+export { default as DomainItem } from './Cart/DomainItem/DomainItem'

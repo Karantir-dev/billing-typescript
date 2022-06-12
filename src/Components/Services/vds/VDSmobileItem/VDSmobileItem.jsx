@@ -11,9 +11,9 @@ import {
   Info,
   Delete,
   ExitSign,
-} from '../../../images'
-import { useOutsideAlerter } from '../../../utils'
-import { ServerState } from '../..'
+} from '../../../../images'
+import { useOutsideAlerter } from '../../../../utils'
+import { ServerState } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSmobileItem.module.scss'
@@ -135,7 +135,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
       <span className={s.value}>{server?.domain?.$}</span>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{server?.ip?.$}</span>
-      <span className={s.label}>{t('OS_template')}:</span>
+      <span className={s.label}>{t('ostempl')}:</span>
       <span className={s.value}>{server?.ostempl?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
       <span className={s.value}>
