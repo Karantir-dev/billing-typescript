@@ -5,6 +5,9 @@ import domainsActions from './domainsActions'
 const initialState = {
   domainsList: [],
   domainsCount: 0,
+
+  domainsFiltersList: null,
+  domainsFilters: null,
 }
 
 const domainsList = createReducer(initialState.domainsList, {
@@ -17,6 +20,19 @@ const domainsCount = createReducer(initialState.domainsCount, {
   [domainsActions.setDomainsCount]: (_, { payload }) => payload,
 })
 
-const domainsReducer = combineReducers({ domainsList, domainsCount })
+const domainsFiltersList = createReducer(initialState.domainsFiltersList, {
+  [domainsActions.setDomainsFiltersLists]: (_, { payload }) => payload,
+})
+
+const domainsFilters = createReducer(initialState.domainsFilters, {
+  [domainsActions.setDomainsFilters]: (_, { payload }) => payload,
+})
+
+const domainsReducer = combineReducers({
+  domainsList,
+  domainsCount,
+  domainsFiltersList,
+  domainsFilters,
+})
 
 export default domainsReducer

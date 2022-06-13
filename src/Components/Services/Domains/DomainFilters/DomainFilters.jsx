@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import DomainFiltertsModal from '../DomainFiltertsModal/DomainFiltertsModal'
+import { domainsOperations, domainsSelectors } from '../../../../Redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
   IconButton,
@@ -10,17 +13,20 @@ import {
   DomainsHistoryModal,
   DomainsWhoisModal,
   DomainsNSModal,
+  Portal,
 } from '../../..'
 import * as routes from '../../../../routes'
 import s from './DomainFilters.module.scss'
-import { domainsOperations } from '../../../../Redux'
 
 export default function Component(props) {
   const { t, i18n } = useTranslation(['domains', 'other', 'vds'])
   const navigate = useNavigate()
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
-  const { selctedItem } = props
-  //   const [filterModal, setFilterModal] = useState(false)
+  const { selctedItem, setCurrentPage } = props
+
+  const filters = useSelector(domainsSelectors.getDomainsFilters)
+  const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
@@ -30,6 +36,8 @@ export default function Component(props) {
 
   const [NSModal, setNSModal] = useState(false)
   const [NSData, setNSData] = useState(null)
+
+  const [filterModal, setFilterModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -79,6 +87,7 @@ export default function Component(props) {
   const NSDomainHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
+      lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
@@ -88,11 +97,84 @@ export default function Component(props) {
     setNSModal(false)
   }
 
+  const NSEditDomainHandler = values => {
+    let data = {
+      elid: selctedItem?.id?.$,
+      lang: i18n?.language,
+    }
+
+    if (values) {
+      data = { ...data, ...values }
+    }
+
+    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
+  }
+
+  const resetFilterHandler = setValues => {
+    const clearField = {
+      id: '',
+      domain: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+    }
+    setValues && setValues({ ...clearField })
+    setCurrentPage(1)
+    setFilterModal(false)
+    dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
+  }
+
+  const setFilterHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
+  }
+
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
         <div className={s.filterBtnBlock}>
-          <IconButton onClick={() => null} icon="filter" className={s.calendarBtn} />
+          <IconButton
+            onClick={() => setFilterModal(true)}
+            icon="filter"
+            className={s.calendarBtn}
+          />
+          {filterModal && (
+            <div>
+              <Portal>
+                <div className={s.bg}>
+                  {mobile && (
+                    <DomainFiltertsModal
+                      filterModal={filterModal}
+                      setFilterModal={setFilterModal}
+                      filters={filters}
+                      filtersList={filtersList}
+                      resetFilterHandler={resetFilterHandler}
+                      setFilterHandler={setFilterHandler}
+                    />
+                  )}
+                </div>
+              </Portal>
+              {!mobile && (
+                <DomainFiltertsModal
+                  filterModal={filterModal}
+                  setFilterModal={setFilterModal}
+                  filters={filters}
+                  filtersList={filtersList}
+                  resetFilterHandler={resetFilterHandler}
+                  setFilterHandler={setFilterHandler}
+                />
+              )}
+            </div>
+          )}
         </div>
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('Transfer')}>
           <IconButton
@@ -166,6 +248,7 @@ export default function Component(props) {
           name={selctedItem?.name?.$}
           closeNSModalHandler={closeNSModalHandler}
           NSData={NSData}
+          NSEditDomainHandler={NSEditDomainHandler}
         />
       )}
       <Button

@@ -36,6 +36,65 @@ const getDomains =
 
         dispatch(domainsActions.setDomainsList(elem))
         dispatch(domainsActions.setDomainsCount(count))
+        dispatch(getDomainsFilters())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getDomainsFilters =
+  (body = {}, filtered = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'domain.filter',
+          out: 'json',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (filtered) {
+          return dispatch(getDomains())
+        }
+
+        let filters = {}
+
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
+
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          domain: data.doc?.domain?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+        }
+
+        dispatch(domainsActions.setDomainsFilters(currentFilters))
+        dispatch(domainsActions.setDomainsFiltersLists(filters))
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -670,8 +729,6 @@ const editDomainNS =
           throw new Error(data.doc.error.msg.$)
         }
 
-        console.log(data?.doc)
-
         const d = {
           ns0: data?.doc?.ns0?.$,
           ns1: data?.doc?.ns1?.$,
@@ -681,6 +738,14 @@ const editDomainNS =
         }
         setNSData && setNSData(d)
         setNSModal && setNSModal(true)
+
+        if (body?.sok === 'ok') {
+          setNSData && setNSData(null)
+          setNSModal && setNSModal(false)
+          toast.success(i18n.t('NS edited successfully', { ns: 'domains' }), {
+            position: 'bottom-right',
+          })
+        }
 
         dispatch(actions.hideLoader())
       })
@@ -705,4 +770,6 @@ export default {
   getHistoryDomain,
   getWhoisDomain,
   editDomainNS,
+
+  getDomainsFilters,
 }

@@ -57,5 +57,21 @@
   "Change": "Изменение",
   "Username": "Имя пользователя",
   "IP address": "IP-адрес",
-  "Domain Information": "Информация о домене"
+  "Domain Information": "Информация о домене",
+  "NS edited successfully": "NS отредактировано успешно",
+  "Domain status": "Статус домена",
+  "Tariff plan": "Тарифный план",
+  "enabled": "Включено",
+  "disabled": "Выключено",
+  "Not selected": "Не выбрано",
+  "Year": "Год",
+  "Domain is not paid": "Домен не оплачен",
+  "Domain has been registered and delegated": "Домен зарегистрирован и делегирован",
+  "Domain has been registered, but it is not  delegated": "Домен зарегистрирован, но не делегирован",
+  "Domain is not registered with registrar": "Домен не зарегистрирован у регистратора",
+
+  "Domain registration in progress": "Выполняется регистрация домена",
+  "Changing registrar for this domain": "Смена регистратора для этого домена",
+  "Domain renewal in progress": "Выполняется продление домена",
+  "Domain delegation has expired": "Срок делегирования домена истек"
 }

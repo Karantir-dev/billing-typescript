@@ -50,6 +50,8 @@ export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'
 export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
 export { default as Backdrop } from './ui/Backdrop/Backdrop'
 
+export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'

@@ -57,5 +57,21 @@
   "Change": "Change",
   "Username": "Username",
   "IP address": "IP address",
-  "Domain Information": "Domain Information"
+  "Domain Information": "Domain Information",
+  "NS edited successfully": "NS edited successfully",
+  "Domain status": "Domain status",
+  "Tariff plan": "Tariff plan",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "Not selected": "Not selected",
+  "Year": "Year",
+  "Domain is not paid": "Domain is not paid",
+  "Domain has been registered and delegated": "Domain has been registered and delegated",
+  "Domain has been registered, but it is not  delegated": "Domain has been registered, but it is not delegated",
+  "Domain is not registered with registrar": "Domain is not registered with registrar",
+
+  "Domain registration in progress": "Domain registration in progress",
+  "Changing registrar for this domain": "Changing registrar for this domain",
+  "Domain renewal in progress": "Domain renewal in progress",
+  "Domain delegation has expired": "Domain delegation has expired"
 }

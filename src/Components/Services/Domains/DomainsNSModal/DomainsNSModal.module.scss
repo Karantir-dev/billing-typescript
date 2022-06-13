@@ -27,6 +27,7 @@
   align-items: center;
   justify-content: space-between;
   display: flex;
+  margin-bottom: 14px;
 }
 
 .crossIcon {
@@ -76,6 +77,37 @@
 
   &::-webkit-scrollbar-thumb {
     background: #e72690;
+  }
+}
+
+.input {
+  margin-top: 10px;
+}
+
+.btnBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+
+  .saveBtn {
+    height: 55px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  .cancel {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 66.3%;
+    color: var(--main-text);
+
+    text-align: center;
+    text-decoration-line: underline;
+
+    cursor: pointer;
   }
 }
 
