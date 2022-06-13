@@ -1,0 +1,83 @@
+.server_item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 15px 65px;
+  border-radius: 3px;
+  background: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow);
+  cursor: pointer;
+}
+
+.shevron_btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 50px;
+  border-top: 1px solid var(--inactive_icon_color);
+  cursor: pointer;
+}
+
+.shevron {
+  stroke: var(--main-text);
+  transition: transform 150ms;
+  transform: rotateZ(180deg);
+
+  &.opened {
+    transform: rotateZ(360deg);
+  }
+}
+
+.tariff_name {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.btn_delete {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.percent {
+  font-size: 16px;
+  color: var(--red-text);
+}
+
+.discount_wrapper {
+  margin-bottom: 10px;
+}
+
+.old_price {
+  font-size: 16px;
+  color: var(--transparent-color);
+  text-decoration: line-through;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.dropdown {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.value {
+  font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .server_item {
+    flex-direction: row;
+    align-items: center;
+  }
+}

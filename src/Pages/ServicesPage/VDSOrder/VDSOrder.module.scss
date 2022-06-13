@@ -70,7 +70,7 @@
 .tariffs_list {
   display: grid;
   gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
 .tariff_item {
@@ -199,7 +199,7 @@
   left: 0;
   right: 0;
   height: 75px;
-  z-index: 1;
+  z-index: 8;
   padding: 15px 30px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--menu_down_black_shadow);
@@ -243,9 +243,11 @@
   height: 14px;
   pointer-events: initial;
   cursor: pointer;
+  transform: scale(1);
+  transition: transform 150ms;
 
   &:active {
-    transform: scale(0.9);
+    transform: scale(0.8);
   }
 
   &.decrement::before {
@@ -284,14 +286,20 @@
   }
 }
 
-.tablet_price_wrapper {
+.buying_panel_item {
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:nth-child(2) {
+    margin-left: 70px;
+  }
 }
 
 .tablet_price_sentence {
   @extend %accent-text-gradient;
   display: block;
-  margin-top: 15px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -304,6 +312,12 @@
   margin-top: 5px;
   font-size: 13px;
   color: var(--error-color);
+}
+
+.amount_digit {
+  @extend %accent-text-gradient;
+  font-weight: 600;
+  font-size: 22px;
 }
 
 @media screen and (min-width: 768px) {
@@ -329,12 +343,12 @@
   }
 
   .tariffs_list {
-    gap: 18px;
+    gap: 20px;
   }
 
   .software_OS_List {
-    gap: 18px;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 
   .parameters_list {
@@ -352,11 +366,17 @@
 
   .btn_buy {
     height: 50px;
+    margin-left: auto;
   }
 
   .buying_panel {
     height: 85px;
     padding: 15px 60px;
+  }
+
+  .count_btn {
+    width: 20px;
+    height: 20px;
   }
 }
 

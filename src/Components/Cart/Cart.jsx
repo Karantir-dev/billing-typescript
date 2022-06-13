@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Cross, Check } from '../../images'
-import { Select, InputField, Button, CheckBox, DomainItem, DedicItem } from '..'
+import { Select, InputField, Button, CheckBox, DomainItem, DedicItem, VdsItem } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -109,6 +109,8 @@ export default function Component() {
 
     const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
 
+    const vdsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vds')
+
     return (
       <>
         {domainsList?.length > 0 && (
@@ -147,8 +149,25 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                />
+              )
+            })}
+          </>
+        )}
+
+        {vdsList?.length > 0 && (
+          <>
+            <div className={s.formBlockTitle}>
+              {t('services.Virtual server', { ns: 'other' })}:
+            </div>
+
+            {vdsList?.map(el => {
+              return (
+                <VdsItem
+                  key={el?.id?.$}
+                  el={el}
                   deleteItemHandler={
-                    dedicList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                    vdsList?.length > 1 ? () => deleteBasketItemHandler(el?.id?.$) : null
                   }
                 />
               )

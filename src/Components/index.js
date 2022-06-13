@@ -107,3 +107,4 @@ export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/Sof
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
 export { default as DomainItem } from './Cart/DomainItem/DomainItem'
+export { default as VdsItem } from './Cart/VdsItem/VdsItem'

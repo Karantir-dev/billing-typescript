@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -16,7 +16,6 @@ import {
 } from '../../../Components'
 import { Check } from '../../../images'
 import { vdsOperations } from '../../../Redux'
-// import * as routes from '../../../routes'
 
 import s from './VDSOrder.module.scss'
 
@@ -25,6 +24,8 @@ export default function VDSOrder() {
   const dispatch = useDispatch()
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
+  const agreementEl = useRef()
+  const checkboxEl = useRef()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -193,13 +194,15 @@ export default function VDSOrder() {
     )
   }
 
-  const onFormSubmit = () => {
-    // dispatch(
-    //   cartActions.setCartIsOpenedState({
-    //     isOpened: true,
-    //     redirectPath: routes.VDS,
-    //   }),
-    // )
+  const onFormSubmit = values => {
+    dispatch(
+      vdsOperations.setOrderData(
+        period,
+        values,
+        selectedTariffId,
+        parametersInfo.register,
+      ),
+    )
   }
 
   const validationSchema = Yup.object().shape({
@@ -249,20 +252,20 @@ export default function VDSOrder() {
               parametersInfo?.slist.find(el => el.$name === 'Port_speed').val[0].$ || '',
             Control_panel: parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
-            agreement: 'off',
+            agreement: checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: Number(
-              parametersInfo?.orderinfo.$.match(/(?<=Total amount: )(.+?)(?= EUR)/g),
+              parametersInfo?.orderinfo.$.match(/(?<=Total amount: )(.+?)(?= EUR)/g)[0],
             ),
             finalTotalPrice: parametersInfo?.orderinfo.$.match(
               /(?<=Total amount: )(.+?)(?= EUR)/g,
-            ),
+            )[0],
+
             count: 1,
           }}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors }) => {
-            console.log(values)
             return (
               <Form>
                 <Select
@@ -336,7 +339,9 @@ export default function VDSOrder() {
                                     setFieldValue('count', values.count - 1)
                                     setFieldValue(
                                       'finalTotalPrice',
-                                      values.totalPrice * (values.count - 1),
+                                      +(values.totalPrice * (values.count - 1)).toFixed(
+                                        4,
+                                      ),
                                     )
                                   }}
                                   disabled={values.count === 1}
@@ -349,7 +354,9 @@ export default function VDSOrder() {
                                     setFieldValue('count', values.count + 1)
                                     setFieldValue(
                                       'finalTotalPrice',
-                                      values.totalPrice * (values.count + 1),
+                                      +(values.totalPrice * (values.count + 1)).toFixed(
+                                        4,
+                                      ),
                                     )
                                   }}
                                 ></button>
@@ -453,38 +460,77 @@ export default function VDSOrder() {
                       />
                     </div>
 
-                    <div className={s.agreement_wrapper}>
-                      <div className={s.checkbox_wrapper}>
-                        <input
-                          className={cn(s.checkbox, { [s.error]: errors.agreement })}
-                          type="checkbox"
-                          onClick={() =>
-                            setFieldValue(
-                              'agreement',
-                              values.agreement === 'on' ? 'off' : 'on',
-                            )
-                          }
-                        />
-                        {values.agreement === 'on' && <Check className={s.icon_check} />}
-                      </div>
+                    <div style={{ paddingBottom: '30px' }} ref={agreementEl}>
+                      <div className={s.agreement_wrapper}>
+                        <div className={s.checkbox_wrapper}>
+                          <input
+                            ref={checkboxEl}
+                            className={cn(s.checkbox, { [s.error]: errors.agreement })}
+                            type="checkbox"
+                            onClick={() =>
+                              setFieldValue(
+                                'agreement',
+                                values.agreement === 'on' ? 'off' : 'on',
+                              )
+                            }
+                          />
+                          {values.agreement === 'on' && (
+                            <Check className={s.icon_check} />
+                          )}
+                        </div>
 
-                      <p className={s.agreement_text}>
-                        {t('terms', { ns: 'dedicated_servers' })}{' '}
-                        <a className={s.link} href={parametersInfo.licence_link.$}>
-                          &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
-                        </a>
-                      </p>
+                        <p className={s.agreement_text}>
+                          {t('terms', { ns: 'dedicated_servers' })}{' '}
+                          <a className={s.link} href={parametersInfo.licence_link.$}>
+                            &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
+                          </a>
+                        </p>
+                      </div>
+                      <ErrorMessage
+                        className={s.error_message}
+                        name="agreement"
+                        component="p"
+                      />
                     </div>
-                    <ErrorMessage
-                      className={s.error_message}
-                      name="agreement"
-                      component="p"
-                    />
                   </>
                 )}
+
                 <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
+                  {widerThanMobile && (
+                    <div className={s.buying_panel_item}>
+                      <p>{t('amount')}:</p>
+
+                      <div className={s.increment_wrapper}>
+                        <button
+                          className={cn(s.count_btn, s.decrement)}
+                          type="button"
+                          onClick={() => {
+                            setFieldValue('count', values.count - 1)
+                            setFieldValue(
+                              'finalTotalPrice',
+                              +(values.totalPrice * (values.count - 1)).toFixed(4),
+                            )
+                          }}
+                          disabled={values.count === 1}
+                        ></button>
+                        <span className={s.amount_digit}>{values.count}</span>
+                        <button
+                          className={cn(s.count_btn, s.increment)}
+                          type="button"
+                          onClick={() => {
+                            setFieldValue('count', values.count + 1)
+                            setFieldValue(
+                              'finalTotalPrice',
+                              +(values.totalPrice * (values.count + 1)).toFixed(4),
+                            )
+                          }}
+                        ></button>
+                      </div>
+                    </div>
+                  )}
+
                   {widerThanMobile ? (
-                    <p className={s.tablet_price_wrapper}>
+                    <p className={s.buying_panel_item}>
                       {t('topay', { ns: 'dedicated_servers' })}:
                       <span className={s.tablet_price_sentence}>
                         <span className={s.tablet_price}>
@@ -501,11 +547,18 @@ export default function VDSOrder() {
                       {t(parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g))}
                     </p>
                   )}
+
                   <Button
                     className={s.btn_buy}
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     isShadow
+                    onClick={() => {
+                      values.agreement === 'off' &&
+                        agreementEl.current.scrollIntoView({
+                          behavior: 'smooth',
+                        })
+                    }}
                   />
                 </div>
               </Form>
