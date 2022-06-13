@@ -300,9 +300,7 @@ const updatePrice =
         }),
       )
       .then(({ data }) => {
-        console.log(data, 'newPrice')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc.orderinfo.$)
 
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
@@ -1103,7 +1101,7 @@ const getServiceHistory =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         const { elem, p_elems } = data.doc
-        console.log('history data loaded', data)
+
         setHistoryList(elem)
         setHistoryElems(p_elems)
         dispatch(actions.hideLoader())
@@ -1122,8 +1120,6 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     auth: { sessionId },
   } = getState()
 
-  console.log(elid)
-
   axiosInstance
     .post(
       '/',
@@ -1137,9 +1133,38 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-      console.log(data)
       setInstructionLink(data.doc.body)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const rebootServer = elid => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.reboot',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      console.log(data, 'rebooting result')
 
       dispatch(actions.hideLoader())
     })
@@ -1174,4 +1199,5 @@ export default {
   payProlongPeriod,
   getServiceHistory,
   getServiceInstruction,
+  rebootServer,
 }

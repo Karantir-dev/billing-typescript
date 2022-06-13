@@ -24,6 +24,8 @@ export default function DedicMobileItem({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
+  setElidForRebootModal,
+  setActiveServer,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -67,6 +69,10 @@ export default function DedicMobileItem({
                   className={s.tool_btn}
                   type="button"
                   disabled={server.show_reboot?.$ !== 'on'}
+                  onClick={() => {
+                    handleToolBtnClick(setElidForRebootModal, server?.id?.$)
+                    setActiveServer(server)
+                  }}
                 >
                   <Reload className={s.tool_icon} />
                   {t('reload')}
@@ -102,7 +108,10 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  onClick={() => handleToolBtnClick(setElidForHistoryModal, server.id.$)}
+                  onClick={() => {
+                    handleToolBtnClick(setElidForHistoryModal, server.id.$)
+                    setActiveServer(server)
+                  }}
                 >
                   <Refund className={s.tool_icon} />
                   {t('history')}

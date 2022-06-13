@@ -5,6 +5,11 @@
   margin-top: 30px;
 }
 
+.icon_cross {
+  cursor: pointer;
+  min-width: 10px;
+}
+
 .history_modal {
   background-color: var(--main-bgc);
   padding: 35px 40px 30px 38px;
@@ -46,6 +51,10 @@
     justify-content: flex-end;
     margin-top: 30px;
   }
+
+  .history_modal {
+    max-width: 623px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -70,5 +79,8 @@
 @media screen and (min-width: 1918px) {
   .pagination {
     margin-top: 40px;
+  }
+  .history_modal {
+    max-width: 1077px;
   }
 }

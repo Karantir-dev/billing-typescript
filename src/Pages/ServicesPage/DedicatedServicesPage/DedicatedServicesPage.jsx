@@ -22,6 +22,7 @@ import s from './DedicatedServicesPage.module.scss'
 import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
 import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
 import InstructionModal from '../../../Components/Services/DedicatedServers/InstructionModal/InstructionModal'
+import RebootModal from '../../../Components/Services/DedicatedServers/RebootModal/RebootModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -35,6 +36,7 @@ export default function DedicatedServersPage() {
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
+  const [elidForRebootModal, setElidForRebootModal] = useState(0)
 
   const location = useLocation()
 
@@ -49,6 +51,8 @@ export default function DedicatedServersPage() {
   useEffect(() => {
     dispatch(dedicOperations.getServersList())
   }, [])
+
+  console.log(elidForEditModal)
 
   return (
     <>
@@ -78,6 +82,7 @@ export default function DedicatedServersPage() {
                   className={s.tools_icon}
                   disabled={activeServer?.show_reboot?.$ !== 'on'}
                   icon="reload"
+                  onClick={() => setElidForRebootModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
               <HintWrapper label={t('ip_addresses')}>
@@ -105,6 +110,7 @@ export default function DedicatedServersPage() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
+                  disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
               <HintWrapper label={t('instruction')}>
@@ -141,6 +147,7 @@ export default function DedicatedServersPage() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
+        setElidForRebootModal={setElidForRebootModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
@@ -166,7 +173,7 @@ export default function DedicatedServersPage() {
       >
         <DedicsHistoryModal
           elid={elidForHistoryModal}
-          serviceName={elidForHistoryModal}
+          server={activeServer}
           closeFn={() => setElidForHistoryModal(0)}
         />
       </Backdrop>
@@ -178,6 +185,17 @@ export default function DedicatedServersPage() {
         <InstructionModal
           elid={elidForInstructionModal}
           closeFn={() => setElidForInstructionModal(0)}
+        />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForRebootModal(0)}
+        isOpened={Boolean(elidForRebootModal)}
+      >
+        <RebootModal
+          server={activeServer}
+          elid={elidForRebootModal}
+          closeFn={setElidForRebootModal}
         />
       </Backdrop>
     </>

@@ -13,6 +13,7 @@ export default function DedicList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
+  setElidForRebootModal,
   setActiveServer,
   activeServerID,
 }) {
@@ -51,6 +52,8 @@ export default function DedicList({
               setElidForProlongModal={setElidForProlongModal}
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForInstructionModal={setElidForInstructionModal}
+              setElidForRebootModal={setElidForRebootModal}
+              setActiveServer={setActiveServer}
             />
           )
         })}
