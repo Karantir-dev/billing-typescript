@@ -16,6 +16,7 @@ import {
 } from '../../../Components'
 import { Check } from '../../../images'
 import { vdsOperations } from '../../../Redux'
+// import * as routes from '../../../routes'
 
 import s from './VDSOrder.module.scss'
 
@@ -196,7 +197,7 @@ export default function VDSOrder() {
     // dispatch(
     //   cartActions.setCartIsOpenedState({
     //     isOpened: true,
-    //     redirectPath: route.DOMAINS,
+    //     redirectPath: routes.VDS,
     //   }),
     // )
   }
