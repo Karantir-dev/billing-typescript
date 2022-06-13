@@ -192,6 +192,15 @@ export default function VDSOrder() {
     )
   }
 
+  const onFormSubmit = () => {
+    // dispatch(
+    //   cartActions.setCartIsOpenedState({
+    //     isOpened: true,
+    //     redirectPath: route.DOMAINS,
+    //   }),
+    // )
+  }
+
   const validationSchema = Yup.object().shape({
     agreement: Yup.string().oneOf(
       ['on'],
@@ -249,7 +258,7 @@ export default function VDSOrder() {
             count: 1,
           }}
           validationSchema={validationSchema}
-          onSubmit={() => {}}
+          onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors }) => {
             console.log(values)
