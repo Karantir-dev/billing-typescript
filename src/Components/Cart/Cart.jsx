@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
-import DomainItem from './DomainItem/DomainItem'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Cross, Check } from '../../images'
-import { Select, InputField, Button, CheckBox } from '..'
+import { Select, InputField, Button, CheckBox, DomainItem, DedicItem } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -17,7 +16,13 @@ export default function Component() {
 
   const navigate = useNavigate()
 
-  const { t } = useTranslation(['cart', 'other', 'payers', 'billing'])
+  const { t } = useTranslation([
+    'cart',
+    'other',
+    'payers',
+    'billing',
+    'dedicated_servers',
+  ])
 
   const [newPayer, setNewPayer] = useState(false)
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -102,6 +107,8 @@ export default function Component() {
       elem => elem['item.type']?.$ === 'domain',
     )
 
+    const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
+
     return (
       <>
         {domainsList?.length > 0 && (
@@ -118,6 +125,30 @@ export default function Component() {
                   discount_percent={discount_percent?.$}
                   deleteItemHandler={
                     domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                  }
+                />
+              )
+            })}
+          </>
+        )}
+
+        {dedicList?.length > 0 && (
+          <>
+            <div className={s.formBlockTitle}>
+              {t('dedicated_server', { ns: 'dedicated_servers' })}:
+            </div>
+            {dedicList?.map(el => {
+              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              return (
+                <DedicItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  fullcost={fullcost?.$}
+                  discount_percent={discount_percent?.$}
+                  pricelist_name={pricelist_name?.$}
+                  deleteItemHandler={
+                    dedicList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
                   }
                 />
               )

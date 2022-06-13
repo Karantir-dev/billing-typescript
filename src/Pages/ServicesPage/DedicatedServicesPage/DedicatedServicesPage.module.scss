@@ -4,7 +4,6 @@
 
 .tools_wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 
   & :nth-child(1) {
@@ -26,6 +25,7 @@
 .order_btn {
   width: 204px;
   height: 53px;
+  margin-right: 10px;
 }
 
 .filter_icon.tools_icon {
@@ -34,8 +34,17 @@
 
 //Adaptive
 
+@media screen and (min-width: 768px) {
+  .order_btn {
+    width: 245px;
+    margin-right: 25px;
+  }
+}
+
 @media screen and (min-width: 1550px) {
   .tools_wrapper {
+    justify-content: space-between;
+
     & :nth-child(1) {
       order: unset;
     }
@@ -50,5 +59,8 @@
 
   .filter_icon.tools_icon {
     margin-right: 35px;
+  }
+  .order_btn {
+    width: 229px;
   }
 }

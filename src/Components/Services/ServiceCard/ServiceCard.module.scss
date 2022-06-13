@@ -112,6 +112,10 @@
       cursor: pointer;
       transform: scale(1.05);
 
+      & .container {
+        max-width: fit-content;
+      }
+
       .card_numeric {
         color: var(--main-text);
       }

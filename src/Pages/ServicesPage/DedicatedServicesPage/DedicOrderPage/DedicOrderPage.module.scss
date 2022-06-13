@@ -444,6 +444,12 @@
   }
 }
 
+@media screen and (min-width: 768px) {
+  .second_processors_block {
+    margin-left: 15px;
+  }
+}
+
 @media screen and (min-width: 1550px) {
   .page_title {
     font-size: 22px;

@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
 import {
   Clock,
   MoreDots,
@@ -17,8 +15,14 @@ import PropTypes from 'prop-types'
 
 import s from './DedicMobileItem.module.scss'
 import { ServerState } from '../../../'
+import { useNavigate } from 'react-router-dom'
+import * as route from '../../../../routes'
 
-export default function DedicMobileItem({ server, setElidForEditModal }) {
+export default function DedicMobileItem({
+  server,
+  setElidForEditModal,
+  setElidForProlongModal,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
@@ -71,7 +75,11 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   disabled={server.has_ip_pricelist?.$ !== 'on'}
-                  onClick={() => navigate(route.DEDICATED_SERVERS_IP)}
+                  onClick={() =>
+                    navigate(route.DEDICATED_SERVERS_IP, {
+                      state: { plid: server?.id?.$ },
+                    })
+                  }
                 >
                   <IP className={s.tool_icon} />
                   {t('ip_addresses')}
@@ -82,6 +90,7 @@ export default function DedicMobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   disabled={server?.status?.$ !== '2'}
+                  onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
                   {t('prolong')}

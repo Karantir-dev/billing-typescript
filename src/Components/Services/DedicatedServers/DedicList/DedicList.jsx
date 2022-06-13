@@ -10,6 +10,7 @@ import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
 export default function DedicList({
   servers,
   setElidForEditModal,
+  setElidForProlongModal,
   setActiveServer,
   activeServerID,
 }) {
@@ -45,6 +46,7 @@ export default function DedicList({
               key={el.id.$}
               server={el}
               setElidForEditModal={setElidForEditModal}
+              setElidForProlongModal={setElidForProlongModal}
             />
           )
         })}
