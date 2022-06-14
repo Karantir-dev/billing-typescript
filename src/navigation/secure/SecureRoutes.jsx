@@ -51,10 +51,6 @@ const Component = () => {
           }
         />
         <Route
-          path={route.DOMAINS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
-        />
-        <Route
           path={route.VDS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
         />
@@ -65,6 +61,11 @@ const Component = () => {
         <Route
           path={route.VDS_ORDER}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+        />
+
+        <Route
+          path={route.DOMAINS}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
         />
         <Route
           path={route.DOMAINS_ORDERS}
@@ -81,6 +82,33 @@ const Component = () => {
         <Route
           path={route.DOMAINS_NS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsNsPage />} />}
+        />
+        <Route
+          path={route.DOMAINS_TRANSFER_ORDERS}
+          element={
+            <PrivateRoute
+              redirectTo={route.LOGIN}
+              children={<DomainOrderPage transfer />}
+            />
+          }
+        />
+        <Route
+          path={route.DOMAINS_TRANSFER_CONTACT_INFO}
+          element={
+            <PrivateRoute
+              redirectTo={route.LOGIN}
+              children={<DomainContactInfoPage transfer />}
+            />
+          }
+        />
+        <Route
+          path={route.DOMAINS_TRANSFER_NS}
+          element={
+            <PrivateRoute
+              redirectTo={route.LOGIN}
+              children={<DomainsNsPage transfer />}
+            />
+          }
         />
 
         <Route

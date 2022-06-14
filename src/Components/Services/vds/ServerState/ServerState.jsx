@@ -27,6 +27,16 @@ export default function ServerState({ className, server }) {
           <InProgress />
         </HintWrapper>
       )}
+      {server?.item_status?.$orig === '5_transfer' && (
+        <HintWrapper label={t('in_progress_transfer')}>
+          <InProgress />
+        </HintWrapper>
+      )}
+      {server?.item_status?.$orig === '5_close' && (
+        <HintWrapper label={t('deletion_in_progress')}>
+          <InProgress className={s.delProgress} />
+        </HintWrapper>
+      )}
       {server?.item_status?.$orig === '3_employeesuspend' && (
         <HintWrapper label={t('stopped_by_admin')}>
           <Attention />

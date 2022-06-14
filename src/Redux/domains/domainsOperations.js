@@ -36,6 +36,65 @@ const getDomains =
 
         dispatch(domainsActions.setDomainsList(elem))
         dispatch(domainsActions.setDomainsCount(count))
+        dispatch(getDomainsFilters())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getDomainsFilters =
+  (body = {}, filtered = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'domain.filter',
+          out: 'json',
+          auth: sessionId,
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (filtered) {
+          return dispatch(getDomains())
+        }
+
+        let filters = {}
+
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
+
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          domain: data.doc?.domain?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+        }
+
+        dispatch(domainsActions.setDomainsFilters(currentFilters))
+        dispatch(domainsActions.setDomainsFiltersLists(filters))
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -130,7 +189,7 @@ const getDomainsOrderName =
   }
 
 const getDomainsContacts =
-  (setDomains, body = {}, navigate) =>
+  (setDomains, body = {}, navigate, transfer) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -271,7 +330,10 @@ const getDomainsContacts =
         if (body?.sok === 'ok') {
           delete body['sok']
           delete body['snext']
-          navigate && navigate(route.DOMAINS_NS, { state: { contacts: body } })
+          navigate &&
+            navigate(transfer ? route.DOMAINS_TRANSFER_NS : route.DOMAINS_NS, {
+              state: { contacts: body },
+            })
         }
         dispatch(actions.hideLoader())
       })
@@ -455,6 +517,246 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
     })
 }
 
+const renewService =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.prolong',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The service can be renewed only after')) {
+            let date = ''
+
+            data.doc.error?.param?.forEach(el => {
+              if (el?.$name === 'value') {
+                date = el?.$
+              }
+            })
+
+            toast.error(
+              `${i18n.t('The service can be renewed only after {{date}}', {
+                ns: 'other',
+                date: date,
+              })}`,
+              {
+                position: 'bottom-right',
+              },
+            )
+          } else {
+            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+              position: 'bottom-right',
+            })
+          }
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const deleteDomain =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.delete',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        toast.success(i18n.t('Domain deleted successfully', { ns: 'domains' }), {
+          position: 'bottom-right',
+        })
+
+        dispatch(domainsActions.deleteDomain(body?.elid))
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getHistoryDomain =
+  (body = {}, setHistoryModal, setHistoryList) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.history',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        setHistoryList && setHistoryList(data?.doc?.elem)
+        setHistoryModal && setHistoryModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getWhoisDomain =
+  (body = {}, setWhoisModal, setWhoisData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.whois',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        setWhoisData && setWhoisData(data?.doc?.whois_data?.$)
+        setWhoisModal && setWhoisModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const editDomainNS =
+  (body = {}, setNSModal, setNSData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.ns',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          ns0: data?.doc?.ns0?.$,
+          ns1: data?.doc?.ns1?.$,
+          ns2: data?.doc?.ns2?.$,
+          ns3: data?.doc?.ns3?.$,
+          ns_additional: data?.doc?.ns_additional?.$,
+        }
+        setNSData && setNSData(d)
+        setNSModal && setNSModal(true)
+
+        if (body?.sok === 'ok') {
+          setNSData && setNSData(null)
+          setNSModal && setNSModal(false)
+          toast.success(i18n.t('NS edited successfully', { ns: 'domains' }), {
+            position: 'bottom-right',
+          })
+        }
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getDomains,
   getDomainsOrderName,
@@ -463,4 +765,11 @@ export default {
   getDomainsNS,
   getDomainPaymentInfo,
   getTermsOfConditionalText,
+  renewService,
+  deleteDomain,
+  getHistoryDomain,
+  getWhoisDomain,
+  editDomainNS,
+
+  getDomainsFilters,
 }

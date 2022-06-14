@@ -1,0 +1,125 @@
+.field_wrapper {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.input_wrapper {
+  width: 100%;
+  height: 45px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  padding-left: 16px;
+  padding-right: 10px;
+  border-radius: 3px;
+  border: 1px solid var(--input-border-icon);
+  z-index: 1;
+  background-color: var(--elements-bgc);
+  color: inherit;
+}
+
+.required_star {
+  color: #d93f21;
+  font-size: 14px;
+}
+
+.input {
+  height: 100%;
+  width: 50%;
+  font-size: 16px;
+  color: var(--main-text);
+
+  border: none;
+  outline: none;
+
+  &::placeholder {
+    color: var(--transparent-color);
+  }
+
+  &.inputAuth {
+    &::placeholder {
+      color: var(--auth-placeholder-color);
+    }
+  }
+
+  &.iconRight {
+    padding-right: 40px;
+  }
+  &.disabled {
+    color: var(--transparent-color);
+  }
+}
+
+.datesText {
+  font-size: 16px;
+  color: var(--main-text);
+  width: 50%;
+
+  &.placeholderDate {
+    color: var(--transparent-color);
+  }
+}
+
+.afterIputText {
+  font-size: 16px;
+  color: var(--transparent-color);
+}
+
+.shadow {
+  border: none;
+  box-shadow: var(--forms_shadow);
+}
+
+.field_bgc {
+  background-color: var(--nearby-elements-bgc);
+}
+
+.line {
+  width: 11px;
+  height: 1.5px;
+  background: var(--transparent-color);
+  margin: 0 20px;
+}
+
+.calendarIcon {
+  width: 40px;
+}
+
+.calendarPicker {
+  cursor: pointer;
+
+  .input {
+    cursor: pointer;
+  }
+}
+
+.calendarModal {
+  position: absolute;
+  display: none;
+  right: -10px;
+  top: calc(100% + 15px);
+
+  &.expenses {
+    right: -500%;
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .input_wrapper {
+    height: 50px;
+  }
+}

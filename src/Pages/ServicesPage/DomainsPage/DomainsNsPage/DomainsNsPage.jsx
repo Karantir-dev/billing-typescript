@@ -9,7 +9,7 @@ import { domainsOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
-export default function ServicesPage() {
+export default function ServicesPage({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users'])
   const dispatch = useDispatch()
 
@@ -26,9 +26,13 @@ export default function ServicesPage() {
   const { state } = location
 
   useEffect(() => {
+    const data = { ...state?.contacts }
+    if (transfer) {
+      data['period'] = -200
+    }
     setSelectedDomain(state?.contacts?.selected_domain?.split(', '))
-    dispatch(domainsOperations.getDomainsNS(state?.contacts))
-    dispatch(domainsOperations.getDomainPaymentInfo(state?.contacts, setPaymentData))
+    dispatch(domainsOperations.getDomainsNS(data))
+    dispatch(domainsOperations.getDomainPaymentInfo(data, setPaymentData))
   }, [])
 
   useEffect(() => {
@@ -55,6 +59,10 @@ export default function ServicesPage() {
         data[`licence_agreement_${select}`] =
           paymentData[`licence_agreement_${select}`]?.$
 
+        if (transfer) {
+          data[`domainparam_${select}_auth_code`] = ''
+        }
+
         const keys = Object.keys(paymentData)
 
         keys.forEach(key => {
@@ -78,6 +86,10 @@ export default function ServicesPage() {
 
   const sendPaymentDataHandler = values => {
     const data = { ...values, ...state?.contacts }
+
+    if (transfer) {
+      data['period'] = -200
+    }
 
     dispatch(domainsOperations.createDomain(data, navigate))
   }
@@ -271,22 +283,43 @@ export default function ServicesPage() {
                           <div key={select} className={s.formBlock}>
                             <div className={s.formBlockTitle}>{domenName}</div>
                             <div className={s.formFieldsBlock}>
-                              <Select
-                                placeholder={t('Not chosen', { ns: 'other' })}
-                                label={`${t('Auto renewal')}:`}
-                                value={values[`autoprolong_${select}`]}
-                                getElement={item =>
-                                  setFieldValue(`autoprolong_${select}`, item)
-                                }
-                                isShadow
-                                className={s.select}
-                                itemsList={paymentData[`autoprolong_${select}_list`]?.map(
-                                  ({ $key, $ }) => ({
+                              {transfer && (
+                                <>
+                                  <InputField
+                                    inputWrapperClass={s.inputHeight}
+                                    name={`domainparam_${select}_auth_code`}
+                                    label={`${t('Confirmation code')}:`}
+                                    placeholder={t('Enter code', { ns: 'other' })}
+                                    isShadow
+                                    className={s.input}
+                                    error={!!errors[`domainparam_${select}_auth_code`]}
+                                    touched={!!touched[`domainparam_${select}_auth_code`]}
+                                    isRequired
+                                  />
+                                  <div className={s.confCodeInstruct}>
+                                    {t('conf_code_instruction')}
+                                  </div>
+                                </>
+                              )}
+
+                              {!transfer && (
+                                <Select
+                                  placeholder={t('Not chosen', { ns: 'other' })}
+                                  label={`${t('Auto renewal')}:`}
+                                  value={values[`autoprolong_${select}`]}
+                                  getElement={item =>
+                                    setFieldValue(`autoprolong_${select}`, item)
+                                  }
+                                  isShadow
+                                  className={s.select}
+                                  itemsList={paymentData[
+                                    `autoprolong_${select}_list`
+                                  ]?.map(({ $key, $ }) => ({
                                     label: t(`${$.trim()}`),
                                     value: $key,
-                                  }),
-                                )}
-                              />
+                                  }))}
+                                />
+                              )}
                               <div className={s.useFirstCheck}>
                                 <CheckBox
                                   initialState={values[checkBoxName] === 'on'}
