@@ -114,7 +114,7 @@ export default function Component() {
     return (
       <>
         {domainsList?.length > 0 && (
-          <>
+          <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
             {domainsList?.map(el => {
               const { id, desc, cost, fullcost, discount_percent } = el
@@ -131,11 +131,11 @@ export default function Component() {
                 />
               )
             })}
-          </>
+          </div>
         )}
 
         {dedicList?.length > 0 && (
-          <>
+          <div className={s.padding}>
             <div className={s.formBlockTitle}>
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
@@ -152,7 +152,7 @@ export default function Component() {
                 />
               )
             })}
-          </>
+          </div>
         )}
 
         {vdsList?.length > 0 && (

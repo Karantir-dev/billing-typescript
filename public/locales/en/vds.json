@@ -69,5 +69,7 @@
   "without_software": "Without software",
   "license_to_panel": "Control Panel License",
   "amount": "Amount",
-  "Unit": "unit"
+  "Unit": "unit",
+  "Service limits": "Service limits",
+  "port_speed_limits": "DDoS Protected Port Speed (Incoming): <b>1024 Kbit/sec</b> day + 0.0029 EUR for 1 Kbit/sec"
 }

@@ -392,6 +392,16 @@ export default function VDSOrder() {
                     <p className={s.section_title}>{t('characteristics')}</p>
                     <div className={s.parameters_list}>
                       <Select
+                        value={values.Control_panel}
+                        itemsList={getControlPanelList('Control_panel')}
+                        getElement={value => {
+                          setFieldValue('Control_panel', value)
+                          onChangeField(period, value, 'Control_panel')
+                        }}
+                        label={`${t('license_to_panel')}:`}
+                        isShadow
+                      />
+                      <Select
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
                         label={`${t('memory')}:`}
@@ -447,16 +457,6 @@ export default function VDSOrder() {
                         label={`${t('count_ip', { ns: 'dedicated_servers' })}:`}
                         isShadow
                         disabled
-                      />
-                      <Select
-                        value={values.Control_panel}
-                        itemsList={getControlPanelList('Control_panel')}
-                        getElement={value => {
-                          setFieldValue('Control_panel', value)
-                          onChangeField(period, value, 'Control_panel')
-                        }}
-                        label={`${t('license_to_panel')}:`}
-                        isShadow
                       />
                     </div>
 

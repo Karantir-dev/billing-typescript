@@ -32,6 +32,7 @@
 
 .tariff_name {
   font-size: 16px;
+  padding-right: 20px;
   margin-bottom: 15px;
 }
 
@@ -79,12 +80,14 @@
 
 @media screen and (min-width: 768px) {
   .server_item {
+    min-height: 60px;
+    padding: 10px 30px 10px 40px;
+  }
+
+  .main_info_wrapper {
+    display: flex;
     flex-direction: row;
     align-items: center;
-    min-height: 60px;
-
-    padding: 0 30px 0 40px;
-    flex-wrap: wrap;
   }
 
   .shevron_btn {
@@ -101,19 +104,24 @@
   }
 
   .tariff_name {
-    margin: 0 0 0 20px;
-    white-space: nowrap;
+    padding-right: 0;
+    margin: 0 10px 0 20px;
   }
 
   .discount_wrapper {
     display: flex;
+    justify-content: end;
     white-space: nowrap;
     gap: 5px;
     order: 2;
   }
+
   .price {
     order: 1;
+    text-align: end;
+    white-space: nowrap;
   }
+
   .price_wrapper {
     margin-left: auto;
     display: flex;
@@ -121,7 +129,16 @@
   }
 
   .dropdown {
+    grid-template-columns: auto auto;
     width: 100%;
+    column-gap: 25px;
+  }
+
+  .period {
+    font-weight: 400;
+  }
+  .value_item {
+    width: fit-content;
   }
 
   .discount_wrapper {

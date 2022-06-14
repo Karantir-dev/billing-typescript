@@ -11,73 +11,109 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownEl = useRef()
   const priceEl = useRef()
-
+  const infoEl = useRef()
+  console.log(el)
   const [dropOpened, setDropOpened] = useState(false)
 
   const tariffName = el?.desc?.$.match(/(?<=<b>)(.+?)(?= \(base price\))/g)
 
-  // const renderDesc = () => {}
   const onShevronClick = () => {
     if (!dropOpened) {
       dropdownEl.current.style.height = dropdownEl.current.scrollHeight + 'px'
-      priceEl.current.style.marginBottom = '15px'
+      if (!tabletOrHigher) {
+        priceEl.current.style.marginBottom = '15px'
+      } else {
+        infoEl.current.style.marginBottom = '15px'
+      }
     } else {
+      dropdownEl.current.style.height = '0'
       priceEl.current.style.marginBottom = '0'
-      dropdownEl.current.style.height = 0
+      infoEl.current.style.marginBottom = '0'
     }
     setDropOpened(!dropOpened)
   }
+
+  const getTranslatedText = regex => {
+    let text = el?.desc?.$?.match(regex)?.[0]
+    if (text?.includes('EUR')) {
+      text = text.replace(text.split('EUR ')[1], t(text.split('EUR ')[1].trim()))
+    }
+    console.log(text)
+    return text
+  }
+
+  const getTranslatedCP = string => {
+    const partText = string?.match(/(?<=^)(.+?)(?= - \d+?\.)/g)?.[0]
+
+    return string.replace(partText, t(partText))
+  }
+
   return (
     <>
       <div className={s.server_item}>
         <button className={s.shevron_btn} type="button" onClick={onShevronClick}>
-          <Shevron className={cn({ [s.shevron]: true, [s.opened]: dropOpened })} />
+          <Shevron
+            width={11}
+            className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
+          />
         </button>
 
-        {tabletOrHigher && (
-          <img src={require('./../../../images/cart/vds.png')} alt="vds" />
-        )}
-        <p className={s.tariff_name}>{tariffName}</p>
-        <div className={s.price_wrapper}>
-          {el?.discount_percent?.$ && (
-            <p className={s.discount_wrapper}>
-              <span className={s.percent}>-{el?.discount_percent?.$}</span>
-              {'  '}
-              <span className={s.old_price}>{el?.fullcost?.$} EUR</span>
-            </p>
+        <div className={s.main_info_wrapper} ref={infoEl}>
+          {tabletOrHigher && (
+            <img
+              width={27}
+              height={33}
+              src={require('./../../../images/cart/vds.png')}
+              alt="vds"
+            />
           )}
+          <p className={s.tariff_name}>{tariffName}</p>
+          <div className={s.price_wrapper}>
+            {el?.discount_percent?.$ && (
+              <p className={s.discount_wrapper}>
+                <span className={s.percent}>-{el?.discount_percent?.$}</span>
+                {'  '}
+                <span className={s.old_price}>{el?.fullcost?.$} EUR</span>
+              </p>
+            )}
 
-          <p className={s.price} ref={priceEl}>
-            {el?.cost?.$} EUR
-          </p>
+            <p className={s.price} ref={priceEl}>
+              {el?.cost?.$} EUR{' '}
+              {tabletOrHigher && (
+                <span className={s.period}>
+                  {t(el?.desc?.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g))}
+                </span>
+              )}
+            </p>
+          </div>
+
+          {typeof deleteItemHandler === 'function' && (
+            <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+              <Delete />
+            </button>
+          )}
         </div>
 
-        {typeof deleteItemHandler === 'function' && (
-          <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-            <Delete />
-          </button>
-        )}
-
         <div className={s.dropdown} ref={dropdownEl}>
-          <p>
+          <p className={s.value_item}>
             {t('processors')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=CPU count)(.+?)(?=<br\/>)/g)}
+              {getTranslatedText(/(?<=CPU count)(.+?)(?=<br\/>)/g)}
             </span>
           </p>
-          <p>
+          <p className={s.value_item}>
             {t('memory')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=Memory)(.+?)(?=<br\/>)/g)}
+              {getTranslatedText(/(?<=Memory)(.+?)(?=<br\/>)/g)}
             </span>
           </p>
-          <p>
+          <p className={s.value_item}>
             {t('disk_space')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=Disk space)(.+?)(?=<br\/>)/g)}
+              {getTranslatedText(/(?<=Disk space)(.+?)(?=<br\/>)/g)}
             </span>
           </p>
-          <p>
+          <p className={s.value_item}>
             {t('IPcount')}:
             <span className={s.value}>
               {el?.desc?.$.match(/(?<=IP-addresses count)(.+?)(?=<br\/>)/g)[0].replace(
@@ -86,19 +122,26 @@ export default function VdsItem({ el, deleteItemHandler }) {
               )}
             </span>
           </p>
-          <p>
+          <p className={s.value_item}>
             {t('port_speed')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=Port speed)(.+?)(?=<br\/>)/g)}
+              {el?.desc?.$.match(/(?<=Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/g)}
             </span>
           </p>
-          <p>
-            {t('license_to_panel')}:
+          <p className={s.value_item}>
+            {t('license_to_panel')}:{' '}
             <span className={s.value}>
-              {' '}
-              {t(el?.desc?.$.match(/(?<=Control panel )(.+?)(?=$)/g)[0])}
+              {getTranslatedCP(
+                getTranslatedText(/(?<=Control panel )(.+?)(?=$|<br\/>)/g),
+              )}
             </span>
           </p>
+          {el?.desc?.$.includes('Service limits') && (
+            <p className={s.value_item}>
+              {t('Service limits')}:{' '}
+              <span className={s.value}>{t('port_speed_limits')}</span>
+            </p>
+          )}
         </div>
       </div>
     </>
