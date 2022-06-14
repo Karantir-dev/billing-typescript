@@ -757,6 +757,168 @@ const editDomainNS =
       })
   }
 
+const editDomain =
+  (body = {}, setEditModal, setEditData, isOpenProfile) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'domain.edit',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          autoprolong: data?.doc?.autoprolong?.$,
+          autoprolong_available: data?.doc?.autoprolong_available?.$,
+          createdate: data?.doc?.createdate?.$,
+          expiredate: data?.doc?.expiredate?.$,
+          domain: data?.doc?.domain?.$,
+          stored_method: data?.doc?.stored_method?.$,
+          service_profile_owner: data?.doc?.service_profile_owner?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'stored_method' || list?.$name === 'autoprolong') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        data.doc?.metadata?.form?.page?.forEach(p => {
+          if (p?.$name === 'addon') {
+            p?.field?.forEach(f => {
+              if (f?.$name?.includes('addon')) {
+                f?.input?.forEach(i => {
+                  if (i?.$name?.includes('addon')) {
+                    d['addon'] = i?.$name
+                    d['isAddon'] = i?.$readonly !== 'yes'
+                  }
+                })
+              }
+            })
+          }
+        })
+
+        d[d.addon] = data?.doc[d.addon]
+
+        setEditModal && setEditModal(true)
+
+        if (body?.sok === 'ok') {
+          setEditData && setEditData(null)
+          setEditModal && setEditModal(false)
+          toast.success(i18n.t('Domain edited successfully', { ns: 'domains' }), {
+            position: 'bottom-right',
+          })
+          if (isOpenProfile) {
+            return dispatch(
+              getServiceProfile(body?.service_profile_owner, null, {}, body),
+            )
+          } else {
+            return dispatch(actions.hideLoader())
+          }
+        }
+
+        dispatch(getServiceProfile(data?.doc?.service_profile_owner?.$, setEditData, d))
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getServiceProfile =
+  (elid, setEditData, d, body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service_profile.edit',
+          out: 'json',
+          ...body,
+          elid,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const profileData = {
+          email: data.doc?.email?.$,
+          lastname: data.doc?.lastname?.$,
+          lastname_locale: data.doc?.lastname_locale?.$,
+          firstname: data.doc?.firstname?.$,
+          firstname_locale: data.doc?.firstname_locale?.$,
+
+          location_address: data.doc?.location_address?.$,
+          location_city: data.doc?.location_city?.$,
+          location_country: data.doc?.location_country?.$,
+          location_postcode: data.doc?.location_postcode?.$,
+          location_state: data.doc?.location_state?.$,
+          middlename: data.doc?.middlename?.$,
+          middlename_locale: data.doc?.middlename_locale?.$,
+          name: data.doc?.name?.$,
+          phone: data.doc?.phone?.$,
+
+          private: data.doc?.private?.$,
+          profiletype: data.doc?.profiletype?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'profiletype' || list?.$name === 'location_country') {
+            profileData[`${list?.$name}_list`] = list?.val
+          }
+        })
+
+        if (body?.sok === 'ok') {
+          return dispatch(actions.hideLoader())
+        }
+
+        setEditData && setEditData({ ...d, ...profileData })
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getDomains,
   getDomainsOrderName,
@@ -772,4 +934,5 @@ export default {
   editDomainNS,
 
   getDomainsFilters,
+  editDomain,
 }

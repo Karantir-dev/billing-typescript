@@ -4,6 +4,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column-reverse;
   margin-top: 40px;
 }
 
@@ -11,7 +12,13 @@
   height: 50px;
   text-transform: uppercase;
   max-width: 230px;
+  min-width: 200px;
   max-height: 53px;
+  margin-right: 24px;
+}
+
+.calendarBtn {
+  margin-right: 20px;
 }
 
 .searchInput {
@@ -32,11 +39,13 @@
 }
 
 .archiveBtn {
-  margin-left: 20px;
+  margin-right: 20px;
+  display: none;
 }
 
 .filterBtnBlock {
   position: relative;
+  margin-top: 5px;
 }
 
 .bg {
@@ -166,9 +175,6 @@
 }
 
 @media screen and (max-width: 767px) {
-  .filterBlock {
-    flex-direction: column-reverse;
-  }
   .newTicketBtn {
     margin-bottom: 30px;
     max-height: 53px;
@@ -297,6 +303,11 @@
 }
 
 @media screen and (min-width: 1550px) {
+  .archiveBtn {
+    margin-right: 20px;
+    display: block;
+  }
+
   .calendarModal {
     right: 50%;
     transform: translateX(50%);
@@ -304,6 +315,18 @@
 
   .calendar_pointer {
     right: 50%;
+  }
+
+  .newTicketBtn {
+    margin-right: 0;
+  }
+
+  .filterBlock {
+    flex-direction: row;
+  }
+
+  .filterBtnBlock {
+    margin-top: 0;
   }
 }
 
