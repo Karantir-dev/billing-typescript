@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Shevron } from '../../../images'
-import s from './DedicItem.module.scss'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
+
+import s from './DedicItem.module.scss'
 
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])

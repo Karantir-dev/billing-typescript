@@ -107,9 +107,11 @@ export { default as VDSItem } from './Services/vds/VDSItem/VDSItem'
 export { default as VDSList } from './Services/vds/VDSList/VDSList'
 export { default as ServerState } from './Services/vds/ServerState/ServerState'
 export { default as EditModal } from './Services/vds/EditModal/EditModal'
-export { default as OstemplVDSbtn } from './Services/vds/OstemplVDSbtn/OstemplVDSbtn'
+export { default as SoftwareOSBtn } from './Services/vds/SoftwareOSBtn/SoftwareOSBtn'
+export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/SoftwareOSSelect'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
 export { default as DomainItem } from './Cart/DomainItem/DomainItem'
+export { default as VdsItem } from './Cart/VdsItem/VdsItem'

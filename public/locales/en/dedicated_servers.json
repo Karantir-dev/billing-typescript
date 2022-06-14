@@ -43,6 +43,7 @@
 
   "licence_error": "domain name must include suffix after dot (example: domain.co)",
   "toaster_text": "The severs is ordered",
+  "agreement_warning": "To continue ordering the service, you must agree to the terms of service",
 
   "mask": "Mask",
   "gateway": "Gateway",
