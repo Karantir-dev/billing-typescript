@@ -61,7 +61,6 @@ const getTarifs = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'dedics')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { val: fpricelist } = data.doc.flist
@@ -229,7 +228,6 @@ const getParameters =
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
         const ipName = currentSumIp.join('').slice(0, 10)
 
-        console.log(paramsList)
         // fields
 
         setFieldValue('ostemplList', ostempl[0].val)
@@ -747,7 +745,6 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data)
       setIPlist(data.doc.elem)
       dispatch(actions.hideLoader())
     })
@@ -854,7 +851,6 @@ const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'maybe error')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
@@ -968,7 +964,6 @@ const orderNewIP =
 
 // PROLONG
 const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
-  console.log(elid)
   dispatch(actions.showLoader())
 
   const {
@@ -991,7 +986,6 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
 
       const { slist, expiredate, period, title_name, newexpiredate } = data.doc
 
-      console.log(data)
       setInitialState({ slist, expiredate, newexpiredate, period, title_name })
       dispatch(actions.hideLoader())
     })
@@ -1144,7 +1138,7 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     })
 }
 
-const rebootServer = elid => (dispatch, getState) => {
+const rebootServer = (elid, manageModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -1164,7 +1158,7 @@ const rebootServer = elid => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data, 'rebooting result')
+      manageModal()
 
       dispatch(actions.hideLoader())
     })

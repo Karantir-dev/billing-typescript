@@ -34,7 +34,7 @@ export default function RebootModal({ elid, closeFn, server }) {
           label={t('Save', { ns: 'other' })}
           type="button"
           onClick={() => {
-            dispatch(dedicOperations.rebootServer(elid))
+            dispatch(dedicOperations.rebootServer(elid, closeFn))
           }}
         />
 

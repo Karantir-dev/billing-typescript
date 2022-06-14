@@ -8,7 +8,6 @@ import s from './DedicIPItem.module.scss'
 export default function DedicIPItem({ ip, activeIP, setActiveIP }) {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
 
-  console.log(ip)
   return (
     <li className={s.item}>
       {ip?.is_main?.$ === 'on' && (

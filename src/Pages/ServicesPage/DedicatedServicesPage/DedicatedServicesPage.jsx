@@ -52,8 +52,6 @@ export default function DedicatedServersPage() {
     dispatch(dedicOperations.getServersList())
   }, [])
 
-  console.log(elidForEditModal)
-
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />

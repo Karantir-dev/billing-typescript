@@ -34,8 +34,7 @@ export default function DedicOrderPage() {
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
-
-  console.log(periodName, 'periodname')
+  console.log(ordered)
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -84,8 +83,6 @@ export default function DedicOrderPage() {
       length: amounts.length,
     }
   }
-
-  console.log(ordered)
 
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
@@ -197,7 +194,6 @@ export default function DedicOrderPage() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors, resetForm }) => {
-          console.log(values)
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
