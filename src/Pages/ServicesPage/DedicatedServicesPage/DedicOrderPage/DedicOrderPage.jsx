@@ -389,6 +389,7 @@ export default function DedicOrderPage() {
                   )
                 })}
               </div>
+
               {parameters && (
                 <div className={s.parameters_block}>
                   <h3 className={s.params}>{t('parameters')}</h3>
@@ -428,20 +429,23 @@ export default function DedicOrderPage() {
                       value={values?.domainname}
                     />
 
-                    <Select
-                      height={50}
-                      getElement={item => {
-                        setFieldValue('ostempl', item)
-                        setFieldValue('recipe', 'null')
-                      }}
-                      isShadow
-                      label={t('os')}
-                      value={values?.ostempl}
-                      itemsList={values?.ostemplList?.map(el => {
-                        return { label: t(el.$), value: el.$key }
-                      })}
-                      className={s.select}
-                    />
+                    {
+                      <Select
+                        height={50}
+                        getElement={item => {
+                          setFieldValue('ostempl', item)
+                          setFieldValue('recipe', 'null')
+                        }}
+                        isShadow
+                        label={t('os')}
+                        value={values?.ostempl}
+                        itemsList={values?.ostemplList?.map(el => {
+                          return { label: t(el.$), value: el.$key }
+                        })}
+                        className={s.select}
+                      />
+                    }
+                    {/* {parseOsteml(values?.ostemplList, setFieldValue, values, t)} */}
 
                     <Select
                       height={50}
@@ -623,3 +627,25 @@ function updatePrice(formValues, dispatch, setNewPrice) {
     ),
   )
 }
+
+//  function parseOsteml (ostemplArr, setFieldValue, values, t) {
+
+//   console.log(ostemplArr)
+
+//   return (
+//     <Select
+//       height={50}
+//       getElement={item => {
+//         setFieldValue('ostempl', item)
+//         setFieldValue('recipe', 'null')
+//       }}
+//       isShadow
+//       label={t('os')}
+//       value={values?.ostempl}
+//       itemsList={values?.ostemplList?.map(el => {
+//         return { label: t(el.$), value: el.$key }
+//       })}
+//       className={s.select}
+//     />
+//   )
+// }

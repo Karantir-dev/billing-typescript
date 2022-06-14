@@ -32,7 +32,7 @@ const getServersList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(dedicActions.setServersList(data.doc.elem))
+      dispatch(dedicActions.setServersList(data.doc.elem ? data.doc.elem : []))
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -94,7 +94,6 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
   const {
     auth: { sessionId },
   } = getState()
-  console.log(datacenterId)
 
   axiosInstance
     .post(
@@ -997,7 +996,6 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
 }
 
 const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getState) => {
-  console.log(elid)
   dispatch(actions.showLoader())
 
   const {
@@ -1019,7 +1017,6 @@ const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getS
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc.period.$)
       setNewExpireDate(data.doc.newexpiredate.$)
       dispatch(actions.hideLoader())
     })
@@ -1169,6 +1166,103 @@ const rebootServer = (elid, manageModal) => (dispatch, getState) => {
     })
 }
 
+const goToPanel = elid => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'gotoserver',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const link = document.createElement('a')
+      link.href = data.doc.ok.$
+      link.setAttribute('target', '_blank')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getDedicFilters =
+  (setFilters, data = {}, filtered = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.filter',
+          out: 'json',
+          auth: sessionId,
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (filtered) {
+          return dispatch(getServersList())
+        }
+
+        let filters = {}
+
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
+
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          domain: data.doc?.domain?.$ || '',
+          ip: data.doc?.ip?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+          datacenter: data.doc?.datacenter?.$ || '',
+          ostemplate: '',
+        }
+
+        setFilters({ filters, currentFilters })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -1194,4 +1288,6 @@ export default {
   getServiceHistory,
   getServiceInstruction,
   rebootServer,
+  getDedicFilters,
+  goToPanel,
 }

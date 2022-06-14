@@ -16,7 +16,9 @@
   "terms_2": "Terms of Service",
 
   "domain_placeholder": "Enter domain name",
+  "ip_placeholder": "Enter IP-address",
   "recipe_placeholder": "Not installed",
+  "datacenter": "Datacenter",
 
   "Month": "Month",
   "Three months": "Three months",
@@ -95,5 +97,9 @@
   "We hope you will enjoy your dedicated server": "We hope you will enjoy your dedicated server",
   "ZOMRO team": "'ZOMRO' team",
   "Server rebooting": "Server rebooting",
-  "Are you sure you want to restart the server": "Are you sure you want to restart the server"
+  "Are you sure you want to restart the server": "Are you sure you want to restart the server",
+
+  "The reboot process is started": "The reboot process is started",
+  "Auto-renewal period is set to": "Auto-renewal period is set to",
+  "Auto-renewal period is set to 'Two years'": "Auto-renewal period is set to 'Two years'"
 }

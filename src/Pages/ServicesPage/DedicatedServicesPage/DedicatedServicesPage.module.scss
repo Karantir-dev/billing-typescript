@@ -5,17 +5,13 @@
 .tools_wrapper {
   display: flex;
   align-items: center;
-
-  & :nth-child(1) {
-    order: 2;
-  }
-  & :nth-child(2) {
-    order: 1;
-  }
+  flex-direction: row-reverse;
+  justify-content: flex-end;
 }
 
 .tools_container {
   display: flex;
+  position: relative;
 }
 
 .desktop_tools_wrapper {
@@ -57,13 +53,14 @@
 @media screen and (min-width: 1550px) {
   .tools_wrapper {
     justify-content: space-between;
+    flex-direction: row;
 
-    & :nth-child(1) {
-      order: unset;
-    }
-    & :nth-child(2) {
-      order: unset;
-    }
+    // & :nth-child(1) {
+    //   order: unset;
+    // }
+    // & :nth-child(2) {
+    //   order: unset;
+    // }
   }
 
   .tools_icon {
