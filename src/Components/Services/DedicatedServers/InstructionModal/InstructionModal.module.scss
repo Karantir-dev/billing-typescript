@@ -1,0 +1,138 @@
+.instruction_modal {
+  background-color: var(--main-bgc);
+  padding: 35px 40px 30px 38px;
+  overflow-y: auto;
+  height: 80vh;
+  position: relative;
+  max-width: 280px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-gradient);
+    border-radius: 5px;
+  }
+}
+
+.icon_cross {
+  cursor: pointer;
+}
+
+.title_wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal_title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.welcome {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+.inform_text,
+.ssh_tip,
+.text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin-bottom: 15px;
+}
+
+.service_info {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+
+.server_info_block,
+.server_info,
+.important_departments_block {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 15px;
+  row-gap: 5px;
+  margin-bottom: 20px;
+}
+
+.label,
+.value {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 140%;
+  color: var(--main-text);
+}
+
+.label {
+  font-weight: 400;
+  color: var(--transparent-color);
+}
+
+.warning_text {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--red-text);
+  margin-bottom: 15px;
+  word-break: break-all;
+}
+.conclusion,
+.signature {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+.signature {
+  font-weight: 600;
+}
+.link {
+  color: var(--link-text);
+  text-decoration: underline;
+}
+.promocode {
+  font-weight: 600;
+}
+.warning_line {
+  padding-left: 3px;
+}
+
+@media screen and (min-width: 768px) {
+  .server_info_block,
+  .server_info,
+  .important_departments_block {
+    grid-template-columns: 150px 1fr;
+    row-gap: 10px;
+  }
+  .instruction_modal {
+    max-width: 632px;
+  }
+  .label {
+    color: var(--main-text);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1550px) {
+}
+
+@media screen and (min-width: 1918px) {
+}

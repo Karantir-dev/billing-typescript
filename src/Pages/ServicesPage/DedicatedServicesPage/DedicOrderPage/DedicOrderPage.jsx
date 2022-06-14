@@ -25,6 +25,17 @@ export default function DedicOrderPage() {
   const { t } = useTranslation(['dedicated_servers', 'other'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
+  const [tarifList, setTarifList] = useState(tarifsList)
+  const [parameters, setParameters] = useState(null)
+  // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
+  const [paymentPeriod, setPaymentPeriod] = useState(null)
+  const [price, setPrice] = useState('')
+  const [ordered, setOrdered] = useState(false)
+  const [filters, setFilters] = useState([])
+  const [periodName, setPeriodName] = useState('')
+  const [isTarifChosen, setTarifChosen] = useState(false)
+  console.log(ordered)
+
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
@@ -59,9 +70,11 @@ export default function DedicOrderPage() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR/' + period
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR'
     let percent = Number(amounts[0]) + '%'
-    let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR/' + period
+    let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
+
+    setPeriodName(period)
 
     return {
       amoumt,
@@ -70,19 +83,6 @@ export default function DedicOrderPage() {
       length: amounts.length,
     }
   }
-
-  const [tarifList, setTarifList] = useState(tarifsList)
-  const [parameters, setParameters] = useState(null)
-  // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
-  const [paymentPeriod, setPaymentPeriod] = useState(null)
-  const [price, setPrice] = useState('-')
-  const [ordered, setOrdered] = useState(false)
-  const [filters, setFilters] = useState([])
-
-  // console.log(datacenter)
-
-  console.log(ordered)
-  // console.log(tarifList)
 
   let filteredTariffList = tarifList?.tarifList?.filter(el => {
     if (Array.isArray(el.filter.tag)) {
@@ -193,8 +193,7 @@ export default function DedicOrderPage() {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, touched, errors }) => {
-          console.log(values)
+        {({ values, setFieldValue, touched, errors, resetForm }) => {
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -205,12 +204,12 @@ export default function DedicOrderPage() {
                   return (
                     <button
                       onClick={() => {
-                        setParameters(null)
-                        setFieldValue('datacenter', item?.$key)
                         setPrice('-')
-                        setFieldValue('period', '1')
-                        setFieldValue('tarif', null)
+                        resetForm()
                         setPaymentPeriod(item)
+                        setFieldValue('datacenter', item?.$key)
+                        setParameters(null)
+                        setTarifChosen(false)
                         dispatch(
                           dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
                         )
@@ -289,15 +288,17 @@ export default function DedicOrderPage() {
                   })}
                 </div>
               </div>
-
               <Select
                 height={50}
                 value={values.period}
                 getElement={item => {
-                  setFieldValue('period', item)
-                  setParameters(null)
                   setPrice('-')
+                  resetForm()
+                  setFieldValue('period', item)
                   setPaymentPeriod(item)
+                  setParameters(null)
+                  setTarifChosen(false)
+
                   dispatch(
                     dedicOperations.getUpdatedPeriod(
                       item,
@@ -313,7 +314,6 @@ export default function DedicOrderPage() {
                 })}
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
-
               <div className={s.tarifs_block}>
                 {tariffsListToRender?.map((item, index) => {
                   const descriptionBlocks = item?.desc?.$.split('/')
@@ -332,6 +332,8 @@ export default function DedicOrderPage() {
                         setParameters(null)
                         setFieldValue('tarif', item?.pricelist?.$)
                         setPrice(priceAmount)
+                        setTarifChosen(true)
+
                         dispatch(
                           dedicOperations.getParameters(
                             values.period,
@@ -371,7 +373,7 @@ export default function DedicOrderPage() {
                             [s.selected]: item?.pricelist?.$ === values.tarif,
                           })}
                         >
-                          {priceAmount}
+                          {priceAmount + '/' + periodName}
                         </span>
                         {paymentPeriod > 1 && (
                           <span className={s.sale_price}>{`${priceSale}`}</span>
@@ -387,7 +389,6 @@ export default function DedicOrderPage() {
                   )
                 })}
               </div>
-
               {parameters && (
                 <div className={s.parameters_block}>
                   <h3 className={s.params}>{t('parameters')}</h3>
@@ -571,18 +572,23 @@ export default function DedicOrderPage() {
                 </div>
               )}
 
-              <div className={s.buy_btn_block}>
+              <div
+                className={classNames({
+                  [s.buy_btn_block]: true,
+                  [s.active]: isTarifChosen,
+                })}
+              >
                 <div className={s.container}>
                   <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                    <span className={s.btn_price}>{price}</span>
+                    <span className={s.btn_price}>{price + '/' + periodName}</span>
                   </div>
 
                   <Button
                     className={s.buy_btn}
                     isShadow
                     size="medium"
-                    label={t('Buy')}
+                    label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() =>
                       licenceCheck.current.scrollIntoView({ behavior: 'smooth' })

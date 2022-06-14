@@ -51,6 +51,8 @@ export default function Component(props) {
 
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
+      <span className={s.total}> {`${t('total')}: ${totalCount}`}</span>
+
       <div className={s.paginationContainer}>
         <div
           className={cn(s.paginationItem, s.arrow, {
@@ -85,8 +87,11 @@ export default function Component(props) {
         >
           <div className={cn(s.arrow, s.right)} />
         </div>
+        <button onClick={goToPage} className={s.btn_desktop}>
+          {t('follow')}
+        </button>
       </div>
-      <button onClick={goToPage} className={s.btn}>
+      <button onClick={goToPage} className={s.btn_mobile}>
         {t('follow')}
       </button>
     </div>
