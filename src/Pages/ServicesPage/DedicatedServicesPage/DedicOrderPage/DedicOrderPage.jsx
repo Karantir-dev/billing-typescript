@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox, Toggle } from '../../../../Components'
+import {
+  BreadCrumbs,
+  Button,
+  CheckBox,
+  SoftwareOSBtn,
+  SoftwareOSSelect,
+  Toggle,
+} from '../../../../Components'
 import { useLocation } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -35,6 +42,7 @@ export default function DedicOrderPage() {
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   console.log(ordered)
+  console.log(tarifList, 'tariflist')
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -111,6 +119,71 @@ export default function DedicOrderPage() {
     pathnames = pathnames.filter(p => p.length !== 0)
 
     return pathnames
+  }
+
+  // RENDER ALL SELECTS 'ostempl', setFieldValue, values.ostempl
+  const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
+    console.log(fieldName)
+    let dataArr = parameters.find(el => el.$name === fieldName).val
+    const elemsData = {}
+    if (fieldName === 'recipe') {
+      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      elemsData.null = [{ $key: 'null', $: t('without_software') }]
+    }
+
+    dataArr.forEach(element => {
+      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
+
+      if (!Object.hasOwn(elemsData, itemName)) {
+        elemsData[itemName] = [element]
+      } else {
+        elemsData[itemName].push(element)
+      }
+    })
+
+    console.log(elemsData)
+    console.log(parameters)
+
+    return Object.entries(elemsData).map(([name, el]) => {
+      if (el.length > 1) {
+        const optionsList = el.map(({ $key, $ }) => ({
+          value: $key,
+          label: $,
+        }))
+
+        return (
+          <SoftwareOSSelect
+            key={optionsList[0].value}
+            iconName={name}
+            itemsList={optionsList}
+            state={state}
+            getElement={value => {
+              setFieldValue(fieldName, value)
+              if (fieldName === 'ostempl') parameters.recipe.$ = 'null'
+              parameters[fieldName].$ = value
+            }}
+          />
+        )
+      } else {
+        return (
+          <SoftwareOSBtn
+            key={el[0].$key}
+            value={el[0].$key}
+            state={state}
+            iconName={name}
+            label={el[0].$}
+            onClick={value => {
+              setFieldValue(fieldName, value)
+              if (fieldName === 'ostempl') parameters.recipe.$ = 'null'
+
+              parameters[fieldName].$ = value
+
+              // setParametersInfo({ ...parametersInfo })
+            }}
+          />
+        )
+      }
+    })
   }
 
   useEffect(() => {
@@ -194,6 +267,7 @@ export default function DedicOrderPage() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors, resetForm }) => {
+          console.log(values)
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -393,6 +467,16 @@ export default function DedicOrderPage() {
               {parameters && (
                 <div className={s.parameters_block}>
                   <h3 className={s.params}>{t('parameters')}</h3>
+
+                  {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
+
+                  {renderSoftwareOSFields(
+                    'recipe',
+                    setFieldValue,
+                    values.recipe,
+                    values.ostempl,
+                  )}
+
                   <div className={s.parameters_wrapper}>
                     <Select
                       height={50}

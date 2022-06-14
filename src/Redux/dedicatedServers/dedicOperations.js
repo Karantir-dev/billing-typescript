@@ -243,7 +243,7 @@ const getParameters =
         setFieldValue('managePanelName', managePanel?.[0]?.$name)
         setFieldValue('portSpeedName', portSpeed.length > 1 ? portSpeed?.[1]?.$name : '')
 
-        setParameters(true)
+        setParameters(paramsList)
 
         dispatch(actions.hideLoader())
       })
