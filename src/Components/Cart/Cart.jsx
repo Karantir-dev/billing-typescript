@@ -310,6 +310,7 @@ export default function Component() {
                         )}
                       </div>
                     </div>
+
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>{t('Payment method')}:</div>
                       <div className={s.formFieldsBlock}>

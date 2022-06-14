@@ -15,7 +15,7 @@ import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
 
-export default function ServicesPage() {
+export default function ServicesPage({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other'])
   const dispatch = useDispatch()
 
@@ -29,7 +29,12 @@ export default function ServicesPage() {
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
 
   useEffect(() => {
-    dispatch(domainsOperations.getDomainsOrderName(setDomains))
+    if (transfer) {
+      const dataTransfer = { domain_action: 'transfer' }
+      dispatch(domainsOperations.getDomainsOrderName(setDomains, dataTransfer))
+    } else {
+      dispatch(domainsOperations.getDomainsOrderName(setDomains))
+    }
   }, [])
 
   const parseLocations = () => {
@@ -48,6 +53,9 @@ export default function ServicesPage() {
     values['selected_pricelist'] = selectedDomains?.join(', ')
     values['sv_field'] = 'ok_whois'
     selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+    if (transfer) {
+      values['domain_action'] = 'transfer'
+    }
     dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
   }
 
@@ -85,13 +93,23 @@ export default function ServicesPage() {
       data[n] = 'on'
     })
 
-    navigate && navigate(route.DOMAINS_CONTACT_INFO, { state: { domainInfo: data } })
+    if (transfer) {
+      data['domain_action'] = 'transfer'
+    }
+
+    navigate &&
+      navigate(
+        transfer ? route.DOMAINS_TRANSFER_CONTACT_INFO : route.DOMAINS_CONTACT_INFO,
+        { state: { domainInfo: data } },
+      )
   }
 
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('Domain name order')}</h1>
+      <h1 className={s.page_title}>
+        {transfer ? t('Domain name transfer') : t('Domain name order')}
+      </h1>
       <Formik
         validationSchema={validationSchema}
         initialValues={{
@@ -117,7 +135,7 @@ export default function ServicesPage() {
                 className={s.searchBtn}
                 isShadow
                 size="medium"
-                label={t('Pick up')}
+                label={t(transfer ? 'Check' : 'Pick up')}
                 type="submit"
               />
             </Form>
@@ -131,12 +149,14 @@ export default function ServicesPage() {
           domains={pickUpDomains?.list}
           selected={pickUpDomains?.selected}
           registerDomainHandler={registerDomainHandler}
+          transfer={transfer}
         />
       ) : (
         <DomainsZone
           setSelectedDomains={setSelectedDomains}
           selectedDomains={selectedDomains}
           domains={domains}
+          transfer={transfer}
         />
       )}
     </div>

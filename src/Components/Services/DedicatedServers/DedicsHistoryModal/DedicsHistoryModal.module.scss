@@ -1,0 +1,86 @@
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.icon_cross {
+  cursor: pointer;
+  min-width: 10px;
+}
+
+.history_modal {
+  background-color: var(--main-bgc);
+  padding: 35px 40px 30px 38px;
+  overflow-y: auto;
+  height: 80vh;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-gradient);
+    border-radius: 5px;
+  }
+}
+
+.title_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.service_name {
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--transparent-color);
+}
+
+@media screen and (min-width: 768px) {
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+
+  .history_modal {
+    max-width: 623px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pagination {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .pagination {
+    margin-top: 30px;
+  }
+  .title {
+    display: flex;
+    flex-direction: row;
+  }
+  .service_name {
+    margin-left: 8px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .pagination {
+    margin-top: 40px;
+  }
+  .history_modal {
+    max-width: 1077px;
+  }
+}

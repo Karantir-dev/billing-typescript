@@ -15,7 +15,6 @@ export default function ProlongModal({ elid, closeFn }) {
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   const [newExpireDate, setNewExpireDate] = useState(initialState?.newexpiredate?.$)
-  console.log(initialState?.newexpiredate?.$)
 
   const handleEditionModal = () => {
     closeFn()
@@ -28,8 +27,6 @@ export default function ProlongModal({ elid, closeFn }) {
   useEffect(() => {
     setNewExpireDate(initialState?.newexpiredate?.$)
   }, [initialState])
-
-  console.log(initialState?.slist)
 
   const handleSubmit = values => {
     const { period } = values
@@ -46,8 +43,6 @@ export default function ProlongModal({ elid, closeFn }) {
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => {
-        console.log(values)
-
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>

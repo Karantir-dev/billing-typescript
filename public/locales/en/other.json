@@ -105,5 +105,19 @@
   "Enter promo code": "Enter promo code",
   "Apply": "Apply",
   "Invalid promo code": "Invalid promo code",
-  "Close": "Close"
+  "Close": "Close",
+  "Changing": "Changing",
+  "Service change history": "Service change history",
+  "for the transfer": "for the transfer",
+  "Enter code": "Enter code",
+  "The '' field has invalid value. The value cannot be empty": "The code field has invalid value. The value cannot be empty",
+  "Domain has not been registered yet": "Domain has not been registered yet",
+  "Changing registrar for this domain": "Changing registrar for this domain",
+  "The service can be renewed only after {{date}}": "The service can be renewed only after {{date}}",
+  "Ordered": "Ordered",
+  "Pending": "Pending",
+  "Suspended": "Suspended",
+  "Cost (from/to)": "Cost (from/to)",
+  "Valid (from/to)": "Valid (from/to)",
+  "Order date (from/to)": "Order date (from/to)"
 }

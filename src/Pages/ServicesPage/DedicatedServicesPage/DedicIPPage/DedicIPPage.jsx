@@ -8,6 +8,7 @@ import {
 } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../../routes'
+import cn from 'classnames'
 
 import s from './DedicIPPage.module.scss'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
@@ -21,7 +22,7 @@ import DedicIPOrder from '../../../../Components/Services/DedicatedServers/Dedic
 
 export default function DedicIPpage() {
   const location = useLocation()
-  const ipPlid = location.state.plid
+  const ipPlid = location?.state?.plid
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -35,6 +36,7 @@ export default function DedicIPpage() {
   const [IPList, setIPList] = useState([])
   const [activeIP, setActiveIP] = useState(null)
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const [hovered, setHovered] = useState(false)
   const navigate = useNavigate()
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
@@ -53,13 +55,15 @@ export default function DedicIPpage() {
     dispatch(dedicOperations.removeIP(elidForDeleteModal, ipPlid, handleRemoveIPModal))
   }
 
-  if (!ipPlid) {
-    navigate(route.DEDICATED_SERVERS_ORDER)
-  }
+  useEffect(() => {
+    if (ipPlid) dispatch(dedicOperations.getIPList(ipPlid, setIPList))
+  }, [])
 
   useEffect(() => {
-    dispatch(dedicOperations.getIPList(ipPlid, setIPList)) // to get ID
-  }, [])
+    if (!ipPlid) {
+      return navigate(route.DEDICATED_SERVERS)
+    }
+  }, [ipPlid])
 
   return (
     <div className={s.page_container}>
@@ -68,13 +72,21 @@ export default function DedicIPpage() {
       <h3 className={s.ip_title}>
         {t('ip', { ns: 'crumbs' })}
         {isMaxAmountIP && (
-          <HintWrapper
-            wrapperClassName={s.hint_wrapper}
-            popupClassName={s.popup_text}
-            label={t('limit_ip', { ns: 'dedicated_servers' })}
+          <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
           >
-            <Attention className={s.attention_icon} />
-          </HintWrapper>
+            <HintWrapper
+              wrapperClassName={s.hint_wrapper}
+              popupClassName={s.popup_text}
+              label={t('limit_ip', { ns: 'dedicated_servers' })}
+            >
+              <Attention
+                isHovered={hovered}
+                className={cn({ [s.attention_icon]: true, [s.hovered]: hovered })}
+              />
+            </HintWrapper>
+          </div>
         )}
       </h3>
 

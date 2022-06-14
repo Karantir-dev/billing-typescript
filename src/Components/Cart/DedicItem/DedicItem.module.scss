@@ -5,7 +5,16 @@
   margin: 10px 0;
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
-  padding: 19px 25px;
+  // padding: 19px 25px 0 25px;
+}
+
+.tarif_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  background: var(--forms_bgc_3);
 
   img {
     width: 31px;
@@ -15,14 +24,17 @@
   position: relative;
 }
 
+.server_info {
+  margin: 19px 25px 0px 25px;
+}
+
 .additional_info_item {
   display: none;
   flex-direction: column;
   width: 100%;
   margin: 10px 0;
   background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
-  padding: 19px 25px 19px 55px;
+  // padding: 19px 25px 19px 0px;
 
   &.opened {
     display: flex;
@@ -33,6 +45,7 @@
   font-size: 14px;
   line-height: 120%;
   color: var(--main-text);
+  margin: 0px 25px 0px 25px;
 
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -67,14 +80,14 @@
   display: flex;
   flex-direction: column;
   margin-top: 15px;
+  margin: 19px 25px 15px 25px;
 }
 
 .cost {
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 18px;
   width: 150px;
-  // line-height: 70.9%;
   color: var(--main-text);
   margin-bottom: 4px;
 }
@@ -112,9 +125,7 @@
 .shevron {
   stroke: var(--icon-color);
   margin-right: 15px;
-  cursor: pointer;
   transition: transform 0.2s ease;
-  order: 3;
   align-self: center;
   transform: rotateX(180deg);
 
@@ -127,15 +138,37 @@
   }
 }
 
+.shevron_container {
+  border-top: 1px solid var(--inactive_icon_color);
+  align-self: stretch;
+  cursor: pointer;
+  height: 50px;
+  order: 3;
+}
+
 @media screen and (min-width: 768px) {
-  .server_item {
+  .tarif_info {
+    display: flex;
     flex-direction: row;
     align-items: center;
   }
 
-  .shevron {
+  .additional_info_item {
+    padding-left: 30px;
+  }
+
+  .service_name {
+    margin: unset;
+  }
+
+  .shevron_container {
     order: unset;
-    align-self: unset;
+    border-top: unset;
+    align-self: center;
+  }
+
+  .server_item {
+    padding: 19px 25px 19px 25px;
   }
 
   .priceList {

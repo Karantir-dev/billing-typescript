@@ -20,8 +20,6 @@ export default function DedicIPEditModal({ elid, closeFn }) {
   const location = useLocation()
   const ipPlid = location.state.plid
 
-  console.log(ipPlid, 'ipPlid')
-
   const handleEditionModal = () => {
     closeFn()
   }
@@ -57,7 +55,6 @@ export default function DedicIPEditModal({ elid, closeFn }) {
       onSubmit={handleSubmit}
     >
       {({ values, errors, touched }) => {
-        console.log(values)
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>

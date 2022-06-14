@@ -89,6 +89,11 @@
 
 .attention_icon {
   cursor: pointer;
+
+  &.hovered {
+    border: 2px solid var(--red-text);
+    border-radius: 25px;
+  }
 }
 
 .hint_wrapper {

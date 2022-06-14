@@ -35,7 +35,7 @@ export default function ServicesPage() {
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
-      <DomainFilters selctedItem={selctedItem} />
+      <DomainFilters selctedItem={selctedItem} setCurrentPage={setCurrentPage} />
       <DomainsTable
         selctedItem={selctedItem}
         setSelctedItem={setSelctedItem}
