@@ -155,5 +155,9 @@
   .domainItemBg {
     flex-basis: 20%;
     margin-right: 25px;
+
+    &.transfer {
+      flex-basis: 31%;
+    }
   }
 }

@@ -50,6 +50,8 @@ export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'
 export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
 export { default as Backdrop } from './ui/Backdrop/Backdrop'
 
+export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
@@ -86,7 +88,12 @@ export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
 
 //==========================================SERVICES==========================================//
 export { default as ServicesList } from './Services/ServicesList/ServicesList'
+
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
+export { default as DomainsHistoryModal } from './Services/Domains/DomainsHistoryModal/DomainsHistoryModal'
+export { default as DomainsWhoisModal } from './Services/Domains/DomainsWhoisModal/DomainsWhoisModal'
+export { default as DomainsNSModal } from './Services/Domains/DomainsNSModal/DomainsNSModal'
+
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
 export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'

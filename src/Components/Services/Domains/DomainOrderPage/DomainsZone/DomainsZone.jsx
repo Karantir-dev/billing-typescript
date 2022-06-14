@@ -7,7 +7,7 @@ import s from './DomainsZone.module.scss'
 export default function ServicesPage(props) {
   const { t } = useTranslation(['domains', 'other'])
 
-  const { domains, selectedDomains, setSelectedDomains } = props
+  const { domains, selectedDomains, setSelectedDomains, transfer } = props
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -25,15 +25,21 @@ export default function ServicesPage(props) {
 
     let amoumt = (
       <span>
-        {amounts[amounts.length - 1] + ' ' + 'EUR/'}
-        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+        {amounts[amounts.length - 1] + ' ' + 'EUR'}
+        <span className={s.year}>
+          {transfer ? ' ' : '/'}
+          {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
+        </span>
       </span>
     )
     let percent = amounts[0] + '%'
     let sale = (
       <span>
-        {amounts[1] + ' ' + 'EUR/'}
-        <span className={s.year}>{t('year', { ns: 'other' })}</span>
+        {amounts[1] + ' ' + 'EUR'}
+        <span className={s.year}>
+          {transfer ? ' ' : '/'}
+          {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
+        </span>
       </span>
     )
     return {
@@ -95,7 +101,10 @@ export default function ServicesPage(props) {
               role="button"
               onKeyDown={null}
               key={id?.$}
-              className={cn(s.domainItemBg, { [s.selected]: itemIsSelected(id?.$) })}
+              className={cn(s.domainItemBg, {
+                [s.selected]: itemIsSelected(id?.$),
+                [s.transfer]: transfer,
+              })}
               onClick={() => setIsSelectedHandler(id?.$)}
             >
               <div className={s.domainItem}>

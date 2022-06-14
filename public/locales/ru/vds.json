@@ -21,6 +21,8 @@
   "stopped": "Приостановлен",
   "ordered": "Заказан",
   "in_progress": "Обрабатывается",
+  "in_progress_transfer": "Выполняется трансфер",
+  "deletion_in_progress": "Выполняется удаление",
   "edit_title": "Редактирование услуги",
   "main": "Основное",
   "additionally": "Дополнительно",

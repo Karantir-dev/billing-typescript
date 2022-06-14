@@ -107,5 +107,17 @@
   "Invalid promo code": "Недействительный промо-код",
   "Close": "Закрыть",
   "Changing": "Изменение",
-  "Service change history": "История изменения услуги "
+  "Service change history": "История изменения услуги ",
+  "for the transfer": "за перенос",
+  "Enter code": "Введите код",
+  "The '' field has invalid value. The value cannot be empty": "Поле кода имеет недопустимое значение. Значение не может быть пустым",
+  "Domain has not been registered yet": "Домен еще не зарегистрирован",
+  "Changing registrar for this domain": "Смена регистратора для этого домена",
+  "The service can be renewed only after {{date}}": "Услуга может быть продлена только после {{date}}",
+  "Ordered": "Заказан",
+  "Pending": "В ожидании",
+  "Suspended": "Приостановленный",
+  "Cost (from/to)": "Стоимость (от/до):",
+  "Valid (from/to)": "Действует (от/до)",
+  "Order date (from/to)": "Дата заказа (от/до)"
 }
