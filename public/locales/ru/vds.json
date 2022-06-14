@@ -66,5 +66,6 @@
   "characteristics": "Характеристики",
   "without_software": "Без ПО",
   "license_to_panel": "Лицензия на панель управления",
-  "amount": "Количество"
+  "amount": "Количество",
+  "Unit": "шт"
 }

@@ -66,5 +66,6 @@
   "characteristics": "Characteristics",
   "without_software": "Without software",
   "license_to_panel": "Control Panel License",
-  "amount": "Amount"
+  "amount": "Amount",
+  "Unit": "unit"
 }

@@ -3,12 +3,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 10px 0;
+  margin-bottom: 10px;
   padding: 15px 15px 65px;
   border-radius: 3px;
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
-  cursor: pointer;
 }
 
 .shevron_btn {
@@ -61,14 +60,17 @@
 .price {
   font-weight: 600;
   font-size: 18px;
-  margin-bottom: 15px;
 }
 
 .dropdown {
+  height: 0;
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
+
   font-size: 14px;
+  transition: height 150ms;
+  overflow: hidden;
 }
 
 .value {
@@ -79,5 +81,50 @@
   .server_item {
     flex-direction: row;
     align-items: center;
+    min-height: 60px;
+
+    padding: 0 30px 0 40px;
+    flex-wrap: wrap;
+  }
+
+  .shevron_btn {
+    right: initial;
+    top: 0;
+    width: 40px;
+    height: 60px;
+    border: none;
+  }
+
+  .btn_delete {
+    position: static;
+    margin-left: 40px;
+  }
+
+  .tariff_name {
+    margin: 0 0 0 20px;
+    white-space: nowrap;
+  }
+
+  .discount_wrapper {
+    display: flex;
+    white-space: nowrap;
+    gap: 5px;
+    order: 2;
+  }
+  .price {
+    order: 1;
+  }
+  .price_wrapper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .discount_wrapper {
+    margin-bottom: 0;
   }
 }
