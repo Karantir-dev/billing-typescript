@@ -180,6 +180,7 @@ const getTariffParameters =
           sok: 'ok',
           period: period,
           pricelist: pricelist,
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -198,7 +199,7 @@ const getTariffParameters =
   }
 
 const changeOrderFormField =
-  (period, value, pricelist, fieldName, mutateOptionsListData) =>
+  (period, values, pricelist, fieldName, setParametersInfo, register) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -212,24 +213,43 @@ const changeOrderFormField =
           out: 'json',
           period: period,
           pricelist: pricelist,
+          ostempl: values.ostempl,
+          domain: values.domain,
+          recipe: values.recipe,
+          autoprolong: values.autoprolong,
+          [register.CPU_count]: values.CPU_count,
+          [register.Control_panel]: values.Control_panel,
+          [register.Disk_space]: values.Disk_space,
+          [register.IP_addresses_count]: values.IP_addresses_count,
+          [register.Memory]: values.Memory,
+          [register.Port_speed]: values.Port_speed.slice(0, 3),
           sv_field: fieldName,
-          [fieldName]: value,
         }),
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         console.log(data.doc)
-        let autoprolongList
-        let orderinfo
-        if (data.doc.slist) {
-          autoprolongList = data.doc.slist[0].val
-          orderinfo = data.doc.orderinfo.$
-        } else {
-          autoprolongList = data.doc.doc.slist[0].val
-          orderinfo = data.doc.doc.orderinfo.$
-        }
-        mutateOptionsListData(autoprolongList, orderinfo)
+        data.doc.doc.messages = data.doc.messages
+        data.doc.doc.slist.find(el => {
+          if (el.$name === 'autoprolong') {
+            el.val = data.doc.slist[0].val
+          }
+        })
+        // let autoprolongList
+        // let orderinfo
+        // let newData
+        // if (data.doc.slist) {
+        // autoprolongList = data.doc.slist[0].val
+        // orderinfo = data.doc.orderinfo.$
+        // newData = data.doc
+        // } else {
+        // autoprolongList = data.doc.doc.slist[0].val
+        // orderinfo = data.doc.doc.orderinfo.$
+        // newData = data.doc.doc
+        // }
+
+        setParametersInfo(renameAddonFields(data.doc.doc))
 
         dispatch(actions.hideLoader())
       })
@@ -240,70 +260,71 @@ const changeOrderFormField =
       })
   }
 
-const setOrderData = (period, values, pricelist, register) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const setOrderData =
+  (period, count, values, pricelist, register) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
 
-  // console.log({
-  //   auth: sessionId,
-  //   period: period,
-  //   pricelist: pricelist,
-  //   ostempl: values.ostempl,
-  //   autoprolong: values.autoprolong,
-  //   domain: values.domain,
-  //   recipe: values.recipe,
-  //   [register.CPU_count]: values.CPU_count,
-  //   [register.Control_panel]: values.Control_panel,
-  //   [register.Disk_space]: values.Disk_space,
-  //   [register.IP_addresses_count]: values.IP_addresses_count,
-  //   [register.Memory]: values.Memory,
-  //   [register.Port_speed]: values.Port_speed.slice(0, 3),
-  //   licence_agreement: values.agreement,
-  //   order_count: String(values.count),
-  // })
+    // console.log({
+    //   auth: sessionId,
+    //   period: period,
+    //   pricelist: pricelist,
+    //   ostempl: values.ostempl,
+    //   autoprolong: values.autoprolong,
+    //   domain: values.domain,
+    //   recipe: values.recipe,
+    //   [register.CPU_count]: values.CPU_count,
+    //   [register.Control_panel]: values.Control_panel,
+    //   [register.Disk_space]: values.Disk_space,
+    //   [register.IP_addresses_count]: values.IP_addresses_count,
+    //   [register.Memory]: values.Memory,
+    //   [register.Port_speed]: values.Port_speed.slice(0, 3),
+    //   licence_agreement: values.agreement,
+    //   order_count: String(count),
+    // })
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'vds.order.param',
-        auth: sessionId,
-        out: 'json',
-        sok: 'ok',
-        period: period,
-        pricelist: pricelist,
-        ostempl: values.ostempl,
-        autoprolong: values.autoprolong,
-        domain: values.domain,
-        recipe: values.recipe,
-        [register.CPU_count]: values.CPU_count,
-        [register.Control_panel]: values.Control_panel,
-        [register.Disk_space]: values.Disk_space,
-        [register.IP_addresses_count]: values.IP_addresses_count,
-        [register.Memory]: values.Memory,
-        [register.Port_speed]: values.Port_speed.slice(0, 3),
-        licence_agreement: values.agreement,
-        order_count: String(values.count),
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-      console.log(data.doc)
-      dispatch(
-        cartActions.setCartIsOpenedState({
-          isOpened: true,
-          redirectPath: routes.VDS,
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.param',
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          period: period,
+          pricelist: pricelist,
+          ostempl: values.ostempl,
+          autoprolong: values.autoprolong,
+          domain: values.domain,
+          recipe: values.recipe,
+          [register.CPU_count]: values.CPU_count,
+          [register.Control_panel]: values.Control_panel,
+          [register.Disk_space]: values.Disk_space,
+          [register.IP_addresses_count]: values.IP_addresses_count,
+          [register.Memory]: values.Memory,
+          [register.Port_speed]: values.Port_speed.slice(0, 3),
+          licence_agreement: values.agreement,
+          order_count: String(count),
         }),
       )
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      errorHandler(err.message, dispatch)
-      dispatch(actions.hideLoader())
-      console.log('setOrderData - ', err)
-    })
-}
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routes.VDS,
+          }),
+        )
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('setOrderData - ', err)
+      })
+  }
 
 export default {
   getVDS,
