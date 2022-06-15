@@ -180,6 +180,7 @@ const getTariffParameters =
           sok: 'ok',
           period: period,
           pricelist: pricelist,
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
