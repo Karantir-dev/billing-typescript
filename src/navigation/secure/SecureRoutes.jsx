@@ -30,7 +30,9 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
+  FTP,
 } from '../../Pages'
+
 import { cartSelectors } from '../../Redux'
 
 import * as route from '../../routes'
@@ -128,6 +130,11 @@ const Component = () => {
         <Route
           path={route.DEDICATED_SERVERS_IP}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
+        />
+
+        <Route
+          path={route.FTP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />}
         />
 
         <Route
