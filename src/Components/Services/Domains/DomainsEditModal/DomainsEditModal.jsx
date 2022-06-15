@@ -313,7 +313,7 @@ export default function Component(props) {
                           error={!!errors.location_state}
                           touched={!!touched.location_state}
                           isRequired
-                        />
+                        /> 
                         <InputField
                           inputWrapperClass={s.inputHeight}
                           name="location_city"
