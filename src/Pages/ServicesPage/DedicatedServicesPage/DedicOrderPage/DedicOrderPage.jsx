@@ -259,7 +259,9 @@ export default function DedicOrderPage() {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, touched, errors, resetForm }) => {
+        {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
+          console.log(touched)
+          console.log(errors)
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -642,9 +644,17 @@ export default function DedicOrderPage() {
                   <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
-                        setValue={item => setFieldValue('license', item)}
+                        setValue={item => {
+                          if (touched.license) {
+                            setFieldTouched(false)
+                          } else {
+                            setFieldTouched(true)
+                          }
+
+                          setFieldValue('license', item)
+                        }}
                         className={s.checkbox}
-                        error={values?.license === false}
+                        error={errors?.license && touched?.license}
                       />
 
                       <div className={s.terms_text}>
@@ -661,7 +671,7 @@ export default function DedicOrderPage() {
                         </button>
                       </div>
                     </div>
-                    {errors.license && (
+                    {errors?.license && touched?.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div>
@@ -687,6 +697,7 @@ export default function DedicOrderPage() {
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() => {
+                      setFieldTouched('license', true)
                       values.license === null && setFieldValue('license', false)
                       !values.license &&
                         licenceCheck.current.scrollIntoView({ behavior: 'smooth' })

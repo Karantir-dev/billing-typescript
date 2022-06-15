@@ -12,10 +12,9 @@ import {
   Backdrop,
   BreadCrumbs,
 } from '../../../Components'
-import DedicList from '../../../Components/Services/DedicatedServers/DedicList/DedicList'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
-import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
+import ftpSelectors from '../../../Redux/ftp/ftpSelectors'
 import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
 import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
@@ -24,6 +23,8 @@ import RebootModal from '../../../Components/Services/DedicatedServers/RebootMod
 import DedicFiltersModal from '../../../Components/Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
 
 import s from './FTP.module.scss'
+import { ftpOperations } from '../../../Redux'
+import FTPList from '../../../Components/Services/ftp/FTPList/FTPList'
 
 export default function FTP() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -31,7 +32,7 @@ export default function FTP() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const serversList = useSelector(dedicSelectors.getServersList)
+  const ftpList = useSelector(ftpSelectors.getFTPList)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -42,6 +43,8 @@ export default function FTP() {
   const [filters, setFilters] = useState([])
 
   const location = useLocation()
+
+  console.log(ftpList)
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -73,9 +76,10 @@ export default function FTP() {
     setValues && setValues({ ...clearField })
     // setCurrentPage(1)
     setFilterModal(false)
-    dispatch(
-      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
-    )
+    // dispatch(
+    //   dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    // )
+    console.log('submit for edition')
   }
 
   const setFilterHandler = values => {
@@ -85,15 +89,15 @@ export default function FTP() {
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getServersList())
-    dispatch(dedicOperations.getDedicFilters(setFilters))
+    dispatch(ftpOperations.getFTPList())
+    // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
 
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
-        {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
+        {t('burger_menu.services.services_list.external_ftp', { ns: 'container' })}
       </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
@@ -123,26 +127,7 @@ export default function FTP() {
                   icon="edit"
                 />
               </HintWrapper>
-              <HintWrapper label={t('reload')}>
-                <IconButton
-                  className={s.tools_icon}
-                  disabled={activeServer?.show_reboot?.$ !== 'on'}
-                  icon="reload"
-                  onClick={() => setElidForRebootModal(activeServer?.id?.$)}
-                />
-              </HintWrapper>
-              <HintWrapper label={t('ip_addresses')}>
-                <IconButton
-                  onClick={() =>
-                    navigate(route.DEDICATED_SERVERS_IP, {
-                      state: { plid: activeServer?.id?.$ },
-                    })
-                  }
-                  className={s.tools_icon}
-                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
-                  icon="ip"
-                />
-              </HintWrapper>
+
               <HintWrapper label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
@@ -186,11 +171,11 @@ export default function FTP() {
           isShadow
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => navigate(route.DEDICATED_SERVERS_ORDER)}
+          onClick={() => navigate(route.FTP_ORDER)}
         />
       </div>
-      <DedicList
-        servers={serversList}
+      <FTPList
+        storageList={ftpList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}

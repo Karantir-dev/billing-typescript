@@ -432,25 +432,25 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         out: 'json',
         auth: sessionId,
         lang: 'en',
-        sok: 'ok',
+        // sok: 'ok',
         elid,
       }),
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const IP = Object.keys(data.doc.doc)
+      const IP = Object.keys(data.doc)
       const currentSumIp = IP.filter(
         item => item.includes('addon') && item.includes('current_value'),
       )
-      const ipamount = data.doc.doc[currentSumIp[0]]
+      const ipamount = data.doc[currentSumIp[0]]
 
-      const findPanelName = Object.keys(data.doc.doc)
+      const findPanelName = Object.keys(data.doc)
       let addonsNames = findPanelName.filter(item => item.includes('addon'))
       let panelName = addonsNames[1]
-      let currentPanelValue = data.doc.doc[panelName].$
+      let currentPanelValue = data.doc[panelName].$
 
-      const { slist: paramsList } = data.doc.doc
+      const { slist: paramsList } = data.doc
       const {
         domain,
         expiredate,
@@ -467,7 +467,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         username,
         userpassword,
         password,
-      } = data.doc.doc
+      } = data.doc
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
 

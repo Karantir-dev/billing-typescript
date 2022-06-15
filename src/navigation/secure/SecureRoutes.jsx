@@ -31,6 +31,7 @@ import {
   DomainsNsPage,
   DedicIPpage,
   FTP,
+  FTPOrder,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -136,6 +137,10 @@ const Component = () => {
           path={route.FTP}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />}
         />
+        <Route
+          path={route.FTP_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
+        />
 
         <Route
           path={route.ACCESS_LOG}
@@ -220,23 +225,6 @@ const SupportScreen = () => {
     </Routes>
   )
 }
-
-// const DedicatedServersScreen = () => {
-//   return (
-//     <Routes>
-//       <Route
-//         path=":path/*"
-//         element={
-//           <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
-//         }
-//       />
-//       <Route
-//         path=":path/:id"
-//         element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
-//       />
-//     </Routes>
-//   )
-// }
 
 const BillingScreen = () => {
   const location = useLocation()
