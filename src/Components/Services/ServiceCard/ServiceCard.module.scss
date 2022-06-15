@@ -70,6 +70,7 @@
 .icon_vds,
 .icon_dedicated,
 .icon_dns_hosting,
+.icon_dns_hosting_lt,
 .icon_dns_hosting_min,
 .icon_ftp_storage,
 .icon_care,
@@ -111,10 +112,6 @@
     &:hover {
       cursor: pointer;
       transform: scale(1.05);
-
-      & .container {
-        max-width: fit-content;
-      }
 
       .card_numeric {
         color: var(--main-text);
@@ -167,6 +164,10 @@
     height: 280px;
   }
 
+  .container {
+    max-width: 300px;
+  }
+
   .triangle {
     left: unset;
     width: 260px;
@@ -194,7 +195,8 @@
     bottom: 15px;
   }
 
-  .icon_dns_hosting {
+  .icon_dns_hosting,
+  .icon_dns_hosting_lt {
     width: 212px;
     height: 105px;
   }
@@ -268,7 +270,8 @@
     height: 101px;
   }
 
-  .icon_dns_hosting {
+  .icon_dns_hosting,
+  .icon_dns_hosting_lt {
     width: 219px;
     height: 108px;
   }

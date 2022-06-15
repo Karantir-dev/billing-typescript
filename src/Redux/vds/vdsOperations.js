@@ -1,8 +1,9 @@
 import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
-import { actions } from '../'
+import { actions, cartActions } from '../'
 import authSelectors from '../auth/authSelectors'
-import { errorHandler } from '../../utils'
+import * as routes from '../../routes'
+import { errorHandler, renameAddonFields } from '../../utils'
 
 const getVDS = setServers => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -183,18 +184,126 @@ const getTariffParameters =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
 
-        setParametersInfo(data.doc)
+        console.log(data.doc)
+        setParametersInfo(renameAddonFields(data.doc))
 
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getTariffParameters - ', err.message)
+        console.log('getTariffParameters - ', err)
       })
   }
+
+const changeOrderFormField =
+  (period, value, pricelist, fieldName, mutateOptionsListData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.param',
+          auth: sessionId,
+          out: 'json',
+          period: period,
+          pricelist: pricelist,
+          sv_field: fieldName,
+          [fieldName]: value,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+        let autoprolongList
+        let orderinfo
+        if (data.doc.slist) {
+          autoprolongList = data.doc.slist[0].val
+          orderinfo = data.doc.orderinfo.$
+        } else {
+          autoprolongList = data.doc.doc.slist[0].val
+          orderinfo = data.doc.doc.orderinfo.$
+        }
+        mutateOptionsListData(autoprolongList, orderinfo)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('changeOrderFormField - ', err)
+      })
+  }
+
+const setOrderData = (period, values, pricelist, register) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  // console.log({
+  //   auth: sessionId,
+  //   period: period,
+  //   pricelist: pricelist,
+  //   ostempl: values.ostempl,
+  //   autoprolong: values.autoprolong,
+  //   domain: values.domain,
+  //   recipe: values.recipe,
+  //   [register.CPU_count]: values.CPU_count,
+  //   [register.Control_panel]: values.Control_panel,
+  //   [register.Disk_space]: values.Disk_space,
+  //   [register.IP_addresses_count]: values.IP_addresses_count,
+  //   [register.Memory]: values.Memory,
+  //   [register.Port_speed]: values.Port_speed.slice(0, 3),
+  //   licence_agreement: values.agreement,
+  //   order_count: String(values.count),
+  // })
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.order.param',
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+        period: period,
+        pricelist: pricelist,
+        ostempl: values.ostempl,
+        autoprolong: values.autoprolong,
+        domain: values.domain,
+        recipe: values.recipe,
+        [register.CPU_count]: values.CPU_count,
+        [register.Control_panel]: values.Control_panel,
+        [register.Disk_space]: values.Disk_space,
+        [register.IP_addresses_count]: values.IP_addresses_count,
+        [register.Memory]: values.Memory,
+        [register.Port_speed]: values.Port_speed.slice(0, 3),
+        licence_agreement: values.agreement,
+        order_count: String(values.count),
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
+      dispatch(
+        cartActions.setCartIsOpenedState({
+          isOpened: true,
+          redirectPath: routes.VDS,
+        }),
+      )
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('setOrderData - ', err)
+    })
+}
 
 export default {
   getVDS,
@@ -203,4 +312,6 @@ export default {
   getVDSOrderInfo,
   getNewPeriodInfo,
   getTariffParameters,
+  changeOrderFormField,
+  setOrderData,
 }

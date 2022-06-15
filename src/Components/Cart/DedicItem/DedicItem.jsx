@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Shevron } from '../../../images'
-import s from './DedicItem.module.scss'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
+
+import s from './DedicItem.module.scss'
 
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
@@ -94,60 +95,94 @@ export default function DedicItem(props) {
 
   return (
     <>
-      <div
-        className={s.server_item}
-        role="button"
-        tabIndex={0}
-        onKeyDown={() => {}}
-        onClick={() => setDropOpened(!dropOpened)}
-      >
-        <Shevron className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })} />
+      <div className={s.server_item}>
+        <div className={s.tarif_info}>
+          <button
+            onClick={() => setDropOpened(!dropOpened)}
+            className={s.shevron_container}
+          >
+            <Shevron
+              className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })}
+            />
+          </button>
 
-        {tabletOrHigher && (
-          <img
-            src={require('./../../../images/services/dedicated.webp')}
-            alt="dedicated_servers"
-          />
-        )}
+          {tabletOrHigher && (
+            <img
+              src={require('./../../../images/services/dedicated.webp')}
+              alt="dedicated_servers"
+            />
+          )}
 
-        <div className={s.priceList}>
-          <div className={s.server_info}>
-            <span className={s.domainName}>{pricelist_name}</span>
-          </div>
-          <div className={s.costBlock}>
-            <div className={s.cost}>
-              {cost} {`EUR/${renderDesc()?.period}`}
+          <div className={s.priceList}>
+            <div className={s.server_info}>
+              <span className={s.domainName}>{pricelist_name}</span>
             </div>
-            {discount_percent && (
-              <div className={s.discountBlock}>
-                <span className={s.discountPerCent}>-{discount_percent}</span>
-                <span className={s.fullcost}>{fullcost} EUR</span>
+            <div className={s.costBlock}>
+              <div className={s.cost}>
+                {cost} {`EUR/${renderDesc()?.period}`}
               </div>
+              {discount_percent && (
+                <div className={s.discountBlock}>
+                  <span className={s.discountPerCent}>-{discount_percent}</span>
+                  <span className={s.fullcost}>{fullcost} EUR</span>
+                </div>
+              )}
+            </div>
+          </div>
+          {!tabletOrHigher && (
+            <div
+              className={classNames({
+                [s.additional_info_item]: true,
+                [s.opened]: dropOpened,
+              })}
+            >
+              {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
+                <p className={s.service_name}>
+                  {t('count_ip', { ns: 'dedicated_servers' })}:
+                  {renderDesc()?.ipAmount?.split('-')[0]}
+                </p>
+              )}
+              {renderDesc()?.managePanel && desc.includes('Control panel') && (
+                <p className={s.service_name}>
+                  {t('manage_panel', { ns: 'dedicated_servers' })}:
+                  {renderDesc()?.managePanel?.split('-')[0]}
+                </p>
+              )}
+              {renderDesc()?.postSpeed && desc.includes('Port speed') && (
+                <p className={s.service_name}>
+                  {t('port_speed', { ns: 'dedicated_servers' })}:
+                  {renderDesc()?.postSpeed?.split('-')[0]}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+        {tabletOrHigher && (
+          <div
+            className={classNames({
+              [s.additional_info_item]: true,
+              [s.opened]: dropOpened,
+            })}
+          >
+            {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
+              <p className={s.service_name}>
+                {t('count_ip', { ns: 'dedicated_servers' })}:
+                {renderDesc()?.ipAmount?.split('-')[0]}
+              </p>
+            )}
+            {renderDesc()?.managePanel && desc.includes('Control panel') && (
+              <p className={s.service_name}>
+                {t('manage_panel', { ns: 'dedicated_servers' })}:
+                {renderDesc()?.managePanel?.split('-')[0]}
+              </p>
+            )}
+            {renderDesc()?.postSpeed && desc.includes('Port speed') && (
+              <p className={s.service_name}>
+                {t('port_speed', { ns: 'dedicated_servers' })}:
+                {renderDesc()?.postSpeed?.split('-')[0]}
+              </p>
             )}
           </div>
-        </div>
-      </div>
-
-      <div
-        className={classNames({ [s.additional_info_item]: true, [s.opened]: dropOpened })}
-      >
-        {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
-          <p className={s.service_name}>
-            {t('count_ip', { ns: 'dedicated_servers' })}:
-            {renderDesc()?.ipAmount?.split('-')[0]}
-          </p>
-        )}
-        {renderDesc()?.managePanel && desc.includes('Control panel') && (
-          <p className={s.service_name}>
-            {t('manage_panel', { ns: 'dedicated_servers' })}:
-            {renderDesc()?.managePanel?.split('-')[0]}
-          </p>
-        )}
-        {renderDesc()?.postSpeed && desc.includes('Port speed') && (
-          <p className={s.service_name}>
-            {t('port_speed', { ns: 'dedicated_servers' })}:
-            {renderDesc()?.postSpeed?.split('-')[0]}
-          </p>
         )}
       </div>
     </>

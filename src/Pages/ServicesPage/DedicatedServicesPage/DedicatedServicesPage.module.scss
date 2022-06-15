@@ -23,9 +23,22 @@
 }
 
 .order_btn {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 66.3%;
   width: 204px;
   height: 53px;
   margin-right: 10px;
+}
+
+.tools_icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
 }
 
 .filter_icon.tools_icon {

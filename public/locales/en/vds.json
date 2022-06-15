@@ -45,6 +45,12 @@
   "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)": "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)",
   "Without a license (0.00 EUR per year)": "Without a license (0.00 EUR per year)",
   "VestaCP (0.00 EUR per year)": "VestaCP (0.00 EUR per year)",
+
+  "Without a license": "Without a license",
+  "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Unlimited domains",
+  "ISPmanager 6 Lite - 10 domains": "ISPmanager 6 Lite - 10 domains",
+  "ISPmanager 6 Pro - 50 domains": "ISPmanager 6 Pro - 50 domains",
+
   "license": "License",
   "processors": "CPU count",
   "disk_space": "Disk space",
@@ -59,5 +65,11 @@
   "Серверы с SSD дисками": "Servers with SSD disks",
   "Серверы с защитой от DDoS": "DDoS protected servers",
   "tariffs": "Tariffs",
-  "characteristics": "Characteristics"
+  "characteristics": "Characteristics",
+  "without_software": "Without software",
+  "license_to_panel": "Control Panel License",
+  "amount": "Amount",
+  "Unit": "unit",
+  "Service limits": "Service limits",
+  "port_speed_limits": "DDoS Protected Port Speed (Incoming): <b>1024 Kbit/sec</b> day + 0.0029 EUR for 1 Kbit/sec"
 }

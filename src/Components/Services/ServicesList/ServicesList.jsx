@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
@@ -12,6 +12,9 @@ import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
 import './ServicesList.scss'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../Redux'
+import { useEffect } from 'react'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -29,6 +32,11 @@ export default function ServicesList() {
   const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
   // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
   const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'storage', false) //funcname wuwuwuw
+
+  const darkTheme = useSelector(selectors.getTheme)
+  const [dark, setDark] = useState(darkTheme)
+
+  let dnsPicture = dark ? 'dns_hosting_lt' : 'dns_hosting'
 
   const servicesMenuList = [
     {
@@ -72,7 +80,7 @@ export default function ServicesList() {
       id: 5,
       routeName: routes.HOME,
       allowedToRender: isDnsAllowedToRender,
-      icon_name: tabletOrLower ? 'dns_hosting_min' : 'dns_hosting',
+      icon_name: tabletOrLower ? 'dns_hosting_min' : dnsPicture,
       icon_width: '84',
       icon_height: '93',
     },
@@ -106,6 +114,10 @@ export default function ServicesList() {
   ]
 
   const filteredServicesMenuList = servicesMenuList.filter(item => item.allowedToRender)
+
+  useEffect(() => {
+    setDark(!dark)
+  }, [darkTheme])
 
   return (
     <ul className="swiper_services_list">

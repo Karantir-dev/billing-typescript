@@ -61,7 +61,6 @@ const getTarifs = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'dedics')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { val: fpricelist } = data.doc.flist
@@ -229,7 +228,6 @@ const getParameters =
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
         const ipName = currentSumIp.join('').slice(0, 10)
 
-        console.log(paramsList)
         // fields
 
         setFieldValue('ostemplList', ostempl[0].val)
@@ -300,9 +298,7 @@ const updatePrice =
         }),
       )
       .then(({ data }) => {
-        console.log(data, 'newPrice')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc.orderinfo.$)
 
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
@@ -749,7 +745,6 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data)
       setIPlist(data.doc.elem)
       dispatch(actions.hideLoader())
     })
@@ -856,7 +851,6 @@ const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'maybe error')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
@@ -970,7 +964,6 @@ const orderNewIP =
 
 // PROLONG
 const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
-  console.log(elid)
   dispatch(actions.showLoader())
 
   const {
@@ -993,7 +986,6 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
 
       const { slist, expiredate, period, title_name, newexpiredate } = data.doc
 
-      console.log(data)
       setInitialState({ slist, expiredate, newexpiredate, period, title_name })
       dispatch(actions.hideLoader())
     })
@@ -1078,6 +1070,105 @@ const payProlongPeriod = (elid, period, handleModal) => (dispatch, getState) => 
     })
 }
 
+const getServiceHistory =
+  (elid, currentPage, setHistoryList, setHistoryElems) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.history',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          p_cnt: 10,
+          p_num: currentPage || null,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const { elem, p_elems } = data.doc
+
+        setHistoryList(elem)
+        setHistoryElems(p_elems)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.instruction.html',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      setInstructionLink(data.doc.body)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const rebootServer = (elid, manageModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.reboot',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      manageModal()
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getUpdatedTarrifs,
@@ -1100,4 +1191,7 @@ export default {
   getProlongInfo,
   getUpdateProlongInfo,
   payProlongPeriod,
+  getServiceHistory,
+  getServiceInstruction,
+  rebootServer,
 }

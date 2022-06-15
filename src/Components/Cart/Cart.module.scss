@@ -19,7 +19,7 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 25px 22px;
+  padding: 25px 0;
   margin: 20px auto;
   max-width: 690px;
   width: 100%;
@@ -60,13 +60,16 @@
 }
 
 .formBlock {
-  margin-top: 25px;
   display: flex;
   flex-direction: column;
 
   &.last {
     padding-bottom: 25px;
     border-bottom: 1px solid #e1daea;
+  }
+
+  &:not(:first-child) {
+    margin-top: 15px;
   }
 }
 
@@ -333,6 +336,24 @@
   color: var(--main-text);
 }
 
+.scroll {
+  padding: 10px 22px 20px;
+  overflow: auto;
+  max-height: 380px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
 .itemsBlock {
   margin-top: 20px;
 }
@@ -348,6 +369,32 @@
   margin-bottom: 20px;
 }
 
+.vds_wrapper {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background-image: linear-gradient(
+      0deg,
+      var(--main-bgc) 20%,
+      rgba(0, 0, 0, 0.0001) 100%
+    );
+  }
+}
+
+.padding {
+  padding: 0 22px;
+}
+
+.mb {
+  margin-bottom: 10px;
+}
+
 @media screen and (min-width: 768px) {
   .modalBg {
     align-items: center;
@@ -355,8 +402,16 @@
   }
 
   .modalBlock {
-    padding: 24px 35px;
+    padding: 24px 0;
     margin: 5% auto;
+  }
+
+  .scroll {
+    padding: 10px 35px 20px;
+  }
+
+  .padding {
+    padding: 0 35px;
   }
 
   .paymentMethodBtn {
