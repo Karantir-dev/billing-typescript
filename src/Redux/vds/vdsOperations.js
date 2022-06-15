@@ -231,23 +231,15 @@ const changeOrderFormField =
 
         console.log(data.doc)
         data.doc.doc.messages = data.doc.messages
-        data.doc.doc.slist.find(el => {
+        data.doc.doc.slist.forEach(el => {
           if (el.$name === 'autoprolong') {
             el.val = data.doc.slist[0].val
           }
+
+          if (!Array.isArray(el.val)) {
+            el.val = [el.val]
+          }
         })
-        // let autoprolongList
-        // let orderinfo
-        // let newData
-        // if (data.doc.slist) {
-        // autoprolongList = data.doc.slist[0].val
-        // orderinfo = data.doc.orderinfo.$
-        // newData = data.doc
-        // } else {
-        // autoprolongList = data.doc.doc.slist[0].val
-        // orderinfo = data.doc.doc.orderinfo.$
-        // newData = data.doc.doc
-        // }
 
         setParametersInfo(renameAddonFields(data.doc.doc))
 

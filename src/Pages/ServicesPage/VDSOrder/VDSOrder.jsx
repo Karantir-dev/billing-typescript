@@ -59,17 +59,6 @@ export default function VDSOrder() {
     }
   }
 
-  // const mutateOptionsListData = (list, orderinfo, fieldForChange, value) => {
-  //   parametersInfo.slist.forEach(el => {
-  //     if (el.$name === 'autoprolong') {
-  //       el.val = list
-  //     }
-  //   })
-  //   parametersInfo.orderinfo.$ = orderinfo
-  //   parametersInfo[fieldForChange] = value
-  //   setParametersInfo({ ...parametersInfo })
-  // }
-
   const getOptionsList = fieldName => {
     const optionsList = formInfo.slist.find(elem => elem.$name === fieldName).val
 
@@ -463,7 +452,7 @@ export default function VDSOrder() {
                         itemsList={getOptionsListExtended('Disk_space')}
                         getElement={value => {
                           setFieldValue('Disk_space', value)
-                          console.log(values)
+
                           onChangeField(
                             period,
                             { ...values, Disk_space: value },

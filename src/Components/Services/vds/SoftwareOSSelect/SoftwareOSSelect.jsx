@@ -20,16 +20,6 @@ export default function SoftwareOSSelect({
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState(itemsList[0])
 
-  //   useEffect(() => {
-  //     if (itemsList) {
-  //       itemsList.forEach(el => {
-  //         if (el?.value === value) {
-  //           setSelectedItem(el)
-  //         }
-  //       })
-  //     }
-  //   }, [ itemsList])
-
   useOutsideAlerter(dropdown, isOpened, () => setIsOpened(false))
 
   const itemSelectHandler = item => {
@@ -55,7 +45,7 @@ export default function SoftwareOSSelect({
 
       {itemsList.length !== 0 && (
         <div ref={dropdown} className={cn(ss.dropdown, { [ss.opened]: isOpened })}>
-          <div className={ss.list}>
+          <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
                 <div
