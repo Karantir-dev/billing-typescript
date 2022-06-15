@@ -2,6 +2,7 @@ import * as React from 'react'
 
 export default function SvgComponent(props) {
   const { isHovered } = props
+
   return (
     <svg
       width={20}

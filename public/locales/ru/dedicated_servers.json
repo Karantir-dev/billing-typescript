@@ -16,7 +16,9 @@
   "terms_2": "Условиями предоставления услуг",
 
   "domain_placeholder": "Введите доменное имя",
+  "ip_placeholder": "Введите IP-адрес",
   "recipe_placeholder": "Не установлено",
+  "datacenter": "Дата-центр",
 
   "Month": "Месяц",
   "Three months": "Три месяца",
@@ -96,5 +98,9 @@
   "We hope you will enjoy your dedicated server": "Мы надеемся, что вам понравится ваш выделенный сервер",
   "ZOMRO team": "Команда 'ZOMRO'",
   "Server rebooting": "Перезагрузка сервера",
-  "Are you sure you want to restart the server": "Вы действительно хотите перезагрузить сервер"
+  "Are you sure you want to restart the server": "Вы действительно хотите перезагрузить сервер",
+
+  "The reboot process is started": "Запущен процесс перезагрузки ",
+  "Auto-renewal period is set to": "Период автоматического продления установлен на",
+  "Auto-renewal period is set to 'Two years'": "Период автоматического продления установлен на 'Два года'"
 }

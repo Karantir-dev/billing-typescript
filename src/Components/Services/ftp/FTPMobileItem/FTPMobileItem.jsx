@@ -1,39 +1,27 @@
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Clock,
-  MoreDots,
-  Edit,
-  Reload,
-  Refund,
-  IP,
-  Info,
-  ExitSign,
-} from '../../../../images'
+import { Clock, MoreDots, Edit, Refund, Info, ExitSign } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
-import s from './DedicMobileItem.module.scss'
-import { ServerState } from '../../../'
-import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
+import s from './FTPMobileItem.module.scss'
+import { ServerState } from '../../..'
+
 import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'
 
-export default function DedicMobileItem({
-  server,
+export default function FTPMobileItem({
+  storage,
   setElidForEditModal,
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setElidForRebootModal,
   setActiveServer,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
@@ -60,7 +48,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
+                  onClick={() => handleToolBtnClick(setElidForEditModal, storage.id.$)}
                 >
                   <Edit className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
@@ -71,37 +59,8 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server.show_reboot?.$ !== 'on'}
-                  onClick={() => {
-                    handleToolBtnClick(setElidForRebootModal, server?.id?.$)
-                    setActiveServer(server)
-                  }}
-                >
-                  <Reload className={s.tool_icon} />
-                  {t('reload')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={server.has_ip_pricelist?.$ !== 'on'}
-                  onClick={() =>
-                    navigate(route.DEDICATED_SERVERS_IP, {
-                      state: { plid: server?.id?.$ },
-                    })
-                  }
-                >
-                  <IP className={s.tool_icon} />
-                  {t('ip_addresses')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={server?.status?.$ !== '2'}
-                  onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
+                  disabled={storage?.status?.$ !== '2'}
+                  onClick={() => handleToolBtnClick(setElidForProlongModal, storage.id.$)}
                 >
                   <Clock className={s.tool_icon} />
                   {t('prolong')}
@@ -112,8 +71,8 @@ export default function DedicMobileItem({
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
-                    handleToolBtnClick(setElidForHistoryModal, server.id.$)
-                    setActiveServer(server)
+                    handleToolBtnClick(setElidForHistoryModal, storage.id.$)
+                    setActiveServer(storage)
                   }}
                 >
                   <Refund className={s.tool_icon} />
@@ -124,9 +83,9 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2'}
+                  disabled={storage?.status?.$ !== '2'}
                   onClick={() =>
-                    handleToolBtnClick(setElidForInstructionModal, server.id.$)
+                    handleToolBtnClick(setElidForInstructionModal, storage.id.$)
                   }
                 >
                   <Info className={s.tool_icon} />
@@ -137,9 +96,9 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server.transition?.$ !== 'on'}
+                  disabled={storage.transition?.$ !== 'on'}
                   onClick={() => {
-                    dispatch(dedicOperations.goToPanel(server.id.$))
+                    dispatch(dedicOperations.goToPanel(storage.id.$))
                   }}
                 >
                   <ExitSign className={s.tool_icon} />
@@ -152,32 +111,27 @@ export default function DedicMobileItem({
       </div>
 
       <span className={s.label}>Id:</span>
-      <span className={s.value}>{server?.id?.$}</span>
-      <span className={s.label}>{t('domain_name')}:</span>
-      <span className={s.value}>{server?.domain?.$}</span>
-      <span className={s.label}>{t('ip_address')}:</span>
-      <span className={s.value}>{server?.ip?.$}</span>
-      <span className={s.label}>{t('ostempl')}:</span>
-      <span className={s.value}>{server?.ostempl?.$}</span>
+      <span className={s.value}>{storage?.id?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
-      <span className={s.value}>
-        {server?.pricelist?.$}
-        <span className={s.price}>
-          {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
-        </span>
-      </span>
-
-      <span className={s.label}>{t('status')}:</span>
-      <ServerState className={s.value} server={server} />
+      <span className={s.value}>{storage?.pricelist?.$}</span>
+      <span className={s.label}>{t('datacenter', { ns: 'dedicated_servers' })}:</span>
+      <span className={s.value}>{storage?.datacenter?.$}</span>
       <span className={s.label}>{t('created')}:</span>
-      <span className={s.value}>{server?.createdate?.$}</span>
+      <span className={s.value}>{storage?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>
-      <span className={s.value}>{server?.expiredate?.$}</span>
+      <span className={s.value}>{storage?.expiredate?.$}</span>
+
+      <span className={s.label}>{t('status', { ns: 'other' })}:</span>
+      <ServerState className={s.value} server={storage} />
+      <span className={s.label}>{t('Price', { ns: 'domains' })}:</span>
+      <span className={s.value}>
+        {storage?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
+      </span>
     </li>
   )
 }
 
-DedicMobileItem.propTypes = {
+FTPMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
 }

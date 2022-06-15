@@ -87,7 +87,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       id: 6,
-      routeName: routes.HOME,
+      routeName: routes.FTP,
       allowedToRender: isFtpAllowedToRender,
       icon_name: 'ftp_storage',
       icon_width: '111',

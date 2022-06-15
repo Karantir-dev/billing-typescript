@@ -38,3 +38,6 @@ export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'
 export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'
 export const DEDICATED_SERVERS_IP = '/services/dedicated_servers/ips'
+
+export const FTP = '/services/ftp'
+export const FTP_ORDER = '/services/ftp/ftp_order'

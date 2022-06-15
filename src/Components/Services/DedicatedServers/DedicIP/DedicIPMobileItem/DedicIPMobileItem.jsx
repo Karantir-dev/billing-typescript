@@ -26,8 +26,6 @@ export default function DedicIPMobileItem({
     setToolsOpened(false)
   }
 
-  console.log(ip)
-
   return (
     <li className={s.item}>
       <div className={s.dots_wrapper}>
@@ -60,7 +58,7 @@ export default function DedicIPMobileItem({
                   onClick={() => handleToolBtnClick(setElidForDeleteModal, ip?.id.$)}
                 >
                   <Delete className={s.tool_icon} />
-                  {t('Remove')}
+                  {t('delete', { ns: 'other' })}
                 </button>
               </li>
             </ul>

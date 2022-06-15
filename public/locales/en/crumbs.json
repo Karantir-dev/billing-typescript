@@ -10,5 +10,7 @@
   "ips": "IP-addresses",
   "vds": "Servers VDS/VPS",
   "vds_order": "Ordering a virtual server",
-  "ip": "IP-address"
+  "ip": "IP-address",
+  "ftp": "External FTP storage",
+  "ftp_order": "Ordering an external FTP storage"
 }

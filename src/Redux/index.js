@@ -75,3 +75,6 @@ export { default as contractsReducer } from './contracts/contractsReducer'
 //===========================================SERVICES=================================//
 export { default as dedicReducer } from './dedicatedServers/dedicReducer'
 export { default as dedicOperations } from './dedicatedServers/dedicOperations'
+
+export { default as ftpReducer } from './ftp/ftpReducer'
+export { default as ftpOperations } from './ftp/ftpOperations'
