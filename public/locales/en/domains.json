@@ -73,5 +73,14 @@
   "Domain registration in progress": "Domain registration in progress",
   "Changing registrar for this domain": "Changing registrar for this domain",
   "Domain renewal in progress": "Domain renewal in progress",
-  "Domain delegation has expired": "Domain delegation has expired"
+  "Domain delegation has expired": "Domain delegation has expired",
+  "Service editing": "Service editing",
+  "Main": "Main",
+  "Service profiles": "Service profiles",
+  "Additionally": "Additionally",
+  "Domain edited successfully": "Domain edited successfully",
+  "Payment method": "Payment method",
+  "Date of creation": "Date of creation",
+  "This profile is used by one or several services": "This profile is used by one or several services. Modifying this profile will automatically send the changes to the domain registrar",
+  "Main parameters": "Main parameters"
 }

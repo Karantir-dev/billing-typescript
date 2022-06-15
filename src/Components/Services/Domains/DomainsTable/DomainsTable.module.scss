@@ -66,6 +66,12 @@
   }
 }
 
+.dots {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+}
+
 .tableBlockFirst,
 .tableBlockSecond,
 .tableBlockThird,
@@ -105,16 +111,12 @@
   white-space: pre;
 }
 
-.dotIcons {
-  display: none;
-}
-
 .list {
   position: absolute;
   width: 210px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
-  right: 23px;
+  right: -25px;
   padding: 18px 18px;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
@@ -229,6 +231,9 @@
 }
 
 @media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 1024px) {
   .item {
     flex-basis: 48%;
     margin-right: 0;
@@ -243,20 +248,13 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
-  .table {
-    display: block;
+@media screen and (min-width: 1550px) {
+  .dots {
+    display: none;
   }
 
-  .dotIcons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    fill: var(--main-text);
-    &:active {
-      transform: scale(0.95);
-    }
+  .table {
+    display: block;
   }
 
   .tableHeader {
@@ -328,9 +326,6 @@
       max-width: 90px;
     }
   }
-}
-
-@media screen and (min-width: 1550px) {
   .tableHeader {
     padding: 22px 27px;
   }

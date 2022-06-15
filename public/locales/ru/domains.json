@@ -73,5 +73,15 @@
   "Domain registration in progress": "Выполняется регистрация домена",
   "Changing registrar for this domain": "Смена регистратора для этого домена",
   "Domain renewal in progress": "Выполняется продление домена",
-  "Domain delegation has expired": "Срок делегирования домена истек"
+  "Domain delegation has expired": "Срок делегирования домена истек",
+  "Service editing": "Редактирование услуги",
+
+  "Main": "Основное",
+  "Service profiles": "Профили услуги",
+  "Additionally": "Дополнительно",
+  "Domain edited successfully": "Домен успешно изменен",
+  "Payment method": "Способ оплаты",
+  "Date of creation": "Дата создания",
+  "This profile is used by one or several services": "Редактируемый профиль используется одной или несколькими услугами. В случае изменения данных профиля, внесенные изменения будут автоматически переданы регистратору доменов.",
+  "Main parameters": "Основные параметры"
 }
