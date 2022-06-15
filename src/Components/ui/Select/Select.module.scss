@@ -105,7 +105,7 @@
 
   &.opened {
     display: block;
-    z-index: 9;
+    z-index: 7;
   }
 
   &::after {
@@ -160,9 +160,6 @@
   align-items: flex-start;
   text-align: start;
   padding: 8px 0;
-  // &:not(:last-child) {
-  //   margin-bottom: 8px;
-  // }
 }
 
 .name {
