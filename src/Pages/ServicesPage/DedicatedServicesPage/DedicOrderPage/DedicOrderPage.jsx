@@ -42,7 +42,6 @@ export default function DedicOrderPage() {
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   console.log(ordered)
-  console.log(tarifList, 'tariflist')
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -123,7 +122,6 @@ export default function DedicOrderPage() {
 
   // RENDER ALL SELECTS 'ostempl', setFieldValue, values.ostempl
   const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
-    console.log(fieldName)
     let dataArr = parameters.find(el => el.$name === fieldName).val
     const elemsData = {}
     if (fieldName === 'recipe') {
@@ -141,9 +139,6 @@ export default function DedicOrderPage() {
       }
     })
 
-    console.log(elemsData)
-    console.log(parameters)
-
     return Object.entries(elemsData).map(([name, el]) => {
       if (el.length > 1) {
         const optionsList = el.map(({ $key, $ }) => ({
@@ -159,8 +154,11 @@ export default function DedicOrderPage() {
             state={state}
             getElement={value => {
               setFieldValue(fieldName, value)
-              if (fieldName === 'ostempl') parameters.recipe.$ = 'null'
-              parameters[fieldName].$ = value
+              // if (fieldName === 'ostempl') parameters.recipe.$ = 'null'
+              if (fieldName === 'ostempl') {
+                console.log('ostempl', parameters)
+              }
+              // parameters[fieldName].$ = value
             }}
           />
         )
@@ -174,9 +172,11 @@ export default function DedicOrderPage() {
             label={el[0].$}
             onClick={value => {
               setFieldValue(fieldName, value)
-              if (fieldName === 'ostempl') parameters.recipe.$ = 'null'
+              if (fieldName === 'ostempl') {
+                console.log('ostempl', parameters)
+              }
 
-              parameters[fieldName].$ = value
+              // parameters[fieldName].$ = value
 
               // setParametersInfo({ ...parametersInfo })
             }}
@@ -513,7 +513,7 @@ export default function DedicOrderPage() {
                       value={values?.domainname}
                     />
 
-                    {
+                    {/* {
                       <Select
                         height={50}
                         getElement={item => {
@@ -528,10 +528,9 @@ export default function DedicOrderPage() {
                         })}
                         className={s.select}
                       />
-                    }
-                    {/* {parseOsteml(values?.ostemplList, setFieldValue, values, t)} */}
+                    } */}
 
-                    <Select
+                    {/* <Select
                       height={50}
                       getElement={item => setFieldValue('recipe', item)}
                       isShadow
@@ -550,7 +549,7 @@ export default function DedicOrderPage() {
                           }
                         })}
                       className={s.select}
-                    />
+                    /> */}
 
                     <Select
                       height={50}
