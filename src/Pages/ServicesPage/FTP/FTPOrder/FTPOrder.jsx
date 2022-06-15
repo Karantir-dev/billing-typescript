@@ -13,6 +13,7 @@ import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 
 import s from './FTPOrder.module.scss'
 import { ftpOperations } from '../../../../Redux'
+import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 export default function FTPOrder() {
   const dispatch = useDispatch()
@@ -25,13 +26,10 @@ export default function FTPOrder() {
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
-  const [paymentPeriod, setPaymentPeriod] = useState(null)
+
   const [price, setPrice] = useState('')
-  const [ordered, setOrdered] = useState(false)
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
-  console.log(ordered)
-  console.log(tarifList)
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -101,50 +99,16 @@ export default function FTPOrder() {
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
-    domainname: Yup.string().matches(
-      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/,
-      t('licence_error'),
-    ),
     license: Yup.boolean()
       .required('The terms and conditions must be accepted.')
       .oneOf([true], 'The terms and conditions must be accepted.'),
   })
 
   const handleSubmit = values => {
-    const {
-      datacenter,
-      tarif,
-      period,
-      managePanelName,
-      portSpeedName,
-      autoprolong,
-      domainname,
-      ostempl,
-      recipe,
-      portSpeed,
-      ipTotal,
-      ipName,
-      managePanel,
-    } = values
+    const { datacenter, tarif, period, autoprolong } = values
 
-    dispatch(
-      dedicOperations.orderServer(
-        autoprolong,
-        datacenter,
-        period,
-        tarif,
-        domainname,
-        ostempl,
-        recipe,
-        portSpeed,
-        portSpeedName,
-        managePanelName,
-        ipTotal,
-        ipName,
-        managePanel,
-        setOrdered,
-      ),
-    )
+    console.log('bying ftp')
+    dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
   }
 
   return (
@@ -159,15 +123,12 @@ export default function FTPOrder() {
           datacenter: tarifList?.currentDatacenter,
           tarif: null,
           period: '1',
-          processor: null,
-          domainname: '',
-          ipTotal: '1',
-          price: null,
           license: null,
         }}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, resetForm }) => {
+          console.log(values)
           return (
             <Form className={s.form}>
               <Select
@@ -177,16 +138,14 @@ export default function FTPOrder() {
                   setPrice('-')
                   resetForm()
                   setFieldValue('period', item)
-                  setPaymentPeriod(item)
                   setParameters(null)
                   setTarifChosen(false)
 
                   dispatch(
-                    dedicOperations.getUpdatedPeriod(
-                      item,
-                      values.datacenter,
-                      setTarifList,
-                    ),
+                    ftpOperations.getTarifs(setTarifList, {
+                      period: item,
+                      datacenter: values.datacenter,
+                    }),
                   )
                 }}
                 isShadow
@@ -196,6 +155,7 @@ export default function FTPOrder() {
                 })}
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
+
               <div className={s.tarifs_block}>
                 {tarifList?.tarifList?.map((item, index) => {
                   const descriptionBlocks = item?.desc?.$.split('/')
@@ -204,8 +164,6 @@ export default function FTPOrder() {
                   const parsedPrice = parsePrice(item?.price?.$)
 
                   const priceAmount = parsedPrice.amoumt
-                  const pricePercent = parsedPrice.percent
-                  const priceSale = parsedPrice.sale
 
                   return (
                     <button
@@ -217,7 +175,7 @@ export default function FTPOrder() {
                         setTarifChosen(true)
 
                         dispatch(
-                          dedicOperations.getParameters(
+                          ftpOperations.getParameters(
                             values.period,
                             values.datacenter,
                             item?.pricelist?.$,
@@ -232,14 +190,6 @@ export default function FTPOrder() {
                       })}
                       key={item?.desc?.$}
                     >
-                      {paymentPeriod > 1 && (
-                        <span
-                          className={classNames({ [s.sale_percent]: paymentPeriod > 1 })}
-                        >
-                          {pricePercent}
-                        </span>
-                      )}
-
                       <span
                         className={classNames({
                           [s.card_title]: true,
@@ -257,9 +207,6 @@ export default function FTPOrder() {
                         >
                           {priceAmount + '/' + periodName}
                         </span>
-                        {paymentPeriod > 1 && (
-                          <span className={s.sale_price}>{`${priceSale}`}</span>
-                        )}
                       </div>
 
                       {descriptionBlocks.slice(1).map((el, i) => (
@@ -284,12 +231,7 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = ''
-                        if (el.$.includes('per month')) {
-                          labeltext = el.$.replace('per month', t('per month'))
-                        } else {
-                          labeltext = t(el.$)
-                        }
+                        let labeltext = translatePeriod(el.$, t)
 
                         return {
                           label: labeltext,
@@ -324,7 +266,7 @@ export default function FTPOrder() {
                         </button>
                       </div>
                     </div>
-                    {errors.license && (
+                    {values.license === false && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div>
@@ -364,23 +306,3 @@ export default function FTPOrder() {
     </div>
   )
 }
-
-// function updatePrice(formValues, dispatch, setNewPrice) {
-//   dispatch(
-//     dedicOperations.updatePrice(
-//       formValues.datacenter,
-//       formValues.period,
-//       formValues.tarif,
-//       formValues.domainname,
-//       formValues.ostempl,
-//       formValues.recipe,
-//       formValues.portSpeed,
-//       formValues.portSpeedName,
-//       formValues.managePanelName,
-//       formValues.ipTotal,
-//       formValues.ipName,
-//       formValues.managePanel,
-//       setNewPrice,
-//     ),
-//   )
-// }

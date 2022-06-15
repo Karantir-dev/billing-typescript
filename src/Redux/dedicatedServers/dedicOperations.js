@@ -210,9 +210,6 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        // console.log(pricelist)
-        // console.log('datacenter', datacenter)
-        // console.log('data new datacenter', data)
         const IP = Object.keys(data.doc)
         const currentSumIp = IP.filter(
           item => item.includes('addon') && item.includes('current_value'),

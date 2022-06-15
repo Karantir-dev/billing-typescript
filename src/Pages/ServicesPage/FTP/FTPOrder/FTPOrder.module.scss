@@ -170,6 +170,15 @@
   margin-bottom: 20px;
   max-width: 60%;
 
+  &::after {
+    content: '';
+    display: block;
+    width: 25px;
+    height: 1px;
+    background-color: var(--after-line-bgc);
+    margin: 15px auto 0px auto;
+  }
+
   &.selected {
     font-weight: 600;
   }
@@ -214,8 +223,6 @@
 
 .price_wrapper {
   width: 100%;
-  box-shadow: var(--burger-menu-elem-box-shadow);
-  background: var(--servers_price_bgc);
   margin-bottom: 17px;
 }
 
@@ -321,6 +328,15 @@
 .license_error {
   margin-top: 10px;
   color: red;
+}
+
+.tarifs_block {
+  display: grid;
+  grid-template-columns: repeat(2, 122px);
+  grid-auto-rows: max-content;
+  grid-column-gap: 9px;
+  grid-row-gap: 10px;
+  margin-bottom: 35px;
 }
 
 // ADAPTIVE
