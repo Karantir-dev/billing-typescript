@@ -93,6 +93,7 @@ export { default as DomainFilters } from './Services/Domains/DomainFilters/Domai
 export { default as DomainsHistoryModal } from './Services/Domains/DomainsHistoryModal/DomainsHistoryModal'
 export { default as DomainsWhoisModal } from './Services/Domains/DomainsWhoisModal/DomainsWhoisModal'
 export { default as DomainsNSModal } from './Services/Domains/DomainsNSModal/DomainsNSModal'
+export { default as DomainsEditModal } from './Services/Domains/DomainsEditModal/DomainsEditModal'
 
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'

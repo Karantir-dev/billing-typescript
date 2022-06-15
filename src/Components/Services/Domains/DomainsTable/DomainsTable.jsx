@@ -7,7 +7,17 @@ import s from './DomainsTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other'])
-  const { list, selctedItem, setSelctedItem } = props
+  const {
+    list,
+    selctedItem,
+    setSelctedItem,
+    editDomainHandler,
+    deleteDomainHandler,
+    renewDomainHandler,
+    historyDomainHandler,
+    whoisDomainHandler,
+    NSDomainHandler,
+  } = props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
@@ -38,6 +48,12 @@ export default function Component(props) {
             setSelctedItem={onItemClick}
             selected={selctedItem?.id?.$ === id?.$}
             el={el}
+            historyDomainHandler={historyDomainHandler}
+            deleteDomainHandler={deleteDomainHandler}
+            editDomainHandler={editDomainHandler}
+            renewDomainHandler={renewDomainHandler}
+            NSDomainHandler={NSDomainHandler}
+            whoisDomainHandler={whoisDomainHandler}
           />
         )
       })}
