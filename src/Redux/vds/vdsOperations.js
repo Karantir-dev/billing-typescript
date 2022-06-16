@@ -22,7 +22,7 @@ const getVDS = setServers => (dispatch, getState) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
       setServers(data.doc.elem)
-
+      console.log('qwe')
       dispatch(actions.hideLoader())
     })
     .catch(err => {
@@ -48,8 +48,8 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-      setInitialState(data.doc)
+      console.log(data.doc)
+      setInitialState(renameAddonFields(data.doc))
 
       dispatch(actions.hideLoader())
     })
@@ -61,7 +61,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
 }
 
 const editVDS =
-  (elid, values, selectedField, mutateOptionsListData, setOrderInfo) =>
+  (elid, values, register, selectedField, mutateOptionsListData, setOrderInfo) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -74,7 +74,8 @@ const editVDS =
           auth: sessionId,
           elid,
           autoprolong: values.autoprolong,
-          addon_5772: values.license,
+          [register.Control_panel]: values.Control_panel,
+          stored_method: values.stored_method,
           [selectedField ? 'sv_field' : '']: selectedField,
           sok: 'ok',
           out: 'json',
@@ -199,7 +200,7 @@ const getTariffParameters =
   }
 
 const changeOrderFormField =
-  (period, values, pricelist, fieldName, setParametersInfo, register) =>
+  (period, values, recipe, pricelist, fieldName, setParametersInfo, register) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -215,7 +216,7 @@ const changeOrderFormField =
           pricelist: pricelist,
           ostempl: values.ostempl,
           domain: values.domain,
-          recipe: values.recipe,
+          recipe: recipe,
           autoprolong: values.autoprolong,
           [register.CPU_count]: values.CPU_count,
           [register.Control_panel]: values.Control_panel,
@@ -253,27 +254,9 @@ const changeOrderFormField =
   }
 
 const setOrderData =
-  (period, count, values, pricelist, register) => (dispatch, getState) => {
+  (period, count, recipe, values, pricelist, register) => (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
-
-    // console.log({
-    //   auth: sessionId,
-    //   period: period,
-    //   pricelist: pricelist,
-    //   ostempl: values.ostempl,
-    //   autoprolong: values.autoprolong,
-    //   domain: values.domain,
-    //   recipe: values.recipe,
-    //   [register.CPU_count]: values.CPU_count,
-    //   [register.Control_panel]: values.Control_panel,
-    //   [register.Disk_space]: values.Disk_space,
-    //   [register.IP_addresses_count]: values.IP_addresses_count,
-    //   [register.Memory]: values.Memory,
-    //   [register.Port_speed]: values.Port_speed.slice(0, 3),
-    //   licence_agreement: values.agreement,
-    //   order_count: String(count),
-    // })
 
     axiosInstance
       .post(
@@ -288,7 +271,7 @@ const setOrderData =
           ostempl: values.ostempl,
           autoprolong: values.autoprolong,
           domain: values.domain,
-          recipe: values.recipe,
+          recipe: recipe,
           [register.CPU_count]: values.CPU_count,
           [register.Control_panel]: values.Control_panel,
           [register.Disk_space]: values.Disk_space,
@@ -318,6 +301,33 @@ const setOrderData =
       })
   }
 
+const deleteVDS = (id, setServers) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.delete',
+        auth: sessionId,
+        elid: id,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
+      dispatch(getVDS(setServers))
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('deleteVDS - ', err)
+    })
+}
+
 export default {
   getVDS,
   getEditFieldsVDS,
@@ -327,4 +337,5 @@ export default {
   getTariffParameters,
   changeOrderFormField,
   setOrderData,
+  deleteVDS,
 }

@@ -10,6 +10,7 @@ import {
   EditModal,
   Backdrop,
   BreadCrumbs,
+  DeleteModal,
 } from '../../../Components'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '../../../Redux'
@@ -26,10 +27,20 @@ export default function VDS() {
   const [servers, setServers] = useState()
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [activeServer, setActiveServer] = useState(null)
+  const [idForDeleteModal, setIdForDeleteModal] = useState('')
 
+  // useEffect(() => {
+  //   setIdForDeleteModal(activeServer?.id.$)
+  // }, [activeServer])
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
   }, [])
+
+  const deleteServer = () => {
+    dispatch(vdsOperations.deleteVDS(idForDeleteModal, setServers))
+    setActiveServer(null)
+    setIdForDeleteModal('')
+  }
 
   return (
     <>
@@ -46,13 +57,14 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer.id.$)}
-                  disabled={!activeServer}
+                  disabled={activeServer?.status?.$ !== '2'}
                   icon="edit"
                 />
               </HintWrapper>
               <HintWrapper label={t('delete', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
+                  onClick={() => setIdForDeleteModal(activeServer.id.$)}
                   disabled={!activeServer}
                   icon="delete"
                 />
@@ -90,7 +102,7 @@ export default function VDS() {
             <HintWrapper label={t('history')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={!activeServer}
+                disabled={activeServer?.status?.$ !== '2'}
                 icon="refund"
               />
             </HintWrapper>
@@ -118,18 +130,38 @@ export default function VDS() {
           onClick={() => navigate(route.VDS_ORDER)}
         />
       </div>
+
       <VDSList
         servers={servers}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}
+        setIdForDeleteModal={setIdForDeleteModal}
       />
+
       <Backdrop
         className={s.backdrop}
         isOpened={Boolean(elidForEditModal)}
         onClick={() => setElidForEditModal(0)}
       >
         <EditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+      </Backdrop>
+
+      <Backdrop
+        // className={s.backdrop}
+        isOpened={Boolean(idForDeleteModal)}
+        onClick={() => setIdForDeleteModal('')}
+      >
+        <DeleteModal
+          name={servers?.reduce((acc, el) => {
+            console.log('qwe')
+            if (el.id.$ === idForDeleteModal) {
+              return (acc = el.name.$)
+            }
+          }, '')}
+          deleteFn={deleteServer}
+          closeFn={() => setIdForDeleteModal('')}
+        />
       </Backdrop>
     </>
   )

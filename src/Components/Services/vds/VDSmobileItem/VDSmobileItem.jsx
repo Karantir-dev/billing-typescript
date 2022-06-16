@@ -18,7 +18,11 @@ import PropTypes from 'prop-types'
 
 import s from './VDSmobileItem.module.scss'
 
-export default function VDSmobileItem({ server, setElidForEditModal }) {
+export default function VDSmobileItem({
+  server,
+  setElidForEditModal,
+  setIdForDeleteModal,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
 
@@ -48,6 +52,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
+                  disabled={server?.status?.$ !== '2'}
                 >
                   <Edit className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
@@ -94,7 +99,11 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 </button>
               </li>
               <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  disabled={server?.status?.$ !== '2'}
+                >
                   <Refund className={s.tool_icon} />
                   {t('history')}
                 </button>
@@ -120,7 +129,11 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 </button>
               </li>
               <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  onClick={setIdForDeleteModal}
+                >
                   <Delete className={s.tool_icon} />
                   {t('delete', { ns: 'other' })}
                 </button>

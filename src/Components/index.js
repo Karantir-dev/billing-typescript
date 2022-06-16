@@ -109,6 +109,7 @@ export { default as ServerState } from './Services/vds/ServerState/ServerState'
 export { default as EditModal } from './Services/vds/EditModal/EditModal'
 export { default as SoftwareOSBtn } from './Services/vds/SoftwareOSBtn/SoftwareOSBtn'
 export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/SoftwareOSSelect'
+export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

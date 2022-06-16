@@ -11,6 +11,7 @@ export default function VDSList({
   setElidForEditModal,
   setActiveServer,
   activeServerID,
+  setIdForDeleteModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -30,6 +31,7 @@ export default function VDSList({
           <li className={s.table_head}>{t('valid_until')}:</li>
         </ul>
       )}
+
       <ul className={s.list}>
         {servers?.map(el => {
           return widerThan1550 ? (
@@ -43,6 +45,7 @@ export default function VDSList({
             <VDSmobileItem
               key={el.id.$}
               server={el}
+              setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
               setElidForEditModal={setElidForEditModal}
             />
           )

@@ -34,6 +34,7 @@ export default function VDSOrder() {
   const [selectedTariffId, setSelectedTariffId] = useState()
   const [parametersInfo, setParametersInfo] = useState()
   const [count, setCount] = useState(1)
+  const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
     tariffCategory ? el.filter.tag.$ === tariffCategory : true,
@@ -157,17 +158,21 @@ export default function VDSOrder() {
             state={state}
             getElement={value => {
               setFieldValue(fieldName, value)
-              if (fieldName === 'ostempl') parametersInfo.recipe.$ = 'null'
-              parametersInfo[fieldName].$ = value
-              setParametersInfo({ ...parametersInfo })
+              if (fieldName === 'ostempl') {
+                setRecipe('null')
+                parametersInfo[fieldName].$ = value
+                setParametersInfo({ ...parametersInfo })
+              } else {
+                setRecipe(value)
+              }
 
-              // if (value.includes('vestacp')) {
-              //   onChangeField(
-              //     period,
-              //     { ...values, recipe: value, Control_panel: '97' },
-              //     'recipe',
-              //   )
-              // }
+              if (value.includes('vestacp')) {
+                onChangeField(
+                  period,
+                  { ...values, recipe: value, Control_panel: '97' },
+                  'Control_panel',
+                )
+              }
             }}
           />
         )
@@ -180,12 +185,13 @@ export default function VDSOrder() {
             iconName={name}
             label={el[0].$}
             onClick={value => {
-              setFieldValue(fieldName, value)
-              if (fieldName === 'ostempl') parametersInfo.recipe.$ = 'null'
-
-              parametersInfo[fieldName].$ = value
-
-              setParametersInfo({ ...parametersInfo })
+              if (fieldName === 'ostempl') {
+                setRecipe('null')
+                parametersInfo[fieldName].$ = value
+                setParametersInfo({ ...parametersInfo })
+              } else {
+                setRecipe(value)
+              }
             }}
           />
         )
@@ -198,10 +204,9 @@ export default function VDSOrder() {
       vdsOperations.changeOrderFormField(
         period,
         values,
+        recipe,
         selectedTariffId,
         parametersInfo.register[fieldName] || fieldName,
-        // (list, orderinfo) =>
-        //   mutateOptionsListData(list, orderinfo, fieldName, values.fieldName),
         setParametersInfo,
         parametersInfo.register,
       ),
@@ -213,6 +218,7 @@ export default function VDSOrder() {
       vdsOperations.setOrderData(
         period,
         count,
+        recipe,
         values,
         selectedTariffId,
         parametersInfo.register,
@@ -271,7 +277,6 @@ export default function VDSOrder() {
             ostempl: parametersInfo?.ostempl?.$ || '',
             autoprolong: parametersInfo?.autoprolong?.$ || '',
             domain: parametersInfo?.domain?.$ || '',
-            recipe: parametersInfo?.recipe?.$ || '',
             CPU_count: parametersInfo?.CPU_count || '',
             Memory: parametersInfo?.Memory || '',
             Disk_space: parametersInfo?.Disk_space || '',
@@ -415,7 +420,7 @@ export default function VDSOrder() {
                         'recipe',
                         values,
                         setFieldValue,
-                        values.recipe,
+                        recipe,
                         values.ostempl,
                       )}
                     </div>

@@ -40,11 +40,6 @@
   "not_installed": "-- Не установлено --",
   "password": "Пароль",
   "user_password": "Пароль пользователя",
-  "ISPmanager 6 Host - Unlimited domains (79.20 EUR per year)": "ISPmanager 6 Host - Неограниченное число доменов (79.20 EUR за год)",
-  "ISPmanager 6 Lite - 10 domains (26.40 EUR per year)": "ISPmanager 6 Lite - 10 доменов (26.40 EUR за год)",
-  "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)": "ISPmanager 6 Pro - 50 доменов (52.80 EUR за год)",
-  "Without a license (0.00 EUR per year)": "Без лицензии (0.00 EUR за год)",
-  "VestaCP (0.00 EUR per year)": "VestaCP (0.00 EUR за год)",
 
   "Without a license": "Без лицензии",
   "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Неограниченное число доменов",
@@ -72,5 +67,7 @@
   "Unit": "шт",
   "Service limits": "Ограничение услуги",
   "port_speed_limits": "Скорость порта с DDoS-защитой (входящая скорость): 1024 Кбит/сек в день + 0.0029 EUR за 1 Кбит/сек",
-  "warning_domain": "Введите валидное доменное имя"
+  "warning_domain": "Введите валидное доменное имя",
+  "attention": "Внимание",
+  "delete_message": "Вы действительно хотите удалить услугу"
 }
