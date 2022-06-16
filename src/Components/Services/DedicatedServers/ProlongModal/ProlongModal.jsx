@@ -9,6 +9,7 @@ import { Button } from '../../..'
 import Select from '../../../ui/Select/Select'
 import { translatePeriod } from '../EditServerModal/EditServerModal'
 import s from './ProlongModal.module.scss'
+import classNames from 'classnames'
 
 export default function ProlongModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
@@ -62,6 +63,18 @@ export default function ProlongModal({ elid, closeFn }) {
                 />
               </div>
               <div className={s.first_row}>
+                <span className={s.label}>{t('status', { ns: 'other' })}:</span>
+                <span
+                  className={classNames({
+                    [s.value]: true,
+                    [s.green]: initialState?.status?.$ === 'status_2',
+                    [s.red]: initialState?.status?.$ !== 'status_2',
+                  })}
+                >
+                  {initialState?.status?.$ === 'status_2' ? t('Active') : t('Inactive')}
+                </span>
+              </div>
+              <div className={s.first_row}>
                 <span className={s.label}>{t('Service active until')}:</span>
                 <span className={s.value}>{initialState?.expiredate?.$}</span>
               </div>
@@ -102,7 +115,7 @@ export default function ProlongModal({ elid, closeFn }) {
                     className={s.buy_btn}
                     isShadow
                     size="medium"
-                    label={t('Save', { ns: 'other' })}
+                    label={t('Proceed', { ns: 'other' })}
                     type="submit"
                   />
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './HistoryMobileListItem.module.scss'
+import { parseTranslation } from '../HistoryListItem/HistoryListItem'
 
 export default function HistoryMobileListItem({ history }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -12,12 +13,22 @@ export default function HistoryMobileListItem({ history }) {
       <span className={s.label}>{t('date', { ns: 'other' })}:</span>
       <span className={s.value}>{history?.changedate?.$}</span>
       <span className={s.label}>{t('Changing', { ns: 'other' })}:</span>
-      <span className={s.value}>{history?.desc?.$}</span>
+      <span className={s.value}>{parseTranslation(history?.desc?.$, t)}</span>
 
       <span className={s.label}>{t('user_name')}:</span>
-      <span className={s.value}>{history?.user?.$}</span>
+      <span className={s.value}>
+        {history?.user?.$.replace(String.fromCharCode(39), '') ===
+        'Providers employee or system'
+          ? t('Provider employee or system', { ns: 'dedicated_servers' })
+          : history?.user?.$}
+        :
+      </span>
       <span className={s.label}>{t('ip_address')}:</span>
-      <span className={s.value}>{history?.ip?.$}</span>
+      <span className={s.value}>
+        {history?.ip?.$.trim() === '-'
+          ? t('Not provided', { ns: 'dedicated_servers' })
+          : history?.ip?.$}
+      </span>
     </li>
   )
 }

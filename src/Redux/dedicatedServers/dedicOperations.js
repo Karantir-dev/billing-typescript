@@ -429,7 +429,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         out: 'json',
         auth: sessionId,
         lang: 'en',
-        // sok: 'ok',
+
         elid,
       }),
     )
@@ -980,9 +980,11 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist, expiredate, period, title_name, newexpiredate } = data.doc
+      console.log(data, 'prolong')
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name })
+      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+
+      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
       dispatch(actions.hideLoader())
     })
     .catch(error => {

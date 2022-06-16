@@ -71,7 +71,6 @@ export default function DedicatedServersPage() {
       ostemplate: '',
     }
     setValues && setValues({ ...clearField })
-    // setCurrentPage(1)
     setFilterModal(false)
     dispatch(
       dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
@@ -79,7 +78,6 @@ export default function DedicatedServersPage() {
   }
 
   const setFilterHandler = values => {
-    // setCurrentPage(1)
     setFilterModal(false)
     dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
@@ -88,6 +86,10 @@ export default function DedicatedServersPage() {
     dispatch(dedicOperations.getServersList())
     dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
+
+  useEffect(() => {
+    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
+  }, [filterModal])
 
   return (
     <>

@@ -74,6 +74,9 @@
   .service_name {
     margin-left: 8px;
   }
+  .history_modal {
+    min-width: 1077px;
+  }
 }
 
 @media screen and (min-width: 1918px) {
@@ -81,6 +84,6 @@
     margin-top: 40px;
   }
   .history_modal {
-    max-width: 1077px;
+    width: 1077px;
   }
 }

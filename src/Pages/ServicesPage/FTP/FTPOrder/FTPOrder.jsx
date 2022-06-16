@@ -10,10 +10,10 @@ import { useTranslation } from 'react-i18next'
 
 import Select from '../../../../Components/ui/Select/Select'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
-
-import s from './FTPOrder.module.scss'
 import { ftpOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
+
+import s from './FTPOrder.module.scss'
 
 export default function FTPOrder() {
   const dispatch = useDispatch()
@@ -26,7 +26,6 @@ export default function FTPOrder() {
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
-
   const [price, setPrice] = useState('')
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
@@ -65,7 +64,7 @@ export default function FTPOrder() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR'
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + '€'
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
@@ -100,14 +99,22 @@ export default function FTPOrder() {
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
     license: Yup.boolean()
-      .required('The terms and conditions must be accepted.')
-      .oneOf([true], 'The terms and conditions must be accepted.'),
+      .required(
+        t('You must agree to the terms of the Service Agreement to be able to proceed', {
+          ns: 'other',
+        }),
+      )
+      .oneOf(
+        [true],
+        t('You must agree to the terms of the Service Agreement to be able to proceed', {
+          ns: 'other',
+        }),
+      ),
   })
 
   const handleSubmit = values => {
     const { datacenter, tarif, period, autoprolong } = values
 
-    console.log('bying ftp')
     dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
   }
 
@@ -127,7 +134,7 @@ export default function FTPOrder() {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, resetForm }) => {
+        {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
           console.log(values)
           return (
             <Form className={s.form}>
@@ -196,7 +203,7 @@ export default function FTPOrder() {
                           [s.selected]: item?.pricelist?.$ === values.tarif,
                         })}
                       >
-                        {cardTitle}
+                        {cardTitle?.split(' ').slice(1).join(' ')}
                       </span>
                       <div className={s.price_wrapper}>
                         <span
@@ -246,10 +253,14 @@ export default function FTPOrder() {
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
+                          if (touched.license && !!errors.license) {
+                            setFieldTouched('license', true)
+                          }
+
                           setFieldValue('license', item)
                         }}
                         className={s.checkbox}
-                        error={values?.license === false}
+                        error={!!errors.license && touched.license}
                       />
 
                       <div className={s.terms_text}>
@@ -259,14 +270,14 @@ export default function FTPOrder() {
                           type="button"
                           className={s.turn_link}
                           onClick={() => {
-                            dispatch(dedicOperations.getPrintLicense(values.tarif))
+                            dispatch(ftpOperations.getPrintLicense(values.tarif))
                           }}
                         >
                           {`"${t('terms_2')}"`}
                         </button>
                       </div>
                     </div>
-                    {values.license === false && (
+                    {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div>
@@ -292,7 +303,8 @@ export default function FTPOrder() {
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() => {
-                      values.license === null && setFieldValue('license', false)
+                      setFieldTouched('license', true)
+                      if (!values.license) setFieldValue('license', false)
                       !values.license &&
                         licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
                     }}

@@ -115,7 +115,7 @@ export default function FTPMobileItem({
       <span className={s.label}>{t('tariff')}:</span>
       <span className={s.value}>{storage?.pricelist?.$}</span>
       <span className={s.label}>{t('datacenter', { ns: 'dedicated_servers' })}:</span>
-      <span className={s.value}>{storage?.datacenter?.$}</span>
+      <span className={s.value}>{storage?.datacentername?.$}</span>
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{storage?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>
