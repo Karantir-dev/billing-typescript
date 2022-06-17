@@ -31,7 +31,6 @@ const getDNSList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data, 'dns list')
       dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
       dispatch(actions.hideLoader())
     })
@@ -55,7 +54,7 @@ const getTarifs =
       .post(
         '/',
         qs.stringify({
-          func: 'storage.order',
+          func: 'dnshost.order',
           out: 'json',
           auth: sessionId,
           lang: 'en',
@@ -64,6 +63,8 @@ const getTarifs =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data, 'data for order dns host')
 
         const { elem: tarifList } = data.doc.list[0]
         const { val: datacenter } = data.doc.slist.length > 1 ? data.doc.slist[0] : []
@@ -100,7 +101,7 @@ const getParameters =
       .post(
         '/',
         qs.stringify({
-          func: 'storage.order.pricelist',
+          func: 'dnshost.order.pricelist',
           out: 'json',
           auth: sessionId,
           period,
@@ -114,14 +115,20 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+        console.log('params', data)
+
         const { slist: paramsList } = data.doc
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
+        const domainsLimit = data.doc.metadata.form.field.filter(item =>
+          item.$name.includes('addon'),
+        )
 
         // fields
 
         setFieldValue('autoprolonglList', autoprolong[0].val)
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
-        setParameters(paramsList)
+        setFieldValue('addon_961', domainsLimit.slider[0].$min)
+        setParameters({ paramsList, domainsLimit })
         dispatch(actions.hideLoader())
       })
 

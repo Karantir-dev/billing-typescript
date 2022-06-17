@@ -13,5 +13,6 @@
   "ip": "IP-address",
   "ftp": "External FTP storage",
   "ftp_order": "Ordering an external FTP storage",
-  "dns": "DNS-hosting"
+  "dns": "DNS-hosting",
+  "dns_order": "Order DNS hosting"
 }

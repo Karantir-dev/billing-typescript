@@ -123,6 +123,9 @@ export { default as FTPFiltersModal } from './Services/ftp/FTPFiltersModal/FTPFi
 export { default as FTPInstructionModal } from './Services/ftp/FTPInstructionModal/FTPInstructionModal'
 export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 
+//==========================================FTP==========================================//
+export { default as DNSList } from './Services/dns/DNSList/DNSList'
+
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'

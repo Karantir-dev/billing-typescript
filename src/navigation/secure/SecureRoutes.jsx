@@ -33,6 +33,7 @@ import {
   FTPOrder,
   DedicOrderPage,
   DNS,
+  DNSOrder,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -146,6 +147,10 @@ const Component = () => {
         <Route
           path={route.DNS}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />}
+        />
+        <Route
+          path={route.DNS_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />}
         />
 
         <Route

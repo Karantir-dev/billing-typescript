@@ -12,11 +12,11 @@ import {
   Backdrop,
   BreadCrumbs,
   FTPFiltersModal,
-  FTPList,
   FTPEditModal,
   ProlongModal,
   DedicsHistoryModal,
   FTPInstructionModal,
+  DNSList,
 } from '../../../Components'
 import { dnsOperations, dnsSelectors } from '../../../Redux'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
@@ -167,10 +167,10 @@ export default function DNS() {
           isShadow
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => navigate(route.FTP_ORDER)}
+          onClick={() => navigate(route.DNS_ORDER)}
         />
       </div>
-      <FTPList
+      <DNSList
         storageList={dnsList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}

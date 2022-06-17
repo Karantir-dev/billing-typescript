@@ -9,10 +9,10 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import Select from '../../../../Components/ui/Select/Select'
-import { ftpOperations } from '../../../../Redux'
+import { dnsOperations, ftpOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
-import s from './FTPOrder.module.scss'
+import s from './DNSOrder.module.scss'
 
 export default function FTPOrder() {
   const dispatch = useDispatch()
@@ -88,7 +88,7 @@ export default function FTPOrder() {
   }
 
   useEffect(() => {
-    dispatch(ftpOperations.getTarifs(setTarifList))
+    dispatch(dnsOperations.getTarifs(setTarifList))
   }, [])
 
   const validationSchema = Yup.object().shape({
@@ -113,10 +113,12 @@ export default function FTPOrder() {
     dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
   }
 
+  console.log(parameters)
+
   return (
     <div className={s.modalHeader}>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>{t('ftp_order', { ns: 'crumbs' })}</h2>
+      <h2 className={s.page_title}>{t('dns_order', { ns: 'crumbs' })}</h2>
 
       <Formik
         enableReinitialize
@@ -176,7 +178,7 @@ export default function FTPOrder() {
                         setTarifChosen(true)
 
                         dispatch(
-                          ftpOperations.getParameters(
+                          dnsOperations.getParameters(
                             values.period,
                             values.datacenter,
                             item?.pricelist?.$,
@@ -225,6 +227,22 @@ export default function FTPOrder() {
                   <p className={s.params}>{t('parameters')}</p>
 
                   <div className={s.parameters_wrapper}>
+                    <Select
+                      height={50}
+                      value={values.autoprolong}
+                      label={t('autoprolong')}
+                      getElement={item => setFieldValue('autoprolong', item)}
+                      isShadow
+                      itemsList={values?.autoprolonglList?.map(el => {
+                        let labeltext = translatePeriod(el.$, t)
+
+                        return {
+                          label: labeltext,
+                          value: el.$key,
+                        }
+                      })}
+                      className={s.select}
+                    />
                     <Select
                       height={50}
                       value={values.autoprolong}
