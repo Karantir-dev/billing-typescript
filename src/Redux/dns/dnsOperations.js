@@ -1,11 +1,11 @@
 import qs from 'qs'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { actions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
-import i18n from '../../i18n'
-import cartActions from '../cart/cartActions'
-import * as route from '../../routes'
+// import i18n from '../../i18n'
+// import cartActions from '../cart/cartActions'
+// import * as route from '../../routes'
 import dnsActions from './dnsActions'
 
 //GET hostings OPERATIONS
@@ -123,11 +123,25 @@ const getParameters =
           item.$name.includes('addon'),
         )
 
+        const maxLimit = domainsLimit[0].slider[0].$max
+        const minLimit = domainsLimit[0].slider[0].$step
+        const step = domainsLimit[0].slider[0].$min
+
+        const limitsList = []
+        let initialLimit = 100
+        for (let i = minLimit; i <= maxLimit; i += step) {
+          limitsList.push(initialLimit + step)
+        }
+
+        console.log(domainsLimit[0].slider[0])
+
+        console.log(maxLimit, minLimit, step)
+
         // fields
 
         setFieldValue('autoprolonglList', autoprolong[0].val)
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
-        setFieldValue('addon_961', domainsLimit.slider[0].$min)
+        setFieldValue('addon_961', domainsLimit)
         setParameters({ paramsList, domainsLimit })
         dispatch(actions.hideLoader())
       })
@@ -139,288 +153,288 @@ const getParameters =
       })
   }
 
-const orderFTP = (autoprolong, datacenter, period, pricelist) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+// const orderFTP = (autoprolong, datacenter, period, pricelist) => (dispatch, getState) => {
+//   dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'storage.order.param',
-        out: 'json',
-        auth: sessionId,
-        period,
-        datacenter,
-        pricelist,
-        autoprolong,
-        licence_agreement: 'on',
-        clicked_button: 'finish',
-        sok: 'ok',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'storage.order.param',
+//         out: 'json',
+//         auth: sessionId,
+//         period,
+//         datacenter,
+//         pricelist,
+//         autoprolong,
+//         licence_agreement: 'on',
+//         clicked_button: 'finish',
+//         sok: 'ok',
+//         lang: 'en',
+//       }),
+//     )
+//     .then(({ data }) => {
+//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(
-        cartActions.setCartIsOpenedState({
-          isOpened: true,
-          redirectPath: route.FTP,
-        }),
-      )
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+//       dispatch(
+//         cartActions.setCartIsOpenedState({
+//           isOpened: true,
+//           redirectPath: route.FTP,
+//         }),
+//       )
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       console.log('error', error)
+//       errorHandler(error.message, dispatch)
+//       dispatch(actions.hideLoader())
+//     })
+// }
 
-const getPrintLicense = priceId => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+// const getPrintLicense = priceId => (dispatch, getState) => {
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  dispatch(actions.showLoader())
+//   dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'license.print',
-        out: 'doc_print',
-        auth: sessionId,
-        elid: priceId,
-      }),
-      { responseType: 'blob' },
-    )
-    .then(response => {
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: 'text/html' }),
-      )
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('target', '_blank')
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'license.print',
+//         out: 'doc_print',
+//         auth: sessionId,
+//         elid: priceId,
+//       }),
+//       { responseType: 'blob' },
+//     )
+//     .then(response => {
+//       const url = window.URL.createObjectURL(
+//         new Blob([response.data], { type: 'text/html' }),
+//       )
+//       const link = document.createElement('a')
+//       link.href = url
+//       link.setAttribute('target', '_blank')
+//       document.body.appendChild(link)
+//       link.click()
+//       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       console.log('error', error)
+//       errorHandler(error.message, dispatch)
+//       dispatch(actions.hideLoader())
+//     })
+// }
 
-const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+// const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) => {
+//   dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'storage.edit',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        elid,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'storage.edit',
+//         out: 'json',
+//         auth: sessionId,
+//         lang: 'en',
+//         elid,
+//       }),
+//     )
+//     .then(({ data }) => {
+//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const autoprolongList = data.doc.slist.filter(
-        item => item.$name === 'autoprolong',
-      )[0]
-      const payment_method = data.doc.slist.filter(
-        item => item.$name === 'stored_method',
-      )[0]
+//       const autoprolongList = data.doc.slist.filter(
+//         item => item.$name === 'autoprolong',
+//       )[0]
+//       const payment_method = data.doc.slist.filter(
+//         item => item.$name === 'stored_method',
+//       )[0]
 
-      const {
-        user,
-        autoprolong,
-        opendate,
-        passwd,
-        period,
-        name,
-        id,
-        expiredate,
-        createdate,
-      } = data.doc
+//       const {
+//         user,
+//         autoprolong,
+//         opendate,
+//         passwd,
+//         period,
+//         name,
+//         id,
+//         expiredate,
+//         createdate,
+//       } = data.doc
 
-      setInitialParams({
-        autoprolongList,
-        autoprolong,
-        opendate,
-        passwd,
-        period,
-        name,
-        user,
-        id,
-        expiredate,
-        createdate,
-        payment_method,
-      })
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+//       setInitialParams({
+//         autoprolongList,
+//         autoprolong,
+//         opendate,
+//         passwd,
+//         period,
+//         name,
+//         user,
+//         id,
+//         expiredate,
+//         createdate,
+//         payment_method,
+//       })
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       console.log('error', error)
+//       errorHandler(error.message, dispatch)
+//       dispatch(actions.hideLoader())
+//     })
+// }
 
-const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+// const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
+//   dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'storage.edit',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        elid,
-        autoprolong,
-        clicked_button: 'ok',
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'storage.edit',
+//         out: 'json',
+//         auth: sessionId,
+//         lang: 'en',
+//         elid,
+//         autoprolong,
+//         clicked_button: 'ok',
+//         sok: 'ok',
+//       }),
+//     )
+//     .then(({ data }) => {
+//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-        position: 'bottom-right',
-        toastId: 'customId',
-      })
-      dispatch(actions.hideLoader())
+//       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+//         position: 'bottom-right',
+//         toastId: 'customId',
+//       })
+//       dispatch(actions.hideLoader())
 
-      handleModal()
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+//       handleModal()
+//     })
+//     .catch(error => {
+//       console.log('error', error)
+//       errorHandler(error.message, dispatch)
+//       dispatch(actions.hideLoader())
+//     })
+// }
 
-const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+// const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
+//   dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'service.instruction.html',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        elid,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      setInstruction(data.doc.body)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'service.instruction.html',
+//         out: 'json',
+//         auth: sessionId,
+//         lang: 'en',
+//         elid,
+//       }),
+//     )
+//     .then(({ data }) => {
+//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//       setInstruction(data.doc.body)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       console.log('error', error)
+//       errorHandler(error.message, dispatch)
+//       dispatch(actions.hideLoader())
+//     })
+// }
 
-const getFTPFilters =
-  (setFilters, data = {}, filtered = false) =>
-  (dispatch, getState) => {
-    dispatch(actions.showLoader())
+// const getFTPFilters =
+//   (setFilters, data = {}, filtered = false) =>
+//   (dispatch, getState) => {
+//     dispatch(actions.showLoader())
 
-    const {
-      auth: { sessionId },
-    } = getState()
+//     const {
+//       auth: { sessionId },
+//     } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'storage.filter',
-          out: 'json',
-          auth: sessionId,
-          ...data,
-        }),
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//     axiosInstance
+//       .post(
+//         '/',
+//         qs.stringify({
+//           func: 'storage.filter',
+//           out: 'json',
+//           auth: sessionId,
+//           ...data,
+//         }),
+//       )
+//       .then(({ data }) => {
+//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(filtered)
-        // if (filtered) {
-        //   return dispatch(getFTPList())
-        // }
+//         console.log(filtered)
+//         // if (filtered) {
+//         //   return dispatch(getFTPList())
+//         // }
 
-        let filters = {}
+//         let filters = {}
 
-        data?.doc?.slist?.forEach(el => {
-          filters[el.$name] = el.val
-        })
+//         data?.doc?.slist?.forEach(el => {
+//           filters[el.$name] = el.val
+//         })
 
-        let currentFilters = {
-          id: data.doc?.id?.$ || '',
-          domain: data.doc?.domain?.$ || '',
-          ip: data.doc?.ip?.$ || '',
-          pricelist: data.doc?.pricelist?.$ || '',
-          period: data.doc?.period?.$ || '',
-          status: data.doc?.status?.$ || '',
-          service_status: data.doc?.service_status?.$ || '',
-          opendate: data.doc?.opendate?.$ || '',
-          expiredate: data.doc?.expiredate?.$ || '',
-          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
-          orderdateto: data.doc?.orderdateto?.$ || '',
-          cost_from: data.doc?.cost_from?.$ || '',
-          cost_to: data.doc?.cost_to?.$ || '',
-          autoprolong: data.doc?.autoprolong?.$ || '',
-          datacenter: data.doc?.datacenter?.$ || '',
-          ostemplate: '',
-        }
+//         let currentFilters = {
+//           id: data.doc?.id?.$ || '',
+//           domain: data.doc?.domain?.$ || '',
+//           ip: data.doc?.ip?.$ || '',
+//           pricelist: data.doc?.pricelist?.$ || '',
+//           period: data.doc?.period?.$ || '',
+//           status: data.doc?.status?.$ || '',
+//           service_status: data.doc?.service_status?.$ || '',
+//           opendate: data.doc?.opendate?.$ || '',
+//           expiredate: data.doc?.expiredate?.$ || '',
+//           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+//           orderdateto: data.doc?.orderdateto?.$ || '',
+//           cost_from: data.doc?.cost_from?.$ || '',
+//           cost_to: data.doc?.cost_to?.$ || '',
+//           autoprolong: data.doc?.autoprolong?.$ || '',
+//           datacenter: data.doc?.datacenter?.$ || '',
+//           ostemplate: '',
+//         }
 
-        setFilters({ filters, currentFilters })
-        dispatch(actions.hideLoader())
-      })
-      .catch(error => {
-        console.log('error', error)
-        errorHandler(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
+//         setFilters({ filters, currentFilters })
+//         dispatch(actions.hideLoader())
+//       })
+//       .catch(error => {
+//         console.log('error', error)
+//         errorHandler(error.message, dispatch)
+//         dispatch(actions.hideLoader())
+//       })
+//   }
 
 export default {
   getTarifs,
   getDNSList,
   getParameters,
-  orderFTP,
-  getPrintLicense,
-  getCurrentStorageInfo,
-  editFTP,
-  getServiceInstruction,
-  getFTPFilters,
+  // orderFTP,
+  // getPrintLicense,
+  // getCurrentStorageInfo,
+  // editFTP,
+  // getServiceInstruction,
+  // getFTPFilters,
 }

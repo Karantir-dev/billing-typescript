@@ -113,7 +113,7 @@ export default function FTPOrder() {
     dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
   }
 
-  console.log(parameters)
+  console.log(parameters, 'tes')
 
   return (
     <div className={s.modalHeader}>
@@ -132,6 +132,7 @@ export default function FTPOrder() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+          console.log(values, 'values')
           return (
             <Form className={s.form}>
               <Select
