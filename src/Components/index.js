@@ -103,7 +103,13 @@ export { default as SharedHostingFilter } from './Services/SharedHosting/SharedH
 export { default as SharedHostingTable } from './Services/SharedHosting/SharedHostingTable/SharedHostingTable'
 
 //==========================================Dedicated_Servers==========================================//
-export { default as DedicOrderPage } from '../Pages/ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
+export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
+export { default as DedicList } from './Services/DedicatedServers/DedicList/DedicList'
+export { default as DedicsHistoryModal } from './Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
+export { default as EditServerModal } from './Services/DedicatedServers/EditServerModal/EditServerModal'
+export { default as InstructionModal } from './Services/DedicatedServers/InstructionModal/InstructionModal'
+export { default as RebootModal } from './Services/DedicatedServers/RebootModal/RebootModal'
+export { default as ProlongModal } from './Services/DedicatedServers/ProlongModal/ProlongModal'
 
 //==========================================VDS==========================================//
 export { default as VDSmobileItem } from './Services/vds/VDSmobileItem/VDSmobileItem'
@@ -114,8 +120,15 @@ export { default as EditModal } from './Services/vds/EditModal/EditModal'
 export { default as SoftwareOSBtn } from './Services/vds/SoftwareOSBtn/SoftwareOSBtn'
 export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/SoftwareOSSelect'
 
+//==========================================FTP==========================================//
+export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'
+export { default as FTPFiltersModal } from './Services/ftp/FTPFiltersModal/FTPFiltersModal'
+export { default as FTPInstructionModal } from './Services/ftp/FTPInstructionModal/FTPInstructionModal'
+export { default as FTPList } from './Services/ftp/FTPList/FTPList'
+
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
 export { default as DomainItem } from './Cart/DomainItem/DomainItem'
 export { default as VdsItem } from './Cart/VdsItem/VdsItem'
+export { default as FtpItem } from './Cart/FtpItem/FtpItem'

@@ -12,5 +12,7 @@
   "vds_order": "Ordering a virtual server",
   "ip": "IP-address",
   "shared_hosting": "Shared hosting",
-  "shared_hosting_order": "Virtual hosting order"
+  "shared_hosting_order": "Virtual hosting order",
+  "ftp": "External FTP storage",
+  "ftp_order": "Ordering an external FTP storage"
 }

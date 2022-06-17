@@ -8,6 +8,7 @@ import { Button } from '../../..'
 import s from './RebootModal.module.scss'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '../../../../Redux'
+import classNames from 'classnames'
 
 export default function RebootModal({ elid, closeFn, server }) {
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -28,10 +29,10 @@ export default function RebootModal({ elid, closeFn, server }) {
 
       <div className={s.btns_wrapper}>
         <Button
-          className={s.buy_btn}
+          className={classNames({ [s.buy_btn]: true, [s.btn]: true })}
           isShadow
           size="medium"
-          label={t('Save', { ns: 'other' })}
+          label={t('Proceed', { ns: 'other' })}
           type="button"
           onClick={() => {
             dispatch(dedicOperations.rebootServer(elid, closeFn))

@@ -94,6 +94,13 @@
 }
 
 @media screen and (min-width: 768px) {
+  .reboot_modal {
+    width: 400px;
+    background-color: var(--main-bgc);
+    padding: 30px 30px 30px 30px;
+    overflow-y: auto;
+    max-height: 500px;
+  }
   .form {
     width: 355px;
     padding: 25px 51px 32px 51px;
@@ -116,7 +123,7 @@
     padding-bottom: 0px;
   }
 
-  .buy_btn {
-    width: 254px;
+  .buy_btn.btn {
+    width: 250px;
   }
 }

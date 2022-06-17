@@ -4,7 +4,6 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Cart,
   Container,
-  DedicOrderPage,
   EmailConfirmation,
   Portal,
   PrivateRoute,
@@ -30,9 +29,16 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
+<<<<<<< HEAD
   SharedHosting,
   SharedHostingOrder,
+=======
+  FTP,
+  FTPOrder,
+  DedicOrderPage,
+>>>>>>> e35d794592f298620186bdbb511e6b3dd7bd2d25
 } from '../../Pages'
+
 import { cartSelectors } from '../../Redux'
 
 import * as route from '../../routes'
@@ -144,6 +150,15 @@ const Component = () => {
         />
 
         <Route
+          path={route.FTP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />}
+        />
+        <Route
+          path={route.FTP_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
+        />
+
+        <Route
           path={route.ACCESS_LOG}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />}
         />
@@ -226,23 +241,6 @@ const SupportScreen = () => {
     </Routes>
   )
 }
-
-// const DedicatedServersScreen = () => {
-//   return (
-//     <Routes>
-//       <Route
-//         path=":path/*"
-//         element={
-//           <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
-//         }
-//       />
-//       <Route
-//         path=":path/:id"
-//         element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
-//       />
-//     </Routes>
-//   )
-// }
 
 const BillingScreen = () => {
   const location = useLocation()

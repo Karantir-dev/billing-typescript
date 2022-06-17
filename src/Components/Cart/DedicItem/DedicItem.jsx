@@ -59,31 +59,7 @@ export default function DedicItem(props) {
 
     const periodStr = curPeriod.reverse().join(' ')
 
-    const translatePeriod = str => {
-      let period
-
-      if (str.includes('for three months')) {
-        period = t('for three months', { ns: 'dedicated_servers' }).toLocaleLowerCase()
-      } else if (str.includes('for two years')) {
-        period = t('for two years').toLocaleLowerCase()
-      } else if (str.includes('for three years')) {
-        period = t('for three years').toLocaleLowerCase()
-      } else if (str.includes('half a year')) {
-        period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
-      } else if (str.includes('year')) {
-        period = t('year', { ns: 'other' }).toLocaleLowerCase()
-      } else if (str.includes('years')) {
-        period = t('years', { ns: 'other' }).toLocaleLowerCase()
-      } else if (str.includes('month')) {
-        period = t('month', { ns: 'other' }).toLocaleLowerCase()
-      } else {
-        period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
-      }
-
-      return period
-    }
-
-    const period = translatePeriod(periodStr)
+    const period = translatePeriod(periodStr, t)
 
     return {
       managePanel,
@@ -187,4 +163,28 @@ export default function DedicItem(props) {
       </div>
     </>
   )
+}
+
+export function translatePeriod(str, t) {
+  let period
+
+  if (str.includes('for three months')) {
+    period = t('for three months', { ns: 'dedicated_servers' }).toLocaleLowerCase()
+  } else if (str.includes('for two years')) {
+    period = t('for two years').toLocaleLowerCase()
+  } else if (str.includes('for three years')) {
+    period = t('for three years').toLocaleLowerCase()
+  } else if (str.includes('half a year')) {
+    period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
+  } else if (str.includes('year')) {
+    period = t('year', { ns: 'other' }).toLocaleLowerCase()
+  } else if (str.includes('years')) {
+    period = t('years', { ns: 'other' }).toLocaleLowerCase()
+  } else if (str.includes('month')) {
+    period = t('month', { ns: 'other' }).toLocaleLowerCase()
+  } else {
+    period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
+  }
+
+  return period
 }

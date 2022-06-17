@@ -21,9 +21,13 @@ export { default as SharedHosting } from './ServicesPage/SharedHosting/SharedHos
 export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/SharedHostingOrder/SharedHostingOrder'
 
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
+export { default as DedicOrderPage } from './ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
 export { default as VDS } from './ServicesPage/VDS/VDS'
 export { default as VDSOrder } from './ServicesPage/VDSOrder/VDSOrder'
+
+export { default as FTP } from './ServicesPage/FTP/FTP'
+export { default as FTPOrder } from './ServicesPage/FTP/FTPOrder/FTPOrder'
 
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'

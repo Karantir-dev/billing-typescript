@@ -450,7 +450,13 @@ export default function EditServerModal({ elid, closeFn }) {
                 />
               )}
 
-              <button onClick={closeFn} className={s.cancel_btn}>
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  closeFn()
+                }}
+                className={s.cancel_btn}
+              >
                 {t('Cancel', { ns: 'other' })}
               </button>
             </div>

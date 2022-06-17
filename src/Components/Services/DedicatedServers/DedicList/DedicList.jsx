@@ -27,7 +27,7 @@ export default function DedicList({
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('domain_name')}:</li>
           <li className={s.table_head}>{t('ip_address')}:</li>
-          <li className={s.table_head}>{t('OS_template')}:</li>
+          <li className={s.table_head}>{t('ostempl')}:</li>
           <li className={s.table_head}>{t('tariff')}:</li>
           <li className={s.table_head}>{t('status')}:</li>
           <li className={s.table_head}>{t('created')}:</li>

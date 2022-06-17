@@ -16,7 +16,9 @@
   "terms_2": "Terms of Service",
 
   "domain_placeholder": "Enter domain name",
+  "ip_placeholder": "Enter IP-address",
   "recipe_placeholder": "Not installed",
+  "datacenter": "Datacenter",
 
   "Month": "Month",
   "Three months": "Three months",
@@ -96,5 +98,31 @@
   "We hope you will enjoy your dedicated server": "We hope you will enjoy your dedicated server",
   "ZOMRO team": "'ZOMRO' team",
   "Server rebooting": "Server rebooting",
-  "Are you sure you want to restart the server": "Are you sure you want to restart the server"
+  "Are you sure you want to restart the server": "Are you sure you want to restart the server",
+
+  "The reboot process is started": "The reboot process is started",
+  "Auto-renewal period is set to": "Auto-renewal period is set to",
+  "Automatic renewal is disabled": "Automatic renewal is disabled",
+  "The service validity period has been changed": "The service validity period has been changed",
+  "The old value": "The old value",
+  "The new value": "The new value",
+  "The service status has been changed to": "The service status has been changed to",
+  "The new service validity period was set": "The new service validity period was set",
+  "Pending": "Pending",
+  "Active": "Active",
+  "The parameter": "The parameter",
+  "has been changed": "has been changed",
+  "Activation date": "Activation date",
+  "New value": "New value",
+  "Ordered": "Ordered",
+  "is binded to a service": "is binded to a service",
+  "Old value": "Old value",
+  "will be deleted from a service": "will be deleted from a service",
+  "Add-on for": "Add-on for",
+  "address": "address",
+  "Without a license": "Without a license",
+  "Operating system": "Operating system",
+  "Preinstalled software": "Preinstalled software",
+  "Control panel": "Control panel",
+  "A new value is set for": "A new value is set for"
 }

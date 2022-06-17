@@ -81,3 +81,6 @@ export { default as vhostActions } from './vhost/vhostActions'
 export { default as vhostOperations } from './vhost/vhostOperations'
 export { default as vhostReducer } from './vhost/vhostReducer'
 export { default as vhostSelectors } from './vhost/vhostSelectors'
+
+export { default as ftpReducer } from './ftp/ftpReducer'
+export { default as ftpOperations } from './ftp/ftpOperations'

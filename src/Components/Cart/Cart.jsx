@@ -5,7 +5,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Cross, Check } from '../../images'
-import { Select, InputField, Button, CheckBox, DomainItem, DedicItem, VdsItem } from '..'
+import {
+  Select,
+  InputField,
+  Button,
+  CheckBox,
+  DomainItem,
+  DedicItem,
+  VdsItem,
+  FtpItem,
+} from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -110,6 +119,7 @@ export default function Component() {
     const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
 
     const vdsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vds')
+    const ftpList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'storage')
 
     return (
       <>
@@ -176,6 +186,27 @@ export default function Component() {
                 )
               })}
             </div>
+          </div>
+        )}
+
+        {ftpList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>
+              {t('services.External FTP-storage', { ns: 'other' })}:
+            </div>
+            {ftpList?.map(el => {
+              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              return (
+                <FtpItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  fullcost={fullcost?.$}
+                  discount_percent={discount_percent?.$}
+                  pricelist_name={pricelist_name?.$}
+                />
+              )
+            })}
           </div>
         )}
       </>

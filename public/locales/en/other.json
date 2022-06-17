@@ -119,5 +119,6 @@
   "Suspended": "Suspended",
   "Cost (from/to)": "Cost (from/to)",
   "Valid (from/to)": "Valid (from/to)",
-  "Order date (from/to)": "Order date (from/to)"
+  "Order date (from/to)": "Order date (from/to)",
+  "FTP server": "FTP-server"
 }

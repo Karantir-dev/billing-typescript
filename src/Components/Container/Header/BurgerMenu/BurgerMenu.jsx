@@ -67,7 +67,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
-      routeName: routes.HOME,
+      routeName: routes.VDS,
       allowedToRender: true,
     },
     {
@@ -83,7 +83,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { name: t('burger_menu.services.services_list.dns_hosting'), routeName: routes.HOME },
     {
       name: t('burger_menu.services.services_list.external_ftp'),
-      routeName: routes.HOME,
+      routeName: routes.FTP,
       allowedToRender: true,
     },
     {
