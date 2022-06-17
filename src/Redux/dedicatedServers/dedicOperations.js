@@ -210,9 +210,6 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        // console.log(pricelist)
-        // console.log('datacenter', datacenter)
-        // console.log('data new datacenter', data)
         const IP = Object.keys(data.doc)
         const currentSumIp = IP.filter(
           item => item.includes('addon') && item.includes('current_value'),
@@ -432,7 +429,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         out: 'json',
         auth: sessionId,
         lang: 'en',
-        // sok: 'ok',
+
         elid,
       }),
     )
@@ -983,9 +980,9 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist, expiredate, period, title_name, newexpiredate } = data.doc
+      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name })
+      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
       dispatch(actions.hideLoader())
     })
     .catch(error => {

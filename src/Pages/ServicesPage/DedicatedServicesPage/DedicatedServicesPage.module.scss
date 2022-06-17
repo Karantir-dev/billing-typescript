@@ -23,6 +23,7 @@
   font-size: 20px;
   line-height: 66.3%;
   width: 204px;
+  max-width: 204px;
   height: 53px;
   margin-right: 10px;
 }
@@ -45,6 +46,7 @@
 
 @media screen and (min-width: 768px) {
   .order_btn {
+    max-width: 245px;
     width: 245px;
     margin-right: 25px;
   }
@@ -71,6 +73,7 @@
     margin-right: 35px;
   }
   .order_btn {
+    max-width: 229px;
     width: 229px;
   }
 }

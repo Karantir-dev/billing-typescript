@@ -55,6 +55,15 @@
   color: var(--main-text);
 }
 
+.value {
+  &.green {
+    color: var(--success-color);
+  }
+  &.red {
+    color: var(--red-color);
+  }
+}
+
 .icon_cross {
   cursor: pointer;
   flex: none;

@@ -18,6 +18,7 @@ export { default as DomainContactInfoPage } from './ServicesPage/DomainsPage/Dom
 export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPage/DomainsNsPage'
 
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
+export { default as DedicOrderPage } from './ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
 export { default as VDS } from './ServicesPage/VDS/VDS'
 export { default as VDSOrder } from './ServicesPage/VDSOrder/VDSOrder'

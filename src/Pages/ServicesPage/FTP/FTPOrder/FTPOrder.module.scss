@@ -1,57 +1,3 @@
-.datacenter_block {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
-}
-
-.datacenter_card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding-top: 7px;
-  padding-bottom: 11px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-
-  &:not(:last-child) {
-    margin-bottom: 15px;
-  }
-
-  &.selected {
-    border-width: 1px;
-    border-style: solid;
-    border-image: var(--line-gradient) 1;
-    box-shadow: var(--forms2_pink_shadow);
-    border-radius: 3px;
-  }
-}
-
-.flag_icon {
-  border-radius: 5px;
-  opacity: 0.15;
-  z-index: 2;
-
-  &.selected {
-    opacity: 1;
-  }
-}
-
-.country_name {
-  margin-top: 10px;
-  margin-bottom: 14px;
-  font-size: 18px;
-  line-height: 70.9%;
-  color: var(--main-text);
-}
-.datacenter {
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 70.9%;
-  color: var(--main-text);
-}
-
 .page_title {
   font-weight: 600;
   font-size: 19px;
@@ -60,51 +6,21 @@
   color: var(--main-text);
 }
 
-.processors_block {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.first_processors_block {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.second_processors_block {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.processor_card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 27px;
-}
-
-.processor,
-.processor_name {
-  font-size: 15px;
-  line-height: 130.5%;
-  color: var(--main-text);
-}
-
-.processor {
-  margin-right: 10px;
-}
-
-.processor_name {
-  margin-right: 5px;
-}
 .select {
+  width: 253px;
   margin-bottom: 15px;
 }
 
 //tariffs
+
+.tarifs_block {
+  display: grid;
+  grid-template-columns: repeat(2, 122px);
+  grid-auto-rows: max-content;
+  grid-column-gap: 9px;
+  grid-row-gap: 10px;
+  margin-bottom: 35px;
+}
 
 .tarif_card {
   width: 100%;
@@ -114,19 +30,12 @@
   align-items: center;
   background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
-  padding-bottom: 23px;
-  padding-top: 23px;
+  padding-bottom: 30px;
+  padding-top: 30px;
   position: relative;
   border-radius: 3px;
-  transition: font-weight 0.2s;
+  transition: font-weight 0.2s ease, transform 0.1s ease-in-out;
   cursor: pointer;
-
-  &:not(:last-child) {
-    margin-bottom: 15px;
-  }
-  &:last-child {
-    margin-bottom: 35px;
-  }
 
   &.selected {
     border-width: 1px;
@@ -134,9 +43,12 @@
     border-image: var(--line-gradient) 1;
     box-shadow: var(--forms2_pink_shadow);
     border-radius: 3px;
+    transform: scale(1.05);
   }
 
   &:hover {
+    transform: scale(1.05);
+
     .card_title {
       font-weight: 600;
     }
@@ -164,29 +76,41 @@
 }
 
 .card_title {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 130%;
   color: var(--servers_tariff_color);
-  margin-bottom: 20px;
-  max-width: 60%;
+  max-width: 80%;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 25px;
+    height: 1px;
+    background-color: var(--after-line-bgc);
+    margin: 15px auto 0px auto;
+  }
 
   &.selected {
     font-weight: 600;
+
+    &::after {
+      height: 2px;
+      background: var(--line-gradient);
+    }
   }
 }
 
 .price {
   position: relative;
   display: block;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 16px;
   line-height: 100%;
   background: var(--accent-text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  padding-bottom: 13px;
-  padding-top: 13px;
+  padding-top: 15px;
 
   &.selected {
     font-weight: 800;
@@ -214,9 +138,6 @@
 
 .price_wrapper {
   width: 100%;
-  box-shadow: var(--burger-menu-elem-box-shadow);
-  background: var(--servers_price_bgc);
-  margin-bottom: 17px;
 }
 
 .params {
@@ -350,18 +271,25 @@
 
   .tarifs_block {
     display: grid;
-    grid-template-columns: repeat(2, 241px);
+    grid-template-columns: repeat(3, 202px);
     grid-auto-rows: max-content;
-    grid-column-gap: 24px;
+    grid-column-gap: 15px;
     grid-row-gap: 20px;
     margin-bottom: 35px;
   }
 
   .tarif_card {
+    padding-top: 26px;
+    padding-bottom: 26px;
+
     &:not(:last-child),
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  .price {
+    font-size: 18px;
   }
 
   .select {
@@ -369,9 +297,6 @@
     & span {
       font-size: 18px;
     }
-  }
-  .input_field_wrapper {
-    width: 242px;
   }
 
   .parameters_wrapper {
@@ -473,17 +398,8 @@
 }
 
 @media screen and (min-width: 1024px) {
-  // .checkbox_wrapper {
-  //   margin-bottom: 250px;
-  // }
   .terms_block {
     margin-bottom: 250px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .second_processors_block {
-    margin-left: 15px;
   }
 }
 
@@ -492,10 +408,17 @@
     font-size: 22px;
     margin-bottom: 30px;
   }
+
   .tarifs_block {
-    grid-template-columns: repeat(4, 252px);
-    grid-column-gap: 30px;
+    grid-template-columns: repeat(6, 176px);
+    grid-column-gap: 20px;
   }
+
+  .tarif_card {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
   .terms_text {
     display: flex;
     align-items: center;
@@ -504,8 +427,9 @@
 }
 
 @media screen and (min-width: 1900px) {
-  .datacenter_card {
-    max-width: 252px;
+  .tarifs_block {
+    grid-template-columns: repeat(6, 191px);
+    grid-column-gap: 22px;
   }
 }
 

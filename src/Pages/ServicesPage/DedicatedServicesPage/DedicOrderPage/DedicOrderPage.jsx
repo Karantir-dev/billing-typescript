@@ -154,8 +154,6 @@ export default function DedicOrderPage() {
             state={state}
             getElement={value => {
               setFieldValue(fieldName, value)
-              console.log(fieldName)
-              console.log(parameters)
 
               if (fieldName === 'ostempl') {
                 setFieldValue('recipe', 'null')
@@ -260,8 +258,6 @@ export default function DedicOrderPage() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
-          console.log(touched)
-          console.log(errors)
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -645,16 +641,14 @@ export default function DedicOrderPage() {
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
-                          if (touched.license) {
-                            setFieldTouched(false)
-                          } else {
-                            setFieldTouched(true)
+                          if (!touched.license) {
+                            setFieldTouched('license', true)
                           }
 
                           setFieldValue('license', item)
                         }}
                         className={s.checkbox}
-                        error={errors?.license && touched?.license}
+                        error={!values.license && touched?.license}
                       />
 
                       <div className={s.terms_text}>
@@ -671,7 +665,7 @@ export default function DedicOrderPage() {
                         </button>
                       </div>
                     </div>
-                    {errors?.license && touched?.license && (
+                    {!values.license && touched?.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div>
@@ -697,8 +691,6 @@ export default function DedicOrderPage() {
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() => {
-                      setFieldTouched('license', true)
-                      values.license === null && setFieldValue('license', false)
                       !values.license &&
                         licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
                     }}

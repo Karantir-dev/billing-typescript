@@ -24,13 +24,13 @@
 }
 
 .title_wrapper {
-  position: sticky;
-  top: 0;
   display: flex;
   justify-content: space-between;
   padding-top: 35px;
   padding-bottom: 20px;
   background-color: var(--main-bgc);
+  position: sticky;
+  top: 0;
 }
 
 .modal_title {

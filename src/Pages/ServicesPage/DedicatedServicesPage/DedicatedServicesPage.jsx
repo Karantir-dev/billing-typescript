@@ -11,17 +11,17 @@ import {
   HintWrapper,
   Backdrop,
   BreadCrumbs,
+  DedicFiltersModal,
+  DedicList,
+  EditServerModal,
+  ProlongModal,
+  DedicsHistoryModal,
+  InstructionModal,
+  RebootModal,
 } from '../../../Components'
-import DedicList from '../../../Components/Services/DedicatedServers/DedicList/DedicList'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
 import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
-import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
-import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
-import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
-import InstructionModal from '../../../Components/Services/DedicatedServers/InstructionModal/InstructionModal'
-import RebootModal from '../../../Components/Services/DedicatedServers/RebootModal/RebootModal'
-import DedicFiltersModal from '../../../Components/Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
 
 import s from './DedicatedServicesPage.module.scss'
 
@@ -71,7 +71,6 @@ export default function DedicatedServersPage() {
       ostemplate: '',
     }
     setValues && setValues({ ...clearField })
-    // setCurrentPage(1)
     setFilterModal(false)
     dispatch(
       dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
@@ -79,7 +78,6 @@ export default function DedicatedServersPage() {
   }
 
   const setFilterHandler = values => {
-    // setCurrentPage(1)
     setFilterModal(false)
     dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
@@ -88,6 +86,10 @@ export default function DedicatedServersPage() {
     dispatch(dedicOperations.getServersList())
     dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
+
+  useEffect(() => {
+    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
+  }, [filterModal])
 
   return (
     <>

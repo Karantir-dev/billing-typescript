@@ -11,20 +11,19 @@ import {
   HintWrapper,
   Backdrop,
   BreadCrumbs,
+  FTPFiltersModal,
+  FTPList,
+  FTPEditModal,
+  ProlongModal,
+  DedicsHistoryModal,
+  FTPInstructionModal,
 } from '../../../Components'
+import { ftpOperations } from '../../../Redux'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
 import ftpSelectors from '../../../Redux/ftp/ftpSelectors'
-import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
-import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
-import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
-import InstructionModal from '../../../Components/Services/DedicatedServers/InstructionModal/InstructionModal'
-import RebootModal from '../../../Components/Services/DedicatedServers/RebootModal/RebootModal'
-import DedicFiltersModal from '../../../Components/Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
 
 import s from './FTP.module.scss'
-import { ftpOperations } from '../../../Redux'
-import FTPList from '../../../Components/Services/ftp/FTPList/FTPList'
 
 export default function FTP() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -38,13 +37,10 @@ export default function FTP() {
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
-  const [elidForRebootModal, setElidForRebootModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
 
   const location = useLocation()
-
-  console.log(ftpList)
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -58,7 +54,6 @@ export default function FTP() {
     const clearField = {
       id: '',
       domain: '',
-      ip: '',
       pricelist: '',
       period: '',
       status: '',
@@ -71,27 +66,26 @@ export default function FTP() {
       cost_to: '',
       autoprolong: '',
       datacenter: '',
-      ostemplate: '',
     }
     setValues && setValues({ ...clearField })
-    // setCurrentPage(1)
+
     setFilterModal(false)
-    // dispatch(
-    //   dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
-    // )
-    console.log('submit for edition')
+    dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
   }
 
   const setFilterHandler = values => {
-    // setCurrentPage(1)
     setFilterModal(false)
-    dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(ftpOperations.getFTPFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
   useEffect(() => {
     dispatch(ftpOperations.getFTPList())
-    // dispatch(dedicOperations.getDedicFilters(setFilters))
+    dispatch(ftpOperations.getFTPFilters(setFilters))
   }, [])
+
+  useEffect(() => {
+    if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters))
+  }, [filterModal])
 
   return (
     <>
@@ -106,8 +100,9 @@ export default function FTP() {
             icon="filter"
             onClick={() => setFilterModal(!filterModal)}
           />
+
           {filterModal && (
-            <DedicFiltersModal
+            <FTPFiltersModal
               filterModal={filterModal}
               setFilterModal={setFilterModal}
               filters={filters?.currentFilters}
@@ -181,14 +176,13 @@ export default function FTP() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
-        setElidForRebootModal={setElidForRebootModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
         onClick={() => setElidForEditModal(0)}
         isOpened={Boolean(elidForEditModal)}
       >
-        <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+        <FTPEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
       <Backdrop
@@ -216,20 +210,9 @@ export default function FTP() {
         onClick={() => setElidForInstructionModal(0)}
         isOpened={Boolean(elidForInstructionModal)}
       >
-        <InstructionModal
+        <FTPInstructionModal
           elid={elidForInstructionModal}
           closeFn={() => setElidForInstructionModal(0)}
-        />
-      </Backdrop>
-
-      <Backdrop
-        onClick={() => setElidForRebootModal(0)}
-        isOpened={Boolean(elidForRebootModal)}
-      >
-        <RebootModal
-          server={activeServer}
-          elid={elidForRebootModal}
-          closeFn={setElidForRebootModal}
         />
       </Backdrop>
     </>

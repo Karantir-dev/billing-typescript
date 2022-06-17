@@ -20,7 +20,7 @@ export default function FTPItem({ storage, setActiveServer, activeServerID }) {
       >
         <span className={s.value}>{storage?.id?.$}</span>
         <span className={s.value}>{storage?.pricelist?.$}</span>
-        <span className={s.value}>{storage?.datacenter?.$}</span>
+        <span className={s.value}>{storage?.datacentername?.$}</span>
         <span className={s.value}>{storage?.createdate?.$}</span>
         <span className={s.value}>{storage?.expiredate?.$}</span>
         <ServerState className={s.value} server={storage} />

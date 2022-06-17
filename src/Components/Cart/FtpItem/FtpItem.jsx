@@ -1,20 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Shevron } from '../../../images'
-import classNames from 'classnames'
+
 import { useMediaQuery } from 'react-responsive'
 
-import s from './DedicItem.module.scss'
+import s from './FtpItem.module.scss'
 
-export default function DedicItem(props) {
+export default function FtpItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
 
   const { desc, cost, discount_percent, fullcost, pricelist_name } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-
-  const [dropOpened, setDropOpened] = useState(false)
 
   const renderDesc = () => {
     const beforeWord = 'Control panel'
@@ -73,22 +70,12 @@ export default function DedicItem(props) {
     <>
       <div className={s.server_item}>
         <div className={s.tarif_info}>
-          <button
-            onClick={() => setDropOpened(!dropOpened)}
-            className={s.shevron_container}
-          >
-            <Shevron
-              className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })}
-            />
-          </button>
-
           {tabletOrHigher && (
             <img
-              src={require('./../../../images/services/dedicated.webp')}
+              src={require('./../../../images/services/ftp_storage.webp')}
               alt="dedicated_servers"
             />
           )}
-
           <div className={s.priceList}>
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
@@ -105,61 +92,7 @@ export default function DedicItem(props) {
               )}
             </div>
           </div>
-          {!tabletOrHigher && (
-            <div
-              className={classNames({
-                [s.additional_info_item]: true,
-                [s.opened]: dropOpened,
-              })}
-            >
-              {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
-                <p className={s.service_name}>
-                  {t('count_ip', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.ipAmount?.split('-')[0]}
-                </p>
-              )}
-              {renderDesc()?.managePanel && desc.includes('Control panel') && (
-                <p className={s.service_name}>
-                  {t('manage_panel', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.managePanel?.split('-')[0]}
-                </p>
-              )}
-              {renderDesc()?.postSpeed && desc.includes('Port speed') && (
-                <p className={s.service_name}>
-                  {t('port_speed', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.postSpeed?.split('-')[0]}
-                </p>
-              )}
-            </div>
-          )}
         </div>
-        {tabletOrHigher && (
-          <div
-            className={classNames({
-              [s.additional_info_item]: true,
-              [s.opened]: dropOpened,
-            })}
-          >
-            {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
-              <p className={s.service_name}>
-                {t('count_ip', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.ipAmount?.split('-')[0]}
-              </p>
-            )}
-            {renderDesc()?.managePanel && desc.includes('Control panel') && (
-              <p className={s.service_name}>
-                {t('manage_panel', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.managePanel?.split('-')[0]}
-              </p>
-            )}
-            {renderDesc()?.postSpeed && desc.includes('Port speed') && (
-              <p className={s.service_name}>
-                {t('port_speed', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.postSpeed?.split('-')[0]}
-              </p>
-            )}
-          </div>
-        )}
       </div>
     </>
   )
@@ -170,10 +103,10 @@ export function translatePeriod(str, t) {
 
   if (str.includes('for three months')) {
     period = t('for three months', { ns: 'dedicated_servers' }).toLocaleLowerCase()
-  } else if (str.includes('for two years')) {
-    period = t('for two years').toLocaleLowerCase()
+  } else if (str.includes('for two years', { ns: 'dedicated_servers' })) {
+    period = t('for two years', { ns: 'dedicated_servers' }).toLocaleLowerCase()
   } else if (str.includes('for three years')) {
-    period = t('for three years').toLocaleLowerCase()
+    period = t('for three years', { ns: 'dedicated_servers' }).toLocaleLowerCase()
   } else if (str.includes('half a year')) {
     period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
   } else if (str.includes('year')) {

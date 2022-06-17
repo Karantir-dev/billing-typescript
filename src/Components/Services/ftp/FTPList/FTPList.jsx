@@ -13,7 +13,6 @@ export default function FTPList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setElidForRebootModal,
   setActiveServer,
   activeServerID,
 }) {
@@ -53,7 +52,6 @@ export default function FTPList({
               setElidForProlongModal={setElidForProlongModal}
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForInstructionModal={setElidForInstructionModal}
-              setElidForRebootModal={setElidForRebootModal}
               setActiveServer={setActiveServer}
             />
           )
