@@ -12,7 +12,7 @@
 
 .history_modal {
   background-color: var(--main-bgc);
-  padding: 35px 40px 30px 38px;
+  padding: 0px 40px 30px 38px;
   overflow-y: auto;
   height: 80vh;
   position: relative;
@@ -30,9 +30,21 @@
   }
 }
 
+// .wrapper {
+//   position: sticky;
+//   z-index: 10;
+// }
+
 .title_wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  background-color: var(--main-bgc);
+  padding-top: 35px;
+  padding-bottom: 35px;
 }
 
 .title {

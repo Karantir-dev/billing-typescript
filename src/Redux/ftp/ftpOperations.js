@@ -66,9 +66,6 @@ const getTarifs =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data, 'tarifffffs')
-
-        // const { val: fpricelist } = data.doc.flist
         const { elem: tarifList } = data.doc.list[0]
         const { val: datacenter } = data.doc.slist.length > 1 ? data.doc.slist[0] : []
         const { val: period } = data.doc.slist[0]
@@ -236,8 +233,6 @@ const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) =
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-      console.log(data, 'edition modal data')
 
       const autoprolongList = data.doc.slist.filter(
         item => item.$name === 'autoprolong',

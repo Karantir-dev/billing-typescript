@@ -26,8 +26,6 @@ export default function FTPEditModal({ elid, closeFn }) {
   }, [])
 
   const handleSubmit = values => {
-    console.log(values, 'submiting')
-    console.log(handleEditionModal)
     const { elid, autoprolong } = values
 
     dispatch(ftpOperations.editFTP(elid, autoprolong, handleEditionModal))
@@ -55,7 +53,6 @@ export default function FTPEditModal({ elid, closeFn }) {
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => {
-        console.log(values)
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>

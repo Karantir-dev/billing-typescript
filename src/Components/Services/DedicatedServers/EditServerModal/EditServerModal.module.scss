@@ -1,9 +1,10 @@
 .form {
   width: 261px;
   background-color: var(--main-bgc);
-  padding: 14px 15px 30px 15px;
+  padding: 0px 15px 30px 15px;
   overflow-y: auto;
   height: 80vh;
+
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -20,7 +21,12 @@
 .header_block {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  background-color: var(--main-bgc);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+  padding-top: 14px;
+  padding-bottom: 20px;
 }
 
 .page_title {

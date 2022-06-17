@@ -84,6 +84,33 @@ export function parseTranslation(str, t) {
     .replace('New value', t('New value', { ns: 'dedicated_servers' }))
     .replace('Username', t('Username', { ns: 'dedicated_servers' }))
     .replace('Ordered', t('Ordered', { ns: 'dedicated_servers' }))
+    .replace('Three months', t('Three months', { ns: 'dedicated_servers' }))
+    .replace(
+      'is binded to a service',
+      t('is binded to a service', { ns: 'dedicated_servers' }),
+    )
+    .replace('Old value', t('Old value', { ns: 'dedicated_servers' }))
+    .replace(
+      'will be deleted from a service',
+      t('will be deleted from a service', { ns: 'dedicated_servers' }),
+    )
+    .replace('Unit', t('Unit', { ns: 'dedicated_servers' }))
+    .replace('Add-on for', t('Add-on for', { ns: 'dedicated_servers' }))
+    .replace('IP-addresses count', t('IP-addresses count', { ns: 'dedicated_servers' }))
+    .replace('addresses', t('addresses', { ns: 'dedicated_servers' }))
+    .replace('address', t('address', { ns: 'dedicated_servers' }))
+    .replace('Without a license', t('Without a license', { ns: 'dedicated_servers' }))
+    .replace('Domain name', t('Domain name', { ns: 'dedicated_servers' }))
+    .replace('Operating system', t('Operating system', { ns: 'dedicated_servers' }))
+    .replace(
+      'Preinstalled software',
+      t('Preinstalled software', { ns: 'dedicated_servers' }),
+    )
+    .replace('Control panel', t('Control panel', { ns: 'dedicated_servers' }))
+    .replace(
+      'A new value is set for',
+      t('A new value is set for', { ns: 'dedicated_servers' }),
+    )
 
   return translate
 }

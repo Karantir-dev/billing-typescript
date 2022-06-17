@@ -135,7 +135,6 @@ export default function FTPOrder() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
-          console.log(values)
           return (
             <Form className={s.form}>
               <Select

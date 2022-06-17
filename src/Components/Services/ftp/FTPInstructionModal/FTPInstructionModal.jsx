@@ -29,8 +29,6 @@ export default function FTPInstructionModal({ elid, closeFn }) {
     const startIndex = trimmedText.indexOf('External FTP storage activation')
     const res = trimmedText.slice(startIndex)
 
-    console.log(res)
-
     const data = {
       service_name: res[0],
       welcome: res[1],

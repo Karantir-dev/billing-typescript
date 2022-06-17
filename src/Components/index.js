@@ -100,7 +100,6 @@ export { default as DomainsZone } from './Services/Domains/DomainOrderPage/Domai
 export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
 
 //==========================================Dedicated_Servers==========================================//
-export { default as DedicOrderPage } from '../Pages/ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 
 //==========================================VDS==========================================//
 export { default as VDSmobileItem } from './Services/vds/VDSmobileItem/VDSmobileItem'

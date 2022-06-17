@@ -114,5 +114,15 @@
   "has been changed": "has been changed",
   "Activation date": "Activation date",
   "New value": "New value",
-  "Ordered": "Ordered"
+  "Ordered": "Ordered",
+  "is binded to a service": "is binded to a service",
+  "Old value": "Old value",
+  "will be deleted from a service": "will be deleted from a service",
+  "Add-on for": "Add-on for",
+  "address": "address",
+  "Without a license": "Without a license",
+  "Operating system": "Operating system",
+  "Preinstalled software": "Preinstalled software",
+  "Control panel": "Control panel",
+  "A new value is set for": "A new value is set for"
 }

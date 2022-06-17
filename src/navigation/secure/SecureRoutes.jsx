@@ -4,7 +4,6 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Cart,
   Container,
-  DedicOrderPage,
   EmailConfirmation,
   Portal,
   PrivateRoute,
@@ -32,6 +31,7 @@ import {
   DedicIPpage,
   FTP,
   FTPOrder,
+  DedicOrderPage,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'

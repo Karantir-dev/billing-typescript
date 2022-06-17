@@ -59,7 +59,7 @@
   "current value": "текущее значение",
   "dedicated_server": "Выделенный сервер",
   "Service active until": "Услуга активна до",
-  "Service extended until": "Услуга продлена до",
+  "Service extended until": "Услуга будет продлена до",
   "Prolong service": "Продление услуги",
   "Not provided": "Не указан",
   "Provider employee or system": "Сотрудник провайдера или системы",
@@ -114,5 +114,14 @@
   "has been changed": "был изменен",
   "Activation date": "Дата активации",
   "New value": "Новое значение",
-  "Ordered": "Заказан"
+  "Ordered": "Заказан",
+  "is binded to a service": "привязан к сервису",
+  "Old value": "Старое значение",
+  "will be deleted from a service": "будет удален из службы",
+  "Add-on for": "Дополнение для",
+  "address": "aдрес",
+  "Operating system": "Операционная система",
+  "Preinstalled software": "Предустановленное ПО",
+  "Control panel": "Панель управления",
+  "A new value is set for": "Устанавливается новое значение"
 }

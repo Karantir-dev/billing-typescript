@@ -1,6 +1,6 @@
 .instruction_modal {
   background-color: var(--main-bgc);
-  padding: 35px 40px 30px 38px;
+  padding: 0px 40px 30px 38px;
   overflow-y: auto;
   height: 80vh;
   position: relative;
@@ -26,7 +26,11 @@
 .title_wrapper {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  padding-top: 35px;
+  padding-bottom: 20px;
+  background-color: var(--main-bgc);
+  position: sticky;
+  top: 0;
 }
 
 .modal_title {

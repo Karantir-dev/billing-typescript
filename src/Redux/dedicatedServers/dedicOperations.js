@@ -980,8 +980,6 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data, 'prolong')
-
       const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
 
       setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
