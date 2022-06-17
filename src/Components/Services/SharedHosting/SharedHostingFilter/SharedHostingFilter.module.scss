@@ -39,10 +39,6 @@
   display: none;
 }
 
-.transferBtn {
-  margin-right: 20px;
-}
-
 .filterBtnBlock {
   position: relative;
   margin-top: 5px;
@@ -173,6 +169,16 @@
 
 .crossIcon {
   fill: var(--main-text);
+}
+
+.tools_icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
 }
 
 @media screen and (max-width: 767px) {

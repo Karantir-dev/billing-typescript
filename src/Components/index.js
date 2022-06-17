@@ -99,6 +99,9 @@ export { default as DomainsTable } from './Services/Domains/DomainsTable/Domains
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
 export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
 
+export { default as SharedHostingFilter } from './Services/SharedHosting/SharedHostingFilter/SharedHostingFilter'
+export { default as SharedHostingTable } from './Services/SharedHosting/SharedHostingTable/SharedHostingTable'
+
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicOrderPage } from '../Pages/ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 

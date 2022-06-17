@@ -38,3 +38,6 @@ export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'
 export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'
 export const DEDICATED_SERVERS_IP = '/services/dedicated_servers/ips'
+
+export const SHARED_HOSTING = '/services/shared_hosting'
+export const SHARED_HOSTING_ORDER = '/services/shared_hosting/shared_hosting_order'

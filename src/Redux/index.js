@@ -75,3 +75,9 @@ export { default as contractsReducer } from './contracts/contractsReducer'
 //===========================================SERVICES=================================//
 export { default as dedicReducer } from './dedicatedServers/dedicReducer'
 export { default as dedicOperations } from './dedicatedServers/dedicOperations'
+
+//===========================================VHOST=================================//
+export { default as vhostActions } from './vhost/vhostActions'
+export { default as vhostOperations } from './vhost/vhostOperations'
+export { default as vhostReducer } from './vhost/vhostReducer'
+export { default as vhostSelectors } from './vhost/vhostSelectors'

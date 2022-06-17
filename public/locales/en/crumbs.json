@@ -10,5 +10,7 @@
   "ips": "IP-addresses",
   "vds": "Servers VDS/VPS",
   "vds_order": "Ordering a virtual server",
-  "ip": "IP-address"
+  "ip": "IP-address",
+  "shared_hosting": "Shared hosting",
+  "shared_hosting_order": "Virtual hosting order"
 }

@@ -17,6 +17,9 @@ export { default as DomainOrderPage } from './ServicesPage/DomainsPage/DomainOrd
 export { default as DomainContactInfoPage } from './ServicesPage/DomainsPage/DomainContactInfoPage/DomainContactInfoPage'
 export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPage/DomainsNsPage'
 
+export { default as SharedHosting } from './ServicesPage/SharedHosting/SharedHosting'
+export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/SharedHostingOrder/SharedHostingOrder'
+
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
 export { default as VDS } from './ServicesPage/VDS/VDS'

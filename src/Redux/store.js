@@ -24,6 +24,7 @@ import {
   domainsReducer,
   contractsReducer,
   cartReducer,
+  vhostReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   domains: domainsReducer,
   contracts: contractsReducer,
   cart: cartReducer,
+  vhost: vhostReducer,
   affiliateProgram,
   theme,
   isLoading,

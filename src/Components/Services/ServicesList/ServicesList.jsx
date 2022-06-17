@@ -69,7 +69,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
       id: 4,
-      routeName: routes.HOME,
+      routeName: routes.SHARED_HOSTING,
       allowedToRender: isVirtualHostAllowedToRender,
       icon_name: 'virtual_hosting',
       icon_width: '118',
