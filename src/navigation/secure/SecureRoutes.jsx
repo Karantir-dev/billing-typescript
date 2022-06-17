@@ -29,14 +29,11 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
-<<<<<<< HEAD
   SharedHosting,
   SharedHostingOrder,
-=======
   FTP,
   FTPOrder,
   DedicOrderPage,
->>>>>>> e35d794592f298620186bdbb511e6b3dd7bd2d25
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
