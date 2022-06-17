@@ -641,7 +641,7 @@ export default function DedicOrderPage() {
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
-                          if (!touched.license) {
+                          if (touched.license && !!errors.license) {
                             setFieldTouched('license', true)
                           }
 
@@ -691,6 +691,8 @@ export default function DedicOrderPage() {
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() => {
+                      setFieldTouched('license', true)
+                      if (!values.license) setFieldValue('license', false)
                       !values.license &&
                         licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
                     }}

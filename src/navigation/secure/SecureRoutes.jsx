@@ -32,6 +32,7 @@ import {
   FTP,
   FTPOrder,
   DedicOrderPage,
+  DNS,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -140,6 +141,11 @@ const Component = () => {
         <Route
           path={route.FTP_ORDER}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
+        />
+
+        <Route
+          path={route.DNS}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />}
         />
 
         <Route

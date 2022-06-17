@@ -25,6 +25,7 @@ import {
   contractsReducer,
   cartReducer,
   ftpReducer,
+  dnsReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 import { affiliateProgram } from './affiliateProgram/reducer'
@@ -55,6 +56,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   dedic: dedicReducer,
   ftp: ftpReducer,
+  dns: dnsReducer,
   affiliateProgram,
   theme,
   isLoading,

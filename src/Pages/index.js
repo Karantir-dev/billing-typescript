@@ -26,5 +26,7 @@ export { default as VDSOrder } from './ServicesPage/VDSOrder/VDSOrder'
 export { default as FTP } from './ServicesPage/FTP/FTP'
 export { default as FTPOrder } from './ServicesPage/FTP/FTPOrder/FTPOrder'
 
+export { default as DNS } from './ServicesPage/DNS/DNS'
+
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'

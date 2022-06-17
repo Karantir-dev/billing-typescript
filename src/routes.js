@@ -41,3 +41,6 @@ export const DEDICATED_SERVERS_IP = '/services/dedicated_servers/ips'
 
 export const FTP = '/services/ftp'
 export const FTP_ORDER = '/services/ftp/ftp_order'
+
+export const DNS = '/services/dns'
+export const DNS_ORDER = '/services/dns/dns_order'

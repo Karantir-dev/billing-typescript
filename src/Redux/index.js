@@ -78,3 +78,7 @@ export { default as dedicOperations } from './dedicatedServers/dedicOperations'
 
 export { default as ftpReducer } from './ftp/ftpReducer'
 export { default as ftpOperations } from './ftp/ftpOperations'
+
+export { default as dnsReducer } from './dns/dnsReducer'
+export { default as dnsOperations } from './dns/dnsOperations'
+export { default as dnsSelectors } from './dns/dnsSelectors'
