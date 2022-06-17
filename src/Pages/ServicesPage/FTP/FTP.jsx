@@ -11,19 +11,19 @@ import {
   HintWrapper,
   Backdrop,
   BreadCrumbs,
+  FTPFiltersModal,
+  FTPList,
+  FTPEditModal,
+  ProlongModal,
+  DedicsHistoryModal,
+  FTPInstructionModal,
 } from '../../../Components'
+import { ftpOperations } from '../../../Redux'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
 import ftpSelectors from '../../../Redux/ftp/ftpSelectors'
-import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
 
 import s from './FTP.module.scss'
-import { ftpOperations } from '../../../Redux'
-import FTPList from '../../../Components/Services/ftp/FTPList/FTPList'
-import FTPEditModal from '../../../Components/Services/ftp/FTPEditModal/FTPEditModal'
-import FTPInstructionModal from '../../../Components/Services/ftp/FTPInstructionModal/FTPInstructionModal'
-import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
-import FTPFiltersModal from '../../../Components/Services/ftp/FTPFiltersModal/FTPFiltersModal'
 
 export default function FTP() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
