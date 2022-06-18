@@ -82,5 +82,7 @@
   "Payment method": "Payment method",
   "Date of creation": "Date of creation",
   "This profile is used by one or several services": "This profile is used by one or several services. Modifying this profile will automatically send the changes to the domain registrar",
-  "Main parameters": "Main parameters"
+  "Main parameters": "Main parameters",
+  "Enter IP address": "Enter IP address",
+  "Data center": "Data center"
 }

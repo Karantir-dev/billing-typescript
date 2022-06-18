@@ -635,6 +635,7 @@ const getHistoryDomain =
           auth: sessionId,
           func: 'service.history',
           out: 'json',
+          p_cnt: 10000,
           ...body,
         }),
       )

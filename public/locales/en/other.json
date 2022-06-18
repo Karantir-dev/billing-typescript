@@ -120,5 +120,13 @@
   "Cost (from/to)": "Cost (from/to)",
   "Valid (from/to)": "Valid (from/to)",
   "Order date (from/to)": "Order date (from/to)",
-  "FTP server": "FTP-server"
+  "FTP server": "FTP-server",
+  
+  "Trial": "Trial",
+  "Month": "Month",
+  "Three months": "Three months",
+  "Half a year": "Half a year",
+  "Year": "Year",
+  "Two years": "Two years",
+  "Three years": "Three years"
 }

@@ -101,6 +101,9 @@ export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPag
 
 export { default as SharedHostingFilter } from './Services/SharedHosting/SharedHostingFilter/SharedHostingFilter'
 export { default as SharedHostingTable } from './Services/SharedHosting/SharedHostingTable/SharedHostingTable'
+export { default as SharedHostingHistoryModal } from './Services/SharedHosting/SharedHostingHistoryModal/SharedHostingHistoryModal'
+export { default as SharedHostingProlongModal } from './Services/SharedHosting/SharedHostingProlongModal/SharedHostingProlongModal'
+export { default as SharedHostingEditModal } from './Services/SharedHosting/SharedHostingEditModal/SharedHostingEditModal'
 
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'

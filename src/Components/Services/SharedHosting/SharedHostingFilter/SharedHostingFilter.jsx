@@ -1,65 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import {} from 'react-redux'
-import { Button, IconButton, HintWrapper } from '../../..'
+import { useSelector, useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
+
+import { Button, IconButton, HintWrapper, Portal } from '../../..'
+import SharedHostingFilterModal from '../SharedHostingFilterModal/SharedHostingFilterModal'
 import * as routes from '../../../../routes'
 import s from './SharedHostingFilter.module.scss'
+import { vhostOperations, vhostSelectors } from '../../../../Redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const navigate = useNavigate()
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
-  const { selctedItem } = props
+  const {
+    selctedItem,
+    setCurrentPage,
+    historyVhostHandler,
+    instructionVhostHandler,
+    platformVhostHandler,
+    prolongVhostHandler,
+    editVhostHandler,
+  } = props
 
-  // const [filterModal, setFilterModal] = useState(false)
+  const [filterModal, setFilterModal] = useState(false)
 
-  // const dispatch = useDispatch()
+  const filters = useSelector(vhostSelectors.getVhostFilters)
+  const filtersList = useSelector(vhostSelectors.getVhostFiltersList)
 
-  // const resetFilterHandler = setValues => {
-  //   const clearField = {
-  //     id: '',
-  //     domain: '',
-  //     pricelist: '',
-  //     period: '',
-  //     status: '',
-  //     service_status: '',
-  //     opendate: '',
-  //     expiredate: '',
-  //     orderdatefrom: '',
-  //     orderdateto: '',
-  //     cost_from: '',
-  //     cost_to: '',
-  //     autoprolong: '',
-  //   }
-  //   setValues && setValues({ ...clearField })
-  //   setCurrentPage(1)
-  //   setFilterModal(false)
-  //   dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
-  // }
+  const dispatch = useDispatch()
 
-  // const setFilterHandler = values => {
-  //   setCurrentPage(1)
-  //   setFilterModal(false)
-  //   dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
-  // }
+  const resetFilterHandler = setValues => {
+    const clearField = {
+      id: '',
+      ip: '',
+      datacenter: '',
+      domain: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+    }
+    setValues && setValues({ ...clearField })
+    setCurrentPage(1)
+    setFilterModal(false)
+    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true))
+  }
+
+  const setFilterHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true))
+  }
 
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
         <div className={s.filterBtnBlock}>
           <IconButton
-            // onClick={() => setFilterModal(true)}
+            onClick={() => setFilterModal(true)}
             icon="filter"
             className={s.calendarBtn}
           />
-          {/* {filterModal && (
+          {filterModal && (
             <div>
               <Portal>
                 <div className={s.bg}>
                   {mobile && (
-                    <DomainFiltertsModal
+                    <SharedHostingFilterModal
                       filterModal={filterModal}
                       setFilterModal={setFilterModal}
                       filters={filters}
@@ -71,7 +89,7 @@ export default function Component(props) {
                 </div>
               </Portal>
               {!mobile && (
-                <DomainFiltertsModal
+                <SharedHostingFilterModal
                   filterModal={filterModal}
                   setFilterModal={setFilterModal}
                   filters={filters}
@@ -81,41 +99,62 @@ export default function Component(props) {
                 />
               )}
             </div>
-          )} */}
+          )}
         </div>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton disabled={!selctedItem} onClick={() => null} icon="edit" />
+          <IconButton disabled={!selctedItem} onClick={editVhostHandler} icon="edit" />
         </HintWrapper>
 
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('trusted_users.Change tariff', { ns: 'trusted_users' })}>
-          <IconButton disabled={!selctedItem} onClick={() => null} icon="change-tariff" />
+        <HintWrapper
+          wrapperClassName={s.archiveBtn}
+          label={t('trusted_users.Change tariff', { ns: 'trusted_users' })}
+        >
+          <IconButton
+            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            onClick={() => null}
+            icon="change-tariff"
+          />
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton
             disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
-            onClick={() => null}
+            onClick={prolongVhostHandler}
             icon="clock"
           />
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
-          <IconButton disabled={!selctedItem} onClick={() => null} icon="refund" />
+          <IconButton
+            disabled={!selctedItem}
+            onClick={historyVhostHandler}
+            icon="refund"
+          />
         </HintWrapper>
 
         <HintWrapper
           wrapperClassName={s.archiveBtn}
           label={t('instruction', { ns: 'vds' })}
         >
-          <IconButton className={s.tools_icon} disabled={!selctedItem} icon="info" />
+          <IconButton
+            onClick={instructionVhostHandler}
+            className={s.tools_icon}
+            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            icon="info"
+          />
         </HintWrapper>
 
         <HintWrapper
           wrapperClassName={s.archiveBtn}
           label={t('go_to_panel', { ns: 'vds' })}
         >
-          <IconButton className={s.tools_icon} disabled={!selctedItem} icon="exitSign" />
+          <IconButton
+            onClick={platformVhostHandler}
+            className={s.tools_icon}
+            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            icon="exitSign"
+          />
         </HintWrapper>
       </div>
       <Button
