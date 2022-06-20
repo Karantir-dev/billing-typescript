@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../../images'
-import dedicOperations from '../../../../../Redux/dedicatedServers/dedicOperations'
+import { dedicOperations } from '../../../../../Redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
-import InputField from '../../../../ui/InputField/InputField'
-import { Button } from '../../../..'
+import { Button, InputField, Select } from '../../../..'
 import { useLocation } from 'react-router-dom'
-import Select from '../../../../ui/Select/Select'
 import s from './DedicIPOrder.module.scss'
 
 export default function DedicIPOrder({ closeFn }) {

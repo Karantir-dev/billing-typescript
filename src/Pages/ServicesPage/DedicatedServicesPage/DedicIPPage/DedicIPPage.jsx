@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import cn from 'classnames'
+import DedicIPEditModal from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPEditModal'
+import DedicIPList from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPList/DedicIPList'
+import DedicIPOrder from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPOrder/DedicIPOrder'
 import {
   Backdrop,
   BreadCrumbs,
@@ -7,18 +11,15 @@ import {
   IconButton,
 } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
-import cn from 'classnames'
 
-import s from './DedicIPPage.module.scss'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'
-import DedicIPList from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPList/DedicIPList'
+import { Attention } from '../../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import DedicIPEditModal from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPEditModal'
-import { Attention } from '../../../../images'
-import DedicIPOrder from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPOrder/DedicIPOrder'
+
+import * as route from '../../../../routes'
+import s from './DedicIPPage.module.scss'
 
 export default function DedicIPpage() {
   const location = useLocation()

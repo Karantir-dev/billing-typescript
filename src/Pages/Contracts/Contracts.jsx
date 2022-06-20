@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import ContractItem from '../../Components/Contracts/ContractItem/ContractItem'
-import contractOperations from '../../Redux/contracts/contractOperations'
-import contractsSelectors from '../../Redux/contracts/contractsSelectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { IconButton } from '../../Components'
+import { contractOperations, contractsSelectors } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 
 import s from './Contracts.module.scss'
-import { IconButton } from '../../Components'
 
 export default function Contracts() {
   const contracts = useSelector(contractsSelectors.getContractsList)

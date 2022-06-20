@@ -1,12 +1,9 @@
 import React from 'react'
-// import cn from 'classnames'
-import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Delete } from '../../../images'
 import s from './DomainItem.module.scss'
 
 export default function Component(props) {
-  //   const dispatch = useDispatch()
 
   const { t } = useTranslation(['cart', 'other'])
 

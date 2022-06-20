@@ -1,7 +1,5 @@
-import cn from 'classnames'
-import { ErrorMessage, Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import React, { useEffect, useRef, useState } from 'react'
+import { ErrorMessage, Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -17,6 +15,8 @@ import {
 import { Check } from '../../../images'
 import { vdsOperations } from '../../../Redux'
 
+import cn from 'classnames'
+import * as Yup from 'yup'
 import s from './VDSOrder.module.scss'
 
 export default function VDSOrder() {
