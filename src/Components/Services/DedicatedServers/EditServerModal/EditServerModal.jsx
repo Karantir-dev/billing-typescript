@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -10,8 +10,11 @@ import s from './EditServerModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
 import { Button } from '../../..'
+// import { dedicOperations } from '../../../../Redux'
 
+// console.log(dedicOperations, 'dedicOperations')
 export default function EditServerModal({ elid, closeFn }) {
+  // console.log(dedicOperations, 'dedicOperations')
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -43,7 +46,7 @@ export default function EditServerModal({ elid, closeFn }) {
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getCurrentDedicInfo(elid, setInitialState))
+    // dispatch(dedicOperations.getCurrentDedicInfo(elid, setInitialState))
   }, [])
 
   const handleSubmit = values => {
@@ -63,51 +66,67 @@ export default function EditServerModal({ elid, closeFn }) {
       password,
     } = values
 
+    console.log(useEffect, setInitialState, setCurrentOrder, handleEditionModal)
+
+    console.log(
+      elid,
+      autoprolong,
+      domainname,
+      ostempl,
+      recipe,
+      managePanel,
+      managePanelName,
+      ipTotal,
+      ipName,
+      ip,
+      username,
+      userpassword,
+      password,
+    )
+
     if (
       (initialIP !== currentIP && currentIP !== undefined) ||
       (initialManagePanel !== currentManagePanel &&
         currentManagePanel !== undefined &&
         currentManagePanel !== '97')
     ) {
-      dispatch(
-        dedicOperations.editDedicServer(
-          elid,
-          autoprolong,
-          domainname,
-          ostempl,
-          recipe,
-          managePanel,
-          managePanelName,
-          ipTotal,
-          ipName,
-          ip,
-          username,
-          userpassword,
-          password,
-
-          handleEditionModal,
-        ),
-      )
+      // dispatch(
+      //   dedicOperations.editDedicServer(
+      //     elid,
+      //     autoprolong,
+      //     domainname,
+      //     ostempl,
+      //     recipe,
+      //     managePanel,
+      //     managePanelName,
+      //     ipTotal,
+      //     ipName,
+      //     ip,
+      //     username,
+      //     userpassword,
+      //     password,
+      //     handleEditionModal,
+      //   ),
+      // )
     } else {
-      dispatch(
-        dedicOperations.editDedicServerNoExtraPay(
-          elid,
-          autoprolong,
-          domainname,
-          ostempl,
-          recipe,
-          managePanel,
-          managePanelName,
-          ipTotal,
-          ipName,
-          ip,
-          username,
-          userpassword,
-          password,
-
-          handleEditionModal,
-        ),
-      )
+      // dispatch(
+      //   dedicOperations.editDedicServerNoExtraPay(
+      //     elid,
+      //     autoprolong,
+      //     domainname,
+      //     ostempl,
+      //     recipe,
+      //     managePanel,
+      //     managePanelName,
+      //     ipTotal,
+      //     ipName,
+      //     ip,
+      //     username,
+      //     userpassword,
+      //     password,
+      //     handleEditionModal,
+      //   ),
+      // )
     }
   }
 
@@ -120,7 +139,7 @@ export default function EditServerModal({ elid, closeFn }) {
 
   return (
     <Formik
-      enableReinitialize
+      // enableReinitialize
       validationSchema={validationSchema}
       initialValues={{
         elid,
@@ -298,26 +317,26 @@ export default function EditServerModal({ elid, closeFn }) {
                     getElement={item => {
                       setFieldValue('managePanel', item)
                       setCurrentManagePanel(item)
-                      dispatch(
-                        dedicOperations.updatePriceEditModal(
-                          elid,
-                          values.autoprolong,
-                          values.domainname,
-                          values.ostempl,
-                          values.recipe,
-                          item,
-                          values.managePanelName,
-                          values.ipTotal,
-                          values.ipName,
-                          values.ip,
-                          values.username,
-                          values.userpassword,
-                          values.password,
+                      // dispatch(
+                      //   dedicOperations.updatePriceEditModal(
+                      //     elid,
+                      //     values.autoprolong,
+                      //     values.domainname,
+                      //     values.ostempl,
+                      //     values.recipe,
+                      //     item,
+                      //     values.managePanelName,
+                      //     values.ipTotal,
+                      //     values.ipName,
+                      //     values.ip,
+                      //     values.username,
+                      //     values.userpassword,
+                      //     values.password,
 
-                          currentOrder,
-                          setCurrentOrder,
-                        ),
-                      )
+                      //     currentOrder,
+                      //     setCurrentOrder,
+                      //   ),
+                      // )
                     }}
                     isShadow
                     label={t('manage_panel')}
@@ -357,26 +376,25 @@ export default function EditServerModal({ elid, closeFn }) {
                     getElement={item => {
                       setFieldValue('ipTotal', item)
                       setCurrentIP(item)
-                      dispatch(
-                        dedicOperations.updatePriceEditModal(
-                          elid,
-                          values.autoprolong,
-                          values.domainname,
-                          values.ostempl,
-                          values.recipe,
-                          values.managePanel,
-                          values.managePanelName,
-                          item,
-                          values.ipName,
-                          values.ip,
-                          values.username,
-                          values.userpassword,
-                          values.password,
+                      dispatch()
+                      // dedicOperations.updatePriceEditModal(
+                      //   elid,
+                      //   values.autoprolong,
+                      //   values.domainname,
+                      //   values.ostempl,
+                      //   values.recipe,
+                      //   values.managePanel,
+                      //   values.managePanelName,
+                      //   item,
+                      //   values.ipName,
+                      //   values.ip,
+                      //   values.username,
+                      //   values.userpassword,
+                      //   values.password,
 
-                          currentOrder,
-                          setCurrentOrder,
-                        ),
-                      )
+                      //   currentOrder,
+                      //   setCurrentOrder,
+                      // )
                     }}
                     isShadow
                     label={t('count_ip')}

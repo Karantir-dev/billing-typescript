@@ -11,6 +11,7 @@ import * as route from '../../routes'
 
 //GET SERVERS OPERATIONS
 
+console.log('ftp console chnageds')
 const getFTPList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 

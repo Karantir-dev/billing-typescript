@@ -10,6 +10,6 @@ const ftpList = createReducer(initialState.ftpList, {
   [dedicActions.setFTPList]: (_, { payload }) => payload,
 })
 
-const dedicReducer = combineReducers({ ftpList })
+const ftpReducer = combineReducers({ ftpList })
 
-export default dedicReducer
+export default ftpReducer

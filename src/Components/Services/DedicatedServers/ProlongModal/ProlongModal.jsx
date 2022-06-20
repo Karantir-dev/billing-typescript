@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+// import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 import { Formik, Form } from 'formik'
 
 import { Button } from '../../..'
@@ -10,6 +10,7 @@ import Select from '../../../ui/Select/Select'
 import { translatePeriod } from '../EditServerModal/EditServerModal'
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
+import { dedicOperations } from '../../../../Redux'
 
 export default function ProlongModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])

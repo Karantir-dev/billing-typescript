@@ -87,6 +87,9 @@ const getTarifs =
         dispatch(actions.hideLoader())
       })
   }
+console.log('dns operations')
+console.log('new in dns')
+console.log('new in dns2')
 
 const getParameters =
   (period, datacenter, pricelist, setParameters, setFieldValue) =>

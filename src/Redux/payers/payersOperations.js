@@ -3,6 +3,7 @@ import { actions, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 
+console.log('payers 41')
 const getPayers =
   (body = {}) =>
   (dispatch, getState) => {

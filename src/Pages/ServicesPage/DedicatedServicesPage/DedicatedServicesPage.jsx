@@ -19,13 +19,16 @@ import {
   InstructionModal,
   RebootModal,
 } from '../../../Components'
-import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
 import { useDispatch, useSelector } from 'react-redux'
-import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
+import { dedicOperations, dedicSelectors } from '../../../Redux'
 
 import s from './DedicatedServicesPage.module.scss'
 
+console.log(dedicOperations, 'main page')
 export default function DedicatedServersPage() {
+  console.log(dedicOperations)
+
+  console.log('dediccs page')
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])

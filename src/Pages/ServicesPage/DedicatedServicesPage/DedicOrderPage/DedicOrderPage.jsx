@@ -15,10 +15,9 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
 import Select from '../../../../Components/ui/Select/Select'
 import InputField from '../../../../Components/ui/InputField/InputField'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { dedicOperations, dedicSelectors } from '../../../../Redux'
 
 import s from './DedicOrderPage.module.scss'
 

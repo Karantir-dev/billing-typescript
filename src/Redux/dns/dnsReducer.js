@@ -10,6 +10,6 @@ const dnsList = createReducer(initialState.dnsList, {
   [dnsActions.setDNSList]: (_, { payload }) => payload,
 })
 
-const dedicReducer = combineReducers({ dnsList })
+const dnsReducer = combineReducers({ dnsList })
 
-export default dedicReducer
+export default dnsReducer
