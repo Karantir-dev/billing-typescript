@@ -12,6 +12,8 @@ export default function VDSList({
   setActiveServer,
   activeServerID,
   setIdForDeleteModal,
+  setIdForPassChange,
+  setIdForReboot,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -46,7 +48,9 @@ export default function VDSList({
               key={el.id.$}
               server={el}
               setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
-              setElidForEditModal={setElidForEditModal}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setIdForPassChange={() => setIdForPassChange(el.id.$)}
+              setIdForReboot={() => setIdForReboot(el.id.$)}
             />
           )
         })}

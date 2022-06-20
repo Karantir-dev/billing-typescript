@@ -3,7 +3,9 @@ import { axiosInstance } from './../../config/axiosInstance'
 import { actions, cartActions } from '../'
 import authSelectors from '../auth/authSelectors'
 import * as routes from '../../routes'
+import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
+import { t } from 'i18next'
 
 const getVDS = setServers => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -20,9 +22,9 @@ const getVDS = setServers => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
+      console.log(data.doc)
       setServers(data.doc.elem)
-      console.log('qwe')
+
       dispatch(actions.hideLoader())
     })
     .catch(err => {
@@ -328,6 +330,101 @@ const deleteVDS = (id, setServers) => (dispatch, getState) => {
     })
 }
 
+const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.changepassword',
+        auth: sessionId,
+        elid: id,
+        passwd: passwd,
+        confirm: confirm,
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      toast.success(
+        `${t('passwd_change_success', { ns: 'vds' })} ${data.doc.banner[0].param.$}`,
+        {
+          position: 'bottom-right',
+          toastId: 'customId',
+        },
+      )
+      console.log(data.doc)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('changePassword - ', err)
+    })
+}
+
+const rebootServer = id => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.reboot',
+        auth: sessionId,
+        elid: id,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('rebootServer - ', err)
+    })
+}
+
+const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.ip',
+        auth: sessionId,
+        elid: id,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
+      setElements(data.doc.elem)
+      setName(data.doc?.plname.$)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('getIpInfo - ', err)
+    })
+}
+
 export default {
   getVDS,
   getEditFieldsVDS,
@@ -338,4 +435,7 @@ export default {
   changeOrderFormField,
   setOrderData,
   deleteVDS,
+  changePassword,
+  rebootServer,
+  getIpInfo,
 }

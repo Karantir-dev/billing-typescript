@@ -30,6 +30,7 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
+  VDSip,
 } from '../../Pages'
 import { cartSelectors } from '../../Redux'
 
@@ -59,8 +60,8 @@ const Component = () => {
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />}
         />
         <Route
-          path={route.VDS_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+          path={route.VDS_IP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />}
         />
 
         <Route

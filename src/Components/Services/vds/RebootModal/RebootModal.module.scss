@@ -1,0 +1,62 @@
+.modal {
+  position: relative;
+  width: 90vw;
+  max-width: 530px;
+  height: fit-content;
+  border-radius: 3px;
+  padding: 20px;
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms2_shadow);
+}
+
+.icon_cross {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.btn_save {
+  display: block;
+  margin: 0 auto 12px;
+  max-width: 250px;
+  height: 50px;
+  font-size: 18px;
+}
+
+.btn_cancel {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  font-size: 18px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--main-text);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    padding: 25px 20px;
+    text-align: center;
+  }
+}

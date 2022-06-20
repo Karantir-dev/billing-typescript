@@ -5,7 +5,7 @@ import { Cross } from '../../../../images'
 import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
 import { Formik, Form } from 'formik'
 
-import { Button } from '../../..'
+import { Button } from '../../../'
 import Select from '../../../ui/Select/Select'
 import { translatePeriod } from '../EditServerModal/EditServerModal'
 import s from './ProlongModal.module.scss'

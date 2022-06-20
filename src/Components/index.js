@@ -101,6 +101,8 @@ export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPag
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicOrderPage } from '../Pages/ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 
+export { default as ProlongModal } from './Services/DedicatedServers/ProlongModal/ProlongModal'
+
 //==========================================VDS==========================================//
 export { default as VDSmobileItem } from './Services/vds/VDSmobileItem/VDSmobileItem'
 export { default as VDSItem } from './Services/vds/VDSItem/VDSItem'
@@ -110,6 +112,8 @@ export { default as EditModal } from './Services/vds/EditModal/EditModal'
 export { default as SoftwareOSBtn } from './Services/vds/SoftwareOSBtn/SoftwareOSBtn'
 export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/SoftwareOSSelect'
 export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
+export { default as VDSPasswordChange } from './Services/vds/PasswordChange/PasswordChange'
+export { default as RebootModal } from './Services/vds/RebootModal/RebootModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

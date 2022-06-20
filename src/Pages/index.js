@@ -19,8 +19,9 @@ export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPa
 
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
-export { default as VDS } from './ServicesPage/VDS/VDS'
-export { default as VDSOrder } from './ServicesPage/VDSOrder/VDSOrder'
+export { default as VDS } from './ServicesPage/VDS/VDSPage/VDS'
+export { default as VDSOrder } from './ServicesPage/VDS/VDSOrder/VDSOrder'
+export { default as VDSip } from './ServicesPage/VDS/VDSip/VDSip'
 
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'

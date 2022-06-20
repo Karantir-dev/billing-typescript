@@ -69,5 +69,7 @@
   "port_speed_limits": "DDoS Protected Port Speed (Incoming): <b>1024 Kbit/sec</b> day + 0.0029 EUR for 1 Kbit/sec",
   "warning_domain": "Введите валидное доменное имя",
   "attention": "Attention",
-  "delete_message": "Do you really want to delete the selected service"
+  "delete_message": "Do you really want to delete the selected service",
+  "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
+  "passwd_change_success": "Password change has been initiated for the service"
 }

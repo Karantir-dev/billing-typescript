@@ -13,9 +13,9 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   Button,
-} from '../../../Components'
-import { Check } from '../../../images'
-import { vdsOperations } from '../../../Redux'
+} from '../../../../Components'
+import { Check } from '../../../../images'
+import { vdsOperations } from '../../../../Redux'
 
 import s from './VDSOrder.module.scss'
 
