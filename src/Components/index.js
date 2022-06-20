@@ -114,6 +114,7 @@ export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/Sof
 export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
 export { default as VDSPasswordChange } from './Services/vds/PasswordChange/PasswordChange'
 export { default as RebootModal } from './Services/vds/RebootModal/RebootModal'
+export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

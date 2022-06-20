@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Backdrop, BreadCrumbs, IconButton } from '../../../../Components'
+import { Backdrop, BreadCrumbs, IconButton, IPeditModal } from '../../../../Components'
 import { vdsOperations } from '../../../../Redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
@@ -20,12 +20,14 @@ export default function VDSip() {
 
   const [elements, setElements] = useState()
   const [name, setName] = useState('')
+  const [idForEditModal, setIdForEditModal] = useState()
 
+  const ServerID = location?.state?.id
   useEffect(() => {
-    if (!location?.state?.id) {
+    if (!ServerID) {
       navigate(route.VDS, { replace: true })
     } else {
-      dispatch(vdsOperations.getIpInfo(location.state.id, setElements, setName))
+      dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName))
     }
   }, [])
 
@@ -81,7 +83,11 @@ export default function VDSip() {
                   <span className={cn(s.table_value, { [s.green]: status === '2' })}>
                     {statusText}
                   </span>
-                  <button className={s.desktop_edit} type="button">
+                  <button
+                    className={s.desktop_edit}
+                    onClick={() => setIdForEditModal(el.id.$)}
+                    type="button"
+                  >
                     <Edit className={s.icon_edit} />
                   </button>
                 </li>
@@ -107,14 +113,25 @@ export default function VDSip() {
                       {statusText}
                     </div>
                   </div>
-                  <IconButton className={s.btn_edit} icon="edit" />
+                  <IconButton
+                    className={s.btn_edit}
+                    icon="edit"
+                    onClick={() => setIdForEditModal(el.id.$)}
+                  />
                 </li>
               )
             })}
           </ul>
         </>
       )}
-      <Backdrop></Backdrop>
+
+      <Backdrop isOpened={!!idForEditModal} onClick={() => setIdForEditModal('')}>
+        <IPeditModal
+          serverID={ServerID}
+          closeFn={() => setIdForEditModal('')}
+          id={idForEditModal}
+        />
+      </Backdrop>
     </>
   )
 }

@@ -9,7 +9,6 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
 .card {
@@ -127,6 +126,12 @@
 .icon_edit {
   width: 16px;
   height: 16px;
+}
+
+@media screen and (min-width: 400px) {
+  .list {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
 }
 
 @media screen and (min-width: 900px) {

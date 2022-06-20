@@ -16,6 +16,7 @@ import {
 } from '../../../../Components'
 import { Check } from '../../../../images'
 import { vdsOperations } from '../../../../Redux'
+import { DOMAIN_REGEX } from '../../../../utils'
 
 import s from './VDSOrder.module.scss'
 
@@ -231,7 +232,7 @@ export default function VDSOrder() {
       ['on'],
       t('agreement_warning', { ns: 'dedicated_servers' }),
     ),
-    domain: Yup.string().matches(/[a-z0-9]\.[a-z]/gi, t('warning_domain')),
+    domain: Yup.string().matches(DOMAIN_REGEX, t('warning_domain')),
   })
 
   const totalPrice = +parametersInfo?.orderinfo?.$.match(
