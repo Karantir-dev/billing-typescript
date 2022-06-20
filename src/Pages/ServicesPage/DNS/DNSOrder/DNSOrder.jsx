@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import Select from '../../../../Components/ui/Select/Select'
-import { dnsOperations, ftpOperations } from '../../../../Redux'
+import { dnsOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './DNSOrder.module.scss'
@@ -20,7 +20,7 @@ export default function FTPOrder() {
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])
@@ -92,7 +92,7 @@ export default function FTPOrder() {
   }, [])
 
   const validationSchema = Yup.object().shape({
-    tarif: Yup.string().required('tariff is required'),
+    pricelist: Yup.string().required('tariff is required'),
     license: Yup.boolean()
       .required(
         t('You must agree to the terms of the Service Agreement to be able to proceed', {
@@ -108,12 +108,12 @@ export default function FTPOrder() {
   })
 
   const handleSubmit = values => {
-    const { datacenter, tarif, period, autoprolong } = values
+    const { datacenter, pricelist, period, autoprolong, addon_961 } = values
 
-    dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
+    dispatch(
+      dnsOperations.orderDNS({ autoprolong, datacenter, period, pricelist, addon_961 }),
+    )
   }
-
-  console.log(parameters, 'tes')
 
   return (
     <div className={s.modalHeader}>
@@ -125,14 +125,13 @@ export default function FTPOrder() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: tarifList?.currentDatacenter,
-          tarif: null,
+          pricelist: null,
           period: '1',
           license: null,
         }}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
-          console.log(values, 'values')
           return (
             <Form className={s.form}>
               <Select
@@ -146,7 +145,7 @@ export default function FTPOrder() {
                   setTarifChosen(false)
 
                   dispatch(
-                    ftpOperations.getTarifs(setTarifList, {
+                    dnsOperations.getTarifs(setTarifList, {
                       period: item,
                       datacenter: values.datacenter,
                     }),
@@ -174,7 +173,7 @@ export default function FTPOrder() {
                       ref={index === 2 ? secondTarrif : null}
                       onClick={() => {
                         setParameters(null)
-                        setFieldValue('tarif', item?.pricelist?.$)
+                        setFieldValue('pricelist', item?.pricelist?.$)
                         setPrice(priceAmount)
                         setTarifChosen(true)
 
@@ -190,23 +189,37 @@ export default function FTPOrder() {
                       }}
                       type="button"
                       className={classNames(s.tarif_card, {
-                        [s.selected]: item?.pricelist?.$ === values.tarif,
+                        [s.selected]: item?.pricelist?.$ === values.pricelist,
                       })}
                       key={item?.desc?.$}
                     >
+                      <img
+                        className={s.dns_img}
+                        src={require(`../../../../images/services/${
+                          item?.pricelist?.$ === 598
+                            ? 'dns_hosting_small.webp'
+                            : 'dns_hosting_middle.webp'
+                        }`)}
+                        alt="dns"
+                      />
                       <span
                         className={classNames({
                           [s.card_title]: true,
-                          [s.selected]: item?.pricelist?.$ === values.tarif,
+                          [s.selected]: item?.pricelist?.$ === values.pricelist,
                         })}
                       >
-                        {cardTitle?.split(' ').slice(1).join(' ')}
+                        {`${t('dns', { ns: 'crumbs' })} ${cardTitle
+                          ?.split(' ')
+                          .slice(1)
+                          .join(' ')
+                          .replace('for', t('for', { ns: 'dns' }))
+                          .replace('domains', t('domains', { ns: 'dns' }))}`}
                       </span>
                       <div className={s.price_wrapper}>
                         <span
                           className={classNames({
                             [s.price]: true,
-                            [s.selected]: item?.pricelist?.$ === values.tarif,
+                            [s.selected]: item?.pricelist?.$ === values.pricelist,
                           })}
                         >
                           {priceAmount + '/' + periodName}
@@ -231,7 +244,7 @@ export default function FTPOrder() {
                     <Select
                       height={50}
                       value={values.autoprolong}
-                      label={t('autoprolong')}
+                      label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
@@ -246,16 +259,26 @@ export default function FTPOrder() {
                     />
                     <Select
                       height={50}
-                      value={values.autoprolong}
-                      label={t('autoprolong')}
-                      getElement={item => setFieldValue('autoprolong', item)}
+                      value={values.addon_961}
+                      label={`${t('domains_limit', { ns: 'dns' })}:`}
+                      getElement={item => {
+                        setFieldValue('addon_961', item)
+
+                        const data = {
+                          addon_961: item,
+                          datacenter: values.datacenter,
+                          period: values.period,
+                          pricelist: values.pricelist,
+                        }
+                        dispatch(dnsOperations.updateDNSPrice(setPrice, data))
+                      }}
                       isShadow
-                      itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = translatePeriod(el.$, t)
+                      itemsList={values?.limitsList?.map(el => {
+                        let labeltext = el + ' ' + t('Unit')
 
                         return {
                           label: labeltext,
-                          value: el.$key,
+                          value: el,
                         }
                       })}
                       className={s.select}
@@ -283,7 +306,7 @@ export default function FTPOrder() {
                           type="button"
                           className={s.turn_link}
                           onClick={() => {
-                            dispatch(ftpOperations.getPrintLicense(values.tarif))
+                            dispatch(dnsOperations.getPrintLicense(values.pricelist))
                           }}
                         >
                           {`"${t('terms_2')}"`}

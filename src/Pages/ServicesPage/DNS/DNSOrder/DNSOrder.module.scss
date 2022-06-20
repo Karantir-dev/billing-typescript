@@ -15,7 +15,7 @@
 
 .tarifs_block {
   display: grid;
-  grid-template-columns: repeat(2, 122px);
+  grid-template-columns: repeat(1, 251px);
   grid-auto-rows: max-content;
   grid-column-gap: 9px;
   grid-row-gap: 10px;
@@ -30,8 +30,8 @@
   align-items: center;
   background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
-  padding-bottom: 30px;
-  padding-top: 30px;
+  padding-bottom: 18px;
+  padding-top: 18px;
   position: relative;
   border-radius: 3px;
   transition: font-weight 0.2s ease, transform 0.1s ease-in-out;
@@ -58,6 +58,10 @@
   }
 }
 
+.dns_img {
+  margin-bottom: 7px;
+}
+
 .sale_percent {
   position: absolute;
   display: flex;
@@ -76,7 +80,7 @@
 }
 
 .card_title {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 130%;
   color: var(--servers_tariff_color);
   max-width: 80%;
@@ -84,7 +88,7 @@
   &::after {
     content: '';
     display: block;
-    width: 25px;
+    width: 30px;
     height: 1px;
     background-color: var(--after-line-bgc);
     margin: 15px auto 0px auto;
@@ -163,6 +167,7 @@
   margin-left: 12px;
 }
 .turn_link {
+  text-align: start;
   color: var(--link-color);
   text-decoration: underline;
   cursor: pointer;
@@ -271,7 +276,7 @@
 
   .tarifs_block {
     display: grid;
-    grid-template-columns: repeat(3, 202px);
+    grid-template-columns: repeat(3, 252px);
     grid-auto-rows: max-content;
     grid-column-gap: 15px;
     grid-row-gap: 20px;
@@ -293,7 +298,6 @@
   }
 
   .select {
-    width: 242px;
     & span {
       font-size: 18px;
     }
@@ -390,11 +394,6 @@
   .processor_name {
     font-size: 18px;
   }
-
-  .software_OS_List {
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -407,11 +406,6 @@
   .page_title {
     font-size: 22px;
     margin-bottom: 30px;
-  }
-
-  .tarifs_block {
-    grid-template-columns: repeat(6, 176px);
-    grid-column-gap: 20px;
   }
 
   .tarif_card {
@@ -428,8 +422,6 @@
 
 @media screen and (min-width: 1900px) {
   .tarifs_block {
-    grid-template-columns: repeat(6, 191px);
-    grid-column-gap: 22px;
   }
 }
 

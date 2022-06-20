@@ -22,6 +22,7 @@ import {
   Info,
   ExitSign,
   Attention,
+  Exchange,
 } from '../../../images'
 
 export default function Component(props) {
@@ -67,6 +68,8 @@ export default function Component(props) {
         return <ExitSign />
       case 'attention':
         return <Attention />
+      case 'exchange':
+        return <Exchange />
 
       default:
         return null
@@ -114,6 +117,7 @@ Component.propTypes = {
     'refund',
     'info',
     'exitSign',
+    'exchange',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,

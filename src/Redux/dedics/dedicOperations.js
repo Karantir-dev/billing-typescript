@@ -10,10 +10,7 @@ import * as route from '../../routes'
 
 // //GET SERVERS OPERATIONS
 
-console.log('deidics test1234')
-
 const getServersList = () => (dispatch, getState) => {
-  console.log('dedic list')
   dispatch(actions.showLoader())
 
   const {
@@ -35,7 +32,6 @@ const getServersList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log('servers list')
       dispatch(dedicActions.setServersList(data.doc.elem ? data.doc.elem : []))
       dispatch(actions.hideLoader())
     })
@@ -46,11 +42,7 @@ const getServersList = () => (dispatch, getState) => {
     })
 }
 
-console.log('dedic list')
-
 const getTarifs = () => (dispatch, getState) => {
-  console.log('dedics tariffs')
-
   dispatch(actions.showLoader())
 
   const {
@@ -95,9 +87,7 @@ const getTarifs = () => (dispatch, getState) => {
     })
 }
 
-console.log('dedics tariffs')
 const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) => {
-  console.log('dedics updated tariffs')
   dispatch(actions.showLoader())
 
   const {
@@ -143,10 +133,8 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
       dispatch(actions.hideLoader())
     })
 }
-console.log('dedics updated tariffs ')
 
 const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getState) => {
-  console.log('dedics update period')
   dispatch(actions.showLoader())
 
   const {
@@ -172,9 +160,6 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       const { val: datacenter } = data.doc.slist[0]
       const { val: period } = data.doc.slist[1]
       const { $: currentDatacenter } = data.doc.datacenter
-      console.log(datacenter)
-
-      console.log(data)
 
       const orderData = {
         fpricelist,
@@ -193,7 +178,6 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       dispatch(actions.hideLoader())
     })
 }
-console.log('dedics update period')
 
 const getParameters =
   (period, datacenter, pricelist, setParameters, setFieldValue) =>
@@ -445,7 +429,6 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
       }),
     )
     .then(({ data }) => {
-      console.log('edit server data')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const IP = Object.keys(data.doc)
@@ -575,32 +558,30 @@ const editDedicServer =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         const billorder = data?.doc?.billorder?.$
-        console.log(billorder)
-        console.log(handleModal)
 
-        // axiosInstance
-        //   .post(
-        //     '/',
-        //     qs.stringify({
-        //       func: 'basket',
-        //       auth: sessionId,
-        //       billorder,
-        //       sok: 'ok',
-        //     }),
-        //   )
-        //   .then(data => {
-        //     console.log(data)
-        //     dispatch(actions.hideLoader())
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'basket',
+              auth: sessionId,
+              billorder,
+              sok: 'ok',
+            }),
+          )
+          .then(data => {
+            console.log(data)
+            dispatch(actions.hideLoader())
 
-        //     dispatch(
-        //       cartActions.setCartIsOpenedState({
-        //         isOpened: true,
-        //         redirectPath: route.DEDICATED_SERVERS,
-        //       }),
-        //     )
-        //   })
+            dispatch(
+              cartActions.setCartIsOpenedState({
+                isOpened: true,
+                redirectPath: route.DEDICATED_SERVERS,
+              }),
+            )
+          })
 
-        // handleModal()
+        handleModal()
       })
       .catch(error => {
         console.log('error', error)
@@ -916,7 +897,6 @@ const orderIPInfo = (ipPlid, setInitialValues) => (dispatch, getState) => {
       const { val: typeList } = data.doc.slist[0]
       const { count, domain, maxcount } = data.doc
 
-      console.log(data, 'order info')
       dispatch(actions.hideLoader())
       setInitialValues({ typeList, count, domain, maxcount })
     })
@@ -1213,11 +1193,9 @@ const goToPanel = elid => (dispatch, getState) => {
     })
 }
 
-console.log('log from dedics for')
 const getDedicFilters =
   (setFilters, data = {}, filtered = false) =>
   (dispatch, getState) => {
-    console.log('dedic filters')
     dispatch(actions.showLoader())
 
     const {
@@ -1275,7 +1253,6 @@ const getDedicFilters =
         dispatch(actions.hideLoader())
       })
   }
-console.log('dedic filters changed twice ')
 
 export default {
   getTarifs,

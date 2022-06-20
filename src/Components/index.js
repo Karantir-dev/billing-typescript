@@ -125,6 +125,7 @@ export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 
 //==========================================FTP==========================================//
 export { default as DNSList } from './Services/dns/DNSList/DNSList'
+export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
@@ -132,3 +133,4 @@ export { default as DedicItem } from './Cart/DedicItem/DedicItem'
 export { default as DomainItem } from './Cart/DomainItem/DomainItem'
 export { default as VdsItem } from './Cart/VdsItem/VdsItem'
 export { default as FtpItem } from './Cart/FtpItem/FtpItem'
+export { default as DnsItem } from './Cart/DnsItem/DnsItem'

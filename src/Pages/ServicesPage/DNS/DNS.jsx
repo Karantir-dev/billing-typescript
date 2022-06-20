@@ -12,11 +12,11 @@ import {
   Backdrop,
   BreadCrumbs,
   FTPFiltersModal,
-  FTPEditModal,
   ProlongModal,
   DedicsHistoryModal,
   FTPInstructionModal,
   DNSList,
+  DNSEditModal,
 } from '../../../Components'
 import { dnsOperations, dnsSelectors } from '../../../Redux'
 import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
@@ -123,6 +123,14 @@ export default function DNS() {
                   icon="edit"
                 />
               </HintWrapper>
+              <HintWrapper label={t('CHANGE TTTTT', { ns: 'other' })}>
+                <IconButton
+                  className={s.tools_icon}
+                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
+                  disabled={!activeServer}
+                  icon="exchange"
+                />
+              </HintWrapper>
 
               <HintWrapper label={t('prolong')}>
                 <IconButton
@@ -183,7 +191,7 @@ export default function DNS() {
         onClick={() => setElidForEditModal(0)}
         isOpened={Boolean(elidForEditModal)}
       >
-        <FTPEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+        <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
       <Backdrop

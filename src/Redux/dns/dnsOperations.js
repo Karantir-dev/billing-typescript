@@ -4,8 +4,8 @@ import { actions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 // import i18n from '../../i18n'
-// import cartActions from '../cart/cartActions'
-// import * as route from '../../routes'
+import cartActions from '../cart/cartActions'
+import * as route from '../../routes'
 import dnsActions from './dnsActions'
 
 //GET hostings OPERATIONS
@@ -64,8 +64,6 @@ const getTarifs =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data, 'data for order dns host')
-
         const { elem: tarifList } = data.doc.list[0]
         const { val: datacenter } = data.doc.slist.length > 1 ? data.doc.slist[0] : []
         const { val: period } = data.doc.slist[0]
@@ -78,7 +76,7 @@ const getTarifs =
           currentDatacenter,
         }
 
-        dispatch(setTarifs(orderData))
+        setTarifs(orderData)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -87,9 +85,6 @@ const getTarifs =
         dispatch(actions.hideLoader())
       })
   }
-console.log('dns operations')
-console.log('new in dns')
-console.log('new in dns2')
 
 const getParameters =
   (period, datacenter, pricelist, setParameters, setFieldValue) =>
@@ -118,8 +113,6 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log('params', data)
-
         const { slist: paramsList } = data.doc
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
         const domainsLimit = data.doc.metadata.form.field.filter(item =>
@@ -127,25 +120,24 @@ const getParameters =
         )
 
         const maxLimit = domainsLimit[0].slider[0].$max
-        const minLimit = domainsLimit[0].slider[0].$step
-        const step = domainsLimit[0].slider[0].$min
+        const step = domainsLimit[0].slider[0].$step
+        const minLimit = domainsLimit[0].slider[0].$min
 
         const limitsList = []
-        let initialLimit = 100
-        for (let i = minLimit; i <= maxLimit; i += step) {
-          limitsList.push(initialLimit + step)
+        let initialLimit = +minLimit
+        limitsList.push(+minLimit)
+        while (+initialLimit < +maxLimit) {
+          limitsList.push(Number(initialLimit) + Number(step))
+          initialLimit += +step
         }
-
-        console.log(domainsLimit[0].slider[0])
-
-        console.log(maxLimit, minLimit, step)
 
         // fields
 
         setFieldValue('autoprolonglList', autoprolong[0].val)
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
-        setFieldValue('addon_961', domainsLimit)
-        setParameters({ paramsList, domainsLimit })
+        setFieldValue('addon_961', limitsList[0])
+        setFieldValue('limitsList', limitsList)
+        setParameters({ paramsList })
         dispatch(actions.hideLoader())
       })
 
@@ -156,147 +148,186 @@ const getParameters =
       })
   }
 
-// const orderFTP = (autoprolong, datacenter, period, pricelist) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+const updateDNSPrice =
+  (setNewPrice, data = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'storage.order.param',
-//         out: 'json',
-//         auth: sessionId,
-//         period,
-//         datacenter,
-//         pricelist,
-//         autoprolong,
-//         licence_agreement: 'on',
-//         clicked_button: 'finish',
-//         sok: 'ok',
-//         lang: 'en',
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dnshost.order.param',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const price = data.doc.orderinfo.$.split('Total amount:')[1].split(' ')[1]
 
-//       dispatch(
-//         cartActions.setCartIsOpenedState({
-//           isOpened: true,
-//           redirectPath: route.FTP,
-//         }),
-//       )
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+        setNewPrice(price)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
-// const getPrintLicense = priceId => (dispatch, getState) => {
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+const orderDNS =
+  (data = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-//   dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'license.print',
-//         out: 'doc_print',
-//         auth: sessionId,
-//         elid: priceId,
-//       }),
-//       { responseType: 'blob' },
-//     )
-//     .then(response => {
-//       const url = window.URL.createObjectURL(
-//         new Blob([response.data], { type: 'text/html' }),
-//       )
-//       const link = document.createElement('a')
-//       link.href = url
-//       link.setAttribute('target', '_blank')
-//       document.body.appendChild(link)
-//       link.click()
-//       link.parentNode.removeChild(link)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dnshost.order.param',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          licence_agreement: 'on',
+          clicked_button: 'finish',
+          lang: 'en',
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: route.DNS,
+          }),
+        )
 
-// const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+const getPrintLicense = priceId => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'storage.edit',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  dispatch(actions.showLoader())
 
-//       const autoprolongList = data.doc.slist.filter(
-//         item => item.$name === 'autoprolong',
-//       )[0]
-//       const payment_method = data.doc.slist.filter(
-//         item => item.$name === 'stored_method',
-//       )[0]
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'license.print',
+        out: 'doc_print',
+        auth: sessionId,
+        elid: priceId,
+      }),
+      { responseType: 'blob' },
+    )
+    .then(response => {
+      console.log(priceId, 'priceid')
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'text/html' }),
+      )
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('target', '_blank')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
 
-//       const {
-//         user,
-//         autoprolong,
-//         opendate,
-//         passwd,
-//         period,
-//         name,
-//         id,
-//         expiredate,
-//         createdate,
-//       } = data.doc
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
-//       setInitialParams({
-//         autoprolongList,
-//         autoprolong,
-//         opendate,
-//         passwd,
-//         period,
-//         name,
-//         user,
-//         id,
-//         expiredate,
-//         createdate,
-//         payment_method,
-//       })
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dnshost.edit',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const autoprolongList = data.doc.slist.filter(
+        item => item.$name === 'autoprolong',
+      )[0]
+      const payment_method = data.doc.slist.filter(
+        item => item.$name === 'stored_method',
+      )[0]
+
+      console.log(data.doc)
+
+      const {
+        username,
+        autoprolong,
+        opendate,
+        password,
+        period,
+        name,
+        id,
+        expiredate,
+        createdate,
+        ip,
+      } = data.doc
+
+      setInitialParams({
+        autoprolongList,
+        autoprolong,
+        opendate,
+        password,
+        period,
+        name,
+        username,
+        id,
+        ip,
+        expiredate,
+        createdate,
+        payment_method,
+      })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 // const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
 //   dispatch(actions.showLoader())
@@ -434,8 +465,11 @@ export default {
   getTarifs,
   getDNSList,
   getParameters,
+  updateDNSPrice,
+  orderDNS,
   // orderFTP,
-  // getPrintLicense,
+  getPrintLicense,
+  getCurrentDNSInfo,
   // getCurrentStorageInfo,
   // editFTP,
   // getServiceInstruction,
