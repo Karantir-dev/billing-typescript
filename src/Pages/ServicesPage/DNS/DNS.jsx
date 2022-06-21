@@ -14,14 +14,12 @@ import {
   FTPFiltersModal,
   ProlongModal,
   DedicsHistoryModal,
-  FTPInstructionModal,
   DNSList,
   DNSEditModal,
+  DNSInstructionModal,
 } from '../../../Components'
-import { dnsOperations, dnsSelectors } from '../../../Redux'
-import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
+import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
-
 import s from './DNS.module.scss'
 
 export default function DNS() {
@@ -31,6 +29,7 @@ export default function DNS() {
   const navigate = useNavigate()
 
   const dnsList = useSelector(dnsSelectors.getDNSList)
+
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -219,7 +218,7 @@ export default function DNS() {
         onClick={() => setElidForInstructionModal(0)}
         isOpened={Boolean(elidForInstructionModal)}
       >
-        <FTPInstructionModal
+        <DNSInstructionModal
           elid={elidForInstructionModal}
           closeFn={() => setElidForInstructionModal(0)}
         />

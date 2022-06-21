@@ -129,9 +129,10 @@ export { default as FTPFiltersModal } from './Services/ftp/FTPFiltersModal/FTPFi
 export { default as FTPInstructionModal } from './Services/ftp/FTPInstructionModal/FTPInstructionModal'
 export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 
-//==========================================FTP==========================================//
+//==========================================DNS==========================================//
 export { default as DNSList } from './Services/dns/DNSList/DNSList'
 export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
+export { default as DNSInstructionModal } from './Services/dns/DNSInstructionModal/DNSInstructionModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

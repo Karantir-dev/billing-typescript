@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 import Select from '../../../../Components/ui/Select/Select'
 import { dnsOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
+// import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './DNSOrder.module.scss'
 
@@ -248,7 +248,8 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = translatePeriod(el.$, t)
+                        // let labeltext = translatePeriod(el.$, t)
+                        let labeltext = el.$
 
                         return {
                           label: labeltext,

@@ -26,6 +26,7 @@ import {
   cartReducer,
   vhostReducer,
   ftpReducer,
+  dnsReducer,
   affiliateReducer,
   dedicReducer,
 } from '.'
@@ -57,6 +58,7 @@ const rootReducer = combineReducers({
   vhost: vhostReducer,
   dedic: dedicReducer,
   ftp: ftpReducer,
+  dns: dnsReducer,
   affiliateProgram: affiliateReducer,
   theme,
   isLoading,

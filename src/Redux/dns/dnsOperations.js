@@ -1,12 +1,10 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
-import cartActions from '../cart/cartActions'
 import * as route from '../../routes'
-import dnsActions from './dnsActions'
+import { actions, cartActions, dnsActions } from '..'
 
 //GET hostings OPERATIONS
 
@@ -470,36 +468,36 @@ const editDNSWithExtraCosts =
         dispatch(actions.hideLoader())
       })
   }
-// const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'service.instruction.html',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//       setInstruction(data.doc.body)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.instruction.html',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      setInstruction(data.doc.body)
 
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 // const getFTPFilters =
 //   (setFilters, data = {}, filtered = false) =>
@@ -577,6 +575,6 @@ export default {
   editDNSWithExtraCosts,
   // getCurrentStorageInfo,
   // editFTP,
-  // getServiceInstruction,
+  getServiceInstruction,
   // getFTPFilters,
 }

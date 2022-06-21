@@ -94,3 +94,9 @@ export { default as ftpReducer } from './ftp/ftpReducer'
 export { default as ftpOperations } from './ftp/ftpOperations'
 export { default as ftpSelectors } from './ftp/ftpSelectors'
 export { default as ftpActions } from './ftp/ftpActions'
+
+//===========================================DNS=================================//
+export { default as dnsReducer } from './dns/dnsReducer'
+export { default as dnsActions } from './dns/dnsActions'
+export { default as dnsOperations } from './dns/dnsOperations'
+export { default as dnsSelectors } from './dns/dnsSelectors'
