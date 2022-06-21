@@ -60,6 +60,7 @@ const getTarifs =
         }),
       )
       .then(({ data }) => {
+        console.log(data, 'order data')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         const { elem: tarifList } = data.doc.list[0]
@@ -557,21 +558,50 @@ const getDNSFilters =
       })
   }
 
+const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'service.changepricelist',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      console.log(data, 'chnage pricelist')
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      setInitialState(data.doc)
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getDNSList,
   getParameters,
   updateDNSPrice,
   orderDNS,
-  // orderFTP,
   getPrintLicense,
   getCurrentDNSInfo,
   editDNS,
   getDNSExtraPayText,
   editDNSWithExtraCosts,
-  // getCurrentStorageInfo,
-  // editFTP,
   getServiceInstruction,
   getDNSFilters,
-  // getFTPFilters,
+  getChangeTariffPricelist,
 }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
 import { Formik, Form } from 'formik'
 
@@ -9,15 +9,12 @@ import s from './DNSChangeTarif.module.scss'
 // import Select from '../../../ui/Select/Select'
 import { Button, RadioButton } from '../../..'
 // import { translatePeriod } from '../../DedicatedServers/EditServerModal/EditServerModal'
-// import { dnsOperations } from '../../../../Redux'
+import { dnsOperations } from '../../../../Redux'
 
 export default function DNSChangeTarif({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs', 'dns'])
-  //   const dispatch = useDispatch()
-  const [
-    initialState,
-    // setInitialState
-  ] = useState()
+  const dispatch = useDispatch()
+  const [initialState, setInitialState] = useState()
   //   const [currentLimit, setCurrentLimit] = useState(null)
   //   const [additionalText, setAdditionalText] = useState('')
 
@@ -52,6 +49,10 @@ export default function DNSChangeTarif({ elid, closeFn }) {
     // }
   }
 
+  useEffect(() => {
+    dispatch(dnsOperations.getChangeTariffPricelist(elid, setInitialState))
+  }, [])
+
   return (
     <Formik
       enableReinitialize
@@ -68,7 +69,9 @@ export default function DNSChangeTarif({ elid, closeFn }) {
             <div className={s.parameters_block}>
               <div className={s.header_block}>
                 <div className={s.title_wrapper}>
-                  <h2 className={s.page_title}>{t('DNS tariff', { ns: 'other' })}</h2>
+                  <h2 className={s.page_title}>
+                    {t('Changing DNS tariff', { ns: 'other' })}
+                  </h2>
                   <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
                 </div>
                 <Cross
