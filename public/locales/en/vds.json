@@ -76,5 +76,6 @@
   "phone_number": "Phone number",
   "confirmation_method": "Confirmation method",
   "send_code_attempts": "You have {{sum}} attempt to send the code",
-  "input_code_attempts": "{{sum}} attempts are left"
+  "input_code_attempts": "{{sum}} attempts are left",
+  "delete_verification_title": "Service removal confirmation - "
 }

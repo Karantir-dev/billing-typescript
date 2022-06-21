@@ -80,5 +80,6 @@
   "phone_number": "Номер телефона",
   "confirmation_method": "Способ подтверждения",
   "send_code_attempts": "Осталось {{sum}} попытки отправки кода",
-  "input_code_attempts": "Осталось {{sum}} попыток ввода кода"
+  "input_code_attempts": "Осталось {{sum}} попыток ввода кода",
+  "delete_verification_title": "Подтверждение удаления услуги - "
 }

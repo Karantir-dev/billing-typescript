@@ -16,6 +16,7 @@ import {
   VDSPasswordChange,
   VdsRebootModal,
   ProlongModal,
+  DeleteVerificationModal,
 } from '../../../../Components'
 import { vdsOperations } from '../../../../Redux'
 
@@ -34,15 +35,19 @@ export default function VDS() {
   const [idForProlong, setIdForProlong] = useState('')
   const [idForPassChange, setIdForPassChange] = useState('')
   const [idForReboot, setIdForReboot] = useState('')
+  const [deletionInitState, setDeletionInitState] = useState()
 
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
   }, [])
 
   const deleteServer = () => {
-    dispatch(vdsOperations.deleteVDS(idForDeleteModal, setServers))
-    setActiveServer(null)
-    setIdForDeleteModal('')
+    dispatch(
+      vdsOperations.deleteVDS(idForDeleteModal, setServers, setDeletionInitState, () =>
+        setIdForDeleteModal(''),
+      ),
+    )
+    // setActiveServer(null)
   }
 
   const getSarverName = id => {
@@ -172,11 +177,18 @@ export default function VDS() {
         isOpened={Boolean(idForDeleteModal)}
         onClick={() => setIdForDeleteModal('')}
       >
-        <DeleteModal
-          name={getSarverName(idForDeleteModal)}
-          deleteFn={deleteServer}
-          closeFn={() => setIdForDeleteModal('')}
-        />
+        {deletionInitState ? (
+          <DeleteVerificationModal
+            initState={deletionInitState}
+            closeFn={() => setIdForDeleteModal('')}
+          />
+        ) : (
+          <DeleteModal
+            name={getSarverName(idForDeleteModal)}
+            deleteFn={deleteServer}
+            closeFn={() => setIdForDeleteModal('')}
+          />
+        )}
       </Backdrop>
 
       <Backdrop
