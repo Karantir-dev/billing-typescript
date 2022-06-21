@@ -1,0 +1,160 @@
+.title {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.list {
+  display: grid;
+}
+
+.card {
+  max-width: 350px;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--icon-color);
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--transparent-color);
+}
+
+.value {
+  font-size: 16px;
+  word-break: break-word;
+}
+
+.green {
+  color: var(--success-color);
+}
+
+.btn_edit {
+  margin: 0 auto;
+  background-color: var(--forms_bgc_4);
+}
+
+.table_headrow {
+  display: flex;
+  padding: 0 70px 0 10px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.desktop_label {
+  font-size: 14px;
+
+  &:nth-child(1) {
+    flex-basis: 16%;
+  }
+  &:nth-child(2) {
+    flex-basis: 19%;
+  }
+  &:nth-child(3) {
+    flex-basis: 15%;
+  }
+  &:nth-child(4) {
+    flex-basis: 35%;
+  }
+  &:nth-child(5) {
+    flex-basis: 15%;
+  }
+}
+
+.table_row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  gap: 10px;
+  padding: 0 70px 0 10px;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+}
+
+.table_value {
+  &:nth-child(1) {
+    flex-basis: 16%;
+  }
+  &:nth-child(2) {
+    flex-basis: 19%;
+  }
+  &:nth-child(3) {
+    flex-basis: 15%;
+  }
+  &:nth-child(4) {
+    flex-basis: 35%;
+  }
+  &:nth-child(5) {
+    flex-basis: 15%;
+  }
+}
+
+.desktop_edit {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 0;
+  cursor: pointer;
+  transition: transform 100ms;
+
+  &:hover svg {
+    fill: url('#gradient');
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.93);
+  }
+}
+
+.icon_edit {
+  width: 16px;
+  height: 16px;
+}
+
+@media screen and (min-width: 400px) {
+  .list {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card {
+    max-width: initial;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .table_headrow {
+    padding: 0 100px 0 30px;
+  }
+
+  .table_row {
+    padding: 0 100px 0 30px;
+  }
+
+  .desktop_edit {
+    right: 30px;
+  }
+}

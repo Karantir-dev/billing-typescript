@@ -33,6 +33,7 @@ export const DOMAINS_TRANSFER_NS =
 
 export const VDS = '/services/vds'
 export const VDS_ORDER = '/services/vds/vds_order'
+export const VDS_IP = '/services/vds/ip'
 
 export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'

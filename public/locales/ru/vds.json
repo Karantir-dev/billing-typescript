@@ -40,11 +40,6 @@
   "not_installed": "-- Не установлено --",
   "password": "Пароль",
   "user_password": "Пароль пользователя",
-  "ISPmanager 6 Host - Unlimited domains (79.20 EUR per year)": "ISPmanager 6 Host - Неограниченное число доменов (79.20 EUR за год)",
-  "ISPmanager 6 Lite - 10 domains (26.40 EUR per year)": "ISPmanager 6 Lite - 10 доменов (26.40 EUR за год)",
-  "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)": "ISPmanager 6 Pro - 50 доменов (52.80 EUR за год)",
-  "Without a license (0.00 EUR per year)": "Без лицензии (0.00 EUR за год)",
-  "VestaCP (0.00 EUR per year)": "VestaCP (0.00 EUR за год)",
 
   "Without a license": "Без лицензии",
   "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Неограниченное число доменов",
@@ -71,5 +66,19 @@
   "amount": "Количество",
   "Unit": "шт",
   "Service limits": "Ограничение услуги",
-  "port_speed_limits": "Скорость порта с DDoS-защитой (входящая скорость): 1024 Кбит/сек в день + 0.0029 EUR за 1 Кбит/сек"
+  "port_speed_limits": "Скорость порта с DDoS-защитой (входящая скорость): 1024 Кбит/сек в день + 0.0029 EUR за 1 Кбит/сек",
+  "warning_domain": "Введите валидное доменное имя",
+  "attention": "Внимание",
+  "delete_message": "Вы действительно хотите удалить услугу",
+  "password_change_desc": "Для применения изменений может потребоваться перезагрузка виртуального сервера, а так же временная приостановка его работы.",
+  "new_password": "Новый пароль",
+  "new_password_placeholder": "Введите пароль",
+  "confirmation": "Подтверждение",
+  "confirmation_placeholder": "Подтвердите пароль",
+  "passwd_change_success": "Запущена операция смены пароля для услуги",
+  "delete_verification_desc": "Мы заботимся о сохранности ваших данных. Поэтому, чтобы убедиться, что это действительно вы, при удалении услуги нам необходимо проверить ваш телефон. Если вы готовы прямо сейчас принять звонок/получить SMS на проверенный номер телефона, нажмите кнопку 'Далее'. Если ваш проверенный телефон не совпадает с указанным, обратитесь в службу технической поддержки.",
+  "phone_number": "Номер телефона",
+  "confirmation_method": "Способ подтверждения",
+  "send_code_attempts": "Осталось {{sum}} попытки отправки кода",
+  "input_code_attempts": "Осталось {{sum}} попыток ввода кода"
 }

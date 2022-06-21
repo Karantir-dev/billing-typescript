@@ -37,15 +37,17 @@ export default function VdsItem({ el, deleteItemHandler }) {
     let text = el?.desc?.$?.match(regex)?.[0]
     if (text?.includes('EUR')) {
       text = text.replace(text.split('EUR ')[1], t(text.split('EUR ')[1].trim()))
+    } else {
+      text = t(text)
     }
-    console.log(text)
+
     return text
   }
 
   const getTranslatedCP = string => {
     const partText = string?.match(/(?<=^)(.+?)(?= - \d+?\.)/g)?.[0]
 
-    return string.replace(partText, t(partText))
+    return partText ? string.replace(partText, t(partText)) : string
   }
 
   return (

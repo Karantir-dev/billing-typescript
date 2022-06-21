@@ -62,3 +62,35 @@
     }
   }
 }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: fit-content;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 10px;
+  max-height: 260px;
+
+  &::-webkit-scrollbar {
+    width: 27px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-top: 10px transparent solid;
+    border-bottom: 10px transparent solid;
+    border-right: 24px transparent solid;
+    background-clip: padding-box;
+    background-color: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    min-height: 35px;
+    border-top: 10px transparent solid;
+    border-bottom: 10px transparent solid;
+    border-right: 24px transparent solid;
+    background-clip: padding-box;
+    background-color: #e72690;
+  }
+}

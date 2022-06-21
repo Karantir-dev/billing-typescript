@@ -12,21 +12,30 @@ import {
   Delete,
   ExitSign,
 } from '../../../../images'
+import * as route from '../../../../routes'
+import { useNavigate } from 'react-router-dom'
 import { useOutsideAlerter } from '../../../../utils'
 import { ServerState } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSmobileItem.module.scss'
 
-export default function VDSmobileItem({ server, setElidForEditModal }) {
+export default function VDSmobileItem({
+  server,
+  setElidForEditModal,
+  setIdForDeleteModal,
+  setIdForPassChange,
+  setIdForReboot,
+  setIdForProlong,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
-
+  const navigate = useNavigate()
   const [toolsOpened, setToolsOpened] = useState(false)
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
-  const handleToolBtnClick = (fn, id) => {
-    fn(id)
+  const handleToolBtnClick = fn => {
+    fn()
     setToolsOpened(false)
   }
 
@@ -47,7 +56,8 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
-                  onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
+                  onClick={() => handleToolBtnClick(setElidForEditModal)}
+                  disabled={server?.status?.$ !== '2'}
                 >
                   <Edit className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
@@ -57,6 +67,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForPassChange)}
                   disabled={server.allow_changepassword?.$ !== 'on'}
                 >
                   <PassChange className={s.tool_icon} />
@@ -67,6 +78,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForReboot)}
                   disabled={server.show_reboot?.$ !== 'on'}
                 >
                   <Reload className={s.tool_icon} />
@@ -77,6 +89,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => navigate(route.VDS_IP, { state: { id: server?.id.$ } })}
                   disabled={server.has_ip_pricelist?.$ !== 'on'}
                 >
                   <IP className={s.tool_icon} />
@@ -87,6 +100,7 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForProlong)}
                   disabled={server?.status?.$ !== '2'}
                 >
                   <Clock className={s.tool_icon} />
@@ -94,7 +108,11 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 </button>
               </li>
               <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  disabled={server?.status?.$ !== '2'}
+                >
                   <Refund className={s.tool_icon} />
                   {t('history')}
                 </button>
@@ -120,7 +138,11 @@ export default function VDSmobileItem({ server, setElidForEditModal }) {
                 </button>
               </li>
               <li className={s.tool_item}>
-                <button className={s.tool_btn} type="button">
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  onClick={() => handleToolBtnClick(setIdForDeleteModal)}
+                >
                   <Delete className={s.tool_icon} />
                   {t('delete', { ns: 'other' })}
                 </button>

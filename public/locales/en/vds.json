@@ -40,11 +40,6 @@
   "not_installed": "-- none --",
   "password": "Password",
   "user_password": "User password",
-  "ISPmanager 6 Host - Unlimited domains (79.20 EUR per year)": "ISPmanager 6 Host - Unlimited domains (79.20 EUR per year)",
-  "ISPmanager 6 Lite - 10 domains (26.40 EUR per year)": "ISPmanager 6 Lite - 10 domains (26.40 EUR per year)",
-  "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)": "ISPmanager 6 Pro - 50 domains (52.80 EUR per year)",
-  "Without a license (0.00 EUR per year)": "Without a license (0.00 EUR per year)",
-  "VestaCP (0.00 EUR per year)": "VestaCP (0.00 EUR per year)",
 
   "Without a license": "Without a license",
   "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Unlimited domains",
@@ -71,5 +66,15 @@
   "amount": "Amount",
   "Unit": "unit",
   "Service limits": "Service limits",
-  "port_speed_limits": "DDoS Protected Port Speed (Incoming): <b>1024 Kbit/sec</b> day + 0.0029 EUR for 1 Kbit/sec"
+  "port_speed_limits": "DDoS Protected Port Speed (Incoming): 1024 Kbit/sec day + 0.0029 EUR for 1 Kbit/sec",
+  "warning_domain": "Введите валидное доменное имя",
+  "attention": "Attention",
+  "delete_message": "Do you really want to delete the selected service",
+  "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
+  "passwd_change_success": "Password change has been initiated for the service",
+  "delete_verification_desc": "Your data security is our top priority. To make sure that you really want to delete the service, we need to verify your phone number. Click Next if you are ready to receive a phone call or an sms to the verified number. Your verified phone number differs the number specified here, please contact Technical support",
+  "phone_number": "Phone number",
+  "confirmation_method": "Confirmation method",
+  "send_code_attempts": "You have {{sum}} attempt to send the code",
+  "input_code_attempts": "{{sum}} attempts are left"
 }

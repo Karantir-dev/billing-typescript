@@ -34,8 +34,20 @@ export default function EditModal({ elid, closeFn }) {
     )
   }
 
+  const getControlPanelList = fieldName => {
+    const optionsList = initialState.slist.find(elem => elem.$name === fieldName)?.val
+
+    return optionsList?.map(({ $key, $ }) => {
+      let label = translatePeriodText($.trim())
+
+      label = t(label.split(' (')[0]) + ' (' + label.split(' (')[1]
+      return { value: $key, label: label }
+    })
+  }
+
   const getOptionsListExtended = fieldName => {
     const optionsList = initialState.slist.find(elem => elem.$name === fieldName).val
+
     if (fieldName === 'autoprolong' && !optionsList.find(el => el.$key === 'null')) {
       optionsList.unshift({ $key: 'null', $: 'Disabled' })
     }
@@ -85,7 +97,7 @@ export default function EditModal({ elid, closeFn }) {
   }
 
   const handleFormSubmit = values => {
-    dispatch(vdsOperations.editVDS(elid, values))
+    dispatch(vdsOperations.editVDS(elid, values, initialState.register))
     closeFn()
   }
 
@@ -115,26 +127,28 @@ export default function EditModal({ elid, closeFn }) {
       <Formik
         initialValues={{
           autoprolong: initialState.autoprolong.$,
-          paymentMethod: '0',
+          stored_method: '0',
           domainName: initialState.domain.$,
           userName: initialState.username.$,
           serverid: initialState.serverid.$,
           preinstalledSoft:
-            initialState.recipe.$ === 'null' ? t('not_installed') : initialState.recipe.$,
+            initialState?.recipe?.$ === 'null' || !initialState?.recipe?.$
+              ? t('not_installed')
+              : initialState.recipe.$,
           IP: initialState.ip.$,
           password: initialState.password.$,
           userpassword: initialState.userpassword.$,
           ostempl: initialState.ostempl.$,
-          license: initialState.addon_5772.$,
+          Control_panel: initialState.Control_panel,
           processors: translatePeriodText(
-            initialState.slist.find(el => el.$name === 'addon_5776').val[0].$,
+            initialState.slist.find(el => el.$name === 'CPU_count').val[0].$,
           ),
-          diskSpace: initialState.addon_5769.$,
-          portSpeed: initialState.slist.find(el => el.$name === 'addon_5777').val[0].$,
+          diskSpace: initialState.Disk_space,
+          portSpeed: initialState.slist.find(el => el.$name === 'Port_speed').val[0].$,
           memory: translatePeriodText(
-            initialState.slist.find(el => el.$name === 'addon_5907').val[0].$,
+            initialState.slist.find(el => el.$name === 'Memory').val[0].$,
           ),
-          IPcount: initialState.addon_5774.$,
+          IPcount: initialState.IP_addresses_count,
         }}
         onSubmit={handleFormSubmit}
       >
@@ -146,10 +160,7 @@ export default function EditModal({ elid, closeFn }) {
                   className={s.mb}
                   inputClassName={s.bgc}
                   value={values.autoprolong}
-                  getElement={value => {
-                    console.log(value)
-                    setFieldValue('autoprolong', value)
-                  }}
+                  getElement={value => setFieldValue('autoprolong', value)}
                   itemsList={getOptionsListExtended('autoprolong')}
                   label={`${t('autoprolong')}:`}
                   isShadow
@@ -158,8 +169,8 @@ export default function EditModal({ elid, closeFn }) {
                 <Select
                   className={s.mb}
                   inputClassName={s.bgc}
-                  value={values.paymentMethod}
-                  getElement={value => setFieldValue('paymentMethod', value)}
+                  value={values.stored_method}
+                  getElement={value => setFieldValue('stored_method', value)}
                   itemsList={getOptionsList('stored_method')}
                   label={`${t('payment_method')}:`}
                   isShadow
@@ -259,7 +270,7 @@ export default function EditModal({ elid, closeFn }) {
                   inputClassName={s.bgc}
                   value={values.diskSpace}
                   getElement={value => setFieldValue('diskSpace', value)}
-                  itemsList={getOptionsListExtended('addon_5769')}
+                  itemsList={getOptionsListExtended('Disk_space')}
                   label={`${t('disk_space')}:`}
                   isShadow
                   disabled={initialState.change_disc_size.$ === 'off'}
@@ -292,20 +303,22 @@ export default function EditModal({ elid, closeFn }) {
                 <Select
                   className={s.mb}
                   inputClassName={s.bgc}
-                  value={values.license}
+                  value={values.Control_panel}
                   getElement={value => {
-                    setFieldValue('license', value)
+                    setFieldValue('Control_panel', value)
+
                     dispatch(
                       vdsOperations.editVDS(
                         elid,
-                        { ...values, license: value },
-                        'addon_5772',
+                        { ...values, Control_panel: value },
+                        initialState.register,
+                        initialState.register.Control_panel,
                         mutateOptionsListData,
                         setOrderInfo,
                       ),
                     )
                   }}
-                  itemsList={getOptionsList('addon_5772')}
+                  itemsList={getControlPanelList('Control_panel')}
                   label={`${t('license')}:`}
                   isShadow
                 />

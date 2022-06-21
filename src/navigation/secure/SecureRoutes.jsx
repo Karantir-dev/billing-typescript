@@ -26,6 +26,7 @@ import {
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
+  VDSip,
   DedicatedServersPage,
   DedicOrderPage,
   FTP,
@@ -64,8 +65,8 @@ const Component = () => {
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />}
         />
         <Route
-          path={route.VDS_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+          path={route.VDS_IP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />}
         />
 
         <Route

@@ -10,13 +10,15 @@
   box-shadow: var(--forms_shadow);
   border-radius: 3px;
   cursor: pointer;
+  transition: transform 100ms;
 
   &:disabled {
     opacity: 0.5;
     cursor: auto;
   }
+
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.93);
   }
 
   &:hover:not(:disabled) {
