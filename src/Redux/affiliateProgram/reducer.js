@@ -1,11 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { affiliateActions } from './actions'
+import actions from './actions'
 
 const initialState = {
   promocode: '',
   refLink: '',
 }
 
-export const affiliateProgram = createReducer(initialState, {
-  [affiliateActions.setReferralLink]: (_, { payload }) => payload,
+const affiliateProgram = createReducer(initialState, {
+  [actions.setReferralLink]: (_, { payload }) => payload,
 })
+
+export default affiliateProgram

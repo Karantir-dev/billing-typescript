@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
@@ -18,11 +17,10 @@ import {
   DedicsHistoryModal,
   FTPInstructionModal,
 } from '../../../Components'
-import { ftpOperations } from '../../../Redux'
-import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
+import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
-import ftpSelectors from '../../../Redux/ftp/ftpSelectors'
 
+import * as route from '../../../routes'
 import s from './FTP.module.scss'
 
 export default function FTP() {

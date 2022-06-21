@@ -99,7 +99,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-        <HintWrapper wrapperClassName={s.calendarBtn} label={t('Transfer')}>
+        <HintWrapper wrapperClassName={s.transferBtn} label={t('Transfer')}>
           <IconButton
             onClick={() => navigate(routes.DOMAINS_TRANSFER_ORDERS)}
             icon="transfer"

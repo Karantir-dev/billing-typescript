@@ -1,8 +1,7 @@
 import qs from 'qs'
-import { actions } from '..'
+import { actions, contarctsActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
-import contarctsActions from './contarctsActions'
 
 const getContracts = () => (dispatch, getState) => {
   dispatch(actions.showLoader())

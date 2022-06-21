@@ -22,16 +22,18 @@ import {
   DomainsPage,
   DomainOrderPage,
   ServicesPage,
-  VDS,
-  VDSOrder,
   Contracts,
-  DedicatedServersPage,
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
+  DedicatedServersPage,
+  DedicOrderPage,
   FTP,
   FTPOrder,
-  DedicOrderPage,
+  VDS,
+  VDSOrder,
+  SharedHosting,
+  SharedHostingOrder,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -64,6 +66,17 @@ const Component = () => {
         <Route
           path={route.VDS_ORDER}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+        />
+
+        <Route
+          path={route.SHARED_HOSTING}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SharedHosting />} />}
+        />
+        <Route
+          path={route.SHARED_HOSTING_ORDER}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<SharedHostingOrder />} />
+          }
         />
 
         <Route

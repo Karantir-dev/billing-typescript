@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Shevron } from '../../../images'
 import classNames from 'classnames'

@@ -120,5 +120,13 @@
   "Cost (from/to)": "Стоимость (от/до):",
   "Valid (from/to)": "Действует (от/до)",
   "Order date (from/to)": "Дата заказа (от/до)",
-  "FTP server": "FTP-сервер"
+  "FTP server": "FTP-сервер",
+
+  "Trial": "Пробный",
+  "Month": "Месяц",
+  "Three months": "Три месяца",
+  "Half a year": "Пол года",
+  "Year": "Год",
+  "Two years": "Два года",
+  "Three years": "Три года"
 }

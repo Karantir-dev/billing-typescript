@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
+import { BreadCrumbs, Button, CheckBox, Select } from '../../../../Components'
 import { useLocation } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,10 +8,8 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import Select from '../../../../Components/ui/Select/Select'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
-import { ftpOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
+import { ftpOperations, dedicOperations } from '../../../../Redux'
+// import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './FTPOrder.module.scss'
 
@@ -237,7 +235,7 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = translatePeriod(el.$, t)
+                        let labeltext = el.$
 
                         return {
                           label: labeltext,

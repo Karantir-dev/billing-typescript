@@ -1,14 +1,12 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '..'
+import { actions, cartActions, dedicActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
-import dedicActions from './dedicActions'
 import i18n from './../../i18n'
-import cartActions from '../cart/cartActions'
 import * as route from '../../routes'
 
-//GET SERVERS OPERATIONS
+// GET SERVERS OPERATIONS
 
 const getServersList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())

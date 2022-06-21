@@ -9,7 +9,7 @@ import s from './FTPEditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
 import { Button } from '../../..'
-import { translatePeriod } from '../../DedicatedServers/EditServerModal/EditServerModal'
+// import { translatePeriod } from '../../DedicatedServers/EditServerModal/EditServerModal'
 import { ftpOperations } from '../../../../Redux'
 
 export default function FTPEditModal({ elid, closeFn }) {
@@ -92,7 +92,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                     isShadow
                     itemsList={initialState?.autoprolongList?.val?.map(el => {
                       return {
-                        label: translatePeriod(el?.$, t),
+                        label: el?.$,
                         value: el.$key,
                       }
                     })}

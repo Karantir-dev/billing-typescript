@@ -1,12 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '..'
+import { actions, ftpActions, cartActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
-import ftpActions from './ftpActions'
-// import dedicActions from './ftpActions'
 import i18n from '../../i18n'
-import cartActions from '../cart/cartActions'
 import * as route from '../../routes'
 
 //GET SERVERS OPERATIONS

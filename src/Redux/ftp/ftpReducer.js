@@ -1,15 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import dedicActions from './ftpActions'
+import ftpActions from './ftpActions'
 
 const initialState = {
   ftpList: [],
 }
 
 const ftpList = createReducer(initialState.ftpList, {
-  [dedicActions.setFTPList]: (_, { payload }) => payload,
+  [ftpActions.setFTPList]: (_, { payload }) => payload,
 })
 
-const dedicReducer = combineReducers({ ftpList })
+const ftpReducer = combineReducers({ ftpList })
 
-export default dedicReducer
+export default ftpReducer

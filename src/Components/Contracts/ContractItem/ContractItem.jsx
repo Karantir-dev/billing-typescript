@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { DownloadWithFolder, Print } from '../../../images'
-import contractOperations from '../../../Redux/contracts/contractOperations'
+import { contractOperations } from '../../../Redux'
 import { useOutsideAlerter } from '../../../utils'
 
 import s from './ContractItem.module.scss'

@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
 import cn from 'classnames'
-import { useMediaQuery } from 'react-responsive'
-
 import {
   Button,
   IconButton,
@@ -19,10 +14,13 @@ import {
   InstructionModal,
   RebootModal,
 } from '../../../Components'
-import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import { dedicOperations, dedicSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
-import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
 
+import * as route from '../../../routes'
 import s from './DedicatedServicesPage.module.scss'
 
 export default function DedicatedServersPage() {
@@ -32,6 +30,9 @@ export default function DedicatedServersPage() {
   const navigate = useNavigate()
 
   const serversList = useSelector(dedicSelectors.getServersList)
+
+  console.log('dedictest2')
+
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -84,7 +85,7 @@ export default function DedicatedServersPage() {
 
   useEffect(() => {
     dispatch(dedicOperations.getServersList())
-    dispatch(dedicOperations.getDedicFilters(setFilters))
+    // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
 
   useEffect(() => {

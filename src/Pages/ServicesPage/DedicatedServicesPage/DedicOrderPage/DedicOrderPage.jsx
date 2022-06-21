@@ -7,6 +7,8 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   Toggle,
+  Select,
+  InputField,
 } from '../../../../Components'
 import { useLocation } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -15,10 +17,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import dedicSelectors from '../../../../Redux/dedicatedServers/dedicSelectors'
-import Select from '../../../../Components/ui/Select/Select'
-import InputField from '../../../../Components/ui/InputField/InputField'
-import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { dedicSelectors, dedicOperations } from '../../../../Redux'
 
 import s from './DedicOrderPage.module.scss'
 
