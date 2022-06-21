@@ -122,6 +122,10 @@ export { default as ServerState } from './Services/vds/ServerState/ServerState'
 export { default as EditModal } from './Services/vds/EditModal/EditModal'
 export { default as SoftwareOSBtn } from './Services/vds/SoftwareOSBtn/SoftwareOSBtn'
 export { default as SoftwareOSSelect } from './Services/vds/SoftwareOSSelect/SoftwareOSSelect'
+export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
+export { default as VDSPasswordChange } from './Services/vds/PasswordChange/PasswordChange'
+export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
+export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
 
 //==========================================FTP==========================================//
 export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'

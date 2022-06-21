@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
+import { useMediaQuery } from 'react-responsive'
+import { useDispatch } from 'react-redux'
+import * as route from '../../../../routes'
 import {
   Button,
   IconButton,
@@ -10,10 +12,12 @@ import {
   EditModal,
   Backdrop,
   BreadCrumbs,
-} from '../../../Components'
-import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../Redux'
-import { useMediaQuery } from 'react-responsive'
+  DeleteModal,
+  VDSPasswordChange,
+  VdsRebootModal,
+  ProlongModal,
+} from '../../../../Components'
+import { vdsOperations } from '../../../../Redux'
 
 import s from './VDS.module.scss'
 
@@ -26,10 +30,29 @@ export default function VDS() {
   const [servers, setServers] = useState()
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [activeServer, setActiveServer] = useState(null)
+  const [idForDeleteModal, setIdForDeleteModal] = useState('')
+  const [idForProlong, setIdForProlong] = useState('')
+  const [idForPassChange, setIdForPassChange] = useState('')
+  const [idForReboot, setIdForReboot] = useState('')
 
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
   }, [])
+
+  const deleteServer = () => {
+    dispatch(vdsOperations.deleteVDS(idForDeleteModal, setServers))
+    setActiveServer(null)
+    setIdForDeleteModal('')
+  }
+
+  const getSarverName = id => {
+    return servers?.reduce((acc, el) => {
+      if (el.id.$ === id) {
+        acc = el.name.$
+      }
+      return acc
+    }, '')
+  }
 
   return (
     <>
@@ -46,14 +69,15 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer.id.$)}
-                  disabled={!activeServer}
+                  disabled={activeServer?.status?.$ !== '2'}
                   icon="edit"
                 />
               </HintWrapper>
               <HintWrapper label={t('delete', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={!activeServer}
+                  onClick={() => setIdForDeleteModal(activeServer.id.$)}
+                  disabled={!activeServer || activeServer.item_status.$ === '5_open'}
                   icon="delete"
                 />
               </HintWrapper>
@@ -63,6 +87,7 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.allow_changepassword?.$ !== 'on'}
+                onClick={() => setIdForPassChange(activeServer.id.$)}
                 icon="passChange"
               />
             </HintWrapper>
@@ -70,6 +95,7 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.show_reboot?.$ !== 'on'}
+                onClick={() => setIdForReboot(activeServer.id.$)}
                 icon="reload"
               />
             </HintWrapper>
@@ -77,6 +103,9 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                onClick={() =>
+                  navigate(route.VDS_IP, { state: { id: activeServer.id.$ } })
+                }
                 icon="ip"
               />
             </HintWrapper>
@@ -84,13 +113,14 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.status?.$ !== '2'}
+                onClick={() => setIdForProlong(activeServer.id.$)}
                 icon="clock"
               />
             </HintWrapper>
             <HintWrapper label={t('history')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={!activeServer}
+                disabled={activeServer?.status?.$ !== '2'}
                 icon="refund"
               />
             </HintWrapper>
@@ -118,18 +148,58 @@ export default function VDS() {
           onClick={() => navigate(route.VDS_ORDER)}
         />
       </div>
+
       <VDSList
         servers={servers}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}
+        setIdForDeleteModal={setIdForDeleteModal}
+        setIdForPassChange={setIdForPassChange}
+        setIdForReboot={setIdForReboot}
+        setIdForProlong={setIdForProlong}
       />
+
       <Backdrop
         className={s.backdrop}
         isOpened={Boolean(elidForEditModal)}
         onClick={() => setElidForEditModal(0)}
       >
         <EditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+      </Backdrop>
+
+      <Backdrop
+        isOpened={Boolean(idForDeleteModal)}
+        onClick={() => setIdForDeleteModal('')}
+      >
+        <DeleteModal
+          name={getSarverName(idForDeleteModal)}
+          deleteFn={deleteServer}
+          closeFn={() => setIdForDeleteModal('')}
+        />
+      </Backdrop>
+
+      <Backdrop
+        isOpened={Boolean(idForPassChange)}
+        onClick={() => setIdForPassChange('')}
+      >
+        <VDSPasswordChange
+          id={idForPassChange}
+          name={getSarverName(idForPassChange)}
+          closeFn={() => setIdForPassChange('')}
+        />
+      </Backdrop>
+
+      <Backdrop isOpened={Boolean(idForReboot)} onClick={() => setIdForReboot('')}>
+        <VdsRebootModal
+          id={idForReboot}
+          name={getSarverName(idForReboot)}
+          closeFn={() => setIdForReboot('')}
+        />
+      </Backdrop>
+
+      <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
+        <ProlongModal elid={idForProlong} closeFn={() => setIdForProlong('')} />
       </Backdrop>
     </>
   )

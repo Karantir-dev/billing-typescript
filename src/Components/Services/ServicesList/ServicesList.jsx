@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
@@ -14,7 +14,6 @@ import 'swiper/swiper.min.css'
 import './ServicesList.scss'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../Redux'
-import { useEffect } from 'react'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 

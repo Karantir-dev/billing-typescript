@@ -1,0 +1,88 @@
+.modal {
+  position: relative;
+  width: 90vw;
+  max-width: 580px;
+  height: fit-content;
+  border-radius: 3px;
+  padding: 25px 12px;
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms2_shadow);
+}
+
+.icon_cross {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.title {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--red-text);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.text {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.cancel_btn {
+  display: block;
+  max-width: 240px;
+  height: 50px;
+  margin: 0 auto 12px;
+  font-size: 18px;
+}
+
+.delete_btn {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--main-text);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    padding: 30px 50px;
+  }
+
+  .icon_cross {
+    top: 20px;
+    right: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .text {
+    margin-bottom: 25px;
+    font-size: 18px;
+  }
+
+  .cancel_btn {
+    font-size: 20px;
+    margin: 0 auto 15px;
+  }
+
+  .delete_btn {
+    font-size: 20px;
+  }
+}

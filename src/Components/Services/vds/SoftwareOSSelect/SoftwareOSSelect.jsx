@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { selectors } from '../../../../Redux'
@@ -8,27 +8,11 @@ import { useOutsideAlerter } from '../../../../utils'
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
 
-export default function SoftwareOSSelect({
-  iconName,
-  itemsList,
-  state,
-  value,
-  getElement,
-}) {
+export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState(itemsList[0])
-
-  useEffect(() => {
-    if (itemsList) {
-      itemsList.forEach(el => {
-        if (el?.value === value) {
-          setSelectedItem(el)
-        }
-      })
-    }
-  }, [itemsList])
 
   useOutsideAlerter(dropdown, isOpened, () => setIsOpened(false))
 
@@ -55,7 +39,7 @@ export default function SoftwareOSSelect({
 
       {itemsList.length !== 0 && (
         <div ref={dropdown} className={cn(ss.dropdown, { [ss.opened]: isOpened })}>
-          <div className={ss.list}>
+          <div className={s.list}>
             {itemsList?.map((el, index) => {
               return (
                 <div
