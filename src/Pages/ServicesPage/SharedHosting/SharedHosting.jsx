@@ -7,6 +7,7 @@ import {
   SharedHostingHistoryModal,
   SharedHostingProlongModal,
   SharedHostingEditModal,
+  SharedHostingChangeTariffModal,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -35,6 +36,10 @@ export default function ServicesPage() {
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
 
+  const [changeTariffModal, setChangeTariffModal] = useState(false)
+  const [changeTariffData, setChangeTariffData] = useState(null)
+  const [changeTariffInfoData, setChangeTariffInfoData] = useState(null)
+
   useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(vhostOperations.getVhosts(data))
@@ -47,8 +52,6 @@ export default function ServicesPage() {
 
     return pathnames
   }
-
-  // console.log(vhostList)
 
   const historyVhostHandler = () => {
     const data = {
@@ -130,16 +133,64 @@ export default function ServicesPage() {
     dispatch(vhostOperations.editVhost(data, setEditModal, setEditData))
   }
 
+  const changeTariffVhostHandler = () => {
+    const data = {
+      elid: selctedItem?.id?.$,
+      elname: selctedItem?.name?.$,
+      lang: i18n?.language,
+    }
+
+    dispatch(
+      vhostOperations.changeTariffVhost(data, setChangeTariffModal, setChangeTariffData),
+    )
+  }
+
+  const closeChangeTariffModalHandler = () => {
+    setChangeTariffData(null)
+    setChangeTariffInfoData(null)
+    setChangeTariffModal(false)
+  }
+
+  const changeTariffInfoVhostHandler = pricelist => {
+    const data = {
+      elid: selctedItem?.id?.$,
+      elname: selctedItem?.name?.$,
+      pricelist,
+      snext: 'ok',
+      sok: 'ok',
+    }
+
+    dispatch(vhostOperations.changeTariffPriceListVhost(data, setChangeTariffInfoData))
+  }
+
+  const changeTariffSaveVhostHandler = pricelist => {
+    const data = {
+      elid: selctedItem?.id?.$,
+      elname: selctedItem?.name?.$,
+      pricelist,
+      sok: 'ok',
+    }
+
+    dispatch(
+      vhostOperations.changeTariffSaveVhost(
+        data,
+        setChangeTariffModal,
+        setChangeTariffInfoData,
+      ),
+    )
+  }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('services.Shared hosting', { ns: 'other' })}</h1>
+      <h1 className={s.page_title}>{t('burger_menu.services.services_list.virtual_hosting')}</h1>
       <SharedHostingFilter
         historyVhostHandler={historyVhostHandler}
         instructionVhostHandler={instructionVhostHandler}
         platformVhostHandler={platformVhostHandler}
         prolongVhostHandler={prolongVhostHandler}
         editVhostHandler={editVhostHandler}
+        changeTariffVhostHandler={changeTariffVhostHandler}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
       />
@@ -149,6 +200,7 @@ export default function ServicesPage() {
         platformVhostHandler={platformVhostHandler}
         prolongVhostHandler={prolongVhostHandler}
         editVhostHandler={editVhostHandler}
+        changeTariffVhostHandler={changeTariffVhostHandler}
         selctedItem={selctedItem}
         setSelctedItem={setSelctedItem}
         list={vhostList}
@@ -188,6 +240,17 @@ export default function ServicesPage() {
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditVhostHandler={sendEditVhostHandler}
+        />
+      )}
+
+      {changeTariffModal && changeTariffData && (
+        <SharedHostingChangeTariffModal
+          changeTariffData={changeTariffData}
+          name={selctedItem?.name?.$}
+          closeChangeTariffModalHandler={closeChangeTariffModalHandler}
+          changeTariffInfoVhostHandler={changeTariffInfoVhostHandler}
+          changeTariffInfoData={changeTariffInfoData}
+          changeTariffSaveVhostHandler={changeTariffSaveVhostHandler}
         />
       )}
     </div>

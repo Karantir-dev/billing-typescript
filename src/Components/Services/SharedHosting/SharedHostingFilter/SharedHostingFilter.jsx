@@ -24,6 +24,7 @@ export default function Component(props) {
     platformVhostHandler,
     prolongVhostHandler,
     editVhostHandler,
+    changeTariffVhostHandler,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -112,7 +113,7 @@ export default function Component(props) {
         >
           <IconButton
             disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
-            onClick={() => null}
+            onClick={changeTariffVhostHandler}
             icon="change-tariff"
           />
         </HintWrapper>

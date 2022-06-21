@@ -11,25 +11,38 @@ export default function Component(props) {
     list,
     selctedItem,
     setSelctedItem,
-    editDomainHandler,
-    deleteDomainHandler,
-    renewDomainHandler,
-    historyDomainHandler,
-    whoisDomainHandler,
-    NSDomainHandler,
+    historyVhostHandler,
+    instructionVhostHandler,
+    platformVhostHandler,
+    prolongVhostHandler,
+    editVhostHandler,
+    changeTariffVhostHandler,
   } = props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
         <span className={cn(s.title_text, s.first_item)}>{t('Id')}:</span>
         <span className={cn(s.title_text, s.second_item)}>{t('Domain name')}:</span>
-        <span className={cn(s.title_text, s.third_item)}>{t('Tariff')}:</span>
-        <span className={cn(s.title_text, s.fourth_item)}>{t('Valid until')}:</span>
-        <span className={cn(s.title_text, s.fifth_item)}>{t('State')}:</span>
-        <span className={cn(s.title_text, s.sixth_item)}>{t('Price')}:</span>
+        <span className={cn(s.title_text, s.third_item)}>{t('IP address')}:</span>
+        <span className={cn(s.title_text, s.fourth_item)}>{t('Tariff')}:</span>
+        <span className={cn(s.title_text, s.fifth_item)}>{t('Data center')}:</span>
+        <span className={cn(s.title_text, s.sixth_item)}>{t('Valid until')}:</span>
+        <span className={cn(s.title_text, s.seventh_item)}>{t('State')}:</span>
+        <span className={cn(s.title_text, s.eighth_item)}>{t('Price')}:</span>
       </div>
       {list?.map(el => {
-        const { id, domain, pricelist, real_expiredate, item_status, cost } = el
+        const {
+          id,
+          domain,
+          pricelist,
+          real_expiredate,
+          item_status,
+          cost,
+          datacentername,
+          ip,
+        } = el
+
+        console.log(el)
 
         let onItemClick = () => setSelctedItem(el)
 
@@ -44,13 +57,15 @@ export default function Component(props) {
             cost={cost?.$}
             setSelctedItem={onItemClick}
             selected={selctedItem?.id?.$ === id?.$}
+            datacentername={datacentername?.$}
+            ip={ip?.$}
             el={el}
-            historyDomainHandler={historyDomainHandler}
-            deleteDomainHandler={deleteDomainHandler}
-            editDomainHandler={editDomainHandler}
-            renewDomainHandler={renewDomainHandler}
-            NSDomainHandler={NSDomainHandler}
-            whoisDomainHandler={whoisDomainHandler}
+            historyVhostHandler={historyVhostHandler}
+            instructionVhostHandler={instructionVhostHandler}
+            platformVhostHandler={platformVhostHandler}
+            prolongVhostHandler={prolongVhostHandler}
+            editVhostHandler={editVhostHandler}
+            changeTariffVhostHandler={changeTariffVhostHandler}
           />
         )
       })}

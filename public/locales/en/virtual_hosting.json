@@ -7,5 +7,18 @@
   "Username": "Username",
   "Password": "Password",
   "Name Server": "Name Server",
-  "Shared hosting edited successfully": "Shared hosting edited successfully"
+  "Shared hosting edited successfully": "Shared hosting edited successfully",
+  "You will be charged with {{sum}} when upgrading to a new tariff plan": "You will be charged with {{sum}} EUR when upgrading to a new tariff plan",
+  "{{sum}} EUR will be refunded upon plan update": "{{sum}} EUR will be refunded upon plan update",
+  "Current tariff": "Current tariff",
+  "New tariff": "New tariff",
+  "Current value": "Current value",
+  "New value": "New value",
+  "New tariff plan": "New tariff plan",
+  "Shared hosting tariff changed successfully": "Shared hosting tariff changed successfully",
+  "Sites": "Sites",
+  "Subdomains": "Subdomains",
+  "Database": "Database",
+  "RAM": "RAM",
+  "Options": "Options"
 }

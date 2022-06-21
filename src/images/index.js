@@ -78,3 +78,5 @@ export { default as Attention } from './svg/Attention.jsx'
 export { default as Flag } from './svg/Flag.jsx'
 export { default as Exchange } from './svg/Exchange'
 export { default as ChangeTariff } from './svg/ChangeTariff.jsx'
+
+export { default as Infinity } from './svg/Infinity.jsx'

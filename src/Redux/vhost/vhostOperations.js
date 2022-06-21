@@ -1,9 +1,10 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, vhostActions } from '..'
+import { actions, cartActions, vhostActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
+import * as route from '../../routes'
 
 const getVhosts =
   (body = {}) =>
@@ -374,8 +375,6 @@ const editVhost =
           throw new Error(data.doc.error.msg.$)
         }
 
-        console.log(data.doc)
-
         const d = {
           title_name: data?.doc?.title_name?.$,
           createdate: data?.doc?.createdate?.$,
@@ -429,6 +428,274 @@ const editVhost =
       })
   }
 
+const changeTariffVhost =
+  (body = {}, setChangeTariffModal, setChangeTariffData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.changepricelist',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {}
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'pricelist') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        setChangeTariffData && setChangeTariffData(d)
+        setChangeTariffModal && setChangeTariffModal(true)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const changeTariffPriceListVhost =
+  (body = {}, setChangeTariffData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.changepricelist.pricelist',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          money_info: data.doc?.money_info?.$,
+          newprice: data.doc?.newprice?.$,
+          newpricelist: data.doc?.newpricelist?.$,
+          oldprice: data.doc?.oldprice?.$,
+          oldpricelist: data.doc?.oldpricelist?.$,
+        }
+
+        setChangeTariffData && setChangeTariffData(d)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const changeTariffSaveVhost =
+  (body = {}, setChangeTariffModal, setChangeTariffData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'service.changepricelist.getmoney',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        toast.success(
+          i18n.t('Shared hosting tariff changed successfully', { ns: 'virtual_hosting' }),
+          {
+            position: 'bottom-right',
+          },
+        )
+
+        setChangeTariffData && setChangeTariffData(null)
+        setChangeTariffModal && setChangeTariffModal(false)
+
+        dispatch(getVhosts())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderVhost =
+  (body = {}, setData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'vhost.order.pricelist',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          period: data.doc?.period?.$,
+          datacenter: data.doc?.datacenter?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'period') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        data.doc?.list?.forEach(list => {
+          if (list?.$name === 'tariflist') {
+            d[`${list?.$name}_list`] = list?.elem
+          }
+        })
+
+        setData && setData(d)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderParamVhost =
+  (body = {}, setParamsData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'vhost.order.param',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          autoprolong: data.doc?.autoprolong?.$,
+          orderinfo: data.doc?.orderinfo?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'autoprolong') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        if (body?.sok === 'ok') {
+          dispatch(
+            cartActions?.setCartIsOpenedState({
+              isOpened: true,
+              redirectPath: route.SHARED_HOSTING,
+            }),
+          )
+        } else {
+          setParamsData && setParamsData(d)
+        }
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getVhosts,
   getVhostFilters,
@@ -437,4 +704,9 @@ export default {
   openPlatformVhost,
   prolongVhost,
   editVhost,
+  changeTariffVhost,
+  changeTariffPriceListVhost,
+  changeTariffSaveVhost,
+  orderVhost,
+  orderParamVhost,
 }

@@ -105,6 +105,8 @@ export { default as SharedHostingTable } from './Services/SharedHosting/SharedHo
 export { default as SharedHostingHistoryModal } from './Services/SharedHosting/SharedHostingHistoryModal/SharedHostingHistoryModal'
 export { default as SharedHostingProlongModal } from './Services/SharedHosting/SharedHostingProlongModal/SharedHostingProlongModal'
 export { default as SharedHostingEditModal } from './Services/SharedHosting/SharedHostingEditModal/SharedHostingEditModal'
+export { default as SharedHostingChangeTariffModal } from './Services/SharedHosting/SharedHostingChangeTariffModal/SharedHostingChangeTariffModal'
+export { default as TarifCard } from './Services/SharedHosting/TarifCard/TarifCard'
 
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
@@ -148,3 +150,4 @@ export { default as DomainItem } from './Cart/DomainItem/DomainItem'
 export { default as VdsItem } from './Cart/VdsItem/VdsItem'
 export { default as FtpItem } from './Cart/FtpItem/FtpItem'
 export { default as DnsItem } from './Cart/DnsItem/DnsItem'
+export { default as VhostItem } from './Cart/VhostItem/VhostItem'

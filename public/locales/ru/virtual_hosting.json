@@ -7,5 +7,18 @@
   "Username": "Имя пользователя",
   "Password": "Пароль",
   "Name Server": "Сервер имен",
-  "Shared hosting edited successfully": "Виртуальный хостинг изменен успешно"
+  "Shared hosting edited successfully": "Виртуальный хостинг изменен успешно",
+  "You will be charged with {{sum}} when upgrading to a new tariff plan": "При переходе на новый тарифный план с вас будет списано {{sum}} EUR",
+  "{{sum}} EUR will be refunded upon plan update": "{{sum}} EUR будет возвращено после обновления плана",
+  "Current tariff": "Текущий тариф",
+  "New tariff": "Новый тариф",
+  "Current value": "Текущая стоимость",
+  "New value": "Новая стоимость",
+  "New tariff plan": "Новый тарифный план",
+  "Shared hosting tariff changed successfully": "Тариф на виртуальный хостинг успешно изменен",
+  "Sites": "Cайтов",
+  "Subdomains": "Поддоменов",
+  "Database": "Базы данных",
+  "RAM": "ОЗУ",
+  "Options": "Параметры"
 }
