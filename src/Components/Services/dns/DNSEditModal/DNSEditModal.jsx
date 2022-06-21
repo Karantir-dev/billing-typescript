@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
 import { Formik, Form } from 'formik'
-import * as Yup from 'yup'
 
 import s from './DNSEditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
@@ -13,36 +12,43 @@ import { translatePeriod } from '../../DedicatedServers/EditServerModal/EditServ
 import { dnsOperations } from '../../../../Redux'
 
 export default function FTPEditModal({ elid, closeFn }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs'])
+  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs', 'dns'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
+  const [currentLimit, setCurrentLimit] = useState(null)
+  const [additionalText, setAdditionalText] = useState('')
 
-  // const handleEditionModal = () => {
-  //   closeFn()
-  // }
+  const handleEditionModal = () => {
+    closeFn()
+  }
 
   useEffect(() => {
     dispatch(dnsOperations.getCurrentDNSInfo(elid, setInitialState))
   }, [])
 
   const handleSubmit = values => {
-    // const { elid, autoprolong } = values
-    console.log(values)
+    const { elid, autoprolong, addon_961 } = values
 
-    // dispatch(ftpOperations.editFTP(elid, autoprolong, handleEditionModal))
+    if (
+      currentLimit === null ||
+      currentLimit === initialState?.addon_961_current_value?.$
+    ) {
+      dispatch(dnsOperations.editDNS(elid, autoprolong, handleEditionModal))
+    } else {
+      dispatch(
+        dnsOperations.editDNSWithExtraCosts(
+          elid,
+          autoprolong,
+          addon_961,
+          handleEditionModal,
+        ),
+      )
+    }
   }
-
-  const validationSchema = Yup.object().shape({
-    domainname: Yup.string().matches(
-      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/,
-      t('licence_error'),
-    ),
-  })
 
   return (
     <Formik
       enableReinitialize
-      validationSchema={validationSchema}
       initialValues={{
         elid,
         autoprolong: initialState?.autoprolong?.$ || null,
@@ -50,6 +56,7 @@ export default function FTPEditModal({ elid, closeFn }) {
         ip: initialState?.ip?.$ || '',
         password: initialState?.password?.$ || '',
         username: initialState?.username?.$ || '',
+        addon_961: initialState?.addon_961_current_value?.$ || '',
       }}
       onSubmit={handleSubmit}
     >
@@ -66,7 +73,10 @@ export default function FTPEditModal({ elid, closeFn }) {
                 </div>
                 <Cross
                   className={s.icon_cross}
-                  onClick={closeFn}
+                  onClick={e => {
+                    e.preventDefault()
+                    closeFn()
+                  }}
                   width={17}
                   height={17}
                 />
@@ -145,16 +155,79 @@ export default function FTPEditModal({ elid, closeFn }) {
                     disabled
                   />
                 </div>
+
+                {initialState?.limitsList && (
+                  <Select
+                    height={50}
+                    value={values.addon_961.toString()}
+                    label={`${t('domains_limit', { ns: 'dns' })}:`}
+                    getElement={item => {
+                      setFieldValue('addon_961', item)
+                      setCurrentLimit(item)
+                      dispatch(
+                        dnsOperations.getDNSExtraPayText(
+                          values.elid,
+                          values.autoprolong,
+                          item,
+                          setAdditionalText,
+                        ),
+                      )
+                    }}
+                    isShadow
+                    itemsList={initialState?.limitsList?.map(el => {
+                      return {
+                        label: el.toString(),
+                        value: el.toString(),
+                      }
+                    })}
+                    className={s.select}
+                  />
+                )}
+
+                <div className={s.additional_text}>
+                  <p>
+                    {additionalText
+                      ?.split('<b>')[2]
+                      ?.replace('</b>', '')
+                      ?.replace('Total amount', t('topay'))}
+                  </p>
+                  <p>
+                    {additionalText
+                      ?.split('<br/>')[1]
+                      ?.replaceAll('Unit', t('Unit'))
+                      ?.replace('Domain limit', t('Domain limit', { ns: 'dns' }))
+                      ?.replace('per month', t('per month'))
+                      ?.replace('additional', t('additional', { ns: 'dns' }))}
+                  </p>
+                </div>
               </div>
 
               <div className={s.btns_wrapper}>
-                <Button
+                {currentLimit === initialState?.addon_961_current_value?.$ ||
+                currentLimit === null ? (
+                  <Button
+                    className={s.buy_btn}
+                    isShadow
+                    size="medium"
+                    label={t('Save', { ns: 'other' })}
+                    type="submit"
+                  />
+                ) : (
+                  <Button
+                    className={s.buy_btn}
+                    isShadow
+                    size="medium"
+                    label={t('Proceed', { ns: 'other' })}
+                    type="submit"
+                  />
+                )}
+                {/* <Button
                   className={s.buy_btn}
                   isShadow
                   size="medium"
                   label={t('Save', { ns: 'other' })}
                   type="submit"
-                />
+                /> */}
 
                 <button
                   onClick={e => {

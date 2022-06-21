@@ -1,9 +1,9 @@
 import qs from 'qs'
-// import { toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { actions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
-// import i18n from '../../i18n'
+import i18n from '../../i18n'
 import cartActions from '../cart/cartActions'
 import * as route from '../../routes'
 import dnsActions from './dnsActions'
@@ -291,7 +291,29 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
         item => item.$name === 'stored_method',
       )[0]
 
-      console.log(data.doc)
+      const domainsLimit = data.doc.metadata.form.page.filter(item =>
+        item.$name.includes('addon'),
+      )
+
+      const countLimit = domainsLimit[0].field.filter(item =>
+        item.$name.includes('addon'),
+      )
+
+      const maxLimit = countLimit[0]?.slider[0]?.$max
+      const step = countLimit[0]?.slider[0]?.$step
+      const minLimit = countLimit[0]?.slider[0]?.$min
+
+      let limitsList = []
+      let initialLimit = +minLimit
+      limitsList.push(+minLimit)
+      while (+initialLimit < +maxLimit) {
+        limitsList.push(Number(initialLimit) + Number(step))
+        initialLimit += +step
+      }
+
+      if (limitsList.includes(NaN)) {
+        limitsList = null
+      }
 
       const {
         username,
@@ -304,6 +326,7 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
         expiredate,
         createdate,
         ip,
+        addon_961_current_value,
       } = data.doc
 
       setInitialParams({
@@ -319,6 +342,8 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
         expiredate,
         createdate,
         payment_method,
+        addon_961_current_value,
+        limitsList,
       })
       dispatch(actions.hideLoader())
     })
@@ -329,45 +354,122 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
     })
 }
 
-// const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+const editDNS = (elid, autoprolong, handleModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'storage.edit',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//         autoprolong,
-//         clicked_button: 'ok',
-//         sok: 'ok',
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dnshost.edit',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+        autoprolong,
+        clicked_button: 'ok',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-//         position: 'bottom-right',
-//         toastId: 'customId',
-//       })
-//       dispatch(actions.hideLoader())
+      dispatch(getDNSList())
 
-//       handleModal()
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+      dispatch(actions.hideLoader())
 
+      handleModal()
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getDNSExtraPayText =
+  (elid, autoprolong, addon_961, setAdditionalText) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dnshost.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          autoprolong,
+          addon_961,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(actions.hideLoader())
+        setAdditionalText(data.doc.orderinfo.$)
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const editDNSWithExtraCosts =
+  (elid, autoprolong, addon_961, handleModal) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dnshost.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          autoprolong,
+          addon_961,
+          clicked_button: 'basket',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        handleModal()
+
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: route.DNS,
+          }),
+        )
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 // const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
 //   dispatch(actions.showLoader())
 
@@ -470,6 +572,9 @@ export default {
   // orderFTP,
   getPrintLicense,
   getCurrentDNSInfo,
+  editDNS,
+  getDNSExtraPayText,
+  editDNSWithExtraCosts,
   // getCurrentStorageInfo,
   // editFTP,
   // getServiceInstruction,
