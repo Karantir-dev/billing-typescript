@@ -114,7 +114,6 @@ export default function Component() {
     dispatch(cartOperations.setPaymentMethods(data, navigate))
   }
 
-  console.log(cartData)
   const renderItems = () => {
     const domainsList = cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'domain',

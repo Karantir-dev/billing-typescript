@@ -42,8 +42,6 @@ export default function Component(props) {
           ip,
         } = el
 
-        console.log(el)
-
         let onItemClick = () => setSelctedItem(el)
 
         return (
