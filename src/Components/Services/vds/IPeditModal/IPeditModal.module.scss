@@ -1,7 +1,7 @@
 .modal {
   position: relative;
   width: 90vw;
-  max-width: 580px;
+  max-width: 410px;
   height: fit-content;
   border-radius: 3px;
   padding: 18px 18px 25px;
@@ -64,7 +64,7 @@
 
 @media screen and (min-width: 768px) {
   .modal {
-    padding: 30px 50px;
+    padding: 20px 60px;
   }
 
   .icon_cross {
@@ -73,16 +73,16 @@
   }
 
   .title {
-    font-size: 20px;
     margin-bottom: 10px;
+  }
+
+  .bold {
+    font-size: 20px;
+    line-height: 130%;
   }
 
   .save_btn {
     font-size: 20px;
-    margin: 0 auto 15px;
-  }
-
-  .cancel_btn {
-    font-size: 20px;
+    margin: 10px auto 15px;
   }
 }

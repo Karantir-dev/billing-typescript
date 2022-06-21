@@ -6,11 +6,11 @@ import { useDispatch } from 'react-redux'
 import { vdsOperations } from '../../../../Redux'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
-
-import s from './IPeditModal.module.scss'
 import { DOMAIN_REGEX } from '../../../../utils'
 
-export default function IPeditModal({ serverID, id, closeFn }) {
+import s from './IPeditModal.module.scss'
+
+export default function IPeditModal({ serverID, id, closeFn, setElements }) {
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers'])
   const dispatch = useDispatch()
 
@@ -21,7 +21,9 @@ export default function IPeditModal({ serverID, id, closeFn }) {
   }, [])
 
   const handleSubmit = values => {
-    dispatch(vdsOperations.changeDomainName(serverID, id, values.domain, closeFn))
+    dispatch(
+      vdsOperations.changeDomainName(serverID, id, values.domain, closeFn, setElements),
+    )
   }
 
   const validationSchema = Yup.object().shape({

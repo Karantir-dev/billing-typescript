@@ -130,6 +130,7 @@ export default function VDSip() {
           serverID={ServerID}
           closeFn={() => setIdForEditModal('')}
           id={idForEditModal}
+          setElements={setElements}
         />
       </Backdrop>
     </>

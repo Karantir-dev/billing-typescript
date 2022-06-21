@@ -15,6 +15,7 @@ import {
   DeleteModal,
   VDSPasswordChange,
   RebootModal,
+  ProlongModal,
 } from '../../../../Components'
 import { vdsOperations } from '../../../../Redux'
 
@@ -156,6 +157,7 @@ export default function VDS() {
         setIdForDeleteModal={setIdForDeleteModal}
         setIdForPassChange={setIdForPassChange}
         setIdForReboot={setIdForReboot}
+        setIdForProlong={setIdForProlong}
       />
 
       <Backdrop
@@ -197,7 +199,7 @@ export default function VDS() {
       </Backdrop>
 
       <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
-        <div></div>
+        <ProlongModal elid={idForProlong} closeFn={() => setIdForProlong('')} />
       </Backdrop>
     </>
   )

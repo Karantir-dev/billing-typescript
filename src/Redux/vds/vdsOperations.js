@@ -454,36 +454,54 @@ const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) =>
     })
 }
 
-const changeDomainName = (serverID, id, domain, closeFn) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const changeDomainName =
+  (serverID, id, domain, closeFn, setElements) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'service.ip.edit',
-        auth: sessionId,
-        plid: serverID,
-        elid: id,
-        domain: domain,
-        sok: 'ok',
-        out: 'json',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.ip.edit',
+          auth: sessionId,
+          plid: serverID,
+          elid: id,
+          domain: domain,
+          sok: 'ok',
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
-      closeFn()
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      errorHandler(err.message, dispatch)
-      dispatch(actions.hideLoader())
-      console.log('changeDomainName - ', err)
-    })
-}
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'service.ip',
+              auth: sessionId,
+              elid: serverID,
+              out: 'json',
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+            console.log(data.doc)
+            setElements(data.doc.elem)
+          })
+        console.log(data.doc)
+        closeFn()
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('changeDomainName - ', err)
+      })
+  }
 
 export default {
   getVDS,

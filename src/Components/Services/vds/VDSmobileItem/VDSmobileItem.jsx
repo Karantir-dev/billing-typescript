@@ -26,6 +26,7 @@ export default function VDSmobileItem({
   setIdForDeleteModal,
   setIdForPassChange,
   setIdForReboot,
+  setIdForProlong,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -99,6 +100,7 @@ export default function VDSmobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForProlong)}
                   disabled={server?.status?.$ !== '2'}
                 >
                   <Clock className={s.tool_icon} />
