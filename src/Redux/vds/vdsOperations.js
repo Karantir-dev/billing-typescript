@@ -320,8 +320,25 @@ const deleteVDS = (id, setServers) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
-      dispatch(getVDS(setServers))
+      if (data.doc?.ok?.$.includes('confirmdelete')) {
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'confirmdelete',
+              auth: sessionId,
+              elid: id,
+              out: 'json',
+            }),
+          )
+          .then(({ data }) => {
+            console.log(data.doc)
+
+            dispatch(actions.hideLoader())
+          })
+      } else {
+        dispatch(getVDS(setServers))
+      }
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
