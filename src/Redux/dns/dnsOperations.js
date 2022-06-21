@@ -499,67 +499,63 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
     })
 }
 
-// const getFTPFilters =
-//   (setFilters, data = {}, filtered = false) =>
-//   (dispatch, getState) => {
-//     dispatch(actions.showLoader())
+const getDNSFilters =
+  (setFilters, data = {}, filtered = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-//     const {
-//       auth: { sessionId },
-//     } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'storage.filter',
-//           out: 'json',
-//           auth: sessionId,
-//           ...data,
-//         }),
-//       )
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dnshost.filter',
+          out: 'json',
+          auth: sessionId,
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//         console.log(filtered)
-//         // if (filtered) {
-//         //   return dispatch(getFTPList())
-//         // }
+        if (filtered) {
+          return dispatch(getDNSList())
+        }
 
-//         let filters = {}
+        let filters = {}
 
-//         data?.doc?.slist?.forEach(el => {
-//           filters[el.$name] = el.val
-//         })
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
 
-//         let currentFilters = {
-//           id: data.doc?.id?.$ || '',
-//           domain: data.doc?.domain?.$ || '',
-//           ip: data.doc?.ip?.$ || '',
-//           pricelist: data.doc?.pricelist?.$ || '',
-//           period: data.doc?.period?.$ || '',
-//           status: data.doc?.status?.$ || '',
-//           service_status: data.doc?.service_status?.$ || '',
-//           opendate: data.doc?.opendate?.$ || '',
-//           expiredate: data.doc?.expiredate?.$ || '',
-//           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
-//           orderdateto: data.doc?.orderdateto?.$ || '',
-//           cost_from: data.doc?.cost_from?.$ || '',
-//           cost_to: data.doc?.cost_to?.$ || '',
-//           autoprolong: data.doc?.autoprolong?.$ || '',
-//           datacenter: data.doc?.datacenter?.$ || '',
-//           ostemplate: '',
-//         }
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+          datacenter: data.doc?.datacenter?.$ || '',
+        }
 
-//         setFilters({ filters, currentFilters })
-//         dispatch(actions.hideLoader())
-//       })
-//       .catch(error => {
-//         console.log('error', error)
-//         errorHandler(error.message, dispatch)
-//         dispatch(actions.hideLoader())
-//       })
-//   }
+        setFilters({ filters, currentFilters })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 export default {
   getTarifs,
@@ -576,5 +572,6 @@ export default {
   // getCurrentStorageInfo,
   // editFTP,
   getServiceInstruction,
+  getDNSFilters,
   // getFTPFilters,
 }

@@ -1,0 +1,47 @@
+.radio_container {
+  margin: 20px 0;
+  display: flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+}
+
+.radio_outer_circle {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  transition: all 0.1s linear;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+
+  &.unselected_circle {
+    width: 0;
+    height: 0;
+  }
+}
+
+.radio_inner_circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  transition: all 0.1s linear;
+
+  &.unselected {
+    width: 0px;
+    height: 0px;
+  }
+}
+
+.label_text {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 120%;
+  color: var(--main-text);
+}

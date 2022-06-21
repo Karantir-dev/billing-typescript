@@ -11,12 +11,13 @@ import {
   HintWrapper,
   Backdrop,
   BreadCrumbs,
-  FTPFiltersModal,
   ProlongModal,
   DedicsHistoryModal,
   DNSList,
   DNSEditModal,
   DNSInstructionModal,
+  DNSFiltersModal,
+  DNSChangeTarif,
 } from '../../../Components'
 import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,6 +36,7 @@ export default function DNS() {
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
+  const [elidForChangeTarifModal, setElidForChangeTarifModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
 
@@ -51,7 +53,6 @@ export default function DNS() {
   const resetFilterHandler = setValues => {
     const clearField = {
       id: '',
-      domain: '',
       pricelist: '',
       period: '',
       status: '',
@@ -68,24 +69,24 @@ export default function DNS() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    // dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    console.log(values)
     setFilters(null)
-    // dispatch(ftpOperations.getFTPFilters(setFilters, { ...values, sok: 'ok' }, true))
+    console.log(values, 'filter handleedr')
+    dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
   useEffect(() => {
     dispatch(dnsOperations.getDNSList())
-    // dispatch(ftpOperations.getFTPFilters(setFilters))
+    dispatch(dnsOperations.getDNSFilters(setFilters))
   }, [])
 
-  //   useEffect(() => {
-  //     if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters))
-  //   }, [filterModal])
+  useEffect(() => {
+    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+  }, [filterModal])
 
   return (
     <>
@@ -102,7 +103,7 @@ export default function DNS() {
           />
 
           {filterModal && (
-            <FTPFiltersModal
+            <DNSFiltersModal
               filterModal={filterModal}
               setFilterModal={setFilterModal}
               filters={filters?.currentFilters}
@@ -125,8 +126,8 @@ export default function DNS() {
               <HintWrapper label={t('CHANGE TTTTT', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer}
+                  onClick={() => setElidForChangeTarifModal(activeServer?.id?.$)}
+                  disabled={!activeServer || activeServer?.change_pricelist?.$ === 'off'}
                   icon="exchange"
                 />
               </HintWrapper>
@@ -184,6 +185,7 @@ export default function DNS() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
+        setElidForChangeTarifModal={setElidForChangeTarifModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
@@ -221,6 +223,16 @@ export default function DNS() {
         <DNSInstructionModal
           elid={elidForInstructionModal}
           closeFn={() => setElidForInstructionModal(0)}
+        />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForChangeTarifModal(0)}
+        isOpened={Boolean(elidForChangeTarifModal)}
+      >
+        <DNSChangeTarif
+          elid={elidForChangeTarifModal}
+          closeFn={() => setElidForChangeTarifModal(0)}
         />
       </Backdrop>
     </>

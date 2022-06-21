@@ -37,6 +37,7 @@ export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
 export { default as Toggle } from './ui/Toggle/Toggle'
+export { default as RadioButton } from './ui/RadioButton/RadioButton'
 
 export { default as Alert } from './ui/Alert/Alert'
 
@@ -137,6 +138,8 @@ export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 export { default as DNSList } from './Services/dns/DNSList/DNSList'
 export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
 export { default as DNSInstructionModal } from './Services/dns/DNSInstructionModal/DNSInstructionModal'
+export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
+export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
