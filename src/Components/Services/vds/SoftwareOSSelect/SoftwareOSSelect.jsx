@@ -1,34 +1,34 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
-// import { useSelector } from 'react-redux'
+import React, { useRef, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
-// import { selectors } from '../../../../Redux'
+import { selectors } from '../../../../Redux'
 import { useOutsideAlerter } from '../../../../utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
 
 export default function SoftwareOSSelect({
-  // iconName,
+  iconName,
   itemsList,
   state,
-
+  value,
   getElement,
 }) {
   const dropdown = useRef(null)
-  // const darkTheme = useSelector(selectors.getTheme) === 'dark'
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState(itemsList[0])
 
-  //   useEffect(() => {
-  //     if (itemsList) {
-  //       itemsList.forEach(el => {
-  //         if (el?.value === value) {
-  //           setSelectedItem(el)
-  //         }
-  //       })
-  //     }
-  //   }, [ itemsList])
+  useEffect(() => {
+    if (itemsList) {
+      itemsList.forEach(el => {
+        if (el?.value === value) {
+          setSelectedItem(el)
+        }
+      })
+    }
+  }, [itemsList])
 
   useOutsideAlerter(dropdown, isOpened, () => setIsOpened(false))
 
@@ -41,13 +41,13 @@ export default function SoftwareOSSelect({
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
-        {/* <img
+        <img
           className={s.img}
           src={require(`../../../../images/soft_os/${
             darkTheme ? iconName + '_dt' : iconName
           }.png`)}
           alt="icon"
-        /> */}
+        />
         {selectedItem?.label}
 
         <Shevron className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
@@ -66,13 +66,13 @@ export default function SoftwareOSSelect({
                   onKeyDown={null}
                   role="button"
                 >
-                  {/* <img
+                  <img
                     className={cn(s.img, s.left, s.grey)}
                     src={require(`../../../../images/soft_os/${
                       darkTheme ? iconName + '_dt' : iconName
                     }.png`)}
                     alt="icon"
-                  /> */}
+                  />
                   {el.label}
                 </div>
               )

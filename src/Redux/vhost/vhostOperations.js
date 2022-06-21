@@ -5,7 +5,6 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
 
-console.log('getVhostsddddcxcx')
 const getVhosts =
   (body = {}) =>
   (dispatch, getState) => {

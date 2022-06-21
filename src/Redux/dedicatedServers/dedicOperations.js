@@ -6,8 +6,6 @@ import { errorHandler } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
 
-console.log(route, 'route1dsadsd')
-
 // GET SERVERS OPERATIONS
 
 const getServersList = () => (dispatch, getState) => {
