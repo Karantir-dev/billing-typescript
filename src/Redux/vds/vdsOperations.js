@@ -303,52 +303,33 @@ const setOrderData =
       })
   }
 
-const deleteVDS =
-  (id, setServers, setDeletionInitState, closeFn) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
-    const sessionId = authSelectors.getSessionId(getState())
+const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'vds.delete',
-          auth: sessionId,
-          elid: id,
-          out: 'json',
-        }),
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vds.delete',
+        auth: sessionId,
+        elid: id,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
 
-        // if (data.doc?.ok?.$.includes('confirmdelete')) {
-        //   axiosInstance
-        //     .post(
-        //       '/',
-        //       qs.stringify({
-        //         func: 'confirmdelete',
-        //         auth: sessionId,
-        //         elid: id,
-        //         out: 'json',
-        //       }),
-        //     )
-        //     .then(({ data }) => {
-        //       console.log(data.doc)
-        //       setDeletionInitState(data.doc)
-        //       dispatch(actions.hideLoader())
-        //     })
-        // } else {
-        dispatch(getVDS(setServers))
-        closeFn()
-        // }
-      })
-      .catch(err => {
-        errorHandler(err.message, dispatch)
-        dispatch(actions.hideLoader())
-        console.log('deleteVDS - ', err)
-      })
-  }
+      dispatch(getVDS(setServers))
+      closeFn()
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      dispatch(actions.hideLoader())
+      console.log('deleteVDS - ', err)
+    })
+}
 
 const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
   dispatch(actions.showLoader())

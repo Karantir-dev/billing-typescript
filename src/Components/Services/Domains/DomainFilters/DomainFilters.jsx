@@ -28,7 +28,7 @@ export default function Component(props) {
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
   const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
-
+  console.log(filters)
   const [filterModal, setFilterModal] = useState(false)
 
   const dispatch = useDispatch()

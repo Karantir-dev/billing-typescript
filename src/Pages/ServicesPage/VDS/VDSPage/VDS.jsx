@@ -16,7 +16,7 @@ import {
   VDSPasswordChange,
   VdsRebootModal,
   ProlongModal,
-  DeleteVerificationModal,
+  FiltersModal,
 } from '../../../../Components'
 import { vdsOperations } from '../../../../Redux'
 
@@ -35,19 +35,20 @@ export default function VDS() {
   const [idForProlong, setIdForProlong] = useState('')
   const [idForPassChange, setIdForPassChange] = useState('')
   const [idForReboot, setIdForReboot] = useState('')
-  const [deletionInitState, setDeletionInitState] = useState()
+  const [isFiltersOpened, setIsFiltersOpened] = useState(false)
 
   useEffect(() => {
     dispatch(vdsOperations.getVDS(setServers))
+    // dispatch(vdsOperations.getVDS(setServers))
   }, [])
 
   const deleteServer = () => {
     dispatch(
-      vdsOperations.deleteVDS(idForDeleteModal, setServers, setDeletionInitState, () =>
+      vdsOperations.deleteVDS(idForDeleteModal, setServers, () =>
         setIdForDeleteModal(''),
       ),
     )
-    // setActiveServer(null)
+    setActiveServer(null)
   }
 
   const getSarverName = id => {
@@ -65,7 +66,19 @@ export default function VDS() {
 
       <h2 className={s.title}>{t('servers_title')}</h2>
       <div className={s.tools_wrapper}>
-        <IconButton className={s.tools_icon} icon="filter" />
+        <div className={s.filter_wrapper}>
+          <IconButton className={s.tools_icon} icon="filter" />
+          <Backdrop
+            className={s.filter_backdrop}
+            isOpened={isFiltersOpened}
+            closeFn={() => setIsFiltersOpened(false)}
+          >
+            <FiltersModal
+              isOpened={isFiltersOpened}
+              closeFn={() => setIsFiltersOpened(false)}
+            />
+          </Backdrop>
+        </div>
 
         {widerThan1550 && (
           <>
@@ -82,7 +95,11 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setIdForDeleteModal(activeServer.id.$)}
-                  disabled={!activeServer || activeServer.item_status.$ === '5_open'}
+                  disabled={
+                    !activeServer ||
+                    activeServer.item_status.$ === '5_open' ||
+                    activeServer.scheduledclose.$ === 'on'
+                  }
                   icon="delete"
                 />
               </HintWrapper>
@@ -177,18 +194,11 @@ export default function VDS() {
         isOpened={Boolean(idForDeleteModal)}
         onClick={() => setIdForDeleteModal('')}
       >
-        {deletionInitState ? (
-          <DeleteVerificationModal
-            initState={deletionInitState}
-            closeFn={() => setIdForDeleteModal('')}
-          />
-        ) : (
-          <DeleteModal
-            name={getSarverName(idForDeleteModal)}
-            deleteFn={deleteServer}
-            closeFn={() => setIdForDeleteModal('')}
-          />
-        )}
+        <DeleteModal
+          name={getSarverName(idForDeleteModal)}
+          deleteFn={deleteServer}
+          closeFn={() => setIdForDeleteModal('')}
+        />
       </Backdrop>
 
       <Backdrop

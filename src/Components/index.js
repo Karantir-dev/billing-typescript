@@ -126,7 +126,7 @@ export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
 export { default as VDSPasswordChange } from './Services/vds/PasswordChange/PasswordChange'
 export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
 export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
-export { default as DeleteVerificationModal } from './Services/vds/DeleteVerificationModal/DeleteVerificationModal'
+export { default as FiltersModal } from './Services/vds/FiltersModal/FiltersModal'
 
 //==========================================FTP==========================================//
 export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'
