@@ -31,6 +31,8 @@ export { default as accessLogsSelectors } from './accessLogs/accessLogsSelectors
 //===========================================AFFILIATE=================================//
 export { default as affiliateSelectors } from './affiliateProgram/selectors'
 export { default as affiliateOperations } from './affiliateProgram/operations'
+export { default as affiliateReducer } from './affiliateProgram/reducer'
+export { default as affiliateActions } from './affiliateProgram/actions'
 
 //===========================================SETTINGS=================================//
 export { default as settingsActions } from './settings/settingsActions'
@@ -71,15 +73,24 @@ export { default as cartSelectors } from './cart/cartSelectors'
 
 //===========================================CONTRACTS=================================//
 export { default as contractsReducer } from './contracts/contractsReducer'
+export { default as contarctsActions } from './contracts/contarctsActions'
+export { default as contractOperations } from './contracts/contractOperations'
+export { default as contractsSelectors } from './contracts/contractsSelectors'
 
-//===========================================SERVICES=================================//
-export { default as dedicReducer } from './dedics/dedicReducer'
-export { default as dedicOperations } from './dedics/dedicOperations'
-export { default as dedicSelectors } from './dedics/dedicSelectors'
+//===========================================DEDIC=================================//
+export { default as dedicReducer } from './dedicatedServers/dedicReducer'
+export { default as dedicOperations } from './dedicatedServers/dedicOperations'
+export { default as dedicSelectors } from './dedicatedServers/dedicSelectors'
+export { default as dedicActions } from './dedicatedServers/dedicActions'
 
+//===========================================VHOST=================================//
+export { default as vhostActions } from './vhost/vhostActions'
+export { default as vhostOperations } from './vhost/vhostOperations'
+export { default as vhostReducer } from './vhost/vhostReducer'
+export { default as vhostSelectors } from './vhost/vhostSelectors'
+
+//===========================================FTP=================================//
 export { default as ftpReducer } from './ftp/ftpReducer'
 export { default as ftpOperations } from './ftp/ftpOperations'
-
-export { default as dnsReducer } from './dns/dnsReducer'
-export { default as dnsOperations } from './dns/dnsOperations'
-export { default as dnsSelectors } from './dns/dnsSelectors'
+export { default as ftpSelectors } from './ftp/ftpSelectors'
+export { default as ftpActions } from './ftp/ftpActions'

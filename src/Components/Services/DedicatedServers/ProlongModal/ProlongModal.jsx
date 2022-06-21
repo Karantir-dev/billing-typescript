@@ -3,14 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
 // import dedicOperations from '../../../../Redux/dedicatedServers/dedicOperations'
+import { dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 
-import { Button } from '../../..'
-import Select from '../../../ui/Select/Select'
-import { translatePeriod } from '../EditServerModal/EditServerModal'
+import { Button, Select } from '../../..'
+// import { translatePeriod } from '../EditServerModal/EditServerModal'
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
-import { dedicOperations } from '../../../../Redux'
 
 export default function ProlongModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
@@ -103,7 +102,7 @@ export default function ProlongModal({ elid, closeFn }) {
                     isShadow
                     itemsList={initialState?.slist[0]?.val?.map(el => {
                       return {
-                        label: translatePeriod(el?.$, t),
+                        label: el?.$,
                         value: el.$key,
                       }
                     })}

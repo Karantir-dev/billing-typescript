@@ -1,9 +1,6 @@
 import React from 'react'
-import {} from 'react-redux'
 import { useTranslation } from 'react-i18next'
-
 import { useMediaQuery } from 'react-responsive'
-
 import s from './FtpItem.module.scss'
 
 export default function FtpItem(props) {

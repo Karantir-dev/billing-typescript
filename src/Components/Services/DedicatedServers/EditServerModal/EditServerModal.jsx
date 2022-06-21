@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
 
+import { dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './EditServerModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import Select from '../../../ui/Select/Select'
-import { Button } from '../../..'
-// import { dedicOperations } from '../../../../Redux'
 
 // console.log(dedicOperations, 'dedicOperations')
 export default function EditServerModal({ elid, closeFn }) {
@@ -90,43 +88,43 @@ export default function EditServerModal({ elid, closeFn }) {
         currentManagePanel !== undefined &&
         currentManagePanel !== '97')
     ) {
-      // dispatch(
-      //   dedicOperations.editDedicServer(
-      //     elid,
-      //     autoprolong,
-      //     domainname,
-      //     ostempl,
-      //     recipe,
-      //     managePanel,
-      //     managePanelName,
-      //     ipTotal,
-      //     ipName,
-      //     ip,
-      //     username,
-      //     userpassword,
-      //     password,
-      //     handleEditionModal,
-      //   ),
-      // )
+      dispatch(
+        dedicOperations.editDedicServer(
+          elid,
+          autoprolong,
+          domainname,
+          ostempl,
+          recipe,
+          managePanel,
+          managePanelName,
+          ipTotal,
+          ipName,
+          ip,
+          username,
+          userpassword,
+          password,
+          handleEditionModal,
+        ),
+      )
     } else {
-      // dispatch(
-      //   dedicOperations.editDedicServerNoExtraPay(
-      //     elid,
-      //     autoprolong,
-      //     domainname,
-      //     ostempl,
-      //     recipe,
-      //     managePanel,
-      //     managePanelName,
-      //     ipTotal,
-      //     ipName,
-      //     ip,
-      //     username,
-      //     userpassword,
-      //     password,
-      //     handleEditionModal,
-      //   ),
-      // )
+      dispatch(
+        dedicOperations.editDedicServerNoExtraPay(
+          elid,
+          autoprolong,
+          domainname,
+          ostempl,
+          recipe,
+          managePanel,
+          managePanelName,
+          ipTotal,
+          ipName,
+          ip,
+          username,
+          userpassword,
+          password,
+          handleEditionModal,
+        ),
+      )
     }
   }
 
@@ -203,7 +201,7 @@ export default function EditServerModal({ elid, closeFn }) {
                       isShadow
                       itemsList={initialState?.autoprolonglList?.map(el => {
                         return {
-                          label: translatePeriod(el?.$, t),
+                          label: el?.$,
                           value: el.$key,
                         }
                       })}
@@ -485,29 +483,29 @@ export default function EditServerModal({ elid, closeFn }) {
   )
 }
 
-export function translatePeriod(string, t) {
-  let period = ''
+// export function translatePeriod(string, t) {
+//   let period = ''
 
-  if (string.includes('three months')) {
-    period = string
-      .replace('three months', t('for three months'))
-      .replace('for', t('for'))
-  } else if (string.includes('month')) {
-    period = string.replace('month', t('month')).replace('per', t('for'))
-  } else if (string.includes('three years')) {
-    period = string.replace('three years', t('for three years')).replace('for', t('for'))
-  } else if (string.includes('two years')) {
-    period = string.replace('two years', t('for two years')).replace('for', t('for'))
-  } else if (string.includes('half a year')) {
-    period = string.replace(
-      'half a year',
-      t('half a year', { ns: 'other' }).toLowerCase(),
-    )
-  } else if (string.includes('per year')) {
-    period = string.replace('per year', t('per year'))
-  } else if (string.includes('Disabled')) {
-    period = string.replace('Disabled', t('Disabled'))
-  }
+//   if (string.includes('three months')) {
+//     period = string
+//       .replace('three months', t('for three months'))
+//       .replace('for', t('for'))
+//   } else if (string.includes('month')) {
+//     period = string.replace('month', t('month')).replace('per', t('for'))
+//   } else if (string.includes('three years')) {
+//     period = string.replace('three years', t('for three years')).replace('for', t('for'))
+//   } else if (string.includes('two years')) {
+//     period = string.replace('two years', t('for two years')).replace('for', t('for'))
+//   } else if (string.includes('half a year')) {
+//     period = string.replace(
+//       'half a year',
+//       t('half a year', { ns: 'other' }).toLowerCase(),
+//     )
+//   } else if (string.includes('per year')) {
+//     period = string.replace('per year', t('per year'))
+//   } else if (string.includes('Disabled')) {
+//     period = string.replace('Disabled', t('Disabled'))
+//   }
 
-  return period
-}
+//   return period
+// }

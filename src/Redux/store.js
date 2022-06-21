@@ -24,12 +24,12 @@ import {
   domainsReducer,
   contractsReducer,
   cartReducer,
+  vhostReducer,
   ftpReducer,
-  dnsReducer,
+  affiliateReducer,
+  dedicReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
-import { affiliateProgram } from './affiliateProgram/reducer'
-import dedicReducer from './dedicatedServers/dedicReducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -54,10 +54,10 @@ const rootReducer = combineReducers({
   domains: domainsReducer,
   contracts: contractsReducer,
   cart: cartReducer,
+  vhost: vhostReducer,
   dedic: dedicReducer,
   ftp: ftpReducer,
-  dns: dnsReducer,
-  affiliateProgram,
+  affiliateProgram: affiliateReducer,
   theme,
   isLoading,
   pinned,

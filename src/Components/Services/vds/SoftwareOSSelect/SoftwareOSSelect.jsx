@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { selectors } from '../../../../Redux'
@@ -12,7 +12,7 @@ export default function SoftwareOSSelect({
   iconName,
   itemsList,
   state,
-
+  value,
   getElement,
 }) {
   const dropdown = useRef(null)
@@ -20,15 +20,15 @@ export default function SoftwareOSSelect({
   const [isOpened, setIsOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState(itemsList[0])
 
-  //   useEffect(() => {
-  //     if (itemsList) {
-  //       itemsList.forEach(el => {
-  //         if (el?.value === value) {
-  //           setSelectedItem(el)
-  //         }
-  //       })
-  //     }
-  //   }, [ itemsList])
+  useEffect(() => {
+    if (itemsList) {
+      itemsList.forEach(el => {
+        if (el?.value === value) {
+          setSelectedItem(el)
+        }
+      })
+    }
+  }, [itemsList])
 
   useOutsideAlerter(dropdown, isOpened, () => setIsOpened(false))
 

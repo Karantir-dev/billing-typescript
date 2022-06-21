@@ -23,6 +23,7 @@ import {
   ExitSign,
   Attention,
   Exchange,
+  ChangeTariff,
 } from '../../../images'
 
 export default function Component(props) {
@@ -71,6 +72,8 @@ export default function Component(props) {
       case 'exchange':
         return <Exchange />
 
+      case 'change-tariff':
+        return <ChangeTariff />
       default:
         return null
     }
@@ -118,6 +121,7 @@ Component.propTypes = {
     'info',
     'exitSign',
     'exchange',
+    'change-tariff',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,
