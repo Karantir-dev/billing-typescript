@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
 import cn from 'classnames'
-import { useMediaQuery } from 'react-responsive'
-
 import {
   Button,
   IconButton,
   HintWrapper,
   Backdrop,
   BreadCrumbs,
+  DedicFiltersModal,
+  DedicList,
+  EditServerModal,
+  ProlongModal,
+  DedicsHistoryModal,
+  InstructionModal,
+  RebootModal,
 } from '../../../Components'
-import DedicList from '../../../Components/Services/DedicatedServers/DedicList/DedicList'
-import dedicOperations from '../../../Redux/dedicatedServers/dedicOperations'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import { dedicOperations, dedicSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
-import dedicSelectors from '../../../Redux/dedicatedServers/dedicSelectors'
-import EditServerModal from '../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
+import * as route from '../../../routes'
 import s from './DedicatedServicesPage.module.scss'
-import ProlongModal from '../../../Components/Services/DedicatedServers/ProlongModal/ProlongModal'
-import DedicsHistoryModal from '../../../Components/Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
-import InstructionModal from '../../../Components/Services/DedicatedServers/InstructionModal/InstructionModal'
-import RebootModal from '../../../Components/Services/DedicatedServers/RebootModal/RebootModal'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -31,12 +30,17 @@ export default function DedicatedServersPage() {
   const navigate = useNavigate()
 
   const serversList = useSelector(dedicSelectors.getServersList)
+
+  console.log('dedictest2')
+
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [elidForRebootModal, setElidForRebootModal] = useState(0)
+  const [filterModal, setFilterModal] = useState(false)
+  const [filters, setFilters] = useState([])
 
   const location = useLocation()
 
@@ -48,9 +52,45 @@ export default function DedicatedServersPage() {
     return pathnames
   }
 
+  const resetFilterHandler = setValues => {
+    const clearField = {
+      id: '',
+      domain: '',
+      ip: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+      ostemplate: '',
+    }
+    setValues && setValues({ ...clearField })
+    setFilterModal(false)
+    dispatch(
+      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    )
+  }
+
+  const setFilterHandler = values => {
+    setFilterModal(false)
+    dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
+  }
+
   useEffect(() => {
     dispatch(dedicOperations.getServersList())
+    // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
+
+  useEffect(() => {
+    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
+  }, [filterModal])
 
   return (
     <>
@@ -63,7 +103,18 @@ export default function DedicatedServersPage() {
           <IconButton
             className={cn({ [s.tools_icon]: true, [s.filter_icon]: true })}
             icon="filter"
+            onClick={() => setFilterModal(!filterModal)}
           />
+          {filterModal && (
+            <DedicFiltersModal
+              filterModal={filterModal}
+              setFilterModal={setFilterModal}
+              filters={filters?.currentFilters}
+              filtersList={filters?.filters}
+              resetFilterHandler={resetFilterHandler}
+              setFilterHandler={setFilterHandler}
+            />
+          )}
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
@@ -121,6 +172,9 @@ export default function DedicatedServersPage() {
               </HintWrapper>
               <HintWrapper label={t('go_to_panel')}>
                 <IconButton
+                  onClick={() => {
+                    dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
+                  }}
                   className={s.tools_icon}
                   disabled={activeServer?.transition?.$ !== 'on'}
                   icon="exitSign"

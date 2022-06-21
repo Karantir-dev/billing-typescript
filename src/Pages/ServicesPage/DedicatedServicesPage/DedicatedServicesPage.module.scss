@@ -5,17 +5,13 @@
 .tools_wrapper {
   display: flex;
   align-items: center;
-
-  & :nth-child(1) {
-    order: 2;
-  }
-  & :nth-child(2) {
-    order: 1;
-  }
+  flex-direction: row-reverse;
+  justify-content: flex-end;
 }
 
 .tools_container {
   display: flex;
+  position: relative;
 }
 
 .desktop_tools_wrapper {
@@ -27,6 +23,7 @@
   font-size: 20px;
   line-height: 66.3%;
   width: 204px;
+  max-width: 204px;
   height: 53px;
   margin-right: 10px;
 }
@@ -49,6 +46,7 @@
 
 @media screen and (min-width: 768px) {
   .order_btn {
+    max-width: 245px;
     width: 245px;
     margin-right: 25px;
   }
@@ -57,13 +55,14 @@
 @media screen and (min-width: 1550px) {
   .tools_wrapper {
     justify-content: space-between;
+    flex-direction: row;
 
-    & :nth-child(1) {
-      order: unset;
-    }
-    & :nth-child(2) {
-      order: unset;
-    }
+    // & :nth-child(1) {
+    //   order: unset;
+    // }
+    // & :nth-child(2) {
+    //   order: unset;
+    // }
   }
 
   .tools_icon {
@@ -74,6 +73,7 @@
     margin-right: 35px;
   }
   .order_btn {
+    max-width: 229px;
     width: 229px;
   }
 }

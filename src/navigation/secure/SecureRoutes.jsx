@@ -4,7 +4,6 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import {
   Cart,
   Container,
-  DedicOrderPage,
   EmailConfirmation,
   Portal,
   PrivateRoute,
@@ -23,15 +22,21 @@ import {
   DomainsPage,
   DomainOrderPage,
   ServicesPage,
-  VDS,
-  VDSOrder,
   Contracts,
-  DedicatedServersPage,
   DomainContactInfoPage,
   DomainsNsPage,
   DedicIPpage,
   VDSip,
+  DedicatedServersPage,
+  DedicOrderPage,
+  FTP,
+  FTPOrder,
+  VDS,
+  VDSOrder,
+  SharedHosting,
+  SharedHostingOrder,
 } from '../../Pages'
+
 import { cartSelectors } from '../../Redux'
 
 import * as route from '../../routes'
@@ -62,6 +67,17 @@ const Component = () => {
         <Route
           path={route.VDS_IP}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />}
+        />
+
+        <Route
+          path={route.SHARED_HOSTING}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SharedHosting />} />}
+        />
+        <Route
+          path={route.SHARED_HOSTING_ORDER}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<SharedHostingOrder />} />
+          }
         />
 
         <Route
@@ -129,6 +145,15 @@ const Component = () => {
         <Route
           path={route.DEDICATED_SERVERS_IP}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
+        />
+
+        <Route
+          path={route.FTP}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />}
+        />
+        <Route
+          path={route.FTP_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
         />
 
         <Route
@@ -214,23 +239,6 @@ const SupportScreen = () => {
     </Routes>
   )
 }
-
-// const DedicatedServersScreen = () => {
-//   return (
-//     <Routes>
-//       <Route
-//         path=":path/*"
-//         element={
-//           <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
-//         }
-//       />
-//       <Route
-//         path=":path/:id"
-//         element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
-//       />
-//     </Routes>
-//   )
-// }
 
 const BillingScreen = () => {
   const location = useLocation()

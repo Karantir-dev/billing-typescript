@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
@@ -14,7 +14,6 @@ import 'swiper/swiper.min.css'
 import './ServicesList.scss'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../Redux'
-import { useEffect } from 'react'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -69,7 +68,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
       id: 4,
-      routeName: routes.HOME,
+      routeName: routes.SHARED_HOSTING,
       allowedToRender: isVirtualHostAllowedToRender,
       icon_name: 'virtual_hosting',
       icon_width: '118',
@@ -87,7 +86,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       id: 6,
-      routeName: routes.HOME,
+      routeName: routes.FTP,
       allowedToRender: isFtpAllowedToRender,
       icon_name: 'ftp_storage',
       icon_width: '111',

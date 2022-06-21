@@ -6,7 +6,7 @@ import cn from 'classnames'
 import { userSelectors } from '../../Redux'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
-// import { useOutsideAlerter } from '../../utils'
+import { useOutsideAlerter } from '../../utils'
 
 export default function NotificationsBar({
   handler,
@@ -19,7 +19,7 @@ export default function NotificationsBar({
 
   const getNotifBarEl = useRef()
 
-  // useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
+  useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
 
   const notifications = messages.bitem
 

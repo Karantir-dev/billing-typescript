@@ -6,109 +6,32 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Button,
-  IconButton,
-  HintWrapper,
-  DomainsHistoryModal,
-  DomainsWhoisModal,
-  DomainsNSModal,
-  Portal,
-} from '../../..'
+import { Button, IconButton, HintWrapper, Portal } from '../../..'
 import * as routes from '../../../../routes'
 import s from './DomainFilters.module.scss'
 
 export default function Component(props) {
-  const { t, i18n } = useTranslation(['domains', 'other', 'vds'])
+  const { t } = useTranslation(['domains', 'other', 'vds'])
   const navigate = useNavigate()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
-  const { selctedItem, setCurrentPage } = props
+  const {
+    selctedItem,
+    setCurrentPage,
+    editDomainHandler,
+    deleteDomainHandler,
+    renewDomainHandler,
+    historyDomainHandler,
+    whoisDomainHandler,
+    NSDomainHandler,
+  } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
   const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
 
-  const [historyModal, setHistoryModal] = useState(false)
-  const [historyList, setHistoryList] = useState([])
-
-  const [whoisModal, setWhoisModal] = useState(false)
-  const [whoisData, setWhoisData] = useState(null)
-
-  const [NSModal, setNSModal] = useState(false)
-  const [NSData, setNSData] = useState(null)
-
   const [filterModal, setFilterModal] = useState(false)
 
   const dispatch = useDispatch()
-
-  const renewDomainHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-    }
-    dispatch(domainsOperations.renewService(data))
-  }
-
-  const deleteDomainHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-    }
-    dispatch(domainsOperations.deleteDomain(data))
-  }
-
-  const historyDomainHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      lang: i18n?.language,
-    }
-    dispatch(domainsOperations.getHistoryDomain(data, setHistoryModal, setHistoryList))
-  }
-
-  const closeHistoryModalHandler = () => {
-    setHistoryList([])
-    setHistoryModal(false)
-  }
-
-  const whoisDomainHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      lang: i18n?.language,
-    }
-    dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
-  }
-
-  const closeWhoisModalHandler = () => {
-    setWhoisData(null)
-    setWhoisModal(false)
-  }
-
-  const NSDomainHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-      lang: i18n?.language,
-    }
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
-  }
-
-  const closeNSModalHandler = () => {
-    setNSData(null)
-    setNSModal(false)
-  }
-
-  const NSEditDomainHandler = values => {
-    let data = {
-      elid: selctedItem?.id?.$,
-      lang: i18n?.language,
-    }
-
-    if (values) {
-      data = { ...data, ...values }
-    }
-
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
-  }
 
   const resetFilterHandler = setValues => {
     const clearField = {
@@ -176,7 +99,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('Transfer')}>
+        <HintWrapper wrapperClassName={s.transferBtn} label={t('Transfer')}>
           <IconButton
             onClick={() => navigate(routes.DOMAINS_TRANSFER_ORDERS)}
             icon="transfer"
@@ -184,7 +107,7 @@ export default function Component(props) {
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton disabled={!selctedItem} onClick={() => null} icon="edit" />
+          <IconButton disabled={!selctedItem} onClick={editDomainHandler} icon="edit" />
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
@@ -229,28 +152,6 @@ export default function Component(props) {
           />
         </HintWrapper>
       </div>
-      {historyModal && historyList?.length > 0 && (
-        <DomainsHistoryModal
-          historyList={historyList}
-          name={selctedItem?.name?.$}
-          closeHistoryModalHandler={closeHistoryModalHandler}
-        />
-      )}
-      {whoisModal && whoisData && (
-        <DomainsWhoisModal
-          whoisData={whoisData}
-          name={selctedItem?.name?.$}
-          closeWhoisModalHandler={closeWhoisModalHandler}
-        />
-      )}
-      {NSModal && NSData && (
-        <DomainsNSModal
-          name={selctedItem?.name?.$}
-          closeNSModalHandler={closeNSModalHandler}
-          NSData={NSData}
-          NSEditDomainHandler={NSEditDomainHandler}
-        />
-      )}
       <Button
         dataTestid={'new_ticket_btn'}
         className={s.newTicketBtn}

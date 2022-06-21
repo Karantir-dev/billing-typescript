@@ -102,7 +102,7 @@ export default function Component(props) {
                       type="submit"
                     />
                     <button
-                      onClick={() => closeNSModalHandler(false)}
+                      onClick={closeNSModalHandler}
                       type="button"
                       className={s.cancel}
                     >

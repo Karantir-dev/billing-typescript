@@ -14,7 +14,7 @@ import {
   BreadCrumbs,
   DeleteModal,
   VDSPasswordChange,
-  RebootModal,
+  VdsRebootModal,
   ProlongModal,
 } from '../../../../Components'
 import { vdsOperations } from '../../../../Redux'
@@ -191,7 +191,7 @@ export default function VDS() {
       </Backdrop>
 
       <Backdrop isOpened={Boolean(idForReboot)} onClick={() => setIdForReboot('')}>
-        <RebootModal
+        <VdsRebootModal
           id={idForReboot}
           name={getSarverName(idForReboot)}
           closeFn={() => setIdForReboot('')}

@@ -1,0 +1,76 @@
+.page_title {
+  margin-bottom: 40px;
+}
+
+.tools_wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.tools_container {
+  display: flex;
+  position: relative;
+}
+
+.desktop_tools_wrapper {
+  display: flex;
+}
+
+.order_btn {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 66.3%;
+  width: 204px;
+  height: 53px;
+  margin-right: 10px;
+}
+
+.tools_icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
+}
+
+.filter_icon.tools_icon {
+  max-height: 46px;
+}
+
+//Adaptive
+
+@media screen and (min-width: 768px) {
+  .order_btn {
+    width: 245px;
+    margin-right: 25px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .tools_wrapper {
+    justify-content: space-between;
+    flex-direction: row;
+
+    // & :nth-child(1) {
+    //   order: unset;
+    // }
+    // & :nth-child(2) {
+    //   order: unset;
+    // }
+  }
+
+  .tools_icon {
+    margin-right: 15px;
+  }
+
+  .filter_icon.tools_icon {
+    margin-right: 35px;
+  }
+  .order_btn {
+    width: 229px;
+  }
+}

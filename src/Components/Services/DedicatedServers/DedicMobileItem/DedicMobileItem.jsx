@@ -17,6 +17,8 @@ import s from './DedicMobileItem.module.scss'
 import { ServerState } from '../../../'
 import { useNavigate } from 'react-router-dom'
 import * as route from '../../../../routes'
+import { dedicOperations } from '../../../../Redux'
+import { useDispatch } from 'react-redux'
 
 export default function DedicMobileItem({
   server,
@@ -32,6 +34,7 @@ export default function DedicMobileItem({
 
   const [toolsOpened, setToolsOpened] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
@@ -135,6 +138,9 @@ export default function DedicMobileItem({
                   className={s.tool_btn}
                   type="button"
                   disabled={server.transition?.$ !== 'on'}
+                  onClick={() => {
+                    dispatch(dedicOperations.goToPanel(server.id.$))
+                  }}
                 >
                   <ExitSign className={s.tool_icon} />
                   {t('go_to_panel')}
@@ -151,7 +157,7 @@ export default function DedicMobileItem({
       <span className={s.value}>{server?.domain?.$}</span>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{server?.ip?.$}</span>
-      <span className={s.label}>{t('OS_template')}:</span>
+      <span className={s.label}>{t('ostempl')}:</span>
       <span className={s.value}>{server?.ostempl?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
       <span className={s.value}>

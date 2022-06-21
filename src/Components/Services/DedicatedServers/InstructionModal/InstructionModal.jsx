@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 import { Cross } from '../../../../images'
 import { dedicOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
-import Loader from '../../../ui/Loader/Loader'
+import { Loader } from '../../..'
 
 import s from './InstructionModal.module.scss'
 

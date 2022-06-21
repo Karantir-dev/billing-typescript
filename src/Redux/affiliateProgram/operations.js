@@ -1,8 +1,6 @@
 import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
-import authSelectors from '../auth/authSelectors'
-import { actions } from '../'
-import { affiliateActions } from './actions'
+import { actions, affiliateActions, authSelectors } from '..'
 import { errorHandler } from '../../utils'
 
 const getReferralLink = () => (dispatch, getState) => {

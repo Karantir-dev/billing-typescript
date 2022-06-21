@@ -227,10 +227,12 @@
   margin-bottom: 24px;
 }
 
-.terms_block {
+.checkbox_wrapper {
   display: flex;
+}
+
+.terms_block {
   margin-top: 20px;
-  margin-bottom: 75px;
 }
 
 .terms_text {
@@ -308,11 +310,28 @@
 .input_field_wrapper {
   margin-bottom: 15px;
 }
+
+.software_OS_List {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.license_error {
+  margin-top: 10px;
+  color: red;
+}
+
 // ADAPTIVE
 
 @media screen and (min-width: 768px) {
+  .checkbox_wrapper {
+    // margin-bottom: 0;
+  }
+
   .terms_block {
-    margin-bottom: 0;
+    margin-top: 0px;
   }
 
   .datacenter_block {
@@ -446,9 +465,17 @@
   .processor_name {
     font-size: 18px;
   }
+
+  .software_OS_List {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
 }
 
 @media screen and (min-width: 1024px) {
+  // .checkbox_wrapper {
+  //   margin-bottom: 250px;
+  // }
   .terms_block {
     margin-bottom: 250px;
   }

@@ -8,13 +8,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
 
-export default function SoftwareOSSelect({
-  iconName,
-  itemsList,
-  state,
-
-  getElement,
-}) {
+export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isOpened, setIsOpened] = useState(false)
