@@ -8,7 +8,7 @@ import { Button, Select } from '../../..'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
-import translatePeriod from '../../../../utils/translatePeriod'
+import { translatePeriod } from '../../../../utils'
 
 export default function ProlongModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])

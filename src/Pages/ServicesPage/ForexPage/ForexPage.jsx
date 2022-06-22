@@ -69,14 +69,15 @@ export default function ForexPage() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
+    console.log(values)
 
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
+    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
   useEffect(() => {
