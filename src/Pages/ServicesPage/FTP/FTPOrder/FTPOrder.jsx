@@ -9,9 +9,9 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import { ftpOperations } from '../../../../Redux'
-// import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './FTPOrder.module.scss'
+import translatePeriod from '../../../../Components/Services/DedicatedServers/translatePeriod'
 
 export default function FTPOrder() {
   const dispatch = useDispatch()
@@ -231,7 +231,7 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = el.$
+                        let labeltext = translatePeriod(el.$, t)
 
                         return {
                           label: labeltext,

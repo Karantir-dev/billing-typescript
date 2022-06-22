@@ -7,7 +7,7 @@ import s from './DNSItem.module.scss'
 import { ServerState } from '../../..'
 
 export default function DNSItem({ storage, setActiveServer, activeServerID }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
   return (
     <li className={s.item}>
@@ -19,7 +19,11 @@ export default function DNSItem({ storage, setActiveServer, activeServerID }) {
         onClick={() => setActiveServer(storage)}
       >
         <span className={s.value}>{storage?.id?.$}</span>
-        <span className={s.value}>{storage?.pricelist?.$}</span>
+        <span className={s.value}>
+          {storage?.pricelist?.$.replace('for', t('for', { ns: 'dns' }))
+            .replace('domains', t('domains', { ns: 'dns' }))
+            .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+        </span>
         <span className={s.value}>{storage?.datacentername?.$}</span>
         <span className={s.value}>{storage?.createdate?.$}</span>
         <span className={s.value}>{storage?.expiredate?.$}</span>

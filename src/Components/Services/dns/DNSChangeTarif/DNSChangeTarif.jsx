@@ -5,10 +5,7 @@ import { Cross } from '../../../../images'
 import { Formik, Form } from 'formik'
 
 import s from './DNSChangeTarif.module.scss'
-// import InputField from '../../../ui/InputField/InputField'
-// import Select from '../../../ui/Select/Select'
 import { Button, RadioButton } from '../../..'
-// import { translatePeriod } from '../../DedicatedServers/EditServerModal/EditServerModal'
 import { dnsOperations } from '../../../../Redux'
 
 export default function DNSChangeTarif({ elid, closeFn }) {

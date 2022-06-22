@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
-import cn from 'classnames'
+// import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import {
@@ -17,7 +17,8 @@ import {
   DNSEditModal,
   DNSInstructionModal,
   DNSFiltersModal,
-  DNSChangeTarif,
+  Portal,
+  // DNSChangeTarif,
 } from '../../../Components'
 import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,7 +37,13 @@ export default function DNS() {
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
-  const [elidForChangeTarifModal, setElidForChangeTarifModal] = useState(0)
+  const [tarifs, setTarifs] = useState('No tariff plans available for order')
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
+
+  // const [
+  //   elidForChangeTarifModal,
+  //   setElidForChangeTarifModal,
+  // ] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
 
@@ -75,13 +82,14 @@ export default function DNS() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    console.log(values, 'filter handleedr')
+
     dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
   useEffect(() => {
     dispatch(dnsOperations.getDNSList())
     dispatch(dnsOperations.getDNSFilters(setFilters))
+    dispatch(dnsOperations.getTarifs(setTarifs))
   }, [])
 
   useEffect(() => {
@@ -96,22 +104,41 @@ export default function DNS() {
       </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
-          <IconButton
-            className={cn({ [s.tools_icon]: true, [s.filter_icon]: true })}
-            icon="filter"
-            onClick={() => setFilterModal(!filterModal)}
-          />
-
-          {filterModal && (
-            <DNSFiltersModal
-              filterModal={filterModal}
-              setFilterModal={setFilterModal}
-              filters={filters?.currentFilters}
-              filtersList={filters?.filters}
-              resetFilterHandler={resetFilterHandler}
-              setFilterHandler={setFilterHandler}
+          <div className={s.filterBtnBlock}>
+            <IconButton
+              onClick={() => setFilterModal(true)}
+              icon="filter"
+              className={s.calendarBtn}
             />
-          )}
+            {filterModal && (
+              <>
+                <Portal>
+                  <div className={s.bg}>
+                    {mobile && (
+                      <DNSFiltersModal
+                        filterModal={filterModal}
+                        setFilterModal={setFilterModal}
+                        filters={filters?.currentFilters}
+                        filtersList={filters?.filters}
+                        resetFilterHandler={resetFilterHandler}
+                        setFilterHandler={setFilterHandler}
+                      />
+                    )}
+                  </div>
+                </Portal>
+                {!mobile && (
+                  <DNSFiltersModal
+                    filterModal={filterModal}
+                    setFilterModal={setFilterModal}
+                    filters={filters?.currentFilters}
+                    filtersList={filters?.filters}
+                    resetFilterHandler={resetFilterHandler}
+                    setFilterHandler={setFilterHandler}
+                  />
+                )}
+              </>
+            )}
+          </div>
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
@@ -123,14 +150,14 @@ export default function DNS() {
                   icon="edit"
                 />
               </HintWrapper>
-              <HintWrapper label={t('CHANGE TTTTT', { ns: 'other' })}>
+              {/* <HintWrapper label={t('Change tarif', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForChangeTarifModal(activeServer?.id?.$)}
                   disabled={!activeServer || activeServer?.change_pricelist?.$ === 'off'}
                   icon="exchange"
                 />
-              </HintWrapper>
+              </HintWrapper> */}
 
               <HintWrapper label={t('prolong')}>
                 <IconButton
@@ -175,7 +202,10 @@ export default function DNS() {
           isShadow
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => navigate(route.DNS_ORDER)}
+          onClick={() => {
+            navigate(route.DNS_ORDER)
+          }}
+          disabled={tarifs === 'No tariff plans available for order'}
         />
       </div>
       <DNSList
@@ -185,7 +215,7 @@ export default function DNS() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
-        setElidForChangeTarifModal={setElidForChangeTarifModal}
+        // setElidForChangeTarifModal={setElidForChangeTarifModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
@@ -226,7 +256,7 @@ export default function DNS() {
         />
       </Backdrop>
 
-      <Backdrop
+      {/* <Backdrop
         onClick={() => setElidForChangeTarifModal(0)}
         isOpened={Boolean(elidForChangeTarifModal)}
       >
@@ -234,7 +264,7 @@ export default function DNS() {
           elid={elidForChangeTarifModal}
           closeFn={() => setElidForChangeTarifModal(0)}
         />
-      </Backdrop>
+      </Backdrop> */}
     </>
   )
 }

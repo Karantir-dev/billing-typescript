@@ -60,7 +60,6 @@ const getTarifs =
         }),
       )
       .then(({ data }) => {
-        console.log(data, 'order data')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         const { elem: tarifList } = data.doc.list[0]
@@ -80,6 +79,9 @@ const getTarifs =
       })
       .catch(error => {
         console.log('error', error)
+        if (error.message === 'No tariff plans available for order') {
+          setTarifs(error.message)
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
