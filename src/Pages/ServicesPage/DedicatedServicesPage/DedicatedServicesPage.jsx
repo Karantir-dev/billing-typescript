@@ -14,11 +14,11 @@ import {
   InstructionModal,
   RebootModal,
 } from '../../../Components'
+import { useDispatch, useSelector } from 'react-redux'
+import { dedicOperations, dedicSelectors } from '../../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { dedicOperations, dedicSelectors } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
 
 import * as route from '../../../routes'
 import s from './DedicatedServicesPage.module.scss'

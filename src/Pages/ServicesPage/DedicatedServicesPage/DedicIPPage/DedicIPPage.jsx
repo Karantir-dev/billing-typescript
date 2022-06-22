@@ -14,12 +14,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'
-import { Attention } from '../../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 
 import * as route from '../../../../routes'
 import s from './DedicIPPage.module.scss'
+import { Attention } from '../../../../images'
 
 export default function DedicIPpage() {
   const location = useLocation()

@@ -77,7 +77,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.dns_hosting'),
       id: 5,
-      routeName: routes.HOME,
+      routeName: routes.DNS,
       allowedToRender: isDnsAllowedToRender,
       icon_name: tabletOrLower ? 'dns_hosting_min' : dnsPicture,
       icon_width: '84',

@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import { ftpOperations, dedicOperations } from '../../../../Redux'
+import { ftpOperations } from '../../../../Redux'
 // import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './FTPOrder.module.scss'
@@ -85,10 +85,6 @@ export default function FTPOrder() {
 
     return pathnames
   }
-
-  useEffect(() => {
-    dispatch(dedicOperations.getTarifs())
-  }, [])
 
   useEffect(() => {
     dispatch(ftpOperations.getTarifs(setTarifList))

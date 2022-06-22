@@ -80,7 +80,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
       routeName: routes.HOME,
       allowedToRender: true,
     },
-    { name: t('burger_menu.services.services_list.dns_hosting'), routeName: routes.HOME },
+    {
+      name: t('burger_menu.services.services_list.dns_hosting'),
+      routeName: routes.DNS,
+      allowedToRender: true,
+    },
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       routeName: routes.FTP,

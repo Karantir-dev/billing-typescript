@@ -3,13 +3,16 @@ import { useTranslation } from 'react-i18next'
 import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './EditServerModal.module.scss'
 
+import { dedicOperations } from '../../../../Redux'
+
+// console.log(dedicOperations, 'dedicOperations')
 export default function EditServerModal({ elid, closeFn }) {
+  // console.log(dedicOperations, 'dedicOperations')
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -60,6 +63,24 @@ export default function EditServerModal({ elid, closeFn }) {
       userpassword,
       password,
     } = values
+
+    console.log(useEffect, setInitialState, setCurrentOrder, handleEditionModal)
+
+    console.log(
+      elid,
+      autoprolong,
+      domainname,
+      ostempl,
+      recipe,
+      managePanel,
+      managePanelName,
+      ipTotal,
+      ipName,
+      ip,
+      username,
+      userpassword,
+      password,
+    )
 
     if (
       (initialIP !== currentIP && currentIP !== undefined) ||

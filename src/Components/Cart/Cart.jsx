@@ -14,6 +14,8 @@ import {
   DedicItem,
   VdsItem,
   FtpItem,
+  DnsItem,
+  VhostItem,
 } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
@@ -31,6 +33,7 @@ export default function Component() {
     'payers',
     'billing',
     'dedicated_servers',
+    'crumbs',
   ])
 
   const [newPayer, setNewPayer] = useState(false)
@@ -120,9 +123,35 @@ export default function Component() {
 
     const vdsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vds')
     const ftpList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'storage')
+    const dnsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dnshost')
+
+    const vhostList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vhost')
 
     return (
       <>
+        {vhostList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+            {vhostList?.map(el => {
+              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+              return (
+                <VhostItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  discount_percent={discount_percent?.$}
+                  fullcost={fullcost?.$}
+                  itemId={el['item.id']?.$}
+                  pricelist_name={pricelist_name?.$}
+                  deleteItemHandler={
+                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                  }
+                />
+              )
+            })}
+          </div>
+        )}
+
         {domainsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
@@ -192,12 +221,32 @@ export default function Component() {
         {ftpList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
-              {t('services.External FTP-storage', { ns: 'other' })}:
+              {' '}
+              {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
             {ftpList?.map(el => {
               const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
               return (
                 <FtpItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  fullcost={fullcost?.$}
+                  discount_percent={discount_percent?.$}
+                  pricelist_name={pricelist_name?.$}
+                />
+              )
+            })}
+          </div>
+        )}
+
+        {dnsList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
+            {dnsList?.map(el => {
+              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              return (
+                <DnsItem
                   key={id?.$}
                   desc={desc?.$}
                   cost={cost?.$}

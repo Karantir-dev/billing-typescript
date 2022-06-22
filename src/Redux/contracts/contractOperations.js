@@ -22,6 +22,7 @@ const getContracts = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
       dispatch(contarctsActions.setContractsList(data.doc.elem))
       dispatch(actions.hideLoader())
     })
