@@ -155,7 +155,7 @@
 
 .searchBtn {
   height: 50px;
-  max-width: 100%;
+  max-width: 300px;
   font-size: 18px;
   text-transform: uppercase;
 }
@@ -176,6 +176,11 @@
 
 .crossIcon {
   fill: var(--main-text);
+  cursor: pointer;
+}
+
+.input_bgc {
+  background-color: var(--forms_bgc_3);
 }
 
 @media screen and (max-width: 767px) {

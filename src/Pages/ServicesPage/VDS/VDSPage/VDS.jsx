@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch } from 'react-redux'
 import * as route from '../../../../routes'
+import cn from 'classnames'
 import {
   Button,
   IconButton,
@@ -28,7 +29,7 @@ export default function VDS() {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
 
-  const [servers, setServers] = useState()
+  const [servers, setServers] = useState([])
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [activeServer, setActiveServer] = useState(null)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
@@ -36,10 +37,15 @@ export default function VDS() {
   const [idForPassChange, setIdForPassChange] = useState('')
   const [idForReboot, setIdForReboot] = useState('')
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
+  const [filtersState, setFiltersState] = useState()
+  const [filtersListState, setfiltersListState] = useState()
 
   useEffect(() => {
-    dispatch(vdsOperations.getVDS(setServers))
     // dispatch(vdsOperations.getVDS(setServers))
+    // resets filters
+    dispatch(
+      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
+    )
   }, [])
 
   const deleteServer = () => {
@@ -51,6 +57,32 @@ export default function VDS() {
     setActiveServer(null)
   }
 
+  const resetFilterHandler = () => {
+    // const clearFields = {
+    //   id: '',
+    //   ip: '',
+    //   domain: '',
+    //   pricelist: '',
+    //   period: '',
+    //   status: '',
+    //   opendate: '',
+    //   expiredate: '',
+    //   orderdatefrom: '',
+    //   orderdateto: '',
+    //   cost_from: '',+
+    //   cost_to: '',
+    //   autoprolong: '',
+    //   datacenter: '',
+    //   ostemplate: '',
+    // }
+    // setValues && setValues({ ...clearFields })
+
+    dispatch(
+      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
+    )
+    setIsFiltersOpened(false)
+  }
+
   const getSarverName = id => {
     return servers?.reduce((acc, el) => {
       if (el.id.$ === id) {
@@ -60,6 +92,18 @@ export default function VDS() {
     }, '')
   }
 
+  const handleSetFilters = values => {
+    dispatch(
+      vdsOperations.setVdsFilters(
+        values,
+        setFiltersState,
+        setfiltersListState,
+        setServers,
+      ),
+    )
+    setIsFiltersOpened(false)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -67,17 +111,22 @@ export default function VDS() {
       <h2 className={s.title}>{t('servers_title')}</h2>
       <div className={s.tools_wrapper}>
         <div className={s.filter_wrapper}>
-          <IconButton className={s.tools_icon} icon="filter" />
-          <Backdrop
-            className={s.filter_backdrop}
+          <IconButton
+            className={s.tools_icon}
+            onClick={() => setIsFiltersOpened(true)}
+            icon="filter"
+            disabled={servers.length < 1}
+          />
+          <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
+
+          <FiltersModal
             isOpened={isFiltersOpened}
             closeFn={() => setIsFiltersOpened(false)}
-          >
-            <FiltersModal
-              isOpened={isFiltersOpened}
-              closeFn={() => setIsFiltersOpened(false)}
-            />
-          </Backdrop>
+            handleSubmit={handleSetFilters}
+            resetFilterHandler={resetFilterHandler}
+            filters={filtersState}
+            filtersList={filtersListState}
+          />
         </div>
 
         {widerThan1550 && (

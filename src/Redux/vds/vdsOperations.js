@@ -22,7 +22,7 @@ const getVDS = setServers => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+
       setServers(data.doc.elem)
 
       dispatch(actions.hideLoader())
@@ -504,6 +504,71 @@ const changeDomainName =
       })
   }
 
+const setVdsFilters =
+  (values, setFiltersState, setfiltersListState, setServers) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.filter',
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          id: values?.id || '',
+          ip: values?.ip || '',
+          domain: values?.domain || '',
+          pricelist: values?.pricelist || '',
+          period: values?.period || '',
+          status: values?.status || '',
+          opendate: values?.opendate || '',
+          expiredate: values?.expiredate || '',
+          orderdatefrom: values?.orderdatefrom || '',
+          orderdateto: values?.orderdateto || '',
+          cost_from: values?.cost_from || '',
+          cost_to: values?.cost_to || '',
+          autoprolong: values?.autoprolong || '',
+          datacenter: values?.datacenter || '',
+          ostemplate: values?.ostemplate || '',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'vds.filter',
+              auth: sessionId,
+              out: 'json',
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+            setFiltersState(data.doc)
+            setfiltersListState({
+              autoprolong: data.doc.slist.find(el => el.$name === 'autoprolong').val,
+              ostemplate: data.doc.slist.find(el => el.$name === 'ostemplate').val,
+              status: data.doc.slist.find(el => el.$name === 'status').val,
+              datacenter: data.doc.slist.find(el => el.$name === 'datacenter').val,
+              period: data.doc.slist.find(el => el.$name === 'period').val,
+              pricelist: data.doc.slist.find(el => el.$name === 'pricelist').val,
+            })
+          })
+
+        dispatch(getVDS(setServers))
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('setVdsFilters - ', err)
+      })
+  }
+
 export default {
   getVDS,
   getEditFieldsVDS,
@@ -519,4 +584,5 @@ export default {
   getIpInfo,
   getEditIPInfo,
   changeDomainName,
+  setVdsFilters,
 }
