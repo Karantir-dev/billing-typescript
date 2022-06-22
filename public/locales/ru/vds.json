@@ -76,5 +76,6 @@
   "confirmation": "Подтверждение",
   "confirmation_placeholder": "Подтвердите пароль",
   "passwd_change_success": "Запущена операция смены пароля для услуги",
-  "scheduled_deletion": "Запланировано удаление услуги на: "
+  "scheduled_deletion": "Запланировано удаление услуги на: ",
+  "instruction_title": "Активация Виртуального сервера"
 }

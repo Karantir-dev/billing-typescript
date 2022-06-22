@@ -72,5 +72,6 @@
   "delete_message": "Do you really want to delete the selected service",
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "passwd_change_success": "Password change has been initiated for the service",
-  "scheduled_deletion": "Service will be deleted on: "
+  "scheduled_deletion": "Service will be deleted on: ",
+  "instruction_title": "Virtual server activation"
 }

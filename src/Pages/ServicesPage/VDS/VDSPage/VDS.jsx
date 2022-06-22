@@ -18,8 +18,9 @@ import {
   VdsRebootModal,
   ProlongModal,
   FiltersModal,
+  VdsInstructionModal,
 } from '../../../../Components'
-import { vdsOperations } from '../../../../Redux'
+import { dedicOperations, vdsOperations } from '../../../../Redux'
 
 import s from './VDS.module.scss'
 
@@ -39,6 +40,7 @@ export default function VDS() {
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [filtersState, setFiltersState] = useState()
   const [filtersListState, setfiltersListState] = useState()
+  const [idForInstruction, setIdForInstruction] = useState('')
 
   useEffect(() => {
     // dispatch(vdsOperations.getVDS(setServers))
@@ -69,7 +71,7 @@ export default function VDS() {
     //   expiredate: '',
     //   orderdatefrom: '',
     //   orderdateto: '',
-    //   cost_from: '',+
+    //   cost_from: '',
     //   cost_to: '',
     //   autoprolong: '',
     //   datacenter: '',
@@ -199,12 +201,14 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.status?.$ !== '2'}
+                onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
               />
             </HintWrapper>
             <HintWrapper label={t('go_to_panel')}>
               <IconButton
                 className={s.tools_icon}
+                onClick={() => dispatch(dedicOperations.goToPanel(activeServer.id.$))}
                 disabled={activeServer?.transition?.$ !== 'on'}
                 icon="exitSign"
               />
@@ -271,6 +275,16 @@ export default function VDS() {
 
       <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
         <ProlongModal elid={idForProlong} closeFn={() => setIdForProlong('')} />
+      </Backdrop>
+
+      <Backdrop
+        isOpened={Boolean(idForInstruction)}
+        onClick={() => setIdForInstruction('')}
+      >
+        <VdsInstructionModal
+          elid={idForInstruction}
+          closeFn={() => setIdForInstruction('')}
+        />
       </Backdrop>
     </>
   )
