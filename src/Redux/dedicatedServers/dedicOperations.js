@@ -8,6 +8,7 @@ import * as route from '../../routes'
 
 // GET SERVERS OPERATIONS
 
+console.log('changes in dedic operations')
 const getServersList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
