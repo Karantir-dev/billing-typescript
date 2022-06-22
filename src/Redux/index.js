@@ -100,3 +100,8 @@ export { default as dnsReducer } from './dns/dnsReducer'
 export { default as dnsActions } from './dns/dnsActions'
 export { default as dnsOperations } from './dns/dnsOperations'
 export { default as dnsSelectors } from './dns/dnsSelectors'
+//===========================================Forex=================================//
+export { default as forexReducer } from './forex/forexReducer'
+export { default as forexActions } from './forex/forexActions'
+export { default as forexOperations } from './forex/forexOperations'
+export { default as forexSelectors } from './forex/forexSelectors'

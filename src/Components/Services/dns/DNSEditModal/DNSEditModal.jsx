@@ -9,7 +9,7 @@ import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
 import { Button } from '../../..'
 import { dnsOperations } from '../../../../Redux'
-import translatePeriod from '../../DedicatedServers/translatePeriod'
+import translatePeriod from '../../../../utils/translatePeriod'
 
 export default function FTPEditModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs', 'dns'])

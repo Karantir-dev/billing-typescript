@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import s from './EditServerModal.module.scss'
 
 import { dedicOperations } from '../../../../Redux'
-import translatePeriod from '../translatePeriod'
+import translatePeriod from '../../../../utils/translatePeriod'
 
 export default function EditServerModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])

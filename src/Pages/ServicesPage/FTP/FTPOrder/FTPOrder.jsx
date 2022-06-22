@@ -7,11 +7,11 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import translatePeriod from '../../../../utils/translatePeriod'
 
 import { ftpOperations } from '../../../../Redux'
 
 import s from './FTPOrder.module.scss'
-import translatePeriod from '../../../../Components/Services/DedicatedServers/translatePeriod'
 
 export default function FTPOrder() {
   const dispatch = useDispatch()
