@@ -16,5 +16,7 @@
   "ftp": "Внешнее FTP хранилище",
   "ftp_order": "Заказ внешнего FTP хранилища",
   "dns": "DNS-хостинг",
-  "dns_order": "Заказ DNS хостинга"
+  "dns_order": "Заказ DNS хостинга",
+  "forex": "Сервер для Forex",
+  "forex_order": "Заказ Forex сервера"
 }

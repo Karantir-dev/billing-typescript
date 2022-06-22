@@ -16,5 +16,7 @@
   "ftp": "External FTP storage",
   "ftp_order": "Ordering an external FTP storage",
   "dns": "DNS-hosting",
-  "dns_order": "Order DNS hosting"
+  "dns_order": "Order DNS hosting",
+  "forex": "Forex server",
+  "forex_order": "Order forex server"
 }

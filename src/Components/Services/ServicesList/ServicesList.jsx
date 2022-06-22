@@ -104,7 +104,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.forex_server'),
       id: 8,
-      routeName: routes.HOME,
+      routeName: routes.FOREX,
       allowedToRender: isForexServerAllowedToRender,
       icon_name: 'forexbox',
       icon_width: '109',

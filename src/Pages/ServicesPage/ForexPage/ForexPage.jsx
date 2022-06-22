@@ -12,13 +12,13 @@ import {
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
-  DNSList,
-  DNSEditModal,
   DNSInstructionModal,
   DNSFiltersModal,
   Portal,
+  ForexList,
+  ForexEditModal,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
+import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 
@@ -28,13 +28,13 @@ export default function ForexPage() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsList = useSelector(dnsSelectors.getDNSList)
+  const forexList = useSelector(forexSelectors.getForexList)
 
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
-  const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
+  const [elidForDeletionModal, setElidForDeletionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
 
@@ -81,20 +81,18 @@ export default function ForexPage() {
   }
 
   useEffect(() => {
-    dispatch(dnsOperations.getDNSList())
-    dispatch(dnsOperations.getDNSFilters(setFilters))
+    dispatch(forexOperations.getForexList())
+    // dispatch(dnsOperations.getDNSFilters(setFilters))
   }, [])
 
   useEffect(() => {
-    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+    // if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
   }, [filterModal])
 
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>
-        {t('burger_menu.services.services_list.dns_hosting', { ns: 'container' })}
-      </h2>
+      <h2 className={s.page_title}>{t('forex', { ns: 'crumbs' })}</h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
           <div className={s.filterBtnBlock}>
@@ -160,22 +158,12 @@ export default function ForexPage() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('instruction')}>
+              <HintWrapper label={t('delete')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
-                  icon="info"
-                  onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
-                />
-              </HintWrapper>
-              <HintWrapper label={t('go_to_panel')}>
-                <IconButton
-                  onClick={() => {
-                    dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
-                  }}
-                  className={s.tools_icon}
-                  disabled={activeServer?.transition?.$ !== 'on'}
-                  icon="exitSign"
+                  disabled={activeServer?.status?.$ !== '1'}
+                  icon="delete"
+                  onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
             </div>
@@ -188,24 +176,24 @@ export default function ForexPage() {
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
           onClick={() => {
-            navigate(route.DNS_ORDER)
+            navigate(route.FOREX_ORDER)
           }}
         />
       </div>
-      <DNSList
-        storageList={dnsList}
+      <ForexList
+        forexList={forexList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
-        setElidForInstructionModal={setElidForInstructionModal}
+        setElidForDeletionModal={setElidForDeletionModal}
         setActiveServer={setActiveServer}
       />
       <Backdrop
         onClick={() => setElidForEditModal(0)}
         isOpened={Boolean(elidForEditModal)}
       >
-        <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+        <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
       <Backdrop
@@ -230,12 +218,12 @@ export default function ForexPage() {
       </Backdrop>
 
       <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
+        onClick={() => setElidForDeletionModal(0)}
+        isOpened={Boolean(elidForDeletionModal)}
       >
         <DNSInstructionModal
-          elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+          elid={elidForDeletionModal}
+          closeFn={() => setElidForDeletionModal(0)}
         />
       </Backdrop>
     </>
