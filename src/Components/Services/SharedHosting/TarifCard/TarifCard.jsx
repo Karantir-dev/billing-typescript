@@ -51,7 +51,7 @@ export default function Component(props) {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
-    if (words.length > 0) {
+    if (words && words.length > 0) {
       words.forEach(w => {
         if (!isNaN(w)) {
           amounts.push(w)

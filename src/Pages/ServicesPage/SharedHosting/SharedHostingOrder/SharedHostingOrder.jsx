@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +17,8 @@ export default function ServicesPage() {
 
   const location = useLocation()
 
+  const licenseBlock = useRef()
+
   const [data, setData] = useState(null)
 
   const [period, setPeriod] = useState(data?.period)
@@ -26,6 +28,8 @@ export default function ServicesPage() {
 
   const [autoprolong, setAutoprolong] = useState(null)
   const [licence_agreement, setLicence_agreement] = useState(false)
+
+  const [licence_agreement_error, setLicence_agreement_error] = useState(false)
 
   useEffect(() => {
     dispatch(vhostOperations.orderVhost({}, setData))
@@ -72,6 +76,11 @@ export default function ServicesPage() {
   }
 
   const buyVhostHandler = () => {
+    if (!licence_agreement) {
+      setLicence_agreement_error(true)
+      return licenseBlock.current.scrollIntoView()
+    }
+
     const d = {
       period,
       licence_agreement: licence_agreement ? 'on' : 'off',
@@ -87,7 +96,7 @@ export default function ServicesPage() {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
-    if (words.length > 0) {
+    if (words && words.length > 0) {
       words.forEach(w => {
         if (!isNaN(w)) {
           amounts.push(w)
@@ -102,6 +111,29 @@ export default function ServicesPage() {
     }
   }
 
+  const translateAutorenewSelect = elem => {
+    const price = parsePrice(elem)?.amount || 0
+
+    console.log(elem)
+    let period = ''
+
+    if (elem?.includes('per month')) {
+      period = 'per month'
+    } else if (elem?.includes('for three months')) {
+      period = 'for three months'
+    } else if (elem?.includes('half a year')) {
+      period = 'half a year'
+    } else if (elem?.includes('per year')) {
+      period = 'per year'
+    } else if (elem?.includes('for two years')) {
+      period = 'for two years'
+    } else if (elem?.includes('for three years')) {
+      period = 'for three years'
+    }
+
+    return price + ' EUR ' + t(period)
+  }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -112,6 +144,7 @@ export default function ServicesPage() {
             setPeriod(item)
             setPrice(null)
             setParamsData(null)
+            setLicence_agreement(false)
             dispatch(vhostOperations.orderVhost({ period: item }, setData))
           }}
           value={period}
@@ -152,19 +185,24 @@ export default function ServicesPage() {
               className={s.select}
               itemsList={paramsData?.autoprolong_list.map(el => {
                 return {
-                  label: t(el.$, { ns: 'other' }),
+                  label:
+                    el.$ === 'Disabled'
+                      ? t(el.$.trim())
+                      : translateAutorenewSelect(el.$.trim()),
                   value: el.$key,
                 }
               })}
               isShadow
             />
-            <div className={s.useFirstCheck}>
+            <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}
                 setValue={item => {
                   setLicence_agreement(item)
+                  setLicence_agreement_error(false)
                 }}
                 className={s.checkbox}
+                error={licence_agreement_error}
               />
               <span className={s.agreeTerms}>
                 {t('I have read and agree to the', { ns: 'domains' })}
@@ -178,12 +216,12 @@ export default function ServicesPage() {
           </div>
         )}
       </div>
-      {licence_agreement && (
+      {price && (
         <div className={s.paymentBlock}>
           <div className={s.amountPayBlock}>
             <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
             <span>
-              {parsePrice(paramsData?.orderinfo).amount} EUR/
+              {parsePrice(paramsData?.orderinfo)?.amount} EUR/
               {t(`${data?.period_list?.filter(el => el?.$key === period)[0]?.$}`, {
                 ns: 'other',
               })}

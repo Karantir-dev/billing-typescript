@@ -12,7 +12,7 @@
 }
 
 .select {
-  max-width: 252px;
+  max-width: 100%;
 }
 
 .paymentWrapper {
@@ -116,6 +116,13 @@
 }
 
 @media screen and (min-width: 768px) {
+  .select {
+    max-width: 252px;
+  }
+  .page_wrapper {
+    padding-bottom: 50px;
+  }
+
   .paymentBlock {
     flex-direction: row;
     .amountPayBlock {

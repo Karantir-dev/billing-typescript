@@ -20,5 +20,13 @@
   "Subdomains": "Поддоменов",
   "Database": "Базы данных",
   "RAM": "ОЗУ",
-  "Options": "Параметры"
+  "Options": "Параметры",
+  "Disabled": "Выключено",
+
+  "per month": "в месяц",
+  "for three months": "на три месяца",
+  "half a year": "полгода",
+  "per year": "в год",
+  "for two years": "на два года",
+  "for three years": "на три года"
 }

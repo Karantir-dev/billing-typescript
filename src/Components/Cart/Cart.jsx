@@ -15,7 +15,7 @@ import {
   VdsItem,
   FtpItem,
   DnsItem,
-  VhostItem
+  VhostItem,
 } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
@@ -139,7 +139,7 @@ export default function Component() {
                   key={id?.$}
                   desc={desc?.$}
                   cost={cost?.$}
-                  discount_percent={discount_percent}
+                  discount_percent={discount_percent?.$}
                   fullcost={fullcost?.$}
                   itemId={el['item.id']?.$}
                   pricelist_name={pricelist_name?.$}

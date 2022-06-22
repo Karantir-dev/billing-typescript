@@ -1,8 +1,6 @@
 .cardBg {
   border-radius: 3px;
-  flex-basis: 24%;
-  margin-right: 30px;
-  max-width: 252px;
+  flex-basis: 100%;
   min-width: 252px;
   margin-top: 20px;
   cursor: pointer;
@@ -86,5 +84,19 @@
     .cardBlock {
       box-shadow: none;
     }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cardBg {
+    flex-basis: 46%;
+    margin-right: 15px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .cardBg {
+    flex-basis: 22%;
+    margin-right: 30px;
   }
 }

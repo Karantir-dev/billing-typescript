@@ -20,5 +20,13 @@
   "Subdomains": "Subdomains",
   "Database": "Database",
   "RAM": "RAM",
-  "Options": "Options"
+  "Options": "Options",
+  "Disabled": "Disabled",
+
+  "per month": "per month",
+  "for three months": "for three months",
+  "half a year": "half a year",
+  "per year": "per year",
+  "for two years": "for two years",
+  "for three years": "for three years"
 }
