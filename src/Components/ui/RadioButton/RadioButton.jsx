@@ -53,7 +53,7 @@ export default function Component({
 Component.propTypes = {
   disabled: PropTypes.bool,
   value: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   label: PropTypes.string,
   labelClassName: PropTypes.string,
   selected: PropTypes.string,

@@ -19,22 +19,28 @@
   align-items: center;
   margin-right: 20px;
   &.first_item {
-    flex-basis: 12.6%;
+    flex-basis: 8.5%;
   }
   &.second_item {
-    flex-basis: 16.5%;
+    flex-basis: 14.9%;
   }
   &.third_item {
-    flex-basis: 11.3%;
+    flex-basis: 12%;
   }
   &.fourth_item {
-    flex-basis: 14.3%;
+    flex-basis: 9.2%;
   }
   &.fifth_item {
-    flex-basis: 19.1%;
+    flex-basis: 18.3%;
   }
   &.sixth_item {
-    flex-basis: 18.5%;
+    flex-basis: 9.9%;
+  }
+  &.seventh_item {
+    flex-basis: 11.3%;
+  }
+  &.eighth_item {
+    flex-basis: 15.9%;
   }
 }
 
@@ -170,7 +176,7 @@
   margin-left: 18px;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 70.9%;
   &:hover {
     font-weight: 400;
@@ -281,51 +287,37 @@
   }
 
   .tableBlockFirst {
-    flex-basis: 12.6%;
+    flex-basis: 8.5%;
   }
 
   .tableBlockSecond {
-    flex-basis: 16.5%;
+    flex-basis: 14.9%;
   }
 
   .tableBlockThird {
-    flex-basis: 11.3%;
+    flex-basis: 12%;
   }
 
   .tableBlockFourth {
-    flex-basis: 14.3%;
+    flex-basis: 9.2%;
   }
 
   .tableBlockFifth {
-    flex-basis: 19.1%;
+    flex-basis: 18.3%;
   }
 
   .tableBlockSixth {
-    flex-basis: 18.5%;
+    flex-basis: 9.9%;
   }
 
-  .item_text {
-    font-size: 14px;
-    align-items: center;
-
-    &.first_item {
-      max-width: 80px;
-    }
-
-    &.third_item {
-      max-width: 70px;
-      word-break: break-word;
-      white-space: break-spaces;
-    }
-
-    &.fourth_item {
-      max-width: 120px;
-    }
-
-    &.fifth_item {
-      max-width: 90px;
-    }
+  .tableBlockSeventh {
+    flex-basis: 11.3%;
   }
+
+  .tableBlockEighth {
+    flex-basis: 15.9%;
+  }
+
   .tableHeader {
     padding: 22px 27px;
   }
@@ -336,36 +328,6 @@
 
   .item_text {
     font-size: 16px;
-
-    &.first_item {
-      max-width: 140px;
-    }
-
-    &.second_item {
-      max-width: 160px;
-    }
-
-    &.third_item {
-      max-width: 160px;
-      word-break: break-word;
-      white-space: break-spaces;
-    }
-
-    &.fourth_item {
-      max-width: 160px;
-    }
-
-    &.fifth_item {
-      max-width: 160px;
-    }
-
-    &.sixth_item {
-      max-width: 160px;
-    }
-
-    &.seventh_item {
-      max-width: 130px;
-    }
   }
 }
 
@@ -375,6 +337,6 @@
   }
 
   .item_text {
-    font-size: 17px;
+    font-size: 16PX;
   }
 }

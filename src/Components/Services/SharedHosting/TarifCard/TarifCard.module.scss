@@ -1,0 +1,102 @@
+.cardBg {
+  border-radius: 3px;
+  flex-basis: 100%;
+  min-width: 252px;
+  margin-top: 20px;
+  cursor: pointer;
+
+  .cardBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 21px 10px;
+    min-height: 278px;
+    background: var(--forms_bgc_2);
+    box-shadow: var(--forms2_shadow);
+  }
+
+  .line {
+    height: 2px;
+    width: 37px;
+    background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
+  }
+
+  .tariffName {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 130%;
+    text-align: center;
+    color: var(--servers_tariff_color);
+  }
+
+  .tariffPrice {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 130%;
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    margin: 15px 0;
+  }
+
+  .charBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+
+    .charText {
+      margin-top: 15px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 70.9%;
+      color: var(--main-text);
+    }
+  }
+
+  &:hover {
+    .tariffName {
+      font-weight: 600;
+    }
+    .tariffPrice {
+      font-weight: 600;
+    }
+  }
+
+  &.selected {
+    padding: 1.5px;
+    box-shadow: var(--forms2_pink_shadow);
+    background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
+
+    .tariffName {
+      font-weight: 600;
+    }
+
+    .tariffPrice {
+      font-weight: 600;
+    }
+
+    .cardBlock {
+      box-shadow: none;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cardBg {
+    flex-basis: 46%;
+    margin-right: 15px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .cardBg {
+    flex-basis: 22%;
+    margin-right: 30px;
+  }
+}
