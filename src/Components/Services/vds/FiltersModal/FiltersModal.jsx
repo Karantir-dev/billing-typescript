@@ -5,56 +5,51 @@ import { useOutsideAlerter } from '../../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
 import { Cross } from '../../../../images'
-import s from './DomainFiltertsModal.module.scss'
+import cn from 'classnames'
 
-export default function Component(props) {
-  const {
-    setFilterModal,
-    filterModal,
-    filters,
-    filtersList,
-    resetFilterHandler,
-    setFilterHandler,
-  } = props
+import s from '../../Domains/DomainFiltertsModal/DomainFiltertsModal.module.scss'
+import ss from './FiltersModal.module.scss'
 
-  const { t } = useTranslation(['domains', 'other', 'billing'])
+export default function FiltersModal({
+  closeFn,
+  isOpened,
+  filters,
+  filtersList,
+  resetFilterHandler,
+  handleSubmit,
+}) {
+  const { t } = useTranslation(['domains', 'other', 'dedicated_servers', 'vds'])
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
 
   const dropdownCalendar = useRef(null)
   const modal = useRef(null)
 
-  const clickOutsideCalendar = () => {
-    setIsOpenedCalendar(false)
-  }
+  useOutsideAlerter(modal, isOpened, () => closeFn())
 
-  const clickOutsideModal = () => {
-    setFilterModal(false)
-  }
-
-  useOutsideAlerter(modal, filterModal, clickOutsideModal)
-
-  useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutsideCalendar)
+  useOutsideAlerter(dropdownCalendar, isOpenedCalendar, () => setIsOpenedCalendar(false))
 
   return (
-    <div ref={modal} className={s.filterModal}>
+    <div ref={modal} className={cn(ss.filters_modal, { [ss.opened]: isOpened })}>
       <Formik
         enableReinitialize
         initialValues={{
-          id: filters?.id || '',
-          domain: filters?.domain || '',
-          pricelist: filters?.pricelist || '',
-          period: filters?.period || '',
-          status: filters?.status || '',
-          service_status: filters?.service_status || '',
-          opendate: filters?.opendate || '',
-          expiredate: filters?.expiredate || '',
-          orderdatefrom: filters?.orderdatefrom || '',
-          orderdateto: filters?.orderdateto || '',
-          cost_from: filters?.cost_from || '',
-          cost_to: filters?.cost_to || '',
-          autoprolong: filters?.autoprolong || '',
+          id: filters?.id?.$ || '',
+          domain: filters?.domain?.$ || '',
+          ip: filters?.ip?.$ || '',
+          pricelist: filters?.pricelist?.$ || '',
+          period: filters?.period?.$ || '',
+          status: filters?.status?.$ || '',
+          opendate: filters?.opendate?.$ || '',
+          expiredate: filters?.expiredate?.$ || '',
+          orderdatefrom: filters?.orderdatefrom?.$ || '',
+          orderdateto: filters?.orderdateto?.$ || '',
+          cost_from: filters?.cost_from?.$ || '',
+          cost_to: filters?.cost_to?.$ || '',
+          autoprolong: filters?.autoprolong?.$ || '',
+          ostemplate: filters?.ostemplate?.$ || '',
+          datacenter: filters?.datacenter?.$ || '',
         }}
-        onSubmit={setFilterHandler}
+        onSubmit={handleSubmit}
       >
         {({ setFieldValue, setValues, values, errors, touched }) => {
           let dates = null
@@ -72,15 +67,16 @@ export default function Component(props) {
           }
 
           return (
-            <Form className={s.form}>
-              <div className={s.formHeader}>
+            <Form className={cn(s.form)}>
+              <div className={ss.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+                <Cross onClick={() => closeFn()} className={s.crossIcon} />
               </div>
 
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
+                  inputClassName={s.input_bgc}
                   name="id"
                   label={`${t('Id')}:`}
                   placeholder={t('Enter id', { ns: 'other' })}
@@ -92,6 +88,7 @@ export default function Component(props) {
 
                 <InputField
                   inputWrapperClass={s.inputHeight}
+                  inputClassName={s.input_bgc}
                   name="domain"
                   label={`${t('Domain name')}:`}
                   placeholder={t('Enter domain name')}
@@ -101,7 +98,21 @@ export default function Component(props) {
                   touched={!!touched.domain}
                 />
 
+                <InputField
+                  inputWrapperClass={s.inputHeight}
+                  inputClassName={s.input_bgc}
+                  name="ip"
+                  label={`${t('ip_address', { ns: 'vds' })}:`}
+                  placeholder={t('ip_placeholder', { ns: 'dedicated_servers' })}
+                  isShadow
+                  className={s.input}
+                  error={!!errors.ip}
+                  touched={!!touched.ip}
+                />
+
                 <Select
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
                   label={`${t('Tariff plan')}:`}
                   placeholder={t('Not selected')}
                   value={values.pricelist}
@@ -115,19 +126,23 @@ export default function Component(props) {
                 />
 
                 <Select
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
                   label={`${t('Period', { ns: 'other' })}:`}
                   placeholder={t('Not selected')}
                   value={values.period}
                   getElement={item => setFieldValue('period', item)}
                   isShadow
                   itemsList={filtersList?.period?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
+                    label: t($.trim(), { ns: 'other' }),
                     value: $key,
                   }))}
                   className={s.select}
                 />
 
                 <Select
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
                   label={`${t('status', { ns: 'other' })}:`}
                   placeholder={t('Not selected')}
                   value={values.status}
@@ -141,19 +156,39 @@ export default function Component(props) {
                 />
 
                 <Select
-                  label={`${t('Domain status')}:`}
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
+                  label={`${t('ostempl', { ns: 'vds' })}:`}
                   placeholder={t('Not selected')}
-                  value={values.service_status}
-                  getElement={item => setFieldValue('service_status', item)}
+                  value={values.ostemplate}
+                  getElement={item => setFieldValue('ostemplate', item)}
                   isShadow
-                  itemsList={filtersList?.service_status?.map(({ $key, $ }) => ({
+                  itemsList={filtersList?.ostemplate?.map(({ $key, $ }) => ({
                     label: t(`${$.trim()}`),
                     value: $key,
                   }))}
                   className={s.select}
                 />
+                <Select
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
+                  label={`${t('datacenter', { ns: 'dedicated_servers' })}:`}
+                  placeholder={t('Not selected')}
+                  value={values.datacenter}
+                  getElement={item => setFieldValue('datacenter', item)}
+                  isShadow
+                  itemsList={filtersList?.datacenter
+                    ?.filter(({ $key }) => $key === '2' || $key === '7' || $key === '8')
+                    .map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                  className={s.select}
+                />
 
                 <Select
+                  dropdownClass={s.input_bgc}
+                  inputClassName={s.input_bgc}
                   label={`${t('Auto renewal')}:`}
                   placeholder={t('Not selected')}
                   value={values.autoprolong}
@@ -167,7 +202,7 @@ export default function Component(props) {
                 />
 
                 <DoubleInputField
-                  inputWrapperClass={s.inputHeight}
+                  inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
                   className={s.input}
                   nameLeft="cost_from"
                   nameRight="cost_to"
@@ -186,7 +221,7 @@ export default function Component(props) {
                 />
 
                 <DoubleInputField
-                  inputWrapperClass={s.inputHeightExpire}
+                  inputWrapperClass={cn(s.inputHeightExpire, s.input_bgc)}
                   className={s.input}
                   nameLeft="opendate"
                   nameRight="expiredate"
@@ -205,7 +240,7 @@ export default function Component(props) {
                 />
 
                 <DoubleInputField
-                  inputWrapperClass={s.inputHeight}
+                  inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
                   className={s.input}
                   nameLeft="orderdatefrom"
                   nameRight="orderdateto"
@@ -248,11 +283,11 @@ export default function Component(props) {
   )
 }
 
-Component.propTypes = {
-  setFilterModal: PropTypes.func,
-  filterModal: PropTypes.bool,
+FiltersModal.propTypes = {
+  closeFn: PropTypes.func,
+  isOpened: PropTypes.bool,
 }
 
-Component.defaultProps = {
-  setFilterModal: () => null,
+FiltersModal.defaultProps = {
+  closeFn: () => null,
 }

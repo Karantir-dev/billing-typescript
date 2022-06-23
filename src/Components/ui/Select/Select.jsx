@@ -12,6 +12,7 @@ export default function Select(props) {
     isShadow, // shadow or border
     className,
     inputClassName,
+    dropdownClass,
     itemsList,
     getElement,
     value,
@@ -122,7 +123,10 @@ export default function Select(props) {
       {itemsList.length !== 0 && (
         <div
           ref={dropdown}
-          className={cn(s.dropdown, { [s.opened]: isOpened })}
+          className={cn(s.dropdown, {
+            [s.opened]: isOpened,
+            [dropdownClass]: dropdownClass,
+          })}
           data-testid="wrapper"
         >
           <div className={s.list}>
@@ -160,6 +164,7 @@ function requiredLabel(labelName) {
 Select.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
+  dropdownClass: PropTypes.string,
   isShadow: PropTypes.bool.isRequired,
   value: PropTypes.string,
   itemsList: PropTypes.oneOfType([

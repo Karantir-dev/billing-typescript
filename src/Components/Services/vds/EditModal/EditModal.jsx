@@ -108,8 +108,9 @@ export default function EditModal({ elid, closeFn }) {
           {t('edit_title')}
           <span className={s.tariff_name}>{initialState?.name?.$.split('(')[0]}</span>
         </p>
-
-        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+        <button className={s.icon_cross} onClick={closeFn} type="button">
+          <Cross width={17} height={17} />
+        </button>
       </div>
 
       <div className={s.dates_wrapper}>
