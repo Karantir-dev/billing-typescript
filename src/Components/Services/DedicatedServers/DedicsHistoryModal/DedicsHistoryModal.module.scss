@@ -11,11 +11,12 @@
 }
 
 .history_modal {
-  background-color: var(--main-bgc);
-  padding: 0px 40px 30px 38px;
+  background-color: var(--forms_bgc_1);
+  padding-bottom: 30px;
   overflow-y: auto;
   height: 80vh;
   position: relative;
+  border-radius: 5px;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -30,11 +31,6 @@
   }
 }
 
-// .wrapper {
-//   position: sticky;
-//   z-index: 10;
-// }
-
 .title_wrapper {
   position: sticky;
   top: 0;
@@ -42,9 +38,10 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background-color: var(--main-bgc);
-  padding-top: 35px;
-  padding-bottom: 35px;
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--modal_header_shadow);
+  padding: 20px 30px 15px;
+  margin-bottom: 15px;
 }
 
 .title {
@@ -57,7 +54,16 @@
   line-height: 130%;
   color: var(--transparent-color);
 }
+.scroll_content {
+  padding-left: 30px;
+  padding-right: 30px;
+}
 
+@media screen and (min-width: 400px) {
+  .history_modal {
+    width: 90%;
+  }
+}
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;
@@ -66,6 +72,8 @@
 
   .history_modal {
     max-width: 623px;
+    padding: 0;
+    padding-bottom: 35px;
   }
 }
 
@@ -81,11 +89,9 @@
   }
   .title {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
   }
-  .service_name {
-    margin-left: 8px;
-  }
+
   .history_modal {
     min-width: 1077px;
   }

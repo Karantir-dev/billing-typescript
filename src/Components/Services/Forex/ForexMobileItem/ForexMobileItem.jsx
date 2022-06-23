@@ -79,7 +79,7 @@ export default function ForexMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.delete?.$ !== '2'}
+                  disabled={!server.id.$}
                   onClick={() => handleToolBtnClick(setElidForDeletionModal, server.id.$)}
                 >
                   <Delete className={s.tool_icon} />

@@ -12,11 +12,11 @@ import {
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
-  DNSInstructionModal,
   Portal,
   ForexList,
   ForexEditModal,
   ForexFiltersModal,
+  ForexDeletionModal,
 } from '../../../Components'
 import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -77,8 +77,6 @@ export default function ForexPage() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    console.log(values)
-
     dispatch(forexOperations.getForexFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
@@ -107,6 +105,8 @@ export default function ForexPage() {
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
+
+  console.log('forexlist', forexList)
 
   return (
     <>
@@ -152,7 +152,10 @@ export default function ForexPage() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -161,7 +164,7 @@ export default function ForexPage() {
                 />
               </HintWrapper>
 
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -169,7 +172,7 @@ export default function ForexPage() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -177,10 +180,13 @@ export default function ForexPage() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('delete')}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('delete', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '1'}
+                  disabled={!activeServer?.id?.$}
                   icon="delete"
                   onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />
@@ -240,7 +246,7 @@ export default function ForexPage() {
         onClick={() => setElidForDeletionModal(0)}
         isOpened={Boolean(elidForDeletionModal)}
       >
-        <DNSInstructionModal
+        <ForexDeletionModal
           elid={elidForDeletionModal}
           closeFn={() => setElidForDeletionModal(0)}
         />

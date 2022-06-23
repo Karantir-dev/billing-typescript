@@ -19,9 +19,19 @@ export default function ForexList({
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
+  if (forexList.length === 0) {
+    return (
+      <div className={s.no_service_wrapper}>
+        <img src={require('../../../../images/services/forexbox.webp')} alt="forexbox" />
+        <p className={s.no_service_title}>You dont have a server yet</p>
+        <p className={s.no_service_description}>Here must be service description</p>
+      </div>
+    )
+  }
+
   return (
     <>
-      {widerThan1550 && (
+      {(widerThan1550 && forexList.length) > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('tariff')}:</li>

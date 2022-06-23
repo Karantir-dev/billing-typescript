@@ -150,7 +150,10 @@ export default function FTP() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -159,7 +162,7 @@ export default function FTP() {
                 />
               </HintWrapper>
 
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -167,7 +170,7 @@ export default function FTP() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -175,7 +178,7 @@ export default function FTP() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('instruction')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}

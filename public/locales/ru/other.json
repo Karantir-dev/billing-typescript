@@ -131,5 +131,7 @@
   "Two years": "Два года",
   "Three years": "Три года",
   "Hostname": "Имя хоста",
-  "Connection URL": "URL для подключения"
+  "Connection URL": "URL для подключения",
+  "Service deletion": "Удаление услуги",
+  "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу"
 }

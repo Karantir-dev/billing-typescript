@@ -1,23 +1,9 @@
-.form {
+.reboot_modal {
   width: 261px;
-  background-color: var(--forms_bgc_2);
+  background-color: var(--main-bgc);
   padding: 14px 15px 30px 15px;
-  // overflow-y: show;
+  overflow-y: auto;
   max-height: 500px;
-  border-radius: 3px;
-  box-shadow: var(--forms2_shadow);
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--scrollbar-track-color);
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--accent-gradient);
-    border-radius: 5px;
-  }
 }
 
 .title_wrapper {
@@ -58,15 +44,6 @@
   color: var(--main-text);
 }
 
-.value {
-  &.green {
-    color: var(--success-color);
-  }
-  &.red {
-    color: var(--red-color);
-  }
-}
-
 .icon_cross {
   cursor: pointer;
   flex: none;
@@ -80,10 +57,6 @@
 
 .select {
   margin-bottom: 12px;
-}
-
-.inputClassName {
-  background-color: var(--nearby-elements-bgc);
 }
 
 .input_field_wrapper {
@@ -121,6 +94,13 @@
 }
 
 @media screen and (min-width: 768px) {
+  .reboot_modal {
+    width: 400px;
+    background-color: var(--main-bgc);
+    padding: 30px 30px 30px 30px;
+    overflow-y: auto;
+    max-height: 500px;
+  }
   .form {
     width: 355px;
     padding: 25px 51px 32px 51px;
@@ -143,7 +123,7 @@
     padding-bottom: 0px;
   }
 
-  .buy_btn {
-    width: 254px;
+  .buy_btn.btn {
+    width: 250px;
   }
 }

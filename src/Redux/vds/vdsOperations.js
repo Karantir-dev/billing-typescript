@@ -46,6 +46,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
         auth: sessionId,
         elid,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {

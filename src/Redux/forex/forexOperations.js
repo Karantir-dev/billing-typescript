@@ -335,77 +335,45 @@ const editForex =
       })
   }
 
-// const editDNSWithExtraCosts =
-//   (elid, autoprolong, addon_961, handleModal) => (dispatch, getState) => {
-//     dispatch(actions.showLoader())
+const deleteForex = (elid, handleModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-//     const {
-//       auth: { sessionId },
-//     } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'dnshost.edit',
-//           out: 'json',
-//           auth: sessionId,
-//           lang: 'en',
-//           elid,
-//           autoprolong,
-//           addon_961,
-//           clicked_button: 'basket',
-//           sok: 'ok',
-//         }),
-//       )
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//         handleModal()
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'forexbox.delete',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//         dispatch(
-//           cartActions.setCartIsOpenedState({
-//             isOpened: true,
-//             redirectPath: route.DNS,
-//           }),
-//         )
-//         dispatch(actions.hideLoader())
-//       })
-//       .catch(error => {
-//         console.log('error', error)
-//         errorHandler(error.message, dispatch)
-//         dispatch(actions.hideLoader())
-//       })
-//   }
-// const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+      console.log(data, 'deletion forexbox')
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+      dispatch(getForexList())
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'service.instruction.html',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//       setInstruction(data.doc.body)
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+      dispatch(actions.hideLoader())
 
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+      handleModal()
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 const getForexFilters =
   (setFilters, data = {}, filtered = false) =>
@@ -465,38 +433,6 @@ const getForexFilters =
       })
   }
 
-// const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
-
-//   const {
-//     auth: { sessionId },
-//   } = getState()
-
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'service.changepricelist',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       console.log(data, 'chnage pricelist')
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//       setInitialState(data.doc)
-
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
-
 export default {
   getForexList,
   getTarifs,
@@ -506,9 +442,5 @@ export default {
   getCurrentForexInfo,
   editForex,
   getForexFilters,
-  // getDNSExtraPayText,
-  // editDNSWithExtraCosts,
-  // getServiceInstruction,
-  // getDNSFilters,
-  // getChangeTariffPricelist,
+  deleteForex,
 }
