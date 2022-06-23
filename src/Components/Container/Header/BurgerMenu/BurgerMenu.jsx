@@ -77,7 +77,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
-      routeName: routes.HOME,
+      routeName: routes.SHARED_HOSTING,
       allowedToRender: true,
     },
     {
@@ -97,7 +97,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.forex_server'),
-      routeName: routes.HOME,
+      routeName: routes.FOREX,
       allowedToRender: true,
     },
   ]

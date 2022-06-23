@@ -75,7 +75,7 @@ const getTarifs =
           currentDatacenter,
         }
 
-        dispatch(setTarifs(orderData))
+        setTarifs(orderData)
         dispatch(actions.hideLoader())
       })
       .catch(error => {

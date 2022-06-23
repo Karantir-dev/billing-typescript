@@ -129,6 +129,8 @@ export { default as DeleteModal } from './Services/vds/DeleteModal/DeleteModal'
 export { default as VDSPasswordChange } from './Services/vds/PasswordChange/PasswordChange'
 export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
 export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
+export { default as FiltersModal } from './Services/vds/FiltersModal/FiltersModal'
+export { default as VdsInstructionModal } from './Services/vds/InstructionModal/InstructionModal'
 
 //==========================================FTP==========================================//
 export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'
@@ -143,6 +145,10 @@ export { default as DNSInstructionModal } from './Services/dns/DNSInstructionMod
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
 export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
+//==========================================DNS==========================================//
+export { default as ForexList } from './Services/Forex/ForexList/ForexList'
+export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
+
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
@@ -151,3 +157,4 @@ export { default as VdsItem } from './Cart/VdsItem/VdsItem'
 export { default as FtpItem } from './Cart/FtpItem/FtpItem'
 export { default as DnsItem } from './Cart/DnsItem/DnsItem'
 export { default as VhostItem } from './Cart/VhostItem/VhostItem'
+export { default as ForexItem } from './Cart/ForexItem/ForexItem'

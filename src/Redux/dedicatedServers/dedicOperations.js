@@ -1113,7 +1113,7 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
         func: 'service.instruction.html',
         out: 'json',
         auth: sessionId,
-        lang: 'en',
+        lang: i18n.language,
         elid,
       }),
     )

@@ -48,3 +48,6 @@ export const FTP_ORDER = '/services/ftp/ftp_order'
 
 export const DNS = '/services/dns'
 export const DNS_ORDER = '/services/dns/dns_order'
+
+export const FOREX = '/services/forex'
+export const FOREX_ORDER = '/services/forex/forex_order'

@@ -16,6 +16,7 @@ import {
   FtpItem,
   DnsItem,
   VhostItem,
+  ForexItem,
 } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
@@ -118,13 +119,13 @@ export default function Component() {
     const domainsList = cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'domain',
     )
-
     const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
-
     const vdsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vds')
     const ftpList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'storage')
     const dnsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dnshost')
-
+    const forexList = cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'forexbox',
+    )
     const vhostList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vhost')
 
     return (
@@ -247,6 +248,25 @@ export default function Component() {
               const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
               return (
                 <DnsItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  fullcost={fullcost?.$}
+                  discount_percent={discount_percent?.$}
+                  pricelist_name={pricelist_name?.$}
+                />
+              )
+            })}
+          </div>
+        )}
+
+        {forexList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>
+            {forexList?.map(el => {
+              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              return (
+                <ForexItem
                   key={id?.$}
                   desc={desc?.$}
                   cost={cost?.$}

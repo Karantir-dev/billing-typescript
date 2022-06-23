@@ -18,7 +18,7 @@ export default function DNSMobileItem({
   setElidForInstructionModal,
   setActiveServer,
 }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
   const dropdownEl = useRef()
 
   const [toolsOpened, setToolsOpened] = useState(false)
@@ -113,7 +113,11 @@ export default function DNSMobileItem({
       <span className={s.label}>Id:</span>
       <span className={s.value}>{storage?.id?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
-      <span className={s.value}>{storage?.pricelist?.$}</span>
+      <span className={s.value}>
+        {storage?.pricelist?.$.replace('for', t('for', { ns: 'dns' }))
+          .replace('domains', t('domains', { ns: 'dns' }))
+          .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+      </span>
       <span className={s.label}>{t('datacenter', { ns: 'dedicated_servers' })}:</span>
       <span className={s.value}>{storage?.datacentername?.$}</span>
       <span className={s.label}>{t('created')}:</span>

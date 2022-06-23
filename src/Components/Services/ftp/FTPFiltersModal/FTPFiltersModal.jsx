@@ -5,6 +5,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
 import s from './FTPFiltersModal.module.scss'
+import { Cross } from '../../../../images'
 
 export default function FTPFiltersModal(props) {
   const {
@@ -80,6 +81,10 @@ export default function FTPFiltersModal(props) {
 
           return (
             <Form className={s.form}>
+              <div className={s.formHeader}>
+                <h2>{t('Filter', { ns: 'other' })}</h2>
+                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+              </div>
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}

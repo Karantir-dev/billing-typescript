@@ -9,10 +9,9 @@ import * as Yup from 'yup'
 import s from './EditServerModal.module.scss'
 
 import { dedicOperations } from '../../../../Redux'
+import { translatePeriod } from '../../../../utils'
 
-// console.log(dedicOperations, 'dedicOperations')
 export default function EditServerModal({ elid, closeFn }) {
-  // console.log(dedicOperations, 'dedicOperations')
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -200,8 +199,9 @@ export default function EditServerModal({ elid, closeFn }) {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={initialState?.autoprolonglList?.map(el => {
+                        const labelText = translatePeriod(el?.$, t)
                         return {
-                          label: el?.$,
+                          label: labelText,
                           value: el.$key,
                         }
                       })}
@@ -483,30 +483,3 @@ export default function EditServerModal({ elid, closeFn }) {
     </Formik>
   )
 }
-
-// export function translatePeriod(string, t) {
-//   let period = ''
-
-//   if (string.includes('three months')) {
-//     period = string
-//       .replace('three months', t('for three months'))
-//       .replace('for', t('for'))
-//   } else if (string.includes('month')) {
-//     period = string.replace('month', t('month')).replace('per', t('for'))
-//   } else if (string.includes('three years')) {
-//     period = string.replace('three years', t('for three years')).replace('for', t('for'))
-//   } else if (string.includes('two years')) {
-//     period = string.replace('two years', t('for two years')).replace('for', t('for'))
-//   } else if (string.includes('half a year')) {
-//     period = string.replace(
-//       'half a year',
-//       t('half a year', { ns: 'other' }).toLowerCase(),
-//     )
-//   } else if (string.includes('per year')) {
-//     period = string.replace('per year', t('per year'))
-//   } else if (string.includes('Disabled')) {
-//     period = string.replace('Disabled', t('Disabled'))
-//   }
-
-//   return period
-// }

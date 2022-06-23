@@ -77,6 +77,7 @@ export default function Component(props) {
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
+
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
@@ -249,11 +250,9 @@ export default function Component(props) {
 
 Component.propTypes = {
   setFilterModal: PropTypes.func,
-  setCurrentPage: PropTypes.func,
   filterModal: PropTypes.bool,
 }
 
 Component.defaultProps = {
   setFilterModal: () => null,
-  setCurrentPage: () => null,
 }

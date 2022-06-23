@@ -5,6 +5,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
 import s from './DNSFiltersModal.module.scss'
+import { Cross } from '../../../../images'
 
 export default function DNSFiltersModal(props) {
   const {
@@ -79,6 +80,10 @@ export default function DNSFiltersModal(props) {
 
           return (
             <Form className={s.form}>
+              <div className={s.formHeader}>
+                <h2>{t('Filter', { ns: 'other' })}</h2>
+                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+              </div>
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
