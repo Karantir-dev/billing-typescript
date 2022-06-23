@@ -22,7 +22,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
 import * as route from '../../../routes'
-import s from './DedicatedServicesPage.module.scss'
+import s from './DedicatedServersPage.module.scss'
 
 export default function DedicatedServersPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -85,7 +85,30 @@ export default function DedicatedServersPage() {
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getServersList())
+    const clearField = {
+      id: '',
+      domain: '',
+      ip: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+      ostemplate: '',
+    }
+
+    dispatch(
+      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    )
+
+    // dispatch(dedicOperations.getServersList())
     // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
 

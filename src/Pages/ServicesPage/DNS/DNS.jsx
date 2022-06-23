@@ -87,8 +87,26 @@ export default function DNS() {
   }
 
   useEffect(() => {
-    dispatch(dnsOperations.getDNSList())
-    dispatch(dnsOperations.getDNSFilters(setFilters))
+    const clearField = {
+      id: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+
+    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+
+    // dispatch(dnsOperations.getDNSList())
+    // dispatch(dnsOperations.getDNSFilters(setFilters))
     dispatch(dnsOperations.getTarifs(setTarifs))
   }, [])
 

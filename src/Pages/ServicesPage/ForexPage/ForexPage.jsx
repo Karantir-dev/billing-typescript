@@ -13,10 +13,10 @@ import {
   ProlongModal,
   DedicsHistoryModal,
   DNSInstructionModal,
-  DNSFiltersModal,
   Portal,
   ForexList,
   ForexEditModal,
+  ForexFiltersModal,
 } from '../../../Components'
 import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -69,7 +69,9 @@ export default function ForexPage() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    )
   }
 
   const setFilterHandler = values => {
@@ -77,16 +79,33 @@ export default function ForexPage() {
     setFilters(null)
     console.log(values)
 
-    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(forexOperations.getForexFilters(setFilters, { ...values, sok: 'ok' }, true))
   }
 
   useEffect(() => {
-    dispatch(forexOperations.getForexList())
-    // dispatch(dnsOperations.getDNSFilters(setFilters))
+    const clearField = {
+      id: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+
+    dispatch(
+      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    )
   }, [])
 
   useEffect(() => {
-    // if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+    if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
 
   return (
@@ -106,7 +125,7 @@ export default function ForexPage() {
                 <Portal>
                   <div className={s.bg}>
                     {mobile && (
-                      <DNSFiltersModal
+                      <ForexFiltersModal
                         filterModal={filterModal}
                         setFilterModal={setFilterModal}
                         filters={filters?.currentFilters}
@@ -118,7 +137,7 @@ export default function ForexPage() {
                   </div>
                 </Portal>
                 {!mobile && (
-                  <DNSFiltersModal
+                  <ForexFiltersModal
                     filterModal={filterModal}
                     setFilterModal={setFilterModal}
                     filters={filters?.currentFilters}

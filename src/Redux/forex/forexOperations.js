@@ -264,9 +264,6 @@ const getCurrentForexInfo = (elid, setInitialParams) => (dispatch, getState) => 
         stored_method,
       } = data.doc
 
-      console.log(data.doc)
-      console.log(stored_method)
-
       setInitialParams({
         autoprolong,
         opendate,
@@ -410,63 +407,63 @@ const editForex =
 //     })
 // }
 
-// const getDNSFilters =
-//   (setFilters, data = {}, filtered = false) =>
-//   (dispatch, getState) => {
-//     dispatch(actions.showLoader())
+const getForexFilters =
+  (setFilters, data = {}, filtered = false) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-//     const {
-//       auth: { sessionId },
-//     } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'dnshost.filter',
-//           out: 'json',
-//           auth: sessionId,
-//           ...data,
-//         }),
-//       )
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'forexbox.filter',
+          out: 'json',
+          auth: sessionId,
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//         if (filtered) {
-//           return dispatch(getDNSList())
-//         }
+        if (filtered) {
+          return dispatch(getForexList())
+        }
 
-//         let filters = {}
+        let filters = {}
 
-//         data?.doc?.slist?.forEach(el => {
-//           filters[el.$name] = el.val
-//         })
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
 
-//         let currentFilters = {
-//           id: data.doc?.id?.$ || '',
-//           pricelist: data.doc?.pricelist?.$ || '',
-//           period: data.doc?.period?.$ || '',
-//           status: data.doc?.status?.$ || '',
-//           service_status: data.doc?.service_status?.$ || '',
-//           opendate: data.doc?.opendate?.$ || '',
-//           expiredate: data.doc?.expiredate?.$ || '',
-//           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
-//           orderdateto: data.doc?.orderdateto?.$ || '',
-//           cost_from: data.doc?.cost_from?.$ || '',
-//           cost_to: data.doc?.cost_to?.$ || '',
-//           autoprolong: data.doc?.autoprolong?.$ || '',
-//           datacenter: data.doc?.datacenter?.$ || '',
-//         }
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+          datacenter: data.doc?.datacenter?.$ || '',
+        }
 
-//         setFilters({ filters, currentFilters })
-//         dispatch(actions.hideLoader())
-//       })
-//       .catch(error => {
-//         console.log('error', error)
-//         errorHandler(error.message, dispatch)
-//         dispatch(actions.hideLoader())
-//       })
-//   }
+        setFilters({ filters, currentFilters })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 // const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState) => {
 //   dispatch(actions.showLoader())
@@ -508,6 +505,7 @@ export default {
   getPrintLicense,
   getCurrentForexInfo,
   editForex,
+  getForexFilters,
   // getDNSExtraPayText,
   // editDNSWithExtraCosts,
   // getServiceInstruction,

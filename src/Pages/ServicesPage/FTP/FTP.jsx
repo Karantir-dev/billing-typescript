@@ -78,8 +78,26 @@ export default function FTP() {
   }
 
   useEffect(() => {
-    dispatch(ftpOperations.getFTPList())
-    dispatch(ftpOperations.getFTPFilters(setFilters))
+    const clearField = {
+      id: '',
+      domain: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+    dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+
+    // dispatch(ftpOperations.getFTPList())
+    // dispatch(ftpOperations.getFTPFilters(setFilters))
   }, [])
 
   useEffect(() => {

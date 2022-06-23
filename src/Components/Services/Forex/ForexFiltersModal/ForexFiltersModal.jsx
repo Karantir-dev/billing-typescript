@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '../../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
-import s from './FTPFiltersModal.module.scss'
 import { Cross } from '../../../../images'
+import s from './ForexFiltersModal.module.scss'
 
-export default function FTPFiltersModal(props) {
+export default function ForexFiltersModal(props) {
   const {
     setFilterModal,
     filterModal,
@@ -52,7 +52,6 @@ export default function FTPFiltersModal(props) {
         enableReinitialize
         initialValues={{
           id: filters?.id || '',
-          domain: filters?.domain || '',
           pricelist: filters?.pricelist || '',
           period: filters?.period || '',
           status: filters?.status || '',
@@ -99,17 +98,6 @@ export default function FTPFiltersModal(props) {
                   className={s.input}
                   error={!!errors.id}
                   touched={!!touched.id}
-                />
-
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="domain"
-                  label={`${t('FTP server', { ns: 'other' })}:`}
-                  placeholder={t('Enter server name')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.domain}
-                  touched={!!touched.domain}
                 />
 
                 <Select
@@ -259,13 +247,13 @@ export default function FTPFiltersModal(props) {
   )
 }
 
-FTPFiltersModal.propTypes = {
+ForexFiltersModal.propTypes = {
   setFilterModal: PropTypes.func,
   setCurrentPage: PropTypes.func,
   filterModal: PropTypes.bool,
 }
 
-FTPFiltersModal.defaultProps = {
+ForexFiltersModal.defaultProps = {
   setFilterModal: () => null,
   setCurrentPage: () => null,
 }

@@ -143,9 +143,10 @@ export { default as DNSInstructionModal } from './Services/dns/DNSInstructionMod
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
 export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
-//==========================================DNS==========================================//
+//==========================================Forex==========================================//
 export { default as ForexList } from './Services/Forex/ForexList/ForexList'
 export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
+export { default as ForexFiltersModal } from './Services/Forex/ForexFiltersModal/ForexFiltersModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

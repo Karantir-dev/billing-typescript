@@ -129,5 +129,7 @@
   "Half a year": "Пол года",
   "Year": "Год",
   "Two years": "Два года",
-  "Three years": "Три года"
+  "Three years": "Три года",
+  "Hostname": "Имя хоста",
+  "Connection URL": "URL для подключения"
 }

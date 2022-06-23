@@ -66,10 +66,72 @@
   flex-direction: column;
 }
 
+//copy field
+.field_wrapper {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.copy_field {
+  position: relative;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+  cursor: pointer;
+
+  &:hover {
+    & .copy_icon {
+      fill: var(--transparent-color);
+    }
+
+    & .field_text {
+      color: var(--main-text);
+    }
+  }
+}
+
+.copy_icon {
+  fill: var(--inactive_icon_color);
+  position: absolute;
+  right: 18px;
+}
+
 .label {
-  font-weight: 800;
+  display: block;
   font-size: 14px;
-  line-height: 115%;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.field_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--transparent-color);
+}
+
+.copy_prompt {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  top: -60px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 214px;
+  height: 41px;
+  border-radius: 25px;
+  color: #fff;
+  background: rgba(63, 63, 63, 0.43);
 }
 
 .value {
@@ -89,6 +151,10 @@
 
 .select {
   margin-bottom: 12px;
+}
+
+.input_class {
+  height: 50px;
 }
 
 .input_field_wrapper {
@@ -152,6 +218,7 @@
   .form {
     width: 594px;
     padding: 0px 51px 42px 51px;
+    height: 61vh;
   }
 
   .header_block {
@@ -170,6 +237,10 @@
   }
   .expiration_date_wrapper {
     flex-direction: row;
+  }
+
+  .field_wrapper {
+    width: 230px;
   }
 
   .value {
