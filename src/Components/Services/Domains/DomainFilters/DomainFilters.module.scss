@@ -184,6 +184,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .filterBlock {
+    flex-direction: row;
+  }
   .bg {
     align-items: center;
   }
@@ -320,10 +323,6 @@
 
   .newTicketBtn {
     margin-right: 0;
-  }
-
-  .filterBlock {
-    flex-direction: row;
   }
 
   .filterBtnBlock {

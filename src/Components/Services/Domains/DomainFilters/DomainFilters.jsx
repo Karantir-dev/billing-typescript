@@ -50,9 +50,9 @@ export default function Component(props) {
       autoprolong: '',
     }
     setValues && setValues({ ...clearField })
-    setCurrentPage(1)
+    // setCurrentPage(1)
     setFilterModal(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
+    // dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
   }
 
   const setFilterHandler = values => {
