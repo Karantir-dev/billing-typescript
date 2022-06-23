@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch } from 'react-redux'
 import * as route from '../../../../routes'
+import cn from 'classnames'
 import {
   Button,
   IconButton,
@@ -16,8 +17,10 @@ import {
   VDSPasswordChange,
   VdsRebootModal,
   ProlongModal,
+  FiltersModal,
+  VdsInstructionModal,
 } from '../../../../Components'
-import { vdsOperations } from '../../../../Redux'
+import { dedicOperations, vdsOperations } from '../../../../Redux'
 
 import s from './VDS.module.scss'
 
@@ -27,22 +30,59 @@ export default function VDS() {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
 
-  const [servers, setServers] = useState()
+  const [servers, setServers] = useState([])
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [activeServer, setActiveServer] = useState(null)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
   const [idForProlong, setIdForProlong] = useState('')
   const [idForPassChange, setIdForPassChange] = useState('')
   const [idForReboot, setIdForReboot] = useState('')
+  const [isFiltersOpened, setIsFiltersOpened] = useState(false)
+  const [filtersState, setFiltersState] = useState()
+  const [filtersListState, setfiltersListState] = useState()
+  const [idForInstruction, setIdForInstruction] = useState('')
 
   useEffect(() => {
-    dispatch(vdsOperations.getVDS(setServers))
+    // dispatch(vdsOperations.getVDS(setServers))
+    // resets filters
+    dispatch(
+      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
+    )
   }, [])
 
   const deleteServer = () => {
-    dispatch(vdsOperations.deleteVDS(idForDeleteModal, setServers))
+    dispatch(
+      vdsOperations.deleteVDS(idForDeleteModal, setServers, () =>
+        setIdForDeleteModal(''),
+      ),
+    )
     setActiveServer(null)
-    setIdForDeleteModal('')
+  }
+
+  const resetFilterHandler = () => {
+    // const clearFields = {
+    //   id: '',
+    //   ip: '',
+    //   domain: '',
+    //   pricelist: '',
+    //   period: '',
+    //   status: '',
+    //   opendate: '',
+    //   expiredate: '',
+    //   orderdatefrom: '',
+    //   orderdateto: '',
+    //   cost_from: '',
+    //   cost_to: '',
+    //   autoprolong: '',
+    //   datacenter: '',
+    //   ostemplate: '',
+    // }
+    // setValues && setValues({ ...clearFields })
+
+    dispatch(
+      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
+    )
+    setIsFiltersOpened(false)
   }
 
   const getSarverName = id => {
@@ -54,13 +94,42 @@ export default function VDS() {
     }, '')
   }
 
+  const handleSetFilters = values => {
+    dispatch(
+      vdsOperations.setVdsFilters(
+        values,
+        setFiltersState,
+        setfiltersListState,
+        setServers,
+      ),
+    )
+    setIsFiltersOpened(false)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <h2 className={s.title}>{t('servers_title')}</h2>
       <div className={s.tools_wrapper}>
-        <IconButton className={s.tools_icon} icon="filter" />
+        <div className={s.filter_wrapper}>
+          <IconButton
+            className={s.tools_icon}
+            onClick={() => setIsFiltersOpened(true)}
+            icon="filter"
+            disabled={servers.length < 1}
+          />
+          <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
+
+          <FiltersModal
+            isOpened={isFiltersOpened}
+            closeFn={() => setIsFiltersOpened(false)}
+            handleSubmit={handleSetFilters}
+            resetFilterHandler={resetFilterHandler}
+            filters={filtersState}
+            filtersList={filtersListState}
+          />
+        </div>
 
         {widerThan1550 && (
           <>
@@ -77,7 +146,11 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setIdForDeleteModal(activeServer.id.$)}
-                  disabled={!activeServer || activeServer.item_status.$ === '5_open'}
+                  disabled={
+                    !activeServer ||
+                    activeServer.item_status.$ === '5_open' ||
+                    activeServer.scheduledclose.$ === 'on'
+                  }
                   icon="delete"
                 />
               </HintWrapper>
@@ -128,12 +201,14 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.status?.$ !== '2'}
+                onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
               />
             </HintWrapper>
             <HintWrapper label={t('go_to_panel')}>
               <IconButton
                 className={s.tools_icon}
+                onClick={() => dispatch(dedicOperations.goToPanel(activeServer.id.$))}
                 disabled={activeServer?.transition?.$ !== 'on'}
                 icon="exitSign"
               />
@@ -200,6 +275,16 @@ export default function VDS() {
 
       <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
         <ProlongModal elid={idForProlong} closeFn={() => setIdForProlong('')} />
+      </Backdrop>
+
+      <Backdrop
+        isOpened={Boolean(idForInstruction)}
+        onClick={() => setIdForInstruction('')}
+      >
+        <VdsInstructionModal
+          elid={idForInstruction}
+          closeFn={() => setIdForInstruction('')}
+        />
       </Backdrop>
     </>
   )

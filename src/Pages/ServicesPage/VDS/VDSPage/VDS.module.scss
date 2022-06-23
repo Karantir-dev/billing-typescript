@@ -45,6 +45,28 @@
   overflow: auto;
 }
 
+.filter_wrapper {
+  position: relative;
+}
+
+.filter_backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.15s;
+  pointer-events: none;
+  opacity: 0;
+
+  &.opened {
+    pointer-events: initial;
+    opacity: 1;
+  }
+}
+
 @media screen and (min-width: 1550px) {
   .btn_order {
     margin-left: auto;

@@ -72,9 +72,6 @@
   "delete_message": "Do you really want to delete the selected service",
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "passwd_change_success": "Password change has been initiated for the service",
-  "delete_verification_desc": "Your data security is our top priority. To make sure that you really want to delete the service, we need to verify your phone number. Click Next if you are ready to receive a phone call or an sms to the verified number. Your verified phone number differs the number specified here, please contact Technical support",
-  "phone_number": "Phone number",
-  "confirmation_method": "Confirmation method",
-  "send_code_attempts": "You have {{sum}} attempt to send the code",
-  "input_code_attempts": "{{sum}} attempts are left"
+  "scheduled_deletion": "Service will be deleted on: ",
+  "instruction_title": "Virtual server activation"
 }

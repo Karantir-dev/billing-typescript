@@ -52,6 +52,11 @@ export default function ServerState({ className, server }) {
           <Clock className={s.green_icon} />
         </HintWrapper>
       )}
+      {server?.scheduledclose?.$ === 'on' && (
+        <HintWrapper label={t('scheduled_deletion') + server?.scheduledclose_prop?.$}>
+          <InProgress className={s.delProgress} />
+        </HintWrapper>
+      )}
     </span>
   )
 }
