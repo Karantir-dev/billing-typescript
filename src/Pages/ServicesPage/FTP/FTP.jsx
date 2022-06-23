@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import {
@@ -16,6 +15,7 @@ import {
   ProlongModal,
   DedicsHistoryModal,
   FTPInstructionModal,
+  Portal,
 } from '../../../Components'
 import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,6 +37,7 @@ export default function FTP() {
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const location = useLocation()
 
@@ -93,22 +94,41 @@ export default function FTP() {
       </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
-          <IconButton
-            className={cn({ [s.tools_icon]: true, [s.filter_icon]: true })}
-            icon="filter"
-            onClick={() => setFilterModal(!filterModal)}
-          />
-
-          {filterModal && (
-            <FTPFiltersModal
-              filterModal={filterModal}
-              setFilterModal={setFilterModal}
-              filters={filters?.currentFilters}
-              filtersList={filters?.filters}
-              resetFilterHandler={resetFilterHandler}
-              setFilterHandler={setFilterHandler}
+          <div className={s.filterBtnBlock}>
+            <IconButton
+              onClick={() => setFilterModal(true)}
+              icon="filter"
+              className={s.calendarBtn}
             />
-          )}
+            {filterModal && (
+              <>
+                <Portal>
+                  <div className={s.bg}>
+                    {mobile && (
+                      <FTPFiltersModal
+                        filterModal={filterModal}
+                        setFilterModal={setFilterModal}
+                        filters={filters?.currentFilters}
+                        filtersList={filters?.filters}
+                        resetFilterHandler={resetFilterHandler}
+                        setFilterHandler={setFilterHandler}
+                      />
+                    )}
+                  </div>
+                </Portal>
+                {!mobile && (
+                  <FTPFiltersModal
+                    filterModal={filterModal}
+                    setFilterModal={setFilterModal}
+                    filters={filters?.currentFilters}
+                    filtersList={filters?.filters}
+                    resetFilterHandler={resetFilterHandler}
+                    setFilterHandler={setFilterHandler}
+                  />
+                )}
+              </>
+            )}
+          </div>
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>

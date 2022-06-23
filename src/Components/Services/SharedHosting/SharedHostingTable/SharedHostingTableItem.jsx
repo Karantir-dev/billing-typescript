@@ -7,11 +7,11 @@ import { ServerState } from '../../..'
 import {
   MoreDots,
   Edit,
-  Delete,
   Clock,
   Refund,
-  Whois,
-  DomainsListName,
+  ExitSign,
+  Info,
+  ChangeTariff,
 } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
 import s from './SharedHostingTable.module.scss'
@@ -26,12 +26,14 @@ export default function Component(props) {
     setSelctedItem,
     selected,
     el,
-    editDomainHandler,
-    deleteDomainHandler,
-    renewDomainHandler,
-    historyDomainHandler,
-    whoisDomainHandler,
-    NSDomainHandler,
+    historyVhostHandler,
+    instructionVhostHandler,
+    platformVhostHandler,
+    prolongVhostHandler,
+    editVhostHandler,
+    changeTariffVhostHandler,
+    ip,
+    datacentername,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
@@ -63,18 +65,26 @@ export default function Component(props) {
         <div className={cn(s.item_text, s.second_item)}>{domain}</div>
       </div>
       <div className={s.tableBlockThird}>
+        {mobile && <div className={s.item_title}>{t('IP address')}:</div>}
+        <div className={cn(s.item_text, s.second_item)}>{ip}</div>
+      </div>
+      <div className={s.tableBlockFourth}>
         {mobile && <div className={s.item_title}>{t('Tariff')}:</div>}
         <div className={cn(s.item_text, s.third_item)}>{tariff}</div>
       </div>
-      <div className={s.tableBlockFourth}>
+      <div className={s.tableBlockFifth}>
+        {mobile && <div className={s.item_title}>{t('Data center')}:</div>}
+        <div className={cn(s.item_text, s.third_item)}>{datacentername}</div>
+      </div>
+      <div className={s.tableBlockSixth}>
         {mobile && <div className={s.item_title}>{t('Valid until')}:</div>}
         <div className={cn(s.item_text, s.fourth_item)}>{expiredate}</div>
       </div>
-      <div className={s.tableBlockFifth}>
+      <div className={s.tableBlockSeventh}>
         {mobile && <div className={s.item_title}>{t('State')}:</div>}
         <ServerState server={el} />
       </div>
-      <div className={s.tableBlockSixth}>
+      <div className={s.tableBlockEighth}>
         {mobile && <div className={s.item_title}>{t('Price')}:</div>}
         <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
       </div>
@@ -92,29 +102,31 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={editDomainHandler}>
+          <button className={s.settings_btn} onClick={editVhostHandler}>
             <Edit />
             <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={deleteDomainHandler}>
-            <Delete />
-            <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
+          <button className={s.settings_btn} onClick={changeTariffVhostHandler}>
+            <ChangeTariff />
+            <p className={s.setting_text}>
+              {t('trusted_users.Change tariff', { ns: 'trusted_users' })}
+            </p>
           </button>
-          <button className={s.settings_btn} onClick={renewDomainHandler}>
+          <button className={s.settings_btn} onClick={prolongVhostHandler}>
             <Clock />
             <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={historyDomainHandler}>
+          <button className={s.settings_btn} onClick={historyVhostHandler}>
             <Refund />
             <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={whoisDomainHandler}>
-            <Whois />
-            <p className={s.setting_text}>{t('whois')}</p>
+          <button className={s.settings_btn} onClick={instructionVhostHandler}>
+            <Info />
+            <p className={s.setting_text}>{t('instruction', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={NSDomainHandler}>
-            <DomainsListName />
-            <p className={s.setting_text}>{t('NS')}</p>
+          <button className={s.settings_btn} onClick={platformVhostHandler}>
+            <ExitSign />
+            <p className={s.setting_text}>{t('go_to_panel', { ns: 'vds' })}</p>
           </button>
         </div>
       </div>

@@ -7,9 +7,9 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { translatePeriod } from '../../../../utils'
 
-import { ftpOperations, dedicOperations } from '../../../../Redux'
-// import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
+import { ftpOperations } from '../../../../Redux'
 
 import s from './FTPOrder.module.scss'
 
@@ -85,10 +85,6 @@ export default function FTPOrder() {
 
     return pathnames
   }
-
-  useEffect(() => {
-    dispatch(dedicOperations.getTarifs())
-  }, [])
 
   useEffect(() => {
     dispatch(ftpOperations.getTarifs(setTarifList))
@@ -235,7 +231,7 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = el.$
+                        let labeltext = translatePeriod(el.$, t)
 
                         return {
                           label: labeltext,

@@ -17,7 +17,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import { dedicSelectors, dedicOperations } from '../../../../Redux'
+import { dedicOperations, dedicSelectors } from '../../../../Redux'
 
 import s from './DedicOrderPage.module.scss'
 
@@ -640,7 +640,7 @@ export default function DedicOrderPage() {
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
-                          if (!touched.license) {
+                          if (touched.license && !!errors.license) {
                             setFieldTouched('license', true)
                           }
 
@@ -690,6 +690,8 @@ export default function DedicOrderPage() {
                     label={t('buy', { ns: 'other' })}
                     type="submit"
                     onClick={() => {
+                      setFieldTouched('license', true)
+                      if (!values.license) setFieldValue('license', false)
                       !values.license &&
                         licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
                     }}

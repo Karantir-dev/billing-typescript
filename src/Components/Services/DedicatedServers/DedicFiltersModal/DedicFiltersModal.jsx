@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '../../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
-// import { Cross } from '../../../../images'
+import { Cross } from '../../../../images'
 import s from './DedicFiltersModal.module.scss'
 
 export default function DedicFiltersModal(props) {
@@ -84,10 +84,10 @@ export default function DedicFiltersModal(props) {
 
           return (
             <Form className={s.form}>
-              {/* <div className={s.formHeader}>
+              <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
-              </div> */}
+              </div>
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}

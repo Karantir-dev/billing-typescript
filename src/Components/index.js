@@ -37,6 +37,7 @@ export { default as ThemeBtn } from './ui/ThemeBtn/ThemeBtn'
 export { default as LangBtn } from './ui/LangBtn/LangBtn'
 export { default as Button } from './ui/Button/Button'
 export { default as Toggle } from './ui/Toggle/Toggle'
+export { default as RadioButton } from './ui/RadioButton/RadioButton'
 
 export { default as Alert } from './ui/Alert/Alert'
 
@@ -104,6 +105,8 @@ export { default as SharedHostingTable } from './Services/SharedHosting/SharedHo
 export { default as SharedHostingHistoryModal } from './Services/SharedHosting/SharedHostingHistoryModal/SharedHostingHistoryModal'
 export { default as SharedHostingProlongModal } from './Services/SharedHosting/SharedHostingProlongModal/SharedHostingProlongModal'
 export { default as SharedHostingEditModal } from './Services/SharedHosting/SharedHostingEditModal/SharedHostingEditModal'
+export { default as SharedHostingChangeTariffModal } from './Services/SharedHosting/SharedHostingChangeTariffModal/SharedHostingChangeTariffModal'
+export { default as TarifCard } from './Services/SharedHosting/TarifCard/TarifCard'
 
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
@@ -135,9 +138,23 @@ export { default as FTPFiltersModal } from './Services/ftp/FTPFiltersModal/FTPFi
 export { default as FTPInstructionModal } from './Services/ftp/FTPInstructionModal/FTPInstructionModal'
 export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 
+//==========================================DNS==========================================//
+export { default as DNSList } from './Services/dns/DNSList/DNSList'
+export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
+export { default as DNSInstructionModal } from './Services/dns/DNSInstructionModal/DNSInstructionModal'
+export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
+export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
+
+//==========================================DNS==========================================//
+export { default as ForexList } from './Services/Forex/ForexList/ForexList'
+export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
+
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
 export { default as DomainItem } from './Cart/DomainItem/DomainItem'
 export { default as VdsItem } from './Cart/VdsItem/VdsItem'
 export { default as FtpItem } from './Cart/FtpItem/FtpItem'
+export { default as DnsItem } from './Cart/DnsItem/DnsItem'
+export { default as VhostItem } from './Cart/VhostItem/VhostItem'
+export { default as ForexItem } from './Cart/ForexItem/ForexItem'

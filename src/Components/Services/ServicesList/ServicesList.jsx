@@ -77,7 +77,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.dns_hosting'),
       id: 5,
-      routeName: routes.HOME,
+      routeName: routes.DNS,
       allowedToRender: isDnsAllowedToRender,
       icon_name: tabletOrLower ? 'dns_hosting_min' : dnsPicture,
       icon_width: '84',
@@ -104,7 +104,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.forex_server'),
       id: 8,
-      routeName: routes.HOME,
+      routeName: routes.FOREX,
       allowedToRender: isForexServerAllowedToRender,
       icon_name: 'forexbox',
       icon_width: '109',

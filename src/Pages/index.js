@@ -30,5 +30,11 @@ export { default as VDSip } from './ServicesPage/VDS/VDSip/VDSip'
 export { default as FTP } from './ServicesPage/FTP/FTP'
 export { default as FTPOrder } from './ServicesPage/FTP/FTPOrder/FTPOrder'
 
+export { default as DNS } from './ServicesPage/DNS/DNS'
+export { default as DNSOrder } from './ServicesPage/DNS/DNSOrder/DNSOrder'
+
+export { default as ForexPage } from './ServicesPage/ForexPage/ForexPage'
+export { default as ForexOrderPage } from './ServicesPage/ForexPage/ForexOrderPage/ForexOrderPage'
+
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'

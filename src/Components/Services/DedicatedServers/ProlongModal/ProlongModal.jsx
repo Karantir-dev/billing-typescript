@@ -4,11 +4,11 @@ import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
 import { dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
-
 import { Button, Select } from '../../..'
-// import { translatePeriod } from '../EditServerModal/EditServerModal'
+
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
+import { translatePeriod } from '../../../../utils'
 
 export default function ProlongModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
@@ -100,8 +100,9 @@ export default function ProlongModal({ elid, closeFn }) {
                     }}
                     isShadow
                     itemsList={initialState?.slist[0]?.val?.map(el => {
+                      const labelText = translatePeriod(el?.$, t)
                       return {
-                        label: el?.$,
+                        label: labelText,
                         value: el.$key,
                       }
                     })}

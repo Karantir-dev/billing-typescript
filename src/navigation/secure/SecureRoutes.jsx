@@ -31,10 +31,14 @@ import {
   DedicOrderPage,
   FTP,
   FTPOrder,
+  DNS,
+  DNSOrder,
   VDS,
   VDSOrder,
   SharedHosting,
   SharedHostingOrder,
+  ForexPage,
+  ForexOrderPage,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -154,6 +158,26 @@ const Component = () => {
         <Route
           path={route.FTP_ORDER}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
+        />
+
+        <Route
+          path={route.DNS}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />}
+        />
+        <Route
+          path={route.DNS_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />}
+        />
+
+        <Route
+          path={route.FOREX}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<ForexPage />} />}
+        />
+        <Route
+          path={route.FOREX_ORDER}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<ForexOrderPage />} />
+          }
         />
 
         <Route

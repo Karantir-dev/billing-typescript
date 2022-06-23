@@ -77,10 +77,14 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
-      routeName: routes.HOME,
+      routeName: routes.SHARED_HOSTING,
       allowedToRender: true,
     },
-    { name: t('burger_menu.services.services_list.dns_hosting'), routeName: routes.HOME },
+    {
+      name: t('burger_menu.services.services_list.dns_hosting'),
+      routeName: routes.DNS,
+      allowedToRender: true,
+    },
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       routeName: routes.FTP,
@@ -93,7 +97,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.forex_server'),
-      routeName: routes.HOME,
+      routeName: routes.FOREX,
       allowedToRender: true,
     },
   ]
