@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-
 import { Cross } from '../../../../images'
 import { dedicOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
 import { Loader } from '../../..'
 
 import s from '../../DedicatedServers/InstructionModal/InstructionModal.module.scss'
@@ -42,24 +39,18 @@ export default function InstructionModal({ elid, closeFn }) {
       domain_name: res[6],
       ip_address: res[7],
       access_type: res[8],
-      ssh_tip: res[9],
-      ssh_server: res[10],
-      username: res[11],
-      password: res[12],
-      information_about_payments_and_service_management: res[13],
-      about_service: res[14],
-      tip_with_payments: res[15],
+      password: res[9],
+      vm_manager: res[10],
+      vm_desc: res[11],
+      link: res[12],
+      user: res[13],
+      vm_password: res[14],
+      vm_password_value: res[15],
       personal_account_info: res[16],
-      ctredits_payments: res[17],
-      expenses: res[18],
-      current_service: res[19],
-      support: res[20],
-      recomendations: {
-        first_line: res[21],
-        second_line: res[23],
-        third_line: res[25],
-      },
-      conclusion_text: res[27],
+      red_text: res[17],
+      red_text_2: res[18],
+      red_text_3: res[19],
+      conclusion_text: res[20],
     }
 
     return data
@@ -86,272 +77,75 @@ export default function InstructionModal({ elid, closeFn }) {
           </div>
           <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
         </div>
-
-        <p className={s.welcome}>
-          {`${t(`${instructionObject?.welcome?.split(' ')[0]}`, {
-            ns: 'dedicated_servers',
-          })} `}
-
-          {t(`${instructionObject?.welcome?.split(' ')?.slice(1)?.join(' ')}`, {
-            ns: 'dedicated_servers',
-          })}
-        </p>
-
-        <p className={s.inform_text}>
-          {t(`${instructionObject?.inform_text}`, { ns: 'dedicated_servers' })}
-        </p>
-
-        <p className={s.service_info}>
-          {t(`${instructionObject?.service_info}`, { ns: 'dedicated_servers' })}:
-        </p>
-
+        <p className={s.welcome}>{instructionObject?.welcome}</p>
+        <p className={s.inform_text}>{instructionObject?.inform_text}</p>
+        <p className={s.service_info}>{instructionObject?.service_info}:</p>
         <div className={s.server_info_block}>
           <span className={s.label}>
-            {t(`${instructionObject?.service_package.split(':')[0]}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
+            {instructionObject?.service_package.split(':')[0]}:
           </span>
           <span className={s.value}>
-            {t(`${instructionObject?.service_package.split(':')[1]}`)}
+            {instructionObject?.service_package.split(':')[1]}
           </span>
 
-          <span className={s.label}>
-            {t(`${instructionObject?.setup_date.split(':')[0]}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.setup_date.split(':')[1]}`)}
-          </span>
+          <span className={s.label}>{instructionObject?.setup_date.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.setup_date.split(':')[1]}</span>
 
-          <span className={s.label}>
-            {t(`${instructionObject?.domain_name.split(':')[0]}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.domain_name.split(':')[1]}`)}
-          </span>
+          <span className={s.label}>{instructionObject?.domain_name.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.domain_name.split(':')[1]}</span>
 
-          <span className={s.label}>
-            {t(`${instructionObject?.ip_address.split(':')[0]}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.ip_address.split(':')[1]}`)}
-          </span>
+          <span className={s.label}>{instructionObject?.ip_address.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.ip_address.split(':')[1]}</span>
+
+          <span className={s.label}>{instructionObject?.access_type.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.access_type.split(':')[1]}</span>
+
+          <span className={s.label}>{instructionObject?.password.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.password.split(':')[1]}</span>
         </div>
-
-        <p className={s.service_info}>
-          {instructionObject?.access_type?.replace(
-            'access',
-            t('access', { ns: 'dedicated_servers' }),
-          )}
-        </p>
-
-        <p className={s.ssh_tip}>
-          {t(`${instructionObject?.ssh_tip?.split('-')[0].trim()}`, {
-            ns: 'dedicated_servers',
-          })}
+        <p className={s.service_info}>{instructionObject?.vm_manager}</p>
+        <p className={s.inform_text}>{instructionObject?.vm_desc}</p>
+        <div className={s.server_info_block}>
+          <span className={s.label}>{instructionObject?.link.split(': ')[0]}:</span>
           <a
             className={s.link}
-            href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html"
+            href={instructionObject?.link.split(': ')[1]}
             target="_blank"
             rel="noreferrer"
           >
-            {t(`${instructionObject?.ssh_tip?.split('-')[1]}`)}
+            {instructionObject?.link.split(': ')[1]}
           </a>
-        </p>
 
-        <div className={s.server_info}>
-          <span className={s.label}>
-            {t(`${instructionObject?.ssh_server.split(':')[0]}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.ssh_server.split(':')[1]}`)}
-          </span>
+          <span className={s.label}>{instructionObject?.user.split(':')[0]}:</span>
+          <span className={s.value}>{instructionObject?.user.split(':')[1]}</span>
 
-          <span className={s.label}>
-            {t(`${instructionObject?.username.split(':')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.username.split(':')[1]}`)}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.password.split(':')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.password.split(':')[1]}`)}
-          </span>
+          <span className={s.label}>{instructionObject?.vm_password}</span>
+          <span className={s.value}>{instructionObject?.vm_password_value}</span>
         </div>
-
-        <p className={s.service_info}>
-          {t(`${instructionObject?.information_about_payments_and_service_management}`, {
-            ns: 'dedicated_servers',
-          })}
-        </p>
-        <p className={s.text}>
-          {t(
-            `${instructionObject?.about_service?.replaceAll(
-              '"',
-              String.fromCharCode(39),
-            )}`,
-            {
-              ns: 'dedicated_servers',
-            },
-          )}
-        </p>
-        <p className={s.text}>
-          {`${t(
-            `${instructionObject?.tip_with_payments
-              ?.split('.')[0]
-              ?.replace('Member area', '')
-              .trim()}`,
-            {
-              ns: 'dedicated_servers',
-            },
-          )} `}
-          {
-            <NavLink className={s.link} to={route.HOME}>
-              {t('Member area', {
-                ns: 'dedicated_servers',
-              })}
-              .
-            </NavLink>
-          }
-          {t(`${instructionObject?.tip_with_payments?.split('.')[1]}`, {
-            ns: 'dedicated_servers',
-          })}
-        </p>
-        {/* 
-        <div className={s.important_departments_block}>
-          <span className={s.label}>
-            {t(`${instructionObject?.personal_account_info.split('-')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.personal_account_info.split('-')[1].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.ctredits_payments.split('-')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(
-              `${instructionObject?.ctredits_payments
-                .split('-')[1]
-                ?.replaceAll('"', String.fromCharCode(39))
-                .trim()}`,
-              {
-                ns: 'dedicated_servers',
-              },
-            )}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.expenses.split('-')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.expenses.split('-')[1].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.current_service.split('-')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.current_service.split('-')[1].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.support.split('-')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.support.split('-')[1].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-          </span>
-        </div>
+        <p className={s.inform_text}>{instructionObject?.personal_account_info}</p>
 
         <p className={s.warning_text}>
-          <span>
-            {t(
-              `${instructionObject?.recomendations?.first_line
-                ?.split('http://zomro.com/storage.html')[0]
-                .trim()}`,
-              {
-                ns: 'dedicated_servers',
-              },
-            )}
-          </span>
+          {instructionObject?.red_text.split(':')[0]}:{' '}
           <a
             className={s.link}
-            href="http://zomro.com/storage.html"
+            href={instructionObject?.red_text.split(': ')[1]}
             target="_blank"
             rel="noreferrer"
           >
-            http://zomro.com/storage.html.
+            {instructionObject?.red_text.split(': ')[1]}
           </a>
-          <span className={s.warning_line}>
-            {t(`${instructionObject?.recomendations?.second_line.trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-          </span>
-          <span className={s.warning_line}>
-            {t(`${instructionObject?.recomendations?.third_line?.split(':')[0].trim()}`, {
-              ns: 'dedicated_servers',
-            })}
-            :
-          </span>
+          <br />
+          {instructionObject?.red_text_2}
+          {instructionObject?.red_text_3.split(':')[0]}
           <span className={s.promocode}>
-            {t(`${instructionObject?.recomendations?.third_line?.split(':')[1]}`)}
+            {instructionObject?.red_text_3.split(':')[1]}
           </span>
         </p>
 
         <p className={s.conclusion}>
-          {t(`${instructionObject?.conclusion_text?.split('!')[0]}`, {
-            ns: 'dedicated_servers',
-          })}
+          {instructionObject?.conclusion_text?.split('!')[0]}
         </p>
-        <p className={s.signature}>
-          {t(`${instructionObject?.conclusion_text?.split('!')[1]}`, {
-            ns: 'dedicated_servers',
-          })}
-        </p> */}
+        <p className={s.signature}>{instructionObject?.conclusion_text?.split('!')[1]}</p>
       </div>
     </>
   )
