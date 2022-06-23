@@ -43,7 +43,27 @@ HistoryListItem.propTypes = {
 }
 
 export function parseTranslation(str, t) {
+  const changedResource = str.match(
+    /(?<=The resource ')(.+?)(?=' has been changed)/g,
+  )?.[0]
+
+  const newValueForResource = str.match(
+    /(?<=A new value is set for \s')(.+?)(?='\.)/g,
+  )?.[0]
+
+  console.log(newValueForResource)
   let translate = str
+    .replace(
+      /The resource '.+' has been changed/g,
+      t('The resource has been changed', { value: t(changedResource) }),
+    )
+    .replace(
+      /A new value is set for .+\./g,
+      t('A new value is set for', { value: t(newValueForResource) }),
+    )
+    .replace('The tariff plan has been changed', t('The tariff plan has been changed'))
+    .replace('The old plan', t('The old plan'))
+    .replace('The new plan', t('The new plan'))
     .replace(
       'The reboot process is started',
       t('The reboot process is started', { ns: 'dedicated_servers' }),
@@ -112,5 +132,5 @@ export function parseTranslation(str, t) {
       t('A new value is set for', { ns: 'dedicated_servers' }),
     )
 
-  return translate
+  return t(translate)
 }

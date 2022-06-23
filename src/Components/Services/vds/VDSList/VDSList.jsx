@@ -15,13 +15,16 @@ export default function VDSList({
   setIdForPassChange,
   setIdForReboot,
   setIdForProlong,
+  setIdForInstruction,
+  setIdForHistory,
+  goToPanel,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
   return (
     <>
-      {widerThan1550 && (
+      {widerThan1550 && servers?.length > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('domain_name')}:</li>
@@ -53,6 +56,9 @@ export default function VDSList({
               setIdForPassChange={() => setIdForPassChange(el.id.$)}
               setIdForReboot={() => setIdForReboot(el.id.$)}
               setIdForProlong={() => setIdForProlong(el.id.$)}
+              setIdForInstruction={() => setIdForInstruction(el.id.$)}
+              setIdForHistory={() => setIdForHistory(el.id.$)}
+              goToPanel={() => goToPanel(el.id.$)}
             />
           )
         })}

@@ -18,12 +18,13 @@ const getVDS = setServers => (dispatch, getState) => {
         func: 'vds',
         auth: sessionId,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setServers(data.doc.elem)
+      setServers(data.doc.elem || [])
 
       dispatch(actions.hideLoader())
     })
@@ -46,6 +47,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
         auth: sessionId,
         elid,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -81,6 +83,7 @@ const editVDS =
           [selectedField ? 'sv_field' : '']: selectedField,
           sok: 'ok',
           out: 'json',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -121,6 +124,7 @@ const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) =>
         func: 'vds.order',
         auth: sessionId,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -152,6 +156,7 @@ const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
         out: 'json',
         period: period,
         sv_field: 'period',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -227,6 +232,7 @@ const changeOrderFormField =
           [register.Memory]: values.Memory,
           [register.Port_speed]: values.Port_speed.slice(0, 3),
           sv_field: fieldName,
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -282,6 +288,7 @@ const setOrderData =
           [register.Port_speed]: values.Port_speed.slice(0, 3),
           licence_agreement: values.agreement,
           order_count: String(count),
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -315,6 +322,7 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
         auth: sessionId,
         elid: id,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -346,6 +354,7 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
         confirm: confirm,
         out: 'json',
         sok: 'ok',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -380,6 +389,7 @@ const rebootServer = id => (dispatch, getState) => {
         auth: sessionId,
         elid: id,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -408,6 +418,7 @@ const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
         auth: sessionId,
         elid: id,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -439,6 +450,7 @@ const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) =>
         plid: serverID,
         elid: id,
         out: 'json',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -471,6 +483,7 @@ const changeDomainName =
           domain: domain,
           sok: 'ok',
           out: 'json',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -532,6 +545,7 @@ const setVdsFilters =
           autoprolong: values?.autoprolong || '',
           datacenter: values?.datacenter || '',
           ostemplate: values?.ostemplate || '',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
