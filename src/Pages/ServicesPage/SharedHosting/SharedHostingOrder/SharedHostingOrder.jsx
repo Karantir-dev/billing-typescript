@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { dnsOperations, vhostOperations } from '../../../../Redux'
 import s from './SharedHostingOrder.module.scss'
 
-export default function ServicesPage() {
+export default function Component() {
   const { t } = useTranslation([
     'virtual_hosting',
     'other',

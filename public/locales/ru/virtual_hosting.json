@@ -28,5 +28,10 @@
   "half a year": "полгода",
   "per year": "в год",
   "for two years": "на два года",
-  "for three years": "на три года"
+  "for three years": "на три года",
+
+  "Site URL": "URL сайта",
+  "Login": "Логин",
+  "Site care edited successfully": "Уход за сайтом успешно изменен",
+  "Pause site check": "Приостановить проверку сайта"
 }

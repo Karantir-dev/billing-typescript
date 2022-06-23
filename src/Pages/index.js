@@ -20,6 +20,8 @@ export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPa
 export { default as SharedHosting } from './ServicesPage/SharedHosting/SharedHosting'
 export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/SharedHostingOrder/SharedHostingOrder'
 
+export { default as SiteCare } from './ServicesPage/SiteCare/SiteCare'
+
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
 export { default as DedicOrderPage } from './ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'

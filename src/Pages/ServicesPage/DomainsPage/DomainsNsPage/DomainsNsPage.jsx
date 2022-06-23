@@ -9,7 +9,7 @@ import { domainsOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
-export default function ServicesPage({ transfer = false }) {
+export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users'])
   const dispatch = useDispatch()
 

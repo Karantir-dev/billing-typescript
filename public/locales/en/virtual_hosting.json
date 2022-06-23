@@ -28,5 +28,10 @@
   "half a year": "half a year",
   "per year": "per year",
   "for two years": "for two years",
-  "for three years": "for three years"
+  "for three years": "for three years",
+
+  "Site URL": "Site URL",
+  "Login": "Login",
+  "Site care edited successfully": "Site care edited successfully",
+  "Pause site check": "Pause site check"
 }

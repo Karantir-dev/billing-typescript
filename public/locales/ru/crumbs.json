@@ -18,5 +18,6 @@
   "dns": "DNS-хостинг",
   "dns_order": "Заказ DNS хостинга",
   "forex": "Сервер для Forex",
-  "forex_order": "Заказ Forex сервера"
+  "forex_order": "Заказ Forex сервера",
+  "site_care": "Забота о сайте"
 }
