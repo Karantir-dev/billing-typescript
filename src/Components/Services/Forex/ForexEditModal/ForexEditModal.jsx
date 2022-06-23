@@ -1,0 +1,226 @@
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Button, InputField, Select } from '../../..'
+import { useDispatch } from 'react-redux'
+import { Cross } from '../../../../images'
+import { Formik, Form } from 'formik'
+
+import s from './ForexEditModal.module.scss'
+
+import { forexOperations } from '../../../../Redux'
+import { translatePeriod } from '../../../../utils'
+
+export default function ForexEditModal({ elid, closeFn }) {
+  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs'])
+  const dispatch = useDispatch()
+  const [initialState, setInitialState] = useState()
+
+  const handleEditionModal = () => {
+    closeFn()
+  }
+
+  useEffect(() => {
+    dispatch(forexOperations.getCurrentForexInfo(elid, setInitialState))
+  }, [])
+
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text)
+  }
+
+  const handleSubmit = values => {
+    const { elid, autoprolong, stored_method } = values
+    dispatch(
+      forexOperations.editForex(elid, autoprolong, stored_method, handleEditionModal),
+    )
+  }
+
+  return (
+    <Formik
+      enableReinitialize
+      initialValues={{
+        elid,
+        autoprolong: initialState?.autoprolong?.$ || null,
+        period: initialState?.period?.$,
+        server_ip: initialState?.server_ip?.$ || '',
+        server_hostname: initialState?.server_hostname?.$ || '',
+        server_password: initialState?.server_password?.$ || '',
+        server_user: initialState?.server_user?.$ || '',
+        server_package: initialState?.serverPackageList[0]?.$ || '',
+        url_rdp: initialState?.url_rdp?.$ || '',
+        stored_method: initialState?.stored_method?.$ || '0',
+      }}
+      onSubmit={handleSubmit}
+    >
+      {({ values, setFieldValue }) => {
+        console.log(values)
+        return (
+          <Form className={s.form}>
+            <div className={s.parameters_block}>
+              <div className={s.header_block}>
+                <div className={s.title_wrapper}>
+                  <h2 className={s.page_title}>
+                    {t('Editing a service', { ns: 'other' })}
+                  </h2>
+                  <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
+                </div>
+                <Cross
+                  className={s.icon_cross}
+                  onClick={closeFn}
+                  width={17}
+                  height={17}
+                />
+              </div>
+
+              <div className={s.status_wrapper}>
+                <div className={s.creation_date_wrapper}>
+                  <span className={s.label}>{t('created', { ns: 'vds' })}:</span>
+                  <span className={s.value}>{initialState?.createdate?.$}</span>
+                </div>
+                <div className={s.expiration_date_wrapper}>
+                  <span className={s.label}>{t('valid_until', { ns: 'vds' })}:</span>
+                  <span className={s.value}>{initialState?.expiredate?.$}</span>
+                </div>
+              </div>
+
+              <div className={s.parameters_wrapper}>
+                <div className={s.main_block}>
+                  <div>
+                    <Select
+                      height={50}
+                      value={values.autoprolong}
+                      label={t('autoprolong')}
+                      getElement={item => setFieldValue('autoprolong', item)}
+                      isShadow
+                      itemsList={initialState?.autoprolongList?.map(el => {
+                        const labelText = translatePeriod(el?.$, t)
+                        return {
+                          label: labelText,
+                          value: el.$key,
+                        }
+                      })}
+                      className={s.select}
+                    />
+
+                    <Select
+                      height={50}
+                      getElement={item => {
+                        setFieldValue('stored_method', item)
+                      }}
+                      isShadow
+                      label={`${t('Payment method', { ns: 'other' })}:`}
+                      value={values?.stored_method}
+                      itemsList={initialState?.paymentMethodList?.map(el => {
+                        return { label: t(el.$), value: el.$key }
+                      })}
+                      className={s.select}
+                      // disabled
+                    />
+
+                    <InputField
+                      label={`${t('ip', { ns: 'crumbs' })}:`}
+                      name="server_ip"
+                      isShadow
+                      className={s.input_field_wrapper}
+                      inputClassName={s.input}
+                      autoComplete
+                      type="text"
+                      value={values?.server_ip}
+                      disabled
+                    />
+                    <InputField
+                      label={`${t('Host name')}:`}
+                      name="server_hostname"
+                      isShadow
+                      className={s.input_field_wrapper}
+                      inputClassName={s.input}
+                      autoComplete
+                      type="text"
+                      value={values?.server_hostname}
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label={`${t('user_name', { ns: 'vds' })}:`}
+                      name="server_user"
+                      isShadow
+                      className={s.input_field_wrapper}
+                      inputClassName={s.input}
+                      autoComplete
+                      type="text"
+                      value={values?.server_user}
+                      disabled
+                    />
+                    <InputField
+                      label={`${t('Password')}:`}
+                      name="server_password"
+                      isShadow
+                      className={s.input_field_wrapper}
+                      inputClassName={s.input}
+                      autoComplete
+                      type="text"
+                      value={values?.server_password}
+                      disabled
+                    />
+                    <InputField
+                      label={`${t('Package')}:`}
+                      name="server_package"
+                      isShadow
+                      className={s.input_field_wrapper}
+                      inputClassName={s.input}
+                      autoComplete
+                      type="text"
+                      value={values?.server_package}
+                      disabled
+                    />
+
+                    <div
+                      className={s.focused_input}
+                      tabIndex="0"
+                      role="button"
+                      onKeyDown={() => null}
+                      onClick={handleCopy(values?.url_rdp)}
+                    >
+                      <InputField
+                        label={`${t('URL')}:`}
+                        name="url_rdp"
+                        isShadow
+                        className={s.input_field_wrapper}
+                        inputClassName={s.input}
+                        autoComplete
+                        type="text"
+                        value={values?.url_rdp}
+                        iconRight={'copy'}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={s.btns_wrapper}>
+              <Button
+                className={s.buy_btn}
+                isShadow
+                size="medium"
+                label={t('Save', { ns: 'other' })}
+                type="submit"
+              />
+
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  closeFn()
+                }}
+                className={s.cancel_btn}
+              >
+                {t('Cancel', { ns: 'other' })}
+              </button>
+            </div>
+          </Form>
+        )
+      }}
+    </Formik>
+  )
+}

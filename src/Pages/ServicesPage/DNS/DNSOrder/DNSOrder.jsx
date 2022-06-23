@@ -7,10 +7,10 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { translatePeriod } from '../../../../utils'
 
 import Select from '../../../../Components/ui/Select/Select'
 import { dnsOperations } from '../../../../Redux'
-// import { translatePeriod } from '../../../../Components/Services/DedicatedServers/EditServerModal/EditServerModal'
 
 import s from './DNSOrder.module.scss'
 
@@ -248,8 +248,7 @@ export default function FTPOrder() {
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
-                        // let labeltext = translatePeriod(el.$, t)
-                        let labeltext = el.$
+                        let labeltext = translatePeriod(el.$, t)
 
                         return {
                           label: labeltext,

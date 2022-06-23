@@ -3,7 +3,7 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { EyeClosed, Eye, Envelope, Padlock, Search, Person } from '../../../images'
+import { EyeClosed, Eye, Envelope, Padlock, Search, Person, Copy } from '../../../images'
 import s from './InputField.module.scss'
 
 export default function InputField(props) {
@@ -45,6 +45,8 @@ export default function InputField(props) {
         return <Search className={pos} />
       case 'person':
         return <Person className={pos} />
+      case 'copy':
+        return <Copy className={pos} />
       default:
         return null
     }
@@ -119,7 +121,7 @@ function requiredLabel(labelName) {
 
 InputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
+  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'copy']),
   iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
   placeholder: PropTypes.string,
   className: PropTypes.string,

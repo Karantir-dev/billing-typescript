@@ -143,6 +143,10 @@ export { default as DNSInstructionModal } from './Services/dns/DNSInstructionMod
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
 export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
+//==========================================DNS==========================================//
+export { default as ForexList } from './Services/Forex/ForexList/ForexList'
+export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
+
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
 export { default as DedicItem } from './Cart/DedicItem/DedicItem'
@@ -151,3 +155,4 @@ export { default as VdsItem } from './Cart/VdsItem/VdsItem'
 export { default as FtpItem } from './Cart/FtpItem/FtpItem'
 export { default as DnsItem } from './Cart/DnsItem/DnsItem'
 export { default as VhostItem } from './Cart/VhostItem/VhostItem'
+export { default as ForexItem } from './Cart/ForexItem/ForexItem'

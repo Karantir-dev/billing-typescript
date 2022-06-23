@@ -13,7 +13,7 @@ export default function DNSList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setElidForChangeTarifModal,
+  // setElidForChangeTarifModal,
   setActiveServer,
   activeServerID,
 }) {
@@ -53,7 +53,7 @@ export default function DNSList({
               setElidForProlongModal={setElidForProlongModal}
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForInstructionModal={setElidForInstructionModal}
-              setElidForChangeTarifModal={setElidForChangeTarifModal}
+              // setElidForChangeTarifModal={setElidForChangeTarifModal}
               setActiveServer={setActiveServer}
             />
           )

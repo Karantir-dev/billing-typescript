@@ -95,7 +95,7 @@ export default function FtpItem(props) {
   )
 }
 
-export function translatePeriod(str, t) {
+function translatePeriod(str, t) {
   let period
 
   if (str.includes('for three months')) {

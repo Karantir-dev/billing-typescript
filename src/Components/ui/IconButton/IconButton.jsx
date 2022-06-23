@@ -71,7 +71,6 @@ export default function Component(props) {
         return <Attention />
       case 'exchange':
         return <Exchange />
-
       case 'change-tariff':
         return <ChangeTariff />
       default:

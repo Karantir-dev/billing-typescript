@@ -61,24 +61,8 @@
   box-shadow: var(--forms2_shadow);
   background: var(--elements-bgc);
   border-radius: 3px;
-  box-sizing: content-box;
+  margin: 20px;
   z-index: 141;
-  right: 0;
-  top: 60px;
-  width: fit-content;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 10px;
-    top: -10px;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--forms_bgc_2);
-    clear: both;
-  }
 }
 
 .calendarModal {
@@ -103,7 +87,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  width: 233px;
+  min-width: 261px;
 }
 
 .fieldsBlock {
@@ -195,11 +179,6 @@
 }
 
 @media screen and (max-width: 767px) {
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-
   .filterBlock {
     flex-direction: column-reverse;
   }
@@ -241,14 +220,13 @@
 
   .filterModal {
     padding: 20px;
-    top: calc(90% + 20px);
-    left: -275px;
+    top: calc(90% + 10px);
+    left: -290px;
 
     &::after {
       content: '';
       position: absolute;
-      right: unset;
-      left: 290px;
+      left: 285px;
       top: -10px;
       width: 0;
       height: 0;
@@ -294,7 +272,6 @@
 @media screen and (min-width: 1024px) {
   .form {
     min-width: 768px;
-
     &.expenses {
       min-width: 730px;
     }
@@ -326,6 +303,23 @@
     }
   }
 
+  .filterModal {
+    left: -20px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: -10px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid var(--forms_bgc_2);
+      clear: both;
+    }
+  }
+
   .input {
     max-width: 240px;
     margin-top: 13px;
@@ -350,13 +344,6 @@
 
   .calendar_pointer {
     right: 50%;
-  }
-  .filterModal {
-    left: 0px;
-
-    &::after {
-      left: 14px;
-    }
   }
 }
 

@@ -37,6 +37,8 @@ import {
   VDSOrder,
   SharedHosting,
   SharedHostingOrder,
+  ForexPage,
+  ForexOrderPage,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -165,6 +167,17 @@ const Component = () => {
         <Route
           path={route.DNS_ORDER}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />}
+        />
+
+        <Route
+          path={route.FOREX}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<ForexPage />} />}
+        />
+        <Route
+          path={route.FOREX_ORDER}
+          element={
+            <PrivateRoute redirectTo={route.LOGIN} children={<ForexOrderPage />} />
+          }
         />
 
         <Route
