@@ -46,6 +46,7 @@ export default function DNS() {
   // ] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const location = useLocation()
 
@@ -77,13 +78,21 @@ export default function DNS() {
 
     setFilterModal(false)
     dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
 
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
@@ -230,7 +239,8 @@ export default function DNS() {
         />
       </div>
       <DNSList
-        storageList={dnsList}
+        emptyFilter={emptyFilter}
+        dnsList={dnsList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}

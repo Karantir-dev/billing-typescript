@@ -357,6 +357,7 @@ export default function DedicOrderPage() {
                   })}
                 </div>
               </div>
+
               <Select
                 height={50}
                 value={values.period}

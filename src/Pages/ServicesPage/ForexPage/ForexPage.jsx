@@ -37,6 +37,7 @@ export default function ForexPage() {
   const [elidForDeletionModal, setElidForDeletionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -50,7 +51,7 @@ export default function ForexPage() {
     return pathnames
   }
 
-  const resetFilterHandler = setValues => {
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       pricelist: '',
@@ -66,18 +67,26 @@ export default function ForexPage() {
       autoprolong: '',
       datacenter: '',
     }
-    setValues && setValues({ ...clearField })
+    // setValues && setValues({ ...clearField })
 
     setFilterModal(false)
     dispatch(
       forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
     )
+    setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    dispatch(forexOperations.getForexFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
@@ -105,8 +114,6 @@ export default function ForexPage() {
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
-
-  console.log('forexlist', forexList)
 
   return (
     <>
@@ -206,6 +213,7 @@ export default function ForexPage() {
         />
       </div>
       <ForexList
+        emptyFilter={emptyFilter}
         forexList={forexList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
@@ -247,6 +255,7 @@ export default function ForexPage() {
         isOpened={Boolean(elidForDeletionModal)}
       >
         <ForexDeletionModal
+          server={activeServer}
           elid={elidForDeletionModal}
           closeFn={() => setElidForDeletionModal(0)}
         />

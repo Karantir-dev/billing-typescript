@@ -22,7 +22,7 @@ export default function NotificationListItem({ arr, removeItem, removedNotificat
               <div className={s.close_btn_wrapper}>
                 <button
                   className={s.close_btn}
-                  onClick={function () {
+                  onClick={() => {
                     removeItem(notif?.$id)
                     removedNotification()
                   }}

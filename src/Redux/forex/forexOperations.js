@@ -356,8 +356,6 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data, 'deletion forexbox')
-
       dispatch(getForexList())
 
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
@@ -376,7 +374,7 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 }
 
 const getForexFilters =
-  (setFilters, data = {}, filtered = false) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -398,6 +396,7 @@ const getForexFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
+          setEmptyFilter && setEmptyFilter(true)
           return dispatch(getForexList())
         }
 

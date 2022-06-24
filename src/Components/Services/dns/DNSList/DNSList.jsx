@@ -8,7 +8,8 @@ import DNSItem from '../DNSItem/DNSItem'
 import DNSMobileItem from '../DNSMobileItem/DNSMobileItem'
 
 export default function DNSList({
-  storageList,
+  emptyFilter,
+  dnsList,
   setElidForEditModal,
   setElidForProlongModal,
   setElidForHistoryModal,
@@ -20,9 +21,28 @@ export default function DNSList({
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
+  if (dnsList) {
+    if (dnsList.length === 0 && emptyFilter) {
+      return <div>not matches </div>
+    }
+
+    if (dnsList.length === 0 && dnsList) {
+      return (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../../images/services/dns_hosting.webp')}
+            alt="forexbox"
+          />
+          <p className={s.no_service_title}>You dont have a server yet</p>
+          <p className={s.no_service_description}>Here must be service description</p>
+        </div>
+      )
+    }
+  }
+
   return (
     <>
-      {widerThan1550 && (
+      {widerThan1550 && dnsList?.length > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('tariff')}:</li>
@@ -37,7 +57,7 @@ export default function DNSList({
       )}
 
       <ul className={s.list}>
-        {storageList?.map(el => {
+        {dnsList?.map(el => {
           return widerThan1550 ? (
             <DNSItem
               key={el.id.$}
@@ -64,7 +84,7 @@ export default function DNSList({
 }
 
 DNSList.propTypes = {
-  servers: PropTypes.arrayOf(PropTypes.object),
+  storageList: PropTypes.arrayOf(PropTypes.object),
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,

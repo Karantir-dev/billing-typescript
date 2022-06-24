@@ -84,8 +84,8 @@ export default function DedicIPMobileItem({
       <span className={s.label}>{t('domain', { ns: 'dedicated_servers' })}:</span>
       <span className={s.value}>{ip?.domain?.$}</span>
 
-      <span className={s.label}>{t('type', { ns: 'dedicated_servers' })}:</span>
-      <span className={s.value}>{t(ip?.type?.$, { ns: 'dedicated_servers' })}</span>
+      {/* <span className={s.label}>{t('type', { ns: 'dedicated_servers' })}:</span>
+      <span className={s.value}>{t(ip?.type?.$, { ns: 'dedicated_servers' })}</span> */}
 
       <span className={s.label}>{t('status', { ns: 'other' })}:</span>
       <span className={s.value}>{t(ip?.ip_status?.$?.trim(), { ns: 'other' })}</span>

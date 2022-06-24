@@ -8,6 +8,7 @@ import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
 
 export default function DedicList({
+  emptyFilter,
   servers,
   setElidForEditModal,
   setElidForProlongModal,
@@ -20,9 +21,28 @@ export default function DedicList({
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
 
+  if (servers) {
+    if (servers.length === 0 && emptyFilter) {
+      return <div>not matches </div>
+    }
+
+    if (servers.length === 0 && servers) {
+      return (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../../images/services/dedicated.webp')}
+            alt="forexbox"
+          />
+          <p className={s.no_service_title}>You dont have a server yet</p>
+          <p className={s.no_service_description}>Here must be service description</p>
+        </div>
+      )
+    }
+  }
+
   return (
     <>
-      {widerThan1550 && (
+      {widerThan1550 && servers?.length > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('domain_name')}:</li>

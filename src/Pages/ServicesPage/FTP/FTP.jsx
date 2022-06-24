@@ -29,7 +29,7 @@ export default function FTP() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const ftpList = useSelector(ftpSelectors.getFTPList)
+  let ftpList = useSelector(ftpSelectors.getFTPList)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -37,6 +37,7 @@ export default function FTP() {
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const location = useLocation()
@@ -70,11 +71,19 @@ export default function FTP() {
 
     setFilterModal(false)
     dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    dispatch(ftpOperations.getFTPFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
@@ -209,6 +218,7 @@ export default function FTP() {
         />
       </div>
       <FTPList
+        emptyFilter={emptyFilter}
         storageList={ftpList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}

@@ -40,6 +40,7 @@ export default function DedicatedServersPage() {
   const [elidForRebootModal, setElidForRebootModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -77,11 +78,19 @@ export default function DedicatedServersPage() {
     dispatch(
       dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
     )
+    setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      dedicOperations.getDedicFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
@@ -240,6 +249,7 @@ export default function DedicatedServersPage() {
         />
       </div>
       <DedicList
+        emptyFilter={emptyFilter}
         servers={serversList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}

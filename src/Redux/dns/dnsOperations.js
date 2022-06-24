@@ -503,7 +503,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
 }
 
 const getDNSFilters =
-  (setFilters, data = {}, filtered = false) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -525,6 +525,7 @@ const getDNSFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
+          setEmptyFilter && setEmptyFilter(true)
           return dispatch(getDNSList())
         }
 
