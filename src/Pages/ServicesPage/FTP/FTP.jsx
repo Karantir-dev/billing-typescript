@@ -149,7 +149,7 @@ export default function FTP() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
-              disabled={ftpList?.length === 0}
+              disabled={ftpList?.length === 0 && !emptyFilter}
             />
             {filterModal && (
               <>

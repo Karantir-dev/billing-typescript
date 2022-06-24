@@ -143,6 +143,7 @@ export default function ForexPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={!emptyFilter && forexList?.length === 0}
             />
             {filterModal && (
               <>

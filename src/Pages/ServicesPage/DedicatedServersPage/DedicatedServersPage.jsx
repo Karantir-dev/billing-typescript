@@ -76,7 +76,12 @@ export default function DedicatedServersPage() {
     setValues && setValues({ ...clearField })
     setFilterModal(false)
     dispatch(
-      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      dedicOperations.getDedicFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
     )
     // setEmptyFilter(false)
   }
@@ -138,6 +143,7 @@ export default function DedicatedServersPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={!emptyFilter && serversList?.length === 0}
             />
             {filterModal && (
               <>

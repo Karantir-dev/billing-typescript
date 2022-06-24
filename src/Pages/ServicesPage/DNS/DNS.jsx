@@ -155,6 +155,7 @@ export default function DNS() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={dnsList?.length === 0 && !emptyFilter}
             />
             {filterModal && (
               <>
