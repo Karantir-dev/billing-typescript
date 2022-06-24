@@ -18,8 +18,14 @@ import {
   ForexFiltersModal,
   ForexDeletionModal,
 } from '../../../Components'
-import { forexOperations, forexSelectors } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  forexOperations,
+  // forexSelectors
+} from '../../../Redux'
+import {
+  useDispatch,
+  // useSelector
+} from 'react-redux'
 import s from './ForexPage.module.scss'
 
 export default function ForexPage() {
@@ -28,8 +34,8 @@ export default function ForexPage() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const forexList = useSelector(forexSelectors.getForexList)
-
+  // const forexList = useSelector(forexSelectors.getForexList)
+  const [forexList, setForexList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -71,9 +77,14 @@ export default function ForexPage() {
 
     setFilterModal(false)
     dispatch(
-      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setForexList,
+        setEmptyFilter,
+      ),
     )
-    setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
@@ -84,6 +95,7 @@ export default function ForexPage() {
         setFilters,
         { ...values, sok: 'ok' },
         true,
+        setForexList,
         setEmptyFilter,
       ),
     )
@@ -107,7 +119,12 @@ export default function ForexPage() {
     }
 
     dispatch(
-      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setForexList,
+      ),
     )
   }, [])
 

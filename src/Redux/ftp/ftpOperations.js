@@ -1,6 +1,10 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, ftpActions, cartActions } from '..'
+import {
+  actions,
+  // ftpActions,
+  cartActions,
+} from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
@@ -8,7 +12,7 @@ import * as route from '../../routes'
 
 //GET SERVERS OPERATIONS
 
-const getFTPList = () => (dispatch, getState) => {
+const getFTPList = setFtpList => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -30,7 +34,9 @@ const getFTPList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(ftpActions.setFTPList(data.doc.elem ? data.doc.elem : []))
+      // dispatch(ftpActions.setFTPList(data.doc.elem ? data.doc.elem : []))
+
+      setFtpList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -343,7 +349,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
 }
 
 const getFTPFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setFtpList, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -366,7 +372,7 @@ const getFTPFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getFTPList())
+          return dispatch(getFTPList(setFtpList))
         }
 
         let filters = {}

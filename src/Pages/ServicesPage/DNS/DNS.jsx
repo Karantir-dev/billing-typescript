@@ -20,8 +20,12 @@ import {
   Portal,
   // DNSChangeTarif,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  dnsOperations,
+  dedicOperations,
+  // dnsSelectors
+} from '../../../Redux'
+import { useDispatch } from 'react-redux'
 import s from './DNS.module.scss'
 
 export default function DNS() {
@@ -30,8 +34,8 @@ export default function DNS() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsList = useSelector(dnsSelectors.getDNSList)
-
+  // const dnsList = useSelector(dnsSelectors.getDNSList)
+  const [dnsList, setDnsList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -77,8 +81,15 @@ export default function DNS() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
-    setEmptyFilter(false)
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setDnsList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   const setFilterHandler = values => {
@@ -90,6 +101,7 @@ export default function DNS() {
         setFilters,
         { ...values, sok: 'ok' },
         true,
+        setDnsList,
         setEmptyFilter,
       ),
     )
@@ -112,7 +124,14 @@ export default function DNS() {
       datacenter: '',
     }
 
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setDnsList,
+      ),
+    )
 
     // dispatch(dnsOperations.getDNSList())
     // dispatch(dnsOperations.getDNSFilters(setFilters))

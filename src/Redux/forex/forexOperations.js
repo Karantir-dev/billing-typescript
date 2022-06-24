@@ -4,11 +4,15 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
-import { actions, cartActions, forexActions } from '..'
+import {
+  actions,
+  cartActions,
+  // forexActions
+} from '..'
 
 //GET hostings OPERATIONS
 
-const getForexList = () => (dispatch, getState) => {
+const getForexList = setForexList => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -29,7 +33,9 @@ const getForexList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
+      console.log(data)
+      // dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
+      setForexList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -374,7 +380,7 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 }
 
 const getForexFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setForexList, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -397,7 +403,7 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList())
+          return dispatch(getForexList(setForexList))
         }
 
         let filters = {}

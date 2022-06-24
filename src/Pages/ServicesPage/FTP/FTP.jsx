@@ -17,8 +17,15 @@ import {
   FTPInstructionModal,
   Portal,
 } from '../../../Components'
-import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  ftpOperations,
+  // ftpSelectors,
+  dedicOperations,
+} from '../../../Redux'
+import {
+  useDispatch,
+  // useSelector
+} from 'react-redux'
 
 import * as route from '../../../routes'
 import s from './FTP.module.scss'
@@ -29,7 +36,8 @@ export default function FTP() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  let ftpList = useSelector(ftpSelectors.getFTPList)
+  // let ftpList = useSelector(ftpSelectors.getFTPList)
+  const [ftpList, setFtpList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -70,8 +78,15 @@ export default function FTP() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
-    setEmptyFilter(false)
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setFtpList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   const setFilterHandler = values => {
@@ -81,6 +96,7 @@ export default function FTP() {
         setFilters,
         { ...values, sok: 'ok' },
         true,
+        setFtpList,
         setEmptyFilter,
       ),
     )
@@ -103,7 +119,14 @@ export default function FTP() {
       autoprolong: '',
       datacenter: '',
     }
-    dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setFtpList,
+      ),
+    )
 
     // dispatch(ftpOperations.getFTPList())
     // dispatch(ftpOperations.getFTPFilters(setFilters))
@@ -126,6 +149,7 @@ export default function FTP() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={ftpList?.length === 0}
             />
             {filterModal && (
               <>

@@ -78,7 +78,7 @@ export default function DedicatedServersPage() {
     dispatch(
       dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
     )
-    setEmptyFilter(false)
+    // setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
