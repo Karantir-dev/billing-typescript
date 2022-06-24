@@ -101,6 +101,12 @@ export default function EditModal({ elid, closeFn }) {
     closeFn()
   }
 
+  const orderDescMonthPart = orderInfo?.description.match(/(per .+?)(?=\))/g)
+
+  const translatedDescription = orderInfo?.description
+    .replace('for order and then', t('for order and then'))
+    .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
+
   return initialState ? (
     <div className={s.modal}>
       <div className={s.title_wrapper}>
@@ -331,11 +337,7 @@ export default function EditModal({ elid, closeFn }) {
                     {t('total_amount')}:{' '}
                     <span className={s.price}>{orderInfo.price} EUR</span>
                   </p>
-                  <p className={s.description}>
-                    {orderInfo.description
-                      .replace('for order and then', t('for order and then'))
-                      .replace('per year', t('per year'))}
-                  </p>
+                  <p className={s.description}>{translatedDescription}</p>
                 </>
               )}
 

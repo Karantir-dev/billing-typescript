@@ -1085,7 +1085,7 @@ const getServiceHistory =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
+        console.log(data.doc)
         const { elem, p_elems } = data.doc
 
         setHistoryList(elem)

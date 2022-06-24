@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
+import { historyTranslateFn } from '../../../../../utils'
 
 import s from './HistoryMobileListItem.module.scss'
-import { parseTranslation } from '../HistoryListItem/HistoryListItem'
 
 export default function HistoryMobileListItem({ history }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -13,7 +13,7 @@ export default function HistoryMobileListItem({ history }) {
       <span className={s.label}>{t('date', { ns: 'other' })}:</span>
       <span className={s.value}>{history?.changedate?.$}</span>
       <span className={s.label}>{t('Changing', { ns: 'other' })}:</span>
-      <span className={s.value}>{parseTranslation(history?.desc?.$, t)}</span>
+      <span className={s.value}>{historyTranslateFn(history?.desc?.$, t)}</span>
 
       <span className={s.label}>{t('user_name')}:</span>
       <span className={s.value}>

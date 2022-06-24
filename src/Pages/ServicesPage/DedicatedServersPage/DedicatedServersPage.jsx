@@ -288,7 +288,7 @@ export default function DedicatedServersPage() {
       >
         <DedicsHistoryModal
           elid={elidForHistoryModal}
-          server={activeServer}
+          name={activeServer?.name?.$}
           closeFn={() => setElidForHistoryModal(0)}
         />
       </Backdrop>

@@ -259,7 +259,7 @@ export default function FiltersModal({
                 />
               </div>
 
-              <div className={s.btnBlock}>
+              <div className={cn(s.btnBlock, ss.btn_block)}>
                 <Button
                   className={s.searchBtn}
                   isShadow

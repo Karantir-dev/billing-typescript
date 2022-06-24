@@ -116,9 +116,9 @@ export default function VDSOrder() {
   }
 
   const parseTariffPrice = price => {
-    let percent = price.match(/(?<=<b>)(.+?)(?=<\/b>)/g)[0]
-    let newPrice = price.match(/(?<=<b>)(.+?)(?=<\/b>)/g)[1]
-    let oldPrice = price.match(/(?<=<del>)(.+?)(?=<\/del>)/g)[0]
+    let percent = price.match(/<b>(.+?)(?=<\/b>)/g)[0].replace('<b>', '')
+    let newPrice = price.match(/<b>(.+?)(?=<\/b>)/g)[1].replace('<b>', '')
+    let oldPrice = price.match(/<del>(.+?)(?=<\/del>)/g)[0].replace('<del>', '')
 
     newPrice = translate(newPrice)
     oldPrice = translate(oldPrice)
@@ -235,9 +235,7 @@ export default function VDSOrder() {
     domain: Yup.string().matches(DOMAIN_REGEX, t('warning_domain')),
   })
 
-  const totalPrice = +parametersInfo?.orderinfo?.$.match(
-    /(?<=Total amount: )(.+?)(?= EUR)/g,
-  )[0]
+  const totalPrice = +parametersInfo?.orderinfo?.$.match(/Total amount: (.+?)(?= EUR)/)[1]
 
   const getPortSpeed = () => {
     const temp = parametersInfo?.slist?.find(el => el.$name === 'Port_speed')?.val
@@ -608,15 +606,13 @@ export default function VDSOrder() {
                         <span className={s.tablet_price}>
                           {values.finalTotalPrice} EUR
                         </span>{' '}
-                        {t(
-                          parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g),
-                        )}
+                        {t(parametersInfo?.orderinfo.$.match(/EUR (.+?)(?= <br\/>)/)[1])}
                       </span>
                     </p>
                   ) : (
                     <p className={s.price_wrapper}>
                       <span className={s.price}>€{values.finalTotalPrice}</span>
-                      {t(parametersInfo?.orderinfo.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g))}
+                      {t(parametersInfo?.orderinfo.$.match(/EUR (.+?)(?= <br\/>)/)[1])}
                     </p>
                   )}
 

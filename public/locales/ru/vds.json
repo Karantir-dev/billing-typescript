@@ -77,5 +77,20 @@
   "confirmation_placeholder": "Подтвердите пароль",
   "passwd_change_success": "Запущена операция смены пароля для услуги",
   "scheduled_deletion": "Запланировано удаление услуги на: ",
-  "instruction_title": "Активация Виртуального сервера"
+  "instruction_title": "Активация Виртуального сервера",
+  "no_servers_yet": "У вас еще нет сервера.",
+  "no_servers_yet_desc": "Высокопроизводительные VDS/VPS - лучшее предложение с мощными процессорами, премиум интернетом, быстрой оперативной памятью, защитой от DDоS-атак, которое подойдет под любые задачи.",
+  "The resource has been changed": "Изменение ресурса '{{value}}'",
+  "Memory": "Оперативная память",
+  "CPU count": "Количество процессоров",
+  "Disk space": "Дисковое пространство",
+  "The tariff plan has been changed": "Изменен тариф",
+  "The old plan": "Старый тариф",
+  "The new plan": "Новый тариф",
+  "A new value is set for": "Установлено значение ресурса '{{value}}'",
+  "Tariff add-on has been modified": "Изменен тариф ресурса",
+  "Old tariff": "Старый тариф",
+  "New tariff": "Новый тариф",
+  "Suspended service": "Услуга остановлена",
+  "Active service": "Услуга запущена"
 }

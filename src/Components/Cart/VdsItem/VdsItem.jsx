@@ -12,10 +12,10 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const dropdownEl = useRef()
   const priceEl = useRef()
   const infoEl = useRef()
-  console.log(el)
+
   const [dropOpened, setDropOpened] = useState(false)
 
-  const tariffName = el?.desc?.$.match(/(?<=<b>)(.+?)(?= \(base price\))/g)
+  const tariffName = el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
 
   const onShevronClick = () => {
     if (!dropOpened) {
@@ -34,7 +34,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   }
 
   const getTranslatedText = regex => {
-    let text = el?.desc?.$?.match(regex)?.[0]
+    let text = el?.desc?.$?.match(regex)?.[1]
     if (text?.includes('EUR')) {
       text = text.replace(text.split('EUR ')[1], t(text.split('EUR ')[1].trim()))
     } else {
@@ -45,7 +45,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   }
 
   const getTranslatedCP = string => {
-    const partText = string?.match(/(?<=^)(.+?)(?= - \d+?\.)/g)?.[0]
+    const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
 
     return partText ? string.replace(partText, t(partText)) : string
   }
@@ -83,7 +83,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
               {el?.cost?.$} EUR{' '}
               {tabletOrHigher && (
                 <span className={s.period}>
-                  {t(el?.desc?.$.match(/(?<=EUR )(.+?)(?= <br\/>)/g))}
+                  {t(el?.desc?.$.match(/EUR (.+?)(?= <br\/>)/))}
                 </span>
               )}
             </p>
@@ -100,25 +100,23 @@ export default function VdsItem({ el, deleteItemHandler }) {
           <p className={s.value_item}>
             {t('processors')}:
             <span className={s.value}>
-              {getTranslatedText(/(?<=CPU count)(.+?)(?=<br\/>)/g)}
+              {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)}
             </span>
           </p>
           <p className={s.value_item}>
             {t('memory')}:
-            <span className={s.value}>
-              {getTranslatedText(/(?<=Memory)(.+?)(?=<br\/>)/g)}
-            </span>
+            <span className={s.value}>{getTranslatedText(/Memory(.+?)(?=<br\/>)/)}</span>
           </p>
           <p className={s.value_item}>
             {t('disk_space')}:
             <span className={s.value}>
-              {getTranslatedText(/(?<=Disk space)(.+?)(?=<br\/>)/g)}
+              {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}
             </span>
           </p>
           <p className={s.value_item}>
             {t('IPcount')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=IP-addresses count)(.+?)(?=<br\/>)/g)[0].replace(
+              {el?.desc?.$.match(/IP-addresses count(.+?)(?=<br\/>)/)[1].replace(
                 'Unit',
                 t('Unit'),
               )}
@@ -127,15 +125,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
           <p className={s.value_item}>
             {t('port_speed')}:
             <span className={s.value}>
-              {el?.desc?.$.match(/(?<=Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/g)}
+              {el?.desc?.$.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]}
             </span>
           </p>
           <p className={s.value_item}>
             {t('license_to_panel')}:{' '}
             <span className={s.value}>
-              {getTranslatedCP(
-                getTranslatedText(/(?<=Control panel )(.+?)(?=$|<br\/>)/g),
-              )}
+              {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}
             </span>
           </p>
           {el?.desc?.$.includes('Service limits') && (
