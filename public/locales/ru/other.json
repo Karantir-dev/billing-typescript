@@ -129,5 +129,6 @@
   "Half a year": "Пол года",
   "Year": "Год",
   "Two years": "Два года",
-  "Three years": "Три года"
+  "Three years": "Три года",
+  "The minimum order period for this service is {{min}}. {{left}} are left": "Минимальный срок заказа данной услуги {{min}} месяц. Осталось {{left}} дней"
 }

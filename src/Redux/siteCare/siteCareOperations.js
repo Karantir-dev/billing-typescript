@@ -1,14 +1,10 @@
 import qs from 'qs'
 import i18n from '../../i18n'
-import {
-  actions,
-  //  cartActions,
-  siteCareActions,
-} from '..'
+import { actions, cartActions, siteCareActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
-// import * as route from '../../routes'
+import * as route from '../../routes'
 
 const getSiteCare =
   (body = {}) =>
@@ -238,7 +234,7 @@ const prolongSiteCare =
           toast.success(i18n.t('Prolonged successfully', { ns: 'virtual_hosting' }), {
             position: 'bottom-right',
           })
-          return dispatch(getSiteCare())
+          return dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
         dispatch(actions.hideLoader())
@@ -279,8 +275,6 @@ const editSiteCare =
           throw new Error(data.doc.error.msg.$)
         }
 
-        console.log(data.doc)
-
         const d = {
           title_name: data?.doc?.title_name?.$,
           createdate: data?.doc?.createdate?.$,
@@ -319,7 +313,7 @@ const editSiteCare =
               position: 'bottom-right',
             },
           )
-          return dispatch(getSiteCare())
+          return dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
         dispatch(actions.hideLoader())
@@ -333,7 +327,7 @@ const editSiteCare =
   }
 
 const deleteSiteCare =
-  (body = {}) =>
+  (body = {}, setDeleteModal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -353,9 +347,43 @@ const deleteSiteCare =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
-            position: 'bottom-right',
-          })
+          if (
+            data.doc.error.msg.$.includes('The minimum order period for this service')
+          ) {
+            const strings = data?.doc?.error?.msg?.$?.split('.')
+            const parsePrice = price => {
+              const words = price?.match(/[\d|.|\\+]+/g)
+              const amounts = []
+
+              if (words.length > 0) {
+                words.forEach(w => {
+                  if (!isNaN(w)) {
+                    amounts.push(w)
+                  }
+                })
+              } else {
+                return
+              }
+
+              return amounts[0]
+            }
+
+            const min = parsePrice(strings[0])
+            const left = parsePrice(strings[1])
+            toast.error(
+              `${i18n.t(
+                'The minimum order period for this service is {{min}}. {{left}} are left',
+                { ns: 'other', min: min, left: left },
+              )}`,
+              {
+                position: 'bottom-right',
+              },
+            )
+          } else {
+            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+              position: 'bottom-right',
+            })
+          }
 
           throw new Error(data.doc.error.msg.$)
         }
@@ -364,7 +392,131 @@ const deleteSiteCare =
           position: 'bottom-right',
         })
 
-        dispatch(siteCareActions.deleteSiteCare(body?.elid))
+        setDeleteModal && setDeleteModal(false)
+        dispatch(getSiteCare({ p_num: body?.p_num }))
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderSiteCare =
+  (body = {}, setData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'zabota-o-servere.order',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          period: data.doc?.period?.$,
+          datacenter: data.doc?.datacenter?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'period') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        data.doc?.list?.forEach(list => {
+          if (list?.$name === 'tariflist') {
+            d[`${list?.$name}_list`] = list?.elem
+          }
+        })
+
+        setData && setData(d)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log(error)
+
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderSiteCarePricelist =
+  (body = {}, setParamsData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          auth: sessionId,
+          func: 'zabota-o-servere.order.param',
+          out: 'json',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        console.log(data.doc)
+
+        const d = {
+          autoprolong: data.doc?.autoprolong?.$,
+          orderinfo: data.doc?.orderinfo?.$,
+        }
+
+        data.doc?.slist?.forEach(list => {
+          if (list?.$name === 'autoprolong') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          }
+        })
+
+        if (body?.sok === 'ok') {
+          dispatch(
+            cartActions?.setCartIsOpenedState({
+              isOpened: true,
+              redirectPath: route.SITE_CARE,
+            }),
+          )
+        } else {
+          setParamsData && setParamsData(d)
+        }
 
         dispatch(actions.hideLoader())
       })
@@ -383,4 +535,6 @@ export default {
   deleteSiteCare,
   editSiteCare,
   getHistorySiteCare,
+  orderSiteCare,
+  orderSiteCarePricelist,
 }

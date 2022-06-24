@@ -7,6 +7,7 @@ import {
   SiteCareHistoryModal,
   SiteCareProlongModal,
   SiteCareEditModal,
+  SiteCareDeleteModal,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -34,6 +35,8 @@ export default function Component() {
 
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
+
+  const [deleteModal, setDeleteModal] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -80,6 +83,7 @@ export default function Component() {
     let data = {
       elid: selctedItem?.id?.$,
       lang: i18n?.language,
+      p_num: currentPage,
       ...values,
     }
 
@@ -104,6 +108,7 @@ export default function Component() {
     let data = {
       elid: selctedItem?.id?.$,
       lang: i18n?.language,
+      p_num: currentPage,
       ...values,
     }
 
@@ -113,8 +118,10 @@ export default function Component() {
   const deleteSiteCareHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
+      p_num: currentPage,
     }
-    dispatch(siteCareOperations.deleteSiteCare(data))
+
+    dispatch(siteCareOperations.deleteSiteCare(data, setDeleteModal))
   }
 
   return (
@@ -127,7 +134,7 @@ export default function Component() {
         historySiteCareHandler={historySiteCareHandler}
         prolongSiteCareHandler={prolongSiteCareHandler}
         editSiteCareHandler={editSiteCareHandler}
-        deleteSiteCareHandler={deleteSiteCareHandler}
+        deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
       />
@@ -135,7 +142,7 @@ export default function Component() {
         historySiteCareHandler={historySiteCareHandler}
         prolongSiteCareHandler={prolongSiteCareHandler}
         editSiteCareHandler={editSiteCareHandler}
-        deleteSiteCareHandler={deleteSiteCareHandler}
+        deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setSelctedItem={setSelctedItem}
         list={siteCareList}
@@ -175,6 +182,14 @@ export default function Component() {
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
+        />
+      )}
+
+      {deleteModal && (
+        <SiteCareDeleteModal
+          closeDeleteModalHandler={() => setDeleteModal(false)}
+          deleteSiteCareHandler={deleteSiteCareHandler}
+          name={selctedItem?.name?.$}
         />
       )}
     </div>

@@ -113,6 +113,8 @@ export { default as SiteCareTable } from './Services/SiteCare/SiteCareTable/Site
 export { default as SiteCareHistoryModal } from './Services/SiteCare/SiteCareHistoryModal/SiteCareHistoryModal'
 export { default as SiteCareProlongModal } from './Services/SiteCare/SiteCareProlongModal/SiteCareProlongModal'
 export { default as SiteCareEditModal } from './Services/SiteCare/SiteCareEditModal/SiteCareEditModal'
+export { default as SiteCareDeleteModal } from './Services/SiteCare/SiteCareDeleteModal/SiteCareDeleteModal'
+export { default as SiteCareTarifCard } from './Services/SiteCare/SiteCareTarifCard/SiteCareTarifCard'
 
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'

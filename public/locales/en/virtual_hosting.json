@@ -33,5 +33,15 @@
   "Site URL": "Site URL",
   "Login": "Login",
   "Site care edited successfully": "Site care edited successfully",
-  "Pause site check": "Pause site check"
+  "Pause site check": "Pause site check",
+  "Deleting a service": "Deleting a service",
+  "Are you sure you want to delete the service \"{{name}}\"?": "Are you sure you want to delete the service \"{{name}}\"?",
+  "Website care order": "Website care order",
+  "Port": "Port",
+
+  "Enter URL": "Enter URL",
+  "Enter IP": "Enter IP",
+  "Enter Port": "Enter Port",
+  "Enter login": "Enter login",
+  "Enter password": "Enter password"
 }

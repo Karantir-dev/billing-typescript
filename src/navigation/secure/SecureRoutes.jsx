@@ -40,6 +40,7 @@ import {
   ForexPage,
   ForexOrderPage,
   SiteCare,
+  SiteCareOrder,
 } from '../../Pages'
 
 import { cartSelectors } from '../../Redux'
@@ -88,6 +89,10 @@ const Component = () => {
         <Route
           path={route.SITE_CARE}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<SiteCare />} />}
+        />
+        <Route
+          path={route.SITE_CARE_ORDER}
+          element={<PrivateRoute redirectTo={route.LOGIN} children={<SiteCareOrder />} />}
         />
 
         <Route

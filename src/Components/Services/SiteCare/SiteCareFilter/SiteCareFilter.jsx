@@ -135,7 +135,7 @@ export default function Component(props) {
         size="medium"
         label={t('to_order', { ns: 'other' })}
         type="button"
-        onClick={() => navigate(routes.SHARED_HOSTING_ORDER)}
+        onClick={() => navigate(routes.SITE_CARE_ORDER)}
       />
     </div>
   )

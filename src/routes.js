@@ -53,3 +53,4 @@ export const FOREX = '/services/forex'
 export const FOREX_ORDER = '/services/forex/forex_order'
 
 export const SITE_CARE = '/services/site_care'
+export const SITE_CARE_ORDER = '/services/site_care/site_care_order'

@@ -114,7 +114,6 @@ export default function Component() {
   const translateAutorenewSelect = elem => {
     const price = parsePrice(elem)?.amount || 0
 
-    console.log(elem)
     let period = ''
 
     if (elem?.includes('per month')) {
