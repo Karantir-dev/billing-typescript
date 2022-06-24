@@ -80,5 +80,7 @@
   "Memory": "Memory",
   "The tariff plan has been changed": "The tariff plan has been changed",
   "The old plan": "The old plan",
-  "The new plan": "The new plan"
+  "The new plan": "The new plan",
+  "A new value is set for": "A new value is set for '{{value}}'",
+  "Tariff add-on has been modified": "Tariff add-on has been modified"
 }

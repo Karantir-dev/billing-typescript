@@ -87,5 +87,6 @@
   "The tariff plan has been changed": "Изменен тариф",
   "The old plan": "Старый тариф",
   "The new plan": "Новый тариф",
-  "A new value is set for": "Установлено значение ресурса '{{value}}'"
+  "A new value is set for": "Установлено значение ресурса '{{value}}'",
+  "Tariff add-on has been modified": ""
 }

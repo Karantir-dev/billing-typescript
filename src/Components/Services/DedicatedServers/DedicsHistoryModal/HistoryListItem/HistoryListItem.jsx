@@ -58,7 +58,7 @@ export function parseTranslation(str, t) {
       t('The resource has been changed', { value: t(changedResource) }),
     )
     .replace(
-      /A new value is set for .+\./g,
+      /A new value is set for .+?\./g,
       t('A new value is set for', { value: t(newValueForResource) }),
     )
     .replace('The tariff plan has been changed', t('The tariff plan has been changed'))
