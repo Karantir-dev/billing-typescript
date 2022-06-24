@@ -19,7 +19,7 @@ export default function DedicList({
   activeServerID,
 }) {
   const { t } = useTranslation(['vds', 'other'])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (servers) {
     if (servers.length === 0 && emptyFilter) {

@@ -18,7 +18,7 @@ export default function FTPList({
   activeServerID,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (storageList) {
     if (storageList.length === 0 && emptyFilter) {

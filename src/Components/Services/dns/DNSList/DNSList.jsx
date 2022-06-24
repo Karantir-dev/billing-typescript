@@ -19,7 +19,7 @@ export default function DNSList({
   activeServerID,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (dnsList) {
     if (dnsList.length === 0 && emptyFilter) {

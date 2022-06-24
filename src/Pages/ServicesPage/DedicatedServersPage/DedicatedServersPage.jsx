@@ -25,7 +25,7 @@ import * as route from '../../../routes'
 import s from './DedicatedServersPage.module.scss'
 
 export default function DedicatedServersPage() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
