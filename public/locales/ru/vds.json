@@ -88,5 +88,9 @@
   "The old plan": "Старый тариф",
   "The new plan": "Новый тариф",
   "A new value is set for": "Установлено значение ресурса '{{value}}'",
-  "Tariff add-on has been modified": ""
+  "Tariff add-on has been modified": "Изменен тариф ресурса",
+  "Old tariff": "Старый тариф",
+  "New tariff": "Новый тариф",
+  "Suspended service": "Услуга остановлена",
+  "Active service": "Услуга запущена"
 }

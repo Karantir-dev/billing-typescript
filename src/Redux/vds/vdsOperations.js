@@ -93,13 +93,14 @@ const editVDS =
         mutateOptionsListData && mutateOptionsListData(newAutoprolongList)
 
         if (data.doc?.orderinfo?.$) {
-          const price = data.doc?.orderinfo?.$.match(/(?<=Total amount: )(.+?)(?= EUR)/g)
+          const price = data.doc?.orderinfo?.$.match(/Total amount: (.+?)(?= EUR)/)[1]
           let description = data.doc?.orderinfo?.$.match(
-            /(?<=Control panel )(.+?)(?=<br\/>)/g,
-          )[0].split(' - ')[2]
+            /Control panel (.+?)(?=<br\/>)/,
+          )[1].split(' - ')[2]
+          console.log(description)
           description = `(${description})`
 
-          setOrderInfo({ price, description })
+          setOrderInfo && setOrderInfo({ price, description })
         } else {
           setOrderInfo(null)
         }

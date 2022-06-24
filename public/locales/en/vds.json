@@ -82,5 +82,9 @@
   "The old plan": "The old plan",
   "The new plan": "The new plan",
   "A new value is set for": "A new value is set for '{{value}}'",
-  "Tariff add-on has been modified": "Tariff add-on has been modified"
+  "Tariff add-on has been modified": "Tariff add-on has been modified",
+  "Old tariff": "Old tariff",
+  "New tariff": "New tariff",
+  "Suspended service": "Suspended service",
+  "Active service": "Active service"
 }
