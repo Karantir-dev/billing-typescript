@@ -19,31 +19,34 @@ import {
   ProlongModal,
   FiltersModal,
   VdsInstructionModal,
+  DedicsHistoryModal,
 } from '../../../../Components'
 import { dedicOperations, vdsOperations } from '../../../../Redux'
+import no_vds from '../../../../images/services/no_vds.png'
 
 import s from './VDS.module.scss'
 
 export default function VDS() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const dispatch = useDispatch()
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
 
   const [servers, setServers] = useState([])
-  const [elidForEditModal, setElidForEditModal] = useState(0)
   const [activeServer, setActiveServer] = useState(null)
+  const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
   const [idForProlong, setIdForProlong] = useState('')
   const [idForPassChange, setIdForPassChange] = useState('')
   const [idForReboot, setIdForReboot] = useState('')
+  const [idForInstruction, setIdForInstruction] = useState('')
+  const [idForHistory, setIdForHistory] = useState('')
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [filtersState, setFiltersState] = useState()
   const [filtersListState, setfiltersListState] = useState()
-  const [idForInstruction, setIdForInstruction] = useState('')
+  const [isSearchMade, setIsSearchMade] = useState(false)
 
   useEffect(() => {
-    // dispatch(vdsOperations.getVDS(setServers))
     // resets filters
     dispatch(
       vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
@@ -103,7 +106,12 @@ export default function VDS() {
         setServers,
       ),
     )
+    setIsSearchMade(true)
     setIsFiltersOpened(false)
+  }
+
+  const goToPanel = id => {
+    dispatch(dedicOperations.goToPanel(id))
   }
 
   return (
@@ -117,7 +125,7 @@ export default function VDS() {
             className={s.tools_icon}
             onClick={() => setIsFiltersOpened(true)}
             icon="filter"
-            disabled={servers.length < 1}
+            disabled={servers?.length < 1 && !isSearchMade}
           />
           <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
 
@@ -193,6 +201,7 @@ export default function VDS() {
             <HintWrapper label={t('history')}>
               <IconButton
                 className={s.tools_icon}
+                onClick={() => setIdForHistory(activeServer.id.$)}
                 disabled={activeServer?.status?.$ !== '2'}
                 icon="refund"
               />
@@ -208,7 +217,7 @@ export default function VDS() {
             <HintWrapper label={t('go_to_panel')}>
               <IconButton
                 className={s.tools_icon}
-                onClick={() => dispatch(dedicOperations.goToPanel(activeServer.id.$))}
+                onClick={() => goToPanel(activeServer.id.$)}
                 disabled={activeServer?.transition?.$ !== 'on'}
                 icon="exitSign"
               />
@@ -224,6 +233,20 @@ export default function VDS() {
         />
       </div>
 
+      {servers?.length < 1 && !isSearchMade && filtersListState && (
+        <div className={s.no_vds_wrapper}>
+          <img className={s.no_vds} src={no_vds} alt="no_vds" />
+          <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+          <p>{t('no_servers_yet_desc')}</p>
+        </div>
+      )}
+
+      {servers?.length < 1 && isSearchMade && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
       <VDSList
         servers={servers}
         activeServerID={activeServer?.id.$}
@@ -233,6 +256,9 @@ export default function VDS() {
         setIdForPassChange={setIdForPassChange}
         setIdForReboot={setIdForReboot}
         setIdForProlong={setIdForProlong}
+        setIdForHistory={setIdForHistory}
+        setIdForInstruction={setIdForInstruction}
+        goToPanel={goToPanel}
       />
 
       <Backdrop
@@ -284,6 +310,14 @@ export default function VDS() {
         <VdsInstructionModal
           elid={idForInstruction}
           closeFn={() => setIdForInstruction('')}
+        />
+      </Backdrop>
+
+      <Backdrop isOpened={Boolean(idForHistory)} onClick={() => setIdForHistory('')}>
+        <DedicsHistoryModal
+          elid={idForHistory}
+          name={getSarverName(idForHistory)}
+          closeFn={() => setIdForHistory('')}
         />
       </Backdrop>
     </>
