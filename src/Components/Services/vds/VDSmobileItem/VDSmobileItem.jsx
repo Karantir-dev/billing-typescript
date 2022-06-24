@@ -27,6 +27,9 @@ export default function VDSmobileItem({
   setIdForPassChange,
   setIdForReboot,
   setIdForProlong,
+  setIdForHistory,
+  setIdForInstruction,
+  goToPanel,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -111,6 +114,7 @@ export default function VDSmobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForHistory)}
                   disabled={server?.status?.$ !== '2'}
                 >
                   <Refund className={s.tool_icon} />
@@ -121,6 +125,7 @@ export default function VDSmobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(setIdForInstruction)}
                   disabled={server?.status?.$ !== '2'}
                 >
                   <Info className={s.tool_icon} />
@@ -131,6 +136,7 @@ export default function VDSmobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
+                  onClick={() => handleToolBtnClick(goToPanel)}
                   disabled={server.transition?.$ !== 'on'}
                 >
                   <ExitSign className={s.tool_icon} />

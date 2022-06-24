@@ -108,8 +108,9 @@
   "The new value": "Новое значение",
   "The service status has been changed to": "Статус услуги изменился на",
   "The new service validity period was set": "Установлен новый срок действия услуги",
-  "Pending": "Обрабатывается",
-  "Active": "Активен",
+  "Pending": "'Обрабатывается'",
+  "Active": "'Активен'",
+  "Suspended": "'Остановлен'",
   "The parameter": "Параметр",
   "has been changed": "был изменен",
   "Activation date": "Дата активации",
@@ -123,5 +124,5 @@
   "Operating system": "Операционная система",
   "Preinstalled software": "Предустановленное ПО",
   "Control panel": "Панель управления",
-  "A new value is set for": "Устанавливается новое значение"
+  "A new value is set for": "Установлено новое значение"
 }
