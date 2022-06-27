@@ -29,7 +29,7 @@ import {
 import s from './ForexPage.module.scss'
 
 export default function ForexPage() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
