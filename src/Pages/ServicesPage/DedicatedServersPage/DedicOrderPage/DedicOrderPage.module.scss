@@ -68,13 +68,13 @@
 }
 
 .first_processors_block {
-  width: 100%;
+  width: 255px;
   display: flex;
   justify-content: space-between;
 }
 
 .second_processors_block {
-  width: 100%;
+  width: 255px;
   display: flex;
   justify-content: space-between;
 }
@@ -450,7 +450,7 @@
 
   .second_processors_block {
     height: 62px;
-    width: 200px;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

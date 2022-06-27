@@ -57,8 +57,8 @@ export default function ProlongModal({ elid, closeFn }) {
                 <Cross
                   className={s.icon_cross}
                   onClick={closeFn}
-                  width={12}
-                  height={12}
+                  width={17}
+                  height={17}
                 />
               </div>
               <div className={s.first_row}>
@@ -107,6 +107,7 @@ export default function ProlongModal({ elid, closeFn }) {
                       }
                     })}
                     className={s.select}
+                    inputClassName={s.inputClassName}
                   />
                 </div>
 

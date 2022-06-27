@@ -5,7 +5,7 @@ import dedicActions from './dedicActions'
 const initialState = {
   tarifList: [],
   filterList: [],
-  serversList: [],
+  serversList: null,
 }
 
 const tarifList = createReducer(initialState.tarifList, {

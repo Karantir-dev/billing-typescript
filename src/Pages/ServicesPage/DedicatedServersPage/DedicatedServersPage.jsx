@@ -22,10 +22,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
 import * as route from '../../../routes'
-import s from './DedicatedServicesPage.module.scss'
+import s from './DedicatedServersPage.module.scss'
 
 export default function DedicatedServersPage() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
@@ -40,6 +40,7 @@ export default function DedicatedServersPage() {
   const [elidForRebootModal, setElidForRebootModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -75,17 +76,53 @@ export default function DedicatedServersPage() {
     setValues && setValues({ ...clearField })
     setFilterModal(false)
     dispatch(
-      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      dedicOperations.getDedicFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
     )
+    // setEmptyFilter(false)
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    dispatch(dedicOperations.getDedicFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      dedicOperations.getDedicFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getServersList())
+    const clearField = {
+      id: '',
+      domain: '',
+      ip: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+      ostemplate: '',
+    }
+
+    dispatch(
+      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+    )
+
+    // dispatch(dedicOperations.getServersList())
     // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
 
@@ -106,6 +143,7 @@ export default function DedicatedServersPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={!emptyFilter && serversList?.length === 0}
             />
             {filterModal && (
               <>
@@ -139,7 +177,10 @@ export default function DedicatedServersPage() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -147,7 +188,7 @@ export default function DedicatedServersPage() {
                   icon="edit"
                 />
               </HintWrapper>
-              <HintWrapper label={t('reload')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('reload')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.show_reboot?.$ !== 'on'}
@@ -155,7 +196,7 @@ export default function DedicatedServersPage() {
                   onClick={() => setElidForRebootModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
-              <HintWrapper label={t('ip_addresses')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('ip_addresses')}>
                 <IconButton
                   onClick={() =>
                     navigate(route.DEDICATED_SERVERS_IP, {
@@ -167,7 +208,7 @@ export default function DedicatedServersPage() {
                   icon="ip"
                 />
               </HintWrapper>
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -175,7 +216,7 @@ export default function DedicatedServersPage() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -183,7 +224,7 @@ export default function DedicatedServersPage() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('instruction')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
@@ -191,7 +232,7 @@ export default function DedicatedServersPage() {
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
-              <HintWrapper label={t('go_to_panel')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('go_to_panel')}>
                 <IconButton
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
@@ -214,6 +255,7 @@ export default function DedicatedServersPage() {
         />
       </div>
       <DedicList
+        emptyFilter={emptyFilter}
         servers={serversList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}

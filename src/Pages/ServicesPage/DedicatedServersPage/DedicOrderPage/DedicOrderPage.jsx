@@ -125,7 +125,7 @@ export default function DedicOrderPage() {
     const elemsData = {}
     if (fieldName === 'recipe') {
       dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
-      elemsData.null = [{ $key: 'null', $: t('without_software') }]
+      elemsData.null = [{ $key: 'null', $: t('without_software', { ns: 'vds' }) }]
     }
 
     dataArr.forEach(element => {
@@ -357,6 +357,7 @@ export default function DedicOrderPage() {
                   })}
                 </div>
               </div>
+
               <Select
                 height={50}
                 value={values.period}

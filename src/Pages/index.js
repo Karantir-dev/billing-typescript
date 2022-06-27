@@ -23,9 +23,9 @@ export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/Shar
 export { default as SiteCare } from './ServicesPage/SiteCare/SiteCare'
 export { default as SiteCareOrder } from './ServicesPage/SiteCare/SiteCareOrder/SiteCareOrder'
 
-export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
-export { default as DedicOrderPage } from './ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
-export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
+export { default as DedicatedServersPage } from './ServicesPage/DedicatedServersPage/DedicatedServersPage'
+export { default as DedicOrderPage } from './ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
+export { default as DedicIPpage } from './ServicesPage/DedicatedServersPage/DedicIPPage/DedicIPPage'
 
 export { default as VDS } from './ServicesPage/VDS/VDSPage/VDS'
 export { default as VDSOrder } from './ServicesPage/VDS/VDSOrder/VDSOrder'
