@@ -1,6 +1,6 @@
 .item {
   height: 62px;
-  background: var(--forms_bgc_2);
+  background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
   border-radius: 5px;
   height: fit-content;
@@ -13,49 +13,38 @@
   height: 100%;
   padding: 20px 30px;
   gap: 30px;
-  cursor: pointer;
   position: relative;
+}
+.date_wrapper {
+  display: flex;
+  flex-direction: column;
+}
 
-  &.active_server::after,
-  &:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    background-image: var(--accent-gradient);
-  }
+.time {
+  color: var(--transparent-color);
+  font-size: 14px;
 }
 
 .value {
-  font-size: 15px;
+  font-size: 16px;
   text-align: start;
-  word-break: break-all;
+  word-break: break-word;
 
   &.empty {
     color: var(--transparent-color);
   }
 
   &:nth-child(1) {
-    flex-basis: 20%;
+    flex-basis: 10%;
   }
   &:nth-child(2) {
-    flex-basis: 40%;
+    flex-basis: 45%;
     word-break: break-all;
   }
   &:nth-child(3) {
     flex-basis: 30%;
   }
   &:nth-child(4) {
-    flex-basis: 10%;
+    flex-basis: 15%;
   }
-}
-
-.price {
-  display: block;
-  font-size: 14px;
-  color: var(--transparent-color);
 }

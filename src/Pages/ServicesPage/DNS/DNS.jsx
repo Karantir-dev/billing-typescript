@@ -20,18 +20,22 @@ import {
   Portal,
   // DNSChangeTarif,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  dnsOperations,
+  dedicOperations,
+  // dnsSelectors
+} from '../../../Redux'
+import { useDispatch } from 'react-redux'
 import s from './DNS.module.scss'
 
 export default function DNS() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsList = useSelector(dnsSelectors.getDNSList)
-
+  // const dnsList = useSelector(dnsSelectors.getDNSList)
+  const [dnsList, setDnsList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -46,6 +50,7 @@ export default function DNS() {
   // ] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const location = useLocation()
 
@@ -76,19 +81,60 @@ export default function DNS() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setDnsList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
 
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setDnsList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
-    dispatch(dnsOperations.getDNSList())
-    dispatch(dnsOperations.getDNSFilters(setFilters))
+    const clearField = {
+      id: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+
+    dispatch(
+      dnsOperations.getDNSFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setDnsList,
+      ),
+    )
+
+    // dispatch(dnsOperations.getDNSList())
+    // dispatch(dnsOperations.getDNSFilters(setFilters))
     dispatch(dnsOperations.getTarifs(setTarifs))
   }, [])
 
@@ -109,6 +155,7 @@ export default function DNS() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={dnsList?.length === 0 && !emptyFilter}
             />
             {filterModal && (
               <>
@@ -142,7 +189,10 @@ export default function DNS() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -159,7 +209,7 @@ export default function DNS() {
                 />
               </HintWrapper> */}
 
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -167,7 +217,7 @@ export default function DNS() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -175,7 +225,7 @@ export default function DNS() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('instruction')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
@@ -183,7 +233,7 @@ export default function DNS() {
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
               </HintWrapper>
-              <HintWrapper label={t('go_to_panel')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('go_to_panel')}>
                 <IconButton
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
@@ -209,7 +259,8 @@ export default function DNS() {
         />
       </div>
       <DNSList
-        storageList={dnsList}
+        emptyFilter={emptyFilter}
+        dnsList={dnsList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}

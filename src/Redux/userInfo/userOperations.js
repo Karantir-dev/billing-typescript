@@ -1,5 +1,4 @@
 import qs from 'qs'
-import i18n from 'i18next'
 
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
@@ -85,14 +84,14 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
 }
 
 const removeItems = (sessionId, id) => dispatch => {
-  console.log('remove items ajax')
+  console.log('remove notif')
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'notificationbar.delete',
         out: 'json',
-        lang: i18n.language,
+        lang: 'en',
         auth: sessionId,
         elid: id,
       }),
@@ -100,6 +99,8 @@ const removeItems = (sessionId, id) => dispatch => {
     .then(({ data }) => {
       console.log('id deleted', id)
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data)
     })
     .catch(error => {
       console.log('error', error)

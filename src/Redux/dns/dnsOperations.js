@@ -4,11 +4,15 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
-import { actions, cartActions, dnsActions } from '..'
+import {
+  actions,
+  cartActions,
+  // dnsActions
+} from '..'
 
 //GET hostings OPERATIONS
 
-const getDNSList = () => (dispatch, getState) => {
+const getDNSList = setDnsList => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -29,7 +33,9 @@ const getDNSList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
+      console.log(data)
+      // dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
+      setDnsList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -503,7 +509,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
 }
 
 const getDNSFilters =
-  (setFilters, data = {}, filtered = false) =>
+  (setFilters, data = {}, filtered = false, setDnsList, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -525,7 +531,8 @@ const getDNSFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getDNSList())
+          setEmptyFilter && setEmptyFilter(true)
+          return dispatch(getDNSList(setDnsList))
         }
 
         let filters = {}

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import dnsActions from './forexActions'
 
 const initialState = {
-  forexList: [],
+  forexList: null,
 }
 
 const forexList = createReducer(initialState.forexList, {

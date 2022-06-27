@@ -13,9 +13,9 @@ export default function HistoryListItem({ history }) {
     <li className={s.item}>
       <button className={cn(s.item_btn)} type="button">
         <span className={s.value}>
-          {history?.changedate?.$}
-          <span className={s.price}>
-            {history?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
+          <span className={s.date_wrapper}>
+            {history?.changedate?.$?.split(' ')[0]}
+            <span className={s.time}> {history?.changedate?.$?.split(' ')[1]}</span>
           </span>
         </span>
         <span className={s.value}>{historyTranslateFn(history?.desc?.$, t)}</span>

@@ -129,5 +129,9 @@
   "Half a year": "Half a year",
   "Year": "Year",
   "Two years": "Two years",
-  "Three years": "Three years"
+  "Three years": "Three years",
+  "Hostname": "Hostname",
+  "Connection URL": "Connection URL",
+  "Service deletion": "Service deletion",
+  "Are you sure you want to delete service": "Are you sure you want to delete service"
 }

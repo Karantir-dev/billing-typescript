@@ -1085,7 +1085,7 @@ const getServiceHistory =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
+
         const { elem, p_elems } = data.doc
 
         setHistoryList(elem)
@@ -1119,7 +1119,7 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+
       setInstructionLink(data.doc.body)
       dispatch(actions.hideLoader())
     })
@@ -1198,7 +1198,7 @@ const goToPanel = elid => (dispatch, getState) => {
 }
 
 const getDedicFilters =
-  (setFilters, data = {}, filtered = false) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -1220,6 +1220,7 @@ const getDedicFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
+          setEmptyFilter && setEmptyFilter(true)
           return dispatch(getServersList())
         }
 

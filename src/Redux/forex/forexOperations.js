@@ -4,11 +4,15 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
-import { actions, cartActions, forexActions } from '..'
+import {
+  actions,
+  cartActions,
+  // forexActions
+} from '..'
 
 //GET hostings OPERATIONS
 
-const getForexList = () => (dispatch, getState) => {
+const getForexList = setForexList => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -29,7 +33,9 @@ const getForexList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
+      console.log(data)
+      // dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
+      setForexList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -264,9 +270,6 @@ const getCurrentForexInfo = (elid, setInitialParams) => (dispatch, getState) => 
         stored_method,
       } = data.doc
 
-      console.log(data.doc)
-      console.log(stored_method)
-
       setInitialParams({
         autoprolong,
         opendate,
@@ -338,167 +341,102 @@ const editForex =
       })
   }
 
-// const editDNSWithExtraCosts =
-//   (elid, autoprolong, addon_961, handleModal) => (dispatch, getState) => {
-//     dispatch(actions.showLoader())
+const deleteForex = (elid, handleModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-//     const {
-//       auth: { sessionId },
-//     } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'dnshost.edit',
-//           out: 'json',
-//           auth: sessionId,
-//           lang: 'en',
-//           elid,
-//           autoprolong,
-//           addon_961,
-//           clicked_button: 'basket',
-//           sok: 'ok',
-//         }),
-//       )
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//         handleModal()
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'forexbox.delete',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//         dispatch(
-//           cartActions.setCartIsOpenedState({
-//             isOpened: true,
-//             redirectPath: route.DNS,
-//           }),
-//         )
-//         dispatch(actions.hideLoader())
-//       })
-//       .catch(error => {
-//         console.log('error', error)
-//         errorHandler(error.message, dispatch)
-//         dispatch(actions.hideLoader())
-//       })
-//   }
-// const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
+      dispatch(getForexList())
 
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+      dispatch(actions.hideLoader())
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'service.instruction.html',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//       setInstruction(data.doc.body)
+      handleModal()
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+const getForexFilters =
+  (setFilters, data = {}, filtered = false, setForexList, setEmptyFilter) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-// const getDNSFilters =
-//   (setFilters, data = {}, filtered = false) =>
-//   (dispatch, getState) => {
-//     dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-//     const {
-//       auth: { sessionId },
-//     } = getState()
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'forexbox.filter',
+          out: 'json',
+          auth: sessionId,
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'dnshost.filter',
-//           out: 'json',
-//           auth: sessionId,
-//           ...data,
-//         }),
-//       )
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (filtered) {
+          setEmptyFilter && setEmptyFilter(true)
+          return dispatch(getForexList(setForexList))
+        }
 
-//         if (filtered) {
-//           return dispatch(getDNSList())
-//         }
+        let filters = {}
 
-//         let filters = {}
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el.val
+        })
 
-//         data?.doc?.slist?.forEach(el => {
-//           filters[el.$name] = el.val
-//         })
+        let currentFilters = {
+          id: data.doc?.id?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          period: data.doc?.period?.$ || '',
+          status: data.doc?.status?.$ || '',
+          service_status: data.doc?.service_status?.$ || '',
+          opendate: data.doc?.opendate?.$ || '',
+          expiredate: data.doc?.expiredate?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          autoprolong: data.doc?.autoprolong?.$ || '',
+          datacenter: data.doc?.datacenter?.$ || '',
+        }
 
-//         let currentFilters = {
-//           id: data.doc?.id?.$ || '',
-//           pricelist: data.doc?.pricelist?.$ || '',
-//           period: data.doc?.period?.$ || '',
-//           status: data.doc?.status?.$ || '',
-//           service_status: data.doc?.service_status?.$ || '',
-//           opendate: data.doc?.opendate?.$ || '',
-//           expiredate: data.doc?.expiredate?.$ || '',
-//           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
-//           orderdateto: data.doc?.orderdateto?.$ || '',
-//           cost_from: data.doc?.cost_from?.$ || '',
-//           cost_to: data.doc?.cost_to?.$ || '',
-//           autoprolong: data.doc?.autoprolong?.$ || '',
-//           datacenter: data.doc?.datacenter?.$ || '',
-//         }
-
-//         setFilters({ filters, currentFilters })
-//         dispatch(actions.hideLoader())
-//       })
-//       .catch(error => {
-//         console.log('error', error)
-//         errorHandler(error.message, dispatch)
-//         dispatch(actions.hideLoader())
-//       })
-//   }
-
-// const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState) => {
-//   dispatch(actions.showLoader())
-
-//   const {
-//     auth: { sessionId },
-//   } = getState()
-
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'service.changepricelist',
-//         out: 'json',
-//         auth: sessionId,
-//         lang: 'en',
-//         elid,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       console.log(data, 'chnage pricelist')
-//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-//       setInitialState(data.doc)
-
-//       dispatch(actions.hideLoader())
-//     })
-//     .catch(error => {
-//       console.log('error', error)
-//       errorHandler(error.message, dispatch)
-//       dispatch(actions.hideLoader())
-//     })
-// }
+        setFilters({ filters, currentFilters })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 export default {
   getForexList,
@@ -508,9 +446,6 @@ export default {
   getPrintLicense,
   getCurrentForexInfo,
   editForex,
-  // getDNSExtraPayText,
-  // editDNSWithExtraCosts,
-  // getServiceInstruction,
-  // getDNSFilters,
-  // getChangeTariffPricelist,
+  getForexFilters,
+  deleteForex,
 }

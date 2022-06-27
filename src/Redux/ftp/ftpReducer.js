@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import ftpActions from './ftpActions'
 
 const initialState = {
-  ftpList: [],
+  ftpList: null,
 }
 
 const ftpList = createReducer(initialState.ftpList, {

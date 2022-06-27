@@ -17,19 +17,27 @@ import {
   FTPInstructionModal,
   Portal,
 } from '../../../Components'
-import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  ftpOperations,
+  // ftpSelectors,
+  dedicOperations,
+} from '../../../Redux'
+import {
+  useDispatch,
+  // useSelector
+} from 'react-redux'
 
 import * as route from '../../../routes'
 import s from './FTP.module.scss'
 
 export default function FTP() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const ftpList = useSelector(ftpSelectors.getFTPList)
+  // let ftpList = useSelector(ftpSelectors.getFTPList)
+  const [ftpList, setFtpList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -37,6 +45,7 @@ export default function FTP() {
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const location = useLocation()
@@ -69,17 +78,58 @@ export default function FTP() {
     setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    dispatch(ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setFtpList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    dispatch(ftpOperations.getFTPFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setFtpList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
-    dispatch(ftpOperations.getFTPList())
-    dispatch(ftpOperations.getFTPFilters(setFilters))
+    const clearField = {
+      id: '',
+      domain: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+    dispatch(
+      ftpOperations.getFTPFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setFtpList,
+      ),
+    )
+
+    // dispatch(ftpOperations.getFTPList())
+    // dispatch(ftpOperations.getFTPFilters(setFilters))
   }, [])
 
   useEffect(() => {
@@ -99,6 +149,7 @@ export default function FTP() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={ftpList?.length === 0 && !emptyFilter}
             />
             {filterModal && (
               <>
@@ -132,7 +183,10 @@ export default function FTP() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -141,7 +195,7 @@ export default function FTP() {
                 />
               </HintWrapper>
 
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -149,7 +203,7 @@ export default function FTP() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -157,7 +211,7 @@ export default function FTP() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('instruction')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={activeServer?.status?.$ !== '2'}
@@ -188,6 +242,7 @@ export default function FTP() {
         />
       </div>
       <FTPList
+        emptyFilter={emptyFilter}
         storageList={ftpList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}

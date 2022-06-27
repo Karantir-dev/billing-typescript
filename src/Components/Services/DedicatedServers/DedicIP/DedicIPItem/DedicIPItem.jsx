@@ -27,7 +27,7 @@ export default function DedicIPItem({ ip, activeIP, setActiveIP }) {
         <span className={s.value}>{ip?.mask?.$}</span>
         <span className={s.value}>{ip?.gateway?.$}</span>
         <span className={s.value}>{ip?.domain?.$}</span>
-        <span className={s.value}>{t(ip?.type?.$, { ns: 'dedicated_servers' })}</span>
+        {/* <span className={s.value}>{t(ip?.type?.$, { ns: 'dedicated_servers' })}</span> */}
         <span className={s.value}>{t(ip?.ip_status?.$?.trim(), { ns: 'other' })}</span>
       </button>
     </li>

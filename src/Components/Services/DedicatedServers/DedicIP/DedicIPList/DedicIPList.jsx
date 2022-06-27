@@ -26,7 +26,7 @@ export default function DedicIPList({
           <li className={s.table_head}>{t('mask', { ns: 'dedicated_servers' })}:</li>
           <li className={s.table_head}>{t('gateway', { ns: 'dedicated_servers' })}:</li>
           <li className={s.table_head}>{t('domain', { ns: 'dedicated_servers' })}:</li>
-          <li className={s.table_head}>{t('type', { ns: 'dedicated_servers' })}:</li>
+          {/* <li className={s.table_head}>{t('type', { ns: 'dedicated_servers' })}:</li> */}
           <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
         </ul>
       )}

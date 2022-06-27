@@ -4,10 +4,11 @@ import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 
 import s from './ForexList.module.scss'
-import DNSItem from '../ForexItem/ForexItem'
-import DNSMobileItem from '../ForexMobileItem/ForexMobileItem'
+import ForexItem from '../ForexItem/ForexItem'
+import ForexMobileItem from '../ForexMobileItem/ForexMobileItem'
 
 export default function ForexList({
+  emptyFilter,
   forexList,
   setElidForEditModal,
   setElidForProlongModal,
@@ -17,11 +18,30 @@ export default function ForexList({
   activeServerID,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  if (forexList) {
+    if (forexList.length === 0 && emptyFilter) {
+      return <div>not matches </div>
+    }
+
+    if (forexList.length === 0 && forexList) {
+      return (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../../images/services/forexbox.webp')}
+            alt="forexbox"
+          />
+          <p className={s.no_service_title}>You dont have a server yet</p>
+          <p className={s.no_service_description}>Here must be service description</p>
+        </div>
+      )
+    }
+  }
 
   return (
     <>
-      {widerThan1550 && (
+      {widerThan1550 && forexList?.length > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('tariff')}:</li>
@@ -38,14 +58,14 @@ export default function ForexList({
       <ul className={s.list}>
         {forexList?.map(el => {
           return widerThan1550 ? (
-            <DNSItem
+            <ForexItem
               key={el.id.$}
               server={el}
               activeServerID={activeServerID}
               setActiveServer={setActiveServer}
             />
           ) : (
-            <DNSMobileItem
+            <ForexMobileItem
               key={el.id.$}
               server={el}
               setElidForEditModal={setElidForEditModal}

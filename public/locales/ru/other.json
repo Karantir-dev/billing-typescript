@@ -129,5 +129,9 @@
   "Half a year": "Пол года",
   "Year": "Год",
   "Two years": "Два года",
-  "Three years": "Три года"
+  "Three years": "Три года",
+  "Hostname": "Имя хоста",
+  "Connection URL": "URL для подключения",
+  "Service deletion": "Удаление услуги",
+  "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу"
 }
