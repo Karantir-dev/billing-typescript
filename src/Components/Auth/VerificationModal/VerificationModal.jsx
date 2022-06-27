@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-
+import { Button } from '../../'
 import { authSelectors, authActions, authOperations } from '../../../Redux'
-
 import { Cross } from '../../../images'
 
 import s from './VerificationModal.module.scss'
@@ -55,10 +54,12 @@ export default function VerificationModal({ resetRecaptcha }) {
           <Cross className={s.icon} />
         </button>
         <p className={s.text}>{t('text')}</p>
+
         <form onSubmit={handleSubmit}>
           <label className={s.label} htmlFor="code">
             {t('label')}
           </label>
+
           <div className={s.input_wrapper}>
             <input
               className={cn({ [s.input]: true, [s.error]: error })}
@@ -73,9 +74,8 @@ export default function VerificationModal({ resetRecaptcha }) {
             <div className={s.input_border}></div>
           </div>
           {error && <span className={s.error_msg}>{t('error')}</span>}
-          <button className={s.btn} type="submit">
-            <span className={s.btn_text}>{t('btn')}</span>
-          </button>
+
+          <Button className={s.btn} isShadow type="submit" label={t('btn')} />
         </form>
       </div>
     </div>

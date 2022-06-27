@@ -23,6 +23,7 @@ import {
 } from '../../../../Components'
 import { dedicOperations, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
+import { usePageRender } from '../../../../utils'
 
 import s from './VDS.module.scss'
 
@@ -31,6 +32,10 @@ export default function VDS() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
+
+  const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
+
+  const [rights, setRights] = useState({})
 
   const [servers, setServers] = useState([])
   const [activeServer, setActiveServer] = useState(null)
@@ -46,11 +51,21 @@ export default function VDS() {
   const [filtersListState, setfiltersListState] = useState()
   const [isSearchMade, setIsSearchMade] = useState(false)
 
+  console.log(rights)
   useEffect(() => {
-    // resets filters
-    dispatch(
-      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
-    )
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    } else {
+      dispatch(
+        vdsOperations.setVdsFilters(
+          null,
+          setFiltersState,
+          setfiltersListState,
+          setServers,
+          setRights,
+        ),
+      )
+    }
   }, [])
 
   const deleteServer = () => {
@@ -63,27 +78,14 @@ export default function VDS() {
   }
 
   const resetFilterHandler = () => {
-    // const clearFields = {
-    //   id: '',
-    //   ip: '',
-    //   domain: '',
-    //   pricelist: '',
-    //   period: '',
-    //   status: '',
-    //   opendate: '',
-    //   expiredate: '',
-    //   orderdatefrom: '',
-    //   orderdateto: '',
-    //   cost_from: '',
-    //   cost_to: '',
-    //   autoprolong: '',
-    //   datacenter: '',
-    //   ostemplate: '',
-    // }
-    // setValues && setValues({ ...clearFields })
-
     dispatch(
-      vdsOperations.setVdsFilters(null, setFiltersState, setfiltersListState, setServers),
+      vdsOperations.setVdsFilters(
+        null,
+        setFiltersState,
+        setfiltersListState,
+        setServers,
+        setRights,
+      ),
     )
     setIsFiltersOpened(false)
   }
@@ -104,6 +106,7 @@ export default function VDS() {
         setFiltersState,
         setfiltersListState,
         setServers,
+        setRights,
       ),
     )
     setIsSearchMade(true)
@@ -142,95 +145,116 @@ export default function VDS() {
         {widerThan1550 && (
           <>
             <div className={s.edit_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer.id.$)}
-                  disabled={activeServer?.status?.$ !== '2'}
-                  icon="edit"
-                />
-              </HintWrapper>
-              <HintWrapper label={t('delete', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setIdForDeleteModal(activeServer.id.$)}
-                  disabled={
-                    !activeServer ||
-                    activeServer.item_status.$ === '5_open' ||
-                    activeServer.scheduledclose.$ === 'on'
-                  }
-                  icon="delete"
-                />
-              </HintWrapper>
+              {rights?.edit && (
+                <HintWrapper label={t('edit', { ns: 'other' })}>
+                  <IconButton
+                    className={s.tools_icon}
+                    onClick={() => setElidForEditModal(activeServer.id.$)}
+                    disabled={activeServer?.status?.$ !== '2'}
+                    icon="edit"
+                  />
+                </HintWrapper>
+              )}
+              {rights?.delete && (
+                <HintWrapper label={t('delete', { ns: 'other' })}>
+                  <IconButton
+                    className={s.tools_icon}
+                    onClick={() => setIdForDeleteModal(activeServer.id.$)}
+                    disabled={
+                      !activeServer ||
+                      activeServer.item_status.$ === '5_open' ||
+                      activeServer.scheduledclose.$ === 'on'
+                    }
+                    icon="delete"
+                  />
+                </HintWrapper>
+              )}
             </div>
 
-            <HintWrapper label={t('password_change')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.allow_changepassword?.$ !== 'on'}
-                onClick={() => setIdForPassChange(activeServer.id.$)}
-                icon="passChange"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('reload')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.show_reboot?.$ !== 'on'}
-                onClick={() => setIdForReboot(activeServer.id.$)}
-                icon="reload"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('ip_addresses')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
-                onClick={() =>
-                  navigate(route.VDS_IP, { state: { id: activeServer.id.$ } })
-                }
-                icon="ip"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('prolong')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2'}
-                onClick={() => setIdForProlong(activeServer.id.$)}
-                icon="clock"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('history')}>
-              <IconButton
-                className={s.tools_icon}
-                onClick={() => setIdForHistory(activeServer.id.$)}
-                disabled={activeServer?.status?.$ !== '2'}
-                icon="refund"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('instruction')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2'}
-                onClick={() => setIdForInstruction(activeServer.id.$)}
-                icon="info"
-              />
-            </HintWrapper>
-            <HintWrapper label={t('go_to_panel')}>
-              <IconButton
-                className={s.tools_icon}
-                onClick={() => goToPanel(activeServer.id.$)}
-                disabled={activeServer?.transition?.$ !== 'on'}
-                icon="exitSign"
-              />
-            </HintWrapper>
+            {rights?.changepassword && (
+              <HintWrapper label={t('password_change')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.allow_changepassword?.$ !== 'on'}
+                  onClick={() => setIdForPassChange(activeServer.id.$)}
+                  icon="passChange"
+                />
+              </HintWrapper>
+            )}
+            {rights?.reboot && (
+              <HintWrapper label={t('reload')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.show_reboot?.$ !== 'on'}
+                  onClick={() => setIdForReboot(activeServer.id.$)}
+                  icon="reload"
+                />
+              </HintWrapper>
+            )}
+            {rights?.ip && (
+              <HintWrapper label={t('ip_addresses')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                  onClick={() =>
+                    navigate(route.VDS_IP, { state: { id: activeServer.id.$ } })
+                  }
+                  icon="ip"
+                />
+              </HintWrapper>
+            )}
+            {rights?.prolong && (
+              <HintWrapper label={t('prolong')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.status?.$ !== '2'}
+                  onClick={() => setIdForProlong(activeServer.id.$)}
+                  icon="clock"
+                />
+              </HintWrapper>
+            )}
+            {rights?.history && (
+              <HintWrapper label={t('history')}>
+                <IconButton
+                  className={s.tools_icon}
+                  onClick={() => setIdForHistory(activeServer.id.$)}
+                  disabled={activeServer?.status?.$ !== '2'}
+                  icon="refund"
+                />
+              </HintWrapper>
+            )}
+            {rights?.instruction && (
+              <HintWrapper label={t('instruction')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={activeServer?.status?.$ !== '2'}
+                  onClick={() => setIdForInstruction(activeServer.id.$)}
+                  icon="info"
+                />
+              </HintWrapper>
+            )}
+            {rights?.gotoserver && (
+              <HintWrapper label={t('go_to_panel')}>
+                <IconButton
+                  className={s.tools_icon}
+                  onClick={() => goToPanel(activeServer.id.$)}
+                  disabled={activeServer?.transition?.$ !== 'on'}
+                  icon="exitSign"
+                />
+              </HintWrapper>
+            )}
           </>
         )}
-        <Button
-          className={s.btn_order}
-          isShadow
-          type="button"
-          label={t('to_order', { ns: 'other' })}
-          onClick={() => navigate(route.VDS_ORDER)}
-        />
+
+        {rights?.edit?.new && (
+          <Button
+            className={s.btn_order}
+            isShadow
+            type="button"
+            label={t('to_order', { ns: 'other' })}
+            onClick={() => navigate(route.VDS_ORDER)}
+          />
+        )}
       </div>
 
       {servers?.length < 1 && !isSearchMade && filtersListState && (
@@ -249,6 +273,7 @@ export default function VDS() {
 
       <VDSList
         servers={servers}
+        rights={rights}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}

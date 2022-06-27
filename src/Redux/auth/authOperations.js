@@ -22,33 +22,31 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) {
-        throw data.doc.error
-      }
+      if (data.doc.error) throw data.doc.error
+
       const sessionId = data.doc.auth.$id
 
       return axiosInstance
         .post(
           '/',
           qs.stringify({
-            func: 'usrparam',
-            sok: 'ok',
+            func: 'whoami',
             out: 'json',
             auth: sessionId,
           }),
         )
         .then(({ data }) => {
-          if (data.doc?.error) {
-            if (data.doc.error.$type === 'extraconfirm') {
-              dispatch(authActions.setTemporaryId(sessionId))
+          if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-              dispatch(actions.hideLoader())
+          console.log(data.doc)
 
-              dispatch(authActions.openTotpForm())
-              return
-            } else {
-              throw new Error(`usrparam - ${data.doc.error.msg.$}`)
-            }
+          if (data.doc?.ok?.$ === 'func=totp.confirm') {
+            dispatch(authActions.setTemporaryId(sessionId))
+
+            dispatch(actions.hideLoader())
+
+            dispatch(authActions.openTotpForm())
+            return
           }
 
           dispatch(authActions.loginSuccess(sessionId))
@@ -124,6 +122,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       }
 
       dispatch(authActions.clearTemporaryId())
+      dispatch(authActions.closeTotpForm())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
     .catch(err => {
