@@ -1,11 +1,11 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import userActions from './userActions'
 
 const initialState = {
   userInfo: {},
   userTickets: [],
-  userItems: { bitem: [] },
+  userItems: [],
   currentSessionRights: [],
   userInfoLoading: false,
 }
@@ -18,6 +18,8 @@ const userTickets = createReducer(initialState.userTickets, {
 })
 const userItems = createReducer(initialState.userItems, {
   [userActions.setItems]: (_, { payload }) => payload,
+  [userActions.removeItems]: (state, { payload }) =>
+    (state = current(state)?.filter(el => el?.$id !== payload)),
 })
 
 const userInfoLoading = createReducer(initialState.userInfoLoading, {

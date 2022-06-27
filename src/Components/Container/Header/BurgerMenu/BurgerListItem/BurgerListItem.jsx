@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid'
 
 import { selectors } from '../../../../../Redux'
 import s from './BurgerListItem.module.scss'
+import { CSSTransition } from 'react-transition-group'
+import animations from './animations.module.scss'
 
 export default function BurgerListItem({
   svg,
@@ -45,33 +47,40 @@ export default function BurgerListItem({
         onKeyDown={() => {}}
         onClick={e => e.stopPropagation()}
       >
-        <ul
-          className={cn({
-            [s.list]: true,
-            [s.closed]: isListOpened,
-          })}
+        <CSSTransition
+          in={isListOpened}
+          classNames={animations}
+          timeout={150}
+          unmountOnExit
         >
-          {subList.map(item => {
-            if (item.allowedToRender) {
-              return (
-                <li key={nanoid()} className={s.list_item}>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={() => {}}
-                    onClick={controlMenu}
-                  >
-                    <NavLink to={item.routeName}>
-                      <p className={s.list_item_name}>{item.name}</p>
-                    </NavLink>
-                  </div>
-                </li>
-              )
-            } else {
-              return null
-            }
-          })}
-        </ul>
+          <ul
+            className={cn({
+              [s.list]: true,
+              [s.closed]: isListOpened,
+            })}
+          >
+            {subList.map(item => {
+              if (item.allowedToRender) {
+                return (
+                  <li key={nanoid()} className={s.list_item}>
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={() => {}}
+                      onClick={controlMenu}
+                    >
+                      <NavLink to={item.routeName}>
+                        <p className={s.list_item_name}>{item.name}</p>
+                      </NavLink>
+                    </div>
+                  </li>
+                )
+              } else {
+                return null
+              }
+            })}
+          </ul>
+        </CSSTransition>
       </div>
     </>
   )

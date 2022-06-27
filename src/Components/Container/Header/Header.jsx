@@ -60,9 +60,9 @@ export default function Header() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const messages = useSelector(userSelectors.getUserItems)
 
-  const mesAmount = messages.bitem
-    ? Array.isArray(messages.bitem) && messages.bitem !== 'undefined'
-      ? messages.bitem.length
+  const mesAmount = messages
+    ? Array.isArray(messages) && messages !== 'undefined'
+      ? messages.length
       : 1
     : 0
 

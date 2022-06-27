@@ -15,13 +15,12 @@ export default function NotificationsBar({
   countNotification,
 }) {
   const messages = useSelector(userSelectors.getUserItems)
+
   const { t } = useTranslation('container')
 
   const getNotifBarEl = useRef()
 
   useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
-
-  const notifications = messages.bitem
 
   return (
     <>
@@ -46,7 +45,7 @@ export default function NotificationsBar({
 
         {isBarOpened && (
           <NotificationList
-            notifications={notifications}
+            notifications={messages}
             removedNotification={removedNotification}
           />
         )}

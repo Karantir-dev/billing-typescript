@@ -159,9 +159,6 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       const { val: datacenter } = data.doc.slist[0]
       const { val: period } = data.doc.slist[1]
       const { $: currentDatacenter } = data.doc.datacenter
-      console.log(datacenter)
-
-      console.log(data)
 
       const orderData = {
         fpricelist,
