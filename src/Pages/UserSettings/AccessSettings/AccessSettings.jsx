@@ -127,7 +127,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                     label={`${t('Old Password')}:`}
                     placeholder={t('Enter old password')}
                     isShadow
-                    className={cn(s.oldpassInput, s.input)}
+                    className={cn(s.oldpassInput, s.input, s.icon)}
+                    inputClassName={s.inputClass}
                     error={!!errors.old_passwd}
                     touched={!!touched.old_passwd}
                   />
@@ -138,7 +139,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                     label={`${t('New Password')}:`}
                     placeholder={t('Enter a new password')}
                     isShadow
-                    className={s.input}
+                    className={cn(s.input, s.icon)}
+                    inputClassName={s.inputClass}
                     error={!!errors.passwd}
                     touched={!!touched.passwd}
                   />
@@ -151,7 +153,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                     label={`${t('Password confirmation')}:`}
                     placeholder={t('Confirm your password')}
                     isShadow
-                    className={s.input}
+                    className={cn(s.input, s.icon)}
+                    inputClassName={s.inputClass}
                     error={!!errors.confirm}
                     touched={!!touched.confirm}
                   />
@@ -169,6 +172,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                         value: $key,
                       }))}
                       className={cn(s.select, s.input)}
+                      inputClassName={s.inputClass}
                       isShadow
                       background
                     />

@@ -36,7 +36,7 @@ export default function AccessRightsListItem({
   const [subList, setSubList] = useState([])
 
   const [mainFuncName, setMainFuncName] = useState('')
-  console.log(setMainFuncName)
+
   const dispatch = useDispatch()
 
   const modifiedList = subList.map(item => {

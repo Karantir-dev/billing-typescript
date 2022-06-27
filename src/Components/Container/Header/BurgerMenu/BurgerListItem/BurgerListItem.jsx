@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 
 import { selectors } from '../../../../../Redux'
-import s from './BurgerListItem.module.scss'
+
 import { CSSTransition } from 'react-transition-group'
 import animations from './animations.module.scss'
+import s from './BurgerListItem.module.scss'
 
 export default function BurgerListItem({
   svg,

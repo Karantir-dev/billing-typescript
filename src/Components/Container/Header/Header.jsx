@@ -9,9 +9,11 @@ import { userSelectors, authOperations, selectors } from '../../../Redux'
 import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
-
-import s from './Header.module.scss'
 import { useOutsideAlerter, usePageRender } from '../../../utils'
+
+import { CSSTransition } from 'react-transition-group'
+import animations from './animations.module.scss'
+import s from './Header.module.scss'
 
 export default function Header() {
   const { t } = useTranslation('container')
@@ -187,7 +189,10 @@ export default function Header() {
                   </li>
                 )}
 
-                <li className={cn({ [s.item]: true, [s.profile_item]: true })}>
+                <li
+                  className={cn({ [s.item]: true, [s.profile_item]: true })}
+                  ref={getProfileEl}
+                >
                   <button
                     className={s.profile_btn}
                     onClick={() => setIsProfileOpened(!isProfileOpened)}
@@ -201,56 +206,62 @@ export default function Header() {
                     />
                   </button>
 
-                  <ul
-                    className={cn({
-                      [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
-                      [s.opened]: isProfileOpened,
-                    })}
-                    ref={getProfileEl}
+                  <CSSTransition
+                    in={isProfileOpened}
+                    classNames={animations}
+                    timeout={150}
+                    unmountOnExit
                   >
-                    <li className={s.profile_list_username_item}>
-                      <div>
-                        <p className={s.user_name}>{$realname}</p>
-                        <p
-                          className={cn({
-                            [s.user_email]: true,
-                            [s.user_email_lt]: !darkTheme,
-                          })}
-                        >
-                          {$email}
-                        </p>
-                      </div>
-                    </li>
-
-                    {profileMenuListToRender.map(item => {
-                      return (
-                        <li key={nanoid()} className={s.profile_list_item}>
-                          <div
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={() => {}}
-                            onClick={() => setIsProfileOpened(!isProfileOpened)}
+                    <ul
+                      className={cn({
+                        [darkTheme ? s.profile_list_dt : s.profile_list_lt]: true,
+                        [s.opened]: isProfileOpened,
+                      })}
+                    >
+                      <li className={s.profile_list_username_item}>
+                        <div>
+                          <p className={s.user_name}>{$realname}</p>
+                          <p
+                            className={cn({
+                              [s.user_email]: true,
+                              [s.user_email_lt]: !darkTheme,
+                            })}
                           >
-                            <NavLink to={item.routeName}>
-                              <p className={s.list_item_name}>{item.name}</p>
-                            </NavLink>
-                          </div>
-                        </li>
-                      )
-                    })}
-                    <li className={s.exit_list_item}>
-                      <div
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={() => {}}
-                        onClick={logOut}
-                      >
-                        <NavLink to={routes.LOGIN}>
-                          <p className={s.exit_name}>{t('profile.log_out')}</p>
-                        </NavLink>
-                      </div>
-                    </li>
-                  </ul>
+                            {$email}
+                          </p>
+                        </div>
+                      </li>
+
+                      {profileMenuListToRender.map(item => {
+                        return (
+                          <li key={nanoid()} className={s.profile_list_item}>
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={() => {}}
+                              onClick={() => setIsProfileOpened(!isProfileOpened)}
+                            >
+                              <NavLink to={item.routeName}>
+                                <p className={s.list_item_name}>{item.name}</p>
+                              </NavLink>
+                            </div>
+                          </li>
+                        )
+                      })}
+                      <li className={s.exit_list_item}>
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={() => {}}
+                          onClick={logOut}
+                        >
+                          <NavLink to={routes.LOGIN}>
+                            <p className={s.exit_name}>{t('profile.log_out')}</p>
+                          </NavLink>
+                        </div>
+                      </li>
+                    </ul>
+                  </CSSTransition>
                 </li>
               </ul>
             </nav>

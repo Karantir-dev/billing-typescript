@@ -58,6 +58,7 @@ const getAccessLogsFiltersHandler =
           func: 'authlog.filter',
           sok: 'ok',
           out: 'json',
+          lang: 'en',
           auth: sessionId,
           ...body,
         }),
