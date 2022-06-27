@@ -95,7 +95,7 @@ export default function ServicesList() {
     {
       name: t('burger_menu.services.services_list.wetsite_care'),
       id: 7,
-      routeName: routes.HOME,
+      routeName: routes.SITE_CARE,
       allowedToRender: isWebsitecareAllowedToRender,
       icon_name: 'care',
       icon_width: '115',

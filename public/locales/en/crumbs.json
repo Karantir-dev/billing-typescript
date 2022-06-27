@@ -18,5 +18,7 @@
   "dns": "DNS-hosting",
   "dns_order": "Order DNS hosting",
   "forex": "Forex server",
-  "forex_order": "Order forex server"
+  "forex_order": "Order forex server",
+  "site_care": "Website care",
+  "site_care_order": "Website care order"
 }

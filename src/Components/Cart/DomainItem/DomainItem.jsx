@@ -4,7 +4,6 @@ import { Delete } from '../../../images'
 import s from './DomainItem.module.scss'
 
 export default function Component(props) {
-
   const { t } = useTranslation(['cart', 'other'])
 
   const { desc, cost, discount_percent, fullcost, deleteItemHandler } = props
@@ -36,9 +35,11 @@ export default function Component(props) {
       <div className={s.priceList}>
         <div className={s.domainInfo}>
           <span className={s.domainName}>{renderDesc()?.domainName}</span>
-          <span className={s.domainProtect}>
-            {t('Data protection')}: {t(renderDesc()?.dataProtect?.trim())}
-          </span>
+          {desc?.includes('Data protection') && (
+            <span className={s.domainProtect}>
+              {t('Data protection')}: {t(renderDesc()?.dataProtect?.trim())}
+            </span>
+          )}
         </div>
         <div className={s.costBlock}>
           <div className={s.cost}>

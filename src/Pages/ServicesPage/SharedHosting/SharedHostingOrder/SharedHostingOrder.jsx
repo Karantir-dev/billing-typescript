@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { dnsOperations, vhostOperations } from '../../../../Redux'
 import s from './SharedHostingOrder.module.scss'
 
-export default function ServicesPage() {
+export default function Component() {
   const { t } = useTranslation([
     'virtual_hosting',
     'other',
@@ -114,7 +114,6 @@ export default function ServicesPage() {
   const translateAutorenewSelect = elem => {
     const price = parsePrice(elem)?.amount || 0
 
-    console.log(elem)
     let period = ''
 
     if (elem?.includes('per month')) {

@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
-export default function ServicesPage() {
+export default function Component() {
   const { t, i18n } = useTranslation(['container', 'trusted_users'])
   const dispatch = useDispatch()
 

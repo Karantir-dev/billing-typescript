@@ -92,7 +92,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.wetsite_care'),
-      routeName: routes.HOME,
+      routeName: routes.SITE_CARE,
       allowedToRender: true,
     },
     {
