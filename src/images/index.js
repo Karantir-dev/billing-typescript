@@ -80,3 +80,5 @@ export { default as Exchange } from './svg/Exchange'
 export { default as ChangeTariff } from './svg/ChangeTariff.jsx'
 
 export { default as Infinity } from './svg/Infinity.jsx'
+
+export { default as SiteCareIcon } from './svg/SiteCareIcon.jsx'

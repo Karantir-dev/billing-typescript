@@ -17,6 +17,7 @@ import {
   DnsItem,
   VhostItem,
   ForexItem,
+  SiteCareItem,
 } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
@@ -128,8 +129,35 @@ export default function Component() {
     )
     const vhostList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vhost')
 
+    const siteCareList = cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'zabota-o-servere',
+    )
+
     return (
       <>
+        {siteCareList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+            {siteCareList?.map(el => {
+              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+              return (
+                <SiteCareItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  discount_percent={discount_percent?.$}
+                  fullcost={fullcost?.$}
+                  itemId={el['item.id']?.$}
+                  pricelist_name={pricelist_name?.$}
+                  deleteItemHandler={
+                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                  }
+                />
+              )
+            })}
+          </div>
+        )}
+
         {vhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Domain registration')}:</div>

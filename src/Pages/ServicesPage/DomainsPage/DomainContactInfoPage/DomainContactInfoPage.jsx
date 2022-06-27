@@ -19,7 +19,7 @@ import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainContactInfoPage.module.scss'
 
-export default function ServicesPage({ transfer = false }) {
+export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other', 'trusted_users'])
   const dispatch = useDispatch()
 

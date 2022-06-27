@@ -1,0 +1,145 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 18px 24px;
+  margin: 20px 10px;
+  max-width: 375px;
+  width: 100%;
+}
+
+.modalHeader {
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  display: flex;
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  margin-top: 5px;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 95%;
+  color: var(--main-text);
+}
+
+.headerTitleBlock {
+  display: flex;
+  flex-direction: column;
+
+  .vhostName {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 130%;
+    color: var(--transparent-color);
+  }
+}
+
+.statusBlock {
+  margin: 15px 0 20px 0;
+}
+
+.statusItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+
+  color: var(--main-text);
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  .status {
+    color: rgb(247, 150, 73);
+
+    &.active {
+      color: var(--success-color);
+    }
+
+    &.disabled {
+      color: var(--error-color);
+    }
+  }
+}
+
+.btnBlock {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 17px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.clearFilters {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-left: 0px;
+  margin-top: 20px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+.searchBtn {
+  height: 50px;
+  max-width: 100%;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    align-items: center;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    padding: 18px 40px;
+    margin: 0 30px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1550px) {
+}
+
+@media screen and (min-width: 1918px) {
+}

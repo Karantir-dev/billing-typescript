@@ -15,7 +15,7 @@ import { useLocation } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 
-export default function ServicesPage() {
+export default function Component() {
   const { t, i18n } = useTranslation(['container', 'other'])
   const dispatch = useDispatch()
 
