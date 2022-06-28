@@ -579,7 +579,7 @@ const setVdsFilters =
               status: data.doc.slist.find(el => el.$name === 'status').val,
               datacenter: data.doc.slist.find(el => el.$name === 'datacenter').val,
               period: data.doc.slist.find(el => el.$name === 'period').val,
-              pricelist: data.doc.slist.find(el => el.$name === 'pricelist').val,
+              pricelist: data.doc.slist.find(el => el.$name === 'pricelist')?.val,
             })
           })
 

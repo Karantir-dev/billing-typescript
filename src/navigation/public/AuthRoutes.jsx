@@ -7,6 +7,7 @@ import {
   PasswordReset,
   PublicRoute,
   SignupForm,
+  Google,
 } from '../../Components'
 import * as route from '../../routes'
 
@@ -19,7 +20,7 @@ const Component = () => {
           <PublicRoute
             children={<AuthPage children={<LoginForm />} />}
             restricted
-            redirectTo={route.HOME}
+            redirectTo={route.SERVICES}
           />
         }
       />
@@ -29,7 +30,7 @@ const Component = () => {
           <PublicRoute
             children={<AuthPage children={<SignupForm />} />}
             restricted
-            redirectTo={route.HOME}
+            redirectTo={route.SERVICES}
           />
         }
       />
@@ -40,7 +41,7 @@ const Component = () => {
           <PublicRoute
             children={<AuthPage children={<PasswordReset />} />}
             restricted
-            redirectTo={route.HOME}
+            redirectTo={route.SERVICES}
           />
         }
       />
@@ -50,7 +51,17 @@ const Component = () => {
           <PublicRoute
             children={<AuthPage children={<PasswordChange />} />}
             restricted
-            redirectTo={route.HOME}
+            redirectTo={route.SERVICES}
+          />
+        }
+      />
+      <Route
+        path={route.GOOGLE}
+        element={
+          <PublicRoute
+            children={<AuthPage children={<Google />} />}
+            restricted
+            redirectTo={route.SERVICES}
           />
         }
       />

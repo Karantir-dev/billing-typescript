@@ -16,6 +16,7 @@ export default function SelectOfCountries({
   setFieldTouched,
   errors,
   touched,
+  setSocialLinks,
 }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
@@ -35,8 +36,15 @@ export default function SelectOfCountries({
   const [currentRegions, setCurrentRegions] = useState([])
 
   useEffect(() => {
-    dispatch(authOperations.getCountries(setCountries, setRegions, setErrMsg))
-  }, [dispatch])
+    dispatch(
+      authOperations.getCountriesForRegister(
+        setCountries,
+        setRegions,
+        setErrMsg,
+        setSocialLinks,
+      ),
+    )
+  }, [])
 
   const countriesWithRegions = regions.reduce((acc, { $depend }) => {
     if (acc.includes($depend)) {

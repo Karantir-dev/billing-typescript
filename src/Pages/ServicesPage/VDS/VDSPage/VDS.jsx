@@ -51,7 +51,6 @@ export default function VDS() {
   const [filtersListState, setfiltersListState] = useState()
   const [isSearchMade, setIsSearchMade] = useState(false)
 
-  console.log(rights)
   useEffect(() => {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })
