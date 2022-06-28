@@ -23,9 +23,9 @@ import {
 import {
   dnsOperations,
   dedicOperations,
-  // dnsSelectors
+  dnsSelectors
 } from '../../../Redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 
 export default function DNS() {
@@ -34,8 +34,8 @@ export default function DNS() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  // const dnsList = useSelector(dnsSelectors.getDNSList)
-  const [dnsList, setDnsList] = useState(null)
+  const dnsList = useSelector(dnsSelectors.getDNSList)
+  // const [dnsList, setDnsList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -86,7 +86,6 @@ export default function DNS() {
         setFilters,
         { ...clearField, sok: 'ok' },
         true,
-        setDnsList,
         setEmptyFilter,
       ),
     )
@@ -101,7 +100,6 @@ export default function DNS() {
         setFilters,
         { ...values, sok: 'ok' },
         true,
-        setDnsList,
         setEmptyFilter,
       ),
     )
@@ -129,7 +127,6 @@ export default function DNS() {
         setFilters,
         { ...clearField, sok: 'ok' },
         true,
-        setDnsList,
       ),
     )
 

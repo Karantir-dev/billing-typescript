@@ -75,6 +75,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
         funcsArray[i](data, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
+
       setLoading && setLoading(false)
     })
     .catch(err => {

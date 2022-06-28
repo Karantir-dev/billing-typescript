@@ -48,6 +48,9 @@ export default function VerificationModal({ resetRecaptcha }) {
       onKeyDown={() => {}}
       className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
       onClick={handleBackdropClick}
+      onKeyDownCapture={e => {
+        e.stopPropagation()
+      }}
     >
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('form_title')}</h3>

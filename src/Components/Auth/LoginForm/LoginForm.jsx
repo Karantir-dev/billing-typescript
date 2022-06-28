@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { authOperations } from '../../../Redux'
+import { authOperations, authSelectors } from '../../../Redux'
 import { VerificationModal, Button, InputField } from '../..'
 import * as routes from '../../../routes'
 import { RECAPTCHA_KEY } from '../../../config/config'
@@ -16,6 +16,7 @@ import s from './LoginForm.module.scss'
 export default function LoginForm() {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
+  const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
 
   const recaptchaEl = useRef()
   const location = useLocation()
@@ -30,6 +31,12 @@ export default function LoginForm() {
     dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
   }
 
+  const handleUserKeyPress = e => {
+    if (e.keyCode === 9) {
+      e.preventDefault()
+    }
+  }
+
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
@@ -37,6 +44,16 @@ export default function LoginForm() {
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
   })
+
+  useEffect(() => {
+    if (formVisibility === 'shown') {
+      window.addEventListener('keydown', handleUserKeyPress)
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress)
+    }
+  }, [formVisibility])
 
   return (
     <div className={s.form_wrapper}>

@@ -67,3 +67,22 @@ p {
   margin-top: 10px;
   margin-left: 0px !important;
 }
+
+//toastify
+
+.Toastify__toast-container {
+  width: 90%;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 0);
+}
+
+@media (min-width: 460px) {
+  .Toastify__toast-container {
+    left: unset;
+    transform: unset;
+    width: var(--toastify-toast-width);
+    bottom: 1em;
+    right: 1em;
+  }
+}

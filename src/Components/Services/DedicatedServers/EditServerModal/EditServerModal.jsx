@@ -63,24 +63,6 @@ export default function EditServerModal({ elid, closeFn }) {
       password,
     } = values
 
-    console.log(useEffect, setInitialState, setCurrentOrder, handleEditionModal)
-
-    console.log(
-      elid,
-      autoprolong,
-      domainname,
-      ostempl,
-      recipe,
-      managePanel,
-      managePanelName,
-      ipTotal,
-      ipName,
-      ip,
-      username,
-      userpassword,
-      password,
-    )
-
     if (
       (initialIP !== currentIP && currentIP !== undefined) ||
       (initialManagePanel !== currentManagePanel &&

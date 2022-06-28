@@ -34,6 +34,9 @@ export default function AccessRightsListItem({
 
   const [selectedSub, setSelectedSub] = useState([])
   const [subList, setSubList] = useState([])
+  const selectedSubWithoutFilters = selectedSub?.filter(
+    item => item?.caption?.$?.trim() !== 'Filter',
+  )
 
   const [mainFuncName, setMainFuncName] = useState('')
 
@@ -99,7 +102,7 @@ export default function AccessRightsListItem({
     res.then(() => {
       try {
         if (allowAll) {
-          const map = selectedSub.map(el => {
+          const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
               el.active.$ = 'off'
             } else if (!allRightsState || !isAllTurnedOn) {
@@ -124,14 +127,17 @@ export default function AccessRightsListItem({
           }
 
           if (subType === 'read' && act === 'suspend') {
-            let list = selectedSub.length > 0 ? selectedSub : selectedSubList
+            let list =
+              selectedSubWithoutFilters.length > 0
+                ? selectedSubWithoutFilters
+                : selectedSubList
 
             const filteredArray = list.map(el => {
               el.active.$ = 'off'
               return el
             })
 
-            if (selectedSub.length > 0) {
+            if (selectedSubWithoutFilters.length > 0) {
               setSelectedSub([])
               setSelectedSub([...filteredArray])
             } else {
@@ -141,14 +147,17 @@ export default function AccessRightsListItem({
           }
 
           if (subType === 'write' && act === 'resume') {
-            let list = selectedSub.length > 0 ? selectedSub : selectedSubList
+            let list =
+              selectedSubWithoutFilters.length > 0
+                ? selectedSubWithoutFilters
+                : selectedSubList
 
             const filteredArray = list.map(el => {
               el.active.$ = 'on'
               return el
             })
 
-            if (selectedSub.length > 0) {
+            if (selectedSubWithoutFilters.length > 0) {
               setSelectedSub([])
               setSelectedSub([...filteredArray])
             } else {
@@ -160,8 +169,6 @@ export default function AccessRightsListItem({
           if (act === 'resume') {
             let currentFuncName =
               typeof mainFuncName === mainFuncName ? mainFuncName : mainFunc
-
-            console.log('mainFuncName', currentFuncName)
 
             res.then(() => {
               dispatch(
@@ -225,7 +232,7 @@ export default function AccessRightsListItem({
           </div>
         </div>
 
-        {selectedSub && (
+        {selectedSubWithoutFilters && (
           <div
             data-testid="modal_rihgts_sub_list"
             className={cn({ [s.sub_list]: true, [s.selected]: selected })}
@@ -250,7 +257,7 @@ export default function AccessRightsListItem({
               </div>
             )}
 
-            {selectedSub.map((child, index) => {
+            {selectedSubWithoutFilters.map((child, index) => {
               return (
                 <AccessRightsListItem
                   allRightsState={allRightsState || isAllTurnedOn}
@@ -263,7 +270,7 @@ export default function AccessRightsListItem({
                   hasAccessToResumeRights={hasAccessToResumeRights}
                   hasAccessToSuspendRights={hasAccessToSuspendRights}
                   hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
-                  selectedSubList={selectedSub}
+                  selectedSubList={selectedSubWithoutFilters}
                   setSelectedSubList={setSelectedSub}
                   mainFunc={mainFuncName}
                 />

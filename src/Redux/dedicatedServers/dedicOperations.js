@@ -644,6 +644,7 @@ const editDedicServerNoExtraPay =
           position: 'bottom-right',
           toastId: 'customId',
         })
+        dispatch(getServersList())
         dispatch(actions.hideLoader())
 
         handleModal()
