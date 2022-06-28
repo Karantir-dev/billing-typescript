@@ -30,6 +30,7 @@ import {
   affiliateReducer,
   dedicReducer,
   forexReducer,
+  siteCareReducer,
 } from '.'
 import { theme, isLoading, pinned } from './reducer'
 
@@ -61,6 +62,7 @@ const rootReducer = combineReducers({
   ftp: ftpReducer,
   dns: dnsReducer,
   forex: forexReducer,
+  sitecare: siteCareReducer,
   affiliateProgram: affiliateReducer,
   theme,
   isLoading,

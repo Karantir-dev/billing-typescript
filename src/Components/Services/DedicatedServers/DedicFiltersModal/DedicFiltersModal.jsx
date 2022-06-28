@@ -39,6 +39,10 @@ export default function DedicFiltersModal(props) {
     setFilterModal(false)
   }
 
+  const filteredDatacenters = filtersList?.datacenter?.filter(
+    item => item.$key === '2' || item.$key === '7' || item.$key === '8',
+  )
+
   useOutsideAlerter(modal, filterModal, clickOutsideModal)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutsideCalendar)
@@ -179,7 +183,7 @@ export default function DedicFiltersModal(props) {
                   value={values.datacenter}
                   getElement={item => setFieldValue('datacenter', item)}
                   isShadow
-                  itemsList={filtersList?.datacenter?.map(({ $key, $ }) => ({
+                  itemsList={filteredDatacenters?.map(({ $key, $ }) => ({
                     label: t(`${$.trim()}`),
                     value: $key,
                   }))}

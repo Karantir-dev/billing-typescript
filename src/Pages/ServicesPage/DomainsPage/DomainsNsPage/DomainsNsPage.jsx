@@ -9,7 +9,7 @@ import { domainsOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
-export default function ServicesPage({ transfer = false }) {
+export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users'])
   const dispatch = useDispatch()
 
@@ -320,20 +320,22 @@ export default function ServicesPage({ transfer = false }) {
                                   }))}
                                 />
                               )}
-                              <div className={s.useFirstCheck}>
-                                <CheckBox
-                                  initialState={values[checkBoxName] === 'on'}
-                                  setValue={item => {
-                                    setFieldValue(checkBoxName, item ? 'on' : 'off')
-                                  }}
-                                  className={s.checkbox}
-                                />
-                                <span>
-                                  {t('Data protection ({{sum}} EUR per year)', {
-                                    sum: defenseSum,
-                                  })}
-                                </span>
-                              </div>
+                              {checkBoxName && (
+                                <div className={s.useFirstCheck}>
+                                  <CheckBox
+                                    initialState={values[checkBoxName] === 'on'}
+                                    setValue={item => {
+                                      setFieldValue(checkBoxName, item ? 'on' : 'off')
+                                    }}
+                                    className={s.checkbox}
+                                  />
+                                  <span>
+                                    {t('Data protection ({{sum}} EUR per year)', {
+                                      sum: defenseSum,
+                                    })}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                             <div className={s.formBlock}>
                               <h1 className={s.page_title}>{t('Order Details')}</h1>
@@ -342,10 +344,12 @@ export default function ServicesPage({ transfer = false }) {
                                   <div>
                                     {domenName} - {sums[2]} EUR {t('per year')}
                                   </div>
-                                  <div>
-                                    {t('Data protection')}:{' '}
-                                    {`(${t(values[checkBoxName])})`}
-                                  </div>
+                                  {checkBoxName && (
+                                    <div>
+                                      {t('Data protection')}:{' '}
+                                      {`(${t(values[checkBoxName])})`}
+                                    </div>
+                                  )}
 
                                   <div className={s.totalAmount}>
                                     {t('Total payable')}: {sums[3]} EUR
@@ -363,6 +367,7 @@ export default function ServicesPage({ transfer = false }) {
                                       )
                                     }}
                                     className={s.checkbox}
+                                    error={values[`licence_agreement_${select}`] !== 'on'}
                                   />
                                   <span className={s.agreeTerms}>
                                     {t('I have read and agree to the')}

@@ -84,5 +84,6 @@
   "This profile is used by one or several services": "This profile is used by one or several services. Modifying this profile will automatically send the changes to the domain registrar",
   "Main parameters": "Main parameters",
   "Enter IP address": "Enter IP address",
-  "Data center": "Data center"
+  "Data center": "Data center",
+  "Site care deleted successfully": "Site care deleted successfully"
 }

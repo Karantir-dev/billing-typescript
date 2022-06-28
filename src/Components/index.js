@@ -109,6 +109,14 @@ export { default as SharedHostingEditModal } from './Services/SharedHosting/Shar
 export { default as SharedHostingChangeTariffModal } from './Services/SharedHosting/SharedHostingChangeTariffModal/SharedHostingChangeTariffModal'
 export { default as TarifCard } from './Services/SharedHosting/TarifCard/TarifCard'
 
+export { default as SiteCareFilter } from './Services/SiteCare/SiteCareFilter/SiteCareFilter'
+export { default as SiteCareTable } from './Services/SiteCare/SiteCareTable/SiteCareTable'
+export { default as SiteCareHistoryModal } from './Services/SiteCare/SiteCareHistoryModal/SiteCareHistoryModal'
+export { default as SiteCareProlongModal } from './Services/SiteCare/SiteCareProlongModal/SiteCareProlongModal'
+export { default as SiteCareEditModal } from './Services/SiteCare/SiteCareEditModal/SiteCareEditModal'
+export { default as SiteCareDeleteModal } from './Services/SiteCare/SiteCareDeleteModal/SiteCareDeleteModal'
+export { default as SiteCareTarifCard } from './Services/SiteCare/SiteCareTarifCard/SiteCareTarifCard'
+
 //==========================================Dedicated_Servers==========================================//
 export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicFiltersModal/DedicFiltersModal'
 export { default as DedicList } from './Services/DedicatedServers/DedicList/DedicList'
@@ -146,9 +154,11 @@ export { default as DNSInstructionModal } from './Services/dns/DNSInstructionMod
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
 export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
-//==========================================DNS==========================================//
+//==========================================Forex==========================================//
 export { default as ForexList } from './Services/Forex/ForexList/ForexList'
 export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
+export { default as ForexFiltersModal } from './Services/Forex/ForexFiltersModal/ForexFiltersModal'
+export { default as ForexDeletionModal } from './Services/Forex/ForexDeletionModal/ForexDeletionModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'
@@ -159,3 +169,4 @@ export { default as FtpItem } from './Cart/FtpItem/FtpItem'
 export { default as DnsItem } from './Cart/DnsItem/DnsItem'
 export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
+export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'

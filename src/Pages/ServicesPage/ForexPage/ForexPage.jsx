@@ -12,24 +12,30 @@ import {
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
-  DNSInstructionModal,
-  DNSFiltersModal,
   Portal,
   ForexList,
   ForexEditModal,
+  ForexFiltersModal,
+  ForexDeletionModal,
 } from '../../../Components'
-import { forexOperations, forexSelectors } from '../../../Redux'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+  forexOperations,
+  // forexSelectors
+} from '../../../Redux'
+import {
+  useDispatch,
+  // useSelector
+} from 'react-redux'
 import s from './ForexPage.module.scss'
 
 export default function ForexPage() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const forexList = useSelector(forexSelectors.getForexList)
-
+  // const forexList = useSelector(forexSelectors.getForexList)
+  const [forexList, setForexList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -37,6 +43,7 @@ export default function ForexPage() {
   const [elidForDeletionModal, setElidForDeletionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
+  const [emptyFilter, setEmptyFilter] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -50,7 +57,7 @@ export default function ForexPage() {
     return pathnames
   }
 
-  const resetFilterHandler = setValues => {
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       pricelist: '',
@@ -66,27 +73,63 @@ export default function ForexPage() {
       autoprolong: '',
       datacenter: '',
     }
-    setValues && setValues({ ...clearField })
+    // setValues && setValues({ ...clearField })
 
     setFilterModal(false)
-    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
+    dispatch(
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setForexList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    console.log(values)
-
-    // dispatch(dnsOperations.getDNSFilters(setFilters, { ...values, sok: 'ok' }, true))
+    dispatch(
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...values, sok: 'ok' },
+        true,
+        setForexList,
+        setEmptyFilter,
+      ),
+    )
   }
 
   useEffect(() => {
-    dispatch(forexOperations.getForexList())
-    // dispatch(dnsOperations.getDNSFilters(setFilters))
+    const clearField = {
+      id: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+      datacenter: '',
+    }
+
+    dispatch(
+      forexOperations.getForexFilters(
+        setFilters,
+        { ...clearField, sok: 'ok' },
+        true,
+        setForexList,
+      ),
+    )
   }, [])
 
   useEffect(() => {
-    // if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+    if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
 
   return (
@@ -100,13 +143,14 @@ export default function ForexPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
+              disabled={!emptyFilter && forexList?.length === 0}
             />
             {filterModal && (
               <>
                 <Portal>
                   <div className={s.bg}>
                     {mobile && (
-                      <DNSFiltersModal
+                      <ForexFiltersModal
                         filterModal={filterModal}
                         setFilterModal={setFilterModal}
                         filters={filters?.currentFilters}
@@ -118,7 +162,7 @@ export default function ForexPage() {
                   </div>
                 </Portal>
                 {!mobile && (
-                  <DNSFiltersModal
+                  <ForexFiltersModal
                     filterModal={filterModal}
                     setFilterModal={setFilterModal}
                     filters={filters?.currentFilters}
@@ -133,7 +177,10 @@ export default function ForexPage() {
 
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('edit', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
@@ -142,7 +189,7 @@ export default function ForexPage() {
                 />
               </HintWrapper>
 
-              <HintWrapper label={t('prolong')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -150,7 +197,7 @@ export default function ForexPage() {
                   icon="clock"
                 />
               </HintWrapper>
-              <HintWrapper label={t('history')}>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -158,10 +205,13 @@ export default function ForexPage() {
                   disabled={!activeServer?.id?.$}
                 />
               </HintWrapper>
-              <HintWrapper label={t('delete')}>
+              <HintWrapper
+                wrapperClassName={s.hint_wrapper}
+                label={t('delete', { ns: 'other' })}
+              >
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '1'}
+                  disabled={!activeServer?.id?.$}
                   icon="delete"
                   onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />
@@ -181,6 +231,7 @@ export default function ForexPage() {
         />
       </div>
       <ForexList
+        emptyFilter={emptyFilter}
         forexList={forexList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
@@ -221,7 +272,8 @@ export default function ForexPage() {
         onClick={() => setElidForDeletionModal(0)}
         isOpened={Boolean(elidForDeletionModal)}
       >
-        <DNSInstructionModal
+        <ForexDeletionModal
+          server={activeServer}
           elid={elidForDeletionModal}
           closeFn={() => setElidForDeletionModal(0)}
         />

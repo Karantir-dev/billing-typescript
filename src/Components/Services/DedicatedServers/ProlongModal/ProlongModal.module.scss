@@ -1,9 +1,12 @@
 .form {
   width: 261px;
-  background-color: var(--main-bgc);
+  background-color: var(--forms_bgc_2);
   padding: 14px 15px 30px 15px;
-  overflow-y: auto;
+  // overflow-y: show;
   max-height: 500px;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -77,6 +80,10 @@
 
 .select {
   margin-bottom: 12px;
+}
+
+.inputClassName {
+  background-color: var(--nearby-elements-bgc);
 }
 
 .input_field_wrapper {

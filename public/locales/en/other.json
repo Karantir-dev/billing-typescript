@@ -129,5 +129,11 @@
   "Half a year": "Half a year",
   "Year": "Year",
   "Two years": "Two years",
-  "Three years": "Three years"
+  "Three years": "Three years",
+
+  "The minimum order period for this service is {{min}}. {{left}} are left": "The minimum order period for this service is {{min}} month. {{left}} days are left",
+  "Hostname": "Hostname",
+  "Connection URL": "Connection URL",
+  "Service deletion": "Service deletion",
+  "Are you sure you want to delete service": "Are you sure you want to delete service"
 }

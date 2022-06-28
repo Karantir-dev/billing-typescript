@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import dnsActions from './dnsActions'
 
 const initialState = {
-  dnsList: [],
+  dnsList: null,
 }
 
 const dnsList = createReducer(initialState.dnsList, {

@@ -20,9 +20,13 @@ export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPa
 export { default as SharedHosting } from './ServicesPage/SharedHosting/SharedHosting'
 export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/SharedHostingOrder/SharedHostingOrder'
 
-export { default as DedicatedServersPage } from './ServicesPage/DedicatedServicesPage/DedicatedServicesPage'
-export { default as DedicOrderPage } from './ServicesPage/DedicatedServicesPage/DedicOrderPage/DedicOrderPage'
-export { default as DedicIPpage } from './ServicesPage/DedicatedServicesPage/DedicIPPage/DedicIPPage'
+export { default as SiteCare } from './ServicesPage/SiteCare/SiteCare'
+export { default as SiteCareOrder } from './ServicesPage/SiteCare/SiteCareOrder/SiteCareOrder'
+
+export { default as DedicatedServersPage } from './ServicesPage/DedicatedServersPage/DedicatedServersPage'
+export { default as DedicOrderPage } from './ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
+export { default as DedicIPpage } from './ServicesPage/DedicatedServersPage/DedicIPPage/DedicIPPage'
+
 export { default as VDS } from './ServicesPage/VDS/VDSPage/VDS'
 export { default as VDSOrder } from './ServicesPage/VDS/VDSOrder/VDSOrder'
 export { default as VDSip } from './ServicesPage/VDS/VDSip/VDSip'

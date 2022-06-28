@@ -1,19 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
+import { Copy, Cross } from '../../../../images'
 import { Formik, Form } from 'formik'
-
-import s from './ForexEditModal.module.scss'
-
 import { forexOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../utils'
+import { CSSTransition } from 'react-transition-group'
+
+import animations from './animations.module.scss'
+
+import s from './ForexEditModal.module.scss'
+import classNames from 'classnames'
 
 export default function ForexEditModal({ elid, closeFn }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'vds',
+    'other',
+    'crumbs',
+    'affiliate_program',
+  ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
+  const [refLinkCopied, setRefLinkCopied] = useState(false)
+
+  const refLinkEl = useRef(null)
 
   const handleEditionModal = () => {
     closeFn()
@@ -23,8 +35,19 @@ export default function ForexEditModal({ elid, closeFn }) {
     dispatch(forexOperations.getCurrentForexInfo(elid, setInitialState))
   }, [])
 
-  const handleCopy = text => {
-    navigator.clipboard.writeText(text)
+  const showPrompt = fn => {
+    fn(true)
+
+    setTimeout(() => {
+      fn(false)
+    }, 2000)
+  }
+
+  const handleCopyText = el => {
+    if (el.current === refLinkEl.current) {
+      showPrompt(setRefLinkCopied)
+      navigator.clipboard.writeText(el.current.textContent)
+    }
   }
 
   const handleSubmit = values => {
@@ -52,7 +75,6 @@ export default function ForexEditModal({ elid, closeFn }) {
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => {
-        console.log(values)
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>
@@ -99,6 +121,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                         }
                       })}
                       className={s.select}
+                      inputClassName={s.input_class}
                     />
 
                     <Select
@@ -113,7 +136,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                         return { label: t(el.$), value: el.$key }
                       })}
                       className={s.select}
-                      // disabled
+                      inputClassName={s.input_class}
                     />
 
                     <InputField
@@ -128,7 +151,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                       disabled
                     />
                     <InputField
-                      label={`${t('Host name')}:`}
+                      label={`${t('Hostname', { ns: 'other' })}:`}
                       name="server_hostname"
                       isShadow
                       className={s.input_field_wrapper}
@@ -163,7 +186,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                       disabled
                     />
                     <InputField
-                      label={`${t('Package')}:`}
+                      label={`${t('tariff', { ns: 'vds' })}:`}
                       name="server_package"
                       isShadow
                       className={s.input_field_wrapper}
@@ -174,25 +197,44 @@ export default function ForexEditModal({ elid, closeFn }) {
                       disabled
                     />
 
-                    <div
-                      className={s.focused_input}
-                      tabIndex="0"
-                      role="button"
-                      onKeyDown={() => null}
-                      onClick={handleCopy(values?.url_rdp)}
-                    >
-                      <InputField
-                        label={`${t('URL')}:`}
-                        name="url_rdp"
-                        isShadow
-                        className={s.input_field_wrapper}
-                        inputClassName={s.input}
-                        autoComplete
-                        type="text"
-                        value={values?.url_rdp}
-                        iconRight={'copy'}
-                        disabled
-                      />
+                    <div className={s.field_wrapper}>
+                      <label className={s.label}>
+                        {`${t('Connection URL', { ns: 'other' })}`}:
+                      </label>
+                      <div
+                        className={s.copy_field}
+                        onClick={() => handleCopyText(refLinkEl)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyUp={() => {}}
+                        data-testid={'ref_link_field'}
+                      >
+                        <span
+                          className={classNames(s.field_text, {
+                            [s.selected]: true,
+                          })}
+                          ref={refLinkEl}
+                        >
+                          {values?.url_rdp}
+                        </span>
+                        <Copy
+                          className={classNames(s.copy_icon, {
+                            [s.selected]: true,
+                          })}
+                        />
+
+                        <CSSTransition
+                          in={refLinkCopied}
+                          classNames={animations}
+                          timeout={150}
+                          unmountOnExit
+                        >
+                          <div className={s.copy_prompt}>
+                            <div className={s.prompt_pointer}></div>
+                            {t('about_section.link_copied', { ns: 'affiliate_program' })}
+                          </div>
+                        </CSSTransition>
+                      </div>
                     </div>
                   </div>
                 </div>
