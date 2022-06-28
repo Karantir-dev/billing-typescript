@@ -82,7 +82,7 @@ export default function InputField(props) {
         </label>
       )}
       <div
-        className={cn(s.input_wrapper, inputWrapperClass, { [s.focused]: isFocused })}
+        className={cn(s.input_wrapper, inputWrapperClass, { [s.focused]: isFocused, [s.shadow]: isShadow, })}
         style={{ height }}
       >
         <Field

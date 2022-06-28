@@ -30,7 +30,7 @@
   transition: linear 0.2s;
 
   &.isOpen {
-    height: 1450px;
+    height: 1550px;
     padding-bottom: 21px;
   }
 }
@@ -123,6 +123,10 @@
   margin-top: 10px;
   margin-left: 2px;
   margin-right: 2px;
+}
+
+.inputHeight {
+  height: 50px !important;
 }
 
 .btnBlock {
@@ -285,7 +289,7 @@
     transition: linear 0.2s;
 
     &.isOpen {
-      height: 900px;
+      height: 1100px;
       padding-bottom: 21px;
     }
   }

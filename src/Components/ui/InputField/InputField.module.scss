@@ -21,9 +21,16 @@
   justify-content: center;
   border-radius: 4px;
   background-color: var(--elements-bgc);
-  box-shadow: var(--forms_shadow);
+  // border: 1px solid var(--input-border-icon);
+
+  &.shadow {
+    // border: none;
+    // box-shadow: var(--forms_shadow);
+  }
+
   &.focused {
     box-shadow: none;
+    // border: none;
     background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
   }
 }
