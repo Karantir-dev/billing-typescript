@@ -1,19 +1,15 @@
 .modalBg {
   position: absolute;
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 149;
-  overflow-y: auto;
-
-  &.profileOpened {
-    display: block;
-  }
+  overflow: hidden;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -43,18 +39,33 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 21px 20px;
   margin: 20px auto;
   max-width: 625px;
   width: 95%;
+  max-height: 90vh;
+  overflow-y: hidden;
+  position: 'relative';
+}
+
+.form {
+  padding: 0px 20px 21px 20px;
+  margin-left: 2px;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
-  margin-bottom: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .crossIcon {
@@ -83,6 +94,7 @@
 
   max-height: 414px;
   overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
   overflow-x: hidden;
 
   font-style: normal;
@@ -109,14 +121,21 @@
 
 .input {
   margin-top: 10px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .btnBlock {
+  position: sticky;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  margin-top: 20px;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--modal_footer_shadow);
 
   .saveBtn {
     height: 55px;
@@ -128,7 +147,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 66.3%;
+    line-height: 130.3%;
     color: var(--main-text);
 
     text-align: center;
@@ -214,6 +233,7 @@
   display: flex;
   align-items: center;
   margin-top: 25px;
+  margin-left: 5px;
 
   span {
     font-style: normal;
@@ -254,6 +274,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .modalHeader {
+    padding: 18px 50px;
+  }
+
   .ownerForm {
     height: 0px;
     overflow-y: hidden;
@@ -267,11 +291,13 @@
   }
 
   .modalBg {
-    align-items: center;
+    display: flex;
     height: 100vh;
+    align-items: center;
   }
 
   .btnBlock {
+    padding: 18px 50px;
     flex-direction: row;
     justify-content: flex-start;
 
@@ -284,9 +310,13 @@
     }
   }
 
+  .form {
+    max-height: 70vh;
+    padding: 0px 50px 38px 50px;
+  }
+
   .modalBlock {
-    padding: 38px 50px;
-    margin: 20 auto;
+    margin: 20px auto;
   }
 
   .input {

@@ -34,6 +34,8 @@ export default function InputField(props) {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const [passShown, setPassShown] = useState(false)
 
+  const [isFocused, setIsFocused] = useState(false)
+
   const renderIcon = (name, position) => {
     const pos = position === 'left' ? s.field_icon_left : s.field_icon_right
     switch (name) {
@@ -79,7 +81,10 @@ export default function InputField(props) {
           {isRequired ? requiredLabel(label) : label}
         </label>
       )}
-      <div className={cn(s.input_wrapper, inputWrapperClass)} style={{ height }}>
+      <div
+        className={cn(s.input_wrapper, inputWrapperClass, { [s.focused]: isFocused })}
+        style={{ height }}
+      >
         <Field
           disabled={disabled}
           data-testid={dataTestid}
@@ -94,6 +99,8 @@ export default function InputField(props) {
             [s.disabled]: disabled,
             [inputClassName]: inputClassName,
           })}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           id={name}
           name={name}
           type={passShown ? 'text' : type}
