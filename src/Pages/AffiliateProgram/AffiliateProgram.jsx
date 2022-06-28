@@ -10,9 +10,9 @@ import {
   AffiliateProgramIncome,
   AffiliateProgramStatistics,
 } from '../'
+import { usePageRender } from '../../utils'
 
 import s from './AffiliateProgram.module.scss'
-import { usePageRender } from '../../utils'
 
 export default function AffiliateProgram() {
   const isComponentAllowedToRender = usePageRender('customer', 'affiliate.client')

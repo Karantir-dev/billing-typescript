@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   padding: 0 30px;
-  gap: 30px;
+  gap: 20px;
   cursor: pointer;
   position: relative;
   user-select: text;
@@ -35,20 +35,20 @@
   text-align: start;
 
   &:nth-child(1) {
-    flex-basis: 9%;
+    flex-basis: 7%;
   }
   &:nth-child(2) {
     flex-basis: 12%;
     word-break: break-all;
   }
   &:nth-child(3) {
-    flex-basis: 10%;
+    flex-basis: 12%;
   }
   &:nth-child(4) {
     flex-basis: 10%;
   }
   &:nth-child(5) {
-    flex-basis: 13%;
+    flex-basis: 12%;
   }
   &:nth-child(6) {
     flex-basis: 10%;
