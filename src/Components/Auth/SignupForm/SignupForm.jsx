@@ -199,7 +199,9 @@ export default function SignupForm() {
             </a>
           </li>
           <li>
-            <Vk />
+            <a href={socialLinks.vkontakte}>
+              <Vk />
+            </a>
           </li>
         </ul>
       </div>

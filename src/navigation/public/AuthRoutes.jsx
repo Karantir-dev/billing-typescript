@@ -65,6 +65,16 @@ const Component = () => {
           />
         }
       />
+      <Route
+        path={route.VK}
+        element={
+          <PublicRoute
+            children={<AuthPage children={<Google />} />}
+            restricted
+            redirectTo={route.SERVICES}
+          />
+        }
+      />
       <Route path="*" element={<Navigate replace to={route.LOGIN} />} />
     </Routes>
   )

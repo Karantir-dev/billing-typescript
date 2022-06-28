@@ -357,6 +357,8 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
               const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
               const email = data.doc.error.param.find(el => el.$name === 'email')?.$
               redirectToRegistration('social_akk_registered', name, email)
+            } else if (data.doc?.error?.$object === 'email') {
+              console.log('email error')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
