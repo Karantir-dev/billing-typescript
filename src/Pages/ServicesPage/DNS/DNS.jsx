@@ -129,7 +129,6 @@ export default function DNS() {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
   }, [filterModal])
 
-  console.log(dnsList, 'dnsList page')
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />

@@ -2,7 +2,15 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  padding: 15px;
+
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .icon_cross {
@@ -11,23 +19,36 @@
 }
 
 .history_modal {
-  background-color: var(--forms_bgc_1);
-  padding-bottom: 30px;
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: hidden;
+  position: 'relative';
+}
+
+.modal_body {
   overflow-y: auto;
-  height: 80vh;
+  max-height: 60vh;
   position: relative;
   border-radius: 5px;
+  padding: 15px 30px;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
   }
+
   &::-webkit-scrollbar-track {
-    background: var(--scrollbar-track-color);
-    border-radius: 5px;
+    background: rgba(161, 161, 161, 23%);
   }
+
   &::-webkit-scrollbar-thumb {
-    background: var(--accent-gradient);
-    border-radius: 5px;
+    background: #e72690;
   }
 }
 
@@ -38,10 +59,9 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background-color: var(--forms_bgc_3);
+  background-color: var(--forms_bgc_2);
   box-shadow: var(--modal_header_shadow);
   padding: 20px 30px 15px;
-  margin-bottom: 15px;
 }
 
 .title {
@@ -54,10 +74,6 @@
   line-height: 130%;
   color: var(--transparent-color);
 }
-.scroll_content {
-  padding-left: 30px;
-  padding-right: 30px;
-}
 
 @media screen and (min-width: 400px) {
   .history_modal {
@@ -67,26 +83,16 @@
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;
-    margin-top: 30px;
+    padding: 15px 30px;
   }
 
   .history_modal {
     max-width: 623px;
     padding: 0;
-    padding-bottom: 35px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .pagination {
-    margin-top: 25px;
   }
 }
 
 @media screen and (min-width: 1550px) {
-  .pagination {
-    margin-top: 30px;
-  }
   .title {
     display: flex;
     flex-direction: column;
@@ -98,9 +104,6 @@
 }
 
 @media screen and (min-width: 1918px) {
-  .pagination {
-    margin-top: 40px;
-  }
   .history_modal {
     width: 1077px;
   }

@@ -46,17 +46,17 @@ export default function DedicsHistoryModal({ elid, closeFn, name }) {
           <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
         </div>
 
-        <div className={s.scroll_content}>
+        <div className={s.modal_body}>
           <div className={s.list}>{<HistoryList historyList={historyData} />}</div>
+        </div>
 
-          <div className={s.pagination}>
-            <Pagination
-              currentPage={currentPage}
-              totalCount={Number(historyElems?.$)}
-              pageSize={10}
-              onPageChange={page => setCurrentPage(page)}
-            />
-          </div>
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(historyElems?.$)}
+            pageSize={10}
+            onPageChange={page => setCurrentPage(page)}
+          />
         </div>
       </div>
     </>

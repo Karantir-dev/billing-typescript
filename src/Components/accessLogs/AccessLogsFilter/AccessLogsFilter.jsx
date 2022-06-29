@@ -89,8 +89,6 @@ export default function Component({ setCurrentPage }) {
     return { time, ip, dates }
   }
 
-  console.log('logsFilterList', logsFilterList)
-
   return (
     <div className={s.filterBlock}>
       <Formik
