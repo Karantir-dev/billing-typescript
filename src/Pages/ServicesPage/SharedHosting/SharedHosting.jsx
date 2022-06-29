@@ -8,6 +8,7 @@ import {
   SharedHostingProlongModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
+  Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -183,7 +184,9 @@ export default function Component() {
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('burger_menu.services.services_list.virtual_hosting')}</h1>
+      <h1 className={s.page_title}>
+        {t('burger_menu.services.services_list.virtual_hosting')}
+      </h1>
       <SharedHostingFilter
         historyVhostHandler={historyVhostHandler}
         instructionVhostHandler={instructionVhostHandler}
@@ -217,22 +220,30 @@ export default function Component() {
         </div>
       )}
 
-      {historyModal && historyList?.length > 0 && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(historyModal && historyList?.length > 0)}
+        onClick={closeHistoryModalHandler}
+      >
         <SharedHostingHistoryModal
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
         />
-      )}
+      </Backdrop>
 
-      {prolongModal && prolongData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(prolongModal && prolongData)}
+        onClick={closeProlongModalHandler}
+      >
         <SharedHostingProlongModal
           prolongData={prolongData}
           name={selctedItem?.name?.$}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditVhostHandler={prolongEditVhostHandler}
         />
-      )}
+      </Backdrop>
 
       {editModal && editData && (
         <SharedHostingEditModal
