@@ -47,7 +47,7 @@ describe('Login Component', () => {
 
   test('Component have 1 Button', () => {
     const button = root.findAllByType(Button)
-    expect(button).toHaveLength(1)
+    expect(button).toHaveLength(2)
   })
 
   test('Component have captcha', () => {
