@@ -1,6 +1,6 @@
 .modalBg {
   position: absolute;
-  display: flex;
+
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -16,17 +16,22 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 21px 21px;
   margin: 20px 10px;
   max-width: 990px;
-  width: 100%;
+  width: 95%;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .crossIcon {
@@ -51,6 +56,7 @@
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
+  padding: 0px 21px;
 }
 
 .tableHeader {
@@ -156,23 +162,39 @@
 }
 
 .total {
+  position: sticky;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+
   font-style: normal;
   font-weight: 300;
   font-size: 18px;
-  line-height: 70.9%;
+  line-height: 130.9%;
   color: var(--main-text);
-  margin: 30px 20px 0 20px;
+  padding: 20px 20px;
 }
 
 @media screen and (min-width: 768px) {
+  .modalHeader {
+    padding: 18px 20px;
+  }
+
   .modalBg {
+    display: flex;
     align-items: center;
     height: 100vh;
   }
 
   .modalBlock {
-    padding: 38px 50px;
     margin: 0 30px;
+  }
+
+  .table {
+    padding: 0 30px;
   }
 
   .item {

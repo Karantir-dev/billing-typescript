@@ -106,8 +106,8 @@
 .calendarModal {
   position: absolute;
   display: none;
-  right: -10px;
-  top: calc(100% + 15px);
+  left: 10px;
+  bottom: calc(100% + 10px);
 
   &.expenses {
     right: -500%;
@@ -115,6 +115,24 @@
 
   &.opened {
     display: block;
+  }
+}
+
+.calendar_pointer {
+  bottom: -15px;
+  transform: rotate(180deg);
+  left: 2%;
+}
+
+@media screen and (min-width: 768px) {
+  .calendarModal {
+    top: calc(100% + 15px);
+  }
+
+  .calendar_pointer {
+    top: -15px;
+    transform: rotate(0deg);
+    left: 2%;
   }
 }
 

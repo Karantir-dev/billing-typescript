@@ -19,7 +19,7 @@ export default function Component(props) {
     selctedItem,
     setCurrentPage,
     editDomainHandler,
-    deleteDomainHandler,
+    // deleteDomainHandler,
     renewDomainHandler,
     historyDomainHandler,
     whoisDomainHandler,
@@ -110,13 +110,13 @@ export default function Component(props) {
           <IconButton disabled={!selctedItem} onClick={editDomainHandler} icon="edit" />
         </HintWrapper>
 
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
+        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
           <IconButton
             disabled={!selctedItem || selctedItem?.item_status?.$orig === '5_transfer'}
             onClick={deleteDomainHandler}
             icon="delete"
           />
-        </HintWrapper>
+        </HintWrapper> */}
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton

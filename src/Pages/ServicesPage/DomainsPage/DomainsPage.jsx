@@ -179,28 +179,44 @@ export default function Component() {
           />
         </div>
       )}
-      {historyModal && historyList?.length > 0 && (
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(historyModal && historyList?.length > 0)}
+        onClick={closeHistoryModalHandler}
+      >
         <DomainsHistoryModal
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
         />
-      )}
-      {whoisModal && whoisData && (
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(whoisModal && whoisData)}
+        onClick={closeWhoisModalHandler}
+      >
         <DomainsWhoisModal
           whoisData={whoisData}
           name={selctedItem?.name?.$}
           closeWhoisModalHandler={closeWhoisModalHandler}
         />
-      )}
-      {NSModal && NSData && (
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(NSModal && NSData)}
+        onClick={closeNSModalHandler}
+      >
         <DomainsNSModal
           name={selctedItem?.name?.$}
           closeNSModalHandler={closeNSModalHandler}
           NSData={NSData}
           NSEditDomainHandler={NSEditDomainHandler}
         />
-      )}
+      </Backdrop>
+
       <Backdrop
         className={s.backdrop}
         isOpened={Boolean(editModal && editData)}

@@ -8,7 +8,7 @@ import { ServerState } from '../../../'
 import {
   MoreDots,
   Edit,
-  Delete,
+  // Delete,
   Clock,
   Refund,
   Whois,
@@ -27,7 +27,7 @@ export default function Component(props) {
     selected,
     el,
     editDomainHandler,
-    deleteDomainHandler,
+    // deleteDomainHandler,
     renewDomainHandler,
     historyDomainHandler,
     whoisDomainHandler,
@@ -96,10 +96,10 @@ export default function Component(props) {
             <Edit />
             <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={deleteDomainHandler}>
+          {/* <button className={s.settings_btn} onClick={deleteDomainHandler}>
             <Delete />
             <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-          </button>
+          </button> */}
           <button className={s.settings_btn} onClick={renewDomainHandler}>
             <Clock />
             <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
