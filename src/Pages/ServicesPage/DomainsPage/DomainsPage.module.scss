@@ -1,8 +1,3 @@
-.page_wrapper {
-  max-height: 0px;
-  overflow: hidden;
-}
-
 .page_title {
   font-style: normal;
   font-weight: 600;
@@ -22,10 +17,6 @@
   .pagination {
     justify-content: flex-end;
     margin-top: 30px;
-  }
-
-  .page_wrapper {
-    max-height: none;
   }
 }
 

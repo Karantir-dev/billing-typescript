@@ -13,7 +13,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import cn from 'classnames'
 import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
@@ -146,7 +145,7 @@ export default function Component() {
   }
 
   return (
-    <div className={cn({ [s.page_wrapper]: Boolean(editModal && editData) })}>
+    <>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
       <DomainFilters
@@ -214,6 +213,6 @@ export default function Component() {
           editData={editData}
         />
       </Backdrop>
-    </div>
+    </>
   )
 }

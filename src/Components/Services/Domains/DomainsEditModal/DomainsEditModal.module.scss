@@ -10,18 +10,6 @@
   background: rgba(0, 0, 0, 0.4);
   z-index: 149;
   overflow: hidden;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
 }
 
 .ownerForm {
@@ -30,7 +18,7 @@
   transition: linear 0.2s;
 
   &.isOpen {
-    height: 1550px;
+    height: 1490px;
     padding-bottom: 21px;
   }
 }
@@ -52,7 +40,19 @@
   margin-left: 2px;
   max-height: 60vh;
   overflow-y: auto;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 .modalHeader {
@@ -94,7 +94,7 @@
 
   max-height: 414px;
   overflow-y: auto;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
 
   font-style: normal;
