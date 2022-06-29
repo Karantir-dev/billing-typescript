@@ -5,11 +5,18 @@ import { LoginForm, Button } from '../../Components'
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import entireStore from '../../Redux/store'
+import { mockedAxiosInstance } from '../../config/axiosInstance'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 import i18n from '../../i18n'
 
 describe('Login Component', () => {
+  beforeAll(() => {
+    mockedAxiosInstance.onPost('/').reply(200, {
+      doc: { imglinks: { elem: [{ $img: 'img', $href: 'link' }] } },
+    })
+  })
+
   const component = create(
     <Provider store={entireStore.store}>
       <I18nextProvider i18n={i18n}>
@@ -56,7 +63,7 @@ describe('Login Component', () => {
   })
 
   test('should update email field on change', async () => {
-    const emailInput = await tree.find('input[name=\'email\']')
+    const emailInput = await tree.find("input[name='email']")
     act(() => {
       emailInput.simulate('change', {
         persist: () => {},
@@ -70,7 +77,7 @@ describe('Login Component', () => {
   })
 
   test('should update password field on change', async () => {
-    const passwordInput = await tree.find('input[name=\'password\']')
+    const passwordInput = await tree.find("input[name='password']")
     act(() => {
       passwordInput.simulate('change', {
         persist: () => {},

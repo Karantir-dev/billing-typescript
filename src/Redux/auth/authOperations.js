@@ -293,9 +293,6 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
         out: 'json',
         sok: 'ok',
       }),
-      {
-        // withCredentials: true,
-      },
     )
     .then(({ data }) => {
       if (data.doc.error) {
