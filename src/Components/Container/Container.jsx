@@ -7,6 +7,7 @@ import s from './Container.module.scss'
 import { authSelectors, userOperations, payersOperations } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import Div100vh from 'react-div-100vh'
 
 export default function Component({ children }) {
   const { i18n } = useTranslation()
@@ -33,7 +34,7 @@ export default function Component({ children }) {
         <AsideServicesMenu />
       </div>
       <Header />
-      <div className={s.container}>{children}</div>
+      <Div100vh className={s.container}>{children}</Div100vh>
     </>
   )
 }
