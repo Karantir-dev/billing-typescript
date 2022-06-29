@@ -45,9 +45,9 @@ export default function Component(props) {
                 )
               })}
             </div>
-            <div className={s.total}>
-              {t('Total')}: {historyList?.length}
-            </div>
+          </div>
+          <div className={s.total}>
+            {t('Total')}: {historyList?.length}
           </div>
         </div>
       </div>
