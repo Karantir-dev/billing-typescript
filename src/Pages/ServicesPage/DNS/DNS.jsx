@@ -20,11 +20,7 @@ import {
   Portal,
   // DNSChangeTarif,
 } from '../../../Components'
-import {
-  dnsOperations,
-  dedicOperations,
-  dnsSelectors
-} from '../../../Redux'
+import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 
@@ -122,13 +118,7 @@ export default function DNS() {
       datacenter: '',
     }
 
-    dispatch(
-      dnsOperations.getDNSFilters(
-        setFilters,
-        { ...clearField, sok: 'ok' },
-        true,
-      ),
-    )
+    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
 
     // dispatch(dnsOperations.getDNSList())
     // dispatch(dnsOperations.getDNSFilters(setFilters))
@@ -139,6 +129,7 @@ export default function DNS() {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
   }, [filterModal])
 
+  console.log(dnsList, 'dnsList page')
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />

@@ -8,6 +8,7 @@ import {
   DomainsWhoisModal,
   DomainsNSModal,
   DomainsEditModal,
+  Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -128,8 +129,8 @@ export default function Component() {
   }
 
   const closeEditModalHandler = () => {
-    setEditData(null)
     setEditModal(false)
+    setEditData(null)
   }
 
   const editSaveDomainHandler = (values = {}, isOpenProfile) => {
@@ -144,7 +145,7 @@ export default function Component() {
   }
 
   return (
-    <div className={s.page_wrapper}>
+    <>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
       <DomainFilters
@@ -200,14 +201,18 @@ export default function Component() {
           NSEditDomainHandler={NSEditDomainHandler}
         />
       )}
-      {editModal && editData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(editModal && editData)}
+        onClick={closeEditModalHandler}
+      >
         <DomainsEditModal
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           editSaveDomainHandler={editSaveDomainHandler}
           editData={editData}
         />
-      )}
-    </div>
+      </Backdrop>
+    </>
   )
 }

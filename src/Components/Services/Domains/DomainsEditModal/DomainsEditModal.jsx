@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Cross, Shevron } from '../../../../images'
-import { Portal, InputField, Button, Select, CustomPhoneInput, CheckBox } from '../../..'
+import { InputField, Button, Select, CustomPhoneInput, CheckBox } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { BASE_URL } from '../../../../config/config'
@@ -13,8 +13,6 @@ export default function Component(props) {
   const { name, closeEditModalHandler, editData, editSaveDomainHandler } = props
 
   const [isOpenProfile, setIsOpenProfile] = useState(false)
-
-  console.log(editData[editData.addon])
 
   const initialValues = {
     autoprolong: editData?.autoprolong || '',
@@ -42,26 +40,28 @@ export default function Component(props) {
     profiletype: editData?.profiletype || '',
   }
 
-  initialValues[editData.addon] = editData[editData.addon]?.$
+  if (editData?.addon) {
+    initialValues[editData?.addon] = editData[editData?.addon]?.$
+  }
 
   return (
-    <Portal>
-      <div className={cn(s.modalBg, { [s.profileOpened]: isOpenProfile })}>
-        <div className={s.modalBlock}>
-          <div className={s.modalHeader}>
-            <span className={s.headerText}>
-              {t('Service editing')} - {name}
-            </span>
-            <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
-          </div>
-          <Formik
-            enableReinitialize
-            initialValues={initialValues}
-            onSubmit={values => editSaveDomainHandler(values, isOpenProfile)}
-          >
-            {({ errors, touched, values, setFieldValue, handleBlur }) => {
-              return (
-                <Form className={s.form}>
+    <div className={cn(s.modalBg, { [s.profileOpened]: isOpenProfile })}>
+      <div className={s.modalBlock}>
+        <div className={s.modalHeader}>
+          <span className={s.headerText}>
+            {t('Service editing')} - {name}
+          </span>
+          <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
+        </div>
+        <Formik
+          enableReinitialize
+          initialValues={initialValues}
+          onSubmit={values => editSaveDomainHandler(values, isOpenProfile)}
+        >
+          {({ errors, touched, values, setFieldValue, handleBlur }) => {
+            return (
+              <Form>
+                <div className={s.form}>
                   <div className={s.formBlock}>
                     <h2 className={s.category_title}>{t('Main')}</h2>
                     <div className={s.formFieldsBlock}>
@@ -313,7 +313,7 @@ export default function Component(props) {
                           error={!!errors.location_state}
                           touched={!!touched.location_state}
                           isRequired
-                        /> 
+                        />
                         <InputField
                           inputWrapperClass={s.inputHeight}
                           name="location_city"
@@ -348,38 +348,39 @@ export default function Component(props) {
                           <CheckBox
                             initialState={editData[editData?.addon]?.$ === 'on'}
                             setValue={item => {
-                              setFieldValue(editData.addon, item ? 'on' : 'off')
+                              setFieldValue(editData?.addon, item ? 'on' : 'off')
                             }}
                             className={s.checkbox}
                           />
-                          <span>{t('Data protection ({{sum}} EUR per year)', {sum: '0.00'})}</span>
+                          <span>
+                            {t('Data protection ({{sum}} EUR per year)', { sum: '0.00' })}
+                          </span>
                         </div>
                       </div>
                     </div>
                   )}
-
-                  <div className={s.btnBlock}>
-                    <Button
-                      className={s.saveBtn}
-                      isShadow
-                      size="medium"
-                      label={t('Save', { ns: 'other' })}
-                      type="submit"
-                    />
-                    <button
-                      onClick={closeEditModalHandler}
-                      type="button"
-                      className={s.cancel}
-                    >
-                      {t('Cancel', { ns: 'other' })}
-                    </button>
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
-        </div>
+                </div>
+                <div className={s.btnBlock}>
+                  <Button
+                    className={s.saveBtn}
+                    isShadow
+                    size="medium"
+                    label={t('Save', { ns: 'other' })}
+                    type="submit"
+                  />
+                  <button
+                    onClick={closeEditModalHandler}
+                    type="button"
+                    className={s.cancel}
+                  >
+                    {t('Cancel', { ns: 'other' })}
+                  </button>
+                </div>
+              </Form>
+            )
+          }}
+        </Formik>
       </div>
-    </Portal>
+    </div>
   )
 }

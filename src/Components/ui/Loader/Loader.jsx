@@ -6,7 +6,7 @@ import { selectors, userSelectors } from '../../../Redux'
 import { Logo } from './../../../images'
 import s from './Loader.module.scss'
 
-export default function Loader({ logo = false }) {
+export default function Loader({ logo = false, shown }) {
   const isLoading = useSelector(selectors.getIsLoadding)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const userInfoLoading = useSelector(userSelectors.getUserInfoLoading)
@@ -17,7 +17,7 @@ export default function Loader({ logo = false }) {
         [s.backdrop]: true,
         [s.main_lt]: (logo || userInfoLoading) && !darkTheme,
         [s.main_dt]: (logo || userInfoLoading) && darkTheme,
-        [s.shown]: isLoading || userInfoLoading,
+        [s.shown]: isLoading || userInfoLoading || shown,
       })}
     >
       {(logo || userInfoLoading) && <Logo svgwidth="105" svgheight="48" />}

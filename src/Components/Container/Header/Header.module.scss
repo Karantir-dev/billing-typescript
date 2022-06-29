@@ -450,6 +450,7 @@ $hamburger-layer-border-radius: 99px;
   background-color: var(--forms_bgc_1);
   transform: translateX(100%);
   transition: transform 0.4s;
+  overflow-x: hidden;
 
   &.opened {
     transform: translateX(0px);

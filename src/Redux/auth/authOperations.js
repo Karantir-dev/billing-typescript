@@ -22,33 +22,31 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) {
-        throw data.doc.error
-      }
+      if (data.doc.error) throw data.doc.error
+
       const sessionId = data.doc.auth.$id
 
       return axiosInstance
         .post(
           '/',
           qs.stringify({
-            func: 'usrparam',
-            sok: 'ok',
+            func: 'whoami',
             out: 'json',
             auth: sessionId,
           }),
         )
         .then(({ data }) => {
-          if (data.doc?.error) {
-            if (data.doc.error.$type === 'extraconfirm') {
-              dispatch(authActions.setTemporaryId(sessionId))
+          if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-              dispatch(actions.hideLoader())
+          console.log(data.doc)
 
-              dispatch(authActions.openTotpForm())
-              return
-            } else {
-              throw new Error(`usrparam - ${data.doc.error.msg.$}`)
-            }
+          if (data.doc?.ok?.$ === 'func=totp.confirm') {
+            dispatch(authActions.setTemporaryId(sessionId))
+
+            dispatch(actions.hideLoader())
+
+            dispatch(authActions.openTotpForm())
+            return
           }
 
           dispatch(authActions.loginSuccess(sessionId))
@@ -124,6 +122,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       }
 
       dispatch(authActions.clearTemporaryId())
+      dispatch(authActions.closeTotpForm())
       dispatch(authActions.loginSuccess(data.doc.auth.$id))
     })
     .catch(err => {
@@ -238,37 +237,43 @@ const logout = () => (dispatch, getState) => {
     })
 }
 
-const getCountries = (setCountries, setStates, setErrMsg) => dispatch => {
-  dispatch(actions.showLoader())
+const getCountriesForRegister =
+  (setCountries, setStates, setErrMsg, setSocialLinks) => dispatch => {
+    dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'register',
-        out: 'json',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'register',
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const countries = data.doc.slist[0].val
-      const states = data.doc.slist[1].val
-      countries.shift()
+        console.log(data.doc)
 
-      setCountries(countries)
-      setStates(states)
+        const countries = data.doc.slist[0].val
+        const states = data.doc.slist[1].val
+        const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+          acc[el.$img] = el.$href
+          return acc
+        }, {})
+        countries.shift()
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      dispatch(actions.hideLoader())
-      setErrMsg(SERVER_ERR_MSG)
-      console.log('getCountries - ', err.message)
-    })
-}
+        setCountries(countries)
+        setStates(states)
+        setSocialLinks(socLinks)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
+        setErrMsg(SERVER_ERR_MSG)
+        console.log('getCountriesForRegister - ', err.message)
+      })
+  }
 
 const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
@@ -309,6 +314,135 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     })
 }
 
+const checkGoogleState = (state, redirectToRegistration) => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth',
+        state: state,
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      // if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
+      // LOGIN
+      if (data.doc?.auth?.$id) {
+        dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
+
+        //REGISTER
+      } else if (data.doc?.ok?.$) {
+        axiosInstance
+          .get(
+            '?' +
+              qs.stringify({
+                func: 'register',
+                state: state,
+                type: 'bill',
+                newwindow: 'yes',
+                code: '',
+                sok: 'ok',
+                out: 'json',
+              }),
+          )
+          .then(({ data }) => {
+            console.log(data.doc)
+
+            if (data.doc?.error?.$object === 'account_exist') {
+              const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
+              const email = data.doc.error.param.find(el => el.$name === 'email')?.$
+              redirectToRegistration('social_akk_registered', name, email)
+            } else if (data.doc?.error?.$object === 'email') {
+              console.log('email error')
+            } else if (data.doc?.ok?.$) {
+              axiosInstance
+                .post(
+                  '/',
+                  qs.stringify({
+                    func: 'auth',
+                    email: data.doc.doc.email.$,
+                    key: data.doc.ok.$.match(/key=(.+?)(?=&)/)[1],
+                    out: 'json',
+                    sok: 'ok',
+                  }),
+                )
+                .then(({ data }) => {
+                  console.log(data.doc)
+                  const sessionId = data.doc.auth.$
+                  dispatch(authActions.loginSuccess(sessionId))
+                })
+            }
+          })
+      }
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log('checkGoogleState - ', err)
+    })
+}
+
+const getLoginSocLinks = setSocialLinks => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'logon',
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      // if (data.doc.error) throw data.doc.error
+      console.log(data.doc)
+
+      const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+        acc[el.$img] = el.$href
+        return acc
+      }, {})
+      setSocialLinks(socLinks)
+      // const sessionId = data.doc.auth.$id
+
+      // return axiosInstance
+      //   .post(
+      //     '/',
+      //     qs.stringify({
+      //       func: 'whoami',
+      //       out: 'json',
+      //       auth: sessionId,
+      //     }),
+      //   )
+      //   .then(({ data }) => {
+      //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
+
+      //     console.log(data.doc)
+
+      //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
+      //       dispatch(authActions.setTemporaryId(sessionId))
+
+      //       dispatch(authActions.openTotpForm())
+      //       return
+      //     }
+
+      //     dispatch(authActions.loginSuccess(sessionId))
+      //     dispatch(userOperations.getUserInfo(sessionId))
+      //   })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      dispatch(actions.hideLoader())
+      console.log('getLoginSocLinks -', error)
+    })
+}
+
 export default {
   login,
   register,
@@ -316,6 +450,8 @@ export default {
   changePassword,
   sendTotp,
   logout,
-  getCountries,
+  getCountriesForRegister,
   getCurrentSessionStatus,
+  checkGoogleState,
+  getLoginSocLinks,
 }

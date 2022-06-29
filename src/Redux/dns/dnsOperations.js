@@ -27,11 +27,15 @@ const getDNSList = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
+      console.log(data, 'dns')
+
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+      console.log(data, 'dns')
       console.log(data)
       dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
       // setDnsList(data.doc.elem ? data.doc.elem : [])
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
