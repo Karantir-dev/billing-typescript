@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
@@ -21,6 +21,11 @@ export default function LoginForm() {
   const location = useLocation()
 
   const [errMsg, setErrMsg] = useState('')
+  const [socialLinks, setSocialLinks] = useState({})
+
+  useEffect(() => {
+    dispatch(authOperations.getLoginSocLinks(setSocialLinks))
+  }, [])
 
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
@@ -135,7 +140,9 @@ export default function LoginForm() {
             <Facebook />
           </li>
           <li>
-            <Google />
+            <a href={socialLinks.google}>
+              <Google />
+            </a>
           </li>
           <li>
             <Vk />

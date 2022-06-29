@@ -8,6 +8,7 @@ import s from './VDSList.module.scss'
 
 export default function VDSList({
   servers,
+  rights,
   setElidForEditModal,
   setActiveServer,
   activeServerID,
@@ -20,11 +21,11 @@ export default function VDSList({
   goToPanel,
 }) {
   const { t } = useTranslation(['vds', 'other'])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   return (
     <>
-      {widerThan1550 && servers?.length > 0 && (
+      {widerThan1600 && servers?.length > 0 && (
         <ul className={s.head_row}>
           <li className={s.table_head}>Id:</li>
           <li className={s.table_head}>{t('domain_name')}:</li>
@@ -40,7 +41,7 @@ export default function VDSList({
 
       <ul className={s.list}>
         {servers?.map(el => {
-          return widerThan1550 ? (
+          return widerThan1600 ? (
             <VDSItem
               key={el.id.$}
               server={el}
@@ -51,6 +52,7 @@ export default function VDSList({
             <VDSmobileItem
               key={el.id.$}
               server={el}
+              rights={rights}
               setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
               setElidForEditModal={() => setElidForEditModal(el.id.$)}
               setIdForPassChange={() => setIdForPassChange(el.id.$)}

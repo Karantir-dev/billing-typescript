@@ -5,7 +5,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button } from '../..'
@@ -20,9 +20,11 @@ export default function SignupForm() {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const recaptchaEl = useRef()
 
-  const [errMsg, setErrMsg] = useState('')
+  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const [socialLinks, setSocialLinks] = useState({})
 
   const successRegistration = () => {
     navigate(routes.LOGIN, { state: { from: location.pathname } })
@@ -80,8 +82,8 @@ export default function SignupForm() {
 
       <Formik
         initialValues={{
-          name: '',
-          email: '',
+          name: location?.state?.name || '',
+          email: location?.state?.email || '',
           password: '',
           passConfirmation: '',
           reCaptcha: '',
@@ -151,6 +153,7 @@ export default function SignupForm() {
 
               <SelectOfCountries
                 setErrMsg={setErrMsg}
+                setSocialLinks={setSocialLinks}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 errors={errors}
@@ -191,10 +194,14 @@ export default function SignupForm() {
             <Facebook />
           </li>
           <li>
-            <Google />
+            <a href={socialLinks.google}>
+              <Google />
+            </a>
           </li>
           <li>
-            <Vk />
+            <a href={socialLinks.vkontakte}>
+              <Vk />
+            </a>
           </li>
         </ul>
       </div>

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
 
-const getVDS = setServers => (dispatch, getState) => {
+const getVDS = (setServers, setRights) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -23,8 +23,15 @@ const getVDS = setServers => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
+      console.log(data.doc)
       setServers(data.doc.elem || [])
+      const rights = {}
+      data.doc.metadata.toolbar.toolgrp.forEach(el => {
+        el?.toolbtn?.forEach(elem => {
+          rights[elem.$name] = true
+        })
+      })
+      setRights(rights)
 
       dispatch(actions.hideLoader())
     })
@@ -519,7 +526,8 @@ const changeDomainName =
   }
 
 const setVdsFilters =
-  (values, setFiltersState, setfiltersListState, setServers) => (dispatch, getState) => {
+  (values, setFiltersState, setfiltersListState, setServers, setRights) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -571,11 +579,11 @@ const setVdsFilters =
               status: data.doc.slist.find(el => el.$name === 'status').val,
               datacenter: data.doc.slist.find(el => el.$name === 'datacenter').val,
               period: data.doc.slist.find(el => el.$name === 'period').val,
-              pricelist: data.doc.slist.find(el => el.$name === 'pricelist').val,
+              pricelist: data.doc.slist.find(el => el.$name === 'pricelist')?.val,
             })
           })
 
-        dispatch(getVDS(setServers))
+        dispatch(getVDS(setServers, setRights))
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
