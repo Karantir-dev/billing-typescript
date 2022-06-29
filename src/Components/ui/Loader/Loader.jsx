@@ -8,13 +8,15 @@ import s from './Loader.module.scss'
 
 export default function Loader({ logo = false }) {
   const isLoading = useSelector(selectors.getIsLoadding)
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const userInfoLoading = useSelector(userSelectors.getUserInfoLoading)
 
   return (
     <div
       className={cn({
         [s.backdrop]: true,
-        [s.main]: logo || userInfoLoading,
+        [s.main_lt]: (logo || userInfoLoading) && !darkTheme,
+        [s.main_dt]: (logo || userInfoLoading) && darkTheme,
         [s.shown]: isLoading || userInfoLoading,
       })}
     >

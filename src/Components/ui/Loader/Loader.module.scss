@@ -8,8 +8,13 @@
     opacity: 1;
   }
 
-  &.main {
-    background-color: var(--main-bgc);
+  &.main_lt {
+    background-color: #fefdff;
+    display: flex;
+    flex-direction: column;
+  }
+  &.main_dt {
+    background-color: #201a2a;
     display: flex;
     flex-direction: column;
   }

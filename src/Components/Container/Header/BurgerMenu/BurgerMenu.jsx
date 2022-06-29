@@ -170,11 +170,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   }
 
   const [activeList, setActiveList] = useState([
-    { active: false, listId: 1 },
-    { active: false, listId: 2 },
-    { active: false, listId: 3 },
-    { active: false, listId: 4 },
-    { active: false, listId: 5 },
+    { active: false, listId: 1, listName: 'profile' },
+    { active: false, listId: 2, listName: 'services' },
+    { active: false, listId: 3, listName: 'finance' },
+    { active: false, listId: 4, listName: 'affiliate_program' },
+    { active: false, listId: 5, listName: 'support' },
   ])
 
   return (

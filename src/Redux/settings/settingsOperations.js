@@ -13,9 +13,7 @@ const getUserEdit =
 
     const {
       auth: { sessionId },
-      isLoading,
     } = getState()
-    console.log(isLoading, 'isLoading in useredit')
 
     axiosInstance
       .post(
@@ -110,12 +108,9 @@ const getUserParams =
   (dispatch, getState) => {
     const {
       auth: { sessionId },
-      isLoading,
     } = getState()
 
     dispatch(actions.showLoader())
-
-    console.log(isLoading, 'isLoading in userparams')
 
     axiosInstance
       .post(
@@ -127,7 +122,6 @@ const getUserParams =
         }),
       )
       .then(({ data }) => {
-        console.log(data, 'from getUserParams')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         const telegram =

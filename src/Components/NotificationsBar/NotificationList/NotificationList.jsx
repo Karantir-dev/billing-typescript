@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { userOperations, authSelectors } from '../../../Redux'
+import { userOperations, authSelectors, userActions } from '../../../Redux'
 import NotificationListItem from '../NotificationListItem/NotificationListItem'
 
 import s from './NotificationList.module.scss'
@@ -26,7 +26,7 @@ export default function NotificationList({ notifications, removedNotification })
 
   const removeItem = id => {
     dispatch(userOperations.removeItems(isAuthenticated, id))
-    dispatch(userOperations.removeItems(id))
+    dispatch(userActions.removeItems(id))
 
     console.log('removing id', id)
     // setCurrentNotifList(() => {
