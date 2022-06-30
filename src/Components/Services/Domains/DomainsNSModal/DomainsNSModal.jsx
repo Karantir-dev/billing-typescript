@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
-import { Portal, InputField, Button } from '../../..'
+import { InputField, Button } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
 
@@ -16,29 +16,29 @@ export default function Component(props) {
   }
 
   return (
-    <Portal>
-      <div className={s.modalBg}>
-        <div className={s.modalBlock}>
-          <div className={s.modalHeader}>
-            <span className={s.headerText}>
-              {t('Name servers')} - {name}
-            </span>
-            <Cross onClick={closeNSModalHandler} className={s.crossIcon} />
-          </div>
-          <Formik
-            enableReinitialize
-            initialValues={{
-              ns0: NSData?.ns0 || '',
-              ns1: NSData?.ns1 || '',
-              ns2: NSData?.ns2 || '',
-              ns3: NSData?.ns3 || '',
-              ns_additional: NSData?.ns_additional || '',
-            }}
-            onSubmit={editHandler}
-          >
-            {({ errors, touched }) => {
-              return (
-                <Form className={s.form}>
+    <div className={s.modalBg}>
+      <div className={s.modalBlock}>
+        <div className={s.modalHeader}>
+          <span className={s.headerText}>
+            {t('Name servers')} - {name}
+          </span>
+          <Cross onClick={closeNSModalHandler} className={s.crossIcon} />
+        </div>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            ns0: NSData?.ns0 || '',
+            ns1: NSData?.ns1 || '',
+            ns2: NSData?.ns2 || '',
+            ns3: NSData?.ns3 || '',
+            ns_additional: NSData?.ns_additional || '',
+          }}
+          onSubmit={editHandler}
+        >
+          {({ errors, touched }) => {
+            return (
+              <Form>
+                <div className={s.form}>
                   <div className={s.formBlock}>
                     <div className={s.formFieldsBlock}>
                       <InputField
@@ -93,28 +93,28 @@ export default function Component(props) {
                       />
                     </div>
                   </div>
-                  <div className={s.btnBlock}>
-                    <Button
-                      className={s.saveBtn}
-                      isShadow
-                      size="medium"
-                      label={t('Save', { ns: 'other' })}
-                      type="submit"
-                    />
-                    <button
-                      onClick={closeNSModalHandler}
-                      type="button"
-                      className={s.cancel}
-                    >
-                      {t('Cancel', { ns: 'other' })}
-                    </button>
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
-        </div>
+                </div>
+                <div className={s.btnBlock}>
+                  <Button
+                    className={s.saveBtn}
+                    isShadow
+                    size="medium"
+                    label={t('Save', { ns: 'other' })}
+                    type="submit"
+                  />
+                  <button
+                    onClick={closeNSModalHandler}
+                    type="button"
+                    className={s.cancel}
+                  >
+                    {t('Cancel', { ns: 'other' })}
+                  </button>
+                </div>
+              </Form>
+            )
+          }}
+        </Formik>
       </div>
-    </Portal>
+    </div>
   )
 }

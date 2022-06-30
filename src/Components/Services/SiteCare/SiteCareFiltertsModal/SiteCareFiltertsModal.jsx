@@ -72,147 +72,147 @@ export default function Component(props) {
           }
 
           return (
-            <Form className={s.form}>
+            <Form>
               <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
+              <div className={s.form}>
+                <div className={s.fieldsBlock}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="id"
+                    label={`${t('Id')}:`}
+                    placeholder={t('Enter id', { ns: 'other' })}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.id}
+                    touched={!!touched.id}
+                  />
 
-              <div className={s.fieldsBlock}>
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="id"
-                  label={`${t('Id')}:`}
-                  placeholder={t('Enter id', { ns: 'other' })}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.id}
-                  touched={!!touched.id}
-                />
+                  <Select
+                    label={`${t('Tariff plan')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.pricelist}
+                    getElement={item => setFieldValue('pricelist', item)}
+                    isShadow
+                    itemsList={filtersList?.pricelist?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <Select
-                  label={`${t('Tariff plan')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.pricelist}
-                  getElement={item => setFieldValue('pricelist', item)}
-                  isShadow
-                  itemsList={filtersList?.pricelist?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'other' }),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <Select
+                    label={`${t('Period', { ns: 'other' })}:`}
+                    placeholder={t('Not selected')}
+                    value={values.period}
+                    getElement={item => setFieldValue('period', item)}
+                    isShadow
+                    itemsList={filtersList?.period?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <Select
-                  label={`${t('Period', { ns: 'other' })}:`}
-                  placeholder={t('Not selected')}
-                  value={values.period}
-                  getElement={item => setFieldValue('period', item)}
-                  isShadow
-                  itemsList={filtersList?.period?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'other' }),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <Select
+                    label={`${t('status', { ns: 'other' })}:`}
+                    placeholder={t('Not selected')}
+                    value={values.status}
+                    getElement={item => setFieldValue('status', item)}
+                    isShadow
+                    itemsList={filtersList?.status?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <Select
-                  label={`${t('status', { ns: 'other' })}:`}
-                  placeholder={t('Not selected')}
-                  value={values.status}
-                  getElement={item => setFieldValue('status', item)}
-                  isShadow
-                  itemsList={filtersList?.status?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'other' }),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <Select
+                    label={`${t('Data center')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.datacenter}
+                    getElement={item => setFieldValue('datacenter', item)}
+                    isShadow
+                    itemsList={filtersList?.datacenter?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <Select
-                  label={`${t('Data center')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.datacenter}
-                  getElement={item => setFieldValue('datacenter', item)}
-                  isShadow
-                  itemsList={filtersList?.datacenter?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <Select
+                    label={`${t('Auto renewal')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.autoprolong}
+                    getElement={item => setFieldValue('autoprolong', item)}
+                    isShadow
+                    itemsList={filtersList?.autoprolong?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <Select
-                  label={`${t('Auto renewal')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.autoprolong}
-                  getElement={item => setFieldValue('autoprolong', item)}
-                  isShadow
-                  itemsList={filtersList?.autoprolong?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <DoubleInputField
+                    inputWrapperClass={s.inputHeight}
+                    className={s.input}
+                    nameLeft="cost_from"
+                    nameRight="cost_to"
+                    valueLeft={values?.cost_from}
+                    onChangeLeft={e => setFieldValue('cost_from', e?.target.value)}
+                    valueRight={values?.cost_to}
+                    onChangeRight={e => setFieldValue('cost_to', e?.target.value)}
+                    label={`${t('Cost (from/to)', { ns: 'other' })}:`}
+                    placeholderLeft="0.00"
+                    placeholderRight="0.00"
+                    textLeft="EUR"
+                    textRight="EUR"
+                    maxLengthLeft={5}
+                    maxLengthRight={5}
+                    isShadow
+                  />
 
-                <DoubleInputField
-                  inputWrapperClass={s.inputHeight}
-                  className={s.input}
-                  nameLeft="cost_from"
-                  nameRight="cost_to"
-                  valueLeft={values?.cost_from}
-                  onChangeLeft={e => setFieldValue('cost_from', e?.target.value)}
-                  valueRight={values?.cost_to}
-                  onChangeRight={e => setFieldValue('cost_to', e?.target.value)}
-                  label={`${t('Cost (from/to)', { ns: 'other' })}:`}
-                  placeholderLeft="0.00"
-                  placeholderRight="0.00"
-                  textLeft="EUR"
-                  textRight="EUR"
-                  maxLengthLeft={5}
-                  maxLengthRight={5}
-                  isShadow
-                />
+                  <DoubleInputField
+                    inputWrapperClass={s.inputHeightExpire}
+                    className={s.input}
+                    nameLeft="opendate"
+                    nameRight="expiredate"
+                    valueLeft={values?.opendate}
+                    onChangeLeft={() => null}
+                    valueRight={values?.expiredate}
+                    onChangeRight={() => null}
+                    label={`${t('Valid (from/to)', { ns: 'other' })}:`}
+                    placeholderLeft="00/00/00"
+                    placeholderRight="00/00/00"
+                    isCalendar
+                    dates={dates}
+                    range={values.opendate?.length !== 0}
+                    setFieldValue={setFieldValue}
+                    isShadow
+                  />
 
-                <DoubleInputField
-                  inputWrapperClass={s.inputHeightExpire}
-                  className={s.input}
-                  nameLeft="opendate"
-                  nameRight="expiredate"
-                  valueLeft={values?.opendate}
-                  onChangeLeft={() => null}
-                  valueRight={values?.expiredate}
-                  onChangeRight={() => null}
-                  label={`${t('Valid (from/to)', { ns: 'other' })}:`}
-                  placeholderLeft="00/00/00"
-                  placeholderRight="00/00/00"
-                  isCalendar
-                  dates={dates}
-                  range={values.opendate?.length !== 0}
-                  setFieldValue={setFieldValue}
-                  isShadow
-                />
-
-                <DoubleInputField
-                  inputWrapperClass={s.inputHeight}
-                  className={s.input}
-                  nameLeft="orderdatefrom"
-                  nameRight="orderdateto"
-                  valueLeft={values?.orderdatefrom}
-                  onChangeLeft={() => null}
-                  valueRight={values?.orderdateto}
-                  onChangeRight={() => null}
-                  label={`${t('Order date (from/to)', { ns: 'other' })}:`}
-                  placeholderLeft="00/00/00"
-                  placeholderRight="00/00/00"
-                  isCalendar
-                  dates={datesOrdered}
-                  range={values.orderdatefrom?.length !== 0}
-                  setFieldValue={setFieldValue}
-                  isShadow
-                />
+                  <DoubleInputField
+                    inputWrapperClass={s.inputHeighOrder}
+                    className={s.input}
+                    nameLeft="orderdatefrom"
+                    nameRight="orderdateto"
+                    valueLeft={values?.orderdatefrom}
+                    onChangeLeft={() => null}
+                    valueRight={values?.orderdateto}
+                    onChangeRight={() => null}
+                    label={`${t('Order date (from/to)', { ns: 'other' })}:`}
+                    placeholderLeft="00/00/00"
+                    placeholderRight="00/00/00"
+                    isCalendar
+                    dates={datesOrdered}
+                    range={values.orderdatefrom?.length !== 0}
+                    setFieldValue={setFieldValue}
+                    isShadow
+                  />
+                </div>
               </div>
-
               <div className={s.btnBlock}>
                 <Button
                   className={s.searchBtn}

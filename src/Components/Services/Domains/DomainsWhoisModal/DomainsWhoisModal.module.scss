@@ -1,6 +1,5 @@
 .modalBg {
   position: absolute;
-  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -16,17 +15,23 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 21px 21px;
   margin: 20px 10px;
   max-width: 990px;
-  width: 100%;
+  width: 95%;
+  padding-bottom: 15px;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .crossIcon {
@@ -51,9 +56,9 @@
   background: var(forms_bgc_4);
   box-shadow: var(--forms_shadow);
   padding: 20px 43px;
-  margin: 30px 0;
+  margin: 30px 15px;
 
-  max-height: 414px;
+  max-height: 65vh;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -81,12 +86,15 @@
 
 @media screen and (min-width: 768px) {
   .modalBg {
-    align-items: center;
+    display: flex;
     height: 100vh;
   }
 
+  .whoisBlock {
+    margin: 25px 25px;
+  }
+
   .modalBlock {
-    padding: 38px 50px;
     margin: 0 30px;
   }
 }

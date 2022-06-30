@@ -53,6 +53,7 @@ export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
 export { default as Backdrop } from './ui/Backdrop/Backdrop'
 
 export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
+export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCurrencyBtn'
 
 //==========================================ACCESS LOGS==========================================//
 

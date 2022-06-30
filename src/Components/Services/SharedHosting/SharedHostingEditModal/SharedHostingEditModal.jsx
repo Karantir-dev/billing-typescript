@@ -57,131 +57,132 @@ export default function Component(props) {
           >
             {({ setFieldValue, values, errors, touched }) => {
               return (
-                <Form className={s.form}>
-                  <div className={s.fieldsBlock}>
-                    <Select
-                      label={`${t('Auto renewal', { ns: 'domains' })}:`}
-                      placeholder={t('Not selected')}
-                      value={values.autoprolong}
-                      getElement={item => setFieldValue('autoprolong', item)}
-                      isShadow
-                      itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
-                        label: $.trim(),
-                        value: $key,
-                      }))}
-                      className={s.select}
-                    />
-                    {editData?.status !== '1' && (
-                      <>
-                        {values?.autoprolong && values?.autoprolong !== 'null' && (
-                          <Select
-                            label={`${t('Payment method', { ns: 'domains' })}:`}
-                            placeholder={t('Not selected')}
-                            value={values.stored_method}
-                            getElement={item => setFieldValue('stored_method', item)}
-                            isShadow
-                            itemsList={editData?.stored_method_list?.map(
-                              ({ $key, $ }) => ({
-                                label: $.trim(),
-                                value: $key,
-                              }),
-                            )}
-                            className={s.select}
-                          />
-                        )}
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ip'}
-                          label={`${t('IP address')}:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.ip}
-                          touched={!!touched.ip}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'domain'}
-                          label={`${t('Domain name', { ns: 'domains' })}:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.domain}
-                          touched={!!touched.domain}
-                        />
-
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'username'}
-                          isRequired
-                          label={`${t('Username')}:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.username}
-                          touched={!!touched.username}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'password'}
-                          label={`${t('Password')}:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.password}
-                          touched={!!touched.password}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'nameserver1'}
-                          label={`${t('Name Server')} 1:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.nameserver1}
-                          touched={!!touched.nameserver1}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'nameserver2'}
-                          label={`${t('Name Server')} 2:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.nameserver2}
-                          touched={!!touched.nameserver2}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'nameserver3'}
-                          label={`${t('Name Server')} 3:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.nameserver3}
-                          touched={!!touched.nameserver3}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'nameserver4'}
-                          label={`${t('Name Server')} 4:`}
-                          isShadow
-                          className={s.input}
-                          disabled
-                          error={!!errors.nameserver4}
-                          touched={!!touched.nameserver4}
-                        />
-                      </>
-                    )}
-
-                    {editData?.status === '1' && (
-                      <div
-                        className={s.orderDetail}
-                        dangerouslySetInnerHTML={{ __html: editData?.orderinfo }}
+                <Form>
+                  <div className={s.form}>
+                    <div className={s.fieldsBlock}>
+                      <Select
+                        label={`${t('Auto renewal', { ns: 'domains' })}:`}
+                        placeholder={t('Not selected')}
+                        value={values.autoprolong}
+                        getElement={item => setFieldValue('autoprolong', item)}
+                        isShadow
+                        itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
+                          label: $.trim(),
+                          value: $key,
+                        }))}
+                        className={s.select}
                       />
-                    )}
-                  </div>
+                      {editData?.status !== '1' && (
+                        <>
+                          {values?.autoprolong && values?.autoprolong !== 'null' && (
+                            <Select
+                              label={`${t('Payment method', { ns: 'domains' })}:`}
+                              placeholder={t('Not selected')}
+                              value={values.stored_method}
+                              getElement={item => setFieldValue('stored_method', item)}
+                              isShadow
+                              itemsList={editData?.stored_method_list?.map(
+                                ({ $key, $ }) => ({
+                                  label: $.trim(),
+                                  value: $key,
+                                }),
+                              )}
+                              className={s.select}
+                            />
+                          )}
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'ip'}
+                            label={`${t('IP address')}:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.ip}
+                            touched={!!touched.ip}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'domain'}
+                            label={`${t('Domain name', { ns: 'domains' })}:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.domain}
+                            touched={!!touched.domain}
+                          />
 
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'username'}
+                            isRequired
+                            label={`${t('Username')}:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.username}
+                            touched={!!touched.username}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'password'}
+                            label={`${t('Password')}:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.password}
+                            touched={!!touched.password}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'nameserver1'}
+                            label={`${t('Name Server')} 1:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.nameserver1}
+                            touched={!!touched.nameserver1}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'nameserver2'}
+                            label={`${t('Name Server')} 2:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.nameserver2}
+                            touched={!!touched.nameserver2}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'nameserver3'}
+                            label={`${t('Name Server')} 3:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.nameserver3}
+                            touched={!!touched.nameserver3}
+                          />
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={'nameserver4'}
+                            label={`${t('Name Server')} 4:`}
+                            isShadow
+                            className={s.input}
+                            disabled
+                            error={!!errors.nameserver4}
+                            touched={!!touched.nameserver4}
+                          />
+                        </>
+                      )}
+
+                      {editData?.status === '1' && (
+                        <div
+                          className={s.orderDetail}
+                          dangerouslySetInnerHTML={{ __html: editData?.orderinfo }}
+                        />
+                      )}
+                    </div>
+                  </div>
                   <div className={s.btnBlock}>
                     <Button
                       className={s.searchBtn}
