@@ -16,23 +16,48 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 17px 12px;
   width: 100%;
   max-width: 815px;
   margin: 20px 10px;
 }
 
 .modalHeader {
+  position: sticky;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+
   h2 {
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
     line-height: 130.5%;
-    color: #392955;
+    color: var(--main-text);
+  }
+}
+
+.mobileScroll {
+  max-height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 17px 12px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
   }
 }
 
@@ -88,6 +113,7 @@
 .qrImage {
   width: 144px;
   height: 144px;
+  display: none;
 }
 
 .btnSave {
@@ -208,9 +234,16 @@
 }
 
 .btnBlock {
-  margin-top: 35px;
+  position: sticky;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .saveBtn {
@@ -289,14 +322,14 @@
   }
 
   .modalHeader {
-    margin-bottom: 35px;
     h2 {
       font-size: 20;
     }
   }
 
-  .modalBlock {
-    padding: 40px 34px;
+  .mobileScroll {
+    max-height: none;
+    padding: 17px 34px;
   }
 
   .btnBlock {
@@ -310,6 +343,10 @@
   .cancel {
     margin-top: 0px;
     margin-left: 20px;
+  }
+
+  .qrImage {
+    display: block;
   }
 }
 
