@@ -1,7 +1,7 @@
 .select_wrapper {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,9 +30,10 @@
   border-radius: 99px;
   background-color: var(--elements-bgc);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1;
+  cursor: pointer;
 }
 
 .icon {
@@ -60,7 +61,7 @@
 
 .dropdown_list {
   position: relative;
-  width: calc(100% - 20px);
+  width: calc(100% - 10px);
   height: fit-content;
   padding: 10px 0;
   border-radius: 8px;

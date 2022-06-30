@@ -1,6 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
+import { Shevron } from '../../../images/'
 import s from './PaymentCurrencyBtn.module.scss'
 
 export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {
@@ -10,7 +11,9 @@ export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {
         [s.select_wrapper]: true,
       })}
     >
-      <div className={s.current_lang}>{currentValue}</div>
+      <div className={s.current_lang}>
+        {currentValue} <Shevron className={s.icon} />
+      </div>
 
       <div className={s.lang_dropdown}>
         <ul className={s.dropdown_list}>
