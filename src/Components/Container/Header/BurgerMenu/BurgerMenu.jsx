@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -169,6 +169,14 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     dispatch(authOperations.logout())
   }
 
+  const [activeList, setActiveList] = useState([
+    { active: false, listId: 1, listName: 'profile' },
+    { active: false, listId: 2, listName: 'services' },
+    { active: false, listId: 3, listName: 'finance' },
+    { active: false, listId: 4, listName: 'affiliate_program' },
+    { active: false, listId: 5, listName: 'support' },
+  ])
+
   return (
     <div className={isOpened ? s.burger : ''}>
       <div ref={getBurgerEl} className={classes}>
@@ -187,6 +195,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
               subList={profileMenuListToRender}
               isProfile
               email={$email}
+              id={1}
+              activeList={activeList}
+              setActiveList={setActiveList}
             />
           </li>
           <li
@@ -204,6 +215,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 controlMenu={controlMenu}
                 name={'services'}
                 subList={servicesMenuList}
+                id={2}
+                activeList={activeList}
+                setActiveList={setActiveList}
               />
             </li>
           )}
@@ -213,6 +227,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 controlMenu={controlMenu}
                 name={'finance'}
                 subList={financeMenuList}
+                id={3}
+                activeList={activeList}
+                setActiveList={setActiveList}
               />
             </li>
           )}
@@ -223,6 +240,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 controlMenu={controlMenu}
                 name={'ref_program'}
                 subList={refProgrammMenuList}
+                id={4}
+                activeList={activeList}
+                setActiveList={setActiveList}
               />
             </li>
           )}
@@ -232,6 +252,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 controlMenu={controlMenu}
                 name={'support'}
                 subList={supportMenuList}
+                id={5}
+                activeList={activeList}
+                setActiveList={setActiveList}
               />
             </li>
           )}

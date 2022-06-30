@@ -11,12 +11,14 @@ const userInfo = (data, dispatch) => {
 
 const userTickets = (data, dispatch) => {
   const { elem } = data.doc
+
   dispatch(userActions.setTickets(elem))
 }
 
 const userNotifications = (data, dispatch) => {
   const { bitem } = data.doc.notify.item[0]
-  dispatch(userActions.setItems({ bitem }))
+
+  dispatch(userActions.setItems(bitem))
 }
 
 const currentSessionRights = (data, dispatch) => {
@@ -73,6 +75,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
         funcsArray[i](data, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
+
       setLoading && setLoading(false)
     })
     .catch(err => {

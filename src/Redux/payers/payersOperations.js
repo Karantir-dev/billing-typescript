@@ -6,7 +6,7 @@ import { errorHandler } from '../../utils'
 const getPayers =
   (body = {}) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    // dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -66,7 +66,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
       })
 
       dispatch(payersActions.setPayersSelectLists(filters))
-      dispatch(actions.hideLoader())
+      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)

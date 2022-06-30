@@ -62,9 +62,9 @@
   position: absolute;
   background-color: var(--nearby-elements-bgc);
   width: 270px;
-  top: 50px;
+  top: 40px;
   right: 0px;
-  padding: 34px 31px 24px 20px;
+  padding: 24px 31px 24px 20px;
   border-radius: 5px;
   display: none;
 
@@ -76,7 +76,7 @@
     background: var(--nearby-elements-bgc);
     transform: rotate(45deg);
     top: -7px;
-    right: 37px;
+    right: 30px;
     box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
   }
 

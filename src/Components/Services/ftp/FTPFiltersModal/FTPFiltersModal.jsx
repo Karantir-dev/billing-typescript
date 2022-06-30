@@ -48,6 +48,11 @@ export default function FTPFiltersModal(props) {
 
   return (
     <div ref={modal} className={s.filterModal}>
+      <div className={s.formHeader}>
+        <h2>{t('Filter', { ns: 'other' })}</h2>
+        <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+      </div>
+
       <Formik
         enableReinitialize
         initialValues={{
@@ -85,10 +90,6 @@ export default function FTPFiltersModal(props) {
 
           return (
             <Form className={s.form}>
-              <div className={s.formHeader}>
-                <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
-              </div>
               <div className={s.fieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
@@ -123,6 +124,7 @@ export default function FTPFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  inputClassName={s.select_wrapper}
                 />
 
                 <Select
@@ -136,6 +138,7 @@ export default function FTPFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  inputClassName={s.select_wrapper}
                 />
 
                 <Select
@@ -149,6 +152,7 @@ export default function FTPFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  inputClassName={s.select_wrapper}
                 />
 
                 <Select
@@ -162,6 +166,7 @@ export default function FTPFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  inputClassName={s.select_wrapper}
                 />
 
                 <Select
@@ -175,6 +180,7 @@ export default function FTPFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  inputClassName={s.select_wrapper}
                 />
 
                 <DoubleInputField

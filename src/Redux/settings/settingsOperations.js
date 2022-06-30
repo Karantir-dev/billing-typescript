@@ -110,6 +110,8 @@ const getUserParams =
       auth: { sessionId },
     } = getState()
 
+    dispatch(actions.showLoader())
+
     axiosInstance
       .post(
         '/',

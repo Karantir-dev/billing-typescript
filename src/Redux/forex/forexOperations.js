@@ -33,7 +33,6 @@ const getForexList = setForexList => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data)
       // dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
       setForexList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())

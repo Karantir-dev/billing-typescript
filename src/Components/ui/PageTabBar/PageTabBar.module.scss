@@ -34,7 +34,7 @@
   color: var(--main-text);
 
   &:not(:last-child) {
-    margin-right: 25px;
+    margin-right: 30px;
   }
 
   &:hover {
@@ -102,6 +102,12 @@
     }
     &::after {
       display: none;
+    }
+  }
+
+  .link {
+    &:not(:last-child) {
+      margin-right: 50px;
     }
   }
 }

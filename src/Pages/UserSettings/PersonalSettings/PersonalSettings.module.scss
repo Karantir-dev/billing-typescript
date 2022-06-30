@@ -93,7 +93,7 @@
 }
 
 .topBlock {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .telegramBlock {
@@ -200,7 +200,7 @@
 }
 
 .confirmBtn {
-  margin: 0 0 40px;
+  margin: 0 0 13px;
   font-style: normal;
   font-weight: 300;
   font-size: 18px;
@@ -290,6 +290,12 @@
   }
   .emailSucces {
     color: var(--success-color);
+  }
+  .confirmBtn {
+    margin: 0 0 23px;
+  }
+  .topBlock {
+    margin-bottom: 40px;
   }
 }
 

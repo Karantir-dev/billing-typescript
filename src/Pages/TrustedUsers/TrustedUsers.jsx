@@ -117,7 +117,7 @@ export default function TrustedUsers() {
           isShadow
         />
 
-        <h4 className={s.users_title}>{t('trusted_users.users_title')}</h4>
+        <h4 className={s.users_title}>{t('trusted_users.users_title')}:</h4>
         <div className={s.table_wrapper}>
           <div className={s.table_header}>
             <p className={s.user_email_lg}>{t('trusted_users.table_header.email')}:</p>
@@ -126,7 +126,6 @@ export default function TrustedUsers() {
               {t('trusted_users.table_header.full_access')}:
             </p>
             <p className={s.user_status_lg}>{t('trusted_users.table_header.status')}:</p>
-            <p></p>
           </div>
         </div>
 
