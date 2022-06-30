@@ -40,14 +40,14 @@ export default function ManageUserForm({
             .min(7, t('trusted_users.form_errors.phone')),
           ['email' + userId]: Yup.string().email(t('trusted_users.form_errors.email')),
           ['password' + userId]: Yup.string()
-            .min(6, t('trusted_users.form_errors.password'))
+            .min(12, t('trusted_users.form_errors.password'))
             .max(48, t('trusted_users.form_errors.password_toolong'))
             .matches(
               /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
               t('trusted_users.form_errors.password'),
             ),
           ['passConfirmation' + userId]: Yup.string().oneOf(
-            [Yup.ref('password')],
+            [Yup.ref(`password${userId}`)],
             t('trusted_users.form_errors.conf_password'),
           ),
         })
@@ -69,7 +69,7 @@ export default function ManageUserForm({
             .email(t('trusted_users.form_errors.email'))
             .required(t('trusted_users.form_warnings.email')),
           ['password' + userId]: Yup.string()
-            .min(6, t('trusted_users.form_errors.password'))
+            .min(12, t('trusted_users.form_errors.password'))
             .max(48, t('trusted_users.form_errors.password_toolong'))
             .required(t('trusted_users.form_warnings.password'))
             .matches(
@@ -77,7 +77,10 @@ export default function ManageUserForm({
               t('trusted_users.form_errors.password'),
             ),
           ['passConfirmation' + userId]: Yup.string()
-            .oneOf([Yup.ref('password')], t('trusted_users.form_errors.conf_password'))
+            .oneOf(
+              [Yup.ref(`password${userId}`)],
+              t('trusted_users.form_errors.conf_password'),
+            )
             .required(t('trusted_users.form_warnings.conf_password')),
         })
 
@@ -108,6 +111,7 @@ export default function ManageUserForm({
             validationSchema={validationSchema}
           >
             {({ errors, touched, handleBlur, setFieldValue }) => {
+              // console.log(values)
               return (
                 <Form>
                   <InputField
