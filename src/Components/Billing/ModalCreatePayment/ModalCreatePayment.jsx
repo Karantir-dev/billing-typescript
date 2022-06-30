@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { Check, Cross } from '../../../images'
-import { Button, Select, InputField, CheckBox } from '../..'
+import { Button, Select, InputField, CheckBox, PaymentCurrencyBtn } from '../..'
 import {
   billingOperations,
   billingSelectors,
@@ -40,8 +40,7 @@ export default function Component(props) {
       profiletype: payersSelectLists?.profiletype[0]?.$key,
     }
 
-    dispatch(billingOperations.getPaymentMethod())
-    dispatch(payersOperations.getPayerModalInfo(data))
+    dispatch(billingOperations.getPaymentMethod({}, data))
   }, [])
 
   const offerTextHandler = () => {
@@ -52,7 +51,7 @@ export default function Component(props) {
     const data = {
       profile: values?.profile,
       amount: values?.amount,
-      payment_currency: paymentsCurrency,
+      payment_currency: values?.payment_currency?.value,
       paymethod: values?.slecetedPayMethod?.paymethod?.$,
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
@@ -84,8 +83,13 @@ export default function Component(props) {
     [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
 
+  console.log(paymentsCurrency)
+
   const payers = newPayer
-    ? [...payersList, { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } }]
+    ? [
+        ...payersList,
+        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+      ]
     : payersList
 
   return (
@@ -104,6 +108,12 @@ export default function Component(props) {
             slecetedPayMethod: undefined,
             person: '',
             [payersSelectedFields?.offer_field]: false,
+            payment_currency: {
+              title: paymentsCurrency?.payment_currency_list?.filter(
+                e => e?.$key === paymentsCurrency?.payment_currency,
+              )[0]?.$,
+              value: paymentsCurrency?.payment_currency,
+            },
           }}
           onSubmit={createPaymentMethodHandler}
         >
@@ -244,7 +254,20 @@ export default function Component(props) {
                         touched={!!touched.amount}
                         isRequired
                       />
-                      <span className={s.currency}>EUR</span>
+                      {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
+                        <PaymentCurrencyBtn
+                          list={paymentsCurrency?.payment_currency_list}
+                          currentValue={values?.payment_currency?.title}
+                          setValue={item => {
+                            setFieldValue('payment_currency', item)
+                            dispatch(
+                              billingOperations.getPaymentMethod({
+                                payment_currency: item?.value,
+                              }),
+                            )
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -254,7 +277,8 @@ export default function Component(props) {
                   {values?.slecetedPayMethod && (
                     <span>
                       {t('Minimum payment amount')}{' '}
-                      {values?.slecetedPayMethod?.payment_minamount?.$}
+                      {values?.slecetedPayMethod?.payment_minamount?.$}{' '}
+                      {values?.payment_currency?.title}
                     </span>
                   )}
                 </div>

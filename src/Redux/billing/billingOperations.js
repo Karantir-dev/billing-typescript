@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, billingActions } from '..'
+import { actions, billingActions, payersOperations } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
@@ -400,7 +400,7 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
 }
 
 const getPaymentMethod =
-  (body = {}) =>
+  (body = {}, payerModalInfoData = null) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -427,12 +427,25 @@ const getPaymentMethod =
           }
         })
 
-        dispatch(billingActions.setPaymentCurrencyList(data.doc?.payment_currency?.$))
+        const d = {
+          payment_currency: data.doc?.payment_currency?.$,
+        }
+
+        data.doc?.slist?.forEach(el => {
+          if (el.$name === 'payment_currency') {
+            d[`${el.$name}_list`] = el.val
+          }
+        })
+
+        dispatch(billingActions.setPaymentCurrencyList(d))
+
+        if(payerModalInfoData) {
+          return dispatch(payersOperations.getPayerModalInfo(payerModalInfoData))
+        }
 
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
