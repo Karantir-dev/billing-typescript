@@ -1,27 +1,14 @@
 .select_wrapper {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--header-btn-width);
-  height: var(--header-btn-height);
+  width: 50px;
+  height: 50px;
   border-radius: 99px;
-  background-image: var(--accent-gradient);
-
-  &.burger_type {
-    --header-btn-width: 66px;
-    --header-btn-height: 36px;
-  }
-
-  &.auth_type {
-    --header-btn-width: 66px;
-    --header-btn-height: 33px;
-  }
-
-  &.main_type {
-    --header-btn-width: 62px;
-    --header-btn-height: 33px;
-  }
+  z-index: 3;
 
   &:hover {
     .dropdown_list {
@@ -43,9 +30,10 @@
   border-radius: 99px;
   background-color: var(--elements-bgc);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1;
+  cursor: pointer;
 }
 
 .icon {
@@ -73,7 +61,7 @@
 
 .dropdown_list {
   position: relative;
-  width: calc(100% - 20px);
+  width: calc(100% - 10px);
   height: fit-content;
   padding: 10px 0;
   border-radius: 8px;

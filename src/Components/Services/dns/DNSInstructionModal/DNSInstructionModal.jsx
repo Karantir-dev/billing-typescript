@@ -75,67 +75,75 @@ export default function DNSInstructionModal({ elid, closeFn }) {
           <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
         </div>
 
-        <p className={s.welcome}>
-          {instructionObject?.welcome?.split(' ')[0]?.trim()}
-          {instructionObject?.welcome?.split(' ')?.slice(1)?.join(' ')}
-        </p>
+        <div className={s.modal_content}>
+          <p className={s.welcome}>
+            {instructionObject?.welcome?.split(' ')[0]?.trim()}
+            {instructionObject?.welcome?.split(' ')?.slice(1)?.join(' ')}
+          </p>
 
-        <p className={s.inform_text}>{instructionObject?.inform_text}</p>
+          <p className={s.inform_text}>{instructionObject?.inform_text}</p>
 
-        <p className={s.service_info}>{instructionObject?.service_info}:</p>
+          <p className={s.service_info}>{instructionObject?.service_info}:</p>
 
-        <div className={s.server_info_block}>
-          <span className={s.label}>
-            {instructionObject?.service_package?.trim()?.split(':')[0]}:
-          </span>
-          <span className={s.value}>
-            {instructionObject?.service_package?.trim()?.split(':')[1]}
-          </span>
+          <div className={s.server_info_block}>
+            <span className={s.label}>
+              {instructionObject?.service_package?.trim()?.split(':')[0]}:
+            </span>
+            <span className={s.value}>
+              {instructionObject?.service_package?.trim()?.split(':')[1]}
+            </span>
 
-          <span className={s.label}>{instructionObject?.setup_date?.split(':')[0]}:</span>
-          <span className={s.value}>{instructionObject?.setup_date?.split(':')[1]}</span>
+            <span className={s.label}>
+              {instructionObject?.setup_date?.split(':')[0]}:
+            </span>
+            <span className={s.value}>
+              {instructionObject?.setup_date?.split(':')[1]}
+            </span>
+          </div>
+
+          <p className={s.service_info}>{instructionObject?.access_type}</p>
+
+          <div className={s.server_info}>
+            <span className={s.label}>{instructionObject?.link?.split(':')[0]}:</span>
+            <a
+              href={instructionObject?.link?.split(':')?.slice(1)?.join(':')}
+              target="_blank"
+              rel="noreferrer"
+              className={classNames({ [s.value]: true, [s.link]: true })}
+            >
+              {instructionObject?.link?.split(':')?.slice(1)?.join(':')}
+            </a>
+            <span className={s.label}>{instructionObject?.user?.split(':')[0]}:</span>
+            <span className={s.value}>{instructionObject?.user?.split(':')[1]}</span>
+
+            <span className={s.label}>
+              {instructionObject?.password?.split(':')[0]?.trim()}:
+            </span>
+            <span className={s.value}>{instructionObject?.password?.split(':')[1]}</span>
+
+            <span className={s.label}>{instructionObject?.ns1?.split(':')[0]}</span>
+            <span className={s.value}>{instructionObject?.ns1?.split(':')[1]}</span>
+
+            <span className={s.label}>{instructionObject?.ns2?.split(':')[0]}:</span>
+            <span className={s.value}>
+              {instructionObject?.ns2?.split(':')?.slice(1).join('')}
+            </span>
+            <span className={s.label}>{instructionObject?.ns3?.split(':')[0]}:</span>
+            <span className={s.value}>{instructionObject?.ns3?.split(':')[1]}</span>
+
+            <span className={s.label}>
+              {instructionObject?.ns4?.split(':')[0]?.trim()}:
+            </span>
+            <span className={s.value}>{instructionObject?.ns4?.split(':')[1]}</span>
+          </div>
+
+          <p className={s.conclusion}>
+            {instructionObject?.conclusion_text?.split('!')[0]?.trim()}!
+          </p>
+          <p className={s.signature}>
+            {instructionObject?.conclusion_text?.split('!')[1]}
+          </p>
         </div>
-
-        <p className={s.service_info}>{instructionObject?.access_type}</p>
-
-        <div className={s.server_info}>
-          <span className={s.label}>{instructionObject?.link?.split(':')[0]}:</span>
-          <a
-            href={instructionObject?.link?.split(':')?.slice(1)?.join(':')}
-            target="_blank"
-            rel="noreferrer"
-            className={classNames({ [s.value]: true, [s.link]: true })}
-          >
-            {instructionObject?.link?.split(':')?.slice(1)?.join(':')}
-          </a>
-          <span className={s.label}>{instructionObject?.user?.split(':')[0]}:</span>
-          <span className={s.value}>{instructionObject?.user?.split(':')[1]}</span>
-
-          <span className={s.label}>
-            {instructionObject?.password?.split(':')[0]?.trim()}:
-          </span>
-          <span className={s.value}>{instructionObject?.password?.split(':')[1]}</span>
-
-          <span className={s.label}>{instructionObject?.ns1?.split(':')[0]}</span>
-          <span className={s.value}>{instructionObject?.ns1?.split(':')[1]}</span>
-
-          <span className={s.label}>{instructionObject?.ns2?.split(':')[0]}:</span>
-          <span className={s.value}>
-            {instructionObject?.ns2?.split(':')?.slice(1).join('')}
-          </span>
-          <span className={s.label}>{instructionObject?.ns3?.split(':')[0]}:</span>
-          <span className={s.value}>{instructionObject?.ns3?.split(':')[1]}</span>
-
-          <span className={s.label}>
-            {instructionObject?.ns4?.split(':')[0]?.trim()}:
-          </span>
-          <span className={s.value}>{instructionObject?.ns4?.split(':')[1]}</span>
-        </div>
-
-        <p className={s.conclusion}>
-          {instructionObject?.conclusion_text?.split('!')[0]?.trim()}!
-        </p>
-        <p className={s.signature}>{instructionObject?.conclusion_text?.split('!')[1]}</p>
       </div>
     </>
   )

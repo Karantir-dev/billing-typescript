@@ -35,106 +35,107 @@ export default function ProlongModal({ elid, closeFn }) {
   }
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{
-        period: initialState?.period?.$.toString() || '',
-      }}
-      onSubmit={handleSubmit}
-    >
-      {({ values, setFieldValue }) => {
-        return (
-          <Form className={s.form}>
-            <div className={s.parameters_block}>
-              <div className={s.header_block}>
-                <div className={s.title_wrapper}>
-                  <h2 className={s.page_title}>{t('Prolong service')}</h2>
-                  <span className={s.tarif_name}>
-                    {initialState?.title_name?.$.split('(')[0]}
-                  </span>
-                </div>
+    <div className={s.modal}>
+      <div className={s.header_block}>
+        <div className={s.title_wrapper}>
+          <h2 className={s.page_title}>{t('Prolong service')}</h2>
+          <span className={s.tarif_name}>
+            {initialState?.title_name?.$.split('(')[0]}
+          </span>
+        </div>
 
-                <Cross
-                  className={s.icon_cross}
-                  onClick={closeFn}
-                  width={17}
-                  height={17}
+        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+      </div>
+
+      <Formik
+        enableReinitialize
+        initialValues={{
+          period: initialState?.period?.$.toString() || '',
+        }}
+        onSubmit={handleSubmit}
+      >
+        {({ values, setFieldValue }) => {
+          return (
+            <Form>
+              <div className={s.form}>
+                <div className={s.parameters_block}>
+                  <div className={s.first_row}>
+                    <span className={s.label}>{t('status', { ns: 'other' })}:</span>
+                    <span
+                      className={classNames({
+                        [s.value]: true,
+                        [s.green]: initialState?.status?.$ === 'status_2',
+                        [s.red]: initialState?.status?.$ !== 'status_2',
+                      })}
+                    >
+                      {initialState?.status?.$ === 'status_2'
+                        ? t('Active')
+                        : t('Inactive')}
+                    </span>
+                  </div>
+                  <div className={s.first_row}>
+                    <span className={s.label}>{t('Service active until')}:</span>
+                    <span className={s.value}>{initialState?.expiredate?.$}</span>
+                  </div>
+                  <div className={s.second_row}>
+                    <span className={s.label}>{t('Service extended until')}:</span>
+                    <span className={s.value}>{newExpireDate}</span>
+                  </div>
+
+                  <div className={s.parameters_wrapper}>
+                    <div className={s.main_block}>
+                      <Select
+                        height={50}
+                        value={values.period}
+                        label={`${t('Period', { ns: 'other' })}:`}
+                        getElement={item => {
+                          dispatch(
+                            dedicOperations.getUpdateProlongInfo(
+                              elid,
+                              item,
+                              setNewExpireDate,
+                            ),
+                          )
+                          setFieldValue('period', item)
+                        }}
+                        isShadow
+                        itemsList={initialState?.slist[0]?.val?.map(el => {
+                          const labelText = translatePeriod(el?.$, t)
+                          return {
+                            label: labelText,
+                            value: el.$key,
+                          }
+                        })}
+                        className={s.select}
+                        inputClassName={s.inputClassName}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={s.btns_wrapper}>
+                <Button
+                  className={s.buy_btn}
+                  isShadow
+                  size="medium"
+                  label={t('Proceed', { ns: 'other' })}
+                  type="submit"
                 />
-              </div>
-              <div className={s.first_row}>
-                <span className={s.label}>{t('status', { ns: 'other' })}:</span>
-                <span
-                  className={classNames({
-                    [s.value]: true,
-                    [s.green]: initialState?.status?.$ === 'status_2',
-                    [s.red]: initialState?.status?.$ !== 'status_2',
-                  })}
+
+                <button
+                  onClick={e => {
+                    e.preventDefault()
+                    closeFn()
+                  }}
+                  className={s.cancel_btn}
                 >
-                  {initialState?.status?.$ === 'status_2' ? t('Active') : t('Inactive')}
-                </span>
+                  {t('Cancel', { ns: 'other' })}
+                </button>
               </div>
-              <div className={s.first_row}>
-                <span className={s.label}>{t('Service active until')}:</span>
-                <span className={s.value}>{initialState?.expiredate?.$}</span>
-              </div>
-              <div className={s.second_row}>
-                <span className={s.label}>{t('Service extended until')}:</span>
-                <span className={s.value}>{newExpireDate}</span>
-              </div>
-
-              <div className={s.parameters_wrapper}>
-                <div className={s.main_block}>
-                  <Select
-                    height={50}
-                    value={values.period}
-                    label={`${t('Period', { ns: 'other' })}:`}
-                    getElement={item => {
-                      dispatch(
-                        dedicOperations.getUpdateProlongInfo(
-                          elid,
-                          item,
-                          setNewExpireDate,
-                        ),
-                      )
-                      setFieldValue('period', item)
-                    }}
-                    isShadow
-                    itemsList={initialState?.slist[0]?.val?.map(el => {
-                      const labelText = translatePeriod(el?.$, t)
-                      return {
-                        label: labelText,
-                        value: el.$key,
-                      }
-                    })}
-                    className={s.select}
-                    inputClassName={s.inputClassName}
-                  />
-                </div>
-
-                <div className={s.btns_wrapper}>
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('Proceed', { ns: 'other' })}
-                    type="submit"
-                  />
-
-                  <button
-                    onClick={e => {
-                      e.preventDefault()
-                      closeFn()
-                    }}
-                    className={s.cancel_btn}
-                  >
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Form>
-        )
-      }}
-    </Formik>
+            </Form>
+          )
+        }}
+      </Formik>
+    </div>
   )
 }

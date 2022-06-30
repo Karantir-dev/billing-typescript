@@ -25,7 +25,9 @@ export default function RebootModal({ elid, closeFn, server }) {
         <Cross className={s.icon_cross} onClick={closeFn} width={12} height={12} />
       </div>
 
-      <p>{`${t('Are you sure you want to restart the server')} ${server?.name?.$}`}</p>
+      <div className={s.modal_body}>
+        <p>{`${t('Are you sure you want to restart the server')} ${server?.name?.$}`}?</p>
+      </div>
 
       <div className={s.btns_wrapper}>
         <Button

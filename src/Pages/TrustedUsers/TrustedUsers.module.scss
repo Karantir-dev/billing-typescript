@@ -47,18 +47,16 @@
 
 .add_btn.btn {
   margin-bottom: 40px;
-  padding-top: 20px;
-  padding-bottom: 19px;
+  padding: 19px 0;
   display: none;
 
   & span {
     font-weight: 800;
     font-size: 18px;
-    line-height: 66.3%;
   }
 
   &.shown {
-    display: block;
+    display: flex;
   }
 }
 

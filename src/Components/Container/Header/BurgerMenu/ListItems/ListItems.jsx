@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useState } from 'react'
+import React from 'react' // { useState }
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
@@ -9,8 +9,13 @@ import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../../..
 import s from './ListItems.module.scss'
 
 export default function ListItems(props) {
-  const { name, email, isProfile, subList, controlMenu } = props
-  const [isOpened, setIsOpened] = useState(false)
+  const { name, email, isProfile, subList, controlMenu, id, activeList, setActiveList } =
+    props
+
+  const currentItem = activeList.filter(item => {
+    return item.listId === id
+  })
+
   const { t } = useTranslation('container')
 
   const renderIcon = name => {
@@ -20,7 +25,7 @@ export default function ListItems(props) {
           <Box
             className={cn({
               [s.icon]: true,
-              [s.active]: isOpened,
+              [s.active]: currentItem[0].active,
             })}
           />
         )
@@ -29,7 +34,7 @@ export default function ListItems(props) {
           <Wallet
             className={cn({
               [s.icon]: true,
-              [s.active]: isOpened,
+              [s.active]: currentItem[0].active,
             })}
           />
         )
@@ -38,7 +43,7 @@ export default function ListItems(props) {
           <Social
             className={cn({
               [s.icon]: true,
-              [s.active]: isOpened,
+              [s.active]: currentItem[0].active,
             })}
           />
         )
@@ -47,7 +52,7 @@ export default function ListItems(props) {
           <Support
             className={cn({
               [s.icon]: true,
-              [s.active]: isOpened,
+              [s.active]: currentItem[0].active,
             })}
           />
         )
@@ -56,13 +61,33 @@ export default function ListItems(props) {
     }
   }
 
+  const handleClick = () => {
+    const mutatedList = activeList.map(item => {
+      if (item.listId === id) {
+        return item
+      } else {
+        return { ...item, active: false }
+      }
+    })
+
+    setActiveList(
+      mutatedList.map(item => {
+        if (item.listId === id) {
+          return { ...item, active: !item.active }
+        } else {
+          return item
+        }
+      }),
+    )
+  }
+
   return (
     <div
       className={s.list_items_wrapper}
       role="button"
       tabIndex={0}
       onKeyDown={() => {}}
-      onClick={() => setIsOpened(!isOpened)}
+      onClick={handleClick}
     >
       <BurgerListItem
         controlMenu={controlMenu}
@@ -71,7 +96,7 @@ export default function ListItems(props) {
           <ArrowSign
             className={cn({
               [s.arrow_icon]: true,
-              [s.closed]: isOpened,
+              [s.closed]: currentItem[0].active,
             })}
           />
         }
@@ -79,7 +104,7 @@ export default function ListItems(props) {
         subList={subList}
         isProfile={isProfile}
         email={email}
-        isListOpened={isOpened}
+        isListOpened={currentItem[0].active}
       />
     </div>
   )

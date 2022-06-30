@@ -134,5 +134,6 @@
   "Hostname": "Имя хоста",
   "Connection URL": "URL для подключения",
   "Service deletion": "Удаление услуги",
-  "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу"
+  "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу",
+  "IP-address removing": "Удаление IP-адреса"
 }

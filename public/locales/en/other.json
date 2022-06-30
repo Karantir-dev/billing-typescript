@@ -87,6 +87,7 @@
   "Confirm": "Confirm",
   "service": "Service",
   "to_order": "Order",
+  "edit": "Edit",
   "to_change": "Edit",
   "delete": "Delete",
   "short_month": "mon.",
@@ -135,5 +136,6 @@
   "Hostname": "Hostname",
   "Connection URL": "Connection URL",
   "Service deletion": "Service deletion",
-  "Are you sure you want to delete service": "Are you sure you want to delete service"
+  "Are you sure you want to delete service": "Are you sure you want to delete service",
+  "IP-address removing": "IP-address removing"
 }

@@ -1,9 +1,17 @@
 .reboot_modal {
-  width: 261px;
-  background-color: var(--main-bgc);
-  padding: 14px 15px 30px 15px;
-  overflow-y: auto;
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: hidden;
+  position: 'relative';
   max-height: 500px;
+}
+
+.modal_body {
+  padding: 30px 30px 30px 30px;
 }
 
 .title_wrapper {
@@ -12,9 +20,16 @@
 }
 
 .header_block {
+  position: sticky;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .page_title {
@@ -68,10 +83,19 @@
 }
 
 .btns_wrapper {
+  position: sticky;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .buy_btn {
@@ -81,7 +105,6 @@
   font-size: 20px;
   text-transform: uppercase;
   margin-bottom: 15px;
-  margin-top: 23px;
 }
 
 .cancel_btn {
@@ -97,17 +120,12 @@
   .reboot_modal {
     width: 400px;
     background-color: var(--main-bgc);
-    padding: 30px 30px 30px 30px;
     overflow-y: auto;
     max-height: 500px;
   }
-  .form {
-    width: 355px;
-    padding: 25px 51px 32px 51px;
-  }
 
   .header_block {
-    margin-bottom: 16px;
+    padding: 20px 30px;
   }
 
   .page_title {

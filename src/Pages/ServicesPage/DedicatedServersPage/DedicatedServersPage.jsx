@@ -265,10 +265,7 @@ export default function DedicatedServersPage() {
         setElidForRebootModal={setElidForRebootModal}
         setActiveServer={setActiveServer}
       />
-      <Backdrop
-        onClick={() => setElidForEditModal(0)}
-        isOpened={Boolean(elidForEditModal)}
-      >
+      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
@@ -310,7 +307,7 @@ export default function DedicatedServersPage() {
         <RebootModal
           server={activeServer}
           elid={elidForRebootModal}
-          closeFn={setElidForRebootModal}
+          closeFn={() => setElidForRebootModal(0)}
         />
       </Backdrop>
     </>

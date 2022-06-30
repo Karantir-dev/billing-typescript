@@ -20,7 +20,19 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
+  background-color: var(--elements-bgc);
+  // border: 1px solid var(--input-border-icon);
+
+  &.shadow {
+    // border: none;
+    // box-shadow: var(--forms_shadow);
+  }
+
+  &.focused {
+    box-shadow: none;
+    // border: none;
+    background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
+  }
 }
 
 .required_star {
@@ -58,6 +70,8 @@
     padding-right: 40px;
   }
   &.disabled {
+    opacity: 1;
+    -webkit-text-fill-color: var(--transparent-color);
     color: var(--transparent-color);
   }
 }

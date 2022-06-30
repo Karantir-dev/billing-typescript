@@ -1,12 +1,14 @@
 import React from 'react'
 import { Logo } from '../../images'
 import { ThemeBtn, LangBtn } from '../../Components'
+import Div100vh from 'react-div-100vh'
+
 
 import s from './AuthPage.module.scss'
 
 export default function AuthPage({ children }) {
   return (
-    <div className={s.wrapper}>
+    <Div100vh className={s.wrapper}>
       <header className={s.header}>
         <div className={`container ${s.flex}`}>
           <Logo svgwidth="105" svgheight="48" />
@@ -17,6 +19,6 @@ export default function AuthPage({ children }) {
         </div>
       </header>
       {children}
-    </div>
+    </Div100vh>
   )
 }
