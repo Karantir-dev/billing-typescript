@@ -8,7 +8,7 @@ import NotificationListItem from '../NotificationListItem/NotificationListItem'
 import s from './NotificationList.module.scss'
 // import classNames from 'classnames'
 
-export default function NotificationList({ notifications, removedNotification }) {
+export default function NotificationList({ notifications }) {
   const isAuthenticated = useSelector(authSelectors.getSessionId)
   const { t } = useTranslation('container')
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export default function NotificationList({ notifications, removedNotification })
     <>
       {notifications.length > 0 || notifications?.$id ? (
         <NotificationListItem
-          removedNotification={removedNotification}
+          // removedNotification={removedNotification}
           arr={notifications}
           removeItem={removeItem}
         />

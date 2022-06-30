@@ -62,18 +62,14 @@ export default function Header() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const messages = useSelector(userSelectors.getUserItems)
 
-  const mesAmount = messages
-    ? Array.isArray(messages) && messages !== 'undefined'
-      ? messages.length
-      : 1
-    : 0
+  const notifications = messages ? messages.length : 0
 
-  const [notifications, setNotifications] = useState(mesAmount)
+  // const [notifications, setNotifications] = useState(mesAmount)
 
-  const handleRemoveNotif = () => {
-    let newNotifications = notifications === 0 ? 0 : notifications - 1
-    setNotifications(newNotifications)
-  }
+  // const handleRemoveNotif = () => {
+  //   let newNotifications = notifications === 0 ? 0 : notifications - 1
+  //   setNotifications(newNotifications)
+  // }
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -289,8 +285,8 @@ export default function Header() {
         controlMenu={handleClick}
       />
       <NotificationsBar
-        countNotification={notifications}
-        removedNotification={handleRemoveNotif}
+        // countNotification={notifications}
+        // removedNotification={handleRemoveNotif}
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}
       />

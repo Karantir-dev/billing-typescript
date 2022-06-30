@@ -17,7 +17,6 @@ export default function DedicIPOrder({ closeFn }) {
   const ipPlid = location.state.plid
 
   const [initialValues, setInitialValues] = useState()
-  console.log(initialValues, 'initialValues')
 
   const handleEditionModal = () => {
     closeFn()
@@ -76,7 +75,6 @@ export default function DedicIPOrder({ closeFn }) {
         onSubmit={handleSubmit}
       >
         {({ values, errors, touched, setFieldValue }) => {
-          console.log(values)
           return (
             <Form>
               <div className={s.form}>

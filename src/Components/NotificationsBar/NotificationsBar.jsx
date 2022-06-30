@@ -11,8 +11,8 @@ import { useOutsideAlerter } from '../../utils'
 export default function NotificationsBar({
   handler,
   isBarOpened,
-  removedNotification,
-  countNotification,
+  // removedNotification,
+  // countNotification,
 }) {
   const messages = useSelector(userSelectors.getUserItems)
 
@@ -35,9 +35,9 @@ export default function NotificationsBar({
         })}
       >
         <div className={s.notification_title_container}>
-          <p className={s.notification_title}>{`${t(
-            'notification_bar.notifications',
-          )} (${countNotification})`}</p>
+          <p className={s.notification_title}>{`${t('notification_bar.notifications')} (${
+            messages.length
+          })`}</p>
           <div className={s.close_btn_wrapper}>
             <button className={s.close_btn} onClick={handler}></button>
           </div>
@@ -46,7 +46,7 @@ export default function NotificationsBar({
         {isBarOpened && (
           <NotificationList
             notifications={messages}
-            removedNotification={removedNotification}
+            // removedNotification={removedNotification}
           />
         )}
       </div>

@@ -19,7 +19,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '../../../../routes'
 import s from './DedicIPPage.module.scss'
-import { Attention } from '../../../../images'
+import { Attention, Cross } from '../../../../images'
 
 export default function DedicIPpage() {
   const location = useLocation()
@@ -152,8 +152,24 @@ export default function DedicIPpage() {
         onClick={() => setElidForDeleteModal(0)}
       >
         <div className={s.modalCloseBlock}>
-          <div className={s.closeText}>
-            {t('After accepting your IP-address will be automatically deleted')}
+          <div className={s.header_block}>
+            <div className={s.title_wrapper}>
+              <h2 className={s.page_title}>
+                {t('IP-address removing', { ns: 'other' })}
+              </h2>
+            </div>
+            <Cross
+              className={s.icon_cross}
+              onClick={() => setElidForDeleteModal(0)}
+              width={17}
+              height={17}
+            />
+          </div>
+
+          <div className={s.modal_content}>
+            <div className={s.closeText}>
+              {t('After accepting your IP-address will be automatically deleted')}
+            </div>
           </div>
           <div className={s.btnCloseBlock}>
             <Button

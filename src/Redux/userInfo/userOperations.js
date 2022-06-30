@@ -17,8 +17,9 @@ const userTickets = (data, dispatch) => {
 
 const userNotifications = (data, dispatch) => {
   const { bitem } = data.doc.notify.item[0]
+  const notifications = Array.isArray(bitem) ? bitem : [bitem]
 
-  dispatch(userActions.setItems(bitem))
+  dispatch(userActions.setItems(notifications))
 }
 
 const currentSessionRights = (data, dispatch) => {

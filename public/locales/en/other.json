@@ -135,5 +135,6 @@
   "Hostname": "Hostname",
   "Connection URL": "Connection URL",
   "Service deletion": "Service deletion",
-  "Are you sure you want to delete service": "Are you sure you want to delete service"
+  "Are you sure you want to delete service": "Are you sure you want to delete service",
+  "IP-address removing": "IP-address removing"
 }

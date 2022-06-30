@@ -1,21 +1,31 @@
 .instruction_modal {
-  background-color: var(--main-bgc);
-  padding: 0px 40px 30px 38px;
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: hidden;
+  position: 'relative';
+}
+
+.modal_content {
+  padding: 20px 20px 21px 20px;
+  margin-left: 2px;
+  max-height: 60vh;
   overflow-y: auto;
-  height: 80vh;
-  position: relative;
-  max-width: 280px;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
   }
+
   &::-webkit-scrollbar-track {
-    background: var(--scrollbar-track-color);
-    border-radius: 5px;
+    background: rgba(161, 161, 161, 23%);
   }
+
   &::-webkit-scrollbar-thumb {
-    background: var(--accent-gradient);
-    border-radius: 5px;
+    background: #e72690;
   }
 }
 
@@ -25,12 +35,15 @@
 
 .title_wrapper {
   position: sticky;
-  top: 0;
   display: flex;
   justify-content: space-between;
-  padding-top: 35px;
-  padding-bottom: 20px;
-  background-color: var(--main-bgc);
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .modal_title {
@@ -51,7 +64,7 @@
 .ssh_tip,
 .text {
   font-weight: 300;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 130%;
   color: var(--main-text);
   margin-bottom: 15px;
@@ -78,7 +91,7 @@
 .label,
 .value {
   font-weight: 300;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 140%;
   color: var(--main-text);
 }
@@ -124,19 +137,29 @@
     grid-template-columns: 150px 1fr;
     row-gap: 10px;
   }
+
+  .inform_text,
+  .ssh_tip,
+  .text {
+    font-size: 18px;
+  }
   .instruction_modal {
     max-width: 632px;
   }
+
+  .modal_content {
+    padding: 20px 45px 30px;
+  }
+
+  .icon_cross {
+    cursor: pointer;
+  }
+
+  .title_wrapper {
+    padding: 20px 45px;
+  }
+
   .label {
     color: var(--main-text);
   }
-}
-
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }
