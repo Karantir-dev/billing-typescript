@@ -270,7 +270,7 @@
     justify-content: flex-start;
 
     padding: unset;
-    z-index: 2;
+    z-index: unset;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     background-color: unset;
@@ -278,8 +278,8 @@
   }
 
   .fieldsBlock {
-    max-height: unset;
-    justify-content: space-between;
+    max-height: 100vh;
+    overflow: visible;
     padding: 0 0 17px 0;
   }
 

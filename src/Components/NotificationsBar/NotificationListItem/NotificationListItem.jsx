@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import s from './NotificationListItem.module.scss'
 
-export default function NotificationListItem({ arr, removeItem, removedNotification }) {
+export default function NotificationListItem({ arr, removeItem }) {
   const { t } = useTranslation(['container', 'other'])
 
   return (
@@ -24,7 +24,6 @@ export default function NotificationListItem({ arr, removeItem, removedNotificat
                   className={s.close_btn}
                   onClick={() => {
                     removeItem(notif?.$id)
-                    removedNotification()
                   }}
                 ></button>
               </div>
@@ -39,7 +38,6 @@ export default function NotificationListItem({ arr, removeItem, removedNotificat
               className={s.close_btn}
               onClick={() => {
                 removeItem(arr?.$id)
-                removedNotification()
               }}
             ></button>
           </div>

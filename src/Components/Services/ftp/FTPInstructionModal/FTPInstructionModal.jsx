@@ -77,142 +77,144 @@ export default function FTPInstructionModal({ elid, closeFn }) {
           <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
         </div>
 
-        <p className={s.welcome}>
-          {`${t(`${instructionObject?.welcome?.split(' ')[0]?.trim()}`, {
-            ns: 'ftp',
-          })} `}
-
-          {t(`${instructionObject?.welcome?.split(' ')?.slice(1)?.join(' ')}`, {
-            ns: 'dedicated_servers',
-          })}
-        </p>
-
-        <p className={s.inform_text}>
-          {t(`${instructionObject?.inform_text}`, { ns: 'ftp' })}
-        </p>
-
-        <p className={s.service_info}>
-          {t(`${instructionObject?.service_info}`, { ns: 'ftp' })}:
-        </p>
-
-        <div className={s.server_info_block}>
-          <span className={s.label}>
-            {t(`${instructionObject?.service_package?.trim()}`, {
+        <div className={s.modal_content}>
+          <p className={s.welcome}>
+            {`${t(`${instructionObject?.welcome?.split(' ')[0]?.trim()}`, {
               ns: 'ftp',
+            })} `}
+
+            {t(`${instructionObject?.welcome?.split(' ')?.slice(1)?.join(' ')}`, {
+              ns: 'dedicated_servers',
             })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(
-              `${instructionObject?.service_package2?.replace(
-                'хранилище на',
-                t('storage', { ns: 'ftp' }),
-              )}`,
+          </p>
+
+          <p className={s.inform_text}>
+            {t(`${instructionObject?.inform_text}`, { ns: 'ftp' })}
+          </p>
+
+          <p className={s.service_info}>
+            {t(`${instructionObject?.service_info}`, { ns: 'ftp' })}:
+          </p>
+
+          <div className={s.server_info_block}>
+            <span className={s.label}>
+              {t(`${instructionObject?.service_package?.trim()}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(
+                `${instructionObject?.service_package2?.replace(
+                  'хранилище на',
+                  t('storage', { ns: 'ftp' }),
+                )}`,
+              )}
+            </span>
+
+            <span className={s.label}>
+              {t(`${instructionObject?.setup_date?.split(':')[0]}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.setup_date?.split(':')[1]}`)}
+            </span>
+          </div>
+
+          <p className={s.service_info}>
+            {instructionObject?.access_type?.replace(
+              'access',
+              t('access', { ns: 'dedicated_servers' }),
             )}
-          </span>
+          </p>
 
-          <span className={s.label}>
-            {t(`${instructionObject?.setup_date?.split(':')[0]}`, {
+          <div className={s.server_info}>
+            <span className={s.label}>
+              {t(`${instructionObject?.ftp_server?.split(':')[0]}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.ftp_server?.split(':')[1]}`, {
+                ns: 'ftp',
+              })}
+            </span>
+            <span className={s.label}>
+              {t(`${instructionObject?.ftp_user?.split(':')[0]}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.ftp_user?.split(':')[1]}`)}
+            </span>
+
+            <span className={s.label}>
+              {t(`${instructionObject?.ftp_password?.split(':')[0]?.trim()}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.ftp_password?.split(':')[1]}`)}
+            </span>
+          </div>
+
+          <p className={s.service_info}>
+            {instructionObject?.access_type2?.replace(
+              'access',
+              t('access', { ns: 'dedicated_servers' }),
+            )}
+          </p>
+
+          <div className={s.server_info}>
+            <span className={s.label}>
+              {t(`${instructionObject?.webdav_address?.split(':')[0]}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.webdav_address?.split(':')?.slice(1).join('')}`, {
+                ns: 'ftp',
+              })}
+            </span>
+            <span className={s.label}>
+              {t(`${instructionObject?.webdav_user?.split(':')[0]}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.webdav_user?.split(':')[1]}`)}
+            </span>
+
+            <span className={s.label}>
+              {t(`${instructionObject?.webdav_pswd?.split(':')[0]?.trim()}`, {
+                ns: 'ftp',
+              })}
+              :
+            </span>
+            <span className={s.value}>
+              {t(`${instructionObject?.webdav_pswd?.split(':')[1]}`)}
+            </span>
+          </div>
+
+          <p className={s.conclusion}>
+            {t(`${instructionObject?.conclusion_text?.split('!')[0]?.trim()}`, {
               ns: 'ftp',
             })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.setup_date?.split(':')[1]}`)}
-          </span>
+            !
+          </p>
+          <p className={s.signature}>
+            {t(`${instructionObject?.conclusion_text?.split('!')[1]}`, {
+              ns: 'ftp',
+            })}
+          </p>
         </div>
-
-        <p className={s.service_info}>
-          {instructionObject?.access_type?.replace(
-            'access',
-            t('access', { ns: 'dedicated_servers' }),
-          )}
-        </p>
-
-        <div className={s.server_info}>
-          <span className={s.label}>
-            {t(`${instructionObject?.ftp_server?.split(':')[0]}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.ftp_server?.split(':')[1]}`, {
-              ns: 'ftp',
-            })}
-          </span>
-          <span className={s.label}>
-            {t(`${instructionObject?.ftp_user?.split(':')[0]}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.ftp_user?.split(':')[1]}`)}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.ftp_password?.split(':')[0]?.trim()}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.ftp_password?.split(':')[1]}`)}
-          </span>
-        </div>
-
-        <p className={s.service_info}>
-          {instructionObject?.access_type2?.replace(
-            'access',
-            t('access', { ns: 'dedicated_servers' }),
-          )}
-        </p>
-
-        <div className={s.server_info}>
-          <span className={s.label}>
-            {t(`${instructionObject?.webdav_address?.split(':')[0]}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.webdav_address?.split(':')?.slice(1).join('')}`, {
-              ns: 'ftp',
-            })}
-          </span>
-          <span className={s.label}>
-            {t(`${instructionObject?.webdav_user?.split(':')[0]}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.webdav_user?.split(':')[1]}`)}
-          </span>
-
-          <span className={s.label}>
-            {t(`${instructionObject?.webdav_pswd?.split(':')[0]?.trim()}`, {
-              ns: 'ftp',
-            })}
-            :
-          </span>
-          <span className={s.value}>
-            {t(`${instructionObject?.webdav_pswd?.split(':')[1]}`)}
-          </span>
-        </div>
-
-        <p className={s.conclusion}>
-          {t(`${instructionObject?.conclusion_text?.split('!')[0]?.trim()}`, {
-            ns: 'ftp',
-          })}
-          !
-        </p>
-        <p className={s.signature}>
-          {t(`${instructionObject?.conclusion_text?.split('!')[1]}`, {
-            ns: 'ftp',
-          })}
-        </p>
       </div>
     </>
   )

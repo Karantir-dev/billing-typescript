@@ -228,6 +228,7 @@ export default function EditServerModal({ elid, closeFn }) {
                               }
                             })}
                           className={s.select}
+                          dropdownClass={s.dropdownClass}
                           disabled
                         />
                       </div>

@@ -898,7 +898,6 @@ const orderIPInfo = (ipPlid, setInitialValues) => (dispatch, getState) => {
       const { val: typeList } = data.doc.slist[0]
       const { count, domain, maxcount } = data.doc
 
-      console.log(data, 'order info')
       dispatch(actions.hideLoader())
       setInitialValues({ typeList, count, domain, maxcount })
     })
