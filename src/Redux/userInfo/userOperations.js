@@ -17,7 +17,14 @@ const userTickets = (data, dispatch) => {
 
 const userNotifications = (data, dispatch) => {
   const { bitem } = data.doc.notify.item[0]
-  const notifications = Array.isArray(bitem) ? bitem : [bitem]
+  let notifications
+  if (Array.isArray(bitem)) {
+    notifications = bitem
+  } else if (!Array.isArray(bitem) && bitem) {
+    notifications = [bitem]
+  } else {
+    notifications = []
+  }
 
   dispatch(userActions.setItems(notifications))
 }
