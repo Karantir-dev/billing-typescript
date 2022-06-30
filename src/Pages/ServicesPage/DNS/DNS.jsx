@@ -256,10 +256,7 @@ export default function DNS() {
         // setElidForChangeTarifModal={setElidForChangeTarifModal}
         setActiveServer={setActiveServer}
       />
-      <Backdrop
-        onClick={() => setElidForEditModal(0)}
-        isOpened={Boolean(elidForEditModal)}
-      >
+      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
