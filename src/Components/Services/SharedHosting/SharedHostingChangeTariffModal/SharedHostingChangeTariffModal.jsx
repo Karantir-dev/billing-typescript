@@ -57,7 +57,7 @@ export default function Component(props) {
             </div>
             <Cross onClick={closeChangeTariffModalHandler} className={s.crossIcon} />
           </div>
-          <div>
+          <div className={s.modalBody}>
             <div className={changeTariffInfoData && s.radioBlock}>
               <div className={s.new_plan}>{t('New tariff plan')}:</div>
               {changeTariffData?.pricelist_list?.map(price => {
@@ -102,24 +102,24 @@ export default function Component(props) {
                 </div>
               </div>
             )}
-            <div className={s.btnBlock}>
-              <Button
-                className={s.searchBtn}
-                isShadow
-                size="medium"
-                label={t('Save', { ns: 'other' })}
-                type="button"
-                disabled={!changeTariffInfoData}
-                onClick={() => changeTariffSaveVhostHandler(tariff)}
-              />
-              <button
-                onClick={closeChangeTariffModalHandler}
-                type="button"
-                className={s.clearFilters}
-              >
-                {t('Cancel', { ns: 'other' })}
-              </button>
-            </div>
+          </div>
+          <div className={s.btnBlock}>
+            <Button
+              className={s.searchBtn}
+              isShadow
+              size="medium"
+              label={t('Save', { ns: 'other' })}
+              type="button"
+              disabled={!changeTariffInfoData}
+              onClick={() => changeTariffSaveVhostHandler(tariff)}
+            />
+            <button
+              onClick={closeChangeTariffModalHandler}
+              type="button"
+              className={s.clearFilters}
+            >
+              {t('Cancel', { ns: 'other' })}
+            </button>
           </div>
         </div>
       </div>

@@ -16,17 +16,27 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 18px 24px;
+
   margin: 20px 10px;
   max-width: 375px;
-  width: 100%;
+  width: 95%;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: flex-start;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.statusBlock {
+  padding: 10px 24px;
 }
 
 .crossIcon {
@@ -44,7 +54,7 @@
   font-weight: 600;
   font-size: 20px;
   line-height: 113%;
-  max-width: 95%;
+  max-width: 100%;
   color: var(--main-text);
 }
 
@@ -63,6 +73,10 @@
 
 .statusBlock {
   margin: 15px 0 20px 0;
+}
+
+.fieldsBlock {
+  padding: 0 24px 30px 24px;
 }
 
 .statusItem {
@@ -95,13 +109,16 @@
 }
 
 .btnBlock {
-  width: 100%;
+  position: sticky;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 17px;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .clearFilters {
@@ -117,7 +134,7 @@
 }
 
 .searchBtn {
-  height: 50px;
+  height: 55px;
   max-width: 100%;
   font-size: 18px;
   text-transform: uppercase;
@@ -125,13 +142,23 @@
 
 @media screen and (min-width: 768px) {
   .modalBg {
-    align-items: center;
     height: 100vh;
   }
 
   .modalBlock {
-    padding: 18px 40px;
     margin: 0 30px;
+  }
+
+  .modalHeader {
+    padding: 18px 20px;
+  }
+
+  .statusBlock {
+    padding: 20px 20px;
+  }
+
+  .fieldsBlock {
+    padding: 10px 20px;
   }
 }
 

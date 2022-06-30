@@ -13,17 +13,22 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 18px 24px;
   margin: 20px auto;
   max-width: 630px;
   width: 95%;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: flex-start;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
 }
 
 .crossIcon {
@@ -59,14 +64,14 @@
 }
 
 .statusBlock {
-  margin: 15px 0 25px 0;
+  margin: 15px 24px 25px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .statusItem {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
 
@@ -100,38 +105,26 @@
   }
 }
 
-.btnBlock {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 17px;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.clearFilters {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 130%;
-  text-decoration-line: underline;
-  margin-left: 0px;
-  margin-top: 20px;
-  color: var(--main-text);
-  cursor: pointer;
-}
-
-.searchBtn {
-  height: 50px;
-  max-width: 100%;
-  font-size: 18px;
-  text-transform: uppercase;
-}
-
 .form {
   display: flex;
   flex-direction: column;
+  padding: 0px 20px 21px 20px;
+  margin-left: 2px;
+  max-height: 45vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 .fieldsBlock {
@@ -170,13 +163,23 @@
 }
 
 .btnBlock {
-  width: 100%;
+  position: sticky;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 17px;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+}
+
+.searchBtn {
+  height: 50px;
+  max-width: 254px;
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
 .clearFilters {
@@ -213,19 +216,30 @@
 }
 
 @media screen and (min-width: 768px) {
+  .statusBlock {
+    flex-direction: row;
+  }
   .modalBg {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .modalBg {
-    align-items: center;
     height: 100vh;
   }
 
+  .modalHeader {
+    padding: 18px 25px;
+  }
+
+  .btnBlock {
+    padding: 18px 25px;
+  }
+
+  .form {
+    padding: 0 25px 25px;
+    max-height: 65vh;
+  }
+
   .modalBlock {
-    padding: 34px 45px;
     margin: 0 30px;
   }
 
@@ -274,7 +288,7 @@
   }
 
   .searchBtn {
-    height: 50px;
+    height: 55px;
     max-width: 254px;
     font-size: 18px;
     text-transform: uppercase;

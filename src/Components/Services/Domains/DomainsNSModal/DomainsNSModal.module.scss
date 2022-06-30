@@ -1,6 +1,5 @@
 .modalBg {
   position: absolute;
-  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -16,18 +15,26 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 21px 21px;
   margin: 20px 10px;
   max-width: 405px;
-  width: 100%;
+  width: 95%;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
-  margin-bottom: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.form {
+  padding: 14px;
 }
 
 .crossIcon {
@@ -85,11 +92,16 @@
 }
 
 .btnBlock {
+  position: sticky;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  margin-top: 20px;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 
   .saveBtn {
     height: 55px;
@@ -101,7 +113,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 66.3%;
+    line-height: 130.3%;
     color: var(--main-text);
 
     text-align: center;
@@ -113,12 +125,21 @@
 
 @media screen and (min-width: 768px) {
   .modalBg {
-    align-items: center;
+    display: flex;
     height: 100vh;
   }
 
   .modalBlock {
-    padding: 38px 50px;
+    // padding: 38px 50px;
     margin: 0 30px;
+  }
+
+  .modalHeader {
+    padding: 18px 20px;
+  }
+
+  .form {
+    max-height: 70vh;
+    padding: 0px 30px 38px 30px;
   }
 }
