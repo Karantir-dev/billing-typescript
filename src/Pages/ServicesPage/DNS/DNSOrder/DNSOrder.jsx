@@ -53,8 +53,8 @@ export default function FTPOrder() {
       period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
     }
 
-    if (words.length > 0) {
-      words.forEach(w => {
+    if (words?.length > 0) {
+      words?.forEach(w => {
         if (!isNaN(w)) {
           amounts.push(w)
         }
@@ -160,80 +160,82 @@ export default function FTPOrder() {
               />
 
               <div className={s.tarifs_block}>
-                {tarifList?.tarifList?.map((item, index) => {
-                  const descriptionBlocks = item?.desc?.$.split('/')
-                  const cardTitle = descriptionBlocks[0]
+                {tarifList?.tarifList
+                  ?.filter(item => item.order_available.$ === 'on')
+                  ?.map((item, index) => {
+                    const descriptionBlocks = item?.desc?.$.split('/')
+                    const cardTitle = descriptionBlocks[0]
 
-                  const parsedPrice = parsePrice(item?.price?.$)
+                    const parsedPrice = parsePrice(item?.price?.$)
 
-                  const priceAmount = parsedPrice.amoumt
+                    const priceAmount = parsedPrice?.amoumt
 
-                  return (
-                    <button
-                      ref={index === 2 ? secondTarrif : null}
-                      onClick={() => {
-                        setParameters(null)
-                        setFieldValue('pricelist', item?.pricelist?.$)
-                        setPrice(priceAmount)
-                        setTarifChosen(true)
+                    return (
+                      <button
+                        ref={index === 2 ? secondTarrif : null}
+                        onClick={() => {
+                          setParameters(null)
+                          setFieldValue('pricelist', item?.pricelist?.$)
+                          setPrice(priceAmount)
+                          setTarifChosen(true)
 
-                        dispatch(
-                          dnsOperations.getParameters(
-                            values.period,
-                            values.datacenter,
-                            item?.pricelist?.$,
-                            setParameters,
-                            setFieldValue,
-                          ),
-                        )
-                      }}
-                      type="button"
-                      className={classNames(s.tarif_card, {
-                        [s.selected]: item?.pricelist?.$ === values.pricelist,
-                      })}
-                      key={item?.desc?.$}
-                    >
-                      <img
-                        className={s.dns_img}
-                        src={require(`../../../../images/services/${
-                          item?.pricelist?.$ === 598
-                            ? 'dns_hosting_small.webp'
-                            : 'dns_hosting_middle.webp'
-                        }`)}
-                        alt="dns"
-                      />
-                      <span
-                        className={classNames({
-                          [s.card_title]: true,
+                          dispatch(
+                            dnsOperations.getParameters(
+                              values.period,
+                              values.datacenter,
+                              item?.pricelist?.$,
+                              setParameters,
+                              setFieldValue,
+                            ),
+                          )
+                        }}
+                        type="button"
+                        className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.pricelist,
                         })}
+                        key={item?.desc?.$}
                       >
-                        {`${t('dns', { ns: 'crumbs' })} ${cardTitle
-                          ?.split(' ')
-                          .slice(1)
-                          .join(' ')
-                          .replace('for', t('for', { ns: 'dns' }))
-                          .replace('domains', t('domains', { ns: 'dns' }))}`}
-                      </span>
-                      <div className={s.price_wrapper}>
+                        <img
+                          className={s.dns_img}
+                          src={require(`../../../../images/services/${
+                            item?.pricelist?.$ === '958'
+                              ? 'dns_hosting_small.webp'
+                              : 'dns_hosting_middle.webp'
+                          }`)}
+                          alt="dns"
+                        />
                         <span
                           className={classNames({
-                            [s.price]: true,
+                            [s.card_title]: true,
                             [s.selected]: item?.pricelist?.$ === values.pricelist,
                           })}
                         >
-                          {priceAmount + '/' + periodName}
+                          {`${t('dns', { ns: 'crumbs' })} ${cardTitle
+                            ?.split(' ')
+                            .slice(1)
+                            .join(' ')
+                            .replace('for', t('for', { ns: 'dns' }))
+                            .replace('domains', t('domains', { ns: 'dns' }))}`}
                         </span>
-                      </div>
+                        <div className={s.price_wrapper}>
+                          <span
+                            className={classNames({
+                              [s.price]: true,
+                              [s.selected]: item?.pricelist?.$ === values.pricelist,
+                            })}
+                          >
+                            {priceAmount + '/' + periodName}
+                          </span>
+                        </div>
 
-                      {descriptionBlocks.slice(1).map((el, i) => (
-                        <span key={i} className={s.card_subtitles}>
-                          {el}
-                        </span>
-                      ))}
-                    </button>
-                  )
-                })}
+                        {descriptionBlocks.slice(1).map((el, i) => (
+                          <span key={i} className={s.card_subtitles}>
+                            {el}
+                          </span>
+                        ))}
+                      </button>
+                    )
+                  })}
               </div>
 
               {parameters && (
@@ -257,32 +259,34 @@ export default function FTPOrder() {
                       })}
                       className={s.select}
                     />
-                    <Select
-                      height={50}
-                      value={values.addon_961}
-                      label={`${t('domains_limit', { ns: 'dns' })}:`}
-                      getElement={item => {
-                        setFieldValue('addon_961', item)
+                    {values?.limitsList?.length > 0 && (
+                      <Select
+                        height={50}
+                        value={values.addon_961}
+                        label={`${t('domains_limit', { ns: 'dns' })}:`}
+                        getElement={item => {
+                          setFieldValue('addon_961', item)
 
-                        const data = {
-                          addon_961: item,
-                          datacenter: values.datacenter,
-                          period: values.period,
-                          pricelist: values.pricelist,
-                        }
-                        dispatch(dnsOperations.updateDNSPrice(setPrice, data))
-                      }}
-                      isShadow
-                      itemsList={values?.limitsList?.map(el => {
-                        let labeltext = el + ' ' + t('Unit')
+                          const data = {
+                            addon_961: item,
+                            datacenter: values.datacenter,
+                            period: values.period,
+                            pricelist: values.pricelist,
+                          }
+                          dispatch(dnsOperations.updateDNSPrice(setPrice, data))
+                        }}
+                        isShadow
+                        itemsList={values?.limitsList?.map(el => {
+                          let labeltext = el + ' ' + t('Unit')
 
-                        return {
-                          label: labeltext,
-                          value: el,
-                        }
-                      })}
-                      className={s.select}
-                    />
+                          return {
+                            label: labeltext,
+                            value: el,
+                          }
+                        })}
+                        className={s.select}
+                      />
+                    )}
                   </div>
 
                   <div className={s.terms_block} ref={licenceCheck}>

@@ -121,16 +121,20 @@ const getParameters =
           item.$name.includes('addon'),
         )
 
-        const maxLimit = domainsLimit[0].slider[0].$max
-        const step = domainsLimit[0].slider[0].$step
-        const minLimit = domainsLimit[0].slider[0].$min
+        const maxLimit = domainsLimit[0]?.slider[0]?.$max
+        const step = domainsLimit[0]?.slider[0]?.$step
+        const minLimit = domainsLimit[0]?.slider[0]?.$min
 
         const limitsList = []
-        let initialLimit = +minLimit
-        limitsList.push(+minLimit)
-        while (+initialLimit < +maxLimit) {
-          limitsList.push(Number(initialLimit) + Number(step))
-          initialLimit += +step
+
+        if (minLimit) {
+          let initialLimit = +minLimit
+          limitsList.push(+minLimit)
+
+          while (+initialLimit < +maxLimit) {
+            limitsList.push(Number(initialLimit) + Number(step))
+            initialLimit += +step
+          }
         }
 
         // fields
@@ -486,7 +490,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
         func: 'service.instruction.html',
         out: 'json',
         auth: sessionId,
-        lang: 'en',
+        lang: i18n.language,
         elid,
       }),
     )

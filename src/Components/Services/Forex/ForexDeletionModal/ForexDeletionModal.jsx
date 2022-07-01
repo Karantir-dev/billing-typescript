@@ -16,7 +16,7 @@ export default function ForexDeletionModal({ elid, closeFn, server }) {
   const dispatch = useDispatch()
 
   return (
-    <div className={s.reboot_modal}>
+    <div className={s.modal}>
       <div className={s.header_block}>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Service deletion')}</h2>
@@ -25,7 +25,9 @@ export default function ForexDeletionModal({ elid, closeFn, server }) {
         <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
       </div>
 
-      <p>{`${t('Are you sure you want to delete service')} ${server?.name?.$}?`}</p>
+      <div className={s.modal_content}>
+        <p>{`${t('Are you sure you want to delete service')} ${server?.name?.$}?`}</p>
+      </div>
 
       <div className={s.btns_wrapper}>
         <Button

@@ -36,11 +36,9 @@ export default function DedicOrderPage() {
   // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
   const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState('')
-  const [ordered, setOrdered] = useState(false)
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
-  console.log(ordered)
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -231,7 +229,6 @@ export default function DedicOrderPage() {
         ipTotal,
         ipName,
         managePanel,
-        setOrdered,
       ),
     )
   }
