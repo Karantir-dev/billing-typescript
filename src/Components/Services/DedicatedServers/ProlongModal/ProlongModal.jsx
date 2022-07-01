@@ -10,7 +10,7 @@ import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '../../../../utils'
 
-export default function ProlongModal({ elid, closeFn }) {
+export default function ProlongModal({ elid, closeFn, pageName }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -31,7 +31,7 @@ export default function ProlongModal({ elid, closeFn }) {
   const handleSubmit = values => {
     const { period } = values
 
-    dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal))
+    dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal, pageName))
   }
 
   return (

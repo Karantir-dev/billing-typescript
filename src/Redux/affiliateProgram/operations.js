@@ -44,6 +44,7 @@ const getInitialIncomeInfo =
           func: 'affiliate.client.reward',
           auth: sessionId,
           out: 'json',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
