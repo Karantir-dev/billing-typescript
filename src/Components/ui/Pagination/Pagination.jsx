@@ -66,7 +66,7 @@ export default function Component(props) {
         >
           <div className={cn(s.arrow, s.left)} />
         </div>
-        <div className={s.paginationItem}>
+        <div className={cn(s.paginationItem, s.inputItem)}>
           <input
             className={s.input}
             value={pageNumber}

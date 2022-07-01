@@ -8,6 +8,7 @@ import {
   SiteCareProlongModal,
   SiteCareEditModal,
   SiteCareDeleteModal,
+  Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +30,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
   const [prolongData, setProlongData] = useState(null)
@@ -56,14 +59,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(siteCareOperations.getHistorySiteCare(data, setHistoryModal, setHistoryList))
+    dispatch(
+      siteCareOperations.getHistorySiteCare(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historySiteCareHandler()
+    }
+  }, [historyCurrentPage])
 
   const prolongSiteCareHandler = () => {
     const data = {
@@ -159,39 +177,58 @@ export default function Component() {
         </div>
       )}
 
-      {historyModal && historyList?.length > 0 && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(historyModal && historyList?.length > 0)}
+        onClick={closeHistoryModalHandler}
+      >
         <SiteCareHistoryModal
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
-      )}
+      </Backdrop>
 
-      {prolongModal && prolongData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(prolongModal && prolongData)}
+        onClick={closeProlongModalHandler}
+      >
         <SiteCareProlongModal
           prolongData={prolongData}
           name={selctedItem?.name?.$}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditSiteCareHandler}
         />
-      )}
+      </Backdrop>
 
-      {editModal && editData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(editModal && editData)}
+        onClick={closeEditModalHandler}
+      >
         <SiteCareEditModal
           editData={editData}
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
         />
-      )}
+      </Backdrop>
 
-      {deleteModal && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(deleteModal)}
+        onClick={() => setDeleteModal(false)}
+      >
         <SiteCareDeleteModal
           closeDeleteModalHandler={() => setDeleteModal(false)}
           deleteSiteCareHandler={deleteSiteCareHandler}
           name={selctedItem?.name?.$}
         />
-      )}
+      </Backdrop>
     </div>
   )
 }

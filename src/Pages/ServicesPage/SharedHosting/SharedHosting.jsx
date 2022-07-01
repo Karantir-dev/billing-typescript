@@ -8,6 +8,7 @@ import {
   SharedHostingProlongModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
+  SharedHostingInstructionModal,
   Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,6 +31,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
   const [prolongData, setProlongData] = useState(null)
@@ -40,6 +43,9 @@ export default function Component() {
   const [changeTariffModal, setChangeTariffModal] = useState(false)
   const [changeTariffData, setChangeTariffData] = useState(null)
   const [changeTariffInfoData, setChangeTariffInfoData] = useState(null)
+
+  const [instructionModal, setInstructionModal] = useState(false)
+  const [instructionData, setInstructionData] = useState(null)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -59,14 +65,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(vhostOperations.getHistoryVhost(data, setHistoryModal, setHistoryList))
+    dispatch(
+      vhostOperations.getHistoryVhost(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historyVhostHandler()
+    }
+  }, [historyCurrentPage])
 
   const instructionVhostHandler = () => {
     const data = {
@@ -74,7 +95,14 @@ export default function Component() {
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
     }
-    dispatch(vhostOperations.getInsructionVhost(data))
+    dispatch(
+      vhostOperations.getInsructionVhost(data, setInstructionModal, setInstructionData),
+    )
+  }
+
+  const closeInstructionModalHandler = () => {
+    setInstructionData(null)
+    setInstructionModal(false)
   }
 
   const platformVhostHandler = () => {
@@ -229,6 +257,9 @@ export default function Component() {
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
       </Backdrop>
 
@@ -245,16 +276,24 @@ export default function Component() {
         />
       </Backdrop>
 
-      {editModal && editData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(editModal && editData)}
+        onClick={closeEditModalHandler}
+      >
         <SharedHostingEditModal
           editData={editData}
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditVhostHandler={sendEditVhostHandler}
         />
-      )}
+      </Backdrop>
 
-      {changeTariffModal && changeTariffData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(changeTariffModal && changeTariffData)}
+        onClick={closeChangeTariffModalHandler}
+      >
         <SharedHostingChangeTariffModal
           changeTariffData={changeTariffData}
           name={selctedItem?.name?.$}
@@ -263,7 +302,19 @@ export default function Component() {
           changeTariffInfoData={changeTariffInfoData}
           changeTariffSaveVhostHandler={changeTariffSaveVhostHandler}
         />
-      )}
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(instructionModal && instructionData)}
+        onClick={closeInstructionModalHandler}
+      >
+        <SharedHostingInstructionModal
+          instructionData={instructionData}
+          name={selctedItem?.name?.$}
+          closeInstructionModalHandler={closeInstructionModalHandler}
+        />
+      </Backdrop>
     </div>
   )
 }

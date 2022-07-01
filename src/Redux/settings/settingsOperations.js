@@ -22,6 +22,7 @@ const getUserEdit =
           func: 'user.edit',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           elid,
         }),
       )
@@ -118,6 +119,7 @@ const getUserParams =
         qs.stringify({
           func: 'usrparam',
           out: 'json',
+          lang: 'en',
           auth: sessionId,
         }),
       )
@@ -217,6 +219,7 @@ const getTimeByTimeZone =
           func: 'usrparam',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           timezone: timezone,
           sv_field: 'time',
         }),
@@ -275,6 +278,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
       qs.stringify({
         func: 'user.edit',
         sok: 'ok',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
         elid,
@@ -290,6 +294,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
             func: 'usrparam',
             out: 'json',
             sok: 'ok',
+            lang: 'en',
             elid,
             auth: sessionId,
             ...userParamsData,
@@ -351,6 +356,7 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
         func: 'usrparam',
         out: 'json',
         sok: 'ok',
+        lang: 'en',
         elid,
         auth: sessionId,
         ...userParamsData,
@@ -380,6 +386,7 @@ const sendEmailConfirm = () => (dispatch, getState) => {
       qs.stringify({
         func: 'usrparam',
         out: 'json',
+        lang: 'en',
         sv_field: 'send_confirm',
         auth: sessionId,
       }),
@@ -474,6 +481,7 @@ const setTotp = () => (dispatch, getState) => {
       qs.stringify({
         func: 'totp.new',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     )
@@ -572,6 +580,7 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
         show_actualtime: 'show',
         login: 'test.hardsoft.cf(mikhail.tatochenko+1@zomro.org)',
         secret: d?.secret,
+        lang: 'en',
         auth: sessionId,
       }),
     )
@@ -612,6 +621,7 @@ const confirmEmail = key => (dispatch, getState) => {
         func: 'notice.confirm',
         sok: 'ok',
         out: 'json',
+        
         auth: sessionId,
         key,
       }),

@@ -30,6 +30,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [whoisModal, setWhoisModal] = useState(false)
   const [whoisData, setWhoisData] = useState(null)
@@ -73,14 +75,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(domainsOperations.getHistoryDomain(data, setHistoryModal, setHistoryList))
+    dispatch(
+      domainsOperations.getHistoryDomain(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historyDomainHandler()
+    }
+  }, [historyCurrentPage])
 
   const whoisDomainHandler = () => {
     const data = {
@@ -189,6 +206,9 @@ export default function Component() {
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
       </Backdrop>
 

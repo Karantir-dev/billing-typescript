@@ -66,8 +66,8 @@
 
 .submit_btn {
   height: 55px;
-  max-width: 255px;
-  width: 255px;
+  max-width: 100%;
+  width: 100%;
   text-transform: uppercase;
   margin-top: 22px;
 }
@@ -103,6 +103,11 @@
   }
   .departmentSelect {
     flex-direction: row;
+  }
+
+  .submit_btn {
+    max-width: 255px;
+    width: 255px;
   }
 }
 
