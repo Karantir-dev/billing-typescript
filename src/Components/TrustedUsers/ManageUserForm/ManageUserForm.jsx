@@ -89,7 +89,7 @@ export default function ManageUserForm({
       <div
         className={classNames({ [s.form_wrapper]: true, [s.active]: isUserFormActive })}
       >
-        <div className={classNames({ [s.form]: true, [s.active]: isUserFormActive })}>
+        <div className={classNames({ [s.modal]: true, [s.active]: isUserFormActive })}>
           <div className={s.form_title_wrapper}>
             <div className={s.title_wrapper}>
               <p className={s.form_title}>{title}</p>
@@ -99,6 +99,7 @@ export default function ManageUserForm({
               <button className={s.close_btn} onClick={controlForm}></button>
             </div>
           </div>
+
           <Formik
             initialValues={{
               ['email' + userId]: '',
@@ -111,112 +112,115 @@ export default function ManageUserForm({
             validationSchema={validationSchema}
           >
             {({ errors, touched, handleBlur, setFieldValue }) => {
-              // console.log(values)
               return (
                 <Form>
-                  <InputField
-                    dataTestid="input_email"
-                    label={
-                      formName === 'settings'
-                        ? `${t('trusted_users.form.email')}:`
-                        : requiredLabel(`${t('trusted_users.form.email')}:`)
-                    }
-                    placeholder={
-                      formName === 'settings'
-                        ? email
-                        : t('trusted_users.form_placeholders.email')
-                    }
-                    name={'email' + userId}
-                    error={!!errors['email' + userId]}
-                    touched={!!touched['email' + userId]}
-                    className={s.field_input}
-                    isShadow={true}
-                    background={true}
-                    autoComplete
-                    disabled={formName === 'settings'}
-                  />
+                  <div className={s.form}>
+                    <InputField
+                      dataTestid="input_email"
+                      label={
+                        formName === 'settings'
+                          ? `${t('trusted_users.form.email')}:`
+                          : requiredLabel(`${t('trusted_users.form.email')}:`)
+                      }
+                      placeholder={
+                        formName === 'settings'
+                          ? email
+                          : t('trusted_users.form_placeholders.email')
+                      }
+                      name={'email' + userId}
+                      error={!!errors['email' + userId]}
+                      touched={!!touched['email' + userId]}
+                      className={s.field_input}
+                      isShadow={true}
+                      background={true}
+                      autoComplete
+                      disabled={formName === 'settings'}
+                    />
 
-                  <InputField
-                    dataTestid="input_name"
-                    label={
-                      formName === 'settings'
-                        ? `${t('trusted_users.form.full_name')}:`
-                        : requiredLabel(`${t('trusted_users.form.full_name')}:`)
-                    }
-                    placeholder={
-                      formName === 'settings'
-                        ? userName
-                        : t('trusted_users.form_placeholders.full_name')
-                    }
-                    name={'name' + userId}
-                    error={!!errors['name' + userId]}
-                    touched={!!touched['name' + userId]}
-                    className={s.field_input}
-                    isShadow={true}
-                    background={true}
-                    disabled={formName === 'settings'}
-                  />
+                    <InputField
+                      dataTestid="input_name"
+                      label={
+                        formName === 'settings'
+                          ? `${t('trusted_users.form.full_name')}:`
+                          : requiredLabel(`${t('trusted_users.form.full_name')}:`)
+                      }
+                      placeholder={
+                        formName === 'settings'
+                          ? userName
+                          : t('trusted_users.form_placeholders.full_name')
+                      }
+                      name={'name' + userId}
+                      error={!!errors['name' + userId]}
+                      touched={!!touched['name' + userId]}
+                      className={s.field_input}
+                      isShadow={true}
+                      background={true}
+                      disabled={formName === 'settings'}
+                    />
 
-                  <CustomPhoneInput
-                    label={
-                      formName === 'settings'
-                        ? `${t('trusted_users.form.phone')}:`
-                        : requiredLabel(`${t('trusted_users.form.phone')}:`)
-                    }
-                    dataTestid="input_phone"
-                    handleBlur={handleBlur}
-                    setFieldValue={setFieldValue}
-                    name={'phone' + userId}
-                    userId={userId}
-                  />
+                    <CustomPhoneInput
+                      label={
+                        formName === 'settings'
+                          ? `${t('trusted_users.form.phone')}:`
+                          : requiredLabel(`${t('trusted_users.form.phone')}:`)
+                      }
+                      dataTestid="input_phone"
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                      name={'phone' + userId}
+                      userId={userId}
+                    />
 
-                  <InputField
-                    dataTestid="input_password"
-                    label={
-                      formName === 'settings'
-                        ? `${t('trusted_users.form.password')}:`
-                        : requiredLabel(`${t('trusted_users.form.password')}:`)
-                    }
-                    placeholder={t('trusted_users.form_placeholders.password')}
-                    name={'password' + userId}
-                    error={!!errors['password' + userId]}
-                    touched={!!touched['password' + userId]}
-                    type="password"
-                    className={s.field_input}
-                    isShadow={true}
-                    background={true}
-                  />
+                    <InputField
+                      dataTestid="input_password"
+                      label={
+                        formName === 'settings'
+                          ? `${t('trusted_users.form.password')}:`
+                          : requiredLabel(`${t('trusted_users.form.password')}:`)
+                      }
+                      placeholder={t('trusted_users.form_placeholders.password')}
+                      name={'password' + userId}
+                      error={!!errors['password' + userId]}
+                      touched={!!touched['password' + userId]}
+                      type="password"
+                      className={s.field_input}
+                      isShadow={true}
+                      background={true}
+                    />
 
-                  <InputField
-                    dataTestid="input_passConfirmation"
-                    label={
-                      formName === 'settings'
-                        ? `${t('trusted_users.form.conf_password')}:`
-                        : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
-                    }
-                    placeholder={t('trusted_users.form_placeholders.conf_password')}
-                    name={'passConfirmation' + userId}
-                    error={!!errors['passConfirmation' + userId]}
-                    touched={!!touched['passConfirmation' + userId]}
-                    type="password"
-                    className={s.field_input}
-                    isShadow={true}
-                    background={true}
-                  />
+                    <InputField
+                      dataTestid="input_passConfirmation"
+                      label={
+                        formName === 'settings'
+                          ? `${t('trusted_users.form.conf_password')}:`
+                          : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
+                      }
+                      placeholder={t('trusted_users.form_placeholders.conf_password')}
+                      name={'passConfirmation' + userId}
+                      error={!!errors['passConfirmation' + userId]}
+                      touched={!!touched['passConfirmation' + userId]}
+                      type="password"
+                      className={s.field_input}
+                      isShadow={true}
+                      background={true}
+                    />
+                  </div>
 
-                  <Button
-                    dataTestid="btn_form_submit"
-                    size="large"
-                    className={classNames({
-                      [s.submit_btn]: true,
-                      [s.btn]: true,
-                      [s.shown]:
-                        formName === 'settings' ? isEditUserAllowedToChange : true,
-                    })}
-                    label={t('trusted_users.form.submit_btn').toUpperCase()}
-                    type="submit"
-                    disabled={!isEditUserAllowedToChange}
-                  />
+                  <div className={s.btn_wrapper}>
+                    <Button
+                      dataTestid="btn_form_submit"
+                      size="large"
+                      className={classNames({
+                        [s.submit_btn]: true,
+                        [s.btn]: true,
+                        [s.shown]:
+                          formName === 'settings' ? isEditUserAllowedToChange : true,
+                      })}
+                      label={t('trusted_users.form.submit_btn').toUpperCase()}
+                      type="submit"
+                      disabled={!isEditUserAllowedToChange}
+                    />
+                  </div>
                 </Form>
               )
             }}

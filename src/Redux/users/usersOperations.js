@@ -210,9 +210,8 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
 }
 
 const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  !isOwner && dispatch(actions.showLoader())
 
-  console.log(isOwner)
   const {
     auth: { sessionId },
   } = getState()

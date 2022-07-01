@@ -27,13 +27,33 @@
 .form_title_wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  position: relative;
-  margin-bottom: 20px;
+  align-items: flex-start;
+  position: sticky;
+
+  padding: 14px 18px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.btn_wrapper {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  padding: 14px 18px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .title_wrapper {
-  margin-top: 9px;
   color: #b3a9c1;
 }
 
@@ -44,19 +64,38 @@
   color: var(--main-text);
 }
 
-.form {
+.modal {
+  position: fixed;
   z-index: 150;
   border-radius: 5px;
   background-color: var(--elements-bgc);
-  padding: 18px;
   margin-top: 125px;
   margin-bottom: 125px;
-  width: 100%;
+  width: 95%;
   transform: scale(0.5);
   transition: transform 0.2s ease-out;
 
   &.active {
     transform: scale(1);
+  }
+}
+
+.form {
+  padding: 18px;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
   }
 }
 
@@ -70,7 +109,7 @@
 }
 
 .submit_btn.btn {
-  margin-top: 20px;
+  width: 100%;
   padding-bottom: 22px;
   padding-top: 22px;
   display: none;
@@ -174,12 +213,6 @@
   }
 }
 
-// .drop_down.list.list_hover li {
-//   &:hover {
-//     background-color: red;
-//   }
-// }
-
 .drop_search {
   &:hover {
     background-color: red;
@@ -187,25 +220,19 @@
 }
 
 // ADAPTIVE
-@media screen and (min-width: 460px) {
-  .form {
-    width: 400px;
-    padding: 29px 78px 31px;
-  }
-}
 
 @media screen and (min-width: 768px) {
-  .form {
+  .modal {
     width: 473px;
+  }
+  .form {
     padding: 29px 78px 31px;
   }
-
   .form_title_wrapper {
-    margin-bottom: 25px;
+    padding: 20px 78px;
   }
 
   .submit_btn.btn {
-    margin-top: 25px;
     padding-bottom: 21px;
     padding-top: 21px;
   }

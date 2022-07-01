@@ -137,5 +137,7 @@
   "Connection URL": "Connection URL",
   "Service deletion": "Service deletion",
   "Are you sure you want to delete service": "Are you sure you want to delete service",
-  "IP-address removing": "IP-address removing"
+  "IP-address removing": "IP-address removing",
+  "DNS-hosting activation": "DNS-hosting activation",
+  "FTP storage activation": "FTP storage activation"
 }
