@@ -105,95 +105,97 @@ export default function Component(props) {
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
-              <div className={s.inputRow}>
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="id"
-                  label={`${t('request_id')}:`}
-                  placeholder={t('Enter id', { ns: 'other' })}
-                  isShadow
-                  className={s.searchInput}
-                  error={!!errors.email}
-                  touched={!!touched.email}
-                />
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="message"
-                  label={`${t('Contains text')}:`}
-                  placeholder={t('Enter text', { ns: 'other' })}
-                  isShadow
-                  className={s.searchInput}
-                  error={!!errors.email}
-                  touched={!!touched.email}
-                />
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="name"
-                  label={`${t('theme', { ns: 'other' })}:`}
-                  placeholder={t('Enter request subject')}
-                  isShadow
-                  className={s.searchInput}
-                  error={!!errors.email}
-                  touched={!!touched.email}
-                />
-              </div>
-              <div className={s.selectAndBtn}>
-                <Select
-                  placeholder={t('Not chosen', { ns: 'other' })}
-                  label={`${t('The request is related to a violation')}:`}
-                  value={values.abuse}
-                  getElement={item => setFieldValue('abuse', item)}
-                  isShadow
-                  itemsList={abuseFilterList.map(({ label, value }) => ({
-                    label: t(`${label.trim()}`, { ns: 'other' }),
-                    value,
-                  }))}
-                  className={s.select}
-                />
-                <SelectMultiple
-                  placeholder={t('Select status', { ns: 'other' })}
-                  label={`${t('status', { ns: 'other' })}:`}
-                  value={values.tstatus}
-                  getElement={item => setFieldValue('tstatus', item)}
-                  isShadow
-                  itemsList={statusFilterList.map(({ label, value }) => ({
-                    label: t(`${label.trim()}`),
-                    value,
-                  }))}
-                  className={s.select}
-                />
-                <div className={s.timeSelectBlock}>
-                  <Select
-                    label={`${t('Period', { ns: 'other' })}:`}
-                    value={values.message_post}
-                    getElement={item => setFieldValue('message_post', item)}
+              <div className={s.formContainer}>
+                <div className={s.inputRow}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="id"
+                    label={`${t('request_id')}:`}
+                    placeholder={t('Enter id', { ns: 'other' })}
                     isShadow
-                    itemsList={timeFilterList.map(({ label, value }) => ({
+                    className={s.searchInput}
+                    error={!!errors.email}
+                    touched={!!touched.email}
+                  />
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="message"
+                    label={`${t('Contains text')}:`}
+                    placeholder={t('Enter text', { ns: 'other' })}
+                    isShadow
+                    className={s.searchInput}
+                    error={!!errors.email}
+                    touched={!!touched.email}
+                  />
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="name"
+                    label={`${t('theme', { ns: 'other' })}:`}
+                    placeholder={t('Enter request subject')}
+                    isShadow
+                    className={s.searchInput}
+                    error={!!errors.email}
+                    touched={!!touched.email}
+                  />
+                </div>
+                <div className={s.selectAndBtn}>
+                  <Select
+                    placeholder={t('Not chosen', { ns: 'other' })}
+                    label={`${t('The request is related to a violation')}:`}
+                    value={values.abuse}
+                    getElement={item => setFieldValue('abuse', item)}
+                    isShadow
+                    itemsList={abuseFilterList.map(({ label, value }) => ({
                       label: t(`${label.trim()}`, { ns: 'other' }),
                       value,
                     }))}
-                    className={cn(s.select, s.dateSelect)}
+                    className={s.select}
                   />
-                  <div className={s.calendarBlock}>
-                    <IconButton
-                      onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
-                      icon="calendar"
-                      className={s.calendarBtn}
+                  <SelectMultiple
+                    placeholder={t('Select status', { ns: 'other' })}
+                    label={`${t('status', { ns: 'other' })}:`}
+                    value={values.tstatus}
+                    getElement={item => setFieldValue('tstatus', item)}
+                    isShadow
+                    itemsList={statusFilterList.map(({ label, value }) => ({
+                      label: t(`${label.trim()}`),
+                      value,
+                    }))}
+                    className={s.select}
+                  />
+                  <div className={s.timeSelectBlock}>
+                    <Select
+                      label={`${t('Period', { ns: 'other' })}:`}
+                      value={values.message_post}
+                      getElement={item => setFieldValue('message_post', item)}
+                      isShadow
+                      itemsList={timeFilterList.map(({ label, value }) => ({
+                        label: t(`${label.trim()}`, { ns: 'other' }),
+                        value,
+                      }))}
+                      className={cn(s.select, s.dateSelect)}
                     />
-                    <div
-                      ref={dropdownCalendar}
-                      className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
-                    >
-                      <CalendarModal
-                        pointerClassName={s.calendar_pointer}
-                        value={dates}
-                        setStartDate={item => {
-                          setFieldValue('message_poststart', item)
-                          setFieldValue('message_post', 'other')
-                        }}
-                        setEndDate={item => setFieldValue('message_postend', item)}
-                        range={values?.message_poststart?.length !== 0}
+                    <div className={s.calendarBlock}>
+                      <IconButton
+                        onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
+                        icon="calendar"
+                        className={s.calendarBtn}
                       />
+                      <div
+                        ref={dropdownCalendar}
+                        className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
+                      >
+                        <CalendarModal
+                          pointerClassName={s.calendar_pointer}
+                          value={dates}
+                          setStartDate={item => {
+                            setFieldValue('message_poststart', item)
+                            setFieldValue('message_post', 'other')
+                          }}
+                          setEndDate={item => setFieldValue('message_postend', item)}
+                          range={values?.message_poststart?.length !== 0}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

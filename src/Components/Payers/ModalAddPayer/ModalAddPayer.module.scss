@@ -14,17 +14,42 @@
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 21px 22px;
   margin: 20px 30px;
   max-width: 640px;
   width: 100%;
 }
 
 .modalHeader {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.form {
+  padding: 0 14px;
+  max-height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 20px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 .crossIcon {
@@ -106,9 +131,16 @@
 }
 
 .btnBlock {
-  margin-top: 25px;
+  position: sticky;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
 }
 
 .saveBtn {
@@ -174,8 +206,19 @@
   }
 
   .modalBlock {
-    padding: 38px 50px;
     margin: 0 30px;
+  }
+
+  .modalHeader {
+    padding: 14px 50px;
+  }
+
+  .form {
+    padding: 0 50px;
+    padding-bottom: 20px;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   .formBlock {

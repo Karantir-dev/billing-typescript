@@ -1,14 +1,22 @@
 .modalBg {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100vh;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 149;
+  overflow: hidden;
+  display: flex;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
+  border-radius: 3px;
+  width: 95%;
+  max-width: 900px;
+  margin: auto;
 }
 
 .label {
@@ -27,26 +35,42 @@
   line-height: 1.2;
 }
 
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
-  border-radius: 3px;
-  padding: 17px;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 30px;
-}
-
 .modalHeader {
+  position: sticky;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
   h2 {
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
     line-height: 113%;
     color: var(--main-text);
+  }
+}
+
+.form {
+  padding: 20px 17px;
+  max-height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
   }
 }
 
@@ -60,16 +84,11 @@
   }
 }
 
-.form {
-  margin-top: 21px;
-}
-
 .submit_btn {
   height: 55px;
   max-width: 100%;
   width: 100%;
   text-transform: uppercase;
-  margin-top: 22px;
 }
 
 .departmentSelect {
@@ -97,10 +116,44 @@
   }
 }
 
+.btnBlock {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+}
+
 @media screen and (min-width: 768px) {
-  .modalBlock {
-    padding: 22px 31px;
+  .modalBg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
+  .modalHeader {
+    padding: 17px 20px;
+  }
+
+  .form {
+    padding: 0 20px;
+    padding-top: 20px;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 375px;
+    max-height: 90vh;
+  }
+
+  .btnBlock {
+    padding: 17px 20px;
+    margin-top: 25px;
+  }
+
   .departmentSelect {
     flex-direction: row;
   }
@@ -112,19 +165,31 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .modalBlock {
-    padding: 23px 35px;
+  .modalHeader {
+    padding: 17px 35px;
+  }
+
+  .form {
+    padding: 0 35px;
+    padding-top: 20px;
+  }
+
+  .btnBlock {
+    padding: 17px 35px;
   }
 }
 
 @media screen and (min-width: 1550px) {
-  .modalBlock {
-    padding: 37px 45px;
+  .modalHeader {
+    padding: 17px 45px;
   }
-}
 
-@media screen and (min-width: 1918px) {
-  .modalBlock {
-    padding: 37px 45px;
+  .form {
+    padding: 0 45px;
+    padding-top: 20px;
+  }
+
+  .btnBlock {
+    padding: 17px 45px;
   }
 }

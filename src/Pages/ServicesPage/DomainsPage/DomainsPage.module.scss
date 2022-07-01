@@ -13,6 +13,30 @@
   margin-top: 30px;
 }
 
+.no_vds_wrapper {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 500px;
+}
+
+.no_vds {
+  display: block;
+  margin: 0 auto 20px;
+  filter: grayscale(1);
+}
+
+.no_vds_title {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.not_found {
+  font-size: 20px;
+  color: var(--transparent-color);
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;

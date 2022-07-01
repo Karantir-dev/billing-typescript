@@ -17,7 +17,7 @@ import s from './SiteCare.module.scss'
 import { siteCareOperations, siteCareSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -40,6 +40,8 @@ export default function Component() {
   const [editData, setEditData] = useState(null)
 
   const [deleteModal, setDeleteModal] = useState(false)
+
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -149,22 +151,34 @@ export default function Component() {
         {t('burger_menu.services.services_list.wetsite_care')}
       </h1>
       <SiteCareFilter
+        setIsFiltered={setIsFiltered}
+        setSelctedItem={setSelctedItem}
         historySiteCareHandler={historySiteCareHandler}
         prolongSiteCareHandler={prolongSiteCareHandler}
         editSiteCareHandler={editSiteCareHandler}
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
+        isFilterActive={siteCareList?.length > 0}
       />
-      <SiteCareTable
-        historySiteCareHandler={historySiteCareHandler}
-        prolongSiteCareHandler={prolongSiteCareHandler}
-        editSiteCareHandler={editSiteCareHandler}
-        deleteSiteCareHandler={() => setDeleteModal(true)}
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={siteCareList}
-      />
+
+      {siteCareList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {siteCareList?.length > 0 && (
+        <SiteCareTable
+          historySiteCareHandler={historySiteCareHandler}
+          prolongSiteCareHandler={prolongSiteCareHandler}
+          editSiteCareHandler={editSiteCareHandler}
+          deleteSiteCareHandler={() => setDeleteModal(true)}
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={siteCareList}
+        />
+      )}
 
       {siteCareList.length !== 0 && (
         <div className={s.pagination}>

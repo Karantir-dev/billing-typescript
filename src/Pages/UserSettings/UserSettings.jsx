@@ -3,7 +3,7 @@ import PersonalSettings from './PersonalSettings/PersonalSettings'
 import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { settingsOperations, userSelectors, usersOperations } from '../../Redux'
+import { settingsOperations, userSelectors } from '../../Redux'
 import { usePageRender } from '../../utils'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
 import { PageTabBar } from '../../Components/'
@@ -43,7 +43,14 @@ export default function Component() {
 
   useEffect(() => {
     if (userInfo?.$id) {
-      dispatch(settingsOperations.getUserEdit(userInfo?.$id))
+      dispatch(
+        settingsOperations.getUserEdit(
+          userInfo?.$id,
+          false,
+          isComponentAllowedToRender,
+          setAvailableEditRights,
+        ),
+      )
     }
   }, [userInfo])
 
@@ -55,11 +62,11 @@ export default function Component() {
     }
   }, [])
 
-  useEffect(() => {
-    if (isComponentAllowedToRender) {
-      dispatch(usersOperations.getAvailableRights('usrparam', setAvailableEditRights))
-    }
-  }, [isComponentAllowedToRender])
+  // useEffect(() => {
+  //   if (isComponentAllowedToRender) {
+  //     dispatch(usersOperations.getAvailableRights('usrparam', setAvailableEditRights))
+  //   }
+  // }, [isComponentAllowedToRender])
 
   if (location.pathname === route.USER_SETTINGS) {
     return <Navigate to={`${route.USER_SETTINGS}/personal`} />

@@ -128,161 +128,164 @@ export default function Component(props) {
             }
 
             return (
-              <Form className={s.form}>
-                <div className={s.formBlock}>
-                  <div className={s.formBlockTitle}>1. {t('Payer\'s choice')}</div>
-                  <div className={cn(s.formFieldsBlock, s.first)}>
-                    <Select
-                      placeholder={t('Not chosen', { ns: 'other' })}
-                      value={values.profile}
-                      getElement={item => setPayerHandler(item)}
-                      isShadow
-                      className={s.select}
-                      itemsList={payers?.map(({ name, id }) => ({
-                        label: t(`${name?.$?.trim()}`),
-                        value: id?.$,
-                      }))}
-                    />
-                    {!newPayer && (
-                      <button
-                        onClick={() => setPayerHandler('add_new')}
-                        type="button"
-                        className={s.addNewPayerBtn}
-                      >
-                        {t('Add new payer', { ns: 'payers' })}
-                      </button>
-                    )}
-                    {newPayer && (
-                      <>
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name="person"
-                          label={`${t('The contact person', { ns: 'payers' })}:`}
-                          placeholder={t('Enter data', { ns: 'other' })}
-                          isShadow
-                          className={s.inputPerson}
-                          error={!!errors.person}
-                          touched={!!touched.person}
-                          isRequired
-                        />
-                        {payersSelectedFields?.offer_link && (
-                          <div className={s.offerBlock}>
-                            <CheckBox
-                              initialState={values[payersSelectedFields?.offer_field]}
-                              setValue={item =>
-                                setFieldValue(
-                                  `${payersSelectedFields?.offer_field}`,
-                                  item,
-                                )
-                              }
-                              className={s.checkbox}
-                              error={!!errors[payersSelectedFields?.offer_field]}
-                            />
-                            <div className={s.offerBlockText}>
-                              {t('I agree with the terms of the offer', { ns: 'payers' })}
-                              <br />
-                              <button
-                                onClick={offerTextHandler}
-                                type="button"
-                                className={s.offerBlockLink}
-                              >
-                                {payersSelectedFields?.offer_name}
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className={s.formBlock}>
-                  <div className={s.formBlockTitle}>2. {t('Payment method')}</div>
-                  <div className={s.formFieldsBlock}>
-                    {paymentsMethodList?.map(method => {
-                      const {
-                        paymethod,
-                        image,
-                        name,
-                        payment_minamount,
-                        payment_maxamount,
-                      } = method
-                      return (
-                        <button
-                          onClick={() => {
-                            setFieldValue('slecetedPayMethod', method)
-                            setMinAmount(Number(payment_minamount?.$))
-                            setMaxAmount(Number(payment_maxamount?.$))
-                          }}
-                          type="button"
-                          className={cn(s.paymentMethodBtn, {
-                            [s.selected]:
-                              paymethod?.$ === values?.slecetedPayMethod?.paymethod?.$,
-                          })}
-                          key={paymethod?.$}
-                        >
-                          <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                          <span>{name?.$}</span>
-                          <Check className={s.iconCheck} />
-                        </button>
-                      )
-                    })}
-                  </div>
-                  <ErrorMessage
-                    className={s.error_message}
-                    name={'slecetedPayMethod'}
-                    component="span"
-                  />
-                </div>
-                <div className={cn(s.formBlock, s.last)}>
-                  <div className={s.formBlockTitle}>3. {t('Top-up amount')}</div>
-                  <div className={s.formFieldsBlock}>
-                    <div className={s.inputAmountBlock}>
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name="amount"
-                        placeholder={'0.00'}
+              <Form>
+                <div className={s.form}>
+                  <div className={s.formBlock}>
+                    <div className={s.formBlockTitle}>1. {t('Payer\'s choice')}</div>
+                    <div className={cn(s.formFieldsBlock, s.first)}>
+                      <Select
+                        placeholder={t('Not chosen', { ns: 'other' })}
+                        value={values.profile}
+                        getElement={item => setPayerHandler(item)}
                         isShadow
-                        value={values.amount}
-                        onChange={e =>
-                          setFieldValue(
-                            'amount',
-                            e?.target?.value.replace(/[^0-9.]/g, ''),
-                          )
-                        }
-                        className={s.input}
-                        error={!!errors.amount}
-                        touched={!!touched.amount}
-                        isRequired
+                        className={s.select}
+                        itemsList={payers?.map(({ name, id }) => ({
+                          label: t(`${name?.$?.trim()}`),
+                          value: id?.$,
+                        }))}
                       />
-                      {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
-                        <PaymentCurrencyBtn
-                          list={paymentsCurrency?.payment_currency_list}
-                          currentValue={values?.payment_currency?.title}
-                          setValue={item => {
-                            setFieldValue('payment_currency', item)
-                            dispatch(
-                              billingOperations.getPaymentMethod({
-                                payment_currency: item?.value,
-                              }),
-                            )
-                          }}
-                        />
+                      {!newPayer && (
+                        <button
+                          onClick={() => setPayerHandler('add_new')}
+                          type="button"
+                          className={s.addNewPayerBtn}
+                        >
+                          {t('Add new payer', { ns: 'payers' })}
+                        </button>
+                      )}
+                      {newPayer && (
+                        <>
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name="person"
+                            label={`${t('The contact person', { ns: 'payers' })}:`}
+                            placeholder={t('Enter data', { ns: 'other' })}
+                            isShadow
+                            className={s.inputPerson}
+                            error={!!errors.person}
+                            touched={!!touched.person}
+                            isRequired
+                          />
+                          {payersSelectedFields?.offer_link && (
+                            <div className={s.offerBlock}>
+                              <CheckBox
+                                initialState={values[payersSelectedFields?.offer_field]}
+                                setValue={item =>
+                                  setFieldValue(
+                                    `${payersSelectedFields?.offer_field}`,
+                                    item,
+                                  )
+                                }
+                                className={s.checkbox}
+                                error={!!errors[payersSelectedFields?.offer_field]}
+                              />
+                              <div className={s.offerBlockText}>
+                                {t('I agree with the terms of the offer', {
+                                  ns: 'payers',
+                                })}
+                                <br />
+                                <button
+                                  onClick={offerTextHandler}
+                                  type="button"
+                                  className={s.offerBlockLink}
+                                >
+                                  {payersSelectedFields?.offer_name}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
-                </div>
+                  <div className={s.formBlock}>
+                    <div className={s.formBlockTitle}>2. {t('Payment method')}</div>
+                    <div className={s.formFieldsBlock}>
+                      {paymentsMethodList?.map(method => {
+                        const {
+                          paymethod,
+                          image,
+                          name,
+                          payment_minamount,
+                          payment_maxamount,
+                        } = method
+                        return (
+                          <button
+                            onClick={() => {
+                              setFieldValue('slecetedPayMethod', method)
+                              setMinAmount(Number(payment_minamount?.$))
+                              setMaxAmount(Number(payment_maxamount?.$))
+                            }}
+                            type="button"
+                            className={cn(s.paymentMethodBtn, {
+                              [s.selected]:
+                                paymethod?.$ === values?.slecetedPayMethod?.paymethod?.$,
+                            })}
+                            key={paymethod?.$}
+                          >
+                            <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                            <span>{name?.$}</span>
+                            <Check className={s.iconCheck} />
+                          </button>
+                        )
+                      })}
+                    </div>
+                    <ErrorMessage
+                      className={s.error_message}
+                      name={'slecetedPayMethod'}
+                      component="span"
+                    />
+                  </div>
+                  <div className={cn(s.formBlock, s.last)}>
+                    <div className={s.formBlockTitle}>3. {t('Top-up amount')}</div>
+                    <div className={s.formFieldsBlock}>
+                      <div className={s.inputAmountBlock}>
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="amount"
+                          placeholder={'0.00'}
+                          isShadow
+                          value={values.amount}
+                          onChange={e =>
+                            setFieldValue(
+                              'amount',
+                              e?.target?.value.replace(/[^0-9.]/g, ''),
+                            )
+                          }
+                          className={s.input}
+                          error={!!errors.amount}
+                          touched={!!touched.amount}
+                          isRequired
+                        />
+                        {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
+                          <PaymentCurrencyBtn
+                            list={paymentsCurrency?.payment_currency_list}
+                            currentValue={values?.payment_currency?.title}
+                            setValue={item => {
+                              setFieldValue('payment_currency', item)
+                              dispatch(
+                                billingOperations.getPaymentMethod({
+                                  payment_currency: item?.value,
+                                }),
+                              )
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
-                <div className={s.infotext}>
-                  {t('Payment using text')}{' '}
-                  {values?.slecetedPayMethod && (
-                    <span>
-                      {t('Minimum payment amount')}{' '}
-                      {values?.slecetedPayMethod?.payment_minamount?.$}{' '}
-                      {values?.payment_currency?.title}
-                    </span>
-                  )}
+                  <div className={s.infotext}>
+                    {t('Payment using text')}{' '}
+                    {values?.slecetedPayMethod && (
+                      <span>
+                        {t('Minimum payment amount')}{' '}
+                        {values?.slecetedPayMethod?.payment_minamount?.$}{' '}
+                        {values?.payment_currency?.title}
+                      </span>
+                    )}
+                  </div>
                 </div>
-
                 <div className={s.btnBlock}>
                   <Button
                     disabled={
