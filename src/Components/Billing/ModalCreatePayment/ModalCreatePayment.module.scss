@@ -37,6 +37,18 @@
   max-height: 55vh;
   overflow-y: auto;
   overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 .crossIcon {
@@ -299,6 +311,7 @@
 
   .form {
     padding: 0px 50px;
+    max-height: 90vh;
   }
 
   .btnBlock {

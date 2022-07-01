@@ -86,86 +86,89 @@ export default function Component(props) {
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
-              <div className={s.fieldsBlock}>
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="id"
-                  label={`${t('Id')}:`}
-                  placeholder={t('Enter id', { ns: 'other' })}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.id}
-                  touched={!!touched.id}
-                />
 
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="locale_name"
-                  label={`${t('Name')}:`}
-                  placeholder={t('Enter the title')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.locale_name}
-                  touched={!!touched.locale_name}
-                />
+              <div className={s.formContainer}>
+                <div className={s.fieldsBlock}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="id"
+                    label={`${t('Id')}:`}
+                    placeholder={t('Enter id', { ns: 'other' })}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.id}
+                    touched={!!touched.id}
+                  />
 
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="item"
-                  label={`${t('Service code')}:`}
-                  placeholder={t('Enter code')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.item}
-                  touched={!!touched.item}
-                />
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="locale_name"
+                    label={`${t('Name')}:`}
+                    placeholder={t('Enter the title')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.locale_name}
+                    touched={!!touched.locale_name}
+                  />
 
-                <Select
-                  label={`${t('Sum comparison type')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.compare_type}
-                  getElement={item => setFieldValue('compare_type', item)}
-                  isShadow
-                  itemsList={expensesFilterList?.compare_type?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="item"
+                    label={`${t('Service code')}:`}
+                    placeholder={t('Enter code')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.item}
+                    touched={!!touched.item}
+                  />
 
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="amount"
-                  label={`${t('Sum', { ns: 'other' })}:`}
-                  placeholder={t('Not selected')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.email}
-                  touched={!!touched.email}
-                />
+                  <Select
+                    label={`${t('Sum comparison type')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.compare_type}
+                    getElement={item => setFieldValue('compare_type', item)}
+                    isShadow
+                    itemsList={expensesFilterList?.compare_type?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
 
-                <div className={s.timeSelectBlock}>
-                  <div className={s.calendarBlock}>
-                    <IconButton
-                      onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
-                      icon="calendar"
-                      className={s.calendarBtn}
-                    />
-                    <div
-                      ref={dropdownCalendar}
-                      className={cn(s.calendarModal, s.expenses, {
-                        [s.opened]: isOpenedCalendar,
-                      })}
-                    >
-                      <CalendarModal
-                        pointerClassName={s.calendar_pointer}
-                        value={dates}
-                        setStartDate={item => {
-                          setFieldValue('fromdate', item)
-                        }}
-                        setEndDate={item => setFieldValue('todate', item)}
-                        range={values?.fromdate?.length !== 0}
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="amount"
+                    label={`${t('Sum', { ns: 'other' })}:`}
+                    placeholder={t('Not selected')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.email}
+                    touched={!!touched.email}
+                  />
+
+                  <div className={s.timeSelectBlock}>
+                    <div className={s.calendarBlock}>
+                      <IconButton
+                        onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
+                        icon="calendar"
+                        className={s.calendarBtn}
                       />
+                      <div
+                        ref={dropdownCalendar}
+                        className={cn(s.calendarModal, s.expenses, {
+                          [s.opened]: isOpenedCalendar,
+                        })}
+                      >
+                        <CalendarModal
+                          pointerClassName={s.calendar_pointer}
+                          value={dates}
+                          setStartDate={item => {
+                            setFieldValue('fromdate', item)
+                          }}
+                          setEndDate={item => setFieldValue('todate', item)}
+                          range={values?.fromdate?.length !== 0}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

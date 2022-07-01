@@ -99,151 +99,155 @@ export default function Component(props) {
                 <h2>{t('Filter', { ns: 'other' })}</h2>
                 <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
-              <div className={s.fieldsBlock}>
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="id"
-                  label={`${t('Id')}:`}
-                  placeholder={t('Enter id', { ns: 'other' })}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.id}
-                  touched={!!touched.id}
-                />
 
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="number"
-                  label={`${t('Payment number')}:`}
-                  placeholder={t('Enter payment number')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.number}
-                  touched={!!touched.number}
-                />
-
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="sender"
-                  label={`${t('Payer')}:`}
-                  placeholder={t('Not selected')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.sender}
-                  touched={!!touched.sender}
-                />
-
-                <Select
-                  label={`${t('Recipient')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.recipient}
-                  getElement={item => setFieldValue('recipient', item)}
-                  isShadow
-                  itemsList={paymentsFiltersList?.recipient?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'other' }),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
-
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="sender_id"
-                  label={`${t('Payer codes')}:`}
-                  placeholder={t('Enter codes')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.sender_id}
-                  touched={!!touched.sender_id}
-                />
-
-                <Select
-                  label={`${t('status', { ns: 'other' })}:`}
-                  placeholder={t('Not selected')}
-                  value={values.status}
-                  getElement={item => setFieldValue('status', item)}
-                  isShadow
-                  itemsList={paymentsFiltersList?.status?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
-
-                <InputField
-                  inputWrapperClass={s.inputHeight}
-                  name="sum"
-                  label={`${t('Sum', { ns: 'other' })}:`}
-                  placeholder={t('Not selected')}
-                  isShadow
-                  className={s.input}
-                  error={!!errors.sum}
-                  touched={!!touched.sum}
-                />
-
-                <Select
-                  label={`${t('Payment method')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.paymethod}
-                  getElement={item => setFieldValue('paymethod', item)}
-                  isShadow
-                  itemsList={paymentsFiltersList?.paymethod?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'other' }),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
-
-                <Select
-                  label={`${t('Refund')}:`}
-                  placeholder={t('Not selected')}
-                  value={values.restrictrefund}
-                  getElement={item => setFieldValue('restrictrefund', item)}
-                  isShadow
-                  itemsList={paymentsFiltersList?.restrictrefund?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                />
-
-                <div className={s.timeSelectBlock}>
-                  <Select
-                    label={`${t('Period', { ns: 'other' })}:`}
-                    value={values.createdate}
-                    getElement={item => setFieldValue('createdate', item)}
+              <div className={s.formContainer}>
+                <div className={s.fieldsBlock}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="id"
+                    label={`${t('Id')}:`}
+                    placeholder={t('Enter id', { ns: 'other' })}
                     isShadow
-                    itemsList={paymentsFiltersList?.createdate?.map(({ $key, $ }) => ({
+                    className={s.input}
+                    error={!!errors.id}
+                    touched={!!touched.id}
+                  />
+
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="number"
+                    label={`${t('Payment number')}:`}
+                    placeholder={t('Enter payment number')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.number}
+                    touched={!!touched.number}
+                  />
+
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="sender"
+                    label={`${t('Payer')}:`}
+                    placeholder={t('Not selected')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.sender}
+                    touched={!!touched.sender}
+                  />
+
+                  <Select
+                    label={`${t('Recipient')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.recipient}
+                    getElement={item => setFieldValue('recipient', item)}
+                    isShadow
+                    itemsList={paymentsFiltersList?.recipient?.map(({ $key, $ }) => ({
                       label: t(`${$.trim()}`, { ns: 'other' }),
                       value: $key,
                     }))}
-                    className={cn(s.select, s.dateSelect)}
+                    className={s.select}
                   />
-                  <div className={s.calendarBlock}>
-                    <IconButton
-                      onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
-                      icon="calendar"
-                      className={s.calendarBtn}
+
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="sender_id"
+                    label={`${t('Payer codes')}:`}
+                    placeholder={t('Enter codes')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.sender_id}
+                    touched={!!touched.sender_id}
+                  />
+
+                  <Select
+                    label={`${t('status', { ns: 'other' })}:`}
+                    placeholder={t('Not selected')}
+                    value={values.status}
+                    getElement={item => setFieldValue('status', item)}
+                    isShadow
+                    itemsList={paymentsFiltersList?.status?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
+
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="sum"
+                    label={`${t('Sum', { ns: 'other' })}:`}
+                    placeholder={t('Not selected')}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.sum}
+                    touched={!!touched.sum}
+                  />
+
+                  <Select
+                    label={`${t('Payment method')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.paymethod}
+                    getElement={item => setFieldValue('paymethod', item)}
+                    isShadow
+                    itemsList={paymentsFiltersList?.paymethod?.map(({ $key, $ }) => ({
+                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
+
+                  <Select
+                    label={`${t('Refund')}:`}
+                    placeholder={t('Not selected')}
+                    value={values.restrictrefund}
+                    getElement={item => setFieldValue('restrictrefund', item)}
+                    isShadow
+                    itemsList={paymentsFiltersList?.restrictrefund?.map(
+                      ({ $key, $ }) => ({
+                        label: t(`${$.trim()}`),
+                        value: $key,
+                      }),
+                    )}
+                    className={s.select}
+                  />
+
+                  <div className={s.timeSelectBlock}>
+                    <Select
+                      label={`${t('Period', { ns: 'other' })}:`}
+                      value={values.createdate}
+                      getElement={item => setFieldValue('createdate', item)}
+                      isShadow
+                      itemsList={paymentsFiltersList?.createdate?.map(({ $key, $ }) => ({
+                        label: t(`${$.trim()}`, { ns: 'other' }),
+                        value: $key,
+                      }))}
+                      className={cn(s.select, s.dateSelect)}
                     />
-                    <div
-                      ref={dropdownCalendar}
-                      className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
-                    >
-                      <CalendarModal
-                        pointerClassName={s.calendar_pointer}
-                        value={dates}
-                        setStartDate={item => {
-                          setFieldValue('createdatestart', item)
-                          setFieldValue('createdate', 'other')
-                        }}
-                        setEndDate={item => setFieldValue('createdateend', item)}
-                        range={values?.createdatestart?.length !== 0}
+                    <div className={s.calendarBlock}>
+                      <IconButton
+                        onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
+                        icon="calendar"
+                        className={s.calendarBtn}
                       />
+                      <div
+                        ref={dropdownCalendar}
+                        className={cn(s.calendarModal, { [s.opened]: isOpenedCalendar })}
+                      >
+                        <CalendarModal
+                          pointerClassName={s.calendar_pointer}
+                          value={dates}
+                          setStartDate={item => {
+                            setFieldValue('createdatestart', item)
+                            setFieldValue('createdate', 'other')
+                          }}
+                          setEndDate={item => setFieldValue('createdateend', item)}
+                          range={values?.createdatestart?.length !== 0}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className={s.btnBlock}>
                 <Button
                   className={s.searchBtn}
