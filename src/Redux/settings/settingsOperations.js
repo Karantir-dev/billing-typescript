@@ -621,7 +621,7 @@ const confirmEmail = key => (dispatch, getState) => {
         func: 'notice.confirm',
         sok: 'ok',
         out: 'json',
-        
+        lang: 'en',
         auth: sessionId,
         key,
       }),
