@@ -18,7 +18,7 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -228,6 +228,7 @@ export default function Component() {
         changeTariffVhostHandler={changeTariffVhostHandler}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
+        isFilterActive={vhostList?.length > 0}
       />
 
       {vhostList?.length < 1 && isFiltered && (

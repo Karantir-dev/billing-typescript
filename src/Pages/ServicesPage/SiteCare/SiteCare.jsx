@@ -17,7 +17,7 @@ import s from './SiteCare.module.scss'
 import { siteCareOperations, siteCareSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -159,6 +159,7 @@ export default function Component() {
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
+        isFilterActive={siteCareList?.length > 0}
       />
 
       {siteCareList?.length < 1 && isFiltered && (

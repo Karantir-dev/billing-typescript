@@ -178,6 +178,7 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
+        isFilterActive={domainsList?.length > 0}
       />
 
       {domainsList?.length < 1 && isFiltered && (

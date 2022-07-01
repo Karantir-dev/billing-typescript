@@ -27,6 +27,7 @@ export default function Component(props) {
     changeTariffVhostHandler,
     setIsFiltered,
     setSelctedItem,
+    isFilterActive,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -81,6 +82,7 @@ export default function Component(props) {
             onClick={() => setFilterModal(true)}
             icon="filter"
             className={s.calendarBtn}
+            disabled={!isFilterActive}
           />
           {filterModal && (
             <div>
