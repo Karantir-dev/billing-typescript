@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, authOperations } from '../'
+import { actions, authOperations, usersOperations } from '../'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
@@ -7,7 +7,7 @@ import i18n from './../../i18n'
 import { errorHandler } from '../../utils'
 
 const getUserEdit =
-  (elid, checkEmail = false) =>
+  (elid, checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -65,7 +65,9 @@ const getUserEdit =
         })
 
         dispatch(settingsActions.setUsersEdit(elem))
-        dispatch(getUserParams(checkEmail))
+        dispatch(
+          getUserParams(checkEmail, isComponentAllowedToRender, setAvailableEditRights),
+        )
       })
       .catch(error => {
         console.log('error', error)
@@ -105,7 +107,7 @@ const setUserAvatar =
   }
 
 const getUserParams =
-  (checkEmail = false) =>
+  (checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
   (dispatch, getState) => {
     const {
       auth: { sessionId },
@@ -191,6 +193,12 @@ const getUserParams =
         })
 
         dispatch(settingsActions.setUsersParams(elem))
+
+        if (isComponentAllowedToRender) {
+          return dispatch(
+            usersOperations.getAvailableRights('usrparam', setAvailableEditRights),
+          )
+        }
         dispatch(actions.hideLoader())
       })
       .then(() => {
