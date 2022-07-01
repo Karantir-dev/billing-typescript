@@ -621,7 +621,7 @@ const deleteDomain =
   }
 
 const getHistoryDomain =
-  (body = {}, setHistoryModal, setHistoryList) =>
+  (body = {}, setHistoryModal, setHistoryList, setHistoryItemCount) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -636,7 +636,7 @@ const getHistoryDomain =
           auth: sessionId,
           func: 'service.history',
           out: 'json',
-          p_cnt: 10000,
+          p_cnt: 10,
           ...body,
         }),
       )
@@ -649,6 +649,7 @@ const getHistoryDomain =
           throw new Error(data.doc.error.msg.$)
         }
 
+        setHistoryItemCount && setHistoryItemCount(data?.doc?.p_elems?.$ || 0)
         setHistoryList && setHistoryList(data?.doc?.elem)
         setHistoryModal && setHistoryModal(true)
 

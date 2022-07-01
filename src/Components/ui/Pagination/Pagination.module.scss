@@ -35,6 +35,13 @@
     justify-content: center;
     cursor: pointer;
 
+    &.inputItem {
+      background: var(--forms_bgc_2);
+      box-shadow: var(--forms_shadow);
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
     &.arrow {
       margin: 0 20px;
     }
@@ -90,9 +97,8 @@
 
 .input {
   padding: 11px 15px;
-  border-radius: 2px;
   border: none;
-  max-width: 65px;
+  max-width: 55px;
   text-align: center;
   font-style: normal;
   font-weight: 400;
@@ -101,8 +107,7 @@
   line-height: 70.9%;
   max-height: 34px;
   color: var(--main-text);
-  background: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
+  background: none;
 }
 
 .blockPagination {
