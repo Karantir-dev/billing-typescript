@@ -135,5 +135,8 @@
   "Connection URL": "URL для подключения",
   "Service deletion": "Удаление услуги",
   "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу",
-  "IP-address removing": "Удаление IP-адреса"
+  "IP-address removing": "Удаление IP-адреса",
+  "DNS-hosting activation": "Активация DNS-хостинга",
+  "FTP storage activation": "Активация FTP-хранилища",
+  "Virtual server activation": "Активация виртуального сервера"
 }

@@ -318,7 +318,6 @@ const orderServer =
     ipTotal,
     ipName,
     managePanel,
-    setParameters,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -352,9 +351,6 @@ const orderServer =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        setParameters(null)
-
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,

@@ -163,3 +163,9 @@
     color: var(--main-text);
   }
 }
+
+@media screen and (min-width: 1200px) {
+  .instruction_modal {
+    max-width: 990px;
+  }
+}
