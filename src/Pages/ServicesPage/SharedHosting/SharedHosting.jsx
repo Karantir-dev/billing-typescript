@@ -47,6 +47,8 @@ export default function Component() {
   const [instructionModal, setInstructionModal] = useState(false)
   const [instructionData, setInstructionData] = useState(null)
 
+  const [isFiltered, setIsFiltered] = useState(false)
+
   useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(vhostOperations.getVhosts(data))
@@ -216,6 +218,8 @@ export default function Component() {
         {t('burger_menu.services.services_list.virtual_hosting')}
       </h1>
       <SharedHostingFilter
+        setIsFiltered={setIsFiltered}
+        setSelctedItem={setSelctedItem}
         historyVhostHandler={historyVhostHandler}
         instructionVhostHandler={instructionVhostHandler}
         platformVhostHandler={platformVhostHandler}
@@ -225,17 +229,26 @@ export default function Component() {
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
       />
-      <SharedHostingTable
-        historyVhostHandler={historyVhostHandler}
-        instructionVhostHandler={instructionVhostHandler}
-        platformVhostHandler={platformVhostHandler}
-        prolongVhostHandler={prolongVhostHandler}
-        editVhostHandler={editVhostHandler}
-        changeTariffVhostHandler={changeTariffVhostHandler}
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={vhostList}
-      />
+
+      {vhostList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {vhostList?.length > 0 && (
+        <SharedHostingTable
+          historyVhostHandler={historyVhostHandler}
+          instructionVhostHandler={instructionVhostHandler}
+          platformVhostHandler={platformVhostHandler}
+          prolongVhostHandler={prolongVhostHandler}
+          editVhostHandler={editVhostHandler}
+          changeTariffVhostHandler={changeTariffVhostHandler}
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={vhostList}
+        />
+      )}
 
       {vhostList.length !== 0 && (
         <div className={s.pagination}>

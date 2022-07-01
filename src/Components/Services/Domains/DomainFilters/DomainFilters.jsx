@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import DomainFiltertsModal from '../DomainFiltertsModal/DomainFiltertsModal'
 import { domainsOperations, domainsSelectors } from '../../../../Redux'
@@ -24,6 +24,8 @@ export default function Component(props) {
     historyDomainHandler,
     whoisDomainHandler,
     NSDomainHandler,
+    setIsFiltered,
+    setSelctedItem,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -33,7 +35,11 @@ export default function Component(props) {
 
   const dispatch = useDispatch()
 
-  const resetFilterHandler = setValues => {
+  useEffect(() => {
+    resetFilterHandler()
+  }, [])
+
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       domain: '',
@@ -49,14 +55,17 @@ export default function Component(props) {
       cost_to: '',
       autoprolong: '',
     }
-    setValues && setValues({ ...clearField })
     setCurrentPage(1)
     setFilterModal(false)
+    setSelctedItem(null)
+    setIsFiltered(false)
     dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
   }
 
   const setFilterHandler = values => {
     setCurrentPage(1)
+    setIsFiltered(true)
+    setSelctedItem(null)
     setFilterModal(false)
     dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
   }
