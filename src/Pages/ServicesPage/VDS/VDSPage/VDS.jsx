@@ -36,9 +36,7 @@ export default function VDS() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
   const [rights, setRights] = useState({})
-
   const [servers, setServers] = useState([])
-
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')

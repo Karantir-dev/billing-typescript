@@ -166,192 +166,201 @@ export default function EditModal({ elid, closeFn }) {
         {({ values, setFieldValue }) => {
           console.log(values)
           return (
-            <Form className={s.form}>
-              <div className={s.grid_fields}>
-                <Select
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  value={values.autoprolong}
-                  getElement={value => setFieldValue('autoprolong', value)}
-                  itemsList={getOptionsListExtended('autoprolong')}
-                  label={`${t('autoprolong')}:`}
-                  isShadow
-                />
+            <Form>
+              <div className={s.form}>
+                <div className={s.grid_fields}>
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.autoprolong}
+                    getElement={value => setFieldValue('autoprolong', value)}
+                    itemsList={getOptionsListExtended('autoprolong')}
+                    label={`${t('autoprolong')}:`}
+                    isShadow
+                  />
 
-                <Select
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  value={values.stored_method}
-                  getElement={value => setFieldValue('stored_method', value)}
-                  itemsList={getOptionsList('stored_method')}
-                  label={`${t('payment_method')}:`}
-                  isShadow
-                  disabled={values.autoprolong === 'null'}
-                />
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.stored_method}
+                    getElement={value => setFieldValue('stored_method', value)}
+                    itemsList={getOptionsList('stored_method')}
+                    label={`${t('payment_method')}:`}
+                    isShadow
+                    disabled={values.autoprolong === 'null'}
+                  />
 
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="domainName"
-                  label={`${t('domain_name')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="userName"
-                  label={`${t('user_name')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="serverid"
-                  label={`${t('name')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="preinstalledSoft"
-                  label={`${t('preinstalled_soft')}:`}
-                  isShadow
-                  disabled
-                />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="domainName"
+                    label={`${t('domain_name')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="userName"
+                    label={`${t('user_name')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="serverid"
+                    label={`${t('name')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="preinstalledSoft"
+                    label={`${t('preinstalled_soft')}:`}
+                    isShadow
+                    disabled
+                  />
 
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="IP"
-                  label={`${t('ip_address')}:`}
-                  isShadow
-                  disabled
-                />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="IP"
+                    label={`${t('ip_address')}:`}
+                    isShadow
+                    disabled
+                  />
 
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="password"
-                  label={`${t('password')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="userpassword"
-                  label={`${t('user_password')}:`}
-                  isShadow
-                  disabled
-                />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="password"
+                    label={`${t('password')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="userpassword"
+                    label={`${t('user_password')}:`}
+                    isShadow
+                    disabled
+                  />
 
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="ostempl"
-                  label={`${t('ostempl')}:`}
-                  isShadow
-                  disabled
-                />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="ostempl"
+                    label={`${t('ostempl')}:`}
+                    isShadow
+                    disabled
+                  />
+                </div>
+
+                <button
+                  className={cn(s.chapter_btn, s.mt)}
+                  type="button"
+                  onClick={handleAddOnsClick}
+                >
+                  2. {t('additionally')}{' '}
+                  <ArrowSign
+                    className={cn(s.arrow_icon, { [s.opened]: isAddOnsOpened })}
+                  />
+                </button>
+
+                <div ref={addOnsEl} className={cn(s.add_ons_wrapper, s.grid_fields)}>
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="processors"
+                    label={`${t('processors')}:`}
+                    isShadow
+                    disabled
+                  />
+
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.diskSpace}
+                    getElement={value => setFieldValue('diskSpace', value)}
+                    itemsList={getOptionsListExtended('Disk_space')}
+                    label={`${t('disk_space')}:`}
+                    isShadow
+                    disabled={initialState.change_disc_size.$ === 'off'}
+                  />
+
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.Control_panel}
+                    getElement={value => {
+                      setFieldValue('Control_panel', value)
+
+                      dispatch(
+                        vdsOperations.editVDS(
+                          elid,
+                          { ...values, Control_panel: value },
+                          initialState.register,
+                          initialState.register.Control_panel,
+                          mutateOptionsListData,
+                          setOrderInfo,
+                        ),
+                      )
+                    }}
+                    itemsList={getControlPanelList('Control_panel')}
+                    label={`${t('license')}:`}
+                    isShadow
+                  />
+                  
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="portSpeed"
+                    label={`${t('port_speed')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="memory"
+                    label={`${t('memory')}:`}
+                    isShadow
+                    disabled
+                  />
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="IPcount"
+                    label={`${t('IPcount')}:`}
+                    isShadow
+                    disabled
+                  />
+                </div>
+
+                {orderInfo && (
+                  <>
+                    <p className={s.total_amount}>
+                      {t('total_amount')}:{' '}
+                      <span className={s.price}>{orderInfo.price} EUR</span>
+                    </p>
+                    <p className={s.description}>{translatedDescription}</p>
+                  </>
+                )}
               </div>
 
-              <button
-                className={cn(s.chapter_btn, s.mt)}
-                type="button"
-                onClick={handleAddOnsClick}
-              >
-                2. {t('additionally')}{' '}
-                <ArrowSign className={cn(s.arrow_icon, { [s.opened]: isAddOnsOpened })} />
-              </button>
-
-              <div ref={addOnsEl} className={cn(s.add_ons_wrapper, s.grid_fields)}>
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="processors"
-                  label={`${t('processors')}:`}
+              <div className={s.btnBlock}>
+                <Button
+                  className={s.btn_save}
+                  type="submit"
                   isShadow
-                  disabled
-                />
-
-                <Select
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  value={values.diskSpace}
-                  getElement={value => setFieldValue('diskSpace', value)}
-                  itemsList={getOptionsListExtended('Disk_space')}
-                  label={`${t('disk_space')}:`}
-                  isShadow
-                  disabled={initialState.change_disc_size.$ === 'off'}
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="portSpeed"
-                  label={`${t('port_speed')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="memory"
-                  label={`${t('memory')}:`}
-                  isShadow
-                  disabled
-                />
-                <InputField
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  name="IPcount"
-                  label={`${t('IPcount')}:`}
-                  isShadow
-                  disabled
-                />
-
-                <Select
-                  className={s.mb}
-                  inputClassName={s.bgc}
-                  value={values.Control_panel}
-                  getElement={value => {
-                    setFieldValue('Control_panel', value)
-
-                    dispatch(
-                      vdsOperations.editVDS(
-                        elid,
-                        { ...values, Control_panel: value },
-                        initialState.register,
-                        initialState.register.Control_panel,
-                        mutateOptionsListData,
-                        setOrderInfo,
-                      ),
-                    )
-                  }}
-                  itemsList={getControlPanelList('Control_panel')}
-                  label={`${t('license')}:`}
-                  isShadow
+                  label={
+                    orderInfo ? t('buy', { ns: 'other' }) : t('Save', { ns: 'other' })
+                  }
                 />
               </div>
-
-              {orderInfo && (
-                <>
-                  <p className={s.total_amount}>
-                    {t('total_amount')}:{' '}
-                    <span className={s.price}>{orderInfo.price} EUR</span>
-                  </p>
-                  <p className={s.description}>{translatedDescription}</p>
-                </>
-              )}
-
-              <Button
-                className={s.btn_save}
-                type="submit"
-                isShadow
-                label={orderInfo ? t('buy', { ns: 'other' }) : t('Save', { ns: 'other' })}
-              />
             </Form>
           )
         }}

@@ -17,7 +17,7 @@ export default function Component(props) {
   }, [message])
 
   return (
-    <div>
+    <div className={s.messageContainer}>
       <div className={s.fieldsBlock}>
         <div className={s.messageBlock}>
           <Field

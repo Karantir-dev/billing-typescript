@@ -21,6 +21,7 @@ const getTicketsHandler =
           out: 'json',
           auth: sessionId,
           p_cnt: 30,
+          lang: 'en',
           p_col: '+time',
           clickstat: 'yes',
           ...body,
@@ -57,6 +58,7 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         clickstat: 'yes',
+        lang: 'en',
         elid: idTicket,
       }),
     )
@@ -88,6 +90,7 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         clickstat: 'yes',
+        lang: 'en',
         elid: idTicket,
       }),
     )
@@ -124,6 +127,7 @@ const getTicketsArchiveHandler =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
@@ -156,6 +160,7 @@ const getFile = (name, elid) => (dispatch, getState) => {
         clickstat: 'yes',
         auth: sessionId,
         elid,
+        lang: 'en',
       }),
       { responseType: 'blob' },
     )
@@ -182,6 +187,7 @@ const setRate = (type, elid, plid, setStatus) => (dispatch, getState) => {
         func: `ticket.message.rate.${type}`,
         out: 'json',
         auth: sessionId,
+        lang: 'en',
         elid,
         plid,
       }),
@@ -240,6 +246,7 @@ const getDepartmenList = () => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.edit',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
       }),
@@ -270,6 +277,7 @@ const getServiceList = () => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.edit',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
         sv_field: 'ticket_item',
@@ -343,6 +351,7 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.filter',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
       }),
@@ -410,6 +419,7 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket.filter',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
         sok: 'ok',
@@ -460,6 +470,7 @@ const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket_archive.filter',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
       }),
@@ -527,6 +538,7 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
       '/',
       qs.stringify({
         func: 'clientticket_archive.filter',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
         sok: 'ok',

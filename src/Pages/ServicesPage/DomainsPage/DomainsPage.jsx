@@ -17,7 +17,7 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'trusted_users'])
+  const { t, i18n } = useTranslation(['container', 'trusted_users', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -41,6 +41,8 @@ export default function Component() {
 
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
+
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -166,7 +168,9 @@ export default function Component() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
       <DomainFilters
+        setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
+        setSelctedItem={setSelctedItem}
         setCurrentPage={setCurrentPage}
         historyDomainHandler={historyDomainHandler}
         deleteDomainHandler={deleteDomainHandler}
@@ -174,18 +178,28 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
+        isFilterActive={domainsList?.length > 0}
       />
-      <DomainsTable
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={domainsList}
-        historyDomainHandler={historyDomainHandler}
-        deleteDomainHandler={deleteDomainHandler}
-        editDomainHandler={editDomainHandler}
-        renewDomainHandler={renewDomainHandler}
-        NSDomainHandler={NSDomainHandler}
-        whoisDomainHandler={whoisDomainHandler}
-      />
+
+      {domainsList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {domainsList?.length > 0 && (
+        <DomainsTable
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={domainsList}
+          historyDomainHandler={historyDomainHandler}
+          deleteDomainHandler={deleteDomainHandler}
+          editDomainHandler={editDomainHandler}
+          renewDomainHandler={renewDomainHandler}
+          NSDomainHandler={NSDomainHandler}
+          whoisDomainHandler={whoisDomainHandler}
+        />
+      )}
       {domainsList.length !== 0 && (
         <div className={s.pagination}>
           <Pagination

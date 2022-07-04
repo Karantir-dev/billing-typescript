@@ -56,7 +56,7 @@ export default function Component(props) {
         }}
         onSubmit={setFilterHandler}
       >
-        {({ setFieldValue, setValues, values, errors, touched }) => {
+        {({ setFieldValue, values, errors, touched }) => {
           let dates = null
           if (values.opendate && values.expiredate) {
             dates = [new Date(values.opendate), new Date(values.expiredate)]
@@ -222,7 +222,7 @@ export default function Component(props) {
                   type="submit"
                 />
                 <button
-                  onClick={() => resetFilterHandler(setValues)}
+                  onClick={() => resetFilterHandler()}
                   type="button"
                   className={s.clearFilters}
                 >

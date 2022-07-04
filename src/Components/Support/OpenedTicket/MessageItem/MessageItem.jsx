@@ -20,8 +20,6 @@ export default function Component(props) {
     dispatch(supportOperations.getFile(fileName, fileId))
   }
 
-  console.log(message?.body?.$)
-
   return (
     <div
       className={cn(

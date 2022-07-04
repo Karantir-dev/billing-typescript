@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +25,9 @@ export default function Component(props) {
     prolongVhostHandler,
     editVhostHandler,
     changeTariffVhostHandler,
+    setIsFiltered,
+    setSelctedItem,
+    isFilterActive,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -34,7 +37,7 @@ export default function Component(props) {
 
   const dispatch = useDispatch()
 
-  const resetFilterHandler = setValues => {
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       ip: '',
@@ -52,15 +55,22 @@ export default function Component(props) {
       cost_to: '',
       autoprolong: '',
     }
-    setValues && setValues({ ...clearField })
     setCurrentPage(1)
     setFilterModal(false)
+    setIsFiltered(false)
+    setSelctedItem(null)
     dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true))
   }
+
+  useEffect(() => {
+    resetFilterHandler()
+  }, [])
 
   const setFilterHandler = values => {
     setCurrentPage(1)
     setFilterModal(false)
+    setIsFiltered(true)
+    setSelctedItem(null)
     dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true))
   }
 
@@ -72,6 +82,7 @@ export default function Component(props) {
             onClick={() => setFilterModal(true)}
             icon="filter"
             className={s.calendarBtn}
+            disabled={!isFilterActive}
           />
           {filterModal && (
             <div>

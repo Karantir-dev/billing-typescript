@@ -35,7 +35,7 @@ const getAccessLogsHandler =
         dispatch(accessLogsActions.getAccessLogs(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(accessLogsActions.getAccessLogsCount(count))
-        dispatch(actions.hideLoader())
+        dispatch(getAccessLogsFiltersHandler())
       })
       .catch(error => {
         console.log('logs -', error.message)
@@ -47,6 +47,7 @@ const getAccessLogsHandler =
 const getAccessLogsFiltersHandler =
   (body = {}) =>
   (dispatch, getState) => {
+    dispatch(actions.showLoader())
     const {
       auth: { sessionId },
     } = getState()
@@ -72,6 +73,7 @@ const getAccessLogsFiltersHandler =
         })
         dispatch(accessLogsActions.getAccessLogsFilters(filters))
         dispatch(accessLogsActions.getCurrentFilters(data?.doc?.filter?.param))
+        dispatch(actions.hideLoader())
       })
       .catch(error => {
         errorHandler(error.message, dispatch)
@@ -82,6 +84,7 @@ const getAccessLogsFiltersHandler =
 const filterDataHandler =
   (body = {}) =>
   (dispatch, getState) => {
+    dispatch(actions.showLoader())
     const {
       auth: { sessionId },
     } = getState()
@@ -122,13 +125,16 @@ const filterDataHandler =
             const count = data?.doc?.p_elems?.$ || 0
             dispatch(accessLogsActions.getAccessLogsCount(count))
             dispatch(accessLogsActions.getAccessLogs(elem))
+            dispatch(actions.hideLoader())
           })
           .catch(error => {
             errorHandler(error.message, dispatch)
+            dispatch(actions.hideLoader())
             console.log('logs -', error.message)
           })
       })
       .catch(error => {
+        dispatch(actions.hideLoader())
         console.log('logs -', error.message)
       })
   }
