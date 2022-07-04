@@ -62,5 +62,19 @@
   "Back to billing": "Вернуться в билинг",
   "An error occurred while processing the payment. If you have any questions, please contact support.": "При обработке платежа произошла ошибка. Если у вас возникли вопросы, обратитесь в поддержку. ",
   "Support service": "Служба поддержки",
-  "Payment error": "Ошибка оплаты"
+  "Payment error": "Ошибка оплаты",
+  "Telematic services": "Телематические услуги",
+  "DNS-hosting for domains": "DNS-хостинг '{{value}}' доменов",
+  "Domain names": "Доменные имена",
+  "Site care service": "Забота о сайте",
+  "Add-on Control panel": "Дополнительная панель управления",
+  "Add-on IP-addresses count": "Количество дополнительных IP-адресов",
+  "Taking care of the server": "Забота о сервере",
+  "Equipment leasing": "Лизинг оборудования",
+  "FTP-storage": "FTP-хранилище",
+  "Add-on Disk space": "Дополнительное место на диске",
+  "Add-on Memory": "Дополнительная память",
+  "Add-on CPU count": "Дополнительный процессор",
+  "Payment system commission": "Комиссия платежной системы",
+  "Add-on DDoS Protected Port Speed (Incoming)": "Дополнительный DDoS-защищенный порт скорость (входящий)"
 }

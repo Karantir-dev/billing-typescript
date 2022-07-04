@@ -79,7 +79,7 @@
       "email": "Incorrect email",
       "full_name": "Unacceptable symbols",
       "phone": "Number must contain at least 7 digits",
-      "password": "Password must contain at least 6 characters (at least 1 lowercase and 1 uppercase letters are required)",
+      "password": "Password must contain at least 12 characters (at least 1 lowercase and 1 uppercase letters are required)",
       "password_toolong": "Max length of the password can be 48 characters",
       "conf_password": "Passwords do not match"
     },
