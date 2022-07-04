@@ -160,7 +160,7 @@ export default function Component() {
 
         {vhostList?.length > 0 && (
           <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+            <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
             {vhostList?.map(el => {
               const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
               return (

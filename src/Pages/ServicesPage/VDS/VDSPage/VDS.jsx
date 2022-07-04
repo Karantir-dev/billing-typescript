@@ -236,7 +236,10 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => goToPanel(activeServer.id.$)}
-                  disabled={activeServer?.transition?.$ !== 'on'}
+                  disabled={
+                    activeServer?.transition?.$ !== 'on' ||
+                    activeServer?.status?.$ !== '2'
+                  }
                   icon="exitSign"
                 />
               </HintWrapper>
