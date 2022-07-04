@@ -41,7 +41,8 @@ export default function DNSList({
         <div className={s.no_service_wrapper}>
           <img
             src={require('../../../../images/services/dns_hosting.webp')}
-            alt="forexbox"
+            alt="dns"
+            className={s.dns_img}
           />
           <p className={s.no_service_title}>You dont have a server yet</p>
           <p className={s.no_service_description}>Here must be service description</p>

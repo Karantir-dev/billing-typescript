@@ -27,8 +27,6 @@ export default function NotificationList({ notifications }) {
   const removeItem = id => {
     dispatch(userOperations.removeItems(isAuthenticated, id))
     dispatch(userActions.removeItems(id))
-
-    console.log('removing id', id)
     // setCurrentNotifList(() => {
     //   if (Array.isArray(currentNotifList)) {
     //     return currentNotifList.filter(item => item.$id !== id)
@@ -40,12 +38,10 @@ export default function NotificationList({ notifications }) {
 
   const removeAllItems = () => {
     notifications.forEach(el => {
-      console.log(el?.$id, 'el')
+      console.log(el, 'el')
       dispatch(userOperations.removeItems(isAuthenticated, el?.$id))
       dispatch(userActions.removeItems(el?.$id))
     })
-
-    console.log('removing all')
     // setCurrentNotifList(() => {
     //   if (Array.isArray(currentNotifList)) {
     //     return currentNotifList.filter(item => item.$id !== id)
@@ -54,6 +50,8 @@ export default function NotificationList({ notifications }) {
     //   }
     // })
   }
+
+  console.log(notifications)
 
   return (
     <>

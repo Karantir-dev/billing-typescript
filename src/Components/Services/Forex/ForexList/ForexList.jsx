@@ -17,7 +17,13 @@ export default function ForexList({
   setActiveServer,
   activeServerID,
 }) {
-  const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
+  const { t } = useTranslation([
+    'vds',
+    'other',
+    'dedicated_servers',
+    'domains',
+    'access_log',
+  ])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (forexList) {

@@ -18,7 +18,7 @@ export default function DedicList({
   setActiveServer,
   activeServerID,
 }) {
-  const { t } = useTranslation(['vds', 'other', 'access_log'])
+  const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (servers) {
@@ -35,10 +35,15 @@ export default function DedicList({
         <div className={s.no_service_wrapper}>
           <img
             src={require('../../../../images/services/dedicated.webp')}
-            alt="forexbox"
+            alt="dedic"
+            className={s.dedic_img}
           />
-          <p className={s.no_service_title}>You dont have a server yet</p>
-          <p className={s.no_service_description}>Here must be service description</p>
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE A DEDICATED SERVER YET', { ns: 'dedicated_servers' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('dedic no services description', { ns: 'dedicated_servers' })}
+          </p>
         </div>
       )
     }
