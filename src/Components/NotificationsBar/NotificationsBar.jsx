@@ -6,26 +6,22 @@ import cn from 'classnames'
 import { userSelectors } from '../../Redux'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
-import { useOutsideAlerter } from '../../utils'
 
-export default function NotificationsBar({
-  handler,
-  isBarOpened,
-  // removedNotification,
-  // countNotification,
-}) {
+export default function NotificationsBar({ handler, isBarOpened }) {
   const messages = useSelector(userSelectors.getUserItems)
 
   const { t } = useTranslation('container')
 
   const getNotifBarEl = useRef()
 
-  useOutsideAlerter(getNotifBarEl, isBarOpened, handler) // check for error
-
   return (
     <>
       <div
         className={cn({ [s.notification_wrapper]: true, [s.opened]: isBarOpened })}
+        role="button"
+        tabIndex={0}
+        onKeyDown={() => null}
+        onClick={() => handler()}
       ></div>
       <div
         ref={getNotifBarEl}
@@ -43,12 +39,7 @@ export default function NotificationsBar({
           </div>
         </div>
 
-        {isBarOpened && (
-          <NotificationList
-            notifications={messages}
-            // removedNotification={removedNotification}
-          />
-        )}
+        {isBarOpened && <NotificationList notifications={messages} />}
       </div>
     </>
   )

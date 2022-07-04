@@ -276,6 +276,7 @@ export default function DedicatedServersPage() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+          pageName="dedics"
         />
       </Backdrop>
 

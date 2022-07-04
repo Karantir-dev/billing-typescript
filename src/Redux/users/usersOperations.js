@@ -28,7 +28,7 @@ const getUsers = () => (dispatch, getState) => {
       const { elem } = data.doc
 
       dispatch(usersActions.setUsers(elem))
-      // dispatch(actions.hideLoader())
+      dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)

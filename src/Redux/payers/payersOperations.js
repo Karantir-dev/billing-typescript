@@ -1,6 +1,8 @@
 import qs from 'qs'
+import { toast } from 'react-toastify'
 import { actions, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
+import i18n from '../../i18n'
 import { errorHandler } from '../../utils'
 
 const getPayers =
@@ -89,6 +91,7 @@ const deletePayer = elid => (dispatch, getState) => {
         func: 'profile.delete',
         out: 'json',
         auth: sessionId,
+        lang: 'en',
         elid,
       }),
     )
@@ -100,6 +103,21 @@ const deletePayer = elid => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+
+      if (
+        error.message.trim() === 'You cannot delete the payer who already made payments'
+      ) {
+        toast.error(
+          i18n.t('You cannot delete the payer who already made payments', {
+            ns: 'payers',
+          }),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+      }
+
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

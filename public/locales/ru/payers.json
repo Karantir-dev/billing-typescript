@@ -18,5 +18,6 @@
   "In Client area": "В клиентской зоне",
   "By post": "Почтой",
   "By email": "По электронной почте",
-  "Add new payer": "+ Добавить"
+  "Add new payer": "+ Добавить",
+  "You cannot delete the payer who already made payments": "Вы не можете удалить плательщика, который уже производил платежи"
 }

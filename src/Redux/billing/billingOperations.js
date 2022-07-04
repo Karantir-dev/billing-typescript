@@ -267,6 +267,7 @@ const getExpenses =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
