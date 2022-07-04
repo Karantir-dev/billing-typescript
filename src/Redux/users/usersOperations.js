@@ -194,16 +194,31 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
         auth: sessionId,
         elid: userId,
         sok: 'ok',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log('user removed', data)
       updateUsersListFunc()
       dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+      if (
+        error.message.trim() ===
+        'Unable to delete item due to dependencies.  Delete the objects that depend on it and try again'
+      ) {
+        toast.error(
+          i18n.t(
+            'Unable to delete item due to dependencies.  Delete the objects that depend on it and try again',
+            { ns: 'trusted_users' },
+          ),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+      }
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

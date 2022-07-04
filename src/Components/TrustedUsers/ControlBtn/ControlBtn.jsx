@@ -70,6 +70,7 @@ export default function ControlBtn({
 
   const removeUser = () => {
     dispatch(usersOperations.removeUser(userId, handleUserRolesData))
+    handleRemoveAlert()
   }
 
   return (

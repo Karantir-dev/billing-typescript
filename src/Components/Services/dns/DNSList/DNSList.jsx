@@ -18,12 +18,22 @@ export default function DNSList({
   setActiveServer,
   activeServerID,
 }) {
-  const { t } = useTranslation(['vds', 'other', 'dedicated_servers', 'domains'])
+  const { t } = useTranslation([
+    'vds',
+    'other',
+    'dedicated_servers',
+    'domains',
+    'access_log',
+  ])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (dnsList) {
     if (dnsList.length === 0 && emptyFilter) {
-      return <div>not matches </div>
+      return (
+        <div className={s.no_results_wrapper}>
+          <p className={s.no_results_text}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )
     }
 
     if (dnsList.length === 0 && dnsList) {
