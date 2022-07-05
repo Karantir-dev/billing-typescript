@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import { authOperations } from '../../../Redux'
 import { useDispatch } from 'react-redux'
-import { Loader } from '../../'
+import { Loader } from '../..'
 
-export default function Google() {
+export default function SocialNetAuth() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -18,10 +18,10 @@ export default function Google() {
   }
 
   useEffect(() => {
-    const state = location.search.match(/state=(.+?)(?=&)/)?.[1]
+    const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
     if (!state) {
       navigate(route.LOGIN, { replace: true })
-      console.log('error ')
+      console.log('no state ')
     } else {
       dispatch(authOperations.checkGoogleState(state, redirectToRegistration))
     }

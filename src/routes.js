@@ -2,8 +2,8 @@ export const CHANGE_PASSWORD = '/change_pass'
 export const RESET_PASSWORD = '/reset_pass'
 export const LOGIN = '/login'
 export const REGISTRATION = '/signup'
-export const GOOGLE = '/google'
-export const VK = '/vk'
+// перейменувати /google на якусь загальну назву для всіх соц мереж
+export const SOC_NET_AUTH = '/google'
 
 export const HOME = '/'
 export const ACCESS_LOG = '/access_log'
