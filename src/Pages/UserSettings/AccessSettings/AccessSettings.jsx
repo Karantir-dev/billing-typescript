@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
   InputField,
@@ -13,7 +13,12 @@ import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
+import {
+  settingsSelectors,
+  settingsOperations,
+  userSelectors,
+  authOperations,
+} from '../../../Redux'
 import { Cross, FacebookSmall, Google, VkSmall } from '../../../images'
 import { ipRegex } from '../../../utils'
 import * as Yup from 'yup'
@@ -30,6 +35,7 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const [isModal, setIsModal] = useState(false)
+  const [socialLinks, setSocialLinks] = useState({})
 
   const setSettingsHandler = values => {
     dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values))
@@ -65,6 +71,12 @@ export default function Component({ isComponentAllowedToEdit }) {
     dispatch(settingsOperations?.setTotp())
     setIsModal(true)
   }
+
+  useEffect(() => {
+    dispatch(authOperations.getLoginSocLinks(setSocialLinks))
+  }, [])
+
+  console.log(socialLinks, 'socialLinks')
 
   return (
     <>
@@ -213,13 +225,26 @@ export default function Component({ isComponentAllowedToEdit }) {
               <div className={s.block}>
                 <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
                 <div className={s.socialRow}>
-                  <SocialButton isNotConnected platform="Google">
-                    <Google className={s.googleIcon} />
-                  </SocialButton>
-                  <SocialButton isNotConnected platform="Facebook">
-                    <FacebookSmall />
-                  </SocialButton>
-                  <SocialButton isNotConnected platform="Вконтакте">
+                  <a href={socialLinks.google}>
+                    <SocialButton isNotConnected platform="Google">
+                      <Google className={s.googleIcon} />
+                    </SocialButton>
+                  </a>
+
+                  <a href={socialLinks.facebook}>
+                    <SocialButton isNotConnected platform="Facebook">
+                      <FacebookSmall />
+                    </SocialButton>
+                  </a>
+
+                  <SocialButton
+                    onClick={() => {
+                      navigate(socialLinks.vkontakte)
+                      return <SocialNetAdd />
+                    }}
+                    isNotConnected
+                    platform="Вконтакте"
+                  >
                     <VkSmall />
                   </SocialButton>
                 </div>

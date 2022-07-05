@@ -3,7 +3,7 @@ export const RESET_PASSWORD = '/reset_pass'
 export const LOGIN = '/login'
 export const REGISTRATION = '/signup'
 // перейменувати /google на якусь загальну назву для всіх соц мереж
-export const SOC_NET_AUTH = '/google'
+export const SOC_NET_AUTH = '/socialnetwork'
 
 export const HOME = '/'
 export const ACCESS_LOG = '/access_log'

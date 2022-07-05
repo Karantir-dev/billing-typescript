@@ -348,15 +348,13 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                 code: '',
                 sok: 'ok',
                 out: 'json',
+                lang: 'en',
               }),
           )
           .then(({ data }) => {
             console.log(data.doc)
 
             if (data.doc?.error?.$object === 'account_exist') {
-              // const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
-              // const email = data.doc.error.param.find(el => el.$name === 'email')?.$
-              // redirectToRegistration('social_akk_registered', name, email)
               redirectToLogin(
                 'social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
@@ -364,8 +362,15 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToRegistration('soc_email_exist', '', email)
+              redirectToLogin('soc_email_exist', email)
+
               console.log('email_exist')
+            } else if (data.doc?.error?.$object === 'email') {
+              // need to handle this error
+              // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+              redirectToRegistration('no_email_from_social', '', '')
+
+              console.log('no email')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
@@ -395,6 +400,45 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
       console.log('checkGoogleState - ', err)
     })
 }
+
+const addLoginWithSocial = (state, redirectToSettings) => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth',
+        state: state,
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      console.log(data.doc)
+      // LOGIN
+      if (data.doc?.error?.$object === 'nolink') {
+        redirectToSettings(
+          'soc_net_not_integrated',
+          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+        )
+      }
+
+      console.log(data)
+      // else if (data.doc?.auth?.$id) {
+      //   dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
+      // }
+
+      // dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log('checkGoogleState - ', err)
+    })
+}
+
+// https://cp.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook
 
 const getLoginSocLinks = setSocialLinks => dispatch => {
   dispatch(actions.showLoader())
@@ -461,4 +505,5 @@ export default {
   getCurrentSessionStatus,
   checkGoogleState,
   getLoginSocLinks,
+  addLoginWithSocial,
 }

@@ -157,7 +157,9 @@ export default function LoginForm() {
         <p className={s.social_title}>{t('login_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <Facebook />
+            <a href={socialLinks.facebook}>
+              <Facebook />
+            </a>
           </li>
           <li>
             <a href={socialLinks.google}>
