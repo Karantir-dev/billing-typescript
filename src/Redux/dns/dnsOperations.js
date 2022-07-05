@@ -30,7 +30,7 @@ const getDNSList = () => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
-      // setDnsList(data.doc.elem ? data.doc.elem : [])
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -249,7 +249,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      console.log(priceId, 'priceid')
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )

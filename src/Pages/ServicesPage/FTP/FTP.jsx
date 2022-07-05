@@ -246,6 +246,7 @@ export default function FTP() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+          pageName="ftp"
         />
       </Backdrop>
 

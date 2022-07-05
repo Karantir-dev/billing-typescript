@@ -37,6 +37,39 @@
   color: var(--transparent-color);
 }
 
+.no_service_wrapper {
+  max-width: 531px;
+  margin: 60px auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    margin-bottom: 40px;
+  }
+}
+
+.virt_host_img {
+  display: block;
+  margin: 0 auto 20px;
+  filter: grayscale(1);
+}
+
+.no_service_title {
+  font-weight: 600;
+  text-align: center;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-bottom: 25px;
+}
+
+.no_service_description {
+  font-weight: 300;
+  text-align: center;
+  font-size: 16px;
+  color: var(--main-text);
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;

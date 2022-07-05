@@ -173,75 +173,77 @@ export default function ForexOrderPage() {
               /> */}
 
               <div className={s.tarifs_block}>
-                {tarifList?.tarifList?.map((item, index) => {
-                  const descriptionBlocks = item?.desc?.$.split('/')
-                  const cardTitle = descriptionBlocks[0]
+                {tarifList?.tarifList
+                  ?.filter(item => item.order_available.$ === 'on')
+                  ?.map((item, index) => {
+                    const descriptionBlocks = item?.desc?.$.split('/')
+                    const cardTitle = descriptionBlocks[0]
 
-                  const parsedPrice = parsePrice(item?.price?.$)
+                    const parsedPrice = parsePrice(item?.price?.$)
 
-                  const priceAmount = parsedPrice.amoumt
+                    const priceAmount = parsedPrice.amoumt
 
-                  return (
-                    <button
-                      ref={index === 2 ? secondTarrif : null}
-                      onClick={() => {
-                        setParameters(null)
-                        setFieldValue('pricelist', item?.pricelist?.$)
-                        setPrice(priceAmount)
-                        setTarifChosen(true)
+                    return (
+                      <button
+                        ref={index === 2 ? secondTarrif : null}
+                        onClick={() => {
+                          setParameters(null)
+                          setFieldValue('pricelist', item?.pricelist?.$)
+                          setPrice(priceAmount)
+                          setTarifChosen(true)
 
-                        dispatch(
-                          forexOperations.getParameters(
-                            values.period,
-                            values.datacenter,
-                            item?.pricelist?.$,
-                            setParameters,
-                            setFieldValue,
-                          ),
-                        )
-                      }}
-                      type="button"
-                      className={classNames(s.tarif_card, {
-                        [s.selected]: item?.pricelist?.$ === values.pricelist,
-                      })}
-                      key={item?.desc?.$}
-                    >
-                      <span
-                        className={classNames({
-                          [s.card_title]: true,
+                          dispatch(
+                            forexOperations.getParameters(
+                              values.period,
+                              values.datacenter,
+                              item?.pricelist?.$,
+                              setParameters,
+                              setFieldValue,
+                            ),
+                          )
+                        }}
+                        type="button"
+                        className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.pricelist,
                         })}
+                        key={item?.desc?.$}
                       >
-                        {cardTitle}
-                      </span>
-
-                      <img
-                        className={s.dns_img}
-                        src={require(`../../../../images/forex/${cardTitle
-                          .toLocaleLowerCase()
-                          .replaceAll(' ', '_')}.webp`)}
-                        alt="dns"
-                      />
-
-                      <div className={s.price_wrapper}>
                         <span
                           className={classNames({
-                            [s.price]: true,
+                            [s.card_title]: true,
                             [s.selected]: item?.pricelist?.$ === values.pricelist,
                           })}
                         >
-                          {priceAmount + '/' + periodName}
+                          {cardTitle}
                         </span>
-                      </div>
 
-                      {descriptionBlocks.slice(1).map((el, i) => (
-                        <span key={i} className={s.card_subtitles}>
-                          {el}
-                        </span>
-                      ))}
-                    </button>
-                  )
-                })}
+                        <img
+                          className={s.dns_img}
+                          src={require(`../../../../images/forex/${cardTitle
+                            .toLocaleLowerCase()
+                            .replaceAll(' ', '_')}.webp`)}
+                          alt="dns"
+                        />
+
+                        <div className={s.price_wrapper}>
+                          <span
+                            className={classNames({
+                              [s.price]: true,
+                              [s.selected]: item?.pricelist?.$ === values.pricelist,
+                            })}
+                          >
+                            {priceAmount + '/' + periodName}
+                          </span>
+                        </div>
+
+                        {descriptionBlocks.slice(1).map((el, i) => (
+                          <span key={i} className={s.card_subtitles}>
+                            {el}
+                          </span>
+                        ))}
+                      </button>
+                    )
+                  })}
               </div>
 
               {parameters && (

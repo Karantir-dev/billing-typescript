@@ -16,12 +16,12 @@ const userTickets = (data, dispatch) => {
 }
 
 const userNotifications = (data, dispatch) => {
-  const { bitem } = data.doc.notify.item[0]
+  const { elem } = data.doc
   let notifications
-  if (Array.isArray(bitem)) {
-    notifications = bitem
-  } else if (!Array.isArray(bitem) && bitem) {
-    notifications = [bitem]
+  if (Array.isArray(elem)) {
+    notifications = elem
+  } else if (!Array.isArray(elem) && elem) {
+    notifications = [elem]
   } else {
     notifications = []
   }
