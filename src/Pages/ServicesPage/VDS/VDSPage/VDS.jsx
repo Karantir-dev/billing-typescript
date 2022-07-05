@@ -36,9 +36,7 @@ export default function VDS() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
   const [rights, setRights] = useState({})
-  console.log(rights)
   const [servers, setServers] = useState([])
-  console.log(servers)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
@@ -325,7 +323,11 @@ export default function VDS() {
       </Backdrop>
 
       <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
-        <ProlongModal elid={idForProlong} closeFn={() => setIdForProlong('')} />
+        <ProlongModal
+          elid={idForProlong}
+          closeFn={() => setIdForProlong('')}
+          pageName="vds"
+        />
       </Backdrop>
 
       <Backdrop

@@ -80,48 +80,48 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.modalBg}>
-      <div className={s.modalBlock}>
-        <div className={s.modalHeader}>
-          <h2>{t('2-Step Verification')}</h2>
-          <Cross onClick={closeModalHandler} className={s.cross} />
-        </div>
-        <div className={s.qrInstruction}>
-          <div className={cn(s.instruction, { [s.showMore]: showMore })}>
-            <p>{t('Two Step Instruction')}</p>
-            <p>
-              {t(
-                'Make sure that time difference between the server and the phone is less than 1 minute.',
-              )}
-            </p>
-            <p className={s.important}>{t('Important!')}</p>
-            <p>{t('Two step warning')}</p>
-          </div>
-          <button onClick={() => setShowMore(!showMore)} className={s.readMore}>
-            {t(showMore ? 'Collapse' : 'Read more')}
-          </button>
-          <div className={s.qrBlock}>
-            <img className={s.qrImage} src={twoStepVerif?.qrimage} alt="qrCode" />
-            <button onClick={downloadQrHandler} className={s.btnSave}>
-              {t('Save QR code')}
-            </button>
-            <button onClick={saveSecretKeyHandler} className={s.btnSave}>
-              {t('Save key')}
-            </button>
-          </div>
-        </div>
-        <Formik
-          enableReinitialize
-          validationSchema={validationSchema}
-          initialValues={{
-            qrcode: '',
-            secret: twoStepVerif?.secret || '',
-          }}
-          onSubmit={sendPasswrodHandler}
-        >
-          {({ errors, touched }) => {
-            return (
-              <Form className={s.form}>
+    <div className={s.modalBlock}>
+      <div className={s.modalHeader}>
+        <h2>{t('2-Step Verification')}</h2>
+        <Cross onClick={closeModalHandler} className={s.cross} />
+      </div>
+      <Formik
+        enableReinitialize
+        validationSchema={validationSchema}
+        initialValues={{
+          qrcode: '',
+          secret: twoStepVerif?.secret || '',
+        }}
+        onSubmit={sendPasswrodHandler}
+      >
+        {({ errors, touched }) => {
+          return (
+            <Form className={s.form}>
+              <div className={s.mobileScroll}>
+                <div className={s.qrInstruction}>
+                  <div className={cn(s.instruction, { [s.showMore]: showMore })}>
+                    <p>{t('Two Step Instruction')}</p>
+                    <p>
+                      {t(
+                        'Make sure that time difference between the server and the phone is less than 1 minute.',
+                      )}
+                    </p>
+                    <p className={s.important}>{t('Important!')}</p>
+                    <p>{t('Two step warning')}</p>
+                  </div>
+                  <button onClick={() => setShowMore(!showMore)} className={s.readMore}>
+                    {t(showMore ? 'Collapse' : 'Read more')}
+                  </button>
+                  <div className={s.qrBlock}>
+                    <img className={s.qrImage} src={twoStepVerif?.qrimage} alt="qrCode" />
+                    <button onClick={downloadQrHandler} className={s.btnSave}>
+                      {t('Save QR code')}
+                    </button>
+                    <button onClick={saveSecretKeyHandler} className={s.btnSave}>
+                      {t('Save key')}
+                    </button>
+                  </div>
+                </div>
                 <div className={s.fieldsRow}>
                   <div className={s.field_wrapper}>
                     <label className={s.label}>{t('Key')}:</label>
@@ -177,23 +177,23 @@ export default function Component(props) {
                     </div>
                   </div>
                 </div>
-                <div className={s.btnBlock}>
-                  <Button
-                    className={s.saveBtn}
-                    isShadow
-                    size="medium"
-                    label={t('Save', { ns: 'other' })}
-                    type="submit"
-                  />
-                  <button onClick={closeModalHandler} type="button" className={s.cancel}>
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
-                </div>
-              </Form>
-            )
-          }}
-        </Formik>
-      </div>
+              </div>
+              <div className={s.btnBlock}>
+                <Button
+                  className={s.saveBtn}
+                  isShadow
+                  size="medium"
+                  label={t('Save', { ns: 'other' })}
+                  type="submit"
+                />
+                <button onClick={closeModalHandler} type="button" className={s.cancel}>
+                  {t('Cancel', { ns: 'other' })}
+                </button>
+              </div>
+            </Form>
+          )
+        }}
+      </Formik>
     </div>
   )
 }

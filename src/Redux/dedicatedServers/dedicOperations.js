@@ -31,6 +31,7 @@ const getServersList = () => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       dispatch(dedicActions.setServersList(data.doc.elem ? data.doc.elem : []))
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -318,7 +319,6 @@ const orderServer =
     ipTotal,
     ipName,
     managePanel,
-    setParameters,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -352,9 +352,6 @@ const orderServer =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        setParameters(null)
-
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
@@ -1019,45 +1016,60 @@ const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getS
     })
 }
 
-const payProlongPeriod = (elid, period, handleModal) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const payProlongPeriod =
+  (elid, period, handleModal, pageName) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'service.prolong',
-        out: 'json',
-        auth: sessionId,
-        elid,
-        period,
-        clicked_button: 'basket',
-        sok: 'ok',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-      handleModal()
-      dispatch(actions.hideLoader())
-      dispatch(
-        cartActions.setCartIsOpenedState({
-          isOpened: true,
-          redirectPath: route.DEDICATED_SERVERS,
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.prolong',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          period,
+          clicked_button: 'basket',
+          sok: 'ok',
+          lang: 'en',
         }),
       )
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        let routeAfterBuying = route.SERVICES
+
+        if (pageName === 'dedics') {
+          routeAfterBuying = route.DEDICATED_SERVERS
+        } else if (routeAfterBuying === 'vds') {
+          routeAfterBuying = route.VDS
+        } else if (routeAfterBuying === 'ftp') {
+          routeAfterBuying = route.FTP
+        } else if (routeAfterBuying === 'dns') {
+          routeAfterBuying = route.DNS
+        } else if (routeAfterBuying === 'forex') {
+          routeAfterBuying = route.FOREX
+        }
+
+        handleModal()
+        dispatch(actions.hideLoader())
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routeAfterBuying,
+          }),
+        )
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getServiceHistory =
   (elid, currentPage, setHistoryList, setHistoryElems) => (dispatch, getState) => {

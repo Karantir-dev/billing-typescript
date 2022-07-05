@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, authOperations } from '../'
+import { actions, authOperations, usersOperations } from '../'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
@@ -7,7 +7,7 @@ import i18n from './../../i18n'
 import { errorHandler } from '../../utils'
 
 const getUserEdit =
-  (elid, checkEmail = false) =>
+  (elid, checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -22,6 +22,7 @@ const getUserEdit =
           func: 'user.edit',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           elid,
         }),
       )
@@ -64,7 +65,9 @@ const getUserEdit =
         })
 
         dispatch(settingsActions.setUsersEdit(elem))
-        dispatch(getUserParams(checkEmail))
+        dispatch(
+          getUserParams(checkEmail, isComponentAllowedToRender, setAvailableEditRights),
+        )
       })
       .catch(error => {
         console.log('error', error)
@@ -104,7 +107,7 @@ const setUserAvatar =
   }
 
 const getUserParams =
-  (checkEmail = false) =>
+  (checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
   (dispatch, getState) => {
     const {
       auth: { sessionId },
@@ -118,6 +121,7 @@ const getUserParams =
         qs.stringify({
           func: 'usrparam',
           out: 'json',
+          lang: 'en',
           auth: sessionId,
         }),
       )
@@ -189,6 +193,12 @@ const getUserParams =
         })
 
         dispatch(settingsActions.setUsersParams(elem))
+
+        if (isComponentAllowedToRender) {
+          return dispatch(
+            usersOperations.getAvailableRights('usrparam', setAvailableEditRights),
+          )
+        }
         dispatch(actions.hideLoader())
       })
       .then(() => {
@@ -217,6 +227,7 @@ const getTimeByTimeZone =
           func: 'usrparam',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           timezone: timezone,
           sv_field: 'time',
         }),
@@ -275,6 +286,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
       qs.stringify({
         func: 'user.edit',
         sok: 'ok',
+        lang: 'en',
         out: 'json',
         auth: sessionId,
         elid,
@@ -290,6 +302,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
             func: 'usrparam',
             out: 'json',
             sok: 'ok',
+            lang: 'en',
             elid,
             auth: sessionId,
             ...userParamsData,
@@ -351,6 +364,7 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
         func: 'usrparam',
         out: 'json',
         sok: 'ok',
+        lang: 'en',
         elid,
         auth: sessionId,
         ...userParamsData,
@@ -380,6 +394,7 @@ const sendEmailConfirm = () => (dispatch, getState) => {
       qs.stringify({
         func: 'usrparam',
         out: 'json',
+        lang: 'en',
         sv_field: 'send_confirm',
         auth: sessionId,
       }),
@@ -474,6 +489,7 @@ const setTotp = () => (dispatch, getState) => {
       qs.stringify({
         func: 'totp.new',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     )
@@ -572,6 +588,7 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
         show_actualtime: 'show',
         login: 'test.hardsoft.cf(mikhail.tatochenko+1@zomro.org)',
         secret: d?.secret,
+        lang: 'en',
         auth: sessionId,
       }),
     )
@@ -612,6 +629,7 @@ const confirmEmail = key => (dispatch, getState) => {
         func: 'notice.confirm',
         sok: 'ok',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
         key,
       }),

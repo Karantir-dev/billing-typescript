@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import siteCareActions from './siteCareActions'
 
 const initialState = {
-  siteCareList: [],
+  siteCareList: null,
   siteCareCount: 0,
 
   siteCareFiltersList: null,

@@ -8,6 +8,7 @@ import {
   SharedHostingProlongModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
+  SharedHostingInstructionModal,
   Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +18,12 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other'])
+  const { t, i18n } = useTranslation([
+    'container',
+    'other',
+    'access_log',
+    'virtual_hosting',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -30,6 +36,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
   const [prolongData, setProlongData] = useState(null)
@@ -40,6 +48,11 @@ export default function Component() {
   const [changeTariffModal, setChangeTariffModal] = useState(false)
   const [changeTariffData, setChangeTariffData] = useState(null)
   const [changeTariffInfoData, setChangeTariffInfoData] = useState(null)
+
+  const [instructionModal, setInstructionModal] = useState(false)
+  const [instructionData, setInstructionData] = useState(null)
+
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -59,14 +72,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(vhostOperations.getHistoryVhost(data, setHistoryModal, setHistoryList))
+    dispatch(
+      vhostOperations.getHistoryVhost(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historyVhostHandler()
+    }
+  }, [historyCurrentPage])
 
   const instructionVhostHandler = () => {
     const data = {
@@ -74,7 +102,14 @@ export default function Component() {
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
     }
-    dispatch(vhostOperations.getInsructionVhost(data))
+    dispatch(
+      vhostOperations.getInsructionVhost(data, setInstructionModal, setInstructionData),
+    )
+  }
+
+  const closeInstructionModalHandler = () => {
+    setInstructionData(null)
+    setInstructionModal(false)
   }
 
   const platformVhostHandler = () => {
@@ -188,6 +223,8 @@ export default function Component() {
         {t('burger_menu.services.services_list.virtual_hosting')}
       </h1>
       <SharedHostingFilter
+        setIsFiltered={setIsFiltered}
+        setSelctedItem={setSelctedItem}
         historyVhostHandler={historyVhostHandler}
         instructionVhostHandler={instructionVhostHandler}
         platformVhostHandler={platformVhostHandler}
@@ -196,20 +233,46 @@ export default function Component() {
         changeTariffVhostHandler={changeTariffVhostHandler}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
-      />
-      <SharedHostingTable
-        historyVhostHandler={historyVhostHandler}
-        instructionVhostHandler={instructionVhostHandler}
-        platformVhostHandler={platformVhostHandler}
-        prolongVhostHandler={prolongVhostHandler}
-        editVhostHandler={editVhostHandler}
-        changeTariffVhostHandler={changeTariffVhostHandler}
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={vhostList}
+        isFilterActive={vhostList?.length > 0}
       />
 
-      {vhostList.length !== 0 && (
+      {vhostList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {vhostList?.length < 1 && !isFiltered && vhostList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/virtual_hosting.webp')}
+            alt="virtual_hosting"
+            className={s.virt_host_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'virtual_hosting' })}
+          </p>
+        </div>
+      )}
+
+      {vhostList?.length > 0 && (
+        <SharedHostingTable
+          historyVhostHandler={historyVhostHandler}
+          instructionVhostHandler={instructionVhostHandler}
+          platformVhostHandler={platformVhostHandler}
+          prolongVhostHandler={prolongVhostHandler}
+          editVhostHandler={editVhostHandler}
+          changeTariffVhostHandler={changeTariffVhostHandler}
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={vhostList}
+        />
+      )}
+
+      {vhostList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
@@ -229,6 +292,9 @@ export default function Component() {
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
       </Backdrop>
 
@@ -245,16 +311,24 @@ export default function Component() {
         />
       </Backdrop>
 
-      {editModal && editData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(editModal && editData)}
+        onClick={closeEditModalHandler}
+      >
         <SharedHostingEditModal
           editData={editData}
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditVhostHandler={sendEditVhostHandler}
         />
-      )}
+      </Backdrop>
 
-      {changeTariffModal && changeTariffData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(changeTariffModal && changeTariffData)}
+        onClick={closeChangeTariffModalHandler}
+      >
         <SharedHostingChangeTariffModal
           changeTariffData={changeTariffData}
           name={selctedItem?.name?.$}
@@ -263,7 +337,19 @@ export default function Component() {
           changeTariffInfoData={changeTariffInfoData}
           changeTariffSaveVhostHandler={changeTariffSaveVhostHandler}
         />
-      )}
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(instructionModal && instructionData)}
+        onClick={closeInstructionModalHandler}
+      >
+        <SharedHostingInstructionModal
+          instructionData={instructionData}
+          name={selctedItem?.name?.$}
+          closeInstructionModalHandler={closeInstructionModalHandler}
+        />
+      </Backdrop>
     </div>
   )
 }

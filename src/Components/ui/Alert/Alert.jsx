@@ -30,7 +30,11 @@ export default function Alert({
               <button className={s.close_btn} onClick={controlAlert}></button>
             </div>
           </div>
-          <p className={s.alert_text}>{text}</p>
+
+          <div className={s.modal_content}>
+            <p className={s.alert_text}>{text}</p>
+          </div>
+
           <div className={s.control_btns_container}>
             {mainBtn}
 

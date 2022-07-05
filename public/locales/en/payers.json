@@ -18,5 +18,6 @@
   "In Client area": "In Client area",
   "By post": "By post",
   "By email": "By email",
-  "Add new payer": "+ Add"
+  "Add new payer": "+ Add",
+  "You cannot delete the payer who already made payments": "You cannot delete the payer who already made payments"
 }

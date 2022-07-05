@@ -137,6 +137,7 @@ export default function Component() {
         onSubmit={buyVhostHandler}
       >
         {({ setFieldValue, values, errors, touched }) => {
+          console.log(values)
           return (
             <Form className={s.form}>
               <div className={s.paymentWrapper}>
@@ -280,7 +281,7 @@ export default function Component() {
                           {t('I have read and agree to the', { ns: 'domains' })}
                           {'\n'}
                           <button
-                            onClick={() => openTermsHandler(values.price)}
+                            onClick={() => openTermsHandler(values.pricelist)}
                             type="button"
                           >{`"${t('Terms of Service', { ns: 'domains' })}"`}</button>
                         </span>

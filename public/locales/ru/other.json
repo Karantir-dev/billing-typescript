@@ -135,5 +135,12 @@
   "Connection URL": "URL для подключения",
   "Service deletion": "Удаление услуги",
   "Are you sure you want to delete service": "Вы уверены, что хотите удалить услугу",
-  "IP-address removing": "Удаление IP-адреса"
+  "IP-address removing": "Удаление IP-адреса",
+  "DNS-hosting activation": "Активация DNS-хостинга",
+  "FTP storage activation": "Активация FTP-хранилища",
+  "Virtual server activation": "Активация виртуального сервера",
+  "no services sitecare description": "Мы не просто проинформируем Вас о падении сервера или ошибке в работе, но и сделаем всё возможное для исправления неполадок.",
+  "YOU DONT HAVE A WEBSITE YET": "У ВАС ЕЩЕ НЕТ ЗАБОТЫ О САЙТЕ",
+  "YOU DO NOT HAVE A FOREX SERVER YET": "У ВАС ЕЩЕ НЕТ СЕРВЕРА ДЛЯ FOREX",
+  "no services forex description": "Только для терминалов ваших брокеров и торговых систем. 100% настроенный сервер, без лишних усилий"
 }

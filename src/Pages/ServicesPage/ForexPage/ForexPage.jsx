@@ -240,10 +240,7 @@ export default function ForexPage() {
         setElidForDeletionModal={setElidForDeletionModal}
         setActiveServer={setActiveServer}
       />
-      <Backdrop
-        onClick={() => setElidForEditModal(0)}
-        isOpened={Boolean(elidForEditModal)}
-      >
+      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
@@ -254,6 +251,7 @@ export default function ForexPage() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+          pageName="forex"
         />
       </Backdrop>
 

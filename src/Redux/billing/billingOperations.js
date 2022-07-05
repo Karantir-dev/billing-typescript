@@ -24,6 +24,7 @@ const getPayments =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
@@ -266,6 +267,7 @@ const getExpenses =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
@@ -439,7 +441,7 @@ const getPaymentMethod =
 
         dispatch(billingActions.setPaymentCurrencyList(d))
 
-        if(payerModalInfoData) {
+        if (payerModalInfoData) {
           return dispatch(payersOperations.getPayerModalInfo(payerModalInfoData))
         }
 

@@ -14,8 +14,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const infoEl = useRef()
 
   const [dropOpened, setDropOpened] = useState(false)
+  const controlPanel = el?.desc?.$?.includes('Control panel')
+  const IPaddresses = el?.desc?.$?.includes('IP-addresses')
+  const hasBasePrice = el?.desc?.$?.includes('base price')
 
-  const tariffName = el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
+  const tariffName = hasBasePrice
+    ? el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
+    : el?.pricelist_name?.$
 
   const onShevronClick = () => {
     if (!dropOpened) {
@@ -74,7 +79,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
             {el?.discount_percent?.$ && (
               <p className={s.discount_wrapper}>
                 <span className={s.percent}>-{el?.discount_percent?.$}</span>
-                {'  '}
                 <span className={s.old_price}>{el?.fullcost?.$} EUR</span>
               </p>
             )}
@@ -97,43 +101,63 @@ export default function VdsItem({ el, deleteItemHandler }) {
         </div>
 
         <div className={s.dropdown} ref={dropdownEl}>
-          <p className={s.value_item}>
-            {t('processors')}:
-            <span className={s.value}>
-              {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)}
-            </span>
-          </p>
-          <p className={s.value_item}>
-            {t('memory')}:
-            <span className={s.value}>{getTranslatedText(/Memory(.+?)(?=<br\/>)/)}</span>
-          </p>
-          <p className={s.value_item}>
-            {t('disk_space')}:
-            <span className={s.value}>
-              {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}
-            </span>
-          </p>
-          <p className={s.value_item}>
-            {t('IPcount')}:
-            <span className={s.value}>
-              {el?.desc?.$.match(/IP-addresses count(.+?)(?=<br\/>)/)[1].replace(
-                'Unit',
-                t('Unit'),
-              )}
-            </span>
-          </p>
-          <p className={s.value_item}>
-            {t('port_speed')}:
-            <span className={s.value}>
-              {el?.desc?.$.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]}
-            </span>
-          </p>
-          <p className={s.value_item}>
-            {t('license_to_panel')}:{' '}
-            <span className={s.value}>
-              {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}
-            </span>
-          </p>
+          {hasBasePrice && (
+            <p className={s.value_item}>
+              {t('processors')}:
+              <span className={s.value}>
+                {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)}
+              </span>
+            </p>
+          )}
+
+          {hasBasePrice && (
+            <p className={s.value_item}>
+              {t('memory')}:
+              <span className={s.value}>
+                {getTranslatedText(/Memory(.+?)(?=<br\/>)/)}
+              </span>
+            </p>
+          )}
+
+          {hasBasePrice && (
+            <p className={s.value_item}>
+              {t('disk_space')}:
+              <span className={s.value}>
+                {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}
+              </span>
+            </p>
+          )}
+
+          {IPaddresses && (
+            <p className={s.value_item}>
+              {t('IPcount')}:
+              <span className={s.value}>
+                {el?.desc?.$.match(/IP-addresses count(.+?)(?=<br\/>)/)[1].replace(
+                  'Unit',
+                  t('Unit'),
+                )}
+              </span>
+            </p>
+          )}
+
+          {hasBasePrice && (
+            <p className={s.value_item}>
+              {t('port_speed')}:
+              <span className={s.value}>
+                {el?.desc?.$.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
+              </span>
+            </p>
+          )}
+
+          {controlPanel && (
+            <p className={s.value_item}>
+              {t('license_to_panel')}:{' '}
+              <span className={s.value}>
+                {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}
+              </span>
+            </p>
+          )}
+
           {el?.desc?.$.includes('Service limits') && (
             <p className={s.value_item}>
               {t('Service limits')}:{' '}

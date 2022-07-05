@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import vhostActions from './vhostActions'
 
 const initialState = {
-  vhostList: [],
+  vhostList: null,
   vhostCount: 0,
 
   vhostFiltersList: null,

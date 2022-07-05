@@ -110,168 +110,173 @@ export default function Component(props) {
         >
           {({ errors, touched, setFieldValue, values, handleBlur }) => {
             return (
-              <Form className={s.form}>
-                <div className={s.formBlock}>
-                  <div className={s.formBlockTitle}>1. {t('Main')}</div>
-                  <div className={s.formFieldsBlock}>
-                    <Select
-                      placeholder={t('Not chosen', { ns: 'other' })}
-                      label={`${t('Payer status')}:`}
-                      value={values.profiletype}
-                      getElement={item => setFieldValue('profiletype', item)}
-                      isShadow
-                      className={s.select}
-                      itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
-                        label: t(`${$.trim()}`),
-                        value: $key,
-                      }))}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="person"
-                      label={`${t('The contact person')}:`}
-                      placeholder={t('Enter data', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.person}
-                      touched={!!touched.person}
-                      isRequired
-                    />
-                    <CustomPhoneInput
-                      containerClass={s.phoneInputContainer}
-                      inputClass={s.phoneInputClass}
-                      value={values.phone}
-                      wrapperClass={s.phoneInput}
-                      labelClass={s.phoneInputLabel}
-                      label={`${t('Phone', { ns: 'other' })}:`}
-                      dataTestid="input_phone"
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      name="phone"
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      type="email"
-                      name="email"
-                      label={`${t('Email')}:`}
-                      placeholder={t('Enter email', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.email}
-                      touched={!!touched.email}
-                    />
-                    <SelectMultiple
-                      placeholder={t('Not chosen', { ns: 'other' })}
-                      label={`${t('Receive documents')}:`}
-                      value={values.maildocs}
-                      getElement={item => setFieldValue('maildocs', item)}
-                      isShadow
-                      className={s.select}
-                      itemsList={payersSelectLists?.maildocs?.map(({ $key, $ }) => ({
-                        label: t(`${$.trim()}`),
-                        value: $key,
-                      }))}
-                    />
-                  </div>
-                </div>
-                <div className={s.formBlock}>
-                  <div className={s.formBlockTitle}>2. {t('Actual address')}</div>
-                  <div className={s.formFieldsBlock}>
-                    <Select
-                      placeholder={t('Not chosen', { ns: 'other' })}
-                      label={`${t('The country', { ns: 'other' })}:`}
-                      value={values.country}
-                      getElement={item => setFieldValue('country', item)}
-                      isShadow
-                      className={s.select}
-                      itemsList={payersSelectLists?.country?.map(
-                        ({ $key, $, $image }) => ({
-                          label: (
-                            <div className={s.countrySelectItem}>
-                              <img src={`${BASE_URL}${$image}`} alt="flag" />
-                              {t(`${$.trim()}`)}
-                            </div>
-                          ),
-                          value: $key,
-                        }),
-                      )}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="postcode_physical"
-                      label={`${t('Index', { ns: 'other' })}:`}
-                      placeholder={t('Enter index', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.postcode_physical}
-                      touched={!!touched.postcode_physical}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="city_physical"
-                      label={`${t('City', { ns: 'other' })}:`}
-                      placeholder={t('Enter city', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.city_physical}
-                      touched={!!touched.city_physical}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="address_physical"
-                      label={`${t('The address', { ns: 'other' })}:`}
-                      placeholder={t('Enter address', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors.address_physical}
-                      touched={!!touched.address_physical}
-                    />
-                  </div>
-                </div>
-                {(payersSelectedFields?.passport_field || !elid) && (
+              <Form>
+                <div className={s.form}>
                   <div className={s.formBlock}>
-                    <div className={s.formBlockTitle}>
-                      3. {t('Data for the contract')}
-                    </div>
+                    <div className={s.formBlockTitle}>1. {t('Main')}</div>
                     <div className={s.formFieldsBlock}>
-                      {payersSelectedFields?.passport_field && (
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name="passport"
-                          label={`${t('Passport', { ns: 'other' })}:`}
-                          placeholder={t('Series and passport number', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors.passport}
-                          touched={!!touched.passport}
-                        />
-                      )}
-                      {payersSelectedFields?.offer_link && (
-                        <div className={s.offerBlock}>
-                          <CheckBox
-                            initialState={values[payersSelectedFields?.offer_field]}
-                            setValue={item =>
-                              setFieldValue(`${payersSelectedFields?.offer_field}`, item)
-                            }
-                            className={s.checkbox}
-                            error={!!errors[payersSelectedFields?.offer_field]}
-                          />
-                          <div className={s.offerBlockText}>
-                            {t('I agree with the terms of the offer')}
-                            <br />
-                            <button
-                              onClick={offerTextHandler}
-                              type="button"
-                              className={s.offerBlockLink}
-                            >
-                              {payersSelectedFields?.offer_name}
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      <Select
+                        placeholder={t('Not chosen', { ns: 'other' })}
+                        label={`${t('Payer status')}:`}
+                        value={values.profiletype}
+                        getElement={item => setFieldValue('profiletype', item)}
+                        isShadow
+                        className={s.select}
+                        itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
+                          label: t(`${$.trim()}`),
+                          value: $key,
+                        }))}
+                      />
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        name="person"
+                        label={`${t('The contact person')}:`}
+                        placeholder={t('Enter data', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.person}
+                        touched={!!touched.person}
+                        isRequired
+                      />
+                      <CustomPhoneInput
+                        containerClass={s.phoneInputContainer}
+                        inputClass={s.phoneInputClass}
+                        value={values.phone}
+                        wrapperClass={s.phoneInput}
+                        labelClass={s.phoneInputLabel}
+                        label={`${t('Phone', { ns: 'other' })}:`}
+                        dataTestid="input_phone"
+                        handleBlur={handleBlur}
+                        setFieldValue={setFieldValue}
+                        name="phone"
+                      />
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        type="email"
+                        name="email"
+                        label={`${t('Email')}:`}
+                        placeholder={t('Enter email', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.email}
+                        touched={!!touched.email}
+                      />
+                      <SelectMultiple
+                        placeholder={t('Not chosen', { ns: 'other' })}
+                        label={`${t('Receive documents')}:`}
+                        value={values.maildocs}
+                        getElement={item => setFieldValue('maildocs', item)}
+                        isShadow
+                        className={s.select}
+                        itemsList={payersSelectLists?.maildocs?.map(({ $key, $ }) => ({
+                          label: t(`${$.trim()}`),
+                          value: $key,
+                        }))}
+                      />
                     </div>
                   </div>
-                )}
+                  <div className={s.formBlock}>
+                    <div className={s.formBlockTitle}>2. {t('Actual address')}</div>
+                    <div className={s.formFieldsBlock}>
+                      <Select
+                        placeholder={t('Not chosen', { ns: 'other' })}
+                        label={`${t('The country', { ns: 'other' })}:`}
+                        value={values.country}
+                        getElement={item => setFieldValue('country', item)}
+                        isShadow
+                        className={s.select}
+                        itemsList={payersSelectLists?.country?.map(
+                          ({ $key, $, $image }) => ({
+                            label: (
+                              <div className={s.countrySelectItem}>
+                                <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                {t(`${$.trim()}`)}
+                              </div>
+                            ),
+                            value: $key,
+                          }),
+                        )}
+                      />
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        name="postcode_physical"
+                        label={`${t('Index', { ns: 'other' })}:`}
+                        placeholder={t('Enter index', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.postcode_physical}
+                        touched={!!touched.postcode_physical}
+                      />
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        name="city_physical"
+                        label={`${t('City', { ns: 'other' })}:`}
+                        placeholder={t('Enter city', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.city_physical}
+                        touched={!!touched.city_physical}
+                      />
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        name="address_physical"
+                        label={`${t('The address', { ns: 'other' })}:`}
+                        placeholder={t('Enter address', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.address_physical}
+                        touched={!!touched.address_physical}
+                      />
+                    </div>
+                  </div>
+                  {(payersSelectedFields?.passport_field || !elid) && (
+                    <div className={s.formBlock}>
+                      <div className={s.formBlockTitle}>
+                        3. {t('Data for the contract')}
+                      </div>
+                      <div className={s.formFieldsBlock}>
+                        {payersSelectedFields?.passport_field && (
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name="passport"
+                            label={`${t('Passport', { ns: 'other' })}:`}
+                            placeholder={t('Series and passport number', { ns: 'other' })}
+                            isShadow
+                            className={s.input}
+                            error={!!errors.passport}
+                            touched={!!touched.passport}
+                          />
+                        )}
+                        {payersSelectedFields?.offer_link && (
+                          <div className={s.offerBlock}>
+                            <CheckBox
+                              initialState={values[payersSelectedFields?.offer_field]}
+                              setValue={item =>
+                                setFieldValue(
+                                  `${payersSelectedFields?.offer_field}`,
+                                  item,
+                                )
+                              }
+                              className={s.checkbox}
+                              error={!!errors[payersSelectedFields?.offer_field]}
+                            />
+                            <div className={s.offerBlockText}>
+                              {t('I agree with the terms of the offer')}
+                              <br />
+                              <button
+                                onClick={offerTextHandler}
+                                type="button"
+                                className={s.offerBlockLink}
+                              >
+                                {payersSelectedFields?.offer_name}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <div className={s.btnBlock}>
                   <Button
                     className={s.saveBtn}

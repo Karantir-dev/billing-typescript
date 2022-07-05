@@ -53,7 +53,7 @@
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 70.9%;
+  line-height: 130.9%;
   color: var(--menu-text-3);
   &.red {
     color: var(--error-color);
@@ -78,13 +78,4 @@
     margin-top: 0px;
     margin-right: 30px;
   }
-}
-
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }

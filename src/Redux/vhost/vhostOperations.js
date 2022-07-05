@@ -107,7 +107,7 @@ const getVhostFilters =
   }
 
 const getHistoryVhost =
-  (body = {}, setHistoryModal, setHistoryList) =>
+  (body = {}, setHistoryModal, setHistoryList, setHistoryItemCount) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -122,7 +122,7 @@ const getHistoryVhost =
           auth: sessionId,
           func: 'service.history',
           out: 'json',
-          p_cnt: 10000,
+          p_cnt: 10,
           ...body,
         }),
       )
@@ -135,6 +135,7 @@ const getHistoryVhost =
           throw new Error(data.doc.error.msg.$)
         }
 
+        setHistoryItemCount && setHistoryItemCount(data?.doc?.p_elems?.$ || 0)
         setHistoryList && setHistoryList(data?.doc?.elem)
         setHistoryModal && setHistoryModal(true)
 
@@ -149,7 +150,7 @@ const getHistoryVhost =
   }
 
 const getInsructionVhost =
-  (body = {}) =>
+  (body = {}, setInstructionModal, setInstructionData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -179,16 +180,8 @@ const getInsructionVhost =
           )
           return dispatch(actions.hideLoader())
         }
-        const url = window.URL.createObjectURL(
-          new Blob([response.data], { type: 'text/html', encoding: 'utf8' }),
-        )
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('target', '__blank')
-        link.setAttribute('rel', 'noopener noreferrer')
-        document.body.appendChild(link)
-        link.click()
-        link.parentNode.removeChild(link)
+        setInstructionModal && setInstructionModal(true)
+        setInstructionData && setInstructionData(response?.data)
 
         dispatch(actions.hideLoader())
       })
@@ -591,6 +584,7 @@ const orderVhost =
           auth: sessionId,
           func: 'vhost.order.pricelist',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
@@ -650,6 +644,7 @@ const orderParamVhost =
           auth: sessionId,
           func: 'vhost.order.param',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )

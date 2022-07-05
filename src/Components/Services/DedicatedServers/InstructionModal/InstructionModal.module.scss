@@ -143,9 +143,9 @@
   .text {
     font-size: 18px;
   }
-  .instruction_modal {
-    max-width: 632px;
-  }
+  // .instruction_modal {
+  //   max-width: 632px;
+  // }
 
   .modal_content {
     padding: 20px 45px 30px;
@@ -161,5 +161,11 @@
 
   .label {
     color: var(--main-text);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .instruction_modal {
+    max-width: 990px;
   }
 }

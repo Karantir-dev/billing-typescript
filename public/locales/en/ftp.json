@@ -12,5 +12,7 @@
   "WebDav passwd": "WebDav password",
   "We hope you’ll enjoy our services": "We hope you’ll enjoy our services",
   "Dear,": "Dear,",
-  "storage": "storage"
+  "storage": "storage",
+  "YOU DO NOT HAVE AN EXTERNAL FTP STORAGE YET": "YOU DO NOT HAVE AN EXTERNAL FTP STORAGE YET",
+  "no ftp services description": "Protect your business from unexpected information loss. FTP storage is a server with a dedicated area of disk space for storing files, backups with the possibility of subsequent recovery. Store data profitably."
 }

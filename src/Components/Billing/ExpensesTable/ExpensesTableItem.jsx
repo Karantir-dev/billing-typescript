@@ -5,10 +5,11 @@ import cn from 'classnames'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
+import { expensesTranslateFn } from '../../../utils'
 
 export default function Component(props) {
   const { id, number, date, sum, name, tax } = props
-  const { t } = useTranslation(['billing', 'other'])
+  const { t } = useTranslation(['billing', 'other', 'dedicated_servers'])
   const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
 
   const datetimeSeparate = string => {
@@ -24,7 +25,9 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Name', { ns: 'other' })}:</div>}
-        <div className={cn(s.item_text, s.second_item)}>{name}</div>
+        <div className={cn(s.item_text, s.second_item)}>
+          {expensesTranslateFn(name, t)}
+        </div>
       </div>
       <div className={s.tableBlockThird}>
         {mobile && <div className={s.item_title}>{t('date', { ns: 'other' })}:</div>}

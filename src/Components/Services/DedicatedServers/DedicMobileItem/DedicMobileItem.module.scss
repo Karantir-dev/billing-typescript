@@ -9,6 +9,7 @@
   background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
+  user-select: text;
 }
 
 .label {
@@ -18,7 +19,6 @@
 
 .value {
   font-size: 15px;
-  word-break: break-all;
 }
 
 .price {

@@ -6,7 +6,6 @@ import s from './OpenedTicketMessages.module.scss'
 export default function Component(props) {
   const { messages } = props
 
-  console.log(messages)
   return (
     <div className={s.messagesBlock}>
       {messages?.map(el => {

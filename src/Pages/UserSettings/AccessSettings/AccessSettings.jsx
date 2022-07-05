@@ -6,7 +6,7 @@ import {
   Select,
   Toggle,
   SocialButton,
-  Portal,
+  Backdrop,
   ModalTwoStepVerification,
 } from '../../../Components'
 import { Form, Formik } from 'formik'
@@ -298,11 +298,13 @@ export default function Component({ isComponentAllowedToEdit }) {
           )
         }}
       </Formik>
-      {isModal && twoStepVerif && (
-        <Portal>
-          <ModalTwoStepVerification setModal={setIsModal} />
-        </Portal>
-      )}
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(isModal && twoStepVerif)}
+        onClick={() => null}
+      >
+        <ModalTwoStepVerification setModal={setIsModal} />
+      </Backdrop>
     </>
   )
 }

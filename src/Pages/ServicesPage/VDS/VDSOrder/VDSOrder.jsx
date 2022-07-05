@@ -261,7 +261,7 @@ export default function VDSOrder() {
                 type="button"
                 onClick={() => setTariffCategory($key)}
               >
-                {$}
+                {t($)}
               </button>
             </li>
           )

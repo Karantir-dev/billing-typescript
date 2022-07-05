@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import domainsActions from './domainsActions'
 
 const initialState = {
-  domainsList: [],
+  domainsList: null,
   domainsCount: 0,
 
   domainsFiltersList: null,

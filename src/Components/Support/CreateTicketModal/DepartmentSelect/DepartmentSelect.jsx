@@ -21,6 +21,65 @@ export default function Component(props) {
 
   useOutsideAlerter(dropdownDescription, isDescrOpen, clickOutside)
 
+  const parseDescription = (desc = '') => {
+    const newString =
+      desc
+        ?.replace(/<!--[\s\S]*?--!?>/g, '')
+        ?.replace(/<\/?[a-z][^>]*(>|$)/gi, '')
+        ?.trim() || ''
+
+    let headerText = ''
+    let bodyText = ''
+    let footerText = ''
+
+    if (newString?.includes('Customer care department')) {
+      headerText = t('Customer care department')
+    }
+
+    if (newString?.includes('Technical support department')) {
+      headerText = t('Technical support department')
+    }
+
+    if (
+      newString?.includes(
+        'Contact our customer care department for assistance with non-technical issues, such as payments, service renewal, services change.',
+      )
+    ) {
+      bodyText = t(
+        'Contact our customer care department for assistance with non-technical issues, such as payments, service renewal, services change.',
+      )
+    }
+
+    if (
+      newString?.includes(
+        'Select this department if your question is related to setting up servers, installing control panels, moving sites.',
+      )
+    ) {
+      bodyText = t(
+        'Select this department if your question is related to setting up servers, installing control panels, moving sites.',
+      )
+    }
+
+    if (newString?.includes('Business hours: 24/7')) {
+      footerText = t('Business hours: 24/7')
+    }
+
+    if (headerText?.length === 0 || bodyText?.length === 0 || footerText?.length === 0) {
+      return newString
+    }
+
+    return (
+      <>
+        <b>{headerText}</b>
+        <br />
+        <br />
+        <p>{bodyText}</p>
+        <br />
+        <i>{footerText}</i>
+      </>
+    )
+  }
+
   return (
     <div className={cn(s.select, { [s.selected]: selected })}>
       <button type="button" onClick={() => setValue(value)} className={s.checkIcon}>
@@ -31,11 +90,9 @@ export default function Component(props) {
         <Info />
       </button>
       {isDescrOpen && (
-        <div
-          dangerouslySetInnerHTML={{ __html: description }}
-          ref={dropdownDescription}
-          className={s.descriptionBlock}
-        />
+        <div ref={dropdownDescription} className={s.descriptionBlock}>
+          {parseDescription(description)}
+        </div>
       )}
     </div>
   )

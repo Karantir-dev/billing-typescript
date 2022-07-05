@@ -267,6 +267,7 @@ export default function DNS() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+          pageName="dns"
         />
       </Backdrop>
 

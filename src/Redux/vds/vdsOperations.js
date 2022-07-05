@@ -23,8 +23,9 @@ const getVDS = (setServers, setRights) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+
       setServers(data.doc.elem || [])
+
       const rights = {}
       data.doc.metadata.toolbar.toolgrp.forEach(el => {
         el?.toolbtn?.forEach(elem => {
@@ -91,25 +92,56 @@ const editVDS =
           sok: 'ok',
           out: 'json',
           lang: 'en',
+          clicked_button: values.clicked_button,
         }),
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log('values.clicked_button', values.clicked_button)
+        console.log('values', values)
 
-        const newAutoprolongList = data.doc?.slist?.[0]?.val
-        mutateOptionsListData && mutateOptionsListData(newAutoprolongList)
+        if (values.clicked_button === 'basket') {
+          const billorder = data?.doc?.billorder?.$
+          console.log(billorder, 'billorder')
 
-        if (data.doc?.orderinfo?.$) {
-          const price = data.doc?.orderinfo?.$.match(/Total amount: (.+?)(?= EUR)/)[1]
-          let description = data.doc?.orderinfo?.$.match(
-            /Control panel (.+?)(?=<br\/>)/,
-          )[1].split(' - ')[2]
-          console.log(description)
-          description = `(${description})`
+          axiosInstance
+            .post(
+              '/',
+              qs.stringify({
+                func: 'basket',
+                auth: sessionId,
+                billorder,
+                sok: 'ok',
+              }),
+            )
+            .then(data => {
+              console.log(data)
+              dispatch(actions.hideLoader())
 
-          setOrderInfo && setOrderInfo({ price, description })
+              dispatch(
+                cartActions.setCartIsOpenedState({
+                  isOpened: true,
+                  redirectPath: routes.VDS,
+                }),
+              )
+            })
         } else {
-          setOrderInfo(null)
+          console.log('save btn')
+          const newAutoprolongList = data.doc?.slist?.[0]?.val
+          mutateOptionsListData && mutateOptionsListData(newAutoprolongList)
+
+          if (data.doc?.orderinfo?.$) {
+            const price = data.doc?.orderinfo?.$.match(/Total amount: (.+?)(?= EUR)/)[1]
+            let description = data.doc?.orderinfo?.$.match(
+              /Control panel (.+?)(?=<br\/>)/,
+            )[1].split(' - ')[2]
+            console.log(description)
+            description = `(${description})`
+
+            setOrderInfo && setOrderInfo({ price, description })
+          } else {
+            setOrderInfo && setOrderInfo(null)
+          }
         }
 
         dispatch(actions.hideLoader())

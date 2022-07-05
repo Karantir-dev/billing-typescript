@@ -1,5 +1,7 @@
 import qs from 'qs'
+import { toast } from 'react-toastify'
 import { actions } from '../'
+import i18n from '../../i18n'
 import { errorHandler } from '../../utils'
 
 import { axiosInstance } from './../../config/axiosInstance'
@@ -134,8 +136,10 @@ const createNewUser =
   }
 
 const editUserInfo =
-  (password, email, phone, realname, elid, controlForm) => (dispatch, getState) => {
+  (passwd, email, phone, realname, elid, controlForm) => (dispatch, getState) => {
     dispatch(actions.showLoader())
+    console.log(passwd, 'passwd')
+    console.log(passwd, email, phone, realname, elid)
 
     const {
       auth: { sessionId },
@@ -149,7 +153,8 @@ const editUserInfo =
           out: 'json',
           auth: sessionId,
           elid,
-          passwd: password,
+          passwd,
+          confirm: passwd,
           email,
           phone,
           realname,
@@ -158,7 +163,11 @@ const editUserInfo =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        console.log('user infor edited successfully', data)
+
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+          toastId: 'customId',
+        })
         dispatch(actions.hideLoader())
         controlForm()
       })
@@ -185,16 +194,31 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
         auth: sessionId,
         elid: userId,
         sok: 'ok',
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log('user removed', data)
       updateUsersListFunc()
       dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
+      if (
+        error.message.trim() ===
+        'Unable to delete item due to dependencies.  Delete the objects that depend on it and try again'
+      ) {
+        toast.error(
+          i18n.t(
+            'Unable to delete item due to dependencies.  Delete the objects that depend on it and try again',
+            { ns: 'trusted_users' },
+          ),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+      }
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

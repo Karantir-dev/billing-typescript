@@ -27,8 +27,6 @@ export default function NotificationList({ notifications }) {
   const removeItem = id => {
     dispatch(userOperations.removeItems(isAuthenticated, id))
     dispatch(userActions.removeItems(id))
-
-    console.log('removing id', id)
     // setCurrentNotifList(() => {
     //   if (Array.isArray(currentNotifList)) {
     //     return currentNotifList.filter(item => item.$id !== id)
@@ -37,6 +35,23 @@ export default function NotificationList({ notifications }) {
     //   }
     // })
   }
+
+  const removeAllItems = () => {
+    notifications.forEach(el => {
+      console.log(el, 'el')
+      dispatch(userOperations.removeItems(isAuthenticated, el?.$id))
+      dispatch(userActions.removeItems(el?.$id))
+    })
+    // setCurrentNotifList(() => {
+    //   if (Array.isArray(currentNotifList)) {
+    //     return currentNotifList.filter(item => item.$id !== id)
+    //   } else if (currentNotifList.id !== id) {
+    //     return currentNotifList
+    //   }
+    // })
+  }
+
+  console.log(notifications)
 
   return (
     <>
@@ -49,7 +64,6 @@ export default function NotificationList({ notifications }) {
       ) : (
         <p className={s.no_messages}>{t('notification_bar.no_messages')}</p>
       )}
-
       {/* {notifications?.length > 3 && (
         <button
           className={classNames({ [s.btn]: true, [s.hidden]: click })}
@@ -58,6 +72,11 @@ export default function NotificationList({ notifications }) {
           <p className={s.show_more}>{t('notification_bar.show_more')}</p>
         </button>
       )} */}
+      {notifications.length > 0 && (
+        <button className={s.clear_btn} onClick={removeAllItems}>
+          Clear all
+        </button>
+      )}
     </>
   )
 }

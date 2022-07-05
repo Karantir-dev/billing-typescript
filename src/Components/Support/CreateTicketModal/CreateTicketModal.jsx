@@ -51,58 +51,63 @@ export default function Component(props) {
           {({ values, setFieldValue, errors, touched }) => {
             let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
             return (
-              <Form className={s.form}>
-                <div className={s.departmentSelect}>
-                  {departmentsList?.map(el => {
-                    return (
-                      <DepartmentSelect
-                        key={el.$key}
-                        selected={values?.client_department === el.$key}
-                        value={el.$key}
-                        title={el.$plainval}
-                        description={el.$}
-                        setValue={value => setFieldValue('client_department', value)}
-                      />
-                    )
-                  })}
+              <Form>
+                <div className={s.form}>
+                  <div className={s.departmentSelect}>
+                    {departmentsList?.map(el => {
+                      return (
+                        <DepartmentSelect
+                          key={el.$key}
+                          selected={values?.client_department === el.$key}
+                          value={el.$key}
+                          title={el.$plainval}
+                          description={el.$}
+                          setValue={value => setFieldValue('client_department', value)}
+                        />
+                      )
+                    })}
+                  </div>
+                  <Select
+                    height={52}
+                    value={values.ticket_item}
+                    getElement={item => setFieldValue('ticket_item', item)}
+                    isShadow
+                    label={`${t('Specify what the question is about')}:`}
+                    itemsList={servicesList.map(el => {
+                      return { label: t(el.label), value: el.value }
+                    })}
+                    className={s.select}
+                  />
+                  <InputField
+                    label={t('Request subject:')}
+                    placeholder={t('Enter the subject of your request')}
+                    name="subject"
+                    isShadow
+                    error={!!errors.subject}
+                    touched={!!touched.subject}
+                    className={s.input_field_wrapper}
+                    autoComplete
+                  />
+                  <label htmlFor={'message'} className={s.label}>
+                    {t('Message')}:
+                  </label>
+                  <MessageInput
+                    message={values.message}
+                    filesError={checkItemSize.length !== 0}
+                    files={values.files}
+                    onChangeFiles={value => setFieldValue('files', value)}
+                  />
                 </div>
-                <Select
-                  height={52}
-                  value={values.ticket_item}
-                  getElement={item => setFieldValue('ticket_item', item)}
-                  isShadow
-                  label={`${t('Specify what the question is about')}:`}
-                  itemsList={servicesList.map(el => {
-                    return { label: t(el.label), value: el.value }
-                  })}
-                  className={s.select}
-                />
-                <InputField
-                  label={t('Request subject:')}
-                  placeholder={t('Enter the subject of your request')}
-                  name="subject"
-                  isShadow
-                  error={!!errors.subject}
-                  touched={!!touched.subject}
-                  className={s.input_field_wrapper}
-                  autoComplete
-                />
-                <label htmlFor={'message'} className={s.label}>
-                  {t('Message')}:
-                </label>
-                <MessageInput
-                  message={values.message}
-                  filesError={checkItemSize.length !== 0}
-                  files={values.files}
-                  onChangeFiles={value => setFieldValue('files', value)}
-                />
-                <Button
-                  disabled={checkItemSize.length !== 0}
-                  size="large"
-                  className={s.submit_btn}
-                  label={t('Send', { ns: 'other' })}
-                  type="submit"
-                />
+                <div className={s.btnBlock}>
+                  <Button
+                    isShadow
+                    disabled={checkItemSize.length !== 0}
+                    size="large"
+                    className={s.submit_btn}
+                    label={t('Send', { ns: 'other' })}
+                    type="submit"
+                  />
+                </div>
               </Form>
             )
           }}

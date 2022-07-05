@@ -8,6 +8,7 @@ import {
   SiteCareProlongModal,
   SiteCareEditModal,
   SiteCareDeleteModal,
+  Backdrop,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +17,7 @@ import s from './SiteCare.module.scss'
 import { siteCareOperations, siteCareSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -29,6 +30,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
   const [prolongData, setProlongData] = useState(null)
@@ -37,6 +40,8 @@ export default function Component() {
   const [editData, setEditData] = useState(null)
 
   const [deleteModal, setDeleteModal] = useState(false)
+
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -56,14 +61,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(siteCareOperations.getHistorySiteCare(data, setHistoryModal, setHistoryList))
+    dispatch(
+      siteCareOperations.getHistorySiteCare(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historySiteCareHandler()
+    }
+  }, [historyCurrentPage])
 
   const prolongSiteCareHandler = () => {
     const data = {
@@ -131,24 +151,52 @@ export default function Component() {
         {t('burger_menu.services.services_list.wetsite_care')}
       </h1>
       <SiteCareFilter
+        setIsFiltered={setIsFiltered}
+        setSelctedItem={setSelctedItem}
         historySiteCareHandler={historySiteCareHandler}
         prolongSiteCareHandler={prolongSiteCareHandler}
         editSiteCareHandler={editSiteCareHandler}
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
-      />
-      <SiteCareTable
-        historySiteCareHandler={historySiteCareHandler}
-        prolongSiteCareHandler={prolongSiteCareHandler}
-        editSiteCareHandler={editSiteCareHandler}
-        deleteSiteCareHandler={() => setDeleteModal(true)}
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={siteCareList}
+        isFilterActive={siteCareList?.length > 0}
       />
 
-      {siteCareList.length !== 0 && (
+      {siteCareList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {siteCareList?.length < 1 && !isFiltered && siteCareList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/care.webp')}
+            alt="sitecare"
+            className={s.sitecare_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services sitecare description', { ns: 'other' })}
+          </p>
+        </div>
+      )}
+
+      {siteCareList?.length > 0 && (
+        <SiteCareTable
+          historySiteCareHandler={historySiteCareHandler}
+          prolongSiteCareHandler={prolongSiteCareHandler}
+          editSiteCareHandler={editSiteCareHandler}
+          deleteSiteCareHandler={() => setDeleteModal(true)}
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={siteCareList}
+        />
+      )}
+
+      {siteCareList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
@@ -159,39 +207,58 @@ export default function Component() {
         </div>
       )}
 
-      {historyModal && historyList?.length > 0 && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(historyModal && historyList?.length > 0)}
+        onClick={closeHistoryModalHandler}
+      >
         <SiteCareHistoryModal
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
-      )}
+      </Backdrop>
 
-      {prolongModal && prolongData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(prolongModal && prolongData)}
+        onClick={closeProlongModalHandler}
+      >
         <SiteCareProlongModal
           prolongData={prolongData}
           name={selctedItem?.name?.$}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditSiteCareHandler}
         />
-      )}
+      </Backdrop>
 
-      {editModal && editData && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(editModal && editData)}
+        onClick={closeEditModalHandler}
+      >
         <SiteCareEditModal
           editData={editData}
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
         />
-      )}
+      </Backdrop>
 
-      {deleteModal && (
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(deleteModal)}
+        onClick={() => setDeleteModal(false)}
+      >
         <SiteCareDeleteModal
           closeDeleteModalHandler={() => setDeleteModal(false)}
           deleteSiteCareHandler={deleteSiteCareHandler}
           name={selctedItem?.name?.$}
         />
-      )}
+      </Backdrop>
     </div>
   )
 }

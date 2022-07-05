@@ -17,7 +17,12 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'trusted_users'])
+  const { t, i18n } = useTranslation([
+    'container',
+    'trusted_users',
+    'access_log',
+    'domains',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -30,6 +35,8 @@ export default function Component() {
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
+  const [historyItemCount, setHistoryItemCount] = useState(0)
+  const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [whoisModal, setWhoisModal] = useState(false)
   const [whoisData, setWhoisData] = useState(null)
@@ -39,6 +46,8 @@ export default function Component() {
 
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
+
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -73,14 +82,29 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+      p_num: historyCurrentPage,
     }
-    dispatch(domainsOperations.getHistoryDomain(data, setHistoryModal, setHistoryList))
+    dispatch(
+      domainsOperations.getHistoryDomain(
+        data,
+        setHistoryModal,
+        setHistoryList,
+        setHistoryItemCount,
+      ),
+    )
   }
 
   const closeHistoryModalHandler = () => {
     setHistoryList([])
+    setHistoryCurrentPage(1)
     setHistoryModal(false)
   }
+
+  useEffect(() => {
+    if (historyModal && historyList?.length > 0) {
+      historyDomainHandler()
+    }
+  }, [historyCurrentPage])
 
   const whoisDomainHandler = () => {
     const data = {
@@ -149,7 +173,9 @@ export default function Component() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
       <DomainFilters
+        setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
+        setSelctedItem={setSelctedItem}
         setCurrentPage={setCurrentPage}
         historyDomainHandler={historyDomainHandler}
         deleteDomainHandler={deleteDomainHandler}
@@ -157,19 +183,45 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
+        isFilterActive={domainsList?.length > 0}
       />
-      <DomainsTable
-        selctedItem={selctedItem}
-        setSelctedItem={setSelctedItem}
-        list={domainsList}
-        historyDomainHandler={historyDomainHandler}
-        deleteDomainHandler={deleteDomainHandler}
-        editDomainHandler={editDomainHandler}
-        renewDomainHandler={renewDomainHandler}
-        NSDomainHandler={NSDomainHandler}
-        whoisDomainHandler={whoisDomainHandler}
-      />
-      {domainsList.length !== 0 && (
+
+      {domainsList?.length < 1 && isFiltered && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {domainsList?.length < 1 && !isFiltered && domainsList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/domains.webp')}
+            alt="domains"
+            className={s.domains_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE A DOMAIN YET', { ns: 'domains' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'domains' })}
+          </p>
+        </div>
+      )}
+
+      {domainsList?.length > 0 && (
+        <DomainsTable
+          selctedItem={selctedItem}
+          setSelctedItem={setSelctedItem}
+          list={domainsList}
+          historyDomainHandler={historyDomainHandler}
+          deleteDomainHandler={deleteDomainHandler}
+          editDomainHandler={editDomainHandler}
+          renewDomainHandler={renewDomainHandler}
+          NSDomainHandler={NSDomainHandler}
+          whoisDomainHandler={whoisDomainHandler}
+        />
+      )}
+      {domainsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
@@ -189,6 +241,9 @@ export default function Component() {
           historyList={historyList}
           name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
+          setHistoryCurrentPage={setHistoryCurrentPage}
+          historyCurrentPage={historyCurrentPage}
+          historyItemCount={historyItemCount}
         />
       </Backdrop>
 

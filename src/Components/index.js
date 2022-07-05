@@ -103,6 +103,7 @@ export { default as DomainsZone } from './Services/Domains/DomainOrderPage/Domai
 export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
 
 export { default as SharedHostingFilter } from './Services/SharedHosting/SharedHostingFilter/SharedHostingFilter'
+export { default as SharedHostingInstructionModal } from './Services/SharedHosting/SharedHostingInstructionModal/SharedHostingInstructionModal'
 export { default as SharedHostingTable } from './Services/SharedHosting/SharedHostingTable/SharedHostingTable'
 export { default as SharedHostingHistoryModal } from './Services/SharedHosting/SharedHostingHistoryModal/SharedHostingHistoryModal'
 export { default as SharedHostingProlongModal } from './Services/SharedHosting/SharedHostingProlongModal/SharedHostingProlongModal'
