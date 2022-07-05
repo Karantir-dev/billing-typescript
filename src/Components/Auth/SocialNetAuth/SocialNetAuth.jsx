@@ -17,13 +17,22 @@ export default function SocialNetAuth() {
     })
   }
 
+  const redirectToLogin = (errMsg, socNetName) => {
+    navigate(route.LOGIN, {
+      state: { errMsg: errMsg, socNetName },
+      replace: true,
+    })
+  }
+
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
     if (!state) {
       navigate(route.LOGIN, { replace: true })
       console.log('no state ')
     } else {
-      dispatch(authOperations.checkGoogleState(state, redirectToRegistration))
+      dispatch(
+        authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),
+      )
     }
   }, [])
 

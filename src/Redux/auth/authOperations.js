@@ -311,7 +311,7 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     })
 }
 
-const checkGoogleState = (state, redirectToRegistration) => dispatch => {
+const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -325,11 +325,14 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
       }),
     )
     .then(({ data }) => {
-      // if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
       console.log(data.doc)
       // LOGIN
-      if (data.doc?.auth?.$id) {
+      if (data.doc?.error?.$object === 'nolink') {
+        redirectToLogin(
+          'soc_net_not_integrated',
+          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+        )
+      } else if (data.doc?.auth?.$id) {
         dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
 
         //REGISTER
@@ -351,9 +354,13 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
             console.log(data.doc)
 
             if (data.doc?.error?.$object === 'account_exist') {
-              const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
-              const email = data.doc.error.param.find(el => el.$name === 'email')?.$
-              redirectToRegistration('social_akk_registered', name, email)
+              // const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
+              // const email = data.doc.error.param.find(el => el.$name === 'email')?.$
+              // redirectToRegistration('social_akk_registered', name, email)
+              redirectToLogin(
+                'social_akk_registered',
+                data.doc.error.param.find(el => el.$name === 'email')?.$,
+              )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
