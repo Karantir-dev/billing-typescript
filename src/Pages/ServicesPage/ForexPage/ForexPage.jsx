@@ -18,14 +18,8 @@ import {
   ForexFiltersModal,
   ForexDeletionModal,
 } from '../../../Components'
-import {
-  forexOperations,
-  // forexSelectors
-} from '../../../Redux'
-import {
-  useDispatch,
-  // useSelector
-} from 'react-redux'
+import { forexOperations, forexSelectors } from '../../../Redux'
+import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 
 export default function ForexPage() {
@@ -34,8 +28,8 @@ export default function ForexPage() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  // const forexList = useSelector(forexSelectors.getForexList)
-  const [forexList, setForexList] = useState(null)
+  const forexRenderData = useSelector(forexSelectors.getForexList)
+  // const [forexList, setForexList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
@@ -81,7 +75,6 @@ export default function ForexPage() {
         setFilters,
         { ...clearField, sok: 'ok' },
         true,
-        setForexList,
         setEmptyFilter,
       ),
     )
@@ -95,7 +88,6 @@ export default function ForexPage() {
         setFilters,
         { ...values, sok: 'ok' },
         true,
-        setForexList,
         setEmptyFilter,
       ),
     )
@@ -119,18 +111,15 @@ export default function ForexPage() {
     }
 
     dispatch(
-      forexOperations.getForexFilters(
-        setFilters,
-        { ...clearField, sok: 'ok' },
-        true,
-        setForexList,
-      ),
+      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
     )
   }, [])
 
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
+
+  console.log(forexRenderData, 'forexRenderData')
 
   return (
     <>
@@ -143,7 +132,7 @@ export default function ForexPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
-              disabled={!emptyFilter && forexList?.length === 0}
+              disabled={!emptyFilter && forexRenderData?.forexList?.length === 0}
             />
             {filterModal && (
               <>
@@ -232,7 +221,7 @@ export default function ForexPage() {
       </div>
       <ForexList
         emptyFilter={emptyFilter}
-        forexList={forexList}
+        forexList={forexRenderData?.forexList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
