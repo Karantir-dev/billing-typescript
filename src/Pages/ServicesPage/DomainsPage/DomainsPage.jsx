@@ -17,7 +17,12 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'trusted_users', 'access_log'])
+  const { t, i18n } = useTranslation([
+    'container',
+    'trusted_users',
+    'access_log',
+    'domains',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -187,6 +192,22 @@ export default function Component() {
         </div>
       )}
 
+      {domainsList?.length < 1 && !isFiltered && domainsList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/domains.webp')}
+            alt="domains"
+            className={s.domains_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE A DOMAIN YET', { ns: 'domains' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'domains' })}
+          </p>
+        </div>
+      )}
+
       {domainsList?.length > 0 && (
         <DomainsTable
           selctedItem={selctedItem}
@@ -200,7 +221,7 @@ export default function Component() {
           whoisDomainHandler={whoisDomainHandler}
         />
       )}
-      {domainsList.length !== 0 && (
+      {domainsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

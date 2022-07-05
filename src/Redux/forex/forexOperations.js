@@ -11,7 +11,6 @@ import {
 } from '..'
 
 //GET hostings OPERATIONS
-
 const getForexList = setForexList => (dispatch, getState) => {
   dispatch(actions.showLoader())
 

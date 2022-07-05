@@ -31,6 +31,7 @@ const getServersList = () => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       dispatch(dedicActions.setServersList(data.doc.elem ? data.doc.elem : []))
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
