@@ -131,6 +131,14 @@
   justify-content: center;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .clearFilters {
   font-style: normal;
   font-weight: 400;

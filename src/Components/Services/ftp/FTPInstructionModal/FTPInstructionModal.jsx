@@ -25,20 +25,15 @@ export default function FTPInstructionModal({ elid, closeFn }) {
   }
 
   return (
-    <>
-      <div className={s.instruction_modal}>
-        <div className={s.title_wrapper}>
-          <div className={s.title}>
-            <h3 className={s.modal_title}>{t('FTP storage activation')}</h3>
-          </div>
-          <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
-        </div>
-
-        <div
-          className={s.modal_content}
-          dangerouslySetInnerHTML={{ __html: instruction?.$ }}
-        ></div>
+    <div className={s.modalBlock}>
+      <div className={s.modalHeader}>
+        <span className={s.headerText}>{t('FTP storage activation')}</span>
+        <Cross onClick={closeFn} className={s.crossIcon} />
       </div>
-    </>
+      <div
+        dangerouslySetInnerHTML={{ __html: instruction?.$ }}
+        className={s.whoisBlock}
+      />
+    </div>
   )
 }

@@ -168,6 +168,8 @@ export default function Component() {
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, isOpenProfile))
   }
 
+  console.log(isFiltered, 'isFiltered')
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -183,7 +185,8 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
-        isFilterActive={domainsList?.length > 0}
+        isFiltered={isFiltered}
+        isFilterActive={isFiltered || domainsList?.length > 0}
       />
 
       {domainsList?.length < 1 && isFiltered && (

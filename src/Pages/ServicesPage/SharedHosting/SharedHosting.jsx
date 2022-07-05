@@ -233,7 +233,8 @@ export default function Component() {
         changeTariffVhostHandler={changeTariffVhostHandler}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
-        isFilterActive={vhostList?.length > 0}
+        isFiltered={isFiltered}
+        isFilterActive={isFiltered || vhostList?.length > 0}
       />
 
       {vhostList?.length < 1 && isFiltered && (

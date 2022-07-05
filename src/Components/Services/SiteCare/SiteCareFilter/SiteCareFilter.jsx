@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -26,6 +27,7 @@ export default function Component(props) {
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
+    isFiltered,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -79,7 +81,7 @@ export default function Component(props) {
           <IconButton
             onClick={() => setFilterModal(true)}
             icon="filter"
-            className={s.calendarBtn}
+            className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
             disabled={!isFilterActive}
           />
           {filterModal && (

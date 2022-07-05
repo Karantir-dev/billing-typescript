@@ -1,39 +1,27 @@
-.instruction_modal {
+.modalBg {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  margin: 20px auto;
+  margin: 20px 10px;
+  max-width: 990px;
   width: 95%;
-  max-height: 90vh;
-  overflow-y: hidden;
-  position: 'relative';
+  padding-bottom: 15px;
 }
 
-.modal_content {
-  padding: 20px 20px 21px 20px;
-  margin-left: 2px;
-  max-height: 60vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-}
-
-.icon_cross {
-  cursor: pointer;
-}
-
-.title_wrapper {
+.modalHeader {
   position: sticky;
   display: flex;
   justify-content: space-between;
@@ -46,126 +34,57 @@
   box-shadow: var(--modal_header_shadow);
 }
 
-.modal_title {
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
   font-weight: 600;
   font-size: 20px;
   line-height: 113%;
+  max-width: 90%;
   color: var(--main-text);
 }
 
-.welcome {
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 130%;
-  color: var(--main-text);
-  margin-bottom: 10px;
-}
-.inform_text,
-.ssh_tip,
-.text {
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 130%;
-  color: var(--main-text);
-  margin-bottom: 15px;
-}
+.whoisBlock {
+  background: var(forms_bgc_4);
+  box-shadow: var(--forms_shadow);
+  margin: 30px 15px;
 
-.service_info {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 130%;
-  color: var(--main-text);
-  margin-bottom: 10px;
-}
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-.server_info_block,
-.server_info,
-.important_departments_block {
-  display: grid;
-  grid-template-columns: 1fr;
-  column-gap: 15px;
-  row-gap: 5px;
-  margin-bottom: 20px;
-}
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
 
-.label,
-.value {
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 140%;
-  color: var(--main-text);
-}
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
 
-.label {
-  font-weight: 400;
-  color: var(--transparent-color);
-}
-
-.warning_text {
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 130%;
-  color: var(--red-text);
-  margin-bottom: 15px;
-  word-break: break-all;
-}
-.conclusion,
-.signature {
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 130%;
-  color: var(--main-text);
-}
-.signature {
-  font-weight: 600;
-}
-.link {
-  color: var(--link-text);
-  text-decoration: underline;
-}
-.promocode {
-  font-weight: 600;
-}
-.warning_line {
-  padding-left: 3px;
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 @media screen and (min-width: 768px) {
-  .server_info_block,
-  .server_info,
-  .important_departments_block {
-    grid-template-columns: 150px 1fr;
-    row-gap: 10px;
+  .modalBg {
+    display: flex;
+    height: 100vh;
   }
 
-  .inform_text,
-  .ssh_tip,
-  .text {
-    font-size: 18px;
-  }
-  .instruction_modal {
-    max-width: 632px;
+  .whoisBlock {
+    margin: 25px 25px;
   }
 
-  .modal_content {
-    padding: 20px 45px 30px;
-  }
-
-  .icon_cross {
-    cursor: pointer;
-  }
-
-  .title_wrapper {
-    padding: 20px 45px;
-  }
-
-  .label {
-    color: var(--main-text);
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .instruction_modal {
-    max-width: 990px;
+  .modalBlock {
+    margin: 0 30px;
   }
 }
