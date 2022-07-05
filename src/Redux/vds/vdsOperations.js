@@ -23,8 +23,9 @@ const getVDS = (setServers, setRights) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+
       setServers(data.doc.elem || [])
+
       const rights = {}
       data.doc.metadata.toolbar.toolgrp.forEach(el => {
         el?.toolbtn?.forEach(elem => {

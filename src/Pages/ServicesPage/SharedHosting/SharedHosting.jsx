@@ -18,7 +18,12 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
+  const { t, i18n } = useTranslation([
+    'container',
+    'other',
+    'access_log',
+    'virtual_hosting',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -237,6 +242,22 @@ export default function Component() {
         </div>
       )}
 
+      {vhostList?.length < 1 && !isFiltered && vhostList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/virtual_hosting.webp')}
+            alt="virtual_hosting"
+            className={s.virt_host_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'virtual_hosting' })}
+          </p>
+        </div>
+      )}
+
       {vhostList?.length > 0 && (
         <SharedHostingTable
           historyVhostHandler={historyVhostHandler}
@@ -251,7 +272,7 @@ export default function Component() {
         />
       )}
 
-      {vhostList.length !== 0 && (
+      {vhostList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

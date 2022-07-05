@@ -16,7 +16,6 @@ const userTickets = (data, dispatch) => {
 }
 
 const userNotifications = (data, dispatch) => {
-  console.log(data, 'data user notif')
   const { elem } = data.doc
   let notifications
   if (Array.isArray(elem)) {

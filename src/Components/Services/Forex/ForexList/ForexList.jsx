@@ -40,10 +40,15 @@ export default function ForexList({
         <div className={s.no_service_wrapper}>
           <img
             src={require('../../../../images/services/forexbox.webp')}
-            alt="forexbox"
+            alt="forex"
+            className={s.forex_img}
           />
-          <p className={s.no_service_title}>You dont have a server yet</p>
-          <p className={s.no_service_description}>Here must be service description</p>
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE A FOREX SERVER YET', { ns: 'other' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services forex description', { ns: 'other' })}
+          </p>
         </div>
       )
     }

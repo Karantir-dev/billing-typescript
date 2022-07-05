@@ -168,6 +168,22 @@ export default function Component() {
         </div>
       )}
 
+      {siteCareList?.length < 1 && !isFiltered && siteCareList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/care.webp')}
+            alt="sitecare"
+            className={s.sitecare_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services sitecare description', { ns: 'other' })}
+          </p>
+        </div>
+      )}
+
       {siteCareList?.length > 0 && (
         <SiteCareTable
           historySiteCareHandler={historySiteCareHandler}
@@ -180,7 +196,7 @@ export default function Component() {
         />
       )}
 
-      {siteCareList.length !== 0 && (
+      {siteCareList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

@@ -29,8 +29,7 @@ const getDNSList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      // dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))   uncoment when the page with no orders will be ready
-      dispatch(dnsActions.setDNSList([]))
+      dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
 
       dispatch(actions.hideLoader())
     })

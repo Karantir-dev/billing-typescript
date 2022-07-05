@@ -23,6 +23,7 @@ export default function FTPList({
     'dedicated_servers',
     'domains',
     'access_log',
+    'ftp',
   ])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
@@ -40,10 +41,15 @@ export default function FTPList({
         <div className={s.no_service_wrapper}>
           <img
             src={require('../../../../images/services/ftp_storage.webp')}
-            alt="forexbox"
+            alt="ftp"
+            className={s.ftp_img}
           />
-          <p className={s.no_service_title}>You dont have a server yet</p>
-          <p className={s.no_service_description}>Here must be service description</p>
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE AN EXTERNAL FTP STORAGE YET', { ns: 'ftp' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no ftp services description', { ns: 'ftp' })}
+          </p>
         </div>
       )
     }

@@ -24,6 +24,7 @@ export default function DNSList({
     'dedicated_servers',
     'domains',
     'access_log',
+    'dns',
   ])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
 
@@ -44,8 +45,12 @@ export default function DNSList({
             alt="dns"
             className={s.dns_img}
           />
-          <p className={s.no_service_title}>You dont have a server yet</p>
-          <p className={s.no_service_description}>Here must be service description</p>
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE DNS HOSTING YET', { ns: 'dns' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'dns' })}
+          </p>
         </div>
       )
     }
