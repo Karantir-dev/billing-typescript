@@ -5,7 +5,7 @@ import { Cross } from '../../../../images'
 import { dedicOperations } from '../../../../Redux'
 import { Loader } from '../../..'
 
-import s from '../../DedicatedServers/InstructionModal/InstructionModal.module.scss'
+import s from './InstructionModal.module.scss'
 
 export default function InstructionModal({ elid, closeFn }) {
   const dispatch = useDispatch()
@@ -23,20 +23,15 @@ export default function InstructionModal({ elid, closeFn }) {
   }
 
   return (
-    <>
-      <div className={s.instruction_modal}>
-        <div className={s.title_wrapper}>
-          <div className={s.title}>
-            <h3 className={s.modal_title}>{t('Virtual server activation')}</h3>
-          </div>
-          <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
-        </div>
-
-        <div
-          className={s.modal_content}
-          dangerouslySetInnerHTML={{ __html: instruction?.$ }}
-        ></div>
+    <div className={s.modalBlock}>
+      <div className={s.modalHeader}>
+        <span className={s.headerText}>{t('Virtual server activation')}</span>
+        <Cross onClick={closeFn} className={s.crossIcon} />
       </div>
-    </>
+      <div
+        dangerouslySetInnerHTML={{ __html: instruction?.$ }}
+        className={s.whoisBlock}
+      />
+    </div>
   )
 }

@@ -108,6 +108,25 @@ export default function Component({ isComponentAllowedToEdit }) {
             }
           }
 
+          const addIpHandlerPlus = () => {
+            setFieldTouched('atallowIp', true, false)
+            if (values.allowIpList.indexOf(values?.atallowIp) != -1) {
+              setFieldError('atallowIp', `${t('Value cannot be repeated')}`)
+              return
+            }
+
+            if (ipRegex().test(values?.atallowIp)) {
+              setFieldValue('atallowIp', '')
+              setFieldValue('allowIpList', values.allowIpList.concat(values?.atallowIp))
+              return
+            }
+
+            return setFieldError(
+              'atallowIp',
+              `${t('You have entered an invalid IP address')}`,
+            )
+          }
+
           const deleteIpHandler = index => {
             let newArr = values.allowIpList
               .slice(0, index)
@@ -185,7 +204,9 @@ export default function Component({ isComponentAllowedToEdit }) {
                         className={s.trustedIp}
                         error={!!errors.atallowIp}
                         touched={!!touched.atallowIp}
+                        iconRight="plus"
                         onKeyDown={addIpHandler}
+                        onPlusClick={addIpHandlerPlus}
                       />
                     )}
                   </div>
@@ -238,7 +259,6 @@ export default function Component({ isComponentAllowedToEdit }) {
                       className={s.trustedIp}
                       error={!!errors.disable_totp}
                       touched={!!touched.disable_totp}
-                      onKeyDown={addIpHandler}
                     />
                   </div>
                 ) : (

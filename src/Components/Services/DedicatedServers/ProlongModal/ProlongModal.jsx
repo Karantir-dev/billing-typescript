@@ -34,13 +34,18 @@ export default function ProlongModal({ elid, closeFn, pageName }) {
     dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal, pageName))
   }
 
+  console.log(initialState?.title_name?.$.split('(')[0])
+
   return (
     <div className={s.modal}>
       <div className={s.header_block}>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Prolong service')}</h2>
           <span className={s.tarif_name}>
-            {initialState?.title_name?.$.split('(')[0]}
+            {initialState?.title_name?.$.split('(')[0]
+              .replace('for', t('for', { ns: 'dns' }))
+              .replace('domains', t('domains', { ns: 'dns' }))
+              .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
           </span>
         </div>
 

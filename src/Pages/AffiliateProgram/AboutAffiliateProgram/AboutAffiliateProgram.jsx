@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner } from '../../../Components'
+import { ServicesSelect, FilesBanner, HintWrapper } from '../../../Components'
 import { Copy } from '../../../images'
 import { affiliateSelectors, affiliateOperations } from '../../../Redux'
 
@@ -128,35 +128,40 @@ export default function AboutAffiliateProgram() {
         </div>
 
         <div className={s.field_wrapper}>
-          <label className={s.label}> {t('about_section.referral_link')}: </label>
-          <div
-            className={s.copy_field}
-            onClick={() => handleCopyText(refLinkEl)}
-            role="button"
-            tabIndex={0}
-            onKeyUp={() => {}}
-            data-testid={'ref_link_field'}
+          <HintWrapper
+            wrapperClassName={s.archiveBtn}
+            label={refLinkEl?.current?.textContent}
           >
-            <span
-              className={cn(s.field_text, { [s.selected]: serviceSelected })}
-              ref={refLinkEl}
+            <label className={s.label}> {t('about_section.referral_link')}: </label>
+            <div
+              className={s.copy_field}
+              onClick={() => handleCopyText(refLinkEl)}
+              role="button"
+              tabIndex={0}
+              onKeyUp={() => {}}
+              data-testid={'ref_link_field'}
             >
-              {t('about_section.referral_link')}
-            </span>
-            <Copy className={cn(s.copy_icon, { [s.selected]: serviceSelected })} />
+              <span
+                className={cn(s.field_text, { [s.selected]: serviceSelected })}
+                ref={refLinkEl}
+              >
+                {t('about_section.referral_link')}
+              </span>
+              <Copy className={cn(s.copy_icon, { [s.selected]: serviceSelected })} />
 
-            <CSSTransition
-              in={refLinkCopied}
-              classNames={animations}
-              timeout={150}
-              unmountOnExit
-            >
-              <div className={s.copy_prompt}>
-                <div className={s.prompt_pointer}></div>
-                {t('about_section.link_copied')}
-              </div>
-            </CSSTransition>
-          </div>
+              <CSSTransition
+                in={refLinkCopied}
+                classNames={animations}
+                timeout={150}
+                unmountOnExit
+              >
+                <div className={s.copy_prompt}>
+                  <div className={s.prompt_pointer}></div>
+                  {t('about_section.link_copied')}
+                </div>
+              </CSSTransition>
+            </div>
+          </HintWrapper>
         </div>
 
         <div className={s.field_wrapper}>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-
 import { Button, IconButton, HintWrapper, Portal } from '../../..'
 import SharedHostingFilterModal from '../SharedHostingFilterModal/SharedHostingFilterModal'
 import * as routes from '../../../../routes'
@@ -28,6 +28,7 @@ export default function Component(props) {
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
+    isFiltered,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -81,7 +82,7 @@ export default function Component(props) {
           <IconButton
             onClick={() => setFilterModal(true)}
             icon="filter"
-            className={s.calendarBtn}
+            className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
             disabled={!isFilterActive}
           />
           {filterModal && (
