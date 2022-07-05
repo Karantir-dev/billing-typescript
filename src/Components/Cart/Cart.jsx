@@ -137,7 +137,7 @@ export default function Component() {
       <>
         {siteCareList?.length > 0 && (
           <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+            <div className={s.formBlockTitle}>{t('Site care')}:</div>
             {siteCareList?.map(el => {
               const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
               return (
@@ -448,7 +448,7 @@ export default function Component() {
                           let paymentName = name?.$
                           let balance = ''
 
-                          if (paymentName?.includes('Лицевой счет')) {
+                          if (paymentName?.includes('Account balance')) {
                             balance = paymentName?.match(/[\d|.|\\+]+/g)
                             paymentName = t('Account balance')
                           }

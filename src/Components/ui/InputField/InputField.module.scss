@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
+  z-index: 1;
   background-color: var(--elements-bgc);
   // border: 1px solid var(--input-border-icon);
 
@@ -92,8 +93,17 @@
   right: 12px;
   transform: translateY(-50%);
   z-index: 2;
-  pointer-events: none;
+  // pointer-events: none;
   fill: var(--input-border-icon);
+
+  &.plusIcon {
+    z-index: 9;
+    cursor: pointer;
+
+    &:hover {
+      fill: url(#gradient);
+    }
+  }
 }
 
 .pass_show_btn {
@@ -128,7 +138,6 @@
 .field_bgc {
   background-color: var(--nearby-elements-bgc);
 }
-
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .input {
