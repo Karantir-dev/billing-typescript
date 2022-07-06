@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import DomainFiltertsModal from '../DomainFiltertsModal/DomainFiltertsModal'
 import { domainsOperations, domainsSelectors } from '../../../../Redux'
 import { useNavigate } from 'react-router-dom'
@@ -27,6 +28,7 @@ export default function Component(props) {
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
+    isFiltered,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -78,7 +80,7 @@ export default function Component(props) {
           <IconButton
             onClick={() => setFilterModal(true)}
             icon="filter"
-            className={s.calendarBtn}
+            className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
             disabled={!isFilterActive}
           />
           {filterModal && (

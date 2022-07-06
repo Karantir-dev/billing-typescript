@@ -584,6 +584,7 @@ const orderVhost =
           auth: sessionId,
           func: 'vhost.order.pricelist',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
@@ -643,6 +644,7 @@ const orderParamVhost =
           auth: sessionId,
           func: 'vhost.order.param',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )

@@ -17,7 +17,12 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 
 export default function Component() {
-  const { t, i18n } = useTranslation(['container', 'trusted_users', 'access_log'])
+  const { t, i18n } = useTranslation([
+    'container',
+    'trusted_users',
+    'access_log',
+    'domains',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -163,6 +168,8 @@ export default function Component() {
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, isOpenProfile))
   }
 
+  console.log(isFiltered, 'isFiltered')
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -178,12 +185,29 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
-        isFilterActive={domainsList?.length > 0}
+        isFiltered={isFiltered}
+        isFilterActive={isFiltered || domainsList?.length > 0}
       />
 
       {domainsList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
           <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {domainsList?.length < 1 && !isFiltered && domainsList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/domains.webp')}
+            alt="domains"
+            className={s.domains_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE A DOMAIN YET', { ns: 'domains' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'domains' })}
+          </p>
         </div>
       )}
 
@@ -200,7 +224,7 @@ export default function Component() {
           whoisDomainHandler={whoisDomainHandler}
         />
       )}
-      {domainsList.length !== 0 && (
+      {domainsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

@@ -150,6 +150,7 @@ export default function Component() {
           label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
           className={s.select}
           itemsList={data?.period_list.map(el => {
+            console.log(el)
             return {
               label: t(el.$, { ns: 'other' }),
               value: el.$key,

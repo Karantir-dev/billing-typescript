@@ -39,6 +39,10 @@
   display: none;
 }
 
+.transferBtn {
+  margin-right: 20px;
+}
+
 .filterBtnBlock {
   position: relative;
   margin-top: 5px;
@@ -117,6 +121,14 @@
   margin-right: 15px;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .btnBlock {
   width: 100%;
   display: flex;
@@ -171,16 +183,6 @@
   fill: var(--main-text);
 }
 
-.tools_icon {
-  svg {
-    min-width: 18px;
-    max-width: 25px;
-    min-height: 18px;
-    max-height: 20px;
-    fill: var(--icon-color_2);
-  }
-}
-
 @media screen and (max-width: 767px) {
   .newTicketBtn {
     margin-bottom: 30px;
@@ -190,6 +192,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .filterBlock {
+    flex-direction: row;
+  }
   .bg {
     align-items: center;
   }
@@ -326,10 +331,6 @@
 
   .newTicketBtn {
     margin-right: 0;
-  }
-
-  .filterBlock {
-    flex-direction: row;
   }
 
   .filterBtnBlock {

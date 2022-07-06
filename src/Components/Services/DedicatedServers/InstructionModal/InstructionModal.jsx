@@ -25,23 +25,16 @@ export default function InstructionModal({ elid, closeFn }) {
     return <Loader />
   }
 
-  console.log(instruction, 'instruction')
-
   return (
-    <>
-      <div className={s.instruction_modal}>
-        <div className={s.title_wrapper}>
-          <div className={s.title}>
-            <h3 className={s.modal_title}>{t('Activation of Dedicated server')}</h3>
-          </div>
-          <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
-        </div>
-
-        <div
-          className={s.modal_content}
-          dangerouslySetInnerHTML={{ __html: instruction?.$ }}
-        ></div>
+    <div className={s.modalBlock}>
+      <div className={s.modalHeader}>
+        <span className={s.headerText}>{t('Activation of Dedicated server')}</span>
+        <Cross onClick={closeFn} className={s.crossIcon} />
       </div>
-    </>
+      <div
+        dangerouslySetInnerHTML={{ __html: instruction?.$ }}
+        className={s.whoisBlock}
+      />
+    </div>
   )
 }

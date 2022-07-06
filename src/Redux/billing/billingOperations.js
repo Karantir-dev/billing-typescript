@@ -58,6 +58,7 @@ const getPaymentsFilters = () => (dispatch, getState) => {
         func: 'payment.filter',
         out: 'json',
         auth: sessionId,
+        lang: 'en',
       }),
     )
     .then(({ data }) => {
@@ -110,6 +111,7 @@ const setPaymentsFilters =
           func: 'payment.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           sok: 'ok',
           ...body,
         }),
@@ -140,6 +142,7 @@ const getPaymentPdf = (elid, name) => (dispatch, getState) => {
         func: 'payment.print.pdf',
         out: 'pdf_print',
         auth: sessionId,
+        lang: 'en',
         elid,
       }),
       { responseType: 'blob' },
@@ -177,6 +180,7 @@ const getPaymentCsv = p_cnt => (dispatch, getState) => {
         func: 'payment',
         out: 'csv',
         auth: sessionId,
+        lang: 'en',
         p_cnt,
       }),
       { responseType: 'blob' },
@@ -213,6 +217,7 @@ const deletePayment = elid => (dispatch, getState) => {
         func: 'payment.delete',
         out: 'json',
         auth: sessionId,
+        lang: 'en',
         elid,
       }),
     )
@@ -267,6 +272,7 @@ const getExpenses =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
@@ -299,6 +305,7 @@ const getExpensesFilters = () => (dispatch, getState) => {
       qs.stringify({
         func: 'expense.filter',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     )
@@ -348,6 +355,7 @@ const setExpensesFilters =
           func: 'expense.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           sok: 'ok',
           ...body,
         }),
@@ -378,6 +386,7 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
         func: 'expense',
         out: 'csv',
         auth: sessionId,
+        lang: 'en',
         p_cnt,
       }),
       { responseType: 'blob' },
@@ -416,6 +425,7 @@ const getPaymentMethod =
           func: 'payment.add.method',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
@@ -468,6 +478,7 @@ const createPaymentMethod =
           func: 'payment.add.method',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           sok: 'ok',
           ...body,
         }),
@@ -539,6 +550,7 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
         auth: sessionId,
         out: 'json',
         sok: 'ok',
+        lang: 'en',
         elid,
         elname,
       }),
@@ -569,6 +581,7 @@ const getAutoPayments = () => (dispatch, getState) => {
       qs.stringify({
         func: 'payment.recurring.settings',
         auth: sessionId,
+        lang: 'en',
         out: 'json',
       }),
     )
@@ -602,6 +615,7 @@ const getAutoPaymentsAdd = () => (dispatch, getState) => {
       qs.stringify({
         func: 'payment.recurring.add',
         auth: sessionId,
+        lang: 'en',
         out: 'json',
       }),
     )
@@ -643,6 +657,7 @@ const stopAutoPayments = id => (dispatch, getState) => {
         func: 'payment.recurring.settings',
         auth: sessionId,
         out: 'json',
+        lang: 'en',
         sok: 'ok',
         clicked_button: 'stop',
         id,
@@ -680,6 +695,7 @@ const createAutoPayment =
           func: 'payment.recurring.add.pay',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           sok: 'ok',
           ...body,
         }),

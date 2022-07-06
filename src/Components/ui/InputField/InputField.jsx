@@ -3,7 +3,16 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { EyeClosed, Eye, Envelope, Padlock, Search, Person, Copy } from '../../../images'
+import {
+  EyeClosed,
+  Eye,
+  Envelope,
+  Padlock,
+  Search,
+  Person,
+  Copy,
+  Plus,
+} from '../../../images'
 import s from './InputField.module.scss'
 
 export default function InputField(props) {
@@ -28,6 +37,7 @@ export default function InputField(props) {
     onKeyDown,
     isRequired,
     inputAuth,
+    onPlusClick,
     ...anotherProps
   } = props
 
@@ -49,6 +59,13 @@ export default function InputField(props) {
         return <Person className={pos} />
       case 'copy':
         return <Copy className={pos} />
+      case 'plus':
+        return (
+          <Plus
+            onClick={() => onPlusClick && onPlusClick()}
+            className={cn(pos, s.plusIcon)}
+          />
+        )
       default:
         return null
     }
@@ -82,9 +99,13 @@ export default function InputField(props) {
         </label>
       )}
       <div
-        className={cn(s.input_wrapper, inputWrapperClass, { [s.focused]: isFocused, [s.shadow]: isShadow, })}
+        className={cn(s.input_wrapper, inputWrapperClass, {
+          [s.focused]: isFocused,
+          [s.shadow]: isShadow,
+        })}
         style={{ height }}
       >
+
         <Field
           disabled={disabled}
           data-testid={dataTestid}
@@ -111,6 +132,7 @@ export default function InputField(props) {
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
         {tabletOrHigher && type !== 'password' && renderIcon(iconRight, 'right')}
+
         {renderPasswordShown(type)}
       </div>
       <ErrorMessage className={s.error_message} name={name} component="span" />
@@ -128,8 +150,8 @@ function requiredLabel(labelName) {
 
 InputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'copy']),
-  iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person']),
+  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'copy', 'plus']),
+  iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'plus', 'copy']),
   placeholder: PropTypes.string,
   className: PropTypes.string,
   dataTestid: PropTypes.string,
@@ -148,6 +170,7 @@ InputField.propTypes = {
   inputWrapperClass: PropTypes.string,
   inputClassName: PropTypes.string,
   onKeyDown: PropTypes.func,
+  onPlusClick: PropTypes.func,
 }
 
 InputField.defaultProps = {
@@ -159,4 +182,5 @@ InputField.defaultProps = {
   isRequired: false,
   inputAuth: false,
   onKeyDown: () => null,
+  onPlusClick: () => null,
 }

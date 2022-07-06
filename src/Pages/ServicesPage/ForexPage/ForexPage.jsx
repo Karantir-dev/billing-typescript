@@ -251,6 +251,7 @@ export default function ForexPage() {
         <ProlongModal
           elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
+          pageName="forex"
         />
       </Backdrop>
 

@@ -3,6 +3,7 @@ import qs from 'qs'
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 import { errorHandler } from '../../utils'
+import cartOperations from '../cart/cartOperations'
 
 const userInfo = (data, dispatch) => {
   const { $realname, $balance, $email, $phone, $id } = data.doc.user
@@ -11,17 +12,16 @@ const userInfo = (data, dispatch) => {
 
 const userTickets = (data, dispatch) => {
   const { elem } = data.doc
-
   dispatch(userActions.setTickets(elem))
 }
 
 const userNotifications = (data, dispatch) => {
-  const { bitem } = data.doc.notify.item[0]
+  const { elem } = data.doc
   let notifications
-  if (Array.isArray(bitem)) {
-    notifications = bitem
-  } else if (!Array.isArray(bitem) && bitem) {
-    notifications = [bitem]
+  if (Array.isArray(elem)) {
+    notifications = elem
+  } else if (!Array.isArray(elem) && elem) {
+    notifications = [elem]
   } else {
     notifications = []
   }
@@ -34,7 +34,20 @@ const currentSessionRights = (data, dispatch) => {
   dispatch(userActions.setCurrentSessionRihgts(node))
 }
 
-const funcsArray = [userInfo, userNotifications, currentSessionRights, userTickets]
+const clearBasket = (data, dispatch) => {
+  const { billorder } = data.doc
+  if (billorder) {
+    dispatch(cartOperations.clearBasket(billorder?.$))
+  }
+}
+
+const funcsArray = [
+  userInfo,
+  userNotifications,
+  currentSessionRights,
+  userTickets,
+  clearBasket,
+]
 
 const getUserInfo = (sessionId, setLoading) => dispatch => {
   dispatch(userActions.showUserInfoLoading())
@@ -47,7 +60,6 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
         auth: sessionId,
       }),
     ),
-
     axiosInstance.post(
       '/',
       qs.stringify({
@@ -70,6 +82,15 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       '/',
       qs.stringify({
         func: 'dashboard.tickets',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'basket',
         out: 'json',
         lang: 'en',
         auth: sessionId,
@@ -119,7 +140,33 @@ const removeItems = (sessionId, id) => dispatch => {
     })
 }
 
+const getDashboardTickets = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.tickets',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      userTickets(data, dispatch)
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+    })
+}
+
 export default {
   getUserInfo,
   removeItems,
+  getDashboardTickets,
 }

@@ -10,7 +10,7 @@ import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '../../../../utils'
 
-export default function ProlongModal({ elid, closeFn }) {
+export default function ProlongModal({ elid, closeFn, pageName }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -31,8 +31,10 @@ export default function ProlongModal({ elid, closeFn }) {
   const handleSubmit = values => {
     const { period } = values
 
-    dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal))
+    dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal, pageName))
   }
+
+  console.log(initialState?.title_name?.$.split('(')[0])
 
   return (
     <div className={s.modal}>
@@ -40,7 +42,10 @@ export default function ProlongModal({ elid, closeFn }) {
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Prolong service')}</h2>
           <span className={s.tarif_name}>
-            {initialState?.title_name?.$.split('(')[0]}
+            {initialState?.title_name?.$.split('(')[0]
+              .replace('for', t('for', { ns: 'dns' }))
+              .replace('domains', t('domains', { ns: 'dns' }))
+              .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
           </span>
         </div>
 

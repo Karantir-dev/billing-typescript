@@ -382,79 +382,83 @@ export default function DedicOrderPage() {
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
               <div className={s.tarifs_block}>
-                {tariffsListToRender?.map((item, index) => {
-                  const descriptionBlocks = item?.desc?.$.split('/')
-                  const cardTitle = descriptionBlocks[0]
+                {tariffsListToRender
+                  ?.filter(item => item.order_available.$ === 'on')
+                  ?.map((item, index) => {
+                    const descriptionBlocks = item?.desc?.$.split('/')
+                    const cardTitle = descriptionBlocks[0]
 
-                  const parsedPrice = parsePrice(item?.price?.$)
+                    const parsedPrice = parsePrice(item?.price?.$)
 
-                  const priceAmount = parsedPrice.amoumt
-                  const pricePercent = parsedPrice.percent
-                  const priceSale = parsedPrice.sale
+                    const priceAmount = parsedPrice.amoumt
+                    const pricePercent = parsedPrice.percent
+                    const priceSale = parsedPrice.sale
 
-                  return (
-                    <button
-                      ref={index === 2 ? secondTarrif : null}
-                      onClick={() => {
-                        setParameters(null)
-                        setFieldValue('tarif', item?.pricelist?.$)
-                        setPrice(priceAmount)
-                        setTarifChosen(true)
+                    return (
+                      <button
+                        ref={index === 2 ? secondTarrif : null}
+                        onClick={() => {
+                          setParameters(null)
+                          setFieldValue('tarif', item?.pricelist?.$)
+                          setPrice(priceAmount)
+                          setTarifChosen(true)
 
-                        dispatch(
-                          dedicOperations.getParameters(
-                            values.period,
-                            values.datacenter,
-                            item?.pricelist?.$,
-                            setParameters,
-                            setFieldValue,
-                          ),
-                        )
-                      }}
-                      type="button"
-                      className={classNames(s.tarif_card, {
-                        [s.selected]: item?.pricelist?.$ === values.tarif,
-                      })}
-                      key={item?.desc?.$}
-                    >
-                      {paymentPeriod > 1 && (
-                        <span
-                          className={classNames({ [s.sale_percent]: paymentPeriod > 1 })}
-                        >
-                          {pricePercent}
-                        </span>
-                      )}
-
-                      <span
-                        className={classNames({
-                          [s.card_title]: true,
+                          dispatch(
+                            dedicOperations.getParameters(
+                              values.period,
+                              values.datacenter,
+                              item?.pricelist?.$,
+                              setParameters,
+                              setFieldValue,
+                            ),
+                          )
+                        }}
+                        type="button"
+                        className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.tarif,
                         })}
+                        key={item?.desc?.$}
                       >
-                        {cardTitle}
-                      </span>
-                      <div className={s.price_wrapper}>
+                        {paymentPeriod > 1 && (
+                          <span
+                            className={classNames({
+                              [s.sale_percent]: paymentPeriod > 1,
+                            })}
+                          >
+                            {pricePercent}
+                          </span>
+                        )}
+
                         <span
                           className={classNames({
-                            [s.price]: true,
+                            [s.card_title]: true,
                             [s.selected]: item?.pricelist?.$ === values.tarif,
                           })}
                         >
-                          {priceAmount + '/' + periodName}
+                          {cardTitle}
                         </span>
-                        {paymentPeriod > 1 && (
-                          <span className={s.sale_price}>{`${priceSale}`}</span>
-                        )}
-                      </div>
+                        <div className={s.price_wrapper}>
+                          <span
+                            className={classNames({
+                              [s.price]: true,
+                              [s.selected]: item?.pricelist?.$ === values.tarif,
+                            })}
+                          >
+                            {priceAmount + '/' + periodName}
+                          </span>
+                          {paymentPeriod > 1 && (
+                            <span className={s.sale_price}>{`${priceSale}`}</span>
+                          )}
+                        </div>
 
-                      {descriptionBlocks.slice(1).map((el, i) => (
-                        <span key={i} className={s.card_subtitles}>
-                          {el}
-                        </span>
-                      ))}
-                    </button>
-                  )
-                })}
+                        {descriptionBlocks.slice(1).map((el, i) => (
+                          <span key={i} className={s.card_subtitles}>
+                            {el}
+                          </span>
+                        ))}
+                      </button>
+                    )
+                  })}
               </div>
 
               {parameters && (

@@ -140,5 +140,9 @@
   "IP-address removing": "IP-address removing",
   "DNS-hosting activation": "DNS-hosting activation",
   "FTP storage activation": "FTP storage activation",
-  "Virtual server activation": "Virtual server activation"
+  "Virtual server activation": "Virtual server activation",
+  "no services sitecare description": "We will not only inform you about a server crash or an error in operation, but we will also do our best to fix the problems.",
+  "YOU DONT HAVE A WEBSITE YET": "YOU DON'T HAVE A WEBSITE YET",
+  "YOU DO NOT HAVE A FOREX SERVER YET": "YOU DO NOT HAVE A FOREX SERVER YET",
+  "no services forex description": "Only for terminals of your brokers and trading systems. 100% configured server, no extra effort"
 }

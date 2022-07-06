@@ -31,6 +31,7 @@ export default function Component(props) {
 
   const deletePayerHandler = () => {
     dispatch(payersOperations.deletePayer(id))
+    setIsDeleteModal(!isDeleteModal)
   }
 
   return (

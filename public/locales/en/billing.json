@@ -62,5 +62,19 @@
   "Back to billing": "Back to billing",
   "An error occurred while processing the payment. If you have any questions, please contact support.": "An error occurred while processing the payment. If you have any questions, please contact support.",
   "Support service": "Support service",
-  "Payment error": "Payment error"
+  "Payment error": "Payment error",
+  "Telematic services": "Telematic services",
+  "DNS-hosting for domains": "DNS-hosting '{{value}}' domains",
+  "Domain names": "Domain names",
+  "Site care service": "Site care service",
+  "Add-on Control panel": "Add-on Control panel",
+  "Add-on IP-addresses count": "Add-on IP-addresses count",
+  "Taking care of the server": "Taking care of the server",
+  "Equipment leasing": "Equipment leasing",
+  "FTP-storage": "FTP-storage",
+  "Add-on Disk space": "Add-on Disk space",
+  "Add-on Memory": "Add-on Memory",
+  "Add-on CPU count": "Add-on CPU count",
+  "Payment system commission": "Payment system commission",
+  "Add-on DDoS Protected Port Speed (Incoming)": "Add-on DDoS Protected Port Speed (Incoming)"
 }

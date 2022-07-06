@@ -159,12 +159,29 @@ export default function Component() {
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
-        isFilterActive={siteCareList?.length > 0}
+        isFiltered={isFiltered}
+        isFilterActive={isFiltered || siteCareList?.length > 0}
       />
 
       {siteCareList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
           <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
+
+      {siteCareList?.length < 1 && !isFiltered && siteCareList && (
+        <div className={s.no_service_wrapper}>
+          <img
+            src={require('../../../images/services/care.webp')}
+            alt="sitecare"
+            className={s.sitecare_img}
+          />
+          <p className={s.no_service_title}>
+            {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services sitecare description', { ns: 'other' })}
+          </p>
         </div>
       )}
 
@@ -180,7 +197,7 @@ export default function Component() {
         />
       )}
 
-      {siteCareList.length !== 0 && (
+      {siteCareList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

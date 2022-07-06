@@ -124,5 +124,7 @@
   "Operating system": "Operating system",
   "Preinstalled software": "Preinstalled software",
   "Control panel": "Control panel",
-  "A new value is set for": "A new value is set for"
+  "A new value is set for": "A new value is set for",
+  "dedic no services description": "Dedicated server - a separate physical server in the data center, all the capacities of which will be completely yours. This is a service for projects requiring high performance, security and reliability.",
+  "YOU DO NOT HAVE A DEDICATED SERVER YET": "YOU DO NOT HAVE A DEDICATED SERVER YET"
 }

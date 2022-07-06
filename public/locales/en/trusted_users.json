@@ -79,7 +79,7 @@
       "email": "Incorrect email",
       "full_name": "Unacceptable symbols",
       "phone": "Number must contain at least 7 digits",
-      "password": "Password must contain at least 6 characters (at least 1 lowercase and 1 uppercase letters are required)",
+      "password": "Password must contain at least 12 characters (at least 1 lowercase and 1 uppercase letters are required)",
       "password_toolong": "Max length of the password can be 48 characters",
       "conf_password": "Passwords do not match"
     },
@@ -427,5 +427,6 @@
   },
   "edit#read": "Edit properties of the selected service (data reading is available)",
   "edit#write": "Edit properties of the selected service (data saving is available)",
-  "insufficient_rights": "Insufficient rights to access this page!"
+  "insufficient_rights": "Insufficient rights to access this page!",
+  "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again"
 }
