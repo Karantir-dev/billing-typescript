@@ -1,7 +1,6 @@
 import qs from 'qs'
-import supportActions from './supportActions'
 import { axiosInstance } from '../../config/axiosInstance'
-import { actions } from '../'
+import { actions, supportActions, userOperations } from '..'
 import { errorHandler } from '../../utils'
 
 const getTicketsHandler =
@@ -67,6 +66,7 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
       dispatch(supportActions.getTicket(data.doc))
+      dispatch(userOperations.getDashboardTickets())
       dispatch(actions.hideLoader())
     })
     .catch(error => {

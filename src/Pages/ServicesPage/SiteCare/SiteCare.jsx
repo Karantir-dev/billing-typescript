@@ -159,7 +159,8 @@ export default function Component() {
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
-        isFilterActive={siteCareList?.length > 0}
+        isFiltered={isFiltered}
+        isFilterActive={isFiltered || siteCareList?.length > 0}
       />
 
       {siteCareList?.length < 1 && isFiltered && (
