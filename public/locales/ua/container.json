@@ -1,0 +1,63 @@
+{
+  "aside_menu": {
+    "services": "Послуги",
+    "finance_and_docs": "Фінанси та документи",
+    "referal_program": "Реферальна програма",
+    "support": "Підтримка"
+  },
+  "balance": "Баланс",
+  "profile": {
+    "user_settings": "Налаштування профілю",
+    "trusted_users": "Довірені користувачі",
+    "visiting_log": "Журнал відвідувань",
+    "payers": "Платники",
+    "contracts": "Договори",
+    "log_out": "Вихід"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "Послуги",
+      "services_list": {
+        "domains": "Домени",
+        "virtual_servers": "Віртуальні сервери",
+        "dedicated_servers": "Виділені сервери",
+        "virtual_hosting": "Віртуальний хостинг",
+        "dns_hosting": "DNS-хостинг",
+        "external_ftp": "Зовнішнє сховище FTP",
+        "wetsite_care": "Турбота про сайт",
+        "forex_server": "Сервер для Forex"
+      }
+    },
+    "ref_program": {
+      "ref_program": "Реферальна програма",
+      "ref_program_list": {
+        "about_program": "Про програму",
+        "incomes": "Дохід",
+        "statistic": "Статистика"
+      }
+    },
+    "support": {
+      "support": "Підтримка",
+      "support_list": {
+        "requests": "Запити",
+        "requests_archieve": "Архів запитів"
+      }
+    },
+    "finance": {
+      "finance": "Фінанси",
+      "finance_list": {
+        "automatic_payment": "Автоплатіж",
+        "payments": "Платежі",
+        "expenses": "Витрати",
+        "auto_renewal": "Автопородження послуг"
+      }
+    }
+  },
+  "notification_bar": {
+    "no_messages": "Нових повідомлень немає",
+    "show_more": "Дивитись всі повідомлення",
+    "notifications": "Повідомлення",
+    "has been prolonged": "продовжено",
+    "is ready for use": "готово до використання"
+  }
+}
