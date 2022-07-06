@@ -401,7 +401,44 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     })
 }
 
-const addLoginWithSocial = (state, redirectToSettings) => dispatch => {
+const getRedirectLink = network => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth.redirect',
+        network,
+        auth: sessionId,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      // const url = window.URL.createObjectURL(new Blob([data.location]))
+
+      const link = document.createElement('a')
+      link.href = data.location
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log(' redirect link - ', err)
+    })
+}
+
+const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -410,35 +447,26 @@ const addLoginWithSocial = (state, redirectToSettings) => dispatch => {
       qs.stringify({
         func: 'oauth',
         state: state,
+        auth: sessionId,
         out: 'json',
         sok: 'ok',
       }),
     )
     .then(({ data }) => {
-      console.log(data.doc)
-      // LOGIN
-      if (data.doc?.error?.$object === 'nolink') {
-        redirectToSettings(
-          'soc_net_not_integrated',
-          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
-        )
+      if (data?.doc?.ok?.$?.includes('linkexists')) {
+        redirectToSettings('denied')
+      } else {
+        redirectToSettings('success')
       }
 
-      console.log(data)
-      // else if (data.doc?.auth?.$id) {
-      //   dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
-      // }
-
-      // dispatch(actions.hideLoader())
+      dispatch(actions.hideLoader())
     })
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log('checkGoogleState - ', err)
+      console.log('checkLoginWithSocial - ', err)
     })
 }
-
-// https://cp.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook
 
 const getLoginSocLinks = setSocialLinks => dispatch => {
   dispatch(actions.showLoader())
@@ -506,4 +534,5 @@ export default {
   checkGoogleState,
   getLoginSocLinks,
   addLoginWithSocial,
+  getRedirectLink,
 }

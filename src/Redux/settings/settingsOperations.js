@@ -151,6 +151,10 @@ const getUserParams =
           avatar_view: data?.doc?.avatar_view?.$ || '',
           email_confirmed_status: data?.doc?.email_confirmed_status?.$ || '',
           telegramLink: telegramLink || '',
+          vkontakte_status: data?.doc?.vkontakte_status?.$,
+          facebook_status: data?.doc?.facebook_status?.$,
+          google_status: data?.doc?.google_status?.$,
+
           listCheckBox: [
             {
               name: 'Financial notices',
@@ -476,6 +480,40 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     })
 }
 
+const changeSocialLinkStatus = (elid, data) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'usrparam',
+        out: 'json',
+        sok: 'ok',
+        elid,
+        auth: sessionId,
+        clicked_button: 'ok',
+        ...data,
+      }),
+    )
+    .then(() => {
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
+
+      dispatch(getUserEdit(elid))
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const setTotp = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
@@ -675,4 +713,5 @@ export default {
   getSecretKeyFile,
   setTotpPassword,
   confirmEmail,
+  changeSocialLinkStatus,
 }

@@ -10,9 +10,11 @@ export default function SocialNetAdd() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const redirectToSettings = (errMsg, socNetName) => {
-    navigate(route.USER_SETTINGS, {
-      state: { errMsg: errMsg, socNetName },
+  const userAccess = route.USER_SETTINGS + '/access'
+
+  const redirectToSettings = isExist => {
+    navigate(userAccess, {
+      state: { isCurrentSocialExist: isExist },
       replace: true,
     })
   }
@@ -21,8 +23,7 @@ export default function SocialNetAdd() {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
 
     if (!state) {
-      navigate(route.USER_SETTINGS, { replace: true })
-      console.log('no state ')
+      navigate(userAccess, { replace: true })
     } else {
       dispatch(authOperations.addLoginWithSocial(state, redirectToSettings))
     }

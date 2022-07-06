@@ -11,7 +11,7 @@ import {
 } from '../../../Components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   settingsSelectors,
@@ -24,21 +24,28 @@ import { ipRegex } from '../../../utils'
 import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import s from './AccessSettings.module.scss'
+import { toast } from 'react-toastify'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
+  const location = useLocation()
+  const existingSocial = location?.state?.isCurrentSocialExist
 
   const userParams = useSelector(settingsSelectors.getUserParams)
   const twoStepVerif = useSelector(settingsSelectors.getTwoStepVerif)
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const [isModal, setIsModal] = useState(false)
-  const [socialLinks, setSocialLinks] = useState({})
 
   const setSettingsHandler = values => {
     dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values))
+    console.log('setSettingsHandler')
+  }
+  const handleSocialLinkClick = values => {
+    console.log(values, 'before dispatch')
+    dispatch(settingsOperations?.changeSocialLinkStatus(userInfo?.$id, values))
   }
 
   const validationSchema = Yup.object().shape({
@@ -73,10 +80,20 @@ export default function Component({ isComponentAllowedToEdit }) {
   }
 
   useEffect(() => {
-    dispatch(authOperations.getLoginSocLinks(setSocialLinks))
-  }, [])
+    if (existingSocial === 'denied') {
+      toast.error(t('existing social network'), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+    } else if (existingSocial === 'success') {
+      toast.success(t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+    }
 
-  console.log(socialLinks, 'socialLinks')
+    navigate(routes?.USER_SETTINGS + '/access', { replace: true })
+  }, [])
 
   return (
     <>
@@ -92,6 +109,9 @@ export default function Component({ isComponentAllowedToEdit }) {
           atallowIp: '',
           allowIpList: userParams?.addr?.length > 0 ? userParams?.addr?.split(' ') : [],
           disable_totp: '',
+          vkontakte_status: userParams?.vkontakte_status || '',
+          facebook_status: userParams?.facebook_status || '',
+          google_status: userParams?.google_status || '',
         }}
         onSubmit={setSettingsHandler}
       >
@@ -126,6 +146,9 @@ export default function Component({ isComponentAllowedToEdit }) {
               .concat(values.allowIpList.slice(index + 1, values.allowIpList.length))
             setFieldValue('allowIpList', newArr)
           }
+
+          const { google_status, facebook_status, vkontakte_status } = values
+          const socialState = { google_status, facebook_status, vkontakte_status }
 
           return (
             <Form onKeyDown={onKeyDown} className={s.personalBlock}>
@@ -225,28 +248,77 @@ export default function Component({ isComponentAllowedToEdit }) {
               <div className={s.block}>
                 <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
                 <div className={s.socialRow}>
-                  <a href={socialLinks.google}>
-                    <SocialButton isNotConnected platform="Google">
+                  {values?.google_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('google'))
+                      }}
+                      isNotConnected
+                      platform="Google"
+                    >
                       <Google className={s.googleIcon} />
                     </SocialButton>
-                  </a>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('google_status', 'off')
+                        handleSocialLinkClick({ ...socialState, google_status: 'off' })
+                      }}
+                      platform="Google"
+                    >
+                      <Google className={s.googleIcon} />
+                    </SocialButton>
+                  )}
 
-                  <a href={socialLinks.facebook}>
-                    <SocialButton isNotConnected platform="Facebook">
+                  {values?.facebook_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('facebook'))
+                      }}
+                      isNotConnected
+                      platform="Facebook"
+                    >
                       <FacebookSmall />
                     </SocialButton>
-                  </a>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('facebook_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          facebook_status: 'off',
+                        })
+                      }}
+                      platform="Facebook"
+                    >
+                      <FacebookSmall />
+                    </SocialButton>
+                  )}
 
-                  <SocialButton
-                    onClick={() => {
-                      navigate(socialLinks.vkontakte)
-                      return <SocialNetAdd />
-                    }}
-                    isNotConnected
-                    platform="Вконтакте"
-                  >
-                    <VkSmall />
-                  </SocialButton>
+                  {values?.vkontakte_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('vkontakte'))
+                      }}
+                      isNotConnected
+                      platform="Вконтакте"
+                    >
+                      <VkSmall />
+                    </SocialButton>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('facebook_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          vkontakte_status: 'off',
+                        })
+                      }}
+                      platform="Вконтакте"
+                    >
+                      <VkSmall />
+                    </SocialButton>
+                  )}
                 </div>
               </div>
               <div className={s.block}>

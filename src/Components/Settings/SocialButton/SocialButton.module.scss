@@ -1,3 +1,8 @@
+.link_btn {
+  display: flex;
+  align-items: center;
+}
+
 .icon_btn {
   width: 30px;
   height: 30px;
@@ -6,6 +11,7 @@
   justify-content: center;
   box-shadow: var(--forms2_shadow);
   background: var(--forms-bg-2-color);
+
   &.notConnected {
     svg {
       path {
