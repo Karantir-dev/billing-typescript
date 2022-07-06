@@ -42,6 +42,7 @@ import {
   SiteCare,
   SiteCareOrder,
 } from '../../Pages'
+import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
 
 import { cartSelectors } from '../../Redux'
 
@@ -222,6 +223,18 @@ const Component = () => {
             }
           />
         </Route>
+
+        <Route
+          path={route.SOC_NET_AUTH}
+          element={
+            <PrivateRoute
+              children={<SocialNetAdd />}
+              restricted
+              redirectTo={route.SERVICES}
+            />
+          }
+        />
+
         <Route
           path={`${route.AFFILIATE_PROGRAM}/*`}
           element={

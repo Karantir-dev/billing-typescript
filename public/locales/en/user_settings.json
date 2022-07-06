@@ -54,5 +54,7 @@
   "Collapse": "Collapse",
   "Wrong password": "Wrong password",
   "Disable 2-Step Verification": "Disable 2-Step Verification",
-  "Invalid confirmation code": "Invalid confirmation code"
+  "Invalid confirmation code": "Invalid confirmation code",
+  "existing social network": "This social network is already in use linked to your other account. If you want to link it here, please unlink it in another account",
+  "disconnect from": "Disconnect from"
 }

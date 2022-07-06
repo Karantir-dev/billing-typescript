@@ -191,7 +191,9 @@ export default function SignupForm() {
         <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <Facebook />
+            <a href={socialLinks.facebook}>
+              <Facebook />
+            </a>
           </li>
           <li>
             <a href={socialLinks.google}>

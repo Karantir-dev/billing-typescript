@@ -7,7 +7,7 @@ import {
   PasswordReset,
   PublicRoute,
   SignupForm,
-  Google,
+  SocialNetAuth,
 } from '../../Components'
 import * as route from '../../routes'
 
@@ -56,25 +56,16 @@ const Component = () => {
         }
       />
       <Route
-        path={route.GOOGLE}
+        path={route.SOC_NET_AUTH}
         element={
           <PublicRoute
-            children={<AuthPage children={<Google />} />}
+            children={<AuthPage children={<SocialNetAuth />} />}
             restricted
             redirectTo={route.SERVICES}
           />
         }
       />
-      <Route
-        path={route.VK}
-        element={
-          <PublicRoute
-            children={<AuthPage children={<Google />} />}
-            restricted
-            redirectTo={route.SERVICES}
-          />
-        }
-      />
+
       <Route path="*" element={<Navigate replace to={route.LOGIN} />} />
     </Routes>
   )

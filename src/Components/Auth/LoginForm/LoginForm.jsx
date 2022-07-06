@@ -16,12 +16,11 @@ import s from './LoginForm.module.scss'
 export default function LoginForm() {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
-  const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
-
-  const recaptchaEl = useRef()
   const location = useLocation()
+  const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
+  const recaptchaEl = useRef()
 
-  const [errMsg, setErrMsg] = useState('')
+  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   const [socialLinks, setSocialLinks] = useState({})
 
   useEffect(() => {
@@ -83,7 +82,11 @@ export default function LoginForm() {
               <VerificationModal resetRecaptcha={resetRecaptcha} />
               <Form className={s.form}>
                 {errMsg && (
-                  <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
+                  <div className={s.credentials_error}>
+                    {t(`warnings.${errMsg}`, {
+                      soc_name: location?.state?.socNetName || '',
+                    })}
+                  </div>
                 )}
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (
                   <div className={s.changed_pass}>{t('changed_pass')}</div>
@@ -94,7 +97,7 @@ export default function LoginForm() {
 
                 <InputField
                   dataTestid="input_email"
-                  label={t('email_label')}
+                  label={t('email_or_login_label')}
                   placeholder={t('email_placeholder')}
                   iconLeft="envelope"
                   name="email"
@@ -154,7 +157,9 @@ export default function LoginForm() {
         <p className={s.social_title}>{t('login_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <Facebook />
+            <a href={socialLinks.facebook}>
+              <Facebook />
+            </a>
           </li>
           <li>
             <a href={socialLinks.google}>
@@ -162,7 +167,9 @@ export default function LoginForm() {
             </a>
           </li>
           <li>
-            <Vk />
+            <a href={socialLinks.vkontakte}>
+              <Vk />
+            </a>
           </li>
         </ul>
       </div>
