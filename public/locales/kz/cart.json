@@ -1,0 +1,17 @@
+{
+  "Payment": "Төлем",
+  "Account balance": "Шот балансы",
+  "Payment method": "Төлем әдісі",
+  "Payer": "Төлеуші",
+  "Payment using text": "VISA, MasterCard және American Express банк карталарының көмегімен төлеу. Автоматты толтыру мүмкіндігі қосылған жағдайда қызметке тапсырыс беру кезінде, карта кейінгі төлемдер үшін сақталады.",
+  "Payment amount": "Төлем сомасы басталады",
+  "Promo code": "Промокод",
+  "Total": "Барлығы",
+  "Domain registration": "Доменді тіркеу",
+  "Data protection": "Деректерді қорғау",
+  "(Disable)": "(Өшіру)",
+  "(Enable)": "(Қосу)",
+  "After closing your order will be automatically deleted": "Жапқаннан кейін тапсырыс автоматты түрде жойылады",
+
+  "Site care": "Забота о сайте"
+}

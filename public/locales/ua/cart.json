@@ -1,0 +1,16 @@
+{
+  "Payment": "Оплата",
+  "Account balance": "Особовий рахунок",
+  "Payment method": "Спосіб оплати",
+  "Payer": "Платник",
+  "Payment using text": "Оплата за допомогою банківських карток VISA, MasterCard та American Express. При замовленні послуги з увімкненим автопродовженням, картка буде збережена для подальшої оплати.",
+  "Payment amount": "Сума платежу від",
+  "Promo code": "Промокод",
+  "Total": "Усього",
+  "Domain registration": "Реєстрація домену",
+  "Data protection": "Захист даних",
+  "(Disable)": "(Вимк.)",
+  "(Enable)": "(Увімк.)",
+  "After closing your order will be automatically deleted": "Після закриття ваше замовлення буде автоматично видалено",
+  "Site care": "Забота о сайте"
+}

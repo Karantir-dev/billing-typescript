@@ -1,0 +1,24 @@
+{
+  "Payers": "Төлеушілер",
+  "Add": "Қосу",
+  "Name": "Атауы",
+  "Payer status": "Төлеуші күйі",
+  "Individual": "Жеке тұлға",
+  "Edit": "Өңдеу",
+  "Delete": "Жою",
+  "Are you sure you want to remove {{name}} from your list of payers?": "Төлеушілеріңіз тізімінен {{name}} жойғыңыз келе ме?",
+  "Adding a payer": "Төлеуші қосу",
+  "Main": "Негізгі",
+  "Actual address": "Нақты мекенжайы",
+  "Data for the contract": "Келісім деректері",
+  "The contact person": "Байланыс тұлғасы",
+  "Receive documents": "Құжаттарды алу",
+  "I agree with the terms of the offer": "Оферта талаптарына келісемін",
+  "Edit the selected payer": "Таңдалған төлеушіні өзгерту",
+  "In Client area": "Клиенттік аймақта",
+  "By post": "Пошта арқылы",
+  "By email": "Электрондық пошта бойынша",
+  "Add new payer": "+ Қосу",
+
+  "You cannot delete the payer who already made payments": "Вы не можете удалить плательщика, который уже производил платежи"
+}
