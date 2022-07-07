@@ -3,27 +3,29 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import { authOperations } from '../../../Redux'
 import { useDispatch } from 'react-redux'
-import { Loader } from '../../'
+import { Loader } from '../../../Components'
 
-export default function Google() {
+export default function SocialNetAdd() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const redirectToRegistration = (errMsg, name, email) => {
-    navigate(route.REGISTRATION, {
-      state: { errMsg: errMsg, name: name, email: email },
+  const userAccess = route.USER_SETTINGS + '/access'
+
+  const redirectToSettings = isExist => {
+    navigate(userAccess, {
+      state: { isCurrentSocialExist: isExist },
       replace: true,
     })
   }
 
   useEffect(() => {
-    const state = location.search.match(/state=(.+?)(?=&)/)?.[1]
+    const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
+
     if (!state) {
-      navigate(route.LOGIN, { replace: true })
-      console.log('error ')
+      navigate(userAccess, { replace: true })
     } else {
-      dispatch(authOperations.checkGoogleState(state, redirectToRegistration))
+      dispatch(authOperations.addLoginWithSocial(state, redirectToSettings))
     }
   }, [])
 

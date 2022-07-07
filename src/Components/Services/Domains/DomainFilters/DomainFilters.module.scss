@@ -27,6 +27,14 @@
   height: 45px;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .formBlock {
   width: 100%;
   display: flex;

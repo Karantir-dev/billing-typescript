@@ -311,7 +311,7 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
     })
 }
 
-const checkGoogleState = (state, redirectToRegistration) => dispatch => {
+const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -325,11 +325,14 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
       }),
     )
     .then(({ data }) => {
-      // if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
       console.log(data.doc)
       // LOGIN
-      if (data.doc?.auth?.$id) {
+      if (data.doc?.error?.$object === 'nolink') {
+        redirectToLogin(
+          'soc_net_not_integrated',
+          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+        )
+      } else if (data.doc?.auth?.$id) {
         dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
 
         //REGISTER
@@ -345,17 +348,29 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
                 code: '',
                 sok: 'ok',
                 out: 'json',
+                lang: 'en',
               }),
           )
           .then(({ data }) => {
             console.log(data.doc)
 
             if (data.doc?.error?.$object === 'account_exist') {
-              const name = data.doc.error.param.find(el => el.$name === 'realname')?.$
-              const email = data.doc.error.param.find(el => el.$name === 'email')?.$
-              redirectToRegistration('social_akk_registered', name, email)
+              redirectToLogin(
+                'social_akk_registered',
+                data.doc.error.param.find(el => el.$name === 'email')?.$,
+              )
+            } else if (data.doc?.error?.$type === 'email_exist') {
+              // need to handle this error
+              const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+              redirectToLogin('soc_email_exist', email)
+
+              console.log('email_exist')
             } else if (data.doc?.error?.$object === 'email') {
-              console.log('email error')
+              // need to handle this error
+              // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+              redirectToRegistration('no_email_from_social', '', '')
+
+              console.log('no email')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
@@ -383,6 +398,73 @@ const checkGoogleState = (state, redirectToRegistration) => dispatch => {
       dispatch(actions.hideLoader())
 
       console.log('checkGoogleState - ', err)
+    })
+}
+
+const getRedirectLink = network => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth.redirect',
+        network,
+        auth: sessionId,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      // const url = window.URL.createObjectURL(new Blob([data.location]))
+
+      const link = document.createElement('a')
+      link.href = data.location
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log(' redirect link - ', err)
+    })
+}
+
+const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth',
+        state: state,
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.ok?.$?.includes('linkexists')) {
+        redirectToSettings('denied')
+      } else {
+        redirectToSettings('success')
+      }
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log('checkLoginWithSocial - ', err)
     })
 }
 
@@ -451,4 +533,6 @@ export default {
   getCurrentSessionStatus,
   checkGoogleState,
   getLoginSocLinks,
+  addLoginWithSocial,
+  getRedirectLink,
 }

@@ -89,6 +89,12 @@ export default function Component(props) {
           <div className={s.tariffPrice}>
             {parsePrice(tariff?.price?.$)?.amount} EUR/{t(period, { ns: 'other' })}
           </div>
+          {parsePrice(tariff?.price?.$)?.percent && (
+            <span className={s.old_price}>
+              <span className={s.percent}>{parsePrice(tariff?.price?.$)?.percent}%</span>{' '}
+              {parsePrice(tariff?.price?.$)?.old_amount} EUR/{t(period, { ns: 'other' })}
+            </span>
+          )}
           <div className={s.line} />
           <div className={s.charText}>
             {data?.ssd === 'unlimited' ? <Infinity /> : data?.ssd} SSD

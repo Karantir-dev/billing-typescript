@@ -14,7 +14,7 @@ export { default as PasswordReset } from './Auth/PasswordReset/PasswordReset'
 export { default as SelectOfCountries } from './Auth/SelectOfCountries/SelectOfCountries'
 export { default as SelectOfRegions } from './Auth/SelectOfRegions/SelectOfRegions'
 export { default as VerificationModal } from './Auth/VerificationModal/VerificationModal'
-export { default as Google } from './Auth/Google/Google'
+export { default as SocialNetAuth } from './Auth/SocialNetAuth/SocialNetAuth'
 
 //==========================================ROUTES==========================================//
 export { default as PrivateRoute } from './Routes/PrivateRoute'

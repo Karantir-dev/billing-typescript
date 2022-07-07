@@ -15,19 +15,24 @@ export default function Component(props) {
       <button
         data-testid={dataTestid}
         disabled={disabled}
-        className={cn({
-          [s.icon_btn]: true,
-          [s.notConnected]: isNotConnected,
-          [className]: className,
-        })}
+        className={s.link_btn}
         type="button"
         onClick={onClick}
       >
-        {children}
+        <div
+          className={cn({
+            [s.icon_btn]: true,
+            [s.notConnected]: isNotConnected,
+            [className]: className,
+          })}
+        >
+          {children}
+        </div>
+
+        <div className={s.linkTo}>
+          {isNotConnected ? t('Link to') : t('disconnect from')} {platform}
+        </div>
       </button>
-      <div className={s.linkTo}>
-        {t('Link to')} {platform}
-      </div>
     </div>
   )
 }

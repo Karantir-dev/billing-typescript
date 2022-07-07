@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
   InputField,
@@ -11,19 +11,27 @@ import {
 } from '../../../Components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
+import {
+  settingsSelectors,
+  settingsOperations,
+  userSelectors,
+  authOperations,
+} from '../../../Redux'
 import { Cross, FacebookSmall, Google, VkSmall } from '../../../images'
 import { ipRegex } from '../../../utils'
 import * as Yup from 'yup'
 import * as routes from '../../../routes'
 import s from './AccessSettings.module.scss'
+import { toast } from 'react-toastify'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
+  const location = useLocation()
+  const existingSocial = location?.state?.isCurrentSocialExist
 
   const userParams = useSelector(settingsSelectors.getUserParams)
   const twoStepVerif = useSelector(settingsSelectors.getTwoStepVerif)
@@ -33,6 +41,11 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   const setSettingsHandler = values => {
     dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values))
+    console.log('setSettingsHandler')
+  }
+  const handleSocialLinkClick = values => {
+    console.log(values, 'before dispatch')
+    dispatch(settingsOperations?.changeSocialLinkStatus(userInfo?.$id, values))
   }
 
   const validationSchema = Yup.object().shape({
@@ -66,6 +79,22 @@ export default function Component({ isComponentAllowedToEdit }) {
     setIsModal(true)
   }
 
+  useEffect(() => {
+    if (existingSocial === 'denied') {
+      toast.error(t('existing social network'), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+    } else if (existingSocial === 'success') {
+      toast.success(t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+    }
+
+    navigate(routes?.USER_SETTINGS + '/access', { replace: true })
+  }, [])
+
   return (
     <>
       <Formik
@@ -80,6 +109,9 @@ export default function Component({ isComponentAllowedToEdit }) {
           atallowIp: '',
           allowIpList: userParams?.addr?.length > 0 ? userParams?.addr?.split(' ') : [],
           disable_totp: '',
+          vkontakte_status: userParams?.vkontakte_status || '',
+          facebook_status: userParams?.facebook_status || '',
+          google_status: userParams?.google_status || '',
         }}
         onSubmit={setSettingsHandler}
       >
@@ -108,12 +140,34 @@ export default function Component({ isComponentAllowedToEdit }) {
             }
           }
 
+          const addIpHandlerPlus = () => {
+            setFieldTouched('atallowIp', true, false)
+            if (values.allowIpList.indexOf(values?.atallowIp) != -1) {
+              setFieldError('atallowIp', `${t('Value cannot be repeated')}`)
+              return
+            }
+
+            if (ipRegex().test(values?.atallowIp)) {
+              setFieldValue('atallowIp', '')
+              setFieldValue('allowIpList', values.allowIpList.concat(values?.atallowIp))
+              return
+            }
+
+            return setFieldError(
+              'atallowIp',
+              `${t('You have entered an invalid IP address')}`,
+            )
+          }
+
           const deleteIpHandler = index => {
             let newArr = values.allowIpList
               .slice(0, index)
               .concat(values.allowIpList.slice(index + 1, values.allowIpList.length))
             setFieldValue('allowIpList', newArr)
           }
+
+          const { google_status, facebook_status, vkontakte_status } = values
+          const socialState = { google_status, facebook_status, vkontakte_status }
 
           return (
             <Form onKeyDown={onKeyDown} className={s.personalBlock}>
@@ -185,7 +239,9 @@ export default function Component({ isComponentAllowedToEdit }) {
                         className={s.trustedIp}
                         error={!!errors.atallowIp}
                         touched={!!touched.atallowIp}
+                        iconRight="plus"
                         onKeyDown={addIpHandler}
+                        onPlusClick={addIpHandlerPlus}
                       />
                     )}
                   </div>
@@ -213,15 +269,77 @@ export default function Component({ isComponentAllowedToEdit }) {
               <div className={s.block}>
                 <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
                 <div className={s.socialRow}>
-                  <SocialButton isNotConnected platform="Google">
-                    <Google className={s.googleIcon} />
-                  </SocialButton>
-                  <SocialButton isNotConnected platform="Facebook">
-                    <FacebookSmall />
-                  </SocialButton>
-                  <SocialButton isNotConnected platform="Вконтакте">
-                    <VkSmall />
-                  </SocialButton>
+                  {values?.google_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('google'))
+                      }}
+                      isNotConnected
+                      platform="Google"
+                    >
+                      <Google className={s.googleIcon} />
+                    </SocialButton>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('google_status', 'off')
+                        handleSocialLinkClick({ ...socialState, google_status: 'off' })
+                      }}
+                      platform="Google"
+                    >
+                      <Google className={s.googleIcon} />
+                    </SocialButton>
+                  )}
+
+                  {values?.facebook_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('facebook'))
+                      }}
+                      isNotConnected
+                      platform="Facebook"
+                    >
+                      <FacebookSmall />
+                    </SocialButton>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('facebook_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          facebook_status: 'off',
+                        })
+                      }}
+                      platform="Facebook"
+                    >
+                      <FacebookSmall />
+                    </SocialButton>
+                  )}
+
+                  {values?.vkontakte_status === 'off' ? (
+                    <SocialButton
+                      onClick={() => {
+                        dispatch(authOperations.getRedirectLink('vkontakte'))
+                      }}
+                      isNotConnected
+                      platform="Вконтакте"
+                    >
+                      <VkSmall />
+                    </SocialButton>
+                  ) : (
+                    <SocialButton
+                      onClick={() => {
+                        setFieldValue('facebook_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          vkontakte_status: 'off',
+                        })
+                      }}
+                      platform="Вконтакте"
+                    >
+                      <VkSmall />
+                    </SocialButton>
+                  )}
                 </div>
               </div>
               <div className={s.block}>
@@ -238,7 +356,6 @@ export default function Component({ isComponentAllowedToEdit }) {
                       className={s.trustedIp}
                       error={!!errors.disable_totp}
                       touched={!!touched.disable_totp}
-                      onKeyDown={addIpHandler}
                     />
                   </div>
                 ) : (

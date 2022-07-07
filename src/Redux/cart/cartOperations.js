@@ -62,6 +62,7 @@ const setBasketPromocode =
         qs.stringify({
           func: 'basket',
           out: 'json',
+          lang: 'en',
           auth: sessionId,
           sok: 'ok',
           promocode,
@@ -100,6 +101,7 @@ const deleteBasketItem =
           func: 'basket',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           sok: 'ok',
           id,
           clicked_button: 'delete',
@@ -130,6 +132,7 @@ const clearBasket = id => (dispatch, getState) => {
       qs.stringify({
         func: 'basket',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
         sok: 'ok',
         id,
@@ -162,6 +165,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
       qs.stringify({
         func: 'payment.add',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
         billorder,
       }),
@@ -200,6 +204,7 @@ const setPaymentMethods =
         qs.stringify({
           func: 'payment.add.method',
           out: 'json',
+          lang: 'en',
           sok: 'ok',
           auth: sessionId,
           ...body,
