@@ -12,6 +12,9 @@
   cursor: pointer;
   transition: transform 100ms;
 
+  // -webkit-clip-path: url('#a');
+  // clip-path: url('#a');
+
   &:disabled {
     opacity: 0.5;
     cursor: auto;

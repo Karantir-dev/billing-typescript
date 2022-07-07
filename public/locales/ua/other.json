@@ -136,12 +136,12 @@
   "Service deletion": "Видалення послуги",
   "Are you sure you want to delete service": "Ви впевнені, що хочете видалити послугу",
 
-  "IP-address removing": "Удаление IP-адреса",
-  "DNS-hosting activation": "Активация DNS-хостинга",
-  "FTP storage activation": "Активация FTP-хранилища",
-  "Virtual server activation": "Активация виртуального сервера",
-  "no services sitecare description": "Мы не просто проинформируем Вас о падении сервера или ошибке в работе, но и сделаем всё возможное для исправления неполадок.",
-  "YOU DONT HAVE A WEBSITE YET": "У ВАС ЕЩЕ НЕТ ЗАБОТЫ О САЙТЕ",
-  "YOU DO NOT HAVE A FOREX SERVER YET": "У ВАС ЕЩЕ НЕТ СЕРВЕРА ДЛЯ FOREX",
-  "no services forex description": "Только для терминалов ваших брокеров и торговых систем. 100% настроенный сервер, без лишних усилий"
+  "IP-address removing": "Видалення IP-адреси",
+  "DNS-hosting activation": "Активація DNS-хостингу",
+  "FTP storage activation": "Активація сховища FTP",
+  "Virtual server activation": "Активація віртуального сервера",
+  "no services sitecare description": "Ми не просто проінформуємо Вас про падіння сервера або помилку в роботі, але й зробимо все можливе для усунення несправностей.",
+  "YOU DONT HAVE A WEBSITE YET": "У ВАС ЩЕ НЕМАЄ ТУРБОТИ ПРО САЙТ",
+  "YOU DO NOT HAVE A FOREX SERVER YET": "У ВАС ЩЕ НЕМАЄ СЕРВЕРУ ДЛЯ FOREX",
+  "no services forex description": "Тільки для терміналів ваших брокерів та торгових систем. 100% налаштований сервер, без зайвих зусиль"
 }
