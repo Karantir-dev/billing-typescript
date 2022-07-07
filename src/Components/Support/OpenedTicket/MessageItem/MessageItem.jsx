@@ -74,7 +74,12 @@ export default function Component(props) {
             <div className={s.fileBlock}>
               {message?.file?.map(el => {
                 const isOpen = () => {
-                  if (el?.name?.$?.includes('png') || el?.name?.$?.includes('webp')) {
+                  if (
+                    el?.name?.$?.includes('png') ||
+                    el?.name?.$?.includes('webp') ||
+                    el?.name?.$?.includes('jpg') ||
+                    el?.name?.$?.includes('jpeg')
+                  ) {
                     return downloadFileHandler(
                       el?.name?.$,
                       el?.param?.$,
