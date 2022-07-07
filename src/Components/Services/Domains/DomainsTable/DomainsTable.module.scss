@@ -51,6 +51,7 @@
   position: relative;
   cursor: pointer;
   position: relative;
+
   &:hover::before,
   &.selected::before {
     content: '';
@@ -230,17 +231,10 @@
   }
 }
 
-@media screen and (min-width: 768px) {
-}
-
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 600px) {
   .item {
-    flex-basis: 48%;
-    margin-right: 0;
-
-    &:nth-child(2n) {
-      margin-right: 15px;
-    }
+    flex-basis: calc(50% - 15px);
+    margin-right: 15px;
   }
 
   .item_text {
@@ -248,7 +242,20 @@
   }
 }
 
-@media screen and (min-width: 1550px) {
+@media screen and (min-width: 1080px) {
+  .item {
+    flex-basis: calc(33% - 15px);
+    margin-right: 15px;
+  }
+}
+
+@media screen and (min-width: 1359px) {
+  .item {
+    flex-basis: calc(25% - 15px);
+  }
+}
+
+@media screen and (min-width: 1600px) {
   .dots {
     display: none;
   }

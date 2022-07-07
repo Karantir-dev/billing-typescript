@@ -427,5 +427,5 @@
   "edit#write": "Редагувати властивості вибраної послуги (доступ до збереження даних)",
   "insufficient_rights": "Недостатньо прав для доступу!",
 
-  "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Невозможно удалить из-за существующих зависимостей. Для выполнения удаления необходимо сначала удалить зависимые элементы"
+  "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Неможливо видалити через існуючі залежності. Для видалення необхідно спочатку видалити залежні елементи"
 }
