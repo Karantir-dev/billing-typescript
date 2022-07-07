@@ -427,5 +427,5 @@
   "edit#write": "Таңдалған қызметтің сипаттарын өңдеу (деректерді сақтау рұқсаты)",
   "insufficient_rights": "Кіру рұқсаты жеткіліксіз!",
 
-  "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Невозможно удалить из-за существующих зависимостей. Для выполнения удаления необходимо сначала удалить зависимые элементы"
+  "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Бар тәуелділіктерге байланысты жою мүмкін емес. Жоюды орындау үшін алдымен тәуелді элементтерді жою керек"
 }

@@ -36,7 +36,7 @@ export default function Component(props) {
     datacentername,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
-  const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
+  const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
 
   const [isOpened, setIsOpened] = useState(false)
   const dropDownEl = useRef()

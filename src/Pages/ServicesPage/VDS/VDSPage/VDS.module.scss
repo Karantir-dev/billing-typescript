@@ -4,6 +4,8 @@
 
 .tools_wrapper {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
   align-items: center;
   gap: 15px;
 }
@@ -91,9 +93,13 @@
   color: var(--transparent-color);
 }
 
-@media screen and (min-width: 1550px) {
+@media screen and (min-width: 1600px) {
   .btn_order {
     margin-left: auto;
+  }
+
+  .tools_wrapper {
+    flex-direction: row;
   }
 
   .no_vds_wrapper {
