@@ -13,5 +13,6 @@
   "(Enable)": "(Вкл.)",
 
   "After closing your order will be automatically deleted": "После закрытия ваш заказ будет автоматически удален",
-  "Site care": "Забота о сайте"
+  "Site care": "Забота о сайте",
+  "The payer is not valid, change the payer or add a new one": "Плательщик недействителен, смените плательщика или добавьте нового"
 }

@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, billingActions, payersOperations } from '..'
+import { actions, billingActions, payersOperations, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
@@ -409,6 +409,82 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
     })
 }
 
+const getPayers =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'profile',
+          out: 'json',
+          auth: sessionId,
+          p_cnt: 30,
+          p_col: '+time',
+          clickstat: 'yes',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const elem = data?.doc?.elem || []
+        const count = data?.doc?.p_elems?.$ || 0
+
+        dispatch(payersActions.setPayersList(elem))
+        dispatch(payersActions.setPayersCount(count))
+        dispatch(getPayerCountryType())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getPayerCountryType = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'profile.add.country',
+        out: 'json',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const filters = {}
+
+      data?.doc?.slist?.forEach(el => {
+        filters[el.$name] = el?.val
+      })
+
+      const d = {
+        country: filters?.country[0]?.$key,
+        profiletype: filters?.profiletype[0]?.$key,
+      }
+
+      dispatch(getPaymentMethod({}, d))
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const getPaymentMethod =
   (body = {}, payerModalInfoData = null) =>
   (dispatch, getState) => {
@@ -732,4 +808,5 @@ export default {
   getAutoPayments,
   stopAutoPayments,
   createAutoPayment,
+  getPayers,
 }
