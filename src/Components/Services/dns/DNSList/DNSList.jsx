@@ -17,6 +17,7 @@ export default function DNSList({
   // setElidForChangeTarifModal,
   setActiveServer,
   activeServerID,
+  pageRights,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -91,6 +92,7 @@ export default function DNSList({
               setElidForInstructionModal={setElidForInstructionModal}
               // setElidForChangeTarifModal={setElidForChangeTarifModal}
               setActiveServer={setActiveServer}
+              pageRights={pageRights}
             />
           )
         })}
@@ -104,4 +106,5 @@ DNSList.propTypes = {
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
+  pageRights: PropTypes.object,
 }

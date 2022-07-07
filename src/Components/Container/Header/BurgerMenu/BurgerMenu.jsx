@@ -59,48 +59,61 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
+  // SERVICES
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
+  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isWebsitecareAllowedToRender = usePageRender('zabota-o-servere', 'storage', false)
+  // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
+
   const servicesMenuList = [
     {
       name: t('burger_menu.services.services_list.domains'),
       routeName: routes.DOMAINS,
-      allowedToRender: true,
+      allowedToRender: isDomainsAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
       routeName: routes.VDS,
-      allowedToRender: true,
+      allowedToRender: isVdsAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.dedicated_servers'),
       routeName: routes.DEDICATED_SERVERS,
-      allowedToRender: true,
+      allowedToRender: isDedicactedAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
       routeName: routes.SHARED_HOSTING,
-      allowedToRender: true,
+      allowedToRender: isVirtualHostAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.dns_hosting'),
       routeName: routes.DNS,
-      allowedToRender: true,
+      allowedToRender: isDnsAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.external_ftp'),
       routeName: routes.FTP,
-      allowedToRender: true,
+      allowedToRender: isFtpAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.wetsite_care'),
       routeName: routes.SITE_CARE,
-      allowedToRender: true,
+      allowedToRender: isWebsitecareAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.forex_server'),
       routeName: routes.FOREX,
-      allowedToRender: true,
+      allowedToRender: isForexServerAllowedToRender,
     },
   ]
+
+  // REF PROGRAMM
   const refProgrammMenuList = [
     {
       name: t('burger_menu.ref_program.ref_program_list.about_program'),

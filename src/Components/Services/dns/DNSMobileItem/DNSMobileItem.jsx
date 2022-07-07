@@ -17,6 +17,7 @@ export default function DNSMobileItem({
   setElidForHistoryModal,
   setElidForInstructionModal,
   setActiveServer,
+  pageRights,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
   const dropdownEl = useRef()
@@ -31,6 +32,7 @@ export default function DNSMobileItem({
     setToolsOpened(false)
   }
 
+  console.log('pageRights', pageRights)
   return (
     <li className={s.item}>
       <div className={s.dots_wrapper}>
@@ -49,6 +51,7 @@ export default function DNSMobileItem({
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, storage.id.$)}
+                  disabled={!pageRights?.edit}
                 >
                   <Edit className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
@@ -59,7 +62,7 @@ export default function DNSMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2'}
+                  disabled={storage?.status?.$ !== '2' || !pageRights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, storage.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -68,6 +71,7 @@ export default function DNSMobileItem({
               </li>
               <li className={s.tool_item}>
                 <button
+                  disabled={!pageRights?.history}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
@@ -83,7 +87,7 @@ export default function DNSMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2'}
+                  disabled={storage?.status?.$ !== '2' || !pageRights?.instruction}
                   onClick={() =>
                     handleToolBtnClick(setElidForInstructionModal, storage.id.$)
                   }
@@ -96,7 +100,7 @@ export default function DNSMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage.transition?.$ !== 'on'}
+                  disabled={storage.transition?.$ !== 'on' || !pageRights?.gotoserver}
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(storage.id.$))
                   }}
@@ -138,4 +142,5 @@ export default function DNSMobileItem({
 DNSMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  pageRights: PropTypes.object,
 }

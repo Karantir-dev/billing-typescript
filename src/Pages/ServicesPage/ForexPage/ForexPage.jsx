@@ -21,6 +21,7 @@ import {
 import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
+import { usePageRender } from '../../../utils'
 
 export default function ForexPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -29,6 +30,8 @@ export default function ForexPage() {
   const navigate = useNavigate()
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
+  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
+
   // const [forexList, setForexList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -94,32 +97,50 @@ export default function ForexPage() {
   }
 
   useEffect(() => {
-    const clearField = {
-      id: '',
-      pricelist: '',
-      period: '',
-      status: '',
-      service_status: '',
-      opendate: '',
-      expiredate: '',
-      orderdatefrom: '',
-      orderdateto: '',
-      cost_from: '',
-      cost_to: '',
-      autoprolong: '',
-      datacenter: '',
-    }
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    } else {
+      const clearField = {
+        id: '',
+        pricelist: '',
+        period: '',
+        status: '',
+        service_status: '',
+        opendate: '',
+        expiredate: '',
+        orderdatefrom: '',
+        orderdateto: '',
+        cost_from: '',
+        cost_to: '',
+        autoprolong: '',
+        datacenter: '',
+      }
 
-    dispatch(
-      forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
-    )
+      dispatch(
+        forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      )
+    }
   }, [])
+
+  function checkRights(toolgrp) {
+    const rights = {}
+
+    console.log(toolgrp, 'toolgrp')
+    toolgrp?.forEach(section => {
+      section?.toolbtn?.forEach(rightName => {
+        console.log(rights)
+        rights[rightName.$name] = true
+      })
+    })
+
+    return rights
+  }
+
+  let rights = checkRights(forexRenderData?.forexPageRights?.toolgrp)
 
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
-
-  console.log(forexRenderData, 'forexRenderData')
 
   return (
     <>
@@ -132,7 +153,10 @@ export default function ForexPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
-              disabled={!emptyFilter && forexRenderData?.forexList?.length === 0}
+              disabled={
+                (!emptyFilter && forexRenderData?.forexList?.length === 0) ||
+                !rights?.filter
+              }
             />
             {filterModal && (
               <>
@@ -173,7 +197,7 @@ export default function ForexPage() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer}
+                  disabled={!activeServer || !rights?.edit}
                   icon="edit"
                 />
               </HintWrapper>
@@ -182,7 +206,7 @@ export default function ForexPage() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
+                  disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
                   icon="clock"
                 />
               </HintWrapper>
@@ -191,7 +215,7 @@ export default function ForexPage() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$}
+                  disabled={!activeServer?.id?.$ || !rights?.history}
                 />
               </HintWrapper>
               <HintWrapper
@@ -200,7 +224,7 @@ export default function ForexPage() {
               >
                 <IconButton
                   className={s.tools_icon}
-                  disabled={!activeServer?.id?.$}
+                  disabled={!activeServer?.id?.$ || !rights?.edit}
                   icon="delete"
                   onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />
@@ -215,8 +239,12 @@ export default function ForexPage() {
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
           onClick={() => {
-            navigate(route.FOREX_ORDER)
+            navigate(route.FOREX_ORDER, {
+              state: { isForexOrderAllowed: rights?.new },
+              replace: true,
+            })
           }}
+          disabled={!rights?.new}
         />
       </div>
       <ForexList
@@ -228,6 +256,7 @@ export default function ForexPage() {
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForDeletionModal={setElidForDeletionModal}
         setActiveServer={setActiveServer}
+        pageRights={rights}
       />
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />

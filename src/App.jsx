@@ -8,6 +8,13 @@ import { Loader, Portal } from './Components'
 import entireStore from './Redux/store'
 import 'dayjs/locale/ru'
 import 'react-toastify/dist/ReactToastify.css'
+import TagManager from 'react-gtm-module'
+
+const tagManagerArgs = {
+  gtmId: 'GTM-T5QQQVX',
+}
+
+TagManager.initialize(tagManagerArgs)
 
 export default function App() {
   return (
