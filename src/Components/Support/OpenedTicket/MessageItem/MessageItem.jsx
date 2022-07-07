@@ -29,8 +29,6 @@ export default function Component(props) {
   const [image, setImage] = useState(null)
   const [imageIsOpened, setImageIsOpened] = useState(false)
 
-  console.log(image)
-
   const closeImageHandler = () => {
     setImage(null)
     setImageIsOpened(false)
@@ -76,7 +74,6 @@ export default function Component(props) {
             <div className={s.fileBlock}>
               {message?.file?.map(el => {
                 const isOpen = () => {
-                  console.log(el?.name?.$?.includes('png'), el?.name?.$)
                   if (el?.name?.$?.includes('png') || el?.name?.$?.includes('webp')) {
                     return downloadFileHandler(
                       el?.name?.$,

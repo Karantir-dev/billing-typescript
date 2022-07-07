@@ -41,10 +41,8 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   const setSettingsHandler = values => {
     dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values))
-    console.log('setSettingsHandler')
   }
   const handleSocialLinkClick = values => {
-    console.log(values, 'before dispatch')
     dispatch(settingsOperations?.changeSocialLinkStatus(userInfo?.$id, values))
   }
 

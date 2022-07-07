@@ -116,7 +116,6 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
 }
 
 const removeItems = (sessionId, id) => dispatch => {
-  console.log('remove notif')
   axiosInstance
     .post(
       '/',
@@ -129,10 +128,7 @@ const removeItems = (sessionId, id) => dispatch => {
       }),
     )
     .then(({ data }) => {
-      console.log('id deleted', id)
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-      console.log(data)
     })
     .catch(error => {
       console.log('error', error)

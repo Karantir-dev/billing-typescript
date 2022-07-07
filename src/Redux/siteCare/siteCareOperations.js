@@ -493,8 +493,6 @@ const orderSiteCarePricelist =
           throw new Error(data.doc.error.msg.$)
         }
 
-        console.log(data.doc)
-
         const d = {
           autoprolong: data.doc?.autoprolong?.$,
           orderinfo: data.doc?.orderinfo?.$,

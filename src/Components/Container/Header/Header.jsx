@@ -106,7 +106,6 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
-  console.log(createPaymentModal)
   return (
     <>
       <header className={s.main_header}>

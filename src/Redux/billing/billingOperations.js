@@ -148,7 +148,6 @@ const getPaymentPdf = (elid, name) => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      console.log(response)
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')
       link.href = url
@@ -596,8 +595,8 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       )
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('target', '__blank')
-      link.setAttribute('rel', 'noopener noreferrer')
+      // link.setAttribute('target', '__blank')
+      // link.setAttribute('rel', 'noopener noreferrer')
       document.body.appendChild(link)
       link.click()
       link.parentNode.removeChild(link)

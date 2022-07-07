@@ -137,7 +137,6 @@ export default function Component() {
         onSubmit={buyVhostHandler}
       >
         {({ setFieldValue, values, errors, touched }) => {
-          console.log(values)
           return (
             <Form className={s.form}>
               <div className={s.paymentWrapper}>
