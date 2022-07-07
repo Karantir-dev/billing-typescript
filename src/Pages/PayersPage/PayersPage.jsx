@@ -18,10 +18,6 @@ export default function Component() {
   const payersCount = useSelector(payersSelectors.getPayersCount)
 
   useEffect(() => {
-    dispatch(payersOperations.getPayers())
-  }, [])
-
-  useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(payersOperations.getPayers(data))
   }, [currentPage])

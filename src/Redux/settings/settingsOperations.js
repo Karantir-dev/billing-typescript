@@ -673,7 +673,6 @@ const confirmEmail = key => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data?.doc)
       if (data?.doc?.error) {
         throw new Error(data.doc.error.msg.$)
       }

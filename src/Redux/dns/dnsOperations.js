@@ -584,7 +584,6 @@ const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState)
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'chnage pricelist')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       setInitialState(data.doc)
 

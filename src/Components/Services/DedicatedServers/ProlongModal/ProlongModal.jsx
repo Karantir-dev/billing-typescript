@@ -34,7 +34,6 @@ export default function ProlongModal({ elid, closeFn, pageName }) {
     dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal, pageName))
   }
 
-  console.log(initialState?.title_name?.$.split('(')[0])
 
   return (
     <div className={s.modal}>

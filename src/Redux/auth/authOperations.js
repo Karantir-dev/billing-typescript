@@ -38,8 +38,6 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
         .then(({ data }) => {
           if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-          console.log(data.doc)
-
           if (data.doc?.ok?.$ === 'func=totp.confirm') {
             dispatch(authActions.setTemporaryId(sessionId))
 
@@ -252,8 +250,6 @@ const getCountriesForRegister =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-
         const countries = data.doc.slist[0].val
         const states = data.doc.slist[1].val
         const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
@@ -325,7 +321,6 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
       }),
     )
     .then(({ data }) => {
-      console.log(data.doc)
       // LOGIN
       if (data.doc?.error?.$object === 'nolink') {
         redirectToLogin(
@@ -352,8 +347,6 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
               }),
           )
           .then(({ data }) => {
-            console.log(data.doc)
-
             if (data.doc?.error?.$object === 'account_exist') {
               redirectToLogin(
                 'social_akk_registered',
@@ -363,14 +356,10 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
               // need to handle this error
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToLogin('soc_email_exist', email)
-
-              console.log('email_exist')
             } else if (data.doc?.error?.$object === 'email') {
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToRegistration('no_email_from_social', '', '')
-
-              console.log('no email')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
@@ -384,7 +373,6 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   }),
                 )
                 .then(({ data }) => {
-                  console.log(data.doc)
                   const sessionId = data.doc.auth.$
                   dispatch(authActions.loginSuccess(sessionId))
                 })
@@ -481,7 +469,6 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
     )
     .then(({ data }) => {
       // if (data.doc.error) throw data.doc.error
-      console.log(data.doc)
 
       const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
         acc[el.$img] = el.$href

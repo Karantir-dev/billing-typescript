@@ -63,7 +63,6 @@ export default function Component(props) {
       listOfValues = selectedItem.filter(el => el.value !== item.value)
     }
     let valuesString = listOfValues?.map(el => `${el.value}`) || ''
-    console.log(valuesString, 'valuesString')
     getElement(valuesString?.join(','))
   }
 

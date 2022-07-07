@@ -119,7 +119,6 @@ export default function ForexPage() {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
 
-  console.log(forexRenderData, 'forexRenderData')
 
   return (
     <>

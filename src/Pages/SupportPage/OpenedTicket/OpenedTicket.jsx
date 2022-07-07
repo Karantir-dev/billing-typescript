@@ -4,7 +4,13 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
-import { OpenedTicketMessages, SendMessageForm, Button } from '../../../Components'
+import {
+  OpenedTicketMessages,
+  SendMessageForm,
+  Button,
+  HintWrapper,
+  IconButton,
+} from '../../../Components'
 import { supportSelectors, supportOperations, supportActions } from '../../../Redux'
 import * as route from '../../../routes'
 import s from './OpenedTicket.module.scss'
@@ -18,9 +24,13 @@ export default function Component() {
   const ticket = useSelector(supportSelectors.getTicket)
 
   useEffect(() => {
-    dispatch(supportOperations.getTicketByIdHandler(params?.id))
+    getTicketHandler()
     return () => dispatch(supportActions.clearTicket())
   }, [params])
+
+  const getTicketHandler = () => {
+    dispatch(supportOperations.getTicketByIdHandler(params?.id))
+  }
 
   const archivePage = ticket?.closed_ticket_user?.$ === 'on'
 
@@ -36,8 +46,17 @@ export default function Component() {
         <span className={s.tickerId}>#{params?.id}</span>
       </div>
       {ticket && (
-        <div>
+        <div className={s.messagesConatiner}>
           <h1 className={s.ticketSubj}>{ticket?.subject?.$}</h1>
+          <div className={s.reloadBtn}>
+            <HintWrapper label={t('Refresh')}>
+              <IconButton
+                className={s.tools_icon}
+                onClick={getTicketHandler}
+                icon="reload"
+              />
+            </HintWrapper>
+          </div>
           <div className={s.infoContainer}>
             <div className={s.infoBlock}>
               <span className={s.infoitemName}>{t('created')}: </span>

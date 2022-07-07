@@ -19,8 +19,6 @@ export default function EditModal({ elid, closeFn }) {
   const [isAddOnsOpened, setIsAddOnsOpened] = useState(false)
   const [orderInfo, setOrderInfo] = useState(null)
 
-  console.log(orderInfo)
-
   useEffect(() => {
     dispatch(vdsOperations.getEditFieldsVDS(elid, setInitialState))
   }, [])
@@ -100,7 +98,6 @@ export default function EditModal({ elid, closeFn }) {
 
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
-    console.log(mutatedValues)
     dispatch(vdsOperations.editVDS(elid, mutatedValues, initialState.register))
     closeFn()
   }
@@ -164,7 +161,6 @@ export default function EditModal({ elid, closeFn }) {
         onSubmit={handleFormSubmit}
       >
         {({ values, setFieldValue }) => {
-          console.log(values)
           return (
             <Form>
               <div className={s.form}>
@@ -313,7 +309,7 @@ export default function EditModal({ elid, closeFn }) {
                     label={`${t('license')}:`}
                     isShadow
                   />
-                  
+
                   <InputField
                     className={s.mb}
                     inputClassName={s.bgc}

@@ -566,8 +566,7 @@ const editDedicServer =
               sok: 'ok',
             }),
           )
-          .then(data => {
-            console.log(data)
+          .then(() => {
             dispatch(actions.hideLoader())
 
             dispatch(

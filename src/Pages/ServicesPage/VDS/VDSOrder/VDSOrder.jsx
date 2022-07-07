@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../../Components'
 import { Check } from '../../../../images'
-import { vdsOperations } from '../../../../Redux'
+import { vdsOperations, dnsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
 
 import cn from 'classnames'
@@ -241,6 +241,10 @@ export default function VDSOrder() {
     const temp = parametersInfo?.slist?.find(el => el.$name === 'Port_speed')?.val
     const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
     return value ? value : ''
+  }
+
+  const openTermsHandler = () => {
+    dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
   }
 
   return (
@@ -536,9 +540,9 @@ export default function VDSOrder() {
 
                         <p className={s.agreement_text}>
                           {t('terms', { ns: 'dedicated_servers' })}{' '}
-                          <a className={s.link} href={parametersInfo.licence_link.$}>
+                          <button className={s.link} onClick={openTermsHandler}>
                             &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
-                          </a>
+                          </button>
                         </p>
                       </div>
                       <ErrorMessage

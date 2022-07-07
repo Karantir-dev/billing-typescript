@@ -148,32 +148,39 @@ const getTicketsArchiveHandler =
       })
   }
 
-const getFile = (name, elid) => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'ticket.file',
-        clickstat: 'yes',
-        auth: sessionId,
-        elid,
-        lang: 'en',
-      }),
-      { responseType: 'blob' },
-    )
-    .then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', name)
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
-    })
-}
+const getFile =
+  (name, elid, setImage = null, setImageIsOpened = null) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'ticket.file',
+          clickstat: 'yes',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+        }),
+        { responseType: 'blob' },
+      )
+      .then(({ data }) => {
+        const url = window.URL.createObjectURL(new Blob([data]))
+        if (setImage && setImageIsOpened) {
+          setImage(url)
+          setImageIsOpened(true)
+          return
+        }
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', name)
+        document.body.appendChild(link)
+        link.click()
+        link.parentNode.removeChild(link)
+      })
+  }
 
 const setRate = (type, elid, plid, setStatus) => (dispatch, getState) => {
   const {

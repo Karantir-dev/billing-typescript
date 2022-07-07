@@ -1,6 +1,6 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, cartActions, billingOperations } from '..'
+import { actions, cartActions, billingOperations, payersOperations } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
@@ -179,7 +179,8 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
         }
       })
 
-      dispatch(actions.hideLoader())
+      dispatch(payersOperations.getPayers())
+      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
@@ -211,7 +212,17 @@ const setPaymentMethods =
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          if (
+            data.doc.error.msg.$ ===
+            'The \'Contact person\' field has invalid value. The value cannot be empty'
+          )
+            toast.error(i18n?.t('The payer is not valid, change the payer or add a new one', { ns: 'cart' }), {
+              position: 'bottom-right',
+              toastId: 'customId',
+            })
+          throw new Error(data.doc.error.msg.$)
+        }
 
         if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
           dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))

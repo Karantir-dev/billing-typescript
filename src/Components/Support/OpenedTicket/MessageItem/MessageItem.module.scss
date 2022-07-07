@@ -249,6 +249,14 @@
   }
 }
 
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 18px 24px;
+  margin: 20px 10px;
+}
+
 @media screen and (min-width: 1024px) {
   .avatar {
     width: 60px;

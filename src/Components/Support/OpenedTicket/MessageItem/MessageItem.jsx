@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { supportOperations } from '../../../../Redux'
+import { Backdrop } from '../../..'
 import { Download } from '../../../../images'
 import { BASE_URL } from '../../../../config/config'
 import s from './MessageItem.module.scss'
@@ -16,8 +17,21 @@ export default function Component(props) {
 
   const { message } = props
 
-  const downloadFileHandler = (fileName, fileId) => {
-    dispatch(supportOperations.getFile(fileName, fileId))
+  const downloadFileHandler = (
+    fileName,
+    fileId,
+    setImg = null,
+    setImgIsOpened = null,
+  ) => {
+    dispatch(supportOperations.getFile(fileName, fileId, setImg, setImgIsOpened))
+  }
+
+  const [image, setImage] = useState(null)
+  const [imageIsOpened, setImageIsOpened] = useState(false)
+
+  const closeImageHandler = () => {
+    setImage(null)
+    setImageIsOpened(false)
   }
 
   return (
@@ -59,12 +73,19 @@ export default function Component(props) {
           {message?.file && (
             <div className={s.fileBlock}>
               {message?.file?.map(el => {
+                const isOpen = () => {
+                  if (el?.name?.$?.includes('png') || el?.name?.$?.includes('webp')) {
+                    return downloadFileHandler(
+                      el?.name?.$,
+                      el?.param?.$,
+                      setImage,
+                      setImageIsOpened,
+                    )
+                  }
+                  return downloadFileHandler(el?.name?.$, el?.param?.$)
+                }
                 return (
-                  <button
-                    onClick={() => downloadFileHandler(el?.name?.$, el?.param?.$)}
-                    className={s.file}
-                    key={el?.param?.$}
-                  >
+                  <button onClick={isOpen} className={s.file} key={el?.param?.$}>
                     <span>{el?.name?.$}</span>
                     <Download />
                   </button>
@@ -81,6 +102,9 @@ export default function Component(props) {
           />
         )}
       </div>
+      <Backdrop isOpened={Boolean(imageIsOpened && image)} onClick={closeImageHandler}>
+        <div className={s.modalBlock}>{image && <img src={image} alt="Opened" />}</div>
+      </Backdrop>
     </div>
   )
 }

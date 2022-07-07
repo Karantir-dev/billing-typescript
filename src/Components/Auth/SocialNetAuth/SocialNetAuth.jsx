@@ -28,7 +28,6 @@ export default function SocialNetAuth() {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
     if (!state) {
       navigate(route.LOGIN, { replace: true })
-      console.log('no state ')
     } else {
       dispatch(
         authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),

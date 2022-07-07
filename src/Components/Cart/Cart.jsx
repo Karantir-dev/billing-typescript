@@ -50,15 +50,20 @@ export default function Component() {
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
   useEffect(() => {
-    const data = {
-      country: payersSelectLists?.country[0]?.$key,
-      profiletype: payersSelectLists?.profiletype[0]?.$key,
-    }
-
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
-
-    dispatch(payersOperations.getPayerModalInfo(data))
   }, [])
+
+  useEffect(() => {
+    if (payersSelectLists) {
+      if (!payersSelectedFields?.country || !payersSelectedFields?.country_physical) {
+        const data = {
+          country: payersSelectLists?.country[0]?.$key,
+          profiletype: payersSelectLists?.profiletype[0]?.$key,
+        }
+        dispatch(payersOperations.getPayerModalInfo(data))
+      }
+    }
+  }, [payersSelectLists])
 
   const validationSchema = Yup.object().shape({
     profile: Yup.string().required(t('Choose payer')),

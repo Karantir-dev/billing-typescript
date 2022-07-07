@@ -24,7 +24,6 @@ export default function Component(props) {
 
   const payersList = useSelector(payersSelectors.getPayersList)
 
-  const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
@@ -35,12 +34,7 @@ export default function Component(props) {
   const [newPayer, setNewPayer] = useState(false)
 
   useEffect(() => {
-    const data = {
-      country: payersSelectLists?.country[0]?.$key,
-      profiletype: payersSelectLists?.profiletype[0]?.$key,
-    }
-
-    dispatch(billingOperations.getPaymentMethod({}, data))
+    dispatch(billingOperations.getPayers())
   }, [])
 
   const offerTextHandler = () => {
@@ -82,8 +76,6 @@ export default function Component(props) {
       : null,
     [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
-
-  console.log(paymentsCurrency)
 
   const payers = newPayer
     ? [
