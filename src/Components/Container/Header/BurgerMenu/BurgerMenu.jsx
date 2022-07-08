@@ -66,7 +66,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
   const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
   const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
-  const isWebsitecareAllowedToRender = usePageRender('zabota-o-servere', 'storage', false)
+  const isWebsitecareAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'zabota-o-servere',
+    false,
+  )
   // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
   const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
 

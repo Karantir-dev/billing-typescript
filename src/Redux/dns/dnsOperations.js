@@ -29,7 +29,6 @@ const getDNSList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc.metadata.toolbar, 'data.doc.metadata.toolbar')
       const dnsRenderData = {
         dnsList: data.doc.elem ? data.doc.elem : [],
         dnsPageRights: data.doc.metadata.toolbar,
