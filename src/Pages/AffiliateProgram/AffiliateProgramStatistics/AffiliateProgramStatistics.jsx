@@ -4,19 +4,19 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
-import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
+import cn from 'classnames'
+import {
+  IconButton,
+  StatisticsFilterModal,
+  Pagination,
+  // Backdrop,
+} from '../../../Components'
 import { affiliateOperations, usersOperations } from '../../../Redux'
 import { Check } from '../../../images'
-import * as route from '../../../routes'
 
 import s from './AffiliateProgramStatistics.module.scss'
-import cn from 'classnames'
-import { Navigate } from 'react-router-dom'
 
-export default function AffiliateProgramStatistics({ allowToRender }) {
-  if (!allowToRender) {
-    return <Navigate replace to={route.SERVICES} />
-  }
+export default function AffiliateProgramStatistics() {
   const dispatch = useDispatch()
 
   const [availableRights, setAvailabelRights] = useState({})
@@ -40,10 +40,13 @@ export default function AffiliateProgramStatistics({ allowToRender }) {
 
   const [initialFilters, setInitialFilters] = useState({
     date: '',
+    datesList: [],
     site: '',
     registered: '',
     payed: '',
   })
+
+  // console.log(isFilterOpened, initialFilters)
 
   useEffect(() => {
     dispatch(
@@ -136,7 +139,7 @@ export default function AffiliateProgramStatistics({ allowToRender }) {
               </span>
 
               <span className={s.label}>{t('statistics_section.from_site')}:</span>
-              <span className={ s.website}>
+              <span className={s.website}>
                 {site?.$ ? (
                   <span className={s.website_url}>{site?.$}</span>
                 ) : (

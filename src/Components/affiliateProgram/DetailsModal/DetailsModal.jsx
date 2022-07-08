@@ -18,8 +18,9 @@ export default function DetailsModal({ details, closeModal }) {
       closeModal()
     }
   }
+  let sortedItems
 
-  const sortedItems = details.sort((a, b) => {
+  sortedItems = details?.sort((a, b) => {
     return b?.reward?.$?.replace('%', '') - a?.reward?.$?.replace('%', '')
   })
 
@@ -96,6 +97,6 @@ export default function DetailsModal({ details, closeModal }) {
 }
 
 DetailsModal.propTypes = {
-  details: PropTypes.arrayOf(PropTypes.object),
+  details: PropTypes.array,
   closeModal: PropTypes.func,
 }
