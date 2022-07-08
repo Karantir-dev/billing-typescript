@@ -1,0 +1,91 @@
+.linkText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--menu-text-3);
+  user-select: none;
+}
+
+.link {
+  text-decoration: underline;
+  margin-right: 10px;
+}
+
+.tickerId {
+  user-select: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--transparent-color);
+  margin-left: 10px;
+}
+
+.breadCrumb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 45px;
+}
+
+.ticketSubj {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 113%;
+  color: var(--support-title-color);
+}
+
+.messagesConatiner {
+  position: relative;
+}
+
+.reloadBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.infoContainer {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.infoitemName {
+  color: var(--transparent-color);
+}
+
+.infoBlock {
+  margin-right: 0px;
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.9%;
+  color: var(--menu-text-3);
+  &.red {
+    color: var(--error-color);
+  }
+  &.green {
+    color: var(--success-color);
+  }
+}
+
+.backBtn {
+  margin-top: 25px;
+  max-width: 255px;
+  height: 55px;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .infoContainer {
+    flex-direction: row;
+  }
+  .infoBlock {
+    margin-top: 0px;
+    margin-right: 30px;
+  }
+}

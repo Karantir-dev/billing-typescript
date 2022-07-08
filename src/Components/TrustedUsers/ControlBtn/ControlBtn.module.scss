@@ -1,0 +1,159 @@
+.control_btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 21px;
+  top: 6px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.remove_btn.btn {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.dot {
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: var(--main-text);
+  }
+}
+
+.list {
+  position: absolute;
+  width: 210px;
+  background-color: var(--forms_bgc_4);
+  top: 40px;
+  right: -21px;
+  padding: 31px 16px 23px 16px;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 5px;
+  display: none;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--forms_bgc_4);
+    transform: rotate(45deg);
+    top: -7px;
+    right: 27px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+.access_rights_btn,
+.settings_btn {
+  display: flex;
+  margin-bottom: 25px;
+}
+
+.remove_btn {
+  display: flex;
+}
+.setting_text {
+  margin-left: 18px;
+  font-weight: 300;
+}
+.access_text {
+  margin-left: 15px;
+}
+.delete_text {
+  margin-left: 22px;
+}
+
+.has_access {
+  display: none;
+
+  &.full {
+    display: block;
+  }
+}
+
+.setting_text,
+.delete_text,
+.access_text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+}
+
+.remove_btn,
+.access_rights_btn,
+.settings_btn {
+  &.owner {
+    opacity: 0.3;
+
+    &:hover {
+      & .setting_text,
+      .delete_text,
+      .access_text {
+        font-weight: 300;
+      }
+      & .icon {
+        fill: var(--icon-color);
+      }
+    }
+  }
+}
+.settings_btn,
+.access_rights_btn,
+.remove_btn {
+  cursor: pointer;
+
+  &:hover {
+    & .setting_text,
+    .delete_text,
+    .access_text {
+      font-weight: 400;
+    }
+
+    & .icon {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.icon {
+  fill: var(--icon-color);
+}
+
+.control_btn_lg {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  top: -15px;
+
+  & .list {
+    top: 40px;
+  }
+
+  cursor: pointer;
+}
+
+.user_email_lg {
+  padding-left: 27px;
+}
+
+// ADAPTIVE
+
+@media screen and (min-width: 768px) {
+  .list {
+    width: 193px;
+  }
+}

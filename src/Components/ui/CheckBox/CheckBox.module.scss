@@ -1,0 +1,23 @@
+.btn {
+  width: 30px;
+  height: 30px;
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.error {
+      border: 1px solid var(--error-color);
+  }
+}
+
+.check {
+  display: none;
+  stroke: url(#gradient);
+  &.active {
+    display: flex;
+  }
+}

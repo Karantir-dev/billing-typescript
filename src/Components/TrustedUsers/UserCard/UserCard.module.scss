@@ -1,0 +1,263 @@
+.min_card_wrapper {
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--elements-bgc);
+  border-radius: 5px;
+  padding: 14px 21px 18px 18px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  margin-bottom: 10px;
+  color: var(--transparent-color);
+}
+
+.user_email {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--link-color);
+}
+.user_name,
+.user_access {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.warning_sign_wrapper {
+  position: absolute;
+  right: -30px;
+  top: 56%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.warning_text {
+  position: absolute;
+  width: 235px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  background-color: var(--forms_bgc_4);
+  top: 33px;
+  left: -50px;
+  padding: 18px 14px 18px 14px;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  border-radius: 5px;
+  display: none;
+  transition: all 3s ease;
+
+  &.light {
+    background-color: #ede7f4;
+
+    &::before {
+      background-color: #ede7f4;
+    }
+  }
+
+  &.mobile {
+    width: 213px;
+    left: -130px;
+  }
+
+  &.mobile {
+    &.light {
+      &::before {
+        background-color: #ede7f4;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: var(--forms_bgc_4);
+      transform: rotate(45deg);
+      top: -7px;
+      left: 132px;
+      box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--forms_bgc_4);
+    transform: rotate(45deg);
+    top: -7px;
+    left: 52px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.hovered {
+    display: block;
+  }
+}
+
+.warning_sign {
+  cursor: pointer;
+  fill: var(--icon-color);
+
+  &:hover {
+    fill: url(#gradient);
+  }
+}
+
+.user_status {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.user_status_off {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.email_wrapper,
+.name_wrapper,
+.full_access_wrapper,
+.status_wrapper {
+  margin-bottom: 15px;
+}
+
+.toggle_wrapper {
+  width: 144px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+// desktop card
+
+.table_wrapper {
+  position: relative;
+}
+
+.toggle_wrapper_lg {
+  // width: 130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.toggle_status_wrapper_lg {
+  // width: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table_row {
+  display: grid;
+  grid-template-columns: 137px 127px 103px 50px 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 16px 20px;
+  box-shadow: var(--forms_shadow);
+  background-color: var(--elements-bgc);
+  margin-bottom: 10px;
+  column-gap: 40px;
+  border-radius: 5px;
+}
+
+.user_email_lg {
+  word-wrap: break-word;
+}
+
+.user_name_lg {
+  word-wrap: break-word;
+}
+
+// ADAPTIVE
+
+@media screen and (min-width: 440px) {
+  .warning_text {
+    &.mobile {
+      width: 250px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .warning_sign_wrapper {
+    right: 30px;
+    top: 56%;
+  }
+  // .toggle_status_wrapper_lg {
+  //   padding-left: 30px;
+  // }
+  .control_btn {
+    position: relative;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .table_row {
+    grid-template-columns: 138px 127px 103px 140px 22px;
+    padding-left: 34px;
+    padding-right: 34px;
+    justify-content: space-between;
+  }
+  // .toggle_status_wrapper_lg {
+  //   padding-left: 0px;
+  // }
+  .warning_sign_wrapper {
+    right: -25px;
+  }
+
+  .warning_text {
+    width: 315px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .table_wrapper {
+    max-width: 1085px;
+  }
+
+  .table_row {
+    grid-template-columns: 149px 127px 143px 140px 22px;
+    gap: 100px;
+    justify-content: start;
+    padding-right: 55px;
+    padding-left: 50px;
+  }
+
+  .warning_sign_wrapper {
+    right: -31px;
+  }
+
+  .warning_text {
+    width: 423px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .table_wrapper {
+    max-width: 1182px;
+  }
+
+  .table_row {
+    gap: 120px;
+    justify-content: start;
+  }
+
+  .warning_text {
+    width: 423px;
+  }
+}

@@ -1,0 +1,358 @@
+.modalBg {
+  position: absolute;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow: hidden;
+}
+
+.ownerForm {
+  height: 0px;
+  overflow-y: hidden;
+  transition: linear 0.2s;
+
+  &.isOpen {
+    height: 1490px;
+    padding-bottom: 21px;
+  }
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  max-width: 625px;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: hidden;
+  position: 'relative';
+}
+
+.form {
+  padding: 0px 20px 21px 20px;
+  margin-left: 2px;
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+.modalHeader {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 90%;
+  color: var(--main-text);
+}
+
+.whoisBlock {
+  background: var(forms_bgc_4);
+  box-shadow: var(--forms_shadow);
+  padding: 20px 43px;
+  margin: 30px 0;
+
+  max-height: 414px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling:touch;
+  overflow-x: hidden;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+
+  color: var(--main-text);
+
+  white-space: pre-line;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+.input {
+  margin-top: 10px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.inputHeight {
+  height: 50px !important;
+}
+
+.btnBlock {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+
+  .saveBtn {
+    height: 55px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  .cancel {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 130.3%;
+    color: var(--main-text);
+
+    text-align: center;
+    text-decoration-line: underline;
+
+    cursor: pointer;
+  }
+}
+
+.formFieldsBlock {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.category_title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  margin-top: 20px;
+}
+
+.select {
+  max-width: 100%;
+  margin-top: 20px;
+  margin-right: 0px;
+
+  button {
+    height: 52px;
+  }
+
+  &.dateSelect {
+    width: 195px;
+    margin-right: 20px;
+  }
+}
+
+.dates {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+
+  color: var(--main-text);
+
+  display: flex;
+  margin-top: 30px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.formBlockTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 115%;
+  color: var(--main-text);
+  margin: 20px 0 0 0;
+}
+
+.phoneInput {
+  width: 100%;
+  max-width: 100%;
+  margin: 13px 0 0 0;
+
+  input {
+    height: 50px !important;
+    background-color: var(--elements-bgc) !important;
+  }
+
+  div {
+    background-color: var(--elements-bgc) !important;
+  }
+}
+
+.phoneInputLabel {
+  margin: 0 0 5px 10px !important;
+}
+
+.useFirstCheck {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  margin-left: 5px;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-left: 18px;
+  }
+}
+
+.profileWarn {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--error-color);
+}
+
+.shevronIcon {
+  margin-left: 16px;
+  stroke: var(--main-text);
+  transform: rotate(180deg);
+  transition: linear 0.1s;
+
+  &.isOpen {
+    transform: rotate(0deg);
+  }
+}
+
+.countrySelectItem {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 13px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modalHeader {
+    padding: 18px 50px;
+  }
+
+  .ownerForm {
+    height: 0px;
+    overflow-y: hidden;
+    padding-left: 2px;
+    transition: linear 0.2s;
+
+    &.isOpen {
+      height: 1100px;
+      padding-bottom: 21px;
+    }
+  }
+
+  .modalBg {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+  }
+
+  .btnBlock {
+    padding: 18px 50px;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .saveBtn {
+      margin-bottom: 0;
+    }
+
+    .cancel {
+      margin-left: 20px;
+    }
+  }
+
+  .form {
+    max-height: 70vh;
+    padding: 0px 50px 38px 50px;
+  }
+
+  .modalBlock {
+    margin: 20px auto;
+  }
+
+  .input {
+    width: 47%;
+
+    &:not(:nth-child(2n)) {
+      margin-right: 15px;
+    }
+  }
+
+  .select {
+    max-width: 47%;
+    margin-top: 10px;
+    margin-right: 15px;
+
+    &.dateSelect {
+      max-width: 220px;
+      width: 220px;
+      margin-right: 10px;
+    }
+
+    &:not(:nth-child(2n)) {
+      margin-right: 15px;
+    }
+  }
+
+  .phoneInput {
+    max-width: 47%;
+    margin: 13px 15px 0 0;
+  }
+
+  .phoneInputLabel {
+    margin: 0 0 4px 10px !important;
+  }
+}

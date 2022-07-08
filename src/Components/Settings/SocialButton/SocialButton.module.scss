@@ -1,0 +1,52 @@
+.link_btn {
+  display: flex;
+  align-items: center;
+}
+
+.icon_btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms-bg-2-color);
+
+  &.notConnected {
+    svg {
+      path {
+        fill: var(--transparent-color);
+      }
+    }
+  }
+}
+
+.socialItem {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.linkTo {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130.5%;
+  text-decoration-line: underline;
+  color: var(--link-color);
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .socialItem {
+    margin-top: 0px;
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+
+  .linkTo {
+    font-size: 17px;
+  }
+}

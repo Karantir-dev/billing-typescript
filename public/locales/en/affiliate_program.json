@@ -1,0 +1,52 @@
+{
+  "page_title": "Affiliate program",
+  "about_section_title": "About the program",
+  "income_section_title": "Income",
+  "statistics_section_title": "Statistics",
+  "about_section": {
+    "description_1": "Zomro Affiliate Program will allow you to earn without any investment. An Affiliate Program is a type of cooperation where you, as our partner, sell the company’s services and we pay you a commission.",
+    "description_2": "Your referral network can be limitless! And it gives you the opportunity to earn unlimited passive income effortlessly.",
+    "banners_link_caption": "Here you can download the archive with materials for your site",
+    "banners_download_link": "DOWNLOAD",
+    "referral_link": "Referral link",
+    "service": "Service",
+    "service_placeholder": "Choose a service",
+    "promocode": "Promo code",
+    "big_vds": "Servers VDS/VPS with big storage",
+    "vds": "Servers VDS/VPS for high load",
+    "dedicated_servers": "Dedicated servers",
+    "shared_hosting": "Shared hosting",
+    "virtual_servers": "Virtual servers",
+    "link_copied": "Link copied",
+    "promocode_copied": "Promo code copied"
+  },
+  "income_section": {
+    "description": "This report shows the amount of funds you get for referring new clients. Funds are credited on the 1st of every month. Your reward will be displayed here only after this date. To view a detailed report, click the amount for the selected month.",
+    "chart": "Chart",
+    "table": "Table",
+    "income_amount": "Income amount",
+    "select_placeholder": "Select a period in the calendar",
+    "detailed_statistics": "Detailed statistics for",
+    "service": "$t(about_section.service)",
+    "rate": "Rate",
+    "income": "Income",
+    "referral": "Referral",
+    "total": "Total",
+    "chart_placeholder": "Insufficient data for chart"
+  },
+  "statistics_section": {
+    "filter": "Filter",
+    "transition_date": "Click date",
+    "from_site": "From web-site",
+    "client_registered": "Client has been registered",
+    "client_payed": "Client made a payment",
+    "apply": "Search",
+    "client": "Client",
+    "payment": "Payment",
+    "not_registered": "Not registered",
+    "unknown_source": "Unknown source",
+    "not_paid": "Not paid",
+    "website_url": "Website URL",
+    "no_result": "No results"
+  }
+}

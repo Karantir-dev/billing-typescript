@@ -1,0 +1,259 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px 30px;
+  max-width: 640px;
+  width: 100%;
+}
+
+.modalHeader {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.form {
+  padding: 0 14px;
+  max-height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 20px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.formBlock {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formBlockTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  margin-bottom: 5px;
+  color: var(--main-text);
+}
+
+.formFieldsBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input {
+  max-width: 100%;
+  margin-top: 13px;
+}
+
+.inputHeight {
+  height: 46px;
+}
+
+.phoneInputLabel {
+  margin: 0 0 5px 10px;
+}
+
+.select {
+  max-width: 100%;
+  margin-top: 13px;
+
+  span {
+    font-size: 16px;
+  }
+
+  div {
+    font-size: 16px;
+  }
+}
+
+.phoneInput {
+  width: 100%;
+  max-width: 100%;
+  margin: 13px 0 0 0;
+
+  input {
+    height: 46px !important;
+    background-color: var(--elements-bgc) !important;
+  }
+
+  div {
+    background-color: var(--elements-bgc) !important;
+  }
+}
+
+.btnBlock {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.countrySelectItem {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 13px;
+  }
+}
+
+.offerBlock {
+  display: flex;
+  align-items: center;
+  margin-top: 33px;
+  max-width: 270px;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.offerBlockText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--main-text);
+}
+
+.offerBlockLink {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    align-items: center;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    margin: 0 30px;
+  }
+
+  .modalHeader {
+    padding: 14px 50px;
+  }
+
+  .form {
+    padding: 0 50px;
+    padding-bottom: 20px;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .formBlock {
+    margin-top: 25px;
+  }
+
+  .phoneInput {
+    max-width: 48%;
+    margin: 13px 20px 0 0;
+  }
+
+  .input {
+    max-width: 48%;
+    margin-right: 20px;
+  }
+
+  .select {
+    max-width: 48%;
+    margin-right: 20px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 254px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+
+  .formFieldsBlock > div:nth-child(2n) {
+    margin-right: 0px;
+  }
+}

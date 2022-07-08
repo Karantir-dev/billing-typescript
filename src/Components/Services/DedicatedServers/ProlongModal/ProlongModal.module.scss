@@ -1,0 +1,179 @@
+.modal {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: visible;
+  position: 'relative';
+}
+
+.form {
+  padding: 25px 20px 21px 20px;
+  margin-left: 2px;
+  height: 30vh;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+.header_block {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.title_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+
+.page_title {
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+
+.first_row,
+.second_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.first_row {
+  margin-bottom: 10px;
+}
+.second_row {
+  margin-bottom: 20px;
+}
+
+.label,
+.value {
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--main-text);
+}
+
+.value {
+  &.green {
+    color: var(--success-color);
+  }
+  &.red {
+    color: var(--red-color);
+  }
+}
+
+.icon_cross {
+  cursor: pointer;
+  flex: none;
+}
+
+.tarif_name {
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--transparent-color);
+}
+
+.select {
+  margin-bottom: 12px;
+}
+
+.inputClassName {
+  background-color: var(--nearby-elements-bgc);
+}
+
+.input_field_wrapper {
+  margin-bottom: 12px;
+}
+
+.input {
+  height: 50px;
+}
+
+.btns_wrapper {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+}
+
+.buy_btn {
+  width: 230px;
+  height: 55px;
+  font-weight: 800;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.cancel_btn {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  text-decoration: underline;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 355px;
+  }
+  .btns_wrapper {
+    padding: 14px;
+  }
+
+  .form {
+    padding: 25px 51px 32px 51px;
+  }
+
+  .header_block {
+    padding: 14px 20px;
+  }
+
+  .page_title {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .input_field_wrapper,
+  .select {
+    min-width: 254px;
+    max-width: 254px;
+    padding-bottom: 0px;
+  }
+
+  .buy_btn {
+    width: 254px;
+  }
+}

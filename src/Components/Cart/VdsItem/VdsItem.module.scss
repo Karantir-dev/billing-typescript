@@ -1,0 +1,147 @@
+.server_item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 15px 15px 65px;
+  border-radius: 3px;
+  background: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow);
+}
+
+.shevron_btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 50px;
+  border-top: 1px solid var(--inactive_icon_color);
+  cursor: pointer;
+}
+
+.shevron {
+  stroke: var(--main-text);
+  transition: transform 150ms;
+  transform: rotateZ(180deg);
+
+  &.opened {
+    transform: rotateZ(360deg);
+  }
+}
+
+.tariff_name {
+  font-size: 16px;
+  padding-right: 20px;
+  margin-bottom: 15px;
+}
+
+.btn_delete {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.percent {
+  font-size: 16px;
+  color: var(--red-text);
+}
+
+.discount_wrapper {
+  margin-bottom: 10px;
+}
+
+.old_price {
+  font-size: 16px;
+  color: var(--transparent-color);
+  text-decoration: line-through;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.dropdown {
+  height: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+
+  font-size: 14px;
+  transition: height 150ms;
+  overflow: hidden;
+}
+
+.value {
+  font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .server_item {
+    min-height: 60px;
+    padding: 10px 30px 10px 40px;
+  }
+
+  .main_info_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .shevron_btn {
+    right: initial;
+    top: 0;
+    width: 40px;
+    height: 60px;
+    border: none;
+  }
+
+  .btn_delete {
+    position: static;
+    margin-left: 40px;
+  }
+
+  .tariff_name {
+    padding-right: 0;
+    margin: 0 10px 0 20px;
+  }
+
+  .discount_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    white-space: nowrap;
+    gap: 5px;
+    order: 2;
+  }
+
+  .price {
+    order: 1;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .price_wrapper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown {
+    grid-template-columns: auto auto;
+    width: 100%;
+    column-gap: 25px;
+  }
+
+  .period {
+    font-weight: 400;
+  }
+  .value_item {
+    width: fit-content;
+  }
+
+  .discount_wrapper {
+    margin-bottom: 0;
+  }
+}

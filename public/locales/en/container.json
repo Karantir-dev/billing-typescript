@@ -1,0 +1,63 @@
+{
+  "aside_menu": {
+    "services": "Services",
+    "finance_and_docs": "Finance and documents",
+    "referal_program": "Referal program",
+    "support": "Support"
+  },
+  "balance": "Balance",
+  "profile": {
+    "user_settings": "User settings",
+    "trusted_users": "Trusted users",
+    "visiting_log": "Browsing history",
+    "payers": "Payers",
+    "contracts": "Contracts",
+    "log_out": "Log out"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "Services",
+      "services_list": {
+        "domains": "Domains",
+        "virtual_servers": "Virtual servers",
+        "dedicated_servers": "Dedicated servers",
+        "virtual_hosting": "Virtual hosting",
+        "dns_hosting": "DNS-hosting",
+        "external_ftp": "External FTP storage",
+        "wetsite_care": "Website care",
+        "forex_server": "Forex server"
+      }
+    },
+    "ref_program": {
+      "ref_program": "Affiliate program",
+      "ref_program_list": {
+        "about_program": "About program",
+        "incomes": "Incomes",
+        "statistic": "Statistic"
+      }
+    },
+    "support": {
+      "support": "Support",
+      "support_list": {
+        "requests": "Requests",
+        "requests_archieve": "Requests archieve"
+      }
+    },
+    "finance": {
+      "finance": "Finance",
+      "finance_list": {
+        "automatic_payment": "Automatic payment",
+        "payments": "Payments",
+        "expenses": "Outcomes",
+        "auto_renewal": "Auto-renewal"
+      }
+    }
+  },
+  "notification_bar": {
+    "no_messages": "There are no notifications",
+    "show_more": "Show all notifications",
+    "notifications": "Notifications",
+    "has been prolonged": "has been prolonged",
+    "is ready for use": "is ready for use"
+  }
+}

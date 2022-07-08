@@ -1,0 +1,164 @@
+.domainsZone {
+  margin-top: 40px;
+}
+
+.domainsZoneTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.chooseAllBlock {
+  display: flex;
+  align-items: center;
+
+  padding: 30px 10px 10px 15px;
+
+  .chooseAllText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 113%;
+    color: var(--main-text);
+    margin-left: 12px;
+  }
+}
+
+.domainItemBg {
+  flex-basis: 100%;
+  margin-top: 20px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  &.selected {
+    padding: 1.5px;
+    border-radius: 5px;
+
+    .domainName {
+      font-weight: 400;
+    }
+
+    .domainPrice {
+      font-weight: 400;
+    }
+
+    .saleEur {
+      font-weight: 400;
+    }
+  }
+
+  &:hover {
+    .domainName {
+      font-weight: 400;
+    }
+
+    .domainPrice {
+      font-weight: 400;
+    }
+
+    .saleEur {
+      font-weight: 400;
+    }
+  }
+}
+
+.domainItem {
+  padding: 20px 10px 20px 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  box-shadow: var(--forms2_shadow);
+  background: var(--forms_bgc_2);
+  position: relative;
+}
+
+.domainsBlock {
+  display: flex;
+  max-width: 1250px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.domainName {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-left: 25px;
+
+  &.selected {
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+}
+
+.domainPrice {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+}
+
+.pricesBlock {
+  margin-left: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.sale {
+  position: absolute;
+  right: 11px;
+  top: -12px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 120%;
+  color: #ffffff;
+  min-width: 56px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red-text);
+  border-radius: 2px;
+}
+
+.saleEur {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 70.9%;
+  text-decoration-line: line-through;
+  color: var(--transparent-color);
+  margin-top: 11px;
+}
+
+.year {
+  text-transform: lowercase;
+}
+
+@media screen and (min-width: 768px) {
+  .domainItemBg {
+    flex-basis: 21%;
+    margin-right: 25px;
+
+    &.transfer {
+      flex-basis: 31%;
+    }
+  }
+}

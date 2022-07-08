@@ -1,0 +1,88 @@
+@import 'modern-normalize';
+@import './fonts.scss';
+@import './variables.scss';
+@import './container.scss';
+
+body {
+  margin: 0;
+  font-family: 'Proxima', sans-serif;
+  color: var(--main-text);
+  background-color: var(--main-bgc);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+// ------- reset styles -------
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+th,
+td,
+input {
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+[type='search'] {
+  outline-offset: 0;
+}
+
+//STORYBOOK ICONS//
+
+.css-ngu85f {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.css-15erloe {
+  height: 50px !important;
+  width: 50px !important;
+}
+
+.css-87agpt {
+  margin-top: 10px;
+  margin-left: 0px !important;
+}
+
+//toastify
+
+.Toastify__toast-container {
+  width: 90%;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 0);
+}
+
+@media (min-width: 460px) {
+  .Toastify__toast-container {
+    left: unset;
+    transform: unset;
+    width: var(--toastify-toast-width);
+    bottom: 1em;
+    right: 1em;
+  }
+}

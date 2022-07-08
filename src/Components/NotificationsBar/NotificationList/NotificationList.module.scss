@@ -1,0 +1,26 @@
+.show_more {
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration-line: underline;
+  margin-top: 10px;
+  cursor: pointer;
+  color: var(--link-color);
+}
+
+.btn {
+  &.hidden {
+    display: none;
+  }
+}
+
+.no_messages {
+  color: var(--main-text);
+}
+
+.clear_btn {
+  margin-top: 10px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+  padding: 5px 15px;
+  cursor: pointer;
+}

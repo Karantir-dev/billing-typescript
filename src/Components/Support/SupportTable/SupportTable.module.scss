@@ -1,0 +1,255 @@
+.table {
+  margin-top: 20px;
+}
+
+.tableHeader {
+  display: none;
+  padding: 12px 23px;
+  width: 100%;
+}
+
+.item_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  &.first_item {
+    color: var(--link-text);
+  }
+  &.third_item {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+  }
+  &.fourth_item {
+    color: #45a884;
+  }
+  &.fifth_item {
+    display: none;
+  }
+}
+
+.openTicket {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+}
+
+.title_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--menu-text-3);
+  align-items: center;
+  margin-right: 20px;
+  &.first_item {
+    flex-basis: 17.8%;
+  }
+  &.second_item {
+    flex-basis: 36.5%;
+  }
+  &.third_item {
+    flex-basis: 20.19%;
+  }
+  &.fourth_item {
+    flex-basis: 19.7%;
+  }
+  &.fifth_item {
+    flex-basis: 5%;
+  }
+}
+
+.item {
+  user-select: none;
+  flex-direction: column;
+  padding: 20px 23px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+  margin-bottom: 7px;
+  cursor: pointer;
+  position: relative;
+  &:hover::before,
+  &.selected::before {
+    content: '';
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
+    left: 0;
+    top: 0;
+    box-shadow: 0px 1px 8px rgb(65 38 114 / 15%);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+}
+
+.item_title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+  margin-bottom: 10px;
+  flex-basis: 35%;
+  min-width: 35%;
+  margin-right: 20px;
+}
+
+.item_text_time {
+  color: var(--transparent-color);
+}
+
+.unread {
+  g {
+    fill: url(#gradient);
+  }
+}
+
+.chatBtn {
+  cursor: pointer;
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.tableBlockFirst,
+.tableBlockSecond,
+.tableBlockThird,
+.tableBlockFourth,
+.tableBlockFifth {
+  flex-direction: row;
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  align-items: baseline;
+}
+
+.tableBlockFifth {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  border: 1px solid #e8e3f3;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+@media screen and (min-width: 768px) {
+  .openTicket {
+    display: none;
+  }
+  .item {
+    flex-direction: row;
+    align-items: center;
+    padding: 23px 35px;
+  }
+
+  .tableHeader {
+    display: flex;
+    padding: 10px 35px;
+  }
+  .tableBlockFirst,
+  .tableBlockSecond,
+  .tableBlockThird,
+  .tableBlockFourth,
+  .tableBlockFifth {
+    margin-top: 0px;
+    margin-right: 20px;
+  }
+  .tableBlockFirst {
+    flex-basis: 17.8%;
+  }
+  .tableBlockSecond {
+    flex-basis: 36.5%;
+  }
+  .tableBlockThird {
+    flex-basis: 20.19%;
+  }
+  .tableBlockFourth {
+    flex-basis: 19.7%;
+  }
+  .tableBlockFifth {
+    flex-basis: 5%;
+  }
+  .item_text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 130%;
+    max-width: 150px;
+    color: var(--main-text);
+    align-items: center;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    &.first_item {
+      color: var(--link-text);
+    }
+    &.second_item {
+      min-width: 100%;
+    }
+    &.third_item {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      display: flex;
+    }
+    &.fourth_item {
+      color: #45a884;
+    }
+    &.fifth_item {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .item {
+    padding: 20px 40px;
+  }
+  .tableHeader {
+    padding: 11px 40px;
+  }
+  .item_text {
+    font-size: 16px;
+    &.third_item {
+      flex-direction: row;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .item {
+    padding: 22px 45px;
+  }
+  .tableHeader {
+    padding: 12px 45px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .item_text {
+    font-size: 17px;
+  }
+  .item {
+    padding: 25px 52px;
+  }
+  .tableHeader {
+    padding: 12px 52px;
+  }
+}

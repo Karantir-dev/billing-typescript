@@ -1,0 +1,249 @@
+.page_title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-top: 30px;
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.instructionNS {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  margin-top: 25px;
+}
+
+.formBlock {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  margin-left: 5px;
+}
+
+.formFieldsBlock {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.flexStart {
+    align-items: flex-start;
+  }
+}
+
+.inputHeight {
+  height: 55px;
+}
+
+.input {
+  max-width: 100%;
+  margin-top: 13px;
+}
+
+.formBlockTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 115%;
+  margin-bottom: 5px;
+  color: var(--main-text);
+}
+
+.btnBlock {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.useFirstCheck {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-left: 18px;
+  }
+}
+
+.select {
+  max-width: 100%;
+  margin-top: 13px;
+
+  button {
+    height: 55px;
+  }
+
+  span {
+    font-size: 16px;
+  }
+
+  div {
+    font-size: 16px;
+  }
+}
+
+.details {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 25px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+}
+
+.agreeTerms {
+  white-space: pre;
+
+  button {
+    margin-top: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 120%;
+    text-decoration: underline;
+    color: var(--link-color);
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.totalAmount {
+  margin-top: 15px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 130.5%;
+}
+
+.confCodeInstruct {
+  max-width: 100%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+
+  color: var(--main-text);
+
+  margin-top: 30px;
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    align-items: center;
+  }
+
+  .confCodeInstruct {
+    max-width: 49%;
+  }
+
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+
+  .formBlock {
+    margin-top: 25px;
+  }
+
+  .formFieldsBlock > div:nth-child(2n) {
+    margin-right: 0px;
+  }
+
+  .input {
+    max-width: 48%;
+    margin-right: 20px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 254px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+
+  .select {
+    max-width: 48%;
+    margin-right: 20px;
+  }
+  .details {
+    max-width: 48%;
+    margin-right: 20px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pagination {
+    margin-top: 25px;
+  }
+
+  .instructionNS {
+    max-width: 736px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .pagination {
+    margin-top: 30px;
+  }
+
+  .instructionNS {
+    max-width: 877px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .pagination {
+    margin-top: 40px;
+  }
+
+  .instructionNS {
+    max-width: 1310px;
+  }
+}

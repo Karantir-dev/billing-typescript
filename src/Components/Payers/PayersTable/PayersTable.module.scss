@@ -1,0 +1,370 @@
+.table {
+  margin-top: 20px;
+  max-width: 1172px;
+}
+
+.tableHeader {
+  display: none;
+  padding: 12px 23px;
+  width: 100%;
+}
+
+.item_text {
+  font-style: normal;
+  position: relative;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  &.second_item {
+    max-width: 300px;
+  }
+}
+
+.openTicket {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+}
+
+.title_text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--menu-text-3);
+  align-items: center;
+  margin-right: 20px;
+  &.first_item {
+    flex-basis: 26.8%;
+  }
+  &.second_item {
+    flex-basis: 31.2%;
+  }
+  &.third_item {
+    flex-basis: 35.6%;
+  }
+  &.fourth_item {
+    flex-basis: 6.4%;
+  }
+}
+
+.item {
+  flex-direction: column;
+  position: relative;
+  padding: 20px 23px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  border-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+  margin-bottom: 7px;
+}
+
+.item_title {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+  margin-bottom: 10px;
+  flex-basis: 35%;
+  min-width: 35%;
+  margin-right: 20px;
+}
+
+.item_text_time {
+  color: var(--transparent-color);
+}
+
+.unread {
+  g {
+    fill: url(#gradient);
+  }
+}
+
+.chatBtn {
+  cursor: pointer;
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.tableBlockFirst,
+.tableBlockSecond,
+.tableBlockThird,
+.tableBlockFourt {
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  align-items: baseline;
+}
+
+.tableBlockFifth {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  border: 1px solid #e8e3f3;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.dotIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  fill: var(--main-text);
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.list {
+  position: absolute;
+  background-color: var(--forms_bgc_4);
+  top: calc(50% + 20px);
+  right: -25px;
+  padding: 18px 18px;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 5px;
+  display: none;
+  z-index: 10;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: var(--forms_bgc_4);
+    transform: rotate(45deg);
+    top: -7px;
+    right: 27px;
+    box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  &.opened {
+    display: block;
+  }
+}
+
+.settings_btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  color: var(--main-text);
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
+
+  .iconContainer {
+    width: 16px;
+  }
+
+  svg,
+  path {
+    fill: var(--icon-color);
+  }
+  &:hover {
+    .setting_text {
+      font-weight: 400;
+    }
+
+    svg,
+    path {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.setting_text {
+  margin-left: 18px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 70.9%;
+}
+
+.tableBlockFourth {
+  position: absolute;
+  right: 25px;
+}
+
+.modalBg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  padding: 45px 25px;
+  margin: 20px;
+}
+
+.modalDeleteText {
+  max-width: 320px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130.5%;
+  text-align: center;
+  color: var(--main-text);
+}
+
+.deleteBtn {
+  margin-top: 25px;
+  height: 55px;
+  max-width: 240px;
+  text-transform: uppercase;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 12px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+.crossIcon {
+  fill: var(--main-text);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .modalBlock {
+    padding: 34px 60px;
+  }
+
+  .openTicket {
+    display: none;
+  }
+  .item {
+    flex-direction: row;
+    align-items: center;
+    padding: 23px 35px;
+  }
+
+  .tableHeader {
+    display: flex;
+    padding: 10px 35px;
+  }
+  .tableBlockFirst,
+  .tableBlockSecond,
+  .tableBlockThird,
+  .tableBlockFourth,
+  .tableBlockFifth {
+    margin-top: 0px;
+  }
+  .tableBlockFirst {
+    flex-basis: 26.8%;
+  }
+  .tableBlockSecond {
+    flex-basis: 31.2%;
+  }
+  .tableBlockThird {
+    flex-basis: 25.6%;
+  }
+  .tableBlockFourth {
+    position: relative;
+    flex-basis: 16.4%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    right: 0;
+    margin-right: 0;
+  }
+  .item_text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 130%;
+    color: var(--main-text);
+    align-items: center;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    &.second_item {
+      max-width: 150px;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .item {
+    padding: 20px 40px;
+  }
+  .tableHeader {
+    padding: 11px 40px;
+  }
+  .item_text {
+    font-size: 16px;
+    &.third_item {
+      flex-direction: row;
+    }
+  }
+}
+
+@media screen and (min-width: 1250px) {
+  .item_text {
+    &.second_item {
+      max-width: 250px;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .item {
+    padding: 22px 45px;
+  }
+  .tableHeader {
+    padding: 12px 45px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .item_text {
+    font-size: 17px;
+  }
+  .item {
+    padding: 25px 52px;
+  }
+  .tableHeader {
+    padding: 12px 52px;
+  }
+}

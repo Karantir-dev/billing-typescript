@@ -1,0 +1,37 @@
+.crumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.linksBlock {
+  &:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  &:not(:last-child) {
+    .links {
+      margin-right: 5px;
+    }
+  }
+
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+
+  .links {
+    &.disabled {
+      color: var(--transparent-color);
+      cursor: default;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .crumbs {
+    margin-bottom: 40px;
+  }
+}

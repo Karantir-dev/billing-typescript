@@ -1,0 +1,145 @@
+.modalBg {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px 10px;
+  max-width: 405px;
+  width: 95%;
+}
+
+.modalHeader {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.form {
+  padding: 14px;
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 90%;
+  color: var(--main-text);
+}
+
+.whoisBlock {
+  background: var(forms_bgc_4);
+  box-shadow: var(--forms_shadow);
+  padding: 20px 43px;
+  margin: 30px 0;
+
+  max-height: 414px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+
+  color: var(--main-text);
+
+  white-space: pre-line;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+.input {
+  margin-top: 10px;
+}
+
+.btnBlock {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_footer_shadow);
+
+  .saveBtn {
+    height: 55px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  .cancel {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 130.3%;
+    color: var(--main-text);
+
+    text-align: center;
+    text-decoration-line: underline;
+
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    display: flex;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    // padding: 38px 50px;
+    margin: 0 30px;
+  }
+
+  .modalHeader {
+    padding: 18px 20px;
+  }
+
+  .form {
+    max-height: 70vh;
+    padding: 0px 30px 38px 30px;
+  }
+}

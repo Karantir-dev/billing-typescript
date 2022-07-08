@@ -1,0 +1,90 @@
+.modalBg {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px 10px;
+  max-width: 990px;
+  width: 95%;
+  padding-bottom: 15px;
+}
+
+.modalHeader {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--modal_header_shadow);
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 90%;
+  color: var(--main-text);
+}
+
+.whoisBlock {
+  background: var(forms_bgc_4);
+  box-shadow: var(--forms_shadow);
+  margin: 30px 15px;
+
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .modalBg {
+    display: flex;
+    height: 100vh;
+  }
+
+  .whoisBlock {
+    margin: 25px 25px;
+  }
+
+  .modalBlock {
+    margin: 0 30px;
+  }
+}

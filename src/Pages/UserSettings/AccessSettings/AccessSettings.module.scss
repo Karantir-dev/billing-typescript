@@ -1,0 +1,291 @@
+.link_button {
+  display: flex;
+}
+
+.personalBlock {
+  position: relative;
+}
+
+.inputClass {
+  font-size: 18px;
+}
+.inputClass::placeholder {
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--transparent-color);
+}
+
+.block {
+  margin-bottom: 30px;
+}
+
+.settingsTitle {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 113%;
+  color: var(--main-text);
+  margin-bottom: 10px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+}
+
+.oldpassInput {
+  margin-right: 0px;
+}
+
+.input {
+  margin-top: 15px;
+  max-width: 100%;
+
+  &.icon {
+    svg {
+      fill: var(--icon-color_2);
+    }
+  }
+}
+
+.btnBlock {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  height: 55px;
+  display: none;
+
+  &.shown {
+    display: block;
+  }
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+}
+
+.select {
+  z-index: 8;
+  button {
+    width: 100%;
+    height: 52px;
+  }
+  svg {
+    stroke: var(--main-text);
+  }
+}
+
+.bindIp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 0px;
+  height: 50px;
+
+  .bindIpText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-right: 0px;
+  }
+}
+
+.verification {
+  text-align: start;
+  margin-top: 15px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130.5%;
+  text-decoration-line: underline;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.securNotification {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+
+  .securNotifnEmailBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .securNotifnGeoBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+
+  .securNotifText {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 130.5%;
+    color: var(--main-text);
+    margin-right: 15px;
+    max-width: 230px;
+    min-width: 215px;
+    white-space: pre-line;
+  }
+}
+
+.socialRow {
+  flex-direction: column;
+}
+
+.ipsForm {
+  width: 100%;
+  max-width: 100%;
+}
+
+.trustedIp {
+  margin-top: 5px;
+}
+
+.selectedIp {
+  display: flex;
+  margin-top: 5px;
+  flex-wrap: wrap;
+  max-width: 700px;
+
+  .selectedItem {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+    margin-right: 20px;
+  }
+
+  svg {
+    fill: var(--transparent-color);
+    margin-left: 5px;
+    transform: scale(0.7);
+    cursor: pointer;
+    &:active {
+      transform: scale(0.65);
+    }
+  }
+}
+
+.googleIcon {
+  transform: scale(0.55);
+}
+
+.twoStepVerif {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+  .twoStepVerif {
+    max-width: 320px;
+  }
+
+  .block {
+    margin-bottom: 40px;
+  }
+
+  .verification {
+    font-size: 17px;
+  }
+
+  .ipsForm {
+    max-width: 322px;
+  }
+
+  .input {
+    max-width: 322px;
+  }
+
+  .bindIp {
+    margin-left: 25px;
+    .bindIpText {
+      margin-right: 34px;
+    }
+  }
+
+  .securNotification {
+    flex-direction: row;
+
+    .securNotifnGeoBlock {
+      margin-left: 50px;
+      margin-top: 0px;
+    }
+
+    .securNotifText {
+      min-width: 230px;
+      font-size: 17px;
+    }
+  }
+
+  .socialRow {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .settingsTitle {
+    font-size: 20px;
+  }
+
+  .formRow {
+    flex-direction: row;
+    margin-top: 15px;
+  }
+
+  .oldpassInput {
+    margin-right: 25px;
+  }
+
+  .input {
+    margin-top: 0px;
+  }
+
+  .btnBlock {
+    flex-direction: row;
+  }
+
+  .saveBtn {
+    width: 240px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .select {
+    button {
+      height: 45px;
+    }
+  }
+}

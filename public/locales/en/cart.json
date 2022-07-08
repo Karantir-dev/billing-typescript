@@ -1,0 +1,17 @@
+{
+  "Payment": "Payment",
+  "Account balance": "Account balance",
+  "Payment method": "Payment method",
+  "Payer": "Payer",
+  "Payment using text": "Payment using VISA, MasterCard and American Express bank cards. When ordering a service with auto-renewal enabled, the card will be saved for further payment.",
+  "Payment amount": "Payment amount from",
+  "Promo code": "Promo code",
+  "Total": "Total",
+  "Domain registration": "Domain registration",
+  "Data protection": "Data protection",
+  "(Disable)": "(Disable)",
+  "(Enable)": "(Enable)",
+  "After closing your order will be automatically deleted": "After closing your order will be automatically deleted",
+  "Site care": "Site care",
+  "The payer is not valid, change the payer or add a new one": "The payer is not valid, change the payer or add a new one"
+}
