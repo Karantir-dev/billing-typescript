@@ -6,7 +6,13 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
 import { userSelectors, authOperations, selectors } from '../../../Redux'
-import { NotificationsBar, ThemeBtn, LangBtn } from '../../../Components'
+import {
+  NotificationsBar,
+  ThemeBtn,
+  LangBtn,
+  ModalCreatePayment,
+  Portal,
+} from '../../../Components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
 import * as routes from '../../../routes'
 import { useOutsideAlerter, usePageRender } from '../../../utils'
@@ -77,6 +83,8 @@ export default function Header() {
   const { $balance, $realname, $email } = useSelector(userSelectors.getUserInfo)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
+  const [createPaymentModal, setCreatePaymentModal] = useState(false)
+
   const [isNotificationBarOpened, setIsNotificationBarOpened] = useState(false)
   const [isProfileOpened, setIsProfileOpened] = useState(false)
   const getProfileEl = useRef()
@@ -115,14 +123,17 @@ export default function Header() {
                     [s.balance_item]: true,
                   })}
                 >
-                  <div className={s.balance_wrapper}>
+                  <button
+                    onClick={() => setCreatePaymentModal(!createPaymentModal)}
+                    className={s.balance_wrapper}
+                  >
                     <p className={s.balance_text}>
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
                         {$balance && Number($balance)?.toFixed(2)} EUR
                       </span>
                     </p>
-                  </div>
+                  </button>
                 </li>
                 <li
                   className={cn({
@@ -290,6 +301,11 @@ export default function Header() {
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}
       />
+      <Portal>
+        {createPaymentModal && (
+          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+        )}
+      </Portal>
     </>
   )
 }

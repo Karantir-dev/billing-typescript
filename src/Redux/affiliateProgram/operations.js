@@ -103,7 +103,7 @@ const getChartInfo =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data)
+
         const tableData = data.doc?.reportdata?.reward?.elem
 
         if (tableData) {
@@ -146,7 +146,6 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data)
       setDetails(data.doc.reportdata.reward.elem)
       dispatch(actions.hideLoader())
     })

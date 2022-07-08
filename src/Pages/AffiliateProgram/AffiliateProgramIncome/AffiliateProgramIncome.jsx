@@ -70,7 +70,6 @@ export default function AffiliateProgramIncome({ allowToRender }) {
   }
 
   const handleSearch = () => {
-    console.log(periodStart, periodEnd)
     if ((fixedPeriod && fixedPeriod !== 'other') || (periodStart && periodEnd)) {
       dispatch(
         affiliateOperations.getChartInfo(

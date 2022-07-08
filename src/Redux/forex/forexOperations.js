@@ -28,8 +28,6 @@ const getForexList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data, 'log rights data')
-
       const forexRenderData = {
         forexList: data.doc.elem ? data.doc.elem : [],
         forexPageRights: data.doc.metadata.toolbar,
@@ -203,7 +201,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      console.log(priceId, 'priceid')
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )

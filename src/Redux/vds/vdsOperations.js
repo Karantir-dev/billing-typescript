@@ -60,7 +60,6 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
       setInitialState(renameAddonFields(data.doc))
 
       dispatch(actions.hideLoader())
@@ -97,12 +96,9 @@ const editVDS =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log('values.clicked_button', values.clicked_button)
-        console.log('values', values)
 
         if (values.clicked_button === 'basket') {
           const billorder = data?.doc?.billorder?.$
-          console.log(billorder, 'billorder')
 
           axiosInstance
             .post(
@@ -114,8 +110,7 @@ const editVDS =
                 sok: 'ok',
               }),
             )
-            .then(data => {
-              console.log(data)
+            .then(() => {
               dispatch(actions.hideLoader())
 
               dispatch(
@@ -126,7 +121,6 @@ const editVDS =
               )
             })
         } else {
-          console.log('save btn')
           const newAutoprolongList = data.doc?.slist?.[0]?.val
           mutateOptionsListData && mutateOptionsListData(newAutoprolongList)
 
@@ -135,7 +129,6 @@ const editVDS =
             let description = data.doc?.orderinfo?.$.match(
               /Control panel (.+?)(?=<br\/>)/,
             )[1].split(' - ')[2]
-            console.log(description)
             description = `(${description})`
 
             setOrderInfo && setOrderInfo({ price, description })
@@ -169,7 +162,6 @@ const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) =>
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
 
       setFormInfo(data.doc)
       setTariffsList(data.doc.list[0].elem)
@@ -201,7 +193,6 @@ const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
       setTariffsList(data.doc.list[0].elem)
       dispatch(actions.hideLoader())
     })
@@ -234,7 +225,6 @@ const getTariffParameters =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
         setParametersInfo(renameAddonFields(data.doc))
 
         dispatch(actions.hideLoader())
@@ -278,7 +268,6 @@ const changeOrderFormField =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
         data.doc.doc.messages = data.doc.messages
         data.doc.doc.slist.forEach(el => {
           if (el.$name === 'autoprolong') {
@@ -334,7 +323,6 @@ const setOrderData =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
@@ -367,7 +355,6 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
 
       dispatch(getVDS(setServers))
       closeFn()
@@ -406,7 +393,6 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
           toastId: 'customId',
         },
       )
-      console.log(data.doc)
 
       dispatch(actions.hideLoader())
     })
@@ -435,8 +421,6 @@ const rebootServer = id => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
-
       dispatch(actions.hideLoader())
     })
     .catch(err => {
@@ -464,7 +448,6 @@ const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
       setElements(data.doc.elem)
       setName(data.doc?.plname.$)
 
@@ -496,7 +479,6 @@ const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) =>
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
       setInitialState(data.doc)
       dispatch(actions.hideLoader())
     })
@@ -542,10 +524,8 @@ const changeDomainName =
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-            console.log(data.doc)
             setElements(data.doc.elem)
           })
-        console.log(data.doc)
         closeFn()
 
         dispatch(actions.hideLoader())

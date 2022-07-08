@@ -52,9 +52,6 @@ export default function ControlBtn({
   const handleSubmit = values => {
     // const { email, name, phone, password } = values
     // console.log(email + userId)
-    console.log(values['email' + userId])
-
-    console.log(values, 'edit user info')
 
     dispatch(
       usersOperations.editUserInfo(

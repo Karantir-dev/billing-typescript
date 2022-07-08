@@ -12,5 +12,6 @@
   "(Disable)": "(Disable)",
   "(Enable)": "(Enable)",
   "After closing your order will be automatically deleted": "After closing your order will be automatically deleted",
-  "Site care": "Site care"
+  "Site care": "Site care",
+  "The payer is not valid, change the payer or add a new one": "The payer is not valid, change the payer or add a new one"
 }

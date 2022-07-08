@@ -168,7 +168,6 @@ export default function Component() {
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, isOpenProfile))
   }
 
-  console.log(isFiltered, 'isFiltered')
 
   return (
     <>
