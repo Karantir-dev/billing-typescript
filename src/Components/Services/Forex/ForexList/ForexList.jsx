@@ -16,6 +16,7 @@ export default function ForexList({
   setElidForDeletionModal,
   setActiveServer,
   activeServerID,
+  pageRights,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -88,6 +89,7 @@ export default function ForexList({
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForDeletionModal={setElidForDeletionModal}
               setActiveServer={setActiveServer}
+              pageRights={pageRights}
             />
           )
         })}
@@ -101,4 +103,5 @@ ForexList.propTypes = {
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
+  pageRights: PropTypes.object,
 }

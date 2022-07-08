@@ -28,9 +28,13 @@ export default function ServicesList() {
   const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
   const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
   const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
-  const isWebsitecareAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isWebsitecareAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'zabota-o-servere',
+    false,
+  )
   // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'storage', false) //funcname wuwuwuw
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)
@@ -146,7 +150,7 @@ export default function ServicesList() {
             clickable: true,
           }}
         >
-          {servicesMenuList.map((item, index) => {
+          {filteredServicesMenuList.map((item, index) => {
             const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
             return (

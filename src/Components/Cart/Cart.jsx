@@ -109,6 +109,7 @@ export default function Component() {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
       person: values?.person || '',
+      promocode: values?.promocode || '',
       name: values?.person,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
@@ -118,7 +119,7 @@ export default function Component() {
     if (values?.slecetedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
     }
-    dispatch(cartOperations.setPaymentMethods(data, navigate))
+    dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
   }
 
   const renderItems = () => {

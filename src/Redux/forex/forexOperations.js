@@ -84,6 +84,7 @@ const getTarifs =
       })
       .catch(error => {
         console.log('error', error)
+
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
@@ -431,6 +432,9 @@ const getForexFilters =
       })
       .catch(error => {
         console.log('error', error)
+        if (error.message.includes('filter')) {
+          dispatch(getForexList())
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
