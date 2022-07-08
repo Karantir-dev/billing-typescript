@@ -595,9 +595,9 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       )
       const link = document.createElement('a')
       link.href = url
-      // document.body.appendChild(link)
-      // link.click()
-      // link.parentNode.removeChild(link)
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
 
       dispatch(actions.hideLoader())
       dispatch(getPayments())
