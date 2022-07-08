@@ -595,11 +595,9 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       )
       const link = document.createElement('a')
       link.href = url
-      // link.setAttribute('target', '__blank')
-      // link.setAttribute('rel', 'noopener noreferrer')
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
+      // document.body.appendChild(link)
+      // link.click()
+      // link.parentNode.removeChild(link)
 
       dispatch(actions.hideLoader())
       dispatch(getPayments())
