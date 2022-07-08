@@ -1,0 +1,63 @@
+{
+  "aside_menu": {
+    "services": "მომსახურება",
+    "finance_and_docs": "ფინანსები და დოკუმენტები",
+    "page_title": "რეფერალური პროგრამა",
+    "support": "მხარდაჭერა"
+  },
+  "balance": "ბალანსი",
+  "profile": {
+    "user_settings": "პროფილის პარამეტრები",
+    "trusted_users": "სანდო მომხმარებლები",
+    "visiting_log": "სესიის ჟურნალი",
+    "Payers": "გადამხდელები",
+    "contracts": "კონტრაქტები",
+    "log_out": "გამოსვლა"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "მომსახურება",
+      "services_list": {
+        "domains": "დომენები",
+        "virtual_servers": "ვირტუალური სერვერები",
+        "dedicated_servers": "გამოყოფილი სერვერები",
+        "virtual_hosting": "ვირტუალური ჰოსტინგი",
+        "dns_hosting": "DNS ჰოსტინგი",
+        "external_ftp": "გარე FTP საცავი",
+        "wetsite_care": "ზრუნვა საიტზე",
+        "forex_server": "სერვერი ფორექსისთვის"
+      }
+    },
+    "ref_program": {
+      "ref_program": "რეფერალური პროგრამა",
+      "ref_program_list": {
+        "about_program": "პროგრამის შესახებ",
+        "incomes": "შემოსავალი",
+        "statistic": "სტატისტიკა"
+      }
+    },
+    "support": {
+      "support": "მხარდაჭერა",
+      "support_list": {
+        "requests": "მოთხოვნები",
+        "requests_archieve": "მოთხოვნების არქივი"
+      }
+    },
+    "finance": {
+      "Finance": "ფინანსები",
+      "finance_list": {
+        "automatic_payment": "ავტოგადახდა",
+        "payments": "გადახდები",
+        "Expenses": "ხარჯები",
+        "auto_renewal": "მომსახურების ავტომატური გაგრძელება"
+      }
+    }
+  },
+  "notification_bar": {
+    "no_messages": "ახალი შეტყობინებები არ არის",
+    "show_more": "ყველა შეტყობინების ნახვა",
+    "notifications": "შეტყობინებები",
+    "has been prolonged": "გაგრძელებულია",
+    "is ready for use": "მზად არის გამოსაყენებლად"
+  }
+}

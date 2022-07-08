@@ -10,7 +10,7 @@ import {
   Select,
   InputField,
 } from '../../../../Components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
@@ -18,14 +18,18 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import { dedicOperations, dedicSelectors } from '../../../../Redux'
+import * as route from '../../../../routes'
 
 import s from './DedicOrderPage.module.scss'
 
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
-
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other'])
@@ -107,8 +111,6 @@ export default function DedicOrderPage() {
     tariffsListToRender = filteredTariffList
   }
 
-  const location = useLocation()
-
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
 
@@ -179,7 +181,11 @@ export default function DedicOrderPage() {
   }
 
   useEffect(() => {
-    dispatch(dedicOperations.getTarifs())
+    if (isDedicOrderAllowed) {
+      dispatch(dedicOperations.getTarifs())
+    } else {
+      navigate(route.DEDICATED_SERVERS, { replace: true })
+    }
   }, [])
 
   useEffect(() => {

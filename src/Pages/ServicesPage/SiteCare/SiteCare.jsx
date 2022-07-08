@@ -12,17 +12,22 @@ import {
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SiteCare.module.scss'
 import { siteCareOperations, siteCareSelectors } from '../../../Redux'
+import { checkServicesRights, usePageRender } from '../../../utils'
+import * as route from '../../../routes'
 
 export default function Component() {
+  const isAllowedToRender = usePageRender('mainmenuservice', 'zabota-o-servere')
+
   const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
-  const siteCareList = useSelector(siteCareSelectors.getSiteCareList)
+  const sitecareRenderData = useSelector(siteCareSelectors.getSiteCareList)
   const siteCareCount = useSelector(siteCareSelectors.getSiteCareCount)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -144,6 +149,14 @@ export default function Component() {
     dispatch(siteCareOperations.deleteSiteCare(data, setDeleteModal))
   }
 
+  let rights = checkServicesRights(sitecareRenderData?.siteCarePageRights?.toolgrp)
+
+  useEffect(() => {
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    }
+  }, [])
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -160,32 +173,35 @@ export default function Component() {
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
         isFiltered={isFiltered}
-        isFilterActive={isFiltered || siteCareList?.length > 0}
+        isFilterActive={isFiltered || sitecareRenderData?.siteCareList?.length > 0}
+        rights={rights}
       />
 
-      {siteCareList?.length < 1 && isFiltered && (
+      {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
           <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
         </div>
       )}
 
-      {siteCareList?.length < 1 && !isFiltered && siteCareList && (
-        <div className={s.no_service_wrapper}>
-          <img
-            src={require('../../../images/services/care.webp')}
-            alt="sitecare"
-            className={s.sitecare_img}
-          />
-          <p className={s.no_service_title}>
-            {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
-          </p>
-          <p className={s.no_service_description}>
-            {t('no services sitecare description', { ns: 'other' })}
-          </p>
-        </div>
-      )}
+      {sitecareRenderData?.siteCareList?.length < 1 &&
+        !isFiltered &&
+        sitecareRenderData?.siteCareList && (
+          <div className={s.no_service_wrapper}>
+            <img
+              src={require('../../../images/services/care.webp')}
+              alt="sitecare"
+              className={s.sitecare_img}
+            />
+            <p className={s.no_service_title}>
+              {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
+            </p>
+            <p className={s.no_service_description}>
+              {t('no services sitecare description', { ns: 'other' })}
+            </p>
+          </div>
+        )}
 
-      {siteCareList?.length > 0 && (
+      {sitecareRenderData?.siteCareList?.length > 0 && (
         <SiteCareTable
           historySiteCareHandler={historySiteCareHandler}
           prolongSiteCareHandler={prolongSiteCareHandler}
@@ -193,11 +209,12 @@ export default function Component() {
           deleteSiteCareHandler={() => setDeleteModal(true)}
           selctedItem={selctedItem}
           setSelctedItem={setSelctedItem}
-          list={siteCareList}
+          list={sitecareRenderData?.siteCareList}
+          rights={rights}
         />
       )}
 
-      {siteCareList?.length !== 0 && (
+      {sitecareRenderData?.siteCareList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

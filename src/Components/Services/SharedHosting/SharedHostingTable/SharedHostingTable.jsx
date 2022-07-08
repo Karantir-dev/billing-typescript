@@ -17,6 +17,7 @@ export default function Component(props) {
     prolongVhostHandler,
     editVhostHandler,
     changeTariffVhostHandler,
+    rights,
   } = props
   return (
     <div className={s.table}>
@@ -64,6 +65,7 @@ export default function Component(props) {
             prolongVhostHandler={prolongVhostHandler}
             editVhostHandler={editVhostHandler}
             changeTariffVhostHandler={changeTariffVhostHandler}
+            rights={rights}
           />
         )
       })}
@@ -75,6 +77,7 @@ Component.propTypes = {
   list: PropTypes.array,
   setSelctedPayment: PropTypes.func,
   selctedPayment: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

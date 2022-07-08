@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
@@ -11,6 +11,7 @@ import { translatePeriod } from '../../../../utils'
 
 import Select from '../../../../Components/ui/Select/Select'
 import { dnsOperations } from '../../../../Redux'
+import * as routes from '../../../../routes'
 
 import s from './DNSOrder.module.scss'
 
@@ -19,6 +20,10 @@ export default function FTPOrder() {
 
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const isSiteCareOrderAllowed = location?.state?.isDnsOrderAllowed
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -77,8 +82,6 @@ export default function FTPOrder() {
     }
   }
 
-  const location = useLocation()
-
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
 
@@ -88,7 +91,13 @@ export default function FTPOrder() {
   }
 
   useEffect(() => {
-    dispatch(dnsOperations.getTarifs(setTarifList))
+    if (isSiteCareOrderAllowed) {
+      dispatch(dnsOperations.getTarifs(setTarifList))
+    } else {
+      navigate(routes.DNS, { replace: true })
+    }
+
+    // dispatch(dnsOperations.getTarifs(setTarifList))
   }, [])
 
   const validationSchema = Yup.object().shape({

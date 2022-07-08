@@ -21,7 +21,7 @@ import {
 import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
-import { usePageRender } from '../../../utils'
+import { checkServicesRights, usePageRender } from '../../../utils'
 
 export default function ForexPage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -122,21 +122,7 @@ export default function ForexPage() {
     }
   }, [])
 
-  function checkRights(toolgrp) {
-    const rights = {}
-
-    console.log(toolgrp, 'toolgrp')
-    toolgrp?.forEach(section => {
-      section?.toolbtn?.forEach(rightName => {
-        console.log(rights)
-        rights[rightName.$name] = true
-      })
-    })
-
-    return rights
-  }
-
-  let rights = checkRights(forexRenderData?.forexPageRights?.toolgrp)
+  let rights = checkServicesRights(forexRenderData?.forexPageRights?.toolgrp)
 
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
@@ -224,7 +210,7 @@ export default function ForexPage() {
               >
                 <IconButton
                   className={s.tools_icon}
-                  disabled={!activeServer?.id?.$ || !rights?.edit}
+                  disabled={!activeServer?.id?.$ || !rights?.delete}
                   icon="delete"
                   onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />

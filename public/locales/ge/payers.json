@@ -1,0 +1,23 @@
+{
+  "Payers": "გადამხდელები",
+  "Add": "დამატება",
+  "Name": "სახელი",
+  "Payer status": "გადამხდელის სტატუსი",
+  "Individual": "ფიზიკური პირი",
+  "Edit": "შეცვლა",
+  "Delete": "წაშლა",
+  "Are you sure you want to remove {{name}} from your list of payers?": "დარწმუნებული ხართ, რომ გსურთ {{name}} წაშლა თქვენი გადამხდელთა სიიდან?",
+  "Adding a payer": "გადამხდელის დამატება",
+  "Main": "ძირითადი",
+  "Actual address": "ფაქტობრივი მისამართი",
+  "Data for the contract": "სახელშეკრულებო მონაცემები",
+  "The contact person": "საკონტაქტო პირი",
+  "Receive documents": "დოკუმენტების მიღება",
+  "I agree with the terms of the offer": "ვეთანხმები ოფერტის პირობებს",
+  "Edit the selected payer": "არჩეული გადამხდელის შეცვლა",
+  "In Client area": "კლიენტის ზონაში",
+  "By post": "ფოსტით",
+  "By email": "ელ. ფოსტით",
+  "Add new payer": "+ დამატება",
+  "You cannot delete the payer who already made payments": "თქვენ არ შეგიძლიათ წაშალოთ გადამხდელი, რომელმაც უკვე განახორციელა გადახდები"
+}

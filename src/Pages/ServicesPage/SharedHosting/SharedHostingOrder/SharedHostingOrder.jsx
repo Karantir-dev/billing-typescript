@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { dnsOperations, vhostOperations } from '../../../../Redux'
+import * as routes from '../../../../routes'
+
 import s from './SharedHostingOrder.module.scss'
 
 export default function Component() {
@@ -16,6 +18,7 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const licenseBlock = useRef()
 
@@ -31,8 +34,14 @@ export default function Component() {
 
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
 
+  const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
+
   useEffect(() => {
-    dispatch(vhostOperations.orderVhost({}, setData))
+    if (isVhostOrderAllowed) {
+      dispatch(vhostOperations.orderVhost({}, setData))
+    } else {
+      navigate(routes.SHARED_HOSTING, { replace: true })
+    }
   }, [])
 
   useEffect(() => {

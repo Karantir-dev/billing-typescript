@@ -17,6 +17,7 @@ export default function DedicList({
   setElidForRebootModal,
   setActiveServer,
   activeServerID,
+  rights,
 }) {
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -83,6 +84,7 @@ export default function DedicList({
               setElidForInstructionModal={setElidForInstructionModal}
               setElidForRebootModal={setElidForRebootModal}
               setActiveServer={setActiveServer}
+              rights={rights}
             />
           )
         })}
@@ -96,4 +98,5 @@ DedicList.propTypes = {
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
+  rights: PropTypes.object,
 }

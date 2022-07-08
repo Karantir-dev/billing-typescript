@@ -6,10 +6,16 @@ import { contractOperations, contractsSelectors } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 
 import s from './Contracts.module.scss'
+import { checkServicesRights, usePageRender } from '../../utils'
+import * as route from '../../routes'
+import { useNavigate } from 'react-router-dom'
 
 export default function Contracts() {
-  const contracts = useSelector(contractsSelectors.getContractsList)
+  const isAllowedToRender = usePageRender('customer', 'contract')
+
+  const contractsRenderData = useSelector(contractsSelectors.getContractsList)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation(['container', 'contracts', 'other', 'billing'])
 
   const [selectedContract, setSelectedContract] = useState(null)
@@ -23,8 +29,15 @@ export default function Contracts() {
     )
   }
 
+  let rights = checkServicesRights(contractsRenderData?.contractsPageRights?.toolgrp)
+  console.log(rights)
+
   useEffect(() => {
-    dispatch(contractOperations.getContracts())
+    if (isAllowedToRender) {
+      dispatch(contractOperations.getContracts())
+    } else {
+      navigate(route.SERVICES, { replace: true })
+    }
   }, [])
 
   return (
@@ -33,13 +46,13 @@ export default function Contracts() {
 
       <div className={s.icons_wrapper}>
         <IconButton
-          disabled={!selectedContract}
+          disabled={!selectedContract || !rights?.print || !rights?.download}
           icon="print"
           className={s.print_btn}
           onClick={handlePrintBtn}
         />
         <IconButton
-          disabled={!selectedContract}
+          disabled={!selectedContract || !rights?.download || !rights?.print}
           icon="archive"
           className={s.download_btn}
           onClick={handleDownloadBtn}
@@ -71,7 +84,7 @@ export default function Contracts() {
       </div>
 
       <div className={s.list}>
-        {contracts?.map(item => {
+        {contractsRenderData?.contracts?.map(item => {
           const {
             client_name,
             company_name,
@@ -89,6 +102,7 @@ export default function Contracts() {
 
           return (
             <ContractItem
+              rights={rights}
               key={id.$}
               contractNumber={number?.$}
               clientName={client_name?.$}
