@@ -190,9 +190,11 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
 }
 
 const setPaymentMethods =
-  (body = {}, navigate) =>
+  (body = {}, navigate, cartData = null) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
+
+    window.dataLayer.push({ ecommerce: null })
 
     const {
       auth: { sessionId },
@@ -217,11 +219,39 @@ const setPaymentMethods =
             data.doc.error.msg.$ ===
             'The \'Contact person\' field has invalid value. The value cannot be empty'
           )
-            toast.error(i18n?.t('The payer is not valid, change the payer or add a new one', { ns: 'cart' }), {
-              position: 'bottom-right',
-              toastId: 'customId',
-            })
+            toast.error(
+              i18n?.t('The payer is not valid, change the payer or add a new one', {
+                ns: 'cart',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
           throw new Error(data.doc.error.msg.$)
+        }
+
+        if (cartData) {
+          const items = cartData?.elemList?.map(e => {
+            return {
+              item_name: e.pricelist_name?.$ || '',
+              item_id: e.id?.$ || '',
+              price: e.cost?.$ || '',
+              item_category: e['item.type']?.$ || '',
+              quantity: 1,
+            }
+          })
+          window.dataLayer.push({
+            event: 'purchase',
+            ecommerce: {
+              transaction_id: cartData?.billorder,
+              affiliation: 'zomro.com',
+              value: cartData?.total_sum,
+              currency: 'EUR',
+              coupon: body?.promocode,
+              items: items,
+            },
+          })
         }
 
         if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
