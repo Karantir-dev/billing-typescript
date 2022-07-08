@@ -25,7 +25,7 @@
     "chart": "График",
     "table": "Таблица",
     "income_amount": "Сумма дохода",
-    "select_placeholder": "Выберите период",
+    "select_placeholder": "Выберите период в календаре",
     "detailed_statistics": "Подробная статистика за",
     "service": "$t(about_section.service)",
     "rate": "Ставка",

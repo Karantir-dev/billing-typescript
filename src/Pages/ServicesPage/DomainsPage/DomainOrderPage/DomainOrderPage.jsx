@@ -131,6 +131,7 @@ export default function Component({ transfer = false }) {
                 label={`${t('Domain name')}:`}
                 placeholder={t('Enter domain name')}
                 className={s.input}
+                inputClassName={s.inputClassName}
                 inputWrapperClass={s.inputHeight}
                 error={!!errors.domain_name}
                 touched={!!touched.domain_name}

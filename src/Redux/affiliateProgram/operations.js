@@ -119,6 +119,8 @@ const getChartInfo =
           }
 
           setTableData(modifiedTableData)
+        } else {
+          setTableData([])
         }
 
         dispatch(actions.hideLoader())
@@ -146,7 +148,8 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      setDetails(data.doc.reportdata.reward.elem)
+      const details = data.doc.reportdata.reward.elem
+      setDetails(Array.isArray(details) ? details : [details])
       dispatch(actions.hideLoader())
     })
     .catch(err => {
@@ -193,7 +196,8 @@ const getInitialStatistics =
         const site = filters.data.doc.site?.$
         const registered = filters.data.doc.referal?.$
         const payed = filters.data.doc.payed?.$
-        setInitialFilters({ date, site, registered, payed })
+        const datesList = filters.data.doc.slist?.find(el => el.$name === 'cdate')?.val
+        setInitialFilters({ date, site, registered, payed, datesList })
 
         dispatch(actions.hideLoader())
       })
