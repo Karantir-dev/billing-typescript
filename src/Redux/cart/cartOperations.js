@@ -245,7 +245,7 @@ const setPaymentMethods =
             event: 'purchase',
             ecommerce: {
               transaction_id: cartData?.billorder,
-              affiliation: 'zomro.com',
+              affiliation: 'cp.zomro.com',
               value: cartData?.total_sum,
               currency: 'EUR',
               coupon: body?.promocode,
