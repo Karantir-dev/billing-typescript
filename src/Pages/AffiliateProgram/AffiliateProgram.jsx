@@ -16,6 +16,7 @@ import s from './AffiliateProgram.module.scss'
 
 export default function AffiliateProgram() {
   const isComponentAllowedToRender = usePageRender('customer', 'affiliate.client')
+
   if (!isComponentAllowedToRender) {
     return <Navigate replace to={route.SERVICES} />
   }
@@ -24,19 +25,21 @@ export default function AffiliateProgram() {
   const dispatch = useDispatch()
 
   const [availableRights, setAvailabelRights] = useState({})
+
   useEffect(() => {
     if (isComponentAllowedToRender) {
       dispatch(usersOperations.getAvailableRights('affiliate.client', setAvailabelRights))
     }
   }, [])
-  const checkIfHasArr = availableRights?.toolbar?.toolgrp
 
-  const isStatisticsAllowedToRender = Array.isArray(checkIfHasArr)
-    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'click')
+  const rightsArr = availableRights?.toolbar?.toolgrp
+
+  const isStatisticsAllowedToRender = Array.isArray(rightsArr)
+    ? rightsArr[0]?.toolbtn?.some(el => el?.$name === 'click')
     : false
 
-  const isIncomesAllowedToRender = Array.isArray(checkIfHasArr)
-    ? availableRights?.toolbar?.toolgrp[0]?.toolbtn?.some(el => el?.$name === 'reward')
+  const isIncomesAllowedToRender = Array.isArray(rightsArr)
+    ? rightsArr[0]?.toolbtn?.some(el => el?.$name === 'reward')
     : false
 
   const navBarSections = [
@@ -68,16 +71,18 @@ export default function AffiliateProgram() {
           path={'/'}
           element={<Navigate replace to={route.AFFILIATE_PROGRAM_ABOUT} />}
         />
-        <Route
-          path={route.AFFILIATE_PROGRAM_INCOME}
-          element={<AffiliateProgramIncome allowToRender={isIncomesAllowedToRender} />}
-        />
-        <Route
-          path={route.AFFILIATE_PROGRAM_STATISTICS}
-          element={
-            <AffiliateProgramStatistics allowToRender={isStatisticsAllowedToRender} />
-          }
-        />
+        {isIncomesAllowedToRender && (
+          <Route
+            path={route.AFFILIATE_PROGRAM_INCOME}
+            element={<AffiliateProgramIncome />}
+          />
+        )}
+        {isStatisticsAllowedToRender && (
+          <Route
+            path={route.AFFILIATE_PROGRAM_STATISTICS}
+            element={<AffiliateProgramStatistics />}
+          />
+        )}
       </Routes>
     </>
   )

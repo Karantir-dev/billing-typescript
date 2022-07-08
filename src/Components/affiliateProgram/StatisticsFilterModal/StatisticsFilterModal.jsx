@@ -58,6 +58,11 @@ export default function StatisticsFilterModal({
     { label: t('-- none --', { ns: 'other' }), value: 'null' },
   ]
 
+  const datesList = initialFilters?.datesList?.map(({ $key, $ }) => ({
+    value: $key,
+    label: t($.trim(), { ns: 'other' }),
+  }))
+
   return (
     <>
       <div
@@ -72,6 +77,7 @@ export default function StatisticsFilterModal({
         <div className={s.pointer_wrapper}>
           <div className={s.pointer}></div>
         </div>
+
         <div className={s.heading_wrapper}>
           {!widerThanMobile && (
             <p className={s.heading}>{t('statistics_section.filter')}</p>
@@ -106,9 +112,9 @@ export default function StatisticsFilterModal({
                   <div className={s.dates_wrapper}>
                     <Select
                       inputClassName={s.select_bgc}
-                      name="date"
                       label={`${t('statistics_section.transition_date')}:`}
                       value={values.date}
+                      itemsList={datesList}
                       getElement={value => setFieldValue('date', value)}
                       isShadow
                     />
@@ -158,7 +164,6 @@ export default function StatisticsFilterModal({
                   />
 
                   <Select
-                    name="registered"
                     inputClassName={s.select_bgc}
                     className={s.form_field}
                     label={`${t('statistics_section.client_registered')}:`}
@@ -169,7 +174,6 @@ export default function StatisticsFilterModal({
                   />
 
                   <Select
-                    name="payed"
                     inputClassName={s.select_bgc}
                     className={s.form_field}
                     label={`${t('statistics_section.client_payed')}:`}

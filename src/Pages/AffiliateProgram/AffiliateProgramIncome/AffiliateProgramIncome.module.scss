@@ -32,6 +32,7 @@
 }
 
 .filter_wrapper {
+  position: relative;
   display: flex;
   column-gap: 15px;
 }
@@ -43,6 +44,8 @@
 
 .icon_btn {
   background-color: var(--forms_bgc_2);
+  width: 45px;
+  height: 45px;
 }
 
 .calendarBlock {
@@ -76,8 +79,12 @@
 }
 
 .error_msg {
-  display: inline-block;
-  margin: 5px 0 0 10px;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  text-align: center;
+
   color: var(--error-color);
   font-size: 16px;
 }
@@ -159,6 +166,13 @@
 
   .chart_placeholder {
     font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .icon_btn {
+    width: 50px;
+    height: 50px;
   }
 }
 
