@@ -18,8 +18,6 @@ export default function Component(props) {
   const expensesFilterList = useSelector(billingSelectors.getExpensesFiltersList)
   const expensesFilter = useSelector(billingSelectors.getExpensesFilters)
 
-  console.log(expensesFilter)
-
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
   const dropdownCalendar = useRef(null)
   const modal = useRef(null)

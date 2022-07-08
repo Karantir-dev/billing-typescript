@@ -464,7 +464,6 @@ const createDomain =
         }),
       )
       .then(({ data }) => {
-        console.log(data.doc)
         if (data.doc.error) {
           toast.error(`${i18n.t(data.doc.error.msg.$, { ns: 'other' })}`, {
             position: 'bottom-right',

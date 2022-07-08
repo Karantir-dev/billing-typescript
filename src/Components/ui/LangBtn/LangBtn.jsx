@@ -6,7 +6,7 @@ import { Shevron } from '../../../images/'
 
 import s from './LangBtn.module.scss'
 
-const LANGUAGES = ['en', 'ru', 'kz']
+const LANGUAGES = ['en', 'ru', 'kz', 'ua']
 
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()

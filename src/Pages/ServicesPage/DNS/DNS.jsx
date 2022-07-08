@@ -23,6 +23,7 @@ import {
 import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
+import { usePageRender } from '../../../utils'
 
 export default function DNS() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -30,7 +31,10 @@ export default function DNS() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsList = useSelector(dnsSelectors.getDNSList)
+  const dnsRenderData = useSelector(dnsSelectors.getDNSList)
+
+  const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
+
   // const [dnsList, setDnsList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -102,28 +106,49 @@ export default function DNS() {
   }
 
   useEffect(() => {
-    const clearField = {
-      id: '',
-      pricelist: '',
-      period: '',
-      status: '',
-      service_status: '',
-      opendate: '',
-      expiredate: '',
-      orderdatefrom: '',
-      orderdateto: '',
-      cost_from: '',
-      cost_to: '',
-      autoprolong: '',
-      datacenter: '',
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    } else {
+      const clearField = {
+        id: '',
+        pricelist: '',
+        period: '',
+        status: '',
+        service_status: '',
+        opendate: '',
+        expiredate: '',
+        orderdatefrom: '',
+        orderdateto: '',
+        cost_from: '',
+        cost_to: '',
+        autoprolong: '',
+        datacenter: '',
+      }
+
+      dispatch(
+        dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      )
+
+      dispatch(dnsOperations.getTarifs(setTarifs))
     }
-
-    dispatch(dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true))
-
-    // dispatch(dnsOperations.getDNSList())
-    // dispatch(dnsOperations.getDNSFilters(setFilters))
-    dispatch(dnsOperations.getTarifs(setTarifs))
   }, [])
+
+  function checkRights(toolgrp) {
+    const rights = {}
+
+    console.log(toolgrp, 'toolgrp')
+    toolgrp?.forEach(section => {
+      section?.toolbtn?.forEach(rightName => {
+        console.log(rights)
+        rights[rightName.$name] = true
+      })
+    })
+
+    return rights
+  }
+
+  let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
+  console.log(rights)
 
   useEffect(() => {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
@@ -142,7 +167,9 @@ export default function DNS() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
-              disabled={dnsList?.length === 0 && !emptyFilter}
+              disabled={
+                (dnsRenderData?.dnsList?.length === 0 && !emptyFilter) || !rights?.filter
+              }
             />
             {filterModal && (
               <>
@@ -183,7 +210,7 @@ export default function DNS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer}
+                  disabled={!activeServer || !rights?.edit}
                   icon="edit"
                 />
               </HintWrapper>
@@ -200,7 +227,7 @@ export default function DNS() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
+                  disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
                   icon="clock"
                 />
               </HintWrapper>
@@ -209,13 +236,13 @@ export default function DNS() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$}
+                  disabled={!activeServer?.id?.$ || !rights?.history}
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
+                  disabled={activeServer?.status?.$ !== '2' || !rights?.instruction}
                   icon="info"
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
@@ -226,7 +253,7 @@ export default function DNS() {
                     dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
                   }}
                   className={s.tools_icon}
-                  disabled={activeServer?.transition?.$ !== 'on'}
+                  disabled={activeServer?.transition?.$ !== 'on' || !rights?.gotoserver}
                   icon="exitSign"
                 />
               </HintWrapper>
@@ -242,12 +269,12 @@ export default function DNS() {
           onClick={() => {
             navigate(route.DNS_ORDER)
           }}
-          disabled={tarifs === 'No tariff plans available for order'}
+          disabled={tarifs === 'No tariff plans available for order' || !rights?.new}
         />
       </div>
       <DNSList
         emptyFilter={emptyFilter}
-        dnsList={dnsList}
+        dnsList={dnsRenderData?.dnsList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
@@ -255,6 +282,7 @@ export default function DNS() {
         setElidForInstructionModal={setElidForInstructionModal}
         // setElidForChangeTarifModal={setElidForChangeTarifModal}
         setActiveServer={setActiveServer}
+        pageRights={rights}
       />
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />

@@ -50,15 +50,20 @@ export default function Component() {
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
   useEffect(() => {
-    const data = {
-      country: payersSelectLists?.country[0]?.$key,
-      profiletype: payersSelectLists?.profiletype[0]?.$key,
-    }
-
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
-
-    dispatch(payersOperations.getPayerModalInfo(data))
   }, [])
+
+  useEffect(() => {
+    if (payersSelectLists) {
+      if (!payersSelectedFields?.country || !payersSelectedFields?.country_physical) {
+        const data = {
+          country: payersSelectLists?.country[0]?.$key,
+          profiletype: payersSelectLists?.profiletype[0]?.$key,
+        }
+        dispatch(payersOperations.getPayerModalInfo(data))
+      }
+    }
+  }, [payersSelectLists])
 
   const validationSchema = Yup.object().shape({
     profile: Yup.string().required(t('Choose payer')),
@@ -104,6 +109,7 @@ export default function Component() {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
       person: values?.person || '',
+      promocode: values?.promocode || '',
       name: values?.person,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
@@ -113,7 +119,7 @@ export default function Component() {
     if (values?.slecetedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
     }
-    dispatch(cartOperations.setPaymentMethods(data, navigate))
+    dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
   }
 
   const renderItems = () => {

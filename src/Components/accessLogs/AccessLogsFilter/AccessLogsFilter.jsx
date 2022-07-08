@@ -1,12 +1,18 @@
 import React, { useState, useRef } from 'react'
 import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
 import PropTypes from 'prop-types'
-import cn from 'classnames'
+// import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '../../../utils'
 import { Formik, Form } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
+import {
+  InputField,
+  Select,
+  IconButton,
+  // CalendarModal,
+  Button,
+} from '../..'
 import s from '../AccessLogsComponents.module.scss'
 
 export default function Component({ setCurrentPage }) {
@@ -33,17 +39,17 @@ export default function Component({ setCurrentPage }) {
     dispatch(accessLogsOperations.filterDataHandler(values))
   }
 
-  const resetFilterHandler = setValues => {
-    const clearField = {
-      ip: '',
-      time: 'nodate',
-      timestart: '',
-      timeend: '',
-    }
-    setCurrentPage(1)
-    setValues({ ...clearField })
-    dispatch(accessLogsOperations.filterDataHandler(clearField))
-  }
+  // const resetFilterHandler = setValues => {
+  //   const clearField = {
+  //     ip: '',
+  //     time: 'nodate',
+  //     timestart: '',
+  //     timeend: '',
+  //   }
+  //   setCurrentPage(1)
+  //   setValues({ ...clearField })
+  //   dispatch(accessLogsOperations.filterDataHandler(clearField))
+  // }
 
   const parseCurrentFilter = () => {
     let time = null
@@ -101,13 +107,20 @@ export default function Component({ setCurrentPage }) {
         }}
         onSubmit={filterHandler}
       >
-        {({ errors, touched, setFieldValue, values, setValues }) => {
-          let dates = null
-          if (values.timestart && values.timeend) {
-            dates = [new Date(values.timestart), new Date(values.timeend)]
-          } else if (values.timestart) {
-            dates = new Date(values.timestart)
-          }
+        {({
+          errors,
+          touched,
+          setFieldValue,
+          values,
+          // setValues
+        }) => {
+          // let dates = null
+          // if (values.timestart && values.timeend) {
+          //   dates = [new Date(values.timestart), new Date(values.timeend)]
+          // } else if (values.timestart) {
+          //   dates = new Date(values.timestart)
+          // }
+
           return (
             <Form className={s.form}>
               <InputField
@@ -130,7 +143,7 @@ export default function Component({ setCurrentPage }) {
                   }))}
                   className={s.select}
                 />
-                <div className={s.calendarBlock}>
+                {/* <div className={s.calendarBlock}>
                   <IconButton
                     onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
                     icon="calendar"
@@ -151,7 +164,7 @@ export default function Component({ setCurrentPage }) {
                       range={values?.timestart?.length !== 0}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className={s.btnBlock}>
                 <Button
@@ -161,13 +174,13 @@ export default function Component({ setCurrentPage }) {
                   label={t('search', { ns: 'other' })}
                   type="submit"
                 />
-                <button
+                {/* <button
                   onClick={() => resetFilterHandler(setValues)}
                   type="button"
                   className={s.clearFilters}
                 >
                   {t('Clear filter', { ns: 'other' })}
-                </button>
+                </button> */}
               </div>
             </Form>
           )

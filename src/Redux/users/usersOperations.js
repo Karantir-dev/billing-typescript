@@ -123,7 +123,6 @@ const createNewUser =
         }),
       )
       .then(({ data }) => {
-        console.log('user created', data)
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         updateListFunc()
         dispatch(actions.hideLoader())
@@ -138,8 +137,6 @@ const createNewUser =
 const editUserInfo =
   (passwd, email, phone, realname, elid, controlForm) => (dispatch, getState) => {
     dispatch(actions.showLoader())
-    console.log(passwd, 'passwd')
-    console.log(passwd, email, phone, realname, elid)
 
     const {
       auth: { sessionId },
@@ -291,12 +288,6 @@ const getSubRights =
   }
 
 const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => {
-  // console.log('userid - ', userId)
-  console.log('funcName - ', funcName)
-  // console.log('sessionId - ', sessionId)
-  // console.log('act - ', act)
-  console.log('type - ', type)
-
   dispatch(actions.showLoader())
 
   return axiosInstance
@@ -313,7 +304,6 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log('managed users right from ajax', data)
 
       dispatch(actions.hideLoader())
     })

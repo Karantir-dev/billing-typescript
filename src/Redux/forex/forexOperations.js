@@ -4,14 +4,10 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
-import {
-  actions,
-  cartActions,
-  // forexActions
-} from '..'
+import { actions, cartActions, forexActions } from '..'
 
 //GET hostings OPERATIONS
-const getForexList = setForexList => (dispatch, getState) => {
+const getForexList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -32,8 +28,13 @@ const getForexList = setForexList => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      // dispatch(forexActions.setForexList(data.doc.elem ? data.doc.elem : []))
-      setForexList(data.doc.elem ? data.doc.elem : [])
+      const forexRenderData = {
+        forexList: data.doc.elem ? data.doc.elem : [],
+        forexPageRights: data.doc.metadata.toolbar,
+      }
+
+      dispatch(forexActions.setForexList(forexRenderData))
+      // setForexList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -83,6 +84,7 @@ const getTarifs =
       })
       .catch(error => {
         console.log('error', error)
+
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
@@ -199,7 +201,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      console.log(priceId, 'priceid')
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
@@ -378,7 +379,7 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 }
 
 const getForexFilters =
-  (setFilters, data = {}, filtered = false, setForexList, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -401,7 +402,7 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList(setForexList))
+          return dispatch(getForexList())
         }
 
         let filters = {}
@@ -431,6 +432,9 @@ const getForexFilters =
       })
       .catch(error => {
         console.log('error', error)
+        if (error.message.includes('filter')) {
+          dispatch(getForexList())
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

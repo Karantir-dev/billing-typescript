@@ -1,0 +1,63 @@
+{
+  "aside_menu": {
+    "services": "Қызметтер",
+    "finance_and_docs": "Қаржы және құжаттар",
+    "referal_program": "Рефералды бағдарлама",
+    "support": "Қолдау"
+  },
+  "balance": "Баланс",
+  "profile": {
+    "user_settings": "Профиль параметрлері",
+    "trusted_users": "Сенімді пайдаланушылар",
+    "visiting_log": "Кіру журналы",
+    "payers": "Төлеушілер",
+    "contracts": "Келісімдер",
+    "log_out": "Шығу"
+  },
+  "burger_menu": {
+    "services": {
+      "services": "Қызметтер",
+      "services_list": {
+        "domains": "Домендер",
+        "virtual_servers": "Виртуалды серверлер",
+        "dedicated_servers": "Белгіленген серверлер",
+        "virtual_hosting": "Виртуалды хостинг",
+        "dns_hosting": "DNS-хостинг",
+        "external_ftp": "Сыртқы FTP қоймасы",
+        "wetsite_care": "Сайтқа күтім жасау",
+        "forex_server": "Forex сервері"
+      }
+    },
+    "ref_program": {
+      "ref_program": "Рефералды бағдарлама",
+      "ref_program_list": {
+        "about_program": "Бағдарлама туралы",
+        "incomes": "Табыс",
+        "statistic": "Статистика"
+      }
+    },
+    "support": {
+      "support": "Қолдау",
+      "support_list": {
+        "requests": "Сұраулар",
+        "requests_archieve": "Сұраулар мұрағаты"
+      }
+    },
+    "finance": {
+      "finance": "Қаржы",
+      "finance_list": {
+        "automatic_payment": "Автоматты төлем",
+        "payments": "Төлемдер",
+        "expenses": "Шығындар",
+        "auto_renewal": "Қызметтер мерзімін автоматты ұзарту"
+      }
+    }
+  },
+  "notification_bar": {
+    "no_messages": "Жаңа хабарландырулар жоқ",
+    "show_more": "Барлық хабарландыруларды қарау",
+    "notifications": "Хабарландырулар",
+    "has been prolonged": "мерзімі ұзартылды",
+    "is ready for use": "пайдалануға дайын"
+  }
+}

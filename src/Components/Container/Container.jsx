@@ -4,7 +4,7 @@ import Header from './Header/Header'
 import dayjs from 'dayjs'
 
 import s from './Container.module.scss'
-import { authSelectors, userOperations, payersOperations } from '../../Redux'
+import { authSelectors, userOperations } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Div100vh from 'react-div-100vh'
@@ -21,7 +21,6 @@ export default function Component({ children }) {
 
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
-    dispatch(payersOperations.getPayers())
   }, [])
 
   if (loading) {

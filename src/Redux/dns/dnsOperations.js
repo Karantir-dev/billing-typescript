@@ -29,7 +29,12 @@ const getDNSList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(dnsActions.setDNSList(data.doc.elem ? data.doc.elem : []))
+      const dnsRenderData = {
+        dnsList: data.doc.elem ? data.doc.elem : [],
+        dnsPageRights: data.doc.metadata.toolbar,
+      }
+
+      dispatch(dnsActions.setDNSList(dnsRenderData))
 
       dispatch(actions.hideLoader())
     })
@@ -560,6 +565,9 @@ const getDNSFilters =
       })
       .catch(error => {
         console.log('error', error)
+        if (error.message.includes('filter')) {
+          dispatch(getDNSList())
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -584,7 +592,6 @@ const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState)
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'chnage pricelist')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       setInitialState(data.doc)
 
