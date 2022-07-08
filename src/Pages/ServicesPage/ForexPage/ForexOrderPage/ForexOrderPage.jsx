@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
@@ -11,16 +11,19 @@ import { translatePeriod } from '../../../../utils'
 
 import Select from '../../../../Components/ui/Select/Select'
 import { forexOperations } from '../../../../Redux'
+import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns'])
+  const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])
@@ -28,6 +31,8 @@ export default function ForexOrderPage() {
   const [price, setPrice] = useState('')
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
+
+  const isForexOrderAllowed = location?.state?.isForexOrderAllowed
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -77,8 +82,6 @@ export default function ForexOrderPage() {
     }
   }
 
-  const location = useLocation()
-
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
 
@@ -88,7 +91,11 @@ export default function ForexOrderPage() {
   }
 
   useEffect(() => {
-    dispatch(forexOperations.getTarifs(setTarifList))
+    if (isForexOrderAllowed) {
+      dispatch(forexOperations.getTarifs(setTarifList))
+    } else {
+      navigate(route.FOREX, { replace: true })
+    }
   }, [])
 
   const validationSchema = Yup.object().shape({
@@ -120,6 +127,8 @@ export default function ForexOrderPage() {
       }),
     )
   }
+
+  console.log(isForexOrderAllowed)
 
   return (
     <div className={s.modalHeader}>

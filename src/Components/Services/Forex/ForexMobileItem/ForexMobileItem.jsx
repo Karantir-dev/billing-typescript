@@ -14,6 +14,7 @@ export default function ForexMobileItem({
   setElidForHistoryModal,
   setElidForDeletionModal,
   setActiveServer,
+  pageRights,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
   const dropdownEl = useRef()
@@ -42,6 +43,7 @@ export default function ForexMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
+                  disabled={!pageRights?.edit}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
@@ -55,7 +57,7 @@ export default function ForexMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2'}
+                  disabled={server?.status?.$ !== '2' || !pageRights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -64,6 +66,7 @@ export default function ForexMobileItem({
               </li>
               <li className={s.tool_item}>
                 <button
+                  disabled={!pageRights?.history}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
@@ -79,7 +82,7 @@ export default function ForexMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={!server.id.$}
+                  disabled={!server.id.$ || !pageRights?.edit}
                   onClick={() => {
                     handleToolBtnClick(setElidForDeletionModal, server.id.$)
                     setActiveServer(server)
@@ -122,4 +125,5 @@ export default function ForexMobileItem({
 ForexMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  pageRights: PropTypes.object,
 }
