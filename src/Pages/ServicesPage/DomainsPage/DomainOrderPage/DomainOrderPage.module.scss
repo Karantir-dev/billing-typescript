@@ -24,6 +24,14 @@
   max-width: 100%;
 }
 
+.inputClassName {
+  font-size: 18px;
+
+  &::placeholder {
+    font-size: 18px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .form {
     align-items: center;

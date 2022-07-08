@@ -78,7 +78,7 @@
   z-index: 1;
   pointer-events: none;
   cursor: pointer;
-  stroke: var(--eye-color);
+  stroke: var(--main-text);
   transform: translateY(-50%) rotateZ(180deg);
   transition: transform 0.15s;
 
@@ -96,7 +96,6 @@
   display: none;
   top: calc(100% + 4px);
   width: 100%;
-  padding-top: 12px;
   height: fit-content;
   border-radius: 3px;
   z-index: 2;
@@ -128,7 +127,6 @@
   flex-direction: column;
   overflow-y: auto;
   height: fit-content;
-  padding-bottom: 12px;
 
   max-height: 260px;
 

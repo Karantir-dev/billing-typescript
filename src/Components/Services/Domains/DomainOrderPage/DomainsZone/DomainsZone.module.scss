@@ -39,6 +39,7 @@
 
   &.selected {
     padding: 1.5px;
+    border-radius: 5px;
 
     .domainName {
       font-weight: 400;
@@ -133,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e57862;
+  background: var(--red-text);
   border-radius: 2px;
 }
 
