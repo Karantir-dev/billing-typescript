@@ -25,7 +25,7 @@
     "chart": "График",
     "table": "Кесте",
     "income_amount": "Табыс сомасы",
-    "select_placeholder": "Мерзімді таңдаңыз",
+    "select_placeholder": "Күнтізбедегі кезеңді таңдаңыз",
     "detailed_statistics": "Толық статистика (мерзімі)",
     "service": "$t(about_section.service)",
     "rate": "Бағам",

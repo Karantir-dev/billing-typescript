@@ -14,16 +14,10 @@ import {
   IncomeChart,
 } from '../../../Components'
 import { useOutsideAlerter } from '../../../utils'
-import * as route from '../../../routes'
 import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
-import { Navigate } from 'react-router-dom'
 
-export default function AffiliateProgramIncome({ allowToRender }) {
-  if (!allowToRender) {
-    return <Navigate replace to={route.SERVICES} />
-  }
-
+export default function AffiliateProgramIncome() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['affiliate_program', 'other'])
   const descrWrapper = useRef(null)
@@ -158,10 +152,12 @@ export default function AffiliateProgramIncome({ allowToRender }) {
                 </div>
               </CSSTransition>
             </div>
+            {error && (
+              <span className={s.error_msg}>
+                {t('income_section.select_placeholder')}
+              </span>
+            )}
           </div>
-          {error && (
-            <span className={s.error_msg}>{t('income_section.select_placeholder')}</span>
-          )}
 
           <Button
             className={s.btn_search}

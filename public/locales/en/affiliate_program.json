@@ -25,7 +25,7 @@
     "chart": "Chart",
     "table": "Table",
     "income_amount": "Income amount",
-    "select_placeholder": "Choose period",
+    "select_placeholder": "Select a period in the calendar",
     "detailed_statistics": "Detailed statistics for",
     "service": "$t(about_section.service)",
     "rate": "Rate",
