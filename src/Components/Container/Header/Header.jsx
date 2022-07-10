@@ -34,6 +34,7 @@ export default function Header() {
   const isAuthLogAllowedToRender = usePageRender('stat', 'authlog', false)
 
   const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
+  const areContractsAllowedToRender = usePageRender('customer', 'contract', false)
 
   const profileMenuList = [
     {
@@ -59,7 +60,7 @@ export default function Header() {
     {
       name: t('profile.contracts'),
       routeName: routes.CONTRACTS,
-      allowedToRender: true,
+      allowedToRender: areContractsAllowedToRender,
     },
   ]
 

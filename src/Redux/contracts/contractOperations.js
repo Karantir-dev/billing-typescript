@@ -23,7 +23,12 @@ const getContracts = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(contarctsActions.setContractsList(data.doc.elem))
+      const contractsRenderData = {
+        contracts: data.doc.elem ? data.doc.elem : [],
+        contractsPageRights: data.doc.metadata.toolbar,
+      }
+
+      dispatch(contarctsActions.setContractsList(contractsRenderData))
       dispatch(actions.hideLoader())
     })
     .catch(error => {

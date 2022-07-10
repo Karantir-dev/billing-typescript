@@ -128,8 +128,6 @@ export default function ForexOrderPage() {
     )
   }
 
-  console.log(isForexOrderAllowed)
-
   return (
     <div className={s.modalHeader}>
       <BreadCrumbs pathnames={parseLocations()} />

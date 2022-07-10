@@ -1,0 +1,17 @@
+{
+  "Payment": "გადახდა",
+  "Account balance": "პირადი ანგარიში",
+  "Payment method": "გადახდის მეთოდი",
+  "Payer": "გადამხდელი",
+  "Payment using text": "გადახდა VISA, MasterCard და American Express საბანკო ბარათებით. ავტომატური გაგრძელების მქონე მომსახურების შეკვეთისას ბარათი შეინახება შემდგომი გადახდისთვის.",
+  "Payment amount": "გადასახდელი თანხა",
+  "Promo code": "პრომო კოდი",
+  "total": "სულ",
+  "Domain registration": "დომენის რეგისტრაცია",
+  "Data protection": "მონაცემთა დაცვა",
+  "(Disable)": "(გამორთვა)",
+  "(Enable)": "(ჩართვა)",
+  "After closing your order will be automatically deleted": "დახურვის შემდეგ თქვენი შეკვეთა ავტომატურად წაიშლება",
+  "Site care": "საიტის მოვლა",
+  "The payer is not valid, change the payer or add a new one": "გადამხდელი არასწორია, შეცვალეთ გადამხდელი ან დაამატეთ ახალი"
+}

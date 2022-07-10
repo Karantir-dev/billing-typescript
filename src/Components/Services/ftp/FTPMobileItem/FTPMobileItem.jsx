@@ -17,6 +17,7 @@ export default function FTPMobileItem({
   setElidForHistoryModal,
   setElidForInstructionModal,
   setActiveServer,
+  rights,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -46,6 +47,7 @@ export default function FTPMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
+                  disabled={!rights?.edit}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, storage.id.$)}
@@ -59,7 +61,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2'}
+                  disabled={storage?.status?.$ !== '2' || !rights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, storage.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -70,6 +72,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
+                  disabled={!rights?.history}
                   onClick={() => {
                     handleToolBtnClick(setElidForHistoryModal, storage.id.$)
                     setActiveServer(storage)
@@ -83,7 +86,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2'}
+                  disabled={storage?.status?.$ !== '2' || !rights?.instruction}
                   onClick={() =>
                     handleToolBtnClick(setElidForInstructionModal, storage.id.$)
                   }
@@ -96,7 +99,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage.transition?.$ !== 'on'}
+                  disabled={storage.transition?.$ !== 'on' || !rights?.gotoserver}
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(storage.id.$))
                   }}
@@ -134,4 +137,5 @@ export default function FTPMobileItem({
 FTPMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  rights: PropTypes.object,
 }

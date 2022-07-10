@@ -23,6 +23,7 @@ export default function Component(props) {
     editSiteCareHandler,
     deleteSiteCareHandler,
     item_status,
+    rights,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
@@ -36,6 +37,7 @@ export default function Component(props) {
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
+  console.log(rights)
   return (
     <div
       data-testid="archive_item"
@@ -83,22 +85,38 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={editSiteCareHandler}>
+          <button
+            className={s.settings_btn}
+            onClick={editSiteCareHandler}
+            disabled={!rights?.edit}
+          >
             <Edit />
             <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
           </button>
 
-          <button className={s.settings_btn} onClick={prolongSiteCareHandler}>
+          <button
+            className={s.settings_btn}
+            onClick={prolongSiteCareHandler}
+            disabled={!rights?.prolong}
+          >
             <Clock />
             <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={historySiteCareHandler}>
+          <button
+            className={s.settings_btn}
+            onClick={historySiteCareHandler}
+            disabled={!rights?.history}
+          >
             <Refund />
             <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
           </button>
 
           {item_status?.$orig !== '5_open' && (
-            <button className={s.settings_btn} onClick={deleteSiteCareHandler}>
+            <button
+              className={s.settings_btn}
+              onClick={deleteSiteCareHandler}
+              disabled={!rights?.delete}
+            >
               <Delete />
               <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
             </button>
@@ -116,6 +134,7 @@ Component.propTypes = {
   unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
   selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

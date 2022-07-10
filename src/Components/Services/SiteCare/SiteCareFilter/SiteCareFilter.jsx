@@ -28,6 +28,7 @@ export default function Component(props) {
     setSelctedItem,
     isFilterActive,
     isFiltered,
+    rights,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -82,7 +83,7 @@ export default function Component(props) {
             onClick={() => setFilterModal(true)}
             icon="filter"
             className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
-            disabled={!isFilterActive}
+            disabled={!isFilterActive || !rights?.filter}
           />
           {filterModal && (
             <div>
@@ -115,12 +116,18 @@ export default function Component(props) {
         </div>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton disabled={!selctedItem} onClick={editSiteCareHandler} icon="edit" />
+          <IconButton
+            disabled={!selctedItem || !rights?.edit}
+            onClick={editSiteCareHandler}
+            icon="edit"
+          />
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
+            }
             onClick={prolongSiteCareHandler}
             icon="clock"
           />
@@ -128,7 +135,7 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem}
+            disabled={!selctedItem || !rights?.history}
             onClick={historySiteCareHandler}
             icon="refund"
           />
@@ -136,19 +143,30 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
           <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '5_open'}
+            disabled={
+              !selctedItem ||
+              selctedItem?.item_status?.$orig === '5_open' ||
+              !rights?.delete
+            }
             onClick={deleteSiteCareHandler}
             icon="delete"
           />
         </HintWrapper>
       </div>
       <Button
+        disabled={!rights?.new}
         className={s.newTicketBtn}
         isShadow
         size="medium"
         label={t('to_order', { ns: 'other' })}
         type="button"
-        onClick={() => navigate(routes.SITE_CARE_ORDER)}
+        onClick={() => {
+          navigate(routes.SITE_CARE_ORDER, {
+            state: { isSiteCareOrderAllowed: rights?.new },
+            replace: true,
+          })
+        }}
+        // onClick={() => navigate(routes.SITE_CARE_ORDER)}
       />
     </div>
   )
@@ -156,6 +174,7 @@ export default function Component(props) {
 
 Component.propTypes = {
   selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

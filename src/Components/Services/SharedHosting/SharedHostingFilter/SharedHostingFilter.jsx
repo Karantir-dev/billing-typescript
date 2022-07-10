@@ -29,6 +29,7 @@ export default function Component(props) {
     setSelctedItem,
     isFilterActive,
     isFiltered,
+    rights,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -116,7 +117,11 @@ export default function Component(props) {
         </div>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton disabled={!selctedItem} onClick={editVhostHandler} icon="edit" />
+          <IconButton
+            disabled={!selctedItem || !rights?.edit}
+            onClick={editVhostHandler}
+            icon="edit"
+          />
         </HintWrapper>
 
         <HintWrapper
@@ -124,7 +129,11 @@ export default function Component(props) {
           label={t('trusted_users.Change tariff', { ns: 'trusted_users' })}
         >
           <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem ||
+              selctedItem?.item_status?.$orig === '1' ||
+              !rights?.changepricelist
+            }
             onClick={changeTariffVhostHandler}
             icon="change-tariff"
           />
@@ -132,7 +141,9 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
+            }
             onClick={prolongVhostHandler}
             icon="clock"
           />
@@ -140,7 +151,7 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem}
+            disabled={!selctedItem || !rights?.history}
             onClick={historyVhostHandler}
             icon="refund"
           />
@@ -153,7 +164,11 @@ export default function Component(props) {
           <IconButton
             onClick={instructionVhostHandler}
             className={s.tools_icon}
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem ||
+              selctedItem?.item_status?.$orig === '1' ||
+              !rights?.instruction
+            }
             icon="info"
           />
         </HintWrapper>
@@ -165,18 +180,28 @@ export default function Component(props) {
           <IconButton
             onClick={platformVhostHandler}
             className={s.tools_icon}
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem ||
+              selctedItem?.item_status?.$orig === '1' ||
+              !rights?.gotoserver
+            }
             icon="exitSign"
           />
         </HintWrapper>
       </div>
       <Button
+        disabled={!rights?.new}
         className={s.newTicketBtn}
         isShadow
         size="medium"
         label={t('to_order', { ns: 'other' })}
         type="button"
-        onClick={() => navigate(routes.SHARED_HOSTING_ORDER)}
+        onClick={() => {
+          navigate(routes.SHARED_HOSTING_ORDER, {
+            state: { isVhostOrderAllowed: rights?.new },
+            replace: true,
+          })
+        }}
       />
     </div>
   )
@@ -184,6 +209,7 @@ export default function Component(props) {
 
 Component.propTypes = {
   selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

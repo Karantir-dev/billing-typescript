@@ -15,6 +15,7 @@ export default function Component(props) {
     prolongSiteCareHandler,
     editSiteCareHandler,
     deleteSiteCareHandler,
+    rights,
   } = props
   return (
     <div className={s.table}>
@@ -48,6 +49,7 @@ export default function Component(props) {
             prolongSiteCareHandler={prolongSiteCareHandler}
             editSiteCareHandler={editSiteCareHandler}
             deleteSiteCareHandler={deleteSiteCareHandler}
+            rights={rights}
           />
         )
       })}
@@ -59,6 +61,7 @@ Component.propTypes = {
   list: PropTypes.array,
   setSelctedPayment: PropTypes.func,
   selctedPayment: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

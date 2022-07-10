@@ -32,6 +32,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive', false)
   const isRequestsAllowedToRender = usePageRender('support', 'clientticket', false)
   const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
+  const areContractsAllowedToRender = usePageRender('customer', 'contract', false)
 
   const profileMenuList = [
     {
@@ -54,7 +55,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
       routeName: routes.PAYERS,
       allowedToRender: arePayersAllowedToRender,
     },
-    { name: t('profile.contracts'), routeName: routes.CONTRACTS, allowedToRender: true },
+    {
+      name: t('profile.contracts'),
+      routeName: routes.CONTRACTS,
+      allowedToRender: areContractsAllowedToRender,
+    },
   ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
