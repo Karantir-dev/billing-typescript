@@ -16,6 +16,7 @@ export default function FTPList({
   setElidForInstructionModal,
   setActiveServer,
   activeServerID,
+  rights,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -89,6 +90,7 @@ export default function FTPList({
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForInstructionModal={setElidForInstructionModal}
               setActiveServer={setActiveServer}
+              rights={rights}
             />
           )
         })}
@@ -102,4 +104,5 @@ FTPList.propTypes = {
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
+  rights: PropTypes.object,
 }

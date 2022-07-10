@@ -34,6 +34,7 @@ export default function Component(props) {
     changeTariffVhostHandler,
     ip,
     datacentername,
+    rights,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
@@ -102,29 +103,53 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={editVhostHandler}>
+          <button
+            disabled={!rights?.edit}
+            className={s.settings_btn}
+            onClick={editVhostHandler}
+          >
             <Edit />
             <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={changeTariffVhostHandler}>
+          <button
+            disabled={!rights?.changepricelist}
+            className={s.settings_btn}
+            onClick={changeTariffVhostHandler}
+          >
             <ChangeTariff />
             <p className={s.setting_text}>
               {t('trusted_users.Change tariff', { ns: 'trusted_users' })}
             </p>
           </button>
-          <button className={s.settings_btn} onClick={prolongVhostHandler}>
+          <button
+            disabled={!rights?.prolong}
+            className={s.settings_btn}
+            onClick={prolongVhostHandler}
+          >
             <Clock />
             <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={historyVhostHandler}>
+          <button
+            disabled={!rights?.history}
+            className={s.settings_btn}
+            onClick={historyVhostHandler}
+          >
             <Refund />
             <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={instructionVhostHandler}>
+          <button
+            disabled={!rights?.instruction}
+            className={s.settings_btn}
+            onClick={instructionVhostHandler}
+          >
             <Info />
             <p className={s.setting_text}>{t('instruction', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={platformVhostHandler}>
+          <button
+            disabled={!rights?.gotoserver}
+            className={s.settings_btn}
+            onClick={platformVhostHandler}
+          >
             <ExitSign />
             <p className={s.setting_text}>{t('go_to_panel', { ns: 'vds' })}</p>
           </button>
@@ -141,6 +166,7 @@ Component.propTypes = {
   unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
   selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

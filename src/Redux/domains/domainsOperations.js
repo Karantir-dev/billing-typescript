@@ -31,10 +31,14 @@ const getDomains =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const elem = data?.doc?.elem || []
+        const domainsRenderData = {
+          domainsList: data?.doc?.elem || [],
+          domainsPageRights: data.doc.metadata.toolbar,
+        }
+        // const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(domainsActions.setDomainsList(elem))
+        dispatch(domainsActions.setDomainsList(domainsRenderData))
         dispatch(domainsActions.setDomainsCount(count))
         dispatch(getDomainsFilters())
       })

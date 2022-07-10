@@ -21,6 +21,7 @@ export default function ContractItem(props) {
     status,
     selectedContract,
     setSelectedContract,
+    rights,
   } = props
 
   const [dropDown, setDropDown] = useState(false)
@@ -80,7 +81,11 @@ export default function ContractItem(props) {
             })}
             ref={dropDownRef}
           >
-            <button className={cn({ [s.btn]: true })} onClick={handlePrintBtn}>
+            <button
+              className={cn({ [s.btn]: true })}
+              onClick={handlePrintBtn}
+              disabled={!rights.download || !rights.print}
+            >
               <Print className={s.icon} />
               <p className={s.btn_text}>{t('print')}</p>
             </button>
@@ -90,6 +95,7 @@ export default function ContractItem(props) {
               className={cn({
                 [s.btn]: true,
               })}
+              disabled={!rights.download || !rights.print}
             >
               <DownloadWithFolder className={s.icon} />
               <p className={s.btn_text}>{t('Download', { ns: 'billing' })}</p>

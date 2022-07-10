@@ -32,6 +32,7 @@ export default function Component(props) {
     historyDomainHandler,
     whoisDomainHandler,
     NSDomainHandler,
+    rights,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
@@ -92,7 +93,11 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          <button className={s.settings_btn} onClick={editDomainHandler}>
+          <button
+            disabled={!rights?.edit}
+            className={s.settings_btn}
+            onClick={editDomainHandler}
+          >
             <Edit />
             <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
           </button>
@@ -100,19 +105,35 @@ export default function Component(props) {
             <Delete />
             <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
           </button> */}
-          <button className={s.settings_btn} onClick={renewDomainHandler}>
+          <button
+            disabled={!rights?.prolong}
+            className={s.settings_btn}
+            onClick={renewDomainHandler}
+          >
             <Clock />
             <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={historyDomainHandler}>
+          <button
+            disabled={!rights?.history}
+            className={s.settings_btn}
+            onClick={historyDomainHandler}
+          >
             <Refund />
             <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
           </button>
-          <button className={s.settings_btn} onClick={whoisDomainHandler}>
+          <button
+            disabled={!rights?.whois}
+            className={s.settings_btn}
+            onClick={whoisDomainHandler}
+          >
             <Whois />
             <p className={s.setting_text}>{t('whois')}</p>
           </button>
-          <button className={s.settings_btn} onClick={NSDomainHandler}>
+          <button
+            disabled={!rights?.ns}
+            className={s.settings_btn}
+            onClick={NSDomainHandler}
+          >
             <DomainsListName />
             <p className={s.setting_text}>{t('NS')}</p>
           </button>
@@ -129,6 +150,7 @@ Component.propTypes = {
   unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
   selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

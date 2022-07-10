@@ -65,124 +65,117 @@ export default function VDSmobileItem({
                 <div className={s.pointer}></div>
               </div>
               <ul>
-                {rights?.edit && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                      disabled={server?.status?.$ !== '2'}
-                    >
-                      <Edit className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-                )}
-                {rights?.changepassword && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForPassChange)}
-                      disabled={server.allow_changepassword?.$ !== 'on'}
-                    >
-                      <PassChange className={s.tool_icon} />
-                      {t('password_change')}
-                    </button>
-                  </li>
-                )}
-                {rights?.reboot && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForReboot)}
-                      disabled={server.show_reboot?.$ !== 'on'}
-                    >
-                      <Reload className={s.tool_icon} />
-                      {t('reload')}
-                    </button>
-                  </li>
-                )}
-                {rights?.ip && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() =>
-                        navigate(route.VDS_IP, { state: { id: server?.id.$ } })
-                      }
-                      disabled={server.has_ip_pricelist?.$ !== 'on'}
-                    >
-                      <IP className={s.tool_icon} />
-                      {t('ip_addresses')}
-                    </button>
-                  </li>
-                )}
-                {rights?.prolong && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForProlong)}
-                      disabled={server?.status?.$ !== '2'}
-                    >
-                      <Clock className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                )}
-                {rights?.history && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForHistory)}
-                      disabled={server?.status?.$ !== '2'}
-                    >
-                      <Refund className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
-                )}
-                {rights?.instruction && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForInstruction)}
-                      disabled={server?.status?.$ !== '2'}
-                    >
-                      <Info className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                )}
-                {rights?.gotoserver && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(goToPanel)}
-                      disabled={server.transition?.$ !== 'on'}
-                    >
-                      <ExitSign className={s.tool_icon} />
-                      {t('go_to_panel')}
-                    </button>
-                  </li>
-                )}
-                {rights?.delete && (
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForDeleteModal)}
-                    >
-                      <Delete className={s.tool_icon} />
-                      {t('delete', { ns: 'other' })}
-                    </button>
-                  </li>
-                )}
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    disabled={server?.status?.$ !== '2' || !rights?.edit}
+                  >
+                    <Edit className={s.tool_icon} />
+                    {t('edit', { ns: 'other' })}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForPassChange)}
+                    disabled={
+                      server.allow_changepassword?.$ !== 'on' || !rights?.changepassword
+                    }
+                  >
+                    <PassChange className={s.tool_icon} />
+                    {t('password_change')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForReboot)}
+                    disabled={server.show_reboot?.$ !== 'on' || !rights?.reboot}
+                  >
+                    <Reload className={s.tool_icon} />
+                    {t('reload')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() =>
+                      navigate(route.VDS_IP, { state: { id: server?.id.$ } })
+                    }
+                    disabled={server.has_ip_pricelist?.$ !== 'on' || !rights?.ip}
+                  >
+                    <IP className={s.tool_icon} />
+                    {t('ip_addresses')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForProlong)}
+                    disabled={server?.status?.$ !== '2' || !rights?.prolong}
+                  >
+                    <Clock className={s.tool_icon} />
+                    {t('prolong')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForHistory)}
+                    disabled={server?.status?.$ !== '2' || !rights?.history}
+                  >
+                    <Refund className={s.tool_icon} />
+                    {t('history')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForInstruction)}
+                    disabled={server?.status?.$ !== '2' || !rights?.instruction}
+                  >
+                    <Info className={s.tool_icon} />
+                    {t('instruction')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(goToPanel)}
+                    disabled={server.transition?.$ !== 'on' || !rights?.gotoserver}
+                  >
+                    <ExitSign className={s.tool_icon} />
+                    {t('go_to_panel')}
+                  </button>
+                </li>
+
+                <li className={s.tool_item}>
+                  <button
+                    disabled={!rights?.delete}
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => handleToolBtnClick(setIdForDeleteModal)}
+                  >
+                    <Delete className={s.tool_icon} />
+                    {t('delete', { ns: 'other' })}
+                  </button>
+                </li>
               </ul>
             </div>
           )}

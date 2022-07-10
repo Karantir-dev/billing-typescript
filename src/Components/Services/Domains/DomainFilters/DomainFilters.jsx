@@ -29,6 +29,7 @@ export default function Component(props) {
     setSelctedItem,
     isFilterActive,
     isFiltered,
+    rights,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -81,7 +82,7 @@ export default function Component(props) {
             onClick={() => setFilterModal(true)}
             icon="filter"
             className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
-            disabled={!isFilterActive}
+            disabled={!isFilterActive || !rights?.filter}
           />
           {filterModal && (
             <div>
@@ -114,13 +115,18 @@ export default function Component(props) {
         </div>
         <HintWrapper wrapperClassName={s.transferBtn} label={t('Transfer')}>
           <IconButton
+            disabled={!rights?.transfer}
             onClick={() => navigate(routes.DOMAINS_TRANSFER_ORDERS)}
             icon="transfer"
           />
         </HintWrapper>
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton disabled={!selctedItem} onClick={editDomainHandler} icon="edit" />
+          <IconButton
+            disabled={!selctedItem || !rights?.edit}
+            onClick={editDomainHandler}
+            icon="edit"
+          />
         </HintWrapper>
 
         {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
@@ -133,7 +139,9 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '1'}
+            disabled={
+              !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
+            }
             onClick={renewDomainHandler}
             icon="clock"
           />
@@ -141,7 +149,7 @@ export default function Component(props) {
 
         <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
           <IconButton
-            disabled={!selctedItem}
+            disabled={!selctedItem || !rights?.history}
             onClick={historyDomainHandler}
             icon="refund"
           />
@@ -151,7 +159,11 @@ export default function Component(props) {
           wrapperClassName={s.archiveBtn}
           label={t('Getting information about a domain using the whois protocol')}
         >
-          <IconButton disabled={!selctedItem} onClick={whoisDomainHandler} icon="whois" />
+          <IconButton
+            disabled={!selctedItem || !rights?.whois}
+            onClick={whoisDomainHandler}
+            icon="whois"
+          />
         </HintWrapper>
 
         <HintWrapper
@@ -159,20 +171,26 @@ export default function Component(props) {
           label={t('View/change the list of nameservers')}
         >
           <IconButton
-            disabled={!selctedItem}
+            disabled={!selctedItem || !rights?.ns}
             onClick={NSDomainHandler}
             icon="server-cloud"
           />
         </HintWrapper>
       </div>
       <Button
+        disabled={!rights?.register}
         dataTestid={'new_ticket_btn'}
         className={s.newTicketBtn}
         isShadow
         size="medium"
         label={t('New domain')}
         type="button"
-        onClick={() => navigate(routes.DOMAINS_ORDERS)}
+        onClick={() => {
+          navigate(routes.DOMAINS_ORDERS, {
+            state: { isDomainsOrderAllowed: rights?.register },
+            replace: true,
+          })
+        }}
       />
     </div>
   )
@@ -180,6 +198,7 @@ export default function Component(props) {
 
 Component.propTypes = {
   selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {

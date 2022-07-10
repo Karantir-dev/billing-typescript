@@ -17,6 +17,7 @@ export default function Component(props) {
     historyDomainHandler,
     whoisDomainHandler,
     NSDomainHandler,
+    rights,
   } = props
   return (
     <div className={s.table}>
@@ -51,6 +52,7 @@ export default function Component(props) {
             renewDomainHandler={renewDomainHandler}
             NSDomainHandler={NSDomainHandler}
             whoisDomainHandler={whoisDomainHandler}
+            rights={rights}
           />
         )
       })}
@@ -62,6 +64,7 @@ Component.propTypes = {
   list: PropTypes.array,
   setSelctedPayment: PropTypes.func,
   selctedPayment: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  rights: PropTypes.object,
 }
 
 Component.defaultProps = {
