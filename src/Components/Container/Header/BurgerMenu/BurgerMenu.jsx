@@ -233,7 +233,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
             <p className={s.balance_text}>{t('balance')}</p>
             <p className={s.balance_sum}>
               {userItems?.$balance
-                ? Number(userItems?.$balance.replace(' €', ''))?.toFixed(2)
+                ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
                 : $balance && Number($balance)?.toFixed(2)}{' '}
               EUR
             </p>
