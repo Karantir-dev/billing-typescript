@@ -25,6 +25,7 @@ const getDomains =
           p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
+          lang: 'en',
           ...body,
         }),
       )
@@ -65,6 +66,7 @@ const getDomainsFilters =
           func: 'domain.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
@@ -640,6 +642,7 @@ const getHistoryDomain =
           func: 'service.history',
           out: 'json',
           p_cnt: 10,
+          lang: 'en',
           ...body,
         }),
       )

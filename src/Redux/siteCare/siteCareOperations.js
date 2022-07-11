@@ -65,6 +65,7 @@ const getSiteCareFilters =
           func: 'zabota-o-servere.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )

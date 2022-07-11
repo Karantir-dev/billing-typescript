@@ -1226,6 +1226,7 @@ const getDedicFilters =
           func: 'dedic.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...data,
         }),
       )

@@ -91,5 +91,7 @@
 
   "Instruction": "Інструкція",
   "YOU DO NOT HAVE A DOMAIN YET": "У ВАС ЩЕ НЕМАЄ ДОМЕНА",
-  "no services description": "Зареєструйте домен в Zomro швидко, недорого і зручно"
+  "no services description": "Зареєструйте домен в Zomro швидко, недорого і зручно",
+  "Transfer": "Трансфер",
+  "Domain has been registered, but it is not  delegated": "Домен зареєстрований, але не делегований"
 }

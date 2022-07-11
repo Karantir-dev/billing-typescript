@@ -473,11 +473,18 @@
 }
 
 @media screen and (min-width: 1024px) {
-  // .checkbox_wrapper {
-  //   margin-bottom: 250px;
-  // }
   .terms_block {
     margin-bottom: 250px;
+  }
+
+  // .tarifs_block {
+  //   grid-template-columns: repeat(3, 241px);
+  // }
+}
+
+@media screen and (min-width: 1000px) {
+  .tarifs_block {
+    grid-template-columns: repeat(3, 241px);
   }
 }
 

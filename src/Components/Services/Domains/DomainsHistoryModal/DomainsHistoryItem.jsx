@@ -25,7 +25,11 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockThird}>
         {mobile && <div className={s.item_title}>{t('Username')}:</div>}
-        <div className={cn(s.item_text, s.third_item)}>{user}</div>
+        <div className={cn(s.item_text, s.third_item)}>
+          {user.replace(String.fromCharCode(39), '') === 'Providers employee or system'
+            ? t('Provider employee or system', { ns: 'dedicated_servers' })
+            : history?.user?.$}
+        </div>
       </div>
       <div className={s.tableBlockFourth}>
         {mobile && <div className={s.item_title}>{t('IP address')}:</div>}
