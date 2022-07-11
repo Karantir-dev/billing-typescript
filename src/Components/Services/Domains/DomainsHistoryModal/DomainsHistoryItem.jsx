@@ -11,7 +11,6 @@ export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'dedicated_servers'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
 
-  console.log(desc)
   return (
     <div className={s.item}>
       <div className={s.tableBlockFirst}>
