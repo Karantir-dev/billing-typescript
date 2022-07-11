@@ -6,9 +6,10 @@ import { InputField, Button, Select, CustomPhoneInput, CheckBox } from '../../..
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { BASE_URL } from '../../../../config/config'
+import { translatePeriod } from '../../../../utils'
 
 export default function Component(props) {
-  const { t } = useTranslation(['domains', 'other'])
+  const { t } = useTranslation(['domains', 'other', 'vds', 'payers'])
 
   const { name, closeEditModalHandler, editData, editSaveDomainHandler } = props
 
@@ -71,10 +72,12 @@ export default function Component(props) {
                         value={values.autoprolong}
                         getElement={item => setFieldValue('autoprolong', item)}
                         isShadow
-                        itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
-                          label: $.trim(),
-                          value: $key,
-                        }))}
+                        itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => {
+                          return {
+                            label: translatePeriod($.trim(), t),
+                            value: $key,
+                          }
+                        })}
                         className={s.select}
                       />
                       {values?.autoprolong && values?.autoprolong !== 'null' && (
@@ -85,7 +88,7 @@ export default function Component(props) {
                           getElement={item => setFieldValue('stored_method', item)}
                           isShadow
                           itemsList={editData?.stored_method_list?.map(({ $key, $ }) => ({
-                            label: $.trim(),
+                            label: t($.trim(), { ns: 'vds' }),
                             value: $key,
                           }))}
                           className={s.select}
@@ -152,10 +155,12 @@ export default function Component(props) {
                           isShadow
                           className={s.select}
                           disabled
-                          itemsList={editData?.profiletype_list?.map(({ $key, $ }) => ({
-                            label: t(`${$.trim()}`),
-                            value: $key,
-                          }))}
+                          itemsList={editData?.profiletype_list?.map(({ $key, $ }) => {
+                            return {
+                              label: t(`${$.trim()}`, { ns: 'payers' }),
+                              value: $key,
+                            }
+                          })}
                         />
                         <div className={s.useFirstCheck}>
                           <CheckBox

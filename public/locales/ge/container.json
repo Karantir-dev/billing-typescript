@@ -2,7 +2,7 @@
   "aside_menu": {
     "services": "მომსახურება",
     "finance_and_docs": "ფინანსები და დოკუმენტები",
-    "page_title": "რეფერალური პროგრამა",
+    "referal_program": "რეფერალური პროგრამა",
     "support": "მხარდაჭერა"
   },
   "balance": "ბალანსი",
@@ -10,7 +10,7 @@
     "user_settings": "პროფილის პარამეტრები",
     "trusted_users": "სანდო მომხმარებლები",
     "visiting_log": "სესიის ჟურნალი",
-    "Payers": "გადამხდელები",
+    "payers": "გადამხდელები",
     "contracts": "კონტრაქტები",
     "log_out": "გამოსვლა"
   },
@@ -59,5 +59,6 @@
     "notifications": "შეტყობინებები",
     "has been prolonged": "გაგრძელებულია",
     "is ready for use": "მზად არის გამოსაყენებლად"
-  }
+  },
+  "clear_all": "Ყველაფრის გასუფთავება"
 }

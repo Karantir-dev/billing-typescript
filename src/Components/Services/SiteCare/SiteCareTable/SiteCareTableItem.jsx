@@ -37,7 +37,6 @@ export default function Component(props) {
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
-  console.log(rights)
   return (
     <div
       data-testid="archive_item"

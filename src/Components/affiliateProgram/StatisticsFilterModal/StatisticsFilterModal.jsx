@@ -160,7 +160,6 @@ export default function StatisticsFilterModal({
                     error={false}
                     autoComplete
                     isShadow
-                    height={44}
                   />
 
                   <Select

@@ -168,10 +168,6 @@ export default function AffiliateProgramStatistics() {
         })}
       </ul>
       <div className={s.footer_wrapper}>
-        <p className={s.total}>
-          {t('total', { ns: 'other' })}: {total}
-        </p>
-
         <Pagination
           currentPage={Number(pageNumber)}
           totalCount={Number(total)}

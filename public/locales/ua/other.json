@@ -143,5 +143,16 @@
   "no services sitecare description": "Ми не просто проінформуємо Вас про падіння сервера або помилку в роботі, але й зробимо все можливе для усунення несправностей.",
   "YOU DONT HAVE A WEBSITE YET": "У ВАС ЩЕ НЕМАЄ ТУРБОТИ ПРО САЙТ",
   "YOU DO NOT HAVE A FOREX SERVER YET": "У ВАС ЩЕ НЕМАЄ СЕРВЕРУ ДЛЯ FOREX",
-  "no services forex description": "Тільки для терміналів ваших брокерів та торгових систем. 100% налаштований сервер, без зайвих зусиль"
+  "no services forex description": "Тільки для терміналів ваших брокерів та торгових систем. 100% налаштований сервер, без зайвих зусиль",
+  "Period": "Період",
+  "per year": "за рік",
+  "per month": "місяць",
+  "for three months": "три місяці",
+  "for 2 years": "два роки",
+  "for three years": "три роки",
+  "for": "за",
+  "Disabled": "Вимкнено",
+  "Enter name": "Введіть ім'я",
+  "Enter surname": "Введіть прізвище",
+  "Enter middle name": "Введіть ім'я по батькові"
 }

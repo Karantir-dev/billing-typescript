@@ -236,7 +236,7 @@ export default function FTPOrder() {
                     <Select
                       height={50}
                       value={values.autoprolong}
-                      label={t('autoprolong')}
+                      label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
