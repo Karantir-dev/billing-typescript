@@ -598,6 +598,10 @@ const setVdsFilters =
         dispatch(getVDS(setServers, setRights))
       })
       .catch(err => {
+        if (err.message.includes('filter')) {
+          dispatch(getVDS(setServers, setRights))
+        }
+
         errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('setVdsFilters - ', err)

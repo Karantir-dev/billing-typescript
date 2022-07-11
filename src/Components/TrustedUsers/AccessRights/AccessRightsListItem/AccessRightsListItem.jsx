@@ -34,9 +34,11 @@ export default function AccessRightsListItem({
 
   const [selectedSub, setSelectedSub] = useState([])
   const [subList, setSubList] = useState([])
-  const selectedSubWithoutFilters = selectedSub?.filter(
-    item => item?.caption?.$?.trim() !== 'Filter',
-  )
+  // const selectedSubWithoutFilters = selectedSub?.filter(
+  //   item => item?.caption?.$?.trim() !== 'Filter',
+  // )
+
+  const selectedSubWithoutFilters = selectedSub
 
   const [mainFuncName, setMainFuncName] = useState('')
 

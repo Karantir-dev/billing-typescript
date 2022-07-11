@@ -12,22 +12,25 @@ import {
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
+import { checkServicesRights, usePageRender } from '../../../utils'
+import * as route from '../../../routes'
 
 export default function Component() {
-  const { t, i18n } = useTranslation([
-    'container',
-    'trusted_users',
-    'access_log',
-    'domains',
-  ])
+  const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
+
+  const {
+    t,
+    // i18n
+  } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
 
-  const domainsList = useSelector(domainsSelectors.getDomainsList)
+  const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -81,7 +84,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -110,7 +113,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
   }
@@ -123,7 +126,7 @@ export default function Component() {
   const NSDomainHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
@@ -136,7 +139,7 @@ export default function Component() {
   const NSEditDomainHandler = (values = {}) => {
     let data = {
       elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       ...values,
     }
 
@@ -147,7 +150,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -161,13 +164,20 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       sok: 'ok',
       ...values,
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, isOpenProfile))
   }
 
+  let rights = checkServicesRights(domainsRenderData?.domainsPageRights?.toolgrp)
+
+  useEffect(() => {
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    }
+  }, [])
 
   return (
     <>
@@ -185,45 +195,49 @@ export default function Component() {
         NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
         isFiltered={isFiltered}
-        isFilterActive={isFiltered || domainsList?.length > 0}
+        isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
+        rights={rights}
       />
 
-      {domainsList?.length < 1 && isFiltered && (
+      {domainsRenderData?.domainsList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
           <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
         </div>
       )}
 
-      {domainsList?.length < 1 && !isFiltered && domainsList && (
-        <div className={s.no_service_wrapper}>
-          <img
-            src={require('../../../images/services/domains.webp')}
-            alt="domains"
-            className={s.domains_img}
-          />
-          <p className={s.no_service_title}>
-            {t('YOU DO NOT HAVE A DOMAIN YET', { ns: 'domains' })}
-          </p>
-          <p className={s.no_service_description}>
-            {t('no services description', { ns: 'domains' })}
-          </p>
-        </div>
-      )}
+      {domainsRenderData?.domainsList?.length < 1 &&
+        !isFiltered &&
+        domainsRenderData?.domainsList && (
+          <div className={s.no_service_wrapper}>
+            <img
+              src={require('../../../images/services/domains.webp')}
+              alt="domains"
+              className={s.domains_img}
+            />
+            <p className={s.no_service_title}>
+              {t('YOU DO NOT HAVE A DOMAIN YET', { ns: 'domains' })}
+            </p>
+            <p className={s.no_service_description}>
+              {t('no services description', { ns: 'domains' })}
+            </p>
+          </div>
+        )}
 
-      {domainsList?.length > 0 && (
+      {domainsRenderData?.domainsList?.length > 0 && (
         <DomainsTable
           selctedItem={selctedItem}
           setSelctedItem={setSelctedItem}
-          list={domainsList}
+          list={domainsRenderData?.domainsList}
           historyDomainHandler={historyDomainHandler}
           deleteDomainHandler={deleteDomainHandler}
           editDomainHandler={editDomainHandler}
           renewDomainHandler={renewDomainHandler}
           NSDomainHandler={NSDomainHandler}
           whoisDomainHandler={whoisDomainHandler}
+          rights={rights}
         />
       )}
-      {domainsList?.length !== 0 && (
+      {domainsRenderData?.domainsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

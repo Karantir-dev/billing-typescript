@@ -136,10 +136,8 @@ export default function DNS() {
   function checkRights(toolgrp) {
     const rights = {}
 
-    console.log(toolgrp, 'toolgrp')
     toolgrp?.forEach(section => {
       section?.toolbtn?.forEach(rightName => {
-        console.log(rights)
         rights[rightName.$name] = true
       })
     })
@@ -148,7 +146,6 @@ export default function DNS() {
   }
 
   let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
-  console.log(rights)
 
   useEffect(() => {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
@@ -267,7 +264,11 @@ export default function DNS() {
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
           onClick={() => {
-            navigate(route.DNS_ORDER)
+            navigate(route.DNS_ORDER, {
+              state: { isDnsOrderAllowed: rights?.new },
+              replace: true,
+            })
+            // navigate(route.DNS_ORDER)
           }}
           disabled={tarifs === 'No tariff plans available for order' || !rights?.new}
         />

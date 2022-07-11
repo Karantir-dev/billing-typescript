@@ -9,11 +9,12 @@ import {
 } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { siteCareOperations, dnsOperations } from '../../../../Redux'
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
+import * as routes from '../../../../routes'
 
 export default function Component() {
   const { t } = useTranslation([
@@ -26,6 +27,7 @@ export default function Component() {
 
   const location = useLocation()
   const licenseBlock = useRef()
+  const navigate = useNavigate()
 
   const [data, setData] = useState(null)
 
@@ -33,9 +35,14 @@ export default function Component() {
 
   const [licence_agreement, setLicence_agreement] = useState(false)
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
+  const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
 
   useEffect(() => {
-    dispatch(siteCareOperations.orderSiteCare({}, setData))
+    if (isSiteCareOrderAllowed) {
+      dispatch(siteCareOperations.orderSiteCare({}, setData))
+    } else {
+      navigate(routes.SITE_CARE, { replace: true })
+    }
   }, [])
 
   const parseLocations = () => {

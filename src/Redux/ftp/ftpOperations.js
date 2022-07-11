@@ -30,9 +30,13 @@ const getFTPList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(ftpActions.setFTPList(data.doc.elem ? data.doc.elem : []))
+      const ftpRenderData = {
+        ftpList: data.doc.elem ? data.doc.elem : [],
+        ftpPageRights: data.doc.metadata.toolbar,
+      }
 
-      // setFtpList(data.doc.elem ? data.doc.elem : [])
+      dispatch(ftpActions.setFTPList(ftpRenderData))
+
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -402,6 +406,11 @@ const getFTPFilters =
       })
       .catch(error => {
         console.log('error', error)
+
+        if (error.message.includes('filter')) {
+          dispatch(getFTPList())
+        }
+
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

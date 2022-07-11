@@ -23,14 +23,17 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '../../../routes'
 import s from './DedicatedServersPage.module.scss'
+import { checkServicesRights, usePageRender } from '../../../utils'
 
 export default function DedicatedServersPage() {
+  const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')
+
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const serversList = useSelector(dedicSelectors.getServersList)
+  const dedicRenderData = useSelector(dedicSelectors.getServersList)
 
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -99,32 +102,35 @@ export default function DedicatedServersPage() {
   }
 
   useEffect(() => {
-    const clearField = {
-      id: '',
-      domain: '',
-      ip: '',
-      pricelist: '',
-      period: '',
-      status: '',
-      service_status: '',
-      opendate: '',
-      expiredate: '',
-      orderdatefrom: '',
-      orderdateto: '',
-      cost_from: '',
-      cost_to: '',
-      autoprolong: '',
-      datacenter: '',
-      ostemplate: '',
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    } else {
+      const clearField = {
+        id: '',
+        domain: '',
+        ip: '',
+        pricelist: '',
+        period: '',
+        status: '',
+        service_status: '',
+        opendate: '',
+        expiredate: '',
+        orderdatefrom: '',
+        orderdateto: '',
+        cost_from: '',
+        cost_to: '',
+        autoprolong: '',
+        datacenter: '',
+        ostemplate: '',
+      }
+
+      dispatch(
+        dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+      )
     }
-
-    dispatch(
-      dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
-    )
-
-    // dispatch(dedicOperations.getServersList())
-    // dispatch(dedicOperations.getDedicFilters(setFilters))
   }, [])
+
+  let rights = checkServicesRights(dedicRenderData?.dedicPageRights?.toolgrp)
 
   useEffect(() => {
     if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
@@ -143,7 +149,10 @@ export default function DedicatedServersPage() {
               onClick={() => setFilterModal(true)}
               icon="filter"
               className={s.calendarBtn}
-              disabled={!emptyFilter && serversList?.length === 0}
+              disabled={
+                (!emptyFilter && dedicRenderData?.serversList?.length === 0) ||
+                !rights.filter
+              }
             />
             {filterModal && (
               <>
@@ -184,14 +193,14 @@ export default function DedicatedServersPage() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer}
+                  disabled={!activeServer || !rights.edit}
                   icon="edit"
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('reload')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.show_reboot?.$ !== 'on'}
+                  disabled={activeServer?.show_reboot?.$ !== 'on' || !rights.reload}
                   icon="reload"
                   onClick={() => setElidForRebootModal(activeServer?.id?.$)}
                 />
@@ -200,11 +209,15 @@ export default function DedicatedServersPage() {
                 <IconButton
                   onClick={() =>
                     navigate(route.DEDICATED_SERVERS_IP, {
-                      state: { plid: activeServer?.id?.$ },
+                      state: {
+                        plid: activeServer?.id?.$,
+                        isIpAllowedRender: rights?.ip,
+                      },
+                      replace: true,
                     })
                   }
                   className={s.tools_icon}
-                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on'}
+                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on' || !rights.ip}
                   icon="ip"
                 />
               </HintWrapper>
@@ -212,7 +225,7 @@ export default function DedicatedServersPage() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
+                  disabled={activeServer?.status?.$ !== '2' || !rights.prolong}
                   icon="clock"
                 />
               </HintWrapper>
@@ -221,13 +234,13 @@ export default function DedicatedServersPage() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$}
+                  disabled={!activeServer?.id?.$ || !rights.history}
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2'}
+                  disabled={activeServer?.status?.$ !== '2' || !rights.instruction}
                   icon="info"
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
@@ -238,7 +251,11 @@ export default function DedicatedServersPage() {
                     dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
                   }}
                   className={s.tools_icon}
-                  disabled={activeServer?.transition?.$ !== 'on'}
+                  disabled={
+                    activeServer?.transition?.$ !== 'on' ||
+                    activeServer?.status?.$ !== '2' ||
+                    !rights.gotoserver
+                  }
                   icon="exitSign"
                 />
               </HintWrapper>
@@ -247,16 +264,22 @@ export default function DedicatedServersPage() {
         </div>
 
         <Button
+          disabled={!rights.new}
           className={s.order_btn}
           isShadow
           type="button"
           label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => navigate(route.DEDICATED_SERVERS_ORDER)}
+          onClick={() => {
+            navigate(route.DEDICATED_SERVERS_ORDER, {
+              state: { isDedicOrderAllowed: rights?.new },
+              replace: true,
+            })
+          }}
         />
       </div>
       <DedicList
         emptyFilter={emptyFilter}
-        servers={serversList}
+        servers={dedicRenderData?.serversList}
         activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
@@ -264,6 +287,7 @@ export default function DedicatedServersPage() {
         setElidForInstructionModal={setElidForInstructionModal}
         setElidForRebootModal={setElidForRebootModal}
         setActiveServer={setActiveServer}
+        rights={rights}
       />
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />

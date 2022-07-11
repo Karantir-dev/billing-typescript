@@ -125,6 +125,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -138,6 +139,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -151,6 +153,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -164,6 +167,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -177,6 +181,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <DoubleInputField

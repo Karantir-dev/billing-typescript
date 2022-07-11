@@ -21,7 +21,14 @@ export default function Component({ children }) {
 
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
+    getNotifyHandler()
   }, [])
+
+  const getNotifyHandler = () => {
+    if (sessionId) {
+      setInterval(() => dispatch(userOperations.getNotify()), 60000)
+    }
+  }
 
   if (loading) {
     return <></>

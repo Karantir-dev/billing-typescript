@@ -30,11 +30,15 @@ const getVhosts =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        // const elem = data?.doc?.elem || []
+        const virtualHostingRenderData = {
+          vhostList: data?.doc?.elem || [],
+          vhostPageRights: data.doc.metadata.toolbar,
+        }
 
-        const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(vhostActions.setVhostList(elem))
+        dispatch(vhostActions.setVhostList(virtualHostingRenderData))
         dispatch(vhostActions.setVhostCount(count))
         dispatch(getVhostFilters())
       })

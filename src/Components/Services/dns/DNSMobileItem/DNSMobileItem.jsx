@@ -32,7 +32,6 @@ export default function DNSMobileItem({
     setToolsOpened(false)
   }
 
-  console.log('pageRights', pageRights)
   return (
     <li className={s.item}>
       <div className={s.dots_wrapper}>

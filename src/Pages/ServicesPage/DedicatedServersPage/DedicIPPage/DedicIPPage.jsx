@@ -24,6 +24,7 @@ import { Attention, Cross } from '../../../../images'
 export default function DedicIPpage() {
   const location = useLocation()
   const ipPlid = location?.state?.plid
+  const isIpAllowedRender = location?.state?.isIpAllowedRender
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -57,14 +58,18 @@ export default function DedicIPpage() {
   }
 
   useEffect(() => {
-    if (ipPlid) dispatch(dedicOperations.getIPList(ipPlid, setIPList))
-  }, [])
-
-  useEffect(() => {
-    if (!ipPlid) {
+    if (ipPlid && isIpAllowedRender) {
+      dispatch(dedicOperations.getIPList(ipPlid, setIPList))
+    } else {
       return navigate(route.DEDICATED_SERVERS)
     }
-  }, [ipPlid])
+  }, [])
+
+  // useEffect(() => {
+  //   if (!ipPlid) {
+  //     return navigate(route.DEDICATED_SERVERS)
+  //   }
+  // }, [ipPlid])
 
   return (
     <div className={s.page_container}>

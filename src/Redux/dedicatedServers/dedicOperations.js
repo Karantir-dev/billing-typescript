@@ -30,7 +30,12 @@ const getServersList = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(dedicActions.setServersList(data.doc.elem ? data.doc.elem : []))
+      const dedicRenderData = {
+        serversList: data.doc.elem ? data.doc.elem : [],
+        dedicPageRights: data.doc.metadata.toolbar,
+      }
+
+      dispatch(dedicActions.setServersList(dedicRenderData))
 
       dispatch(actions.hideLoader())
     })
@@ -1262,6 +1267,9 @@ const getDedicFilters =
       })
       .catch(error => {
         console.log('error', error)
+        if (error.message.includes('filter')) {
+          dispatch(getServersList())
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

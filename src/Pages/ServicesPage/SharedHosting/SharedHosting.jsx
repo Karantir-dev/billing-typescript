@@ -13,11 +13,15 @@ import {
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
+import * as route from '../../../routes'
+import { checkServicesRights, usePageRender } from '../../../utils'
 
 export default function Component() {
+  const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
+
   const { t, i18n } = useTranslation([
     'container',
     'other',
@@ -25,10 +29,10 @@ export default function Component() {
     'virtual_hosting',
   ])
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const location = useLocation()
 
-  const vhostList = useSelector(vhostSelectors.getVhostList)
+  const virtualHostingRenderData = useSelector(vhostSelectors.getVhostList)
   const vhostCount = useSelector(vhostSelectors.getVhostCount)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -216,6 +220,14 @@ export default function Component() {
     )
   }
 
+  let rights = checkServicesRights(virtualHostingRenderData?.vhostPageRights?.toolgrp)
+
+  useEffect(() => {
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    }
+  }, [])
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -234,32 +246,35 @@ export default function Component() {
         selctedItem={selctedItem}
         setCurrentPage={setCurrentPage}
         isFiltered={isFiltered}
-        isFilterActive={isFiltered || vhostList?.length > 0}
+        isFilterActive={isFiltered || virtualHostingRenderData?.vhostList?.length > 0}
+        rights={rights}
       />
 
-      {vhostList?.length < 1 && isFiltered && (
+      {virtualHostingRenderData?.vhostList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
           <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
         </div>
       )}
 
-      {vhostList?.length < 1 && !isFiltered && vhostList && (
-        <div className={s.no_service_wrapper}>
-          <img
-            src={require('../../../images/services/virtual_hosting.webp')}
-            alt="virtual_hosting"
-            className={s.virt_host_img}
-          />
-          <p className={s.no_service_title}>
-            {t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' })}
-          </p>
-          <p className={s.no_service_description}>
-            {t('no services description', { ns: 'virtual_hosting' })}
-          </p>
-        </div>
-      )}
+      {virtualHostingRenderData?.vhostList?.length < 1 &&
+        !isFiltered &&
+        virtualHostingRenderData?.vhostList && (
+          <div className={s.no_service_wrapper}>
+            <img
+              src={require('../../../images/services/virtual_hosting.webp')}
+              alt="virtual_hosting"
+              className={s.virt_host_img}
+            />
+            <p className={s.no_service_title}>
+              {t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' })}
+            </p>
+            <p className={s.no_service_description}>
+              {t('no services description', { ns: 'virtual_hosting' })}
+            </p>
+          </div>
+        )}
 
-      {vhostList?.length > 0 && (
+      {virtualHostingRenderData?.vhostList?.length > 0 && (
         <SharedHostingTable
           historyVhostHandler={historyVhostHandler}
           instructionVhostHandler={instructionVhostHandler}
@@ -269,11 +284,12 @@ export default function Component() {
           changeTariffVhostHandler={changeTariffVhostHandler}
           selctedItem={selctedItem}
           setSelctedItem={setSelctedItem}
-          list={vhostList}
+          list={virtualHostingRenderData?.vhostList}
+          rights={rights}
         />
       )}
 
-      {vhostList?.length !== 0 && (
+      {virtualHostingRenderData?.vhostList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}

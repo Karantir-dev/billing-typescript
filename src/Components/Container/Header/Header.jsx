@@ -34,6 +34,7 @@ export default function Header() {
   const isAuthLogAllowedToRender = usePageRender('stat', 'authlog', false)
 
   const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
+  const areContractsAllowedToRender = usePageRender('customer', 'contract', false)
 
   const profileMenuList = [
     {
@@ -59,16 +60,16 @@ export default function Header() {
     {
       name: t('profile.contracts'),
       routeName: routes.CONTRACTS,
-      allowedToRender: true,
+      allowedToRender: areContractsAllowedToRender,
     },
   ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const messages = useSelector(userSelectors.getUserItems)
+  const userItems = useSelector(userSelectors.getUserItems)
 
-  const notifications = messages ? messages.length : 0
+  const notifications = userItems?.messages_count ? userItems?.messages_count : 0
 
   // const [notifications, setNotifications] = useState(mesAmount)
 
@@ -130,7 +131,10 @@ export default function Header() {
                     <p className={s.balance_text}>
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
-                        {$balance && Number($balance)?.toFixed(2)} EUR
+                        {userItems?.$balance
+                          ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
+                          : $balance && Number($balance)?.toFixed(2)}{' '}
+                        EUR
                       </span>
                     </p>
                   </button>

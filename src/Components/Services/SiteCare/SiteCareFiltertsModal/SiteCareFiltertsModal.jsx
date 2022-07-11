@@ -101,6 +101,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -114,6 +115,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -127,6 +129,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -140,6 +143,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <Select
@@ -153,6 +157,7 @@ export default function Component(props) {
                       value: $key,
                     }))}
                     className={s.select}
+                    inputClassName={s.select_wrapper}
                   />
 
                   <DoubleInputField
@@ -194,7 +199,7 @@ export default function Component(props) {
                   />
 
                   <DoubleInputField
-                    inputWrapperClass={s.inputHeighOrder}
+                    inputWrapperClass={s.inputHeight}
                     className={s.input}
                     nameLeft="orderdatefrom"
                     nameRight="orderdateto"

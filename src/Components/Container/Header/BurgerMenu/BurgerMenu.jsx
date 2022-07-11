@@ -32,6 +32,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive', false)
   const isRequestsAllowedToRender = usePageRender('support', 'clientticket', false)
   const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
+  const areContractsAllowedToRender = usePageRender('customer', 'contract', false)
 
   const profileMenuList = [
     {
@@ -54,7 +55,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
       routeName: routes.PAYERS,
       allowedToRender: arePayersAllowedToRender,
     },
-    { name: t('profile.contracts'), routeName: routes.CONTRACTS, allowedToRender: true },
+    {
+      name: t('profile.contracts'),
+      routeName: routes.CONTRACTS,
+      allowedToRender: areContractsAllowedToRender,
+    },
   ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
@@ -176,6 +181,8 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
 
+  const userItems = useSelector(userSelectors.getUserItems)
+
   const dispatch = useDispatch()
   const getBurgerEl = useRef()
 
@@ -224,7 +231,12 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
             })}
           >
             <p className={s.balance_text}>{t('balance')}</p>
-            <p className={s.balance_sum}>{$balance} EUR</p>
+            <p className={s.balance_sum}>
+              {userItems?.$balance
+                ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
+                : $balance && Number($balance)?.toFixed(2)}{' '}
+              EUR
+            </p>
           </li>
           {areServicesAllowedToRender && (
             <li className={s.list_item}>

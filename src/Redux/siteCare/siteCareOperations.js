@@ -31,10 +31,14 @@ const getSiteCare =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const elem = data?.doc?.elem || []
+        const sitecareRenderData = {
+          siteCareList: data?.doc?.elem || [],
+          siteCarePageRights: data.doc.metadata.toolbar,
+        }
+        // const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(siteCareActions.setSiteCareList(elem))
+        dispatch(siteCareActions.setSiteCareList(sitecareRenderData))
         dispatch(siteCareActions.setSiteCareCount(count))
         dispatch(getSiteCareFilters())
       })

@@ -27,13 +27,18 @@ export default function Component({ transfer = false }) {
 
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
+  const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   useEffect(() => {
-    if (transfer) {
-      const dataTransfer = { domain_action: 'transfer' }
-      dispatch(domainsOperations.getDomainsOrderName(setDomains, dataTransfer))
+    if (isDomainsOrderAllowed) {
+      if (transfer) {
+        const dataTransfer = { domain_action: 'transfer' }
+        dispatch(domainsOperations.getDomainsOrderName(setDomains, dataTransfer))
+      } else {
+        dispatch(domainsOperations.getDomainsOrderName(setDomains))
+      }
     } else {
-      dispatch(domainsOperations.getDomainsOrderName(setDomains))
+      navigate(route.DOMAINS, { replace: true })
     }
   }, [])
 
@@ -126,6 +131,7 @@ export default function Component({ transfer = false }) {
                 label={`${t('Domain name')}:`}
                 placeholder={t('Enter domain name')}
                 className={s.input}
+                inputClassName={s.inputClassName}
                 inputWrapperClass={s.inputHeight}
                 error={!!errors.domain_name}
                 touched={!!touched.domain_name}

@@ -6,11 +6,11 @@ import { Shevron } from '../../../images/'
 
 import s from './LangBtn.module.scss'
 
-const LANGUAGES = ['en', 'ru', 'kz', 'ua']
+const LANGUAGES = ['en', 'ru', 'kz', 'ua', 'ge']
 
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()
-  const currentLang = i18n.language?.slice(0, 2)
+  const currentLang = i18n.language?.slice(0, 5)
 
   if (!LANGUAGES.includes(currentLang)) {
     i18n.changeLanguage('en')

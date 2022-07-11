@@ -38,7 +38,6 @@ export default function NotificationList({ notifications }) {
 
   const removeAllItems = () => {
     notifications.forEach(el => {
-      console.log(el, 'el')
       dispatch(userOperations.removeItems(isAuthenticated, el?.$id))
       dispatch(userActions.removeItems(el?.$id))
     })
@@ -50,8 +49,6 @@ export default function NotificationList({ notifications }) {
     //   }
     // })
   }
-
-  console.log(notifications)
 
   return (
     <>

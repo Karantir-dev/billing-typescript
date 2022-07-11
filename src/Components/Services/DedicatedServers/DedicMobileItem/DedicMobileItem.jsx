@@ -28,6 +28,7 @@ export default function DedicMobileItem({
   setElidForInstructionModal,
   setElidForRebootModal,
   setActiveServer,
+  rights,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -58,6 +59,7 @@ export default function DedicMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
+                  disabled={!rights?.edit}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
@@ -85,10 +87,11 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server.has_ip_pricelist?.$ !== 'on'}
+                  disabled={server.has_ip_pricelist?.$ !== 'on' || !rights?.ip}
                   onClick={() =>
                     navigate(route.DEDICATED_SERVERS_IP, {
-                      state: { plid: server?.id?.$ },
+                      state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },
+                      replace: true,
                     })
                   }
                 >
@@ -100,7 +103,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2'}
+                  disabled={server?.status?.$ !== '2' || !rights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -109,6 +112,7 @@ export default function DedicMobileItem({
               </li>
               <li className={s.tool_item}>
                 <button
+                  disabled={!rights?.history}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
@@ -124,7 +128,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2'}
+                  disabled={server?.status?.$ !== '2' || !rights?.instruction}
                   onClick={() =>
                     handleToolBtnClick(setElidForInstructionModal, server.id.$)
                   }
@@ -137,7 +141,11 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server.transition?.$ !== 'on'}
+                  disabled={
+                    server.transition?.$ !== 'on' ||
+                    server?.status?.$ !== '2' ||
+                    !rights?.gotoserver
+                  }
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(server.id.$))
                   }}
@@ -180,4 +188,5 @@ export default function DedicMobileItem({
 DedicMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  rights: PropTypes.object,
 }

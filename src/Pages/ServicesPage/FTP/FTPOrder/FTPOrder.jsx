@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox, Select } from '../../../../Components'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 
 import { ftpOperations } from '../../../../Redux'
+import * as route from '../../../../routes'
 
 import s from './FTPOrder.module.scss'
 
@@ -18,6 +19,10 @@ export default function FTPOrder() {
 
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const isFtpOrderAllowed = location?.state?.isFtpOrderAllowed
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -76,8 +81,6 @@ export default function FTPOrder() {
     }
   }
 
-  const location = useLocation()
-
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
 
@@ -87,7 +90,11 @@ export default function FTPOrder() {
   }
 
   useEffect(() => {
-    dispatch(ftpOperations.getTarifs(setTarifList))
+    if (isFtpOrderAllowed) {
+      dispatch(ftpOperations.getTarifs(setTarifList))
+    } else {
+      navigate(route.FTP, { replace: true })
+    }
   }, [])
 
   const validationSchema = Yup.object().shape({
