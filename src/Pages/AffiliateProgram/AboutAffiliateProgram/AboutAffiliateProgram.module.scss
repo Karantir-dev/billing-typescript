@@ -126,6 +126,7 @@
 }
 
 .copy_icon {
+  flex: none;
   fill: var(--inactive_icon_color);
 
   &.selected {
