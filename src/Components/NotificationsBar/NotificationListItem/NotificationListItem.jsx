@@ -14,9 +14,8 @@ export default function NotificationListItem({ arr, removeItem }) {
           const notifText = notif?.msg?.$.trim().split(' ').slice(3).join(' ')
           const message = `${t('service', {
             ns: 'other',
-          })} ${ticketCode} ${t(`notification_bar.${notifText}`)}`
+          })} ${ticketCode} ${t(`${notifText}`)}`
 
-          console.log(arr)
           return (
             <div key={notif?.$id} className={s.notification_message_container}>
               <p className={s.notification_message}>{message}</p>

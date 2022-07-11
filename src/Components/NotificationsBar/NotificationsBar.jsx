@@ -8,7 +8,7 @@ import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
 
 export default function NotificationsBar({ handler, isBarOpened }) {
-  const messages = useSelector(userSelectors.getUserItems)
+  const userItems = useSelector(userSelectors.getUserItems)
 
   const { t } = useTranslation('container')
 
@@ -32,14 +32,14 @@ export default function NotificationsBar({ handler, isBarOpened }) {
       >
         <div className={s.notification_title_container}>
           <p className={s.notification_title}>{`${t('notification_bar.notifications')} (${
-            messages.length
+            userItems?.messages_count
           })`}</p>
           <div className={s.close_btn_wrapper}>
             <button className={s.close_btn} onClick={handler}></button>
           </div>
         </div>
 
-        {isBarOpened && <NotificationList notifications={messages} />}
+        {isBarOpened && <NotificationList notifications={userItems?.messages} />}
       </div>
     </>
   )
