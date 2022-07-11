@@ -101,11 +101,9 @@ export default function InputField(props) {
       <div
         className={cn(s.input_wrapper, inputWrapperClass, {
           [s.focused]: isFocused,
-          [s.shadow]: isShadow,
         })}
         style={{ height }}
       >
-
         <Field
           disabled={disabled}
           data-testid={dataTestid}
