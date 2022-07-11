@@ -569,6 +569,7 @@ const editDedicServer =
               auth: sessionId,
               billorder,
               sok: 'ok',
+              lang: 'en',
             }),
           )
           .then(() => {

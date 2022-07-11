@@ -100,11 +100,7 @@
 
   &:hover {
     & .copy_icon {
-      fill: var(--transparent-color);
-    }
-
-    & .field_text {
-      color: var(--main-text);
+      fill: url(#gradient);
     }
   }
 }
@@ -129,7 +125,8 @@
   text-overflow: ellipsis;
   font-weight: 300;
   font-size: 16px;
-  color: var(--transparent-color);
+  // color: var(--transparent-color);
+  color: var(--main-text);
 }
 
 .copy_prompt {

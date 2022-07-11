@@ -61,26 +61,26 @@
   color: var(--main-text);
 
   &:nth-child(1) {
-    flex-basis: 10%;
+    flex-basis: 6%;
   }
   &:nth-child(2) {
-    flex-basis: 15%;
+    flex-basis: 26%;
     word-break: break-all;
   }
   &:nth-child(3) {
-    flex-basis: 15%;
+    flex-basis: 26%;
   }
   &:nth-child(4) {
-    flex-basis: 10%;
+    flex-basis: 8%;
   }
   &:nth-child(5) {
-    flex-basis: 10%;
+    flex-basis: 8%;
   }
   &:nth-child(6) {
     flex-basis: 10%;
   }
   &:nth-child(7) {
-    flex-basis: 15%;
+    flex-basis: 14%;
   }
 }
 
