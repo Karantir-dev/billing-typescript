@@ -78,7 +78,7 @@ jobs:
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t zomro-bill-prod .
+          docker build -f Dockerfile.prod -t zomro-bill-prod .
           docker tag zomro-bill-prod:latest zomrocom/zomro-bill-prod:latest
           docker tag zomrocom/zomro-bill-prod:latest zomrocom/zomro-bill-prod:$RELEASE_NAME
           docker push $DOCKER_USERNAME/zomro-bill-prod:latest
