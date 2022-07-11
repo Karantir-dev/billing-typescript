@@ -57,7 +57,7 @@ export default function NotificationList({ notifications }) {
       )} */}
       {notifications?.messages?.length > 0 && (
         <button className={s.clear_btn} onClick={removeAllItems}>
-          Clear all
+          {t('clear_all')}
         </button>
       )}
     </>

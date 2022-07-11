@@ -28,7 +28,7 @@ import { usePageRender } from '../../../../utils'
 import s from './VDS.module.scss'
 
 export default function VDS() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
@@ -140,7 +140,7 @@ export default function VDS() {
           />
         </div>
 
-        {widerThan1550 && (
+        {widerThan1600 && (
           <>
             <div className={s.edit_wrapper}>
               <HintWrapper label={t('edit', { ns: 'other' })}>

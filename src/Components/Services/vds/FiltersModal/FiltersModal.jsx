@@ -18,7 +18,7 @@ export default function FiltersModal({
   resetFilterHandler,
   handleSubmit,
 }) {
-  const { t } = useTranslation(['domains', 'other', 'dedicated_servers', 'vds'])
+  const { t } = useTranslation(['domains', 'dedicated_servers', 'other', 'vds'])
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
 
   const dropdownCalendar = useRef(null)

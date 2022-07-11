@@ -19,8 +19,13 @@
 
 .clear_btn {
   margin-top: 10px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms2_shadow);
-  padding: 5px 15px;
+  font-size: 16px;
+  text-decoration: underline;
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .clear_btn {
+    font-size: 18px;
+  }
 }

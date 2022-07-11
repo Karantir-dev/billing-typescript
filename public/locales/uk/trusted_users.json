@@ -315,7 +315,7 @@
       "payment": "Платежі",
       "expense": "Витрати",
       "promisepayment_add": "Обіцяний платіж",
-      "services_autoprolong": "Автопородження послуг",
+      "services_autoprolong": "Автопродовження послуг",
       "payment_recurring_settings#read": "Автоплатіж (доступне для читання даних форм)",
       "payment_recurring_settings#write": "Автоплатіж (доступне збереження даних)",
 
