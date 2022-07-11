@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -15,6 +15,7 @@ import s from './PasswordReset.module.scss'
 export default function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation('auth')
 
   const [email, setEmail] = useState('')
@@ -113,9 +114,15 @@ export default function PasswordReset() {
           </a>
           {t('reset.confirm_descr_3')}
         </p>
-        <Link className={s.to_login_link} to={routes.LOGIN}>
+        {/* <Link className={s.to_login_link} to={routes.LOGIN}>
           <span className={s.btn_text}>OK</span>
-        </Link>
+        </Link> */}
+        <Button
+          className={cn(s.submit_btn, s.mw)}
+          label="OK"
+          isShadow
+          onClick={() => navigate(routes.LOGIN, { replace: true })}
+        />
       </form>
     </div>
   )

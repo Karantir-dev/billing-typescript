@@ -60,6 +60,8 @@
 
 .icon_calendar {
   background-color: var(--forms_bgc_3) !important;
+  width: 45px;
+  height: 45px;
 }
 
 .calendarBlock {
@@ -157,5 +159,12 @@
     transform: rotateZ(45deg);
     background-color: var(--elements-bgc);
     box-shadow: var(--forms2_shadow);
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .icon_calendar {
+    width: 50px !important;
+    height: 50px !important;
   }
 }
