@@ -136,10 +136,8 @@ export default function DNS() {
   function checkRights(toolgrp) {
     const rights = {}
 
-    console.log(toolgrp, 'toolgrp')
     toolgrp?.forEach(section => {
       section?.toolbtn?.forEach(rightName => {
-        console.log(rights)
         rights[rightName.$name] = true
       })
     })
@@ -148,7 +146,6 @@ export default function DNS() {
   }
 
   let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
-  console.log(rights)
 
   useEffect(() => {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))

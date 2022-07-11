@@ -21,12 +21,10 @@ import * as route from '../../../routes'
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
 
-  const { t, i18n } = useTranslation([
-    'container',
-    'trusted_users',
-    'access_log',
-    'domains',
-  ])
+  const {
+    t,
+    // i18n
+  } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -86,7 +84,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -115,7 +113,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
   }
@@ -128,7 +126,7 @@ export default function Component() {
   const NSDomainHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
@@ -141,7 +139,7 @@ export default function Component() {
   const NSEditDomainHandler = (values = {}) => {
     let data = {
       elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       ...values,
     }
 
@@ -152,7 +150,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -166,7 +164,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      // lang: i18n?.language,
       sok: 'ok',
       ...values,
     }
