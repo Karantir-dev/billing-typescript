@@ -13,7 +13,6 @@ use(Backend)
     ns: ['auth'],
     defaultNS: 'other',
     react: {
-      wait: true,
       useSuspense: process.env.NODE_ENV === 'test' ? false : true,
     },
     // Стандартный язык
