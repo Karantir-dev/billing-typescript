@@ -1,6 +1,12 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, cartActions, billingOperations, payersOperations } from '..'
+import {
+  actions,
+  cartActions,
+  billingOperations,
+  payersOperations,
+  userOperations,
+} from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
@@ -267,6 +273,7 @@ const setPaymentMethods =
         )
         dispatch(actions.hideLoader())
       })
+      .then(() => dispatch(userOperations.getNotify()))
       .catch(error => {
         console.log('error', error)
         errorHandler(error.message, dispatch)

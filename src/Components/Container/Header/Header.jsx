@@ -67,9 +67,9 @@ export default function Header() {
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const messages = useSelector(userSelectors.getUserItems)
+  const userItems = useSelector(userSelectors.getUserItems)
 
-  const notifications = messages ? messages.length : 0
+  const notifications = userItems?.messages_count ? userItems?.messages_count : 0
 
   // const [notifications, setNotifications] = useState(mesAmount)
 
@@ -131,7 +131,10 @@ export default function Header() {
                     <p className={s.balance_text}>
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
-                        {$balance && Number($balance)?.toFixed(2)} EUR
+                        {userItems?.$balance
+                          ? Number(userItems?.$balance.replace(' €', ''))?.toFixed(2)
+                          : $balance && Number($balance)?.toFixed(2)}{' '}
+                        EUR
                       </span>
                     </p>
                   </button>
