@@ -132,7 +132,7 @@ export default function Header() {
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
                         {userItems?.$balance
-                          ? Number(userItems?.$balance.replace(' €', ''))?.toFixed(2)
+                          ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
                           : $balance && Number($balance)?.toFixed(2)}{' '}
                         EUR
                       </span>
