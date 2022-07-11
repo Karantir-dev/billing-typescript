@@ -779,6 +779,7 @@ const editDomain =
           auth: sessionId,
           func: 'domain.edit',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
@@ -869,6 +870,7 @@ const getServiceProfile =
           auth: sessionId,
           func: 'service_profile.edit',
           out: 'json',
+          lang: 'en',
           ...body,
           elid,
         }),
