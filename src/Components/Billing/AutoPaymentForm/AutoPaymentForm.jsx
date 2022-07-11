@@ -263,6 +263,7 @@ export default function Component(props) {
                 label={t('Confirm', { ns: 'other' })}
                 onClick={() => null}
                 type="submit"
+                isShadow
               />
             </Form>
           )
