@@ -393,7 +393,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                 <Button
                   className={cn({
                     [s.saveBtn]: true,
-                    [s.shown]: isComponentAllowedToEdit,
+                    [s.shown]: true,
                   })}
                   isShadow
                   size="medium"

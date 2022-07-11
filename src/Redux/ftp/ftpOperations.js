@@ -365,6 +365,7 @@ const getFTPFilters =
           func: 'storage.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...data,
         }),
       )

@@ -210,7 +210,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                               })}
                               ref={refLinkEl}
                             >
-                              {values?.url_rdp}
+                              {values?.url_rdp?.slice(0, 25)}
                             </span>
                             <Copy
                               className={classNames(s.copy_icon, {

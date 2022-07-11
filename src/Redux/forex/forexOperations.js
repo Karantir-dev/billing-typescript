@@ -394,6 +394,7 @@ const getForexFilters =
           func: 'forexbox.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...data,
         }),
       )
