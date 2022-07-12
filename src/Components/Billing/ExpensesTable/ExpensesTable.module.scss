@@ -1,7 +1,7 @@
 @import '../../../scss/mixin.scss';
 
 .table {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -92,7 +92,7 @@
   white-space: pre;
 
   &.second_item {
-    max-width: 130px;
+    max-width: 100px;
 
     @include truncate-text(2);
     white-space: break-spaces;
@@ -132,10 +132,11 @@
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 540px) {
   .item {
     flex-basis: 48%;
     margin-right: 0;
+    margin-bottom: 15px;
 
     &:nth-child(2n) {
       margin-right: 15px;
@@ -147,25 +148,45 @@
 
     &.fifth_item {
       max-width: 220px;
+      @include truncate-text(2);
+      white-space: break-spaces;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .item {
+    flex-basis: 48.7%;
+    margin-right: 0;
+    margin-bottom: 15px;
+
+    &:nth-child(2n) {
+      margin-right: 15px;
     }
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .item {
-    flex-basis: 30%;
+  .tableHeader {
+    display: flex;
+    padding: 22px 27px;
+  }
 
-    &:not(:nth-child(1)) {
-      margin-right: 15px;
-    }
+  .table {
+    display: block;
+  }
+
+  .item {
+    padding: 22px 27px;
+    flex-direction: row;
+    align-items: center;
   }
 
   .item_text {
     font-size: 16px;
 
     &.second_item {
-      max-width: 130px;
-      //   max-height: 40px;
+      max-width: 297px;
       @include truncate-text(2);
       white-space: break-spaces;
     }
@@ -174,17 +195,47 @@
       max-width: 220px;
     }
   }
+
+  .tableBlockFirst,
+  .tableBlockSecond,
+  .tableBlockThird,
+  .tableBlockFourth,
+  .tableBlockFifth,
+  .tableBlockSixth,
+  .tableBlockSeventh,
+  .tableBlockEighth {
+    margin-top: 0px;
+    margin-right: 20px;
+  }
+
+  .tableBlockFirst {
+    flex-basis: 9.2%;
+  }
+
+  .tableBlockSecond {
+    flex-basis: 33.9%;
+  }
+
+  .tableBlockThird {
+    flex-basis: 12%;
+  }
+
+  .tableBlockFourth {
+    flex-basis: 10.5%;
+  }
+
+  .tableBlockFifth {
+    flex-basis: 22.6%;
+  }
+
+  .tableBlockSixth {
+    flex-basis: 11.5%;
+  }
 }
 
 @media screen and (min-width: 1550px) {
   .table {
-    margin-top: 20px;
     display: block;
-  }
-
-  .tableHeader {
-    display: flex;
-    padding: 22px 27px;
   }
 
   .item {
