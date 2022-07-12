@@ -12,16 +12,7 @@ import Div100vh from 'react-div-100vh'
 export default function Component({ children }) {
   const { i18n } = useTranslation()
 
-  const language =
-    i18n.language === 'ua'
-      ? 'uk'
-      : i18n.language === 'kz'
-      ? 'kk'
-      : i18n.language === 'ge'
-      ? 'ka'
-      : i18n.language
-
-  dayjs.locale(language)
+  dayjs.locale(i18n.language)
 
   const [loading, setLoading] = useState(true)
 
