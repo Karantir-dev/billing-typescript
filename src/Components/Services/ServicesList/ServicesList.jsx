@@ -33,8 +33,8 @@ export default function ServicesList() {
     'zabota-o-servere',
     false,
   )
-  // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
+
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false)
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)

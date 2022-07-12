@@ -25,6 +25,8 @@ export default function ForexEditModal({ elid, closeFn }) {
   const [initialState, setInitialState] = useState()
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
+  let paymentMethodList = initialState?.paymentMethodList?.filter(item => item.$key)
+
   const refLinkEl = useRef(null)
 
   const handleEditionModal = () => {
@@ -43,10 +45,10 @@ export default function ForexEditModal({ elid, closeFn }) {
     }, 2000)
   }
 
-  const handleCopyText = el => {
+  const handleCopyText = (el, text) => {
     if (el.current === refLinkEl.current) {
       showPrompt(setRefLinkCopied)
-      navigator.clipboard.writeText(el.current.textContent)
+      navigator.clipboard.writeText(text)
     }
   }
 
@@ -127,7 +129,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           label={`${t('Payment method', { ns: 'other' })}:`}
                           value={values?.stored_method}
-                          itemsList={initialState?.paymentMethodList?.map(el => {
+                          itemsList={paymentMethodList?.map(el => {
                             return { label: t(el.$), value: el.$key }
                           })}
                           className={s.select}
@@ -198,7 +200,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           </label>
                           <div
                             className={s.copy_field}
-                            onClick={() => handleCopyText(refLinkEl)}
+                            onClick={() => handleCopyText(refLinkEl, values.url_rdp)}
                             role="button"
                             tabIndex={0}
                             onKeyUp={() => {}}
@@ -210,7 +212,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                               })}
                               ref={refLinkEl}
                             >
-                              {values?.url_rdp?.slice(0, 25)}
+                              {values?.url_rdp?.slice(0, 22) + '...'}
                             </span>
                             <Copy
                               className={classNames(s.copy_icon, {

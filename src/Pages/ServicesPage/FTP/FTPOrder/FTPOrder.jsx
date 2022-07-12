@@ -175,55 +175,59 @@ export default function FTPOrder() {
                     const priceAmount = parsedPrice.amoumt
 
                     return (
-                      <button
-                        ref={index === 2 ? secondTarrif : null}
-                        onClick={() => {
-                          setParameters(null)
-                          setFieldValue('tarif', item?.pricelist?.$)
-                          setPrice(priceAmount)
-                          setTarifChosen(true)
-
-                          dispatch(
-                            ftpOperations.getParameters(
-                              values.period,
-                              values.datacenter,
-                              item?.pricelist?.$,
-                              setParameters,
-                              setFieldValue,
-                            ),
-                          )
-                        }}
-                        type="button"
+                      <div
                         className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.tarif,
                         })}
                         key={item?.desc?.$}
                       >
-                        <span
-                          className={classNames({
-                            [s.card_title]: true,
-                            [s.selected]: item?.pricelist?.$ === values.tarif,
-                          })}
+                        <button
+                          ref={index === 2 ? secondTarrif : null}
+                          onClick={() => {
+                            setParameters(null)
+                            setFieldValue('tarif', item?.pricelist?.$)
+                            setPrice(priceAmount)
+                            setTarifChosen(true)
+
+                            dispatch(
+                              ftpOperations.getParameters(
+                                values.period,
+                                values.datacenter,
+                                item?.pricelist?.$,
+                                setParameters,
+                                setFieldValue,
+                              ),
+                            )
+                          }}
+                          type="button"
+                          className={s.tarif_card_btn}
                         >
-                          {cardTitle?.split(' ').slice(1).join(' ')}
-                        </span>
-                        <div className={s.price_wrapper}>
                           <span
                             className={classNames({
-                              [s.price]: true,
+                              [s.card_title]: true,
                               [s.selected]: item?.pricelist?.$ === values.tarif,
                             })}
                           >
-                            {priceAmount + '/' + periodName}
+                            {cardTitle?.split(' ').slice(1).join(' ')}
                           </span>
-                        </div>
+                          <div className={s.price_wrapper}>
+                            <span
+                              className={classNames({
+                                [s.price]: true,
+                                [s.selected]: item?.pricelist?.$ === values.tarif,
+                              })}
+                            >
+                              {priceAmount + '/' + periodName}
+                            </span>
+                          </div>
 
-                        {descriptionBlocks.slice(1).map((el, i) => (
-                          <span key={i} className={s.card_subtitles}>
-                            {el}
-                          </span>
-                        ))}
-                      </button>
+                          {descriptionBlocks.slice(1).map((el, i) => (
+                            <span key={i} className={s.card_subtitles}>
+                              {el}
+                            </span>
+                          ))}
+                        </button>
+                      </div>
                     )
                   })}
               </div>
