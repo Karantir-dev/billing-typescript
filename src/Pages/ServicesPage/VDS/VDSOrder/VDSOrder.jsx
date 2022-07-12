@@ -15,9 +15,9 @@ import {
 import { Check } from '../../../../images'
 import { vdsOperations, dnsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
-
 import cn from 'classnames'
 import * as Yup from 'yup'
+
 import s from './VDSOrder.module.scss'
 
 export default function VDSOrder() {

@@ -31,14 +31,6 @@
     max-height: 20px;
     fill: var(--icon-color_2);
   }
-
-  &:disabled {
-    pointer-events: none;
-
-    svg {
-      fill: var(--disabled_icon_color);
-    }
-  }
 }
 
 .backdrop {
