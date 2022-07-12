@@ -268,35 +268,39 @@ export default function DedicOrderPage() {
                   let datacenterName = item?.$?.split(',')[1]
 
                   return (
-                    <button
-                      onClick={() => {
-                        setPrice('-')
-                        resetForm()
-                        setPaymentPeriod(item)
-                        setFieldValue('datacenter', item?.$key)
-                        setParameters(null)
-                        setTarifChosen(false)
-                        dispatch(
-                          dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
-                        )
-                      }}
-                      type="button"
+                    <div
                       className={classNames(s.datacenter_card, {
                         [s.selected]: item?.$key === values?.datacenter,
                       })}
                       key={item?.$key}
                     >
-                      <img
-                        className={classNames({
-                          [s.flag_icon]: true,
-                          [s.selected]: item?.$key === values?.datacenter,
-                        })}
-                        src={require('../../../../images/countryFlags/netherlands_flag.webp')}
-                        alt="nth_flag"
-                      />
-                      <p className={s.country_name}>{countryName}</p>
-                      <span className={s.datacenter}>{datacenterName}</span>
-                    </button>
+                      <button
+                        onClick={() => {
+                          setPrice('-')
+                          resetForm()
+                          setPaymentPeriod(item)
+                          setFieldValue('datacenter', item?.$key)
+                          setParameters(null)
+                          setTarifChosen(false)
+                          dispatch(
+                            dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
+                          )
+                        }}
+                        type="button"
+                        className={s.datacenter_card_btn}
+                      >
+                        <img
+                          className={classNames({
+                            [s.flag_icon]: true,
+                            [s.selected]: item?.$key === values?.datacenter,
+                          })}
+                          src={require('../../../../images/countryFlags/netherlands_flag.webp')}
+                          alt="nth_flag"
+                        />
+                        <p className={s.country_name}>{countryName}</p>
+                        <span className={s.datacenter}>{datacenterName}</span>
+                      </button>
+                    </div>
                   )
                 })}
               </div>
@@ -401,68 +405,72 @@ export default function DedicOrderPage() {
                     const priceSale = parsedPrice.sale
 
                     return (
-                      <button
-                        ref={index === 2 ? secondTarrif : null}
-                        onClick={() => {
-                          setParameters(null)
-                          setFieldValue('tarif', item?.pricelist?.$)
-                          setPrice(priceAmount)
-                          setTarifChosen(true)
-
-                          dispatch(
-                            dedicOperations.getParameters(
-                              values.period,
-                              values.datacenter,
-                              item?.pricelist?.$,
-                              setParameters,
-                              setFieldValue,
-                            ),
-                          )
-                        }}
-                        type="button"
+                      <div
                         className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.tarif,
                         })}
                         key={item?.desc?.$}
                       >
-                        {paymentPeriod > 1 && (
-                          <span
-                            className={classNames({
-                              [s.sale_percent]: paymentPeriod > 1,
-                            })}
-                          >
-                            {pricePercent}
-                          </span>
-                        )}
+                        <button
+                          ref={index === 2 ? secondTarrif : null}
+                          onClick={() => {
+                            setParameters(null)
+                            setFieldValue('tarif', item?.pricelist?.$)
+                            setPrice(priceAmount)
+                            setTarifChosen(true)
 
-                        <span
-                          className={classNames({
-                            [s.card_title]: true,
-                            [s.selected]: item?.pricelist?.$ === values.tarif,
-                          })}
+                            dispatch(
+                              dedicOperations.getParameters(
+                                values.period,
+                                values.datacenter,
+                                item?.pricelist?.$,
+                                setParameters,
+                                setFieldValue,
+                              ),
+                            )
+                          }}
+                          type="button"
+                          className={s.tarif_card_btn}
                         >
-                          {cardTitle}
-                        </span>
-                        <div className={s.price_wrapper}>
+                          {paymentPeriod > 1 && (
+                            <span
+                              className={classNames({
+                                [s.sale_percent]: paymentPeriod > 1,
+                              })}
+                            >
+                              {pricePercent}
+                            </span>
+                          )}
+
                           <span
                             className={classNames({
-                              [s.price]: true,
+                              [s.card_title]: true,
                               [s.selected]: item?.pricelist?.$ === values.tarif,
                             })}
                           >
-                            {priceAmount + '/' + periodName}
+                            {cardTitle}
                           </span>
-                          {paymentPeriod > 1 && (
-                            <span className={s.sale_price}>{`${priceSale}`}</span>
-                          )}
-                        </div>
+                          <div className={s.price_wrapper}>
+                            <span
+                              className={classNames({
+                                [s.price]: true,
+                                [s.selected]: item?.pricelist?.$ === values.tarif,
+                              })}
+                            >
+                              {priceAmount + '/' + periodName}
+                            </span>
+                            {paymentPeriod > 1 && (
+                              <span className={s.sale_price}>{`${priceSale}`}</span>
+                            )}
+                          </div>
 
-                        {descriptionBlocks.slice(1).map((el, i) => (
-                          <span key={i} className={s.card_subtitles}>
-                            {el}
-                          </span>
-                        ))}
-                      </button>
+                          {descriptionBlocks.slice(1).map((el, i) => (
+                            <span key={i} className={s.card_subtitles}>
+                              {el}
+                            </span>
+                          ))}
+                        </button>
+                      </div>
                     )
                   })}
               </div>
