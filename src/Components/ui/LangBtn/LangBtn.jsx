@@ -3,13 +3,16 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Shevron } from '../../../images/'
+import { actions } from '../../../Redux'
+import { useDispatch } from 'react-redux'
 
 import s from './LangBtn.module.scss'
 
-const LANGUAGES = ['en', 'ru', 'kz', 'ua', 'ge']
+const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
 
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()
+  const dispatch = useDispatch()
   const currentLang = i18n.language?.slice(0, 5)
 
   if (!LANGUAGES.includes(currentLang)) {
@@ -43,7 +46,10 @@ export default function LangBtn({ burgerType, authType, mainType }) {
                 <button
                   className={s.lang_btn}
                   type="button"
-                  onClick={() => i18n.changeLanguage(lang)}
+                  onClick={() => {
+                    dispatch(actions.showLoader())
+                    i18n.changeLanguage(lang)
+                  }}
                 >
                   {lang}
                 </button>

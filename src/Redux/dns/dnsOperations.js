@@ -527,6 +527,7 @@ const getDNSFilters =
           func: 'dnshost.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...data,
         }),
       )

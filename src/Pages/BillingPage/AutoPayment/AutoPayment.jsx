@@ -47,6 +47,7 @@ export default function Component() {
           label={t('Configure')}
           onClick={() => setIsConfigure(true)}
           type="button"
+          isShadow
         />
       </>
     )

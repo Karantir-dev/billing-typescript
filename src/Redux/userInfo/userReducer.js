@@ -19,7 +19,11 @@ const userTickets = createReducer(initialState.userTickets, {
 const userItems = createReducer(initialState.userItems, {
   [userActions.setItems]: (_, { payload }) => payload,
   [userActions.removeItems]: (state, { payload }) =>
-    (state = current(state)?.filter(el => el?.$id !== payload)),
+    (state = {
+      ...current(state),
+      messages: current(state?.messages)?.filter(el => el?.$id !== payload?.id),
+      messages_count: +payload?.messages - 1,
+    }),
 })
 
 const userInfoLoading = createReducer(initialState.userInfoLoading, {
