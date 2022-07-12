@@ -1,5 +1,5 @@
 .table {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -102,7 +102,7 @@
 
 .list {
   position: absolute;
-  width: 210px;
+  // width: 210px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: 23px;
@@ -218,11 +218,11 @@
     margin-right: 6px;
   }
 }
-
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 540px) {
   .item {
     flex-basis: 48%;
     margin-right: 0;
+    margin-bottom: 15px;
 
     &:nth-child(2n) {
       margin-right: 15px;
@@ -238,6 +238,18 @@
 
     &.sixth_item {
       max-width: 130px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .item {
+    flex-basis: 48.7%;
+    margin-right: 0;
+    margin-bottom: 15px;
+
+    &:nth-child(2n) {
+      margin-right: 15px;
     }
   }
 }

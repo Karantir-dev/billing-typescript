@@ -25,16 +25,18 @@ export default function Component() {
   }, [currentPage])
 
   return (
-    <div data-testid='request_support'>
+    <div data-testid="request_support">
       <SupportFilter selctedTicket={selctedTicket} setCurrentPage={setCurrentPage} />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
       </h2>
-      <SupportTable
-        list={tickerList}
-        setSelctedTicket={setSelctedTicket}
-        selctedTicket={selctedTicket}
-      />
+      {tickerList?.length > 0 && (
+        <SupportTable
+          list={tickerList}
+          setSelctedTicket={setSelctedTicket}
+          selctedTicket={selctedTicket}
+        />
+      )}
       {tickerList.length !== 0 && (
         <div className={s.pagination}>
           <Pagination

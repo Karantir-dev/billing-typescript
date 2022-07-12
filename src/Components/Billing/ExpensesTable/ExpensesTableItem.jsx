@@ -10,7 +10,7 @@ import { expensesTranslateFn } from '../../../utils'
 export default function Component(props) {
   const { id, number, date, sum, name, tax } = props
   const { t } = useTranslation(['billing', 'other', 'dedicated_servers'])
-  const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
+  const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
 
   const datetimeSeparate = string => {
     let date = dayjs(string).format('DD MMM YYYY')
@@ -41,7 +41,7 @@ export default function Component(props) {
         {mobile && (
           <div className={s.item_title}>{t('Paid in payments', { ns: 'other' })}:</div>
         )}
-        <div className={cn(s.item_text, s.fifth_item)}>{t(number)}</div>
+        <div className={cn(s.item_text, s.fifth_item)}>{t(number || '-')}</div>
       </div>
       <div className={s.tableBlockSixth}>
         {mobile && <div className={s.item_title}>{t('Tax', { ns: 'other' })}:</div>}

@@ -59,7 +59,7 @@
 .filterModal {
   position: absolute;
   box-shadow: var(--forms2_shadow);
-  background: var(--elements-bgc);
+  background: var(--forms_bgc_1);
   border-radius: 3px;
   z-index: 141;
   margin-top: 20px;
@@ -223,11 +223,11 @@
     padding: 20px;
     margin-top: 0;
     top: calc(120% + 10px);
-    left: -15px;
+    left: 0px;
     &::after {
       content: '';
       position: absolute;
-      left: 30px;
+      left: 15px;
       top: -10px;
       width: 0;
       height: 0;
