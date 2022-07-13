@@ -47,7 +47,7 @@ export default function FTPMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
-                  disabled={!rights?.edit}
+                  disabled={!rights?.edit || storage?.status?.$ === '1'}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, storage.id.$)}
@@ -61,7 +61,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2' || !rights?.prolong}
+                  disabled={storage?.status?.$ === '1' || !rights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, storage.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -72,7 +72,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={!rights?.history}
+                  disabled={!rights?.history || storage?.status?.$ === '1'}
                   onClick={() => {
                     handleToolBtnClick(setElidForHistoryModal, storage.id.$)
                     setActiveServer(storage)
@@ -86,7 +86,7 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage?.status?.$ !== '2' || !rights?.instruction}
+                  disabled={storage?.status?.$ === '1' || !rights?.instruction}
                   onClick={() =>
                     handleToolBtnClick(setElidForInstructionModal, storage.id.$)
                   }
@@ -99,7 +99,11 @@ export default function FTPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={storage.transition?.$ !== 'on' || !rights?.gotoserver}
+                  disabled={
+                    storage.transition?.$ !== 'on' ||
+                    !rights?.gotoserver ||
+                    storage?.status?.$ !== '2'
+                  }
                   onClick={() => {
                     dispatch(dedicOperations.goToPanel(storage.id.$))
                   }}

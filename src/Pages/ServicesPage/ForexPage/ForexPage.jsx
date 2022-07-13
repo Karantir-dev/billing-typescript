@@ -183,7 +183,9 @@ export default function ForexPage() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer || !rights?.edit}
+                  disabled={
+                    !activeServer || !rights?.edit || activeServer?.status?.$ === '1'
+                  }
                   icon="edit"
                 />
               </HintWrapper>
@@ -192,7 +194,9 @@ export default function ForexPage() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights?.prolong || !activeServer
+                  }
                   icon="clock"
                 />
               </HintWrapper>
@@ -201,7 +205,11 @@ export default function ForexPage() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$ || !rights?.history}
+                  disabled={
+                    !activeServer?.id?.$ ||
+                    !rights?.history ||
+                    activeServer?.status?.$ === '1'
+                  }
                 />
               </HintWrapper>
               <HintWrapper
@@ -210,7 +218,11 @@ export default function ForexPage() {
               >
                 <IconButton
                   className={s.tools_icon}
-                  disabled={!activeServer?.id?.$ || !rights?.delete}
+                  disabled={
+                    !activeServer?.id?.$ ||
+                    !rights?.delete ||
+                    activeServer?.status?.$ === '1'
+                  }
                   icon="delete"
                   onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
                 />
