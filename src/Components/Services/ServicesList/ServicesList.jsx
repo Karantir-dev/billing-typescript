@@ -33,13 +33,15 @@ export default function ServicesList() {
     'zabota-o-servere',
     false,
   )
-  // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
+
+  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false)
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)
+  // const [clickedSlider, setClickedSlider] = useState(0)
 
   let dnsPicture = dark ? 'dns_hosting_lt' : 'dns_hosting'
+  let domainsPicture = dark ? 'domains_lt' : 'domains'
 
   const servicesMenuList = [
     {
@@ -47,7 +49,7 @@ export default function ServicesList() {
       id: 1,
       routeName: routes.DOMAINS,
       allowedToRender: isDomainsAllowedToRender,
-      icon_name: 'domains',
+      icon_name: domainsPicture,
       icon_width: '97',
       icon_height: '117',
     },
@@ -122,6 +124,13 @@ export default function ServicesList() {
     setDark(!dark)
   }, [darkTheme])
 
+  // useEffect(() => {
+  //   const activeCards = document.querySelectorAll('.swiper-slide.swiper-slide-visible')
+  //   activeCards.forEach(card => {
+  //     card.classList.add('swiper-slide-active')
+  //   })
+  // }, [clickedSlider])
+
   return (
     <ul className="swiper_services_list">
       {laptopAndHigher ? (
@@ -146,24 +155,36 @@ export default function ServicesList() {
           spaceBetween={0}
           slidesPerView={'auto'}
           centeredSlides={true}
+          effect={'creative'}
           pagination={{
             clickable: true,
           }}
+          watchSlidesProgress={true}
+          watchSlidesVisibility={true}
+          // onSlideChange={() => {
+          //   let newCount = clickedSlider
+          //   newCount += 1
+          //   setClickedSlider(newCount)
+          // }}
         >
           {filteredServicesMenuList.map((item, index) => {
             const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
             return (
               <SwiperSlide key={id}>
-                <ServiceCard
-                  title={name.toUpperCase()}
-                  index={index + 1}
-                  route={routeName}
-                  iconName={icon_name}
-                  className="swiper-item"
-                  iconWidth={icon_width}
-                  iconHeight={icon_height}
-                />
+                {({ isVisible }) => {
+                  return (
+                    <ServiceCard
+                      title={name.toUpperCase()}
+                      index={index + 1}
+                      route={routeName}
+                      iconName={icon_name}
+                      className={isVisible && 'test'}
+                      iconWidth={icon_width}
+                      iconHeight={icon_height}
+                    />
+                  )
+                }}
               </SwiperSlide>
             )
           })}

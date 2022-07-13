@@ -180,69 +180,75 @@ export default function FTPOrder() {
                     const priceAmount = parsedPrice?.amoumt
 
                     return (
-                      <button
-                        ref={index === 2 ? secondTarrif : null}
-                        onClick={() => {
-                          setParameters(null)
-                          setFieldValue('pricelist', item?.pricelist?.$)
-                          setPrice(priceAmount)
-                          setTarifChosen(true)
-
-                          dispatch(
-                            dnsOperations.getParameters(
-                              values.period,
-                              values.datacenter,
-                              item?.pricelist?.$,
-                              setParameters,
-                              setFieldValue,
-                            ),
-                          )
-                        }}
-                        type="button"
+                      <div
                         className={classNames(s.tarif_card, {
                           [s.selected]: item?.pricelist?.$ === values.pricelist,
                         })}
                         key={item?.desc?.$}
                       >
-                        <img
-                          className={s.dns_img}
-                          src={require(`../../../../images/services/${
-                            item?.pricelist?.$ === '958'
-                              ? 'dns_hosting_small.webp'
-                              : 'dns_hosting_middle.webp'
-                          }`)}
-                          alt="dns"
-                        />
-                        <span
-                          className={classNames({
-                            [s.card_title]: true,
-                            [s.selected]: item?.pricelist?.$ === values.pricelist,
-                          })}
+                        <button
+                          ref={index === 2 ? secondTarrif : null}
+                          onClick={() => {
+                            setParameters(null)
+                            setFieldValue('pricelist', item?.pricelist?.$)
+                            setPrice(priceAmount)
+                            setTarifChosen(true)
+
+                            dispatch(
+                              dnsOperations.getParameters(
+                                values.period,
+                                values.datacenter,
+                                item?.pricelist?.$,
+                                setParameters,
+                                setFieldValue,
+                              ),
+                            )
+                          }}
+                          type="button"
+                          className={s.tarif_card_btn}
                         >
-                          {`${t('dns', { ns: 'crumbs' })} ${cardTitle
-                            ?.split(' ')
-                            .slice(1)
-                            .join(' ')
-                            .replace('for', t('for', { ns: 'dns' }))
-                            .replace('domains', t('domains', { ns: 'dns' }))}`}
-                        </span>
-                        <div className={s.price_wrapper}>
+                          <div className={s.img_wrapper}>
+                            <img
+                              className={s.dns_img}
+                              src={require(`../../../../images/services/${
+                                item?.pricelist?.$ === '958'
+                                  ? 'dns_hosting_small.webp'
+                                  : 'dns_hosting_middle.webp'
+                              }`)}
+                              alt="dns"
+                            />
+                          </div>
                           <span
                             className={classNames({
-                              [s.price]: true,
+                              [s.card_title]: true,
                               [s.selected]: item?.pricelist?.$ === values.pricelist,
                             })}
                           >
-                            {priceAmount + '/' + periodName}
+                            {`${t('dns', { ns: 'crumbs' })} ${cardTitle
+                              ?.split(' ')
+                              .slice(1)
+                              .join(' ')
+                              .replace('for', t('for', { ns: 'dns' }))
+                              .replace('domains', t('domains', { ns: 'dns' }))}`}
                           </span>
-                        </div>
+                          <div className={s.price_wrapper}>
+                            <span
+                              className={classNames({
+                                [s.price]: true,
+                                [s.selected]: item?.pricelist?.$ === values.pricelist,
+                              })}
+                            >
+                              {priceAmount + '/' + periodName}
+                            </span>
+                          </div>
 
-                        {descriptionBlocks.slice(1).map((el, i) => (
-                          <span key={i} className={s.card_subtitles}>
-                            {el}
-                          </span>
-                        ))}
-                      </button>
+                          {descriptionBlocks.slice(1).map((el, i) => (
+                            <span key={i} className={s.card_subtitles}>
+                              {el}
+                            </span>
+                          ))}
+                        </button>
+                      </div>
                     )
                   })}
               </div>

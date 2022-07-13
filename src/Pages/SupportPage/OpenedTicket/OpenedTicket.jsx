@@ -83,6 +83,7 @@ export default function Component() {
               label={t('Back', { ns: 'other' })}
               onClick={() => navigate(`${route.SUPPORT}/${params.path}`)}
               type="button"
+              // isShadow
             />
           ) : (
             <SendMessageForm />

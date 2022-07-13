@@ -14,5 +14,14 @@
 
   "After closing your order will be automatically deleted": "После закрытия ваш заказ будет автоматически удален",
   "Site care": "Забота о сайте",
-  "The payer is not valid, change the payer or add a new one": "Плательщик недействителен, смените плательщика или добавьте нового"
+  "The payer is not valid, change the payer or add a new one": "Плательщик недействителен, смените плательщика или добавьте нового",
+
+  "Payment amount from 1.00 EUR. ": "Сумма платежа от 1.00 EUR.",
+  "Payment using VISA, MasterCard and American Express bank cards.When ordering a service with auto-renewal enabled, the card will be saved for further payment.": "Оплата банковскими картами VISA, MasterCard и American Express. При заказе услуги с включенным автопродлением карта будет сохранена для дальнейшей оплаты.",
+  "Payment amount from 1.00 EUR till  1000.00 EUR ": "Сумма платежа от 1.00 EUR до 1000.00 EUR",
+  "Payment amount from 1.00 EUR. Commission 2%": "Сумма платежа от 1.00 EUR. Комиссия 2%",
+  "Cryptocurrency payment.Refunds are not available for this payment method.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.We don&rsquo;t accept USDT": "Оплата криптовалютой. Для данного способа оплаты возврат средств невозможен. При оплате через сторонние сервисы, биржи - учитывайте их комиссию и прибавляйте к стоимости платежа. Мы не принимаем USDT",
+  "Payment amount from 5.00 EUR. Commission 3%. ": "Сумма платежа от 5,00 EUR. Комиссия 3%.",
+  "Payment amount from 15.00 RUB till  200000.00 RUB . ": "Сумма платежа от 15,00 RUB. до 200000,00 RUB.",
+  "For residents of Russia.Refunds are not available for this payment method.": "Для резидентов России. Возврат денежных средств по данному способу оплаты невозможен."
 }

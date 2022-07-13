@@ -20,10 +20,6 @@
   margin-top: 15px;
 }
 
-.inputHeight {
-  height: 45px;
-}
-
 .formBlock {
   width: 100%;
   display: flex;
@@ -59,7 +55,7 @@
 .filterModal {
   position: absolute;
   box-shadow: var(--forms2_shadow);
-  background: var(--elements-bgc);
+  background: var(--forms_bgc_1);
   border-radius: 3px;
   z-index: 141;
   margin-top: 20px;
@@ -173,6 +169,14 @@
   fill: var(--main-text);
 }
 
+.input_bgc {
+  background-color: var(--forms_bgc_3);
+}
+
+.calendarBtn {
+  background-color: var(--forms_bgc_3);
+}
+
 @media screen and (max-width: 767px) {
   .filterBlock {
     flex-direction: column-reverse;
@@ -182,9 +186,6 @@
     max-height: 53px;
     max-width: 100%;
   }
-}
-
-@media screen and (max-width: 767px) {
   .formContainer {
     padding: 0 14px;
     height: 100%;
@@ -223,11 +224,11 @@
     padding: 20px;
     margin-top: 0;
     top: calc(120% + 10px);
-    left: -15px;
+    left: 0px;
     &::after {
       content: '';
       position: absolute;
-      left: 30px;
+      left: 15px;
       top: -10px;
       width: 0;
       height: 0;

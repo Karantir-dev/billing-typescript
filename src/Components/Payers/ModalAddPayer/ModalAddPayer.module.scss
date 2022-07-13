@@ -10,6 +10,10 @@
   overflow-y: auto;
 }
 
+.selectDropdownClass {
+  z-index: 9 !important;
+}
+
 .modalBlock {
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);

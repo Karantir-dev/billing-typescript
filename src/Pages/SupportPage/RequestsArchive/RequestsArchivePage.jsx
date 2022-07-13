@@ -26,11 +26,13 @@ export default function Component() {
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
       </h2>
-      <SupportArchiveTable
-        list={tickerArchiveList}
-        setSelctedTicket={setSelctedTicket}
-        selctedTicket={selctedTicket}
-      />
+      {tickerArchiveList?.length > 0 && (
+        <SupportArchiveTable
+          list={tickerArchiveList}
+          setSelctedTicket={setSelctedTicket}
+          selctedTicket={selctedTicket}
+        />
+      )}
       {tickerArchiveList.length !== 0 && (
         <div className={s.pagination}>
           <Pagination

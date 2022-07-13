@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '../../../../utils'
 import { Check, Info } from '../../../../images'
 
 import s from './DepartmentSelect.module.scss'
@@ -11,15 +10,7 @@ export default function Component(props) {
   const { t } = useTranslation('support')
   const { selected, value, title, setValue, description } = props
 
-  const [isDescrOpen, setIsDescrOpen] = useState(false)
-
   const dropdownDescription = useRef(null)
-
-  const clickOutside = () => {
-    setIsDescrOpen(false)
-  }
-
-  useOutsideAlerter(dropdownDescription, isDescrOpen, clickOutside)
 
   const parseDescription = (desc = '') => {
     const newString =
@@ -81,19 +72,23 @@ export default function Component(props) {
   }
 
   return (
-    <div className={cn(s.select, { [s.selected]: selected })}>
-      <button type="button" onClick={() => setValue(value)} className={s.checkIcon}>
+    <div
+      tabIndex={0}
+      role="button"
+      onKeyDown={null}
+      onClick={() => setValue(value)}
+      className={cn(s.select, { [s.selected]: selected })}
+    >
+      <div className={s.checkIcon}>
         <Check />
-      </button>
+      </div>
       <div className={s.title}>{t(title)}</div>
-      <button onClick={() => setIsDescrOpen(true)} type="button" className={s.infoBtn}>
+      <button type="button" className={s.infoBtn}>
         <Info />
-      </button>
-      {isDescrOpen && (
         <div ref={dropdownDescription} className={s.descriptionBlock}>
           {parseDescription(description)}
         </div>
-      )}
+      </button>
     </div>
   )
 }

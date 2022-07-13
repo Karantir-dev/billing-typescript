@@ -48,7 +48,6 @@
 .dropdown {
   position: absolute;
   z-index: 1;
-  padding: 0 20px;
   height: 0;
   overflow: hidden;
   top: calc(100% + 5px);
@@ -60,17 +59,13 @@
 }
 
 .service_item {
-  margin-bottom: 15px;
+  padding: 8px 20px;
   font-size: 16px;
   font-weight: 300;
   cursor: pointer;
 
-  &:first-child {
-    margin-top: 15px;
-  }
-
   &:hover {
-    font-weight: 400;
+    background-color: var(--select_option_bgc);
   }
 }
 

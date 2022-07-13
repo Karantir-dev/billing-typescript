@@ -122,6 +122,7 @@ export default function Component(props) {
                         getElement={item => setFieldValue('profiletype', item)}
                         isShadow
                         className={s.select}
+                        dropdownClass={s.selectDropdownClass}
                         itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
                           label: t(`${$.trim()}`),
                           value: $key,

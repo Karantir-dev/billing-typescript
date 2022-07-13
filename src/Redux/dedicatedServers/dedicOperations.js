@@ -569,6 +569,7 @@ const editDedicServer =
               auth: sessionId,
               billorder,
               sok: 'ok',
+              lang: 'en',
             }),
           )
           .then(() => {
@@ -1226,6 +1227,7 @@ const getDedicFilters =
           func: 'dedic.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...data,
         }),
       )

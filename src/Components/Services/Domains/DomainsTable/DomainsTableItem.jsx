@@ -77,7 +77,9 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockSixth}>
         {mobile && <div className={s.item_title}>{t('Price')}:</div>}
-        <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
+        <div className={cn(s.item_text, s.seventh_item)}>
+          {cost.replace('Year', t('Year', { ns: 'other' }))}
+        </div>
       </div>
       <div className={s.dots}>
         <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />

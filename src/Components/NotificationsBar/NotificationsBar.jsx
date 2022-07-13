@@ -39,7 +39,7 @@ export default function NotificationsBar({ handler, isBarOpened }) {
           </div>
         </div>
 
-        {isBarOpened && <NotificationList notifications={userItems?.messages} />}
+        {isBarOpened && <NotificationList notifications={userItems} />}
       </div>
     </>
   )

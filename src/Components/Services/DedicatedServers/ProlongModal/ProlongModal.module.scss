@@ -10,9 +10,9 @@
 }
 
 .form {
-  padding: 25px 20px 21px 20px;
+  padding: 25px 20px 25px 20px;
   margin-left: 2px;
-  height: 30vh;
+  // height: 30vh;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 
@@ -68,8 +68,15 @@
   margin-bottom: 20px;
 }
 
-.label,
+.label {
+  width: 70%;
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--main-text);
+}
+
 .value {
+  width: 30%;
   font-size: 14px;
   line-height: 120%;
   color: var(--main-text);
@@ -117,6 +124,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
 
   padding: 14px;
   z-index: 2;
@@ -153,7 +162,7 @@
   }
 
   .form {
-    padding: 25px 51px 32px 51px;
+    padding: 25px 51px 25px 51px;
   }
 
   .header_block {

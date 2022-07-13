@@ -181,6 +181,12 @@
   }
 }
 
+@media screen and (min-width: 1024px) {
+  .content {
+    margin-top: 30px;
+  }
+}
+
 @media screen and (min-width: 1300px) {
   .list_item {
     gap: 30px;

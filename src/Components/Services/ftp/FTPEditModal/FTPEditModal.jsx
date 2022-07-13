@@ -104,17 +104,20 @@ export default function FTPEditModal({ elid, closeFn }) {
                         value={values?.payment_method}
                         disabled
                       />
-                      <InputField
-                        label={`${t('FTP server', { ns: 'other' })}:`}
-                        name="ftp_server"
-                        isShadow
-                        className={s.input_field_wrapper}
-                        inputClassName={s.input}
-                        autoComplete
-                        type="text"
-                        value={values?.ftp_server}
-                        disabled
-                      />
+                      {values?.ftp_server && (
+                        <InputField
+                          label={`${t('FTP server', { ns: 'other' })}:`}
+                          name="ftp_server"
+                          isShadow
+                          className={s.input_field_wrapper}
+                          inputClassName={s.input}
+                          autoComplete
+                          type="text"
+                          value={values?.ftp_server}
+                          disabled
+                        />
+                      )}
+
                       <InputField
                         label={`${t('user_name', { ns: 'vds' })}:`}
                         name="username"

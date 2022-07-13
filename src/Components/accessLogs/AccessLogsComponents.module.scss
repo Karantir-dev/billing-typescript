@@ -94,6 +94,22 @@
   div {
     height: 46px;
   }
+  input {
+    font-size: 18px;
+    &::placeholder {
+      font-size: 18px;
+    }
+  }
+}
+
+.inputClassName {
+  font-size: 18px;
+}
+
+.dropdownClass {
+  span {
+    font-size: 18px;
+  }
 }
 
 .selectAndBtn {

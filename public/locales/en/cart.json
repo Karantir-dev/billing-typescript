@@ -13,5 +13,14 @@
   "(Enable)": "(Enable)",
   "After closing your order will be automatically deleted": "After closing your order will be automatically deleted",
   "Site care": "Site care",
-  "The payer is not valid, change the payer or add a new one": "The payer is not valid, change the payer or add a new one"
+  "The payer is not valid, change the payer or add a new one": "The payer is not valid, change the payer or add a new one",
+
+  "Payment amount from 1.00 EUR. ": "Payment amount from 1.00 EUR.",
+  "Payment using VISA, MasterCard and American Express bank cards.When ordering a service with auto-renewal enabled, the card will be saved for further payment.": "Payment using VISA, MasterCard and American Express bank cards. When ordering a service with auto-renewal enabled, the card will be saved for further payment.",
+  "Payment amount from 1.00 EUR till  1000.00 EUR ": "Payment amount from 1.00 EUR till  1000.00 EUR",
+  "Payment amount from 1.00 EUR. Commission 2%": "Payment amount from 1.00 EUR. Commission 2%",
+  "Cryptocurrency payment.Refunds are not available for this payment method.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.We don&rsquo;t accept USDT": "Cryptocurrency payment. Refunds are not available for this payment method.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. We don't accept USDT",
+  "Payment amount from 5.00 EUR. Commission 3%. ": "Payment amount from 5.00 EUR. Commission 3%.",
+  "Payment amount from 15.00 RUB till  200000.00 RUB . ": "Payment amount from 15.00 RUB till  200000.00 RUB .",
+  "For residents of Russia.Refunds are not available for this payment method.": "For residents of Russia. Refunds are not available for this payment method."
 }
