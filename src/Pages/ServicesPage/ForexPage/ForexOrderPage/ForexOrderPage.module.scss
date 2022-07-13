@@ -7,7 +7,7 @@
 }
 
 .select {
-  width: 253px;
+  width: 100%;
   margin-bottom: 15px;
 }
 
@@ -15,7 +15,7 @@
 
 .tarifs_block {
   display: grid;
-  grid-template-columns: repeat(1, 251px);
+  grid-template-columns: 1fr;
   grid-auto-rows: max-content;
   grid-column-gap: 9px;
   grid-row-gap: 10px;
@@ -65,7 +65,7 @@
   }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
 
     .card_title {
       font-weight: 600;
@@ -261,8 +261,8 @@
 // ADAPTIVE
 
 @media screen and (min-width: 768px) {
-  .checkbox_wrapper {
-    // margin-bottom: 0;
+  .select {
+    width: 253px;
   }
 
   .terms_block {

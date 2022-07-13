@@ -188,7 +188,7 @@ export default function Component() {
         sitecareRenderData?.siteCareList && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/care.webp')}
+              src={require('../../../images/services/no_site_care.png')}
               alt="sitecare"
               className={s.sitecare_img}
             />

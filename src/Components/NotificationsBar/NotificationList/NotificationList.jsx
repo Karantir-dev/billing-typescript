@@ -26,7 +26,7 @@ export default function NotificationList({ notifications }) {
 
   const removeItem = id => {
     dispatch(userOperations.removeItems(isAuthenticated, id))
-    dispatch(userActions.removeItems({ id, messages: notifications.messages_count }))
+    dispatch(userActions.removeItems({ id, messages: notifications?.messages_count }))
   }
 
   const removeAllItems = () => {
@@ -39,11 +39,7 @@ export default function NotificationList({ notifications }) {
   return (
     <>
       {notifications?.messages?.length > 0 || notifications?.messages?.$id ? (
-        <NotificationListItem
-          // removedNotification={removedNotification}
-          arr={notifications?.messages}
-          removeItem={removeItem}
-        />
+        <NotificationListItem arr={notifications?.messages} removeItem={removeItem} />
       ) : (
         <p className={s.no_messages}>{t('notification_bar.no_messages')}</p>
       )}
