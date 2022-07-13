@@ -43,11 +43,11 @@
 
 .list {
   position: absolute;
-  width: 150px;
+  min-width: 150px;
   background-color: var(--forms_bgc_4);
   top: 35px;
   right: -19px;
-  padding: 29px 23px 22px;
+  padding: 22px 22px;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;

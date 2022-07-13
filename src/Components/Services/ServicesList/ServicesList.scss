@@ -111,9 +111,16 @@
   }
 }
 
+@media screen and (min-width: 1400px) {
+  .swiper_services_list {
+    grid-template-columns: repeat(4, max-content);
+    gap: 32px;
+  }
+}
+
 @media screen and (min-width: 1550px) {
   .swiper_services_list {
     grid-template-columns: repeat(4, max-content);
-    gap: 39px;
+    gap: 40px;
   }
 }

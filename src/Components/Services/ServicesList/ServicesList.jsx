@@ -41,6 +41,7 @@ export default function ServicesList() {
   // const [clickedSlider, setClickedSlider] = useState(0)
 
   let dnsPicture = dark ? 'dns_hosting_lt' : 'dns_hosting'
+  let domainsPicture = dark ? 'domains_lt' : 'domains'
 
   const servicesMenuList = [
     {
@@ -48,7 +49,7 @@ export default function ServicesList() {
       id: 1,
       routeName: routes.DOMAINS,
       allowedToRender: isDomainsAllowedToRender,
-      icon_name: 'domains',
+      icon_name: domainsPicture,
       icon_width: '97',
       icon_height: '117',
     },
