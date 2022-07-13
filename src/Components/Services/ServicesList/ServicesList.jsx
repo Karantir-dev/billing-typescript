@@ -38,6 +38,7 @@ export default function ServicesList() {
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)
+  // const [clickedSlider, setClickedSlider] = useState(0)
 
   let dnsPicture = dark ? 'dns_hosting_lt' : 'dns_hosting'
 
@@ -122,6 +123,13 @@ export default function ServicesList() {
     setDark(!dark)
   }, [darkTheme])
 
+  // useEffect(() => {
+  //   const activeCards = document.querySelectorAll('.swiper-slide.swiper-slide-visible')
+  //   activeCards.forEach(card => {
+  //     card.classList.add('swiper-slide-active')
+  //   })
+  // }, [clickedSlider])
+
   return (
     <ul className="swiper_services_list">
       {laptopAndHigher ? (
@@ -146,24 +154,36 @@ export default function ServicesList() {
           spaceBetween={0}
           slidesPerView={'auto'}
           centeredSlides={true}
+          effect={'creative'}
           pagination={{
             clickable: true,
           }}
+          watchSlidesProgress={true}
+          watchSlidesVisibility={true}
+          // onSlideChange={() => {
+          //   let newCount = clickedSlider
+          //   newCount += 1
+          //   setClickedSlider(newCount)
+          // }}
         >
           {filteredServicesMenuList.map((item, index) => {
             const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
             return (
               <SwiperSlide key={id}>
-                <ServiceCard
-                  title={name.toUpperCase()}
-                  index={index + 1}
-                  route={routeName}
-                  iconName={icon_name}
-                  className="swiper-item"
-                  iconWidth={icon_width}
-                  iconHeight={icon_height}
-                />
+                {({ isVisible }) => {
+                  return (
+                    <ServiceCard
+                      title={name.toUpperCase()}
+                      index={index + 1}
+                      route={routeName}
+                      iconName={icon_name}
+                      className={isVisible && 'test'}
+                      iconWidth={icon_width}
+                      iconHeight={icon_height}
+                    />
+                  )
+                }}
               </SwiperSlide>
             )
           })}
