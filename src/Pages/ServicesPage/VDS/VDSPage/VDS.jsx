@@ -147,7 +147,7 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer.id.$)}
-                  disabled={activeServer?.status?.$ !== '2' || !rights?.edit}
+                  disabled={activeServer?.status?.$ === '1' || !rights?.edit}
                   icon="edit"
                 />
               </HintWrapper>
@@ -157,7 +157,6 @@ export default function VDS() {
                   className={s.tools_icon}
                   onClick={() => setIdForDeleteModal(activeServer.id.$)}
                   disabled={
-                    !activeServer ||
                     activeServer.item_status.$ === '5_open' ||
                     activeServer.scheduledclose.$ === 'on' ||
                     !rights?.delete
@@ -202,7 +201,7 @@ export default function VDS() {
             <HintWrapper label={t('prolong')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
+                disabled={activeServer?.status?.$ === '1' || !rights?.prolong}
                 onClick={() => setIdForProlong(activeServer.id.$)}
                 icon="clock"
               />
@@ -212,7 +211,7 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 onClick={() => setIdForHistory(activeServer.id.$)}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.history}
+                disabled={activeServer?.status?.$ === '1' || !rights?.history}
                 icon="refund"
               />
             </HintWrapper>
@@ -220,7 +219,7 @@ export default function VDS() {
             <HintWrapper label={t('instruction')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.instruction}
+                disabled={activeServer?.status?.$ === '1' || !rights?.instruction}
                 onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
               />

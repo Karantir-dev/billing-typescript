@@ -43,10 +43,14 @@ import {
   SiteCareOrder,
 } from '../../Pages'
 import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
-
 import { cartSelectors } from '../../Redux'
-
 import * as route from '../../routes'
+
+// const AffiliateProgram = React.lazy(() =>
+//   import(
+//     '../../Pages/AffiliateProgram/AffiliateProgram' /* webpakChankName: "AffiliateProgram" */
+//   ),
+// )
 
 const Component = () => {
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
