@@ -341,6 +341,23 @@ export default function Component() {
               onSubmit={payBasketHandler}
             >
               {({ values, setFieldValue, touched, errors }) => {
+                const parsePaymentInfo = text => {
+                  const splittedText = text?.split('<p>')
+                  const minAmount = splittedText[0]?.replace('\n', '')
+                  const infoText = splittedText[1]
+                    ?.replace('<p>', '')
+                    ?.replace('</p>', '')
+                    ?.replace('<strong>', '')
+                    ?.replace('</strong>', '')
+                    ?.replaceAll('\n', '')
+
+                  return { minAmount, infoText }
+                }
+
+                const parsedText =
+                  values?.slecetedPayMethod &&
+                  parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+
                 const setPayerHandler = val => {
                   setFieldValue('profile', val)
                   if (val === 'add_new') {
@@ -499,13 +516,14 @@ export default function Component() {
                     </div>
 
                     <div className={s.infotext}>
-                      {t('Payment using text')}{' '}
                       {values?.slecetedPayMethod &&
                         values?.slecetedPayMethod?.payment_minamount && (
-                          <span>
-                            {t('Payment amount')}{' '}
-                            {values?.slecetedPayMethod?.payment_minamount?.$} EUR
-                          </span>
+                          <div>
+                            <span>{t(`${parsedText?.minAmount}`, { ns: 'cart' })}</span>
+                            {parsedText?.infoText && (
+                              <p>{t(`${parsedText?.infoText}`, { ns: 'cart' })}</p>
+                            )}
+                          </div>
                         )}
                     </div>
 
