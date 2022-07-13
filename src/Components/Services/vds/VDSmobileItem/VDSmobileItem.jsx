@@ -70,7 +70,10 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setElidForEditModal)}
-                    disabled={server?.status?.$ !== '2' || !rights?.edit}
+                    disabled={
+                      (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                      !rights?.edit
+                    }
                   >
                     <Edit className={s.tool_icon} />
                     {t('edit', { ns: 'other' })}
@@ -83,7 +86,7 @@ export default function VDSmobileItem({
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForPassChange)}
                     disabled={
-                      server.allow_changepassword?.$ !== 'on' || !rights?.changepassword
+                      server?.allow_changepassword?.$ !== 'on' || !rights?.changepassword
                     }
                   >
                     <PassChange className={s.tool_icon} />
@@ -96,7 +99,7 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForReboot)}
-                    disabled={server.show_reboot?.$ !== 'on' || !rights?.reboot}
+                    disabled={server?.show_reboot?.$ !== 'on' || !rights?.reboot}
                   >
                     <Reload className={s.tool_icon} />
                     {t('reload')}
@@ -110,7 +113,11 @@ export default function VDSmobileItem({
                     onClick={() =>
                       navigate(route.VDS_IP, { state: { id: server?.id.$ } })
                     }
-                    disabled={server.has_ip_pricelist?.$ !== 'on' || !rights?.ip}
+                    disabled={
+                      server?.status?.$ === '5' ||
+                      server?.has_ip_pricelist?.$ !== 'on' ||
+                      !rights?.ip
+                    }
                   >
                     <IP className={s.tool_icon} />
                     {t('ip_addresses')}
@@ -122,7 +129,10 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForProlong)}
-                    disabled={server?.status?.$ !== '2' || !rights?.prolong}
+                    disabled={
+                      (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                      !rights?.prolong
+                    }
                   >
                     <Clock className={s.tool_icon} />
                     {t('prolong')}
@@ -134,7 +144,10 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForHistory)}
-                    disabled={server?.status?.$ !== '2' || !rights?.history}
+                    disabled={
+                      (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                      !rights?.history
+                    }
                   >
                     <Refund className={s.tool_icon} />
                     {t('history')}
@@ -146,7 +159,10 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForInstruction)}
-                    disabled={server?.status?.$ !== '2' || !rights?.instruction}
+                    disabled={
+                      (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                      !rights?.instruction
+                    }
                   >
                     <Info className={s.tool_icon} />
                     {t('instruction')}
@@ -158,7 +174,11 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(goToPanel)}
-                    disabled={server.transition?.$ !== 'on' || !rights?.gotoserver}
+                    disabled={
+                      server?.transition?.$ !== 'on' ||
+                      server?.status?.$ !== '2' ||
+                      !rights?.gotoserver
+                    }
                   >
                     <ExitSign className={s.tool_icon} />
                     {t('go_to_panel')}
@@ -167,7 +187,11 @@ export default function VDSmobileItem({
 
                 <li className={s.tool_item}>
                   <button
-                    disabled={!rights?.delete}
+                    disabled={
+                      server?.status?.$ === '5' ||
+                      server?.scheduledclose.$ === 'on' ||
+                      !rights?.delete
+                    }
                     className={s.tool_btn}
                     type="button"
                     onClick={() => handleToolBtnClick(setIdForDeleteModal)}
