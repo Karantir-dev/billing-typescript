@@ -82,7 +82,7 @@ export default function Component(props) {
         <div className={cn(s.item_text, s.fourth_item)}>{expiredate}</div>
       </div>
       <div className={s.tableBlockSeventh}>
-        {mobile && <div className={s.item_title}>{t('State')}:</div>}
+        {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}
         <ServerState server={el} />
       </div>
       <div className={s.tableBlockEighth}>

@@ -290,7 +290,7 @@
   .filterModal {
     position: absolute;
     max-height: unset;
-    padding: 20px;
+    padding:  10px 20px 20px;
     top: calc(90% + 10px);
     left: -290px;
     overflow-y: visible;
@@ -415,7 +415,7 @@
 
 @media screen and (min-width: 1918px) {
   .filterModal {
-    padding: 26px 31px;
+    padding:  10px 20px 20px;
   }
 
   .form {

@@ -74,6 +74,26 @@ export default function Component(props) {
     }
   }
 
+  const renderImage = name => {
+    const vhostCloud = require('../../../../images/vhost/VhostCloud.png')
+    const corporate = require('../../../../images/vhost/corporate.png')
+    const favourable = require('../../../../images/vhost/favourable.png')
+    const optimal = require('../../../../images/vhost/optimal.png')
+
+    if (name === 'AFFORDABLE') {
+      return vhostCloud
+    } else if (name === 'CORPORATE') {
+      return corporate
+    } else if (name === 'FAVOURABLE') {
+      return favourable
+    } else if (name === 'OPTIMAL') {
+      return optimal
+    }
+
+    return vhostCloud
+  }
+
+  console.log(data?.name)
   return (
     <div
       tabIndex={0}
@@ -83,7 +103,7 @@ export default function Component(props) {
       className={cn(s.cardBg, { [s.selected]: selected })}
     >
       <div className={s.cardBlock}>
-        <img src={require('../../../../images/vhost/VhostCloud.png')} alt="VhostCloud" />
+        <img src={renderImage(data?.name)} alt="VhostCloud" />
         <div className={s.charBlock}>
           <div className={s.tariffName}>{data?.name}</div>
           <div className={s.tariffPrice}>
