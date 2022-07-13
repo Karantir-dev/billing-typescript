@@ -19,8 +19,6 @@ const tagManagerArgs = {
 
 TagManager.initialize(tagManagerArgs)
 
-// console.log(window.dataLayer)
-
 export default function App() {
   return (
     <Provider store={entireStore.store}>

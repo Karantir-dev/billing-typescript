@@ -5,11 +5,31 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions, authSelectors } from '../Redux'
 import i18n from 'i18next'
 
+function getFaviconEl() {
+  return document.getElementById('favicon')
+}
+
+function getFaviconMobEl() {
+  return document.getElementById('favicon_mob')
+}
+
 const Component = () => {
   const dispatch = useDispatch()
-  i18n.on('languageChanged', () => {
+
+  i18n.on('languageChanged', l => {
+    const favicon = getFaviconEl()
+    const favicon_mob = getFaviconMobEl()
+    if (l !== 'ru') {
+      favicon.href = require('../images/favIcons/favicon_ua.ico')
+      favicon_mob.href = require('../images/favIcons/logo192_ua.png')
+    } else {
+      favicon.href = require('../images/favIcons/favicon.ico')
+      favicon_mob.href = require('../images/favIcons/logo192.png')
+    }
+
     dispatch(actions.hideLoader())
   })
+
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
   return <>{isAuthenticated ? <SecureRoutes /> : <AuthRoutes />}</>

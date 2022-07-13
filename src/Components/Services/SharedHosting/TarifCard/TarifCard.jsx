@@ -93,7 +93,6 @@ export default function Component(props) {
     return vhostCloud
   }
 
-  console.log(data?.name)
   return (
     <div
       tabIndex={0}
