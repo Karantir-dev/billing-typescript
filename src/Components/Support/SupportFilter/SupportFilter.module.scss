@@ -20,10 +20,6 @@
   margin-top: 15px;
 }
 
-.inputHeight {
-  height: 45px;
-}
-
 .formBlock {
   width: 100%;
   display: flex;
@@ -173,6 +169,14 @@
   fill: var(--main-text);
 }
 
+.input_bgc {
+  background-color: var(--forms_bgc_3);
+}
+
+.calendarBtn {
+  background-color: var(--forms_bgc_3);
+}
+
 @media screen and (max-width: 767px) {
   .filterBlock {
     flex-direction: column-reverse;
@@ -182,9 +186,6 @@
     max-height: 53px;
     max-width: 100%;
   }
-}
-
-@media screen and (max-width: 767px) {
   .formContainer {
     padding: 0 14px;
     height: 100%;

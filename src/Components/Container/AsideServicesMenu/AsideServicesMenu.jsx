@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
@@ -45,11 +45,13 @@ const AsideServicesMenu = () => {
     <nav className={cn({ [s.navigation]: true, [s.navigation_pinned]: !pinnedStatus })}>
       <ul className={s.list}>
         <div className={s.logo_container}>
-          <Logo
-            svgwidth={!pinnedStatus ? '74' : '91'}
-            svgheight="40"
-            className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
-          />
+          <Link to={routes.SERVICES}>
+            <Logo
+              svgwidth={!pinnedStatus ? '74' : '91'}
+              svgheight="40"
+              className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
+            />
+          </Link>
         </div>
 
         {areServicesAllowedToRender && (
