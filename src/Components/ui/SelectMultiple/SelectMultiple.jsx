@@ -15,6 +15,7 @@ export default function Component(props) {
     value,
     height,
     placeholder,
+    inputClassName,
   } = props
 
   const [isOpened, setIsOpened] = useState(false)
@@ -78,16 +79,16 @@ export default function Component(props) {
     getElement(valuesString?.join(','))
   }
 
-  const calculateTop = () => {
-    if (selectedItem?.length > 1) {
-      return 65 + 28 * (selectedItem?.length - 1)
-    }
-    return 70
-  }
+  // const calculateTop = () => {
+  //   if (selectedItem?.length > 1) {
+  //     return 65 + 28 * (selectedItem?.length - 1)
+  //   }
+  //   return 70
+  // }
 
   return (
     <div
-      style={{ marginBottom: calculateTop() - 70 }}
+      // style={{ marginBottom: calculateTop() - 70 }}
       className={cn({ [s.field_wrapper]: true, [className]: className })}
     >
       {label && <label className={s.label}>{label}</label>}
@@ -101,6 +102,7 @@ export default function Component(props) {
           className={cn({
             [s.input]: true,
             [s.shadow]: isShadow,
+            [inputClassName]: inputClassName,
           })}
         >
           {selectedItem.length > 0 ? (
@@ -108,7 +110,12 @@ export default function Component(props) {
               {selectedItem?.map(el => (
                 <div className={s.selected_item} key={el.value}>
                   <span>{el.label}</span>
-                  <Cross onClick={e => deleteItem(el, e)} className={s.cross} />
+                  <Cross
+                    className={s.cross}
+                    width={12}
+                    height={12}
+                    onClick={e => deleteItem(el, e)}
+                  />
                 </div>
               ))}
             </>
@@ -117,13 +124,13 @@ export default function Component(props) {
               {placeholder}
             </span>
           )}
-          <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
         </div>
+        <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
       </button>
       {itemsList.length !== 0 && (
         <div
           ref={dropdown}
-          style={{ top: calculateTop() }}
+          // style={{ top: calculateTop() }}
           className={cn(s.dropdown, { [s.opened]: isOpened })}
         >
           <div className={s.list}>

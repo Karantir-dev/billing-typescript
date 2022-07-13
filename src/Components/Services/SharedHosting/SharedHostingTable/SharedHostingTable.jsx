@@ -28,7 +28,9 @@ export default function Component(props) {
         <span className={cn(s.title_text, s.fourth_item)}>{t('Tariff')}:</span>
         <span className={cn(s.title_text, s.fifth_item)}>{t('Data center')}:</span>
         <span className={cn(s.title_text, s.sixth_item)}>{t('Valid until')}:</span>
-        <span className={cn(s.title_text, s.seventh_item)}>{t('State')}:</span>
+        <span className={cn(s.title_text, s.seventh_item)}>
+          {t('status', { ns: 'other' })}:
+        </span>
         <span className={cn(s.title_text, s.eighth_item)}>{t('Price')}:</span>
       </div>
       {list?.map(el => {

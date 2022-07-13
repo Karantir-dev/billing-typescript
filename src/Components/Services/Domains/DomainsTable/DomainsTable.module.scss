@@ -6,7 +6,7 @@
 
 .tableHeader {
   display: none;
-  padding: 20px 23px;
+  padding: 20px 23px 13px;
   width: 100%;
 }
 
@@ -22,7 +22,7 @@
     flex-basis: 12.6%;
   }
   &.second_item {
-    flex-basis: 16.5%;
+    flex-basis: 24.5%;
   }
   &.third_item {
     flex-basis: 11.3%;
@@ -34,7 +34,7 @@
     flex-basis: 19.1%;
   }
   &.sixth_item {
-    flex-basis: 18.5%;
+    flex-basis: 10.5%;
   }
 }
 
@@ -266,7 +266,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px;
+    padding: 20px 26px 13px;
   }
 
   .item {
@@ -292,7 +292,7 @@
   }
 
   .tableBlockSecond {
-    flex-basis: 16.5%;
+    flex-basis: 24.5%;
   }
 
   .tableBlockThird {
@@ -308,7 +308,7 @@
   }
 
   .tableBlockSixth {
-    flex-basis: 18.5%;
+    flex-basis: 10.5%;
   }
 
   .item_text {
@@ -334,7 +334,7 @@
     }
   }
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 13px;
   }
 
   .item {
@@ -378,7 +378,7 @@
 
 @media screen and (min-width: 1918px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 13px;
   }
 
   .item_text {

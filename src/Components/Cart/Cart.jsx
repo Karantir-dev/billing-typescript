@@ -231,7 +231,7 @@ export default function Component() {
 
         {vdsList?.length > 0 && (
           <div className={s.vds_wrapper}>
-            <div className={cn(s.formBlockTitle, s.padding, s.mb)}>
+            <div className={cn(s.formBlockTitle, s.padding)}>
               {t('services.Virtual server', { ns: 'other' })}:
             </div>
 
