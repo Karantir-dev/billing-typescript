@@ -15,10 +15,9 @@
 }
 
 .input_wrapper {
-  width: 100%;
   position: relative;
-  min-height: 46px;
-  height: fit-content;
+  width: 100%;
+  height: 47px;
 }
 
 .checkBox {
@@ -44,13 +43,27 @@
   bottom: 1px;
   left: 1px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 5px;
+  row-gap: 3px;
+  padding: 6px 40px 6px 16px;
   caret-color: transparent;
-  min-height: 44px;
-  height: fit-content;
   cursor: pointer;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+
   span {
     max-width: 90%;
     white-space: nowrap;
@@ -66,10 +79,15 @@
 }
 
 .selected_item {
-  margin: 5px 0;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
-  width: 100%;
+  align-items: center;
+
+  padding: 0 5px;
+  background-color: var(--select_option_bgc);
+  border-radius: 3px;
+  height: fit-content;
+
   span {
     max-width: 90%;
     font-style: normal;
@@ -82,7 +100,7 @@
 }
 
 .cross {
-  transform: scale(0.7);
+  flex: none;
   fill: var(--transparent-color);
 }
 
@@ -92,12 +110,12 @@
 
 .right_icon {
   position: absolute;
-  top: 23px;
+  top: 50%;
   right: 20px;
   z-index: 1;
   pointer-events: none;
   cursor: pointer;
-  stroke: var(--eye-color);
+  stroke: var(--main-text);
   transform: translateY(-50%) rotateZ(180deg);
   transition: transform 0.15s;
 
@@ -202,11 +220,6 @@
 
 // ADAPTIVE
 @media screen and (min-width: 768px) {
-  .input_wrapper {
-    min-height: 44px;
-    height: fit-content;
-  }
-
   .input {
     &.iconLeft {
       padding-left: 36px;
@@ -214,5 +227,11 @@
     &.iconLeft {
       padding-right: 36px;
     }
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .input_wrapper {
+    height: 52px;
   }
 }

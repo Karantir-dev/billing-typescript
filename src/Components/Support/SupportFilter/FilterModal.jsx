@@ -14,9 +14,9 @@ import {
   Button,
   SelectMultiple,
 } from '../..'
+import { Cross } from '../../../images'
 import { supportSelectors, supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
-import { Cross } from '../../../images'
 
 export default function Component(props) {
   const { setFilterModal, setCurrentPage, filterModal } = props
@@ -108,7 +108,7 @@ export default function Component(props) {
               <div className={s.formContainer}>
                 <div className={s.inputRow}>
                   <InputField
-                    inputWrapperClass={s.inputHeight}
+                    inputClassName={s.input_bgc}
                     name="id"
                     label={`${t('request_id')}:`}
                     placeholder={t('Enter id', { ns: 'other' })}
@@ -118,7 +118,7 @@ export default function Component(props) {
                     touched={!!touched.email}
                   />
                   <InputField
-                    inputWrapperClass={s.inputHeight}
+                    inputClassName={s.input_bgc}
                     name="message"
                     label={`${t('Contains text')}:`}
                     placeholder={t('Enter text', { ns: 'other' })}
@@ -128,7 +128,7 @@ export default function Component(props) {
                     touched={!!touched.email}
                   />
                   <InputField
-                    inputWrapperClass={s.inputHeight}
+                    inputClassName={s.input_bgc}
                     name="name"
                     label={`${t('theme', { ns: 'other' })}:`}
                     placeholder={t('Enter request subject')}
@@ -140,6 +140,8 @@ export default function Component(props) {
                 </div>
                 <div className={s.selectAndBtn}>
                   <Select
+                    inputClassName={s.input_bgc}
+                    className={s.select}
                     placeholder={t('Not chosen', { ns: 'other' })}
                     label={`${t('The request is related to a violation')}:`}
                     value={values.abuse}
@@ -149,9 +151,11 @@ export default function Component(props) {
                       label: t(`${label.trim()}`, { ns: 'other' }),
                       value,
                     }))}
-                    className={s.select}
                   />
+
                   <SelectMultiple
+                    className={s.select}
+                    inputClassName={s.input_bgc}
                     placeholder={t('Select status', { ns: 'other' })}
                     label={`${t('status', { ns: 'other' })}:`}
                     value={values.tstatus}
@@ -161,10 +165,11 @@ export default function Component(props) {
                       label: t(`${label.trim()}`),
                       value,
                     }))}
-                    className={s.select}
                   />
+
                   <div className={s.timeSelectBlock}>
                     <Select
+                      inputClassName={s.input_bgc}
                       label={`${t('Period', { ns: 'other' })}:`}
                       value={values.message_post}
                       getElement={item => setFieldValue('message_post', item)}
@@ -175,11 +180,12 @@ export default function Component(props) {
                       }))}
                       className={cn(s.select, s.dateSelect)}
                     />
+
                     <div className={s.calendarBlock}>
                       <IconButton
+                        className={s.calendarBtn}
                         onClick={() => setIsOpenedCalendar(!isOpenedCalendar)}
                         icon="calendar"
-                        className={s.calendarBtn}
                       />
                       <div
                         ref={dropdownCalendar}
@@ -200,6 +206,7 @@ export default function Component(props) {
                   </div>
                 </div>
               </div>
+
               <div className={s.btnBlock}>
                 <Button
                   className={s.searchBtn}
