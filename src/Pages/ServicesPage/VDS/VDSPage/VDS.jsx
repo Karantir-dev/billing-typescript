@@ -114,7 +114,7 @@ export default function VDS() {
   const goToPanel = id => {
     dispatch(dedicOperations.goToPanel(id))
   }
-
+  console.log(activeServer?.status?.$)
   return (
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -147,7 +147,11 @@ export default function VDS() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer.id.$)}
-                  disabled={activeServer?.status?.$ !== '2' || !rights?.edit}
+                  disabled={
+                    (activeServer?.status?.$ !== '3' &&
+                      activeServer?.status?.$ !== '2') ||
+                    !rights?.edit
+                  }
                   icon="edit"
                 />
               </HintWrapper>
@@ -158,8 +162,9 @@ export default function VDS() {
                   onClick={() => setIdForDeleteModal(activeServer.id.$)}
                   disabled={
                     !activeServer ||
-                    activeServer.item_status.$ === '5_open' ||
-                    activeServer.scheduledclose.$ === 'on' ||
+                    activeServer?.status?.$ === '5' ||
+                    // activeServer?.item_status.$ === '5_open' ||
+                    activeServer?.scheduledclose.$ === 'on' ||
                     !rights?.delete
                   }
                   icon="delete"
@@ -191,7 +196,11 @@ export default function VDS() {
             <HintWrapper label={t('ip_addresses')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={activeServer?.has_ip_pricelist?.$ !== 'on' || !rights?.ip}
+                disabled={
+                  activeServer?.status?.$ === '5' ||
+                  activeServer?.has_ip_pricelist?.$ !== 'on' ||
+                  !rights?.ip
+                }
                 onClick={() =>
                   navigate(route.VDS_IP, { state: { id: activeServer.id.$ } })
                 }
@@ -202,7 +211,10 @@ export default function VDS() {
             <HintWrapper label={t('prolong')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
+                disabled={
+                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
+                  !rights?.prolong
+                }
                 onClick={() => setIdForProlong(activeServer.id.$)}
                 icon="clock"
               />
@@ -212,7 +224,10 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 onClick={() => setIdForHistory(activeServer.id.$)}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.history}
+                disabled={
+                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
+                  !rights?.history
+                }
                 icon="refund"
               />
             </HintWrapper>
@@ -220,7 +235,10 @@ export default function VDS() {
             <HintWrapper label={t('instruction')}>
               <IconButton
                 className={s.tools_icon}
-                disabled={activeServer?.status?.$ !== '2' || !rights?.instruction}
+                disabled={
+                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
+                  !rights?.instruction
+                }
                 onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
               />
