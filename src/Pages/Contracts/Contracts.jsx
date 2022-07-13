@@ -20,9 +20,9 @@ export default function Contracts() {
 
   const [selectedContract, setSelectedContract] = useState(null)
 
-  const handlePrintBtn = () => {
-    dispatch(contractOperations.getPrintFile(selectedContract?.id?.$))
-  }
+  // const handlePrintBtn = () => {
+  //   dispatch(contractOperations.getPrintFile(selectedContract?.id?.$))
+  // }
   const handleDownloadBtn = () => {
     dispatch(
       contractOperations.getPdfFile(selectedContract?.id?.$, selectedContract?.number?.$),
@@ -30,7 +30,6 @@ export default function Contracts() {
   }
 
   let rights = checkServicesRights(contractsRenderData?.contractsPageRights?.toolgrp)
-  console.log(rights)
 
   useEffect(() => {
     if (isAllowedToRender) {
@@ -45,12 +44,12 @@ export default function Contracts() {
       <h3 className={s.page_title}>{t('profile.contracts')}</h3>
 
       <div className={s.icons_wrapper}>
-        <IconButton
+        {/* <IconButton
           disabled={!selectedContract || !rights?.print || !rights?.download}
           icon="print"
           className={s.print_btn}
           onClick={handlePrintBtn}
-        />
+        /> */}
         <IconButton
           disabled={!selectedContract || !rights?.download || !rights?.print}
           icon="archive"

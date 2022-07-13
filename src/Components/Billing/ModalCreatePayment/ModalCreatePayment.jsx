@@ -18,7 +18,7 @@ import * as Yup from 'yup'
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['billing', 'other', 'payers'])
+  const { t } = useTranslation(['billing', 'other', 'payers', 'cart'])
 
   const { setCreatePaymentModal } = props
 
@@ -110,6 +110,23 @@ export default function Component(props) {
           onSubmit={createPaymentMethodHandler}
         >
           {({ values, setFieldValue, touched, errors }) => {
+            const parsePaymentInfo = text => {
+              const splittedText = text?.split('<p>')
+              const minAmount = splittedText[0]?.replace('\n', '')
+              const infoText = splittedText[1]
+                ?.replace('<p>', '')
+                ?.replace('</p>', '')
+                ?.replace('<strong>', '')
+                ?.replace('</strong>', '')
+                ?.replaceAll('\n', '')
+
+              return { minAmount, infoText }
+            }
+
+            const parsedText =
+              values?.slecetedPayMethod &&
+              parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+
             const setPayerHandler = val => {
               setFieldValue('profile', val)
               if (val === 'add_new') {
@@ -123,7 +140,7 @@ export default function Component(props) {
               <Form>
                 <div className={s.form}>
                   <div className={s.formBlock}>
-                    <div className={s.formBlockTitle}>1. {t('Payer\'s choice')}</div>
+                    <div className={s.formBlockTitle}>1. {t('Payers choice')}</div>
                     <div className={cn(s.formFieldsBlock, s.first)}>
                       <Select
                         placeholder={t('Not chosen', { ns: 'other' })}
@@ -268,13 +285,14 @@ export default function Component(props) {
                   </div>
 
                   <div className={s.infotext}>
-                    {t('Payment using text')}{' '}
+                    {/* {t('Payment using text')} */}
                     {values?.slecetedPayMethod && (
-                      <span>
-                        {t('Minimum payment amount')}{' '}
-                        {values?.slecetedPayMethod?.payment_minamount?.$}{' '}
-                        {values?.payment_currency?.title}
-                      </span>
+                      <div>
+                        <span>{t(`${parsedText?.minAmount}`, { ns: 'cart' })}</span>
+                        {parsedText?.infoText && (
+                          <p>{t(`${parsedText?.infoText}`, { ns: 'cart' })}</p>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
