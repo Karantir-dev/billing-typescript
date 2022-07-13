@@ -65,6 +65,7 @@ const getVhostFilters =
           func: 'vhost.filter',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )

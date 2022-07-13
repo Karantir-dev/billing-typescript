@@ -153,6 +153,7 @@ const clearBasket = id => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
+      dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

@@ -1,5 +1,6 @@
 .select {
   padding: 4px 8px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   position: relative;
@@ -21,7 +22,6 @@
 }
 
 .checkIcon {
-  cursor: pointer;
   padding: 12px 20px 12px 12px;
   border-right: 1px solid var(--border-color);
   &:active {
@@ -45,6 +45,7 @@
   margin-left: auto;
   padding: 12px 12px 12px 0px;
   cursor: pointer;
+
   &:hover {
     svg {
       path {
@@ -52,23 +53,34 @@
         fill: url(#gradient);
       }
     }
+    .descriptionBlock {
+      opacity: 1;
+      height: auto;
+      overflow: auto;
+      padding: 15px;
+    }
   }
 }
 
 .descriptionBlock {
   position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
   box-shadow: var(--burger-menu-elem-box-shadow);
   background-color: var(--forms_bgc_4);
-  padding: 15px;
-  top: 100%;
+  padding: 0;
+  top: 110%;
   right: 0;
-  width: calc(100% - 50px);
+  width: 300px;
   z-index: 111;
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
+  text-align: start;
+  transition: 0.05s linear;
   &::after {
     content: '';
     position: absolute;

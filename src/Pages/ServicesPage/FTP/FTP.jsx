@@ -184,7 +184,9 @@ export default function FTP() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer || !rights?.edit}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights?.edit || !activeServer
+                  }
                   icon="edit"
                 />
               </HintWrapper>
@@ -193,7 +195,9 @@ export default function FTP() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2' || !rights?.prolong}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights?.prolong || !activeServer
+                  }
                   icon="clock"
                 />
               </HintWrapper>
@@ -202,13 +206,19 @@ export default function FTP() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$ || !rights?.history}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights?.history || !activeServer
+                  }
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2' || !rights?.instruction}
+                  disabled={
+                    activeServer?.status?.$ === '1' ||
+                    !rights?.instruction ||
+                    !activeServer
+                  }
                   icon="info"
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
@@ -219,7 +229,12 @@ export default function FTP() {
                     dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
                   }}
                   className={s.tools_icon}
-                  disabled={activeServer?.transition?.$ !== 'on' || !rights?.gotoserver}
+                  disabled={
+                    activeServer?.transition?.$ !== 'on' ||
+                    !rights?.gotoserver ||
+                    activeServer?.status?.$ !== '2' ||
+                    !activeServer
+                  }
                   icon="exitSign"
                 />
               </HintWrapper>

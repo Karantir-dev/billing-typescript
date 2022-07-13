@@ -10,7 +10,7 @@
 }
 
 .form {
-  padding: 0px 20px 21px 20px;
+  padding: 20px 20px 20px 20px;
   margin-left: 2px;
   max-height: 60vh;
   overflow-y: auto;
@@ -61,7 +61,6 @@
 .status_wrapper {
   display: flex;
   margin-bottom: 20px;
-  padding-top: 16px;
 }
 
 .creation_date_wrapper {
@@ -171,7 +170,7 @@
   }
 
   .form {
-    padding: 0px 51px 42px 51px;
+    padding: 20px 51px 20px 51px;
     max-height: 65vh;
   }
 
@@ -218,7 +217,7 @@
     flex-direction: row;
     justify-content: flex-start;
     padding: 14px 55px;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
 
   .cancel_btn {

@@ -137,11 +137,19 @@ export default function Component({ setCurrentPage }) {
                   value={values.time}
                   getElement={item => setFieldValue('time', item)}
                   isShadow
-                  itemsList={logsFilterList.map(({ label, value }) => ({
-                    label: t(`${label.trim()}`, { ns: 'other' }),
-                    value,
-                  }))}
+                  itemsList={logsFilterList
+                    .map(({ label, value }) => {
+                      if (label.trim() !== 'any period') {
+                        return {
+                          label: t(`${label.trim()}`, { ns: 'other' }),
+                          value,
+                        }
+                      }
+                    })
+                    .filter(e => e !== undefined)}
                   className={s.select}
+                  inputClassName={s.inputClassName}
+                  dropdownClass={s.dropdownClass}
                 />
                 {/* <div className={s.calendarBlock}>
                   <IconButton

@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { DownloadWithFolder, Print } from '../../../images'
+import { DownloadWithFolder } from '../../../images'
 import { contractOperations } from '../../../Redux'
 import { useOutsideAlerter } from '../../../utils'
 
@@ -31,9 +31,9 @@ export default function ContractItem(props) {
 
   const dispatch = useDispatch()
 
-  const handlePrintBtn = () => {
-    dispatch(contractOperations.getPrintFile(id))
-  }
+  // const handlePrintBtn = () => {
+  //   dispatch(contractOperations.getPrintFile(id))
+  // }
   const handleDownloadBtn = () => {
     dispatch(contractOperations.getPdfFile(id, contractNumber))
   }
@@ -81,14 +81,14 @@ export default function ContractItem(props) {
             })}
             ref={dropDownRef}
           >
-            <button
+            {/* <button
               className={cn({ [s.btn]: true })}
               onClick={handlePrintBtn}
               disabled={!rights.download || !rights.print}
             >
               <Print className={s.icon} />
               <p className={s.btn_text}>{t('print')}</p>
-            </button>
+            </button> */}
 
             <button
               onClick={handleDownloadBtn}

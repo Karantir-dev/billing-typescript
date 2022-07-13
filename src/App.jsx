@@ -7,6 +7,9 @@ import { ToastContainer } from 'react-toastify'
 import { Loader, Portal } from './Components'
 import entireStore from './Redux/store'
 import 'dayjs/locale/ru'
+import 'dayjs/locale/uk'
+import 'dayjs/locale/kk'
+import 'dayjs/locale/ka'
 import 'react-toastify/dist/ReactToastify.css'
 import TagManager from 'react-gtm-module'
 
@@ -15,8 +18,6 @@ const tagManagerArgs = {
 }
 
 TagManager.initialize(tagManagerArgs)
-
-// console.log(window.dataLayer)
 
 export default function App() {
   return (

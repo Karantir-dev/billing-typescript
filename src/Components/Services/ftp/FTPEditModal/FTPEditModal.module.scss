@@ -10,7 +10,7 @@
 }
 
 .form {
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px 8px 20px;
   margin-left: 2px;
   max-height: 60vh;
   overflow-y: auto;
@@ -135,7 +135,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  // margin-top: 20px;
 
   padding: 14px;
   z-index: 2;
@@ -169,11 +169,8 @@
   }
 
   .form {
-    padding: 20px 48px;
+    padding: 20px 48px 8px;
   }
-
-  // .header_block {
-  // }
 
   .page_title {
     font-size: 20px;

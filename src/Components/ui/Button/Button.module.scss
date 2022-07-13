@@ -37,6 +37,7 @@
 .btn_text {
   @extend %btn-text;
   text-transform: uppercase;
+  display: block;
   margin-top: 3px; // pay attention to this. No way
 }
 

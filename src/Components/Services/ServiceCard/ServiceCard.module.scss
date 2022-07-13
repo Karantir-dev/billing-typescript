@@ -67,6 +67,7 @@
 }
 
 .icon_domains,
+.icon_domains_lt,
 .icon_vds,
 .icon_dedicated,
 .icon_dns_hosting,
@@ -81,7 +82,8 @@
   bottom: 0px;
 }
 
-.icon_domains {
+.icon_domains,
+.icon_domains_lt {
   bottom: -4px;
 }
 
@@ -115,6 +117,7 @@
 
       .card_numeric {
         color: var(--main-text);
+        font-size: 18px;
       }
       .card_title {
         background: var(--accent-text-gradient);
@@ -175,7 +178,8 @@
   }
 
   //icons
-  .icon_domains {
+  .icon_domains,
+  .icon_domains_lt {
     width: 115;
     height: 125;
   }
@@ -221,9 +225,6 @@
     left: 0px;
   }
 
-  .card_numeric {
-    font-size: 18px;
-  }
   .card_title {
     font-size: 21px;
   }
@@ -233,9 +234,6 @@
 }
 
 @media screen and (min-width: 1900px) {
-  .card_numeric {
-    font-size: 23px;
-  }
   .card_container {
     width: 268px;
     height: 285px;
@@ -252,7 +250,8 @@
 
   //icons
 
-  .icon_domains {
+  .icon_domains,
+  .icon_domains_lt {
     width: 118;
     height: 128;
   }

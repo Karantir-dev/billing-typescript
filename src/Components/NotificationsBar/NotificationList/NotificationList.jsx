@@ -26,38 +26,20 @@ export default function NotificationList({ notifications }) {
 
   const removeItem = id => {
     dispatch(userOperations.removeItems(isAuthenticated, id))
-    dispatch(userActions.removeItems(id))
-    // setCurrentNotifList(() => {
-    //   if (Array.isArray(currentNotifList)) {
-    //     return currentNotifList.filter(item => item.$id !== id)
-    //   } else if (currentNotifList.id !== id) {
-    //     return currentNotifList
-    //   }
-    // })
+    dispatch(userActions.removeItems({ id, messages: notifications?.messages_count }))
   }
 
   const removeAllItems = () => {
-    notifications.forEach(el => {
+    notifications?.messages?.forEach(el => {
       dispatch(userOperations.removeItems(isAuthenticated, el?.$id))
-      dispatch(userActions.removeItems(el?.$id))
+      dispatch(userActions.removeItems({ id: el?.$id, messages: 1 }))
     })
-    // setCurrentNotifList(() => {
-    //   if (Array.isArray(currentNotifList)) {
-    //     return currentNotifList.filter(item => item.$id !== id)
-    //   } else if (currentNotifList.id !== id) {
-    //     return currentNotifList
-    //   }
-    // })
   }
 
   return (
     <>
-      {notifications.length > 0 || notifications?.$id ? (
-        <NotificationListItem
-          // removedNotification={removedNotification}
-          arr={notifications}
-          removeItem={removeItem}
-        />
+      {notifications?.messages?.length > 0 || notifications?.messages?.$id ? (
+        <NotificationListItem arr={notifications?.messages} removeItem={removeItem} />
       ) : (
         <p className={s.no_messages}>{t('notification_bar.no_messages')}</p>
       )}
@@ -69,7 +51,7 @@ export default function NotificationList({ notifications }) {
           <p className={s.show_more}>{t('notification_bar.show_more')}</p>
         </button>
       )} */}
-      {notifications.length > 0 && (
+      {notifications?.messages?.length > 0 && (
         <button className={s.clear_btn} onClick={removeAllItems}>
           {t('clear_all')}
         </button>

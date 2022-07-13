@@ -210,7 +210,7 @@ export default function Component() {
         domainsRenderData?.domainsList && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/domains.webp')}
+              src={require('../../../images/services/no_domain.png')}
               alt="domains"
               className={s.domains_img}
             />

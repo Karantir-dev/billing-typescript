@@ -35,7 +35,7 @@ export default function DedicList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/dedicated.webp')}
+            src={require('../../../../images/services/no_dedic_server.png')}
             alt="dedic"
             className={s.dedic_img}
           />
