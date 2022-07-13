@@ -43,7 +43,7 @@ export default function ForexMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
-                  disabled={!pageRights?.edit}
+                  disabled={!pageRights?.edit || server?.status?.$ === '1'}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
@@ -57,7 +57,7 @@ export default function ForexMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2' || !pageRights?.prolong}
+                  disabled={server?.status?.$ === '1' || !pageRights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -66,7 +66,7 @@ export default function ForexMobileItem({
               </li>
               <li className={s.tool_item}>
                 <button
-                  disabled={!pageRights?.history}
+                  disabled={!pageRights?.history || server?.status?.$ === '1'}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
@@ -82,7 +82,9 @@ export default function ForexMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={!server.id.$ || !pageRights?.delete}
+                  disabled={
+                    !server.id.$ || !pageRights?.delete || server?.status?.$ === '1'
+                  }
                   onClick={() => {
                     handleToolBtnClick(setElidForDeletionModal, server.id.$)
                     setActiveServer(server)

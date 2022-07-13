@@ -193,14 +193,20 @@ export default function DedicatedServersPage() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={!activeServer || !rights.edit}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights.edit || !activeServer
+                  }
                   icon="edit"
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('reload')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.show_reboot?.$ !== 'on' || !rights.reload}
+                  disabled={
+                    activeServer?.show_reboot?.$ !== 'on' ||
+                    !rights.reload ||
+                    !activeServer
+                  }
                   icon="reload"
                   onClick={() => setElidForRebootModal(activeServer?.id?.$)}
                 />
@@ -217,7 +223,11 @@ export default function DedicatedServersPage() {
                     })
                   }
                   className={s.tools_icon}
-                  disabled={activeServer?.has_ip_pricelist?.$ !== 'on' || !rights.ip}
+                  disabled={
+                    activeServer?.has_ip_pricelist?.$ !== 'on' ||
+                    !rights.ip ||
+                    !activeServer
+                  }
                   icon="ip"
                 />
               </HintWrapper>
@@ -225,7 +235,9 @@ export default function DedicatedServersPage() {
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2' || !rights.prolong}
+                  disabled={
+                    activeServer?.status?.$ === '1' || !rights.prolong || !activeServer
+                  }
                   icon="clock"
                 />
               </HintWrapper>
@@ -234,13 +246,19 @@ export default function DedicatedServersPage() {
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
                   icon="refund"
-                  disabled={!activeServer?.id?.$ || !rights.history}
+                  disabled={
+                    !activeServer?.status?.$ === '1' || !rights.history || !activeServer
+                  }
                 />
               </HintWrapper>
               <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
-                  disabled={activeServer?.status?.$ !== '2' || !rights.instruction}
+                  disabled={
+                    activeServer?.status?.$ === '1' ||
+                    !rights.instruction ||
+                    !activeServer
+                  }
                   icon="info"
                   onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
                 />
@@ -254,7 +272,8 @@ export default function DedicatedServersPage() {
                   disabled={
                     activeServer?.transition?.$ !== 'on' ||
                     activeServer?.status?.$ !== '2' ||
-                    !rights.gotoserver
+                    !rights.gotoserver ||
+                    !activeServer
                   }
                   icon="exitSign"
                 />

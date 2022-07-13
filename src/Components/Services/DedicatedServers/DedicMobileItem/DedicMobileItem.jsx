@@ -103,7 +103,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2' || !rights?.prolong}
+                  disabled={server?.status?.$ === '1' || !rights?.prolong}
                   onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
                 >
                   <Clock className={s.tool_icon} />
@@ -112,7 +112,7 @@ export default function DedicMobileItem({
               </li>
               <li className={s.tool_item}>
                 <button
-                  disabled={!rights?.history}
+                  disabled={server?.status?.$ === '1' || !rights?.history}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => {
@@ -128,7 +128,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server?.status?.$ !== '2' || !rights?.instruction}
+                  disabled={server?.status?.$ === '1' || !rights?.instruction}
                   onClick={() =>
                     handleToolBtnClick(setElidForInstructionModal, server.id.$)
                   }
