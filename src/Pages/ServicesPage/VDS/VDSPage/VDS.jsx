@@ -157,8 +157,8 @@ export default function VDS() {
                   className={s.tools_icon}
                   onClick={() => setIdForDeleteModal(activeServer.id.$)}
                   disabled={
-                    activeServer.item_status.$ === '5_open' ||
-                    activeServer.scheduledclose.$ === 'on' ||
+                    activeServer?.item_status.$ === '5_open' ||
+                    activeServer?.scheduledclose.$ === 'on' ||
                     !rights?.delete
                   }
                   icon="delete"
