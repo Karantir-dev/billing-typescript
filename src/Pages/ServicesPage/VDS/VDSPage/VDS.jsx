@@ -114,7 +114,8 @@ export default function VDS() {
   const goToPanel = id => {
     dispatch(dedicOperations.goToPanel(id))
   }
-
+  console.log(activeServer?.item_status)
+  console.log(activeServer?.status)
   return (
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -213,6 +214,7 @@ export default function VDS() {
                 className={s.tools_icon}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
+                  activeServer?.item_status?.$.trim() === 'Suspended by Administrator' ||
                   !rights?.prolong
                 }
                 onClick={() => setIdForProlong(activeServer.id.$)}
