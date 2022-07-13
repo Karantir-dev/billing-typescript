@@ -52,6 +52,8 @@ export default function DNS() {
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
 
+  console.log(activeServer, 'activeServer')
+
   const location = useLocation()
 
   const parseLocations = () => {

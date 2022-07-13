@@ -32,7 +32,7 @@ export default function NotificationsBar({ handler, isBarOpened }) {
       >
         <div className={s.notification_title_container}>
           <p className={s.notification_title}>{`${t('notification_bar.notifications')} (${
-            userItems?.messages_count
+            userItems.messages_count ? userItems?.messages_count : 0
           })`}</p>
           <div className={s.close_btn_wrapper}>
             <button className={s.close_btn} onClick={handler}></button>
