@@ -343,15 +343,17 @@ export default function Component() {
               {({ values, setFieldValue, touched, errors }) => {
                 const parsePaymentInfo = text => {
                   const splittedText = text?.split('<p>')
-                  const minAmount = splittedText[0]?.replace('\n', '')
-                  const infoText = splittedText[1]
-                    ?.replace('<p>', '')
-                    ?.replace('</p>', '')
-                    ?.replace('<strong>', '')
-                    ?.replace('</strong>', '')
-                    ?.replaceAll('\n', '')
+                  if (splittedText?.length > 0) {
+                    const minAmount = splittedText[0]?.replace('\n', '')
+                    const infoText = splittedText[1]
+                      ?.replace('<p>', '')
+                      ?.replace('</p>', '')
+                      ?.replace('<strong>', '')
+                      ?.replace('</strong>', '')
+                      ?.replaceAll('\n', '')
 
-                  return { minAmount, infoText }
+                    return { minAmount, infoText }
+                  }
                 }
 
                 const parsedText =
