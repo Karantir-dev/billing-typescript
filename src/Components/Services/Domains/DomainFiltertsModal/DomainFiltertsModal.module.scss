@@ -230,6 +230,10 @@
   fill: var(--main-text);
 }
 
+.input_bgc {
+  background-color: var(--forms_bgc_3);
+}
+
 @media screen and (max-width: 767px) {
   .filterBlock {
     flex-direction: column-reverse;
