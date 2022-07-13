@@ -117,6 +117,14 @@
   }
 }
 
+.balance_wrapper_btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .exit_wrapper {

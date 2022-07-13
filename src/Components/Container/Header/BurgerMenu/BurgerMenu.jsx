@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn } from '../../../../Components'
+import { ThemeBtn, LangBtn, Portal, ModalCreatePayment } from '../../../../Components'
 import { ExitSign } from '../../../../images'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '../../../../Redux'
@@ -16,6 +16,8 @@ import s from './BurgerMenu.module.scss'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const { t } = useTranslation('container')
+
+  const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
   const isTrustedUsersAllowedToRender = usePageRender('customer', 'user', false)
 
@@ -202,108 +204,124 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   ])
 
   return (
-    <div className={isOpened ? s.burger : ''}>
-      <div ref={getBurgerEl} className={classes}>
-        <nav className={s.burger_nav}>
-          <div className={s.theme_btn_wrapper}>
-            <ThemeBtn burgerType />
-          </div>
-          <LangBtn burgerType />
-        </nav>
+    <>
+      <div className={isOpened ? s.burger : ''}>
+        <div ref={getBurgerEl} className={classes}>
+          <nav className={s.burger_nav}>
+            <div className={s.theme_btn_wrapper}>
+              <ThemeBtn burgerType />
+            </div>
+            <LangBtn burgerType />
+          </nav>
 
-        <ul className={s.list}>
-          <li className={s.list_item}>
-            <ListItems
-              controlMenu={controlMenu}
-              name={$realname}
-              subList={profileMenuListToRender}
-              isProfile
-              email={$email}
-              id={1}
-              activeList={activeList}
-              setActiveList={setActiveList}
-            />
-          </li>
-          <li
-            className={cn({
-              [s.balance_wrapper]: true,
-              [darkTheme ? s.balance_wrapper_dt : s.balance_wrapper_lt]: true,
-            })}
-          >
-            <p className={s.balance_text}>{t('balance')}</p>
-            <p className={s.balance_sum}>
-              {userItems?.$balance
-                ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
-                : $balance && Number($balance)?.toFixed(2)}{' '}
-              EUR
-            </p>
-          </li>
-          {areServicesAllowedToRender && (
+          <ul className={s.list}>
             <li className={s.list_item}>
               <ListItems
                 controlMenu={controlMenu}
-                name={'services'}
-                subList={servicesMenuList}
-                id={2}
+                name={$realname}
+                subList={profileMenuListToRender}
+                isProfile
+                email={$email}
+                id={1}
                 activeList={activeList}
                 setActiveList={setActiveList}
               />
             </li>
-          )}
-          {isFinanceAllowedToRender && (
-            <li className={s.list_item}>
-              <ListItems
-                controlMenu={controlMenu}
-                name={'finance'}
-                subList={financeMenuList}
-                id={3}
-                activeList={activeList}
-                setActiveList={setActiveList}
-              />
-            </li>
-          )}
-
-          {isAffiliateProgramAllowedToRender && (
-            <li className={s.list_item}>
-              <ListItems
-                controlMenu={controlMenu}
-                name={'ref_program'}
-                subList={refProgrammMenuList}
-                id={4}
-                activeList={activeList}
-                setActiveList={setActiveList}
-              />
-            </li>
-          )}
-          {isSupportAllowedToRender && (
-            <li className={s.list_item}>
-              <ListItems
-                controlMenu={controlMenu}
-                name={'support'}
-                subList={supportMenuList}
-                id={5}
-                activeList={activeList}
-                setActiveList={setActiveList}
-              />
-            </li>
-          )}
-          <li className={s.exit_list_item}>
-            <NavLink to={routes.LOGIN}>
-              <div
-                className={s.exit_wrapper}
-                role="button"
-                tabIndex={0}
-                onKeyDown={() => {}}
-                onClick={logOut}
+            <li
+              className={cn({
+                [s.balance_wrapper]: true,
+                [darkTheme ? s.balance_wrapper_dt : s.balance_wrapper_lt]: true,
+              })}
+            >
+              <button
+                onClick={() => {
+                  controlMenu()
+                  setCreatePaymentModal(!createPaymentModal)
+                }}
+                className={s.balance_wrapper_btn}
               >
-                <ExitSign className={s.icon} />
-                <p className={s.exit_name}>{t('profile.log_out')}</p>
-              </div>
-            </NavLink>
-          </li>
-        </ul>
+                <p className={s.balance_text}>{t('balance')}</p>
+                <p className={s.balance_sum}>
+                  {userItems?.$balance
+                    ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
+                    : $balance && Number($balance)?.toFixed(2)}{' '}
+                  EUR
+                </p>
+              </button>
+            </li>
+            {areServicesAllowedToRender && (
+              <li className={s.list_item}>
+                <ListItems
+                  controlMenu={controlMenu}
+                  name={'services'}
+                  subList={servicesMenuList}
+                  id={2}
+                  activeList={activeList}
+                  setActiveList={setActiveList}
+                />
+              </li>
+            )}
+            {isFinanceAllowedToRender && (
+              <li className={s.list_item}>
+                <ListItems
+                  controlMenu={controlMenu}
+                  name={'finance'}
+                  subList={financeMenuList}
+                  id={3}
+                  activeList={activeList}
+                  setActiveList={setActiveList}
+                />
+              </li>
+            )}
+
+            {isAffiliateProgramAllowedToRender && (
+              <li className={s.list_item}>
+                <ListItems
+                  controlMenu={controlMenu}
+                  name={'ref_program'}
+                  subList={refProgrammMenuList}
+                  id={4}
+                  activeList={activeList}
+                  setActiveList={setActiveList}
+                />
+              </li>
+            )}
+            {isSupportAllowedToRender && (
+              <li className={s.list_item}>
+                <ListItems
+                  controlMenu={controlMenu}
+                  name={'support'}
+                  subList={supportMenuList}
+                  id={5}
+                  activeList={activeList}
+                  setActiveList={setActiveList}
+                />
+              </li>
+            )}
+            <li className={s.exit_list_item}>
+              <NavLink to={routes.LOGIN}>
+                <div
+                  className={s.exit_wrapper}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={() => {}}
+                  onClick={logOut}
+                >
+                  <ExitSign className={s.icon} />
+                  <p className={s.exit_name}>{t('profile.log_out')}</p>
+                </div>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+
+      <Portal>
+        {createPaymentModal && (
+          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+        )}
+      </Portal>
+    </>
   )
 }
 
