@@ -112,15 +112,17 @@ export default function Component(props) {
           {({ values, setFieldValue, touched, errors }) => {
             const parsePaymentInfo = text => {
               const splittedText = text?.split('<p>')
-              const minAmount = splittedText[0]?.replace('\n', '')
-              const infoText = splittedText[1]
-                ?.replace('<p>', '')
-                ?.replace('</p>', '')
-                ?.replace('<strong>', '')
-                ?.replace('</strong>', '')
-                ?.replaceAll('\n', '')
+              if (splittedText?.length > 0) {
+                const minAmount = splittedText[0]?.replace('\n', '')
+                const infoText = splittedText[1]
+                  ?.replace('<p>', '')
+                  ?.replace('</p>', '')
+                  ?.replace('<strong>', '')
+                  ?.replace('</strong>', '')
+                  ?.replaceAll('\n', '')
 
-              return { minAmount, infoText }
+                return { minAmount, infoText }
+              }
             }
 
             const parsedText =
@@ -163,7 +165,7 @@ export default function Component(props) {
                         </button>
                       )}
                       {newPayer && (
-                        <>
+                        <div className={s.addPayerBlock}>
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="person"
@@ -203,7 +205,7 @@ export default function Component(props) {
                               </div>
                             </div>
                           )}
-                        </>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -245,7 +247,13 @@ export default function Component(props) {
                       component="span"
                     />
                   </div>
-                  <div className={cn(s.formBlock, s.last)}>
+                  <div
+                    className={cn(s.formBlock, s.last, {
+                      [s.border]:
+                        values?.slecetedPayMethod &&
+                        (parsedText?.minAmount || parsedText?.infoText),
+                    })}
+                  >
                     <div className={s.formBlockTitle}>3. {t('Top-up amount')}</div>
                     <div className={s.formFieldsBlock}>
                       <div className={s.inputAmountBlock}>
@@ -285,7 +293,6 @@ export default function Component(props) {
                   </div>
 
                   <div className={s.infotext}>
-                    {/* {t('Payment using text')} */}
                     {values?.slecetedPayMethod && (
                       <div>
                         <span>{t(`${parsedText?.minAmount}`, { ns: 'cart' })}</span>
