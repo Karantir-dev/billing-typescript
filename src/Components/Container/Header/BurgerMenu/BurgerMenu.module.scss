@@ -13,7 +13,7 @@
   padding: 20px 23px;
   position: sticky;
   top: 0;
-  background-color: var(--forms_bgc_3);
+  background-color: var(--elements-bgc);
   box-shadow: var(--modal_header_shadow);
   z-index: 111;
 }
@@ -115,6 +115,14 @@
     border-radius: 5px;
     background: var(--icon-color);
   }
+}
+
+.balance_wrapper_btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
 // ADAPTIVE
