@@ -1,6 +1,5 @@
 .page_wrapper {
   position: relative;
-  padding-bottom: 150px;
 }
 
 .page_title {
@@ -9,6 +8,10 @@
   font-size: 22px;
   line-height: 113%;
   color: var(--main-text);
+}
+
+.form {
+  padding-bottom: 75px;
 }
 
 .select {
@@ -49,7 +52,7 @@
   span {
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 70.9%;
     color: var(--main-text);
     margin-left: 18px;
@@ -158,12 +161,19 @@
 
 @media screen and (min-width: 1024px) {
   .paymentBlock {
-    padding: 17px 160px 25px 160px;
+    padding: 17px 160px 25px 210px;
   }
 }
 
 @media screen and (min-width: 1550px) {
+  .paymentBlock {
+    padding: 17px 160px 25px 270px;
+  }
+
 }
 
 @media screen and (min-width: 1918px) {
+  .paymentBlock {
+    padding: 17px 160px 25px 290px;
+  }
 }

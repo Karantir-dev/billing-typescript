@@ -1,5 +1,6 @@
 .modalBg {
   position: absolute;
+
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -52,7 +53,6 @@
 }
 
 .table {
-  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   padding: 0px 21px;
@@ -60,7 +60,7 @@
 
 .tableHeader {
   display: none;
-  padding: 20px 20px;
+  padding: 20px 20px 13px;
   width: 99%;
 }
 
@@ -140,8 +140,8 @@
 
 .tableItems {
   width: 100%;
-  max-height: 400px;
   min-height: 400px;
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 5px;
@@ -179,6 +179,14 @@
 }
 
 @media screen and (min-width: 768px) {
+  .modalHeader {
+    padding: 18px 50px;
+  }
+
+  .total {
+    padding: 18px 50px;
+  }
+
   .modalBg {
     display: flex;
     align-items: center;
@@ -187,6 +195,10 @@
 
   .modalBlock {
     margin: 0 30px;
+  }
+
+  .table {
+    padding: 0 30px;
   }
 
   .item {
@@ -208,12 +220,8 @@
     display: block;
   }
 
-  .modalHeader {
-    padding: 18px 20px;
-  }
-
   .table {
-    padding: 0 30px;
+    display: block;
   }
 
   .dotIcons {
@@ -229,7 +237,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px;
+    padding: 20px 26px 13px;
   }
 
   .item {
@@ -271,7 +279,7 @@
 
 @media screen and (min-width: 1550px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 13px;
   }
 
   .item {
@@ -285,7 +293,7 @@
 
 @media screen and (min-width: 1918px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 13px;
   }
 
   .item_text {
