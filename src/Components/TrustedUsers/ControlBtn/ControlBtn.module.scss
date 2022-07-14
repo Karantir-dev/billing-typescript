@@ -33,7 +33,7 @@
   background-color: var(--forms_bgc_4);
   top: 40px;
   right: -21px;
-  padding: 31px 16px 23px 16px;
+  padding: 15px 16px;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
@@ -60,10 +60,12 @@
 .settings_btn {
   display: flex;
   margin-bottom: 25px;
+  align-items: center;
 }
 
 .remove_btn {
   display: flex;
+  align-items: center;
 }
 .setting_text {
   margin-left: 18px;

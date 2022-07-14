@@ -18,6 +18,7 @@ import {
   DNSInstructionModal,
   DNSFiltersModal,
   Portal,
+  Pagination,
   // DNSChangeTarif,
 } from '../../../Components'
 import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
@@ -32,6 +33,7 @@ export default function DNS() {
   const navigate = useNavigate()
 
   const dnsRenderData = useSelector(dnsSelectors.getDNSList)
+  const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
 
@@ -43,6 +45,7 @@ export default function DNS() {
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [tarifs, setTarifs] = useState('No tariff plans available for order')
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
+  const [currentPage, setCurrentPage] = useState(1)
 
   // const [
   //   elidForChangeTarifModal,
@@ -94,6 +97,7 @@ export default function DNS() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
+    setCurrentPage(1)
 
     dispatch(
       dnsOperations.getDNSFilters(
@@ -146,6 +150,11 @@ export default function DNS() {
   }
 
   let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
+
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(dnsOperations.getDNSList(data))
+  }, [currentPage])
 
   useEffect(() => {
     if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
@@ -300,6 +309,18 @@ export default function DNS() {
         setActiveServer={setActiveServer}
         pageRights={rights}
       />
+
+      {dnsRenderData?.dnsList?.length !== 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(dnsCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
+
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>

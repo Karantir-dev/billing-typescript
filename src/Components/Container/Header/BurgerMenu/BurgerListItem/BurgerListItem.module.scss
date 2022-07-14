@@ -89,11 +89,20 @@
   }
 }
 
+.list .list_item:not(:last-child) .list_item_name {
+  padding-bottom: 20px;
+}
+.list .list_item:last-child .list_item_name {
+  padding-bottom: 7px;
+}
+.list .list_item:first-child .list_item_name {
+  padding-top: 7px;
+}
+
 .list_item_name {
   font-size: 16px;
   line-height: 70.9%;
   color: var(--main-text);
-  padding-bottom: 20px;
 }
 
 // ADAPTIVE
@@ -102,9 +111,13 @@
   .list_name {
     font-size: 20px;
   }
+
+  .list .list_item:not(:last-child) .list_item_name {
+    padding-bottom: 30px;
+  }
+
   .list_item_name {
     font-size: 18px;
-    padding-bottom: 30px;
   }
 
   .list_item_container {
