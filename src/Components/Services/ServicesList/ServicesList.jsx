@@ -125,11 +125,29 @@ export default function ServicesList() {
   }, [darkTheme])
 
   // useEffect(() => {
-  //   const activeCards = document.querySelectorAll('.swiper-slide.swiper-slide-visible')
-  //   activeCards.forEach(card => {
-  //     card.classList.add('swiper-slide-active')
-  //   })
-  // }, [clickedSlider])
+  //   const mainSwiper = document.querySelector('.swiper-wrapper')
+
+  //   const observer = new IntersectionObserver(
+  //     entries => {
+  //       entries.forEach(entry => {
+  //         if (entry.isIntersecting) {
+  //           entry.target.classList.remove('notInViewport')
+  //         } else {
+  //           entry.target.classList.add('notInViewport')
+  //         }
+  //       })
+  //     },
+  //     { mainSwiper, threshold: 1 },
+  //   )
+
+  //   const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
+
+  //   if (slides.length > 0) {
+  //     slides.forEach(slide => {
+  //       observer.observe(slide)
+  //     })
+  //   }
+  // }, [])
 
   return (
     <ul className="swiper_services_list">
@@ -161,10 +179,12 @@ export default function ServicesList() {
           }}
           watchSlidesProgress={true}
           watchSlidesVisibility={true}
-          // onSlideChange={() => {
-          //   let newCount = clickedSlider
-          //   newCount += 1
-          //   setClickedSlider(newCount)
+          observer={true}
+          watchOverflow={false}
+          // onSwiper={swiper => console.log(swiper)}
+          // onSlideChange={swiper => {
+          //   console.log(swiper.visibleSlidesIndexes.slice(0, 2))
+          //   console.log(swiper)
           // }}
         >
           {filteredServicesMenuList.map((item, index) => {
@@ -172,19 +192,15 @@ export default function ServicesList() {
 
             return (
               <SwiperSlide key={id}>
-                {({ isVisible }) => {
-                  return (
-                    <ServiceCard
-                      title={name.toUpperCase()}
-                      index={index + 1}
-                      route={routeName}
-                      iconName={icon_name}
-                      className={isVisible && 'test'}
-                      iconWidth={icon_width}
-                      iconHeight={icon_height}
-                    />
-                  )
-                }}
+                <ServiceCard
+                  title={name.toUpperCase()}
+                  index={index + 1}
+                  route={routeName}
+                  iconName={icon_name}
+                  className={'card'}
+                  iconWidth={icon_width}
+                  iconHeight={icon_height}
+                />
               </SwiperSlide>
             )
           })}

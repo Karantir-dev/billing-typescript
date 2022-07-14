@@ -2,6 +2,13 @@
   margin-bottom: 40px;
 }
 
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 .tools_wrapper {
   display: flex;
   align-items: center;
@@ -63,6 +70,10 @@
   }
   .bg {
     align-items: center;
+  }
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
   }
 }
 

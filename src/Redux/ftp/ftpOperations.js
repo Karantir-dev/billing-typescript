@@ -8,7 +8,7 @@ import * as route from '../../routes'
 
 //GET SERVERS OPERATIONS
 
-const getFTPList = () => (dispatch, getState) => {
+const getFTPList = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -24,6 +24,8 @@ const getFTPList = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
+        p_cnt: 30,
+        ...data,
         // sok: 'ok',
       }),
     )
@@ -35,6 +37,8 @@ const getFTPList = () => (dispatch, getState) => {
         ftpPageRights: data.doc.metadata.toolbar,
       }
 
+      const count = data?.doc?.p_elems?.$ || 0
+      dispatch(ftpActions.setFtpCount(count))
       dispatch(ftpActions.setFTPList(ftpRenderData))
 
       dispatch(actions.hideLoader())
@@ -306,7 +310,7 @@ const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
         position: 'bottom-right',
         toastId: 'customId',
       })
-      dispatch(getFTPList())
+      dispatch(getFTPList({ p_num: 1 }))
       dispatch(actions.hideLoader())
 
       handleModal()
@@ -374,7 +378,7 @@ const getFTPFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getFTPList())
+          return dispatch(getFTPList({ p_num: 1 }))
         }
 
         let filters = {}
@@ -409,7 +413,7 @@ const getFTPFilters =
         console.log('error', error)
 
         if (error.message.includes('filter')) {
-          dispatch(getFTPList())
+          dispatch(getFTPList({ p_num: 1 }))
         }
 
         errorHandler(error.message, dispatch)

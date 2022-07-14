@@ -3,7 +3,7 @@ import { actions, contarctsActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 
-const getContracts = () => (dispatch, getState) => {
+const getContracts = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -18,6 +18,8 @@ const getContracts = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         lang: 'en',
+        p_cnt: 30,
+        ...data,
       }),
     )
     .then(({ data }) => {
@@ -28,7 +30,10 @@ const getContracts = () => (dispatch, getState) => {
         contractsPageRights: data.doc.metadata.toolbar,
       }
 
+      const count = data?.doc?.p_elems?.$ || 0
+
       dispatch(contarctsActions.setContractsList(contractsRenderData))
+      dispatch(contarctsActions.setContractsCount(count))
       dispatch(actions.hideLoader())
     })
     .catch(error => {

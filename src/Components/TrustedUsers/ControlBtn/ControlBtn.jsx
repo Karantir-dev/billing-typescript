@@ -101,7 +101,7 @@ export default function ControlBtn({
             className={cn({ [s.settings_btn]: true, [s.owner]: !isEditUserAllowed })}
             onClick={handleSettingsForm}
           >
-            <Settings className={s.icon} />{' '}
+            <Settings className={s.icon} />
             <p className={s.setting_text}>
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
