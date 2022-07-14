@@ -27,10 +27,10 @@
     width: 3px;
     height: 100%;
     position: absolute;
-    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
     right: 0;
     top: 0;
-    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(180deg, #e030bd 0.01%, #dd34bb 0.02%, #ff008c 100%);
+    box-shadow: var(--forms_shadow);
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
   }
@@ -39,10 +39,11 @@
     width: 3px;
     height: 100%;
     position: absolute;
-    background: #a480d2;
+    background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
+
+    box-shadow: var(--forms_shadow);
     left: 0;
     top: 0;
-    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
   }
