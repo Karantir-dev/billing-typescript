@@ -175,6 +175,12 @@
 
 .calendarBtn {
   background-color: var(--forms_bgc_3);
+
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {

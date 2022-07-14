@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import FilterModal from './FilterModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -9,13 +10,55 @@ import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '../.
 import { supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
-export default function Component({ selctedTicket, setCurrentPage }) {
+export default function Component(props) {
   const { t } = useTranslation(['support', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
+
+  const { selctedTicket, setCurrentPage, isFiltered, setIsFiltered, isFilterActive } =
+    props
+
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
+
   const dispatch = useDispatch()
   const params = useParams()
+
+  useEffect(() => {
+    resetFilterHandler()
+  }, [])
+
+  const filterHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    setIsFiltered && setIsFiltered(true)
+    if (params?.path === 'requests') {
+      dispatch(supportOperations.getTicketsFiltersHandler(values))
+    } else if (params?.path === 'requests_archive') {
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(values))
+    }
+  }
+
+  const resetFilterHandler = () => {
+    const clearField = {
+      id: '',
+      message: '',
+      name: '',
+      abuse: 'null',
+      tstatus: '',
+      message_post: 'nodate',
+      message_poststart: '',
+      message_postend: '',
+    }
+    setIsFiltered && setIsFiltered(false)
+    setFilterModal(true)
+    setCurrentPage(1)
+    setFilterModal(false)
+    if (params?.path === 'requests') {
+      dispatch(supportOperations.getTicketsFiltersHandler(clearField))
+    } else if (params?.path === 'requests_archive') {
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(clearField))
+    }
+  }
 
   return (
     <div className={s.filterBlock}>
@@ -24,7 +67,8 @@ export default function Component({ selctedTicket, setCurrentPage }) {
           <IconButton
             onClick={() => setFilterModal(true)}
             icon="filter"
-            className={s.calendarBtn}
+            className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
+            disabled={!isFilterActive}
           />
           {filterModal && (
             <div>
@@ -32,7 +76,8 @@ export default function Component({ selctedTicket, setCurrentPage }) {
                 <div className={s.bg}>
                   {mobile && (
                     <FilterModal
-                      setCurrentPage={setCurrentPage}
+                      filterHandler={filterHandler}
+                      resetFilterHandler={resetFilterHandler}
                       filterModal={filterModal}
                       setFilterModal={setFilterModal}
                     />
@@ -41,7 +86,8 @@ export default function Component({ selctedTicket, setCurrentPage }) {
               </Portal>
               {!mobile && (
                 <FilterModal
-                  setCurrentPage={setCurrentPage}
+                  filterHandler={filterHandler}
+                  resetFilterHandler={resetFilterHandler}
                   filterModal={filterModal}
                   setFilterModal={setFilterModal}
                 />
