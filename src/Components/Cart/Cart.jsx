@@ -474,7 +474,7 @@ export default function Component() {
                           let balance = ''
 
                           if (paymentName?.includes('Account balance')) {
-                            balance = paymentName?.match(/[\d|.|\\+]+/g)
+                            balance = paymentName?.match(/[-\d|.|\\+]+/g)
                             paymentName = t('Account balance')
                           }
 
