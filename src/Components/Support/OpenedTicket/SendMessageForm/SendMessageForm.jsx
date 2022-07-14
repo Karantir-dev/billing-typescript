@@ -51,6 +51,7 @@ export default function Component() {
                 className={s.submit_btn}
                 label={t('Send', { ns: 'other' })}
                 type="submit"
+                isShadow
               />
               <NavLink className={s.link} to={`${route.SUPPORT}/${params.path}`}>
                 {t('Cancel', { ns: 'other' })}
