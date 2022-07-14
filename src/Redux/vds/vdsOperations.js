@@ -7,41 +7,47 @@ import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
 
-const getVDS = (setServers, setRights) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const getVDS =
+  ({ setServers, setRights, setElemsTotal, currentPage }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'vds',
-        auth: sessionId,
-        out: 'json',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds',
+          p_cnt: '30',
+          p_num: currentPage,
+          auth: sessionId,
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setServers(data.doc.elem || [])
+        setServers(data.doc.elem || [])
 
-      const rights = {}
-      data.doc.metadata.toolbar.toolgrp.forEach(el => {
-        el?.toolbtn?.forEach(elem => {
-          rights[elem.$name] = true
+        const rights = {}
+        data.doc.metadata.toolbar.toolgrp.forEach(el => {
+          el?.toolbtn?.forEach(elem => {
+            rights[elem.$name] = true
+          })
         })
-      })
-      setRights(rights)
+        setRights(rights)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      errorHandler(err.message, dispatch)
-      dispatch(actions.hideLoader())
-      console.log('getVDS - ', err.message)
-    })
-}
+        setElemsTotal && setElemsTotal(data.doc?.p_elems?.$)
+
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('getVDS - ', err.message)
+      })
+  }
 
 const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -538,7 +544,7 @@ const changeDomainName =
   }
 
 const setVdsFilters =
-  (values, setFiltersState, setfiltersListState, setServers, setRights) =>
+  (values, setFiltersState, setfiltersListState, setServers, setRights, setElemsTotal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -595,11 +601,11 @@ const setVdsFilters =
             })
           })
 
-        dispatch(getVDS(setServers, setRights))
+        dispatch(getVDS({ setServers, setRights, setElemsTotal }))
       })
       .catch(err => {
         if (err.message.includes('filter')) {
-          dispatch(getVDS(setServers, setRights))
+          dispatch(getVDS({ setServers, setRights, setElemsTotal }))
         }
 
         errorHandler(err.message, dispatch)

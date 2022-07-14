@@ -20,6 +20,7 @@ import {
   FiltersModal,
   VdsInstructionModal,
   DedicsHistoryModal,
+  Pagination,
 } from '../../../../Components'
 import { dedicOperations, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
@@ -50,6 +51,16 @@ export default function VDS() {
   const [filtersListState, setfiltersListState] = useState()
   const [isSearchMade, setIsSearchMade] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const [elemsTotal, setElemsTotal] = useState(0)
+
+  const [firstRender, setFirstRender] = useState(true)
+  useEffect(() => {
+    if (!firstRender) {
+      dispatch(vdsOperations.getVDS({ setServers, setRights, currentPage }))
+    }
+  }, [currentPage])
+
   useEffect(() => {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })
@@ -61,8 +72,11 @@ export default function VDS() {
           setfiltersListState,
           setServers,
           setRights,
+          setElemsTotal,
         ),
       )
+
+      setFirstRender(false)
     }
   }, [])
 
@@ -297,6 +311,13 @@ export default function VDS() {
         setIdForHistory={setIdForHistory}
         setIdForInstruction={setIdForInstruction}
         goToPanel={goToPanel}
+      />
+
+      <Pagination
+        currentPage={currentPage}
+        totalCount={Number(elemsTotal)}
+        pageSize={30}
+        onPageChange={page => setCurrentPage(page)}
       />
 
       <Backdrop
