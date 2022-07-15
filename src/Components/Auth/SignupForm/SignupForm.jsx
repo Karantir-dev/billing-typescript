@@ -38,7 +38,7 @@ export default function SignupForm() {
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
-      .min(6, t('warnings.invalid_pass'))
+      .min(12, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
       .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass'))
       .required(t('warnings.password_required')),

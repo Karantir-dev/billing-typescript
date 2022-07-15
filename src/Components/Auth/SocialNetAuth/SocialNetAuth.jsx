@@ -17,9 +17,9 @@ export default function SocialNetAuth() {
     })
   }
 
-  const redirectToLogin = (errMsg, socNetName) => {
+  const redirectToLogin = (errMsg, value) => {
     navigate(route.LOGIN, {
-      state: { errMsg: errMsg, socNetName },
+      state: { errMsg: errMsg, value },
       replace: true,
     })
   }
