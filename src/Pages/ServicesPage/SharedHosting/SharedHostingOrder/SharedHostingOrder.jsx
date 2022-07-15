@@ -145,8 +145,6 @@ export default function Component() {
     return price + ' EUR ' + t(period)
   }
 
-  console.log(period)
-
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
