@@ -194,9 +194,9 @@ describe('Filter modal form', () => {
     )
   }
 
-  test('render support filter', async () => {
-    renderComponent('requests')
-    expect(screen.queryByTestId('archiveBtn')).toBeInTheDocument()
-    expect(screen.queryByTestId('new_ticket_btn')).toBeInTheDocument()
-  })
+  // test('render support filter', async () => {
+  //   renderComponent('requests')
+  //   expect(screen.queryByTestId('archiveBtn')).toBeInTheDocument()
+  //   expect(screen.queryByTestId('new_ticket_btn')).toBeInTheDocument()
+  // })
 })
