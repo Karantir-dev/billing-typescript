@@ -132,6 +132,14 @@
   margin-top: 3px;
 }
 
+.error_message_addpayer {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.2;
+  margin-top: 10px;
+}
+
 .inputAmountBlock {
   display: flex;
   align-items: center;
@@ -305,7 +313,7 @@
 
   .addNewPayerBtn {
     width: auto;
-    margin: 13px 0 0 0;
+    margin: 13px 0 5px 0;
   }
 
   .offerBlock {

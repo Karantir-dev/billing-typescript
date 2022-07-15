@@ -29,6 +29,16 @@
   margin-left: 20px;
 }
 
+.calendarBtn {
+  background-color: var(--forms_bgc_3);
+
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .filterBtnBlock {
   position: relative;
 }

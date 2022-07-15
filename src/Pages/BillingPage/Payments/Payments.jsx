@@ -11,6 +11,7 @@ export default function Component() {
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -32,15 +33,20 @@ export default function Component() {
   return (
     <>
       <BillingFilter
+        isFiltered={isFiltered}
+        setIsFiltered={setIsFiltered}
+        isFilterActive={isFiltered || paymentsList?.length > 0}
         setCurrentPage={setCurrentPage}
         downloadPdfHandler={downloadPdfHandler}
       />
-      <PaymentsTable
-        list={paymentsList}
-        downloadPdfHandler={downloadPdfHandler}
-        deletePayment={deletePayment}
-        payHandler={payHandler}
-      />
+      {paymentsList?.length > 0 && (
+        <PaymentsTable
+          list={paymentsList}
+          downloadPdfHandler={downloadPdfHandler}
+          deletePayment={deletePayment}
+          payHandler={payHandler}
+        />
+      )}
       <div className={s.pagination}>
         <Pagination
           currentPage={currentPage}

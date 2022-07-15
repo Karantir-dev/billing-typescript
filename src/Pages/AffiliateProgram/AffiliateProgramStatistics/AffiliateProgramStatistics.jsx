@@ -37,6 +37,7 @@ export default function AffiliateProgramStatistics() {
   const [items, setItems] = useState([])
   const [total, setTotal] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   const [initialFilters, setInitialFilters] = useState({
     date: '',
@@ -45,8 +46,6 @@ export default function AffiliateProgramStatistics() {
     registered: '',
     payed: '',
   })
-
-  // console.log(isFilterOpened, initialFilters)
 
   useEffect(() => {
     dispatch(
@@ -57,6 +56,7 @@ export default function AffiliateProgramStatistics() {
         setInitialFilters,
       ),
     )
+    onClearFilter()
   }, [])
 
   const onPageChange = pageNum => {
@@ -64,23 +64,37 @@ export default function AffiliateProgramStatistics() {
     dispatch(affiliateOperations.getNextPageStatistics(setItems, setTotal, pageNum))
   }
 
+  const onSubmit = values => {
+    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal))
+    setPageNumber(1)
+    setIsFiltered && setIsFiltered(true)
+    setIsFilterOpened(false)
+  }
+
+  const onClearFilter = () => {
+    dispatch(affiliateOperations.dropFilters(setItems, setTotal))
+    setPageNumber(1)
+    setIsFilterOpened(false)
+    setIsFiltered && setIsFiltered(false)
+  }
+
   return (
     <div className={s.content}>
       {isFilterAllowedToRender && (
         <div className={s.filter_wrapper}>
           <IconButton
-            className={s.icon_filter}
             onClick={() => setIsFilterOpened(true)}
             icon="filter"
+            disabled={!(isFiltered || items?.length > 0)}
+            className={cn(s.icon_filter, { [s.filtered]: isFiltered })}
           />
 
           <StatisticsFilterModal
             initialFilters={initialFilters}
             opened={isFilterOpened}
             closeFn={() => setIsFilterOpened(false)}
-            setItems={setItems}
-            setTotal={setTotal}
-            setPageNumber={setPageNumber}
+            onSubmit={onSubmit}
+            onClearFilter={onClearFilter}
           />
         </div>
       )}

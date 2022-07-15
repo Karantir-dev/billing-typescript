@@ -48,6 +48,10 @@ export default function Component(props) {
   }, [tariff])
 
   const parsePrice = price => {
+    if (period === 'Trial period') {
+      return
+    }
+
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
@@ -98,15 +102,30 @@ export default function Component(props) {
       tabIndex={0}
       onKeyDown={null}
       role="button"
-      onClick={setPriceHandler}
-      className={cn(s.cardBg, { [s.selected]: selected })}
+      onClick={
+        period === 'Trial period' && data?.name !== 'AFFORDABLE' ? null : setPriceHandler
+      }
+      className={cn(s.cardBg, {
+        [s.selected]: selected,
+        [s.disabled]: period === 'Trial period' && data?.name !== 'AFFORDABLE',
+      })}
     >
       <div className={s.cardBlock}>
         <img src={renderImage(data?.name)} alt="VhostCloud" />
         <div className={s.charBlock}>
           <div className={s.tariffName}>{data?.name}</div>
-          <div className={s.tariffPrice}>
-            {parsePrice(tariff?.price?.$)?.amount} EUR/{t(period, { ns: 'other' })}
+          <div
+            className={cn(s.tariffPrice, {
+              [s.freeTrial]: period === 'Trial period' && data?.name === 'AFFORDABLE',
+            })}
+          >
+            {period === 'Trial period' && data?.name !== 'AFFORDABLE'
+              ? t(tariff?.price?.$?.trim())
+              : period === 'Trial period' && data?.name === 'AFFORDABLE'
+              ? `0.00 EUR ${t('for 10 days')}`
+              : `${parsePrice(tariff?.price?.$)?.amount} EUR/${t(period, {
+                  ns: 'other',
+                })}`}
           </div>
           {parsePrice(tariff?.price?.$)?.percent && (
             <span className={s.old_price}>
