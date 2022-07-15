@@ -14,6 +14,7 @@ export default function Component() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selctedTicket, setSelctedTicket] = useState(null)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -22,7 +23,12 @@ export default function Component() {
 
   return (
     <div data-testid="request_archive">
-      <SupportFilter setCurrentPage={setCurrentPage} />
+      <SupportFilter
+        isFiltered={isFiltered}
+        setIsFiltered={setIsFiltered}
+        isFilterActive={isFiltered || tickerArchiveList?.length > 0}
+        setCurrentPage={setCurrentPage}
+      />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
       </h2>

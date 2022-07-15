@@ -41,6 +41,13 @@ export default function Component(props) {
     dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
   }
 
+  const payers = newPayer
+    ? [
+        ...payersList,
+        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+      ]
+    : payersList
+
   const createPaymentMethodHandler = values => {
     const data = {
       profile: values?.profile,
@@ -50,7 +57,8 @@ export default function Component(props) {
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
-      person: values?.person || '',
+      person:
+        values?.person || payers?.find(e => e?.id?.$ === values?.profile)?.name?.$ || ' ',
       name: values?.person,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
@@ -76,13 +84,6 @@ export default function Component(props) {
       : null,
     [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
-
-  const payers = newPayer
-    ? [
-        ...payersList,
-        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
-      ]
-    : payersList
 
   return (
     <div className={s.modalBg}>

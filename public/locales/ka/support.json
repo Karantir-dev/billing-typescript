@@ -33,5 +33,6 @@
   "Business hours: 24/7": "გახსნის საათები: 24/7",
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "აირჩიეთ ეს დეპარტამენტი, თუ თქვენი შეკითხვა დაკავშირებულია სერვერების დაყენებასთან, მართვის პანელების დაყენებასთან, საიტების გადაადგილებასთან. ასევე კითხვები ჰოსტინგის ტექნიკურ მახასიათებლებზე, VDS, Dedicated - ამ დეპარტამენტისთვის.",
   "Refresh": "განაახლეთ",
-  "To the archive": "არქივისკენ"
+  "To the archive": "არქივისკენ",
+  "Select a department": "აირჩიეთ განყოფილება"
 }

@@ -58,6 +58,9 @@ export default function Component(props) {
   const createPayerHandler = values => {
     let data = {
       ...values,
+      name: '',
+      clicked_button: 'finish',
+      progressid: false,
       sok: 'ok',
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'

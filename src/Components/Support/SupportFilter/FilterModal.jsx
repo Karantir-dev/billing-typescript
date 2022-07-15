@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '../../../utils'
-import { useParams } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import {
   InputField,
@@ -15,14 +14,12 @@ import {
   SelectMultiple,
 } from '../..'
 import { Cross } from '../../../images'
-import { supportSelectors, supportOperations } from '../../../Redux'
+import { supportSelectors } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
 export default function Component(props) {
-  const { setFilterModal, setCurrentPage, filterModal } = props
+  const { setFilterModal, filterModal, filterHandler, resetFilterHandler } = props
   const { t } = useTranslation(['support', 'other'])
-  const dispatch = useDispatch()
-  const params = useParams()
 
   const abuseFilterList = useSelector(supportSelectors.getAbuseFilterList)
   const statusFilterList = useSelector(supportSelectors.getTstatusFilterList)
@@ -44,37 +41,6 @@ export default function Component(props) {
   useOutsideAlerter(modal, filterModal, clickOutsideModal)
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutsideCalendar)
-
-  const filterHandler = values => {
-    setCurrentPage(1)
-    setFilterModal(false)
-    if (params?.path === 'requests') {
-      dispatch(supportOperations.getTicketsFiltersHandler(values))
-    } else if (params?.path === 'requests_archive') {
-      dispatch(supportOperations.getTicketsArchiveFiltersHandler(values))
-    }
-  }
-
-  const resetFilterHandler = setValues => {
-    const clearField = {
-      id: '',
-      message: '',
-      name: '',
-      abuse: 'null',
-      tstatus: '',
-      message_post: 'nodate',
-      message_poststart: '',
-      message_postend: '',
-    }
-    setCurrentPage(1)
-    setValues({ ...clearField })
-    setFilterModal(false)
-    if (params?.path === 'requests') {
-      dispatch(supportOperations.getTicketsFiltersHandler(clearField))
-    } else if (params?.path === 'requests_archive') {
-      dispatch(supportOperations.getTicketsArchiveFiltersHandler(clearField))
-    }
-  }
 
   return (
     <div ref={modal} className={s.filterModal}>

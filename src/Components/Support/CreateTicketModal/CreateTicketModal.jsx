@@ -5,7 +5,7 @@ import { Cross } from '../../../images'
 import { Button, Select, InputField } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { Form, Formik } from 'formik'
+import { Form, Formik, ErrorMessage } from 'formik'
 import { supportSelectors, supportOperations } from '../../../Redux'
 import * as Yup from 'yup'
 import s from './CreateTicketModal.module.scss'
@@ -21,6 +21,7 @@ export default function Component(props) {
   const validationSchema = Yup.object().shape({
     message: Yup.string().required(t('Is a required field')),
     subject: Yup.string().required(t('Is a required field')),
+    client_department: Yup.string().required(t('Select a department')),
   })
 
   const sendMessageHandle = (values, { resetForm }) => {
@@ -42,7 +43,7 @@ export default function Component(props) {
           initialValues={{
             message: '',
             files: [],
-            client_department: departmentsList[0]?.$key || '',
+            client_department: '',
             ticket_item: 'null',
             subject: '',
           }}
@@ -67,6 +68,11 @@ export default function Component(props) {
                       )
                     })}
                   </div>
+                  <ErrorMessage
+                    className={s.error_department}
+                    name={'client_department'}
+                    component="span"
+                  />
                   <Select
                     height={52}
                     value={values.ticket_item}

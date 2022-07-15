@@ -1,7 +1,7 @@
 .modalBg {
   position: absolute;
-  display: flex;
-  justify-content: center;
+
+  height: 100vh;
   width: 100%;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@
   border-radius: 3px;
   margin: 20px 30px;
   max-width: 640px;
-  width: 100%;
+  // width: 100%;
 }
 
 .modalHeader {
@@ -151,6 +151,7 @@
   width: 100%;
   max-width: 100%;
   text-transform: uppercase;
+  font-size: 18px;
   height: 55px;
 }
 
@@ -204,7 +205,13 @@
 }
 
 @media screen and (min-width: 768px) {
+  .saveBtn {
+    font-size: 20px;
+  }
+
   .modalBg {
+    display: flex;
+    justify-content: center;
     align-items: center;
     height: 100vh;
   }
@@ -220,9 +227,9 @@
   .form {
     padding: 0 50px;
     padding-bottom: 20px;
-    max-height: none;
+    max-height: 75vh;
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
   }
 
   .formBlock {
