@@ -68,8 +68,6 @@ export default function Component(props) {
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
-  console.log(payers)
-
   const validationSchema = Yup.object().shape({
     profile: Yup.string().required(t('Choose payer')),
     amount: Yup.number()
