@@ -84,7 +84,7 @@ export default function LoginForm() {
                 {errMsg && (
                   <div className={s.credentials_error}>
                     {t(`warnings.${errMsg}`, {
-                      soc_name: location?.state?.socNetName || '',
+                      value: location?.state?.value || '',
                     })}
                   </div>
                 )}
