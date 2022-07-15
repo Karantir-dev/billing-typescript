@@ -3,11 +3,9 @@ import { Form, Formik } from 'formik'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { Cross } from '../../../images'
 import { Button, Select, CalendarModal, IconButton, InputField } from '../..'
-import { affiliateOperations } from '../../../Redux'
 import { useOutsideAlerter } from '../../../utils'
 
 import animations from './animations.module.scss'
@@ -16,12 +14,10 @@ import s from './StatisticsFilterModal.module.scss'
 export default function StatisticsFilterModal({
   opened,
   closeFn,
-  setItems,
-  setTotal,
-  setPageNumber,
   initialFilters,
+  onClearFilter,
+  onSubmit,
 }) {
-  const dispatch = useDispatch()
   const { t } = useTranslation(['affiliate_program', 'other'])
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownCalendar = useRef(null)
@@ -40,17 +36,6 @@ export default function StatisticsFilterModal({
     if (e.target === e.currentTarget) {
       closeFn()
     }
-  }
-
-  const onSubmit = values => {
-    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal))
-    closeFn()
-  }
-
-  const onClearFilter = () => {
-    dispatch(affiliateOperations.dropFilters(setItems, setTotal))
-    setPageNumber(1)
-    closeFn()
   }
 
   const optionsList = [

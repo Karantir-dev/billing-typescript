@@ -1,19 +1,18 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '../../../utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
-import { billingOperations, billingSelectors } from '../../../Redux'
+import { billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
 import { Cross } from '../../../images'
 
 export default function Component(props) {
-  const { setFilterModal, setCurrentPage, filterModal } = props
+  const { setFilterModal, filterModal, filterHandler, resetFilterHandler } = props
   const { t } = useTranslation(['billing', 'other'])
-  const dispatch = useDispatch()
 
   const expensesFilterList = useSelector(billingSelectors.getExpensesFiltersList)
   const expensesFilter = useSelector(billingSelectors.getExpensesFilters)
@@ -34,28 +33,6 @@ export default function Component(props) {
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutsideCalendar)
 
-  const filterHandler = values => {
-    setCurrentPage(1)
-    setFilterModal(false)
-    dispatch(billingOperations.setExpensesFilters(values))
-  }
-
-  const resetFilterHandler = setValues => {
-    const clearField = {
-      id: '',
-      locale_name: '',
-      item: '',
-      compare_type: 'null',
-      amount: '',
-      fromdate: '',
-      todate: '',
-    }
-    setCurrentPage(1)
-    setValues({ ...clearField })
-    setFilterModal(false)
-    dispatch(billingOperations.setExpensesFilters(clearField))
-  }
-
   return (
     <div ref={modal} className={s.filterModal}>
       <Formik
@@ -71,7 +48,7 @@ export default function Component(props) {
         }}
         onSubmit={filterHandler}
       >
-        {({ setFieldValue, setValues, values, errors, touched }) => {
+        {({ setFieldValue, values, errors, touched }) => {
           let dates = null
           if (values.fromdate && values.todate) {
             dates = [new Date(values.fromdate), new Date(values.todate)]
@@ -181,7 +158,7 @@ export default function Component(props) {
                   type="submit"
                 />
                 <button
-                  onClick={() => resetFilterHandler(setValues)}
+                  onClick={resetFilterHandler}
                   type="button"
                   className={s.clearFilters}
                 >

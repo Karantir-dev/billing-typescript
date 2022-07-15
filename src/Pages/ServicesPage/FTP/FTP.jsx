@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-
+import cn from 'classnames'
 import {
   Button,
   IconButton,
@@ -46,6 +46,8 @@ export default function FTP() {
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
+  const [isFiltered, setIsFiltered] = useState(false)
+
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const location = useLocation()
@@ -58,7 +60,7 @@ export default function FTP() {
     return pathnames
   }
 
-  const resetFilterHandler = setValues => {
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       domain: '',
@@ -75,8 +77,9 @@ export default function FTP() {
       autoprolong: '',
       datacenter: '',
     }
-    setValues && setValues({ ...clearField })
 
+    setIsFiltered(false)
+    setCurrentPage(1)
     setFilterModal(false)
     dispatch(
       ftpOperations.getFTPFilters(
@@ -91,6 +94,7 @@ export default function FTP() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setCurrentPage(1)
+    setIsFiltered(true)
 
     dispatch(
       ftpOperations.getFTPFilters(
@@ -151,7 +155,7 @@ export default function FTP() {
             <IconButton
               onClick={() => setFilterModal(true)}
               icon="filter"
-              className={s.calendarBtn}
+              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
               disabled={
                 (ftpRenderData?.ftpList?.length === 0 && !emptyFilter) || !rights?.filter
               }

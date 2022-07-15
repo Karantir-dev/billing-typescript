@@ -8,6 +8,7 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   const expensesList = useSelector(billingSelectors.getExpensesList)
   const expensesCount = useSelector(billingSelectors.getExpensesCount)
@@ -19,8 +20,13 @@ export default function Component() {
 
   return (
     <>
-      <BillingFilter />
-      <ExpensesTable list={expensesList} />
+      <BillingFilter
+        isFiltered={isFiltered}
+        setIsFiltered={setIsFiltered}
+        isFilterActive={isFiltered || expensesList?.length > 0}
+        setCurrentPage={setCurrentPage}
+      />
+      {expensesList?.length > 0 && <ExpensesTable list={expensesList} />}
       <div className={s.pagination}>
         <Pagination
           currentPage={currentPage}

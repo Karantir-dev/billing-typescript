@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import FilterPaymentsModal from './FilterPaymentsModal'
 import FilterExpensesModal from './FilterExpensesModal'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +12,7 @@ import { billingOperations, billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
-  const { setCurrentPage } = props
+  const { setCurrentPage, setIsFiltered, isFilterActive, isFiltered } = props
 
   const { t } = useTranslation(['billing', 'other'])
   const dispatch = useDispatch()
@@ -21,6 +22,12 @@ export default function Component(props) {
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
   const expensesCount = useSelector(billingSelectors.getExpensesCount)
   const params = useParams()
+
+  useEffect(() => {
+    params?.path === 'payments'
+      ? resetFilterPaymentsHandler()
+      : resetFilterExpensesHandler()
+  }, [])
 
   const [filterModal, setFilterModal] = useState(false)
   const [createPaymentModal, setCreatePaymentModal] = useState(false)
@@ -33,6 +40,60 @@ export default function Component(props) {
     dispatch(billingOperations.getExpensesCsv(count))
   }
 
+  const filterPaymentsHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    setIsFiltered && setIsFiltered(true)
+
+    values.saamount_from = values.sum
+    values.saamount_to = values.sum
+    dispatch(billingOperations.setPaymentsFilters(values))
+  }
+
+  const resetFilterPaymentsHandler = () => {
+    const clearField = {
+      id: '',
+      number: '',
+      sender: '',
+      sender_id: '',
+      recipient: '',
+      paymethod: '',
+      status: '',
+      createdate: 'nodate',
+      createdatestart: '',
+      createdateend: '',
+      saamount_from: '',
+      saamount_to: '',
+    }
+    setCurrentPage(1)
+    setFilterModal(false)
+    setIsFiltered && setIsFiltered(false)
+    dispatch(billingOperations.setPaymentsFilters(clearField))
+  }
+
+  const filterExpensesHandler = values => {
+    setCurrentPage(1)
+    setFilterModal(false)
+    setIsFiltered && setIsFiltered(true)
+    dispatch(billingOperations.setExpensesFilters(values))
+  }
+
+  const resetFilterExpensesHandler = () => {
+    const clearField = {
+      id: '',
+      locale_name: '',
+      item: '',
+      compare_type: 'null',
+      amount: '',
+      fromdate: '',
+      todate: '',
+    }
+    setCurrentPage(1)
+    setFilterModal(false)
+    setIsFiltered && setIsFiltered(false)
+    dispatch(billingOperations.setExpensesFilters(clearField))
+  }
+
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
@@ -40,7 +101,8 @@ export default function Component(props) {
           <IconButton
             onClick={() => setFilterModal(true)}
             icon="filter"
-            className={s.calendarBtn}
+            className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
+            disabled={!isFilterActive}
           />
           {filterModal && (
             <div>
@@ -49,13 +111,15 @@ export default function Component(props) {
                   {mobile &&
                     (params?.path === 'payments' ? (
                       <FilterPaymentsModal
-                        setCurrentPage={setCurrentPage}
+                        resetFilterHandler={resetFilterPaymentsHandler}
+                        filterHandler={filterPaymentsHandler}
                         filterModal={filterModal}
                         setFilterModal={setFilterModal}
                       />
                     ) : (
                       <FilterExpensesModal
-                        setCurrentPage={setCurrentPage}
+                        resetFilterHandler={resetFilterExpensesHandler}
+                        filterHandler={filterExpensesHandler}
                         filterModal={filterModal}
                         setFilterModal={setFilterModal}
                       />
@@ -65,13 +129,15 @@ export default function Component(props) {
               {!mobile &&
                 (params?.path === 'payments' ? (
                   <FilterPaymentsModal
-                    setCurrentPage={setCurrentPage}
+                    resetFilterHandler={resetFilterPaymentsHandler}
+                    filterHandler={filterPaymentsHandler}
                     filterModal={filterModal}
                     setFilterModal={setFilterModal}
                   />
                 ) : (
                   <FilterExpensesModal
-                    setCurrentPage={setCurrentPage}
+                    resetFilterHandler={resetFilterExpensesHandler}
+                    filterHandler={filterExpensesHandler}
                     filterModal={filterModal}
                     setFilterModal={setFilterModal}
                   />
