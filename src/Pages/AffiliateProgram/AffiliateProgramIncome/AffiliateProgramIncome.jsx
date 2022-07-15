@@ -96,7 +96,7 @@ export default function AffiliateProgramIncome() {
           onClick={toggleDescrHeight}
           data-testid="btn_more"
         >
-          {t('read_more', { ns: 'other' })}
+          {t(isDescrOpened ? 'collapse' : 'read_more', { ns: 'other' })}
         </button>
       )}
 
