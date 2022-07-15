@@ -8,7 +8,7 @@ import { actions, cartActions, dnsActions } from '..'
 
 //GET hostings OPERATIONS
 
-const getDNSList = () => (dispatch, getState) => {
+const getDNSList = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -24,6 +24,8 @@ const getDNSList = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
+        p_cnt: 30,
+        ...data,
       }),
     )
     .then(({ data }) => {
@@ -33,8 +35,10 @@ const getDNSList = () => (dispatch, getState) => {
         dnsList: data.doc.elem ? data.doc.elem : [],
         dnsPageRights: data.doc.metadata.toolbar,
       }
+      const count = data?.doc?.p_elems?.$ || 0
 
       dispatch(dnsActions.setDNSList(dnsRenderData))
+      dispatch(dnsActions.setDNSCount(count))
 
       dispatch(actions.hideLoader())
     })
@@ -388,7 +392,7 @@ const editDNS = (elid, autoprolong, handleModal) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getDNSList())
+      dispatch(getDNSList({ p_num: 1 }))
 
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
         position: 'bottom-right',
@@ -536,7 +540,7 @@ const getDNSFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getDNSList())
+          return dispatch(getDNSList({ p_num: 1 }))
         }
 
         let filters = {}
@@ -567,7 +571,7 @@ const getDNSFilters =
       .catch(error => {
         console.log('error', error)
         if (error.message.includes('filter')) {
-          dispatch(getDNSList())
+          dispatch(getDNSList({ p_num: 1 }))
         }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())

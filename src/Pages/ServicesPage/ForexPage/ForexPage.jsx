@@ -17,6 +17,7 @@ import {
   ForexEditModal,
   ForexFiltersModal,
   ForexDeletionModal,
+  Pagination,
 } from '../../../Components'
 import { forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,6 +31,7 @@ export default function ForexPage() {
   const navigate = useNavigate()
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
+  const forexCount = useSelector(forexSelectors.getForexCount)
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
   // const [forexList, setForexList] = useState(null)
@@ -41,6 +43,7 @@ export default function ForexPage() {
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -86,6 +89,8 @@ export default function ForexPage() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
+    setCurrentPage(1)
+
     dispatch(
       forexOperations.getForexFilters(
         setFilters,
@@ -123,6 +128,11 @@ export default function ForexPage() {
   }, [])
 
   let rights = checkServicesRights(forexRenderData?.forexPageRights?.toolgrp)
+
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(forexOperations.getForexList(data))
+  }, [currentPage])
 
   useEffect(() => {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
@@ -256,6 +266,17 @@ export default function ForexPage() {
         setActiveServer={setActiveServer}
         pageRights={rights}
       />
+      {forexRenderData?.forexList?.length !== 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(forexCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
+
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>

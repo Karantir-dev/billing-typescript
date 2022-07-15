@@ -2,6 +2,7 @@
   border-radius: 3px;
   flex-basis: 100%;
   min-width: 252px;
+  max-width: 252px;
   margin-top: 20px;
   cursor: pointer;
 
@@ -28,19 +29,20 @@
     font-size: 18px;
     line-height: 130%;
     text-align: center;
-    color: var(--servers_tariff_color);
-  }
-
-  .tariffPrice {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 130%;
     background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
+    text-transform: uppercase;
+  }
+
+  .tariffPrice {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 130%;
+    color: var(--main-text);
     margin: 15px 0;
   }
 
@@ -53,7 +55,7 @@
     .charText {
       margin-top: 15px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 300;
       font-size: 16px;
       line-height: 70.9%;
       color: var(--main-text);
@@ -70,7 +72,7 @@
   }
 
   &.selected {
-    padding: 1.5px;
+    padding: 1.7px;
     box-shadow: var(--forms2_pink_shadow);
     background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
 

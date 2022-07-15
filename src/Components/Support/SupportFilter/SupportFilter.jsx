@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useParams } from 'react-router-dom'
-import { Button, IconButton, Portal, CreateTicketModal } from '../..'
+import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '../..'
 import { supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
@@ -50,15 +50,16 @@ export default function Component({ selctedTicket, setCurrentPage }) {
           )}
         </div>
         {params?.path === 'requests' && (
-          <IconButton
-            dataTestid={'archiveBtn'}
-            disabled={selctedTicket?.toarchive?.$ !== 'on'}
-            onClick={() =>
-              dispatch(supportOperations.archiveTicketsHandler(selctedTicket?.id?.$))
-            }
-            icon="archive"
-            className={s.archiveBtn}
-          />
+          <HintWrapper wrapperClassName={s.archiveBtn} label={t('To the archive')}>
+            <IconButton
+              dataTestid={'archiveBtn'}
+              disabled={selctedTicket?.toarchive?.$ !== 'on'}
+              onClick={() =>
+                dispatch(supportOperations.archiveTicketsHandler(selctedTicket?.id?.$))
+              }
+              icon="archive"
+            />
+          </HintWrapper>
         )}
       </div>
       {params?.path === 'requests' && (

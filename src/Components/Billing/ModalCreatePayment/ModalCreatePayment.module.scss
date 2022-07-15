@@ -75,7 +75,10 @@
 
   &.last {
     padding-bottom: 25px;
-    border-bottom: 1px solid #e1daea;
+
+    &.border {
+      border-bottom: 1px solid #e1daea;
+    }
   }
 }
 
@@ -117,7 +120,7 @@
 }
 
 .select {
-  max-width: 313px;
+  max-width: 100%;
   margin-top: 15px;
 }
 
@@ -163,11 +166,13 @@
   display: flex;
   align-items: center;
   flex-basis: 100%;
-  margin: 15px 0 0 0;
+  margin: 15px 0px 0 0;
   padding: 14px;
   box-shadow: var(--forms2_shadow);
   background-color: var(--forms_bgc_3);
   position: relative;
+  max-height: 50px;
+  height: 50px;
 
   img {
     width: 20px;
@@ -194,13 +199,25 @@
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 130.5%;
+    line-height: 100%;
     color: var(--main-text);
     margin-left: 10px;
+
+    text-align: left;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .balance {
+    text-align: left;
+    margin-left: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 100%;
+    color: var(--transparent-color);
   }
 
   &:active {
@@ -241,7 +258,6 @@
   display: flex;
   align-items: center;
   margin-top: 13px;
-  max-width: 270px;
 }
 
 .checkbox {
@@ -254,12 +270,14 @@
   font-size: 14px;
   line-height: 18px;
   color: var(--main-text);
+  text-align: start;
 }
 
 .offerBlockLink {
   color: var(--link-color);
   text-decoration: underline;
   cursor: pointer;
+  text-align: start;
 }
 
 .inputPerson {
@@ -267,10 +285,18 @@
   max-width: 100%;
 }
 
+.addPayerBlock {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
 @media screen and (min-width: 768px) {
   .paymentMethodBtn {
-    margin: 15px 15px 0 0;
+    max-width: 30%;
     flex-basis: 30%;
+    margin: 15px 15px 0 0;
   }
 
   .inputAmountBlock {
@@ -287,11 +313,12 @@
   }
 
   .inputPerson {
-    max-width: 311px;
+    max-width: 30%;
     margin-right: 20px;
   }
 
   .select {
+    max-width: 30%;
     margin-right: 20px;
   }
 
@@ -320,5 +347,9 @@
 
   .saveBtn {
     width: 254px;
+  }
+
+  .addPayerBlock {
+    flex-direction: row;
   }
 }

@@ -8,7 +8,7 @@ import * as route from '../../routes'
 
 // GET SERVERS OPERATIONS
 
-const getServersList = () => (dispatch, getState) => {
+const getServersList = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -25,6 +25,8 @@ const getServersList = () => (dispatch, getState) => {
         lang: 'en',
         clickstat: 'yes',
         sok: 'ok',
+        p_cnt: 30,
+        ...data,
       }),
     )
     .then(({ data }) => {
@@ -35,7 +37,10 @@ const getServersList = () => (dispatch, getState) => {
         dedicPageRights: data.doc.metadata.toolbar,
       }
 
+      const count = data?.doc?.p_elems?.$ || 0
+
       dispatch(dedicActions.setServersList(dedicRenderData))
+      dispatch(dedicActions.setDedicCount(count))
 
       dispatch(actions.hideLoader())
     })
@@ -646,7 +651,7 @@ const editDedicServerNoExtraPay =
           position: 'bottom-right',
           toastId: 'customId',
         })
-        dispatch(getServersList())
+        dispatch(getServersList({ p_num: 1 }))
         dispatch(actions.hideLoader())
 
         handleModal()
@@ -1236,7 +1241,7 @@ const getDedicFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getServersList())
+          return dispatch(getServersList({ p_num: 1 }))
         }
 
         let filters = {}
@@ -1270,7 +1275,7 @@ const getDedicFilters =
       .catch(error => {
         console.log('error', error)
         if (error.message.includes('filter')) {
-          dispatch(getServersList())
+          dispatch(getServersList({ p_num: 1 }))
         }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())

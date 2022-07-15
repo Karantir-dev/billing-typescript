@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ContractItem from '../../Components/Contracts/ContractItem/ContractItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton } from '../../Components'
+import { IconButton, Pagination } from '../../Components'
 import { contractOperations, contractsSelectors } from '../../Redux'
 import { useTranslation } from 'react-i18next'
 
@@ -14,11 +14,14 @@ export default function Contracts() {
   const isAllowedToRender = usePageRender('customer', 'contract')
 
   const contractsRenderData = useSelector(contractsSelectors.getContractsList)
+  const contractsCount = useSelector(contractsSelectors.getContractsCount)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['container', 'contracts', 'other', 'billing'])
 
   const [selectedContract, setSelectedContract] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   // const handlePrintBtn = () => {
   //   dispatch(contractOperations.getPrintFile(selectedContract?.id?.$))
@@ -33,11 +36,12 @@ export default function Contracts() {
 
   useEffect(() => {
     if (isAllowedToRender) {
-      dispatch(contractOperations.getContracts())
+      const data = { p_num: currentPage }
+      dispatch(contractOperations.getContracts(data))
     } else {
       navigate(route.SERVICES, { replace: true })
     }
-  }, [])
+  }, [currentPage])
 
   return (
     <>
@@ -52,7 +56,7 @@ export default function Contracts() {
         /> */}
         <IconButton
           disabled={!selectedContract || !rights?.download || !rights?.print}
-          icon="archive"
+          icon="download-folder"
           className={s.download_btn}
           onClick={handleDownloadBtn}
         />
@@ -117,6 +121,16 @@ export default function Contracts() {
           )
         })}
       </div>
+      {contractsRenderData?.contracts?.length !== 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(contractsCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </>
   )
 }

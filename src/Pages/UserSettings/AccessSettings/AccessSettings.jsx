@@ -270,6 +270,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                   {values?.google_status === 'off' ? (
                     <SocialButton
                       onClick={() => {
+                        localStorage.setItem('connect_social_in_settings', 'true')
                         dispatch(authOperations.getRedirectLink('google'))
                       }}
                       isNotConnected
@@ -292,6 +293,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                   {values?.facebook_status === 'off' ? (
                     <SocialButton
                       onClick={() => {
+                        localStorage.setItem('connect_social_in_settings', 'true')
                         dispatch(authOperations.getRedirectLink('facebook'))
                       }}
                       isNotConnected
@@ -317,6 +319,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                   {values?.vkontakte_status === 'off' ? (
                     <SocialButton
                       onClick={() => {
+                        localStorage.setItem('connect_social_in_settings', 'true')
                         dispatch(authOperations.getRedirectLink('vkontakte'))
                       }}
                       isNotConnected

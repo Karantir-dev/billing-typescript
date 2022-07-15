@@ -14,6 +14,7 @@ import {
   InstructionModal,
   RebootModal,
   Portal,
+  Pagination,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { dedicOperations, dedicSelectors } from '../../../Redux'
@@ -34,6 +35,7 @@ export default function DedicatedServersPage() {
   const navigate = useNavigate()
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)
+  const dedicCount = useSelector(dedicSelectors.getDedicCount)
 
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -44,6 +46,7 @@ export default function DedicatedServersPage() {
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -78,6 +81,8 @@ export default function DedicatedServersPage() {
     }
     setValues && setValues({ ...clearField })
     setFilterModal(false)
+    setCurrentPage(1)
+
     dispatch(
       dedicOperations.getDedicFilters(
         setFilters,
@@ -91,6 +96,8 @@ export default function DedicatedServersPage() {
 
   const setFilterHandler = values => {
     setFilterModal(false)
+    setCurrentPage(1)
+
     dispatch(
       dedicOperations.getDedicFilters(
         setFilters,
@@ -131,6 +138,11 @@ export default function DedicatedServersPage() {
   }, [])
 
   let rights = checkServicesRights(dedicRenderData?.dedicPageRights?.toolgrp)
+
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(dedicOperations.getServersList(data))
+  }, [currentPage])
 
   useEffect(() => {
     if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
@@ -308,6 +320,17 @@ export default function DedicatedServersPage() {
         setActiveServer={setActiveServer}
         rights={rights}
       />
+      {dedicRenderData?.serversList?.length !== 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(dedicCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
+
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>

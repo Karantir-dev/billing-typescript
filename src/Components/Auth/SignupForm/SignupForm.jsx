@@ -32,13 +32,13 @@ export default function SignupForm() {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[^!@#$-_%^\\&*()\]~+/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!@#$_%^\\&*()\]~+/}[{=?|"<>:;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
-      .min(6, t('warnings.invalid_pass'))
+      .min(12, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
       .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass'))
       .required(t('warnings.password_required')),
