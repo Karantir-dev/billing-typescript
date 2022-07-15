@@ -13,6 +13,7 @@ export default function Component() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selctedTicket, setSelctedTicket] = useState(null)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     dispatch(supportOperations.getDepartmenList())
@@ -26,7 +27,13 @@ export default function Component() {
 
   return (
     <div data-testid="request_support">
-      <SupportFilter selctedTicket={selctedTicket} setCurrentPage={setCurrentPage} />
+      <SupportFilter
+        isFiltered={isFiltered}
+        setIsFiltered={setIsFiltered}
+        isFilterActive={isFiltered || tickerList?.length > 0}
+        selctedTicket={selctedTicket}
+        setCurrentPage={setCurrentPage}
+      />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
       </h2>
