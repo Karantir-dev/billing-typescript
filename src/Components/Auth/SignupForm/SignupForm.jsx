@@ -32,7 +32,7 @@ export default function SignupForm() {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[^!@#$-_%^\\&*()\]~+/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!@#$_%^\\&*()\]~+/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
       .email(t('warnings.invalid_email'))
