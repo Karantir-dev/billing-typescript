@@ -56,7 +56,7 @@ export default function Contracts() {
         /> */}
         <IconButton
           disabled={!selectedContract || !rights?.download || !rights?.print}
-          icon="archive"
+          icon="download-folder"
           className={s.download_btn}
           onClick={handleDownloadBtn}
         />
