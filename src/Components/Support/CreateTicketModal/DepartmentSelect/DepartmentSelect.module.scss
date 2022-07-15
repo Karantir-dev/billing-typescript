@@ -18,6 +18,16 @@
         }
       }
     }
+
+    .title {
+      color: var(--main-text);
+    }
+  }
+
+  &:hover {
+    .title {
+      color: var(--main-text);
+    }
   }
 }
 
@@ -36,12 +46,12 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 102.9%;
-  color: var(--main-text);
+  color: var(--transparent-color);
 }
 
 .infoBtn {
+  display: none;
   position: relative;
-  display: flex;
   margin-left: auto;
   padding: 12px 12px 12px 0px;
   cursor: pointer;
@@ -96,6 +106,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .infoBtn {
+    display: flex;
+  }
   .select {
     flex-basis: 49%;
   }
