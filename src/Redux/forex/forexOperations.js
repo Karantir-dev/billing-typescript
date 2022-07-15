@@ -7,7 +7,7 @@ import * as route from '../../routes'
 import { actions, cartActions, forexActions } from '..'
 
 //GET hostings OPERATIONS
-const getForexList = () => (dispatch, getState) => {
+const getForexList = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -23,6 +23,8 @@ const getForexList = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
+        p_cnt: 30,
+        ...data,
       }),
     )
     .then(({ data }) => {
@@ -33,7 +35,10 @@ const getForexList = () => (dispatch, getState) => {
         forexPageRights: data.doc.metadata.toolbar,
       }
 
+      const count = data?.doc?.p_elems?.$ || 0
+
       dispatch(forexActions.setForexList(forexRenderData))
+      dispatch(forexActions.setForexCount(count))
       // setForexList(data.doc.elem ? data.doc.elem : [])
       dispatch(actions.hideLoader())
     })
@@ -323,7 +328,7 @@ const editForex =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        dispatch(getForexList())
+        dispatch(getForexList({ p_num: 1 }))
 
         toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
           position: 'bottom-right',
@@ -361,7 +366,7 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getForexList())
+      dispatch(getForexList({ p_num: 1 }))
 
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
         position: 'bottom-right',
@@ -403,7 +408,7 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList())
+          return dispatch(getForexList({ p_num: 1 }))
         }
 
         let filters = {}
@@ -434,7 +439,7 @@ const getForexFilters =
       .catch(error => {
         console.log('error', error)
         if (error.message.includes('filter')) {
-          dispatch(getForexList())
+          dispatch(getForexList({ p_num: 1 }))
         }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())

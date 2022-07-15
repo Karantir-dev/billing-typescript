@@ -16,6 +16,7 @@ import {
   DedicsHistoryModal,
   FTPInstructionModal,
   Portal,
+  Pagination,
 } from '../../../Components'
 import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,6 +34,9 @@ export default function FTP() {
   const navigate = useNavigate()
 
   let ftpRenderData = useSelector(ftpSelectors.getFTPList)
+  const ftpCount = useSelector(ftpSelectors.getFTPCount)
+  const [currentPage, setCurrentPage] = useState(1)
+
   // const [ftpList, setFtpList] = useState(null)
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -86,6 +90,8 @@ export default function FTP() {
 
   const setFilterHandler = values => {
     setFilterModal(false)
+    setCurrentPage(1)
+
     dispatch(
       ftpOperations.getFTPFilters(
         setFilters,
@@ -123,6 +129,11 @@ export default function FTP() {
   }, [])
 
   let rights = checkServicesRights(ftpRenderData?.ftpPageRights?.toolgrp)
+
+  useEffect(() => {
+    const data = { p_num: currentPage }
+    dispatch(ftpOperations.getFTPList(data))
+  }, [currentPage])
 
   useEffect(() => {
     if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters))
@@ -267,6 +278,18 @@ export default function FTP() {
         setActiveServer={setActiveServer}
         rights={rights}
       />
+
+      {ftpRenderData?.ftpList?.length !== 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(ftpCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
+
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <FTPEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
