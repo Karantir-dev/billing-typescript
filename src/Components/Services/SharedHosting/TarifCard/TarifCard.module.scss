@@ -36,12 +36,17 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 130%;
+    text-align: center;
     background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
     margin: 15px 0;
+
+    &.freeTrial {
+      line-height: 400%;
+    }
   }
 
   .charBlock {
@@ -67,6 +72,11 @@
     .tariffPrice {
       font-weight: 600;
     }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.7;
   }
 
   &.selected {

@@ -96,7 +96,8 @@ export default function Component(props) {
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
-            profile: payersList[payersList?.length - 1]?.id?.$ || 'add_new',
+            profile:
+              payersList?.length !== 0 ? payersList[payersList?.length - 1]?.id?.$ : '',
             amount: '',
             slecetedPayMethod: undefined,
             person: '',
@@ -145,25 +146,34 @@ export default function Component(props) {
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>1. {t('Payers choice')}</div>
                     <div className={cn(s.formFieldsBlock, s.first)}>
-                      <Select
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        value={values.profile}
-                        getElement={item => setPayerHandler(item)}
-                        isShadow
-                        className={s.select}
-                        itemsList={payers?.map(({ name, id }) => ({
-                          label: t(`${name?.$?.trim()}`),
-                          value: id?.$,
-                        }))}
-                      />
+                      {payers?.length !== 0 && (
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          value={values.profile}
+                          getElement={item => setPayerHandler(item)}
+                          isShadow
+                          className={s.select}
+                          itemsList={payers?.map(({ name, id }) => ({
+                            label: t(`${name?.$?.trim()}`),
+                            value: id?.$,
+                          }))}
+                        />
+                      )}
                       {!newPayer && (
-                        <button
-                          onClick={() => setPayerHandler('add_new')}
-                          type="button"
-                          className={s.addNewPayerBtn}
-                        >
-                          {t('Add new payer', { ns: 'payers' })}
-                        </button>
+                        <div className={s.addPayerBtnBlock}>
+                          <button
+                            onClick={() => setPayerHandler('add_new')}
+                            type="button"
+                            className={s.addNewPayerBtn}
+                          >
+                            {t('Add new payer', { ns: 'payers' })}
+                          </button>
+                          <ErrorMessage
+                            className={s.error_message_addpayer}
+                            name={'profile'}
+                            component="span"
+                          />
+                        </div>
                       )}
                       {newPayer && (
                         <div className={s.addPayerBlock}>
