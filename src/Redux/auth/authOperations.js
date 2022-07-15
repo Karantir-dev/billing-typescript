@@ -422,39 +422,44 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
 }
 
-const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const addLoginWithSocial =
+  (state, redirectLink, isRequestFromSettings) => (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  dispatch(actions.showLoader())
+    dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'oauth',
-        state: state,
-        auth: sessionId,
-        out: 'json',
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data?.doc?.ok?.$?.includes('linkexists')) {
-        redirectToSettings('denied')
-      } else {
-        redirectToSettings('success')
-      }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'oauth',
+          state: state,
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data?.doc?.ok?.$?.includes('linkexists')) {
+          redirectLink('denied')
+        } else {
+          if (isRequestFromSettings) {
+            redirectLink('success')
+          } else {
+            redirectLink()
+          }
+        }
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      dispatch(actions.hideLoader())
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
 
-      console.log('checkLoginWithSocial - ', err)
-    })
-}
+        console.log('checkLoginWithSocial - ', err)
+      })
+  }
 
 const getLoginSocLinks = setSocialLinks => dispatch => {
   dispatch(actions.showLoader())
