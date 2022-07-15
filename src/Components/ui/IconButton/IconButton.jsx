@@ -24,6 +24,7 @@ import {
   Attention,
   Exchange,
   ChangeTariff,
+  DownloadWithFolder,
 } from '../../../images'
 
 export default function Component(props) {
@@ -73,6 +74,8 @@ export default function Component(props) {
         return <Exchange />
       case 'change-tariff':
         return <ChangeTariff />
+      case 'download-folder':
+        return <DownloadWithFolder />
       default:
         return null
     }
