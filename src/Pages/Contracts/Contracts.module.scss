@@ -6,6 +6,33 @@
   color: var(--main-text);
 }
 
+.no_service_wrapper {
+  max-width: 531px;
+  margin: 60px auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    margin-bottom: 40px;
+  }
+}
+
+.no_service_title {
+  font-weight: 600;
+  text-align: center;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-bottom: 25px;
+}
+
+.no_service_description {
+  font-weight: 300;
+  text-align: center;
+  font-size: 16px;
+  color: var(--main-text);
+}
+
 .print_btn {
   margin-right: 20px;
 }

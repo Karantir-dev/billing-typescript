@@ -5,5 +5,7 @@
   "contract_name": "Вид договора",
   "print": "Печать",
   "Signed": "Подписан",
-  "Public Offer Agreement": "Договор-оферта"
+  "Public Offer Agreement": "Договор-оферта",
+  "YOU DO NOT HAVE CONTRACTS YET": "У ВАС ЕЩЕ НЕТ ДОГОВОРОВ",
+  "no services description": "В этом разделе Вы сможете найти договоры после покупки услуг"
 }

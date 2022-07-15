@@ -173,11 +173,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
       routeName: `${routes.BILLING}/expenses`,
       allowedToRender: true,
     },
-    {
-      name: t('burger_menu.finance.finance_list.auto_renewal'),
-      routeName: routes.HOME,
-      allowedToRender: true,
-    },
+    // {
+    //   name: t('burger_menu.finance.finance_list.auto_renewal'),
+    //   routeName: routes.HOME,
+    //   allowedToRender: true,
+    // },
   ]
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
