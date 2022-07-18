@@ -271,7 +271,7 @@ const getCountriesForRegister =
       })
   }
 
-const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
+const register = (values, partner,  setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -285,6 +285,7 @@ const register = (values, setErrMsg, successRegistration, resetRecaptcha) => dis
         confirm: values.passConfirmation,
         country: values.country,
         state: values.region,
+        partner: partner,
         'g-recaptcha-response': values.reCaptcha,
         out: 'json',
         sok: 'ok',
