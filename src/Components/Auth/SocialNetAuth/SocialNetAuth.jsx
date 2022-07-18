@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
-import { authOperations } from '../../../Redux'
-import { useDispatch } from 'react-redux'
-import { Loader } from '../..'
+import { authOperations, authSelectors } from '../../../Redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Loader, VerificationModal } from '../..'
 
 export default function SocialNetAuth() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
 
   const redirectToRegistration = (errMsg, name, email) => {
     navigate(route.REGISTRATION, {
@@ -35,5 +37,9 @@ export default function SocialNetAuth() {
     }
   }, [])
 
-  return <Loader shown />
+  return formVisibility === 'shown' ? (
+    <VerificationModal onClose={() => redirectToLogin()} />
+  ) : (
+    <Loader shown />
+  )
 }
