@@ -33,6 +33,14 @@
   margin-right: 10px;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .tools_icon {
   svg {
     min-width: 18px;

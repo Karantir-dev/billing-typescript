@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button } from '../..'
@@ -13,6 +14,7 @@ import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
+
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
@@ -59,18 +61,17 @@ export default function SignupForm() {
       otherwise: Yup.number(),
     }),
   })
-
+  const partner = Cookies.get('billpartner')
   const handleSubmit = (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl.current.reset()
       setFieldValue('reCaptcha', '')
     }
-
+  
     dispatch(
-      authOperations.register(values, setErrMsg, successRegistration, resetRecaptcha),
+      authOperations.register(values, partner, setErrMsg, successRegistration, resetRecaptcha),
     )
   }
-
   return (
     <div className={s.form_wrapper}>
       <div className={s.auth_links_wrapper}>

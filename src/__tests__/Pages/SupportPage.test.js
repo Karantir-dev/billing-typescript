@@ -3,12 +3,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { Route, MemoryRouter, Routes } from 'react-router-dom'
 import OpenedTicket from '../../Pages/SupportPage/OpenedTicket/OpenedTicket'
-import {
-  SupportTable,
-  SupportArchiveTable,
-  SendMessageForm,
-  SupportFilter,
-} from '../../Components'
+import { SupportTable, SupportArchiveTable, SendMessageForm } from '../../Components'
 import * as redux from 'react-redux'
 import entireStore from '../../Redux/store'
 import userEvent from '@testing-library/user-event'
@@ -178,25 +173,5 @@ describe('Send message form', () => {
     await user.click(screen.getByTestId('btn_form_submit'))
 
     expect(message.value).toMatch('')
-  })
-})
-
-describe('Filter modal form', () => {
-  function renderComponent(path) {
-    render(
-      <Provider store={entireStore.store}>
-        <MemoryRouter initialEntries={[`/support/${path}`]}>
-          <Routes>
-            <Route path="/support/:path" element={<SupportFilter />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
-    )
-  }
-
-  test('render support filter', async () => {
-    renderComponent('requests')
-    expect(screen.queryByTestId('archiveBtn')).toBeInTheDocument()
-    expect(screen.queryByTestId('new_ticket_btn')).toBeInTheDocument()
   })
 })
