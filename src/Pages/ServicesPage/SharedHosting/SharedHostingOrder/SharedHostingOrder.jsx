@@ -102,6 +102,9 @@ export default function Component() {
   }
 
   const parsePrice = price => {
+    if (period === 'Trial period') {
+      return
+    }
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
@@ -184,24 +187,26 @@ export default function Component() {
         {paramsData && (
           <div className={s.parametrsContainer}>
             <div className={s.parametrsTitle}>{t('Options')}</div>
-            <Select
-              getElement={item => {
-                setAutoprolong(item)
-              }}
-              value={autoprolong}
-              label={`${t('Auto renewal', { ns: 'domains' })}:`}
-              className={s.select}
-              itemsList={paramsData?.autoprolong_list.map(el => {
-                return {
-                  label:
-                    el.$ === 'Disabled'
-                      ? t(el.$.trim())
-                      : translateAutorenewSelect(el.$.trim()),
-                  value: el.$key,
-                }
-              })}
-              isShadow
-            />
+            {period !== '-100' ? (
+              <Select
+                getElement={item => {
+                  setAutoprolong(item)
+                }}
+                value={autoprolong}
+                label={`${t('Auto renewal', { ns: 'domains' })}:`}
+                className={s.select}
+                itemsList={paramsData?.autoprolong_list?.map(el => {
+                  return {
+                    label:
+                      el.$ === 'Disabled'
+                        ? t(el.$.trim())
+                        : translateAutorenewSelect(el.$.trim()),
+                    value: el.$key,
+                  }
+                })}
+                isShadow
+              />
+            ) : null}
             <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}

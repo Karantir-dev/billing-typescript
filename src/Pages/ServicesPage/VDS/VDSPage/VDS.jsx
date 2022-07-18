@@ -55,6 +55,9 @@ export default function VDS() {
   const [elemsTotal, setElemsTotal] = useState(0)
 
   const [firstRender, setFirstRender] = useState(true)
+
+  const [isFiltered, setIsFiltered] = useState(false)
+
   useEffect(() => {
     if (!firstRender) {
       dispatch(vdsOperations.getVDS({ setServers, setRights, currentPage }))
@@ -90,6 +93,8 @@ export default function VDS() {
   }
 
   const resetFilterHandler = () => {
+    setIsFiltered(false)
+    setCurrentPage(1)
     dispatch(
       vdsOperations.setVdsFilters(
         null,
@@ -112,6 +117,7 @@ export default function VDS() {
   }
 
   const handleSetFilters = values => {
+    setCurrentPage(1)
     dispatch(
       vdsOperations.setVdsFilters(
         values,
@@ -122,6 +128,7 @@ export default function VDS() {
       ),
     )
     setIsSearchMade(true)
+    setIsFiltered(true)
     setIsFiltersOpened(false)
   }
 
@@ -137,7 +144,7 @@ export default function VDS() {
       <div className={s.tools_wrapper}>
         <div className={s.filter_wrapper}>
           <IconButton
-            className={s.tools_icon}
+            className={cn(s.tools_icon, { [s.filtered]: isFiltered })}
             onClick={() => setIsFiltersOpened(true)}
             icon="filter"
             disabled={(servers?.length < 1 && !isSearchMade) || !rights?.filter}
@@ -313,12 +320,14 @@ export default function VDS() {
         goToPanel={goToPanel}
       />
 
-      <Pagination
-        currentPage={currentPage}
-        totalCount={Number(elemsTotal)}
-        pageSize={30}
-        onPageChange={page => setCurrentPage(page)}
-      />
+      {servers?.length !== 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalCount={Number(elemsTotal)}
+          pageSize={30}
+          onPageChange={page => setCurrentPage(page)}
+        />
+      )}
 
       <Backdrop
         className={s.backdrop}

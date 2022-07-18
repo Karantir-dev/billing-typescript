@@ -25,6 +25,14 @@
   display: flex;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .order_btn {
   font-weight: 800;
   font-size: 20px;

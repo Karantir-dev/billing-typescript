@@ -20,10 +20,6 @@ export default function Component() {
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
-  useEffect(async () => {
-    dispatch(accessLogsOperations.getAccessLogsFiltersHandler())
-  }, [])
-
   useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(accessLogsOperations.getAccessLogsHandler(data))
