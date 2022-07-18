@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
 import PropTypes from 'prop-types'
 // import cn from 'classnames'
@@ -14,7 +14,6 @@ import {
   Button,
 } from '../..'
 import s from '../AccessLogsComponents.module.scss'
-import { useEffect } from 'react'
 
 export default function Component({ setCurrentPage }) {
   const { t } = useTranslation(['access_log', 'other'])

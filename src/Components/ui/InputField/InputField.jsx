@@ -15,7 +15,7 @@ import {
 } from '../../../images'
 import s from './InputField.module.scss'
 
-export default function InputField(props) {
+const InputField = function InputField(props) {
   const {
     label,
     iconRight, // icon type
@@ -182,3 +182,5 @@ InputField.defaultProps = {
   onKeyDown: () => null,
   onPlusClick: () => null,
 }
+
+export default InputField

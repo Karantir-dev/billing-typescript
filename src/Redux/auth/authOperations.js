@@ -36,7 +36,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           }),
         )
         .then(({ data }) => {
-          if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
+          if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
 
           if (data.doc?.ok?.$ === 'func=totp.confirm') {
             dispatch(authActions.setTemporaryId(sessionId))
@@ -271,42 +271,43 @@ const getCountriesForRegister =
       })
   }
 
-const register = (values, partner,  setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
-  dispatch(actions.showLoader())
+const register =
+  (values, partner, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
+    dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'register',
-        realname: values.name,
-        email: values.email,
-        passwd: values.password,
-        confirm: values.passConfirmation,
-        country: values.country,
-        state: values.region,
-        partner: partner,
-        'g-recaptcha-response': values.reCaptcha,
-        out: 'json',
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        setErrMsg(data.doc.error.$type)
-        throw new Error(data.doc.error.msg.$)
-      }
-      successRegistration()
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'register',
+          realname: values.name,
+          email: values.email,
+          passwd: values.password,
+          confirm: values.passConfirmation,
+          country: values.country,
+          state: values.region,
+          partner: partner,
+          'g-recaptcha-response': values.reCaptcha,
+          out: 'json',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          setErrMsg(data.doc.error.$type)
+          throw new Error(data.doc.error.msg.$)
+        }
+        successRegistration()
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      resetRecaptcha()
-      dispatch(actions.hideLoader())
-      setErrMsg(SERVER_ERR_MSG)
-      console.log('registration - ', err.message)
-    })
-}
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        resetRecaptcha()
+        dispatch(actions.hideLoader())
+        setErrMsg(SERVER_ERR_MSG)
+        console.log('registration - ', err.message)
+      })
+  }
 
 const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
   dispatch(actions.showLoader())
@@ -329,7 +330,32 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
           data.doc?.error?.param.find(el => el.$name === 'network')?.$,
         )
       } else if (data.doc?.auth?.$id) {
-        dispatch(authActions.loginSuccess(data.doc?.auth?.$id))
+        const sessionId = data.doc?.auth?.$id
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'whoami',
+              out: 'json',
+              auth: sessionId,
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
+
+            if (data.doc?.ok?.$ === 'func=totp.confirm') {
+              dispatch(authActions.setTemporaryId(sessionId))
+
+              dispatch(actions.hideLoader())
+
+              dispatch(authActions.openTotpForm())
+              return
+            }
+
+            dispatch(authActions.loginSuccess(sessionId))
+            // is it necessary request?
+            dispatch(userOperations.getUserInfo(sessionId))
+          })
 
         //REGISTER
       } else if (data.doc?.ok?.$) {
@@ -423,44 +449,39 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
 }
 
-const addLoginWithSocial =
-  (state, redirectLink, isRequestFromSettings) => (dispatch, getState) => {
-    const {
-      auth: { sessionId },
-    } = getState()
+const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    dispatch(actions.showLoader())
+  dispatch(actions.showLoader())
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'oauth',
-          state: state,
-          auth: sessionId,
-          out: 'json',
-          sok: 'ok',
-        }),
-      )
-      .then(({ data }) => {
-        if (data?.doc?.ok?.$?.includes('linkexists')) {
-          redirectLink('denied')
-        } else {
-          if (isRequestFromSettings) {
-            redirectLink('success')
-          } else {
-            redirectLink()
-          }
-        }
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth',
+        state: state,
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.ok?.$?.includes('linkexists')) {
+        redirectToSettings('denied')
+      } else {
+        redirectToSettings('success')
+      }
 
-        dispatch(actions.hideLoader())
-      })
-      .catch(err => {
-        dispatch(actions.hideLoader())
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
 
-        console.log('checkLoginWithSocial - ', err)
-      })
-  }
+      console.log('checkLoginWithSocial - ', err)
+    })
+}
 
 const getLoginSocLinks = setSocialLinks => dispatch => {
   dispatch(actions.showLoader())

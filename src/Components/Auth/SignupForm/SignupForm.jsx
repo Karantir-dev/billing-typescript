@@ -42,7 +42,7 @@ export default function SignupForm() {
     password: Yup.string()
       .min(12, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
-      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass'))
+      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass'))
       .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
@@ -137,6 +137,7 @@ export default function SignupForm() {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
+                autocomplete="new-password"
               />
 
               <InputField
