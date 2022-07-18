@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik, Form } from 'formik'
+import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Button, Select, InputField, CheckBox } from '../../../Components/'
 import {
@@ -52,7 +52,7 @@ export default function Component(props) {
     const words = string?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
-    if (words.length > 0) {
+    if (words?.length > 0) {
       words.forEach(w => {
         if (!isNaN(w)) {
           amounts.push(w)
@@ -138,7 +138,8 @@ export default function Component(props) {
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          profile: payersList[payersList?.length - 1]?.id?.$ || 'add_new',
+          profile:
+            payersList?.length !== 0 ? payersList[payersList?.length - 1]?.id?.$ : '',
           person: '',
           maxamount: autoPaymentConfig?.maxamount || '',
           paymethod: selectedMethod?.paymethod?.$ || '',
@@ -171,14 +172,22 @@ export default function Component(props) {
                     value: id?.$,
                   }))}
                 />
+
                 {!newPayer && (
-                  <button
-                    onClick={() => setPayerHandler('add_new')}
-                    type="button"
-                    className={s.addNewPayerBtn}
-                  >
-                    {t('Add new payer', { ns: 'payers' })}
-                  </button>
+                  <div className={s.addPayerBtnBlock}>
+                    <button
+                      onClick={() => setPayerHandler('add_new')}
+                      type="button"
+                      className={s.addNewPayerBtn}
+                    >
+                      {t('Add new payer', { ns: 'payers' })}
+                    </button>
+                    <ErrorMessage
+                      className={s.error_message_addpayer}
+                      name={'profile'}
+                      component="span"
+                    />
+                  </div>
                 )}
               </div>
               <div className={cn(s.formFieldsBlock, s.first)}>

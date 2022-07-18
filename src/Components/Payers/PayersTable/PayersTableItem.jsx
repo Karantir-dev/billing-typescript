@@ -92,6 +92,7 @@ export default function Component(props) {
                 className={s.deleteBtn}
                 label={t('Delete')}
                 type="button"
+                isShadow
               />
               <button
                 onClick={() => setIsDeleteModal(false)}

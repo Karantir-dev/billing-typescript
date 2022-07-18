@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
 import PropTypes from 'prop-types'
 // import cn from 'classnames'
@@ -33,23 +33,26 @@ export default function Component({ setCurrentPage }) {
 
   useOutsideAlerter(dropdownCalendar, isOpenedCalendar, clickOutside)
 
+  useEffect(() => {
+    resetFilterHandler()
+  }, [])
+
   const filterHandler = values => {
     setCurrentPage(1)
     setIsOpenedCalendar(false)
     dispatch(accessLogsOperations.filterDataHandler(values))
   }
 
-  // const resetFilterHandler = setValues => {
-  //   const clearField = {
-  //     ip: '',
-  //     time: 'nodate',
-  //     timestart: '',
-  //     timeend: '',
-  //   }
-  //   setCurrentPage(1)
-  //   setValues({ ...clearField })
-  //   dispatch(accessLogsOperations.filterDataHandler(clearField))
-  // }
+  const resetFilterHandler = () => {
+    const clearField = {
+      ip: '',
+      time: 'nodate',
+      timestart: '',
+      timeend: '',
+    }
+    setCurrentPage(1)
+    dispatch(accessLogsOperations.filterDataHandler(clearField))
+  }
 
   const parseCurrentFilter = () => {
     let time = null

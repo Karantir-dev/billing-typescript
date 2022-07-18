@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button } from '../..'
@@ -13,6 +14,7 @@ import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
+
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
@@ -32,7 +34,7 @@ export default function SignupForm() {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[^!@#$-_%^\\&*()\]~+/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!@#$_%^\\&*()\]~+/}[{=?|"<>:;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
       .email(t('warnings.invalid_email'))
@@ -40,7 +42,7 @@ export default function SignupForm() {
     password: Yup.string()
       .min(12, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
-      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass'))
+      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass'))
       .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
@@ -59,18 +61,17 @@ export default function SignupForm() {
       otherwise: Yup.number(),
     }),
   })
-
+  const partner = Cookies.get('billpartner')
   const handleSubmit = (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl.current.reset()
       setFieldValue('reCaptcha', '')
     }
-
+  
     dispatch(
-      authOperations.register(values, setErrMsg, successRegistration, resetRecaptcha),
+      authOperations.register(values, partner, setErrMsg, successRegistration, resetRecaptcha),
     )
   }
-
   return (
     <div className={s.form_wrapper}>
       <div className={s.auth_links_wrapper}>
@@ -136,6 +137,7 @@ export default function SignupForm() {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
+                autocomplete="new-password"
               />
 
               <InputField

@@ -41,7 +41,7 @@
   padding: 0 14px;
   max-height: 50vh;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -193,8 +193,6 @@
   .form {
     padding: 0 50px 20px;
     max-height: none;
-    overflow-y: hidden;
-    overflow-x: hidden;
   }
 
   .btn_save {

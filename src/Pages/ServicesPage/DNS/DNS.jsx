@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
-// import cn from 'classnames'
+import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import {
@@ -59,6 +59,8 @@ export default function DNS() {
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
 
+  const [isFiltered, setIsFiltered] = useState(false)
+
   const location = useLocation()
 
   const parseLocations = () => {
@@ -69,7 +71,7 @@ export default function DNS() {
     return pathnames
   }
 
-  const resetFilterHandler = setValues => {
+  const resetFilterHandler = () => {
     const clearField = {
       id: '',
       pricelist: '',
@@ -85,7 +87,9 @@ export default function DNS() {
       autoprolong: '',
       datacenter: '',
     }
-    setValues && setValues({ ...clearField })
+
+    setIsFiltered(false)
+    setCurrentPage(1)
 
     setFilterModal(false)
     dispatch(
@@ -102,6 +106,8 @@ export default function DNS() {
     setFilterModal(false)
     setFilters(null)
     setCurrentPage(1)
+
+    setIsFiltered(true)
 
     dispatch(
       dnsOperations.getDNSFilters(
@@ -181,7 +187,7 @@ export default function DNS() {
             <IconButton
               onClick={() => setFilterModal(true)}
               icon="filter"
-              className={s.calendarBtn}
+              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
               disabled={
                 (dnsRenderData?.dnsList?.length === 0 && !emptyFilter) || !rights?.filter
               }

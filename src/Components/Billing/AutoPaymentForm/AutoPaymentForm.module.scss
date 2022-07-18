@@ -28,6 +28,14 @@
   }
 }
 
+.error_message_addpayer {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.2;
+  margin-top: 10px;
+}
+
 .select {
   max-width: 100%;
   margin-top: 20px;
@@ -132,7 +140,7 @@
 @media screen and (min-width: 768px) {
   .addNewPayerBtn {
     width: auto;
-    margin: 33px 0 0 0;
+    margin: 33px 0 5px 0;
   }
 
   .select {

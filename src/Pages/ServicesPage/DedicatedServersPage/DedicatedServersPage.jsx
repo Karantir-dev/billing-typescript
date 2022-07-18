@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-// import cn from 'classnames'
+import cn from 'classnames'
 import {
   Button,
   IconButton,
@@ -55,6 +55,8 @@ export default function DedicatedServersPage() {
     0,
   )
 
+  const [isFiltered, setIsFiltered] = useState(false)
+
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const location = useLocation()
@@ -90,6 +92,8 @@ export default function DedicatedServersPage() {
     setFilterModal(false)
     setCurrentPage(1)
 
+    setIsFiltered(false)
+
     dispatch(
       dedicOperations.getDedicFilters(
         setFilters,
@@ -104,6 +108,8 @@ export default function DedicatedServersPage() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setCurrentPage(1)
+
+    setIsFiltered(true)
 
     dispatch(
       dedicOperations.getDedicFilters(
@@ -173,7 +179,7 @@ export default function DedicatedServersPage() {
             <IconButton
               onClick={() => setFilterModal(true)}
               icon="filter"
-              className={s.calendarBtn}
+              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
               disabled={
                 (!emptyFilter && dedicRenderData?.serversList?.length === 0) ||
                 !rights.filter

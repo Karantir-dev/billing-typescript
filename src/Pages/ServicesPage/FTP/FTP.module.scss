@@ -55,6 +55,14 @@
   }
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .filter_icon.tools_icon {
   max-height: 46px;
 }

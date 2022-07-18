@@ -42,6 +42,12 @@
     max-height: 20px;
     fill: var(--icon-color_2);
   }
+
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
 }
 
 .backdrop {

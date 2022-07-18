@@ -107,7 +107,7 @@ export default function EditModal({ elid, closeFn }) {
   const translatedDescription = orderInfo?.description
     .replace('for order and then', t('for order and then'))
     .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
-
+  console.log(initialState)
   return initialState ? (
     <div className={s.modal}>
       <div className={s.title_wrapper}>
@@ -135,7 +135,7 @@ export default function EditModal({ elid, closeFn }) {
       <Formik
         initialValues={{
           autoprolong: initialState.autoprolong.$,
-          stored_method: '0',
+          stored_method: initialState.stored_method.$,
           domainName: initialState.domain.$,
           userName: initialState.username.$,
           serverid: initialState.serverid.$,
@@ -148,14 +148,10 @@ export default function EditModal({ elid, closeFn }) {
           userpassword: initialState.userpassword.$,
           ostempl: initialState.ostempl.$,
           Control_panel: initialState.Control_panel,
-          processors: translatePeriodText(
-            initialState.slist.find(el => el.$name === 'CPU_count').val[0].$,
-          ),
+          processors: initialState.CPU_count,
           diskSpace: initialState.Disk_space,
           portSpeed: initialState.slist.find(el => el.$name === 'Port_speed').val[0].$,
-          memory: translatePeriodText(
-            initialState.slist.find(el => el.$name === 'Memory').val[0].$,
-          ),
+          memory: initialState.Memory,
           IPcount: initialState.IP_addresses_count,
         }}
         onSubmit={handleFormSubmit}
@@ -267,26 +263,6 @@ export default function EditModal({ elid, closeFn }) {
                 </button>
 
                 <div ref={addOnsEl} className={cn(s.add_ons_wrapper, s.grid_fields)}>
-                  <InputField
-                    className={s.mb}
-                    inputClassName={s.bgc}
-                    name="processors"
-                    label={`${t('processors')}:`}
-                    isShadow
-                    disabled
-                  />
-
-                  <Select
-                    className={s.mb}
-                    inputClassName={s.bgc}
-                    value={values.diskSpace}
-                    getElement={value => setFieldValue('diskSpace', value)}
-                    itemsList={getOptionsListExtended('Disk_space')}
-                    label={`${t('disk_space')}:`}
-                    isShadow
-                    disabled={initialState.change_disc_size.$ === 'off'}
-                  />
-
                   <Select
                     className={s.mb}
                     inputClassName={s.bgc}
@@ -310,6 +286,28 @@ export default function EditModal({ elid, closeFn }) {
                     isShadow
                   />
 
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.processors}
+                    getElement={value => setFieldValue('processors', value)}
+                    itemsList={getOptionsListExtended('CPU_count')}
+                    label={`${t('processors')}:`}
+                    isShadow
+                    disabled={true}
+                  />
+
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.diskSpace}
+                    getElement={value => setFieldValue('diskSpace', value)}
+                    itemsList={getOptionsListExtended('Disk_space')}
+                    label={`${t('disk_space')}:`}
+                    isShadow
+                    disabled={initialState.change_disc_size.$ === 'off'}
+                  />
+
                   <InputField
                     className={s.mb}
                     inputClassName={s.bgc}
@@ -318,13 +316,16 @@ export default function EditModal({ elid, closeFn }) {
                     isShadow
                     disabled
                   />
-                  <InputField
+
+                  <Select
                     className={s.mb}
                     inputClassName={s.bgc}
-                    name="memory"
+                    value={values.memory}
+                    getElement={value => setFieldValue('memory', value)}
+                    itemsList={getOptionsListExtended('Memory')}
                     label={`${t('memory')}:`}
                     isShadow
-                    disabled
+                    disabled={true}
                   />
                   <InputField
                     className={s.mb}

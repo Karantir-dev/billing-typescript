@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import cn from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '../../../routes'
 import { useMediaQuery } from 'react-responsive'
@@ -48,6 +49,7 @@ export default function ForexPage() {
   const forexTotalPrice = forexRenderData?.forexList?.reduce((curServer, nextServer) => {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
+  const [isFiltered, setIsFiltered] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -77,9 +79,10 @@ export default function ForexPage() {
       autoprolong: '',
       datacenter: '',
     }
-    // setValues && setValues({ ...clearField })
 
+    setIsFiltered(false)
     setFilterModal(false)
+    setCurrentPage(1)
     dispatch(
       forexOperations.getForexFilters(
         setFilters,
@@ -94,6 +97,7 @@ export default function ForexPage() {
     setFilterModal(false)
     setFilters(null)
     setCurrentPage(1)
+    setIsFiltered(true)
 
     dispatch(
       forexOperations.getForexFilters(
@@ -159,7 +163,7 @@ export default function ForexPage() {
             <IconButton
               onClick={() => setFilterModal(true)}
               icon="filter"
-              className={s.calendarBtn}
+              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
               disabled={
                 (!emptyFilter && forexRenderData?.forexList?.length === 0) ||
                 !rights?.filter

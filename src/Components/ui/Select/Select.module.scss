@@ -85,7 +85,12 @@
   &.opened {
     transform: translateY(-50%) rotate(0);
   }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
+
 .shadow {
   border: none;
   box-shadow: var(--forms_shadow);

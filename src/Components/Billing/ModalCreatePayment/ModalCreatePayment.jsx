@@ -41,6 +41,13 @@ export default function Component(props) {
     dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
   }
 
+  const payers = newPayer
+    ? [
+        ...payersList,
+        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+      ]
+    : payersList
+
   const createPaymentMethodHandler = values => {
     const data = {
       profile: values?.profile,
@@ -50,7 +57,8 @@ export default function Component(props) {
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
-      person: values?.person || '',
+      person:
+        values?.person || payers?.find(e => e?.id?.$ === values?.profile)?.name?.$ || ' ',
       name: values?.person,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
@@ -77,13 +85,6 @@ export default function Component(props) {
     [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
 
-  const payers = newPayer
-    ? [
-        ...payersList,
-        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
-      ]
-    : payersList
-
   return (
     <div className={s.modalBg}>
       <div className={s.modalBlock}>
@@ -95,7 +96,8 @@ export default function Component(props) {
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
-            profile: payersList[payersList?.length - 1]?.id?.$ || 'add_new',
+            profile:
+              payersList?.length !== 0 ? payersList[payersList?.length - 1]?.id?.$ : '',
             amount: '',
             slecetedPayMethod: undefined,
             person: '',
@@ -144,25 +146,34 @@ export default function Component(props) {
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>1. {t('Payers choice')}</div>
                     <div className={cn(s.formFieldsBlock, s.first)}>
-                      <Select
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        value={values.profile}
-                        getElement={item => setPayerHandler(item)}
-                        isShadow
-                        className={s.select}
-                        itemsList={payers?.map(({ name, id }) => ({
-                          label: t(`${name?.$?.trim()}`),
-                          value: id?.$,
-                        }))}
-                      />
+                      {payers?.length !== 0 && (
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          value={values.profile}
+                          getElement={item => setPayerHandler(item)}
+                          isShadow
+                          className={s.select}
+                          itemsList={payers?.map(({ name, id }) => ({
+                            label: t(`${name?.$?.trim()}`),
+                            value: id?.$,
+                          }))}
+                        />
+                      )}
                       {!newPayer && (
-                        <button
-                          onClick={() => setPayerHandler('add_new')}
-                          type="button"
-                          className={s.addNewPayerBtn}
-                        >
-                          {t('Add new payer', { ns: 'payers' })}
-                        </button>
+                        <div className={s.addPayerBtnBlock}>
+                          <button
+                            onClick={() => setPayerHandler('add_new')}
+                            type="button"
+                            className={s.addNewPayerBtn}
+                          >
+                            {t('Add new payer', { ns: 'payers' })}
+                          </button>
+                          <ErrorMessage
+                            className={s.error_message_addpayer}
+                            name={'profile'}
+                            component="span"
+                          />
+                        </div>
                       )}
                       {newPayer && (
                         <div className={s.addPayerBlock}>

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { usePageRender } from '../../utils'
 import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'
+import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components'
 import * as routes from '../../routes'
 
 import s from './AccessLogPage.module.scss'
-import { Navigate } from 'react-router-dom'
 
 export default function Component() {
   const { t } = useTranslation(['access_log', 'other', 'trusted_users'])
@@ -19,10 +19,6 @@ export default function Component() {
 
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
-
-  useEffect(async () => {
-    dispatch(accessLogsOperations.getAccessLogsFiltersHandler())
-  }, [])
 
   useEffect(() => {
     const data = { p_num: currentPage }

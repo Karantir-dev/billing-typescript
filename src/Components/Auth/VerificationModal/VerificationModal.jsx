@@ -9,7 +9,7 @@ import { Cross } from '../../../images'
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
 
-export default function VerificationModal({ resetRecaptcha }) {
+export default function VerificationModal({ onClose }) {
   const [totp, setTotp] = useState('')
   const [error, setError] = useState(false)
 
@@ -28,29 +28,13 @@ export default function VerificationModal({ resetRecaptcha }) {
     dispatch(authOperations.sendTotp(totp, setError))
   }
 
-  const handleBackdropClick = e => {
-    if (e.currentTarget === e.target) {
-      resetRecaptcha()
-      dispatch(authActions.closeTotpForm())
-    }
-  }
-
   const handleBtnCloseClick = () => {
-    resetRecaptcha()
+    onClose()
     dispatch(authActions.closeTotpForm())
   }
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onKeyDown={() => {}}
-      className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}
-      onClick={handleBackdropClick}
-      onKeyDownCapture={e => {
-        e.stopPropagation()
-      }}
-    >
+    <div className={cn({ [s.backdrop]: true, [s.shown]: formVisibility === 'shown' })}>
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('form_title')}</h3>
         <button className={s.closeBtn} onClick={handleBtnCloseClick} type="button">
@@ -86,5 +70,8 @@ export default function VerificationModal({ resetRecaptcha }) {
 }
 
 VerificationModal.propTypes = {
-  resetRecaptcha: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+}
+VerificationModal.defaultProps = {
+  onClose: () => {},
 }
