@@ -87,7 +87,7 @@ jobs:
         env:
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
-          sed -i "s|zomrocom/zomro-bill-prod|zomrocom/zomro-bill-prod:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|zomrocom/zomro-bill-prod|zomrocom/zomro-bill-prod:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment_prod.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
