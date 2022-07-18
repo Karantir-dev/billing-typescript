@@ -267,26 +267,6 @@ export default function EditModal({ elid, closeFn }) {
                 </button>
 
                 <div ref={addOnsEl} className={cn(s.add_ons_wrapper, s.grid_fields)}>
-                  <InputField
-                    className={s.mb}
-                    inputClassName={s.bgc}
-                    name="processors"
-                    label={`${t('processors')}:`}
-                    isShadow
-                    disabled
-                  />
-
-                  <Select
-                    className={s.mb}
-                    inputClassName={s.bgc}
-                    value={values.diskSpace}
-                    getElement={value => setFieldValue('diskSpace', value)}
-                    itemsList={getOptionsListExtended('Disk_space')}
-                    label={`${t('disk_space')}:`}
-                    isShadow
-                    disabled={initialState.change_disc_size.$ === 'off'}
-                  />
-
                   <Select
                     className={s.mb}
                     inputClassName={s.bgc}
@@ -308,6 +288,26 @@ export default function EditModal({ elid, closeFn }) {
                     itemsList={getControlPanelList('Control_panel')}
                     label={`${t('license')}:`}
                     isShadow
+                  />
+
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="processors"
+                    label={`${t('processors')}:`}
+                    isShadow
+                    disabled
+                  />
+
+                  <Select
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    value={values.diskSpace}
+                    getElement={value => setFieldValue('diskSpace', value)}
+                    itemsList={getOptionsListExtended('Disk_space')}
+                    label={`${t('disk_space')}:`}
+                    isShadow
+                    disabled={initialState.change_disc_size.$ === 'off'}
                   />
 
                   <InputField
