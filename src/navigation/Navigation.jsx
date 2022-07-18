@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react' // useEffect
 import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, authSelectors, supportSelectors } from '../Redux'
+import {
+  actions,
+  authSelectors,
+  //  supportSelectors
+} from '../Redux'
 import i18n from 'i18next'
 
 function getFaviconEl() {
@@ -17,28 +21,18 @@ const Component = () => {
   const dispatch = useDispatch()
 
   // const notifications = useSelector(userSelectors.getUserItems)
-  const areNewTickets = useSelector(supportSelectors.getTicket)
-  console.log('tickets from support dep', areNewTickets)
+  // let areNewTickets = useSelector(supportSelectors.getTicket)
+  // areNewTickets = true
 
   i18n.on('languageChanged', l => {
     const favicon = getFaviconEl()
     const favicon_mob = getFaviconMobEl()
     if (l !== 'ru') {
-      if (areNewTickets) {
-        favicon.href = require('../images/favIcons/favicon_ua.ico')
-        favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-      } else {
-        favicon.href = require('../images/favIcons/favicon_ua.ico')
-        favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-      }
+      favicon.href = require('../images/favIcons/favicon_ua.ico')
+      favicon_mob.href = require('../images/favIcons/logo192_ua.png')
     } else {
-      if (areNewTickets) {
-        favicon.href = require('../images/favIcons/favicon_active.png')
-        favicon_mob.href = require('../images/favIcons/logo192.png')
-      } else {
-        favicon.href = require('../images/favIcons/favicon.ico')
-        favicon_mob.href = require('../images/favIcons/logo192.png')
-      }
+      favicon.href = require('../images/favIcons/favicon.ico')
+      favicon_mob.href = require('../images/favIcons/logo192.png')
     }
 
     dispatch(actions.hideLoader())
@@ -46,27 +40,27 @@ const Component = () => {
 
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
-  useEffect(() => {
-    const favicon = getFaviconEl()
-    const favicon_mob = getFaviconMobEl()
-    if (i18n.language !== 'ru') {
-      if (areNewTickets) {
-        favicon.href = require('../images/favIcons/favicon_ua.ico')
-        favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-      } else {
-        favicon.href = require('../images/favIcons/favicon_ua.ico')
-        favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-      }
-    } else {
-      if (areNewTickets) {
-        favicon.href = require('../images/favIcons/favicon_active.png')
-        favicon_mob.href = require('../images/favIcons/logo192.png')
-      } else {
-        favicon.href = require('../images/favIcons/favicon.ico')
-        favicon_mob.href = require('../images/favIcons/logo192.png')
-      }
-    }
-  })
+  // useEffect(() => {
+  //   const favicon = getFaviconEl()
+  //   const favicon_mob = getFaviconMobEl()
+  //   if (i18n.language !== 'ru') {
+  //     if (areNewTickets) {
+  //       favicon.href = require('../images/favIcons/favicon_ua.ico')
+  //       favicon_mob.href = require('../images/favIcons/logo192_ua.png')
+  //     } else {
+  //       favicon.href = require('../images/favIcons/favicon_ua.ico')
+  //       favicon_mob.href = require('../images/favIcons/logo192_ua.png')
+  //     }
+  //   } else {
+  //     if (areNewTickets) {
+  //       favicon.href = require('../images/favIcons/favicon_active.png')
+  //       favicon_mob.href = require('../images/favIcons/logo192.png')
+  //     } else {
+  //       favicon.href = require('../images/favIcons/favicon.ico')
+  //       favicon_mob.href = require('../images/favIcons/logo192.png')
+  //     }
+  //   }
+  // })
 
   return <>{isAuthenticated ? <SecureRoutes /> : <AuthRoutes />}</>
 }

@@ -57,7 +57,8 @@ const funcsArray = [
 ]
 
 const getUserInfo = (sessionId, setLoading) => dispatch => {
-  dispatch(userActions.showUserInfoLoading())
+  setLoading && dispatch(userActions.showUserInfoLoading())
+
   Promise.all([
     axiosInstance.post(
       '/',
@@ -185,7 +186,7 @@ const getNotify = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data)
+
       userNotifications(data, dispatch)
     })
     .catch(error => {

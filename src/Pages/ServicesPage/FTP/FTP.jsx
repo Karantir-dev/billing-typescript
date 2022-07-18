@@ -48,6 +48,10 @@ export default function FTP() {
   const [emptyFilter, setEmptyFilter] = useState(false)
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
+  const ftpTotalPrice = ftpRenderData?.ftpList?.reduce((curServer, nextServer) => {
+    return curServer + +nextServer?.item_cost?.$
+  }, 0)
+
   const location = useLocation()
 
   const parseLocations = () => {
@@ -144,6 +148,11 @@ export default function FTP() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.external_ftp', { ns: 'container' })}
+        {ftpRenderData?.ftpList?.length !== 0 && (
+          <span className={s.title_count_services}>
+            {` (${ftpRenderData?.ftpList?.length})`}
+          </span>
+        )}
       </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
@@ -279,11 +288,18 @@ export default function FTP() {
         rights={rights}
       />
 
+      {Number(ftpCount) <= 30 && widerThan1550 && ftpRenderData?.ftpList?.length !== 0 && (
+        <div className={s.total_pagination_price}>
+          {t('Sum', { ns: 'other' })}: {`${+ftpTotalPrice?.toFixed(4)} EUR`}
+        </div>
+      )}
+
       {ftpRenderData?.ftpList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(ftpCount)}
+            totalPrice={widerThan1550 && +ftpTotalPrice?.toFixed(4)}
             pageSize={30}
             onPageChange={page => setCurrentPage(page)}
           />
