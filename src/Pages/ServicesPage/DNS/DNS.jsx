@@ -47,6 +47,10 @@ export default function DNS() {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
   const [currentPage, setCurrentPage] = useState(1)
 
+  const dnsTotalPrice = dnsRenderData?.dnsList?.reduce((curServer, nextServer) => {
+    return curServer + +nextServer?.item_cost?.$
+  }, 0)
+
   // const [
   //   elidForChangeTarifModal,
   //   setElidForChangeTarifModal,
@@ -171,6 +175,11 @@ export default function DNS() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dns_hosting', { ns: 'container' })}
+        {dnsRenderData?.dnsList?.length !== 0 && (
+          <span className={s.title_count_services}>
+            {` (${dnsRenderData?.dnsList?.length})`}
+          </span>
+        )}
       </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
@@ -316,11 +325,18 @@ export default function DNS() {
         pageRights={rights}
       />
 
+      {Number(dnsCount) <= 30 && widerThan1550 && dnsRenderData?.dnsList?.length !== 0 && (
+        <div className={s.total_pagination_price}>
+          {t('Sum', { ns: 'other' })}: {`${+dnsTotalPrice?.toFixed(4)} EUR`}
+        </div>
+      )}
+
       {dnsRenderData?.dnsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(dnsCount)}
+            totalPrice={widerThan1550 && +dnsTotalPrice?.toFixed(4)}
             pageSize={30}
             onPageChange={page => setCurrentPage(page)}
           />

@@ -49,6 +49,7 @@
   margin-bottom: 40px;
   padding: 19px 0;
   display: none;
+  height: 55px;
 
   & span {
     font-weight: 800;
@@ -70,19 +71,18 @@
 
 .table_header {
   display: grid;
-  grid-template-columns: 137px 127px 103px 50px 30px;
+  grid-template-columns: 177px 127px 103px 50px 30px;
   justify-content: space-between;
-  column-gap: 40px;
+  column-gap: 30px;
   margin-bottom: 15px;
   padding-left: 20px;
   padding-right: 20px;
 }
-// .user_email_lg {
-//   padding-left: 27px;
-// }
-
-.user_name_lg {
-  // padding-left: 15px;
+.user_email_lg,
+.user_name_lg,
+.user_access_lg,
+.user_status_lg {
+  font-size: 14px;
 }
 
 .table_wrapper {
@@ -101,7 +101,7 @@
   }
 
   .add_btn.btn {
-    width: 300px;
+    width: 255px;
     margin-top: 25px;
   }
 
@@ -123,10 +123,8 @@
 
 @media screen and (min-width: 1024px) {
   .table_header {
-    grid-template-columns: 138px 127px 103px 140px 22px;
+    grid-template-columns: 170px 157px 103px 140px 30px;
     justify-content: space-between;
-    padding-left: 34px;
-    padding-right: 34px;
   }
   .section_title {
     margin-bottom: 30px;
@@ -136,7 +134,7 @@
     padding-left: 0px;
   }
   .add_btn.btn {
-    width: 256px;
+    width: 255px;
   }
 }
 
@@ -146,16 +144,15 @@
   }
   .add_btn.btn {
     margin-bottom: 50px;
-    width: 300px;
+    width: 255px;
   }
   .subtitle {
     font-size: 18px;
     line-height: 130.5%;
   }
   .table_header {
-    max-width: 1085px;
-    grid-template-columns: 149px 127px 143px 140px 22px;
-    gap: 100px;
+    grid-template-columns: 20% 20% 10% 12% 3%;
+    gap: 50px;
     padding-right: 55px;
     padding-left: 50px;
   }

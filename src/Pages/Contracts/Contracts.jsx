@@ -9,6 +9,7 @@ import s from './Contracts.module.scss'
 import { checkServicesRights, usePageRender } from '../../utils'
 import * as route from '../../routes'
 import { useNavigate } from 'react-router-dom'
+import { SendArchive } from '../../images'
 
 export default function Contracts() {
   const isAllowedToRender = usePageRender('customer', 'contract')
@@ -46,45 +47,67 @@ export default function Contracts() {
   return (
     <>
       <h3 className={s.page_title}>{t('profile.contracts')}</h3>
-
-      <div className={s.icons_wrapper}>
-        {/* <IconButton
+      {contractsRenderData?.contracts?.length > 0 && (
+        <div className={s.icons_wrapper}>
+          {/* <IconButton
           disabled={!selectedContract || !rights?.print || !rights?.download}
           icon="print"
           className={s.print_btn}
           onClick={handlePrintBtn}
         /> */}
-        <IconButton
-          disabled={!selectedContract || !rights?.download || !rights?.print}
-          icon="download-folder"
-          className={s.download_btn}
-          onClick={handleDownloadBtn}
-        />
-      </div>
+          <IconButton
+            disabled={!selectedContract || !rights?.download || !rights?.print}
+            icon="download-folder"
+            className={s.download_btn}
+            onClick={handleDownloadBtn}
+          />
+        </div>
+      )}
 
-      <div className={s.table_title}>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('Number', { ns: 'other' })}:</span>
+      {contractsRenderData?.contracts?.length > 0 && (
+        <div className={s.table_title}>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('Number', { ns: 'other' })}:</span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('signdate', { ns: 'contracts' })}:</span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('enddate', { ns: 'contracts' })}:</span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('Payer', { ns: 'other' })}:</span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('company', { ns: 'contracts' })}:</span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>
+              {t('contract_name', { ns: 'contracts' })}:
+            </span>
+          </div>
+          <div className={s.card_item_wrapper}>
+            <span className={s.item_title}>{t('status', { ns: 'other' })}:</span>
+          </div>
         </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('signdate', { ns: 'contracts' })}:</span>
+      )}
+
+      {contractsRenderData?.contracts?.length === 0 && (
+        <div className={s.no_service_wrapper}>
+          {/* <img
+            src={require('../../images/services/no_dns.png')}
+            alt="dns"
+            className={s.dns_img}
+          /> */}
+          <SendArchive />
+          <p className={s.no_service_title}>
+            {t('YOU DO NOT HAVE CONTRACTS YET', { ns: 'contracts' })}
+          </p>
+          <p className={s.no_service_description}>
+            {t('no services description', { ns: 'contracts' })}
+          </p>
         </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('enddate', { ns: 'contracts' })}:</span>
-        </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('Payer', { ns: 'other' })}:</span>
-        </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('company', { ns: 'contracts' })}:</span>
-        </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('contract_name', { ns: 'contracts' })}:</span>
-        </div>
-        <div className={s.card_item_wrapper}>
-          <span className={s.item_title}>{t('status', { ns: 'other' })}:</span>
-        </div>
-      </div>
+      )}
 
       <div className={s.list}>
         {contractsRenderData?.contracts?.map(item => {

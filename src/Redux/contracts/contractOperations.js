@@ -27,6 +27,7 @@ const getContracts = data => (dispatch, getState) => {
 
       const contractsRenderData = {
         contracts: data.doc.elem ? data.doc.elem : [],
+        // contracts: [],
         contractsPageRights: data.doc.metadata.toolbar,
       }
 

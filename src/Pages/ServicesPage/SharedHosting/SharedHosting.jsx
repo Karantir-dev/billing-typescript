@@ -18,6 +18,7 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 import * as route from '../../../routes'
 import { checkServicesRights, usePageRender } from '../../../utils'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
@@ -57,6 +58,14 @@ export default function Component() {
   const [instructionData, setInstructionData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  const hostingsTotalPrice = virtualHostingRenderData?.vhostList?.reduce(
+    (curServer, nextServer) => {
+      return curServer + +nextServer?.item_cost?.$
+    },
+    0,
+  )
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -233,6 +242,12 @@ export default function Component() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>
         {t('burger_menu.services.services_list.virtual_hosting')}
+
+        {virtualHostingRenderData?.vhostList?.length !== 0 && (
+          <span className={s.title_count_services}>
+            {` (${virtualHostingRenderData?.vhostList?.length})`}
+          </span>
+        )}
       </h1>
       <SharedHostingFilter
         setIsFiltered={setIsFiltered}
@@ -289,12 +304,21 @@ export default function Component() {
         />
       )}
 
+      {Number(vhostCount) <= 30 &&
+        widerThan1600 &&
+        virtualHostingRenderData?.vhostList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+hostingsTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
+
       {virtualHostingRenderData?.vhostList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(vhostCount)}
             pageSize={30}
+            totalPrice={widerThan1600 && +hostingsTotalPrice?.toFixed(4)}
             onPageChange={page => setCurrentPage(page)}
           />
         </div>

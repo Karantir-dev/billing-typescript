@@ -46,6 +46,9 @@ export default function ForexPage() {
   const [emptyFilter, setEmptyFilter] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
+  const forexTotalPrice = forexRenderData?.forexList?.reduce((curServer, nextServer) => {
+    return curServer + +nextServer?.item_cost?.$
+  }, 0)
   const [isFiltered, setIsFiltered] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -146,7 +149,14 @@ export default function ForexPage() {
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>{t('forex', { ns: 'crumbs' })}</h2>
+      <h2 className={s.page_title}>
+        {t('forex', { ns: 'crumbs' })}
+        {forexRenderData?.forexList?.length !== 0 && (
+          <span className={s.title_count_services}>
+            {` (${forexRenderData?.forexList?.length})`}
+          </span>
+        )}
+      </h2>
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
           <div className={s.filterBtnBlock}>
@@ -271,11 +281,21 @@ export default function ForexPage() {
         setActiveServer={setActiveServer}
         pageRights={rights}
       />
+
+      {Number(forexCount) <= 30 &&
+        widerThan1550 &&
+        forexRenderData?.forexList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+forexTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
+
       {forexRenderData?.forexList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(forexCount)}
+            totalPrice={widerThan1550 && +forexTotalPrice?.toFixed(4)}
             pageSize={30}
             onPageChange={page => setCurrentPage(page)}
           />

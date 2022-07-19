@@ -4,10 +4,18 @@ import Header from './Header/Header'
 import dayjs from 'dayjs'
 
 import s from './Container.module.scss'
-import { authSelectors, userOperations } from '../../Redux'
+import { authSelectors, userOperations, userSelectors } from '../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Div100vh from 'react-div-100vh'
+
+function getFaviconEl() {
+  return document.getElementById('favicon')
+}
+
+function getFaviconMobEl() {
+  return document.getElementById('favicon_mob')
+}
 
 export default function Component({ children }) {
   const { i18n } = useTranslation()
@@ -19,6 +27,9 @@ export default function Component({ children }) {
   const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
 
+  const userTickets = useSelector(userSelectors.getUserTickets)
+  const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
+
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
     getNotifyHandler()
@@ -26,7 +37,30 @@ export default function Component({ children }) {
 
   const getNotifyHandler = () => {
     if (sessionId) {
-      setInterval(() => dispatch(userOperations.getNotify()), 60000)
+      setInterval(() => {
+        dispatch(userOperations.getNotify())
+        dispatch(userOperations.getUserInfo(sessionId))
+      }, 60000)
+    }
+  }
+
+  const favicon = getFaviconEl()
+  const favicon_mob = getFaviconMobEl()
+  if (i18n.language !== 'ru') {
+    if (areNewTickets) {
+      favicon.href = require('../../images/favIcons/favicon_ua_active.png')
+      favicon_mob.href = require('../../images/favIcons/favicon_192_ua_active.png')
+    } else {
+      favicon.href = require('../../images/favIcons/favicon_ua.ico')
+      favicon_mob.href = require('../../images/favIcons/logo192_ua.png')
+    }
+  } else {
+    if (areNewTickets) {
+      favicon.href = require('../../images/favIcons/favicon_active.png')
+      favicon_mob.href = require('../../images/favIcons/favicon_192_active.png')
+    } else {
+      favicon.href = require('../../images/favIcons/favicon.ico')
+      favicon_mob.href = require('../../images/favIcons/logo192.png')
     }
   }
 

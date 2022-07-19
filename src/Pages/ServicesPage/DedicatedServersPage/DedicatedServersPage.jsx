@@ -48,8 +48,14 @@ export default function DedicatedServersPage() {
   const [emptyFilter, setEmptyFilter] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const [isFiltered, setIsFiltered] = useState(false)
+  const dedicsTotalPrice = dedicRenderData?.serversList?.reduce(
+    (curServer, nextServer) => {
+      return curServer + +nextServer?.item_cost?.$
+    },
+    0,
+  )
 
+  const [isFiltered, setIsFiltered] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -160,7 +166,13 @@ export default function DedicatedServersPage() {
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
+        {dedicRenderData?.serversList?.length !== 0 && (
+          <span className={s.title_count_services}>
+            {` (${dedicRenderData?.serversList?.length})`}
+          </span>
+        )}
       </h2>
+
       <div className={s.tools_wrapper}>
         <div className={s.tools_container}>
           <div className={s.filterBtnBlock}>
@@ -327,12 +339,22 @@ export default function DedicatedServersPage() {
         setActiveServer={setActiveServer}
         rights={rights}
       />
+
+      {Number(dedicCount) <= 30 &&
+        widerThan1550 &&
+        dedicRenderData?.serversList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+dedicsTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
+
       {dedicRenderData?.serversList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(dedicCount)}
             pageSize={30}
+            totalPrice={widerThan1550 && +dedicsTotalPrice?.toFixed(4)}
             onPageChange={page => setCurrentPage(page)}
           />
         </div>
