@@ -97,6 +97,7 @@ export default function ToggleButton({
               type="button"
               className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
+              isShadow
             />
           }
         />
@@ -126,6 +127,7 @@ export default function ToggleButton({
               type="button"
               className={cn({ [s.add_btn]: true, [s.access]: true })}
               onClick={getUsersResponse}
+              isShadow
             />
           }
         />

@@ -244,9 +244,7 @@ export default function Component() {
         {t('burger_menu.services.services_list.virtual_hosting')}
 
         {virtualHostingRenderData?.vhostList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${virtualHostingRenderData?.vhostList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${vhostCount})`}</span>
         )}
       </h1>
       <SharedHostingFilter

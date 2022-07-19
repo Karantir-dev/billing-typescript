@@ -60,5 +60,17 @@
     "has been prolonged": "has been prolonged",
     "is ready for use": "is ready for use"
   },
-  "clear_all": "Clear all"
+  "clear_all": "Clear all",
+  "Service is ready for use": "Service '{{value}}' is ready for use",
+  "Service has been deleted": "Service '{{value}}' has been deleted",
+  "Service has been suspended": "Service '{{value}}' has been suspended",
+  "Error in domain contacts for the service": "Error in domain contacts for the service '{{value}}'. Check parameters and repeat the operation",
+  "An error occurred when changing name servers": "An error occurred when changing name servers of the '{{value}}' service. Check parameters and try again",
+  "The domain has been successfully transferred": "The '{{value}}' domain has been successfully transferred",
+  "Failed to transfer the domain": "Failed to transfer the '{{value}}' domain",
+  "Service has been prolonged": "Service '{{value}}' has been prolonged",
+  "Service has been modified": "Service '{{value}}' has been modified",
+  "Service has been activated": "Service '{{value}}' has been activated",
+  "Change pricelist": "An error occurred when changing the tariff of '{{value}}'. Your old tariff plan has been activated",
+  "Failed to register the SSL-certificate": "Failed to register the '{{value}}' SSL-certificate"
 }

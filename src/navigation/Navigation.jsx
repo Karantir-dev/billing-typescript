@@ -40,28 +40,6 @@ const Component = () => {
 
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
-  // useEffect(() => {
-  //   const favicon = getFaviconEl()
-  //   const favicon_mob = getFaviconMobEl()
-  //   if (i18n.language !== 'ru') {
-  //     if (areNewTickets) {
-  //       favicon.href = require('../images/favIcons/favicon_ua.ico')
-  //       favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-  //     } else {
-  //       favicon.href = require('../images/favIcons/favicon_ua.ico')
-  //       favicon_mob.href = require('../images/favIcons/logo192_ua.png')
-  //     }
-  //   } else {
-  //     if (areNewTickets) {
-  //       favicon.href = require('../images/favIcons/favicon_active.png')
-  //       favicon_mob.href = require('../images/favIcons/logo192.png')
-  //     } else {
-  //       favicon.href = require('../images/favIcons/favicon.ico')
-  //       favicon_mob.href = require('../images/favIcons/logo192.png')
-  //     }
-  //   }
-  // })
-
   return <>{isAuthenticated ? <SecureRoutes /> : <AuthRoutes />}</>
 }
 

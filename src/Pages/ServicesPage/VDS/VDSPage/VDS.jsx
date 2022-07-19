@@ -149,7 +149,7 @@ export default function VDS() {
       <h2 className={s.title}>
         {t('servers_title')}
         {servers?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${servers?.length})`}</span>
+          <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
         )}
       </h2>
       <div className={s.tools_wrapper}>

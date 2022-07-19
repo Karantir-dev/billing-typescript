@@ -68,7 +68,7 @@ export default function ForexOrderPage() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + '€'
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
@@ -242,7 +242,7 @@ export default function ForexOrderPage() {
                                 [s.selected]: item?.pricelist?.$ === values.pricelist,
                               })}
                             >
-                              {priceAmount + '/' + periodName}
+                              {priceAmount + ' €' + '/' + periodName}
                             </span>
                           </div>
 
@@ -322,10 +322,22 @@ export default function ForexOrderPage() {
                 })}
               >
                 <div className={s.container}>
-                  <div className={s.sum_price_wrapper}>
-                    {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                    <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div>
+                  {tabletOrHigher ? (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <span className={s.btn_price}>
+                        {price + ' €' + '/' + periodName}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <p className={s.price_wrapper}>
+                        <span className={s.btn_price}>{'€' + price}</span>{' '}
+                        {'/' + periodName}
+                      </p>
+                    </div>
+                  )}
 
                   <Button
                     className={s.buy_btn}

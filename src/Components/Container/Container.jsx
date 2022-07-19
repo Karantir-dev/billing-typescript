@@ -32,17 +32,31 @@ export default function Component({ children }) {
 
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
-    getNotifyHandler()
-  }, [])
 
-  const getNotifyHandler = () => {
+    let intervalId
+
     if (sessionId) {
-      setInterval(() => {
+      intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getUserInfo(sessionId))
       }, 60000)
     }
-  }
+
+    return () => {
+      clearInterval(intervalId)
+    }
+
+    // getNotifyHandler()
+  }, [sessionId])
+
+  // const getNotifyHandler = () => {
+  //   if (sessionId) {
+  //     setInterval(() => {
+  //       dispatch(userOperations.getNotify())
+  //       dispatch(userOperations.getUserInfo(sessionId))
+  //     }, 60000)
+  //   }
+  // }
 
   const favicon = getFaviconEl()
   const favicon_mob = getFaviconMobEl()

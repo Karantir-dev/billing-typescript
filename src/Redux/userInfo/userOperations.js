@@ -65,6 +65,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       qs.stringify({
         func: 'whoami',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     ),
@@ -82,6 +83,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       qs.stringify({
         func: 'menu',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
         sok: 'ok',
       }),
