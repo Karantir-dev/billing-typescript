@@ -17,7 +17,7 @@ import {
   Pagination,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
-import { dedicOperations, dedicSelectors } from '../../../Redux'
+import { actions, dedicOperations, dedicSelectors } from '../../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -50,6 +50,13 @@ export default function DedicatedServersPage() {
 
   const [isFiltered, setIsFiltered] = useState(false)
 
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 

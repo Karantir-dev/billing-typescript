@@ -6,4 +6,14 @@ const changeIsPinned = createAction('CHANGE_PINNED')
 const showLoader = createAction('SHOW_LOADER')
 const hideLoader = createAction('HIDE_LOADER')
 
-export default { changeTheme, showLoader, hideLoader, changeIsPinned }
+const disableScrolling = createAction('DISABLE_SCROLLING')
+const enableScrolling = createAction('ENABLE_SCROLLING')
+
+export default {
+  changeTheme,
+  showLoader,
+  hideLoader,
+  changeIsPinned,
+  disableScrolling,
+  enableScrolling,
+}

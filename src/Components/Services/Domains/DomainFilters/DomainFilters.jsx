@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import DomainFiltertsModal from '../DomainFiltertsModal/DomainFiltertsModal'
-import { domainsOperations, domainsSelectors } from '../../../../Redux'
+import { actions, domainsOperations, domainsSelectors } from '../../../../Redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
@@ -36,6 +36,14 @@ export default function Component(props) {
   const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
 
   const [filterModal, setFilterModal] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const dispatch = useDispatch()
 

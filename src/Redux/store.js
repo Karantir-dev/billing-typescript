@@ -32,7 +32,7 @@ import {
   forexReducer,
   siteCareReducer,
 } from '.'
-import { theme, isLoading, pinned } from './reducer'
+import { theme, isLoading, pinned, scrollForbidden } from './reducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -67,6 +67,7 @@ const rootReducer = combineReducers({
   theme,
   isLoading,
   pinned,
+  scrollForbidden,
 })
 
 const store = configureStore({

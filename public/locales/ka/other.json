@@ -152,5 +152,6 @@
   "Disabled": "გამორთულია",
   "Enter name": "შეიყვანეთ სახელი",
   "Enter surname": "შეიყვანეთ გვარი",
-  "Enter middle name": "შეიყვანეთ შუა სახელი"
+  "Enter middle name": "შეიყვანეთ შუა სახელი",
+  "Not selected": "არ არის განსაზღვრული"
 }

@@ -97,7 +97,20 @@ export default function FiltersModal({
                     error={!!errors.domain}
                     touched={!!touched.domain}
                   />
-
+                  <Select
+                    dropdownClass={s.input_bgc}
+                    inputClassName={s.input_bgc}
+                    label={`${t('ostempl', { ns: 'vds' })}:`}
+                    placeholder={t('Not selected', { ns: 'other' })}
+                    value={values.ostemplate}
+                    getElement={item => setFieldValue('ostemplate', item)}
+                    isShadow
+                    itemsList={filtersList?.ostemplate?.map(({ $key, $ }) => ({
+                      label: t($.trim()),
+                      value: $key,
+                    }))}
+                    className={s.select}
+                  />
                   <InputField
                     inputWrapperClass={s.inputHeight}
                     inputClassName={s.input_bgc}
@@ -114,14 +127,16 @@ export default function FiltersModal({
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('Tariff plan')}:`}
-                    placeholder={t('Not selected')}
+                    placeholder={t('Not selected', { ns: 'other' })}
                     value={values.pricelist}
                     getElement={item => setFieldValue('pricelist', item)}
                     isShadow
-                    itemsList={filtersList?.pricelist?.map(({ $key, $ }) => ({
-                      label: t(`${$.trim()}`, { ns: 'other' }),
-                      value: $key,
-                    }))}
+                    itemsList={filtersList?.pricelist?.map(({ $key, $ }) => {
+                      return {
+                        label: t($.trim(), { ns: 'other' }),
+                        value: $key,
+                      }
+                    })}
                     className={s.select}
                   />
 
@@ -129,7 +144,7 @@ export default function FiltersModal({
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('Period', { ns: 'other' })}:`}
-                    placeholder={t('Not selected')}
+                    placeholder={t('Not selected', { ns: 'other' })}
                     value={values.period}
                     getElement={item => setFieldValue('period', item)}
                     isShadow
@@ -144,12 +159,12 @@ export default function FiltersModal({
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('status', { ns: 'other' })}:`}
-                    placeholder={t('Not selected')}
+                    placeholder={t('Not selected', { ns: 'other' })}
                     value={values.status}
                     getElement={item => setFieldValue('status', item)}
                     isShadow
                     itemsList={filtersList?.status?.map(({ $key, $ }) => ({
-                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      label: t($.trim(), { ns: 'other' }),
                       value: $key,
                     }))}
                     className={s.select}
@@ -158,29 +173,18 @@ export default function FiltersModal({
                   <Select
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
-                    label={`${t('ostempl', { ns: 'vds' })}:`}
-                    placeholder={t('Not selected')}
-                    value={values.ostemplate}
-                    getElement={item => setFieldValue('ostemplate', item)}
-                    isShadow
-                    itemsList={filtersList?.ostemplate?.map(({ $key, $ }) => ({
-                      label: t(`${$.trim()}`),
-                      value: $key,
-                    }))}
-                    className={s.select}
-                  />
-                  <Select
-                    dropdownClass={s.input_bgc}
-                    inputClassName={s.input_bgc}
                     label={`${t('datacenter', { ns: 'dedicated_servers' })}:`}
-                    placeholder={t('Not selected')}
+                    placeholder={t('Not selected', { ns: 'other' })}
                     value={values.datacenter}
                     getElement={item => setFieldValue('datacenter', item)}
                     isShadow
                     itemsList={filtersList?.datacenter
-                      ?.filter(({ $key }) => $key === '2' || $key === '7' || $key === '8')
+                      ?.filter(
+                        ({ $key }) =>
+                          $key === '2' || $key === '7' || $key === '8' || $key === '',
+                      )
                       .map(({ $key, $ }) => ({
-                        label: t(`${$.trim()}`),
+                        label: t($.trim()),
                         value: $key,
                       }))}
                     className={s.select}
@@ -190,12 +194,12 @@ export default function FiltersModal({
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('Auto renewal')}:`}
-                    placeholder={t('Not selected')}
+                    placeholder={t('Not selected', { ns: 'other' })}
                     value={values.autoprolong}
                     getElement={item => setFieldValue('autoprolong', item)}
                     isShadow
                     itemsList={filtersList?.autoprolong?.map(({ $key, $ }) => ({
-                      label: t(`${$.trim()}`),
+                      label: t($.trim()),
                       value: $key,
                     }))}
                     className={s.select}
