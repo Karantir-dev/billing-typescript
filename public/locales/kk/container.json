@@ -60,5 +60,17 @@
     "has been prolonged": "мерзімі ұзартылды",
     "is ready for use": "пайдалануға дайын"
   },
-  "clear_all": "Барлығын өшіру"
+  "clear_all": "Барлығын өшіру",
+  "Service is ready for use": "'{{value}}' қызметі пайдалануға дайын",
+  "Service has been deleted": "'{{value}}' қызметі жойылды",
+  "Service has been suspended": "'{{value}}' қызметі уақытша тоқтатылды",
+  "Error in domain contacts for the service": "'{{value}}' қызметінің домен контактілеріндегі қате. Параметрлерді тексеріп, әрекетті қайталаңыз",
+  "An error occurred when changing name servers": "'{{value}}' қызметінің атау серверлерін өзгерту кезінде қате орын алды. Параметрлерді тексеріп, әрекетті қайталаңыз",
+  "The domain has been successfully transferred": "'{{value}}' домені сәтті тасымалданды",
+  "Failed to transfer the domain": "'{{value}}' доменін тасымалдау сәтсіз аяқталды",
+  "Service has been prolonged": "'{{value}}' қызметі ұзартылды",
+  "Service has been modified": "'{{value}}'' қызметі өзгертілді",
+  "Service has been activated": "'{{value}}' қызметі іске қосылды",
+  "Change pricelist": "'{{value}}' тарифін өзгерту кезінде қате орын алды. Сіздің ескі тарифтік жоспарыңыз іске қосылды",
+  "Failed to register the SSL-certificate": "'{{value}}' SSL сертификатын тіркеу сәтсіз аяқталды"
 }

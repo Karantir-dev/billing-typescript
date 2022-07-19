@@ -24,10 +24,10 @@
   background-color: var(--elements-bgc);
   // border: 1px solid var(--input-border-icon);
 
-  &.shadow {
-    // border: none;
-    // box-shadow: var(--forms_shadow);
-  }
+  // &.shadow {
+  //   // border: none;
+  //   // box-shadow: var(--forms_shadow);
+  // }
 
   &.focused {
     box-shadow: none;
@@ -133,6 +133,7 @@
 .shadow {
   border: none;
   box-shadow: var(--forms_shadow);
+  -webkit-appearance: none; // check if box-shadow will be shown on safari!
 }
 
 .field_bgc {

@@ -176,9 +176,7 @@ export default function DNS() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dns_hosting', { ns: 'container' })}
         {dnsRenderData?.dnsList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${dnsRenderData?.dnsList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${dnsCount})`}</span>
         )}
       </h2>
       <div className={s.tools_wrapper}>

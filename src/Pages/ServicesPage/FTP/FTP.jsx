@@ -153,9 +153,7 @@ export default function FTP() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.external_ftp', { ns: 'container' })}
         {ftpRenderData?.ftpList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${ftpRenderData?.ftpList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${ftpCount})`}</span>
         )}
       </h2>
       <div className={s.tools_wrapper}>

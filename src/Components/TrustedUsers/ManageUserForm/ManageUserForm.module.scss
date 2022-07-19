@@ -69,10 +69,8 @@
   z-index: 150;
   border-radius: 5px;
   background-color: var(--elements-bgc);
-  margin-top: 125px;
-  margin-bottom: 125px;
+  top: 50px;
   width: 95%;
-  transform: scale(0.5);
   transition: transform 0.2s ease-out;
 
   &.active {

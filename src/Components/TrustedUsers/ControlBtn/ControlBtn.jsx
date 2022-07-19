@@ -154,6 +154,7 @@ export default function ControlBtn({
               type="button"
               className={cn({ [s.remove_btn]: true, [s.btn]: true })}
               onClick={removeUser}
+              isShadow
             />
           }
         />

@@ -219,6 +219,7 @@ export default function ManageUserForm({
                       label={t('trusted_users.form.submit_btn').toUpperCase()}
                       type="submit"
                       disabled={!isEditUserAllowedToChange}
+                      isShadow
                     />
                   </div>
                 </Form>

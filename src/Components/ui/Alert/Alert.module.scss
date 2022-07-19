@@ -43,6 +43,11 @@
   box-shadow: var(--modal_header_shadow);
 }
 
+.modal_title {
+  font-size: 18px;
+  font-weight: 600px;
+}
+
 .text_wrapper {
   display: flex;
 }
@@ -52,8 +57,7 @@
   font-size: 16px;
   line-height: 130%;
   color: var(--main-text);
-  margin-bottom: 25px;
-  margin-top: 25px;
+
 }
 
 .control_btns_container {
@@ -131,4 +135,19 @@
     margin-top: 0;
     margin-left: 23px;
   }
+
+  .close_btn_wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .close_btn {
+    width: 20px;
+    height: 20px;
+
+    &:before,
+    &:after {
+      height: 20px;
+    }
+}
 }
