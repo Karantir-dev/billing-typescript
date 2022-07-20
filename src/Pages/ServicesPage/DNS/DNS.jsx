@@ -19,7 +19,6 @@ import {
   DNSFiltersModal,
   Portal,
   Pagination,
-  // DNSChangeTarif,
 } from '../../../Components'
 import { dnsOperations, dedicOperations, dnsSelectors, actions } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -384,16 +383,6 @@ export default function DNS() {
           closeFn={() => setElidForInstructionModal(0)}
         />
       </Backdrop>
-
-      {/* <Backdrop
-        onClick={() => setElidForChangeTarifModal(0)}
-        isOpened={Boolean(elidForChangeTarifModal)}
-      >
-        <DNSChangeTarif
-          elid={elidForChangeTarifModal}
-          closeFn={() => setElidForChangeTarifModal(0)}
-        />
-      </Backdrop> */}
     </>
   )
 }
