@@ -125,7 +125,7 @@ const InputField = function InputField(props) {
           type={passShown ? 'text' : type}
           placeholder={placeholder}
           onKeyDown={onKeyDown}
-          autoComplete={autoComplete ? 1 : 0}
+          autoComplete={autoComplete ? 'on' : 'off'}
           {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}

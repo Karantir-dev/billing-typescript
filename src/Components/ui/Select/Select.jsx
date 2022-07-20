@@ -60,9 +60,12 @@ export default function Select(props) {
   }
 
   useOutsideAlerter(dropdown, isOpened, clickOutside)
-
+  if (label === 'Тарифний план:') {
+    console.log('value', value)
+    console.log('itemsList', itemsList)
+  }
   useEffect(() => {
-    if (itemsList && value) {
+    if (itemsList && value !== undefined) {
       itemsList?.forEach(el => {
         if (el?.value === value) {
           setSelectedItem(el)

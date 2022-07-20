@@ -5,13 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
-import {
-  IconButton,
-  StatisticsFilterModal,
-  Pagination,
-  // Backdrop,
-} from '../../../Components'
-import { affiliateOperations, usersOperations } from '../../../Redux'
+import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
+import { actions, affiliateOperations, usersOperations } from '../../../Redux'
 import { Check } from '../../../images'
 
 import s from './AffiliateProgramStatistics.module.scss'
@@ -38,6 +33,14 @@ export default function AffiliateProgramStatistics() {
   const [total, setTotal] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
   const [isFiltered, setIsFiltered] = useState(false)
+
+  useEffect(() => {
+    if (isFilterOpened) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [isFilterOpened])
 
   const [initialFilters, setInitialFilters] = useState({
     date: '',

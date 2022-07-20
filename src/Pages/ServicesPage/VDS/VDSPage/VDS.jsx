@@ -21,8 +21,9 @@ import {
   VdsInstructionModal,
   DedicsHistoryModal,
   Pagination,
+  Portal,
 } from '../../../../Components'
-import { dedicOperations, vdsOperations } from '../../../../Redux'
+import { actions, dedicOperations, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
 import { usePageRender } from '../../../../utils'
 
@@ -63,6 +64,14 @@ export default function VDS() {
   const [firstRender, setFirstRender] = useState(true)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  useEffect(() => {
+    if (isFiltersOpened) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [isFiltersOpened])
 
   useEffect(() => {
     if (!firstRender) {
@@ -160,7 +169,9 @@ export default function VDS() {
             icon="filter"
             disabled={(servers?.length < 1 && !isSearchMade) || !rights?.filter}
           />
-          <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
+          <Portal className={cn()}>
+            <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
+          </Portal>
 
           <FiltersModal
             isOpened={isFiltersOpened}

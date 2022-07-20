@@ -15,7 +15,7 @@
   "Період": "Період",
   "Enter id": "Введіть id",
   "Enter text": "Введіть текст",
-  "Not chosen": "Не вибрано",
+  "Not chosen": "Не обрано",
   "Select status": "Виберіть статус",
   "select_placeholder": "Виберіть період",
   "whole period": "За весь час",
@@ -33,7 +33,7 @@
   "half a year": "Півроку",
   "year": "Рік",
   "any period": "Довільний діапазон",
-  "-- none --": "Не вибрано",
+  "-- none --": "Не обрано",
   "Yes": "Так",
   "No": "Ні",
   "services": {
@@ -155,5 +155,6 @@
   "Disabled": "Вимкнено",
   "Enter name": "Введіть ім'я",
   "Enter surname": "Введіть прізвище",
-  "Enter middle name": "Введіть ім'я по батькові"
+  "Enter middle name": "Введіть ім'я по батькові",
+  "Not selected": "Не обрано"
 }

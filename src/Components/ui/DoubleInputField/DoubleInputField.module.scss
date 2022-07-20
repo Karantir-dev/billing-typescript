@@ -124,7 +124,13 @@
   left: 2%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1281px) {
+  .input_wrapper {
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
   .calendarModal {
     top: calc(100% + 15px);
   }
@@ -133,11 +139,5 @@
     top: -15px;
     transform: rotate(0deg);
     left: 2%;
-  }
-}
-
-@media screen and (min-width: 1281px) {
-  .input_wrapper {
-    height: 50px;
   }
 }

@@ -65,7 +65,6 @@ export default function Component(props) {
               <div className={s.formContainer}>
                 <div className={s.fieldsBlock}>
                   <InputField
-                    inputWrapperClass={s.inputHeight}
                     name="id"
                     label={`${t('Id')}:`}
                     placeholder={t('Enter id', { ns: 'other' })}
@@ -76,7 +75,6 @@ export default function Component(props) {
                   />
 
                   <InputField
-                    inputWrapperClass={s.inputHeight}
                     name="locale_name"
                     label={`${t('Name')}:`}
                     placeholder={t('Enter the title')}
@@ -87,7 +85,6 @@ export default function Component(props) {
                   />
 
                   <InputField
-                    inputWrapperClass={s.inputHeight}
                     name="item"
                     label={`${t('Service code')}:`}
                     placeholder={t('Enter code')}
@@ -111,7 +108,6 @@ export default function Component(props) {
                   />
 
                   <InputField
-                    inputWrapperClass={s.inputHeight}
                     name="amount"
                     label={`${t('Sum', { ns: 'other' })}:`}
                     placeholder={t('Not selected')}

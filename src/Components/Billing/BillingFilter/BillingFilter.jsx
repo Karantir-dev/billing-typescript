@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, ModalCreatePayment } from '../..'
 import { useMediaQuery } from 'react-responsive'
-import { billingOperations, billingSelectors } from '../../../Redux'
+import { actions, billingOperations, billingSelectors } from '../../../Redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
@@ -31,6 +31,14 @@ export default function Component(props) {
 
   const [filterModal, setFilterModal] = useState(false)
   const [createPaymentModal, setCreatePaymentModal] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const downloadPaymentsCsvHandler = count => {
     dispatch(billingOperations.getPaymentCsv(count))
