@@ -25,10 +25,8 @@ export default function DNSChangeTarif({ elid, closeFn }) {
 
   const handleSubmit = values => {
     // const { elid, autoprolong, addon_961 } = values
-
-    console.log('values', values)
-    console.log(handleEditionModal)
-
+    // console.log('values', values)
+    // console.log(handleEditionModal)
     // if (
     //   currentLimit === null ||
     //   currentLimit === initialState?.addon_961_current_value?.$
@@ -60,7 +58,7 @@ export default function DNSChangeTarif({ elid, closeFn }) {
       onSubmit={handleSubmit}
     >
       {({ values, setFieldValue }) => {
-        console.log(values)
+        // console.log(values)
         return (
           <Form className={s.form}>
             <div className={s.parameters_block}>
