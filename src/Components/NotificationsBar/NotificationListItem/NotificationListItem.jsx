@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { notificationsTranslateFn } from '../../../utils'
 
 import s from './NotificationListItem.module.scss'
 
@@ -10,15 +11,11 @@ export default function NotificationListItem({ arr, removeItem }) {
     <>
       {Array.isArray(arr) ? (
         arr.map(notif => {
-          const ticketCode = notif?.msg?.$.trim().split(' ').slice(1, 3).join(' ')
-          const notifText = notif?.msg?.$.trim().split(' ').slice(3).join(' ')
-          const message = `${t('service', {
-            ns: 'other',
-          })} ${ticketCode} ${t(`${notifText}`)}`
-
           return (
             <div key={notif?.$id} className={s.notification_message_container}>
-              <p className={s.notification_message}>{message}</p>
+              <p className={s.notification_message}>
+                {notificationsTranslateFn(notif?.msg?.$, t)}
+              </p>
               <div className={s.close_btn_wrapper}>
                 <button
                   className={s.close_btn}
@@ -32,7 +29,9 @@ export default function NotificationListItem({ arr, removeItem }) {
         })
       ) : (
         <div key={arr?.$id} className={s.notification_message_container}>
-          <p className={s.notification_message}>{arr?.msg?.$}</p>
+          <p className={s.notification_message}>
+            {notificationsTranslateFn(arr?.msg?.$, t)}
+          </p>
           <div className={s.close_btn_wrapper}>
             <button
               className={s.close_btn}

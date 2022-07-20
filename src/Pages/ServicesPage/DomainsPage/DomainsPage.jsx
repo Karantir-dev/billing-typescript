@@ -17,6 +17,7 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
@@ -51,6 +52,14 @@ export default function Component() {
   const [editData, setEditData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
+    (curServer, nextServer) => {
+      return curServer + +nextServer?.item_cost?.$
+    },
+    0,
+  )
 
   useEffect(() => {
     const data = { p_num: currentPage }
@@ -182,7 +191,12 @@ export default function Component() {
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('burger_menu.services.services_list.domains')}</h1>
+      <h1 className={s.page_title}>
+        {t('burger_menu.services.services_list.domains')}
+        {domainsRenderData?.domainsList?.length !== 0 && (
+          <span className={s.title_count_services}>{` (${domainsCount})`}</span>
+        )}
+      </h1>
       <DomainFilters
         setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
@@ -237,11 +251,21 @@ export default function Component() {
           rights={rights}
         />
       )}
+
+      {Number(domainsCount) <= 30 &&
+        widerThan1600 &&
+        domainsRenderData?.domainsList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
+
       {domainsRenderData?.domainsList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(domainsCount)}
+            totalPrice={widerThan1600 && +domainsTotalPrice?.toFixed(4)}
             pageSize={30}
             onPageChange={page => setCurrentPage(page)}
           />

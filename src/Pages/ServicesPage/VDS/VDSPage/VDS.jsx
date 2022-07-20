@@ -52,6 +52,12 @@ export default function VDS() {
   const [filtersListState, setfiltersListState] = useState()
   const [isSearchMade, setIsSearchMade] = useState(false)
 
+  // const [serversCost, setServersCost] = useState(0)
+
+  const serversTotalPrice = servers?.reduce((curServer, nextServer) => {
+    return curServer + +nextServer?.item_cost?.$
+  }, 0)
+
   const [currentPage, setCurrentPage] = useState(1)
   const [elemsTotal, setElemsTotal] = useState(0)
 
@@ -149,7 +155,12 @@ export default function VDS() {
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.title}>{t('servers_title')}</h2>
+      <h2 className={s.title}>
+        {t('servers_title')}
+        {servers?.length !== 0 && (
+          <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
+        )}
+      </h2>
       <div className={s.tools_wrapper}>
         <div className={s.filter_wrapper}>
           <IconButton
@@ -331,14 +342,19 @@ export default function VDS() {
         goToPanel={goToPanel}
       />
 
-      {servers?.length !== 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalCount={Number(elemsTotal)}
-          pageSize={30}
-          onPageChange={page => setCurrentPage(page)}
-        />
+      {Number(elemsTotal) <= 30 && widerThan1600 && servers?.length !== 0 && (
+        <div className={s.total_pagination_price}>
+          {t('Sum', { ns: 'other' })}: {`${serversTotalPrice} EUR`}
+        </div>
       )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalCount={Number(elemsTotal)}
+        pageSize={30}
+        totalPrice={widerThan1600 && serversTotalPrice}
+        onPageChange={page => setCurrentPage(page)}
+      />
 
       <Backdrop
         className={s.backdrop}

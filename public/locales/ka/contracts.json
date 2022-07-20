@@ -5,5 +5,7 @@
   "contract_name": "ხელშეკრულების ტიპი",
   "print": "ბეჭდვა",
   "Signed": "ხელმოწერილია",
-  "Public Offer Agreement": "ხელშეკრულება-ოფერტა"
+  "Public Offer Agreement": "ხელშეკრულება-ოფერტა",
+  "YOU DO NOT HAVE CONTRACTS YET": "თქვენ ჯერ არ გაქვთ კონტრაქტები",
+  "no services description": "ამ განყოფილებაში შეგიძლიათ იხილოთ კონტრაქტები მომსახურების შეძენის შემდეგ"
 }

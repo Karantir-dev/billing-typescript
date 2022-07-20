@@ -5,5 +5,7 @@
   "contract_name": "Келісім түрі",
   "print": "Мөр",
   "Signed": "Қол қойылды",
-  "Public Offer Agreement": "Келісім-оферта"
+  "Public Offer Agreement": "Келісім-оферта",
+  "YOU DO NOT HAVE CONTRACTS YET": "СІЗДЕ ӘЛІ КЕЛІСІМ ЖОҚ",
+  "no services description": "Бұл бөлімде қызметтерді сатып алғаннан кейінгі келісім-шарттарды таба аласыз"
 }

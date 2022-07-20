@@ -5,5 +5,7 @@
   "contract_name": "Contract type",
   "print": "Print",
   "Signed": "Signed",
-  "Public Offer Agreement": "Public Offer Agreement"
+  "Public Offer Agreement": "Public Offer Agreement",
+  "YOU DO NOT HAVE CONTRACTS YET": "YOU DO NOT HAVE CONTRACTS YET",
+  "no services description": "In this section you can find contracts after the purchase of services"
 }

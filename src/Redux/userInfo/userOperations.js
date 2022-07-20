@@ -57,13 +57,15 @@ const funcsArray = [
 ]
 
 const getUserInfo = (sessionId, setLoading) => dispatch => {
-  dispatch(userActions.showUserInfoLoading())
+  setLoading && dispatch(userActions.showUserInfoLoading())
+
   Promise.all([
     axiosInstance.post(
       '/',
       qs.stringify({
         func: 'whoami',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
       }),
     ),
@@ -81,6 +83,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       qs.stringify({
         func: 'menu',
         out: 'json',
+        lang: 'en',
         auth: sessionId,
         sok: 'ok',
       }),
@@ -185,6 +188,7 @@ const getNotify = () => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
       userNotifications(data, dispatch)
     })
     .catch(error => {

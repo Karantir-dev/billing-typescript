@@ -60,5 +60,17 @@
     "has been prolonged": "продлена",
     "is ready for use": "готова к использованию"
   },
-  "clear_all": "Очистить все"
+  "clear_all": "Очистить все",
+  "Service is ready for use": "Услуга '{{value}}' готова к использованию",
+  "Service has been deleted": "Услуга '{{value}}' удалена",
+  "Service has been suspended": "Услуга '{{value}}' приостановлена",
+  "Error in domain contacts for the service": "Ошибка в контактах домена для службы '{value}}'. Проверьте параметры и повторите операцию",
+  "An error occurred when changing name servers": "Произошла ошибка при смене имен серверов '{{value}}'. Проверьте параметры и повторите попытку",
+  "The domain has been successfully transferred": "Домен '{{value}}' успешно перенесен",
+  "Failed to transfer the domain": "Не удалось перенести домен '{{value}}'",
+  "Service has been prolonged": "Услуга '{{value}}' продлена",
+  "Service has been modified": "Услуга '{{value}}' была изменена",
+  "Service has been activated": "Услуга '{{value}}' активирована",
+  "Change pricelist": "Произошла ошибка при изменении тарифа '{{value}}'. Ваш старый тарифный план активирован",
+  "Failed to register the SSL-certificate": "Не удалось зарегистрировать SSL-сертификат '{{value}}'"
 }
