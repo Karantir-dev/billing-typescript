@@ -65,7 +65,7 @@
   position: fixed;
   max-height: 90vh;
   overflow-y: hidden;
-  position: 'relative';
+  position: relative;
   top: 50%;
   transform: translate(0, -50%);
 
@@ -290,7 +290,7 @@
   .filterModal {
     position: absolute;
     max-height: unset;
-    padding:  10px 20px 20px;
+    padding: 10px 20px 20px;
     top: calc(90% + 10px);
     left: -290px;
     overflow-y: visible;
@@ -306,7 +306,7 @@
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
       border-bottom: 10px solid var(--elements-bgc);
-      clear: both;
+      // clear: both;
     }
   }
 
@@ -415,7 +415,7 @@
 
 @media screen and (min-width: 1918px) {
   .filterModal {
-    padding:  10px 20px 20px;
+    padding: 10px 20px 20px;
   }
 
   .form {

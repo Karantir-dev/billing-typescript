@@ -154,7 +154,6 @@ export { default as DNSList } from './Services/dns/DNSList/DNSList'
 export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
 export { default as DNSInstructionModal } from './Services/dns/DNSInstructionModal/DNSInstructionModal'
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
-export { default as DNSChangeTarif } from './Services/dns/DNSChangeTarif/DNSChangeTarif'
 
 //==========================================Forex==========================================//
 export { default as ForexList } from './Services/Forex/ForexList/ForexList'

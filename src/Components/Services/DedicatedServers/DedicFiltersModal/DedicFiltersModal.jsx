@@ -115,7 +115,19 @@ export default function DedicFiltersModal(props) {
                   error={!!errors.domain}
                   touched={!!touched.domain}
                 />
-
+                <Select
+                  label={`${t('ostempl', { ns: 'vds' })}:`}
+                  placeholder={t('Not selected')}
+                  value={values.ostemplate}
+                  getElement={item => setFieldValue('ostemplate', item)}
+                  isShadow
+                  itemsList={filtersList?.ostemplate?.map(({ $key, $ }) => ({
+                    label: t(`${$.trim()}`),
+                    value: $key,
+                  }))}
+                  className={s.select}
+                  inputClassName={s.select_wrapper}
+                />
                 <InputField
                   inputWrapperClass={s.inputHeight}
                   name="ip"
@@ -169,19 +181,6 @@ export default function DedicFiltersModal(props) {
                   inputClassName={s.select_wrapper}
                 />
 
-                <Select
-                  label={`${t('ostempl', { ns: 'vds' })}:`}
-                  placeholder={t('Not selected')}
-                  value={values.ostemplate}
-                  getElement={item => setFieldValue('ostemplate', item)}
-                  isShadow
-                  itemsList={filtersList?.ostemplate?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
-                    value: $key,
-                  }))}
-                  className={s.select}
-                  inputClassName={s.select_wrapper}
-                />
                 <Select
                   label={`${t('datacenter', { ns: 'dedicated_servers' })}:`}
                   placeholder={t('Not selected')}

@@ -7,6 +7,7 @@ const initialState = {
   isLoading: false,
   userInfo: [],
   pinned: false,
+  scrollForbidden: false,
 }
 
 export const theme = createReducer(initialState.theme, {
@@ -23,6 +24,11 @@ export const isLoading = createReducer(initialState.isLoading, {
   [authActions.registrationSuccess]: () => false,
   [authActions.loginSuccess]: () => false,
   [authActions.logoutSuccess]: () => false,
+})
+
+export const scrollForbidden = createReducer(initialState.scrollForbidden, {
+  [actions.disableScrolling]: () => true,
+  [actions.enableScrolling]: () => false,
 })
 
 // export const userInfo = createReducer(initialState.userInfo, {

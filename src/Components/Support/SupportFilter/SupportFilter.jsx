@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '../..'
-import { supportOperations } from '../../../Redux'
+import { actions, supportOperations } from '../../../Redux'
 import s from './SupportFilter.module.scss'
 
 export default function Component(props) {
@@ -19,6 +19,14 @@ export default function Component(props) {
 
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const dispatch = useDispatch()
   const params = useParams()

@@ -20,7 +20,7 @@ import {
   ForexDeletionModal,
   Pagination,
 } from '../../../Components'
-import { forexOperations, forexSelectors } from '../../../Redux'
+import { actions, forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 import { checkServicesRights, usePageRender } from '../../../utils'
@@ -50,6 +50,14 @@ export default function ForexPage() {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
   const [isFiltered, setIsFiltered] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
