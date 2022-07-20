@@ -152,13 +152,13 @@ export default function Component(props) {
                     </div>
                   </div>
                   <InputField
+                    className={s.passInput}
                     background
                     name="qrcode"
-                    type="password"
+                    type="number"
                     label={`${t('A temporary password')}:`}
                     placeholder={t('Enter password')}
                     isShadow
-                    className={s.passInput}
                     error={!!errors.qrcode}
                     touched={!!touched.qrcode}
                   />
