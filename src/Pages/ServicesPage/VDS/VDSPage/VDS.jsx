@@ -194,7 +194,8 @@ export default function VDS() {
                   disabled={
                     (activeServer?.status?.$ !== '3' &&
                       activeServer?.status?.$ !== '2') ||
-                    !rights?.edit
+                    !rights?.edit ||
+                    activeServices?.length >= 2
                   }
                   icon="edit"
                 />
@@ -243,7 +244,8 @@ export default function VDS() {
                 disabled={
                   activeServer?.status?.$ === '5' ||
                   activeServer?.has_ip_pricelist?.$ !== 'on' ||
-                  !rights?.ip
+                  !rights?.ip ||
+                  activeServices?.length >= 2
                 }
                 onClick={() =>
                   navigate(route.VDS_IP, { state: { id: activeServer?.id?.$ } })
@@ -271,7 +273,8 @@ export default function VDS() {
                 onClick={() => setIdForHistory(activeServer.id.$)}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.history
+                  !rights?.history ||
+                  activeServices?.length >= 2
                 }
                 icon="refund"
               />
@@ -282,7 +285,8 @@ export default function VDS() {
                 className={s.tools_icon}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.instruction
+                  !rights?.instruction ||
+                  activeServices?.length >= 2
                 }
                 onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
@@ -296,7 +300,8 @@ export default function VDS() {
                 disabled={
                   activeServer?.transition?.$ !== 'on' ||
                   activeServer?.status?.$ !== '2' ||
-                  !rights?.gotoserver
+                  !rights?.gotoserver ||
+                  activeServices?.length >= 2
                 }
                 icon="exitSign"
               />
