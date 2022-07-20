@@ -19,9 +19,8 @@ import {
   DNSFiltersModal,
   Portal,
   Pagination,
-  // DNSChangeTarif,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors } from '../../../Redux'
+import { dnsOperations, dedicOperations, dnsSelectors, actions } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 import { usePageRender } from '../../../utils'
@@ -60,6 +59,14 @@ export default function DNS() {
   const [emptyFilter, setEmptyFilter] = useState(false)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const location = useLocation()
 
@@ -376,16 +383,6 @@ export default function DNS() {
           closeFn={() => setElidForInstructionModal(0)}
         />
       </Backdrop>
-
-      {/* <Backdrop
-        onClick={() => setElidForChangeTarifModal(0)}
-        isOpened={Boolean(elidForChangeTarifModal)}
-      >
-        <DNSChangeTarif
-          elid={elidForChangeTarifModal}
-          closeFn={() => setElidForChangeTarifModal(0)}
-        />
-      </Backdrop> */}
     </>
   )
 }

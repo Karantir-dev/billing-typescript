@@ -62,7 +62,7 @@ export default function Select(props) {
   useOutsideAlerter(dropdown, isOpened, clickOutside)
 
   useEffect(() => {
-    if (itemsList && value) {
+    if (itemsList && value !== undefined) {
       itemsList?.forEach(el => {
         if (el?.value === value) {
           setSelectedItem(el)

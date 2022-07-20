@@ -1,5 +1,6 @@
 .container {
-  padding: 100px 30px 87px 30px;
+  --right-padding: 30px;
+  padding: 100px var(--right-padding) 87px 30px;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--main-bgc);
@@ -22,6 +23,11 @@
   &::-webkit-scrollbar-thumb:hover {
     background: #e72690;
   }
+
+  &.scroll_forbidden {
+    overflow: hidden;
+    padding-right: calc(var(--right-padding) + 5px);
+  }
 }
 
 .aside_menu_container {
@@ -30,7 +36,8 @@
 
 @media screen and (min-width: 768px) {
   .container {
-    padding: 127px 60px 210px 60px;
+    --right-padding: 60px;
+    padding: 127px var(--right-padding) 210px 60px;
   }
 
   .aside_menu_container {
@@ -41,20 +48,22 @@
 @media screen and (min-width: 1024px) {
   .container {
     margin: 0 auto;
-    padding: 127px 60px 42px 200px;
+    padding: 127px var(--right-padding) 42px 200px;
     width: 100%;
   }
 }
 
 @media screen and (min-width: 1550px) {
   .container {
-    padding: 137px 135px 188px 259px;
+    --right-padding: 135px;
+    padding: 137px var(--right-padding) 188px 259px;
   }
 }
 
 @media screen and (min-width: 1918px) {
   .container {
+    --right-padding: 155px;
     margin: unset;
-    padding: 157px 155px 120px 290px;
+    padding: 157px var(--right-padding) 120px 290px;
   }
 }

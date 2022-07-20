@@ -9,7 +9,7 @@ import { Button, IconButton, HintWrapper, Portal } from '../../..'
 import SharedHostingFilterModal from '../SharedHostingFilterModal/SharedHostingFilterModal'
 import * as routes from '../../../../routes'
 import s from './SharedHostingFilter.module.scss'
-import { vhostOperations, vhostSelectors } from '../../../../Redux'
+import { actions, vhostOperations, vhostSelectors } from '../../../../Redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -33,6 +33,14 @@ export default function Component(props) {
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const filters = useSelector(vhostSelectors.getVhostFilters)
   const filtersList = useSelector(vhostSelectors.getVhostFiltersList)

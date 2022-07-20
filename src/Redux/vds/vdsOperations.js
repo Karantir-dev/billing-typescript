@@ -591,14 +591,18 @@ const setVdsFilters =
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
             setFiltersState(data.doc)
-            setfiltersListState({
+            data.doc.slist.forEach(el => {
+              el.val.push({ $key: '', $: 'Not selected' })
+            })
+            const filtersList = {
               autoprolong: data.doc.slist.find(el => el.$name === 'autoprolong').val,
               ostemplate: data.doc.slist.find(el => el.$name === 'ostemplate').val,
               status: data.doc.slist.find(el => el.$name === 'status').val,
               datacenter: data.doc.slist.find(el => el.$name === 'datacenter').val,
               period: data.doc.slist.find(el => el.$name === 'period').val,
               pricelist: data.doc.slist.find(el => el.$name === 'pricelist')?.val,
-            })
+            }
+            setfiltersListState(filtersList)
           })
 
         dispatch(getVDS({ setServers, setRights, setElemsTotal }))

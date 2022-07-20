@@ -10,7 +10,7 @@ import { Button, IconButton, HintWrapper, Portal } from '../../..'
 import SiteCareFiltertsModal from '../SiteCareFiltertsModal/SiteCareFiltertsModal'
 import * as routes from '../../../../routes'
 import s from './SiteCareFilter.module.scss'
-import { siteCareOperations, siteCareSelectors } from '../../../../Redux'
+import { actions, siteCareOperations, siteCareSelectors } from '../../../../Redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -32,6 +32,14 @@ export default function Component(props) {
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const filters = useSelector(siteCareSelectors.getSiteCareFilters)
   const filtersList = useSelector(siteCareSelectors.getSiteCareFiltersList)

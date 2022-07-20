@@ -18,7 +18,7 @@ import {
   Portal,
   Pagination,
 } from '../../../Components'
-import { ftpOperations, ftpSelectors, dedicOperations } from '../../../Redux'
+import { ftpOperations, ftpSelectors, dedicOperations, actions } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as route from '../../../routes'
@@ -55,6 +55,14 @@ export default function FTP() {
   }, 0)
 
   const location = useLocation()
+
+  useEffect(() => {
+    if (filterModal) {
+      dispatch(actions.disableScrolling())
+    } else {
+      dispatch(actions.enableScrolling())
+    }
+  }, [filterModal])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')

@@ -82,6 +82,7 @@ export default function InputField(props) {
             onChange={onChangeLeft}
             value={valueLeft}
             maxLength={maxLengthLeft}
+            autoComplete="off"
           />
         )}
 
@@ -105,6 +106,7 @@ export default function InputField(props) {
             onChange={onChangeRight}
             value={valueRight}
             maxLength={maxLengthRight}
+            autoComplete="off"
           />
         )}
         {textRight && !isCalendar && <div className={s.afterIputText}>{textRight}</div>}
