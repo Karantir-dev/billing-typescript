@@ -170,19 +170,22 @@ export default function Component() {
           isShadow
         />
         <div className={s.cardContainer}>
-          {data?.tariflist_list?.map(tariff => {
-            const { pricelist } = tariff
-            const setPriceHandler = () => setPrice(pricelist?.$)
-            return (
-              <TarifCard
-                period={data?.period_list?.filter(el => el?.$key === period)[0]?.$}
-                selected={pricelist?.$ === price}
-                setPriceHandler={setPriceHandler}
-                key={pricelist?.$}
-                tariff={tariff}
-              />
-            )
-          })}
+          {data?.tariflist_list
+            ?.filter(plan => plan?.order_available?.$ === 'on')
+            ?.map(tariff => {
+              const { pricelist } = tariff
+              const setPriceHandler = () => setPrice(pricelist?.$)
+
+              return (
+                <TarifCard
+                  period={data?.period_list?.filter(el => el?.$key === period)[0]?.$}
+                  selected={pricelist?.$ === price}
+                  setPriceHandler={setPriceHandler}
+                  key={pricelist?.$}
+                  tariff={tariff}
+                />
+              )
+            })}
         </div>
         {paramsData && (
           <div className={s.parametrsContainer}>

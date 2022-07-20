@@ -25,7 +25,7 @@ export default function Alert({
       <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
         <div className={s.alert} ref={getAlerEl} data-testid={dataTestid}>
           <div className={s.title_wrapper}>
-            <h5>{title}</h5>
+            <h5 className={s.modal_title}>{title}</h5>
             <div className={s.close_btn_wrapper}>
               <button className={s.close_btn} onClick={controlAlert}></button>
             </div>

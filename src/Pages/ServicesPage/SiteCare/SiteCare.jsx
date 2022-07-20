@@ -172,9 +172,7 @@ export default function Component() {
       <h1 className={s.page_title}>
         {t('burger_menu.services.services_list.wetsite_care')}
         {sitecareRenderData?.siteCareList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${sitecareRenderData?.siteCareList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${siteCareCount})`}</span>
         )}
       </h1>
 

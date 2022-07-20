@@ -152,9 +152,7 @@ export default function ForexPage() {
       <h2 className={s.page_title}>
         {t('forex', { ns: 'crumbs' })}
         {forexRenderData?.forexList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${forexRenderData?.forexList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${forexCount})`}</span>
         )}
       </h2>
       <div className={s.tools_wrapper}>

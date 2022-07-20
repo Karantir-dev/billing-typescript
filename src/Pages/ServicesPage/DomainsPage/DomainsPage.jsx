@@ -194,9 +194,7 @@ export default function Component() {
       <h1 className={s.page_title}>
         {t('burger_menu.services.services_list.domains')}
         {domainsRenderData?.domainsList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${domainsRenderData?.domainsList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${domainsCount})`}</span>
         )}
       </h1>
       <DomainFilters

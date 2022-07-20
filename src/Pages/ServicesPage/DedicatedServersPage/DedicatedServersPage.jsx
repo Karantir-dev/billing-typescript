@@ -167,9 +167,7 @@ export default function DedicatedServersPage() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
         {dedicRenderData?.serversList?.length !== 0 && (
-          <span className={s.title_count_services}>
-            {` (${dedicRenderData?.serversList?.length})`}
-          </span>
+          <span className={s.title_count_services}>{` (${dedicCount})`}</span>
         )}
       </h2>
 

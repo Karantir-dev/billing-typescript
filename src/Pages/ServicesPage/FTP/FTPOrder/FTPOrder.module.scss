@@ -152,6 +152,8 @@
 
 .price_wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .params {
@@ -216,11 +218,12 @@
 }
 
 .buy_btn {
-  width: 165px;
+  min-width: 165px;
   height: 46px;
   font-size: 18px;
   line-height: 66.3%;
   text-transform: uppercase;
+  font: none;
 }
 
 .btn_price {
