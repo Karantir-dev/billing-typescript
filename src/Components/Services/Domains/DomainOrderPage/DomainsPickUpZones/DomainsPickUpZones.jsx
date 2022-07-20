@@ -166,7 +166,7 @@ export default function ServicesPage(props) {
         {domainsList?.allResults?.map(d => {
           const { id, domain, price } = d
 
-          const notAvailable = d?.desc?.$.includes('Not available')
+          const notAvailable = d?.desc?.$?.includes('Not available')
 
           return (
             <div

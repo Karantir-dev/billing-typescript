@@ -271,7 +271,7 @@ export default function ForexPage() {
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
-        activeServerID={activeServer?.id.$}
+        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

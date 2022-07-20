@@ -233,7 +233,7 @@ export default function DedicatedServersPage() {
                   className={s.tools_icon}
                   disabled={
                     activeServer?.show_reboot?.$ !== 'on' ||
-                    !rights.reload ||
+                    !rights.reboot ||
                     !activeServer
                   }
                   icon="reload"

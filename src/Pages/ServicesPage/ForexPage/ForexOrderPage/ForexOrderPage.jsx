@@ -333,7 +333,7 @@ export default function ForexOrderPage() {
                     <div className={s.sum_price_wrapper}>
                       {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                       <p className={s.price_wrapper}>
-                        <span className={s.btn_price}>{'€' + price}</span>{' '}
+                        <span className={s.btn_price}>{'€' + price}</span>
                         {'/' + periodName}
                       </p>
                     </div>

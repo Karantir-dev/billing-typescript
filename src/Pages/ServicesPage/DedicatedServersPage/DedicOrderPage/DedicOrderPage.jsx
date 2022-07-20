@@ -38,7 +38,7 @@ export default function DedicOrderPage() {
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
   // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
-  const [paymentPeriod, setPaymentPeriod] = useState(null)
+  // const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState('')
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
@@ -78,7 +78,7 @@ export default function DedicOrderPage() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR'
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
@@ -278,9 +278,10 @@ export default function DedicOrderPage() {
                         onClick={() => {
                           setPrice('-')
                           resetForm()
-                          setPaymentPeriod(item)
+                          // setPaymentPeriod(item)
                           setFieldValue('datacenter', item?.$key)
                           setParameters(null)
+                          setFilters([])
                           setTarifChosen(false)
                           dispatch(
                             dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
@@ -372,7 +373,7 @@ export default function DedicOrderPage() {
                   setPrice('-')
                   resetForm()
                   setFieldValue('period', item)
-                  setPaymentPeriod(item)
+                  // setPaymentPeriod(item)
                   setParameters(null)
                   setTarifChosen(false)
 
@@ -432,10 +433,10 @@ export default function DedicOrderPage() {
                           type="button"
                           className={s.tarif_card_btn}
                         >
-                          {paymentPeriod > 1 && (
+                          {priceSale && pricePercent && (
                             <span
                               className={classNames({
-                                [s.sale_percent]: paymentPeriod > 1,
+                                [s.sale_percent]: priceSale && pricePercent,
                               })}
                             >
                               {pricePercent}
@@ -457,9 +458,9 @@ export default function DedicOrderPage() {
                                 [s.selected]: item?.pricelist?.$ === values.tarif,
                               })}
                             >
-                              {priceAmount + '/' + periodName}
+                              {priceAmount + ' €' + '/' + periodName}
                             </span>
-                            {paymentPeriod > 1 && (
+                            {priceSale && pricePercent && (
                               <span className={s.sale_price}>{`${priceSale}`}</span>
                             )}
                           </div>
@@ -694,10 +695,26 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.container}>
-                  <div className={s.sum_price_wrapper}>
+                  {tabletOrHigher ? (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <span className={s.btn_price}>
+                        {price + ' €' + '/' + periodName}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <p className={s.btn_price_wrapper}>
+                        <span className={s.btn_price}>{'€' + price}</span>
+                        {'/' + periodName}
+                      </p>
+                    </div>
+                  )}
+                  {/* <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                     <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div>
+                  </div> */}
 
                   <Button
                     className={s.buy_btn}

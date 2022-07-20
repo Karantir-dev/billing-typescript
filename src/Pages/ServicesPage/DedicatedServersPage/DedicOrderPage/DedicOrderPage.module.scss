@@ -258,6 +258,11 @@
   background: var(--servers_price_bgc);
   margin-bottom: 17px;
 }
+.btn_price_wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 .params {
   font-weight: 600;
