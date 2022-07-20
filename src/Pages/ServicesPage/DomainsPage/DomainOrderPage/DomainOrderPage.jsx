@@ -72,6 +72,8 @@ export default function Component({ transfer = false }) {
     const checkedDomain = pickUpDomains?.checked_domain?.$?.split(', ')
     const newCheckedDomains = []
 
+    console.log(selected_domain_names, 'selected_domain_names')
+
     const selected_domain = []
     selected_domain_names?.forEach(el => {
       const newString = el.replace('select_domain_', '')

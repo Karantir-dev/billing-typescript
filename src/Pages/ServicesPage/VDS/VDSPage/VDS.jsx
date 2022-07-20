@@ -40,6 +40,7 @@ export default function VDS() {
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
   const [activeServer, setActiveServer] = useState(null)
+  const [activeServices, setActiveServices] = useState([])
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
   const [idForProlong, setIdForProlong] = useState('')
@@ -189,7 +190,7 @@ export default function VDS() {
               <HintWrapper label={t('edit', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer.id.$)}
+                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
                   disabled={
                     (activeServer?.status?.$ !== '3' &&
                       activeServer?.status?.$ !== '2') ||
@@ -202,7 +203,7 @@ export default function VDS() {
               <HintWrapper label={t('delete', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
-                  onClick={() => setIdForDeleteModal(activeServer.id.$)}
+                  onClick={() => setIdForDeleteModal(activeServer?.id?.$)}
                   disabled={
                     !activeServer ||
                     activeServer?.status?.$ === '5' ||
@@ -222,7 +223,7 @@ export default function VDS() {
                   activeServer?.allow_changepassword?.$ !== 'on' ||
                   !rights?.changepassword
                 }
-                onClick={() => setIdForPassChange(activeServer.id.$)}
+                onClick={() => setIdForPassChange(activeServer?.id?.$)}
                 icon="passChange"
               />
             </HintWrapper>
@@ -231,7 +232,7 @@ export default function VDS() {
               <IconButton
                 className={s.tools_icon}
                 disabled={activeServer?.show_reboot?.$ !== 'on' || !rights?.reboot}
-                onClick={() => setIdForReboot(activeServer.id.$)}
+                onClick={() => setIdForReboot(activeServer?.id?.$)}
                 icon="reload"
               />
             </HintWrapper>
@@ -245,7 +246,7 @@ export default function VDS() {
                   !rights?.ip
                 }
                 onClick={() =>
-                  navigate(route.VDS_IP, { state: { id: activeServer.id.$ } })
+                  navigate(route.VDS_IP, { state: { id: activeServer?.id?.$ } })
                 }
                 icon="ip"
               />
@@ -291,7 +292,7 @@ export default function VDS() {
             <HintWrapper label={t('go_to_panel')}>
               <IconButton
                 className={s.tools_icon}
-                onClick={() => goToPanel(activeServer.id.$)}
+                onClick={() => goToPanel(activeServer?.id?.$)}
                 disabled={
                   activeServer?.transition?.$ !== 'on' ||
                   activeServer?.status?.$ !== '2' ||
@@ -330,7 +331,7 @@ export default function VDS() {
       <VDSList
         servers={servers}
         rights={rights}
-        activeServerID={activeServer?.id.$}
+        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
         setActiveServer={setActiveServer}
         setIdForDeleteModal={setIdForDeleteModal}
@@ -340,6 +341,9 @@ export default function VDS() {
         setIdForHistory={setIdForHistory}
         setIdForInstruction={setIdForInstruction}
         goToPanel={goToPanel}
+        activeServer={activeServer}
+        activeServices={activeServices}
+        setActiveServices={setActiveServices}
       />
 
       {Number(elemsTotal) <= 30 && widerThan1600 && servers?.length !== 0 && (

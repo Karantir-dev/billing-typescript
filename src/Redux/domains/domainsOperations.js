@@ -125,6 +125,7 @@ const getDomainsOrderName =
         qs.stringify({
           func: 'domain.order.name',
           out: 'json',
+          lang: 'en',
           auth: sessionId,
           ...body,
         }),
@@ -132,13 +133,13 @@ const getDomainsOrderName =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const domainData = data.doc
+        const domainData = data?.doc
 
         const domains = []
         if (!search) {
           domainData?.list?.forEach(l => {
             if (l?.$name === 'pricelist_info') {
-              l?.elem.forEach(e => {
+              l?.elem?.forEach(e => {
                 if (e?.id) {
                   domains.push(e)
                 }
@@ -152,7 +153,7 @@ const getDomainsOrderName =
 
         domainData?.list?.forEach(l => {
           if (l?.$name === 'domain_list') {
-            l?.elem.forEach(e => {
+            l?.elem?.forEach(e => {
               if (e?.id) {
                 domains.push(e)
               }

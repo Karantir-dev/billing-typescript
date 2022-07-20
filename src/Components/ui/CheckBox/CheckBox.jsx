@@ -10,6 +10,7 @@ export default function Component({
   disabled,
   className,
   error,
+  func,
 }) {
   const [isChecked, setIsChecked] = useState(false)
 
@@ -23,6 +24,7 @@ export default function Component({
 
   const toggleHandler = val => {
     setIsChecked(!val)
+    func && func(isChecked)
   }
 
   return (
@@ -49,4 +51,5 @@ Component.propTypes = {
   error: PropTypes.bool,
   setValue: PropTypes.func,
   className: PropTypes.string,
+  func: PropTypes.func,
 }

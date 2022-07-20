@@ -73,7 +73,7 @@ export default function DedicMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={server.show_reboot?.$ !== 'on'}
+                  disabled={server.show_reboot?.$ !== 'on' || !rights?.reboot}
                   onClick={() => {
                     handleToolBtnClick(setElidForRebootModal, server?.id?.$)
                     setActiveServer(server)
