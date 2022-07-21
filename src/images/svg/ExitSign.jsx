@@ -8,8 +8,8 @@ export default function SvgComponent(props) {
 
   return (
     <svg
-      width={26}
-      height={22}
+      width={20}
+      height={20}
       viewBox="0 0 26 22"
       fill={darkTheme ? '#decbfe' : '#ae9ccd'}
       xmlns="http://www.w3.org/2000/svg"

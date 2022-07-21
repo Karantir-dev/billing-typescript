@@ -5,6 +5,13 @@
   border-radius: 5px;
 }
 
+.item_wrapper {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 25px;
+  align-items: center;
+}
+
 .item_btn {
   display: flex;
   align-items: center;
