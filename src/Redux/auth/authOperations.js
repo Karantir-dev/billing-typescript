@@ -260,7 +260,7 @@ const getCountriesForRegister =
 
         setCountries(countries)
         setStates(states)
-        setSocialLinks(socLinks)
+        setSocialLinks && setSocialLinks(socLinks)
 
         dispatch(actions.hideLoader())
       })

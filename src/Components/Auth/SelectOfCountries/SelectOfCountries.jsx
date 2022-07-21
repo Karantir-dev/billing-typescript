@@ -16,7 +16,7 @@ export default function SelectOfCountries({
   setFieldTouched,
   errors,
   touched,
-  setSocialLinks,
+  // setSocialLinks,
 }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
@@ -41,7 +41,7 @@ export default function SelectOfCountries({
         setCountries,
         setRegions,
         setErrMsg,
-        setSocialLinks,
+        // setSocialLinks,
       ),
     )
   }, [])
