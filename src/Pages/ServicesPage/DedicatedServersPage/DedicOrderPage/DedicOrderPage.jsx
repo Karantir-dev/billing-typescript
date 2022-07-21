@@ -727,7 +727,7 @@ export default function DedicOrderPage() {
                       setFieldTouched('license', true)
                       if (!values.license) setFieldValue('license', false)
                       !values.license &&
-                        licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
+                        licenceCheck?.current?.scrollIntoView({ behavior: 'smooth' })
                     }}
                   />
                 </div>

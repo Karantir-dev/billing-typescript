@@ -38,7 +38,7 @@ export default function LoginForm() {
 
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
-      recaptchaEl && recaptchaEl.current.reset()
+      recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
     dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
@@ -83,9 +83,10 @@ export default function LoginForm() {
       >
         {({ setFieldValue, errors, touched }) => {
           const resetRecaptcha = () => {
-            recaptchaEl && recaptchaEl.current.reset()
+            recaptchaEl && recaptchaEl?.current?.reset()
             setFieldValue('reCaptcha', '')
           }
+
           return (
             <>
               <VerificationModal resetRecaptcha={resetRecaptcha} />
