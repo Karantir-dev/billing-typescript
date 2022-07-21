@@ -2,7 +2,7 @@ import cn from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  // CheckBox,
+  //  CheckBox,
   ServerState,
 } from '../../..'
 import PropTypes from 'prop-types'
@@ -13,14 +13,15 @@ export default function VDSItem({
   server,
   setActiveServer,
   activeServerID,
-  // activeServices,
-  // setActiveServices,
+  activeServices,
+  setActiveServices,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
   return (
     // <div className={s.item_wrapper}>
     //   <CheckBox
+    //     initialState={activeServices?.some(service => service?.id?.$ === server?.id?.$)}
     //     func={isChecked => {
     //       isChecked
     //         ? setActiveServices(
@@ -33,12 +34,15 @@ export default function VDSItem({
     <li className={s.item}>
       <button
         className={cn(s.item_btn, {
-          [s.active_server]: activeServerID === server?.id?.$,
+          [s.active_server]:
+            activeServerID === server?.id?.$ ||
+            activeServices?.some(service => service?.id?.$ === server?.id?.$),
         })}
         type="button"
         onClick={() => {
           setActiveServer(server)
-          // setActiveServices([])
+          setActiveServices([])
+          setActiveServices([server])
         }}
       >
         <span className={s.value}>{server?.id?.$}</span>
@@ -48,7 +52,7 @@ export default function VDSItem({
         <span className={s.value}>
           {server?.pricelist?.$}
           <span className={s.price}>
-            {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
+            {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
           </span>
         </span>
         <span className={s.value}>{server?.datacentername?.$}</span>
