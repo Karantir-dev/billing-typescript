@@ -33,7 +33,7 @@ const getVhosts =
         // const elem = data?.doc?.elem || []
         const virtualHostingRenderData = {
           vhostList: data?.doc?.elem || [],
-          vhostPageRights: data.doc.metadata.toolbar,
+          vhostPageRights: data?.doc?.metadata?.toolbar,
         }
 
         const count = data?.doc?.p_elems?.$ || 0
@@ -329,10 +329,12 @@ const prolongVhost =
         if (body?.sok === 'ok') {
           setProlongData && setProlongData(null)
           setProlongModal && setProlongModal(false)
-          toast.success(i18n.t('Prolonged successfully', { ns: 'virtual_hosting' }), {
-            position: 'bottom-right',
-          })
-          return dispatch(getVhosts())
+          dispatch(
+            cartActions.setCartIsOpenedState({
+              isOpened: true,
+              redirectPath: route.SHARED_HOSTING,
+            }),
+          )
         }
 
         dispatch(actions.hideLoader())

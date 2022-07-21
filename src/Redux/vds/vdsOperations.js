@@ -28,17 +28,17 @@ const getVDS =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        setServers(data.doc.elem || [])
+        setServers(data?.doc?.elem || [])
 
         const rights = {}
-        data.doc.metadata.toolbar.toolgrp.forEach(el => {
+        data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
           el?.toolbtn?.forEach(elem => {
             rights[elem.$name] = true
           })
         })
         setRights(rights)
 
-        setElemsTotal && setElemsTotal(data.doc?.p_elems?.$)
+        setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
         dispatch(actions.hideLoader())
       })
@@ -170,7 +170,7 @@ const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) =>
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
       setFormInfo(data.doc)
-      setTariffsList(data.doc.list[0].elem)
+      setTariffsList(data?.doc?.list[0]?.elem)
 
       dispatch(actions.hideLoader())
     })
@@ -199,7 +199,7 @@ const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      setTariffsList(data.doc.list[0].elem)
+      setTariffsList(data?.doc?.list[0]?.elem)
       dispatch(actions.hideLoader())
     })
     .catch(err => {
@@ -275,9 +275,9 @@ const changeOrderFormField =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         data.doc.doc.messages = data.doc.messages
-        data.doc.doc.slist.forEach(el => {
+        data.doc?.doc?.slist?.forEach(el => {
           if (el.$name === 'autoprolong') {
-            el.val = data.doc.slist[0].val
+            el.val = data.doc?.slist[0]?.val
           }
 
           if (!Array.isArray(el.val)) {
@@ -454,7 +454,7 @@ const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setElements(data.doc.elem)
+      setElements(data?.doc?.elem)
       setName(data.doc?.plname.$)
 
       dispatch(actions.hideLoader())
@@ -530,7 +530,7 @@ const changeDomainName =
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-            setElements(data.doc.elem)
+            setElements(data?.doc?.elem)
           })
         closeFn()
 
@@ -591,16 +591,16 @@ const setVdsFilters =
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
             setFiltersState(data.doc)
-            data.doc.slist.forEach(el => {
+            data.doc?.slist?.forEach(el => {
               el.val.push({ $key: '', $: 'Not selected' })
             })
             const filtersList = {
-              autoprolong: data.doc.slist.find(el => el.$name === 'autoprolong').val,
-              ostemplate: data.doc.slist.find(el => el.$name === 'ostemplate').val,
-              status: data.doc.slist.find(el => el.$name === 'status').val,
-              datacenter: data.doc.slist.find(el => el.$name === 'datacenter').val,
-              period: data.doc.slist.find(el => el.$name === 'period').val,
-              pricelist: data.doc.slist.find(el => el.$name === 'pricelist')?.val,
+              autoprolong: data.doc?.slist?.find(el => el.$name === 'autoprolong').val,
+              ostemplate: data.doc?.slist?.find(el => el.$name === 'ostemplate').val,
+              status: data.doc?.slist?.find(el => el.$name === 'status').val,
+              datacenter: data.doc?.slist?.find(el => el.$name === 'datacenter').val,
+              period: data.doc?.slist?.find(el => el.$name === 'period').val,
+              pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
             }
             setfiltersListState(filtersList)
           })

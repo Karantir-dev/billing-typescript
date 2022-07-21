@@ -12,7 +12,7 @@ export default function Component(props) {
   const { name, closeProlongModalHandler, prolongData, prolongEditVhostHandler } = props
 
   const editHandler = values => {
-    const data = { ...values, sok: 'ok' }
+    const data = { ...values, sok: 'ok', clicked_button: 'basket' }
     prolongEditVhostHandler(data)
   }
 
