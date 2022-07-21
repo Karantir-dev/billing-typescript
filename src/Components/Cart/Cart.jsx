@@ -345,12 +345,25 @@ export default function Component() {
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
                     const minAmount = splittedText[0]?.replace('\n', '')
-                    const infoText = splittedText[1]
+
+                    let infoText = ''
+
+                    if (splittedText[1]) {
+                      splittedText[1]
+                        ?.replace('<p>', '')
+                        ?.replace('</p>', '')
+                        ?.replace('<strong>', '')
+                        ?.replace('</strong>', '')
+                        ?.replaceAll('\n', '')
+                    }
+                    {
+                      /* const infoText = splittedText[1]
                       ?.replace('<p>', '')
                       ?.replace('</p>', '')
                       ?.replace('<strong>', '')
                       ?.replace('</strong>', '')
-                      ?.replaceAll('\n', '')
+                      ?.replaceAll('\n', '') */
+                    }
 
                     return { minAmount, infoText }
                   }
