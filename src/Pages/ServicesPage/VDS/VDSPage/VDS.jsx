@@ -40,7 +40,7 @@ export default function VDS() {
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
   const [activeServer, setActiveServer] = useState(null)
-  const [activeServices, setActiveServices] = useState([])
+  // const [activeServices, setActiveServices] = useState([])
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
   const [idForProlong, setIdForProlong] = useState('')
@@ -194,8 +194,9 @@ export default function VDS() {
                   disabled={
                     (activeServer?.status?.$ !== '3' &&
                       activeServer?.status?.$ !== '2') ||
-                    !rights?.edit ||
-                    activeServices?.length >= 2
+                    !rights?.edit
+                    // ||
+                    // activeServices?.length >= 2
                   }
                   icon="edit"
                 />
@@ -244,8 +245,9 @@ export default function VDS() {
                 disabled={
                   activeServer?.status?.$ === '5' ||
                   activeServer?.has_ip_pricelist?.$ !== 'on' ||
-                  !rights?.ip ||
-                  activeServices?.length >= 2
+                  !rights?.ip
+                  // ||
+                  // activeServices?.length >= 2
                 }
                 onClick={() =>
                   navigate(route.VDS_IP, { state: { id: activeServer?.id?.$ } })
@@ -273,8 +275,9 @@ export default function VDS() {
                 onClick={() => setIdForHistory(activeServer.id.$)}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.history ||
-                  activeServices?.length >= 2
+                  !rights?.history
+                  //  ||
+                  // activeServices?.length >= 2
                 }
                 icon="refund"
               />
@@ -285,8 +288,9 @@ export default function VDS() {
                 className={s.tools_icon}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.instruction ||
-                  activeServices?.length >= 2
+                  !rights?.instruction
+                  // ||
+                  // activeServices?.length >= 2
                 }
                 onClick={() => setIdForInstruction(activeServer.id.$)}
                 icon="info"
@@ -300,8 +304,9 @@ export default function VDS() {
                 disabled={
                   activeServer?.transition?.$ !== 'on' ||
                   activeServer?.status?.$ !== '2' ||
-                  !rights?.gotoserver ||
-                  activeServices?.length >= 2
+                  !rights?.gotoserver
+                  //  ||
+                  // activeServices?.length >= 2
                 }
                 icon="exitSign"
               />
@@ -347,8 +352,8 @@ export default function VDS() {
         setIdForInstruction={setIdForInstruction}
         goToPanel={goToPanel}
         activeServer={activeServer}
-        activeServices={activeServices}
-        setActiveServices={setActiveServices}
+        // activeServices={activeServices}
+        // setActiveServices={setActiveServices}
       />
 
       {Number(elemsTotal) <= 30 && widerThan1600 && servers?.length !== 0 && (
