@@ -24,7 +24,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
     .then(({ data }) => {
       if (data.doc.error) throw data.doc.error
 
-      const sessionId = data.doc.auth.$id
+      const sessionId = data?.doc?.auth?.$id
 
       return axiosInstance
         .post(
@@ -121,7 +121,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
 
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.closeTotpForm())
-      dispatch(authActions.loginSuccess(data.doc.auth.$id))
+      dispatch(authActions.loginSuccess(data?.doc?.auth?.$id))
     })
     .catch(err => {
       dispatch(actions.hideLoader())
@@ -189,7 +189,7 @@ const changePassword =
           '/',
           qs.stringify({
             func: 'logon',
-            auth: data.doc.auth.$id,
+            auth: data?.doc?.auth?.$id,
             sok: 'ok',
             out: 'json',
           }),
@@ -400,7 +400,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   }),
                 )
                 .then(({ data }) => {
-                  const sessionId = data.doc.auth.$
+                  const sessionId = data?.doc?.auth?.$
                   dispatch(authActions.loginSuccess(sessionId))
                 })
             }

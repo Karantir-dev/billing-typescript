@@ -21,7 +21,7 @@ const userNotifications = (data, dispatch) => {
   if (Array.isArray(data?.doc?.notify?.item)) {
     data?.doc?.notify?.item.forEach(el => {
       if (el?.$name === 'bannerlist') {
-        d['messages'] = el?.bitem
+        d['messages'] = Array.isArray(el?.bitem) ? el?.bitem : [el?.bitem]
         d['messages_count'] = el?.msg?.$
       }
       if (el?.$name === 'ticket') {
