@@ -19,8 +19,8 @@ export default function VDSList({
   setIdForInstruction,
   setIdForHistory,
   goToPanel,
-  activeServices,
-  setActiveServices,
+  // activeServices,
+  // setActiveServices,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -49,8 +49,8 @@ export default function VDSList({
               server={el}
               activeServerID={activeServerID}
               setActiveServer={setActiveServer}
-              activeServices={activeServices}
-              setActiveServices={setActiveServices}
+              // activeServices={activeServices}
+              // setActiveServices={setActiveServices}
             />
           ) : (
             <VDSmobileItem
@@ -79,5 +79,5 @@ VDSList.propTypes = {
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
   activeServices: PropTypes.array,
-  setActiveServices: PropTypes.func,
+  // setActiveServices: PropTypes.func,
 }
