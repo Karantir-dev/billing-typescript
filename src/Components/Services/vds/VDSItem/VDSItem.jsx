@@ -13,8 +13,8 @@ export default function VDSItem({
   server,
   setActiveServer,
   activeServerID,
-  activeServices,
-  setActiveServices,
+  // activeServices,
+  // setActiveServices,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -34,15 +34,15 @@ export default function VDSItem({
     <li className={s.item}>
       <button
         className={cn(s.item_btn, {
-          [s.active_server]:
-            activeServerID === server?.id?.$ ||
-            activeServices?.some(service => service?.id?.$ === server?.id?.$),
+          [s.active_server]: activeServerID === server?.id?.$,
+          // ||
+          // activeServices?.some(service => service?.id?.$ === server?.id?.$),
         })}
         type="button"
         onClick={() => {
           setActiveServer(server)
-          setActiveServices([])
-          setActiveServices([server])
+          // setActiveServices([])
+          // setActiveServices([server])
         }}
       >
         <span className={s.value}>{server?.id?.$}</span>
