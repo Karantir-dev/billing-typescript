@@ -76,9 +76,10 @@ export default function Component({ transfer = false }) {
 
     const selected_domain = []
     selected_domain_names?.forEach(el => {
-      const newString = el.replace('select_domain_', '')
+      const newString = el?.replace('select_domain_', '')
+
       selected_domain?.push(newString)
-      checkedDomain.forEach(checked => {
+      checkedDomain?.forEach(checked => {
         const check = checked.substring(0, checked.length - 1) + '1'
         if (checked?.includes(newString)) {
           newCheckedDomains.push(check)
@@ -92,8 +93,8 @@ export default function Component({ transfer = false }) {
       domain_name: pickUpDomains?.domain_name,
       'zoom-domain_name': pickUpDomains?.domain_name,
       checked_domain: newCheckedDomains?.join(', '),
-      selected_domain: selected_domain.join(', '),
-      selected_domain_real_name: selected_domain_real_name.join(', '),
+      selected_domain: selected_domain?.join(', '),
+      selected_domain_real_name: selected_domain_real_name?.join(', '),
     }
 
     selected_domain_names?.forEach(n => {

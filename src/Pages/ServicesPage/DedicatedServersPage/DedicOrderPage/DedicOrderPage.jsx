@@ -404,6 +404,7 @@ export default function DedicOrderPage() {
                     const priceAmount = parsedPrice.amoumt
                     const pricePercent = parsedPrice.percent
                     const priceSale = parsedPrice.sale
+                    const hasSale = parsedPrice.length
 
                     return (
                       <div
@@ -433,10 +434,10 @@ export default function DedicOrderPage() {
                           type="button"
                           className={s.tarif_card_btn}
                         >
-                          {priceSale && pricePercent && (
+                          {hasSale === 3 && (
                             <span
                               className={classNames({
-                                [s.sale_percent]: priceSale && pricePercent,
+                                [s.sale_percent]: hasSale === 3,
                               })}
                             >
                               {pricePercent}
@@ -460,7 +461,7 @@ export default function DedicOrderPage() {
                             >
                               {priceAmount + ' €' + '/' + periodName}
                             </span>
-                            {priceSale && pricePercent && (
+                            {hasSale === 3 && (
                               <span className={s.sale_price}>{`${priceSale}`}</span>
                             )}
                           </div>

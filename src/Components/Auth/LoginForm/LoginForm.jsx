@@ -13,6 +13,13 @@ import { Facebook, Google, Vk } from '../../../images'
 
 import s from './LoginForm.module.scss'
 
+const FACEBOOK_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook'
+const VK_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte'
+const GOOGLE_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google'
+
 export default function LoginForm() {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
@@ -21,15 +28,17 @@ export default function LoginForm() {
   const recaptchaEl = useRef()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
-  const [socialLinks, setSocialLinks] = useState({})
+  // const [socialLinks, setSocialLinks] = useState({})
 
-  useEffect(() => {
-    dispatch(authOperations.getLoginSocLinks(setSocialLinks))
-  }, [])
+  // console.log(socialLinks)
+
+  // useEffect(() => {
+  //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
+  // }, [])
 
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
-      recaptchaEl.current.reset()
+      recaptchaEl && recaptchaEl.current.reset()
       setFieldValue('reCaptcha', '')
     }
     dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
@@ -74,7 +83,7 @@ export default function LoginForm() {
       >
         {({ setFieldValue, errors, touched }) => {
           const resetRecaptcha = () => {
-            recaptchaEl.current.reset()
+            recaptchaEl && recaptchaEl.current.reset()
             setFieldValue('reCaptcha', '')
           }
           return (
@@ -157,17 +166,17 @@ export default function LoginForm() {
         <p className={s.social_title}>{t('login_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <a href={socialLinks.facebook}>
+            <a href={FACEBOOK_LINK}>
               <Facebook />
             </a>
           </li>
           <li>
-            <a href={socialLinks.google}>
+            <a href={GOOGLE_LINK}>
               <Google />
             </a>
           </li>
           <li>
-            <a href={socialLinks.vkontakte}>
+            <a href={VK_LINK}>
               <Vk />
             </a>
           </li>

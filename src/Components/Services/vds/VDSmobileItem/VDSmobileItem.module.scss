@@ -36,6 +36,7 @@
 .dots_btn {
   transform: scale(1);
   transition: transform 150ms;
+  cursor: pointer;
 
   &:active {
     transform: scale(0.9);
