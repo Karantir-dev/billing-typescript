@@ -135,8 +135,8 @@
 
 .label {
   display: block;
-  margin-left: 15px;
-  margin-bottom: 7px;
+  margin-left: 10px;
+  margin-bottom: 5px;
   font-weight: 400;
   font-size: 14px;
 }
@@ -266,6 +266,14 @@
 
 .passInput {
   margin-top: 15px;
+
+  & label {
+    margin-bottom: 7px;
+  }
+  & input {
+    height: 50px;
+  }
+
 }
 
 @media screen and (min-width: 768px) {
@@ -367,6 +375,17 @@
   }
   .btnSave {
     font-size: 16px;
+  }
+}
+
+
+
+@media screen and (min-width: 1279px) {
+  .passInput {
+
+    & label {
+      margin-bottom: 5px;
+    }
   }
 }
 

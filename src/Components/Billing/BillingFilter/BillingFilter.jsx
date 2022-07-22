@@ -8,7 +8,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, ModalCreatePayment } from '../..'
 import { useMediaQuery } from 'react-responsive'
-import { actions, billingOperations, billingSelectors } from '../../../Redux'
+import {
+  actions,
+  billingActions,
+  billingOperations,
+  billingSelectors,
+} from '../../../Redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
@@ -75,7 +80,9 @@ export default function Component(props) {
     }
     setCurrentPage(1)
     setFilterModal(false)
+    dispatch(billingActions.setPaymentsList(null))
     setIsFiltered && setIsFiltered(false)
+
     dispatch(billingOperations.setPaymentsFilters(clearField))
   }
 
@@ -98,7 +105,9 @@ export default function Component(props) {
     }
     setCurrentPage(1)
     setFilterModal(false)
+    dispatch(billingActions.setExpensesList(null))
     setIsFiltered && setIsFiltered(false)
+
     dispatch(billingOperations.setExpensesFilters(clearField))
   }
 

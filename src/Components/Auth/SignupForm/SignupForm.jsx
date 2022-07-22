@@ -70,7 +70,7 @@ export default function SignupForm() {
   const partner = Cookies.get('billpartner')
   const handleSubmit = (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
-      recaptchaEl && recaptchaEl.current.reset()
+      recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
 

@@ -76,5 +76,10 @@
   "Add-on Memory": "დამატებითი მეხსიერება",
   "Add-on CPU count": "დამატებითი პროცესორი",
   "Payment system commission": "გადახდის სისტემის საკომისიოგადახდის სისტემის საკომისიო",
-  "Add-on DDoS Protected Port Speed (Incoming)": "სურვილისამებრ DDoS დაცული პორტის სიჩქარე (შემავალი)"
+  "Add-on DDoS Protected Port Speed (Incoming)": "სურვილისამებრ DDoS დაცული პორტის სიჩქარე (შემავალი)",
+
+  "YOU DO NOT HAVE PAYMENTS YET": "თქვენ ჯერ არ გაქვთ გადასახადები",
+  "no services description": "ამ განყოფილებაში შეგიძლიათ იხილოთ დეტალები გადახდების შესახებ",
+  "YOU DO NOT HAVE EXPENSES YET": "ჯერ არ გაქვთ ხარჯები",
+  "no services description expenses": "ამ განყოფილებაში შეგიძლიათ იხილოთ დეტალები თქვენი ხარჯების შესახებ"
 }

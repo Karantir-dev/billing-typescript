@@ -349,6 +349,8 @@ export default function Component() {
                     let infoText = ''
 
                     if (splittedText[1]) {
+                      console.log('text', text)
+                      console.log(splittedText[1], 'splittedText[1]')
                       splittedText[1]
                         ?.replace('<p>', '')
                         ?.replace('</p>', '')
