@@ -76,5 +76,11 @@
   "Add-on Memory": "Add-on Memory",
   "Add-on CPU count": "Add-on CPU count",
   "Payment system commission": "Payment system commission",
-  "Add-on DDoS Protected Port Speed (Incoming)": "Add-on DDoS Protected Port Speed (Incoming)"
+  "Add-on DDoS Protected Port Speed (Incoming)": "Add-on DDoS Protected Port Speed (Incoming)",
+
+  "YOU DO NOT HAVE PAYMENTS YET": "YOU DO NOT HAVE PAYMENTS YET",
+  "no services description": "In this section you can find details about payments",
+
+  "YOU DO NOT HAVE EXPENSES YET": "YOU DO NOT HAVE EXPENSES YET",
+  "no services description expenses": "In this section you can find details about your expenses"
 }

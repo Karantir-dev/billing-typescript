@@ -25,7 +25,6 @@ import s from './DedicOrderPage.module.scss'
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
   const licenceCheck = useRef()
-  const secondTarrif = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -121,14 +120,14 @@ export default function DedicOrderPage() {
 
   // RENDER ALL SELECTS 'ostempl', setFieldValue, values.ostempl
   const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
-    let dataArr = parameters.find(el => el.$name === fieldName).val
+    let dataArr = parameters?.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
-      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
       elemsData.null = [{ $key: 'null', $: t('without_software', { ns: 'vds' }) }]
     }
 
-    dataArr.forEach(element => {
+    dataArr?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
       if (!Object.hasOwn(elemsData, itemName)) {
@@ -138,9 +137,9 @@ export default function DedicOrderPage() {
       }
     })
 
-    return Object.entries(elemsData).map(([name, el]) => {
+    return Object.entries(elemsData)?.map(([name, el]) => {
       if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
+        const optionsList = el?.map(({ $key, $ }) => ({
           value: $key,
           label: $,
         }))
@@ -395,7 +394,7 @@ export default function DedicOrderPage() {
               <div className={s.tarifs_block}>
                 {tariffsListToRender
                   ?.filter(item => item.order_available.$ === 'on')
-                  ?.map((item, index) => {
+                  ?.map(item => {
                     const descriptionBlocks = item?.desc?.$.split('/')
                     const cardTitle = descriptionBlocks[0]
 
@@ -414,7 +413,6 @@ export default function DedicOrderPage() {
                         key={item?.desc?.$}
                       >
                         <button
-                          ref={index === 2 ? secondTarrif : null}
                           onClick={() => {
                             setParameters(null)
                             setFieldValue('tarif', item?.pricelist?.$)

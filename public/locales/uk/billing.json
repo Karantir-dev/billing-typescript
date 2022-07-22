@@ -77,5 +77,10 @@
   "Add-on Memory": "Додаткова пам'ять",
   "Add-on CPU count": "Додатковий процесор",
   "Payment system commission": "Комісія платіжної системи",
-  "Add-on DDoS Protected Port Speed (Incoming)": "Додатковий DDoS-захищений порт швидкість (вхідний)"
+  "Add-on DDoS Protected Port Speed (Incoming)": "Додатковий DDoS-захищений порт швидкість (вхідний)",
+
+  "YOU DO NOT HAVE PAYMENTS YET": "У ВАС ЩЕ НЕМАЄ ПЛАТЕЖІВ",
+  "no services description": "У цьому розділі Ви можете ознайомитися з детальною інформацією про платежі",
+  "YOU DO NOT HAVE EXPENSES YET": "У ВАС ЩЕ НЕМАЄ ВИТРАТ",
+  "no services description expenses": "У цьому розділі  Ви можете знайти детальну інформацію про свої витрати"
 }

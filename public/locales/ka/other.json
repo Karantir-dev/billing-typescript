@@ -153,5 +153,7 @@
   "Enter name": "შეიყვანეთ სახელი",
   "Enter surname": "შეიყვანეთ გვარი",
   "Enter middle name": "შეიყვანეთ შუა სახელი",
-  "Not selected": "არ არის განსაზღვრული"
+  "Not selected": "არ არის განსაზღვრული",
+  "Paid in payments": "გადახდილი გადახდებში",
+  "Tax": "გადასახადი"
 }

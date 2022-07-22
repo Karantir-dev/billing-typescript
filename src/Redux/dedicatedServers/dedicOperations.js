@@ -304,7 +304,7 @@ const updatePrice =
 
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
-        updatePrice(price)
+        updatePrice(price?.replace('EUR', ''))
         dispatch(actions.hideLoader())
       })
       .catch(error => {

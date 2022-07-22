@@ -12,6 +12,7 @@
   text-transform: uppercase;
   max-width: 230px;
   max-height: 53px;
+  font-size: 18px;
 }
 
 .formBlock {
@@ -72,6 +73,7 @@
   display: none;
   right: -10px;
   top: calc(100% + 15px);
+  z-index: 100;
 
   &.expenses {
     right: -500%;
