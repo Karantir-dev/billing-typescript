@@ -3,9 +3,9 @@ import { combineReducers } from 'redux'
 import billingActions from './billingActions'
 
 const initialState = {
-  paymentsList: [],
+  paymentsList: null,
   paymentsCount: 0,
-  expensesList: [],
+  expensesList: null,
   expensesCount: 0,
 
   paymentsFiltersList: null,
