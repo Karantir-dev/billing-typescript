@@ -60,6 +60,8 @@ export default function VdsItem({ el, deleteItemHandler }) {
     ?.trim()
     ?.match(/EUR (.+?)(?=<br\/>)/)
 
+  const IPaddressesCountText = el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)
+
   return (
     <>
       <div className={s.server_item}>
@@ -144,10 +146,14 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.value_item}>
               {t('IPcount')}:
               <span className={s.value}>
-                {el?.desc?.$.match(/IP-addresses count(.+?)(?=<br\/>)/)[1].replace(
+                {IPaddressesCountText[1]
+                  ? IPaddressesCountText.replace('Unit', t('Unit'))
+                  : ''}
+
+                {/* {el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)[1]?.replace(
                   'Unit',
                   t('Unit'),
-                )}
+                )} */}
               </span>
             </p>
           )}
@@ -156,7 +162,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.value_item}>
               {t('port_speed')}:
               <span className={s.value}>
-                {el?.desc?.$.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
+                {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
               </span>
             </p>
           )}

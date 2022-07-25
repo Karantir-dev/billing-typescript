@@ -34,12 +34,12 @@ export default function Component() {
       <div className={s.content}>
         <h1 className={s.pageTitle}>{t('access_log')}</h1>
         <AccessLogsFilter setCurrentPage={setCurrentPage} />
-        {logsList.length !== 0 ? (
+        {logsList?.length !== 0 ? (
           <AccessLogsTable list={logsList} />
         ) : (
           <span className={s.noResults}>{t('nothing_found')}</span>
         )}
-        {logsList.length !== 0 && (
+        {logsList?.length !== 0 && (
           <div className={s.pagination}>
             <Pagination
               currentPage={currentPage}

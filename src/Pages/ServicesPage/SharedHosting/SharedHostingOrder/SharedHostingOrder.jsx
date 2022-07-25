@@ -87,7 +87,7 @@ export default function Component() {
   const buyVhostHandler = () => {
     if (!licence_agreement) {
       setLicence_agreement_error(true)
-      return licenseBlock.current.scrollIntoView()
+      return licenseBlock?.current?.scrollIntoView()
     }
 
     const d = {
