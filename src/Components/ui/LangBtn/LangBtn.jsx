@@ -31,7 +31,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       })}
     >
       <div className={s.current_lang}>
-        {currentLang}
+        {currentLang?.toLocaleLowerCase()?.trim() === 'en-us' ? 'en' : currentLang}
         <Shevron className={s.icon} />
       </div>
 
