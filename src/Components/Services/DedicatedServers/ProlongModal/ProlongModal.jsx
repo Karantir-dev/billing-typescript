@@ -34,14 +34,13 @@ export default function ProlongModal({ elid, closeFn, pageName }) {
     dispatch(dedicOperations.payProlongPeriod(elid, period, handleEditionModal, pageName))
   }
 
-
   return (
     <div className={s.modal}>
       <div className={s.header_block}>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Prolong service')}</h2>
           <span className={s.tarif_name}>
-            {initialState?.title_name?.$.split('(')[0]
+            {initialState?.title_name?.$?.split('(')[0]
               .replace('for', t('for', { ns: 'dns' }))
               .replace('domains', t('domains', { ns: 'dns' }))
               .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
@@ -54,7 +53,7 @@ export default function ProlongModal({ elid, closeFn, pageName }) {
       <Formik
         enableReinitialize
         initialValues={{
-          period: initialState?.period?.$.toString() || '',
+          period: initialState?.period?.$?.toString() || '',
         }}
         onSubmit={handleSubmit}
       >
