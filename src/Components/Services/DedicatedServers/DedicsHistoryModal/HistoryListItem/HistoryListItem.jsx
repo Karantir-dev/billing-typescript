@@ -26,9 +26,9 @@ export default function HistoryListItem({ history }) {
             : history?.user?.$}
         </span>
         <span
-          className={cn({ [s.value]: true, [s.empty]: history?.ip?.$.trim() === '-' })}
+          className={cn({ [s.value]: true, [s.empty]: history?.ip?.$?.trim() === '-' })}
         >
-          {history?.ip?.$.trim() === '-'
+          {history?.ip?.$?.trim() === '-'
             ? t('Not provided', { ns: 'dedicated_servers' })
             : history?.ip?.$}
         </span>
