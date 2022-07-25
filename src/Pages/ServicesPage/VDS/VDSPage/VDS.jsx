@@ -210,7 +210,7 @@ export default function VDS() {
                     !activeServer ||
                     activeServer?.status?.$ === '5' ||
                     // activeServer?.item_status.$ === '5_open' ||
-                    activeServer?.scheduledclose.$ === 'on' ||
+                    activeServer?.scheduledclose?.$ === 'on' ||
                     !rights?.delete
                   }
                   icon="delete"
@@ -264,7 +264,7 @@ export default function VDS() {
                   activeServer?.item_status?.$.trim() === 'Suspended by Administrator' ||
                   !rights?.prolong
                 }
-                onClick={() => setIdForProlong(activeServer.id.$)}
+                onClick={() => setIdForProlong(activeServer?.id?.$)}
                 icon="clock"
               />
             </HintWrapper>
@@ -272,7 +272,7 @@ export default function VDS() {
             <HintWrapper label={t('history')}>
               <IconButton
                 className={s.tools_icon}
-                onClick={() => setIdForHistory(activeServer.id.$)}
+                onClick={() => setIdForHistory(activeServer?.id?.$)}
                 disabled={
                   (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
                   !rights?.history
@@ -292,7 +292,7 @@ export default function VDS() {
                   // ||
                   // activeServices?.length >= 2
                 }
-                onClick={() => setIdForInstruction(activeServer.id.$)}
+                onClick={() => setIdForInstruction(activeServer?.id?.$)}
                 icon="info"
               />
             </HintWrapper>

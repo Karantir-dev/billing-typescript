@@ -335,7 +335,7 @@ export default function DedicatedServersPage() {
       <DedicList
         emptyFilter={emptyFilter}
         servers={dedicRenderData?.serversList}
-        activeServerID={activeServer?.id.$}
+        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

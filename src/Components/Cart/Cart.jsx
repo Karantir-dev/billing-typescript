@@ -23,6 +23,7 @@ import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL } from '../../config/config'
+import { replaceAllFn } from '../../utils'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -349,14 +350,13 @@ export default function Component() {
                     let infoText = ''
 
                     if (splittedText[1]) {
-                      console.log('text', text)
-                      console.log(splittedText[1], 'splittedText[1]')
-                      splittedText[1]
+                      let replacedText = splittedText[1]
                         ?.replace('<p>', '')
                         ?.replace('</p>', '')
                         ?.replace('<strong>', '')
                         ?.replace('</strong>', '')
-                        ?.replaceAll('\n', '')
+
+                      infoText = replaceAllFn(replacedText, '\n', '')
                     }
                     {
                       /* const infoText = splittedText[1]

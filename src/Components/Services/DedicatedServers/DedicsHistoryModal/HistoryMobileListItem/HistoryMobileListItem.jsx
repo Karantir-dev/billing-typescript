@@ -17,7 +17,7 @@ export default function HistoryMobileListItem({ history }) {
 
       <span className={s.label}>{t('user_name')}:</span>
       <span className={s.value}>
-        {history?.user?.$.replace(String.fromCharCode(39), '') ===
+        {history?.user?.$?.replace(String.fromCharCode(39), '') ===
         'Providers employee or system'
           ? t('Provider employee or system', { ns: 'dedicated_servers' })
           : history?.user?.$}
@@ -25,7 +25,7 @@ export default function HistoryMobileListItem({ history }) {
       </span>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>
-        {history?.ip?.$.trim() === '-'
+        {history?.ip?.$?.trim() === '-'
           ? t('Not provided', { ns: 'dedicated_servers' })
           : history?.ip?.$}
       </span>
