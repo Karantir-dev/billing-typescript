@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { VDSmobileItem, VDSItem } from '../../..'
+import { VDSmobileItem, VDSItem, CheckBox } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
@@ -19,8 +19,8 @@ export default function VDSList({
   setIdForInstruction,
   setIdForHistory,
   goToPanel,
-  // activeServices,
-  // setActiveServices,
+  activeServices,
+  setActiveServices,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -28,17 +28,26 @@ export default function VDSList({
   return (
     <>
       {widerThan1600 && servers?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('domain_name')}:</li>
-          <li className={s.table_head}>{t('ip_address')}:</li>
-          <li className={s.table_head}>{t('ostempl')}:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>{t('data_center')}:</li>
-          <li className={s.table_head}>{t('status')}:</li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-        </ul>
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(servers)
+            }}
+          />
+
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('domain_name')}:</li>
+            <li className={s.table_head}>{t('ip_address')}:</li>
+            <li className={s.table_head}>{t('ostempl')}:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>{t('data_center')}:</li>
+            <li className={s.table_head}>{t('status')}:</li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+          </ul>
+        </div>
       )}
 
       <ul className={s.list}>
@@ -49,8 +58,8 @@ export default function VDSList({
               server={el}
               activeServerID={activeServerID}
               setActiveServer={setActiveServer}
-              // activeServices={activeServices}
-              // setActiveServices={setActiveServices}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
             />
           ) : (
             <VDSmobileItem
