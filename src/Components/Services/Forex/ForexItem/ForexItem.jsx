@@ -4,13 +4,22 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './ForexItem.module.scss'
-import { ServerState } from '../../..'
+import {
+  // CheckBox,
+  ServerState,
+} from '../../..'
 
 export default function ForexItem({ server, setActiveServer, activeServerID }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
   return (
-    <li className={s.item}>
+    // <div className={s.item_wrapper}>
+    //   <CheckBox
+    //     func={isChecked => {
+    //       isChecked ? setActiveServer(0) : setActiveServer(server)
+    //     }}
+    //   />
+    <div className={s.item}>
       <button
         className={cn(s.item_btn, {
           [s.active_server]: activeServerID === server?.id?.$,
@@ -33,7 +42,8 @@ export default function ForexItem({ server, setActiveServer, activeServerID }) {
           {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
         </span>
       </button>
-    </li>
+    </div>
+    // </div>
   )
 }
 

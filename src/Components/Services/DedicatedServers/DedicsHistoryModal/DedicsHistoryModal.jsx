@@ -16,7 +16,7 @@ export default function DedicsHistoryModal({ elid, closeFn, name }) {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [historyData, setHistoryData] = useState([])
-  const [historyElems, setHistoryElems] = useState()
+  const [historyElems, setHistoryElems] = useState(null)
 
   useEffect(() => {
     dispatch(

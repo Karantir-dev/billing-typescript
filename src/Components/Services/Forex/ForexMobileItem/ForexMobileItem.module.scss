@@ -1,7 +1,7 @@
 .item {
   position: relative;
   display: grid;
-  grid-template-columns: 75px 1fr;
+  grid-template-columns: auto 1fr;
   column-gap: 15px;
   row-gap: 10px;
   width: 100%;
@@ -37,6 +37,7 @@
 .dots_btn {
   transform: scale(1);
   transition: transform 150ms;
+  cursor: pointer;
 
   &:active {
     transform: scale(0.9);

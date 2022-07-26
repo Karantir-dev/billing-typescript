@@ -76,5 +76,10 @@
   "Add-on Memory": "Дополнительная память",
   "Add-on CPU count": "Дополнительный процессор",
   "Payment system commission": "Комиссия платежной системы",
-  "Add-on DDoS Protected Port Speed (Incoming)": "Дополнительный DDoS-защищенный порт скорость (входящий)"
+  "Add-on DDoS Protected Port Speed (Incoming)": "Дополнительный DDoS-защищенный порт скорость (входящий)",
+
+  "YOU DO NOT HAVE PAYMENTS YET": "У ВАС ЕЩЕ НЕТ ПЛАТЕЖЕЙ",
+  "no services description": "В этом разделе Вы можете найти подробную информацию о платежах",
+  "YOU DO NOT HAVE EXPENSES YET": "У ВАС ПОКА НЕТ РАСХОДОВ",
+  "no services description expenses": "В этом разделе Вы можете найти подробную информацию о ваших расходах"
 }

@@ -21,7 +21,7 @@ const userNotifications = (data, dispatch) => {
   if (Array.isArray(data?.doc?.notify?.item)) {
     data?.doc?.notify?.item.forEach(el => {
       if (el?.$name === 'bannerlist') {
-        d['messages'] = el?.bitem
+        d['messages'] = Array.isArray(el?.bitem) ? el?.bitem : [el?.bitem]
         d['messages_count'] = el?.msg?.$
       }
       if (el?.$name === 'ticket') {
@@ -197,9 +197,36 @@ const getNotify = () => (dispatch, getState) => {
     })
 }
 
+const getTickets = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.tickets',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      const { elem } = data.doc
+      dispatch(userActions.setTickets(elem))
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+    })
+}
+
 export default {
   getUserInfo,
   removeItems,
   getDashboardTickets,
   getNotify,
+  getTickets,
 }

@@ -71,7 +71,7 @@ export default function ForexList({
         </ul>
       )}
 
-      <ul className={s.list}>
+      <div className={s.list}>
         {forexList?.map(el => {
           return widerThan1550 ? (
             <ForexItem
@@ -93,7 +93,7 @@ export default function ForexList({
             />
           )
         })}
-      </ul>
+      </div>
     </>
   )
 }

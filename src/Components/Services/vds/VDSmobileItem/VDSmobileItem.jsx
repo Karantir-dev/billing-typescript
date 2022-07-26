@@ -111,7 +111,7 @@ export default function VDSmobileItem({
                     className={s.tool_btn}
                     type="button"
                     onClick={() =>
-                      navigate(route.VDS_IP, { state: { id: server?.id.$ } })
+                      navigate(route.VDS_IP, { state: { id: server?.id?.$ } })
                     }
                     disabled={
                       server?.status?.$ === '5' ||
@@ -131,7 +131,7 @@ export default function VDSmobileItem({
                     onClick={() => handleToolBtnClick(setIdForProlong)}
                     disabled={
                       (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                      server?.item_status?.$.trim() === 'Suspended by Administrator' ||
+                      server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
                       !rights?.prolong
                     }
                   >
@@ -190,7 +190,7 @@ export default function VDSmobileItem({
                   <button
                     disabled={
                       server?.status?.$ === '5' ||
-                      server?.scheduledclose.$ === 'on' ||
+                      server?.scheduledclose?.$ === 'on' ||
                       !rights?.delete
                     }
                     className={s.tool_btn}
@@ -218,7 +218,7 @@ export default function VDSmobileItem({
       <span className={s.value}>
         {server?.pricelist?.$}
         <span className={s.price}>
-          {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
+          {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
         </span>
       </span>
       <span className={s.label}>{t('data_center')}:</span>

@@ -77,5 +77,10 @@
   "Add-on Memory": "Қосымша жад",
   "Add-on CPU count": "Қосымша процессор",
   "Payment system commission": "Төлем жүйесінің комиссиясы",
-  "Add-on DDoS Protected Port Speed (Incoming)": "Қосымша DDoS қорғалған порт жылдамдығы (кіріс)"
+  "Add-on DDoS Protected Port Speed (Incoming)": "Қосымша DDoS қорғалған порт жылдамдығы (кіріс)",
+
+  "YOU DO NOT HAVE PAYMENTS YET": "СІЗДІҢ ТӨЛЕМДЕРІҢІЗ ӘЛІ ЖОҚ",
+  "no services description": "Бұл бөлімде сіз төлемдер туралы мәліметтерді таба аласыз",
+  "YOU DO NOT HAVE EXPENSES YET": "ӘЛІ ШЫҒЫНЫҢЫЗ ЖОҚ",
+  "no services description expenses": "Бұл бөлімде сіз өзіңіздің шығындарыңыз туралы толық ақпаратты таба аласыз"
 }

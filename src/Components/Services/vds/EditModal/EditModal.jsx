@@ -107,7 +107,7 @@ export default function EditModal({ elid, closeFn }) {
   const translatedDescription = orderInfo?.description
     .replace('for order and then', t('for order and then'))
     .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
-  // console.log(initialState)
+
   return initialState ? (
     <div className={s.modal}>
       <div className={s.title_wrapper}>

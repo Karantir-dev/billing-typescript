@@ -40,7 +40,8 @@ export default function Component({ children }) {
     if (sessionId) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
-        dispatch(userOperations.getUserInfo(sessionId))
+        dispatch(userOperations.getTickets())
+        // dispatch(userOperations.getUserInfo(sessionId))
       }, 60000)
     }
 
@@ -55,7 +56,6 @@ export default function Component({ children }) {
   //   if (sessionId) {
   //     setInterval(() => {
   //       dispatch(userOperations.getNotify())
-  //       dispatch(userOperations.getUserInfo(sessionId))
   //     }, 60000)
   //   }
   // }

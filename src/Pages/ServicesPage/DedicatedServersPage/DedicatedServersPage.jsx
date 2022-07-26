@@ -240,7 +240,7 @@ export default function DedicatedServersPage() {
                   className={s.tools_icon}
                   disabled={
                     activeServer?.show_reboot?.$ !== 'on' ||
-                    !rights.reload ||
+                    !rights.reboot ||
                     !activeServer
                   }
                   icon="reload"
@@ -335,7 +335,7 @@ export default function DedicatedServersPage() {
       <DedicList
         emptyFilter={emptyFilter}
         servers={dedicRenderData?.serversList}
-        activeServerID={activeServer?.id.$}
+        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

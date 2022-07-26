@@ -25,7 +25,6 @@ import s from './DedicOrderPage.module.scss'
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
   const licenceCheck = useRef()
-  const secondTarrif = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -38,7 +37,7 @@ export default function DedicOrderPage() {
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
   // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
-  const [paymentPeriod, setPaymentPeriod] = useState(null)
+  // const [paymentPeriod, setPaymentPeriod] = useState(null)
   const [price, setPrice] = useState('')
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
@@ -78,7 +77,7 @@ export default function DedicOrderPage() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + 'EUR'
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
@@ -121,14 +120,14 @@ export default function DedicOrderPage() {
 
   // RENDER ALL SELECTS 'ostempl', setFieldValue, values.ostempl
   const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
-    let dataArr = parameters.find(el => el.$name === fieldName).val
+    let dataArr = parameters?.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
-      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
       elemsData.null = [{ $key: 'null', $: t('without_software', { ns: 'vds' }) }]
     }
 
-    dataArr.forEach(element => {
+    dataArr?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
       if (!Object.hasOwn(elemsData, itemName)) {
@@ -138,9 +137,9 @@ export default function DedicOrderPage() {
       }
     })
 
-    return Object.entries(elemsData).map(([name, el]) => {
+    return Object.entries(elemsData)?.map(([name, el]) => {
       if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
+        const optionsList = el?.map(({ $key, $ }) => ({
           value: $key,
           label: $,
         }))
@@ -278,9 +277,10 @@ export default function DedicOrderPage() {
                         onClick={() => {
                           setPrice('-')
                           resetForm()
-                          setPaymentPeriod(item)
+                          // setPaymentPeriod(item)
                           setFieldValue('datacenter', item?.$key)
                           setParameters(null)
+                          setFilters([])
                           setTarifChosen(false)
                           dispatch(
                             dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
@@ -372,7 +372,7 @@ export default function DedicOrderPage() {
                   setPrice('-')
                   resetForm()
                   setFieldValue('period', item)
-                  setPaymentPeriod(item)
+                  // setPaymentPeriod(item)
                   setParameters(null)
                   setTarifChosen(false)
 
@@ -394,7 +394,7 @@ export default function DedicOrderPage() {
               <div className={s.tarifs_block}>
                 {tariffsListToRender
                   ?.filter(item => item.order_available.$ === 'on')
-                  ?.map((item, index) => {
+                  ?.map(item => {
                     const descriptionBlocks = item?.desc?.$.split('/')
                     const cardTitle = descriptionBlocks[0]
 
@@ -403,6 +403,7 @@ export default function DedicOrderPage() {
                     const priceAmount = parsedPrice.amoumt
                     const pricePercent = parsedPrice.percent
                     const priceSale = parsedPrice.sale
+                    const hasSale = parsedPrice.length
 
                     return (
                       <div
@@ -412,7 +413,6 @@ export default function DedicOrderPage() {
                         key={item?.desc?.$}
                       >
                         <button
-                          ref={index === 2 ? secondTarrif : null}
                           onClick={() => {
                             setParameters(null)
                             setFieldValue('tarif', item?.pricelist?.$)
@@ -432,10 +432,10 @@ export default function DedicOrderPage() {
                           type="button"
                           className={s.tarif_card_btn}
                         >
-                          {paymentPeriod > 1 && (
+                          {hasSale === 3 && (
                             <span
                               className={classNames({
-                                [s.sale_percent]: paymentPeriod > 1,
+                                [s.sale_percent]: hasSale === 3,
                               })}
                             >
                               {pricePercent}
@@ -457,9 +457,9 @@ export default function DedicOrderPage() {
                                 [s.selected]: item?.pricelist?.$ === values.tarif,
                               })}
                             >
-                              {priceAmount + '/' + periodName}
+                              {priceAmount + ' €' + '/' + periodName}
                             </span>
-                            {paymentPeriod > 1 && (
+                            {hasSale === 3 && (
                               <span className={s.sale_price}>{`${priceSale}`}</span>
                             )}
                           </div>
@@ -694,10 +694,26 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.container}>
-                  <div className={s.sum_price_wrapper}>
+                  {tabletOrHigher ? (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <span className={s.btn_price}>
+                        {price + ' €' + '/' + periodName}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <p className={s.btn_price_wrapper}>
+                        <span className={s.btn_price}>{'€' + price}</span>
+                        {'/' + periodName}
+                      </p>
+                    </div>
+                  )}
+                  {/* <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                     <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div>
+                  </div> */}
 
                   <Button
                     className={s.buy_btn}
@@ -709,7 +725,7 @@ export default function DedicOrderPage() {
                       setFieldTouched('license', true)
                       if (!values.license) setFieldValue('license', false)
                       !values.license &&
-                        licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
+                        licenceCheck?.current?.scrollIntoView({ behavior: 'smooth' })
                     }}
                   />
                 </div>

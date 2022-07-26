@@ -15,6 +15,12 @@ import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
 
+const FACEBOOK_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
+const VK_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='
+const GOOGLE_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
@@ -26,7 +32,7 @@ export default function SignupForm() {
   const recaptchaEl = useRef()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
-  const [socialLinks, setSocialLinks] = useState({})
+  // const [socialLinks, setSocialLinks] = useState({})
 
   const successRegistration = () => {
     navigate(routes.LOGIN, { state: { from: location.pathname } })
@@ -64,12 +70,18 @@ export default function SignupForm() {
   const partner = Cookies.get('billpartner')
   const handleSubmit = (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
-      recaptchaEl.current.reset()
+      recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
-  
+
     dispatch(
-      authOperations.register(values, partner, setErrMsg, successRegistration, resetRecaptcha),
+      authOperations.register(
+        values,
+        partner,
+        setErrMsg,
+        successRegistration,
+        resetRecaptcha,
+      ),
     )
   }
   return (
@@ -122,7 +134,7 @@ export default function SignupForm() {
                 error={!!errors.email}
                 touched={!!touched.email}
                 className={s.input_field_wrapper}
-                autoComplete
+                autoComplete={false}
                 inputAuth
               />
 
@@ -137,7 +149,7 @@ export default function SignupForm() {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
-                autocomplete="new-password"
+                autoComplete={false}
               />
 
               <InputField
@@ -155,7 +167,7 @@ export default function SignupForm() {
 
               <SelectOfCountries
                 setErrMsg={setErrMsg}
-                setSocialLinks={setSocialLinks}
+                // setSocialLinks={setSocialLinks}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 errors={errors}
@@ -193,17 +205,17 @@ export default function SignupForm() {
         <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
           <li>
-            <a href={socialLinks.facebook}>
+            <a href={FACEBOOK_LINK}>
               <Facebook />
             </a>
           </li>
           <li>
-            <a href={socialLinks.google}>
+            <a href={GOOGLE_LINK}>
               <Google />
             </a>
           </li>
           <li>
-            <a href={socialLinks.vkontakte}>
+            <a href={VK_LINK}>
               <Vk />
             </a>
           </li>

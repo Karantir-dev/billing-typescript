@@ -218,6 +218,10 @@
   align-items: center;
   margin-right: 25px;
   cursor: pointer;
+
+  &.no_notif {
+  margin-right: 60px;
+  }
 }
 
 .item.profile_item {
@@ -532,6 +536,12 @@ $hamburger-layer-border-radius: 99px;
   .item.profile_item {
     display: block;
     margin-right: 0;
+  }
+
+  .item {
+    &.no_notif {
+      margin-right: 25px;
+      }
   }
 
   .profile_item {

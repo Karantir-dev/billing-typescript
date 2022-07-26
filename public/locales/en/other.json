@@ -156,5 +156,7 @@
   "Enter name": "Enter name",
   "Enter surname": "Enter surname",
   "Enter middle name": "Enter middle name",
-  "Not selected": "Not selected"
+  "Not selected": "Not selected",
+  "Paid in payments": "Paid in payments",
+  "Tax": "Tax"
 }

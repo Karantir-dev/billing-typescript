@@ -154,5 +154,7 @@
   "Enter name": "Введите имя",
   "Enter surname": "Введите фамилию",
   "Enter middle name": "Введите отчество",
-  "Not selected": "Не выбрано"
+  "Not selected": "Не выбрано",
+  "Paid in payments": "Оплачено в платежах",
+  "Tax": "Налог"
 }

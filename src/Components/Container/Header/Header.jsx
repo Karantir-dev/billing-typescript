@@ -160,6 +160,7 @@ export default function Header() {
                     className={cn({
                       [s.item]: true,
                       [s.active_notification]: areNewTickets,
+                      [s.no_notif]: notifications === 0,
                     })}
                   >
                     <NavLink
@@ -175,7 +176,7 @@ export default function Header() {
                   </li>
                 )}
 
-                {isBellAllowedToRender && (
+                {isBellAllowedToRender && notifications > 0 && (
                   <li
                     className={cn({
                       [s.item]: true,

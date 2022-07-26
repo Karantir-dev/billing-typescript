@@ -14,6 +14,7 @@ import {
 import s from './ModalCreatePayment.module.scss'
 import { BASE_URL } from '../../../config/config'
 import * as Yup from 'yup'
+import { replaceAllFn } from '../../../utils'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -116,12 +117,27 @@ export default function Component(props) {
               const splittedText = text?.split('<p>')
               if (splittedText?.length > 0) {
                 const minAmount = splittedText[0]?.replace('\n', '')
-                const infoText = splittedText[1]
-                  ?.replace('<p>', '')
-                  ?.replace('</p>', '')
-                  ?.replace('<strong>', '')
-                  ?.replace('</strong>', '')
-                  ?.replaceAll('\n', '')
+
+                let infoText = ''
+
+                if (splittedText[1]) {
+                  let replacedText = splittedText[1]
+                    ?.replace('<p>', '')
+                    ?.replace('</p>', '')
+                    ?.replace('<strong>', '')
+                    ?.replace('</strong>', '')
+
+                  infoText = replaceAllFn(replacedText, '\n', '')
+                }
+
+                {
+                  /* const infoText = splittedText[1]
+                      ?.replace('<p>', '')
+                      ?.replace('</p>', '')
+                      ?.replace('<strong>', '')
+                      ?.replace('</strong>', '')
+                      ?.replaceAll('\n', '') */
+                }
 
                 return { minAmount, infoText }
               }

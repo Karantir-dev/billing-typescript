@@ -36,9 +36,9 @@ export default function PasswordChange() {
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required(t('warnings.password_required'))
-      .min(6, t('warnings.invalid_pass'))
+      .min(12, t('warnings.invalid_pass'))
       .max(48, t('warnings.invalid_pass'))
-      .matches(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/, t('warnings.invalid_pass')),
+      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),

@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {
-  const { t } = useTranslation(['vds'])
+  const { t } = useTranslation(['vds', 'virtual_hosting'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownEl = useRef()
   const priceEl = useRef()
@@ -55,6 +55,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
     return partText ? string.replace(partText, t(partText)) : string
   }
 
+  const priceDescription = el?.desc?.$?.replace('CPU', ' ')
+    ?.replace('(renewal)', '')
+    ?.trim()
+    ?.match(/EUR (.+?)(?=<br\/>)/)
+
+  const IPaddressesCountText = el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)
+
   return (
     <>
       <div className={s.server_item}>
@@ -87,7 +94,14 @@ export default function VdsItem({ el, deleteItemHandler }) {
               {el?.cost?.$} EUR{' '}
               {tabletOrHigher && (
                 <span className={s.period}>
-                  {t(el?.desc?.$.match(/EUR (.+?)(?= <br\/>)/))}
+                  {!el?.desc?.$?.includes('renewal')
+                    ? t(el?.desc?.$?.match(/EUR (.+?)(?= <br\/>)/))
+                    : t(priceDescription[1].trim()) +
+                      ' (' +
+                      t('Service extension', {
+                        ns: 'virtual_hosting',
+                      }).toLocaleLowerCase() +
+                      ')'}
                 </span>
               )}
             </p>
@@ -132,10 +146,14 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.value_item}>
               {t('IPcount')}:
               <span className={s.value}>
-                {el?.desc?.$.match(/IP-addresses count(.+?)(?=<br\/>)/)[1].replace(
+                {IPaddressesCountText[1]
+                  ? IPaddressesCountText.replace('Unit', t('Unit'))
+                  : ''}
+
+                {/* {el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)[1]?.replace(
                   'Unit',
                   t('Unit'),
-                )}
+                )} */}
               </span>
             </p>
           )}
@@ -144,7 +162,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.value_item}>
               {t('port_speed')}:
               <span className={s.value}>
-                {el?.desc?.$.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
+                {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
               </span>
             </p>
           )}

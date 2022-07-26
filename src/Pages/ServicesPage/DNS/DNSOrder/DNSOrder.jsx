@@ -19,7 +19,6 @@ export default function FTPOrder() {
   const dispatch = useDispatch()
 
   const licenceCheck = useRef()
-  const secondTarrif = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -68,7 +67,7 @@ export default function FTPOrder() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2) + ' ' + '€'
+    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
@@ -163,16 +162,16 @@ export default function FTPOrder() {
                 isShadow
                 label={`${t('payment_period')}:`}
                 itemsList={tarifList?.period?.map(el => {
-                  return { label: t(el.$), value: el.$key }
+                  return { label: t(el?.$), value: el?.$key }
                 })}
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
 
               <div className={s.tarifs_block}>
                 {tarifList?.tarifList
-                  ?.filter(item => item.order_available.$ === 'on')
-                  ?.map((item, index) => {
-                    const descriptionBlocks = item?.desc?.$.split('/')
+                  ?.filter(item => item?.order_available?.$ === 'on')
+                  ?.map(item => {
+                    const descriptionBlocks = item?.desc?.$?.split('/')
                     const cardTitle = descriptionBlocks[0]
 
                     const parsedPrice = parsePrice(item?.price?.$)
@@ -182,12 +181,11 @@ export default function FTPOrder() {
                     return (
                       <div
                         className={classNames(s.tarif_card, {
-                          [s.selected]: item?.pricelist?.$ === values.pricelist,
+                          [s.selected]: item?.pricelist?.$ === values?.pricelist,
                         })}
                         key={item?.desc?.$}
                       >
                         <button
-                          ref={index === 2 ? secondTarrif : null}
                           onClick={() => {
                             setParameters(null)
                             setFieldValue('pricelist', item?.pricelist?.$)
@@ -196,8 +194,8 @@ export default function FTPOrder() {
 
                             dispatch(
                               dnsOperations.getParameters(
-                                values.period,
-                                values.datacenter,
+                                values?.period,
+                                values?.datacenter,
                                 item?.pricelist?.$,
                                 setParameters,
                                 setFieldValue,
@@ -221,7 +219,7 @@ export default function FTPOrder() {
                           <span
                             className={classNames({
                               [s.card_title]: true,
-                              [s.selected]: item?.pricelist?.$ === values.pricelist,
+                              [s.selected]: item?.pricelist?.$ === values?.pricelist,
                             })}
                           >
                             {`${t('dns', { ns: 'crumbs' })} ${cardTitle
@@ -235,10 +233,10 @@ export default function FTPOrder() {
                             <span
                               className={classNames({
                                 [s.price]: true,
-                                [s.selected]: item?.pricelist?.$ === values.pricelist,
+                                [s.selected]: item?.pricelist?.$ === values?.pricelist,
                               })}
                             >
-                              {priceAmount + '/' + periodName}
+                              {priceAmount + ' €' + '/' + periodName}
                             </span>
                           </div>
 
@@ -277,16 +275,16 @@ export default function FTPOrder() {
                     {values?.limitsList?.length > 0 && (
                       <Select
                         height={50}
-                        value={values.addon_961}
+                        value={values?.addon_961}
                         label={`${t('domains_limit', { ns: 'dns' })}:`}
                         getElement={item => {
                           setFieldValue('addon_961', item)
 
                           const data = {
                             addon_961: item,
-                            datacenter: values.datacenter,
-                            period: values.period,
-                            pricelist: values.pricelist,
+                            datacenter: values?.datacenter,
+                            period: values?.period,
+                            pricelist: values?.pricelist,
                           }
                           dispatch(dnsOperations.updateDNSPrice(setPrice, data))
                         }}
@@ -325,7 +323,7 @@ export default function FTPOrder() {
                           type="button"
                           className={s.turn_link}
                           onClick={() => {
-                            dispatch(dnsOperations.getPrintLicense(values.pricelist))
+                            dispatch(dnsOperations.getPrintLicense(values?.pricelist))
                           }}
                         >
                           {`"${t('terms_2')}"`}
@@ -346,10 +344,27 @@ export default function FTPOrder() {
                 })}
               >
                 <div className={s.container}>
-                  <div className={s.sum_price_wrapper}>
+                  {tabletOrHigher ? (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <span className={s.btn_price}>
+                        {price + ' €' + '/' + periodName}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={s.sum_price_wrapper}>
+                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                      <p className={s.price_wrapper}>
+                        <span className={s.btn_price}>{'€' + price}</span>{' '}
+                        {'/' + periodName}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                     <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div>
+                  </div> */}
 
                   <Button
                     className={s.buy_btn}
