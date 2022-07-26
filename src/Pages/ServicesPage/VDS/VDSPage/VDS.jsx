@@ -118,6 +118,7 @@ export default function VDS() {
         setfiltersListState,
         setServers,
         setRights,
+        setElemsTotal,
       ),
     )
     setIsFiltersOpened(false)
@@ -141,6 +142,7 @@ export default function VDS() {
         setfiltersListState,
         setServers,
         setRights,
+        setElemsTotal,
       ),
     )
     setIsSearchMade(true)

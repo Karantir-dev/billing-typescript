@@ -56,9 +56,12 @@ export default function Component(props) {
       </span>
       <div className={s.tableBlockFifth}>
         {mobile && <div className={s.line} />}
-        <span className={cn(s.item_text, s.fifth_item)}>
-          <Chats className={cn({ [s.unread]: unread })} />
-        </span>
+        <button
+          onClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+          className={cn(s.item_text, s.fifth_item)}
+        >
+          <Chats className={cn({ [s.unread]: unread, [s.chat_icon]: true })} />
+        </button>
         <Button
           className={s.openTicket}
           isShadow
