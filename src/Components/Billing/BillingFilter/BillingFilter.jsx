@@ -30,8 +30,8 @@ export default function Component(props) {
 
   useEffect(() => {
     params?.path === 'payments'
-      ? resetFilterPaymentsHandler()
-      : resetFilterExpensesHandler()
+      ? resetFilterPaymentsHandler(true)
+      : resetFilterExpensesHandler(true)
   }, [])
 
   const [filterModal, setFilterModal] = useState(false)
@@ -63,7 +63,7 @@ export default function Component(props) {
     dispatch(billingOperations.setPaymentsFilters(values))
   }
 
-  const resetFilterPaymentsHandler = () => {
+  const resetFilterPaymentsHandler = (firstOpen = false) => {
     const clearField = {
       id: '',
       number: '',
@@ -78,8 +78,10 @@ export default function Component(props) {
       saamount_from: '',
       saamount_to: '',
     }
-    setCurrentPage(1)
-    setFilterModal(false)
+    if (!firstOpen) {
+      setCurrentPage(1)
+      setFilterModal(false)
+    }
     dispatch(billingActions.setPaymentsList(null))
     setIsFiltered && setIsFiltered(false)
 
@@ -93,7 +95,7 @@ export default function Component(props) {
     dispatch(billingOperations.setExpensesFilters(values))
   }
 
-  const resetFilterExpensesHandler = () => {
+  const resetFilterExpensesHandler = (firstOpen = false) => {
     const clearField = {
       id: '',
       locale_name: '',
@@ -103,8 +105,11 @@ export default function Component(props) {
       fromdate: '',
       todate: '',
     }
-    setCurrentPage(1)
-    setFilterModal(false)
+
+    if (!firstOpen) {
+      setCurrentPage(1)
+      setFilterModal(false)
+    }
     dispatch(billingActions.setExpensesList(null))
     setIsFiltered && setIsFiltered(false)
 
