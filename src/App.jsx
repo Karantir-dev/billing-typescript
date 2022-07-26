@@ -15,16 +15,17 @@ import TagManager from 'react-gtm-module'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 
+if (process.env.NODE_ENV !== 'development') {
+  Sentry.init({
+    dsn: 'https://eb3aa2d250244c83868a97ae819cef41@o1326854.ingest.sentry.io/6587426',
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.7,
+  })
+}
+
 const tagManagerArgs = {
   gtmId: 'GTM-T5QQQVX',
 }
-
-Sentry.init({
-  dsn: 'https://eb3aa2d250244c83868a97ae819cef41@o1326854.ingest.sentry.io/6587426',
-  integrations: [new BrowserTracing()],
-
-  tracesSampleRate: 0.7,
-})
 
 TagManager.initialize(tagManagerArgs)
 

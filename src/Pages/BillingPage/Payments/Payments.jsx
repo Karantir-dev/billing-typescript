@@ -14,11 +14,18 @@ export default function Component() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const [firstOpen, setFirstOpen] = useState(true)
+
   const { t } = useTranslation(['billing', 'access_log'])
 
   useEffect(() => {
-    const data = { p_num: currentPage }
-    dispatch(billingOperations.getPayments(data))
+    if (!firstOpen) {
+      const data = { p_num: currentPage }
+      dispatch(billingOperations.getPayments(data))
+    }
+
+    setFirstOpen(false)
   }, [currentPage])
 
   const payHandler = (id, name) => {
@@ -65,14 +72,16 @@ export default function Component() {
           payHandler={payHandler}
         />
       )}
-      <div className={s.pagination}>
-        <Pagination
-          currentPage={currentPage}
-          totalCount={Number(paymentsCount)}
-          pageSize={30}
-          onPageChange={page => setCurrentPage(page)}
-        />
-      </div>
+      {paymentsList?.length > 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(paymentsCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </>
   )
 }
