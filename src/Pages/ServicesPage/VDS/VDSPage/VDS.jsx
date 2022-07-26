@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as route from '../../../../routes'
 import cn from 'classnames'
 import {
@@ -23,7 +23,7 @@ import {
   Pagination,
   Portal,
 } from '../../../../Components'
-import { actions, dedicOperations, vdsOperations } from '../../../../Redux'
+import { actions, dedicOperations, selectors, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
 import { usePageRender } from '../../../../utils'
 
@@ -150,6 +150,8 @@ export default function VDS() {
   const goToPanel = id => {
     dispatch(dedicOperations.goToPanel(id))
   }
+
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   return (
     <>
@@ -313,7 +315,7 @@ export default function VDS() {
         />
       </div>
 
-      {servers?.length < 1 && !isSearchMade && filtersListState && (
+      {servers?.length < 1 && !isSearchMade && !isLoading && (
         <div className={s.no_vds_wrapper}>
           <img className={s.no_vds} src={no_vds} alt="no_vds" />
           <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
