@@ -3,6 +3,21 @@
   display: flex;
   justify-content: center;
   overflow-y: auto;
+
+  scrollbar-color: #e72690 rgba(161, 161, 161, 23%);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
 }
 
 .header {

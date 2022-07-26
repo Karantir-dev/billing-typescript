@@ -124,7 +124,12 @@ export default function Component(props) {
         <HintWrapper wrapperClassName={s.transferBtn} label={t('Transfer')}>
           <IconButton
             disabled={!rights?.transfer}
-            onClick={() => navigate(routes.DOMAINS_TRANSFER_ORDERS)}
+            onClick={() =>
+              navigate(routes.DOMAINS_TRANSFER_ORDERS, {
+                state: { isDomainsOrderAllowed: rights?.transfer },
+                replace: true,
+              })
+            }
             icon="transfer"
           />
         </HintWrapper>

@@ -5,6 +5,10 @@
   overflow-x: hidden;
   background-color: var(--main-bgc);
 
+
+  scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
+  scrollbar-width: thin;
+  
   &::-webkit-scrollbar {
     width: 5px;
   }

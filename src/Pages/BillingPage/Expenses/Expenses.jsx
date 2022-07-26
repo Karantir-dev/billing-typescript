@@ -12,14 +12,19 @@ export default function Component() {
   const [currentPage, setCurrentPage] = useState(1)
   const [isFiltered, setIsFiltered] = useState(false)
 
+  const [firstOpen, setFirstOpen] = useState(true)
+
   const { t } = useTranslation(['billing', 'access_log'])
 
   const expensesList = useSelector(billingSelectors.getExpensesList)
   const expensesCount = useSelector(billingSelectors.getExpensesCount)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
-    dispatch(billingOperations.getExpenses(data))
+    if (!firstOpen) {
+      const data = { p_num: currentPage }
+      dispatch(billingOperations.getExpenses(data))
+    }
+    setFirstOpen(false)
   }, [currentPage])
 
   return (
@@ -48,14 +53,16 @@ export default function Component() {
       )}
 
       {expensesList?.length > 0 && <ExpensesTable list={expensesList} />}
-      <div className={s.pagination}>
-        <Pagination
-          currentPage={currentPage}
-          totalCount={Number(expensesCount)}
-          pageSize={30}
-          onPageChange={page => setCurrentPage(page)}
-        />
-      </div>
+      {expensesList?.length > 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={Number(expensesCount)}
+            pageSize={30}
+            onPageChange={page => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </>
   )
 }
