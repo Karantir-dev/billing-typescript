@@ -34,6 +34,7 @@
 }
 
 .dots_btn {
+  display: flex;
   transform: scale(1);
   transition: transform 150ms;
   cursor: pointer;
@@ -46,9 +47,8 @@
 .dropdown {
   position: absolute;
   right: -10px;
-  width: 240px;
+  width: fit-content;
   top: calc(100% + 10px);
-  padding: 20px 10px 20px 20px;
   border-radius: 3px;
   z-index: 1;
   background-color: var(--forms_bgc_4);
@@ -75,20 +75,27 @@
   box-shadow: var(--forms2_shadow);
 }
 
-.tool_item:not(:last-child) {
-  margin-bottom: 15px;
+.tool_item {
+  &:first-child .tool_btn {
+    padding-top: 12px;
+  }
+  &:last-child .tool_btn {
+    padding-bottom: 12px;
+  }
 }
 
 .tool_btn {
   display: flex;
+  align-items: center;
   width: 100%;
+  padding: 6px 20px;
   white-space: nowrap;
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
 
   &:hover {
-    font-weight: 400;
+    background-color: var(--select_option_bgc);
     svg {
       fill: url('#gradient');
     }

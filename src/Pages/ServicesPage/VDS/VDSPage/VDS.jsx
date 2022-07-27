@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -9,7 +9,6 @@ import {
   Button,
   IconButton,
   VDSList,
-  HintWrapper,
   EditModal,
   Backdrop,
   BreadCrumbs,
@@ -34,14 +33,17 @@ export default function VDS() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
+  const servicesInput = useRef()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
-  const [activeServer, setActiveServer] = useState(null)
 
   const [activeServices, setActiveServices] = useState([])
+
+  const [filtersState, setFiltersState] = useState()
+  const [filtersListState, setfiltersListState] = useState()
 
   const [elidForEditModal, setElidForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState('')
@@ -50,23 +52,18 @@ export default function VDS() {
   const [idForReboot, setIdForReboot] = useState('')
   const [idForInstruction, setIdForInstruction] = useState('')
   const [idForHistory, setIdForHistory] = useState('')
-  const [isFiltersOpened, setIsFiltersOpened] = useState(false)
-  const [filtersState, setFiltersState] = useState()
-  const [filtersListState, setfiltersListState] = useState()
-  const [isSearchMade, setIsSearchMade] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [elemsTotal, setElemsTotal] = useState(0)
+  const [servicesPerPage, setServicesPerPage] = useState('0')
 
-  // const [serversCost, setServersCost] = useState(0)
+  const [firstRender, setFirstRender] = useState(true)
+  const [isFiltersOpened, setIsFiltersOpened] = useState(false)
+  const [isFiltered, setIsFiltered] = useState(false)
+  const [isSearchMade, setIsSearchMade] = useState(false)
 
   const serversTotalPrice = servers?.reduce((curServer, nextServer) => {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [elemsTotal, setElemsTotal] = useState(0)
-
-  const [firstRender, setFirstRender] = useState(true)
-
-  const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
     if (isFiltersOpened) {
@@ -94,6 +91,7 @@ export default function VDS() {
           setServers,
           setRights,
           setElemsTotal,
+          setServicesPerPage,
         ),
       )
 
@@ -101,13 +99,37 @@ export default function VDS() {
     }
   }, [])
 
+  function onPressEnter(event) {
+    if (event.code === 'Enter') {
+      dispatch(
+        vdsOperations.getVDS({
+          setServers,
+          setRights,
+          setElemsTotal,
+          servicesPerPage,
+          setServicesPerPage,
+        }),
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (document.activeElement === servicesInput.current) {
+      window.addEventListener('keydown', onPressEnter)
+    }
+
+    return () => {
+      window.removeEventListener('keydown', onPressEnter)
+    }
+  }, [servicesPerPage])
+
   const deleteServer = () => {
     dispatch(
       vdsOperations.deleteVDS(idForDeleteModal, setServers, () =>
         setIdForDeleteModal(''),
       ),
     )
-    setActiveServer(null)
+    setActiveServices(activeServices.filter(el => el.id.$ !== idForDeleteModal))
   }
 
   const resetFilterHandler = () => {
@@ -169,6 +191,15 @@ export default function VDS() {
         )}
       </h2>
       <div className={s.tools_wrapper}>
+        <Button
+          disabled={!rights?.new}
+          className={s.btn_order}
+          isShadow
+          type="button"
+          label={t('to_order', { ns: 'other' })}
+          onClick={() => navigate(route.VDS_ORDER)}
+        />
+
         <div className={s.filter_wrapper}>
           <IconButton
             className={cn(s.tools_icon, { [s.filtered]: isFiltered })}
@@ -176,7 +207,7 @@ export default function VDS() {
             icon="filter"
             disabled={(servers?.length < 1 && !isSearchMade) || !rights?.filter}
           />
-          <Portal className={cn()}>
+          <Portal>
             <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
           </Portal>
 
@@ -190,7 +221,30 @@ export default function VDS() {
           />
         </div>
 
-        {widerThan1600 && (
+        <div className={s.services_per_page}>
+          <label htmlFor="services_count">
+            {t('services_per_page', { ns: 'other' })}
+          </label>
+
+          <div className={s.input_wrapper}>
+            <input
+              ref={servicesInput}
+              className={s.services_per_page_input}
+              value={servicesPerPage}
+              onChange={event => {
+                setServicesPerPage(event.target.value)
+              }}
+              onBlur={event => {
+                if (event.target.value < 5) setServicesPerPage(5)
+              }}
+              id="services_count"
+              type="number"
+              placeholder="5"
+              min={5}
+            />
+          </div>
+        </div>
+        {/* {widerThan1600 && (
           <>
             <div className={s.edit_wrapper}>
               <HintWrapper label={t('edit', { ns: 'other' })}>
@@ -312,16 +366,7 @@ export default function VDS() {
               />
             </HintWrapper>
           </>
-        )}
-
-        <Button
-          disabled={!rights?.new}
-          className={s.btn_order}
-          isShadow
-          type="button"
-          label={t('to_order', { ns: 'other' })}
-          onClick={() => navigate(route.VDS_ORDER)}
-        />
+        )} */}
       </div>
 
       {servers?.length < 1 && !isSearchMade && !isLoading && (
@@ -341,9 +386,7 @@ export default function VDS() {
       <VDSList
         servers={servers}
         rights={rights}
-        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
-        setActiveServer={setActiveServer}
         setIdForDeleteModal={setIdForDeleteModal}
         setIdForPassChange={setIdForPassChange}
         setIdForReboot={setIdForReboot}
@@ -351,7 +394,6 @@ export default function VDS() {
         setIdForHistory={setIdForHistory}
         setIdForInstruction={setIdForInstruction}
         goToPanel={goToPanel}
-        activeServer={activeServer}
         activeServices={activeServices}
         setActiveServices={setActiveServices}
       />

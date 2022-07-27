@@ -156,5 +156,7 @@
   "Enter middle name": "Введите отчество",
   "Not selected": "Не выбрано",
   "Paid in payments": "Оплачено в платежах",
-  "Tax": "Налог"
+  "Tax": "Налог",
+  "services_per_page": "Услуг на странице:",
+  "services_selected": "Выбрано услуг:"
 }

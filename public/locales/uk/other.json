@@ -158,5 +158,7 @@
   "Enter middle name": "Введіть ім'я по батькові",
   "Not selected": "Не обрано",
   "Paid in payments": "Оплачено в платежах",
-  "Tax": "Податок"
+  "Tax": "Податок",
+  "services_per_page": "Послуг на сторінці:",
+  "services_selected": "Обрано послуг:"
 }

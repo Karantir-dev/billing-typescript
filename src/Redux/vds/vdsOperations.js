@@ -8,18 +8,27 @@ import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, currentPage }) =>
+  ({
+    setServers,
+    setRights,
+    setElemsTotal,
+    currentPage,
+    servicesPerPage,
+    setServicesPerPage,
+  }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
+
+    console.log(servicesPerPage)
 
     axiosInstance
       .post(
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: '30',
-          p_num: currentPage,
+          p_cnt: servicesPerPage || '',
+          p_num: currentPage || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -29,6 +38,7 @@ const getVDS =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         setServers(data?.doc?.elem || [])
+        setServicesPerPage(data.doc?.p_cnt?.$)
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
@@ -544,7 +554,15 @@ const changeDomainName =
   }
 
 const setVdsFilters =
-  (values, setFiltersState, setfiltersListState, setServers, setRights, setElemsTotal) =>
+  (
+    values,
+    setFiltersState,
+    setfiltersListState,
+    setServers,
+    setRights,
+    setElemsTotal,
+    setServicesPerPage,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -605,7 +623,7 @@ const setVdsFilters =
             setfiltersListState(filtersList)
           })
 
-        dispatch(getVDS({ setServers, setRights, setElemsTotal }))
+        dispatch(getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage }))
       })
       .catch(err => {
         if (err.message.includes('filter')) {

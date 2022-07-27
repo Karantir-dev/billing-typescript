@@ -10,8 +10,7 @@ export default function VDSList({
   servers,
   rights,
   setElidForEditModal,
-  setActiveServer,
-  activeServerID,
+
   setIdForDeleteModal,
   setIdForPassChange,
   setIdForReboot,
@@ -46,6 +45,7 @@ export default function VDSList({
             <li className={s.table_head}>{t('status')}:</li>
             <li className={s.table_head}>{t('created')}:</li>
             <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.tenth_element}></li>
           </ul>
         </div>
       )}
@@ -56,16 +56,27 @@ export default function VDSList({
             <VDSItem
               key={el.id.$}
               server={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              rights={rights}
+              // activeServerID={activeServerID}
+              // setActiveServer={setActiveServer}
               activeServices={activeServices}
               setActiveServices={setActiveServices}
+              setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setIdForPassChange={() => setIdForPassChange(el.id.$)}
+              setIdForReboot={() => setIdForReboot(el.id.$)}
+              setIdForProlong={() => setIdForProlong(el.id.$)}
+              setIdForInstruction={() => setIdForInstruction(el.id.$)}
+              setIdForHistory={() => setIdForHistory(el.id.$)}
+              goToPanel={() => goToPanel(el.id.$)}
             />
           ) : (
             <VDSmobileItem
               key={el.id.$}
               server={el}
               rights={rights}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
               setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
               setElidForEditModal={() => setElidForEditModal(el.id.$)}
               setIdForPassChange={() => setIdForPassChange(el.id.$)}

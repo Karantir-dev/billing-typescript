@@ -157,5 +157,7 @@
   "Enter middle name": "Әкесінің атын енгізіңіз",
   "Not selected": "Орнатылмаған",
   "Paid in payments": "Төлемдер бойынша төленген",
-  "Tax": "Салық"
+  "Tax": "Салық",
+  "services_per_page": "Әр бетте қызметтер:",
+  "services_selected": "Қызметтер таңдалды:"
 }
