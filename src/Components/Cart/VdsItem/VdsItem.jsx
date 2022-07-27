@@ -146,7 +146,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.value_item}>
               {t('IPcount')}:
               <span className={s.value}>
-                {IPaddressesCountText?.length > 0 && IPaddressesCountText[1]
+                {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
                   ? IPaddressesCountText[1].replace('Unit', t('Unit'))
                   : ''}
 

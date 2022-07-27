@@ -71,6 +71,10 @@ export default function Component(props) {
             datesOrdered = new Date(values.orderdatefrom)
           }
 
+          const filteredDatacenters = filtersList?.datacenter?.filter(
+            item => item.$key === '2' || item.$key === '7' || item.$key === '8',
+          )
+
           return (
             <Form>
               <div className={s.formHeader}>
@@ -97,7 +101,7 @@ export default function Component(props) {
                     getElement={item => setFieldValue('pricelist', item)}
                     isShadow
                     itemsList={filtersList?.pricelist?.map(({ $key, $ }) => ({
-                      label: t(`${$.trim()}`, { ns: 'other' }),
+                      label: t(`${$.trim()}`, { ns: 'billing' }),
                       value: $key,
                     }))}
                     className={s.select}
@@ -138,7 +142,7 @@ export default function Component(props) {
                     value={values.datacenter}
                     getElement={item => setFieldValue('datacenter', item)}
                     isShadow
-                    itemsList={filtersList?.datacenter?.map(({ $key, $ }) => ({
+                    itemsList={filteredDatacenters?.map(({ $key, $ }) => ({
                       label: t(`${$.trim()}`),
                       value: $key,
                     }))}
