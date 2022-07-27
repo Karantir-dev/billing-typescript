@@ -23,6 +23,7 @@
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
+  white-space: nowrap;
 
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -120,9 +121,9 @@
       flex-basis: 15%;
     }
 
-    &.centered {
-      text-align: center;
-    }
+    // &.centered {
+    //   text-align: center;
+    // }
   }
 
   .list_item {

@@ -149,7 +149,7 @@ export default function SignupForm() {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
-                autoComplete={false}
+                autocomplete="new-password"
               />
 
               <InputField

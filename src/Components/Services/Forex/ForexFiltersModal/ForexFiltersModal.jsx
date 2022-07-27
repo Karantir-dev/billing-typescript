@@ -121,7 +121,7 @@ export default function ForexFiltersModal(props) {
                   getElement={item => setFieldValue('period', item)}
                   isShadow
                   itemsList={filtersList?.period?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
+                    label: t(`${$.trim()}`, { ns: 'other' }),
                     value: $key,
                   }))}
                   className={s.select}

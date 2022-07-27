@@ -116,6 +116,15 @@
   }
 }
 
+.chat_icon {
+  &:hover {
+    g {
+      fill: url(#gradient);
+    }
+
+  }
+}
+
 .chatBtn {
   cursor: pointer;
   &:active {
@@ -214,6 +223,7 @@
     &.fifth_item {
       display: flex;
       justify-content: flex-end;
+      cursor: pointer;
     }
   }
 }

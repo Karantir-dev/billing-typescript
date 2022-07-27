@@ -12,7 +12,7 @@ import { dedicOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../utils'
 
 export default function EditServerModal({ elid, closeFn }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
+  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   const [currentIP, setCurrentIP] = useState()
@@ -196,7 +196,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           disabled
                         />
                         <InputField
-                          label={`${t('User name')}:`}
+                          label={`${t('user_name', { ns: 'vds' })}:`}
                           name="username"
                           isShadow
                           className={s.input_field_wrapper}
@@ -234,7 +234,7 @@ export default function EditServerModal({ elid, closeFn }) {
                       </div>
                       <div>
                         <InputField
-                          label={`${t('IP-address')}:`}
+                          label={`${t('ip', { ns: 'crumbs' })}:`}
                           name="ip"
                           isShadow
                           className={s.input_field_wrapper}
@@ -256,7 +256,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           disabled
                         />
                         <InputField
-                          label={`${t('User password')}:`}
+                          label={`${t('user_password', { ns: 'vds' })}:`}
                           name="userpassword"
                           isShadow
                           className={s.input_field_wrapper}
