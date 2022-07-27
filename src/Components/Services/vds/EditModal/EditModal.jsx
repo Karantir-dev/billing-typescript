@@ -47,7 +47,7 @@ export default function EditModal({ elid, closeFn }) {
 
   const getOptionsListExtended = fieldName => {
     if (!initialState || initialState?.slist?.length === 0) {
-      return [{ value: '', label: '' }]
+      return [{ value: '', label: '' }] 
     }
 
     let optionsList = []
