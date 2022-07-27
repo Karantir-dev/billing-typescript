@@ -19,6 +19,7 @@ import {
   ForexFiltersModal,
   ForexDeletionModal,
   Pagination,
+  ForexInstructionModal,
 } from '../../../Components'
 import { actions, forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,6 +42,7 @@ export default function ForexPage() {
   const [elidForProlongModal, setElidForProlongModal] = useState(0)
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForDeletionModal, setElidForDeletionModal] = useState(0)
+  const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
@@ -243,6 +245,19 @@ export default function ForexPage() {
                   }
                 />
               </HintWrapper>
+              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
+                <IconButton
+                  className={s.tools_icon}
+                  disabled={
+                    activeServer?.status?.$ === '1' ||
+                    !rights?.instruction ||
+                    !activeServer
+                  }
+                  icon="info"
+                  onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
+                />
+              </HintWrapper>
+
               <HintWrapper
                 wrapperClassName={s.hint_wrapper}
                 label={t('delete', { ns: 'other' })}
@@ -284,6 +299,7 @@ export default function ForexPage() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForDeletionModal={setElidForDeletionModal}
+        setElidForInstructionModal={setElidForInstructionModal}
         setActiveServer={setActiveServer}
         pageRights={rights}
       />
@@ -342,6 +358,16 @@ export default function ForexPage() {
           server={activeServer}
           elid={elidForDeletionModal}
           closeFn={() => setElidForDeletionModal(0)}
+        />
+      </Backdrop>
+
+      <Backdrop
+        onClick={() => setElidForInstructionModal(0)}
+        isOpened={Boolean(elidForInstructionModal)}
+      >
+        <ForexInstructionModal
+          elid={elidForInstructionModal}
+          closeFn={() => setElidForInstructionModal(0)}
         />
       </Backdrop>
     </>

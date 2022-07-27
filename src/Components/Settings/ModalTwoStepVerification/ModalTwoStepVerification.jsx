@@ -91,6 +91,7 @@ export default function Component(props) {
         initialValues={{
           qrcode: '',
           secret: twoStepVerif?.secret || '',
+          email: userInfo?.$email || '',
         }}
         onSubmit={sendPasswrodHandler}
       >

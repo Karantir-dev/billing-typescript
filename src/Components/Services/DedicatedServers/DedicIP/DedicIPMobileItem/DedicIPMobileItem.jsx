@@ -12,6 +12,7 @@ export default function DedicIPMobileItem({
   ip,
   setElidForEditModal,
   setElidForDeleteModal,
+  rights,
 }) {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
   const dropdownEl = useRef()
@@ -41,6 +42,7 @@ export default function DedicIPMobileItem({
             <ul>
               <li className={s.tool_item}>
                 <button
+                  disabled={!rights?.edit}
                   className={s.tool_btn}
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, ip?.id.$)}
@@ -54,7 +56,7 @@ export default function DedicIPMobileItem({
                 <button
                   className={s.tool_btn}
                   type="button"
-                  disabled={ip?.no_delete?.$ === 'on'}
+                  disabled={ip?.no_delete?.$ === 'on' || !rights?.delete}
                   onClick={() => handleToolBtnClick(setElidForDeleteModal, ip?.id.$)}
                 >
                   <Delete className={s.tool_icon} />
@@ -96,4 +98,5 @@ export default function DedicIPMobileItem({
 DedicIPMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  rights: PropTypes.object,
 }
