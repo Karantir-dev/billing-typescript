@@ -46,7 +46,15 @@ export default function EditModal({ elid, closeFn }) {
   }
 
   const getOptionsListExtended = fieldName => {
-    const optionsList = initialState.slist.find(elem => elem.$name === fieldName).val
+    if (!initialState || initialState?.slist?.length === 0) {
+      return [{ value: '', label: '' }] 
+    }
+
+    let optionsList = []
+
+    if (initialState?.slist?.find(elem => elem.$name === fieldName)) {
+      optionsList = initialState?.slist?.find(elem => elem.$name === fieldName)?.val
+    }
 
     if (fieldName === 'autoprolong' && !optionsList.find(el => el.$key === 'null')) {
       optionsList.unshift({ $key: 'null', $: 'Disabled' })
@@ -108,6 +116,8 @@ export default function EditModal({ elid, closeFn }) {
     .replace('for order and then', t('for order and then'))
     .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
 
+  console.log(initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$)
+
   return initialState ? (
     <div className={s.modal}>
       <div className={s.title_wrapper}>
@@ -150,7 +160,10 @@ export default function EditModal({ elid, closeFn }) {
           Control_panel: initialState.Control_panel,
           processors: initialState.CPU_count,
           diskSpace: initialState.Disk_space,
-          portSpeed: initialState.slist.find(el => el.$name === 'Port_speed').val[0].$,
+          portSpeed:
+            initialState?.slist?.length > 0
+              ? initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$
+              : '',
           memory: initialState.Memory,
           IPcount: initialState.IP_addresses_count,
         }}
