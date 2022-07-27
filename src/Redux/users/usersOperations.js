@@ -244,6 +244,7 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
 
       const { elem } = data.doc
       const { metadata } = data.doc
+      console.log(elem, 'elem from rights')
 
       setRightsForRender && setRightsForRender(metadata)
       dispatch(usersActions.setRights(elem))

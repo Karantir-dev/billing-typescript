@@ -128,6 +128,31 @@ export default function AccessRightsListItem({
             setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
           }
 
+          //   if (setAllRightsState) {
+          //     console.log('test3')
+          //     setAllRightsState(!allRightsState)
+          //     dispatch(usersOperations.getRights(userId))
+          //   } else {
+          //     console.log('test4')
+          //     setIsAllTurnedOn(!isAllTurnedOn)
+          //     dispatch(usersOperations.getRights(userId))
+          //   }
+          // } else {
+          //   setCurrentRightState(!currentRightState)
+
+          //   if (allRightsState || isAllTurnedOn) {
+          //     if (setAllRightsState) {
+          //       console.log('test1')
+          //       dispatch(usersOperations.getRights(userId))
+          //       setAllRightsState(false)
+          //     } else {
+          //       console.log('test2')
+
+          //       dispatch(usersOperations.getRights(userId))
+          //       setIsAllTurnedOn(false)
+          //     }
+          //   }
+
           if (subType === 'read' && act === 'suspend') {
             let list =
               selectedSubWithoutFilters.length > 0
@@ -191,7 +216,7 @@ export default function AccessRightsListItem({
     })
   }
 
-  const nameWithoutDots = item.name.$.replaceAll('.', '_')
+  const nameWithoutDots = item?.name?.$?.replaceAll('.', '_')
 
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
