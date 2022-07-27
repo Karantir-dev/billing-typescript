@@ -624,7 +624,7 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
         sok: 'ok',
         out: 'json',
         show_actualtime: 'show',
-        login: 'test.hardsoft.cf(mikhail.tatochenko+1@zomro.org)',
+        login: `api.zomro.com(${d?.email})`,
         secret: d?.secret,
         lang: 'en',
         auth: sessionId,

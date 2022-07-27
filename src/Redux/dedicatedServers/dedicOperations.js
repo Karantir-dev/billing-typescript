@@ -723,7 +723,7 @@ const updatePriceEditModal =
   }
 
 // IP-addresses
-const getIPList = (elid, setIPlist) => (dispatch, getState) => {
+const getIPList = (elid, setIPlist, setRights) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -744,6 +744,7 @@ const getIPList = (elid, setIPlist) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+      setRights(data?.doc?.metadata?.toolbar)
       setIPlist(data.doc.elem)
       dispatch(actions.hideLoader())
     })
