@@ -55,6 +55,8 @@ export { default as Backdrop } from './ui/Backdrop/Backdrop'
 export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
 export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCurrencyBtn'
 
+export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'

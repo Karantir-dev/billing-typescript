@@ -9,7 +9,9 @@ import {
   PrivateRoute,
   ServicesList,
   TrustedUsers,
+  PageTitleRender,
 } from '../../Components'
+import { useTranslation } from 'react-i18next'
 import {
   AccessLogPage,
   AffiliateProgram,
@@ -53,6 +55,17 @@ import * as route from '../../routes'
 // )
 
 const Component = () => {
+  const { t } = useTranslation([
+    'container',
+    'vds',
+    'crumbs',
+    'virtual_hosting',
+    'domains',
+    'dedicated_servers',
+    'access_log',
+    'payers',
+    'trusted_users',
+  ])
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
 
   return (
@@ -61,161 +74,345 @@ const Component = () => {
         <Route
           path={route.SERVICES}
           element={
-            <PrivateRoute
-              children={<ServicesPage children={<ServicesList />} />}
-              redirectTo={route.LOGIN}
-            />
+            <PageTitleRender title={t('aside_menu.services')}>
+              <PrivateRoute
+                children={<ServicesPage children={<ServicesList />} />}
+                redirectTo={route.LOGIN}
+              />
+            </PageTitleRender>
           }
         />
         <Route
           path={route.VDS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />}
+          element={
+            <PageTitleRender title={`${t('aside_menu.services')}/VDS `}>
+              <PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.VDS_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('vds_order', { ns: 'crumbs' })} `}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.VDS_IP}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/VDS ${t('ip_address', { ns: 'vds' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />
+            </PageTitleRender>
+          }
         />
 
         <Route
           path={route.SHARED_HOSTING}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<SharedHosting />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.virtual_hosting',
+              )}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<SharedHosting />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.SHARED_HOSTING_ORDER}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<SharedHostingOrder />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Virtual hosting order', {
+                ns: 'virtual_hosting',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<SharedHostingOrder />} />
+            </PageTitleRender>
           }
         />
 
         <Route
           path={route.SITE_CARE}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<SiteCare />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.wetsite_care',
+              )}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<SiteCare />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.SITE_CARE_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<SiteCareOrder />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Website care order', {
+                ns: 'virtual_hosting',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<SiteCareOrder />} />
+            </PageTitleRender>
+          }
         />
 
         <Route
           path={route.DOMAINS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.domains',
+              )}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.DOMAINS_ORDERS}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DomainOrderPage />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name order', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DomainOrderPage />} />
+            </PageTitleRender>
           }
         />
         <Route
           path={route.DOMAINS_CONTACT_INFO}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DomainContactInfoPage />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name order', {
+                ns: 'domains',
+              })}/${t('Owner contacts', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute
+                redirectTo={route.LOGIN}
+                children={<DomainContactInfoPage />}
+              />
+            </PageTitleRender>
           }
         />
         <Route
           path={route.DOMAINS_NS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DomainsNsPage />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name order', {
+                ns: 'domains',
+              })}/${t('Owner contacts', {
+                ns: 'domains',
+              })}/${t('Service parameters', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DomainsNsPage />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.DOMAINS_TRANSFER_ORDERS}
           element={
-            <PrivateRoute
-              redirectTo={route.LOGIN}
-              children={<DomainOrderPage transfer />}
-            />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute
+                redirectTo={route.LOGIN}
+                children={<DomainOrderPage transfer />}
+              />
+            </PageTitleRender>
           }
         />
         <Route
           path={route.DOMAINS_TRANSFER_CONTACT_INFO}
           element={
-            <PrivateRoute
-              redirectTo={route.LOGIN}
-              children={<DomainContactInfoPage transfer />}
-            />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
+                ns: 'domains',
+              })}/${t('Owner contacts', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute
+                redirectTo={route.LOGIN}
+                children={<DomainContactInfoPage transfer />}
+              />
+            </PageTitleRender>
           }
         />
         <Route
           path={route.DOMAINS_TRANSFER_NS}
           element={
-            <PrivateRoute
-              redirectTo={route.LOGIN}
-              children={<DomainsNsPage transfer />}
-            />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
+                ns: 'domains',
+              })}/${t('Owner contacts', {
+                ns: 'domains',
+              })}/${t('Service parameters', {
+                ns: 'domains',
+              })}`}
+            >
+              <PrivateRoute
+                redirectTo={route.LOGIN}
+                children={<DomainsNsPage transfer />}
+              />
+            </PageTitleRender>
           }
         />
 
         <Route
           path={route.DEDICATED_SERVERS}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DedicatedServersPage />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.dedicated_servers',
+              )}`}
+            >
+              <PrivateRoute
+                redirectTo={route.LOGIN}
+                children={<DedicatedServersPage />}
+              />
+            </PageTitleRender>
           }
         />
 
         <Route
           path={route.DEDICATED_SERVERS_ORDER}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('page_title', {
+                ns: 'dedicated_servers',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
+            </PageTitleRender>
           }
         />
 
         <Route
           path={route.DEDICATED_SERVERS_IP}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('ip', { ns: 'crumbs' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />
+            </PageTitleRender>
+          }
         />
 
         <Route
           path={route.FTP}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.external_ftp',
+              )}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.FTP_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('ftp_order', { ns: 'crumbs' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />
+            </PageTitleRender>
+          }
         />
 
         <Route
           path={route.DNS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t(
+                'burger_menu.services.services_list.dns_hosting',
+              )}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.DNS_ORDER}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('dns_order', { ns: 'crumbs' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />
+            </PageTitleRender>
+          }
         />
 
         <Route
           path={route.FOREX}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<ForexPage />} />}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('forex', { ns: 'crumbs' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<ForexPage />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.FOREX_ORDER}
           element={
-            <PrivateRoute redirectTo={route.LOGIN} children={<ForexOrderPage />} />
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('forex_order', { ns: 'crumbs' })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<ForexOrderPage />} />
+            </PageTitleRender>
           }
         />
 
         <Route
           path={route.ACCESS_LOG}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />}
+          element={
+            <PageTitleRender title={t('access_log', { ns: 'access_log' })}>
+              <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
+            </PageTitleRender>
+          }
         />
+
         <Route
           path={`${route.SUPPORT}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />}
         />
+
         <Route
           path={`${route.BILLING}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />}
         />
+
         <Route
           path={route.PAYERS}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />}
+          element={
+            <PageTitleRender title={t('Payers', { ns: 'payers' })}>
+              <PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />
+            </PageTitleRender>
+          }
         />
         <Route
           path={route.CONTRACTS}
-          element={<PrivateRoute children={<Contracts />} redirectTo={route.LOGIN} />}
+          element={
+            <PageTitleRender title={t('profile.contracts')}>
+              <PrivateRoute children={<Contracts />} redirectTo={route.LOGIN} />
+            </PageTitleRender>
+          }
         />
+
         <Route
           path={`${route.USER_SETTINGS}`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />}
@@ -245,16 +442,23 @@ const Component = () => {
             <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
           }
         />
+
         <Route
           path={route.TRUSTED_USERS}
-          element={<PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />}
+          element={
+            <PageTitleRender title={t('trusted_users.title', { ns: 'trusted_users' })}>
+              <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+            </PageTitleRender>
+          }
         />
+
         <Route
           path={route.CONFIRM_EMAIL}
           element={
             <PrivateRoute children={<EmailConfirmation />} redirectTo={route.LOGIN} />
           }
         />
+
         <Route
           path={`${route.ERROR_PAGE}/*`}
           element={<PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />}
@@ -274,6 +478,8 @@ const Component = () => {
 const SupportScreen = () => {
   const location = useLocation()
 
+  const { t } = useTranslation(['support'])
+
   if (location.pathname === route.SUPPORT) {
     return <Navigate to={`${route.SUPPORT}/requests`} />
   }
@@ -282,11 +488,24 @@ const SupportScreen = () => {
     <Routes>
       <Route
         path=":path/*"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />}
+        element={
+          <PageTitleRender title={t('support')}>
+            <PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />
+          </PageTitleRender>
+        }
       />
       <Route
         path=":path/:id"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<OpenedTicker />} />}
+        element={
+          <PrivateRoute
+            redirectTo={route.LOGIN}
+            children={
+              <PageTitleRender title={t('support') + '/' + t('Message')}>
+                <OpenedTicker />
+              </PageTitleRender>
+            }
+          />
+        }
       />
     </Routes>
   )
@@ -294,6 +513,8 @@ const SupportScreen = () => {
 
 const BillingScreen = () => {
   const location = useLocation()
+
+  const { t } = useTranslation(['billing'])
 
   if (location.pathname === route.BILLING) {
     return <Navigate to={`${route.BILLING}/payments`} />
@@ -303,11 +524,19 @@ const BillingScreen = () => {
     <Routes>
       <Route
         path=":path/*"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
+        element={
+          <PageTitleRender title={t('Finance')}>
+            <PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />
+          </PageTitleRender>
+        }
       />
       <Route
         path=":path/:result"
-        element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />}
+        element={
+          <PageTitleRender title={t('Finance')}>
+            <PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />
+          </PageTitleRender>
+        }
       />
     </Routes>
   )
