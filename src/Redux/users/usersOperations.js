@@ -244,7 +244,6 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
 
       const { elem } = data.doc
       const { metadata } = data.doc
-      console.log(elem, 'elem from rights')
 
       setRightsForRender && setRightsForRender(metadata)
       dispatch(usersActions.setRights(elem))
@@ -306,7 +305,8 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(actions.hideLoader())
+      dispatch(getRights(userId))
+      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
