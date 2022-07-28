@@ -1,13 +1,13 @@
 @import '../../../scss/placeholders.scss';
 
 .icon_btn {
-  background-color: var(--forms_bgc_2);
+  background-color: var(--btn-bgc);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 45px;
   height: 45px;
-  box-shadow: var(--forms_shadow);
+  box-shadow: var(--icon_btn_shadow);
   border-radius: 3px;
   cursor: pointer;
   transition: transform 100ms;

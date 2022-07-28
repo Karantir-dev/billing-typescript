@@ -13,7 +13,7 @@ const getVDS =
     setRights,
     setElemsTotal,
     currentPage,
-    servicesPerPage,
+    controledQuantityInput: servicesPerPage,
     setServicesPerPage,
   }) =>
   (dispatch, getState) => {

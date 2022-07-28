@@ -21,6 +21,8 @@ import {
   DedicsHistoryModal,
   Pagination,
   Portal,
+  HintWrapper,
+  CheckBox,
 } from '../../../../Components'
 import { actions, dedicOperations, selectors, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
@@ -54,16 +56,26 @@ export default function VDS() {
   const [idForHistory, setIdForHistory] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [elemsTotal, setElemsTotal] = useState(0)
-  const [servicesPerPage, setServicesPerPage] = useState('0')
+  const [servicesPerPage, _setServicesPerPage] = useState('5')
+  const [controledQuantityInput, setControledQuantityInput] = useState('5')
+  const setServicesPerPage = value => {
+    _setServicesPerPage(value)
+    setControledQuantityInput(value)
+  }
 
   const [firstRender, setFirstRender] = useState(true)
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
   const [isSearchMade, setIsSearchMade] = useState(false)
 
-  const serversTotalPrice = servers?.reduce((curServer, nextServer) => {
-    return curServer + +nextServer?.item_cost?.$
-  }, 0)
+  const getTotalPrice = () => {
+    const list = activeServices.length > 1 ? activeServices : servers
+    return list
+      ?.reduce((curServer, nextServer) => {
+        return curServer + +nextServer?.item_cost?.$
+      }, 0)
+      ?.toFixed(2)
+  }
 
   useEffect(() => {
     if (isFiltersOpened) {
@@ -106,7 +118,7 @@ export default function VDS() {
           setServers,
           setRights,
           setElemsTotal,
-          servicesPerPage,
+          controledQuantityInput,
           setServicesPerPage,
         }),
       )
@@ -121,7 +133,7 @@ export default function VDS() {
     return () => {
       window.removeEventListener('keydown', onPressEnter)
     }
-  }, [servicesPerPage])
+  }, [controledQuantityInput])
 
   const deleteServer = () => {
     dispatch(
@@ -190,198 +202,53 @@ export default function VDS() {
           <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
         )}
       </h2>
-      <div className={s.tools_wrapper}>
-        <Button
-          disabled={!rights?.new}
-          className={s.btn_order}
-          isShadow
-          type="button"
-          label={t('to_order', { ns: 'other' })}
-          onClick={() => navigate(route.VDS_ORDER)}
-        />
-
-        <div className={s.filter_wrapper}>
-          <IconButton
-            className={cn(s.tools_icon, { [s.filtered]: isFiltered })}
-            onClick={() => setIsFiltersOpened(true)}
-            icon="filter"
-            disabled={(servers?.length < 1 && !isSearchMade) || !rights?.filter}
+      <div className={s.extra_tools_wrapper}>
+        <div className={s.tools_wrapper}>
+          <Button
+            disabled={!rights?.new}
+            className={s.btn_order}
+            isShadow
+            type="button"
+            label={t('to_order', { ns: 'other' })}
+            onClick={() => navigate(route.VDS_ORDER)}
           />
-          <Portal>
-            <div className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}></div>
-          </Portal>
 
-          <FiltersModal
-            isOpened={isFiltersOpened}
-            closeFn={() => setIsFiltersOpened(false)}
-            handleSubmit={handleSetFilters}
-            resetFilterHandler={resetFilterHandler}
-            filters={filtersState}
-            filtersList={filtersListState}
-          />
-        </div>
+          <div className={s.filter_wrapper}>
+            <IconButton
+              className={cn(s.tools_icon, { [s.filtered]: isFiltered })}
+              onClick={() => setIsFiltersOpened(true)}
+              icon="filter"
+              disabled={(servers?.length < 1 && !isSearchMade) || !rights?.filter}
+            />
+            <Portal>
+              <div
+                className={cn(s.filter_backdrop, { [s.opened]: isFiltersOpened })}
+              ></div>
+            </Portal>
 
-        <div className={s.services_per_page}>
-          <label htmlFor="services_count">
-            {t('services_per_page', { ns: 'other' })}
-          </label>
-
-          <div className={s.input_wrapper}>
-            <input
-              ref={servicesInput}
-              className={s.services_per_page_input}
-              value={servicesPerPage}
-              onChange={event => {
-                setServicesPerPage(event.target.value)
-              }}
-              onBlur={event => {
-                if (event.target.value < 5) setServicesPerPage(5)
-              }}
-              id="services_count"
-              type="number"
-              placeholder="5"
-              min={5}
+            <FiltersModal
+              isOpened={isFiltersOpened}
+              closeFn={() => setIsFiltersOpened(false)}
+              handleSubmit={handleSetFilters}
+              resetFilterHandler={resetFilterHandler}
+              filters={filtersState}
+              filtersList={filtersListState}
             />
           </div>
         </div>
-        {/* {widerThan1600 && (
-          <>
-            <div className={s.edit_wrapper}>
-              <HintWrapper label={t('edit', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={
-                    (activeServer?.status?.$ !== '3' &&
-                      activeServer?.status?.$ !== '2') ||
-                    !rights?.edit ||
-                    activeServices?.length >= 2
-                  }
-                  icon="edit"
-                />
-              </HintWrapper>
 
-              <HintWrapper label={t('delete', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setIdForDeleteModal(activeServer?.id?.$)}
-                  disabled={
-                    !activeServer ||
-                    activeServer?.status?.$ === '5' ||
-                    activeServer?.scheduledclose?.$ === 'on' ||
-                    !rights?.delete
-                  }
-                  icon="delete"
-                />
-              </HintWrapper>
-            </div>
-
-            <HintWrapper label={t('password_change')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={
-                  activeServer?.allow_changepassword?.$ !== 'on' ||
-                  !rights?.changepassword
-                }
-                onClick={() => setIdForPassChange(activeServer?.id?.$)}
-                icon="passChange"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('reload')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={activeServer?.show_reboot?.$ !== 'on' || !rights?.reboot}
-                onClick={() => setIdForReboot(activeServer?.id?.$)}
-                icon="reload"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('ip_addresses')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={
-                  activeServer?.status?.$ === '5' ||
-                  activeServer?.has_ip_pricelist?.$ !== 'on' ||
-                  !rights?.ip ||
-                  activeServices?.length >= 2
-                }
-                onClick={() =>
-                  navigate(route.VDS_IP, { state: { id: activeServer?.id?.$ } })
-                }
-                icon="ip"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('prolong')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={
-                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  activeServer?.item_status?.$.trim() === 'Suspended by Administrator' ||
-                  !rights?.prolong
-                }
-                onClick={() => setIdForProlong(activeServer?.id?.$)}
-                icon="clock"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('history')}>
-              <IconButton
-                className={s.tools_icon}
-                onClick={() => setIdForHistory(activeServer?.id?.$)}
-                disabled={
-                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.history ||
-                  activeServices?.length >= 2
-                }
-                icon="refund"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('instruction')}>
-              <IconButton
-                className={s.tools_icon}
-                disabled={
-                  (activeServer?.status?.$ !== '3' && activeServer?.status?.$ !== '2') ||
-                  !rights?.instruction ||
-                  activeServices?.length >= 2
-                }
-                onClick={() => setIdForInstruction(activeServer?.id?.$)}
-                icon="info"
-              />
-            </HintWrapper>
-
-            <HintWrapper label={t('go_to_panel')}>
-              <IconButton
-                className={s.tools_icon}
-                onClick={() => goToPanel(activeServer?.id?.$)}
-                disabled={
-                  activeServer?.transition?.$ !== 'on' ||
-                  activeServer?.status?.$ !== '2' ||
-                  !rights?.gotoserver ||
-                  activeServices?.length >= 2
-                }
-                icon="exitSign"
-              />
-            </HintWrapper>
-          </>
-        )} */}
+        {!widerThan1600 && (
+          <div className={s.main_checkbox}>
+            <CheckBox
+              className={s.check_box}
+              func={isChecked => {
+                isChecked ? setActiveServices([]) : setActiveServices(servers)
+              }}
+            />
+            <span>{t('Choose all', { ns: 'other' })}</span>
+          </div>
+        )}
       </div>
-
-      {servers?.length < 1 && !isSearchMade && !isLoading && (
-        <div className={s.no_vds_wrapper}>
-          <img className={s.no_vds} src={no_vds} alt="no_vds" />
-          <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
-          <p>{t('no_servers_yet_desc')}</p>
-        </div>
-      )}
-
-      {servers?.length < 1 && isSearchMade && (
-        <div className={s.no_vds_wrapper}>
-          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
-        </div>
-      )}
 
       <VDSList
         servers={servers}
@@ -398,19 +265,132 @@ export default function VDS() {
         setActiveServices={setActiveServices}
       />
 
-      {Number(elemsTotal) <= 30 && widerThan1600 && servers?.length !== 0 && (
-        <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${serversTotalPrice} EUR`}
+      {servers.length > 0 && (
+        <div className={s.pagination_wrapper}>
+          <div className={s.services_per_page}>
+            <label htmlFor="services_count">
+              {t('services_per_page', { ns: 'other' })}
+            </label>
+
+            <div className={s.input_wrapper}>
+              <input
+                ref={servicesInput}
+                className={s.services_per_page_input}
+                value={controledQuantityInput}
+                onChange={event => {
+                  setControledQuantityInput(event.target.value)
+                  console.log(event.target.value)
+                }}
+                onBlur={event => {
+                  if (event.target.value < 5) setControledQuantityInput('5')
+                }}
+                id="services_count"
+                type="number"
+                placeholder="5"
+                min={5}
+              />
+            </div>
+          </div>
+
+          {+servicesPerPage <= +elemsTotal && (
+            <Pagination
+              className={s.pagination}
+              currentPage={currentPage}
+              totalCount={Number(elemsTotal)}
+              pageSize={+servicesPerPage}
+              onPageChange={page => setCurrentPage(page)}
+              hideExtraInfo
+            />
+          )}
         </div>
       )}
 
-      <Pagination
-        currentPage={currentPage}
-        totalCount={Number(elemsTotal)}
-        pageSize={30}
-        totalPrice={widerThan1600 && serversTotalPrice}
-        onPageChange={page => setCurrentPage(page)}
-      />
+      {servers.length > 0 && (
+        <div className={s.tools_footer}>
+          {activeServices.length > 1 && (
+            <>
+              <div className={s.buttons_wrapper}>
+                <HintWrapper label={t('delete', { ns: 'other' })}>
+                  <IconButton
+                    className={s.tools_icon}
+                    // onClick={() => setIdForDeleteModal(activeServices)}
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                      ) || !rights?.delete
+                    }
+                    icon="delete"
+                  />
+                </HintWrapper>
+                <HintWrapper label={t('password_change')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(
+                        server => server?.allow_changepassword?.$ !== 'on',
+                      ) || !rights?.changepassword
+                    }
+                    // onClick={() => setIdForPassChange(activeServices)}
+                    icon="passChange"
+                  />
+                </HintWrapper>
+
+                <HintWrapper label={t('reload')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
+                      !rights?.reboot
+                    }
+                    // onClick={() => setIdForReboot(activeServices)}
+                    icon="reload"
+                  />
+                </HintWrapper>
+
+                <HintWrapper label={t('prolong')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                          server?.item_status?.$.trim() === 'Suspended by Administrator',
+                      ) || !rights?.prolong
+                    }
+                    // onClick={() => setIdForProlong(activeServices)}
+                    icon="clock"
+                  />
+                </HintWrapper>
+              </div>
+              <p className={s.services_selected}>
+                {t('services_selected', { ns: 'other' })}{' '}
+                <span className={s.tools_footer_value}>{activeServices.length}</span>
+              </p>
+            </>
+          )}
+          <p className={s.total_price}>
+            {t('total', { ns: 'other' })}:{' '}
+            <span className={s.tools_footer_value}>
+              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            </span>
+          </p>
+        </div>
+      )}
+
+      {servers?.length < 1 && !isSearchMade && !isLoading && (
+        <div className={s.no_vds_wrapper}>
+          <img className={s.no_vds} src={no_vds} alt="no_vds" />
+          <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+          <p>{t('no_servers_yet_desc')}</p>
+        </div>
+      )}
+
+      {servers?.length < 1 && isSearchMade && (
+        <div className={s.no_vds_wrapper}>
+          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
 
       <Backdrop
         className={s.backdrop}

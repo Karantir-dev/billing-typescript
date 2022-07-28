@@ -40,11 +40,11 @@ export default function VDSList({
             <li className={s.table_head}>{t('domain_name')}:</li>
             <li className={s.table_head}>{t('ip_address')}:</li>
             <li className={s.table_head}>{t('ostempl')}:</li>
-            <li className={s.table_head}>{t('tariff')}:</li>
             <li className={s.table_head}>{t('data_center')}:</li>
-            <li className={s.table_head}>{t('status')}:</li>
             <li className={s.table_head}>{t('created')}:</li>
             <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}>{t('status')}:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
             <li className={s.tenth_element}></li>
           </ul>
         </div>
@@ -57,8 +57,6 @@ export default function VDSList({
               key={el.id.$}
               server={el}
               rights={rights}
-              // activeServerID={activeServerID}
-              // setActiveServer={setActiveServer}
               activeServices={activeServices}
               setActiveServices={setActiveServices}
               setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
