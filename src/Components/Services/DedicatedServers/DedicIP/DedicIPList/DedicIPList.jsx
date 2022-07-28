@@ -14,6 +14,7 @@ export default function DedicIPList({
   setElidForDeleteModal,
   setActiveIP,
   activeIP,
+  rights,
 }) {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
@@ -46,6 +47,7 @@ export default function DedicIPList({
               ip={el}
               setElidForEditModal={setElidForEditModal}
               setElidForDeleteModal={setElidForDeleteModal}
+              rights={rights}
             />
           )
         })}
@@ -59,4 +61,5 @@ DedicIPList.propTypes = {
   setElidForEditModal: PropTypes.func,
   setActiveServer: PropTypes.func,
   activeServerID: PropTypes.string,
+  rights: PropTypes.object,
 }

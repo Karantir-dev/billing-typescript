@@ -21,6 +21,8 @@ export default function LangBtn({ burgerType, authType, mainType }) {
 
   const availableLangs = LANGUAGES.filter(lang => currentLang !== lang)
 
+  const checkIfLangIsLocale = currentLang?.split('-')?.length > 1
+
   return (
     <div
       className={cn({
@@ -31,7 +33,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       })}
     >
       <div className={s.current_lang}>
-        {currentLang?.toLocaleLowerCase()?.trim() === 'en-us' ? 'en' : currentLang}
+        {checkIfLangIsLocale ? currentLang?.split('-')[0] : currentLang}
         <Shevron className={s.icon} />
       </div>
 
