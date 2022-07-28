@@ -41,8 +41,8 @@
   "Terms of Service": "Умовами надання послуг",
   "Total payable": "Разом до оплати",
   "Disabled": "Вимкнути",
-  "Трансфер": "Трансфер",
-  "Готування інформації про домашню мову за допомогою протоколу whois": "Отримання інформації про домен за протоколом whois",
+  "Transfer": "Трансфер",
+  "Getting information about a domain using the whois protocol": "Отримання інформації про домен за протоколом whois",
   "View/change the list of nameservers": "Переглянути/змінити список серверів імен",
   "Domain name transfer": "Трансфер доменного імені",
   "Check": "Перевірити",
@@ -92,6 +92,8 @@
   "Instruction": "Інструкція",
   "YOU DO NOT HAVE A DOMAIN YET": "У ВАС ЩЕ НЕМАЄ ДОМЕНА",
   "no services description": "Зареєструйте домен в Zomro швидко, недорого і зручно",
-  "Transfer": "Трансфер",
-  "Domain has been registered, but it is not  delegated": "Домен зареєстрований, але не делегований"
+  "Domain has been registered, but it is not  delegated": "Домен зареєстрований, але не делегований",
+
+  "Select": "Вибрати",
+  "Selected": "Вибрані"
 }

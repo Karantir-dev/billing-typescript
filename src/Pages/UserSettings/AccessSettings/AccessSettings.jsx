@@ -171,7 +171,7 @@ export default function Component({ isComponentAllowedToEdit }) {
             <Form onKeyDown={onKeyDown} className={s.personalBlock}>
               <div className={s.block}>
                 <h2 className={s.settingsTitle}>{t('Change Password')}</h2>
-                <div className={s.formRow}>
+                <div className={cn(s.formRow, s.passwordsColumn)}>
                   <InputField
                     background
                     name="old_passwd"

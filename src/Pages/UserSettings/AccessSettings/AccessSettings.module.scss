@@ -258,10 +258,14 @@
   .formRow {
     flex-direction: row;
     margin-top: 15px;
+
+    &.passwordsColumn {
+      flex-direction: column;
+    }
   }
 
   .oldpassInput {
-    margin-right: 25px;
+    margin-bottom: 15px;
   }
 
   .input {
