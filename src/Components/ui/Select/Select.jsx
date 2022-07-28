@@ -23,6 +23,7 @@ export default function Select(props) {
     disabled,
     isRequired,
     error,
+    hasNotSelectedOption,
   } = props
   const { t } = useTranslation('other')
 
@@ -48,9 +49,14 @@ export default function Select(props) {
     { label: t('whole period'), value: 'nodate' },
     { label: t('any period'), value: 'other' },
   ]
+
   if (!itemsList) {
     itemsList = defaultItemsList
+  } else if (hasNotSelectedOption) {
+    if (!itemsList.some(item => item.label === t('Not selected')))
+      itemsList.push({ label: t('Not selected'), value: '' })
   }
+
   if (!placeholder) {
     placeholder = t('select_placeholder')
   }
