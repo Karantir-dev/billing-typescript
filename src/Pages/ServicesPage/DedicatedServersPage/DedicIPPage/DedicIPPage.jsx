@@ -20,6 +20,7 @@ import { useMediaQuery } from 'react-responsive'
 import * as route from '../../../../routes'
 import s from './DedicIPPage.module.scss'
 import { Attention, Cross } from '../../../../images'
+import { checkServicesRights } from '../../../../utils'
 
 export default function DedicIPpage() {
   const location = useLocation()
@@ -36,6 +37,7 @@ export default function DedicIPpage() {
 
   const dispatch = useDispatch()
   const [IPList, setIPList] = useState([])
+  const [rightsList, setRightsList] = useState([])
   const [activeIP, setActiveIP] = useState(null)
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const [hovered, setHovered] = useState(false)
@@ -59,17 +61,13 @@ export default function DedicIPpage() {
 
   useEffect(() => {
     if (ipPlid && isIpAllowedRender) {
-      dispatch(dedicOperations.getIPList(ipPlid, setIPList))
+      dispatch(dedicOperations.getIPList(ipPlid, setIPList, setRightsList))
     } else {
       return navigate(route.DEDICATED_SERVERS)
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (!ipPlid) {
-  //     return navigate(route.DEDICATED_SERVERS)
-  //   }
-  // }, [ipPlid])
+  let rights = checkServicesRights(rightsList?.toolgrp)
 
   return (
     <div className={s.page_container}>
@@ -104,7 +102,7 @@ export default function DedicIPpage() {
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForEditModal(activeIP?.id?.$)}
-                  disabled={!activeIP}
+                  disabled={!activeIP || !rights?.edit}
                   icon="edit"
                 />
               </HintWrapper>
@@ -113,7 +111,7 @@ export default function DedicIPpage() {
               <IconButton
                 className={s.tools_icon}
                 onClick={() => setElidForDeleteModal(activeIP?.id?.$)}
-                disabled={activeIP?.no_delete?.$ === 'on' || !activeIP}
+                disabled={activeIP?.no_delete?.$ === 'on' || !activeIP || !rights?.delete}
                 icon="delete"
               />
             </HintWrapper>
@@ -127,7 +125,7 @@ export default function DedicIPpage() {
             type="button"
             label={t('to_order', { ns: 'other' }).toUpperCase()}
             onClick={() => setOrderModalOpened(true)}
-            disabled={isMaxAmountIP}
+            disabled={isMaxAmountIP || !rights?.new}
           />
         </div>
       </div>
@@ -138,6 +136,7 @@ export default function DedicIPpage() {
         activeIP={activeIP}
         setElidForEditModal={setElidForEditModal}
         setElidForDeleteModal={setElidForDeleteModal}
+        rights={rights}
       />
       <Backdrop
         className={s.backdrop}

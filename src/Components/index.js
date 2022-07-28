@@ -162,6 +162,7 @@ export { default as ForexList } from './Services/Forex/ForexList/ForexList'
 export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
 export { default as ForexFiltersModal } from './Services/Forex/ForexFiltersModal/ForexFiltersModal'
 export { default as ForexDeletionModal } from './Services/Forex/ForexDeletionModal/ForexDeletionModal'
+export { default as ForexInstructionModal } from './Services/Forex/ForexInstructionModal/ForexInstructionModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

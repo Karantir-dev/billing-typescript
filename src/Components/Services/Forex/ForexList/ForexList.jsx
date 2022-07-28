@@ -14,6 +14,7 @@ export default function ForexList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForDeletionModal,
+  setElidForInstructionModal,
   setActiveServer,
   activeServerID,
   pageRights,
@@ -88,6 +89,7 @@ export default function ForexList({
               setElidForProlongModal={setElidForProlongModal}
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForDeletionModal={setElidForDeletionModal}
+              setElidForInstructionModal={setElidForInstructionModal}
               setActiveServer={setActiveServer}
               pageRights={pageRights}
             />

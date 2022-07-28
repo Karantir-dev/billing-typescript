@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, MoreDots, Edit, Refund, Delete } from '../../../../images'
+import { Clock, MoreDots, Edit, Refund, Delete, Info } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
@@ -13,6 +13,7 @@ export default function ForexMobileItem({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForDeletionModal,
+  setElidForInstructionModal,
   setActiveServer,
   pageRights,
 }) {
@@ -76,6 +77,19 @@ export default function ForexMobileItem({
                 >
                   <Refund className={s.tool_icon} />
                   {t('history')}
+                </button>
+              </li>
+              <li className={s.tool_item}>
+                <button
+                  className={s.tool_btn}
+                  type="button"
+                  disabled={server?.status?.$ === '1' || !pageRights?.instruction}
+                  onClick={() =>
+                    handleToolBtnClick(setElidForInstructionModal, server.id.$)
+                  }
+                >
+                  <Info className={s.tool_icon} />
+                  {t('instruction')}
                 </button>
               </li>
               <li className={s.tool_item}>
