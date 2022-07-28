@@ -24,6 +24,7 @@ const getVhosts =
           auth: sessionId,
           p_cnt: 30,
           p_col: '+time',
+          lang: 'en',
           clickstat: 'yes',
           ...body,
         }),
@@ -444,6 +445,7 @@ const changeTariffVhost =
           auth: sessionId,
           func: 'service.changepricelist',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
@@ -495,6 +497,7 @@ const changeTariffPriceListVhost =
           auth: sessionId,
           func: 'service.changepricelist.pricelist',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
@@ -543,6 +546,7 @@ const changeTariffSaveVhost =
           auth: sessionId,
           func: 'service.changepricelist.getmoney',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
