@@ -50,9 +50,15 @@ export default function VdsItem({ el, deleteItemHandler }) {
   }
 
   const getTranslatedCP = string => {
-    const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
+    let partText = ''
+    if (typeof string === 'string') {
+      string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
+    }
+    // const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
 
-    return partText ? string.replace(partText, t(partText)) : string
+    return typeof partText === 'string' && partText
+      ? string.replace(partText, t(partText))
+      : string
   }
 
   const priceDescription = el?.desc?.$?.replace('CPU', ' ')
@@ -149,11 +155,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
                 {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
                   ? IPaddressesCountText[1].replace('Unit', t('Unit'))
                   : ''}
-
-                {/* {el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)[1]?.replace(
-                  'Unit',
-                  t('Unit'),
-                )} */}
               </span>
             </p>
           )}
