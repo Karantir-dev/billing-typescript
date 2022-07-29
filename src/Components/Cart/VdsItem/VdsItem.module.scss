@@ -36,6 +36,23 @@
   margin-bottom: 15px;
 }
 
+.countItem {
+  position: absolute;
+  right: 10px;
+  padding: 10px 5px;
+  background-color: rgba(174, 156, 205, 0.15);
+  border-radius: 3px;
+  min-width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-left: 20px;
+}
+
 .btn_delete {
   position: absolute;
   top: 15px;
@@ -143,5 +160,10 @@
 
   .discount_wrapper {
     margin-bottom: 0;
+  }
+
+  .countItem {
+    position: relative;
+    right: 0px;
   }
 }
