@@ -11,7 +11,7 @@ export default function SvgComponent(props) {
       width={18}
       height={18}
       viewBox="0 0 18 18"
-      fill={darkTheme ? '#DECBFE' : '#D3CDDB'}
+      fill={darkTheme ? '#DECBFE' : '#AE9CCD'}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

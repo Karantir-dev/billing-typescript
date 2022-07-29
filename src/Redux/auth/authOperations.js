@@ -290,6 +290,7 @@ const register =
           'g-recaptcha-response': values.reCaptcha,
           out: 'json',
           sok: 'ok',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
@@ -304,7 +305,10 @@ const register =
       .catch(err => {
         resetRecaptcha()
         dispatch(actions.hideLoader())
-        setErrMsg(SERVER_ERR_MSG)
+        err.message.trim() ===
+        'This email is already registered in the system. If you forgot your password, please use the password recovery form'
+          ? setErrMsg('soc_email_exist')
+          : setErrMsg(SERVER_ERR_MSG)
         console.log('registration - ', err.message)
       })
   }

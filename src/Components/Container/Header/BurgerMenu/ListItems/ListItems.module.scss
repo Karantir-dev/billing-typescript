@@ -12,10 +12,12 @@
 .profile_icon {
   fill: var(--icon-color);
   margin-right: 18px;
+  flex: none;
 }
 
 .arrow_icon {
   margin-left: auto;
+  flex: none;
 
   stroke: var(--main-text);
   transition: transform 0.5s;

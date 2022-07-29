@@ -124,30 +124,30 @@ export default function ServicesList() {
     setDark(!dark)
   }, [darkTheme])
 
-  // useEffect(() => {
-  //   const mainSwiper = document.querySelector('.swiper-wrapper')
+  useEffect(() => {
+    const mainSwiper = document.querySelector('.swiper-wrapper')
 
-  //   const observer = new IntersectionObserver(
-  //     entries => {
-  //       entries.forEach(entry => {
-  //         if (entry.isIntersecting) {
-  //           entry.target.classList.remove('notInViewport')
-  //         } else {
-  //           entry.target.classList.add('notInViewport')
-  //         }
-  //       })
-  //     },
-  //     { mainSwiper, threshold: 1 },
-  //   )
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('notInViewport')
+          } else {
+            entry.target.classList.add('notInViewport')
+          }
+        })
+      },
+      { mainSwiper, threshold: 1 },
+    )
 
-  //   const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
+    const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
 
-  //   if (slides.length > 0) {
-  //     slides.forEach(slide => {
-  //       observer.observe(slide)
-  //     })
-  //   }
-  // }, [])
+    if (slides.length > 0) {
+      slides.forEach(slide => {
+        observer.observe(slide)
+      })
+    }
+  }, [])
 
   return (
     <ul className="swiper_services_list">
@@ -172,20 +172,11 @@ export default function ServicesList() {
         <Swiper
           spaceBetween={0}
           slidesPerView={'auto'}
-          centeredSlides={true}
+          // centeredSlides={true}
           effect={'creative'}
           pagination={{
             clickable: true,
           }}
-          watchSlidesProgress={true}
-          watchSlidesVisibility={true}
-          observer={true}
-          watchOverflow={false}
-          // onSwiper={swiper => console.log(swiper)}
-          // onSlideChange={swiper => {
-          //   console.log(swiper.visibleSlidesIndexes.slice(0, 2))
-          //   console.log(swiper)
-          // }}
         >
           {filteredServicesMenuList.map((item, index) => {
             const { id, name, routeName, icon_name, icon_height, icon_width } = item

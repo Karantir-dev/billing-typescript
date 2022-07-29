@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
 import * as route from '../../routes'
 
-import { PageTabBar } from '../../Components/'
+import { PageTabBar, PageTitleRender } from '../../Components/'
 import { usePageRender } from '../../utils'
 
 import s from './SupportPage.module.scss'
@@ -33,11 +33,19 @@ export default function Component() {
 
   const renderPage = path => {
     if (path === 'requests') {
-      return <Requests />
+      return (
+        <PageTitleRender title={t('support') + '/' + t('requests')}>
+          <Requests />
+        </PageTitleRender>
+      )
     } else if (path === 'requests_archive' && !isArchiveAllowedToRender) {
       return <Navigate to={route.HOME} />
     } else if (path === 'requests_archive') {
-      return <RequestsArchive />
+      return (
+        <PageTitleRender title={t('support') + '/' + t('request_archive')}>
+          <RequestsArchive />
+        </PageTitleRender>
+      )
     }
   }
 

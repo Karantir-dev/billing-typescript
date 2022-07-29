@@ -8,18 +8,27 @@ import { useDispatch } from 'react-redux'
 
 import s from './LangBtn.module.scss'
 
-const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
+// const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
+const LANGUAGES = [
+  { langCode: 'uk', showLangCode: 'ua' },
+  { langCode: 'en', showLangCode: 'en' },
+  { langCode: 'kk', showLangCode: 'kz' },
+  { langCode: 'ka', showLangCode: 'ge' },
+  { langCode: 'ru', showLangCode: 'ru' },
+]
 
 export default function LangBtn({ burgerType, authType, mainType }) {
   const { i18n } = useTranslation()
   const dispatch = useDispatch()
   const currentLang = i18n.language?.slice(0, 5)
 
-  if (!LANGUAGES.includes(currentLang)) {
+  if (!LANGUAGES.some(lang => lang.langCode === currentLang)) {
     i18n.changeLanguage('en')
   }
 
-  const availableLangs = LANGUAGES.filter(lang => currentLang !== lang)
+  const availableLangs = LANGUAGES.filter(lang => currentLang !== lang.langCode)
+  const langCodeForWeb = LANGUAGES.find(lang => lang.langCode === currentLang)
+  const checkIfLangIsLocale = langCodeForWeb?.showLangCode?.split('-')?.length > 1
 
   return (
     <div
@@ -31,7 +40,9 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       })}
     >
       <div className={s.current_lang}>
-        {currentLang?.toLocaleLowerCase()?.trim() === 'en-us' ? 'en' : currentLang}
+        {checkIfLangIsLocale
+          ? langCodeForWeb?.showLangCode?.split('-')[0]
+          : langCodeForWeb?.showLangCode}
         <Shevron className={s.icon} />
       </div>
 
@@ -42,16 +53,16 @@ export default function LangBtn({ burgerType, authType, mainType }) {
           </li>
           {availableLangs.map(lang => {
             return (
-              <li key={lang} className={s.lang_item}>
+              <li key={lang.langCode} className={s.lang_item}>
                 <button
                   className={s.lang_btn}
                   type="button"
                   onClick={() => {
                     dispatch(actions.showLoader())
-                    i18n.changeLanguage(lang)
+                    i18n.changeLanguage(lang.langCode)
                   }}
                 >
-                  {lang}
+                  {lang.showLangCode}
                 </button>
               </li>
             )

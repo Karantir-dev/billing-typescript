@@ -186,7 +186,6 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
     }
 
     dispatch(

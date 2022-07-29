@@ -166,7 +166,7 @@
 .user_name {
   font-weight: 400;
   font-size: 16px;
-  line-height: 70.9%;
+  line-height: 130%;
   color: var(--main-text);
 }
 
@@ -219,6 +219,10 @@
   margin-right: 25px;
   cursor: pointer;
 
+  &.active_notification {
+    cursor: default;
+  }
+
   &.no_notif {
   margin-right: 60px;
   }
@@ -262,7 +266,6 @@
     border-radius: 60px;
     border: none;
     color: #eeeeee;
-    cursor: pointer;
     display: inline-block;
     position: absolute;
     right: -5px;

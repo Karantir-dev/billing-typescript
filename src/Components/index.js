@@ -55,6 +55,8 @@ export { default as Backdrop } from './ui/Backdrop/Backdrop'
 export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
 export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCurrencyBtn'
 
+export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
+
 //==========================================ACCESS LOGS==========================================//
 
 export { default as AccessLogsTable } from './accessLogs/AccessLogsTable/AccessLogsTable'
@@ -160,6 +162,7 @@ export { default as ForexList } from './Services/Forex/ForexList/ForexList'
 export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
 export { default as ForexFiltersModal } from './Services/Forex/ForexFiltersModal/ForexFiltersModal'
 export { default as ForexDeletionModal } from './Services/Forex/ForexDeletionModal/ForexDeletionModal'
+export { default as ForexInstructionModal } from './Services/Forex/ForexInstructionModal/ForexInstructionModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

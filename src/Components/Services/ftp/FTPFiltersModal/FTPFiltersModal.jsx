@@ -125,6 +125,7 @@ export default function FTPFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -134,11 +135,12 @@ export default function FTPFiltersModal(props) {
                   getElement={item => setFieldValue('period', item)}
                   isShadow
                   itemsList={filtersList?.period?.map(({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
+                    label: t(`${$.trim()}`, { ns: 'other' }),
                     value: $key,
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -153,6 +155,7 @@ export default function FTPFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -167,6 +170,7 @@ export default function FTPFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -181,6 +185,7 @@ export default function FTPFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <DoubleInputField

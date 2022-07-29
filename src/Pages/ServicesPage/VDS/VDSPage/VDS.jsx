@@ -283,10 +283,7 @@ export default function VDS() {
                 ref={servicesInput}
                 className={s.services_per_page_input}
                 value={controledQuantityInput}
-                onChange={event => {
-                  setControledQuantityInput(event.target.value)
-                  console.log(event.target.value)
-                }}
+                onChange={event => setControledQuantityInput(event.target.value)}
                 onBlur={event => {
                   if (event.target.value < 5) setControledQuantityInput('5')
                 }}

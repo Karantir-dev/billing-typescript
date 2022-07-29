@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { usersOperations } from '../../Redux'
 import { useDispatch } from 'react-redux'
-import { PageTabBar } from '../../Components/'
+import { PageTabBar, PageTitleRender } from '../../Components/'
 import * as route from '../../routes'
 import {
   AboutAffiliateProgram,
@@ -66,7 +66,14 @@ export default function AffiliateProgram() {
       <PageTabBar sections={navBarSections} />
 
       <Routes>
-        <Route path={route.AFFILIATE_PROGRAM_ABOUT} element={<AboutAffiliateProgram />} />
+        <Route
+          path={route.AFFILIATE_PROGRAM_ABOUT}
+          element={
+            <PageTitleRender title={t('page_title') + '/' + t('about_section_title')}>
+              <AboutAffiliateProgram />
+            </PageTitleRender>
+          }
+        />
         <Route
           path={'/'}
           element={<Navigate replace to={route.AFFILIATE_PROGRAM_ABOUT} />}
@@ -74,13 +81,21 @@ export default function AffiliateProgram() {
         {isIncomesAllowedToRender && (
           <Route
             path={route.AFFILIATE_PROGRAM_INCOME}
-            element={<AffiliateProgramIncome />}
+            element={
+              <PageTitleRender title={t('page_title') + '/' + t('income_section_title')}>
+                <AffiliateProgramIncome />
+              </PageTitleRender>
+            }
           />
         )}
         {isStatisticsAllowedToRender && (
           <Route
             path={route.AFFILIATE_PROGRAM_STATISTICS}
-            element={<AffiliateProgramStatistics />}
+            element={
+              <PageTitleRender title={t('page_title') + '/' + t('statistics_section_title')}>
+                <AffiliateProgramStatistics />
+              </PageTitleRender>
+            }
           />
         )}
       </Routes>

@@ -305,7 +305,8 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(actions.hideLoader())
+      dispatch(getRights(userId))
+      // dispatch(actions.hideLoader())
     })
     .catch(error => {
       console.log('error', error)
