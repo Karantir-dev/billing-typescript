@@ -20,8 +20,6 @@ const getVDS =
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    console.log(servicesPerPage)
-
     axiosInstance
       .post(
         '/',
@@ -36,9 +34,10 @@ const getVDS =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        // console.log(data.doc)
 
         setServers(data?.doc?.elem || [])
-        setServicesPerPage(data.doc?.p_cnt?.$)
+        setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {

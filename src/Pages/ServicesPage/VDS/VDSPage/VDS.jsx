@@ -61,6 +61,7 @@ export default function VDS() {
   const setServicesPerPage = value => {
     _setServicesPerPage(value)
     setControledQuantityInput(value)
+    setCurrentPage(1)
   }
 
   const [firstRender, setFirstRender] = useState(true)
@@ -70,9 +71,10 @@ export default function VDS() {
 
   const getTotalPrice = () => {
     const list = activeServices.length > 1 ? activeServices : servers
+
     return list
-      ?.reduce((curServer, nextServer) => {
-        return curServer + +nextServer?.item_cost?.$
+      ?.reduce((totalPrice, server) => {
+        return totalPrice + +server?.cost?.$?.trim()?.split(' ')?.[0]
       }, 0)
       ?.toFixed(2)
   }
@@ -88,6 +90,7 @@ export default function VDS() {
   useEffect(() => {
     if (!firstRender) {
       dispatch(vdsOperations.getVDS({ setServers, setRights, currentPage }))
+      setActiveServices([])
     }
   }, [currentPage])
 
@@ -184,6 +187,7 @@ export default function VDS() {
     setIsSearchMade(true)
     setIsFiltered(true)
     setIsFiltersOpened(false)
+    setActiveServices([])
   }
 
   const goToPanel = id => {
@@ -241,6 +245,7 @@ export default function VDS() {
           <div className={s.main_checkbox}>
             <CheckBox
               className={s.check_box}
+              initialState={activeServices.length === +servicesPerPage}
               func={isChecked => {
                 isChecked ? setActiveServices([]) : setActiveServices(servers)
               }}
@@ -253,6 +258,7 @@ export default function VDS() {
       <VDSList
         servers={servers}
         rights={rights}
+        servicesPerPage={servicesPerPage}
         setElidForEditModal={setElidForEditModal}
         setIdForDeleteModal={setIdForDeleteModal}
         setIdForPassChange={setIdForPassChange}
@@ -363,6 +369,7 @@ export default function VDS() {
                   />
                 </HintWrapper>
               </div>
+
               <p className={s.services_selected}>
                 {t('services_selected', { ns: 'other' })}{' '}
                 <span className={s.tools_footer_value}>{activeServices.length}</span>

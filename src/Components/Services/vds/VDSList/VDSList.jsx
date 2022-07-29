@@ -10,7 +10,7 @@ export default function VDSList({
   servers,
   rights,
   setElidForEditModal,
-
+  servicesPerPage,
   setIdForDeleteModal,
   setIdForPassChange,
   setIdForReboot,
@@ -30,6 +30,7 @@ export default function VDSList({
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
+            initialState={activeServices.length === +servicesPerPage}
             func={isChecked => {
               isChecked ? setActiveServices([]) : setActiveServices(servers)
             }}

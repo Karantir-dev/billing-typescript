@@ -66,7 +66,9 @@ export default function VDSmobileItem({
                 : setActiveServices([...activeServices, server])
             }}
           />
-          <div className={s.dots_wrapper}>
+          <div
+            className={cn(s.dots_wrapper, { [s.disabled]: activeServices.length > 1 })}
+          >
             <button
               className={s.dots_btn}
               type="button"
