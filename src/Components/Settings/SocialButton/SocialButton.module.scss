@@ -9,8 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--forms2_shadow);
-  background: var(--forms-bg-2-color);
+  box-shadow: var(--forms_shadow);
+  background: var(--forms_bgc_2);
+  border-radius: 3px;
 
   &.notConnected {
     svg {

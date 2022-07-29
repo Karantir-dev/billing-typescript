@@ -116,8 +116,6 @@ export default function EditModal({ elid, closeFn }) {
     .replace('for order and then', t('for order and then'))
     .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
 
-  console.log(initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$)
-
   return initialState ? (
     <div className={s.modal}>
       <div className={s.title_wrapper}>

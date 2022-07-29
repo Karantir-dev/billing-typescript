@@ -1,7 +1,13 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
-import { PageTabBar, Portal, SuccessPayment, ErrorPayment } from '../../Components/'
+import {
+  PageTabBar,
+  Portal,
+  SuccessPayment,
+  ErrorPayment,
+  PageTitleRender,
+} from '../../Components'
 import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
 import AutoPayment from './AutoPayment/AutoPayment'
@@ -49,11 +55,23 @@ export default function Component() {
 
   const renderPage = path => {
     if (path === 'payments' && isPaymentsComponentAllowedToRender) {
-      return <Payments />
+      return (
+        <PageTitleRender title={t('Finance') + '/' + t('Payments')}>
+          <Payments />
+        </PageTitleRender>
+      )
     } else if (path === 'expenses' && isExpensesComponentAllowedToRender) {
-      return <Expenses />
+      return (
+        <PageTitleRender title={t('Finance') + '/' + t('Expenses')}>
+          <Expenses />
+        </PageTitleRender>
+      )
     } else if (path === 'auto_payment' && isAutoPaymentComponentAllowedToRender) {
-      return <AutoPayment />
+      return (
+        <PageTitleRender title={t('Finance') + '/' + t('Auto payment')}>
+          <AutoPayment />
+        </PageTitleRender>
+      )
     } else {
       return <Navigate to={route.HOME} />
     }

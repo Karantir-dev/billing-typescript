@@ -126,6 +126,7 @@ export default function DedicFiltersModal(props) {
                     value: $key,
                   }))}
                   className={s.select}
+                  hasNotSelectedOption
                   inputClassName={s.select_wrapper}
                 />
                 <InputField
@@ -151,6 +152,7 @@ export default function DedicFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -165,6 +167,7 @@ export default function DedicFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -179,6 +182,7 @@ export default function DedicFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -193,6 +197,7 @@ export default function DedicFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <Select
@@ -207,6 +212,7 @@ export default function DedicFiltersModal(props) {
                   }))}
                   className={s.select}
                   inputClassName={s.select_wrapper}
+                  hasNotSelectedOption
                 />
 
                 <DoubleInputField
