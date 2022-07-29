@@ -92,5 +92,7 @@
   "Old tariff": "Старий тариф",
   "New tariff": "Новий тариф",
   "Suspended service": "Послуга зупинена",
-  "Active service": "Послуга запущена"
+  "Active service": "Послуга запущена",
+
+  "psc.": "шт."
 }
