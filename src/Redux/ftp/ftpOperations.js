@@ -201,6 +201,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
+      
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )

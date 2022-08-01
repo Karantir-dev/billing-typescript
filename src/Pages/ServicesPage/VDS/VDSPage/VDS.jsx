@@ -47,11 +47,11 @@ export default function VDS() {
   const [filtersState, setFiltersState] = useState()
   const [filtersListState, setfiltersListState] = useState()
 
-  const [elidForEditModal, setElidForEditModal] = useState(0)
-  const [idForDeleteModal, setIdForDeleteModal] = useState('')
-  const [idForProlong, setIdForProlong] = useState('')
-  const [idForPassChange, setIdForPassChange] = useState('')
-  const [idForReboot, setIdForReboot] = useState('')
+  const [elidForEditModal, setIdForEditModal] = useState(0)
+  const [idForDeleteModal, setIdForDeleteModal] = useState([])
+  const [idForProlong, setIdForProlong] = useState([])
+  const [idForPassChange, setIdForPassChange] = useState([])
+  const [idForReboot, setIdForReboot] = useState([])
   const [idForInstruction, setIdForInstruction] = useState('')
   const [idForHistory, setIdForHistory] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -140,11 +140,13 @@ export default function VDS() {
 
   const deleteServer = () => {
     dispatch(
-      vdsOperations.deleteVDS(idForDeleteModal, setServers, () =>
-        setIdForDeleteModal(''),
+      vdsOperations.deleteVDS(
+        idForDeleteModal,
+        setServers,
+        () => setIdForDeleteModal([]),
+        setElemsTotal,
       ),
     )
-    setActiveServices(activeServices.filter(el => el.id.$ !== idForDeleteModal))
   }
 
   const resetFilterHandler = () => {
@@ -163,13 +165,21 @@ export default function VDS() {
     setIsFiltersOpened(false)
   }
 
-  const getSarverName = id => {
-    return servers?.reduce((acc, el) => {
-      if (el.id.$ === id) {
-        acc = el.name.$
-      }
-      return acc
-    }, '')
+  const getServerName = id => {
+    if (typeof id === 'string') {
+      return servers?.reduce((acc, el) => {
+        if (el.id.$ === id) {
+          acc = el.name.$
+        }
+        return acc
+      }, '')
+    } else if (Array.isArray(id)) {
+      return id?.reduce((acc, idValue) => {
+        acc.push(servers.find(server => server.id.$ === idValue).name.$)
+
+        return acc
+      }, [])
+    }
   }
 
   const handleSetFilters = values => {
@@ -190,8 +200,8 @@ export default function VDS() {
     setActiveServices([])
   }
 
-  const goToPanel = id => {
-    dispatch(dedicOperations.goToPanel(id))
+  const goToPanelFn = id => {
+    dispatch(dedicOperations.goToPanelFn(id))
   }
 
   const isLoading = useSelector(selectors.getIsLoadding)
@@ -245,7 +255,7 @@ export default function VDS() {
           <div className={s.main_checkbox}>
             <CheckBox
               className={s.check_box}
-              initialState={activeServices.length === +servicesPerPage}
+              initialState={activeServices.length === servers.length}
               func={isChecked => {
                 isChecked ? setActiveServices([]) : setActiveServices(servers)
               }}
@@ -259,14 +269,14 @@ export default function VDS() {
         servers={servers}
         rights={rights}
         servicesPerPage={servicesPerPage}
-        setElidForEditModal={setElidForEditModal}
+        setIdForEditModal={setIdForEditModal}
         setIdForDeleteModal={setIdForDeleteModal}
         setIdForPassChange={setIdForPassChange}
         setIdForReboot={setIdForReboot}
         setIdForProlong={setIdForProlong}
         setIdForHistory={setIdForHistory}
         setIdForInstruction={setIdForInstruction}
-        goToPanel={goToPanel}
+        goToPanelFn={goToPanelFn}
         activeServices={activeServices}
         setActiveServices={setActiveServices}
       />
@@ -316,7 +326,9 @@ export default function VDS() {
                 <HintWrapper label={t('delete', { ns: 'other' })}>
                   <IconButton
                     className={s.tools_icon}
-                    // onClick={() => setIdForDeleteModal(activeServices)}
+                    onClick={() =>
+                      setIdForDeleteModal(activeServices.map(server => server.id.$))
+                    }
                     disabled={
                       activeServices.some(
                         server =>
@@ -399,42 +411,42 @@ export default function VDS() {
       <Backdrop
         className={s.backdrop}
         isOpened={Boolean(elidForEditModal)}
-        onClick={() => setElidForEditModal(0)}
+        onClick={() => setIdForEditModal(0)}
       >
-        <EditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
+        <EditModal elid={elidForEditModal} closeFn={() => setIdForEditModal(0)} />
       </Backdrop>
 
       <Backdrop
-        isOpened={Boolean(idForDeleteModal)}
-        onClick={() => setIdForDeleteModal('')}
+        isOpened={idForDeleteModal.length > 0}
+        onClick={() => setIdForDeleteModal([])}
       >
         <DeleteModal
-          name={getSarverName(idForDeleteModal)}
+          names={getServerName(idForDeleteModal)}
           deleteFn={deleteServer}
-          closeFn={() => setIdForDeleteModal('')}
+          closeFn={() => setIdForDeleteModal([])}
         />
       </Backdrop>
 
       <Backdrop
-        isOpened={Boolean(idForPassChange)}
+        isOpened={idForPassChange.length > 0}
         onClick={() => setIdForPassChange('')}
       >
         <VDSPasswordChange
           id={idForPassChange}
-          name={getSarverName(idForPassChange)}
+          name={getServerName(idForPassChange)}
           closeFn={() => setIdForPassChange('')}
         />
       </Backdrop>
 
-      <Backdrop isOpened={Boolean(idForReboot)} onClick={() => setIdForReboot('')}>
+      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot('')}>
         <VdsRebootModal
           id={idForReboot}
-          name={getSarverName(idForReboot)}
+          name={getServerName(idForReboot)}
           closeFn={() => setIdForReboot('')}
         />
       </Backdrop>
 
-      <Backdrop isOpened={Boolean(idForProlong)} onClick={() => setIdForProlong('')}>
+      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong('')}>
         <ProlongModal
           elid={idForProlong}
           closeFn={() => setIdForProlong('')}
@@ -455,7 +467,7 @@ export default function VDS() {
       <Backdrop isOpened={Boolean(idForHistory)} onClick={() => setIdForHistory('')}>
         <DedicsHistoryModal
           elid={idForHistory}
-          name={getSarverName(idForHistory)}
+          name={getServerName(idForHistory)}
           closeFn={() => setIdForHistory('')}
         />
       </Backdrop>

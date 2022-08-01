@@ -34,7 +34,6 @@ const getVDS =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        // console.log(data.doc)
 
         setServers(data?.doc?.elem || [])
         setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
@@ -45,7 +44,7 @@ const getVDS =
             rights[elem.$name] = true
           })
         })
-        setRights(rights)
+        setRights && setRights(rights)
 
         setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
@@ -353,7 +352,7 @@ const setOrderData =
       })
   }
 
-const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
+const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -363,7 +362,7 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
       qs.stringify({
         func: 'vds.delete',
         auth: sessionId,
-        elid: id,
+        elid: id.join(', '),
         out: 'json',
         lang: 'en',
       }),
@@ -371,11 +370,19 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getVDS(setServers))
+      dispatch(getVDS({ setServers, setElemsTotal }))
       closeFn()
+
+      toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
+        position: 'bottom-right',
+      })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      closeFn()
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('deleteVDS - ', err)
     })

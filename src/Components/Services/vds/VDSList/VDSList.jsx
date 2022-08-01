@@ -9,15 +9,14 @@ import s from './VDSList.module.scss'
 export default function VDSList({
   servers,
   rights,
-  setElidForEditModal,
-  servicesPerPage,
+  setIdForEditModal,
   setIdForDeleteModal,
   setIdForPassChange,
   setIdForReboot,
   setIdForProlong,
   setIdForInstruction,
   setIdForHistory,
-  goToPanel,
+  goToPanelFn,
   activeServices,
   setActiveServices,
 }) {
@@ -30,7 +29,7 @@ export default function VDSList({
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices.length === +servicesPerPage}
+            initialState={activeServices.length === servers.length}
             func={isChecked => {
               isChecked ? setActiveServices([]) : setActiveServices(servers)
             }}
@@ -60,14 +59,14 @@ export default function VDSList({
               rights={rights}
               activeServices={activeServices}
               setActiveServices={setActiveServices}
-              setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
-              setElidForEditModal={() => setElidForEditModal(el.id.$)}
-              setIdForPassChange={() => setIdForPassChange(el.id.$)}
-              setIdForReboot={() => setIdForReboot(el.id.$)}
-              setIdForProlong={() => setIdForProlong(el.id.$)}
+              setIdForDeleteModal={() => setIdForDeleteModal([el.id.$])}
+              setIdForEditModal={() => setIdForEditModal(el.id.$)}
+              setIdForPassChange={() => setIdForPassChange([el.id.$])}
+              setIdForReboot={() => setIdForReboot([el.id.$])}
+              setIdForProlong={() => setIdForProlong([el.id.$])}
               setIdForInstruction={() => setIdForInstruction(el.id.$)}
               setIdForHistory={() => setIdForHistory(el.id.$)}
-              goToPanel={() => goToPanel(el.id.$)}
+              goToPanelFn={() => goToPanelFn(el.id.$)}
             />
           ) : (
             <VDSmobileItem
@@ -76,14 +75,14 @@ export default function VDSList({
               rights={rights}
               activeServices={activeServices}
               setActiveServices={setActiveServices}
-              setIdForDeleteModal={() => setIdForDeleteModal(el.id.$)}
-              setElidForEditModal={() => setElidForEditModal(el.id.$)}
-              setIdForPassChange={() => setIdForPassChange(el.id.$)}
-              setIdForReboot={() => setIdForReboot(el.id.$)}
-              setIdForProlong={() => setIdForProlong(el.id.$)}
+              setIdForDeleteModal={() => setIdForDeleteModal([el.id.$])}
+              setIdForEditModal={() => setIdForEditModal(el.id.$)}
+              setIdForPassChange={() => setIdForPassChange([el.id.$])}
+              setIdForReboot={() => setIdForReboot([el.id.$])}
+              setIdForProlong={() => setIdForProlong([el.id.$])}
               setIdForInstruction={() => setIdForInstruction(el.id.$)}
               setIdForHistory={() => setIdForHistory(el.id.$)}
-              goToPanel={() => goToPanel(el.id.$)}
+              goToPanelFn={() => goToPanelFn(el.id.$)}
             />
           )
         })}
@@ -93,10 +92,16 @@ export default function VDSList({
 }
 
 VDSList.propTypes = {
-  servers: PropTypes.arrayOf(PropTypes.object),
-  setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
-  activeServices: PropTypes.array,
-  // setActiveServices: PropTypes.func,
+  servers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rights: PropTypes.object.isRequired,
+  setIdForEditModal: PropTypes.func.isRequired,
+  setIdForDeleteModal: PropTypes.func.isRequired,
+  setIdForPassChange: PropTypes.func.isRequired,
+  setIdForReboot: PropTypes.func.isRequired,
+  setIdForProlong: PropTypes.func.isRequired,
+  setIdForInstruction: PropTypes.func.isRequired,
+  setIdForHistory: PropTypes.func.isRequired,
+  goToPanelFn: PropTypes.func.isRequired,
+  activeServices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setActiveServices: PropTypes.func.isRequired,
 }

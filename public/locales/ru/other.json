@@ -159,5 +159,8 @@
   "Tax": "Налог",
   "services_per_page": "Услуг на странице:",
   "services_selected": "Выбрано услуг:",
-  "Forex server activation": "Активация Forex сервера"
+  "Forex server activation": "Активация Forex сервера",
+  "server_deleted": "Сервер {{id}} удален",
+  "unknown_error": "Что-то пошло не так",
+  "services_deletion": "и еще {{value}} услуг?"
 }

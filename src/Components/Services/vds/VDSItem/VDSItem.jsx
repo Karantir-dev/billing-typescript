@@ -26,14 +26,14 @@ export default function VDSItem({
   rights,
   activeServices,
   setActiveServices,
-  setElidForEditModal,
+  setIdForEditModal,
   setIdForDeleteModal,
   setIdForPassChange,
   setIdForReboot,
   setIdForProlong,
   setIdForHistory,
   setIdForInstruction,
-  goToPanel,
+  goToPanelFn,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -107,7 +107,7 @@ export default function VDSItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                      onClick={() => handleToolBtnClick(setIdForEditModal)}
                       disabled={
                         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                         !rights?.edit
@@ -213,7 +213,7 @@ export default function VDSItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(goToPanel)}
+                      onClick={() => handleToolBtnClick(goToPanelFn)}
                       disabled={
                         server?.transition?.$ !== 'on' ||
                         server?.status?.$ !== '2' ||
@@ -251,7 +251,16 @@ export default function VDSItem({
 }
 
 VDSItem.propTypes = {
-  server: PropTypes.object,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  server: PropTypes.object.isRequired,
+  rights: PropTypes.object.isRequired,
+  setIdForEditModal: PropTypes.func.isRequired,
+  setIdForDeleteModal: PropTypes.func.isRequired,
+  setIdForPassChange: PropTypes.func.isRequired,
+  setIdForReboot: PropTypes.func.isRequired,
+  setIdForProlong: PropTypes.func.isRequired,
+  setIdForInstruction: PropTypes.func.isRequired,
+  setIdForHistory: PropTypes.func.isRequired,
+  goToPanelFn: PropTypes.func.isRequired,
+  activeServices: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setActiveServices: PropTypes.func.isRequired,
 }
