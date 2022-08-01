@@ -995,6 +995,40 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     })
 }
 
+const getProlongInfoForFewElems = (elid, setInitialState) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'groupedit',
+        faction: 'service.prolong',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+
+      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      dispatch(actions.hideLoader())
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
@@ -1050,6 +1084,64 @@ const payProlongPeriod =
         }),
       )
       .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        let routeAfterBuying = route.SERVICES
+
+        if (pageName === 'dedics') {
+          routeAfterBuying = route.DEDICATED_SERVERS
+        } else if (routeAfterBuying === 'vds') {
+          routeAfterBuying = route.VDS
+        } else if (routeAfterBuying === 'ftp') {
+          routeAfterBuying = route.FTP
+        } else if (routeAfterBuying === 'dns') {
+          routeAfterBuying = route.DNS
+        } else if (routeAfterBuying === 'forex') {
+          routeAfterBuying = route.FOREX
+        }
+
+        handleModal()
+        dispatch(actions.hideLoader())
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routeAfterBuying,
+          }),
+        )
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const payProlongPeriodFewElems =
+  (elid, period = 1, handleModal, pageName) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'groupedit',
+          faction: 'service.prolong',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          period,
+          clicked_button: 'basket',
+          sok: 'ok',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        console.log(data, 'data from basket a few')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         let routeAfterBuying = route.SERVICES
@@ -1314,4 +1406,6 @@ export default {
   rebootServer,
   getDedicFilters,
   goToPanel,
+  getProlongInfoForFewElems,
+  payProlongPeriodFewElems,
 }

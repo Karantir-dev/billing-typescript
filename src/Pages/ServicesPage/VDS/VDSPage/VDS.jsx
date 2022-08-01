@@ -373,6 +373,9 @@ export default function VDS() {
                           server?.item_status?.$.trim() === 'Suspended by Administrator',
                       ) || !rights?.prolong
                     }
+                    onClick={() =>
+                      setIdForProlong(activeServices.map(server => server.id.$))
+                    }
                     // onClick={() => setIdForProlong(activeServices)}
                     icon="clock"
                   />
@@ -451,6 +454,7 @@ export default function VDS() {
           elid={idForProlong}
           closeFn={() => setIdForProlong('')}
           pageName="vds"
+          names={getServerName(idForProlong)}
         />
       </Backdrop>
 

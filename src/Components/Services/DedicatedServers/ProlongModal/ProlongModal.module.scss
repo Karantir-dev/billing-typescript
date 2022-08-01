@@ -153,6 +153,40 @@
   cursor: pointer;
 }
 
+.warning_text {
+  font-size: 14px;
+  color: var(--red-text);
+  margin-bottom: 14px;
+}
+.hidden_area {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 14px;
+  display: block;
+  margin-top: 8px;
+}
+.item {
+  color: var(--transparent-color);
+  font-size: 14px;
+}
+.services_names_wrapper {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(161, 161, 161, 23%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #e72690;
+  }
+  max-height: 75px;
+  overflow-y: scroll;
+}
+
 @media screen and (min-width: 768px) {
   .modal {
     width: 355px;
