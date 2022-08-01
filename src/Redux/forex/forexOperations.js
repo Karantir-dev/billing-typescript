@@ -368,13 +368,13 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 
       dispatch(getForexList({ p_num: 1 }))
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+      dispatch(actions.hideLoader())
+      handleModal()
+
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
         position: 'bottom-right',
         toastId: 'customId',
       })
-      dispatch(actions.hideLoader())
-
-      handleModal()
     })
     .catch(error => {
       console.log('error', error)

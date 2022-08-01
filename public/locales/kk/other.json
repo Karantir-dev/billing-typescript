@@ -158,5 +158,10 @@
   "Not selected": "Орнатылмаған",
   "Paid in payments": "Төлемдер бойынша төленген",
   "Tax": "Салық",
-  "Forex server activation": "Forex серверін белсендіру"
+  "Forex server activation": "Forex серверін белсендіру",
+  "Service has been successfully changed": "Қызмет сәтті өзгертілді",
+  "Service has been successfully removed": "Қызмет сәтті жойылды",
+  "Password has been successfully changed": "Құпия сөз сәтті өзгертілді",
+  "Server has been successfully rebooted": "Сервер сәтті қайта жүктелді",
+  "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді"
 }

@@ -853,7 +853,7 @@ const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
         position: 'bottom-right',
         toastId: 'customId',
       })
@@ -1173,6 +1173,10 @@ const rebootServer = (elid, manageModal) => (dispatch, getState) => {
       manageModal()
 
       dispatch(actions.hideLoader())
+      toast.success(i18n.t('Server has been successfully rebooted', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
     })
     .catch(error => {
       console.log('error', error)

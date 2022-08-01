@@ -159,5 +159,11 @@
   "Not selected": "Не обрано",
   "Paid in payments": "Оплачено в платежах",
   "Tax": "Податок",
-  "Forex server activation": "Активація Forex сервера"
+  "Forex server activation": "Активація Forex сервера",
+  "Service has been successfully changed": "Послугу успішно змінено",
+  "Service has been successfully removed": "Послугу успішно видалено",
+  "Password has been successfully changed": "Пароль успішно змінено",
+  "Server has been successfully rebooted": "Сервер успішно перезавантажено",
+  "Name servers has been successfully changed": "Сервери імен успішно змінено",
+  "Changes saved successfully": "Зміни успішно збережені"
 }

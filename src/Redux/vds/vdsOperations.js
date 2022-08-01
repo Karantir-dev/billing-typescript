@@ -6,6 +6,7 @@ import * as routes from '../../routes'
 import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
+import i18n from './../../i18n'
 
 const getVDS =
   ({ setServers, setRights, setElemsTotal, currentPage }) =>
@@ -140,6 +141,9 @@ const editVDS =
             setOrderInfo && setOrderInfo({ price, description })
           } else {
             setOrderInfo && setOrderInfo(null)
+            toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
           }
         }
 
@@ -364,6 +368,9 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
 
       dispatch(getVDS(setServers))
       closeFn()
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
@@ -428,6 +435,9 @@ const rebootServer = id => (dispatch, getState) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
       dispatch(actions.hideLoader())
+      toast.success(i18n.t('Server has been successfully rebooted', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
@@ -535,6 +545,9 @@ const changeDomainName =
         closeFn()
 
         dispatch(actions.hideLoader())
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+        })
       })
       .catch(err => {
         errorHandler(err.message, dispatch)

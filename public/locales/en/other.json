@@ -159,5 +159,10 @@
   "Not selected": "Not selected",
   "Paid in payments": "Paid in payments",
   "Tax": "Tax",
-  "Forex server activation": "Forex server activation"
+  "Forex server activation": "Forex server activation",
+  "Service has been successfully changed": "Service has been successfully changed",
+  "Service has been successfully removed": "Service has been successfully removed",
+  "Password has been successfully changed": "Password has been successfully changed",
+  "Server has been successfully rebooted": "Server has been successfully rebooted",
+  "Name servers has been successfully changed": "Name servers has been successfully changed"
 }

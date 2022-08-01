@@ -156,5 +156,10 @@
   "Not selected": "არ არის განსაზღვრული",
   "Paid in payments": "გადახდილი გადახდებში",
   "Tax": "გადასახადი",
-  "Forex server activation": "ფორექსის სერვერის გააქტიურება"
+  "Forex server activation": "ფორექსის სერვერის გააქტიურება",
+  "Service has been successfully changed": "სერვისი წარმატებით შეიცვალა",
+  "Service has been successfully removed": "სერვისი წარმატებით წაიშალა",
+  "Password has been successfully changed": "პაროლი წარმატებით შეიცვალა",
+  "Server has been successfully rebooted": "სერვერი წარმატებით გადაიტვირთა",
+  "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა"
 }
