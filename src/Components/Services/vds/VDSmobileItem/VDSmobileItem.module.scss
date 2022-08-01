@@ -5,7 +5,7 @@
   column-gap: 15px;
   row-gap: 10px;
   width: 100%;
-  padding: 26px 15px;
+  padding: 76px 15px 26px 15px;
   background: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
@@ -19,6 +19,10 @@
 .value {
   font-size: 15px;
   word-break: break-all;
+
+  &.active {
+    color: var(--accent-color-light);
+  }
 }
 
 .price {
@@ -28,12 +32,16 @@
 }
 
 .dots_wrapper {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: relative;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .dots_btn {
+  display: flex;
   transform: scale(1);
   transition: transform 150ms;
   cursor: pointer;
@@ -46,9 +54,8 @@
 .dropdown {
   position: absolute;
   right: -10px;
-  width: 240px;
+  width: fit-content;
   top: calc(100% + 10px);
-  padding: 20px 10px 20px 20px;
   border-radius: 3px;
   z-index: 1;
   background-color: var(--forms_bgc_4);
@@ -75,20 +82,27 @@
   box-shadow: var(--forms2_shadow);
 }
 
-.tool_item:not(:last-child) {
-  margin-bottom: 15px;
+.tool_item {
+  &:first-child .tool_btn {
+    padding-top: 12px;
+  }
+  &:last-child .tool_btn {
+    padding-bottom: 12px;
+  }
 }
 
 .tool_btn {
   display: flex;
+  align-items: center;
   width: 100%;
+  padding: 6px 20px;
   white-space: nowrap;
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
 
   &:hover {
-    font-weight: 400;
+    background-color: var(--select_option_bgc);
     svg {
       fill: url('#gradient');
     }
@@ -103,8 +117,25 @@
   }
 }
 
+.tools_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 15px;
+  right: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--select_option_bgc);
+}
+
 .tool_icon {
   margin-right: 12px;
   width: 20px;
   fill: var(--icon-color_2);
+}
+
+.check_box {
+  box-shadow: var(--checkbox_shadow);
+  background-color: var(--forms_bgc_4);
 }

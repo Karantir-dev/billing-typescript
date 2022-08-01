@@ -163,5 +163,10 @@
   "Service has been successfully removed": "Қызмет сәтті жойылды",
   "Password has been successfully changed": "Құпия сөз сәтті өзгертілді",
   "Server has been successfully rebooted": "Сервер сәтті қайта жүктелді",
-  "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді"
+  "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді",
+  "services_per_page": "Әр бетте қызметтер:",
+  "services_selected": "Қызметтер таңдалды:",
+  "server_deleted": "{{id}} сервері жойылды",
+  "unknown_error": "Бірдеңе дұрыс болмады",
+  "services_deletion": "және тағы {{value}} қызмет?"
 }

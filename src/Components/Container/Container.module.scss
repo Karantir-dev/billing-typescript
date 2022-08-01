@@ -1,14 +1,13 @@
 .container {
   --right-padding: 30px;
-  padding: 100px var(--right-padding) 87px 30px;
+  padding: 100px var(--right-padding) 125px 30px;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--main-bgc);
 
-
   scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
   scrollbar-width: thin;
-  
+
   &::-webkit-scrollbar {
     width: 5px;
   }
@@ -52,7 +51,7 @@
 @media screen and (min-width: 1024px) {
   .container {
     margin: 0 auto;
-    padding: 127px var(--right-padding) 42px 200px;
+    padding: 127px var(--right-padding) 80px 200px;
     width: 100%;
   }
 }

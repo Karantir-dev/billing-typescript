@@ -161,5 +161,10 @@
   "Service has been successfully removed": "სერვისი წარმატებით წაიშალა",
   "Password has been successfully changed": "პაროლი წარმატებით შეიცვალა",
   "Server has been successfully rebooted": "სერვერი წარმატებით გადაიტვირთა",
-  "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა"
+  "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა",
+  "services_per_page": "სერვისები თითო გვერდზე:",
+  "services_selected": "შერჩეულია სერვისები:",
+  "server_deleted": "სერვერი {{id}} წაიშალა",
+  "unknown_error": "Რაღაც არასწორად წავიდა",
+  "services_deletion": "და მეტი {{value}} სერვისი?"
 }

@@ -370,7 +370,7 @@
 
 @media screen and (min-width: 1600px) {
   .form {
-    min-width: 1070px;
+    min-width: 1020px;
     &.expenses {
       min-width: 770px;
     }
@@ -415,9 +415,5 @@
 @media screen and (min-width: 1918px) {
   .filterModal {
     padding: 10px 20px 20px;
-  }
-
-  .form {
-    min-width: 1020px;
   }
 }

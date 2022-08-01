@@ -162,5 +162,10 @@
   "Service has been successfully removed": "Услуга успешно удалена",
   "Password has been successfully changed": "Пароль успешно изменен",
   "Server has been successfully rebooted": "Сервер успешно перезагружена",
-  "Name servers has been successfully changed": "Серверы имен были успешно изменены"
+  "Name servers has been successfully changed": "Серверы имен были успешно изменены",
+  "services_per_page": "Услуг на странице:",
+  "services_selected": "Выбрано услуг:",
+  "server_deleted": "Сервер {{id}} удален",
+  "unknown_error": "Что-то пошло не так",
+  "services_deletion": "и еще {{value}} услуг?"
 }

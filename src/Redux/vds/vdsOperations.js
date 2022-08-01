@@ -9,7 +9,14 @@ import { t } from 'i18next'
 import i18n from './../../i18n'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, currentPage }) =>
+  ({
+    setServers,
+    setRights,
+    setElemsTotal,
+    currentPage,
+    controledQuantityInput: servicesPerPage,
+    setServicesPerPage,
+  }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -19,8 +26,8 @@ const getVDS =
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: '30',
-          p_num: currentPage,
+          p_cnt: servicesPerPage || '',
+          p_num: currentPage || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -30,6 +37,7 @@ const getVDS =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         setServers(data?.doc?.elem || [])
+        setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
@@ -37,7 +45,7 @@ const getVDS =
             rights[elem.$name] = true
           })
         })
-        setRights(rights)
+        setRights && setRights(rights)
 
         setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
@@ -348,7 +356,7 @@ const setOrderData =
       })
   }
 
-const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
+const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -358,7 +366,7 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
       qs.stringify({
         func: 'vds.delete',
         auth: sessionId,
-        elid: id,
+        elid: id.join(', '),
         out: 'json',
         lang: 'en',
       }),
@@ -366,14 +374,19 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getVDS(setServers))
+      dispatch(getVDS({ setServers, setElemsTotal }))
       closeFn()
-      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
+
+      toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
         position: 'bottom-right',
       })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      closeFn()
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('deleteVDS - ', err)
     })
@@ -557,7 +570,15 @@ const changeDomainName =
   }
 
 const setVdsFilters =
-  (values, setFiltersState, setfiltersListState, setServers, setRights, setElemsTotal) =>
+  (
+    values,
+    setFiltersState,
+    setfiltersListState,
+    setServers,
+    setRights,
+    setElemsTotal,
+    setServicesPerPage,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -618,7 +639,7 @@ const setVdsFilters =
             setfiltersListState(filtersList)
           })
 
-        dispatch(getVDS({ setServers, setRights, setElemsTotal }))
+        dispatch(getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage }))
       })
       .catch(err => {
         if (err.message.includes('filter')) {

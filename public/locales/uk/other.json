@@ -165,5 +165,10 @@
   "Password has been successfully changed": "Пароль успішно змінено",
   "Server has been successfully rebooted": "Сервер успішно перезавантажено",
   "Name servers has been successfully changed": "Сервери імен успішно змінено",
-  "Changes saved successfully": "Зміни успішно збережені"
+  "Changes saved successfully": "Зміни успішно збережені",
+  "services_per_page": "Послуг на сторінці:",
+  "services_selected": "Обрано послуг:",
+  "server_deleted": "Сервер {{id}} видалений",
+  "unknown_error": "Щось пішло не так",
+  "services_deletion": "і ще {{value}} послуг?"
 }

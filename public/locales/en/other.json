@@ -164,5 +164,10 @@
   "Service has been successfully removed": "Service has been successfully removed",
   "Password has been successfully changed": "Password has been successfully changed",
   "Server has been successfully rebooted": "Server has been successfully rebooted",
-  "Name servers has been successfully changed": "Name servers has been successfully changed"
+  "Name servers has been successfully changed": "Name servers has been successfully changed",
+  "services_per_page": "Services per page:",
+  "services_selected": "Services are selected:",
+  "server_deleted": "Server {{id}} deleted",
+  "unknown_error": "Something went wrong",
+  "services_deletion": "and {{value}} more services?"
 }
