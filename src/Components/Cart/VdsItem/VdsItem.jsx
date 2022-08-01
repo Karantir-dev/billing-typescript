@@ -18,9 +18,10 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const IPaddresses = el?.desc?.$?.includes('IP-addresses')
   const hasBasePrice = el?.desc?.$?.includes('base price')
 
-  const tariffName = hasBasePrice
-    ? el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
-    : el?.pricelist_name?.$
+  const tariffName = el?.pricelist_name?.$
+  // hasBasePrice
+  //   ? el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
+  //   : el?.pricelist_name?.$
 
   const onShevronClick = () => {
     if (!dropOpened) {
@@ -87,6 +88,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
               alt="vds"
             />
           )}
+          <p className={s.countItem}>{el?.count} {t('psc.')}</p>
           <p className={s.tariff_name}>{tariffName}</p>
           <div className={s.price_wrapper}>
             {el?.discount_percent?.$ && (
