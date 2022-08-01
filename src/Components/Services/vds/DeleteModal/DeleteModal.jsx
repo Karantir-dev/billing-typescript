@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
 import { Button } from '../../../'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 
 import s from './DeleteModal.module.scss'
 
 export default function DeleteModal({ closeFn, names, deleteFn }) {
   const { t } = useTranslation(['vds', 'other'])
+  const [namesOpened, setNamesOpened] = useState(false)
+  const namesBlock = useRef()
 
-  const namesToRender = names.length > 3 ? names.slice(0, 3) : names
+  useEffect(() => {
+    if (!namesOpened) {
+      console.log(namesBlock.current.firstElementChild.scrollHeight)
+      namesBlock.current.style.height =
+        namesBlock.current.firstElementChild.scrollHeight + 'px'
+    } else {
+      const openedHeight =
+        namesBlock.current.scrollHeight > 260
+          ? 260 + 'px'
+          : namesBlock.current.scrollHeight + 'px'
+      namesBlock.current.style.height = openedHeight
+    }
+  }, [namesOpened])
 
   return (
     <div className={s.modal}>
@@ -18,18 +33,30 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
       </button>
       <p className={s.title}>{t('attention')}!</p>
       <p className={s.text}>{t('delete_message')}:</p>
+      <div>
+        <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
+          {names.map((name, idx) => {
+            return (
+              <>
+                <span className={s.name_item} key={name}>
+                  {name}
+                  {names.length - 1 === idx ? '' : ','}
+                </span>{' '}
+              </>
+            )
+          })}
+        </p>
 
-      {namesToRender.map((item, idx) => {
-        return (
-          <p className={s.item} key={item}>
-            {item}
-            {names.length <= 3 && idx === names.length - 1 ? '?' : ','}
-          </p>
-        )
-      })}
-      {names.length > 3 && (
-        <p>{t('services_deletion', { ns: 'other', value: +names.length - 3 })}</p>
-      )}
+        {names.length > 1 && (
+          <button
+            className={s.btn_more}
+            type="button"
+            onClick={() => setNamesOpened(!namesOpened)}
+          >
+            {namesOpened ? 'скрыть' : 'и ещё ' + (names.length - 1)}
+          </button>
+        )}
+      </div>
 
       <Button
         className={s.cancel_btn}

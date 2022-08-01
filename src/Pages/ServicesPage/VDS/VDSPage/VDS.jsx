@@ -147,6 +147,7 @@ export default function VDS() {
         setElemsTotal,
       ),
     )
+    setActiveServices([])
   }
 
   const resetFilterHandler = () => {
@@ -346,7 +347,9 @@ export default function VDS() {
                         server => server?.allow_changepassword?.$ !== 'on',
                       ) || !rights?.changepassword
                     }
-                    // onClick={() => setIdForPassChange(activeServices)}
+                    onClick={() =>
+                      setIdForPassChange(activeServices.map(server => server.id.$))
+                    }
                     icon="passChange"
                   />
                 </HintWrapper>
@@ -429,12 +432,12 @@ export default function VDS() {
 
       <Backdrop
         isOpened={idForPassChange.length > 0}
-        onClick={() => setIdForPassChange('')}
+        onClick={() => setIdForPassChange([])}
       >
         <VDSPasswordChange
           id={idForPassChange}
           name={getServerName(idForPassChange)}
-          closeFn={() => setIdForPassChange('')}
+          closeFn={() => setIdForPassChange([])}
         />
       </Backdrop>
 
