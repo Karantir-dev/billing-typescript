@@ -10,13 +10,14 @@ import s from './DeleteModal.module.scss'
 export default function DeleteModal({ closeFn, names, deleteFn }) {
   const { t } = useTranslation(['vds', 'other'])
   const [namesOpened, setNamesOpened] = useState(false)
+  const [firstRender, setFirstRender] = useState(true)
   const namesBlock = useRef()
 
   useEffect(() => {
     if (!namesOpened) {
-      console.log(namesBlock.current.firstElementChild.scrollHeight)
       namesBlock.current.style.height =
         namesBlock.current.firstElementChild.scrollHeight + 'px'
+      !firstRender && namesBlock.current.firstElementChild.scrollIntoView()
     } else {
       const openedHeight =
         namesBlock.current.scrollHeight > 260
@@ -25,6 +26,10 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
       namesBlock.current.style.height = openedHeight
     }
   }, [namesOpened])
+
+  useEffect(() => {
+    setFirstRender(false)
+  }, [])
 
   return (
     <div className={s.modal}>
@@ -37,12 +42,10 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
         <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
           {names.map((name, idx) => {
             return (
-              <>
-                <span className={s.name_item} key={name}>
-                  {name}
-                  {names.length - 1 === idx ? '' : ','}
-                </span>{' '}
-              </>
+              <span className={s.name_item} key={name}>
+                {name}
+                {names.length - 1 === idx ? '' : ','}
+              </span>
             )
           })}
         </p>
