@@ -5,7 +5,15 @@ import s from './Pagination.module.scss'
 import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
-  const { onPageChange, totalCount, currentPage, pageSize, className, totalPrice } = props
+  const {
+    onPageChange,
+    totalCount,
+    currentPage,
+    pageSize,
+    className,
+    totalPrice,
+    hideExtraInfo,
+  } = props
 
   const { t } = useTranslation('other')
 
@@ -51,7 +59,7 @@ export default function Component(props) {
 
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
-      <span className={s.total}>
+      <span className={s.total} style={hideExtraInfo ? { display: 'none' } : {}}>
         {totalPrice ? `${t('Sum')}: ${totalPrice} EUR` : `${t('total')}: ${totalCount}`}
       </span>
 
@@ -107,6 +115,7 @@ Component.propTypes = {
   currentPage: PropTypes.number,
   totalCount: PropTypes.number,
   totalPrice: PropTypes.number,
+  hideExtraInfo: PropTypes.bool,
 }
 
 Component.defaultProps = {

@@ -156,5 +156,10 @@
   "Not selected": "არ არის განსაზღვრული",
   "Paid in payments": "გადახდილი გადახდებში",
   "Tax": "გადასახადი",
-  "Forex server activation": "ფორექსის სერვერის გააქტიურება"
+  "services_per_page": "სერვისები თითო გვერდზე:",
+  "services_selected": "შერჩეულია სერვისები:",
+  "Forex server activation": "ფორექსის სერვერის გააქტიურება",
+  "server_deleted": "სერვერი {{id}} წაიშალა",
+  "unknown_error": "Რაღაც არასწორად წავიდა",
+  "services_deletion": "და მეტი {{value}} სერვისი?"
 }

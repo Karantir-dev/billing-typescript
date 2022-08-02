@@ -159,5 +159,11 @@
   "Not selected": "Не обрано",
   "Paid in payments": "Оплачено в платежах",
   "Tax": "Податок",
-  "Forex server activation": "Активація Forex сервера"
+  "services_per_page": "Послуг на сторінці:",
+  "services_selected": "Обрано послуг:",
+  "Forex server activation": "Активація Forex сервера",
+  "server_deleted": "Сервер {{id}} видалений",
+  "unknown_error": "Щось пішло не так",
+  "services_deletion": "і ще {{value}} послуг?",
+  "hide": "Згорнути"
 }
