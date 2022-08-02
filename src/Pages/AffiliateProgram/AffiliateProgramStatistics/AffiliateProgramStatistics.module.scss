@@ -90,7 +90,6 @@
 }
 
 .icon_filter {
-  background-color: var(--forms_bgc_2);
   &.filtered {
     svg {
       fill: url(#gradient);
