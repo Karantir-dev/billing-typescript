@@ -21,6 +21,7 @@ export default function notificationsTranslateFn(str, t) {
   const errorIndDomainServers = str.match(
     /An error occurred when changing name servers of the "(.+?)(?=" service. Check parameters and try again)/,
   )?.[1]
+  const passwordHasBeenChanged = str.match(/Password for "(.+?)(?=" has been changed)/)
 
   let translate = str
     .replace(
@@ -98,6 +99,13 @@ export default function notificationsTranslateFn(str, t) {
       /An error occurred when changing name servers of the ".+" service. Check parameters and try again/g,
       t('An error occurred when changing name servers', {
         value: t(errorIndDomainServers),
+        ns: 'container',
+      }),
+    )
+    .replace(
+      /Password for ".+" has been changed/g,
+      t('Password for has been changed', {
+        value: t(passwordHasBeenChanged),
         ns: 'container',
       }),
     )

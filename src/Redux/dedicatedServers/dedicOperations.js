@@ -981,6 +981,7 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
+      console.log(data, 'data prolong vds with expiration')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
@@ -1141,7 +1142,6 @@ const payProlongPeriodFewElems =
         }),
       )
       .then(({ data }) => {
-        console.log(data, 'data from basket a few')
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         let routeAfterBuying = route.SERVICES

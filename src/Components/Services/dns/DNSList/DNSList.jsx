@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 
-import s from './DNSList.module.scss'
 import DNSItem from '../DNSItem/DNSItem'
 import DNSMobileItem from '../DNSMobileItem/DNSMobileItem'
+import { CheckBox } from '../../..'
+
+import s from './DNSList.module.scss'
 
 export default function DNSList({
   emptyFilter,
@@ -14,10 +16,11 @@ export default function DNSList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  // setElidForChangeTarifModal,
   setActiveServer,
   activeServerID,
   pageRights,
+  setActiveServices,
+  activeServices,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -60,17 +63,28 @@ export default function DNSList({
   return (
     <>
       {widerThan1550 && dnsList?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>
-            {t('datacenter', { ns: 'dedicated_servers' })}:
-          </li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
-          <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
-        </ul>
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={activeServices?.length === dnsList?.length}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(dnsList)
+            }}
+          />
+
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>
+              {t('datacenter', { ns: 'dedicated_servers' })}:
+            </li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
+            <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
+            <li className={s.table_head}></li>
+          </ul>
+        </div>
       )}
 
       <ul className={s.list}>
@@ -81,17 +95,21 @@ export default function DNSList({
               storage={el}
               activeServerID={activeServerID}
               setActiveServer={setActiveServer}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              pageRights={pageRights}
             />
           ) : (
             <DNSMobileItem
               key={el.id.$}
               storage={el}
               setElidForEditModal={setElidForEditModal}
-              setElidForProlongModal={setElidForProlongModal}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
               setElidForHistoryModal={setElidForHistoryModal}
               setElidForInstructionModal={setElidForInstructionModal}
-              // setElidForChangeTarifModal={setElidForChangeTarifModal}
               setActiveServer={setActiveServer}
+              activeServices={activeServices}
               pageRights={pageRights}
             />
           )

@@ -19,8 +19,14 @@ import {
   DNSFiltersModal,
   Portal,
   Pagination,
+  // CheckBox,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors, actions } from '../../../Redux'
+import {
+  dnsOperations,
+  // dedicOperations,
+  dnsSelectors,
+  actions,
+} from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 import { usePageRender } from '../../../utils'
@@ -36,10 +42,11 @@ export default function DNS() {
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
 
-  // const [dnsList, setDnsList] = useState(null)
+  const [activeServices, setActiveServices] = useState([])
+
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
-  const [elidForProlongModal, setElidForProlongModal] = useState(0)
+  const [elidForProlongModal, setElidForProlongModal] = useState([])
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [tarifs, setTarifs] = useState('No tariff plans available for order')
@@ -50,15 +57,21 @@ export default function DNS() {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
 
-  // const [
-  //   elidForChangeTarifModal,
-  //   setElidForChangeTarifModal,
-  // ] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const getTotalPrice = () => {
+    const list = activeServices.length > 1 ? activeServices : dnsRenderData?.dnsList
+
+    return list
+      ?.reduce((totalPrice, server) => {
+        return totalPrice + +server?.cost?.$?.trim()?.split(' ')?.[0]
+      }, 0)
+      ?.toFixed(2)
+  }
 
   useEffect(() => {
     if (filterModal) {
@@ -124,6 +137,7 @@ export default function DNS() {
         setEmptyFilter,
       ),
     )
+    setActiveServices([])
   }
 
   useEffect(() => {
@@ -171,6 +185,7 @@ export default function DNS() {
   useEffect(() => {
     const data = { p_num: currentPage }
     dispatch(dnsOperations.getDNSList(data))
+    setActiveServices([])
   }, [currentPage])
 
   useEffect(() => {
@@ -227,9 +242,22 @@ export default function DNS() {
             )}
           </div>
 
+          {/* <div className={s.main_checkbox}>
+            <CheckBox
+              className={s.check_box}
+              initialState={activeServices.length === dnsRenderData?.dnsList?.length}
+              func={isChecked => {
+                isChecked
+                  ? setActiveServices([])
+                  : setActiveServices(dnsRenderData?.dnsList)
+              }}
+            />
+            <span>{t('Choose all', { ns: 'other' })}</span>
+          </div> */}
+
           {widerThan1550 && (
             <div className={s.desktop_tools_wrapper}>
-              <HintWrapper
+              {/* <HintWrapper
                 wrapperClassName={s.hint_wrapper}
                 label={t('edit', { ns: 'other' })}
               >
@@ -241,17 +269,9 @@ export default function DNS() {
                   }
                   icon="edit"
                 />
-              </HintWrapper>
-              {/* <HintWrapper label={t('Change tarif', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForChangeTarifModal(activeServer?.id?.$)}
-                  disabled={!activeServer || activeServer?.change_pricelist?.$ === 'off'}
-                  icon="exchange"
-                />
               </HintWrapper> */}
 
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
+              {/* <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
                 <IconButton
                   onClick={() => setElidForProlongModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -260,8 +280,8 @@ export default function DNS() {
                   }
                   icon="clock"
                 />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
+              </HintWrapper> */}
+              {/* <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
                 <IconButton
                   onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
                   className={s.tools_icon}
@@ -270,8 +290,8 @@ export default function DNS() {
                     activeServer?.status?.$ === '1' || !rights?.history || !activeServer
                   }
                 />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
+              </HintWrapper> */}
+              {/* <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
                 <IconButton
                   className={s.tools_icon}
                   disabled={
@@ -297,7 +317,7 @@ export default function DNS() {
                   }
                   icon="exitSign"
                 />
-              </HintWrapper>
+              </HintWrapper> */}
             </div>
           )}
         </div>
@@ -312,7 +332,6 @@ export default function DNS() {
               state: { isDnsOrderAllowed: rights?.new },
               replace: true,
             })
-            // navigate(route.DNS_ORDER)
           }}
           disabled={tarifs === 'No tariff plans available for order' || !rights?.new}
         />
@@ -325,9 +344,10 @@ export default function DNS() {
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
-        // setElidForChangeTarifModal={setElidForChangeTarifModal}
         setActiveServer={setActiveServer}
         pageRights={rights}
+        activeServices={activeServices}
+        setActiveServices={setActiveServices}
       />
 
       {Number(dnsCount) <= 30 && widerThan1550 && dnsRenderData?.dnsList?.length !== 0 && (
@@ -348,6 +368,85 @@ export default function DNS() {
         </div>
       )}
 
+      {dnsRenderData?.dnsList?.length > 0 && (
+        <div className={s.tools_footer}>
+          {activeServices.length > 1 && (
+            <>
+              <div className={s.buttons_wrapper}>
+                {/* <HintWrapper label={t('delete', { ns: 'other' })}>
+                  <IconButton
+                    className={s.tools_icon}
+                    onClick={() =>
+                      setIdForDeleteModal(activeServices.map(server => server.id.$))
+                    }
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                      ) || !rights?.delete
+                    }
+                    icon="delete"
+                  />
+                </HintWrapper> */}
+                {/* <HintWrapper label={t('password_change')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(
+                        server => server?.allow_changepassword?.$ !== 'on',
+                      ) || !rights?.changepassword
+                    }
+                    // onClick={() => setIdForPassChange(activeServices)}
+                    icon="passChange"
+                  />
+                </HintWrapper> */}
+                {/*
+                <HintWrapper label={t('reload')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
+                      !rights?.reboot
+                    }
+                    // onClick={() => setIdForReboot(activeServices)}
+                    icon="reload"
+                  />
+                </HintWrapper> */}
+
+                <HintWrapper label={t('prolong')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                          server?.item_status?.$.trim() === 'Suspended by Administrator',
+                      ) || !rights?.prolong
+                    }
+                    onClick={() =>
+                      setElidForProlongModal(activeServices?.map(item => item.id.$))
+                    }
+                    // onClick={() => setIdForProlong(activeServices)}
+                    icon="clock"
+                  />
+                </HintWrapper>
+              </div>
+
+              <p className={s.services_selected}>
+                {t('services_selected', { ns: 'other' })}{' '}
+                <span className={s.tools_footer_value}>{activeServices.length}</span>
+              </p>
+            </>
+          )}
+          <p className={s.total_price}>
+            {t('total', { ns: 'other' })}:{' '}
+            <span className={s.tools_footer_value}>
+              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            </span>
+          </p>
+        </div>
+      )}
+
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
@@ -357,7 +456,8 @@ export default function DNS() {
         isOpened={Boolean(elidForProlongModal)}
       >
         <ProlongModal
-          elid={elidForProlongModal}
+          elidList={elidForProlongModal}
+          // elid={elidForProlongModal}
           closeFn={() => setElidForProlongModal(0)}
           pageName="dns"
         />

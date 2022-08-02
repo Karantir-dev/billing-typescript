@@ -154,7 +154,6 @@ export default function Component() {
         })
       }
     })
-    console.log(filteredVdsList)
 
     return (
       <>

@@ -451,7 +451,7 @@ export default function VDS() {
 
       <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong('')}>
         <ProlongModal
-          elid={idForProlong}
+          elidList={idForProlong}
           closeFn={() => setIdForProlong('')}
           pageName="vds"
           names={getServerName(idForProlong)}
