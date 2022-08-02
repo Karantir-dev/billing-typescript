@@ -1,3 +1,5 @@
+@import '../../../../scss/placeholders.scss';
+
 .modal {
   position: relative;
   width: 90vw;
@@ -65,6 +67,7 @@
   transition: height 150ms;
   font-size: 14px;
   color: var(--transparent-color);
+  @extend %scrollbar;
 
   .name_item:not(:first-child) {
     opacity: 0;
@@ -90,6 +93,7 @@
   line-height: 1;
   font-size: 14px;
   border-bottom: 1px solid var(--link-color);
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {

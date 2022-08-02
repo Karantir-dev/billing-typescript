@@ -19,7 +19,7 @@ export default function Backdrop({ children, onClick, isOpened, className }) {
       onKeyUp={() => {}}
       role="button"
       className={cn(s.backdrop, { [s.opened]: isOpened, [className]: className })}
-      onClick={onBackdropClick}
+      onClick={onClick ? onBackdropClick : null}
     >
       <CSSTransition in={isOpened} classNames={animations} timeout={150} unmountOnExit>
         {children}

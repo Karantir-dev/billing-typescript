@@ -115,6 +115,7 @@ export default function VDS() {
   }, [])
 
   function onPressEnter(event) {
+    alert(`event.code - ${event.code}; event.key - ${event.key}`)
     if (event.code === 'Enter') {
       dispatch(
         vdsOperations.getVDS({
@@ -361,7 +362,9 @@ export default function VDS() {
                       activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
                       !rights?.reboot
                     }
-                    // onClick={() => setIdForReboot(activeServices)}
+                    onClick={() =>
+                      setIdForReboot(activeServices.map(server => server.id.$))
+                    }
                     icon="reload"
                   />
                 </HintWrapper>
@@ -376,7 +379,7 @@ export default function VDS() {
                           server?.item_status?.$.trim() === 'Suspended by Administrator',
                       ) || !rights?.prolong
                     }
-                    // onClick={() => setIdForProlong(activeServices)}
+                    // onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
                     icon="clock"
                   />
                 </HintWrapper>
@@ -430,29 +433,26 @@ export default function VDS() {
         />
       </Backdrop>
 
-      <Backdrop
-        isOpened={idForPassChange.length > 0}
-        onClick={() => setIdForPassChange([])}
-      >
+      <Backdrop isOpened={idForPassChange.length > 0}>
         <VDSPasswordChange
           id={idForPassChange}
-          name={getServerName(idForPassChange)}
+          names={getServerName(idForPassChange)}
           closeFn={() => setIdForPassChange([])}
         />
       </Backdrop>
 
-      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot('')}>
+      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot([])}>
         <VdsRebootModal
           id={idForReboot}
-          name={getServerName(idForReboot)}
-          closeFn={() => setIdForReboot('')}
+          names={getServerName(idForReboot)}
+          closeFn={() => setIdForReboot([])}
         />
       </Backdrop>
 
-      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong('')}>
+      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong([])}>
         <ProlongModal
           elid={idForProlong}
-          closeFn={() => setIdForProlong('')}
+          closeFn={() => setIdForProlong([])}
           pageName="vds"
         />
       </Backdrop>

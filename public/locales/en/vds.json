@@ -87,6 +87,7 @@
   "New tariff": "New tariff",
   "Suspended service": "Suspended service",
   "Active service": "Active service",
+  "reboot_launched": "Server reboot process started",
 
   "psc.": "psc."
 }

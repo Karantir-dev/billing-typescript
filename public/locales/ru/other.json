@@ -162,6 +162,5 @@
   "Forex server activation": "Активация Forex сервера",
   "server_deleted": "Сервер {{id}} удален",
   "unknown_error": "Что-то пошло не так",
-  "services_deletion": "и еще {{value}} услуг?",
-  "hide": "Свернуть"
+  "and_more": "и еще {{value}}"
 }
