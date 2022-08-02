@@ -140,6 +140,22 @@ export default function Component() {
       elem => elem['item.type']?.$ === 'zabota-o-servere',
     )
 
+    const filteredVdsList = []
+
+    vdsList?.forEach(elem => {
+      if (
+        filteredVdsList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredVdsList?.push({
+          ...elem,
+          count: vdsList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+    console.log(filteredVdsList)
+
     return (
       <>
         {siteCareList?.length > 0 && (
@@ -230,20 +246,20 @@ export default function Component() {
           </div>
         )}
 
-        {vdsList?.length > 0 && (
+        {filteredVdsList?.length > 0 && (
           <div className={s.vds_wrapper}>
             <div className={cn(s.formBlockTitle, s.padding)}>
               {t('services.Virtual server', { ns: 'other' })}:
             </div>
 
             <div className={s.scroll}>
-              {vdsList?.map(el => {
+              {filteredVdsList?.map(el => {
                 return (
                   <VdsItem
                     key={el?.id?.$}
                     el={el}
                     deleteItemHandler={
-                      vdsList?.length > 1
+                      filteredVdsList?.length > 1
                         ? () => deleteBasketItemHandler(el?.id?.$)
                         : null
                     }
@@ -257,7 +273,6 @@ export default function Component() {
         {ftpList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
-              {' '}
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
             {ftpList?.map(el => {
