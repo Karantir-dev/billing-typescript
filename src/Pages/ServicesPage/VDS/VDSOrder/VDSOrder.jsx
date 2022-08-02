@@ -370,11 +370,12 @@ export default function VDSOrder() {
                                   className={s.count_input}
                                   value={count}
                                   onChange={event => {
-                                    console.log(event.target.value)
-                                    console.log(+event.target.value)
-                                    setCount(
-                                      +event.target.value > 50 ? 50 : +event.target.value,
-                                    )
+                                    const value =
+                                      event.target.value.length > 1
+                                        ? event.target.value.replace(/^0/, '')
+                                        : event.target.value
+
+                                    setCount(+event.target.value > 50 ? 50 : value)
                                   }}
                                   onBlur={event => {
                                     if (event.target.value < 1) setCount(1)
