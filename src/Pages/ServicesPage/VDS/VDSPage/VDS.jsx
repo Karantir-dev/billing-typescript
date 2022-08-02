@@ -115,8 +115,8 @@ export default function VDS() {
   }, [])
 
   function onPressEnter(event) {
-    alert(`event.code - ${event.code}; event.key - ${event.key}`)
-    if (event.code === 'Enter') {
+    if (event.key === 'Enter') {
+      event.preventDefault()
       dispatch(
         vdsOperations.getVDS({
           setServers,
