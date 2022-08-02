@@ -253,7 +253,7 @@ export default function VDS() {
           </div>
         </div>
 
-        {!widerThan1600 && (
+        {!widerThan1600 && servers.length > 0 && (
           <div className={s.main_checkbox}>
             <CheckBox
               className={s.check_box}
