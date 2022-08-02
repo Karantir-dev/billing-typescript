@@ -11,33 +11,35 @@ export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {
         [s.select_wrapper]: true,
       })}
     >
-      <div className={s.current_lang}>
-        {currentValue} <Shevron className={s.icon} />
+      <div className={cn(s.current_lang, { [s.pointer]: list?.length > 1 })}>
+        {currentValue} {list?.length > 1 && <Shevron className={s.icon} />}
       </div>
 
-      <div className={s.lang_dropdown}>
-        <ul className={s.dropdown_list}>
-          <li className={s.shevron_wrapper}>
-            <div className={s.dropdown_shevron}></div>
-          </li>
-          {list.map(({ $key, $ }) => {
-            if (currentValue === $) {
-              return
-            }
-            return (
-              <li key={$key} className={s.lang_item}>
-                <button
-                  className={s.lang_btn}
-                  type="button"
-                  onClick={() => setValue && setValue({ title: $, value: $key })}
-                >
-                  {$}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+      {list?.length > 1 && (
+        <div className={s.lang_dropdown}>
+          <ul className={s.dropdown_list}>
+            <li className={s.shevron_wrapper}>
+              <div className={s.dropdown_shevron}></div>
+            </li>
+            {list.map(({ $key, $ }) => {
+              if (currentValue === $) {
+                return
+              }
+              return (
+                <li key={$key} className={s.lang_item}>
+                  <button
+                    className={s.lang_btn}
+                    type="button"
+                    onClick={() => setValue && setValue({ title: $, value: $key })}
+                  >
+                    {$}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }
