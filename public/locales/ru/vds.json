@@ -92,5 +92,6 @@
   "Old tariff": "Старый тариф",
   "New tariff": "Новый тариф",
   "Suspended service": "Услуга остановлена",
-  "Active service": "Услуга запущена"
+  "Active service": "Услуга запущена",
+  "reboot_launched": "Запущен процесс перезагрузки сервера"
 }

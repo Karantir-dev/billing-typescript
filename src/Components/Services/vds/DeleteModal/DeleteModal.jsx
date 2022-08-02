@@ -37,7 +37,7 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
         <Cross />
       </button>
       <p className={s.title}>{t('attention')}!</p>
-      <p className={s.text}>{t('delete_message')}:</p>
+      <p className={s.text}>{t('delete_message')}?</p>
       <div>
         <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
           {names.map((name, idx) => {
@@ -56,7 +56,9 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
             type="button"
             onClick={() => setNamesOpened(!namesOpened)}
           >
-            {namesOpened ? 'скрыть' : 'и ещё ' + (names.length - 1)}
+            {namesOpened
+              ? t('collapse', { ns: 'other' })
+              : t('and_more', { ns: 'other', value: names.length - 1 })}
           </button>
         )}
       </div>

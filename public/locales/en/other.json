@@ -164,5 +164,6 @@
   "Forex server activation": "Forex server activation",
   "server_deleted": "Server {{id}} deleted",
   "unknown_error": "Something went wrong",
-  "services_deletion": "and {{value}} more services?"
+  "services_deletion": "and {{value}} more services?",
+  "and_more": "and {{value}} more"
 }

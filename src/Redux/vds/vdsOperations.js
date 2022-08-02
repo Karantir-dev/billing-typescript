@@ -408,6 +408,7 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
       toast.success(
         `${t('passwd_change_success', { ns: 'vds' })} ${data.doc.banner[0].param.$}`,
         {
@@ -420,8 +421,50 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('changePassword - ', err)
+    })
+}
+
+const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'groupedit',
+        faction: 'service.changepassword',
+        auth: sessionId,
+        elid: id.join(', '),
+        passwd: passwd,
+        confirm: confirm,
+        out: 'json',
+        sok: 'ok',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
+      toast.success(`${t('passwd_change_success', { ns: 'vds' })} #${id.join(', #')}`, {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
+      dispatch(actions.hideLoader())
+      console.log('groupChangePassword - ', err)
     })
 }
 
@@ -435,7 +478,7 @@ const rebootServer = id => (dispatch, getState) => {
       qs.stringify({
         func: 'service.reboot',
         auth: sessionId,
-        elid: id,
+        elid: id.join(', '),
         out: 'json',
         lang: 'en',
       }),
@@ -443,10 +486,16 @@ const rebootServer = id => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
+      toast.success(t('reboot_launched', { ns: 'vds' }) + `: #${id.join(', #')}`, {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('rebootServer - ', err)
     })
@@ -658,4 +707,5 @@ export default {
   getEditIPInfo,
   changeDomainName,
   setVdsFilters,
+  groupChangePassword,
 }
