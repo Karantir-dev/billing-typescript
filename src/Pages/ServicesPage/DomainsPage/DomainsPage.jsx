@@ -9,6 +9,7 @@ import {
   DomainsNSModal,
   DomainsEditModal,
   Backdrop,
+  DomainsProlongModal,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -51,6 +52,9 @@ export default function Component() {
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
 
+  const [prolongModal, setProlongModal] = useState(false)
+  const [prolongData, setProlongData] = useState(null)
+
   const [isFiltered, setIsFiltered] = useState(false)
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
@@ -79,7 +83,22 @@ export default function Component() {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
     }
-    dispatch(domainsOperations.renewService(data))
+    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
+  }
+
+  const closeProlongModalHandler = () => {
+    setProlongData(null)
+    setProlongModal(false)
+  }
+
+  const prolongEditDomainHandler = (values = {}) => {
+    let data = {
+      elid: selctedItem?.id?.$,
+      p_num: currentPage,
+      ...values,
+    }
+
+    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
   }
 
   const deleteDomainHandler = () => {
@@ -271,6 +290,19 @@ export default function Component() {
           />
         </div>
       )}
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(prolongModal && prolongData)}
+        onClick={closeProlongModalHandler}
+      >
+        <DomainsProlongModal
+          prolongData={prolongData}
+          name={selctedItem?.name?.$}
+          closeProlongModalHandler={closeProlongModalHandler}
+          prolongEditSiteCareHandler={prolongEditDomainHandler}
+        />
+      </Backdrop>
 
       <Backdrop
         className={s.backdrop}

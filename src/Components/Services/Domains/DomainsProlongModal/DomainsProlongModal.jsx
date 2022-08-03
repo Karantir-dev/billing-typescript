@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
 import { Select, Button } from '../../..'
 import { Formik, Form } from 'formik'
-import s from './SiteCareProlongModal.module.scss'
+import s from './DomainsProlongModal.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
