@@ -48,16 +48,18 @@ export default function VerificationModal({ onClose }) {
           </label>
 
           <div className={s.input_wrapper}>
-            <input
-              className={cn({ [s.input]: true, [s.error]: error })}
-              id="code"
-              type="text"
-              value={totp}
-              onChange={e => setTotp(e.target.value)}
-              placeholder={t('placeholder')}
-              autoFocus
-              autoComplete="off"
-            />
+            {formVisibility === 'shown' && (
+              <input
+                className={cn({ [s.input]: true, [s.error]: error })}
+                id="code"
+                type="text"
+                value={totp}
+                onChange={e => setTotp(e.target.value)}
+                placeholder={t('placeholder')}
+                autoFocus
+                autoComplete="off"
+              />
+            )}
             <div className={s.input_border}></div>
           </div>
           {error && <span className={s.error_msg}>{t('error')}</span>}

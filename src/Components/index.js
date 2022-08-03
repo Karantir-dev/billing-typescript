@@ -99,6 +99,7 @@ export { default as DomainsHistoryModal } from './Services/Domains/DomainsHistor
 export { default as DomainsWhoisModal } from './Services/Domains/DomainsWhoisModal/DomainsWhoisModal'
 export { default as DomainsNSModal } from './Services/Domains/DomainsNSModal/DomainsNSModal'
 export { default as DomainsEditModal } from './Services/Domains/DomainsEditModal/DomainsEditModal'
+export { default as DomainsProlongModal } from './Services/Domains/DomainsProlongModal/DomainsProlongModal'
 
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
