@@ -81,6 +81,43 @@
   overflow-y: auto;
 }
 
+.tools_footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 10px;
+
+  height: fit-content;
+  padding: 15px 35px 15px 30px;
+  background-color: var(--elements-bgc);
+  box-shadow: var(--menu_down_black_shadow);
+}
+
+.services_selected {
+  font-size: 14px;
+  margin-right: auto;
+}
+.total_price {
+  font-size: 14px;
+}
+
+.tools_footer_value {
+  font-weight: 600;
+}
+
+.buttons_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+
 //Adaptive
 
 @media screen and (min-width: 768px) {
@@ -94,6 +131,27 @@
   .pagination {
     justify-content: flex-end;
     margin-top: 30px;
+  }
+  .buttons_wrapper {
+    justify-content: flex-end;
+  }
+
+  .tools_footer {
+    flex-wrap: nowrap;
+    column-gap: 30px;
+    padding: 15px 65px 15px 60px;
+  }
+}
+
+@media screen and(min-width: 1024px) {
+  .tools_footer {
+    padding: 15px 65px 15px 200px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .tools_footer {
+    padding: 15px 140px 15px 259px;
   }
 }
 
@@ -117,5 +175,11 @@
   .order_btn {
     width: 229px;
     font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .tools_footer {
+    padding: 15px 160px 20px 290px;
   }
 }

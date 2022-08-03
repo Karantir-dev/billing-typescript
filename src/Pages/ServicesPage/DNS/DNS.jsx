@@ -37,8 +37,77 @@ export default function DNS() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsRenderData = useSelector(dnsSelectors.getDNSList)
+  let dnsRenderData = useSelector(dnsSelectors.getDNSList)
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
+
+  let newList = []
+  for (let i = 0; i <= 10; i++) {
+    let obj = {
+      abusesuspend: { $: 'off' },
+      autoprolong: { $: 'Month' },
+      autoprolong_period: { $: '1' },
+      autosuspend: { $: 'off' },
+      billdaily: { $: 'off' },
+      billhourly: { $: 'off' },
+      change_pl: { $: '0' },
+      change_pricelist: { $: 'off' },
+      changepolicy: { $: '4' },
+      cost: { $: '0.00 EUR / Month' },
+      costperiod: { $: '1' },
+      createdate: { $: '2022-07-29' },
+      currency_id: { $: '153' },
+      currency_str: { $: 'EUR' },
+      datacenter: { $: '6' },
+      datacentername: { $: 'Netherlands, Latvia, Bulgaria, France' },
+      description: {},
+      employeesuspend: { $: 'off' },
+      expiredate: { $: '2022-08-29' },
+      has_ip_pricelist: { $: 'off' },
+      id: { $: '3719369' },
+      intname: {},
+      item_cost: { $: '0.0000' },
+      item_real_status: { $: '2' },
+      item_status: { $color: 'green', $orig: '2', $: 'Active' },
+      itemtype: { $: '41' },
+      module_failed: { $: 'off' },
+      module_upload_doc: { $: 'off' },
+      name: { $: 'DNS-hosting for 50 domains #3719369' },
+      opennotify: { $: '68' },
+      order_disabled: { $: 'off' },
+      period: { $: '1' },
+      pmmodule: { $: 'pmdnsmgr' },
+      price_on_request: { $: 'off' },
+      pricelist: { $: 'DNS-hosting for 50 domains' },
+      pricelist_id: { $: '958' },
+      processingmodule_failed: { $: 'off' },
+      processingnode: {},
+      real_expiredate: { $: '2022-08-29' },
+      scheduledclose: { $: 'off' },
+      show_changepassword: { $: 'off' },
+      show_hardreboot: { $: 'off' },
+      show_movetovdc: { $: 'off' },
+      show_reboot: { $: 'off' },
+      show_supportpassword: { $: 'off' },
+      show_vdc_loadbalancer: { $: 'off' },
+      show_vdc_network: { $: 'off' },
+      show_vdc_router: { $: 'off' },
+      show_vdc_vm: { $: 'off' },
+      show_vdc_volume: { $: 'off' },
+      show_webconsole: { $: 'off' },
+      specialstatus: { $: '0' },
+      stat_enabled: { $: 'off' },
+      status: { $: '2' },
+      subaccount: { $: '184885' },
+      sync_feature: { $: 'off' },
+      transition: { $: 'on' },
+    }
+
+    obj.id.$ = +obj.id.$ + i
+
+    newList.push(obj)
+  }
+  console.log(newList)
+  dnsRenderData = { ...dnsRenderData, dnsList: newList }
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
 
@@ -372,6 +441,11 @@ export default function DNS() {
         <div className={s.tools_footer}>
           {activeServices.length > 1 && (
             <>
+              <p className={s.services_selected}>
+                {t('services_selected', { ns: 'other' })}{' '}
+                <span className={s.tools_footer_value}>{activeServices.length}</span>
+              </p>
+
               <div className={s.buttons_wrapper}>
                 {/* <HintWrapper label={t('delete', { ns: 'other' })}>
                   <IconButton
@@ -431,11 +505,6 @@ export default function DNS() {
                   />
                 </HintWrapper>
               </div>
-
-              <p className={s.services_selected}>
-                {t('services_selected', { ns: 'other' })}{' '}
-                <span className={s.tools_footer_value}>{activeServices.length}</span>
-              </p>
             </>
           )}
           <p className={s.total_price}>
