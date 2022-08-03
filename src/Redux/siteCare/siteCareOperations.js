@@ -237,9 +237,12 @@ const prolongSiteCare =
         if (body?.sok === 'ok') {
           setProlongData && setProlongData(null)
           setProlongModal && setProlongModal(false)
-          toast.success(i18n.t('Prolonged successfully', { ns: 'virtual_hosting' }), {
-            position: 'bottom-right',
-          })
+          dispatch(
+            cartActions.setCartIsOpenedState({
+              isOpened: true,
+              redirectPath: route.SITE_CARE,
+            }),
+          )
           return dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
