@@ -525,7 +525,7 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
 }
 
 const renewService =
-  (body = {}) =>
+  (body = {}, setProlongModal, setProlongData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -570,6 +570,70 @@ const renewService =
           }
 
           throw new Error(data.doc.error.msg.$)
+        }
+
+        const d = {
+          title_name: data?.doc?.title_name?.$,
+          expiredate: data?.doc?.expiredate?.$,
+          newexpiredate: data?.doc?.newexpiredate?.$,
+          status: data?.doc?.status?.$,
+          period: data?.doc?.period?.$,
+
+          item_status: data?.doc?.messages?.msg?.item_status,
+          item_status_0: data?.doc?.messages?.msg?.item_status_0,
+          item_status_1: data?.doc?.messages?.msg?.item_status_1,
+          item_status_2: data?.doc?.messages?.msg?.item_status_2,
+          item_status_2_2_16: data?.doc?.messages?.msg?.item_status_2_2_16,
+          item_status_2_2_29: data?.doc?.messages?.msg?.item_status_2_2_29,
+          item_status_2_genkey: data?.doc?.messages?.msg?.item_status_2_genkey,
+          item_status_2_hardreboot: data?.doc?.messages?.msg?.item_status_2_hardreboot,
+          item_status_2_reboot: data?.doc?.messages?.msg?.item_status_2_reboot,
+          item_status_2_start: data?.doc?.messages?.msg?.item_status_2_start,
+          item_status_2_stop: data?.doc?.messages?.msg?.item_status_2_stop,
+          item_status_3: data?.doc?.messages?.msg?.item_status_3,
+          item_status_3_abusesuspend:
+            data?.doc?.messages?.msg?.item_status_3_abusesuspend,
+          item_status_3_autosuspend: data?.doc?.messages?.msg?.item_status_3_autosuspend,
+          item_status_3_employeesuspend:
+            data?.doc?.messages?.msg?.item_status_3_employeesuspend,
+          item_status_4: data?.doc?.messages?.msg?.item_status_4,
+          item_status_5: data?.doc?.messages?.msg?.item_status_5,
+          item_status_5_close: data?.doc?.messages?.msg?.item_status_5_close,
+          item_status_5_hardreboot: data?.doc?.messages?.msg?.item_status_5_hardreboot,
+          item_status_5_need_configure:
+            data?.doc?.messages?.msg?.item_status_5_need_configure,
+          item_status_5_open: data?.doc?.messages?.msg?.item_status_5_open,
+          item_status_5_prolong: data?.doc?.messages?.msg?.item_status_5_prolong,
+          item_status_5_reboot: data?.doc?.messages?.msg?.item_status_5_reboot,
+          item_status_5_reopen: data?.doc?.messages?.msg?.item_status_5_reopen,
+          item_status_5_resume: data?.doc?.messages?.msg?.item_status_5_resume,
+          item_status_5_suspend: data?.doc?.messages?.msg?.item_status_5_suspend,
+          item_status_5_transfer: data?.doc?.messages?.msg?.item_status_5_transfer,
+          item_status_hardreboot: data?.doc?.messages?.msg?.item_status_hardreboot,
+          item_status_reboot: data?.doc?.messages?.msg?.item_status_reboot,
+          item_status_service_nosuitable:
+            data?.doc?.messages?.msg?.item_status_service_nosuitable,
+        }
+
+        data?.doc?.slist?.forEach(list => {
+          if (list?.$name === 'period') {
+            d['period_list'] = list?.val
+          }
+        })
+
+        setProlongData && setProlongData(d)
+        setProlongModal && setProlongModal(true)
+
+        if (body?.sok === 'ok') {
+          setProlongData && setProlongData(null)
+          setProlongModal && setProlongModal(false)
+          dispatch(
+            cartActions.setCartIsOpenedState({
+              isOpened: true,
+              redirectPath: route.SITE_CARE,
+            }),
+          )
+          return
         }
 
         dispatch(actions.hideLoader())
