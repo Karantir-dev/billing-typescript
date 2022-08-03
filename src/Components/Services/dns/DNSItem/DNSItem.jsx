@@ -12,12 +12,13 @@ import { useOutsideAlerter } from '../../../../utils'
 
 export default function DNSItem({
   storage,
-  setActiveServer,
-  // activeServerID,
   pageRights,
   activeServices,
   setActiveServices,
   setElidForProlongModal,
+  setElidForEditModal,
+  setElidForHistoryModal,
+  setElidForInstructionModal,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
@@ -59,8 +60,6 @@ export default function DNSItem({
         className={cn(s.item, {
           [s.active_server]: serverIsActive,
         })}
-        // type="button"
-        // onClick={() => setActiveServer(storage)}
       >
         <span className={s.value}>{storage?.id?.$}</span>
         <span className={s.value}>
@@ -80,7 +79,7 @@ export default function DNSItem({
         {isToolsBtnVisible && (
           <div
             className={cn(s.dots_wrapper, s.value, {
-              [s.disabled]: activeServices.length > 1,
+              [s.disabled]: false,
             })}
           >
             <button
@@ -101,7 +100,7 @@ export default function DNSItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(storage.id.$)}
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
                       disabled={!pageRights?.edit || storage?.status?.$ === '1'}
                     >
                       <Edit className={s.tool_icon} />
@@ -126,8 +125,7 @@ export default function DNSItem({
                       className={s.tool_btn}
                       type="button"
                       onClick={() => {
-                        // handleToolBtnClick(setElidForHistoryModal)
-                        setActiveServer(storage)
+                        handleToolBtnClick(setElidForHistoryModal)
                       }}
                     >
                       <Refund className={s.tool_icon} />
@@ -139,9 +137,7 @@ export default function DNSItem({
                       className={s.tool_btn}
                       type="button"
                       disabled={storage?.status?.$ === '1' || !pageRights?.instruction}
-                      // onClick={() =>
-                      //   handleToolBtnClick(setElidForInstructionModal)
-                      // }
+                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
                       <Info className={s.tool_icon} />
                       {t('instruction')}

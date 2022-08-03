@@ -16,8 +16,6 @@ export default function DNSList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setActiveServer,
-  activeServerID,
   pageRights,
   setActiveServices,
   activeServices,
@@ -93,23 +91,24 @@ export default function DNSList({
             <DNSItem
               key={el.id.$}
               storage={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
               activeServices={activeServices}
               setActiveServices={setActiveServices}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
               setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
               pageRights={pageRights}
             />
           ) : (
             <DNSMobileItem
               key={el.id.$}
               storage={el}
-              setElidForEditModal={setElidForEditModal}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
               setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
-              setElidForHistoryModal={setElidForHistoryModal}
-              setElidForInstructionModal={setElidForInstructionModal}
-              setActiveServer={setActiveServer}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
               activeServices={activeServices}
+              setActiveServices={setActiveServices}
               pageRights={pageRights}
             />
           )

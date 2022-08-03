@@ -167,5 +167,6 @@
   "services_selected": "Выбрано услуг:",
   "server_deleted": "Сервер {{id}} удален",
   "unknown_error": "Что-то пошло не так",
-  "and_more": "и еще {{value}}"
+  "and_more": "и еще {{value}}",
+  "Attention, edit few services": "Внимание! Следующие изменения будут применены ко всем выбранным услугам"
 }

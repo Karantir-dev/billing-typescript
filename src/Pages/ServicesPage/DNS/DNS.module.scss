@@ -23,9 +23,14 @@
 
 .tools_wrapper {
   display: flex;
+  flex-direction: column-reverse;
+  // align-items: center;
+  // justify-content: space-between;
+}
+
+.btns_wrapper {
+  display: flex;
   align-items: center;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
 }
 
 .tools_container {
@@ -33,8 +38,9 @@
   position: relative;
 }
 
-.desktop_tools_wrapper {
+.check_box_wrapper {
   display: flex;
+  margin-top: 25px;
 }
 
 .order_btn {
@@ -118,6 +124,19 @@
   gap: 15px;
 }
 
+.main_checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.check_box {
+  box-shadow: var(--checkbox_shadow);
+  background-color: var(--forms_bgc_4);
+}
+
 //Adaptive
 
 @media screen and (min-width: 768px) {
@@ -133,13 +152,35 @@
     margin-top: 30px;
   }
   .buttons_wrapper {
-    justify-content: flex-end;
+    width: fit-content;
+    order: 2;
+  }
+
+  .total_price {
+    font-size: 16px;
+    order: 3;
   }
 
   .tools_footer {
     flex-wrap: nowrap;
     column-gap: 30px;
     padding: 15px 65px 15px 60px;
+  }
+  .services_selected {
+    font-size: 16px;
+    order: 1;
+  }
+  .main_checkbox {
+    font-size: 16px;
+  }
+  .check_box_wrapper {
+    margin-top: 0px;
+  }
+  .tools_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 
@@ -157,10 +198,9 @@
 
 @media screen and (min-width: 1600px) {
   .tools_wrapper {
-    justify-content: space-between;
-    flex-direction: row;
 
-    .desktop_tools_wrapper {
+
+    .check_box_wrapper {
       margin-left: 35px;
     }
   }
