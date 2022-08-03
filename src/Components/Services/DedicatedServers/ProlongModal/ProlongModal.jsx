@@ -11,7 +11,6 @@ import classNames from 'classnames'
 import { replaceAllFn, translatePeriod } from '../../../../utils'
 
 export default function ProlongModal({ elidList, closeFn, pageName, names }) {
-  console.log(elidList, 'elidList in prol modal')
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'trusted_users'])
 
   const dispatch = useDispatch()
