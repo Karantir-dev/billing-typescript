@@ -30,9 +30,9 @@ describe('Login Component', () => {
   )
   const root = component.root
 
-  test('Component have 3 inputs', () => {
+  test('Component have 2 inputs', () => {
     const input = root.findAllByType('input')
-    expect(input).toHaveLength(3)
+    expect(input).toHaveLength(2)
   })
 
   test('Component have 2 links', () => {
