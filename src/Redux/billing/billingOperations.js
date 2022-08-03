@@ -517,11 +517,17 @@ const getPaymentMethod =
           payment_currency: data.doc?.payment_currency?.$,
         }
 
-        data.doc?.slist?.forEach(el => {
-          if (el.$name === 'payment_currency') {
-            d[`${el.$name}_list`] = el.val
-          }
-        })
+        if (data.doc?.slist) {
+          data.doc?.slist?.forEach(el => {
+            if (el.$name === 'payment_currency') {
+              d[`${el.$name}_list`] = el.val
+            }
+          })
+        } else {
+          d['payment_currency_list'] = [{ $: 'EUR', $key: data.doc?.payment_currency?.$ }]
+        }
+
+        console.log(data.doc)
 
         dispatch(billingActions.setPaymentCurrencyList(d))
 

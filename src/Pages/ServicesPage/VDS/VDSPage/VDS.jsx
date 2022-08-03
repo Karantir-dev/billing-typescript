@@ -115,7 +115,8 @@ export default function VDS() {
   }, [])
 
   function onPressEnter(event) {
-    if (event.code === 'Enter') {
+    if (event.key === 'Enter') {
+      event.preventDefault()
       dispatch(
         vdsOperations.getVDS({
           setServers,
@@ -147,6 +148,7 @@ export default function VDS() {
         setElemsTotal,
       ),
     )
+    setActiveServices([])
   }
 
   const resetFilterHandler = () => {
@@ -251,7 +253,7 @@ export default function VDS() {
           </div>
         </div>
 
-        {!widerThan1600 && (
+        {!widerThan1600 && servers.length > 0 && (
           <div className={s.main_checkbox}>
             <CheckBox
               className={s.check_box}
@@ -346,7 +348,9 @@ export default function VDS() {
                         server => server?.allow_changepassword?.$ !== 'on',
                       ) || !rights?.changepassword
                     }
-                    // onClick={() => setIdForPassChange(activeServices)}
+                    onClick={() =>
+                      setIdForPassChange(activeServices.map(server => server.id.$))
+                    }
                     icon="passChange"
                   />
                 </HintWrapper>
@@ -358,7 +362,9 @@ export default function VDS() {
                       activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
                       !rights?.reboot
                     }
-                    // onClick={() => setIdForReboot(activeServices)}
+                    onClick={() =>
+                      setIdForReboot(activeServices.map(server => server.id.$))
+                    }
                     icon="reload"
                   />
                 </HintWrapper>
@@ -430,29 +436,26 @@ export default function VDS() {
         />
       </Backdrop>
 
-      <Backdrop
-        isOpened={idForPassChange.length > 0}
-        onClick={() => setIdForPassChange('')}
-      >
+      <Backdrop isOpened={idForPassChange.length > 0}>
         <VDSPasswordChange
           id={idForPassChange}
-          name={getServerName(idForPassChange)}
-          closeFn={() => setIdForPassChange('')}
+          names={getServerName(idForPassChange)}
+          closeFn={() => setIdForPassChange([])}
         />
       </Backdrop>
 
-      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot('')}>
+      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot([])}>
         <VdsRebootModal
           id={idForReboot}
-          name={getServerName(idForReboot)}
-          closeFn={() => setIdForReboot('')}
+          names={getServerName(idForReboot)}
+          closeFn={() => setIdForReboot([])}
         />
       </Backdrop>
 
-      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong('')}>
+      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong([])}>
         <ProlongModal
           elidList={idForProlong}
-          closeFn={() => setIdForProlong('')}
+          closeFn={() => setIdForProlong([])}
           pageName="vds"
           names={getServerName(idForProlong)}
         />

@@ -170,5 +170,6 @@
   "server_deleted": "Server {{id}} deleted",
   "unknown_error": "Something went wrong",
   "services_deletion": "and {{value}} more services?",
-  "Attention, edit few services": "Attention! The following changes will be applied to all selected services"
+  "Attention, edit few services": "Attention! The following changes will be applied to all selected services",
+  "and_more": "and {{value}} more"
 }

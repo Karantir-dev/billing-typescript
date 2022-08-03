@@ -157,7 +157,7 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
                       {names?.length > 1 && (
                         <button onClick={handleMoreBtn} className={s.hidden_area}>
                           {!more
-                            ? t('services_deletion', {
+                            ? t('and_more', {
                                 ns: 'other',
                                 value: +names.length - 1,
                               })

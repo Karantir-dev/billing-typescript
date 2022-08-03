@@ -78,7 +78,7 @@ jobs:
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t zomro-bill-prod .
+          docker build -f Dockerfile.prod -t zomro-bill-prod .
           docker tag zomro-bill-prod:latest zomrocom/zomro-bill-prod:latest
           docker tag zomrocom/zomro-bill-prod:latest zomrocom/zomro-bill-prod:$RELEASE_NAME
           docker push $DOCKER_USERNAME/zomro-bill-prod:latest
@@ -87,7 +87,7 @@ jobs:
         env:
           RELEASE_NAME: release-${{ steps.date.outputs.date }}
         run: |
-          sed -i "s|zomrocom/zomro-bill-prod|zomrocom/zomro-bill-prod:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|zomrocom/zomro-bill-prod|zomrocom/zomro-bill-prod:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment_prod.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -98,10 +98,10 @@ jobs:
           doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
+        run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment_prod.yml
 
       - name: Verify deployment
-        run: kubectl rollout status deployment/zomro-bill-deployment -n dev
+        run: kubectl rollout status deployment/zomro-bill-prod-deployment -n prod
       
       - name: Deploy status
         uses: 8398a7/action-slack@v3

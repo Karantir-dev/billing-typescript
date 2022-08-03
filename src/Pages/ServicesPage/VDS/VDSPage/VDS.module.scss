@@ -131,6 +131,7 @@
   height: 100%;
   border-radius: 1px;
   background-color: var(--forms_bgc_2);
+  color: inherit;
 
   &:focus {
     outline: transparent;

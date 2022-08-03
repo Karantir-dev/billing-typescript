@@ -170,5 +170,5 @@
   "services_selected": "Обрано послуг:",
   "server_deleted": "Сервер {{id}} видалений",
   "unknown_error": "Щось пішло не так",
-  "services_deletion": "і ще {{value}} послуг?"
+  "and_more": "і ще {{value}}"
 }

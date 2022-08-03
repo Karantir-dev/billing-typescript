@@ -88,8 +88,8 @@
   "Confirm": "დადასტურება",
   "service": "მომსახურება",
   "to_order": "შეკვეთა",
-  "Edit": "შეცვლა",
-  "Delete": "წაშლა",
+  "edit": "შეცვლა",
+  "delete": "წაშლა",
   "short_month": "თვე",
   "Choose all": "აირჩიეთ ყველა",
   "No matching options": "შესაფერისი ვარიანტები არ არის",
@@ -166,5 +166,6 @@
   "services_selected": "შერჩეულია სერვისები:",
   "server_deleted": "სერვერი {{id}} წაიშალა",
   "unknown_error": "Რაღაც არასწორად წავიდა",
-  "services_deletion": "და მეტი {{value}} სერვისი?"
+  "services_deletion": "და მეტი {{value}} სერვისი?",
+  "and_more": "და მეტი {{value}}"
 }
