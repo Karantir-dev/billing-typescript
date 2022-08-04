@@ -2,14 +2,13 @@
 
 .filterBlock {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
   flex-direction: column-reverse;
   margin-top: 35px;
 }
 
 .newTicketBtn {
-  height: 50px;
+  height: 53px;
   text-transform: uppercase;
   max-width: 230px;
   min-width: 200px;
@@ -48,14 +47,10 @@
   display: none;
 }
 
-.transferBtn {
-  margin-right: 20px;
-}
-
 .filterBtnBlock {
   position: relative;
   margin-top: 5px;
-  margin-right: 35px;
+  margin-right: 19px;
 }
 
 .bg {
@@ -201,13 +196,17 @@
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 600px) {
   .newTicketBtn {
     max-width: 229px;
+    margin-right: 20px;
+    margin-bottom: 0;
   }
+
   .filterBlock {
     flex-direction: row-reverse;
   }
+
   .bg {
     align-items: center;
   }
@@ -290,6 +289,7 @@
   .newTicketBtn {
     margin-bottom: 0;
   }
+
   .select {
     max-width: 287px;
     margin-right: 0px;
@@ -298,6 +298,7 @@
       margin-top: 10px;
     }
   }
+
   .form {
     min-width: 768px;
     flex-direction: column;
@@ -332,8 +333,9 @@
 
 @media screen and (min-width: 1600px) {
   .filterBlock {
-    flex-direction: row;
+    flex-direction: row-reverse;
   }
+
   .archiveBtn {
     margin-right: 20px;
     display: block;
@@ -349,12 +351,12 @@
   }
 
   .newTicketBtn {
-    margin-right: 0;
+    margin-right: 20px;
     font-size: 20px;
   }
 
   .filterBtnBlock {
-    margin-right: 20px;
+    margin-right: 19px;
   }
 }
 
@@ -362,17 +364,21 @@
   .filterModal {
     padding: 26px 31px;
   }
+
   .form {
     min-width: 950px;
   }
+
   .searchInput {
     min-width: 280px;
     margin-right: 22px;
   }
+
   .select {
     max-width: 295px;
     margin-right: 22px;
   }
+
   .dateSelect {
     max-width: 225px;
     width: 225px;

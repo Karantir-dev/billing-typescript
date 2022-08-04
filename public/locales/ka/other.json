@@ -162,5 +162,6 @@
   "server_deleted": "სერვერი {{id}} წაიშალა",
   "unknown_error": "Რაღაც არასწორად წავიდა",
   "services_deletion": "და მეტი {{value}} სერვისი?",
-  "and_more": "და მეტი {{value}}"
+  "and_more": "და მეტი {{value}}",
+  "Services per page": "სერვისები თითო გვერდზე"
 }

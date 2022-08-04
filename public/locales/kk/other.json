@@ -163,5 +163,6 @@
   "Forex server activation": "Forex серверін белсендіру",
   "server_deleted": "{{id}} сервері жойылды",
   "unknown_error": "Бірдеңе дұрыс болмады",
-  "and_more": "және тағы басқа {{value}}"
+  "and_more": "және тағы басқа {{value}}",
+  "Services per page": "Әр бетте қызметтер"
 }

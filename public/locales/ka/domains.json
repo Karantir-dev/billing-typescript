@@ -94,5 +94,7 @@
 
     
   "Select": "აირჩიე",
-  "Selected": "არჩეული"
+  "Selected": "არჩეული",
+
+  "View/change the list of name servers": "იხილეთ/შეცვალეთ სახელების სერვერების სია"
 }

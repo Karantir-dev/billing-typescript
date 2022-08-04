@@ -22,7 +22,6 @@ const getDomains =
           func: 'domain',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
           lang: 'en',

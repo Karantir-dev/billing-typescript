@@ -165,5 +165,6 @@
   "server_deleted": "Server {{id}} deleted",
   "unknown_error": "Something went wrong",
   "services_deletion": "and {{value}} more services?",
-  "and_more": "and {{value}} more"
+  "and_more": "and {{value}} more",
+  "Services per page": "Services per page"
 }
