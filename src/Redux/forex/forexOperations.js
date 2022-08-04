@@ -206,7 +206,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
@@ -348,6 +347,8 @@ const editForex =
 
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
+
+  console.log(elid)
 
   const {
     auth: { sessionId },
