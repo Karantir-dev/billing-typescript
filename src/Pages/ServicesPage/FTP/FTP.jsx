@@ -34,7 +34,7 @@ export default function FTP() {
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  let ftpRenderData = useSelector(ftpSelectors.getFTPList)
+  const ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -281,12 +281,6 @@ export default function FTP() {
         rights={rights}
       />
 
-      {/* {Number(ftpCount) <= 30 && widerThan1600 && ftpRenderData?.ftpList?.length !== 0 && (
-        <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${+ftpTotalPrice?.toFixed(4)} EUR`}
-        </div>
-      )} */}
-
       {ftpRenderData?.ftpList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
@@ -349,6 +343,7 @@ export default function FTP() {
           elidList={elidForProlongModal}
           closeFn={() => setElidForProlongModal([])}
           pageName="ftp"
+          names={getServerName(elidForProlongModal)}
         />
       </Backdrop>
 

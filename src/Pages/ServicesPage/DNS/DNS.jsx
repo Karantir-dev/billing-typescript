@@ -387,46 +387,6 @@ export default function DNS() {
           {activeServices.length >= 1 && (
             <>
               <div className={s.buttons_wrapper}>
-                {/* <HintWrapper label={t('delete', { ns: 'other' })}>
-                  <IconButton
-                    className={s.tools_icon}
-                    onClick={() =>
-                      setIdForDeleteModal(activeServices.map(server => server.id.$))
-                    }
-                    disabled={
-                      activeServices.some(
-                        server =>
-                          server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
-                      ) || !rights?.delete
-                    }
-                    icon="delete"
-                  />
-                </HintWrapper> */}
-                {/* <HintWrapper label={t('password_change')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(
-                        server => server?.allow_changepassword?.$ !== 'on',
-                      ) || !rights?.changepassword
-                    }
-                    // onClick={() => setIdForPassChange(activeServices)}
-                    icon="passChange"
-                  />
-                </HintWrapper> */}
-                {/*
-                <HintWrapper label={t('reload')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
-                      !rights?.reboot
-                    }
-                    // onClick={() => setIdForReboot(activeServices)}
-                    icon="reload"
-                  />
-                </HintWrapper> */}
-
                 <HintWrapper label={t('prolong')}>
                   <IconButton
                     className={s.tools_icon}
@@ -472,6 +432,7 @@ export default function DNS() {
           elidList={elidForProlongModal}
           closeFn={() => setElidForProlongModal([])}
           pageName="dns"
+          names={getServerName(elidForProlongModal)}
         />
       </Backdrop>
 

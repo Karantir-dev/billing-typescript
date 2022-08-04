@@ -473,6 +473,7 @@ export default function DedicatedServersPage() {
         <ProlongModal
           elidList={elidForProlongModal}
           closeFn={() => setElidForProlongModal([])}
+          names={getServerName(elidForProlongModal)}
           pageName="dedics"
         />
       </Backdrop>

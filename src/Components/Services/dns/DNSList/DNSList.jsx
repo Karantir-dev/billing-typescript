@@ -28,7 +28,7 @@ export default function DNSList({
     'access_log',
     'dns',
   ])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (dnsList) {
     if (dnsList.length === 0 && emptyFilter) {
@@ -60,7 +60,7 @@ export default function DNSList({
 
   return (
     <>
-      {widerThan1550 && dnsList?.length > 0 && (
+      {widerThan1600 && dnsList?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
@@ -87,7 +87,7 @@ export default function DNSList({
 
       <ul className={s.list}>
         {dnsList?.map(el => {
-          return widerThan1550 ? (
+          return widerThan1600 ? (
             <DNSItem
               key={el.id.$}
               storage={el}

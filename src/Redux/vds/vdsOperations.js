@@ -494,9 +494,6 @@ const rebootServer = id => (dispatch, getState) => {
         position: 'bottom-right',
       })
       dispatch(actions.hideLoader())
-      toast.success(i18n.t('Server has been successfully rebooted', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)

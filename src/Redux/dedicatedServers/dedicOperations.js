@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { errorHandler, replaceAllFn } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
 
@@ -1169,6 +1169,16 @@ const payProlongPeriodFewElems =
       })
       .catch(error => {
         console.log('error', error)
+
+        if (
+          replaceAllFn(error.message.trim(), String.fromCharCode(39), '"') ===
+          'The "Period" field has invalid value.'
+        ) {
+          toast.warning(i18n.t('The Period field has invalid value.', { ns: 'other' }), {
+            position: 'bottom-right',
+            toastId: 'customId',
+          })
+        }
         errorHandler(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

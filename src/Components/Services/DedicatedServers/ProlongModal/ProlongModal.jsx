@@ -8,7 +8,7 @@ import { Button, Select } from '../../..'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
-import { replaceAllFn, translatePeriod } from '../../../../utils'
+import { translatePeriod } from '../../../../utils'
 
 export default function ProlongModal({ elidList, closeFn, pageName, names }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'trusted_users'])
@@ -27,10 +27,9 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
 
   useEffect(() => {
     if (elidList?.length > 1) {
-      const elidToString = elidList?.toString()
-      const elidWithSpaces = replaceAllFn(elidToString, ',', ', ')
-
-      dispatch(dedicOperations.getProlongInfoForFewElems(elidWithSpaces, setInitialState))
+      dispatch(
+        dedicOperations.getProlongInfoForFewElems(elidList.join(', '), setInitialState),
+      )
     } else {
       dispatch(dedicOperations.getProlongInfo(elidList[0], setInitialState))
     }
@@ -44,12 +43,9 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
     const { period } = values
 
     if (elidList?.length > 1) {
-      const elidToString = elidList?.toString()
-      const elidWithSpaces = replaceAllFn(elidToString, ',', ', ')
-
       dispatch(
         dedicOperations.payProlongPeriodFewElems(
-          elidWithSpaces,
+          elidList.join(', '),
           period,
           handleEditionModal,
           pageName,

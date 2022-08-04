@@ -17,9 +17,10 @@ import {
   ForexList,
   ForexEditModal,
   ForexFiltersModal,
-  ForexDeletionModal,
+  DeleteModal,
   Pagination,
   ForexInstructionModal,
+  CheckBox,
 } from '../../../Components'
 import { actions, forexOperations, forexSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +28,7 @@ import s from './ForexPage.module.scss'
 import { checkServicesRights, usePageRender } from '../../../utils'
 
 export default function ForexPage() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
@@ -36,12 +37,12 @@ export default function ForexPage() {
   const forexCount = useSelector(forexSelectors.getForexCount)
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
-  // const [forexList, setForexList] = useState(null)
-  const [activeServer, setActiveServer] = useState(null)
+  const [activeServices, setActiveServices] = useState([])
+
   const [elidForEditModal, setElidForEditModal] = useState(0)
-  const [elidForProlongModal, setElidForProlongModal] = useState(0)
+  const [elidForProlongModal, setElidForProlongModal] = useState([])
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
-  const [elidForDeletionModal, setElidForDeletionModal] = useState(0)
+  const [elidForDeletionModal, setElidForDeletionModal] = useState([])
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
@@ -52,6 +53,16 @@ export default function ForexPage() {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const getTotalPrice = () => {
+    const list = activeServices.length > 1 ? activeServices : forexRenderData?.forexList
+
+    return list
+      ?.reduce((totalPrice, server) => {
+        return totalPrice + +server?.cost?.$?.trim()?.split(' ')?.[0]
+      }, 0)
+      ?.toFixed(2)
+  }
 
   useEffect(() => {
     if (filterModal) {
@@ -156,6 +167,29 @@ export default function ForexPage() {
     if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
   }, [filterModal])
 
+  const getServerName = id => {
+    if (typeof id === 'string') {
+      return forexRenderData?.forexList?.reduce((acc, el) => {
+        if (el.id.$ === id) {
+          acc = el.name.$
+        }
+        return acc
+      }, '')
+    } else if (Array.isArray(id)) {
+      return id?.reduce((acc, idValue) => {
+        acc.push(
+          forexRenderData?.forexList?.find(server => server.id.$ === idValue).name.$,
+        )
+
+        return acc
+      }, [])
+    }
+  }
+
+  const handleDeletionModal = closeFn => {
+    dispatch(forexOperations.deleteForex(elidForDeletionModal, closeFn))
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -165,49 +199,84 @@ export default function ForexPage() {
           <span className={s.title_count_services}>{` (${forexCount})`}</span>
         )}
       </h2>
-      <div className={s.tools_wrapper}>
-        <div className={s.tools_container}>
-          <div className={s.filterBtnBlock}>
-            <IconButton
-              onClick={() => setFilterModal(true)}
-              icon="filter"
-              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
-              disabled={
-                (!emptyFilter && forexRenderData?.forexList?.length === 0) ||
-                !rights?.filter
-              }
-            />
-            {filterModal && (
-              <>
-                <Portal>
-                  <div className={s.bg}>
-                    {mobile && (
-                      <ForexFiltersModal
-                        filterModal={filterModal}
-                        setFilterModal={setFilterModal}
-                        filters={filters?.currentFilters}
-                        filtersList={filters?.filters}
-                        resetFilterHandler={resetFilterHandler}
-                        setFilterHandler={setFilterHandler}
-                      />
-                    )}
-                  </div>
-                </Portal>
-                {!mobile && (
-                  <ForexFiltersModal
-                    filterModal={filterModal}
-                    setFilterModal={setFilterModal}
-                    filters={filters?.currentFilters}
-                    filtersList={filters?.filters}
-                    resetFilterHandler={resetFilterHandler}
-                    setFilterHandler={setFilterHandler}
-                  />
-                )}
-              </>
-            )}
-          </div>
 
-          {widerThan1550 && (
+      <div className={s.tools_wrapper}>
+        {!widerThan1600 && forexRenderData?.forexList?.length > 0 && (
+          <div className={s.check_box_wrapper}>
+            <div className={s.main_checkbox}>
+              <CheckBox
+                className={s.check_box}
+                initialState={
+                  activeServices.length === forexRenderData?.forexList?.length
+                }
+                func={isChecked => {
+                  isChecked
+                    ? setActiveServices([])
+                    : setActiveServices(forexRenderData?.forexList)
+                }}
+              />
+              <span>{t('Choose all', { ns: 'other' })}</span>
+            </div>
+          </div>
+        )}
+
+        <div className={s.btns_wrapper}>
+          <Button
+            className={s.order_btn}
+            isShadow
+            type="button"
+            label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
+            onClick={() => {
+              navigate(route.FOREX_ORDER, {
+                state: { isForexOrderAllowed: rights?.new },
+                replace: true,
+              })
+            }}
+            disabled={!rights?.new}
+          />
+
+          <div className={s.tools_container}>
+            <div className={s.filterBtnBlock}>
+              <IconButton
+                onClick={() => setFilterModal(true)}
+                icon="filter"
+                className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
+                disabled={
+                  (!emptyFilter && forexRenderData?.forexList?.length === 0) ||
+                  !rights?.filter
+                }
+              />
+              {filterModal && (
+                <>
+                  <Portal>
+                    <div className={s.bg}>
+                      {mobile && (
+                        <ForexFiltersModal
+                          filterModal={filterModal}
+                          setFilterModal={setFilterModal}
+                          filters={filters?.currentFilters}
+                          filtersList={filters?.filters}
+                          resetFilterHandler={resetFilterHandler}
+                          setFilterHandler={setFilterHandler}
+                        />
+                      )}
+                    </div>
+                  </Portal>
+                  {!mobile && (
+                    <ForexFiltersModal
+                      filterModal={filterModal}
+                      setFilterModal={setFilterModal}
+                      filters={filters?.currentFilters}
+                      filtersList={filters?.filters}
+                      resetFilterHandler={resetFilterHandler}
+                      setFilterHandler={setFilterHandler}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* {widerThan1600 && (
             <div className={s.desktop_tools_wrapper}>
               <HintWrapper
                 wrapperClassName={s.hint_wrapper}
@@ -274,53 +343,87 @@ export default function ForexPage() {
                 />
               </HintWrapper>
             </div>
-          )}
+          )} */}
+          </div>
         </div>
-
-        <Button
-          className={s.order_btn}
-          isShadow
-          type="button"
-          label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => {
-            navigate(route.FOREX_ORDER, {
-              state: { isForexOrderAllowed: rights?.new },
-              replace: true,
-            })
-          }}
-          disabled={!rights?.new}
-        />
       </div>
+
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
-        activeServerID={activeServer?.id?.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForDeletionModal={setElidForDeletionModal}
         setElidForInstructionModal={setElidForInstructionModal}
-        setActiveServer={setActiveServer}
+        activeServices={activeServices}
+        setActiveServices={setActiveServices}
         pageRights={rights}
       />
-
-      {Number(forexCount) <= 30 &&
-        widerThan1550 &&
-        forexRenderData?.forexList?.length !== 0 && (
-          <div className={s.total_pagination_price}>
-            {t('Sum', { ns: 'other' })}: {`${+forexTotalPrice?.toFixed(4)} EUR`}
-          </div>
-        )}
 
       {forexRenderData?.forexList?.length !== 0 && (
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage}
             totalCount={Number(forexCount)}
-            totalPrice={widerThan1550 && +forexTotalPrice?.toFixed(4)}
+            totalPrice={widerThan1600 && +forexTotalPrice?.toFixed(4)}
             pageSize={30}
             onPageChange={page => setCurrentPage(page)}
           />
+        </div>
+      )}
+
+      {forexRenderData?.forexList?.length > 0 && (
+        <div className={s.tools_footer}>
+          {activeServices.length >= 1 && (
+            <>
+              <div className={s.buttons_wrapper}>
+                <HintWrapper label={t('delete', { ns: 'other' })}>
+                  <IconButton
+                    className={s.tools_icon}
+                    onClick={() =>
+                      setElidForDeletionModal(activeServices.map(server => server.id.$))
+                    }
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                      ) || !rights?.delete
+                    }
+                    icon="delete"
+                  />
+                </HintWrapper>
+
+                <HintWrapper label={t('prolong')}>
+                  <IconButton
+                    className={s.tools_icon}
+                    disabled={
+                      activeServices.some(
+                        server =>
+                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                          server?.item_status?.$.trim() === 'Suspended by Administrator',
+                      ) || !rights?.prolong
+                    }
+                    onClick={() =>
+                      setElidForProlongModal(activeServices?.map(item => item.id.$))
+                    }
+                    icon="clock"
+                  />
+                </HintWrapper>
+              </div>
+
+              <p className={s.services_selected}>
+                {t('services_selected', { ns: 'other' })}{' '}
+                <span className={s.tools_footer_value}>{activeServices.length}</span>
+              </p>
+            </>
+          )}
+          <p className={s.total_price}>
+            {t('total', { ns: 'other' })}:{' '}
+            <span className={s.tools_footer_value}>
+              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            </span>
+          </p>
         </div>
       )}
 
@@ -329,13 +432,14 @@ export default function ForexPage() {
       </Backdrop>
 
       <Backdrop
-        onClick={() => setElidForProlongModal(0)}
-        isOpened={Boolean(elidForProlongModal)}
+        onClick={() => setElidForProlongModal([])}
+        isOpened={elidForProlongModal.length > 0}
       >
         <ProlongModal
-          elid={elidForProlongModal}
-          closeFn={() => setElidForProlongModal(0)}
+          elidList={elidForProlongModal}
+          closeFn={() => setElidForProlongModal([])}
           pageName="forex"
+          names={getServerName(elidForProlongModal)}
         />
       </Backdrop>
 
@@ -345,19 +449,19 @@ export default function ForexPage() {
       >
         <DedicsHistoryModal
           elid={elidForHistoryModal}
-          server={activeServer}
+          name={getServerName(elidForHistoryModal)}
           closeFn={() => setElidForHistoryModal(0)}
         />
       </Backdrop>
 
       <Backdrop
-        onClick={() => setElidForDeletionModal(0)}
-        isOpened={Boolean(elidForDeletionModal)}
+        onClick={() => setElidForDeletionModal([])}
+        isOpened={elidForDeletionModal.length > 0}
       >
-        <ForexDeletionModal
-          server={activeServer}
-          elid={elidForDeletionModal}
-          closeFn={() => setElidForDeletionModal(0)}
+        <DeleteModal
+          names={getServerName(elidForDeletionModal)}
+          closeFn={() => setElidForDeletionModal([])}
+          deleteFn={() => handleDeletionModal(() => setElidForDeletionModal([]))}
         />
       </Backdrop>
 
