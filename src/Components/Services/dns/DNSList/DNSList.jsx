@@ -119,9 +119,13 @@ export default function DNSList({
 }
 
 DNSList.propTypes = {
-  storageList: PropTypes.arrayOf(PropTypes.object),
+  dnsList: PropTypes.arrayOf(PropTypes.object),
+  emptyFilter: PropTypes.bool,
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   pageRights: PropTypes.object,
 }

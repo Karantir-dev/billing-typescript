@@ -119,9 +119,14 @@ export default function ForexList({
 }
 
 ForexList.propTypes = {
-  servers: PropTypes.arrayOf(PropTypes.object),
+  forexList: PropTypes.arrayOf(PropTypes.object),
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  emptyFilter: PropTypes.bool,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setElidForDeletionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   pageRights: PropTypes.object,
 }
