@@ -3,7 +3,13 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './Toggle.module.scss'
 
-export default function Component({ initialState, setValue, disabled }) {
+export default function Component({
+  initialState,
+  setValue,
+  func,
+  hasConfirmation,
+  disabled,
+}) {
   const [isToggled, setIsToggled] = useState(false)
 
   useEffect(() => {
@@ -15,7 +21,12 @@ export default function Component({ initialState, setValue, disabled }) {
   }, [isToggled])
 
   const toggleHandler = val => {
-    setIsToggled(!val)
+    if (!hasConfirmation) {
+      func && func()
+      setIsToggled(!val)
+    } else {
+      func()
+    }
   }
 
   return (
@@ -38,4 +49,6 @@ Component.propTypes = {
   disabled: PropTypes.bool,
   initialState: PropTypes.bool,
   setValue: PropTypes.func,
+  func: PropTypes.func,
+  hasConfirmation: PropTypes.bool,
 }

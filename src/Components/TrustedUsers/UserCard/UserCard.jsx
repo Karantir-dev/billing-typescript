@@ -5,14 +5,15 @@ import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import ToggleButton from '../ToggleButton/ToggleButton'
 import ControlBtn from '../ControlBtn/ControlBtn'
-import { selectors, usersOperations, usersSelectors } from '../../../Redux'
-
-import s from './UserCard.module.scss'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
 import { Info } from '../../../images'
+import Alert from '../../ui/Alert/Alert'
+import { Button, Toggle } from '../..'
+import { selectors, usersOperations, usersSelectors } from '../../../Redux'
+
+import s from './UserCard.module.scss'
 
 export default function UserCard({
   name,
@@ -107,12 +108,13 @@ export default function UserCard({
 
   const handleAccessClick = () => {
     const switchAccess = hasAccess ? 'off' : 'on'
-    setIsSuccessAlertOpened(!isSuccessAlertOpened)
+
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
 
     if (switchAccess === 'off') {
       dispatch(usersOperations.getRights(userId, isOwner))
     }
+    setIsSuccessAlertOpened(!isSuccessAlertOpened)
   }
 
   const handleStatusClick = () => {
@@ -143,6 +145,25 @@ export default function UserCard({
     }
   }, [isRightsComponentAllowedToRender])
 
+  // new toggle
+
+  let alertAccessText = ''
+
+  if (!hasAccess) {
+    alertAccessText = `${t('trusted_users.alerts.access.text')} ${email} ${t(
+      'trusted_users.alerts.access.text2',
+    )}`
+  } else {
+    alertAccessText = `${t('trusted_users.alerts.access.text3')} ${email} ${t(
+      'trusted_users.alerts.access.text4',
+    )}`
+  }
+
+  const alertStatusText =
+    !status === 'on'
+      ? `${t('trusted_users.alerts.status.text')} ${email}?`
+      : `${t('trusted_users.alerts.status.text2')} ${email}?`
+
   return (
     <>
       {mobile && (
@@ -164,16 +185,11 @@ export default function UserCard({
                   : t('trusted_users.user_cards.no')}
               </p>
 
-              <ToggleButton
-                toggleName="access"
-                func={handleAccessClick}
-                initialState={hasAccess}
-                isAlertOpened={isSuccessAlertOpened}
-                email={email}
-                handleAlert={handleAccessAlert}
-                isOwner={isOwner}
-                hasAlert={true}
-                disabled={!hasPageOwnerFullAccess}
+              <Toggle
+                initialState={hasAccess === 'on'}
+                func={handleAccessAlert}
+                disabled={!hasPageOwnerFullAccess || isOwner}
+                hasConfirmation
               />
 
               {hasAccess && !isOwner && (
@@ -210,19 +226,16 @@ export default function UserCard({
                   ? t('trusted_users.user_cards.active')
                   : t('trusted_users.user_cards.inactive')}
               </p>
-              <ToggleButton
-                toggleName="status"
+
+              <Toggle
                 initialState={status === 'on'}
-                func={handleStatusClick}
-                isAlertOpened={isStatusAlertOpened}
-                email={email}
-                handleAlert={handleStatusAlert}
-                isOwner={isOwner}
-                hasAlert={true}
+                func={handleStatusAlert}
                 disabled={
                   (!isTurnOnUserAllowed && status === 'off') ||
-                  (!isTurnOffUserAllowed && status === 'on')
+                  (!isTurnOffUserAllowed && status === 'on') ||
+                  isOwner
                 }
+                hasConfirmation
               />
             </div>
           </div>
@@ -260,16 +273,11 @@ export default function UserCard({
                 </p>
               )}
 
-              <ToggleButton
-                toggleName="access"
-                func={handleAccessClick}
-                initialState={hasAccess}
-                isAlertOpened={isSuccessAlertOpened}
-                email={email}
-                handleAlert={handleAccessAlert}
-                isOwner={isOwner}
-                hasAlert={true}
-                disabled={!hasPageOwnerFullAccess}
+              <Toggle
+                initialState={hasAccess === 'on'}
+                func={handleAccessAlert}
+                disabled={!hasPageOwnerFullAccess || isOwner}
+                hasConfirmation
               />
 
               {hasAccess && !isOwner && (
@@ -299,20 +307,15 @@ export default function UserCard({
                     : t('trusted_users.user_cards.inactive')}
                 </p>
               )}
-              <ToggleButton
-                toggleName="status"
+              <Toggle
                 initialState={status === 'on'}
-                func={handleStatusClick}
-                isAlertOpened={isStatusAlertOpened}
-                email={email}
-                handleAlert={handleStatusAlert}
-                isOwner={isOwner}
-                hasAlert={true}
-                handleRightsAlert={handleRightsAlert}
+                func={handleStatusAlert}
                 disabled={
                   (!isTurnOnUserAllowed && status === 'off') ||
-                  (!isTurnOffUserAllowed && status === 'on')
+                  (!isTurnOffUserAllowed && status === 'on') ||
+                  isOwner
                 }
+                hasConfirmation
               />
             </div>
             <div className={s.control_btn}>
@@ -335,6 +338,66 @@ export default function UserCard({
             </div>
           </div>
         </div>
+      )}
+
+      {isSuccessAlertOpened && (
+        <Alert
+          hasControlBtns={true}
+          dataTestid="trusted_users_alert_access"
+          isOpened={isSuccessAlertOpened}
+          controlAlert={handleAccessAlert}
+          title={
+            hasAccess
+              ? t('trusted_users.alerts.access.title2')
+              : t('trusted_users.alerts.access.title')
+          }
+          text={alertAccessText}
+          mainBtn={
+            <Button
+              dataTestid="alert_controlBtn_test_access"
+              size="small"
+              label={
+                hasAccess
+                  ? t('trusted_users.alerts.access.btn_text_ok2').toUpperCase()
+                  : t('trusted_users.alerts.access.btn_text_ok').toUpperCase()
+              }
+              type="button"
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
+              onClick={handleAccessClick}
+              isShadow
+            />
+          }
+        />
+      )}
+
+      {isStatusAlertOpened && (
+        <Alert
+          hasControlBtns={true}
+          dataTestid="trusted_users_alert_status"
+          isOpened={isStatusAlertOpened}
+          controlAlert={handleStatusAlert}
+          title={
+            status === 'on'
+              ? t('trusted_users.alerts.status.title2')
+              : t('trusted_users.alerts.status.title')
+          }
+          text={alertStatusText}
+          mainBtn={
+            <Button
+              dataTestid="alert_controlBtn_test_status"
+              size="small"
+              label={
+                status === 'on'
+                  ? t('trusted_users.alerts.status.btn_text_ok2').toUpperCase()
+                  : t('trusted_users.alerts.status.btn_text_ok').toUpperCase()
+              }
+              type="button"
+              className={cn({ [s.add_btn]: true, [s.access]: true })}
+              onClick={handleStatusClick}
+              isShadow
+            />
+          }
+        />
       )}
 
       {showRightsAlert && (

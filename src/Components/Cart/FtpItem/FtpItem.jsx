@@ -15,8 +15,8 @@ export default function FtpItem(props) {
     const afterWord = '</br>'
 
     const managePanel = desc
-      .slice(desc.indexOf(beforeWord) + beforeWord?.length, desc.indexOf(afterWord))
-      .replace(
+      ?.slice(desc?.indexOf(beforeWord) + beforeWord?.length, desc?.indexOf(afterWord))
+      ?.replace(
         'Without a license<br/>IP',
         t('Without a license', { ns: 'dedicated_servers' }),
       )
@@ -25,23 +25,23 @@ export default function FtpItem(props) {
     const afterWordIP = 'Unit'
 
     const ipAmount =
-      desc.slice(
-        desc.indexOf(beforeWordIP) + beforeWordIP?.length,
-        desc.indexOf(afterWordIP),
+      desc?.slice(
+        desc?.indexOf(beforeWordIP) + beforeWordIP?.length,
+        desc?.indexOf(afterWordIP),
       ) +
       'Unit'
-        .replaceAll('Unit', t('Unit', { ns: 'dedicated_servers' }))
-        .replace('current value', t('current value', { ns: 'dedicated_servers' }))
+        ?.replaceAll('Unit', t('Unit', { ns: 'dedicated_servers' }))
+        ?.replace('current value', t('current value', { ns: 'dedicated_servers' }))
 
     const beforeWordSpeed = 'Port speed'
     const afterWordSpeed = '</br>'
 
-    const postSpeed = desc.slice(
-      desc.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
-      desc.indexOf(afterWordSpeed),
+    const postSpeed = desc?.slice(
+      desc?.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
+      desc?.indexOf(afterWordSpeed),
     )
 
-    const paymentPeriod = desc.split(' ').reverse()
+    const paymentPeriod = desc?.split(' ')?.reverse()
     let curPeriod = []
 
     for (let i = 0; i <= paymentPeriod.length; i++) {
@@ -51,7 +51,7 @@ export default function FtpItem(props) {
       }
     }
 
-    const periodStr = curPeriod.reverse().join(' ')
+    const periodStr = curPeriod?.reverse()?.join(' ')
 
     const period = translatePeriod(periodStr, t)
 

@@ -6,6 +6,7 @@ import * as routes from '../../routes'
 import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
+import i18n from './../../i18n'
 
 const getVDS =
   ({
@@ -148,6 +149,9 @@ const editVDS =
             setOrderInfo && setOrderInfo({ price, description })
           } else {
             setOrderInfo && setOrderInfo(null)
+            toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
           }
         }
 
@@ -600,6 +604,9 @@ const changeDomainName =
         closeFn()
 
         dispatch(actions.hideLoader())
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+        })
       })
       .catch(err => {
         errorHandler(err.message, dispatch)

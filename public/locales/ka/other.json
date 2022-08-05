@@ -156,11 +156,18 @@
   "Not selected": "არ არის განსაზღვრული",
   "Paid in payments": "გადახდილი გადახდებში",
   "Tax": "გადასახადი",
+  "Forex server activation": "ფორექსის სერვერის გააქტიურება",
+  "Service has been successfully changed": "სერვისი წარმატებით შეიცვალა",
+  "Service has been successfully removed": "სერვისი წარმატებით წაიშალა",
+  "Password has been successfully changed": "პაროლი წარმატებით შეიცვალა",
+  "Server has been successfully rebooted": "სერვერი წარმატებით გადაიტვირთა",
+  "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა",
   "services_per_page": "სერვისები თითო გვერდზე:",
   "services_selected": "შერჩეულია სერვისები:",
-  "Forex server activation": "ფორექსის სერვერის გააქტიურება",
   "server_deleted": "სერვერი {{id}} წაიშალა",
   "unknown_error": "Რაღაც არასწორად წავიდა",
   "services_deletion": "და მეტი {{value}} სერვისი?",
-  "and_more": "და მეტი {{value}}"
+  "and_more": "და მეტი {{value}}",
+  "Attention, edit few services": "ყურადღება! შემდეგი ცვლილებები გამოყენებული იქნება ყველა არჩეულ სერვისზე",
+  "The Period field has invalid value.": "'პერიოდის' ველს აქვს არასწორი მნიშვნელობა. გთხოვთ, აირჩიოთ სხვა პერიოდი"
 }

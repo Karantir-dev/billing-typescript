@@ -5,7 +5,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './FTPMobileItem.module.scss'
-import { ServerState } from '../../..'
+import { CheckBox, ServerState } from '../../..'
 
 import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'
@@ -16,7 +16,8 @@ export default function FTPMobileItem({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setActiveServer,
+  activeServices,
+  setActiveServices,
   rights,
 }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -27,95 +28,120 @@ export default function FTPMobileItem({
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
-  const handleToolBtnClick = (fn, id) => {
-    fn(id)
+  const handleToolBtnClick = fn => {
+    fn()
     setToolsOpened(false)
   }
 
+  const isToolsBtnVisible =
+    Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
+      .length > 0
+
+  const serverIsActive = activeServices?.some(
+    service => service?.id?.$ === storage?.id?.$,
+  )
+
   return (
     <li className={s.item}>
-      <div className={s.dots_wrapper}>
-        <button className={s.dots_btn} type="button" onClick={() => setToolsOpened(true)}>
-          <MoreDots />
-        </button>
+      {isToolsBtnVisible && (
+        <div className={s.tools_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={serverIsActive}
+            func={isChecked => {
+              isChecked
+                ? setActiveServices(
+                    activeServices?.filter(item => item?.id?.$ !== storage?.id?.$),
+                  )
+                : setActiveServices([...activeServices, storage])
+            }}
+          />
 
-        {toolsOpened && (
-          <div className={s.dropdown} ref={dropdownEl}>
-            <div className={s.pointer_wrapper}>
-              <div className={s.pointer}></div>
-            </div>
-            <ul>
-              <li className={s.tool_item}>
-                <button
-                  disabled={!rights?.edit || storage?.status?.$ === '1'}
-                  className={s.tool_btn}
-                  type="button"
-                  onClick={() => handleToolBtnClick(setElidForEditModal, storage.id.$)}
-                >
-                  <Edit className={s.tool_icon} />
-                  {t('edit', { ns: 'other' })}
-                </button>
-              </li>
+          <div className={s.dots_wrapper}>
+            <button
+              className={s.dots_btn}
+              type="button"
+              onClick={() => setToolsOpened(true)}
+            >
+              <MoreDots />
+            </button>
 
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={storage?.status?.$ === '1' || !rights?.prolong}
-                  onClick={() => handleToolBtnClick(setElidForProlongModal, storage.id.$)}
-                >
-                  <Clock className={s.tool_icon} />
-                  {t('prolong')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={!rights?.history || storage?.status?.$ === '1'}
-                  onClick={() => {
-                    handleToolBtnClick(setElidForHistoryModal, storage.id.$)
-                    setActiveServer(storage)
-                  }}
-                >
-                  <Refund className={s.tool_icon} />
-                  {t('history')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={storage?.status?.$ === '1' || !rights?.instruction}
-                  onClick={() =>
-                    handleToolBtnClick(setElidForInstructionModal, storage.id.$)
-                  }
-                >
-                  <Info className={s.tool_icon} />
-                  {t('instruction')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={
-                    storage.transition?.$ !== 'on' ||
-                    !rights?.gotoserver ||
-                    storage?.status?.$ !== '2'
-                  }
-                  onClick={() => {
-                    dispatch(dedicOperations.goToPanel(storage.id.$))
-                  }}
-                >
-                  <ExitSign className={s.tool_icon} />
-                  {t('go_to_panel')}
-                </button>
-              </li>
-            </ul>
+            {toolsOpened && (
+              <div className={s.dropdown} ref={dropdownEl}>
+                <div className={s.pointer_wrapper}>
+                  <div className={s.pointer}></div>
+                </div>
+                <ul>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!rights?.edit || storage?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    >
+                      <Edit className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
+                    </button>
+                  </li>
+
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={storage?.status?.$ === '1' || !rights?.prolong}
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Clock className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={!rights?.history || storage?.status?.$ === '1'}
+                      onClick={() => {
+                        handleToolBtnClick(setElidForHistoryModal)
+                      }}
+                    >
+                      <Refund className={s.tool_icon} />
+                      {t('history')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={storage?.status?.$ === '1' || !rights?.instruction}
+                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
+                    >
+                      <Info className={s.tool_icon} />
+                      {t('instruction')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={
+                        storage.transition?.$ !== 'on' ||
+                        !rights?.gotoserver ||
+                        storage?.status?.$ !== '2'
+                      }
+                      onClick={() => {
+                        dispatch(dedicOperations.goToPanel(storage.id.$))
+                      }}
+                    >
+                      <ExitSign className={s.tool_icon} />
+                      {t('go_to_panel')}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <span className={s.label}>Id:</span>
       <span className={s.value}>{storage?.id?.$}</span>

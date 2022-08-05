@@ -72,5 +72,6 @@
   "Service has been modified": "სერვისი '{{value}}' შეიცვალა",
   "Service has been activated": "სერვისი '{{value}}' გააქტიურებულია",
   "Change pricelist": "'{{value}}'-ის ტარიფის შეცვლისას მოხდა შეცდომა. თქვენი ძველი სატარიფო გეგმა გააქტიურებულია",
-  "Failed to register the SSL-certificate": "'{{value}}' SSL-სერთიფიკატის რეგისტრაცია ვერ მოხერხდა"
+  "Failed to register the SSL-certificate": "'{{value}}' SSL-სერთიფიკატის რეგისტრაცია ვერ მოხერხდა",
+  "Password for has been changed": "'{{value}}'-ის პაროლი შეიცვალა"
 }

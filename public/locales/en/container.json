@@ -72,5 +72,6 @@
   "Service has been modified": "Service '{{value}}' has been modified",
   "Service has been activated": "Service '{{value}}' has been activated",
   "Change pricelist": "An error occurred when changing the tariff of '{{value}}'. Your old tariff plan has been activated",
-  "Failed to register the SSL-certificate": "Failed to register the '{{value}}' SSL-certificate"
+  "Failed to register the SSL-certificate": "Failed to register the '{{value}}' SSL-certificate",
+  "Password for has been changed": "Password for '{{value}}' has been changed"
 }
