@@ -270,15 +270,17 @@ export default function Component() {
           </div>
         )} */}
 
-      <div className={s.pagination}>
-        <Pagination
-          currentPage={p_num}
-          totalCount={Number(domainsCount)}
-          pageSize={p_cnt}
-          onPageChange={page => setP_num(page)}
-          onPageItemChange={items => setP_cnt(items)}
-        />
-      </div>
+      {domainsRenderData?.domainsList?.length > 0 && (
+        <div className={s.pagination}>
+          <Pagination
+            currentPage={p_num}
+            totalCount={Number(domainsCount)}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
+          />
+        </div>
+      )}
 
       <Backdrop
         className={s.backdrop}
