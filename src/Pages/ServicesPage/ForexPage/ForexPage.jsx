@@ -21,7 +21,7 @@ import {
   Pagination,
   ForexInstructionModal,
 } from '../../../Components'
-import { actions, forexOperations, forexSelectors } from '../../../Redux'
+import { actions, forexOperations, forexSelectors, selectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 import { checkServicesRights, usePageRender } from '../../../utils'
@@ -34,6 +34,8 @@ export default function ForexPage() {
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
   const forexCount = useSelector(forexSelectors.getForexCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
+
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
   // const [forexList, setForexList] = useState(null)
@@ -306,6 +308,7 @@ export default function ForexPage() {
 
       {Number(forexCount) <= 30 &&
         widerThan1550 &&
+        !isLoading &&
         forexRenderData?.forexList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+forexTotalPrice?.toFixed(4)} EUR`}

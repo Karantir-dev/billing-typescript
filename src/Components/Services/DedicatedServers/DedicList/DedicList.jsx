@@ -39,9 +39,20 @@ export default function DedicList({
             alt="dedic"
             className={s.dedic_img}
           />
+
           <p className={s.no_service_title}>
             {t('YOU DO NOT HAVE A DEDICATED SERVER YET', { ns: 'dedicated_servers' })}
           </p>
+          <div className={s.discount_wrapper}>
+            <p className={s.discount_percent}>
+              {t('DISCOUNT -10% ON DEDICATED SERVERS', { ns: 'other' })}
+            </p>
+            <p className={s.discount_desc}>
+              {t('You can get a discount using a promo code', { ns: 'other' })}:
+              <span className={s.promocode}>S-ZM-DED20</span>
+            </p>
+          </div>
+
           <p className={s.no_service_description}>
             {t('dedic no services description', { ns: 'dedicated_servers' })}
           </p>

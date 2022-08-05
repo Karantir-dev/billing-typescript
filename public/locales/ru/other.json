@@ -157,5 +157,9 @@
   "Not selected": "Не выбрано",
   "Paid in payments": "Оплачено в платежах",
   "Tax": "Налог",
-  "Forex server activation": "Активация Forex сервера"
+  "Forex server activation": "Активация Forex сервера",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "СКИДКА -10% НА ВЫДЕЛЕННЫЕ СЕРВЕРА",
+  "DISCOUNT -20% ON VDS/VPS": "СКИДКА -20% НА VDS/VPS",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "СКИДКА -20% НА ПЕРВЫЙ МЕСЯЦ НА УСЛУГУ 'УХОД ЗА САЙТОМ'",
+  "You can get a discount using a promo code": "Вы можете получить скидку по промокоду"
 }

@@ -18,7 +18,13 @@ import {
   Portal,
   Pagination,
 } from '../../../Components'
-import { ftpOperations, ftpSelectors, dedicOperations, actions } from '../../../Redux'
+import {
+  ftpOperations,
+  ftpSelectors,
+  dedicOperations,
+  actions,
+  selectors,
+} from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as route from '../../../routes'
@@ -35,6 +41,7 @@ export default function FTP() {
 
   let ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
   const [currentPage, setCurrentPage] = useState(1)
 
   // const [ftpList, setFtpList] = useState(null)
@@ -298,11 +305,14 @@ export default function FTP() {
         rights={rights}
       />
 
-      {Number(ftpCount) <= 30 && widerThan1550 && ftpRenderData?.ftpList?.length !== 0 && (
-        <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${+ftpTotalPrice?.toFixed(4)} EUR`}
-        </div>
-      )}
+      {Number(ftpCount) <= 30 &&
+        widerThan1550 &&
+        !isLoading &&
+        ftpRenderData?.ftpList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+ftpTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
 
       {ftpRenderData?.ftpList?.length !== 0 && (
         <div className={s.pagination}>

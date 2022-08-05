@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
-import { domainsOperations, domainsSelectors } from '../../../Redux'
+import { domainsOperations, domainsSelectors, selectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
 import { useMediaQuery } from 'react-responsive'
@@ -34,6 +34,7 @@ export default function Component() {
 
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selctedItem, setSelctedItem] = useState(null)
@@ -273,6 +274,7 @@ export default function Component() {
 
       {Number(domainsCount) <= 30 &&
         widerThan1600 &&
+        !isLoading &&
         domainsRenderData?.domainsList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}

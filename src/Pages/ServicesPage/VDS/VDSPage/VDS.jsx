@@ -23,17 +23,19 @@ import {
   Pagination,
   Portal,
 } from '../../../../Components'
-import { actions, dedicOperations, vdsOperations } from '../../../../Redux'
+import { actions, dedicOperations, selectors, vdsOperations } from '../../../../Redux'
 import no_vds from '../../../../images/services/no_vds.png'
 import { usePageRender } from '../../../../utils'
 
 import s from './VDS.module.scss'
+import { useSelector } from 'react-redux'
 
 export default function VDS() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
@@ -326,10 +328,21 @@ export default function VDS() {
         />
       </div>
 
-      {servers?.length < 1 && !isSearchMade && filtersListState && (
+      {servers?.length < 1 && !isSearchMade && filtersListState && !isLoading && (
         <div className={s.no_vds_wrapper}>
           <img className={s.no_vds} src={no_vds} alt="no_vds" />
           <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+
+          <div className={s.discount_wrapper}>
+            <p className={s.discount_percent}>
+              {t('DISCOUNT -20% ON VDS/VPS', { ns: 'other' })}
+            </p>
+            <p className={s.discount_desc}>
+              {t('You can get a discount using a promo code', { ns: 'other' })}:
+              <span className={s.promocode}>0-ZM-VS8</span>
+            </p>
+          </div>
+
           <p>{t('no_servers_yet_desc')}</p>
         </div>
       )}

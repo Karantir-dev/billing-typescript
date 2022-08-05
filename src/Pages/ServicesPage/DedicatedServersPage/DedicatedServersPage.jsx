@@ -17,7 +17,7 @@ import {
   Pagination,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, dedicOperations, dedicSelectors } from '../../../Redux'
+import { actions, dedicOperations, dedicSelectors, selectors } from '../../../Redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -36,6 +36,7 @@ export default function DedicatedServersPage() {
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)
   const dedicCount = useSelector(dedicSelectors.getDedicCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const [activeServer, setActiveServer] = useState(null)
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -347,6 +348,7 @@ export default function DedicatedServersPage() {
 
       {Number(dedicCount) <= 30 &&
         widerThan1550 &&
+        !isLoading &&
         dedicRenderData?.serversList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+dedicsTotalPrice?.toFixed(4)} EUR`}

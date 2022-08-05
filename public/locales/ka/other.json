@@ -156,5 +156,9 @@
   "Not selected": "არ არის განსაზღვრული",
   "Paid in payments": "გადახდილი გადახდებში",
   "Tax": "გადასახადი",
-  "Forex server activation": "ფორექსის სერვერის გააქტიურება"
+  "Forex server activation": "ფორექსის სერვერის გააქტიურება",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "ფასდაკლება -10% გამოყოფილ სერვერებზე",
+  "DISCOUNT -20% ON VDS/VPS": "ფასდაკლება -20% VDS/VPS-ზე",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ფასდაკლება -20% პირველ თვეზე 'საიტის მოვლა' სერვისზე",
+  "You can get a discount using a promo code": "შეგიძლიათ მიიღოთ ფასდაკლება პრომო კოდის გამოყენებით"
 }

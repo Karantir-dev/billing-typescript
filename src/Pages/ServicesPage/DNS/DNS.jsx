@@ -20,7 +20,13 @@ import {
   Portal,
   Pagination,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors, actions } from '../../../Redux'
+import {
+  dnsOperations,
+  dedicOperations,
+  dnsSelectors,
+  actions,
+  selectors,
+} from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 import { usePageRender } from '../../../utils'
@@ -33,6 +39,7 @@ export default function DNS() {
 
   const dnsRenderData = useSelector(dnsSelectors.getDNSList)
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
 
@@ -330,11 +337,14 @@ export default function DNS() {
         pageRights={rights}
       />
 
-      {Number(dnsCount) <= 30 && widerThan1550 && dnsRenderData?.dnsList?.length !== 0 && (
-        <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${+dnsTotalPrice?.toFixed(4)} EUR`}
-        </div>
-      )}
+      {Number(dnsCount) <= 30 &&
+        widerThan1550 &&
+        !isLoading &&
+        dnsRenderData?.dnsList?.length !== 0 && (
+          <div className={s.total_pagination_price}>
+            {t('Sum', { ns: 'other' })}: {`${+dnsTotalPrice?.toFixed(4)} EUR`}
+          </div>
+        )}
 
       {dnsRenderData?.dnsList?.length !== 0 && (
         <div className={s.pagination}>

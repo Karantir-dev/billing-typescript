@@ -158,5 +158,9 @@
   "Not selected": "Орнатылмаған",
   "Paid in payments": "Төлемдер бойынша төленген",
   "Tax": "Салық",
-  "Forex server activation": "Forex серверін белсендіру"
+  "Forex server activation": "Forex серверін белсендіру",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "АРНАЛҒАН СЕРВЕРЛЕРГЕ -10% ЖЕҢІЛДІК",
+  "DISCOUNT -20% ON VDS/VPS": "VDS/VPS бойынша -20% ЖЕҢІЛДІК",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "БІРІНШІ АЙ ҮШІН -20% ЖЕҢІЛДІК 'Сайтқа күтім жасау' ҚЫЗМЕТІ ҮШІН",
+  "You can get a discount using a promo code": "Сіз промокодты пайдаланып жеңілдік ала аласыз"
 }
