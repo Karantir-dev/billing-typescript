@@ -72,7 +72,6 @@ export default function FtpItem(props) {
     }
   }
 
-  console.log(count, 'count')
   return (
     <>
       <div className={s.server_item}>
@@ -85,9 +84,29 @@ export default function FtpItem(props) {
           )}
 
           <div className={s.priceList}>
-            <p className={s.countItem}>
-              {count} {t('psc.')}
-            </p>
+            {!tabletOrHigher && (
+              <div className={s.control_bts_wrapper}>
+                <p className={s.countItem}>
+                  {count} {t('psc.')}
+                </p>
+                {typeof deleteItemHandler === 'function' && (
+                  <button
+                    className={s.btn_delete}
+                    type="button"
+                    onClick={deleteItemHandler}
+                  >
+                    <Delete />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {tabletOrHigher && (
+              <p className={s.countItem}>
+                {count} {t('psc.')}
+              </p>
+            )}
+
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
             </div>
@@ -103,7 +122,7 @@ export default function FtpItem(props) {
               )}
             </div>
 
-            {typeof deleteItemHandler === 'function' && (
+            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
               <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
                 <Delete />
               </button>

@@ -88,7 +88,30 @@ export default function VdsItem({ el, deleteItemHandler }) {
               alt="vds"
             />
           )}
-          <p className={s.countItem}>{el?.count} {t('psc.')}</p>
+
+          {!tabletOrHigher && (
+            <div className={s.control_bts_wrapper}>
+              <p className={s.countItem}>
+                {el?.count} {t('psc.')}
+              </p>
+              {typeof deleteItemHandler === 'function' && (
+                <button
+                  className={s.btn_delete}
+                  type="button"
+                  onClick={deleteItemHandler}
+                >
+                  <Delete />
+                </button>
+              )}
+            </div>
+          )}
+
+          {tabletOrHigher && (
+            <p className={s.countItem}>
+              {el?.count} {t('psc.')}
+            </p>
+          )}
+
           <p className={s.tariff_name}>{tariffName}</p>
           <div className={s.price_wrapper}>
             {el?.discount_percent?.$ && (
@@ -115,7 +138,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </p>
           </div>
 
-          {typeof deleteItemHandler === 'function' && (
+          {typeof deleteItemHandler === 'function' && tabletOrHigher && (
             <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
               <Delete />
             </button>

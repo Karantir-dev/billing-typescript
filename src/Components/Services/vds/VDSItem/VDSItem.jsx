@@ -86,9 +86,7 @@ export default function VDSItem({
           </span>
         </span>
         {isToolsBtnVisible && (
-          <div
-            className={cn(s.dots_wrapper, { [s.disabled]: activeServices.length > 1 })}
-          >
+          <div className={cn(s.dots_wrapper, { [s.disabled]: false })}>
             <button
               className={s.dots_btn}
               type="button"

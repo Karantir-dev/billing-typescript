@@ -68,9 +68,6 @@
     border-bottom: 1px solid #e1daea;
   }
 
-  &:not(:first-child) {
-    margin-top: 15px;
-  }
 }
 
 .formBlockTitle {
@@ -262,7 +259,7 @@
 }
 
 .addNewPayerBtn {
-  margin: 15px 15px;
+  margin: 10px 15px 15px;
   display: flex;
   width: 100%;
 
@@ -278,7 +275,7 @@
 }
 
 .promocodeBtn {
-  margin: 15px 15px;
+  margin: 10px 15px 15px;
   display: flex;
   width: 100%;
 
@@ -397,6 +394,13 @@
 }
 
 @media screen and (min-width: 768px) {
+
+  .formBlock {
+    &:not(:first-child) {
+      margin-top: 15px;
+    }
+  }
+
   .modalBg {
     align-items: center;
     height: 100vh;
