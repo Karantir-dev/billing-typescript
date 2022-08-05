@@ -117,9 +117,13 @@ export default function FTPList({
 }
 
 FTPList.propTypes = {
-  servers: PropTypes.arrayOf(PropTypes.object),
+  storageList: PropTypes.arrayOf(PropTypes.object),
+  emptyFilter: PropTypes.bool,
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   rights: PropTypes.object,
 }

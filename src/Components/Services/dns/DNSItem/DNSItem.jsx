@@ -171,7 +171,12 @@ export default function DNSItem({
 }
 
 DNSItem.propTypes = {
-  server: PropTypes.object,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  storage: PropTypes.object,
+  setElidForEditModal: PropTypes.func,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
+  pageRights: PropTypes.object,
 }
