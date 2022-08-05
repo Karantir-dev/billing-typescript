@@ -76,6 +76,7 @@ export default function DnsItem(props) {
               alt="dns"
             />
           )}
+
           <div className={s.priceList}>
             <div className={s.server_info}>
               <span className={s.domainName}>

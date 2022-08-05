@@ -308,7 +308,15 @@ export default function Component() {
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
             {filteredFtpList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+              const {
+                id,
+                desc,
+                cost,
+                fullcost,
+                discount_percent,
+                pricelist_name,
+                count,
+              } = el
               return (
                 <FtpItem
                   key={id?.$}
@@ -317,6 +325,12 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                  count={count}
+                  deleteItemHandler={
+                    filteredVdsList?.length >= 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
+                  }
                 />
               )
             })}

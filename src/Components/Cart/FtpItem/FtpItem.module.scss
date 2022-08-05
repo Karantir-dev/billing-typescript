@@ -144,7 +144,29 @@
   order: 3;
 }
 
+.countItem {
+  position: absolute;
+  right: 10px;
+  padding: 10px 5px;
+  background-color: rgba(174, 156, 205, 0.15);
+  border-radius: 3px;
+  min-width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-left: 20px;
+}
+
 @media screen and (min-width: 768px) {
+  .countItem {
+    position: relative;
+    right: 0px;
+  }
+
   .tarif_info {
     display: flex;
     flex-direction: row;
