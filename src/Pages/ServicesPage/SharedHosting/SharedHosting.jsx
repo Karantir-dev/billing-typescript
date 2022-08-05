@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
-import { vhostSelectors, vhostOperations } from '../../../Redux'
+import { vhostSelectors, vhostOperations, selectors } from '../../../Redux'
 import * as route from '../../../routes'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import { useMediaQuery } from 'react-responsive'
@@ -35,6 +35,7 @@ export default function Component() {
 
   const virtualHostingRenderData = useSelector(vhostSelectors.getVhostList)
   const vhostCount = useSelector(vhostSelectors.getVhostCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selctedItem, setSelctedItem] = useState(null)
@@ -303,6 +304,7 @@ export default function Component() {
 
       {Number(vhostCount) <= 30 &&
         widerThan1600 &&
+        !isLoading &&
         virtualHostingRenderData?.vhostList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+hostingsTotalPrice?.toFixed(4)} EUR`}

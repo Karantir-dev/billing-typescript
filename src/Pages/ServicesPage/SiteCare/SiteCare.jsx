@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SiteCare.module.scss'
-import { siteCareOperations, siteCareSelectors } from '../../../Redux'
+import { selectors, siteCareOperations, siteCareSelectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
 import { useMediaQuery } from 'react-responsive'
@@ -30,6 +30,7 @@ export default function Component() {
 
   const sitecareRenderData = useSelector(siteCareSelectors.getSiteCareList)
   const siteCareCount = useSelector(siteCareSelectors.getSiteCareCount)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [selctedItem, setSelctedItem] = useState(null)
@@ -198,7 +199,8 @@ export default function Component() {
 
       {sitecareRenderData?.siteCareList?.length < 1 &&
         !isFiltered &&
-        sitecareRenderData?.siteCareList && (
+        sitecareRenderData?.siteCareList &&
+        !isLoading && (
           <div className={s.no_service_wrapper}>
             <img
               src={require('../../../images/services/no_site_care.png')}
@@ -208,6 +210,19 @@ export default function Component() {
             <p className={s.no_service_title}>
               {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
             </p>
+
+            <div className={s.discount_wrapper}>
+              <p className={s.discount_percent}>
+                {t('DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE', {
+                  ns: 'other',
+                })}
+              </p>
+              <p className={s.discount_desc}>
+                {t('You can get a discount using a promo code', { ns: 'other' })}:
+                <span className={s.promocode}>ST-ZM-CR</span>
+              </p>
+            </div>
+
             <p className={s.no_service_description}>
               {t('no services sitecare description', { ns: 'other' })}
             </p>
@@ -229,6 +244,7 @@ export default function Component() {
 
       {Number(siteCareCount) <= 30 &&
         widerThan1600 &&
+        !isLoading &&
         sitecareRenderData?.siteCareList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+sitecareTotalPrice?.toFixed(4)} EUR`}
