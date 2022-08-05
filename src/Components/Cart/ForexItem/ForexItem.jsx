@@ -5,11 +5,20 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './ForexItem.module.scss'
+import { Delete } from '../../../images'
 
 export default function ForexItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'dns', 'crumbs'])
 
-  const { desc, cost, discount_percent, fullcost, pricelist_name } = props
+  const {
+    desc,
+    cost,
+    discount_percent,
+    fullcost,
+    pricelist_name,
+    count,
+    deleteItemHandler,
+  } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -80,6 +89,29 @@ export default function ForexItem(props) {
             />
           )}
           <div className={s.priceList}>
+            {!tabletOrHigher && (
+              <div className={s.control_bts_wrapper}>
+                <p className={s.countItem}>
+                  {count} {t('psc.')}
+                </p>
+                {typeof deleteItemHandler === 'function' && (
+                  <button
+                    className={s.btn_delete}
+                    type="button"
+                    onClick={deleteItemHandler}
+                  >
+                    <Delete />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {tabletOrHigher && (
+              <p className={s.countItem}>
+                {count} {t('psc.')}
+              </p>
+            )}
+
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
             </div>
@@ -94,6 +126,12 @@ export default function ForexItem(props) {
                 </div>
               )}
             </div>
+
+            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+              <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+                <Delete />
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Shevron } from '../../../images'
+import { Delete, Shevron } from '../../../images'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
@@ -9,7 +9,15 @@ import s from './DedicItem.module.scss'
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
 
-  const { desc, cost, discount_percent, fullcost, pricelist_name } = props
+  const {
+    desc,
+    cost,
+    discount_percent,
+    fullcost,
+    pricelist_name,
+    count,
+    deleteItemHandler,
+  } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -89,6 +97,29 @@ export default function DedicItem(props) {
           )}
 
           <div className={s.priceList}>
+            {!tabletOrHigher && (
+              <div className={s.control_bts_wrapper}>
+                <p className={s.countItem}>
+                  {count} {t('psc.')}
+                </p>
+                {typeof deleteItemHandler === 'function' && (
+                  <button
+                    className={s.btn_delete}
+                    type="button"
+                    onClick={deleteItemHandler}
+                  >
+                    <Delete />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {tabletOrHigher && (
+              <p className={s.countItem}>
+                {count} {t('psc.')}
+              </p>
+            )}
+
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
             </div>
@@ -103,6 +134,11 @@ export default function DedicItem(props) {
                 </div>
               )}
             </div>
+            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+              <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+                <Delete />
+              </button>
+            )}
           </div>
           {!tabletOrHigher && (
             <div

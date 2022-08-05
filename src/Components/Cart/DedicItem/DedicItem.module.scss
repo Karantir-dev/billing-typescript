@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 10px 0;
+  margin: 20px 0;
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
-  // padding: 19px 25px 0 25px;
 }
 
 .tarif_info {
@@ -25,7 +24,7 @@
 }
 
 .server_info {
-  margin: 19px 25px 0px 25px;
+  margin: 19px 0px 0px 0px;
 }
 
 .additional_info_item {
@@ -34,7 +33,6 @@
   width: 100%;
   margin: 10px 0;
   background: var(--forms_bgc_3);
-  // padding: 19px 25px 19px 0px;
 
   &.opened {
     display: flex;
@@ -56,7 +54,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+}
+
+.control_bts_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .domainName {
@@ -80,7 +87,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 15px;
-  margin: 19px 25px 15px 25px;
+  margin: 19px 0px 15px;
 }
 
 .cost {
@@ -146,7 +153,34 @@
   order: 3;
 }
 
+.countItem {
+  padding: 5px 5px;
+  background-color: rgba(174, 156, 205, 0.15);
+  border-radius: 3px;
+  min-width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--main-text);
+}
+.btn_delete {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 768px) {
+  .countItem {
+    position: relative;
+    right: 0px;
+  }
+
+  .btn_delete {
+    position: static;
+    margin-left: 40px;
+  }
+
   .tarif_info {
     display: flex;
     flex-direction: row;
@@ -174,16 +208,30 @@
   .priceList {
     display: flex;
     margin-left: 20px;
+    padding: 0;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
     width: 100%;
     margin-top: 0;
+
+    & :not(:last-child) {
+      margin-right: 10px;
+    }
+    & :nth-child(1) {
+      flex-basis: 20%;
+    }
+    & :nth-child(2) {
+      flex-basis: 40%;
+    }
+    & :nth-child(3) {
+      flex-basis: 25%;
+    }
   }
 
   .costBlock {
     display: flex;
-    align-items: flex-end;
+    // align-items: flex-end;
     margin-top: 0;
     margin-left: 15px;
   }

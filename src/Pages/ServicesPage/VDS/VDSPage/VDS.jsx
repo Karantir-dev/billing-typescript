@@ -322,7 +322,7 @@ export default function VDS() {
 
       {servers.length > 0 && (
         <div className={s.tools_footer}>
-          {activeServices.length > 1 && (
+          {activeServices.length > 0 && (
             <>
               <div className={s.buttons_wrapper}>
                 <HintWrapper label={t('delete', { ns: 'other' })}>
