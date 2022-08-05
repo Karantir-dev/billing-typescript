@@ -360,7 +360,7 @@ export default function VDS() {
 
       {Number(elemsTotal) <= 30 && widerThan1600 && servers?.length !== 0 && (
         <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${serversTotalPrice} EUR`}
+          {t('Sum', { ns: 'other' })}: {`${+serversTotalPrice.toFixed(4)} EUR`}
         </div>
       )}
 
