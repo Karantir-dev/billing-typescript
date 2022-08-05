@@ -72,5 +72,6 @@
   "Service has been modified": "Услуга '{{value}}' была изменена",
   "Service has been activated": "Услуга '{{value}}' активирована",
   "Change pricelist": "Произошла ошибка при изменении тарифа '{{value}}'. Ваш старый тарифный план активирован",
-  "Failed to register the SSL-certificate": "Не удалось зарегистрировать SSL-сертификат '{{value}}'"
+  "Failed to register the SSL-certificate": "Не удалось зарегистрировать SSL-сертификат '{{value}}'",
+  "Password for has been changed": "Пароль для '{{value}}' был изменен"
 }

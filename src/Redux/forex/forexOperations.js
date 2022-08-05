@@ -206,7 +206,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
@@ -349,6 +348,8 @@ const editForex =
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
+  console.log(elid)
+
   const {
     auth: { sessionId },
   } = getState()
@@ -369,13 +370,13 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 
       dispatch(getForexList({ p_num: 1 }))
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+      dispatch(actions.hideLoader())
+      handleModal()
+
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
         position: 'bottom-right',
         toastId: 'customId',
       })
-      dispatch(actions.hideLoader())
-
-      handleModal()
     })
     .catch(error => {
       console.log('error', error)

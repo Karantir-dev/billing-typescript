@@ -72,5 +72,6 @@
   "Service has been modified": "'{{value}}'' қызметі өзгертілді",
   "Service has been activated": "'{{value}}' қызметі іске қосылды",
   "Change pricelist": "'{{value}}' тарифін өзгерту кезінде қате орын алды. Сіздің ескі тарифтік жоспарыңыз іске қосылды",
-  "Failed to register the SSL-certificate": "'{{value}}' SSL сертификатын тіркеу сәтсіз аяқталды"
+  "Failed to register the SSL-certificate": "'{{value}}' SSL сертификатын тіркеу сәтсіз аяқталды",
+  "Password for has been changed": "'{{value}}' құпия сөзі өзгертілді"
 }

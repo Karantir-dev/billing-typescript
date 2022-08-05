@@ -24,7 +24,7 @@ const getDNSList = data => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
-        p_cnt: 30,
+        p_cnt: 10,
         ...data,
       }),
     )

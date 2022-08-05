@@ -159,12 +159,19 @@
   "Not selected": "Not selected",
   "Paid in payments": "Paid in payments",
   "Tax": "Tax",
+  "Forex server activation": "Forex server activation",
+  "Service has been successfully changed": "Service has been successfully changed",
+  "Service has been successfully removed": "Service has been successfully removed",
+  "Password has been successfully changed": "Password has been successfully changed",
+  "Server has been successfully rebooted": "Server has been successfully rebooted",
+  "Name servers has been successfully changed": "Name servers has been successfully changed",
   "services_per_page": "Services per page:",
   "services_selected": "Services are selected:",
-  "Forex server activation": "Forex server activation",
   "server_deleted": "Server {{id}} deleted",
   "unknown_error": "Something went wrong",
   "services_deletion": "and {{value}} more services?",
   "and_more": "and {{value}} more",
-  "Services per page": "Services per page"
+  "Services per page": "Services per page",
+  "Attention, edit few services": "Attention! The following changes will be applied to all selected services",
+  "The Period field has invalid value.": "The 'Period' field has invalid value. Please choose another period"
 }

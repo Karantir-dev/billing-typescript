@@ -158,11 +158,18 @@
   "Not selected": "Орнатылмаған",
   "Paid in payments": "Төлемдер бойынша төленген",
   "Tax": "Салық",
+  "Forex server activation": "Forex серверін белсендіру",
+  "Service has been successfully changed": "Қызмет сәтті өзгертілді",
+  "Service has been successfully removed": "Қызмет сәтті жойылды",
+  "Password has been successfully changed": "Құпия сөз сәтті өзгертілді",
+  "Server has been successfully rebooted": "Сервер сәтті қайта жүктелді",
+  "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді",
   "services_per_page": "Әр бетте қызметтер:",
   "services_selected": "Қызметтер таңдалды:",
-  "Forex server activation": "Forex серверін белсендіру",
   "server_deleted": "{{id}} сервері жойылды",
   "unknown_error": "Бірдеңе дұрыс болмады",
   "and_more": "және тағы басқа {{value}}",
-  "Services per page": "Әр бетте қызметтер"
+  "Services per page": "Әр бетте қызметтер",
+  "Attention, edit few services": "Назар аударыңыз! Келесі өзгертулер барлық таңдалған қызметтерге қолданылады",
+  "The Period field has invalid value.": "'Кезең' өрісінде жарамсыз мән бар. Басқа кезеңді таңдаңыз"
 }

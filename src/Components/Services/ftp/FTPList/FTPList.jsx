@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import s from './FTPList.module.scss'
 import FTPItem from '../FTPItem/FTPItem'
 import FTPMobileItem from '../FTPMobileItem/FTPMobileItem'
+import { CheckBox } from '../../..'
 
 export default function FTPList({
   emptyFilter,
@@ -14,9 +15,9 @@ export default function FTPList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  setActiveServer,
-  activeServerID,
   rights,
+  setActiveServices,
+  activeServices,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -26,7 +27,7 @@ export default function FTPList({
     'access_log',
     'ftp',
   ])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (storageList) {
     if (storageList.length === 0 && emptyFilter) {
@@ -58,38 +59,54 @@ export default function FTPList({
 
   return (
     <>
-      {widerThan1550 && storageList?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>
-            {t('datacenter', { ns: 'dedicated_servers' })}:
-          </li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
-          <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
-        </ul>
+      {widerThan1600 && storageList?.length > 0 && (
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={activeServices?.length === storageList?.length}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(storageList)
+            }}
+          />
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>
+              {t('datacenter', { ns: 'dedicated_servers' })}:
+            </li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
+            <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
+            <li className={s.table_head}></li>
+          </ul>
+        </div>
       )}
 
       <ul className={s.list}>
         {storageList?.map(el => {
-          return widerThan1550 ? (
+          return widerThan1600 ? (
             <FTPItem
               key={el.id.$}
               storage={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              setActiveServices={setActiveServices}
+              activeServices={activeServices}
+              rights={rights}
             />
           ) : (
             <FTPMobileItem
               key={el.id.$}
               storage={el}
-              setElidForEditModal={setElidForEditModal}
-              setElidForProlongModal={setElidForProlongModal}
-              setElidForHistoryModal={setElidForHistoryModal}
-              setElidForInstructionModal={setElidForInstructionModal}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              setActiveServices={setActiveServices}
+              activeServices={activeServices}
               rights={rights}
             />
           )
