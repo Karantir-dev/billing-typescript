@@ -17,14 +17,14 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
-    selctedItem,
+    // selctedItem,
     setCurrentPage,
-    editDomainHandler,
+    // editDomainHandler,
     // deleteDomainHandler,
-    renewDomainHandler,
-    historyDomainHandler,
-    whoisDomainHandler,
-    NSDomainHandler,
+    // renewDomainHandler,
+    // historyDomainHandler,
+    // whoisDomainHandler,
+    // NSDomainHandler,
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
@@ -134,13 +134,13 @@ export default function Component(props) {
           />
         </HintWrapper>
 
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
+        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
           <IconButton
             disabled={!selctedItem || !rights?.edit}
             onClick={editDomainHandler}
             icon="edit"
           />
-        </HintWrapper>
+        </HintWrapper> */}
 
         {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
           <IconButton
@@ -150,7 +150,7 @@ export default function Component(props) {
           />
         </HintWrapper> */}
 
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
+        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
           <IconButton
             disabled={
               !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
@@ -188,7 +188,7 @@ export default function Component(props) {
             onClick={NSDomainHandler}
             icon="server-cloud"
           />
-        </HintWrapper>
+        </HintWrapper> */}
       </div>
       <Button
         disabled={!rights?.register}

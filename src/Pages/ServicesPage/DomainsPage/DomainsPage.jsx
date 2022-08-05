@@ -18,15 +18,11 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
-import { useMediaQuery } from 'react-responsive'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
 
-  const {
-    t,
-    // i18n
-  } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
+  const { t } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -35,7 +31,9 @@ export default function Component() {
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+
+  const [p_num, setP_num] = useState(1)
   const [selctedItem, setSelctedItem] = useState(null)
 
   const [historyModal, setHistoryModal] = useState(false)
@@ -56,19 +54,18 @@ export default function Component() {
   const [prolongData, setProlongData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
-  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
-  const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
+  // const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
+  //   (curServer, nextServer) => {
+  //     return curServer + +nextServer?.item_cost?.$
+  //   },
+  //   0,
+  // )
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(domainsOperations.getDomains(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -94,7 +91,7 @@ export default function Component() {
   const prolongEditDomainHandler = (values = {}) => {
     let data = {
       elid: selctedItem?.id?.$,
-      p_num: currentPage,
+      p_num,
       ...values,
     }
 
@@ -112,7 +109,6 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -141,7 +137,6 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
     }
     dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
   }
@@ -154,7 +149,6 @@ export default function Component() {
   const NSDomainHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
-      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
@@ -167,7 +161,6 @@ export default function Component() {
   const NSEditDomainHandler = (values = {}) => {
     let data = {
       elid: selctedItem?.id?.$,
-      // lang: i18n?.language,
       ...values,
     }
 
@@ -178,7 +171,6 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -192,7 +184,6 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
       sok: 'ok',
       ...values,
     }
@@ -220,7 +211,7 @@ export default function Component() {
         setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
         setSelctedItem={setSelctedItem}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
         historyDomainHandler={historyDomainHandler}
         deleteDomainHandler={deleteDomainHandler}
         editDomainHandler={editDomainHandler}
@@ -271,22 +262,22 @@ export default function Component() {
         />
       )}
 
-      {Number(domainsCount) <= 30 &&
+      {/* {Number(domainsCount) <= 30 &&
         widerThan1600 &&
         domainsRenderData?.domainsList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}
           </div>
-        )}
+        )} */}
 
-      {domainsRenderData?.domainsList?.length !== 0 && (
+      {domainsRenderData?.domainsList?.length > 0 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
+            currentPage={p_num}
             totalCount={Number(domainsCount)}
-            totalPrice={widerThan1600 && +domainsTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

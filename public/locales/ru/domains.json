@@ -93,5 +93,6 @@
   "no services description": "Зарегестрируйте домен в Zomro быстро, недорого и удобно",
 
   "Select": "Выбрать",
-  "Selected": "Выбрано"
+  "Selected": "Выбрано",
+  "View/change the list of name servers": "Посмотреть/изменить список серверов имен"
 }
