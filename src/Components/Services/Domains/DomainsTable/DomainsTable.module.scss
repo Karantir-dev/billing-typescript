@@ -7,6 +7,7 @@
 .tableHeader {
   display: none;
   padding: 20px 23px 13px;
+  align-items: center;
   width: 100%;
 }
 
@@ -40,37 +41,49 @@
 
 .item {
   flex-direction: column;
-  padding: 15px 17px;
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  margin-bottom: 7px;
+  position: relative;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
-  margin-bottom: 7px;
-  position: relative;
-  cursor: pointer;
-  position: relative;
+}
 
-  &:hover::before,
-  &.selected::before {
-    content: '';
-    width: 3px;
-    height: 100%;
-    position: absolute;
-    background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
-    left: 0;
-    top: 0;
-    box-shadow: 0px 1px 8px rgb(65 38 114 / 15%);
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
+.columnsWithoutCheckBox {
+  padding: 15px 17px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.headerColumnsWithoutCheckBox {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.checkBoxColumn {
+  flex-basis: 100%;
+  margin: 0 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--select_option_bgc);
 }
 
 .dots {
+  cursor: pointer;
   position: absolute;
   right: 25px;
   top: 25px;
+}
+
+.dotIcons {
+  &.opened,
+  &:hover {
+    fill: url(#gradient);
+  }
 }
 
 .tableBlockFirst,
@@ -114,15 +127,15 @@
 
 .list {
   position: absolute;
-  width: 210px;
+  width: 250px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: -25px;
-  padding: 18px 18px;
+  padding: 15px 0;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
-  z-index: 10;
+  z-index: 8;
 
   &::before {
     content: '';
@@ -144,15 +157,15 @@
 .settings_btn {
   display: flex;
   align-items: center;
+  text-align: start;
+  width: 100%;
   cursor: pointer;
-
+  padding: 8px 20px;
   color: var(--main-text);
-  &:not(:last-child) {
-    margin-bottom: 18px;
-  }
 
   svg {
-    width: 16px;
+    width: 23px;
+    min-width: 23px;
   }
 
   svg,
@@ -160,6 +173,7 @@
     fill: var(--transparent-color);
   }
   &:hover {
+    background-color: rgba(217, 208, 235, 0.1);
     svg,
     path {
       fill: url(#gradient);
@@ -171,8 +185,8 @@
   margin-left: 18px;
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
-  line-height: 70.9%;
+  font-size: 16px;
+  line-height: 17.9px;
   &:hover {
     font-weight: 400;
   }
@@ -233,6 +247,7 @@
 
 @media screen and (min-width: 600px) {
   .item {
+    max-width: calc(50% - 15px);
     flex-basis: calc(50% - 15px);
     margin-right: 15px;
   }
@@ -244,6 +259,7 @@
 
 @media screen and (min-width: 1080px) {
   .item {
+    max-width: calc(33% - 15px);
     flex-basis: calc(33% - 15px);
     margin-right: 15px;
   }
@@ -251,13 +267,38 @@
 
 @media screen and (min-width: 1359px) {
   .item {
+    max-width: calc(25% - 15px);
     flex-basis: calc(25% - 15px);
   }
 }
 
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1550px) {
+  .checkBoxColumn {
+    flex-basis: 3.5%;
+    margin: 0;
+    padding: 0;
+    margin-right: 23px;
+    border-bottom: none;
+  }
+
+  .headerColumnsWithoutCheckBox {
+    padding: 0 31px;
+  }
+
+  .columnsWithoutCheckBox {
+    max-height: 60px;
+    flex-direction: row;
+    padding: 21px 31px;
+    border-radius: 3px;
+    background-color: var(--forms_bgc_2);
+    box-shadow: var(--forms_shadow);
+  }
+
   .dots {
-    display: none;
+    position: relative;
+    top: 0;
+    right: 0;
+    // display: none;
   }
 
   .table {
@@ -266,13 +307,16 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px 13px;
+    padding: 20px 0px 13px;
   }
 
   .item {
+    max-width: 100%;
     flex-direction: row;
     align-items: center;
-    padding: 20px 26px;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
   }
 
   .tableBlockFirst,
@@ -312,36 +356,6 @@
   }
 
   .item_text {
-    font-size: 14px;
-    align-items: center;
-
-    &.first_item {
-      max-width: 80px;
-    }
-
-    &.third_item {
-      max-width: 70px;
-      word-break: break-word;
-      white-space: break-spaces;
-    }
-
-    &.fourth_item {
-      max-width: 120px;
-    }
-
-    &.fifth_item {
-      max-width: 90px;
-    }
-  }
-  .tableHeader {
-    padding: 22px 27px 13px;
-  }
-
-  .item {
-    padding: 22px 27px;
-  }
-
-  .item_text {
     font-size: 16px;
 
     &.first_item {
@@ -377,11 +391,19 @@
 }
 
 @media screen and (min-width: 1918px) {
+  .headerColumnsWithoutCheckBox {
+    padding: 0 41px;
+  }
+
+  .columnsWithoutCheckBox {
+    padding: 21px 41px;
+  }
+
   .tableHeader {
-    padding: 22px 27px 13px;
+    padding: 22px 0px 13px;
   }
 
   .item_text {
-    font-size: 17px;
+    font-size: 16px;
   }
 }

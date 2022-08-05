@@ -1,5 +1,66 @@
 @import '../../../scss/placeholders.scss';
 
+.pageItemContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+
+  .servperpage {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 130%;
+    color: var(--main-text);
+    margin-right: 10px;
+  }
+
+  .input {
+    min-width: 80px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+  }
+
+  .paginationItem {
+    padding: 0 8px;
+    height: 35px;
+    text-align: center;
+    margin: auto 0;
+    color: var(--main-text);
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    letter-spacing: 0.01071em;
+    border-radius: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    min-width: 35px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.inputItem {
+      background: var(--forms_bgc_2);
+      box-shadow: var(--forms_shadow);
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
+    &.selected {
+      box-shadow: var(--forms_shadow);
+      background: var(--forms_bgc_2);
+      border-radius: 3px;
+    }
+  }
+}
+
 .paginationContainer {
   display: flex;
   align-items: center;
@@ -114,6 +175,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 .total {
@@ -138,6 +200,16 @@
 }
 
 @media screen and (min-width: 768px) {
+  .pageItemContainer {
+    width: 100%;
+    margin-bottom: 0;
+    justify-content: flex-start;
+
+    .servperpage {
+      font-size: 16px;
+    }
+  }
+
   .blockPagination {
     flex-direction: row;
     width: 100%;
