@@ -188,6 +188,7 @@ export default function ForexPage() {
 
   const handleDeletionModal = closeFn => {
     dispatch(forexOperations.deleteForex(elidForDeletionModal.join(', '), closeFn))
+    setActiveServices([])
   }
 
   return (

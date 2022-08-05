@@ -155,6 +155,39 @@ export default function Component() {
       }
     })
 
+    const filteredDnsList = []
+
+    dnsList?.forEach(elem => {
+      if (
+        filteredDnsList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredDnsList?.push({
+          ...elem,
+          count: dnsList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    const filteredFtpList = []
+
+    ftpList?.forEach(elem => {
+      if (
+        filteredFtpList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredFtpList?.push({
+          ...elem,
+          count: ftpList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    console.log(filteredDnsList, 'filteredDnsList')
+    console.log(filteredFtpList, 'filteredFtpList')
+
     return (
       <>
         {siteCareList?.length > 0 && (
@@ -269,12 +302,12 @@ export default function Component() {
           </div>
         )}
 
-        {ftpList?.length > 0 && (
+        {filteredFtpList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
-            {ftpList?.map(el => {
+            {filteredFtpList?.map(el => {
               const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
               return (
                 <FtpItem
