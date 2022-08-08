@@ -170,5 +170,9 @@
   "and_more": "და მეტი {{value}}",
   "Services per page": "სერვისები თითო გვერდზე",
   "Attention, edit few services": "ყურადღება! შემდეგი ცვლილებები გამოყენებული იქნება ყველა არჩეულ სერვისზე",
-  "The Period field has invalid value.": "'პერიოდის' ველს აქვს არასწორი მნიშვნელობა. გთხოვთ, აირჩიოთ სხვა პერიოდი"
+  "The Period field has invalid value.": "'პერიოდის' ველს აქვს არასწორი მნიშვნელობა. გთხოვთ, აირჩიოთ სხვა პერიოდი",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "ფასდაკლება -10% გამოყოფილ სერვერებზე",
+  "DISCOUNT -20% ON VDS/VPS": "ფასდაკლება -20% VDS/VPS-ზე",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ფასდაკლება -20% პირველ თვეზე 'საიტის მოვლა' სერვისზე",
+  "You can get a discount using a promo code": "შეგიძლიათ მიიღოთ ფასდაკლება პრომო კოდის გამოყენებით"
 }

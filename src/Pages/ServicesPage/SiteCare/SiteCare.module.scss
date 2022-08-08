@@ -50,13 +50,13 @@
 
 .no_service_wrapper {
   max-width: 531px;
-  margin: 60px auto 0px;
+  margin: 0px auto 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   img {
-    margin-bottom: 40px;
+    margin-bottom: 15px;
   }
 }
 
@@ -71,7 +71,7 @@
   text-align: center;
   font-size: 18px;
   color: var(--main-text);
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .no_service_description {
@@ -81,12 +81,38 @@
   color: var(--main-text);
 }
 
+.discount_wrapper {
+  margin-bottom: 15px;
+}
+
+.discount_percent {
+  font-size: 16px;
+  color: var(--red-text);
+  text-align: center;
+}
+.discount_desc {
+  font-size: 16px;
+  color: var(--main-text);
+  text-align: center;
+  font-weight: 300;
+}
+
+.promocode {
+  font-size: 16px;
+  padding-left: 3px;
+  font-weight: 600;
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;
     margin-top: 30px;
   }
+  .no_service_wrapper {
+    margin: 60px auto 0px;
+  }
 }
+
 
 @media screen and (min-width: 1024px) {
   .pagination {

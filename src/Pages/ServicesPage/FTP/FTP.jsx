@@ -36,7 +36,6 @@ export default function FTP() {
 
   const ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
-
   const [currentPage, setCurrentPage] = useState(1)
 
   const [activeServices, setActiveServices] = useState([])

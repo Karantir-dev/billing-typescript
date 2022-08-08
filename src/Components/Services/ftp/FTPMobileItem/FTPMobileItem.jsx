@@ -165,7 +165,12 @@ export default function FTPMobileItem({
 }
 
 FTPMobileItem.propTypes = {
-  server: PropTypes.object,
+  storage: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   rights: PropTypes.object,
 }

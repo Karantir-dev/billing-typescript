@@ -35,6 +35,7 @@ export default function ForexPage() {
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
   const forexCount = useSelector(forexSelectors.getForexCount)
+
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
   const [activeServices, setActiveServices] = useState([])
@@ -276,75 +277,6 @@ export default function ForexPage() {
                 </>
               )}
             </div>
-
-            {/* {widerThan1600 && (
-            <div className={s.desktop_tools_wrapper}>
-              <HintWrapper
-                wrapperClassName={s.hint_wrapper}
-                label={t('edit', { ns: 'other' })}
-              >
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={
-                    !activeServer || !rights?.edit || activeServer?.status?.$ === '1'
-                  }
-                  icon="edit"
-                />
-              </HintWrapper>
-
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
-                <IconButton
-                  onClick={() => setElidForProlongModal(activeServer?.id?.$)}
-                  className={s.tools_icon}
-                  disabled={
-                    activeServer?.status?.$ === '1' || !rights?.prolong || !activeServer
-                  }
-                  icon="clock"
-                />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
-                <IconButton
-                  onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
-                  className={s.tools_icon}
-                  icon="refund"
-                  disabled={
-                    !activeServer?.id?.$ ||
-                    !rights?.history ||
-                    activeServer?.status?.$ === '1'
-                  }
-                />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
-                <IconButton
-                  className={s.tools_icon}
-                  disabled={
-                    activeServer?.status?.$ === '1' ||
-                    !rights?.instruction ||
-                    !activeServer
-                  }
-                  icon="info"
-                  onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
-                />
-              </HintWrapper>
-
-              <HintWrapper
-                wrapperClassName={s.hint_wrapper}
-                label={t('delete', { ns: 'other' })}
-              >
-                <IconButton
-                  className={s.tools_icon}
-                  disabled={
-                    !activeServer?.id?.$ ||
-                    !rights?.delete ||
-                    activeServer?.status?.$ === '1'
-                  }
-                  icon="delete"
-                  onClick={() => setElidForDeletionModal(activeServer?.id?.$)}
-                />
-              </HintWrapper>
-            </div>
-          )} */}
           </div>
         </div>
       </div>

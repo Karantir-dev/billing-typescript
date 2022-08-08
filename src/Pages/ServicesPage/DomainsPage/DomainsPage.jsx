@@ -264,6 +264,7 @@ export default function Component() {
 
       {/* {Number(domainsCount) <= 30 &&
         widerThan1600 &&
+        !isLoading &&
         domainsRenderData?.domainsList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}
