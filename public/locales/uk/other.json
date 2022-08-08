@@ -173,5 +173,9 @@
   "and_more": "і ще {{value}}",
   "Services per page": "Послуг на сторінці",
   "Attention, edit few services": "Увага! Наступні зміни буде застосовано до всіх вибраних послуг",
-  "The Period field has invalid value.": "Поле 'Період' має недопустиме значення. Будь-ласка, оберіть інший період"
+  "The Period field has invalid value.": "Поле 'Період' має недопустиме значення. Будь-ласка, оберіть інший період",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "ЗНИЖКА -10% НА ВИДІЛЕНІ СЕРВЕРИ",
+  "DISCOUNT -20% ON VDS/VPS": "ЗНИЖКА -20% НА VDS/VPS",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ЗНИЖКА -20% НА ПЕРШИЙ МІСЯЦЬ НА ПОСЛУГУ 'ДОГЛЯД ЗА САЙТОМ'",
+  "You can get a discount using a promo code": "Ви можете отримати знижку за промокодом"
 }

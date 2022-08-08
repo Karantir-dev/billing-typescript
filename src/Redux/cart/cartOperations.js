@@ -243,17 +243,18 @@ const setPaymentMethods =
             return {
               item_name: e.pricelist_name?.$ || '',
               item_id: e.id?.$ || '',
-              price: e.cost?.$ || '',
+              price: Number(e.cost?.$) || 0,
               item_category: e['item.type']?.$ || '',
               quantity: 1,
             }
           })
+
           window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
               transaction_id: cartData?.billorder,
               affiliation: 'cp.zomro.com',
-              value: cartData?.total_sum,
+              value: Number(cartData?.total_sum) || 0,
               currency: 'EUR',
               coupon: body?.promocode,
               items: items,

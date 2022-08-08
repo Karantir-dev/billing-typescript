@@ -173,5 +173,9 @@
   "and_more": "and {{value}} more",
   "Services per page": "Services per page",
   "Attention, edit few services": "Attention! The following changes will be applied to all selected services",
-  "The Period field has invalid value.": "The 'Period' field has invalid value. Please choose another period"
+  "The Period field has invalid value.": "The 'Period' field has invalid value. Please choose another period",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "DISCOUNT -10% ON DEDICATED SERVERS",
+  "DISCOUNT -20% ON VDS/VPS": "DISCOUNT -20% ON VDS/VPS",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE 'CARE OF THE SITE'",
+  "You can get a discount using a promo code": "You can get a discount using a promo code"
 }
