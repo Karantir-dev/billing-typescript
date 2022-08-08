@@ -10,6 +10,7 @@ import {
   DomainsEditModal,
   Backdrop,
   DomainsProlongModal,
+  DomainBottomBar,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -34,7 +35,7 @@ export default function Component() {
   const [p_cnt, setP_cnt] = useState(10)
 
   const [p_num, setP_num] = useState(1)
-  const [selctedItem, setSelctedItem] = useState(null)
+  const [selctedItem, setSelctedItem] = useState([])
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
@@ -55,13 +56,6 @@ export default function Component() {
 
   const [isFiltered, setIsFiltered] = useState(false)
 
-  // const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
-  //   (curServer, nextServer) => {
-  //     return curServer + +nextServer?.item_cost?.$
-  //   },
-  //   0,
-  // )
-
   useEffect(() => {
     const data = { p_num, p_cnt }
     dispatch(domainsOperations.getDomains(data))
@@ -75,10 +69,26 @@ export default function Component() {
     return pathnames
   }
 
+  const parseSelectedItemName = () => {
+    let names = ''
+    selctedItem?.forEach(el => {
+      names = names + '\n' + el?.name?.$
+    })
+    return names
+  }
+
+  const parseSelectedItemId = () => {
+    let id = []
+    selctedItem?.forEach(el => {
+      id.push(el?.id?.$)
+    })
+    return id?.join(',')
+  }
+
   const renewDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
   }
@@ -90,7 +100,7 @@ export default function Component() {
 
   const prolongEditDomainHandler = (values = {}) => {
     let data = {
-      elid: selctedItem?.id?.$,
+      elid: parseSelectedItemId(),
       p_num,
       ...values,
     }
@@ -100,15 +110,15 @@ export default function Component() {
 
   const deleteDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
+      elid: parseSelectedItemId(),
     }
     dispatch(domainsOperations.deleteDomain(data))
   }
 
   const historyDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: parseSelectedItemId(),
+      elname: parseSelectedItemName(),
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -135,8 +145,8 @@ export default function Component() {
 
   const whoisDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
   }
@@ -148,7 +158,7 @@ export default function Component() {
 
   const NSDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
+      elid: parseSelectedItemId(),
     }
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
@@ -160,7 +170,7 @@ export default function Component() {
 
   const NSEditDomainHandler = (values = {}) => {
     let data = {
-      elid: selctedItem?.id?.$,
+      elid: parseSelectedItemId(),
       ...values,
     }
 
@@ -169,8 +179,8 @@ export default function Component() {
 
   const editDomainHandler = () => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -182,8 +192,8 @@ export default function Component() {
 
   const editSaveDomainHandler = (values = {}, isOpenProfile) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: parseSelectedItemId(),
+      elname: parseSelectedItemName(),
       sok: 'ok',
       ...values,
     }
@@ -198,6 +208,8 @@ export default function Component() {
     }
   }, [])
 
+  console.log(selctedItem, 'selctedItem')
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -209,14 +221,10 @@ export default function Component() {
       </h1>
       <DomainFilters
         setIsFiltered={setIsFiltered}
-        selctedItem={selctedItem}
         setSelctedItem={setSelctedItem}
         setCurrentPage={setP_num}
         historyDomainHandler={historyDomainHandler}
         deleteDomainHandler={deleteDomainHandler}
-        editDomainHandler={editDomainHandler}
-        renewDomainHandler={renewDomainHandler}
-        NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
@@ -262,13 +270,14 @@ export default function Component() {
         />
       )}
 
-      {/* {Number(domainsCount) <= 30 &&
-        widerThan1600 &&
-        domainsRenderData?.domainsList?.length !== 0 && (
-          <div className={s.total_pagination_price}>
-            {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}
-          </div>
-        )} */}
+      <DomainBottomBar
+        selctedItem={selctedItem}
+        editDomainHandler={editDomainHandler}
+        renewDomainHandler={renewDomainHandler}
+        NSDomainHandler={NSDomainHandler}
+        rights={rights}
+        domainsRenderData={domainsRenderData}
+      />
 
       {domainsRenderData?.domainsList?.length > 0 && (
         <div className={s.pagination}>
@@ -328,7 +337,7 @@ export default function Component() {
         onClick={closeNSModalHandler}
       >
         <DomainsNSModal
-          name={selctedItem?.name?.$}
+          name={parseSelectedItemName()}
           closeNSModalHandler={closeNSModalHandler}
           NSData={NSData}
           NSEditDomainHandler={NSEditDomainHandler}

@@ -10,7 +10,8 @@
 .newTicketBtn {
   height: 53px;
   text-transform: uppercase;
-  max-width: 230px;
+  max-width: 100%;
+  width: 100%;
   min-width: 200px;
   max-height: 53px;
   margin-right: 24px;
@@ -192,7 +193,7 @@
   .newTicketBtn {
     margin-bottom: 30px;
     max-height: 53px;
-    max-width: 255px;
+    max-width: 100%;
   }
 }
 

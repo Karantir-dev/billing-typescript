@@ -43,7 +43,13 @@ export default function Component(props) {
       {list?.map(el => {
         const { id, domain, pricelist, real_expiredate, item_status, cost } = el
 
-        let onItemClick = () => setSelctedItem(el)
+        const addSelectedItem = (val, ids) => {
+          if (val) {
+            setSelctedItem(s => [...s, ids])
+            return
+          }
+          setSelctedItem(s => s.filter(el => el !== ids))
+        }
 
         return (
           <DomainsTableItem
@@ -54,8 +60,8 @@ export default function Component(props) {
             expiredate={real_expiredate?.$}
             status={item_status?.$}
             cost={cost?.$}
-            setSelctedItem={onItemClick}
-            selected={selctedItem?.id?.$ === id?.$}
+            setSelctedItem={addSelectedItem}
+            selected={selctedItem}
             el={el}
             historyDomainHandler={historyDomainHandler}
             deleteDomainHandler={deleteDomainHandler}

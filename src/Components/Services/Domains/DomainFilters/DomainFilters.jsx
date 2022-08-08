@@ -17,14 +17,7 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
-    // selctedItem,
     setCurrentPage,
-    // editDomainHandler,
-    // deleteDomainHandler,
-    // renewDomainHandler,
-    // historyDomainHandler,
-    // whoisDomainHandler,
-    // NSDomainHandler,
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
@@ -69,7 +62,7 @@ export default function Component(props) {
     }
     setCurrentPage(1)
     setFilterModal(false)
-    setSelctedItem(null)
+    setSelctedItem([])
     setIsFiltered(false)
     dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
   }
@@ -77,7 +70,7 @@ export default function Component(props) {
   const setFilterHandler = values => {
     setCurrentPage(1)
     setIsFiltered(true)
-    setSelctedItem(null)
+    setSelctedItem([])
     setFilterModal(false)
     dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
   }
@@ -133,62 +126,6 @@ export default function Component(props) {
             icon="transfer"
           />
         </HintWrapper>
-
-        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton
-            disabled={!selctedItem || !rights?.edit}
-            onClick={editDomainHandler}
-            icon="edit"
-          />
-        </HintWrapper> */}
-
-        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
-          <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '5_transfer'}
-            onClick={deleteDomainHandler}
-            icon="delete"
-          />
-        </HintWrapper> */}
-
-        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
-          <IconButton
-            disabled={
-              !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
-            }
-            onClick={renewDomainHandler}
-            icon="clock"
-          />
-        </HintWrapper>
-
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
-          <IconButton
-            disabled={!selctedItem || !rights?.history}
-            onClick={historyDomainHandler}
-            icon="refund"
-          />
-        </HintWrapper>
-
-        <HintWrapper
-          wrapperClassName={s.archiveBtn}
-          label={t('Getting information about a domain using the whois protocol')}
-        >
-          <IconButton
-            disabled={!selctedItem || !rights?.whois}
-            onClick={whoisDomainHandler}
-            icon="whois"
-          />
-        </HintWrapper>
-
-        <HintWrapper
-          wrapperClassName={s.archiveBtn}
-          label={t('View/change the list of nameservers')}
-        >
-          <IconButton
-            disabled={!selctedItem || !rights?.ns}
-            onClick={NSDomainHandler}
-            icon="server-cloud"
-          />
-        </HintWrapper> */}
       </div>
       <Button
         disabled={!rights?.register}

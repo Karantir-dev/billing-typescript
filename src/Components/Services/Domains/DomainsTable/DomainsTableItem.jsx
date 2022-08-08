@@ -5,15 +5,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox } from '../../../'
-import {
-  MoreDots,
-  Edit,
-  // Delete,
-  Clock,
-  Refund,
-  Whois,
-  DomainsListName,
-} from '../../../../images'
+import { MoreDots, Edit, Clock, Refund, Whois, DomainsListName } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
 
 export default function Component(props) {
@@ -27,7 +19,6 @@ export default function Component(props) {
     selected,
     el,
     editDomainHandler,
-    // deleteDomainHandler,
     renewDomainHandler,
     historyDomainHandler,
     whoisDomainHandler,
@@ -47,19 +38,12 @@ export default function Component(props) {
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
   return (
-    <div
-      data-testid="archive_item"
-      role="button"
-      tabIndex={0}
-      onKeyDown={() => {}}
-      onClick={() => setSelctedItem(id)}
-      className={cn(s.item, { [s.selected]: selected })}
-    >
+    <div className={s.item}>
       <div className={s.checkBoxColumn}>
         <CheckBox
           className={s.check_box}
-          // initialState={activeServices.length === servers.length}
-          func={isChecked => console.log(isChecked)}
+          initialState={selected?.includes(el)}
+          setValue={isChecked => setSelctedItem(isChecked, el)}
         />
       </div>
       <div className={s.columnsWithoutCheckBox}>
@@ -114,10 +98,6 @@ export default function Component(props) {
               <Edit />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
-            {/* <button className={s.settings_btn} onClick={deleteDomainHandler}>
-            <Delete />
-            <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-          </button> */}
             <button
               disabled={!rights?.prolong}
               className={s.settings_btn}
@@ -165,7 +145,7 @@ Component.propTypes = {
   status: PropTypes.string,
   unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
-  selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
+  selected: PropTypes.array,
   rights: PropTypes.object,
 }
 
@@ -176,5 +156,5 @@ Component.defaultProps = {
   status: '',
   unread: false,
   setSelctedTicket: () => null,
-  selected: null,
+  selected: [],
 }
