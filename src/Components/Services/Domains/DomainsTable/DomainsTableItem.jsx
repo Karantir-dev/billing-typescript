@@ -5,15 +5,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox } from '../../../'
-import {
-  MoreDots,
-  Edit,
-  // Delete,
-  Clock,
-  Refund,
-  Whois,
-  DomainsListName,
-} from '../../../../images'
+import { MoreDots, Edit, Clock, Refund, Whois, DomainsListName } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
 
 export default function Component(props) {
@@ -27,7 +19,6 @@ export default function Component(props) {
     selected,
     el,
     editDomainHandler,
-    // deleteDomainHandler,
     renewDomainHandler,
     historyDomainHandler,
     whoisDomainHandler,
@@ -47,19 +38,12 @@ export default function Component(props) {
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
   return (
-    <div
-      data-testid="archive_item"
-      role="button"
-      tabIndex={0}
-      onKeyDown={() => {}}
-      onClick={() => setSelctedItem(id)}
-      className={cn(s.item, { [s.selected]: selected })}
-    >
+    <div className={s.item}>
       <div className={s.checkBoxColumn}>
         <CheckBox
           className={s.check_box}
-          // initialState={activeServices.length === servers.length}
-          func={isChecked => console.log(isChecked)}
+          initialState={selected?.includes(el)}
+          func={isChecked => setSelctedItem(!isChecked, el)}
         />
       </div>
       <div className={s.columnsWithoutCheckBox}>
@@ -109,19 +93,15 @@ export default function Component(props) {
             <button
               disabled={!rights?.edit}
               className={s.settings_btn}
-              onClick={editDomainHandler}
+              onClick={() => editDomainHandler(id)}
             >
               <Edit />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
-            {/* <button className={s.settings_btn} onClick={deleteDomainHandler}>
-            <Delete />
-            <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-          </button> */}
             <button
               disabled={!rights?.prolong}
               className={s.settings_btn}
-              onClick={renewDomainHandler}
+              onClick={() => renewDomainHandler(id)}
             >
               <Clock />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
@@ -129,7 +109,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.history}
               className={s.settings_btn}
-              onClick={historyDomainHandler}
+              onClick={() => historyDomainHandler(id)}
             >
               <Refund />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
@@ -137,7 +117,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.whois}
               className={s.settings_btn}
-              onClick={whoisDomainHandler}
+              onClick={() => whoisDomainHandler(id)}
             >
               <Whois />
               <p className={s.setting_text}>{t('whois')}</p>
@@ -145,7 +125,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.ns}
               className={s.settings_btn}
-              onClick={NSDomainHandler}
+              onClick={() => NSDomainHandler(id)}
             >
               <DomainsListName />
               <p className={s.setting_text}>
@@ -165,7 +145,7 @@ Component.propTypes = {
   status: PropTypes.string,
   unread: PropTypes.bool,
   setSelctedTicket: PropTypes.func,
-  selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
+  selected: PropTypes.array,
   rights: PropTypes.object,
 }
 
@@ -176,5 +156,5 @@ Component.defaultProps = {
   status: '',
   unread: false,
   setSelctedTicket: () => null,
-  selected: null,
+  selected: [],
 }

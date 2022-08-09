@@ -95,7 +95,15 @@ export default function Component(props) {
         }}
         onSubmit={sendPasswrodHandler}
       >
-        {({ errors, touched }) => {
+        {({ errors, touched, values, setFieldValue }) => {
+          const onInputItemsChange = text => {
+            let value = text.replace(/\D/g, '')
+            if (value.length === 0) {
+              value = ''
+            }
+            setFieldValue('qrcode', value)
+          }
+
           return (
             <Form className={s.form}>
               <div className={s.mobileScroll}>
@@ -155,11 +163,13 @@ export default function Component(props) {
                   <InputField
                     className={s.passInput}
                     background
-                    name="qrcode"
-                    type="number"
+                    type="text"
                     label={`${t('A temporary password')}:`}
                     placeholder={t('Enter password')}
                     isShadow
+                    value={values?.qrcode}
+                    onChange={e => onInputItemsChange(e?.target?.value)}
+                    name="qrcode"
                     error={!!errors.qrcode}
                     touched={!!touched.qrcode}
                   />

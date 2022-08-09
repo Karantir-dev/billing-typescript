@@ -104,6 +104,7 @@ export { default as DomainsProlongModal } from './Services/Domains/DomainsProlon
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'
 export { default as DomainsZone } from './Services/Domains/DomainOrderPage/DomainsZone/DomainsZone'
 export { default as DomainsPickUpZones } from './Services/Domains/DomainOrderPage/DomainsPickUpZones/DomainsPickUpZones'
+export { default as DomainBottomBar } from './Services/Domains/DomainBottomBar/DomainBottomBar'
 
 export { default as SharedHostingFilter } from './Services/SharedHosting/SharedHostingFilter/SharedHostingFilter'
 export { default as SharedHostingInstructionModal } from './Services/SharedHosting/SharedHostingInstructionModal/SharedHostingInstructionModal'

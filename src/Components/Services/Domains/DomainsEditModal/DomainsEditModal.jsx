@@ -11,9 +11,20 @@ import { translatePeriod } from '../../../../utils'
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds', 'payers'])
 
-  const { name, closeEditModalHandler, editData, editSaveDomainHandler } = props
+  const { names, closeEditModalHandler, editData, editSaveDomainHandler } = props
 
   const [isOpenProfile, setIsOpenProfile] = useState(false)
+
+  const [more, setMore] = useState(false)
+  const [namesToRender, setNamesToRender] = useState(
+    names?.length > 1 ? names?.slice(0, 1) : names,
+  )
+
+  const handleMoreBtn = e => {
+    e.preventDefault()
+    setMore(!more)
+    setNamesToRender(!more ? names : names?.slice(0, 1))
+  }
 
   const initialValues = {
     autoprolong: editData?.autoprolong || '',
@@ -45,19 +56,58 @@ export default function Component(props) {
     initialValues[editData?.addon] = editData[editData?.addon]?.$
   }
 
+  console.log(editData, 'editData')
   return (
     <div className={cn(s.modalBg, { [s.profileOpened]: isOpenProfile })}>
       <div className={s.modalBlock}>
         <div className={s.modalHeader}>
-          <span className={s.headerText}>
-            {t('Service editing')} - {name}
-          </span>
+          <span className={s.headerText}>{t('Service editing')}</span>
           <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
         </div>
+        {editData?.domain_id?.split(',')?.length > 1 && (
+          <div className={s.namesBlock}>
+            <p className={s.warning_text}>
+              {t('Attention, edit few services', { ns: 'other' })}:
+            </p>
+
+            <div
+              className={cn({
+                [s.services_names_wrapper]: true,
+                [s.active]: more,
+              })}
+            >
+              {namesToRender?.map((item, idx) => {
+                return (
+                  <span className={s.item} key={item}>
+                    {item
+                      ?.split(' (')[0]
+                      ?.replace('for', t('for', { ns: 'dns' }))
+                      ?.replace('domains', t('domains', { ns: 'dns' }))
+                      ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+
+                    {names.length <= 3 && idx === names.length - 1 ? '' : ', '}
+                  </span>
+                )
+              })}
+            </div>
+            {names?.length > 1 && (
+              <button onClick={handleMoreBtn} className={s.hidden_area}>
+                {!more
+                  ? t('and_more', {
+                      ns: 'other',
+                      value: +names.length - 1,
+                    })
+                  : t('trusted_users.read_less', { ns: 'trusted_users' })}
+              </button>
+            )}
+          </div>
+        )}
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          onSubmit={values => editSaveDomainHandler(values, isOpenProfile)}
+          onSubmit={values =>
+            editSaveDomainHandler(values, isOpenProfile, editData?.domain_id)
+          }
         >
           {({ errors, touched, values, setFieldValue, handleBlur }) => {
             return (
