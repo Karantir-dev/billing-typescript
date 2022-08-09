@@ -8,7 +8,14 @@ import s from './ForexItem.module.scss'
 import { Delete } from '../../../images'
 
 export default function ForexItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'dns', 'crumbs'])
+  const { t } = useTranslation([
+    'cart',
+    'dedicated_servers',
+    'other',
+    'dns',
+    'crumbs',
+    'vds',
+  ])
 
   const {
     desc,
@@ -92,7 +99,7 @@ export default function ForexItem(props) {
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
                 <p className={s.countItem}>
-                  {count} {t('psc.')}
+                  {count} {t('psc.', { ns: 'vds' })}
                 </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
@@ -108,7 +115,7 @@ export default function ForexItem(props) {
 
             {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.')}
+                {count} {t('psc.', { ns: 'vds' })}
               </p>
             )}
 

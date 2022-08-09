@@ -20,7 +20,7 @@ export default function Loader({ logo = false, shown }) {
         [s.shown]: isLoading || userInfoLoading || shown,
       })}
     >
-      {(logo || userInfoLoading) && <Logo svgwidth="105" svgheight="48" />}
+      {(logo || userInfoLoading) && <Logo svgwidth="115" svgheight="53" />}
 
       <div className={s.loader}>
         <div className={`${s.loader_circle} ${s.first}`}></div>

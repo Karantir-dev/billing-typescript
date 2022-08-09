@@ -5,7 +5,7 @@ import { Delete } from '../../../images'
 import s from './FtpItem.module.scss'
 
 export default function FtpItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
+  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
   const {
     desc,
@@ -87,7 +87,7 @@ export default function FtpItem(props) {
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
                 <p className={s.countItem}>
-                  {count} {t('psc.')}
+                  {count} {t('psc.', { ns: 'vds' })}
                 </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
@@ -103,7 +103,7 @@ export default function FtpItem(props) {
 
             {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.')}
+                {count} {t('psc.', { ns: 'vds' })}
               </p>
             )}
 

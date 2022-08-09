@@ -215,6 +215,21 @@ export default function Component() {
       }
     })
 
+    const filteredVhostList = []
+
+    vhostList?.forEach(elem => {
+      if (
+        filteredVhostList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredVhostList?.push({
+          ...elem,
+          count: vhostList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
     return (
       <>
         {siteCareList?.length > 0 && (
@@ -240,11 +255,19 @@ export default function Component() {
           </div>
         )}
 
-        {vhostList?.length > 0 && (
+        {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
-            {vhostList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+            {filteredVhostList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                pricelist_name,
+                discount_percent,
+                fullcost,
+                count,
+              } = el
               return (
                 <VhostItem
                   key={id?.$}
@@ -255,8 +278,11 @@ export default function Component() {
                   itemId={el['item.id']?.$}
                   pricelist_name={pricelist_name?.$}
                   deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                    filteredVhostList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
                   }
+                  count={count}
                 />
               )
             })}
