@@ -56,7 +56,7 @@ export default function ForexPage() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   const getTotalPrice = () => {
-    const list = activeServices.length > 1 ? activeServices : forexRenderData?.forexList
+    const list = activeServices.length >= 1 ? activeServices : forexRenderData?.forexList
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -344,13 +344,12 @@ export default function ForexPage() {
                   />
                 </HintWrapper>
               </div>
-
-              <p className={s.services_selected}>
-                {t('services_selected', { ns: 'other' })}{' '}
-                <span className={s.tools_footer_value}>{activeServices.length}</span>
-              </p>
             </>
           )}
+          <p className={s.services_selected}>
+            {t('services_selected', { ns: 'other' })}{' '}
+            <span className={s.tools_footer_value}>{activeServices.length}</span>
+          </p>
           <p className={s.total_price}>
             {t('total', { ns: 'other' })}:{' '}
             <span className={s.tools_footer_value}>

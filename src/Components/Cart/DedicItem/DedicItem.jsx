@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 import s from './DedicItem.module.scss'
 
 export default function DedicItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
+  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
   const {
     desc,
@@ -100,7 +100,7 @@ export default function DedicItem(props) {
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
                 <p className={s.countItem}>
-                  {count} {t('psc.')}
+                  {count} {t('psc.', { ns: 'vds' })}
                 </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
@@ -116,7 +116,7 @@ export default function DedicItem(props) {
 
             {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.')}
+                {count} {t('psc.', { ns: 'vds' })}
               </p>
             )}
 

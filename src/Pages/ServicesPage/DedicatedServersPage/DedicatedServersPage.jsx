@@ -171,7 +171,8 @@ export default function DedicatedServersPage() {
   }, [filterModal])
 
   const getTotalPrice = () => {
-    const list = activeServices.length > 1 ? activeServices : dedicRenderData?.serversList
+    const list =
+      activeServices.length >= 1 ? activeServices : dedicRenderData?.serversList
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -349,13 +350,12 @@ export default function DedicatedServersPage() {
                   />
                 </HintWrapper>
               </div>
-
-              <p className={s.services_selected}>
-                {t('services_selected', { ns: 'other' })}{' '}
-                <span className={s.tools_footer_value}>{activeServices.length}</span>
-              </p>
             </>
           )}
+          <p className={s.services_selected}>
+            {t('services_selected', { ns: 'other' })}{' '}
+            <span className={s.tools_footer_value}>{activeServices.length}</span>
+          </p>
           <p className={s.total_price}>
             {t('total', { ns: 'other' })}:{' '}
             <span className={s.tools_footer_value}>

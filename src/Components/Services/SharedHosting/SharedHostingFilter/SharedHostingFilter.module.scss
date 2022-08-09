@@ -31,9 +31,11 @@
 .formBlock {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-bottom: 10px;
+  flex-direction: column-reverse;
 }
+
 
 .archiveBtn {
   margin-right: 20px;
@@ -182,18 +184,43 @@
   fill: var(--main-text);
 }
 
+.btns_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 260px;
+}
+
+.check_box_wrapper {
+  display: flex;
+  margin-top: 25px;
+}
+
+.main_checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.check_box {
+  box-shadow: var(--checkbox_shadow);
+  background-color: var(--forms_bgc_4);
+}
+
 @media screen and (max-width: 320px) {
   .newTicketBtn {
-    margin-bottom: 30px;
+    // margin-bottom: 30px;
     max-height: 53px;
     min-width: 200px;
     max-width: 200px;
   }
 }
 
-@media screen and (min-width: 321px) {
+@media screen and (min-width: 450px) {
   .newTicketBtn {
-    margin-bottom: 30px;
+    // margin-bottom: 30px;
     max-height: 53px;
     max-width: 255px;
   }
@@ -284,6 +311,18 @@
     margin-right: 15px;
     width: 100%;
   }
+
+  .btns_wrapper {
+    width: 330px;
+    margin-left: auto;
+  }
+
+  .formBlock {
+  align-items: center;
+  padding-bottom: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+}
 }
 
 @media screen and (min-width: 1024px) {
@@ -328,6 +367,10 @@
 }
 
 @media screen and (min-width: 1600px) {
+  .btns_wrapper {
+    margin-left: 0;
+  }
+
   .filterBlock {
     flex-direction: row;
   }
@@ -347,7 +390,6 @@
   }
 
   .newTicketBtn {
-    margin-right: 0;
     font-size: 20px;
   }
 

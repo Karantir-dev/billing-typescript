@@ -68,7 +68,6 @@
   top: 50%;
   transform: translate(0, -50%);
 
-  // padding: 17px 14px;
   box-shadow: var(--forms2_shadow);
   background: var(--elements-bgc);
   border-radius: 3px;
@@ -287,14 +286,14 @@
     max-height: unset;
     padding: 20px;
     top: calc(90% + 10px);
-    left: -290px;
+    right: -20px;
     overflow-y: visible;
     transform: unset;
 
     &::after {
       content: '';
       position: absolute;
-      left: 285px;
+      right: 15px;
       top: -10px;
       width: 0;
       height: 0;
@@ -306,7 +305,7 @@
   }
 
   .form {
-    min-width: 645px;
+    min-width: 590px;
 
     &.expenses {
       min-width: 600px;
@@ -340,7 +339,7 @@
 
 @media screen and (min-width: 1024px) {
   .form {
-    min-width: 768px;
+    min-width: 730px;
     &.expenses {
       min-width: 730px;
     }
@@ -366,13 +365,14 @@
 
 @media screen and (min-width: 1600px) {
   .form {
-    min-width: 1070px;
+    min-width: 1020px;
     &.expenses {
       min-width: 770px;
     }
   }
 
   .filterModal {
+    width: fit-content;
     left: -20px;
 
     &::after {

@@ -58,7 +58,7 @@ export default function DNS() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   const getTotalPrice = () => {
-    const list = activeServices.length > 1 ? activeServices : dnsRenderData?.dnsList
+    const list = activeServices.length >= 1 ? activeServices : dnsRenderData?.dnsList
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -335,13 +335,12 @@ export default function DNS() {
                   />
                 </HintWrapper>
               </div>
-
-              <p className={s.services_selected}>
-                {t('services_selected', { ns: 'other' })}{' '}
-                <span className={s.tools_footer_value}>{activeServices.length}</span>
-              </p>
             </>
           )}
+          <p className={s.services_selected}>
+            {t('services_selected', { ns: 'other' })}{' '}
+            <span className={s.tools_footer_value}>{activeServices.length}</span>
+          </p>
           <p className={s.total_price}>
             {t('total', { ns: 'other' })}:{' '}
             <span className={s.tools_footer_value}>
