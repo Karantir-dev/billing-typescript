@@ -65,6 +65,14 @@ export default function Component(props) {
     setItemNumber(value)
   }
 
+  const onPressEnter = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      event?.target?.blur()
+    }
+  }
+
+
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
       <>
@@ -74,6 +82,7 @@ export default function Component(props) {
             <div className={cn(s.paginationItem, s.inputItem)}>
               <input
                 className={s.input}
+                onKeyDown={onPressEnter}
                 value={itemNumber}
                 onBlur={changePageItems}
                 onChange={e => onInputItemsChange(e.target.value)}
@@ -99,6 +108,7 @@ export default function Component(props) {
           <div className={cn(s.paginationItem, s.inputItem)}>
             <input
               className={s.input}
+              onKeyDown={onPressEnter}
               value={pageNumber}
               onBlur={goToPage}
               onChange={e => onInputChange(e.target.value)}

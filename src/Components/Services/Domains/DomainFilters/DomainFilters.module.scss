@@ -52,6 +52,7 @@
   position: relative;
   margin-top: 5px;
   margin-right: 19px;
+  margin-left: auto;
 }
 
 .bg {
@@ -181,6 +182,21 @@
   fill: var(--main-text);
 }
 
+.checkBoxColumn {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+    margin-left: 16px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .newTicketBtn {
     margin-bottom: 30px;
@@ -198,6 +214,14 @@
 }
 
 @media screen and (min-width: 600px) {
+  .filterBtnBlock {
+    margin-left: 0;
+  }
+
+  .checkBoxColumn {
+    display: none;
+  }
+
   .newTicketBtn {
     max-width: 229px;
     margin-right: 20px;

@@ -36,7 +36,10 @@ export default function VDS(props) {
   const checkNSSelctedItemStatus = () => {
     let blocked = false
     selctedItem?.forEach(el => {
-      if (el?.item_status?.$orig === '5_open') {
+      if (
+        el?.item_status?.$orig === '5_open' ||
+        el?.item_status?.$orig === '3_autosuspend'
+      ) {
         blocked = true
       }
     })
@@ -45,40 +48,42 @@ export default function VDS(props) {
 
   return (
     <div className={s.tools_footer}>
-      <div className={s.buttons_wrapper}>
-        <HintWrapper label={t('edit', { ns: 'other' })}>
-          <IconButton
-            className={s.tools_icon}
-            disabled={selctedItem?.length === 0 || !rights?.edit}
-            onClick={editDomainHandler}
-            icon="edit"
-          />
-        </HintWrapper>
+      {selctedItem?.length !== 0 && (
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('edit', { ns: 'other' })}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={selctedItem?.length === 0 || !rights?.edit}
+              onClick={() => editDomainHandler()}
+              icon="edit"
+            />
+          </HintWrapper>
 
-        <HintWrapper label={t('prolong', { ns: 'vds' })}>
-          <IconButton
-            className={s.tools_icon}
-            disabled={
-              selctedItem?.length === 0 ||
-              checkProlongSelctedItemStatus() ||
-              !rights?.prolong
-            }
-            onClick={renewDomainHandler}
-            icon="clock"
-          />
-        </HintWrapper>
+          <HintWrapper label={t('prolong', { ns: 'vds' })}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                selctedItem?.length === 0 ||
+                checkProlongSelctedItemStatus() ||
+                !rights?.prolong
+              }
+              onClick={() => renewDomainHandler()}
+              icon="clock"
+            />
+          </HintWrapper>
 
-        <HintWrapper label={t('View/change the list of nameservers')}>
-          <IconButton
-            className={s.tools_icon}
-            disabled={
-              selctedItem?.length === 0 || !rights?.ns || checkNSSelctedItemStatus()
-            }
-            onClick={NSDomainHandler}
-            icon="server-cloud"
-          />
-        </HintWrapper>
-      </div>
+          <HintWrapper label={t('View/change the list of nameservers')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                selctedItem?.length === 0 || !rights?.ns || checkNSSelctedItemStatus()
+              }
+              onClick={() => NSDomainHandler()}
+              icon="server-cloud"
+            />
+          </HintWrapper>
+        </div>
+      )}
       <p className={s.services_selected}>
         {t('services_selected', { ns: 'other' })}{' '}
         <span className={s.tools_footer_value}>{selctedItem?.length || '0'}</span>

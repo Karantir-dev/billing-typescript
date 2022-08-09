@@ -808,6 +808,7 @@ const editDomainNS =
           ns2: data?.doc?.ns2?.$,
           ns3: data?.doc?.ns3?.$,
           ns_additional: data?.doc?.ns_additional?.$,
+          domain_id: data?.doc?.elid?.$,
         }
         setNSData && setNSData(d)
         setNSModal && setNSModal(true)
@@ -844,7 +845,8 @@ const editDomain =
         '/',
         qs.stringify({
           auth: sessionId,
-          func: 'domain.edit',
+          func: body?.elid.split(',')?.length > 1 ? 'groupedit' : 'domain.edit',
+          faction: 'domain.edit',
           out: 'json',
           lang: 'en',
           ...body,
@@ -865,6 +867,9 @@ const editDomain =
           createdate: data?.doc?.createdate?.$,
           expiredate: data?.doc?.expiredate?.$,
           domain: data?.doc?.domain?.$,
+          domain_name: data?.doc?.name?.$,
+          domain_id: data?.doc?.elid?.$,
+
           stored_method: data?.doc?.stored_method?.$,
           service_profile_owner: data?.doc?.service_profile_owner?.$,
         }

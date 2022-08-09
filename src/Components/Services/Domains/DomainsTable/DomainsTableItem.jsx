@@ -43,7 +43,7 @@ export default function Component(props) {
         <CheckBox
           className={s.check_box}
           initialState={selected?.includes(el)}
-          setValue={isChecked => setSelctedItem(isChecked, el)}
+          func={isChecked => setSelctedItem(!isChecked, el)}
         />
       </div>
       <div className={s.columnsWithoutCheckBox}>
@@ -93,7 +93,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.edit}
               className={s.settings_btn}
-              onClick={editDomainHandler}
+              onClick={() => editDomainHandler(id)}
             >
               <Edit />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
@@ -101,7 +101,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.prolong}
               className={s.settings_btn}
-              onClick={renewDomainHandler}
+              onClick={() => renewDomainHandler(id)}
             >
               <Clock />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
@@ -109,7 +109,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.history}
               className={s.settings_btn}
-              onClick={historyDomainHandler}
+              onClick={() => historyDomainHandler(id)}
             >
               <Refund />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
@@ -117,7 +117,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.whois}
               className={s.settings_btn}
-              onClick={whoisDomainHandler}
+              onClick={() => whoisDomainHandler(id)}
             >
               <Whois />
               <p className={s.setting_text}>{t('whois')}</p>
@@ -125,7 +125,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.ns}
               className={s.settings_btn}
-              onClick={NSDomainHandler}
+              onClick={() => NSDomainHandler(id)}
             >
               <DomainsListName />
               <p className={s.setting_text}>

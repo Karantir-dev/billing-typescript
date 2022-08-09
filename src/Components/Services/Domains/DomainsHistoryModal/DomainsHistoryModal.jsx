@@ -10,7 +10,6 @@ export default function Component(props) {
   const { t } = useTranslation(['domains', 'other'])
 
   const {
-    name,
     historyList,
     closeHistoryModalHandler,
     setHistoryCurrentPage,
@@ -21,9 +20,7 @@ export default function Component(props) {
   return (
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
-        <span className={s.headerText}>
-          {t('Service change history')} - {name}
-        </span>
+        <span className={s.headerText}>{t('Service change history')}</span>
         <Cross onClick={closeHistoryModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.table}>

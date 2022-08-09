@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, IconButton, HintWrapper, Portal } from '../../..'
+import { Button, IconButton, HintWrapper, Portal, CheckBox } from '../../..'
 import * as routes from '../../../../routes'
 import s from './DomainFilters.module.scss'
 
@@ -17,6 +17,8 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
+    selctedItem,
+    list,
     setCurrentPage,
     setIsFiltered,
     setSelctedItem,
@@ -29,6 +31,14 @@ export default function Component(props) {
   const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
 
   const [filterModal, setFilterModal] = useState(false)
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(list)
+      return
+    }
+    setSelctedItem([])
+  }
 
   useEffect(() => {
     if (filterModal) {
@@ -78,6 +88,14 @@ export default function Component(props) {
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={list?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
         <div className={s.filterBtnBlock}>
           <IconButton
             onClick={() => setFilterModal(true)}

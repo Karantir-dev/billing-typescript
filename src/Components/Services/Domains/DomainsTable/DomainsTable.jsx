@@ -20,14 +20,23 @@ export default function Component(props) {
     NSDomainHandler,
     rights,
   } = props
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(list)
+      return
+    }
+    setSelctedItem([])
+  }
+
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            // initialState={activeServices.length === servers.length}
-            func={isChecked => console.log(isChecked)}
+            initialState={list?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
           />
         </div>
         <div className={s.headerColumnsWithoutCheckBox}>
