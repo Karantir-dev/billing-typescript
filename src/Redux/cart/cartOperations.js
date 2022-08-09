@@ -37,6 +37,22 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         billorder: data?.doc?.billorder?.$,
       }
 
+      // axiosInstance
+      //   .post(
+      //     '/',
+      //     qs.stringify({
+      //       func: 'basket',
+      //       out: 'json',
+      //       auth: sessionId,
+      //       lang: 'en',
+      //       billorder: data?.doc?.billorder?.$,
+      //     }),
+      //   )
+      //   .then(({ data }) => {
+      //     console.log(data, 'data from bilorder')
+      //   })
+      // console.log(data?.doc?.billorder?.$, 'data?.doc?.billorder?.$')
+
       data.doc?.list?.forEach(el => {
         if (el.$name === 'itemlist') {
           cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
@@ -223,8 +239,8 @@ const setPaymentMethods =
       .then(({ data }) => {
         if (data.doc.error) {
           if (
-            data.doc.error.msg.$ ===
-            'The \'Contact person\' field has invalid value. The value cannot be empty'
+            data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
+            'The Contact person field has invalid value. The value cannot be empty'
           )
             toast.error(
               i18n?.t('The payer is not valid, change the payer or add a new one', {

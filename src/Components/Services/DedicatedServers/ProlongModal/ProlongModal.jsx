@@ -162,6 +162,12 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
                     </div>
                   )}
 
+                  {initialState?.suspendpenaltywarn && (
+                    <p className={s.suspendpenaltywarn}>
+                      {initialState?.suspendpenaltywarn?.$}
+                    </p>
+                  )}
+
                   <div className={s.parameters_wrapper}>
                     <div className={s.main_block}>
                       <Select

@@ -984,9 +984,25 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
       console.log(data, 'data prolong vds with expiration')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -1017,9 +1033,25 @@ const getProlongInfoForFewElems = (elid, setInitialState) => (dispatch, getState
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
       dispatch(actions.hideLoader())
       dispatch(actions.hideLoader())
     })
