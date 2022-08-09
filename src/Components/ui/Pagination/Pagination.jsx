@@ -89,7 +89,7 @@ export default function Component(props) {
               />
             </div>
           </div>
-        )}
+        )} 
       </>
       {!(currentPage === 0 || lastPage < 2) && (
         <div className={s.paginationContainer}>
