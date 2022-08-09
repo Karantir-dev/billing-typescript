@@ -8,7 +8,14 @@ import s from './DnsItem.module.scss'
 import { Delete } from '../../../images'
 
 export default function DnsItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'dns', 'crumbs'])
+  const { t } = useTranslation([
+    'cart',
+    'dedicated_servers',
+    'other',
+    'dns',
+    'crumbs',
+    'vds',
+  ])
 
   const {
     desc,
@@ -90,7 +97,7 @@ export default function DnsItem(props) {
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
                 <p className={s.countItem}>
-                  {count} {t('psc.')}
+                  {count} {t('psc.', { ns: 'vds' })}
                 </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
@@ -106,7 +113,7 @@ export default function DnsItem(props) {
 
             {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.')}
+                {count} {t('psc.', { ns: 'vds' })}
               </p>
             )}
 

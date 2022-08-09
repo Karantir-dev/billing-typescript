@@ -36,7 +36,6 @@ export default function Component(props) {
     ip,
     datacentername,
     rights,
-
     activeServices,
     setActiveServices,
   } = props
@@ -88,7 +87,7 @@ export default function Component(props) {
           />
         )}
 
-        {mobile && <hr className={s.line} />}
+        {mobile && <div className={s.line} />}
 
         <div className={s.tableBlockFirst}>
           {mobile && <div className={s.item_title}>{t('Id')}:</div>}
@@ -204,6 +203,9 @@ Component.propTypes = {
   setSelctedTicket: PropTypes.func,
   selected: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.bool]),
   rights: PropTypes.object,
+  activeServices: PropTypes.array,
+  setActiveServices: PropTypes.func,
+  setElidForProlongModal: PropTypes.func,
 }
 
 Component.defaultProps = {

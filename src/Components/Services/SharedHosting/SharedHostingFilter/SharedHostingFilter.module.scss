@@ -31,10 +31,11 @@
 .formBlock {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-bottom: 10px;
-  justify-content: space-between;
+  flex-direction: column-reverse;
 }
+
 
 .archiveBtn {
   margin-right: 20px;
@@ -187,7 +188,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 330px;
+  width: 260px;
 }
 
 .check_box_wrapper {
@@ -217,7 +218,7 @@
   }
 }
 
-@media screen and (min-width: 321px) {
+@media screen and (min-width: 450px) {
   .newTicketBtn {
     // margin-bottom: 30px;
     max-height: 53px;
@@ -310,6 +311,18 @@
     margin-right: 15px;
     width: 100%;
   }
+
+  .btns_wrapper {
+    width: 330px;
+    margin-left: auto;
+  }
+
+  .formBlock {
+  align-items: center;
+  padding-bottom: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+}
 }
 
 @media screen and (min-width: 1024px) {
@@ -354,6 +367,10 @@
 }
 
 @media screen and (min-width: 1600px) {
+  .btns_wrapper {
+    margin-left: 0;
+  }
+
   .filterBlock {
     flex-direction: row;
   }

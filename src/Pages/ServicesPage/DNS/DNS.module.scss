@@ -163,6 +163,7 @@
     flex-wrap: nowrap;
     column-gap: 30px;
     padding: 15px 65px 15px 60px;
+    min-height: 85px;
   }
   .services_selected {
     font-size: 16px;
@@ -180,6 +181,10 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .btns_wrapper {
+    margin-left: auto;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -195,9 +200,11 @@
 }
 
 @media screen and (min-width: 1600px) {
+  .btns_wrapper {
+    margin-left: 0;
+  }
+
   .tools_wrapper {
-
-
     .check_box_wrapper {
       margin-left: 35px;
     }

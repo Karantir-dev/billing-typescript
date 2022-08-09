@@ -173,6 +173,13 @@ export default function Component(props) {
 Component.propTypes = {
   selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
   rights: PropTypes.object,
+  hostingList: PropTypes.array,
+  activeServices: PropTypes.array,
+  setActiveServices: PropTypes.func,
+  setIsFiltered: PropTypes.func,
+  setSelctedItem: PropTypes.func,
+  isFilterActive: PropTypes.bool,
+  isFiltered: PropTypes.bool,
 }
 
 Component.defaultProps = {

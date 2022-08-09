@@ -104,6 +104,10 @@ Component.propTypes = {
   setSelctedPayment: PropTypes.func,
   selctedPayment: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
   rights: PropTypes.object,
+  activeServices: PropTypes.array,
+  setActiveServices: PropTypes.func,
+  elidForProlongModal: PropTypes.array,
+  setElidForProlongModal: PropTypes.func,
 }
 
 Component.defaultProps = {

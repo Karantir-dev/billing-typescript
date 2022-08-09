@@ -77,7 +77,6 @@
   //     border-bottom-left-radius: 3px;
   //   }
   // }
-
 }
 
 .dots {
@@ -193,7 +192,8 @@
 }
 
 .line {
-  border: 1px solid #e1daea;
+  border-bottom: 1px solid var(--select_option_bgc);
+  margin-top: 15px;
   width: 100%;
   margin-bottom: 15px;
 }
@@ -245,10 +245,10 @@
   }
 }
 
-.line {
-  display: block;
-  border: 1px solid var(--select_option_bgc);
-}
+// .line {
+//   display: block;
+//   border: 1px solid var(--select_option_bgc);
+// }
 
 
 .check_box {
