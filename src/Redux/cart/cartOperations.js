@@ -37,22 +37,6 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         billorder: data?.doc?.billorder?.$,
       }
 
-      // axiosInstance
-      //   .post(
-      //     '/',
-      //     qs.stringify({
-      //       func: 'basket',
-      //       out: 'json',
-      //       auth: sessionId,
-      //       lang: 'en',
-      //       billorder: data?.doc?.billorder?.$,
-      //     }),
-      //   )
-      //   .then(({ data }) => {
-      //     console.log(data, 'data from bilorder')
-      //   })
-      // console.log(data?.doc?.billorder?.$, 'data?.doc?.billorder?.$')
-
       data.doc?.list?.forEach(el => {
         if (el.$name === 'itemlist') {
           cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)

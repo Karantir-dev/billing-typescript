@@ -64,13 +64,23 @@ export default function VDS() {
     setCurrentPage(1)
   }
 
+  const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
+
+  const filteredElidForProlongModal = itemWithPenalty
+    ? idForProlong?.filter(el => el !== itemWithPenalty.id.$)
+    : idForProlong
+
+  if (itemWithPenalty) {
+    filteredElidForProlongModal.unshift(itemWithPenalty?.id?.$)
+  }
+
   const [firstRender, setFirstRender] = useState(true)
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
   const [isSearchMade, setIsSearchMade] = useState(false)
 
   const getTotalPrice = () => {
-    const list = activeServices.length > 1 ? activeServices : servers
+    const list = activeServices.length > 0 ? activeServices : []
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -320,88 +330,83 @@ export default function VDS() {
         </div>
       )}
 
-      {servers.length > 0 && (
-        <div className={s.tools_footer}>
-          {activeServices.length > 0 && (
-            <>
-              <div className={s.buttons_wrapper}>
-                <HintWrapper label={t('delete', { ns: 'other' })}>
-                  <IconButton
-                    className={s.tools_icon}
-                    onClick={() =>
-                      setIdForDeleteModal(activeServices.map(server => server.id.$))
-                    }
-                    disabled={
-                      activeServices.some(
-                        server =>
-                          server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
-                      ) || !rights?.delete
-                    }
-                    icon="delete"
-                  />
-                </HintWrapper>
-                <HintWrapper label={t('password_change')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(
-                        server => server?.allow_changepassword?.$ !== 'on',
-                      ) || !rights?.changepassword
-                    }
-                    onClick={() =>
-                      setIdForPassChange(activeServices.map(server => server.id.$))
-                    }
-                    icon="passChange"
-                  />
-                </HintWrapper>
+      <div
+        className={cn({
+          [s.tools_footer]: true,
+          [s.active_footer]: activeServices.length > 0,
+        })}
+      >
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('delete', { ns: 'other' })}>
+            <IconButton
+              className={s.tools_icon}
+              onClick={() =>
+                setIdForDeleteModal(activeServices.map(server => server.id.$))
+              }
+              disabled={
+                activeServices.some(
+                  server =>
+                    server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                ) || !rights?.delete
+              }
+              icon="delete"
+            />
+          </HintWrapper>
+          <HintWrapper label={t('password_change')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(server => server?.allow_changepassword?.$ !== 'on') ||
+                !rights?.changepassword
+              }
+              onClick={() =>
+                setIdForPassChange(activeServices.map(server => server.id.$))
+              }
+              icon="passChange"
+            />
+          </HintWrapper>
 
-                <HintWrapper label={t('reload')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
-                      !rights?.reboot
-                    }
-                    onClick={() =>
-                      setIdForReboot(activeServices.map(server => server.id.$))
-                    }
-                    icon="reload"
-                  />
-                </HintWrapper>
+          <HintWrapper label={t('reload')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
+                !rights?.reboot
+              }
+              onClick={() => setIdForReboot(activeServices.map(server => server.id.$))}
+              icon="reload"
+            />
+          </HintWrapper>
 
-                <HintWrapper label={t('prolong')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(
-                        server =>
-                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                          server?.item_status?.$.trim() === 'Suspended by Administrator',
-                      ) || !rights?.prolong
-                    }
-                    onClick={() =>
-                      setIdForProlong(activeServices.map(server => server.id.$))
-                    }
-                    // onClick={() => setIdForProlong(activeServices)}
-                    icon="clock"
-                  />
-                </HintWrapper>
-              </div>
-
-              <p className={s.services_selected}>
-                {t('services_selected', { ns: 'other' })}{' '}
-                <span className={s.tools_footer_value}>{activeServices.length}</span>
-              </p>
-            </>
-          )}
-          <p className={s.total_price}>
-            {t('total', { ns: 'other' })}:{' '}
-            <span className={s.tools_footer_value}>
-              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
-            </span>
-          </p>
+          <HintWrapper label={t('prolong')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(
+                  server =>
+                    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                ) || !rights?.prolong
+              }
+              onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
+              // onClick={() => setIdForProlong(activeServices)}
+              icon="clock"
+            />
+          </HintWrapper>
         </div>
-      )}
+
+        <p className={s.services_selected}>
+          {t('services_selected', { ns: 'other' })}{' '}
+          <span className={s.tools_footer_value}>{activeServices.length}</span>
+        </p>
+
+        <p className={s.total_price}>
+          {t('total', { ns: 'other' })}:{' '}
+          <span className={s.tools_footer_value}>
+            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+          </span>
+        </p>
+      </div>
 
       {servers?.length < 1 && !isSearchMade && !isLoading && (
         <div className={s.no_vds_wrapper}>
@@ -465,10 +470,11 @@ export default function VDS() {
 
       <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong([])}>
         <ProlongModal
-          elidList={idForProlong}
+          elidList={filteredElidForProlongModal}
           closeFn={() => setIdForProlong([])}
           pageName="vds"
           names={getServerName(idForProlong)}
+          itemsList={servers.filter(item => idForProlong.includes(item.id.$))}
         />
       </Backdrop>
 

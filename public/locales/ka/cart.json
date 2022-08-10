@@ -22,5 +22,6 @@
   "Cryptocurrency payment.Refunds are not available for this payment method.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.We don&rsquo;t accept USDT": "კრიპტოვალუტის გადახდა. გადახდის რომელი მეთოდისთვის, ღირებულების დაბრუნება შეუძლებელია. მესამე მხარის სერვისებით გადახდისას, გაცვლა - გადაიხადეთ თქვენი საკომისიო და დაამატეთ იგი გადახდის თანხას. ჩვენ არ ვიღებთ USDT-ს",
   "Payment amount from 5.00 EUR. Commission 3%. ": "გადახდის თანხაა 5.00 ევრო. საკომისიო 3%.",
   "Payment amount from 15.00 RUB till  200000.00 RUB . ": "გადახდის ოდენობაა 15.00 რუბლი. 200000.00 რუბლამდე.",
-  "For residents of Russia.Refunds are not available for this payment method.": "რუსეთის მაცხოვრებლებისთვის. ამ გადახდის მეთოდისთვის თანხის დაბრუნება შეუძლებელია."
+  "For residents of Russia.Refunds are not available for this payment method.": "რუსეთის მაცხოვრებლებისთვის. ამ გადახდის მეთოდისთვის თანხის დაბრუნება შეუძლებელია.",
+  "Late fee": "დაგვიანებული გადასახადი"
 }

@@ -178,6 +178,14 @@
       fill: url(#gradient);
     }
   }
+
+  &:disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
 }
 
 .setting_text {
@@ -245,16 +253,16 @@
   }
 }
 
-// .line {
-//   display: block;
-//   border: 1px solid var(--select_option_bgc);
-// }
 
 
 .check_box {
   margin-right: 20px;
   box-shadow: var(--checkbox_shadow);
   background-color: var(--forms_bgc_4);
+}
+
+.inactive {
+  color: var(--transparent-color);
 }
 
 
@@ -270,11 +278,6 @@
   }
 }
 
-// @media screen and (min-width: 600px) {
-//   .table {
-//     grid-template-columns: repeat(auto-fill, minmax(315px, 1fr));
-//   }
-// }
 
 
 

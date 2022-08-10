@@ -109,9 +109,17 @@
   }
 
   .main_info_wrapper {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 40px 65px 130px 205px 50px;
+    column-gap: 20px;
     align-items: center;
+    max-width: 550px;
+
+    & :nth-child(4) {
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
+
   }
 
   .shevron_btn {
@@ -122,13 +130,11 @@
     border: none;
   }
 
-  .btn_delete {
-    margin-left: 40px;
-  }
 
   .tariff_name {
     padding-right: 0;
-    margin: 0 10px 0 20px;
+    // margin: 0 10px 0 20px;
+    margin: 0;
   }
 
   .discount_wrapper {
@@ -141,8 +147,8 @@
 
   .price {
     order: 1;
-    text-align: end;
-    white-space: nowrap;
+    // text-align: end;
+    // white-space: nowrap;
   }
 
   .price_wrapper {
@@ -168,7 +174,7 @@
     margin-bottom: 0;
   }
 
-  .countItem {
-    margin-left: 20px;
-  }
+  // .countItem {
+  //   margin-left: 20px;
+  // }
 }
