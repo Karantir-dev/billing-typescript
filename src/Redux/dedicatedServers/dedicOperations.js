@@ -229,9 +229,21 @@ const getParameters =
         const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
         const ipName = currentSumIp.join('').slice(0, 10)
+        const ipSliderData = data.doc?.metadata?.form?.field?.find(
+          item => item?.$name === ipName,
+        )?.slider[0]
+
+        const ipListData = []
+        if (ipSliderData) {
+          for (let i = 1; i <= ipSliderData.$max; i += Number(ipSliderData.$step)) {
+            const item = { value: i, cost: ipSliderData.$cost * i }
+            ipListData.push(item)
+          }
+        }
 
         // fields
 
+        setFieldValue('ipList', ipListData)
         setFieldValue('ostemplList', ostempl[0].val)
         setFieldValue('recipelList', recipe[0].val)
         setFieldValue('managePanellList', managePanel[0].val)
@@ -981,12 +993,27 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'data prolong vds with expiration')
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -1017,9 +1044,26 @@ const getProlongInfoForFewElems = (elid, setInitialState) => (dispatch, getState
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
+
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
       dispatch(actions.hideLoader())
       dispatch(actions.hideLoader())
     })

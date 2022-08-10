@@ -22,6 +22,7 @@ import { vhostSelectors, vhostOperations } from '../../../Redux'
 import * as route from '../../../routes'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import { useMediaQuery } from 'react-responsive'
+import cn from 'classnames'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
@@ -243,8 +244,7 @@ export default function Component() {
   }, [])
 
   const getTotalPrice = () => {
-    const list =
-      activeServices.length >= 1 ? activeServices : virtualHostingRenderData?.vhostList
+    const list = activeServices.length >= 1 ? activeServices : []
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -350,44 +350,44 @@ export default function Component() {
         </div>
       )}
 
-      {virtualHostingRenderData?.vhostList?.length > 0 && (
-        <div className={s.tools_footer}>
-          {activeServices.length >= 1 && (
-            <>
-              <div className={s.buttons_wrapper}>
-                <HintWrapper label={t('prolong')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(
-                        server =>
-                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                          server?.item_status?.$.trim() === 'Suspended by Administrator',
-                      ) || !rights?.prolong
-                    }
-                    onClick={() => {
-                      setElidForProlongModal(activeServices?.map(item => item.id.$))
-                      prolongVhostHandler()
-                    }}
-                    icon="clock"
-                  />
-                </HintWrapper>
-              </div>
-            </>
-          )}
-          <p className={s.services_selected}>
-            {t('services_selected', { ns: 'other' })}{' '}
-            <span className={s.tools_footer_value}>{activeServices.length}</span>
-          </p>
-
-          <p className={s.total_price}>
-            {t('total', { ns: 'other' })}:{' '}
-            <span className={s.tools_footer_value}>
-              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
-            </span>
-          </p>
+      <div
+        className={cn({
+          [s.tools_footer]: true,
+          [s.active_footer]: activeServices.length >= 1,
+        })}
+      >
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('prolong')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(
+                  server =>
+                    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                ) || !rights?.prolong
+              }
+              onClick={() => {
+                setElidForProlongModal(activeServices?.map(item => item.id.$))
+                prolongVhostHandler()
+              }}
+              icon="clock"
+            />
+          </HintWrapper>
         </div>
-      )}
+
+        <p className={s.services_selected}>
+          {t('services_selected', { ns: 'other' })}{' '}
+          <span className={s.tools_footer_value}>{activeServices.length}</span>
+        </p>
+
+        <p className={s.total_price}>
+          {t('total', { ns: 'other' })}:{' '}
+          <span className={s.tools_footer_value}>
+            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+          </span>
+        </p>
+      </div>
 
       <Backdrop
         className={s.backdrop}

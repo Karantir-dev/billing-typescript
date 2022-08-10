@@ -253,7 +253,7 @@ export default function Component() {
                         inputWrapperClass={s.inputHeight}
                         placeholder={t('Enter Port')}
                         name={'port'}
-                        label={`${t('Port')}:`}
+                        label={`SSH ${t('Port')}:`}
                         isShadow
                         className={s.input}
                         error={!!errors.port}

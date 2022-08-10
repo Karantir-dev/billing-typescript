@@ -23,5 +23,6 @@
   "Cryptocurrency payment.Refunds are not available for this payment method.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.We don&rsquo;t accept USDT": "Криптовалюта төлемі. Бұл төлем әдісі үшін ақшаны қайтару мүмкін емес. Үшінші тарап қызметтері арқылы төлеу кезінде биржалар - олардың комиссиясын ескеріңіз және төлем құнына қосыңыз. Біз USDT қабылдамаймыз",
   "Payment amount from 5.00 EUR. Commission 3%. ": "Төлем сомасы 5,00 EUR. Комиссия 3%.",
   "Payment amount from 15.00 RUB till  200000.00 RUB . ": "Төлем сомасы 15.00 рубльден. 200000,00 рубльге дейін.",
-  "For residents of Russia.Refunds are not available for this payment method.": "Ресей тұрғындары үшін. Бұл төлем әдісі үшін ақшаны қайтару мүмкін емес."
+  "For residents of Russia.Refunds are not available for this payment method.": "Ресей тұрғындары үшін. Бұл төлем әдісі үшін ақшаны қайтару мүмкін емес.",
+  "Late fee": "Кешіктірілген төлем"
 }

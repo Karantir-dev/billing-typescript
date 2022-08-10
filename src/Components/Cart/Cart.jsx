@@ -123,6 +123,8 @@ export default function Component() {
     dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
   }
 
+  let VDS_FEE_AMOUNT = ''
+
   const renderItems = () => {
     const domainsList = cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'domain',
@@ -154,6 +156,27 @@ export default function Component() {
         })
       }
     })
+
+    //penalty for vds
+    const vdsWithPenalty = vdsList?.filter(el => {
+      return el?.desc?.$?.includes('fee will be charged')
+    })
+
+    const VDS_FEE_AMOUNT_ARRAY = []
+
+    if (vdsWithPenalty?.length > 0) {
+      vdsWithPenalty.forEach(el => {
+        const penaltyPrice = el?.desc?.$?.match(/time: (.+?)(?= EUR)/)?.[1]
+        VDS_FEE_AMOUNT_ARRAY.push(penaltyPrice)
+      })
+    }
+    const vdsTotalPenalty = VDS_FEE_AMOUNT_ARRAY?.reduce(
+      (acc, curr) => Number(curr) + Number(acc),
+      0,
+    )
+
+    VDS_FEE_AMOUNT = vdsTotalPenalty
+    //penalty for vds
 
     const filteredDnsList = []
 
@@ -699,6 +722,14 @@ export default function Component() {
                           </div>
                         )}
                     </div>
+
+                    {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
+                      <div className={s.penalty_sum}>
+                        {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
+                      </div>
+                    ) : (
+                      ''
+                    )}
 
                     <div className={s.totalSum}>
                       {t('Total')}: <b>{cartData?.total_sum} EUR</b>
