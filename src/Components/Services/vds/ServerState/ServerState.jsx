@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import s from './ServerState.module.scss'
 
 export default function ServerState({ className, server }) {
+  console.log(server, 'from serfverState')
   const { t } = useTranslation('vds')
 
   return (
@@ -44,6 +45,11 @@ export default function ServerState({ className, server }) {
       )}
       {server?.item_status?.$orig === '3_autosuspend' && (
         <HintWrapper label={t('stopped')}>
+          <Attention />
+        </HintWrapper>
+      )}
+      {server?.item_status?.$orig === '3_abusesuspend' && (
+        <HintWrapper label={t('Suspended due to abuse')}>
           <Attention />
         </HintWrapper>
       )}

@@ -97,19 +97,28 @@ export default function AboutAffiliateProgram() {
 
           <ul className={s.percents_list}>
             <li className={s.percents_item}>
-              <span className={s.percent}>15%</span>
+              <span className={s.percent}>
+                {t('about_section.Up to', { value: t('15%') }).toUpperCase()}
+              </span>
               <span className={s.percents_categories}>
                 {t('about_section.virtual_servers')}
               </span>
             </li>
             <li className={s.percents_item}>
-              <span className={s.percent}>40%</span>
+              <span className={s.percent}>
+                {t('about_section.Up to', {
+                  value: t('40%'),
+                  ns: 'affiliate_program',
+                }).toUpperCase()}
+              </span>
               <span className={s.percents_categories}>
                 {t('about_section.shared_hosting')}
               </span>
             </li>
             <li className={s.percents_item}>
-              <span className={s.percent}>15%</span>
+              <span className={s.percent}>
+                {t('about_section.Up to', { value: t('15%') }).toUpperCase()}
+              </span>
               <span className={s.percents_categories}>
                 {t('about_section.dedicated_servers')}
               </span>
