@@ -1,4 +1,5 @@
 .container {
+  max-height: 100vh;
   --right-padding: 30px;
   padding: 100px var(--right-padding) 125px 30px;
   overflow-y: auto;
