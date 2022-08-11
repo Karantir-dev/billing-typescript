@@ -12,14 +12,16 @@ export default function Component() {
   const tickerArchiveList = useSelector(supportSelectors.getTicketArchiveList)
   const tickerArchiveCount = useSelector(supportSelectors.getTicketArchiveCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [selctedTicket, setSelctedTicket] = useState(null)
   const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(supportOperations.getTicketsArchiveHandler(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   return (
     <div data-testid="request_archive">
@@ -27,7 +29,8 @@ export default function Component() {
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || tickerArchiveList?.length > 0}
-        setCurrentPage={setCurrentPage}
+        p_cnt={p_cnt}
+        setCurrentPage={setP_num}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
@@ -39,13 +42,15 @@ export default function Component() {
           selctedTicket={selctedTicket}
         />
       )}
-      {tickerArchiveList.length !== 0 && (
+
+      {tickerArchiveCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(tickerArchiveCount)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

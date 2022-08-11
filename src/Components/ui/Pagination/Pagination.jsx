@@ -20,10 +20,6 @@ export default function Component(props) {
 
   let lastPage = Math.ceil(totalCount / pageSize)
 
-  // if (currentPage === 0 || lastPage < 2) {
-  //   return null
-  // }
-
   const onNext = () => {
     onPageChange(currentPage + 1)
     setPageNumber(currentPage + 1)
@@ -40,6 +36,11 @@ export default function Component(props) {
 
   const changePageItems = () => {
     onPageChange(1)
+    if (itemNumber < 5) {
+      setItemNumber(5)
+      onPageItemChange(Number(5))
+      return
+    }
     onPageItemChange(Number(itemNumber))
   }
 
@@ -72,7 +73,6 @@ export default function Component(props) {
     }
   }
 
-
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
       <>
@@ -89,7 +89,7 @@ export default function Component(props) {
               />
             </div>
           </div>
-        )} 
+        )}
       </>
       {!(currentPage === 0 || lastPage < 2) && (
         <div className={s.paginationContainer}>

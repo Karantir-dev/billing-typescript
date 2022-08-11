@@ -21,7 +21,6 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 import * as route from '../../../routes'
 import { checkServicesRights, usePageRender } from '../../../utils'
-import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 
 export default function Component() {
@@ -40,7 +39,9 @@ export default function Component() {
   const virtualHostingRenderData = useSelector(vhostSelectors.getVhostList)
   const vhostCount = useSelector(vhostSelectors.getVhostCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [selctedItem, setSelctedItem] = useState(null)
   const [activeServices, setActiveServices] = useState([])
   const [elidForProlongModal, setElidForProlongModal] = useState([])
@@ -64,19 +65,11 @@ export default function Component() {
   const [instructionData, setInstructionData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
-  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
-
-  const hostingsTotalPrice = virtualHostingRenderData?.vhostList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(vhostOperations.getVhosts(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -286,7 +279,8 @@ export default function Component() {
       <SharedHostingFilter
         setIsFiltered={setIsFiltered}
         setSelctedItem={setSelctedItem}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
+        p_cnt={p_cnt}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || virtualHostingRenderData?.vhostList?.length > 0}
         rights={rights}
@@ -338,14 +332,14 @@ export default function Component() {
         />
       )}
 
-      {virtualHostingRenderData?.vhostList?.length !== 0 && (
+      {vhostCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(vhostCount)}
-            pageSize={30}
-            totalPrice={widerThan1600 && +hostingsTotalPrice?.toFixed(4)}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

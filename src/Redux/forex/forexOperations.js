@@ -23,7 +23,7 @@ const getForexList = data => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
-        p_cnt: 30,
+        p_cnt: data?.p_cnt || 10,
         ...data,
       }),
     )
@@ -410,7 +410,7 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList({ p_num: 1 }))
+          return dispatch(getForexList({ p_num: 1, p_cnt: data?.p_cnt }))
         }
 
         let filters = {}

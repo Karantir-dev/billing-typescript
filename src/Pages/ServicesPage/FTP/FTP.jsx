@@ -36,7 +36,9 @@ export default function FTP() {
 
   const ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
-  const [currentPage, setCurrentPage] = useState(1)
+
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
   const [activeServices, setActiveServices] = useState([])
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -49,10 +51,6 @@ export default function FTP() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
-
-  const ftpTotalPrice = ftpRenderData?.ftpList?.reduce((curServer, nextServer) => {
-    return curServer + +nextServer?.item_cost?.$
-  }, 0)
 
   const getTotalPrice = () => {
     const list = activeServices.length >= 1 ? activeServices : []
@@ -101,12 +99,12 @@ export default function FTP() {
     }
 
     setIsFiltered(false)
-    setCurrentPage(1)
+    setP_num(1)
     setFilterModal(false)
     dispatch(
       ftpOperations.getFTPFilters(
         setFilters,
-        { ...clearField, sok: 'ok' },
+        { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -115,13 +113,13 @@ export default function FTP() {
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    setCurrentPage(1)
+    setP_num(1)
     setIsFiltered(true)
 
     dispatch(
       ftpOperations.getFTPFilters(
         setFilters,
-        { ...values, sok: 'ok' },
+        { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -149,7 +147,11 @@ export default function FTP() {
         datacenter: '',
       }
       dispatch(
-        ftpOperations.getFTPFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+        ftpOperations.getFTPFilters(
+          setFilters,
+          { ...clearField, sok: 'ok', p_cnt },
+          true,
+        ),
       )
     }
   }, [])
@@ -157,12 +159,12 @@ export default function FTP() {
   let rights = checkServicesRights(ftpRenderData?.ftpPageRights?.toolgrp)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(ftpOperations.getFTPList(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters))
+    if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters, { p_cnt }))
   }, [filterModal])
 
   const getServerName = id => {
@@ -280,14 +282,14 @@ export default function FTP() {
         rights={rights}
       />
 
-      {ftpRenderData?.ftpList?.length !== 0 && (
+      {ftpCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(ftpCount)}
-            totalPrice={widerThan1600 && +ftpTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

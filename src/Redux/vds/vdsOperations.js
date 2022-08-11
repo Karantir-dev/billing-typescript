@@ -9,14 +9,7 @@ import { t } from 'i18next'
 import i18n from './../../i18n'
 
 const getVDS =
-  ({
-    setServers,
-    setRights,
-    setElemsTotal,
-    currentPage,
-    controledQuantityInput: servicesPerPage,
-    setServicesPerPage,
-  }) =>
+  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -26,8 +19,8 @@ const getVDS =
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: servicesPerPage || '',
-          p_num: currentPage || '1',
+          p_cnt: p_cnt || '10',
+          p_num: p_num || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -624,6 +617,7 @@ const setVdsFilters =
     setRights,
     setElemsTotal,
     setServicesPerPage,
+    p_cnt,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -685,7 +679,9 @@ const setVdsFilters =
             setfiltersListState(filtersList)
           })
 
-        dispatch(getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage }))
+        dispatch(
+          getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage, p_cnt }),
+        )
       })
       .catch(err => {
         if (err.message.includes('filter')) {

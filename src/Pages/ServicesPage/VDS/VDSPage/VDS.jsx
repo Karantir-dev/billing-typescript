@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -35,7 +35,6 @@ export default function VDS() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
-  const servicesInput = useRef()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
@@ -54,15 +53,11 @@ export default function VDS() {
   const [idForReboot, setIdForReboot] = useState([])
   const [idForInstruction, setIdForInstruction] = useState('')
   const [idForHistory, setIdForHistory] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
+
   const [elemsTotal, setElemsTotal] = useState(0)
-  const [servicesPerPage, _setServicesPerPage] = useState('5')
-  const [controledQuantityInput, setControledQuantityInput] = useState('5')
-  const setServicesPerPage = value => {
-    _setServicesPerPage(value)
-    setControledQuantityInput(value)
-    setCurrentPage(1)
-  }
+
+  const [p_num, setP_num] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
 
   const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
 
@@ -99,10 +94,12 @@ export default function VDS() {
 
   useEffect(() => {
     if (!firstRender) {
-      dispatch(vdsOperations.getVDS({ setServers, setRights, currentPage }))
+      dispatch(
+        vdsOperations.getVDS({ setServers, setRights, setElemsTotal, p_num, p_cnt }),
+      )
       setActiveServices([])
     }
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
     if (!isAllowedToRender) {
@@ -116,38 +113,14 @@ export default function VDS() {
           setServers,
           setRights,
           setElemsTotal,
-          setServicesPerPage,
+          setP_cnt,
+          p_cnt
         ),
       )
 
       setFirstRender(false)
     }
   }, [])
-
-  function onPressEnter(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      dispatch(
-        vdsOperations.getVDS({
-          setServers,
-          setRights,
-          setElemsTotal,
-          controledQuantityInput,
-          setServicesPerPage,
-        }),
-      )
-    }
-  }
-
-  useEffect(() => {
-    if (document.activeElement === servicesInput.current) {
-      window.addEventListener('keydown', onPressEnter)
-    }
-
-    return () => {
-      window.removeEventListener('keydown', onPressEnter)
-    }
-  }, [controledQuantityInput])
 
   const deleteServer = () => {
     dispatch(
@@ -163,7 +136,7 @@ export default function VDS() {
 
   const resetFilterHandler = () => {
     setIsFiltered(false)
-    setCurrentPage(1)
+    setP_num(1)
     dispatch(
       vdsOperations.setVdsFilters(
         null,
@@ -172,6 +145,8 @@ export default function VDS() {
         setServers,
         setRights,
         setElemsTotal,
+        null,
+        p_cnt
       ),
     )
     setIsFiltersOpened(false)
@@ -195,7 +170,7 @@ export default function VDS() {
   }
 
   const handleSetFilters = values => {
-    setCurrentPage(1)
+    setP_num(1)
     dispatch(
       vdsOperations.setVdsFilters(
         values,
@@ -204,6 +179,8 @@ export default function VDS() {
         setServers,
         setRights,
         setElemsTotal,
+        null,
+        p_cnt
       ),
     )
     setIsSearchMade(true)
@@ -280,7 +257,6 @@ export default function VDS() {
       <VDSList
         servers={servers}
         rights={rights}
-        servicesPerPage={servicesPerPage}
         setIdForEditModal={setIdForEditModal}
         setIdForDeleteModal={setIdForDeleteModal}
         setIdForPassChange={setIdForPassChange}
@@ -293,41 +269,15 @@ export default function VDS() {
         setActiveServices={setActiveServices}
       />
 
-      {servers.length > 0 && (
-        <div className={s.pagination_wrapper}>
-          <div className={s.services_per_page}>
-            <label htmlFor="services_count">
-              {t('services_per_page', { ns: 'other' })}
-            </label>
-
-            <div className={s.input_wrapper}>
-              <input
-                ref={servicesInput}
-                className={s.services_per_page_input}
-                value={controledQuantityInput}
-                onChange={event => setControledQuantityInput(event.target.value)}
-                onBlur={event => {
-                  if (event.target.value < 5) setControledQuantityInput('5')
-                }}
-                id="services_count"
-                type="number"
-                placeholder="5"
-                min={5}
-              />
-            </div>
-          </div>
-
-          {+servicesPerPage <= +elemsTotal && (
-            <Pagination
-              className={s.pagination}
-              currentPage={currentPage}
-              totalCount={Number(elemsTotal)}
-              pageSize={+servicesPerPage}
-              onPageChange={page => setCurrentPage(page)}
-              hideExtraInfo
-            />
-          )}
-        </div>
+      {elemsTotal > 5 && (
+        <Pagination
+          className={s.pagination}
+          currentPage={p_num}
+          totalCount={Number(elemsTotal)}
+          onPageChange={page => setP_num(page)}
+          pageSize={p_cnt}
+          onPageItemChange={items => setP_cnt(items)}
+        />
       )}
 
       <div

@@ -40,6 +40,7 @@ export default function Component(props) {
     isFilterActive,
     isFiltered,
     rights,
+    p_cnt,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -79,7 +80,7 @@ export default function Component(props) {
     setFilterModal(false)
     setIsFiltered(false)
     setSelctedItem(null)
-    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true))
+    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok', p_cnt }, true))
   }
 
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function Component(props) {
     setFilterModal(false)
     setIsFiltered(true)
     setSelctedItem(null)
-    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true))
+    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
   return (

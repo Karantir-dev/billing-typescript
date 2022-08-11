@@ -21,7 +21,6 @@ const getPayers =
           func: 'profile',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
           ...body,
