@@ -48,11 +48,10 @@ export default function ForexPage() {
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const forexTotalPrice = forexRenderData?.forexList?.reduce((curServer, nextServer) => {
-    return curServer + +nextServer?.item_cost?.$
-  }, 0)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [isFiltered, setIsFiltered] = useState(false)
 
   const getTotalPrice = () => {
@@ -104,11 +103,11 @@ export default function ForexPage() {
 
     setIsFiltered(false)
     setFilterModal(false)
-    setCurrentPage(1)
+    setP_num(1)
     dispatch(
       forexOperations.getForexFilters(
         setFilters,
-        { ...clearField, sok: 'ok' },
+        { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -118,13 +117,13 @@ export default function ForexPage() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    setCurrentPage(1)
+    setP_num(1)
     setIsFiltered(true)
 
     dispatch(
       forexOperations.getForexFilters(
         setFilters,
-        { ...values, sok: 'ok' },
+        { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -152,7 +151,11 @@ export default function ForexPage() {
       }
 
       dispatch(
-        forexOperations.getForexFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+        forexOperations.getForexFilters(
+          setFilters,
+          { ...clearField, sok: 'ok', p_cnt },
+          true,
+        ),
       )
     }
   }, [])
@@ -160,12 +163,12 @@ export default function ForexPage() {
   let rights = checkServicesRights(forexRenderData?.forexPageRights?.toolgrp)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(forexOperations.getForexList(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(forexOperations.getForexFilters(setFilters))
+    if (filterModal) dispatch(forexOperations.getForexFilters(setFilters, { p_cnt }))
   }, [filterModal])
 
   const getServerName = id => {
@@ -294,14 +297,14 @@ export default function ForexPage() {
         pageRights={rights}
       />
 
-      {forexRenderData?.forexList?.length !== 0 && (
+      {forexCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(forexCount)}
-            totalPrice={widerThan1600 && +forexTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

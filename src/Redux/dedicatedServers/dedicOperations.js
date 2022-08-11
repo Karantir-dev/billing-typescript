@@ -25,7 +25,7 @@ const getServersList = data => (dispatch, getState) => {
         lang: 'en',
         clickstat: 'yes',
         sok: 'ok',
-        p_cnt: 30,
+        p_cnt: data?.p_cnt || 10,
         ...data,
       }),
     )
@@ -1397,7 +1397,7 @@ const getDedicFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getServersList({ p_num: 1 }))
+          return dispatch(getServersList({ p_num: 1, p_cnt: data?.p_cnt }))
         }
 
         let filters = {}

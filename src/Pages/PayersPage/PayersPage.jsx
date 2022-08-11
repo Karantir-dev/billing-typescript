@@ -10,7 +10,9 @@ export default function Component() {
 
   const { t } = useTranslation(['payers', 'other'])
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [addPayerModal, setAddPayerModal] = useState(false)
   const [elid, setElid] = useState(null)
 
@@ -18,9 +20,9 @@ export default function Component() {
   const payersCount = useSelector(payersSelectors.getPayersCount)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(payersOperations.getPayers(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const closeAddModalHandler = () => {
     setElid(null)
@@ -47,10 +49,11 @@ export default function Component() {
         <div className={s.content}>
           <div className={s.pagination}>
             <Pagination
-              currentPage={currentPage}
               totalCount={Number(payersCount)}
-              pageSize={30}
-              onPageChange={page => setCurrentPage(page)}
+              currentPage={p_num}
+              pageSize={p_cnt}
+              onPageChange={page => setP_num(page)}
+              onPageItemChange={items => setP_cnt(items)}
             />
           </div>
         </div>

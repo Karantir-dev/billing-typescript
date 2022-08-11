@@ -1,6 +1,6 @@
 .tools_footer {
   position: fixed;
-  bottom: 0;
+  bottom: -500px;
   left: 0;
   right: 0;
   display: flex;
@@ -16,14 +16,31 @@
   background-color: var(--elements-bgc);
   box-shadow: var(--menu_down_black_shadow);
   min-height: 84px;
-}
+  transition: linear 0.2s;
 
-.services_selected {
-  font-size: 14px;
-  margin-right: auto;
-}
-.total_price {
-  font-size: 14px;
+  .services_selected {
+    opacity: 0;
+    font-size: 14px;
+    margin-right: auto;
+  }
+  .total_price {
+    opacity: 0;
+    font-size: 14px;
+  }
+
+  &.isopen {
+    bottom: 0;
+
+    .services_selected {
+      opacity: 1;
+      font-size: 14px;
+      margin-right: auto;
+    }
+    .total_price {
+      opacity: 1;
+      font-size: 14px;
+    }
+  }
 }
 
 .tools_footer_value {

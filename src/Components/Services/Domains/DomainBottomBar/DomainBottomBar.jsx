@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { IconButton, HintWrapper } from '../../../../Components'
 
@@ -7,21 +8,13 @@ import s from './DomainBottomBar.module.scss'
 export default function VDS(props) {
   const { t } = useTranslation(['vds', 'other', 'access_log'])
 
-  const {
-    domainsRenderData,
-    selctedItem,
-    NSDomainHandler,
-    renewDomainHandler,
-    editDomainHandler,
-    rights,
-  } = props
+  const { selctedItem, NSDomainHandler, renewDomainHandler, editDomainHandler, rights } =
+    props
 
-  const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
+  const domainsTotalPrice = selctedItem?.reduce((curServer, nextServer) => {
+    return curServer + +nextServer?.item_cost?.$
+  }, 0)
+  console.log(domainsTotalPrice)
 
   const checkProlongSelctedItemStatus = () => {
     let blocked = false
@@ -47,7 +40,7 @@ export default function VDS(props) {
   }
 
   return (
-    <div className={s.tools_footer}>
+    <div className={cn(s.tools_footer, { [s.isopen]: selctedItem?.length !== 0 })}>
       {selctedItem?.length !== 0 && (
         <div className={s.buttons_wrapper}>
           <HintWrapper label={t('edit', { ns: 'other' })}>

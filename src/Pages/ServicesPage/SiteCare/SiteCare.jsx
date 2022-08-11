@@ -17,7 +17,6 @@ import s from './SiteCare.module.scss'
 import { selectors, siteCareOperations, siteCareSelectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
-import { useMediaQuery } from 'react-responsive'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'zabota-o-servere')
@@ -32,7 +31,9 @@ export default function Component() {
   const siteCareCount = useSelector(siteCareSelectors.getSiteCareCount)
   const isLoading = useSelector(selectors.getIsLoadding)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [selctedItem, setSelctedItem] = useState(null)
 
   const [historyModal, setHistoryModal] = useState(false)
@@ -49,19 +50,18 @@ export default function Component() {
   const [deleteModal, setDeleteModal] = useState(false)
 
   const [isFiltered, setIsFiltered] = useState(false)
-  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
-  const sitecareTotalPrice = sitecareRenderData?.siteCareList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
+  // const sitecareTotalPrice = sitecareRenderData?.siteCareList?.reduce(
+  //   (curServer, nextServer) => {
+  //     return curServer + +nextServer?.item_cost?.$
+  //   },
+  //   0,
+  // )
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(siteCareOperations.getSiteCare(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -118,7 +118,7 @@ export default function Component() {
     let data = {
       elid: selctedItem?.id?.$,
       lang: i18n?.language,
-      p_num: currentPage,
+      p_num,
       ...values,
     }
 
@@ -143,7 +143,7 @@ export default function Component() {
     let data = {
       elid: selctedItem?.id?.$,
       lang: i18n?.language,
-      p_num: currentPage,
+      p_num,
       ...values,
     }
 
@@ -153,7 +153,7 @@ export default function Component() {
   const deleteSiteCareHandler = () => {
     const data = {
       elid: selctedItem?.id?.$,
-      p_num: currentPage,
+      p_num,
     }
 
     dispatch(siteCareOperations.deleteSiteCare(data, setDeleteModal))
@@ -185,7 +185,8 @@ export default function Component() {
         editSiteCareHandler={editSiteCareHandler}
         deleteSiteCareHandler={() => setDeleteModal(true)}
         selctedItem={selctedItem}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
+        p_cnt={p_cnt}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || sitecareRenderData?.siteCareList?.length > 0}
         rights={rights}
@@ -242,23 +243,23 @@ export default function Component() {
         />
       )}
 
-      {Number(siteCareCount) <= 30 &&
+      {/* {Number(siteCareCount) <= 30 &&
         widerThan1600 &&
         !isLoading &&
         sitecareRenderData?.siteCareList?.length !== 0 && (
           <div className={s.total_pagination_price}>
             {t('Sum', { ns: 'other' })}: {`${+sitecareTotalPrice?.toFixed(4)} EUR`}
           </div>
-        )}
+        )} */}
 
-      {sitecareRenderData?.siteCareList?.length !== 0 && (
+      {siteCareCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(siteCareCount)}
-            totalPrice={widerThan1600 && +sitecareTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

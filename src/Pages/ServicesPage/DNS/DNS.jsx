@@ -45,11 +45,9 @@ export default function DNS() {
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [tarifs, setTarifs] = useState('No tariff plans available for order')
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const dnsTotalPrice = dnsRenderData?.dnsList?.reduce((curServer, nextServer) => {
-    return curServer + +nextServer?.item_cost?.$
-  }, 0)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
@@ -103,13 +101,13 @@ export default function DNS() {
     }
 
     setIsFiltered(false)
-    setCurrentPage(1)
+    setP_num(1)
 
     setFilterModal(false)
     dispatch(
       dnsOperations.getDNSFilters(
         setFilters,
-        { ...clearField, sok: 'ok' },
+        { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -119,14 +117,14 @@ export default function DNS() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    setCurrentPage(1)
+    setP_num(1)
 
     setIsFiltered(true)
 
     dispatch(
       dnsOperations.getDNSFilters(
         setFilters,
-        { ...values, sok: 'ok' },
+        { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -155,7 +153,11 @@ export default function DNS() {
       }
 
       dispatch(
-        dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+        dnsOperations.getDNSFilters(
+          setFilters,
+          { ...clearField, sok: 'ok', p_cnt },
+          true,
+        ),
       )
 
       dispatch(dnsOperations.getTarifs(setTarifs))
@@ -177,13 +179,13 @@ export default function DNS() {
   let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(dnsOperations.getDNSList(data))
     setActiveServices([])
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters, { p_cnt }))
   }, [filterModal])
 
   const getServerName = id => {
@@ -301,14 +303,14 @@ export default function DNS() {
         setActiveServices={setActiveServices}
       />
 
-      {dnsRenderData?.dnsList?.length !== 0 && (
+      {dnsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(dnsCount)}
-            totalPrice={widerThan1600 && +dnsTotalPrice?.toFixed(4)}
-            pageSize={10}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

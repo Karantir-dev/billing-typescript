@@ -22,7 +22,9 @@ export default function Contracts() {
   const { t } = useTranslation(['container', 'contracts', 'other', 'billing'])
 
   const [selectedContract, setSelectedContract] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
+
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
   // const handlePrintBtn = () => {
   //   dispatch(contractOperations.getPrintFile(selectedContract?.id?.$))
@@ -37,12 +39,12 @@ export default function Contracts() {
 
   useEffect(() => {
     if (isAllowedToRender) {
-      const data = { p_num: currentPage }
+      const data = { p_num, p_cnt }
       dispatch(contractOperations.getContracts(data))
     } else {
       navigate(route.SERVICES, { replace: true })
     }
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   return (
     <>
@@ -144,13 +146,14 @@ export default function Contracts() {
           )
         })}
       </div>
-      {contractsRenderData?.contracts?.length !== 0 && (
+      {contractsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(contractsCount)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

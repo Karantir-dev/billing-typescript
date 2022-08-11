@@ -238,6 +238,7 @@ export default function Component() {
       <DomainFilters
         setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
+        p_cnt={p_cnt}
         setSelctedItem={setSelctedItem}
         list={domainsRenderData?.domainsList}
         setCurrentPage={setP_num}
@@ -303,14 +304,13 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         rights={rights}
-        domainsRenderData={domainsRenderData}
       />
 
-      {domainsRenderData?.domainsList?.length > 0 && (
+      {domainsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={p_num}
             totalCount={Number(domainsCount)}
+            currentPage={p_num}
             pageSize={p_cnt}
             onPageChange={page => setP_num(page)}
             onPageItemChange={items => setP_cnt(items)}

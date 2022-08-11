@@ -25,6 +25,7 @@ const getDomains =
           p_col: '+time',
           clickstat: 'yes',
           lang: 'en',
+          p_cnt: body?.p_cnt || 10,
           ...body,
         }),
       )
@@ -73,7 +74,7 @@ const getDomainsFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getDomains())
+          return dispatch(getDomains({ p_cnt: body?.p_cnt }))
         }
 
         let filters = {}

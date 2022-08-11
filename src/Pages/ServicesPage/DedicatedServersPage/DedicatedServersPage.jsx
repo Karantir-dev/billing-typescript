@@ -48,14 +48,9 @@ export default function DedicatedServersPage() {
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const dedicsTotalPrice = dedicRenderData?.serversList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
   useEffect(() => {
     if (filterModal) {
@@ -99,14 +94,14 @@ export default function DedicatedServersPage() {
     }
     setValues && setValues({ ...clearField })
     setFilterModal(false)
-    setCurrentPage(1)
+    setP_num(1)
 
     setIsFiltered(false)
 
     dispatch(
       dedicOperations.getDedicFilters(
         setFilters,
-        { ...clearField, sok: 'ok' },
+        { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -116,14 +111,14 @@ export default function DedicatedServersPage() {
 
   const setFilterHandler = values => {
     setFilterModal(false)
-    setCurrentPage(1)
+    setP_num(1)
 
     setIsFiltered(true)
 
     dispatch(
       dedicOperations.getDedicFilters(
         setFilters,
-        { ...values, sok: 'ok' },
+        { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -154,7 +149,11 @@ export default function DedicatedServersPage() {
       }
 
       dispatch(
-        dedicOperations.getDedicFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+        dedicOperations.getDedicFilters(
+          setFilters,
+          { ...clearField, sok: 'ok', p_cnt },
+          true,
+        ),
       )
     }
   }, [])
@@ -162,12 +161,12 @@ export default function DedicatedServersPage() {
   let rights = checkServicesRights(dedicRenderData?.dedicPageRights?.toolgrp)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(dedicOperations.getServersList(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters))
+    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters, { p_cnt }))
   }, [filterModal])
 
   const getTotalPrice = () => {
@@ -301,14 +300,14 @@ export default function DedicatedServersPage() {
         activeServices={activeServices}
       />
 
-      {dedicRenderData?.serversList?.length !== 0 && (
+      {dedicCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(dedicCount)}
-            pageSize={30}
-            totalPrice={widerThan1600 && +dedicsTotalPrice?.toFixed(4)}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

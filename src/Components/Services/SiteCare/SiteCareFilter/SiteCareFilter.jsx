@@ -29,6 +29,7 @@ export default function Component(props) {
     isFilterActive,
     isFiltered,
     rights,
+    p_cnt,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -68,7 +69,7 @@ export default function Component(props) {
     setSelctedItem(null)
     setCurrentPage(1)
     setFilterModal(false)
-    dispatch(siteCareOperations.getSiteCareFilters({ ...clearField, sok: 'ok' }, true))
+    dispatch(siteCareOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true))
   }
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export default function Component(props) {
     setFilterModal(false)
     setIsFiltered(true)
     setSelctedItem(null)
-    dispatch(siteCareOperations.getSiteCareFilters({ ...values, sok: 'ok' }, true))
+    dispatch(siteCareOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
   return (

@@ -9,7 +9,9 @@ import s from './Expenses.module.scss'
 export default function Component() {
   const dispatch = useDispatch()
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [isFiltered, setIsFiltered] = useState(false)
 
   const [firstOpen, setFirstOpen] = useState(true)
@@ -21,19 +23,20 @@ export default function Component() {
 
   useEffect(() => {
     if (!firstOpen) {
-      const data = { p_num: currentPage }
+      const data = { p_num, p_cnt }
       dispatch(billingOperations.getExpenses(data))
     }
     setFirstOpen(false)
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   return (
     <>
       <BillingFilter
+        p_cnt={p_cnt}
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || expensesList?.length > 0}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
       />
 
       {isFiltered && expensesList?.length === 0 && (
@@ -53,13 +56,15 @@ export default function Component() {
       )}
 
       {expensesList?.length > 0 && <ExpensesTable list={expensesList} />}
-      {expensesList?.length > 0 && (
+
+      {expensesList?.length > 0 && expensesCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(expensesCount)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

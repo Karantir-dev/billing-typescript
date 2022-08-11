@@ -3,11 +3,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 10px;
+
   padding: 15px 15px 65px;
   border-radius: 3px;
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 }
 
 .control_bts_wrapper {

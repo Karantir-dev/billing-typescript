@@ -5,6 +5,10 @@
   margin: 10px 0;
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
 }
 
 .tarif_info {

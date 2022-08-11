@@ -18,7 +18,6 @@ const getContracts = data => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
         lang: 'en',
-        p_cnt: 30,
         ...data,
       }),
     )

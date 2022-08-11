@@ -210,6 +210,14 @@
   background-color: var(--forms_bgc_4);
 }
 
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 150px;
+}
+
 @media screen and (min-width: 768px) {
   .pagination_wrapper {
     justify-content: space-between;
@@ -217,7 +225,8 @@
   }
 
   .pagination {
-    width: fit-content;
+    justify-content: flex-end;
+    margin-top: 30px;
   }
 
   .services_per_page {
@@ -287,11 +296,19 @@
   .tools_footer {
     padding: 15px 65px 15px 200px;
   }
+
+  .pagination {
+    margin-top: 25px;
+  }
 }
 
 @media screen and (min-width: 1550px) {
   .tools_footer {
     padding: 15px 140px 15px 259px;
+  }
+
+  .pagination {
+    margin-top: 30px;
   }
 }
 
@@ -312,5 +329,9 @@
 @media screen and (min-width: 1918px) {
   .tools_footer {
     padding: 15px 160px 20px 290px;
+  }
+
+  .pagination {
+    margin-top: 40px;
   }
 }

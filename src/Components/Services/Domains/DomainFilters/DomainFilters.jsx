@@ -25,6 +25,7 @@ export default function Component(props) {
     isFilterActive,
     isFiltered,
     rights,
+    p_cnt,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -74,7 +75,9 @@ export default function Component(props) {
     setFilterModal(false)
     setSelctedItem([])
     setIsFiltered(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
+    dispatch(
+      domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok', p_cnt }, true),
+    )
   }
 
   const setFilterHandler = values => {
@@ -82,7 +85,7 @@ export default function Component(props) {
     setIsFiltered(true)
     setSelctedItem([])
     setFilterModal(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
+    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
   return (
