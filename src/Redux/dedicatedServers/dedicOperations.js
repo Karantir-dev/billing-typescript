@@ -236,8 +236,13 @@ const getParameters =
         const ipListData = []
         if (ipSliderData) {
           for (let i = 1; i <= ipSliderData.$max; i += Number(ipSliderData.$step)) {
-            const item = { value: i, cost: ipSliderData.$cost * i }
-            ipListData.push(item)
+            if (i === 1) {
+              const item = { value: i, cost: '0.00' }
+              ipListData.push(item)
+            } else {
+              const item = { value: i, cost: ipSliderData.$cost }
+              ipListData.push(item)
+            }
           }
         }
 

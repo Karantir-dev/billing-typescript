@@ -32,29 +32,9 @@ export default function Select(props) {
 
   const dropdown = useRef(null)
 
-  const defaultItemsList = [
-    { label: t('current year'), value: 'currentyear' },
-    { label: t('current month'), value: 'currentmonth' },
-    { label: t('current week'), value: 'currentweek' },
-    { label: t('current day'), value: 'today' },
-    { label: t('previous year'), value: 'lastyear' },
-    { label: t('previous month'), value: 'lastmonth' },
-    { label: t('previous week'), value: 'lastweek' },
-    { label: t('previous day'), value: 'lastday' },
-    { label: t('year'), value: 'year' },
-    { label: t('half a year'), value: 'halfyear' },
-    { label: t('quarter'), value: 'quarter' },
-    { label: t('month'), value: 'month' },
-    { label: t('week'), value: 'week' },
-    { label: t('whole period'), value: 'nodate' },
-    { label: t('any period'), value: 'other' },
-  ]
-
-  if (!itemsList) {
-    itemsList = defaultItemsList
-  } else if (hasNotSelectedOption) {
-    if (!itemsList.some(item => item.label === t('Not selected')))
-      itemsList.push({ label: t('Not selected'), value: '' })
+  if (hasNotSelectedOption && Array.isArray(itemsList)) {
+    if (!itemsList?.some(item => item.label === t('Not selected')))
+      itemsList.unshift({ label: t('Not selected'), value: '' })
   }
 
   if (!placeholder) {
@@ -132,7 +112,7 @@ export default function Select(props) {
         </div>
       </button>
 
-      {itemsList.length !== 0 && (
+      {itemsList?.length !== 0 && (
         <div
           ref={dropdown}
           className={cn(s.dropdown, {
