@@ -171,8 +171,7 @@ export default function DedicatedServersPage() {
   }, [filterModal])
 
   const getTotalPrice = () => {
-    const list =
-      activeServices.length >= 1 ? activeServices : dedicRenderData?.serversList
+    const list = activeServices.length >= 1 ? activeServices : []
 
     return list
       ?.reduce((totalPrice, server) => {
@@ -314,56 +313,56 @@ export default function DedicatedServersPage() {
         </div>
       )}
 
-      {dedicRenderData?.serversList?.length > 0 && (
-        <div className={s.tools_footer}>
-          {activeServices.length >= 1 && (
-            <>
-              <div className={s.buttons_wrapper}>
-                <HintWrapper label={t('reload')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
-                      !rights?.reboot
-                    }
-                    onClick={() =>
-                      setElidForRebootModal(activeServices?.map(item => item.id.$))
-                    }
-                    icon="reload"
-                  />
-                </HintWrapper>
+      <div
+        className={cn({
+          [s.tools_footer]: true,
+          [s.active_footer]: activeServices.length >= 1,
+        })}
+      >
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('reload')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(server => server?.show_reboot?.$ !== 'on') ||
+                !rights?.reboot
+              }
+              onClick={() =>
+                setElidForRebootModal(activeServices?.map(item => item.id.$))
+              }
+              icon="reload"
+            />
+          </HintWrapper>
 
-                <HintWrapper label={t('prolong')}>
-                  <IconButton
-                    className={s.tools_icon}
-                    disabled={
-                      activeServices.some(
-                        server =>
-                          (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                          server?.item_status?.$.trim() === 'Suspended by Administrator',
-                      ) || !rights?.prolong
-                    }
-                    onClick={() =>
-                      setElidForProlongModal(activeServices?.map(item => item.id.$))
-                    }
-                    icon="clock"
-                  />
-                </HintWrapper>
-              </div>
-            </>
-          )}
-          <p className={s.services_selected}>
-            {t('services_selected', { ns: 'other' })}{' '}
-            <span className={s.tools_footer_value}>{activeServices.length}</span>
-          </p>
-          <p className={s.total_price}>
-            {t('total', { ns: 'other' })}:{' '}
-            <span className={s.tools_footer_value}>
-              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
-            </span>
-          </p>
+          <HintWrapper label={t('prolong')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(
+                  server =>
+                    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                ) || !rights?.prolong
+              }
+              onClick={() =>
+                setElidForProlongModal(activeServices?.map(item => item.id.$))
+              }
+              icon="clock"
+            />
+          </HintWrapper>
         </div>
-      )}
+
+        <p className={s.services_selected}>
+          {t('services_selected', { ns: 'other' })}{' '}
+          <span className={s.tools_footer_value}>{activeServices.length}</span>
+        </p>
+        <p className={s.total_price}>
+          {t('total', { ns: 'other' })}:
+          <span className={s.tools_footer_value}>
+            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+          </span>
+        </p>
+      </div>
 
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />

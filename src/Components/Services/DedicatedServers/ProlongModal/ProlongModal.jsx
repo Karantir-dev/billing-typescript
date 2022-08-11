@@ -10,7 +10,13 @@ import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '../../../../utils'
 
-export default function ProlongModal({ elidList, closeFn, pageName, names }) {
+export default function ProlongModal({
+  elidList,
+  closeFn,
+  pageName,
+  names,
+  // itemsList
+}) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'trusted_users'])
 
   const dispatch = useDispatch()
@@ -67,6 +73,17 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
     e.preventDefault()
     setMore(!more)
     setNamesToRender(!more ? names : names?.slice(0, 1))
+  }
+
+  const translateFeeText = text => {
+    const feeAmount = text.match(/time: (.+?)(?= EUR)/)?.[1]
+
+    let translate = t('Late fee will be charged to the expired service', {
+      value: t(+feeAmount),
+      ns: 'dedicated_servers',
+    })
+
+    return translate
   }
 
   return (
@@ -160,6 +177,12 @@ export default function ProlongModal({ elidList, closeFn, pageName, names }) {
                         </button>
                       )}
                     </div>
+                  )}
+
+                  {initialState?.suspendpenaltywarn && (
+                    <p className={s.suspendpenaltywarn}>
+                      {translateFeeText(initialState?.suspendpenaltywarn?.$)}
+                    </p>
                   )}
 
                   <div className={s.parameters_wrapper}>

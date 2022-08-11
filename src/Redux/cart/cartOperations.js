@@ -223,8 +223,8 @@ const setPaymentMethods =
       .then(({ data }) => {
         if (data.doc.error) {
           if (
-            data.doc.error.msg.$ ===
-            'The \'Contact person\' field has invalid value. The value cannot be empty'
+            data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
+            'The Contact person field has invalid value. The value cannot be empty'
           )
             toast.error(
               i18n?.t('The payer is not valid, change the payer or add a new one', {

@@ -39,7 +39,7 @@ export default function Component(props) {
     activeServices,
     setActiveServices,
   } = props
-  const { t } = useTranslation(['domains', 'other', 'vds'])
+  const { t } = useTranslation(['domains', 'other', 'vds', 'dedicated_servers'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
 
   const [isOpened, setIsOpened] = useState(false)
@@ -95,11 +95,15 @@ export default function Component(props) {
         </div>
         <div className={s.tableBlockSecond}>
           {mobile && <div className={s.item_title}>{t('Domain name')}:</div>}
-          <div className={cn(s.item_text, s.second_item)}>{domain}</div>
+          <div className={cn(s.item_text, s.second_item, { [s.inactive]: !domain })}>
+            {domain ? domain : t('Not provided', { ns: 'dedicated_servers' })}
+          </div>
         </div>
         <div className={s.tableBlockThird}>
           {mobile && <div className={s.item_title}>{t('IP address')}:</div>}
-          <div className={cn(s.item_text, s.second_item)}>{ip}</div>
+          <div className={cn(s.item_text, s.second_item, { [s.inactive]: !ip })}>
+            {ip ? ip : t('Not provided', { ns: 'dedicated_servers' })}
+          </div>
         </div>
         <div className={s.tableBlockFourth}>
           {mobile && <div className={s.item_title}>{t('Tariff')}:</div>}
@@ -107,7 +111,13 @@ export default function Component(props) {
         </div>
         <div className={s.tableBlockFifth}>
           {mobile && <div className={s.item_title}>{t('Data center')}:</div>}
-          <div className={cn(s.item_text, s.third_item)}>{datacentername}</div>
+          <div
+            className={cn(s.item_text, s.third_item, { [s.inactive]: !datacentername })}
+          >
+            {datacentername
+              ? datacentername
+              : t('Not provided', { ns: 'dedicated_servers' })}
+          </div>
         </div>
         <div className={s.tableBlockSixth}>
           {mobile && <div className={s.item_title}>{t('Valid until')}:</div>}
@@ -144,7 +154,7 @@ export default function Component(props) {
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
             <button
-              disabled={!rights?.changepricelist}
+              disabled={!rights?.changepricelist || el?.status?.$ === '1'}
               className={s.settings_btn}
               onClick={changeTariffVhostHandler}
             >
@@ -154,7 +164,7 @@ export default function Component(props) {
               </p>
             </button>
             <button
-              disabled={!rights?.prolong}
+              disabled={!rights?.prolong || el?.status?.$ === '1'}
               className={s.settings_btn}
               onClick={() => {
                 prolongVhostHandler()
@@ -173,7 +183,7 @@ export default function Component(props) {
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
             <button
-              disabled={!rights?.instruction}
+              disabled={!rights?.instruction || el?.status?.$ === '1'}
               className={s.settings_btn}
               onClick={instructionVhostHandler}
             >
@@ -181,7 +191,9 @@ export default function Component(props) {
               <p className={s.setting_text}>{t('instruction', { ns: 'vds' })}</p>
             </button>
             <button
-              disabled={!rights?.gotoserver}
+              disabled={
+                el.transition?.$ !== 'on' || el?.status?.$ !== '2' || !rights?.gotoserver
+              }
               className={s.settings_btn}
               onClick={platformVhostHandler}
             >

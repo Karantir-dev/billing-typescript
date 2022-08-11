@@ -87,7 +87,7 @@
 
 .tools_footer {
   position: fixed;
-  bottom: 0;
+  bottom: -85px;
   left: 0;
   right: 0;
   display: flex;
@@ -96,11 +96,18 @@
   flex-wrap: wrap;
   row-gap: 16px;
   column-gap: 10px;
+  opacity: 0;
 
   height: fit-content;
   padding: 15px 35px 15px 30px;
   background-color: var(--elements-bgc);
   box-shadow: var(--menu_down_black_shadow);
+  transition: bottom .3s ease-in, opacity .2s ease-in;
+
+  &.active_footer {
+    opacity: 1;
+    bottom: 0;
+  }
 }
 
 .services_selected {
@@ -118,7 +125,7 @@
 .buttons_wrapper {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 15px;
 }
 
