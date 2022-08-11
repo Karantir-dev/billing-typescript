@@ -647,12 +647,12 @@ export default function DedicOrderPage() {
                       label={t('count_ip')}
                       itemsList={values?.ipList?.map(el => {
                         return {
-                          label: `${el.value}
+                          label: `${el?.value}
                           ${t('psc.', {
                             ns: 'vds',
                           })}
-                          (${el.cost.toFixed(2)} EUR)`,
-                          value: el.value.toString(),
+                          (${el?.cost} EUR)`,
+                          value: el?.value?.toString(),
                         }
                       })}
                       className={s.select}

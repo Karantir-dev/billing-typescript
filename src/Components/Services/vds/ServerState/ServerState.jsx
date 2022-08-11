@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 import s from './ServerState.module.scss'
 
 export default function ServerState({ className, server }) {
-  console.log(server, 'from serfverState')
   const { t } = useTranslation('vds')
 
   return (
