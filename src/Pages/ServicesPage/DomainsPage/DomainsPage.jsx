@@ -303,7 +303,6 @@ export default function Component() {
         renewDomainHandler={renewDomainHandler}
         NSDomainHandler={NSDomainHandler}
         rights={rights}
-        domainsRenderData={domainsRenderData}
       />
 
       {domainsRenderData?.domainsList?.length > 0 && (
