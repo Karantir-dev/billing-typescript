@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
+import * as routes from '../../routes'
 import { Cross, Check } from '../../images'
 import {
   Select,
@@ -537,15 +538,6 @@ export default function Component() {
 
                       infoText = replaceAllFn(replacedText, '\n', '')
                     }
-                    {
-                      /* const infoText = splittedText[1]
-                      ?.replace('<p>', '')
-                      ?.replace('</p>', '')
-                      ?.replace('<strong>', '')
-                      ?.replace('</strong>', '')
-                      ?.replaceAll('\n', '') */
-                    }
-
                     return { minAmount, infoText }
                   }
                 }
@@ -659,51 +651,61 @@ export default function Component() {
                     </div>
 
                     <div className={s.formBlock}>
-                      <div className={s.formBlockTitle}>{t('Payment method')}:</div>
-                      <div className={s.formFieldsBlock}>
-                        {paymentsMethodList?.map(method => {
-                          const { image, name, paymethod_type, paymethod } = method
+                      {paymentsMethodList?.length === 0 && (
+                        <div className={s.notAllowPayMethod}>
+                          {t('order_amount_is_less')}
+                        </div>
+                      )}
+                      {paymentsMethodList?.length > 0 && (
+                        <>
+                          <div className={s.formBlockTitle}>{t('Payment method')}:</div>
+                          <div className={s.formFieldsBlock}>
+                            {paymentsMethodList?.map(method => {
+                              const { image, name, paymethod_type, paymethod } = method
 
-                          let paymentName = name?.$
-                          let balance = ''
+                              let paymentName = name?.$
+                              let balance = ''
 
-                          if (paymentName?.includes('Account balance')) {
-                            balance = paymentName?.match(/[-\d|.|\\+]+/g)
-                            paymentName = t('Account balance')
-                          }
+                              if (paymentName?.includes('Account balance')) {
+                                balance = paymentName?.match(/[-\d|.|\\+]+/g)
+                                paymentName = t('Account balance')
+                              }
 
-                          return (
-                            <button
-                              onClick={() => {
-                                setFieldValue('slecetedPayMethod', method)
-                              }}
-                              type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod_type?.$ ===
-                                    values?.slecetedPayMethod?.paymethod_type?.$ &&
-                                  paymethod?.$ ===
-                                    values?.slecetedPayMethod?.paymethod?.$,
-                              })}
-                              key={name?.$}
-                            >
-                              <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                              <span>
-                                {paymentName}
-                                {balance?.length > 0 && (
-                                  <>
-                                    <br />{' '}
-                                    <span className={s.balance}>
-                                      {Number(balance).toFixed(2)} EUR
-                                    </span>
-                                  </>
-                                )}
-                              </span>
-                              <Check className={s.iconCheck} />
-                            </button>
-                          )
-                        })}
-                      </div>
+                              return (
+                                <button
+                                  onClick={() => {
+                                    setFieldValue('slecetedPayMethod', method)
+                                  }}
+                                  type="button"
+                                  className={cn(s.paymentMethodBtn, {
+                                    [s.selected]:
+                                      paymethod_type?.$ ===
+                                        values?.slecetedPayMethod?.paymethod_type?.$ &&
+                                      paymethod?.$ ===
+                                        values?.slecetedPayMethod?.paymethod?.$,
+                                  })}
+                                  key={name?.$}
+                                >
+                                  <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                  <span>
+                                    {paymentName}
+                                    {balance?.length > 0 && (
+                                      <>
+                                        <br />{' '}
+                                        <span className={s.balance}>
+                                          {Number(balance).toFixed(2)} EUR
+                                        </span>
+                                      </>
+                                    )}
+                                  </span>
+                                  <Check className={s.iconCheck} />
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </>
+                      )}
+
                       <ErrorMessage
                         className={s.error_message}
                         name={'slecetedPayMethod'}
@@ -736,18 +738,33 @@ export default function Component() {
                     </div>
 
                     <div className={s.btnBlock}>
-                      <Button
-                        disabled={
-                          Number(values.amount) <
-                            values?.slecetedPayMethod?.payment_minamount?.$ ||
-                          !values?.slecetedPayMethod
-                        }
-                        className={s.saveBtn}
-                        isShadow
-                        size="medium"
-                        label={t('Pay', { ns: 'billing' })}
-                        type="submit"
-                      />
+                      {paymentsMethodList?.length === 0 ? (
+                        <Button
+                          className={s.saveBtn}
+                          isShadow
+                          size="medium"
+                          label={t('OK', { ns: 'billing' })}
+                          type="button"
+                          onClick={() => {
+                            navigate(routes.BILLING)
+                            closeBasketHamdler(cartData?.billorder)
+                          }}
+                        />
+                      ) : (
+                        <Button
+                          disabled={
+                            Number(values.amount) <
+                              values?.slecetedPayMethod?.payment_minamount?.$ ||
+                            !values?.slecetedPayMethod
+                          }
+                          className={s.saveBtn}
+                          isShadow
+                          size="medium"
+                          label={t('Pay', { ns: 'billing' })}
+                          type="submit"
+                        />
+                      )}
+
                       <button
                         onClick={() => setIsClosing(true)}
                         type="button"
