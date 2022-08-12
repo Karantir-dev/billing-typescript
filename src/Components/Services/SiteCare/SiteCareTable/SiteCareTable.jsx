@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SiteCareTableItem from './SiteCareTableItem'
 import cn from 'classnames'
+import { CheckBox } from '../../..'
 import { useTranslation } from 'react-i18next'
 import s from './SiteCareTable.module.scss'
 
@@ -16,21 +17,47 @@ export default function Component(props) {
     editSiteCareHandler,
     deleteSiteCareHandler,
     rights,
+    setDeleteIds,
   } = props
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(list)
+      return
+    }
+    setSelctedItem([])
+  }
+
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
-        <span className={cn(s.title_text, s.first_item)}>{t('Id')}:</span>
-        <span className={cn(s.title_text, s.second_item)}>{t('Tariff')}:</span>
-        <span className={cn(s.title_text, s.third_item)}>{t('Data center')}:</span>
-        <span className={cn(s.title_text, s.fourth_item)}>{t('Valid until')}:</span>
-        <span className={cn(s.title_text, s.fifth_item)}>{t('State')}:</span>
-        <span className={cn(s.title_text, s.sixth_item)}>{t('Price')}:</span>
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={list?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+        </div>
+        <div className={s.headerColumnsWithoutCheckBox}>
+          <span className={cn(s.title_text, s.first_item)}>{t('Id')}:</span>
+          <span className={cn(s.title_text, s.second_item)}>{t('Tariff')}:</span>
+          <span className={cn(s.title_text, s.third_item)}>{t('Data center')}:</span>
+          <span className={cn(s.title_text, s.fourth_item)}>{t('Valid until')}:</span>
+          <span className={cn(s.title_text, s.fifth_item)}>{t('State')}:</span>
+          <span className={cn(s.title_text, s.sixth_item)}>{t('Price')}:</span>
+          <div style={{ flexBasis: '2%' }} />
+        </div>
       </div>
       {list?.map(el => {
         const { id, pricelist, real_expiredate, item_status, cost, datacentername } = el
 
-        let onItemClick = () => setSelctedItem(el)
+        const addSelectedItem = (val, ids) => {
+          if (val) {
+            setSelctedItem(s => [...s, ids])
+            return
+          }
+          setSelctedItem(s => s.filter(el => el !== ids))
+        }
 
         return (
           <SiteCareTableItem
@@ -41,8 +68,8 @@ export default function Component(props) {
             status={item_status?.$}
             item_status={item_status}
             cost={cost?.$}
-            setSelctedItem={onItemClick}
-            selected={selctedItem?.id?.$ === id?.$}
+            setSelctedItem={addSelectedItem}
+            selected={selctedItem}
             datacentername={datacentername?.$}
             el={el}
             historySiteCareHandler={historySiteCareHandler}
@@ -50,6 +77,7 @@ export default function Component(props) {
             editSiteCareHandler={editSiteCareHandler}
             deleteSiteCareHandler={deleteSiteCareHandler}
             rights={rights}
+            setDeleteIds={setDeleteIds}
           />
         )
       })}

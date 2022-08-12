@@ -538,7 +538,8 @@ const renewService =
         '/',
         qs.stringify({
           auth: sessionId,
-          func: 'service.prolong',
+          func: body?.elid?.split(', ')?.length > 1 ? 'groupedit' : 'service.prolong',
+          faction: 'service.prolong',
           out: 'json',
           ...body,
         }),
