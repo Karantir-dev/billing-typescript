@@ -278,6 +278,14 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
     finance_notice_ntemail: data?.finance_notice_ntemail ? 'on' : 'off',
     finance_notice_ntmessenger: data?.finance_notice_ntmessenger ? 'on' : 'off',
     finance_notice_ntsms: data?.finance_notice_ntsms ? 'on' : 'off',
+
+    sendemail: data?.sendemail ? 'on' : 'off',
+    setgeoip: data?.setgeoip ? 'on' : 'off',
+  }
+
+  if(data?.email_notif?.length === 0) {
+    userParamsData.sendemail = 'off'
+    userParamsData.setgeoip = 'off'
   }
 
   const {
@@ -430,8 +438,6 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
     confirm: d.confirm,
     atype: d.atype,
     secureip: d?.secureip ? 'on' : 'off',
-    sendemail: d?.sendemail ? 'on' : 'off',
-    setgeoip: d?.setgeoip ? 'on' : 'off',
     addr: addr,
     disable_totp: d.disable_totp,
   }

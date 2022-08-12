@@ -5,7 +5,7 @@ import { useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
-import { ServerState } from '../../..'
+import { CheckBox, ServerState } from '../../..'
 
 export default function ForexMobileItem({
   server,
@@ -14,7 +14,8 @@ export default function ForexMobileItem({
   setElidForHistoryModal,
   setElidForDeletionModal,
   setElidForInstructionModal,
-  setActiveServer,
+  activeServices,
+  setActiveServices,
   pageRights,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
@@ -24,94 +25,117 @@ export default function ForexMobileItem({
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
-  const handleToolBtnClick = (fn, id) => {
-    fn(id)
+  const handleToolBtnClick = fn => {
+    fn()
     setToolsOpened(false)
   }
 
+  const isToolsBtnVisible =
+    Object.keys(pageRights)?.filter(
+      key => key !== 'ask' && key !== 'filter' && key !== 'new',
+    ).length > 0
+
+  const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+
   return (
     <li className={s.item}>
-      <div className={s.dots_wrapper}>
-        <button className={s.dots_btn} type="button" onClick={() => setToolsOpened(true)}>
-          <MoreDots />
-        </button>
+      {isToolsBtnVisible && (
+        <div className={s.tools_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={serverIsActive}
+            func={isChecked => {
+              isChecked
+                ? setActiveServices(
+                    activeServices?.filter(item => item?.id?.$ !== server?.id?.$),
+                  )
+                : setActiveServices([...activeServices, server])
+            }}
+          />
 
-        {toolsOpened && (
-          <div className={s.dropdown} ref={dropdownEl}>
-            <div className={s.pointer_wrapper}>
-              <div className={s.pointer}></div>
-            </div>
-            <ul>
-              <li className={s.tool_item}>
-                <button
-                  disabled={!pageRights?.edit || server?.status?.$ === '1'}
-                  className={s.tool_btn}
-                  type="button"
-                  onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
-                >
-                  <Edit className={s.tool_icon} />
-                  {t('edit', { ns: 'other' })}
-                </button>
-              </li>
+          <div className={s.dots_wrapper}>
+            <button
+              className={s.dots_btn}
+              type="button"
+              onClick={() => setToolsOpened(true)}
+            >
+              <MoreDots />
+            </button>
 
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={server?.status?.$ === '1' || !pageRights?.prolong}
-                  onClick={() => handleToolBtnClick(setElidForProlongModal, server.id.$)}
-                >
-                  <Clock className={s.tool_icon} />
-                  {t('prolong')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  disabled={!pageRights?.history || server?.status?.$ === '1'}
-                  className={s.tool_btn}
-                  type="button"
-                  onClick={() => {
-                    handleToolBtnClick(setElidForHistoryModal, server.id.$)
-                    setActiveServer(server)
-                  }}
-                >
-                  <Refund className={s.tool_icon} />
-                  {t('history')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={server?.status?.$ === '1' || !pageRights?.instruction}
-                  onClick={() =>
-                    handleToolBtnClick(setElidForInstructionModal, server.id.$)
-                  }
-                >
-                  <Info className={s.tool_icon} />
-                  {t('instruction')}
-                </button>
-              </li>
-              <li className={s.tool_item}>
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  disabled={
-                    !server.id.$ || !pageRights?.delete || server?.status?.$ === '1'
-                  }
-                  onClick={() => {
-                    handleToolBtnClick(setElidForDeletionModal, server.id.$)
-                    setActiveServer(server)
-                  }}
-                >
-                  <Delete className={s.tool_icon} />
-                  {t('delete', { ns: 'other' })}
-                </button>
-              </li>
-            </ul>
+            {toolsOpened && (
+              <div className={s.dropdown} ref={dropdownEl}>
+                <div className={s.pointer_wrapper}>
+                  <div className={s.pointer}></div>
+                </div>
+                <ul>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    >
+                      <Edit className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
+                    </button>
+                  </li>
+
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={server?.status?.$ === '1' || !pageRights?.prolong}
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Clock className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.history || server?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => {
+                        handleToolBtnClick(setElidForHistoryModal)
+                      }}
+                    >
+                      <Refund className={s.tool_icon} />
+                      {t('history')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={server?.status?.$ === '1' || !pageRights?.instruction}
+                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
+                    >
+                      <Info className={s.tool_icon} />
+                      {t('instruction')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={
+                        !server.id.$ || !pageRights?.delete || server?.status?.$ === '1'
+                      }
+                      onClick={() => {
+                        handleToolBtnClick(setElidForDeletionModal)
+                      }}
+                    >
+                      <Delete className={s.tool_icon} />
+                      {t('delete', { ns: 'other' })}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
@@ -141,5 +165,11 @@ export default function ForexMobileItem({
 ForexMobileItem.propTypes = {
   server: PropTypes.object,
   setElidForEditModal: PropTypes.func,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setElidForDeletionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   pageRights: PropTypes.object,
 }

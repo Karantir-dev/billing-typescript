@@ -33,14 +33,14 @@
   --size: 50px;
   display: flex;
   justify-content: space-between;
-  width: calc(var(--size) * 2);
+  width: calc(var(--size) * 1.2);
   margin: 30px auto 0;
   text-align: center;
 }
 
 .loader_circle {
-  width: calc(var(--size) / 2);
-  height: calc(var(--size) / 2);
+  width: calc(var(--size) / 4);
+  height: calc(var(--size) / 4);
   background-color: #ff50bf;
   border-radius: 100%;
   display: inline-block;

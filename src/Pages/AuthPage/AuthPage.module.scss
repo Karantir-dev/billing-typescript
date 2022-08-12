@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   overflow-y: auto;
+  max-height: 100vh;
 
   scrollbar-color: #e72690 rgba(161, 161, 161, 23%);
   scrollbar-width: thin;

@@ -93,6 +93,8 @@
   "New tariff": "Жаңа тариф",
   "Suspended service": "Қызмет тоқтатылды",
   "Active service": "Қызмет іске қосылды",
+  "reboot_launched": "Серверді қайта іске қосу процесі басталды",
 
-  "psc.": "psc."
+  "psc.": "psc.",
+  "Suspended due to abuse": "Бұзушылық үшін тоқтатылды"
 }

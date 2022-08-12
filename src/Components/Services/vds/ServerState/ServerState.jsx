@@ -47,6 +47,11 @@ export default function ServerState({ className, server }) {
           <Attention />
         </HintWrapper>
       )}
+      {server?.item_status?.$orig === '3_abusesuspend' && (
+        <HintWrapper label={t('Suspended due to abuse')}>
+          <Attention />
+        </HintWrapper>
+      )}
       {server?.autoprolong?.$ && (
         <HintWrapper label={t('auto_prolong')}>
           <Clock className={s.green_icon} />

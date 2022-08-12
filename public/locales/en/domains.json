@@ -91,5 +91,7 @@
   "no services description": "Register a domain with Zomro quickly, cheaply and conveniently",
   
   "Select": "Select",
-  "Selected": "Selected"
+  "Selected": "Selected",
+
+  "View/change the list of name servers": "View/change the list of name servers"
 }

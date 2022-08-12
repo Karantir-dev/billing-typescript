@@ -1,3 +1,5 @@
+@import '../../../../scss/placeholders.scss';
+
 .title {
   margin: 25px 0;
 }
@@ -15,8 +17,6 @@
 
 .tools_wrapper {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
   align-items: center;
   gap: 15px;
 }
@@ -102,17 +102,236 @@
   color: var(--transparent-color);
 }
 
+.services_per_page {
+  width: fit-content;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.input_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 75px;
+  border-radius: 2px;
+  background-image: var(--accent-gradient);
+  box-shadow: var(--forms2_shadow);
+}
+
+.services_per_page_input {
+  @extend %input_type_number;
+  padding: 0 10px;
+  border: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 1px;
+  background-color: var(--forms_bgc_2);
+  color: inherit;
+
+  &:focus {
+    outline: transparent;
+    border: none;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+  }
+}
+
+.tools_footer {
+  position: fixed;
+  bottom: -85px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 10px;
+  opacity: 0;
+
+  height: fit-content;
+  padding: 15px 35px 15px 30px;
+  background-color: var(--elements-bgc);
+  box-shadow: var(--menu_down_black_shadow);
+  transition: bottom .1s ease-in, opacity .1s ease-in;
+
+  &.active_footer {
+    opacity: 1;
+    bottom: 0;
+  }
+}
+
+.services_selected {
+  font-size: 14px;
+  margin-right: auto;
+}
+.total_price {
+  font-size: 14px;
+}
+
+.tools_footer_value {
+  font-weight: 600;
+}
+
+.buttons_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+
+.pagination_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.extra_tools_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.main_checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.check_box {
+  box-shadow: var(--checkbox_shadow);
+  background-color: var(--forms_bgc_4);
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 150px;
+}
+
+@media screen and (min-width: 768px) {
+  .pagination_wrapper {
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+
+  .services_per_page {
+    font-size: 16px;
+  }
+
+  .input_wrapper {
+    width: 72px;
+  }
+
+  .tools_footer {
+    flex-wrap: nowrap;
+    column-gap: 30px;
+    padding: 15px 65px 15px 60px;
+  }
+
+  .services_selected {
+    font-size: 16px;
+    order: 1;
+  }
+
+  .buttons_wrapper {
+    width: fit-content;
+    order: 2;
+  }
+
+  .total_price {
+    font-size: 16px;
+    order: 3;
+  }
+
+  .extra_tools_wrapper {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .main_checkbox {
+    font-size: 16px;
+  }
+
+  .btn_order {
+    width: 240px;
+  }
+}
+
+.discount_wrapper {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.discount_percent {
+  font-size: 16px;
+  color: var(--red-text);
+}
+.discount_desc {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--main-text);
+}
+.promocode {
+  font-size: 16px;
+  padding-left: 3px;
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+@media screen and (min-width: 1024px) {
+  .tools_footer {
+    padding: 15px 65px 15px 200px;
+  }
+
+  .pagination {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .tools_footer {
+    padding: 15px 140px 15px 259px;
+  }
+
+  .pagination {
+    margin-top: 30px;
+  }
+}
+
 @media screen and (min-width: 1600px) {
   .btn_order {
     font-size: 20px;
-    margin-left: auto;
-  }
-
-  .tools_wrapper {
-    flex-direction: row;
   }
 
   .no_vds_wrapper {
     max-width: 700px;
+  }
+
+  .extra_tools_wrapper {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .tools_footer {
+    padding: 15px 160px 20px 290px;
+  }
+
+  .pagination {
+    margin-top: 40px;
   }
 }

@@ -6,9 +6,10 @@ import * as routes from '../../routes'
 import { toast } from 'react-toastify'
 import { errorHandler, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
+import i18n from './../../i18n'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, currentPage }) =>
+  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -18,8 +19,8 @@ const getVDS =
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: '30',
-          p_num: currentPage,
+          p_cnt: p_cnt || '10',
+          p_num: p_num || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -29,6 +30,7 @@ const getVDS =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         setServers(data?.doc?.elem || [])
+        setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
@@ -36,7 +38,7 @@ const getVDS =
             rights[elem.$name] = true
           })
         })
-        setRights(rights)
+        setRights && setRights(rights)
 
         setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
@@ -140,6 +142,9 @@ const editVDS =
             setOrderInfo && setOrderInfo({ price, description })
           } else {
             setOrderInfo && setOrderInfo(null)
+            toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
           }
         }
 
@@ -344,7 +349,7 @@ const setOrderData =
       })
   }
 
-const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
+const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -354,7 +359,7 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
       qs.stringify({
         func: 'vds.delete',
         auth: sessionId,
-        elid: id,
+        elid: id.join(', '),
         out: 'json',
         lang: 'en',
       }),
@@ -362,11 +367,19 @@ const deleteVDS = (id, setServers, closeFn) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getVDS(setServers))
+      dispatch(getVDS({ setServers, setElemsTotal }))
       closeFn()
+
+      toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
+        position: 'bottom-right',
+      })
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      closeFn()
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('deleteVDS - ', err)
     })
@@ -392,6 +405,7 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
       toast.success(
         `${t('passwd_change_success', { ns: 'vds' })} ${data.doc.banner[0].param.$}`,
         {
@@ -404,8 +418,50 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('changePassword - ', err)
+    })
+}
+
+const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'groupedit',
+        faction: 'service.changepassword',
+        auth: sessionId,
+        elid: id.join(', '),
+        passwd: passwd,
+        confirm: confirm,
+        out: 'json',
+        sok: 'ok',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data.doc)
+      toast.success(`${t('passwd_change_success', { ns: 'vds' })} #${id.join(', #')}`, {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
+      dispatch(actions.hideLoader())
+      console.log('groupChangePassword - ', err)
     })
 }
 
@@ -419,7 +475,7 @@ const rebootServer = id => (dispatch, getState) => {
       qs.stringify({
         func: 'service.reboot',
         auth: sessionId,
-        elid: id,
+        elid: id.join(', '),
         out: 'json',
         lang: 'en',
       }),
@@ -427,10 +483,16 @@ const rebootServer = id => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
+      toast.success(t('reboot_launched', { ns: 'vds' }) + `: #${id.join(', #')}`, {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
     })
     .catch(err => {
       errorHandler(err.message, dispatch)
+      toast.error(t('unknown_error', { ns: 'other' }), {
+        position: 'bottom-right',
+      })
       dispatch(actions.hideLoader())
       console.log('rebootServer - ', err)
     })
@@ -535,6 +597,9 @@ const changeDomainName =
         closeFn()
 
         dispatch(actions.hideLoader())
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+        })
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
@@ -544,7 +609,16 @@ const changeDomainName =
   }
 
 const setVdsFilters =
-  (values, setFiltersState, setfiltersListState, setServers, setRights, setElemsTotal) =>
+  (
+    values,
+    setFiltersState,
+    setfiltersListState,
+    setServers,
+    setRights,
+    setElemsTotal,
+    setServicesPerPage,
+    p_cnt,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -605,7 +679,9 @@ const setVdsFilters =
             setfiltersListState(filtersList)
           })
 
-        dispatch(getVDS({ setServers, setRights, setElemsTotal }))
+        dispatch(
+          getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage, p_cnt }),
+        )
       })
       .catch(err => {
         if (err.message.includes('filter')) {
@@ -634,4 +710,5 @@ export default {
   getEditIPInfo,
   changeDomainName,
   setVdsFilters,
+  groupChangePassword,
 }

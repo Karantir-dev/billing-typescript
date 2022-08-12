@@ -51,9 +51,15 @@ export default function VdsItem({ el, deleteItemHandler }) {
   }
 
   const getTranslatedCP = string => {
-    const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
+    let partText = ''
+    if (typeof string === 'string') {
+      string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
+    }
+    // const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
 
-    return partText ? string.replace(partText, t(partText)) : string
+    return typeof partText === 'string' && partText
+      ? string.replace(partText, t(partText))
+      : string
   }
 
   const priceDescription = el?.desc?.$?.replace('CPU', ' ')
@@ -82,7 +88,30 @@ export default function VdsItem({ el, deleteItemHandler }) {
               alt="vds"
             />
           )}
-          <p className={s.countItem}>{el?.count} {t('psc.')}</p>
+
+          {!tabletOrHigher && (
+            <div className={s.control_bts_wrapper}>
+              <p className={s.countItem}>
+                {el?.count} {t('psc.')}
+              </p>
+              {typeof deleteItemHandler === 'function' && (
+                <button
+                  className={s.btn_delete}
+                  type="button"
+                  onClick={deleteItemHandler}
+                >
+                  <Delete />
+                </button>
+              )}
+            </div>
+          )}
+
+          {tabletOrHigher && (
+            <p className={s.countItem}>
+              {el?.count} {t('psc.')}
+            </p>
+          )}
+
           <p className={s.tariff_name}>{tariffName}</p>
           <div className={s.price_wrapper}>
             {el?.discount_percent?.$ && (
@@ -109,7 +138,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </p>
           </div>
 
-          {typeof deleteItemHandler === 'function' && (
+          {typeof deleteItemHandler === 'function' && tabletOrHigher && (
             <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
               <Delete />
             </button>
@@ -151,11 +180,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
                 {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
                   ? IPaddressesCountText[1].replace('Unit', t('Unit'))
                   : ''}
-
-                {/* {el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)[1]?.replace(
-                  'Unit',
-                  t('Unit'),
-                )} */}
               </span>
             </p>
           )}

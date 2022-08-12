@@ -35,6 +35,7 @@ export default function VDSOrder() {
   const [selectedTariffId, setSelectedTariffId] = useState()
   const [parametersInfo, setParametersInfo] = useState()
   const [count, setCount] = useState(1)
+
   const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
@@ -369,9 +370,12 @@ export default function VDSOrder() {
                                   className={s.count_input}
                                   value={count}
                                   onChange={event => {
-                                    setCount(
-                                      +event.target.value > 50 ? 50 : event.target.value,
-                                    )
+                                    const value =
+                                      event.target.value.length > 1
+                                        ? event.target.value.replace(/^0/, '')
+                                        : event.target.value
+
+                                    setCount(+event.target.value > 50 ? 50 : value)
                                   }}
                                   onBlur={event => {
                                     if (event.target.value < 1) setCount(1)
@@ -540,7 +544,11 @@ export default function VDSOrder() {
 
                         <p className={s.agreement_text}>
                           {t('terms', { ns: 'dedicated_servers' })}{' '}
-                          <button className={s.link} onClick={openTermsHandler}>
+                          <button
+                            className={s.link}
+                            type="button"
+                            onClick={openTermsHandler}
+                          >
                             &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
                           </button>
                         </p>
@@ -577,7 +585,12 @@ export default function VDSOrder() {
                             className={cn(s.count_input, s.amount_digit)}
                             value={count}
                             onChange={event => {
-                              setCount(+event.target.value > 50 ? 50 : event.target.value)
+                              const value =
+                                event.target.value.length > 1
+                                  ? event.target.value.replace(/^0/, '')
+                                  : event.target.value
+
+                              setCount(+event.target.value > 50 ? 50 : value)
                             }}
                             onBlur={event => {
                               if (event.target.value < 1) setCount(1)

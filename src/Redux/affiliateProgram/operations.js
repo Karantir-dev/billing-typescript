@@ -160,7 +160,8 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
 }
 
 const getInitialStatistics =
-  (setItems, setTotal, setPageNumber, setInitialFilters) => (dispatch, getState) => {
+  (setItems, setTotal, setPageNumber, setInitialFilters, p_cnt) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -170,7 +171,7 @@ const getInitialStatistics =
         qs.stringify({
           func: 'affiliate.client.click',
           auth: sessionId,
-          p_cnt: 20,
+          p_cnt,
           out: 'json',
         }),
       ),
@@ -209,7 +210,7 @@ const getInitialStatistics =
   }
 
 const getFilteredStatistics =
-  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal) =>
+  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal, p_cnt) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -239,7 +240,7 @@ const getFilteredStatistics =
             qs.stringify({
               func: 'affiliate.client.click',
               auth: sessionId,
-              p_cnt: 20,
+              p_cnt,
               out: 'json',
             }),
           )
@@ -259,37 +260,38 @@ const getFilteredStatistics =
       })
   }
 
-const getNextPageStatistics = (setItems, setTotal, pageNum) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const getNextPageStatistics =
+  (setItems, setTotal, pageNum, p_cnt) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'affiliate.client.click',
-        auth: sessionId,
-        p_num: pageNum,
-        p_cnt: 20,
-        out: 'json',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click',
+          auth: sessionId,
+          p_num: pageNum,
+          p_cnt,
+          out: 'json',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setItems(data.doc?.elem || [])
-      setTotal(data.doc.p_elems.$)
+        setItems(data.doc?.elem || [])
+        setTotal(data.doc.p_elems.$)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      errorHandler(err.message, dispatch)
-      dispatch(actions.hideLoader())
-      console.log('getNextPageStatistics - ', err.message)
-    })
-}
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorHandler(err.message, dispatch)
+        dispatch(actions.hideLoader())
+        console.log('getNextPageStatistics - ', err.message)
+      })
+  }
 
-const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
+const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -313,7 +315,7 @@ const dropFilters = (setItems, setTotal) => (dispatch, getState) => {
           qs.stringify({
             func: 'affiliate.client.click',
             auth: sessionId,
-            p_cnt: 20,
+            p_cnt,
             out: 'json',
           }),
         )

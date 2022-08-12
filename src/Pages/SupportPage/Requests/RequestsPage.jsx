@@ -11,7 +11,9 @@ export default function Component() {
   const tickerList = useSelector(supportSelectors.getTicketList)
   const tickerCount = useSelector(supportSelectors.getTicketCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [selctedTicket, setSelctedTicket] = useState(null)
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -21,9 +23,9 @@ export default function Component() {
   }, [])
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(supportOperations.getTicketsHandler(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   return (
     <div data-testid="request_support">
@@ -32,7 +34,8 @@ export default function Component() {
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || tickerList?.length > 0}
         selctedTicket={selctedTicket}
-        setCurrentPage={setCurrentPage}
+        p_cnt={p_cnt}
+        setCurrentPage={setP_num}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
@@ -44,13 +47,14 @@ export default function Component() {
           selctedTicket={selctedTicket}
         />
       )}
-      {tickerList.length !== 0 && (
+      {tickerCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(tickerCount)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

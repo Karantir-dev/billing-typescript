@@ -1,3 +1,5 @@
+@import '../../../../scss/placeholders.scss';
+
 .modal {
   position: relative;
   width: 90vw;
@@ -5,6 +7,7 @@
   height: fit-content;
   border-radius: 3px;
   padding: 25px 12px;
+  text-align: center;
   background-color: var(--forms_bgc_1);
   box-shadow: var(--forms2_shadow);
 }
@@ -21,21 +24,19 @@
   font-weight: 600;
   font-size: 18px;
   color: var(--red-text);
-  text-align: center;
   text-transform: uppercase;
 }
 
 .text {
-  text-align: center;
   font-size: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .cancel_btn {
   display: block;
   max-width: 240px;
   height: 50px;
-  margin: 0 auto 12px;
+  margin: 15px auto 12px;
   font-size: 18px;
 }
 
@@ -57,6 +58,44 @@
   }
 }
 
+.item {
+  margin-bottom: 2px;
+}
+
+.names_block {
+  overflow: hidden;
+  transition: height 150ms;
+  font-size: 14px;
+  color: var(--transparent-color);
+  @extend %scrollbar;
+
+  .name_item:not(:first-child) {
+    opacity: 0;
+  }
+
+  &.opened {
+    overflow: auto;
+
+    .name_item {
+      opacity: 1;
+    }
+  }
+}
+
+.name_item {
+  display: inline-block;
+  margin-bottom: 3px;
+  margin-right: 3px;
+}
+
+.btn_more {
+  color: var(--link-color);
+  line-height: 1;
+  font-size: 14px;
+  border-bottom: 1px solid var(--link-color);
+  cursor: pointer;
+}
+
 @media screen and (min-width: 768px) {
   .modal {
     padding: 30px 50px;
@@ -73,13 +112,12 @@
   }
 
   .text {
-    margin-bottom: 25px;
     font-size: 18px;
   }
 
   .cancel_btn {
     font-size: 20px;
-    margin: 0 auto 15px;
+    margin: 20px auto 15px;
   }
 
   .delete_btn {

@@ -12,7 +12,9 @@ export default function Component() {
   let paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [isFiltered, setIsFiltered] = useState(false)
 
   const [firstOpen, setFirstOpen] = useState(true)
@@ -21,12 +23,12 @@ export default function Component() {
 
   useEffect(() => {
     if (!firstOpen) {
-      const data = { p_num: currentPage }
+      const data = { p_num, p_cnt }
       dispatch(billingOperations.getPayments(data))
     }
 
     setFirstOpen(false)
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const payHandler = (id, name) => {
     dispatch(billingOperations.getPaymentRedirect(id, name))
@@ -44,9 +46,10 @@ export default function Component() {
     <>
       <BillingFilter
         isFiltered={isFiltered}
+        p_cnt={p_cnt}
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || paymentsList?.length > 0}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
         downloadPdfHandler={downloadPdfHandler}
       />
 
@@ -72,13 +75,15 @@ export default function Component() {
           payHandler={payHandler}
         />
       )}
-      {paymentsList?.length > 0 && (
+
+      {paymentsList?.length > 0 && paymentsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(paymentsCount)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
       )}

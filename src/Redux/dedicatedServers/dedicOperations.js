@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { errorHandler, replaceAllFn } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
 
@@ -25,7 +25,7 @@ const getServersList = data => (dispatch, getState) => {
         lang: 'en',
         clickstat: 'yes',
         sok: 'ok',
-        p_cnt: 30,
+        p_cnt: data?.p_cnt || 10,
         ...data,
       }),
     )
@@ -229,9 +229,26 @@ const getParameters =
         const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
         const ipName = currentSumIp.join('').slice(0, 10)
+        const ipSliderData = data.doc?.metadata?.form?.field?.find(
+          item => item?.$name === ipName,
+        )?.slider[0]
+
+        const ipListData = []
+        if (ipSliderData) {
+          for (let i = 1; i <= ipSliderData.$max; i += Number(ipSliderData.$step)) {
+            if (i === 1) {
+              const item = { value: i, cost: '0.00' }
+              ipListData.push(item)
+            } else {
+              const item = { value: i, cost: ipSliderData.$cost }
+              ipListData.push(item)
+            }
+          }
+        }
 
         // fields
 
+        setFieldValue('ipList', ipListData)
         setFieldValue('ostemplList', ostempl[0].val)
         setFieldValue('recipelList', recipe[0].val)
         setFieldValue('managePanellList', managePanel[0].val)
@@ -853,7 +870,7 @@ const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
         position: 'bottom-right',
         toastId: 'customId',
       })
@@ -983,9 +1000,76 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { slist, expiredate, period, title_name, newexpiredate, status } = data.doc
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
 
-      setInitialState({ slist, expiredate, newexpiredate, period, title_name, status })
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const getProlongInfoForFewElems = (elid, setInitialState) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'groupedit',
+        faction: 'service.prolong',
+        out: 'json',
+        auth: sessionId,
+        elid,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const {
+        slist,
+        expiredate,
+        period,
+        title_name,
+        newexpiredate,
+        status,
+        suspendpenaltywarn,
+      } = data.doc
+
+      setInitialState({
+        slist,
+        expiredate,
+        newexpiredate,
+        period,
+        title_name,
+        status,
+        suspendpenaltywarn,
+      })
+      dispatch(actions.hideLoader())
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -1082,6 +1166,73 @@ const payProlongPeriod =
       })
   }
 
+const payProlongPeriodFewElems =
+  (elid, period = 1, handleModal, pageName) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'groupedit',
+          faction: 'service.prolong',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          period,
+          clicked_button: 'basket',
+          sok: 'ok',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        let routeAfterBuying = route.SERVICES
+
+        if (pageName === 'dedics') {
+          routeAfterBuying = route.DEDICATED_SERVERS
+        } else if (routeAfterBuying === 'vds') {
+          routeAfterBuying = route.VDS
+        } else if (routeAfterBuying === 'ftp') {
+          routeAfterBuying = route.FTP
+        } else if (routeAfterBuying === 'dns') {
+          routeAfterBuying = route.DNS
+        } else if (routeAfterBuying === 'forex') {
+          routeAfterBuying = route.FOREX
+        }
+
+        handleModal()
+        dispatch(actions.hideLoader())
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routeAfterBuying,
+          }),
+        )
+      })
+      .catch(error => {
+        console.log('error', error)
+
+        if (
+          replaceAllFn(error.message.trim(), String.fromCharCode(39), '"') ===
+          'The "Period" field has invalid value.'
+        ) {
+          toast.warning(i18n.t('The Period field has invalid value.', { ns: 'other' }), {
+            position: 'bottom-right',
+            toastId: 'customId',
+          })
+        }
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 const getServiceHistory =
   (elid, currentPage, setHistoryList, setHistoryElems) => (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -1173,6 +1324,10 @@ const rebootServer = (elid, manageModal) => (dispatch, getState) => {
       manageModal()
 
       dispatch(actions.hideLoader())
+      toast.success(i18n.t('Server has been successfully rebooted', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
+      })
     })
     .catch(error => {
       console.log('error', error)
@@ -1242,7 +1397,7 @@ const getDedicFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getServersList({ p_num: 1 }))
+          return dispatch(getServersList({ p_num: 1, p_cnt: data?.p_cnt }))
         }
 
         let filters = {}
@@ -1310,4 +1465,6 @@ export default {
   rebootServer,
   getDedicFilters,
   goToPanel,
+  getProlongInfoForFewElems,
+  payProlongPeriodFewElems,
 }

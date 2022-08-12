@@ -123,6 +123,8 @@ export default function Component() {
     dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
   }
 
+  let VDS_FEE_AMOUNT = ''
+
   const renderItems = () => {
     const domainsList = cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'domain',
@@ -154,7 +156,102 @@ export default function Component() {
         })
       }
     })
-    console.log(filteredVdsList)
+
+    //penalty for vds
+    const vdsWithPenalty = vdsList?.filter(el => {
+      return el?.desc?.$?.includes('fee will be charged')
+    })
+
+    const VDS_FEE_AMOUNT_ARRAY = []
+
+    if (vdsWithPenalty?.length > 0) {
+      vdsWithPenalty.forEach(el => {
+        const penaltyPrice = el?.desc?.$?.match(/time: (.+?)(?= EUR)/)?.[1]
+        VDS_FEE_AMOUNT_ARRAY.push(penaltyPrice)
+      })
+    }
+    const vdsTotalPenalty = VDS_FEE_AMOUNT_ARRAY?.reduce(
+      (acc, curr) => Number(curr) + Number(acc),
+      0,
+    )
+
+    VDS_FEE_AMOUNT = vdsTotalPenalty
+    //penalty for vds
+
+    const filteredDnsList = []
+
+    dnsList?.forEach(elem => {
+      if (
+        filteredDnsList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredDnsList?.push({
+          ...elem,
+          count: dnsList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    const filteredFtpList = []
+
+    ftpList?.forEach(elem => {
+      if (
+        filteredFtpList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredFtpList?.push({
+          ...elem,
+          count: ftpList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    const filteredForexList = []
+
+    forexList?.forEach(elem => {
+      if (
+        filteredForexList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredForexList?.push({
+          ...elem,
+          count: forexList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    const filteredDedicList = []
+
+    dedicList?.forEach(elem => {
+      if (
+        filteredDedicList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredDedicList?.push({
+          ...elem,
+          count: dedicList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
+    const filteredVhostList = []
+
+    vhostList?.forEach(elem => {
+      if (
+        filteredVhostList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredVhostList?.push({
+          ...elem,
+          count: vhostList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
 
     return (
       <>
@@ -181,11 +278,19 @@ export default function Component() {
           </div>
         )}
 
-        {vhostList?.length > 0 && (
+        {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
-            {vhostList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+            {filteredVhostList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                pricelist_name,
+                discount_percent,
+                fullcost,
+                count,
+              } = el
               return (
                 <VhostItem
                   key={id?.$}
@@ -196,8 +301,11 @@ export default function Component() {
                   itemId={el['item.id']?.$}
                   pricelist_name={pricelist_name?.$}
                   deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                    filteredVhostList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
                   }
+                  count={count}
                 />
               )
             })}
@@ -225,13 +333,21 @@ export default function Component() {
           </div>
         )}
 
-        {dedicList?.length > 0 && (
+        {filteredDedicList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
-            {dedicList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+            {filteredDedicList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                fullcost,
+                discount_percent,
+                pricelist_name,
+                count,
+              } = el
               return (
                 <DedicItem
                   key={id?.$}
@@ -240,6 +356,12 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                  count={count}
+                  deleteItemHandler={
+                    filteredDedicList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
+                  }
                 />
               )
             })}
@@ -270,13 +392,21 @@ export default function Component() {
           </div>
         )}
 
-        {ftpList?.length > 0 && (
+        {filteredFtpList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
-            {ftpList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+            {filteredFtpList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                fullcost,
+                discount_percent,
+                pricelist_name,
+                count,
+              } = el
               return (
                 <FtpItem
                   key={id?.$}
@@ -285,17 +415,31 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                  count={count}
+                  deleteItemHandler={
+                    filteredFtpList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
+                  }
                 />
               )
             })}
           </div>
         )}
 
-        {dnsList?.length > 0 && (
+        {filteredDnsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
-            {dnsList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+            {filteredDnsList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                fullcost,
+                discount_percent,
+                pricelist_name,
+                count,
+              } = el
               return (
                 <DnsItem
                   key={id?.$}
@@ -304,17 +448,31 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                  count={count}
+                  deleteItemHandler={
+                    filteredDnsList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
+                  }
                 />
               )
             })}
           </div>
         )}
 
-        {forexList?.length > 0 && (
+        {filteredForexList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>
-            {forexList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent, pricelist_name } = el
+            {filteredForexList?.map(el => {
+              const {
+                id,
+                desc,
+                cost,
+                fullcost,
+                discount_percent,
+                pricelist_name,
+                count,
+              } = el
               return (
                 <ForexItem
                   key={id?.$}
@@ -323,6 +481,12 @@ export default function Component() {
                   fullcost={fullcost?.$}
                   discount_percent={discount_percent?.$}
                   pricelist_name={pricelist_name?.$}
+                  count={count}
+                  deleteItemHandler={
+                    filteredForexList?.length > 1
+                      ? () => deleteBasketItemHandler(id?.$)
+                      : null
+                  }
                 />
               )
             })}
@@ -558,6 +722,14 @@ export default function Component() {
                           </div>
                         )}
                     </div>
+
+                    {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
+                      <div className={s.penalty_sum}>
+                        {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
+                      </div>
+                    ) : (
+                      ''
+                    )}
 
                     <div className={s.totalSum}>
                       {t('Total')}: <b>{cartData?.total_sum} EUR</b>

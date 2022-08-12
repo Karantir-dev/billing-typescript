@@ -24,9 +24,8 @@ const getFTPList = data => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
-        p_cnt: 30,
+        p_cnt: data?.p_cnt || 10,
         ...data,
-        // sok: 'ok',
       }),
     )
     .then(({ data }) => {
@@ -201,6 +200,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
+      
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
@@ -378,7 +378,7 @@ const getFTPFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getFTPList({ p_num: 1 }))
+          return dispatch(getFTPList({ p_num: 1, p_cnt: data?.p_cnt }))
         }
 
         let filters = {}

@@ -23,7 +23,7 @@ const getForexList = data => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
         clickstat: 'yes',
-        p_cnt: 30,
+        p_cnt: data?.p_cnt || 10,
         ...data,
       }),
     )
@@ -348,6 +348,8 @@ const editForex =
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
+  console.log(elid)
+
   const {
     auth: { sessionId },
   } = getState()
@@ -368,13 +370,13 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 
       dispatch(getForexList({ p_num: 1 }))
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+      dispatch(actions.hideLoader())
+      handleModal()
+
+      toast.success(i18n.t('Service has been successfully removed', { ns: 'other' }), {
         position: 'bottom-right',
         toastId: 'customId',
       })
-      dispatch(actions.hideLoader())
-
-      handleModal()
     })
     .catch(error => {
       console.log('error', error)
@@ -408,7 +410,7 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList({ p_num: 1 }))
+          return dispatch(getForexList({ p_num: 1, p_cnt: data?.p_cnt }))
         }
 
         let filters = {}

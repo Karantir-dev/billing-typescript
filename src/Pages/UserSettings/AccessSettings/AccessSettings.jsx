@@ -167,6 +167,14 @@ export default function Component({ isComponentAllowedToEdit }) {
           const { google_status, facebook_status, vkontakte_status } = values
           const socialState = { google_status, facebook_status, vkontakte_status }
 
+          const onInputItemsChange = text => {
+            let value = text.replace(/\D/g, '')
+            if (value.length === 0) {
+              value = ''
+            }
+            setFieldValue('disable_totp', value)
+          }
+
           return (
             <Form onKeyDown={onKeyDown} className={s.personalBlock}>
               <div className={s.block}>
@@ -267,80 +275,68 @@ export default function Component({ isComponentAllowedToEdit }) {
               <div className={s.block}>
                 <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
                 <div className={s.socialRow}>
-                  {values?.google_status === 'off' ? (
-                    <SocialButton
-                      onClick={() => {
-                        localStorage.setItem('connect_social_in_settings', 'true')
-                        dispatch(authOperations.getRedirectLink('google'))
-                      }}
-                      isNotConnected
-                      platform="Google"
-                    >
-                      <Google className={s.googleIcon} />
-                    </SocialButton>
-                  ) : (
-                    <SocialButton
-                      onClick={() => {
-                        setFieldValue('google_status', 'off')
-                        handleSocialLinkClick({ ...socialState, google_status: 'off' })
-                      }}
-                      platform="Google"
-                    >
-                      <Google className={s.googleIcon} />
-                    </SocialButton>
-                  )}
+                  <SocialButton
+                    onClick={
+                      values?.google_status === 'off'
+                        ? () => {
+                            localStorage.setItem('connect_social_in_settings', 'true')
+                            dispatch(authOperations.getRedirectLink('google'))
+                          }
+                        : () => {
+                            setFieldValue('google_status', 'off')
+                            handleSocialLinkClick({
+                              ...socialState,
+                              google_status: 'off',
+                            })
+                          }
+                    }
+                    isNotConnected={values?.google_status === 'off'}
+                    platform="Google"
+                  >
+                    <Google className={s.googleIcon} />
+                  </SocialButton>
 
-                  {values?.facebook_status === 'off' ? (
-                    <SocialButton
-                      onClick={() => {
-                        localStorage.setItem('connect_social_in_settings', 'true')
-                        dispatch(authOperations.getRedirectLink('facebook'))
-                      }}
-                      isNotConnected
-                      platform="Facebook"
-                    >
-                      <FacebookSmall />
-                    </SocialButton>
-                  ) : (
-                    <SocialButton
-                      onClick={() => {
-                        setFieldValue('facebook_status', 'off')
-                        handleSocialLinkClick({
-                          ...socialState,
-                          facebook_status: 'off',
-                        })
-                      }}
-                      platform="Facebook"
-                    >
-                      <FacebookSmall />
-                    </SocialButton>
-                  )}
+                  <SocialButton
+                    onClick={
+                      values?.facebook_status === 'off'
+                        ? () => {
+                            localStorage.setItem('connect_social_in_settings', 'true')
+                            dispatch(authOperations.getRedirectLink('facebook'))
+                          }
+                        : () => {
+                            setFieldValue('facebook_status', 'off')
+                            handleSocialLinkClick({
+                              ...socialState,
+                              facebook_status: 'off',
+                            })
+                          }
+                    }
+                    isNotConnected={values?.facebook_status === 'off'}
+                    platform="Facebook"
+                  >
+                    <FacebookSmall />
+                  </SocialButton>
 
-                  {values?.vkontakte_status === 'off' ? (
-                    <SocialButton
-                      onClick={() => {
-                        localStorage.setItem('connect_social_in_settings', 'true')
-                        dispatch(authOperations.getRedirectLink('vkontakte'))
-                      }}
-                      isNotConnected
-                      platform="Вконтакте"
-                    >
-                      <VkSmall />
-                    </SocialButton>
-                  ) : (
-                    <SocialButton
-                      onClick={() => {
-                        setFieldValue('facebook_status', 'off')
-                        handleSocialLinkClick({
-                          ...socialState,
-                          vkontakte_status: 'off',
-                        })
-                      }}
-                      platform="Вконтакте"
-                    >
-                      <VkSmall />
-                    </SocialButton>
-                  )}
+                  <SocialButton
+                    onClick={
+                      values?.vkontakte_status === 'off'
+                        ? () => {
+                            localStorage.setItem('connect_social_in_settings', 'true')
+                            dispatch(authOperations.getRedirectLink('vkontakte'))
+                          }
+                        : () => {
+                            setFieldValue('facebook_status', 'off')
+                            handleSocialLinkClick({
+                              ...socialState,
+                              vkontakte_status: 'off',
+                            })
+                          }
+                    }
+                    isNotConnected={values?.vkontakte_status === 'off'}
+                    platform="Вконтакте"
+                  >
+                    <VkSmall />
+                  </SocialButton>
                 </div>
               </div>
               <div className={s.block}>
@@ -350,8 +346,10 @@ export default function Component({ isComponentAllowedToEdit }) {
                     <InputField
                       background
                       label={t('Disable 2-Step Verification')}
-                      type="password"
+                      type="text"
                       name="disable_totp"
+                      value={values?.disable_totp}
+                      onChange={e => onInputItemsChange(e?.target?.value)}
                       placeholder={t('Enter password')}
                       isShadow
                       className={s.trustedIp}
@@ -368,29 +366,6 @@ export default function Component({ isComponentAllowedToEdit }) {
                     {t('Enable 2-Step Verification')}
                   </button>
                 )}
-              </div>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
-                <div className={s.securNotification}>
-                  <div className={s.securNotifnEmailBlock}>
-                    <div className={s.securNotifText}>
-                      {t('Send e-mail messages about authorization')}
-                    </div>
-                    <Toggle
-                      setValue={value => setFieldValue('sendemail', value)}
-                      initialState={userParams?.sendemail === 'on'}
-                    />
-                  </div>
-                  <div className={s.securNotifnGeoBlock}>
-                    <div className={s.securNotifText}>
-                      {t('Use GeoIP (region tracking by IP)')}
-                    </div>
-                    <Toggle
-                      setValue={value => setFieldValue('setgeoip', value)}
-                      initialState={userParams?.setgeoip === 'on'}
-                    />
-                  </div>
-                </div>
               </div>
               <div className={s.btnBlock}>
                 <Button

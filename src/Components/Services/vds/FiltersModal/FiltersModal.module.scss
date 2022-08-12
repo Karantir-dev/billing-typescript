@@ -82,13 +82,14 @@
 @media screen and (min-width: 768px) {
   .filters_modal {
     position: absolute;
-    left: -274px;
+    left: initial;
+    right: 0;
+    top: calc(100% + 15px);
     overflow: initial;
     height: fit-content;
     max-width: initial;
     width: fit-content;
     padding: 10px 20px 20px;
-    top: calc(100% + 15px);
     transform: scale(0);
 
     &.opened {
@@ -98,7 +99,8 @@
     &::after {
       content: '';
       position: absolute;
-      left: 285px;
+      left: initial;
+      right: 13px;
       top: -10px;
       width: 0;
       height: 0;
@@ -128,7 +130,7 @@
 @media screen and (min-width: 1281px) {
   .filters_modal {
     &::after {
-      left: 288px;
+      right: 15px;
     }
   }
 }
@@ -136,6 +138,7 @@
 @media screen and (min-width: 1600px) {
   .filters_modal {
     left: -20px;
+    right: initial;
 
     &::after {
       left: 34px;

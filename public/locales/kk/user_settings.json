@@ -5,7 +5,7 @@
   "Upload a photo": "Фотосурет жүктеу",
   "jpg, png, gif 80x80 up to 64 Kb": "jpg, png, gif 80x80 64 Кб дейін",
   "Notification settings": "Хабарландырулар параметрлері",
-  "To receive notifications via Telegram, write to our bot": "Хабарландыруларды Telegram арқылы алу үшін біздің ботқа жазыңыз",
+  "To receive notifications using Telegram": "Telegram арқылы хабарландыруларды алу үшін:",
   "Enter your telegram": "telegram атауын енгізіңіз",
   "Support service": "Қолдау қызметі",
   "Notification methods": "Хабарландыру әдістері",
@@ -57,5 +57,10 @@
   "Invalid confirmation code": "Растау коды қате",
 
   "existing social network": "Бұл әлеуметтік желі басқа тіркелгіңізге байланысты пайдаланылуда. Егер сіз оны осында байланыстырғыңыз келсе, оны басқа тіркелгіде ажыратыңыз",
-  "disconnect from": "-дан ажырату"
+  "disconnect from": "-дан ажырату",
+  "Setting up Telegram notifications": "Telegram хабарландыруларын орнату",
+  "Click \"send confirmation\" for resending": "Қайта жіберу үшін \"растауды жіберу\" түймесін басыңыз",
+  "Enter your login in the form below": "Төмендегі пішінге логиніңізді енгізіңіз",
+  "Write to our bot": "Біздің ботқа жазыңыз",
+  "Confirm your email to activate the functionality": "Функцияны белсендіру үшін электрондық поштаңызды растаңыз"
 }

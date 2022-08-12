@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import s from './ForexList.module.scss'
 import ForexItem from '../ForexItem/ForexItem'
 import ForexMobileItem from '../ForexMobileItem/ForexMobileItem'
+import { CheckBox } from '../../..'
 
 export default function ForexList({
   emptyFilter,
@@ -15,8 +16,8 @@ export default function ForexList({
   setElidForHistoryModal,
   setElidForDeletionModal,
   setElidForInstructionModal,
-  setActiveServer,
-  activeServerID,
+  activeServices,
+  setActiveServices,
   pageRights,
 }) {
   const { t } = useTranslation([
@@ -26,7 +27,7 @@ export default function ForexList({
     'domains',
     'access_log',
   ])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (forexList) {
     if (forexList.length === 0 && emptyFilter) {
@@ -58,39 +59,56 @@ export default function ForexList({
 
   return (
     <>
-      {widerThan1550 && forexList?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>
-            {t('datacenter', { ns: 'dedicated_servers' })}:
-          </li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
-          <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
-        </ul>
+      {widerThan1600 && forexList?.length > 0 && (
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={activeServices?.length === forexList?.length}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(forexList)
+            }}
+          />
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>
+              {t('datacenter', { ns: 'dedicated_servers' })}:
+            </li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
+            <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
+            <li className={s.table_head}></li>
+          </ul>
+        </div>
       )}
 
       <div className={s.list}>
         {forexList?.map(el => {
-          return widerThan1550 ? (
+          return widerThan1600 ? (
             <ForexItem
               key={el.id.$}
               server={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForDeletionModal={() => setElidForDeletionModal([el.id.$])}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
+              pageRights={pageRights}
             />
           ) : (
             <ForexMobileItem
               key={el.id.$}
               server={el}
-              setElidForEditModal={setElidForEditModal}
-              setElidForProlongModal={setElidForProlongModal}
-              setElidForHistoryModal={setElidForHistoryModal}
-              setElidForDeletionModal={setElidForDeletionModal}
-              setElidForInstructionModal={setElidForInstructionModal}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForDeletionModal={() => setElidForDeletionModal([el.id.$])}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
               pageRights={pageRights}
             />
           )
@@ -101,9 +119,14 @@ export default function ForexList({
 }
 
 ForexList.propTypes = {
-  servers: PropTypes.arrayOf(PropTypes.object),
+  forexList: PropTypes.arrayOf(PropTypes.object),
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  emptyFilter: PropTypes.bool,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setElidForDeletionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   pageRights: PropTypes.object,
 }

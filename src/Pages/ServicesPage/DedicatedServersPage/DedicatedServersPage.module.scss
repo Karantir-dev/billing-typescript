@@ -1,7 +1,6 @@
 .page_title {
   margin-bottom: 40px;
 }
-
 .title_count_services {
   font-size: 16px;
   color: var(--transparent-color);
@@ -21,11 +20,17 @@
   justify-content: center;
   margin-top: 30px;
 }
+
 .tools_wrapper {
   display: flex;
+  flex-direction: column-reverse;
+  // align-items: center;
+  // justify-content: space-between;
+}
+
+.btns_wrapper {
+  display: flex;
   align-items: center;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
 }
 
 .tools_container {
@@ -33,8 +38,9 @@
   position: relative;
 }
 
-.desktop_tools_wrapper {
+.check_box_wrapper {
   display: flex;
+  margin-top: 25px;
 }
 
 .order_btn {
@@ -42,9 +48,16 @@
   font-size: 18px;
   line-height: 66.3%;
   width: 204px;
-  max-width: 204px;
   height: 53px;
   margin-right: 10px;
+}
+
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
 }
 
 .tools_icon {
@@ -74,24 +87,73 @@
   overflow-y: auto;
 }
 
-.calendarBtn {
-  &.filtered {
-    svg {
-      fill: url(#gradient);
-    }
+.tools_footer {
+  position: fixed;
+  bottom: -85px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 10px;
+  opacity: 0;
+
+  height: fit-content;
+  padding: 15px 35px 15px 30px;
+  background-color: var(--elements-bgc);
+  box-shadow: var(--menu_down_black_shadow);
+  transition: bottom .1s ease-in, opacity .1s ease-in;
+
+  &.active_footer {
+    opacity: 1;
+    bottom: 0;
   }
 }
 
+.services_selected {
+  font-size: 14px;
+  margin-right: auto;
+}
+.total_price {
+  font-size: 14px;
+}
+
+.tools_footer_value {
+  font-weight: 600;
+}
+
+.buttons_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.main_checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.check_box {
+  box-shadow: var(--checkbox_shadow);
+  background-color: var(--forms_bgc_4);
+}
 
 //Adaptive
 
 @media screen and (min-width: 768px) {
+  .btns_wrapper {
+    margin-left: auto;
+  }
   .order_btn {
-    max-width: 245px;
     width: 245px;
     margin-right: 25px;
   }
-
   .bg {
     align-items: center;
   }
@@ -99,14 +161,59 @@
     justify-content: flex-end;
     margin-top: 30px;
   }
+  .buttons_wrapper {
+    width: fit-content;
+    order: 2;
+  }
+
+  .total_price {
+    font-size: 16px;
+    order: 3;
+  }
+
+  .tools_footer {
+    flex-wrap: nowrap;
+    column-gap: 30px;
+    padding: 15px 65px 15px 60px;
+    min-height: 85px;
+  }
+  .services_selected {
+    font-size: 16px;
+    order: 1;
+  }
+  .main_checkbox {
+    font-size: 16px;
+  }
+  .check_box_wrapper {
+    margin-top: 0px;
+  }
+  .tools_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .tools_footer {
+    padding: 15px 65px 15px 200px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .tools_footer {
+    padding: 15px 140px 15px 259px;
+  }
 }
 
 @media screen and (min-width: 1600px) {
-  .tools_wrapper {
-    justify-content: space-between;
-    flex-direction: row;
+  .btns_wrapper {
+    margin-left: 0;
+  }
 
-    .desktop_tools_wrapper {
+  .tools_wrapper {
+    .check_box_wrapper {
       margin-left: 35px;
     }
   }
@@ -119,8 +226,13 @@
     margin-right: 35px;
   }
   .order_btn {
-    max-width: 229px;
     width: 229px;
     font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .tools_footer {
+    padding: 15px 160px 20px 290px;
   }
 }

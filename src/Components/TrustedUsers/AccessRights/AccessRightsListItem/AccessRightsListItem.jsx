@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { authSelectors, usersOperations, usersSelectors } from '../../../../Redux'
-import ToggleButton from '../../ToggleButton/ToggleButton'
-import ToggleButtonAll from '../../ToggleButton/ToggleButtonAll'
+
+import { Toggle } from '../../..'
 
 import s from './AccessRightsListItem.module.scss'
 
@@ -236,7 +236,19 @@ export default function AccessRightsListItem({
             {hasSubItems ? (
               <Shevron className={s.shevron} />
             ) : (
-              <ToggleButton
+              <Toggle
+                func={handleToggleBtns}
+                initialState={currentRightState}
+                disabled={
+                  (!hasAccessToResumeRights && !currentRightState) ||
+                  (!hasAccessToSuspendRights &&
+                    currentRightState &&
+                    !hasAccessToSuspendRightsOnly)
+                }
+              />
+            )}
+
+            {/* <ToggleButton
                 disabled={
                   (!hasAccessToResumeRights && !currentRightState) ||
                   (!hasAccessToSuspendRights &&
@@ -247,8 +259,7 @@ export default function AccessRightsListItem({
                 initialState={currentRightState}
                 func={handleToggleBtns}
                 size="small"
-              />
-            )}
+              /> */}
           </div>
         </div>
 
@@ -261,7 +272,17 @@ export default function AccessRightsListItem({
               <div className={cn({ [s.allow_all_item]: true })}>
                 <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
 
-                <ToggleButtonAll
+                <Toggle
+                  func={handleToggleBtns}
+                  initialState={allRightsState || isAllTurnedOn}
+                  disabled={
+                    (!hasAccessToResumeRights && !currentRightState) ||
+                    (!hasAccessToSuspendRights &&
+                      currentRightState &&
+                      !hasAccessToSuspendRightsOnly)
+                  }
+                />
+                {/* <ToggleButtonAll
                   disabled={
                     (!hasAccessToResumeRights && !currentRightState) ||
                     (!hasAccessToSuspendRights &&
@@ -273,7 +294,7 @@ export default function AccessRightsListItem({
                   func={handleToggleBtns}
                   size="small"
                   id={'123123'}
-                />
+                /> */}
               </div>
             )}
 

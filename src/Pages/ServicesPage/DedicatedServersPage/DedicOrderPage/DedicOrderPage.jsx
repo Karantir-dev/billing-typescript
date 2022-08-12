@@ -638,15 +638,22 @@ export default function DedicOrderPage() {
 
                     <Select
                       height={50}
-                      value={values?.ipTotal}
+                      value={values?.ipTotal?.toString()}
                       getElement={item => {
                         setFieldValue('ipTotal', item)
                         updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
                       }}
                       isShadow
                       label={t('count_ip')}
-                      itemsList={['1', '2'].map(el => {
-                        return { label: el, value: el }
+                      itemsList={values?.ipList?.map(el => {
+                        return {
+                          label: `${el?.value}
+                          ${t('psc.', {
+                            ns: 'vds',
+                          })}
+                          (${el?.cost} EUR)`,
+                          value: el?.value?.toString(),
+                        }
                       })}
                       className={s.select}
                     />

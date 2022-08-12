@@ -31,7 +31,10 @@ export default function AffiliateProgramStatistics() {
   const [isFilterOpened, setIsFilterOpened] = useState(false)
   const [items, setItems] = useState([])
   const [total, setTotal] = useState(0)
-  const [pageNumber, setPageNumber] = useState(1)
+
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
@@ -55,28 +58,31 @@ export default function AffiliateProgramStatistics() {
       affiliateOperations.getInitialStatistics(
         setItems,
         setTotal,
-        setPageNumber,
+        setP_num,
         setInitialFilters,
+        p_cnt,
       ),
     )
     onClearFilter()
-  }, [])
+  }, [p_cnt])
 
   const onPageChange = pageNum => {
-    setPageNumber(pageNum)
-    dispatch(affiliateOperations.getNextPageStatistics(setItems, setTotal, pageNum))
+    setP_num(pageNum)
+    dispatch(
+      affiliateOperations.getNextPageStatistics(setItems, setTotal, pageNum, p_cnt),
+    )
   }
 
   const onSubmit = values => {
-    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal))
-    setPageNumber(1)
+    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal, p_cnt))
+    setP_num(1)
     setIsFiltered && setIsFiltered(true)
     setIsFilterOpened(false)
   }
 
   const onClearFilter = () => {
-    dispatch(affiliateOperations.dropFilters(setItems, setTotal))
-    setPageNumber(1)
+    dispatch(affiliateOperations.dropFilters(setItems, setTotal, p_cnt))
+    setP_num(1)
     setIsFilterOpened(false)
     setIsFiltered && setIsFiltered(false)
   }
@@ -184,14 +190,18 @@ export default function AffiliateProgramStatistics() {
           )
         })}
       </ul>
-      <div className={s.footer_wrapper}>
-        <Pagination
-          currentPage={Number(pageNumber)}
-          totalCount={Number(total)}
-          pageSize={20}
-          onPageChange={onPageChange}
-        />
-      </div>
+
+      {total > 5 && (
+        <div className={s.footer_wrapper}>
+          <Pagination
+            totalCount={Number(total)}
+            currentPage={Number(p_num)}
+            pageSize={Number(p_cnt)}
+            onPageChange={page => onPageChange(page)}
+            onPageItemChange={items => setP_cnt(items)}
+          />
+        </div>
+      )}
     </div>
   )
 }

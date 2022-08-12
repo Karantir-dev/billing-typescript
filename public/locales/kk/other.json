@@ -158,5 +158,21 @@
   "Not selected": "Орнатылмаған",
   "Paid in payments": "Төлемдер бойынша төленген",
   "Tax": "Салық",
-  "Forex server activation": "Forex серверін белсендіру"
+  "Forex server activation": "Forex серверін белсендіру",
+  "Service has been successfully changed": "Қызмет сәтті өзгертілді",
+  "Service has been successfully removed": "Қызмет сәтті жойылды",
+  "Password has been successfully changed": "Құпия сөз сәтті өзгертілді",
+  "Server has been successfully rebooted": "Сервер сәтті қайта жүктелді",
+  "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді",
+  "services_selected": "Қызметтер таңдалды:",
+  "server_deleted": "{{id}} сервері жойылды",
+  "unknown_error": "Бірдеңе дұрыс болмады",
+  "and_more": "және тағы басқа {{value}}",
+  "Services per page": "Әр беттегі элементтер",
+  "Attention, edit few services": "Назар аударыңыз! Келесі өзгертулер барлық таңдалған қызметтерге қолданылады",
+  "The Period field has invalid value.": "'Кезең' өрісінде жарамсыз мән бар. Басқа кезеңді таңдаңыз",
+  "DISCOUNT -10% ON DEDICATED SERVERS": "АРНАЛҒАН СЕРВЕРЛЕРГЕ -10% ЖЕҢІЛДІК",
+  "DISCOUNT -20% ON VDS/VPS": "VDS/VPS бойынша -20% ЖЕҢІЛДІК",
+  "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "БІРІНШІ АЙ ҮШІН -20% ЖЕҢІЛДІК 'Сайтқа күтім жасау' ҚЫЗМЕТІ ҮШІН",
+  "You can get a discount using a promo code": "Сіз промокодты пайдаланып жеңілдік ала аласыз"
 }

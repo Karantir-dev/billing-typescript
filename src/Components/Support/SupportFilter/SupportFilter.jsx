@@ -14,8 +14,14 @@ export default function Component(props) {
   const { t } = useTranslation(['support', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
-  const { selctedTicket, setCurrentPage, isFiltered, setIsFiltered, isFilterActive } =
-    props
+  const {
+    selctedTicket,
+    setCurrentPage,
+    isFiltered,
+    setIsFiltered,
+    isFilterActive,
+    p_cnt,
+  } = props
 
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
@@ -38,6 +44,9 @@ export default function Component(props) {
   const filterHandler = values => {
     setCurrentPage(1)
     setFilterModal(false)
+
+    values.p_cnt = p_cnt
+
     setIsFiltered && setIsFiltered(true)
     if (params?.path === 'requests') {
       dispatch(supportOperations.getTicketsFiltersHandler(values))
@@ -56,6 +65,7 @@ export default function Component(props) {
       message_post: 'nodate',
       message_poststart: '',
       message_postend: '',
+      p_cnt: p_cnt,
     }
     setIsFiltered && setIsFiltered(false)
     setFilterModal(true)

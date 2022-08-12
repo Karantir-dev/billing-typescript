@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import s from './DedicList.module.scss'
 import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
+import { CheckBox } from '../../..'
 
 export default function DedicList({
   emptyFilter,
@@ -15,9 +16,9 @@ export default function DedicList({
   setElidForHistoryModal,
   setElidForInstructionModal,
   setElidForRebootModal,
-  setActiveServer,
-  activeServerID,
   rights,
+  setActiveServices,
+  activeServices,
 }) {
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -39,9 +40,20 @@ export default function DedicList({
             alt="dedic"
             className={s.dedic_img}
           />
+
           <p className={s.no_service_title}>
             {t('YOU DO NOT HAVE A DEDICATED SERVER YET', { ns: 'dedicated_servers' })}
           </p>
+          <div className={s.discount_wrapper}>
+            <p className={s.discount_percent}>
+              {t('DISCOUNT -10% ON DEDICATED SERVERS', { ns: 'other' })}
+            </p>
+            <p className={s.discount_desc}>
+              {t('You can get a discount using a promo code', { ns: 'other' })}:
+              <span className={s.promocode}>S-ZM-DED20</span>
+            </p>
+          </div>
+
           <p className={s.no_service_description}>
             {t('dedic no services description', { ns: 'dedicated_servers' })}
           </p>
@@ -53,16 +65,27 @@ export default function DedicList({
   return (
     <>
       {widerThan1550 && servers?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('domain_name')}:</li>
-          <li className={s.table_head}>{t('ip_address')}:</li>
-          <li className={s.table_head}>{t('ostempl')}:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>{t('status')}:</li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-        </ul>
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={activeServices?.length === servers?.length}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(servers)
+            }}
+          />
+
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('domain_name')}:</li>
+            <li className={s.table_head}>{t('ip_address')}:</li>
+            <li className={s.table_head}>{t('ostempl')}:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>{t('status')}:</li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}></li>
+          </ul>
+        </div>
       )}
 
       <ul className={s.list}>
@@ -71,19 +94,26 @@ export default function DedicList({
             <DedicItem
               key={el.id.$}
               server={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              setElidForRebootModal={() => setElidForRebootModal([el.id.$])}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
+              rights={rights}
             />
           ) : (
             <DedicMobileItem
               key={el.id.$}
               server={el}
-              setElidForEditModal={setElidForEditModal}
-              setElidForProlongModal={setElidForProlongModal}
-              setElidForHistoryModal={setElidForHistoryModal}
-              setElidForInstructionModal={setElidForInstructionModal}
-              setElidForRebootModal={setElidForRebootModal}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              setElidForRebootModal={() => setElidForRebootModal([el.id.$])}
+              setActiveServices={setActiveServices}
+              activeServices={activeServices}
               rights={rights}
             />
           )
@@ -96,7 +126,12 @@ export default function DedicList({
 DedicList.propTypes = {
   servers: PropTypes.arrayOf(PropTypes.object),
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  emptyFilter: PropTypes.bool,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setElidForRebootModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   rights: PropTypes.object,
 }

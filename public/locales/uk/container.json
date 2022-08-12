@@ -64,7 +64,6 @@
   "Service is ready for use": "Послуга '{{value}}' готова до використання",
   "Service has been deleted": "Послуга '{{value}}' видалена",
   "Service has been suspended": "Послугу '{{value}}' призупинено",
-  "Error in domain contacts for the service": "Помилка в контактах домену для послуги '{{value}}'. Перевірте параметри та повторіть операцію",
   "An error occurred when changing name servers": "Під час зміни серверів імен послуги '{{value}}' сталася помилка. Перевірте параметри та повторіть спробу",
   "The domain has been successfully transferred": "Домен '{{value}}' успішно перенесено",
   "Failed to transfer the domain": "Не вдалося перенести домен '{{value}}'.",
@@ -72,5 +71,9 @@
   "Service has been modified": "Послугу '{{value}}' було змінено",
   "Service has been activated": "Послуга '{{value}}' активована",
   "Change pricelist": "Під час зміни тарифу '{{value}}' сталася помилка. Ваш старий тарифний план активовано",
-  "Failed to register the SSL-certificate": "Не вдалося зареєструвати SSL-сертифікат '{{value}}'."
+  "Failed to register the SSL-certificate": "Не вдалося зареєструвати SSL-сертифікат '{{value}}'.",
+  "Password for has been changed": "Змінено пароль для '{{value}}'",
+  "Name servers for have been successfully changed": "Сервери імен для '{{value}}' успішно змінено",
+  "Check parameters and repeat the operation": "Перевірте параметри та повторіть операцію",
+  "Error in domain contacts for the service": "Помилка в контактах домену для послуги '{{value}}'"
 }

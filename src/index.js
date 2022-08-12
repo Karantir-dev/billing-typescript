@@ -4,7 +4,7 @@ import './i18n'
 
 import App from './App'
 import './scss/common.scss'
-
+ 
 ReactDOM.render(
   <React.StrictMode>
     <App />

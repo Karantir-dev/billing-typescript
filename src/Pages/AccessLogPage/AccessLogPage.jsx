@@ -15,15 +15,16 @@ export default function Component() {
 
   const isComponentAllowedToRender = usePageRender('stat', 'authlog')
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(accessLogsOperations.getAccessLogsHandler(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   if (!isComponentAllowedToRender) {
     return <Navigate to={routes.HOME} />
@@ -33,19 +34,20 @@ export default function Component() {
     <div className={s.body}>
       <div className={s.content}>
         <h1 className={s.pageTitle}>{t('access_log')}</h1>
-        <AccessLogsFilter setCurrentPage={setCurrentPage} />
+        <AccessLogsFilter p_cnt={p_cnt} setCurrentPage={setP_num} />
         {logsList?.length !== 0 ? (
           <AccessLogsTable list={logsList} />
         ) : (
           <span className={s.noResults}>{t('nothing_found')}</span>
         )}
-        {logsList?.length !== 0 && (
+        {logsCount > 5 && (
           <div className={s.pagination}>
             <Pagination
-              currentPage={currentPage}
               totalCount={Number(logsCount)}
-              pageSize={30}
-              onPageChange={page => setCurrentPage(page)}
+              currentPage={p_num}
+              pageSize={p_cnt}
+              onPageChange={page => setP_num(page)}
+              onPageItemChange={items => setP_cnt(items)}
             />
           </div>
         )}

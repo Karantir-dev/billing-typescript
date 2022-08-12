@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
 
-import s from './DNSList.module.scss'
 import DNSItem from '../DNSItem/DNSItem'
 import DNSMobileItem from '../DNSMobileItem/DNSMobileItem'
+import { CheckBox } from '../../..'
+
+import s from './DNSList.module.scss'
 
 export default function DNSList({
   emptyFilter,
@@ -14,10 +16,9 @@ export default function DNSList({
   setElidForProlongModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
-  // setElidForChangeTarifModal,
-  setActiveServer,
-  activeServerID,
   pageRights,
+  setActiveServices,
+  activeServices,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -27,7 +28,7 @@ export default function DNSList({
     'access_log',
     'dns',
   ])
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   if (dnsList) {
     if (dnsList.length === 0 && emptyFilter) {
@@ -59,39 +60,55 @@ export default function DNSList({
 
   return (
     <>
-      {widerThan1550 && dnsList?.length > 0 && (
-        <ul className={s.head_row}>
-          <li className={s.table_head}>Id:</li>
-          <li className={s.table_head}>{t('tariff')}:</li>
-          <li className={s.table_head}>
-            {t('datacenter', { ns: 'dedicated_servers' })}:
-          </li>
-          <li className={s.table_head}>{t('created')}:</li>
-          <li className={s.table_head}>{t('valid_until')}:</li>
-          <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
-          <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
-        </ul>
+      {widerThan1600 && dnsList?.length > 0 && (
+        <div className={s.head_row_wrapper}>
+          <CheckBox
+            className={s.check_box}
+            initialState={activeServices?.length === dnsList?.length}
+            func={isChecked => {
+              isChecked ? setActiveServices([]) : setActiveServices(dnsList)
+            }}
+          />
+
+          <ul className={s.head_row}>
+            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={s.table_head}>
+              {t('datacenter', { ns: 'dedicated_servers' })}:
+            </li>
+            <li className={s.table_head}>{t('created')}:</li>
+            <li className={s.table_head}>{t('valid_until')}:</li>
+            <li className={s.table_head}>{t('status', { ns: 'other' })}:</li>
+            <li className={s.table_head}>{t('Price', { ns: 'domains' })}:</li>
+            <li className={s.table_head}></li>
+          </ul>
+        </div>
       )}
 
       <ul className={s.list}>
         {dnsList?.map(el => {
-          return widerThan1550 ? (
+          return widerThan1600 ? (
             <DNSItem
               key={el.id.$}
               storage={el}
-              activeServerID={activeServerID}
-              setActiveServer={setActiveServer}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              pageRights={pageRights}
             />
           ) : (
             <DNSMobileItem
               key={el.id.$}
               storage={el}
-              setElidForEditModal={setElidForEditModal}
-              setElidForProlongModal={setElidForProlongModal}
-              setElidForHistoryModal={setElidForHistoryModal}
-              setElidForInstructionModal={setElidForInstructionModal}
-              // setElidForChangeTarifModal={setElidForChangeTarifModal}
-              setActiveServer={setActiveServer}
+              setElidForEditModal={() => setElidForEditModal(el.id.$)}
+              setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
+              setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
+              setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
+              activeServices={activeServices}
+              setActiveServices={setActiveServices}
               pageRights={pageRights}
             />
           )
@@ -102,9 +119,13 @@ export default function DNSList({
 }
 
 DNSList.propTypes = {
-  storageList: PropTypes.arrayOf(PropTypes.object),
+  dnsList: PropTypes.arrayOf(PropTypes.object),
+  emptyFilter: PropTypes.bool,
   setElidForEditModal: PropTypes.func,
-  setActiveServer: PropTypes.func,
-  activeServerID: PropTypes.string,
+  setElidForProlongModal: PropTypes.func,
+  setElidForHistoryModal: PropTypes.func,
+  setElidForInstructionModal: PropTypes.func,
+  setActiveServices: PropTypes.func,
+  activeServices: PropTypes.arrayOf(PropTypes.object),
   pageRights: PropTypes.object,
 }

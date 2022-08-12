@@ -19,7 +19,6 @@ const getTicketsHandler =
           sok: 'ok',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
           lang: 'en',
           p_col: '+time',
           clickstat: 'yes',
@@ -124,7 +123,6 @@ const getTicketsArchiveHandler =
           sok: 'ok',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
           p_col: '+time',
           clickstat: 'yes',
           lang: 'en',
@@ -458,7 +456,7 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
       }
       dispatch(supportActions.getCurrentFilters(currentFilter))
 
-      dispatch(getTicketsHandler())
+      dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }))
     })
     .catch(error => {
       console.log('support -', error.message)

@@ -64,7 +64,6 @@
   "Service is ready for use": "სერვისი '{{value}}' მზად არის გამოსაყენებლად",
   "Service has been deleted": "სერვისი '{{value}}' წაიშალა",
   "Service has been suspended": "სერვისი '{{value}}' შეჩერებულია",
-  "Error in domain contacts for the service": "შეცდომა დომენის კონტაქტებში სერვისისთვის '{{value}}'. შეამოწმეთ პარამეტრები და გაიმეორეთ ოპერაცია",
   "An error occurred when changing name servers": "'{{value}}' სერვისის სახელების სერვერების შეცვლისას მოხდა შეცდომა. შეამოწმეთ პარამეტრები და სცადეთ ხელახლა",
   "The domain has been successfully transferred": "'{{value}}' დომენი წარმატებით გადავიდა",
   "Failed to transfer the domain": "'{{value}}' დომენის გადაცემა ვერ მოხერხდა",
@@ -72,5 +71,9 @@
   "Service has been modified": "სერვისი '{{value}}' შეიცვალა",
   "Service has been activated": "სერვისი '{{value}}' გააქტიურებულია",
   "Change pricelist": "'{{value}}'-ის ტარიფის შეცვლისას მოხდა შეცდომა. თქვენი ძველი სატარიფო გეგმა გააქტიურებულია",
-  "Failed to register the SSL-certificate": "'{{value}}' SSL-სერთიფიკატის რეგისტრაცია ვერ მოხერხდა"
+  "Failed to register the SSL-certificate": "'{{value}}' SSL-სერთიფიკატის რეგისტრაცია ვერ მოხერხდა",
+  "Password for has been changed": "'{{value}}'-ის პაროლი შეიცვალა",
+  "Name servers for have been successfully changed": "სახელის სერვერები '{{value}}'-ისთვის წარმატებით შეიცვალა",
+  "Check parameters and repeat the operation": "შეამოწმეთ პარამეტრები და გაიმეორეთ ოპერაცია",
+  "Error in domain contacts for the service": "შეცდომა დომენის კონტაქტებში სერვისისთვის '{{value}}'."
 }

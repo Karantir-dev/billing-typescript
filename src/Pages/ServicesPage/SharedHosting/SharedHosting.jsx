@@ -5,11 +5,14 @@ import {
   Pagination,
   SharedHostingTable,
   SharedHostingHistoryModal,
-  SharedHostingProlongModal,
+  // SharedHostingProlongModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
   SharedHostingInstructionModal,
   Backdrop,
+  HintWrapper,
+  IconButton,
+  ProlongModal,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +21,7 @@ import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations } from '../../../Redux'
 import * as route from '../../../routes'
 import { checkServicesRights, usePageRender } from '../../../utils'
-import { useMediaQuery } from 'react-responsive'
+import cn from 'classnames'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
@@ -36,8 +39,12 @@ export default function Component() {
   const virtualHostingRenderData = useSelector(vhostSelectors.getVhostList)
   const vhostCount = useSelector(vhostSelectors.getVhostCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
+
   const [selctedItem, setSelctedItem] = useState(null)
+  const [activeServices, setActiveServices] = useState([])
+  const [elidForProlongModal, setElidForProlongModal] = useState([])
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
@@ -45,7 +52,7 @@ export default function Component() {
   const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
-  const [prolongData, setProlongData] = useState(null)
+  // const [prolongData, setProlongData] = useState(null)
 
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
@@ -58,19 +65,11 @@ export default function Component() {
   const [instructionData, setInstructionData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
-  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
-
-  const hostingsTotalPrice = virtualHostingRenderData?.vhostList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(vhostOperations.getVhosts(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -135,28 +134,29 @@ export default function Component() {
   }
 
   const prolongVhostHandler = () => {
-    const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      lang: i18n?.language,
-    }
-    dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
+    setProlongModal(true)
+    // const data = {
+    //   elid: selctedItem?.id?.$,
+    //   elname: selctedItem?.name?.$,
+    //   lang: i18n?.language,
+    // }
+    // dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
   }
 
   const closeProlongModalHandler = () => {
-    setProlongData(null)
+    // setProlongData(null)
     setProlongModal(false)
   }
 
-  const prolongEditVhostHandler = (values = {}) => {
-    let data = {
-      elid: selctedItem?.id?.$,
-      lang: i18n?.language,
-      ...values,
-    }
+  // const prolongEditVhostHandler = (values = {}) => {
+  //   let data = {
+  //     elid: selctedItem?.id?.$,
+  //     lang: i18n?.language,
+  //     ...values,
+  //   }
 
-    dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
-  }
+  //   dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
+  // }
 
   const editVhostHandler = () => {
     const data = {
@@ -236,6 +236,36 @@ export default function Component() {
     }
   }, [])
 
+  const getTotalPrice = () => {
+    const list = activeServices.length >= 1 ? activeServices : []
+
+    return list
+      ?.reduce((totalPrice, server) => {
+        return totalPrice + +server?.cost?.$?.trim()?.split(' ')?.[0]
+      }, 0)
+      ?.toFixed(2)
+  }
+
+  const getServerName = id => {
+    if (typeof id === 'string') {
+      return virtualHostingRenderData?.vhostList?.reduce((acc, el) => {
+        if (el.id.$ === id) {
+          acc = el.name.$
+        }
+        return acc
+      }, '')
+    } else if (Array.isArray(id)) {
+      return id?.reduce((acc, idValue) => {
+        acc.push(
+          virtualHostingRenderData?.vhostList?.find(server => server.id.$ === idValue)
+            .name.$,
+        )
+
+        return acc
+      }, [])
+    }
+  }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -249,17 +279,14 @@ export default function Component() {
       <SharedHostingFilter
         setIsFiltered={setIsFiltered}
         setSelctedItem={setSelctedItem}
-        historyVhostHandler={historyVhostHandler}
-        instructionVhostHandler={instructionVhostHandler}
-        platformVhostHandler={platformVhostHandler}
-        prolongVhostHandler={prolongVhostHandler}
-        editVhostHandler={editVhostHandler}
-        changeTariffVhostHandler={changeTariffVhostHandler}
-        selctedItem={selctedItem}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={setP_num}
+        p_cnt={p_cnt}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || virtualHostingRenderData?.vhostList?.length > 0}
         rights={rights}
+        activeServices={activeServices}
+        setActiveServices={setActiveServices}
+        hostingList={virtualHostingRenderData?.vhostList}
       />
 
       {virtualHostingRenderData?.vhostList?.length < 1 && isFiltered && (
@@ -298,28 +325,69 @@ export default function Component() {
           setSelctedItem={setSelctedItem}
           list={virtualHostingRenderData?.vhostList}
           rights={rights}
+          activeServices={activeServices}
+          setActiveServices={setActiveServices}
+          elidForProlongModal={elidForProlongModal}
+          setElidForProlongModal={setElidForProlongModal}
         />
       )}
 
-      {Number(vhostCount) <= 30 &&
-        widerThan1600 &&
-        virtualHostingRenderData?.vhostList?.length !== 0 && (
-          <div className={s.total_pagination_price}>
-            {t('Sum', { ns: 'other' })}: {`${+hostingsTotalPrice?.toFixed(4)} EUR`}
-          </div>
-        )}
-
-      {virtualHostingRenderData?.vhostList?.length !== 0 && (
+      {vhostCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(vhostCount)}
-            pageSize={30}
-            totalPrice={widerThan1600 && +hostingsTotalPrice?.toFixed(4)}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => {
+              setP_num(page)
+              setActiveServices([])
+            }}
+            onPageItemChange={items => {
+              setP_cnt(items)
+              setActiveServices([])
+            }}
           />
         </div>
       )}
+
+      <div
+        className={cn({
+          [s.tools_footer]: true,
+          [s.active_footer]: activeServices.length >= 1,
+        })}
+      >
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('prolong')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(
+                  server =>
+                    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                ) || !rights?.prolong
+              }
+              onClick={() => {
+                setElidForProlongModal(activeServices?.map(item => item.id.$))
+                prolongVhostHandler()
+              }}
+              icon="clock"
+            />
+          </HintWrapper>
+        </div>
+
+        <p className={s.services_selected}>
+          {t('services_selected', { ns: 'other' })}{' '}
+          <span className={s.tools_footer_value}>{activeServices.length}</span>
+        </p>
+
+        <p className={s.total_price}>
+          {t('total', { ns: 'other' })}:{' '}
+          <span className={s.tools_footer_value}>
+            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+          </span>
+        </p>
+      </div>
 
       <Backdrop
         className={s.backdrop}
@@ -336,7 +404,7 @@ export default function Component() {
         />
       </Backdrop>
 
-      <Backdrop
+      {/* <Backdrop
         className={s.backdrop}
         isOpened={Boolean(prolongModal && prolongData)}
         onClick={closeProlongModalHandler}
@@ -346,6 +414,19 @@ export default function Component() {
           name={selctedItem?.name?.$}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditVhostHandler={prolongEditVhostHandler}
+        />
+      </Backdrop> */}
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={Boolean(prolongModal)}
+        onClick={closeProlongModalHandler}
+      >
+        <ProlongModal
+          elidList={elidForProlongModal}
+          closeFn={() => closeProlongModalHandler()}
+          names={getServerName(elidForProlongModal)}
+          pageName="shared_hosting"
         />
       </Backdrop>
 

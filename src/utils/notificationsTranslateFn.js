@@ -16,10 +16,19 @@ export default function notificationsTranslateFn(str, t) {
     /The "(.+?)(?=" domain has been successfully transferred)/,
   )?.[1]
   const errorIndDomainContacts = str.match(
-    /Error in domain contacts for the service "(.+?)(?=" Check parameters and repeat the operation)/,
+    /Error in domain contacts for the service "(.+?)(?=. Check parameters and repeat the operation)/,
   )?.[1]
   const errorIndDomainServers = str.match(
     /An error occurred when changing name servers of the "(.+?)(?=" service. Check parameters and try again)/,
+  )?.[1]
+  const passwordHasBeenChanged = str.match(
+    /Password for "(.+?)(?=" has been changed)/,
+  )?.[1]
+  const nameServersChanged = str.match(
+    /Name servers for "(.+?)(?=" have been successfully changed)/,
+  )?.[1]
+  const errorInDomainContacts = str.match(
+    /Error in domain contacts for the service "(.+?)(?=".)/,
   )?.[1]
 
   let translate = str
@@ -100,6 +109,31 @@ export default function notificationsTranslateFn(str, t) {
         value: t(errorIndDomainServers),
         ns: 'container',
       }),
+    )
+    .replace(
+      /Password for ".+" has been changed/g,
+      t('Password for has been changed', {
+        value: t(passwordHasBeenChanged),
+        ns: 'container',
+      }),
+    )
+    .replace(
+      /Name servers for ".+" have been successfully changed/g,
+      t('Name servers for have been successfully changed', {
+        value: t(nameServersChanged),
+        ns: 'container',
+      }),
+    )
+    .replace(
+      /Error in domain contacts for the service ".+"/g,
+      t('Error in domain contacts for the service', {
+        value: t(errorInDomainContacts),
+        ns: 'container',
+      }),
+    )
+    .replace(
+      'Check parameters and repeat the operation',
+      t('Check parameters and repeat the operation', { ns: 'container' }),
     )
 
   return t(translate.trim())

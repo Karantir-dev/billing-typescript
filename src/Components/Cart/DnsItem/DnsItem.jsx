@@ -5,11 +5,27 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './DnsItem.module.scss'
+import { Delete } from '../../../images'
 
 export default function DnsItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'dns', 'crumbs'])
+  const { t } = useTranslation([
+    'cart',
+    'dedicated_servers',
+    'other',
+    'dns',
+    'crumbs',
+    'vds',
+  ])
 
-  const { desc, cost, discount_percent, fullcost, pricelist_name } = props
+  const {
+    desc,
+    cost,
+    discount_percent,
+    fullcost,
+    pricelist_name,
+    count,
+    deleteItemHandler,
+  } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -18,8 +34,8 @@ export default function DnsItem(props) {
     const afterWord = '</br>'
 
     const managePanel = desc
-      .slice(desc.indexOf(beforeWord) + beforeWord?.length, desc.indexOf(afterWord))
-      .replace(
+      ?.slice(desc?.indexOf(beforeWord) + beforeWord?.length, desc?.indexOf(afterWord))
+      ?.replace(
         'Without a license<br/>IP',
         t('Without a license', { ns: 'dedicated_servers' }),
       )
@@ -28,23 +44,23 @@ export default function DnsItem(props) {
     const afterWordIP = 'Unit'
 
     const ipAmount =
-      desc.slice(
-        desc.indexOf(beforeWordIP) + beforeWordIP?.length,
-        desc.indexOf(afterWordIP),
+      desc?.slice(
+        desc?.indexOf(beforeWordIP) + beforeWordIP?.length,
+        desc?.indexOf(afterWordIP),
       ) +
       'Unit'
-        .replaceAll('Unit', t('Unit', { ns: 'dedicated_servers' }))
-        .replace('current value', t('current value', { ns: 'dedicated_servers' }))
+        ?.replaceAll('Unit', t('Unit', { ns: 'dedicated_servers' }))
+        ?.replace('current value', t('current value', { ns: 'dedicated_servers' }))
 
     const beforeWordSpeed = 'Port speed'
     const afterWordSpeed = '</br>'
 
-    const postSpeed = desc.slice(
-      desc.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
-      desc.indexOf(afterWordSpeed),
+    const postSpeed = desc?.slice(
+      desc?.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
+      desc?.indexOf(afterWordSpeed),
     )
 
-    const paymentPeriod = desc.split(' ').reverse()
+    const paymentPeriod = desc?.split(' ')?.reverse()
     let curPeriod = []
 
     for (let i = 0; i <= paymentPeriod.length; i++) {
@@ -54,7 +70,7 @@ export default function DnsItem(props) {
       }
     }
 
-    const periodStr = curPeriod.reverse().join(' ')
+    const periodStr = curPeriod?.reverse()?.join(' ')
 
     const period = translatePeriod(periodStr, t)
 
@@ -76,13 +92,37 @@ export default function DnsItem(props) {
               alt="dns"
             />
           )}
+
           <div className={s.priceList}>
+            {!tabletOrHigher && (
+              <div className={s.control_bts_wrapper}>
+                <p className={s.countItem}>
+                  {count} {t('psc.', { ns: 'vds' })}
+                </p>
+                {typeof deleteItemHandler === 'function' && (
+                  <button
+                    className={s.btn_delete}
+                    type="button"
+                    onClick={deleteItemHandler}
+                  >
+                    <Delete />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {tabletOrHigher && (
+              <p className={s.countItem}>
+                {count} {t('psc.', { ns: 'vds' })}
+              </p>
+            )}
+
             <div className={s.server_info}>
               <span className={s.domainName}>
                 {pricelist_name
-                  .replace('for', t('for', { ns: 'dns' }))
-                  .replace('domains', t('domains', { ns: 'dns' }))
-                  .replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+                  ?.replace('for', t('for', { ns: 'dns' }))
+                  ?.replace('domains', t('domains', { ns: 'dns' }))
+                  ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
               </span>
             </div>
             <div className={s.costBlock}>
@@ -96,6 +136,12 @@ export default function DnsItem(props) {
                 </div>
               )}
             </div>
+
+            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+              <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+                <Delete />
+              </button>
+            )}
           </div>
         </div>
       </div>

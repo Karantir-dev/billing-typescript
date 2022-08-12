@@ -13,6 +13,8 @@ import {
   Portal,
   ModalPickPhoto,
   ToggleBlock,
+  Toggle,
+  HintWrapper,
 } from '../../../Components'
 import { BASE_URL } from '../../../config/config'
 import { Form, Formik } from 'formik'
@@ -223,54 +225,116 @@ export default function Component({ isComponentAllowedToEdit }) {
               </div>
               <div className={s.bottomBlock}>
                 <h2 className={s.settingsTitle}>{t('Notification settings')}</h2>
-                {userParams?.telegramLink && userParams?.telegramLink?.length !== 0 && (
-                  <div className={s.telegramBlock}>
-                    {t('To receive notifications via Telegram, write to our bot')} —{' '}
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      className={s.telegramLink}
-                      href={userParams?.telegramLink}
-                    >
-                      ZomroNotifier_bot
-                    </a>
-                  </div>
-                )}
+
                 <div className={cn(s.formRow, s.rowMessages)}>
-                  <InputField
-                    name="email_notif"
-                    label={`${t('Email')}:`}
-                    placeholder={t('email_placeholder', { ns: 'auth' })}
-                    isShadow
-                    className={s.emailInput}
-                    error={!!errors.email_notif}
-                    touched={!!touched.email_notif}
-                  />
-                  <InputField
-                    name="telegram_id"
-                    label={`${t('Telegram')}:`}
-                    placeholder={t('Enter your telegram')}
-                    isShadow
-                    className={s.input}
-                    error={!!errors.email}
-                    touched={!!touched.email}
-                  />
+                  <div className={s.emailBlock}>
+                    <InputField
+                      name="email_notif"
+                      label={`${t('Email')}:`}
+                      placeholder={t('email_placeholder', { ns: 'auth' })}
+                      isShadow
+                      className={cn(s.emailInput, s.notifEmail)}
+                      error={!!errors.email_notif}
+                      touched={!!touched.email_notif}
+                    />
+                    {confirmEmailBtnRender(
+                      userParams?.email_confirmed_status,
+                      values.email_notif,
+                    ) &&
+                      values?.email_notif?.length > 0 && (
+                        <button
+                          className={s.confirmBtn}
+                          onClick={() => confirmEmailHandler(values)}
+                          type="button"
+                        >
+                          {t('Send confirmation', { ns: 'other' })}
+                        </button>
+                      )}
+                  </div>
+
+                  <div className={s.emailStatus}>
+                    {emailStatusRender(userParams?.email_confirmed_status)}
+                  </div>
+
+                  <div className={s.securNotification}>
+                    <div className={s.securNotifnEmailBlock}>
+                      <div className={s.securNotifText}>
+                        {t('Send e-mail messages about authorization')}
+                      </div>
+
+                      <HintWrapper
+                        popupClassName={s.hintWrapper}
+                        label={t('Confirm your email to activate the functionality')}
+                      >
+                        <Toggle
+                          disabled={confirmEmailBtnRender(
+                            userParams?.email_confirmed_status,
+                            values.email_notif,
+                          )}
+                          setValue={value => setFieldValue('sendemail', value)}
+                          initialState={userParams?.sendemail === 'on'}
+                        />
+                      </HintWrapper>
+                    </div>
+                    <div className={s.securNotifnGeoBlock}>
+                      <div className={s.securNotifText}>
+                        {t('Use GeoIP (region tracking by IP)')}
+                      </div>
+                      <HintWrapper
+                        popupClassName={s.hintWrapper}
+                        label={t('Confirm your email to activate the functionality')}
+                      >
+                        <Toggle
+                          disabled={confirmEmailBtnRender(
+                            userParams?.email_confirmed_status,
+                            values.email_notif,
+                          )}
+                          setValue={value => setFieldValue('setgeoip', value)}
+                          initialState={userParams?.setgeoip === 'on'}
+                        />
+                      </HintWrapper>
+                    </div>
+                  </div>
                 </div>
-                <div className={s.emailStatus}>
-                  {emailStatusRender(userParams?.email_confirmed_status)}
+                <div className={s.bottomBlock}>
+                  <h2 className={s.settingsTitle}>
+                    {t('Setting up Telegram notifications')}
+                  </h2>
+
+                  {userParams?.telegramLink && userParams?.telegramLink?.length !== 0 && (
+                    <div className={s.telegramBlock}>
+                      {t('To receive notifications using Telegram')}
+
+                      <div className={s.listTelegram}>
+                        1. {t('Enter your login in the form below')}
+                      </div>
+
+                      <div className={s.listTelegram}>
+                        2. {t('Write to our bot')} -{' '}
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          className={s.telegramLink}
+                          href={userParams?.telegramLink}
+                        >
+                          ZomroNotifier_bot
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={cn(s.formRow, s.rowMessages)}>
+                    <InputField
+                      name="telegram_id"
+                      label={`${t('Telegram')}:`}
+                      placeholder={t('Enter your telegram')}
+                      isShadow
+                      className={cn(s.input, s.notifEmail)}
+                      error={!!errors.email}
+                      touched={!!touched.email}
+                    />
+                  </div>
                 </div>
-                {confirmEmailBtnRender(
-                  userParams?.email_confirmed_status,
-                  values.email_notif,
-                ) && (
-                  <button
-                    className={s.confirmBtn}
-                    onClick={() => confirmEmailHandler(values)}
-                    type="button"
-                  >
-                    {t('Send confirmation', { ns: 'other' })}
-                  </button>
-                )}
                 {userParams?.listCheckBox && (
                   <div className={s.checkBlock}>
                     <div className={s.checkTitle}>

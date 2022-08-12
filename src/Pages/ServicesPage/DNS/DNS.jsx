@@ -19,46 +19,51 @@ import {
   DNSFiltersModal,
   Portal,
   Pagination,
+  CheckBox,
 } from '../../../Components'
-import { dnsOperations, dedicOperations, dnsSelectors, actions } from '../../../Redux'
+import { dnsOperations, dnsSelectors, actions } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
 import { usePageRender } from '../../../utils'
 
 export default function DNS() {
-  const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other'])
   const navigate = useNavigate()
 
-  const dnsRenderData = useSelector(dnsSelectors.getDNSList)
+  let dnsRenderData = useSelector(dnsSelectors.getDNSList)
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
 
-  // const [dnsList, setDnsList] = useState(null)
-  const [activeServer, setActiveServer] = useState(null)
+  const [activeServices, setActiveServices] = useState([])
+
   const [elidForEditModal, setElidForEditModal] = useState(0)
-  const [elidForProlongModal, setElidForProlongModal] = useState(0)
+  const [elidForProlongModal, setElidForProlongModal] = useState([])
   const [elidForHistoryModal, setElidForHistoryModal] = useState(0)
   const [elidForInstructionModal, setElidForInstructionModal] = useState(0)
   const [tarifs, setTarifs] = useState('No tariff plans available for order')
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const dnsTotalPrice = dnsRenderData?.dnsList?.reduce((curServer, nextServer) => {
-    return curServer + +nextServer?.item_cost?.$
-  }, 0)
+  const [p_cnt, setP_cnt] = useState(10)
+  const [p_num, setP_num] = useState(1)
 
-  // const [
-  //   elidForChangeTarifModal,
-  //   setElidForChangeTarifModal,
-  // ] = useState(0)
   const [filterModal, setFilterModal] = useState(false)
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const getTotalPrice = () => {
+    const list = activeServices.length >= 1 ? activeServices : []
+
+    return list
+      ?.reduce((totalPrice, server) => {
+        return totalPrice + +server?.cost?.$?.trim()?.split(' ')?.[0]
+      }, 0)
+      ?.toFixed(2)
+  }
 
   useEffect(() => {
     if (filterModal) {
@@ -96,13 +101,13 @@ export default function DNS() {
     }
 
     setIsFiltered(false)
-    setCurrentPage(1)
+    setP_num(1)
 
     setFilterModal(false)
     dispatch(
       dnsOperations.getDNSFilters(
         setFilters,
-        { ...clearField, sok: 'ok' },
+        { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
@@ -112,18 +117,19 @@ export default function DNS() {
   const setFilterHandler = values => {
     setFilterModal(false)
     setFilters(null)
-    setCurrentPage(1)
+    setP_num(1)
 
     setIsFiltered(true)
 
     dispatch(
       dnsOperations.getDNSFilters(
         setFilters,
-        { ...values, sok: 'ok' },
+        { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
       ),
     )
+    setActiveServices([])
   }
 
   useEffect(() => {
@@ -147,7 +153,11 @@ export default function DNS() {
       }
 
       dispatch(
-        dnsOperations.getDNSFilters(setFilters, { ...clearField, sok: 'ok' }, true),
+        dnsOperations.getDNSFilters(
+          setFilters,
+          { ...clearField, sok: 'ok', p_cnt },
+          true,
+        ),
       )
 
       dispatch(dnsOperations.getTarifs(setTarifs))
@@ -169,13 +179,31 @@ export default function DNS() {
   let rights = checkRights(dnsRenderData?.dnsPageRights?.toolgrp)
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(dnsOperations.getDNSList(data))
-  }, [currentPage])
+    setActiveServices([])
+  }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters))
+    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters, { p_cnt }))
   }, [filterModal])
+
+  const getServerName = id => {
+    if (typeof id === 'string') {
+      return dnsRenderData?.dnsList?.reduce((acc, el) => {
+        if (el.id.$ === id) {
+          acc = el.name.$
+        }
+        return acc
+      }, '')
+    } else if (Array.isArray(id)) {
+      return id?.reduce((acc, idValue) => {
+        acc.push(dnsRenderData?.dnsList?.find(server => server.id.$ === idValue).name.$)
+
+        return acc
+      }, [])
+    }
+  }
 
   return (
     <>
@@ -186,190 +214,173 @@ export default function DNS() {
           <span className={s.title_count_services}>{` (${dnsCount})`}</span>
         )}
       </h2>
+
       <div className={s.tools_wrapper}>
-        <div className={s.tools_container}>
-          <div className={s.filterBtnBlock}>
-            <IconButton
-              onClick={() => setFilterModal(true)}
-              icon="filter"
-              className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
-              disabled={
-                (dnsRenderData?.dnsList?.length === 0 && !emptyFilter) || !rights?.filter
-              }
-            />
-            {filterModal && (
-              <>
-                <Portal>
-                  <div className={s.bg}>
-                    {mobile && (
-                      <DNSFiltersModal
-                        filterModal={filterModal}
-                        setFilterModal={setFilterModal}
-                        filters={filters?.currentFilters}
-                        filtersList={filters?.filters}
-                        resetFilterHandler={resetFilterHandler}
-                        setFilterHandler={setFilterHandler}
-                      />
-                    )}
-                  </div>
-                </Portal>
-                {!mobile && (
-                  <DNSFiltersModal
-                    filterModal={filterModal}
-                    setFilterModal={setFilterModal}
-                    filters={filters?.currentFilters}
-                    filtersList={filters?.filters}
-                    resetFilterHandler={resetFilterHandler}
-                    setFilterHandler={setFilterHandler}
-                  />
-                )}
-              </>
-            )}
-          </div>
-
-          {widerThan1550 && (
-            <div className={s.desktop_tools_wrapper}>
-              <HintWrapper
-                wrapperClassName={s.hint_wrapper}
-                label={t('edit', { ns: 'other' })}
-              >
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForEditModal(activeServer?.id?.$)}
-                  disabled={
-                    activeServer?.status?.$ === '1' || !rights?.edit || !activeServer
-                  }
-                  icon="edit"
-                />
-              </HintWrapper>
-              {/* <HintWrapper label={t('Change tarif', { ns: 'other' })}>
-                <IconButton
-                  className={s.tools_icon}
-                  onClick={() => setElidForChangeTarifModal(activeServer?.id?.$)}
-                  disabled={!activeServer || activeServer?.change_pricelist?.$ === 'off'}
-                  icon="exchange"
-                />
-              </HintWrapper> */}
-
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('prolong')}>
-                <IconButton
-                  onClick={() => setElidForProlongModal(activeServer?.id?.$)}
-                  className={s.tools_icon}
-                  disabled={
-                    activeServer?.status?.$ === '1' || !rights?.prolong || !activeServer
-                  }
-                  icon="clock"
-                />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('history')}>
-                <IconButton
-                  onClick={() => setElidForHistoryModal(activeServer?.id?.$)}
-                  className={s.tools_icon}
-                  icon="refund"
-                  disabled={
-                    activeServer?.status?.$ === '1' || !rights?.history || !activeServer
-                  }
-                />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('instruction')}>
-                <IconButton
-                  className={s.tools_icon}
-                  disabled={
-                    activeServer?.status?.$ === '1' ||
-                    !rights?.instruction ||
-                    !activeServer
-                  }
-                  icon="info"
-                  onClick={() => setElidForInstructionModal(activeServer?.id?.$)}
-                />
-              </HintWrapper>
-              <HintWrapper wrapperClassName={s.hint_wrapper} label={t('go_to_panel')}>
-                <IconButton
-                  onClick={() => {
-                    dispatch(dedicOperations.goToPanel(activeServer?.id?.$))
-                  }}
-                  className={s.tools_icon}
-                  disabled={
-                    activeServer?.transition?.$ !== 'on' ||
-                    activeServer?.status?.$ !== '2' ||
-                    !rights?.gotoserver ||
-                    !activeServer
-                  }
-                  icon="exitSign"
-                />
-              </HintWrapper>
+        {!widerThan1600 && dnsRenderData?.dnsList?.length > 0 && (
+          <div className={s.check_box_wrapper}>
+            <div className={s.main_checkbox}>
+              <CheckBox
+                className={s.check_box}
+                initialState={activeServices.length === dnsRenderData?.dnsList?.length}
+                func={isChecked => {
+                  isChecked
+                    ? setActiveServices([])
+                    : setActiveServices(dnsRenderData?.dnsList)
+                }}
+              />
+              <span>{t('Choose all', { ns: 'other' })}</span>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        <Button
-          className={s.order_btn}
-          isShadow
-          type="button"
-          label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-          onClick={() => {
-            navigate(route.DNS_ORDER, {
-              state: { isDnsOrderAllowed: rights?.new },
-              replace: true,
-            })
-            // navigate(route.DNS_ORDER)
-          }}
-          disabled={tarifs === 'No tariff plans available for order' || !rights?.new}
-        />
+        <div className={s.btns_wrapper}>
+          <Button
+            className={s.order_btn}
+            isShadow
+            type="button"
+            label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
+            onClick={() => {
+              navigate(route.DNS_ORDER, {
+                state: { isDnsOrderAllowed: rights?.new },
+                replace: true,
+              })
+            }}
+            disabled={tarifs === 'No tariff plans available for order' || !rights?.new}
+          />
+          <div className={s.tools_container}>
+            <div className={s.filterBtnBlock}>
+              <IconButton
+                onClick={() => setFilterModal(true)}
+                icon="filter"
+                className={cn(s.calendarBtn, { [s.filtered]: isFiltered })}
+                disabled={
+                  (dnsRenderData?.dnsList?.length === 0 && !emptyFilter) ||
+                  !rights?.filter
+                }
+              />
+              {filterModal && (
+                <>
+                  <Portal>
+                    <div className={s.bg}>
+                      {mobile && (
+                        <DNSFiltersModal
+                          filterModal={filterModal}
+                          setFilterModal={setFilterModal}
+                          filters={filters?.currentFilters}
+                          filtersList={filters?.filters}
+                          resetFilterHandler={resetFilterHandler}
+                          setFilterHandler={setFilterHandler}
+                        />
+                      )}
+                    </div>
+                  </Portal>
+                  {!mobile && (
+                    <DNSFiltersModal
+                      filterModal={filterModal}
+                      setFilterModal={setFilterModal}
+                      filters={filters?.currentFilters}
+                      filtersList={filters?.filters}
+                      resetFilterHandler={resetFilterHandler}
+                      setFilterHandler={setFilterHandler}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
+
       <DNSList
         emptyFilter={emptyFilter}
         dnsList={dnsRenderData?.dnsList}
-        activeServerID={activeServer?.id.$}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
         setElidForInstructionModal={setElidForInstructionModal}
-        // setElidForChangeTarifModal={setElidForChangeTarifModal}
-        setActiveServer={setActiveServer}
         pageRights={rights}
+        activeServices={activeServices}
+        setActiveServices={setActiveServices}
       />
 
-      {Number(dnsCount) <= 30 && widerThan1550 && dnsRenderData?.dnsList?.length !== 0 && (
-        <div className={s.total_pagination_price}>
-          {t('Sum', { ns: 'other' })}: {`${+dnsTotalPrice?.toFixed(4)} EUR`}
-        </div>
-      )}
-
-      {dnsRenderData?.dnsList?.length !== 0 && (
+      {dnsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(dnsCount)}
-            totalPrice={widerThan1550 && +dnsTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => {
+              setP_num(page)
+              setActiveServices([])
+            }}
+            onPageItemChange={items => {
+              setP_cnt(items)
+              setActiveServices([])
+            }}
           />
         </div>
       )}
+
+      <div
+        className={cn({
+          [s.tools_footer]: true,
+          [s.active_footer]: activeServices.length >= 1,
+        })}
+      >
+        <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('prolong')}>
+            <IconButton
+              className={s.tools_icon}
+              disabled={
+                activeServices.some(
+                  server =>
+                    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                ) || !rights?.prolong
+              }
+              onClick={() =>
+                setElidForProlongModal(activeServices?.map(item => item.id.$))
+              }
+              icon="clock"
+            />
+          </HintWrapper>
+        </div>
+
+        <p className={s.services_selected}>
+          {t('services_selected', { ns: 'other' })}{' '}
+          <span className={s.tools_footer_value}>{activeServices.length}</span>
+        </p>
+        <p className={s.total_price}>
+          {t('total', { ns: 'other' })}:{' '}
+          <span className={s.tools_footer_value}>
+            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+          </span>
+        </p>
+      </div>
 
       <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
         <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
       </Backdrop>
 
       <Backdrop
-        onClick={() => setElidForProlongModal(0)}
-        isOpened={Boolean(elidForProlongModal)}
+        onClick={() => setElidForProlongModal([])}
+        isOpened={elidForProlongModal.length > 0}
       >
         <ProlongModal
-          elid={elidForProlongModal}
-          closeFn={() => setElidForProlongModal(0)}
+          elidList={elidForProlongModal}
+          closeFn={() => setElidForProlongModal([])}
           pageName="dns"
+          names={getServerName(elidForProlongModal)}
         />
       </Backdrop>
 
       <Backdrop
-        onClick={() => setElidForHistoryModal(0)}
+        onClick={() => setElidForHistoryModal('')}
         isOpened={Boolean(elidForHistoryModal)}
       >
         <DedicsHistoryModal
           elid={elidForHistoryModal}
-          server={activeServer}
+          name={getServerName(elidForHistoryModal)}
           closeFn={() => setElidForHistoryModal(0)}
         />
       </Backdrop>

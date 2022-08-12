@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Shevron } from '../../../images'
+import { Delete, Shevron } from '../../../images'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './DedicItem.module.scss'
 
 export default function DedicItem(props) {
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other'])
+  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
-  const { desc, cost, discount_percent, fullcost, pricelist_name } = props
+  const {
+    desc,
+    cost,
+    discount_percent,
+    fullcost,
+    pricelist_name,
+    count,
+    deleteItemHandler,
+  } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -20,8 +28,8 @@ export default function DedicItem(props) {
     const afterWord = '</br>'
 
     const managePanel = desc
-      .slice(desc.indexOf(beforeWord) + beforeWord?.length, desc.indexOf(afterWord))
-      .replace(
+      ?.slice(desc.indexOf(beforeWord) + beforeWord?.length, desc.indexOf(afterWord))
+      ?.replace(
         'Without a license<br/>IP',
         t('Without a license', { ns: 'dedicated_servers' }),
       )
@@ -30,9 +38,9 @@ export default function DedicItem(props) {
     const afterWordIP = 'Unit'
 
     const ipAmount =
-      desc.slice(
-        desc.indexOf(beforeWordIP) + beforeWordIP?.length,
-        desc.indexOf(afterWordIP),
+      desc?.slice(
+        desc?.indexOf(beforeWordIP) + beforeWordIP?.length,
+        desc?.indexOf(afterWordIP),
       ) +
       'Unit'
         .replaceAll('Unit', t('Unit', { ns: 'dedicated_servers' }))
@@ -41,12 +49,12 @@ export default function DedicItem(props) {
     const beforeWordSpeed = 'Port speed'
     const afterWordSpeed = '</br>'
 
-    const postSpeed = desc.slice(
-      desc.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
-      desc.indexOf(afterWordSpeed),
+    const postSpeed = desc?.slice(
+      desc?.indexOf(beforeWordSpeed) + beforeWordSpeed?.length,
+      desc?.indexOf(afterWordSpeed),
     )
 
-    const paymentPeriod = desc.split(' ').reverse()
+    const paymentPeriod = desc?.split(' ')?.reverse()
     let curPeriod = []
 
     for (let i = 0; i <= paymentPeriod.length; i++) {
@@ -56,7 +64,7 @@ export default function DedicItem(props) {
       }
     }
 
-    const periodStr = curPeriod.reverse().join(' ')
+    const periodStr = curPeriod?.reverse()?.join(' ')
 
     const period = translatePeriod(periodStr, t)
 
@@ -89,6 +97,29 @@ export default function DedicItem(props) {
           )}
 
           <div className={s.priceList}>
+            {!tabletOrHigher && (
+              <div className={s.control_bts_wrapper}>
+                <p className={s.countItem}>
+                  {count} {t('psc.', { ns: 'vds' })}
+                </p>
+                {typeof deleteItemHandler === 'function' && (
+                  <button
+                    className={s.btn_delete}
+                    type="button"
+                    onClick={deleteItemHandler}
+                  >
+                    <Delete />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {tabletOrHigher && (
+              <p className={s.countItem}>
+                {count} {t('psc.', { ns: 'vds' })}
+              </p>
+            )}
+
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
             </div>
@@ -103,6 +134,11 @@ export default function DedicItem(props) {
                 </div>
               )}
             </div>
+            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+              <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+                <Delete />
+              </button>
+            )}
           </div>
           {!tabletOrHigher && (
             <div

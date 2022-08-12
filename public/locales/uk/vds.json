@@ -93,6 +93,8 @@
   "New tariff": "Новий тариф",
   "Suspended service": "Послуга зупинена",
   "Active service": "Послуга запущена",
+  "reboot_launched": "Запущений процес перезавантаження сервера",
 
-  "psc.": "шт."
+  "psc.": "шт.",
+  "Suspended due to abuse": "Зупинено за порушення"
 }

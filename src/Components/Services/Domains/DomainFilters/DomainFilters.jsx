@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, IconButton, HintWrapper, Portal } from '../../..'
+import { Button, IconButton, HintWrapper, Portal, CheckBox } from '../../..'
 import * as routes from '../../../../routes'
 import s from './DomainFilters.module.scss'
 
@@ -18,24 +18,28 @@ export default function Component(props) {
 
   const {
     selctedItem,
+    list,
     setCurrentPage,
-    editDomainHandler,
-    // deleteDomainHandler,
-    renewDomainHandler,
-    historyDomainHandler,
-    whoisDomainHandler,
-    NSDomainHandler,
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
     isFiltered,
     rights,
+    p_cnt,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
   const filtersList = useSelector(domainsSelectors.getDomainsFiltersList)
 
   const [filterModal, setFilterModal] = useState(false)
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(list)
+      return
+    }
+    setSelctedItem([])
+  }
 
   useEffect(() => {
     if (filterModal) {
@@ -69,22 +73,32 @@ export default function Component(props) {
     }
     setCurrentPage(1)
     setFilterModal(false)
-    setSelctedItem(null)
+    setSelctedItem([])
     setIsFiltered(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok' }, true))
+    dispatch(
+      domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok', p_cnt }, true),
+    )
   }
 
   const setFilterHandler = values => {
     setCurrentPage(1)
     setIsFiltered(true)
-    setSelctedItem(null)
+    setSelctedItem([])
     setFilterModal(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok' }, true))
+    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={list?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
         <div className={s.filterBtnBlock}>
           <IconButton
             onClick={() => setFilterModal(true)}
@@ -131,62 +145,6 @@ export default function Component(props) {
               })
             }
             icon="transfer"
-          />
-        </HintWrapper>
-
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
-          <IconButton
-            disabled={!selctedItem || !rights?.edit}
-            onClick={editDomainHandler}
-            icon="edit"
-          />
-        </HintWrapper>
-
-        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('delete', { ns: 'other' })}>
-          <IconButton
-            disabled={!selctedItem || selctedItem?.item_status?.$orig === '5_transfer'}
-            onClick={deleteDomainHandler}
-            icon="delete"
-          />
-        </HintWrapper> */}
-
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('prolong', { ns: 'vds' })}>
-          <IconButton
-            disabled={
-              !selctedItem || selctedItem?.item_status?.$orig === '1' || !rights?.prolong
-            }
-            onClick={renewDomainHandler}
-            icon="clock"
-          />
-        </HintWrapper>
-
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('history', { ns: 'vds' })}>
-          <IconButton
-            disabled={!selctedItem || !rights?.history}
-            onClick={historyDomainHandler}
-            icon="refund"
-          />
-        </HintWrapper>
-
-        <HintWrapper
-          wrapperClassName={s.archiveBtn}
-          label={t('Getting information about a domain using the whois protocol')}
-        >
-          <IconButton
-            disabled={!selctedItem || !rights?.whois}
-            onClick={whoisDomainHandler}
-            icon="whois"
-          />
-        </HintWrapper>
-
-        <HintWrapper
-          wrapperClassName={s.archiveBtn}
-          label={t('View/change the list of nameservers')}
-        >
-          <IconButton
-            disabled={!selctedItem || !rights?.ns}
-            onClick={NSDomainHandler}
-            icon="server-cloud"
           />
         </HintWrapper>
       </div>

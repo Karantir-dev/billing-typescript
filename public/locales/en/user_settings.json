@@ -5,7 +5,7 @@
   "Upload a photo": "Upload a photo",
   "jpg, png, gif 80x80 up to 64 Kb": "jpg, png, gif 80x80 up to 64 Kb",
   "Notification settings": "Notification settings",
-  "To receive notifications via Telegram, write to our bot": "To receive notifications via Telegram, write to our bot",
+  "To receive notifications using Telegram": "To receive notifications using Telegram:",
   "Enter your telegram": "Enter your telegram",
   "Support service": "Support service",
   "Notification methods": "Notification methods",
@@ -56,5 +56,10 @@
   "Disable 2-Step Verification": "Disable 2-Step Verification",
   "Invalid confirmation code": "Invalid confirmation code",
   "existing social network": "This social network is already in use linked to your other account. If you want to link it here, please unlink it in another account",
-  "disconnect from": "Disconnect from"
+  "disconnect from": "Disconnect from",
+  "Setting up Telegram notifications": "Setting up Telegram notifications",
+  "Click \"send confirmation\" for resending": "Click \"send confirmation\" for resending",
+  "Enter your login in the form below": "Enter your login in the form below",
+  "Write to our bot": "Write to our bot",
+  "Confirm your email to activate the functionality": "Confirm your email to activate the functionality"
 }

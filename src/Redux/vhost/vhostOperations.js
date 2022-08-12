@@ -22,7 +22,7 @@ const getVhosts =
           func: 'vhost',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
+          p_cnt: body?.p_cnt || 10,
           p_col: '+time',
           lang: 'en',
           clickstat: 'yes',
@@ -74,7 +74,7 @@ const getVhostFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getVhosts())
+          return dispatch(getVhosts({ p_cnt: body?.p_cnt }))
         }
 
         let filters = {}

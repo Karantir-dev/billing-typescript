@@ -10,6 +10,8 @@ import {
   DomainsEditModal,
   Backdrop,
   DomainsProlongModal,
+  DomainBottomBar,
+  CheckBox,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -18,15 +20,11 @@ import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '../../../Redux'
 import { checkServicesRights, usePageRender } from '../../../utils'
 import * as route from '../../../routes'
-import { useMediaQuery } from 'react-responsive'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
 
-  const {
-    t,
-    // i18n
-  } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
+  const { t } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -35,8 +33,10 @@ export default function Component() {
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [selctedItem, setSelctedItem] = useState(null)
+  const [p_cnt, setP_cnt] = useState(10)
+
+  const [p_num, setP_num] = useState(1)
+  const [selctedItem, setSelctedItem] = useState([])
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
@@ -56,19 +56,11 @@ export default function Component() {
   const [prolongData, setProlongData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
-  const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
-
-  const domainsTotalPrice = domainsRenderData?.domainsList?.reduce(
-    (curServer, nextServer) => {
-      return curServer + +nextServer?.item_cost?.$
-    },
-    0,
-  )
 
   useEffect(() => {
-    const data = { p_num: currentPage }
+    const data = { p_num, p_cnt }
     dispatch(domainsOperations.getDomains(data))
-  }, [currentPage])
+  }, [p_num, p_cnt])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -78,10 +70,34 @@ export default function Component() {
     return pathnames
   }
 
-  const renewDomainHandler = () => {
+  const parseSelectedItemName = () => {
+    let names = []
+    selctedItem?.forEach(el => {
+      names.push(el?.name?.$)
+    })
+    return names?.join(',')
+  }
+
+  const parseSelectedItemNameArr = () => {
+    let names = []
+    selctedItem?.forEach(el => {
+      names.push(el?.name?.$)
+    })
+    return names
+  }
+
+  const parseSelectedItemId = () => {
+    let id = []
+    selctedItem?.forEach(el => {
+      id.push(el?.id?.$)
+    })
+    return id?.join(', ')
+  }
+
+  const renewDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
   }
@@ -91,28 +107,27 @@ export default function Component() {
     setProlongModal(false)
   }
 
-  const prolongEditDomainHandler = (values = {}) => {
+  const prolongEditDomainHandler = (values = {}, elid = null) => {
     let data = {
-      elid: selctedItem?.id?.$,
-      p_num: currentPage,
+      elid: elid || parseSelectedItemId(),
+      p_num,
       ...values,
     }
 
     dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
   }
 
-  const deleteDomainHandler = () => {
+  const deleteDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
+      elid: elid || parseSelectedItemId(),
     }
     dispatch(domainsOperations.deleteDomain(data))
   }
 
-  const historyDomainHandler = () => {
+  const historyDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -137,11 +152,10 @@ export default function Component() {
     }
   }, [historyCurrentPage])
 
-  const whoisDomainHandler = () => {
+  const whoisDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.getWhoisDomain(data, setWhoisModal, setWhoisData))
   }
@@ -151,11 +165,11 @@ export default function Component() {
     setWhoisModal(false)
   }
 
-  const NSDomainHandler = () => {
+  const NSDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
     }
+    console.log(data)
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 
@@ -164,21 +178,19 @@ export default function Component() {
     setNSModal(false)
   }
 
-  const NSEditDomainHandler = (values = {}) => {
+  const NSEditDomainHandler = (values = {}, elid = null) => {
     let data = {
-      elid: selctedItem?.id?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
       ...values,
     }
 
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 
-  const editDomainHandler = () => {
+  const editDomainHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -188,11 +200,10 @@ export default function Component() {
     setEditData(null)
   }
 
-  const editSaveDomainHandler = (values = {}, isOpenProfile) => {
+  const editSaveDomainHandler = (values = {}, isOpenProfile, elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      // lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
       sok: 'ok',
       ...values,
     }
@@ -207,6 +218,14 @@ export default function Component() {
     }
   }, [])
 
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(domainsRenderData?.domainsList)
+      return
+    }
+    setSelctedItem([])
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -219,18 +238,26 @@ export default function Component() {
       <DomainFilters
         setIsFiltered={setIsFiltered}
         selctedItem={selctedItem}
+        p_cnt={p_cnt}
         setSelctedItem={setSelctedItem}
-        setCurrentPage={setCurrentPage}
+        list={domainsRenderData?.domainsList}
+        setCurrentPage={setP_num}
         historyDomainHandler={historyDomainHandler}
         deleteDomainHandler={deleteDomainHandler}
-        editDomainHandler={editDomainHandler}
-        renewDomainHandler={renewDomainHandler}
-        NSDomainHandler={NSDomainHandler}
         whoisDomainHandler={whoisDomainHandler}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
         rights={rights}
       />
+
+      <div className={s.checkBoxColumn}>
+        <CheckBox
+          className={s.check_box}
+          initialState={domainsRenderData?.domainsList?.length === selctedItem?.length}
+          func={isChecked => setSelectedAll(!isChecked)}
+        />
+        <span>{t('Choose all', { ns: 'other' })}</span>
+      </div>
 
       {domainsRenderData?.domainsList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
@@ -271,22 +298,28 @@ export default function Component() {
         />
       )}
 
-      {Number(domainsCount) <= 30 &&
-        widerThan1600 &&
-        domainsRenderData?.domainsList?.length !== 0 && (
-          <div className={s.total_pagination_price}>
-            {t('Sum', { ns: 'other' })}: {`${+domainsTotalPrice?.toFixed(4)} EUR`}
-          </div>
-        )}
+      <DomainBottomBar
+        selctedItem={selctedItem}
+        editDomainHandler={editDomainHandler}
+        renewDomainHandler={renewDomainHandler}
+        NSDomainHandler={NSDomainHandler}
+        rights={rights}
+      />
 
-      {domainsRenderData?.domainsList?.length !== 0 && (
+      {domainsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
-            currentPage={currentPage}
             totalCount={Number(domainsCount)}
-            totalPrice={widerThan1600 && +domainsTotalPrice?.toFixed(4)}
-            pageSize={30}
-            onPageChange={page => setCurrentPage(page)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => {
+              setP_num(page)
+              setSelctedItem([])
+            }}
+            onPageItemChange={items => {
+              setP_cnt(items)
+              setSelctedItem([])
+            }}
           />
         </div>
       )}
@@ -298,7 +331,7 @@ export default function Component() {
       >
         <DomainsProlongModal
           prolongData={prolongData}
-          name={selctedItem?.name?.$}
+          names={parseSelectedItemNameArr()}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditDomainHandler}
         />
@@ -311,7 +344,6 @@ export default function Component() {
       >
         <DomainsHistoryModal
           historyList={historyList}
-          name={selctedItem?.name?.$}
           closeHistoryModalHandler={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
@@ -326,7 +358,6 @@ export default function Component() {
       >
         <DomainsWhoisModal
           whoisData={whoisData}
-          name={selctedItem?.name?.$}
           closeWhoisModalHandler={closeWhoisModalHandler}
         />
       </Backdrop>
@@ -337,7 +368,7 @@ export default function Component() {
         onClick={closeNSModalHandler}
       >
         <DomainsNSModal
-          name={selctedItem?.name?.$}
+          names={parseSelectedItemNameArr()}
           closeNSModalHandler={closeNSModalHandler}
           NSData={NSData}
           NSEditDomainHandler={NSEditDomainHandler}
@@ -350,7 +381,7 @@ export default function Component() {
         onClick={closeEditModalHandler}
       >
         <DomainsEditModal
-          name={selctedItem?.name?.$}
+          names={parseSelectedItemNameArr()}
           closeEditModalHandler={closeEditModalHandler}
           editSaveDomainHandler={editSaveDomainHandler}
           editData={editData}

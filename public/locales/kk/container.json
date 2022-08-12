@@ -64,7 +64,6 @@
   "Service is ready for use": "'{{value}}' қызметі пайдалануға дайын",
   "Service has been deleted": "'{{value}}' қызметі жойылды",
   "Service has been suspended": "'{{value}}' қызметі уақытша тоқтатылды",
-  "Error in domain contacts for the service": "'{{value}}' қызметінің домен контактілеріндегі қате. Параметрлерді тексеріп, әрекетті қайталаңыз",
   "An error occurred when changing name servers": "'{{value}}' қызметінің атау серверлерін өзгерту кезінде қате орын алды. Параметрлерді тексеріп, әрекетті қайталаңыз",
   "The domain has been successfully transferred": "'{{value}}' домені сәтті тасымалданды",
   "Failed to transfer the domain": "'{{value}}' доменін тасымалдау сәтсіз аяқталды",
@@ -72,5 +71,9 @@
   "Service has been modified": "'{{value}}'' қызметі өзгертілді",
   "Service has been activated": "'{{value}}' қызметі іске қосылды",
   "Change pricelist": "'{{value}}' тарифін өзгерту кезінде қате орын алды. Сіздің ескі тарифтік жоспарыңыз іске қосылды",
-  "Failed to register the SSL-certificate": "'{{value}}' SSL сертификатын тіркеу сәтсіз аяқталды"
+  "Failed to register the SSL-certificate": "'{{value}}' SSL сертификатын тіркеу сәтсіз аяқталды",
+  "Password for has been changed": "'{{value}}' құпия сөзі өзгертілді",
+  "Name servers for have been successfully changed": "'{{value}}' үшін атау серверлері сәтті өзгертілді",
+  "Check parameters and repeat the operation": "Параметрлерді тексеріп, әрекетті қайталаңыз",
+  "Error in domain contacts for the service": "'{{value}}' қызметінің домен контактілеріндегі қате."
 }

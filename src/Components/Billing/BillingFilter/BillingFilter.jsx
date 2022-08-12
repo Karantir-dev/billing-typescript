@@ -17,7 +17,7 @@ import {
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
-  const { setCurrentPage, setIsFiltered, isFilterActive, isFiltered } = props
+  const { setCurrentPage, setIsFiltered, isFilterActive, isFiltered, p_cnt } = props
 
   const { t } = useTranslation(['billing', 'other'])
   const dispatch = useDispatch()
@@ -60,6 +60,7 @@ export default function Component(props) {
 
     values.saamount_from = values.sum
     values.saamount_to = values.sum
+    values.p_cnt = p_cnt
     dispatch(billingOperations.setPaymentsFilters(values))
   }
 
@@ -77,6 +78,7 @@ export default function Component(props) {
       createdateend: '',
       saamount_from: '',
       saamount_to: '',
+      p_cnt: p_cnt,
     }
     if (!firstOpen) {
       setCurrentPage(1)
@@ -91,6 +93,7 @@ export default function Component(props) {
   const filterExpensesHandler = values => {
     setCurrentPage(1)
     setFilterModal(false)
+    values.p_cnt = p_cnt
     setIsFiltered && setIsFiltered(true)
     dispatch(billingOperations.setExpensesFilters(values))
   }
@@ -104,6 +107,7 @@ export default function Component(props) {
       amount: '',
       fromdate: '',
       todate: '',
+      p_cnt: p_cnt,
     }
 
     if (!firstOpen) {

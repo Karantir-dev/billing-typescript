@@ -1,3 +1,5 @@
+@import '../../../../scss/placeholders.scss';
+
 .modal {
   position: relative;
   width: 90vw;
@@ -30,7 +32,7 @@
 
 .btn_save {
   display: block;
-  margin: 0 auto 12px;
+  margin: 15px auto 12px;
   max-width: 250px;
   height: 50px;
   font-size: 18px;
@@ -52,6 +54,40 @@
     height: 1px;
     background-color: var(--main-text);
   }
+}
+
+.names_block {
+  overflow: hidden;
+  transition: height 150ms;
+  font-size: 14px;
+  color: var(--transparent-color);
+  @extend %scrollbar;
+
+  .name_item:not(:first-child) {
+    opacity: 0;
+  }
+
+  &.opened {
+    overflow: auto;
+
+    .name_item {
+      opacity: 1;
+    }
+  }
+}
+
+.name_item {
+  display: inline-block;
+  margin-bottom: 3px;
+  margin-right: 3px;
+}
+
+.btn_more {
+  color: var(--link-color);
+  line-height: 1;
+  font-size: 14px;
+  border-bottom: 1px solid var(--link-color);
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {

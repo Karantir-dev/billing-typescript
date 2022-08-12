@@ -5,21 +5,20 @@ import s from './Pagination.module.scss'
 import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
-  const { onPageChange, totalCount, currentPage, pageSize, className, totalPrice } = props
+  const { onPageChange, totalCount, currentPage, pageSize, className, onPageItemChange } =
+    props
 
   const { t } = useTranslation('other')
 
   const [pageNumber, setPageNumber] = useState(currentPage)
+  const [itemNumber, setItemNumber] = useState(pageSize)
 
   useEffect(() => {
     setPageNumber(currentPage)
-  }, [currentPage])
+    setItemNumber(itemNumber)
+  }, [currentPage, itemNumber])
 
   let lastPage = Math.ceil(totalCount / pageSize)
-
-  if (currentPage === 0 || lastPage < 2) {
-    return null
-  }
 
   const onNext = () => {
     onPageChange(currentPage + 1)
@@ -33,6 +32,16 @@ export default function Component(props) {
 
   const goToPage = () => {
     onPageChange(Number(pageNumber))
+  }
+
+  const changePageItems = () => {
+    onPageChange(1)
+    if (itemNumber < 5) {
+      setItemNumber(5)
+      onPageItemChange(Number(5))
+      return
+    }
+    onPageItemChange(Number(itemNumber))
   }
 
   const onInputChange = text => {
@@ -49,53 +58,78 @@ export default function Component(props) {
     setPageNumber(value)
   }
 
+  const onInputItemsChange = text => {
+    let value = text.replace(/\D/g, '')
+    if (value.length === 0) {
+      value = ''
+    }
+    setItemNumber(value)
+  }
+
+  const onPressEnter = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      event?.target?.blur()
+    }
+  }
+
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
-      <span className={s.total}>
-        {totalPrice ? `${t('Sum')}: ${totalPrice} EUR` : `${t('total')}: ${totalCount}`}
-      </span>
-
-      <div className={s.paginationContainer}>
-        <div
-          className={cn(s.paginationItem, s.arrow, {
-            [s.disabled]: currentPage === 1,
-          })}
-          role="button"
-          tabIndex={0}
-          disabled={currentPage === 1}
-          onClick={onPrevious}
-          onKeyDown={null}
-        >
-          <div className={cn(s.arrow, s.left)} />
+      <>
+        {onPageItemChange && (
+          <div className={s.pageItemContainer}>
+            <div className={s.servperpage}>{t('Services per page')}:</div>
+            <div className={cn(s.paginationItem, s.inputItem)}>
+              <input
+                className={s.input}
+                onKeyDown={onPressEnter}
+                value={itemNumber}
+                onBlur={changePageItems}
+                onChange={e => onInputItemsChange(e.target.value)}
+              />
+            </div>
+          </div>
+        )}
+      </>
+      {!(currentPage === 0 || lastPage < 2) && (
+        <div className={s.paginationContainer}>
+          <div
+            className={cn(s.paginationItem, s.arrow, {
+              [s.disabled]: currentPage === 1,
+            })}
+            role="button"
+            tabIndex={0}
+            disabled={currentPage === 1}
+            onClick={onPrevious}
+            onKeyDown={null}
+          >
+            <div className={cn(s.arrow, s.left)} />
+          </div>
+          <div className={cn(s.paginationItem, s.inputItem)}>
+            <input
+              className={s.input}
+              onKeyDown={onPressEnter}
+              value={pageNumber}
+              onBlur={goToPage}
+              onChange={e => onInputChange(e.target.value)}
+            />
+          </div>
+          {t('of')}
+          <div className={s.totalPages}>{lastPage}</div>
+          <div
+            className={cn(s.paginationItem, s.arrow, {
+              [s.disabled]: currentPage === lastPage,
+            })}
+            role="button"
+            disabled={currentPage === lastPage}
+            tabIndex={0}
+            onClick={onNext}
+            onKeyDown={null}
+          >
+            <div className={cn(s.arrow, s.right)} />
+          </div>
         </div>
-        <div className={cn(s.paginationItem, s.inputItem)}>
-          <input
-            className={s.input}
-            value={pageNumber}
-            onChange={e => onInputChange(e.target.value)}
-          />
-        </div>
-        {t('of')}
-        <div className={s.totalPages}>{lastPage}</div>
-        <div
-          className={cn(s.paginationItem, s.arrow, {
-            [s.disabled]: currentPage === lastPage,
-          })}
-          role="button"
-          disabled={currentPage === lastPage}
-          tabIndex={0}
-          onClick={onNext}
-          onKeyDown={null}
-        >
-          <div className={cn(s.arrow, s.right)} />
-        </div>
-        <button onClick={goToPage} className={s.btn_desktop}>
-          {t('follow')}
-        </button>
-      </div>
-      <button onClick={goToPage} className={s.btn_mobile}>
-        {t('follow')}
-      </button>
+      )}
     </div>
   )
 }
@@ -107,6 +141,7 @@ Component.propTypes = {
   currentPage: PropTypes.number,
   totalCount: PropTypes.number,
   totalPrice: PropTypes.number,
+  hideExtraInfo: PropTypes.bool,
 }
 
 Component.defaultProps = {
