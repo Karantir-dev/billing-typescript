@@ -312,8 +312,14 @@ export default function Component() {
             totalCount={Number(domainsCount)}
             currentPage={p_num}
             pageSize={p_cnt}
-            onPageChange={page => setP_num(page)}
-            onPageItemChange={items => setP_cnt(items)}
+            onPageChange={page => {
+              setP_num(page)
+              setSelctedItem([])
+            }}
+            onPageItemChange={items => {
+              setP_cnt(items)
+              setSelctedItem([])
+            }}
           />
         </div>
       )}

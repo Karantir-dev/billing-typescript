@@ -114,7 +114,7 @@ export default function VDS() {
           setRights,
           setElemsTotal,
           setP_cnt,
-          p_cnt
+          p_cnt,
         ),
       )
 
@@ -146,7 +146,7 @@ export default function VDS() {
         setRights,
         setElemsTotal,
         null,
-        p_cnt
+        p_cnt,
       ),
     )
     setIsFiltersOpened(false)
@@ -180,7 +180,7 @@ export default function VDS() {
         setRights,
         setElemsTotal,
         null,
-        p_cnt
+        p_cnt,
       ),
     )
     setIsSearchMade(true)
@@ -274,9 +274,15 @@ export default function VDS() {
           className={s.pagination}
           currentPage={p_num}
           totalCount={Number(elemsTotal)}
-          onPageChange={page => setP_num(page)}
+          onPageChange={page => {
+            setP_num(page)
+            setActiveServices([])
+          }}
           pageSize={p_cnt}
-          onPageItemChange={items => setP_cnt(items)}
+          onPageItemChange={items => {
+            setP_cnt(items)
+            setActiveServices([])
+          }}
         />
       )}
 

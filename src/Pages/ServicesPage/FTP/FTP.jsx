@@ -288,8 +288,14 @@ export default function FTP() {
             totalCount={Number(ftpCount)}
             currentPage={p_num}
             pageSize={p_cnt}
-            onPageChange={page => setP_num(page)}
-            onPageItemChange={items => setP_cnt(items)}
+            onPageChange={page => {
+              setP_num(page)
+              setActiveServices([])
+            }}
+            onPageItemChange={items => {
+              setP_cnt(items)
+              setActiveServices([])
+            }}
           />
         </div>
       )}
