@@ -60,5 +60,6 @@
   "Setting up Telegram notifications": "Telegram შეტყობინებების დაყენება",
   "Click \"send confirmation\" for resending": "ხელახლა გასაგზავნად დააწკაპუნეთ \"დადასტურების გაგზავნა\".",
   "Enter your login in the form below": "შეიყვანეთ თქვენი შესვლა ქვემოთ მოცემულ ფორმაში",
-  "Write to our bot": "მოგვწერეთ ჩვენს ბოტს"
+  "Write to our bot": "მოგვწერეთ ჩვენს ბოტს",
+  "Confirm your email to activate the functionality": "დაადასტურეთ თქვენი ელფოსტა ფუნქციის გასააქტიურებლად"
 }

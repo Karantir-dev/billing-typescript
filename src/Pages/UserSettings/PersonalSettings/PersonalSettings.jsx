@@ -14,6 +14,7 @@ import {
   ModalPickPhoto,
   ToggleBlock,
   Toggle,
+  HintWrapper,
 } from '../../../Components'
 import { BASE_URL } from '../../../config/config'
 import { Form, Formik } from 'formik'
@@ -90,7 +91,6 @@ export default function Component({ isComponentAllowedToEdit }) {
   }
 
   const confirmEmailBtnRender = (statusText, email) => {
-    console.log(statusText)
     if (
       statusText?.toLowerCase().includes('email') &&
       statusText?.toLowerCase().includes('is confirmed') &&
@@ -240,15 +240,16 @@ export default function Component({ isComponentAllowedToEdit }) {
                     {confirmEmailBtnRender(
                       userParams?.email_confirmed_status,
                       values.email_notif,
-                    ) && (
-                      <button
-                        className={s.confirmBtn}
-                        onClick={() => confirmEmailHandler(values)}
-                        type="button"
-                      >
-                        {t('Send confirmation', { ns: 'other' })}
-                      </button>
-                    )}
+                    ) &&
+                      values?.email_notif?.length > 0 && (
+                        <button
+                          className={s.confirmBtn}
+                          onClick={() => confirmEmailHandler(values)}
+                          type="button"
+                        >
+                          {t('Send confirmation', { ns: 'other' })}
+                        </button>
+                      )}
                   </div>
 
                   <div className={s.emailStatus}>
@@ -260,27 +261,38 @@ export default function Component({ isComponentAllowedToEdit }) {
                       <div className={s.securNotifText}>
                         {t('Send e-mail messages about authorization')}
                       </div>
-                      <Toggle
-                        disabled={confirmEmailBtnRender(
-                          userParams?.email_confirmed_status,
-                          values.email_notif,
-                        )}
-                        setValue={value => setFieldValue('sendemail', value)}
-                        initialState={userParams?.sendemail === 'on'}
-                      />
+
+                      <HintWrapper
+                        popupClassName={s.hintWrapper}
+                        label={t('Confirm your email to activate the functionality')}
+                      >
+                        <Toggle
+                          disabled={confirmEmailBtnRender(
+                            userParams?.email_confirmed_status,
+                            values.email_notif,
+                          )}
+                          setValue={value => setFieldValue('sendemail', value)}
+                          initialState={userParams?.sendemail === 'on'}
+                        />
+                      </HintWrapper>
                     </div>
                     <div className={s.securNotifnGeoBlock}>
                       <div className={s.securNotifText}>
                         {t('Use GeoIP (region tracking by IP)')}
                       </div>
-                      <Toggle
-                        disabled={confirmEmailBtnRender(
-                          userParams?.email_confirmed_status,
-                          values.email_notif,
-                        )}
-                        setValue={value => setFieldValue('setgeoip', value)}
-                        initialState={userParams?.setgeoip === 'on'}
-                      />
+                      <HintWrapper
+                        popupClassName={s.hintWrapper}
+                        label={t('Confirm your email to activate the functionality')}
+                      >
+                        <Toggle
+                          disabled={confirmEmailBtnRender(
+                            userParams?.email_confirmed_status,
+                            values.email_notif,
+                          )}
+                          setValue={value => setFieldValue('setgeoip', value)}
+                          initialState={userParams?.setgeoip === 'on'}
+                        />
+                      </HintWrapper>
                     </div>
                   </div>
                 </div>
