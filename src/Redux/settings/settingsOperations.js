@@ -283,6 +283,11 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
     setgeoip: data?.setgeoip ? 'on' : 'off',
   }
 
+  if(data?.email_notif?.length === 0) {
+    userParamsData.sendemail = 'off'
+    userParamsData.setgeoip = 'off'
+  }
+
   const {
     auth: { sessionId },
   } = getState()

@@ -375,6 +375,13 @@
   }
 }
 
+.hintWrapper {
+  max-width: 237px;
+  width: 237px;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
 @media screen and (min-width: 1124px) {
   .avatarBlock {
     max-width: 130px;
