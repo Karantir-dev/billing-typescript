@@ -7,11 +7,10 @@ import s from './SiteCareDeleteModal.module.scss'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
 
-  const { name, closeDeleteModalHandler, deleteSiteCareHandler } = props
+  const { name, closeDeleteModalHandler, deleteSiteCareHandler, deleteIds } = props
 
-  const deleteHandler = values => {
-    const data = { ...values, sok: 'ok' }
-    deleteSiteCareHandler(data)
+  const deleteHandler = () => {
+    deleteSiteCareHandler(deleteIds)
   }
 
   return (
@@ -30,7 +29,7 @@ export default function Component(props) {
           className={s.searchBtn}
           isShadow
           size="medium"
-          onClick={deleteHandler}
+          onClick={() => deleteHandler()}
           label={t('delete', { ns: 'other' })}
           type="button"
         />

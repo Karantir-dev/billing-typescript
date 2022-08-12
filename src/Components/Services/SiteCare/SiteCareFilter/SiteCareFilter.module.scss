@@ -2,19 +2,19 @@
 
 .filterBlock {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-direction: row-reverse;
+  align-items: center;
+  flex-direction: column-reverse;
   margin-top: 35px;
 }
 
 .newTicketBtn {
-  height: 50px;
+  height: 53px;
   text-transform: uppercase;
-  max-width: 205px;
+  max-width: 100%;
+  width: 100%;
   min-width: 200px;
   max-height: 53px;
-  margin-right: 10px;
+  margin-right: 24px;
   font-size: 18px;
 }
 
@@ -28,10 +28,18 @@
   height: 45px;
 }
 
+.calendarBtn {
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
 .formBlock {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   padding-bottom: 10px;
 }
 
@@ -40,13 +48,11 @@
   display: none;
 }
 
-.transferBtn {
-  margin-right: 20px;
-}
-
 .filterBtnBlock {
   position: relative;
   margin-top: 5px;
+  margin-right: 19px;
+  margin-left: auto;
 }
 
 .bg {
@@ -121,14 +127,6 @@
   margin-right: 15px;
 }
 
-.calendarBtn {
-  &.filtered {
-    svg {
-      fill: url(#gradient);
-    }
-  }
-}
-
 .btnBlock {
   width: 100%;
   display: flex;
@@ -170,6 +168,7 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
+
   h2 {
     font-style: normal;
     font-weight: 600;
@@ -183,12 +182,26 @@
   fill: var(--main-text);
 }
 
+.checkBoxColumn {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+    margin-left: 16px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .newTicketBtn {
     margin-bottom: 30px;
     max-height: 53px;
-    min-width: 200px;
-    max-width: 200px;
+    max-width: 100%;
   }
 }
 
@@ -196,12 +209,27 @@
   .newTicketBtn {
     margin-bottom: 30px;
     max-height: 53px;
-    max-width: 255px;
+    max-width: 100%;
   }
 }
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 600px) {
+  .filterBtnBlock {
+    margin-left: 0;
+  }
+
+  .checkBoxColumn {
+    display: none;
+  }
+
   .newTicketBtn {
-    margin-right: 25px;
+    max-width: 229px;
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+
+  .filterBlock {
+    flex-direction: row-reverse;
   }
 
   .bg {
@@ -286,6 +314,7 @@
   .newTicketBtn {
     margin-bottom: 0;
   }
+
   .select {
     max-width: 287px;
     margin-right: 0px;
@@ -294,6 +323,7 @@
       margin-top: 10px;
     }
   }
+
   .form {
     min-width: 768px;
     flex-direction: column;
@@ -328,7 +358,7 @@
 
 @media screen and (min-width: 1600px) {
   .filterBlock {
-    flex-direction: row;
+    flex-direction: row-reverse;
   }
 
   .archiveBtn {
@@ -346,13 +376,12 @@
   }
 
   .newTicketBtn {
-    margin-right: 0;
+    margin-right: 20px;
     font-size: 20px;
   }
 
   .filterBtnBlock {
-    margin-top: 0;
-    margin-right: 20px;
+    margin-right: 19px;
   }
 }
 
@@ -360,17 +389,21 @@
   .filterModal {
     padding: 26px 31px;
   }
+
   .form {
     min-width: 950px;
   }
+
   .searchInput {
     min-width: 280px;
     margin-right: 22px;
   }
+
   .select {
     max-width: 295px;
     margin-right: 22px;
   }
+
   .dateSelect {
     max-width: 225px;
     width: 225px;

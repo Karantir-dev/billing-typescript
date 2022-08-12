@@ -35,7 +35,7 @@
   "Site care edited successfully": "Уход за сайтом успешно изменен",
   "Pause site check": "Приостановить проверку сайта",
   "Deleting a service": "Удаление услуги",
-  "Are you sure you want to delete the service \"{{name}}\"?": "Вы уверены, что хотите удалить услугу \"{{name}}\"?",
+  "Are you sure you want to delete the service \"{{name}}\"?": "Вы уверены, что хотите удалить услугу {{name}}?",
   "Website care order": "Заказ ухода за сайтом",
   "Port": "Порт",
 

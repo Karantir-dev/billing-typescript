@@ -9,6 +9,8 @@ import {
   SiteCareEditModal,
   SiteCareDeleteModal,
   Backdrop,
+  CheckBox,
+  SiteCareBottomBar,
 } from '../../../Components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -34,7 +36,7 @@ export default function Component() {
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
 
-  const [selctedItem, setSelctedItem] = useState(null)
+  const [selctedItem, setSelctedItem] = useState([])
 
   const [historyModal, setHistoryModal] = useState(false)
   const [historyList, setHistoryList] = useState([])
@@ -48,15 +50,33 @@ export default function Component() {
   const [editData, setEditData] = useState(null)
 
   const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteIds, setDeleteIds] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
 
-  // const sitecareTotalPrice = sitecareRenderData?.siteCareList?.reduce(
-  //   (curServer, nextServer) => {
-  //     return curServer + +nextServer?.item_cost?.$
-  //   },
-  //   0,
-  // )
+  const parseSelectedItemName = () => {
+    let names = []
+    selctedItem?.forEach(el => {
+      names.push(el?.name?.$)
+    })
+    return names?.join(',')
+  }
+
+  const parseSelectedItemNameArr = () => {
+    let names = []
+    selctedItem?.forEach(el => {
+      names.push(el?.name?.$)
+    })
+    return names
+  }
+
+  const parseSelectedItemId = () => {
+    let id = []
+    selctedItem?.forEach(el => {
+      id.push(el?.id?.$)
+    })
+    return id?.join(', ')
+  }
 
   useEffect(() => {
     const data = { p_num, p_cnt }
@@ -71,10 +91,10 @@ export default function Component() {
     return pathnames
   }
 
-  const historySiteCareHandler = () => {
+  const historySiteCareHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
       lang: i18n?.language,
       p_num: historyCurrentPage,
     }
@@ -100,11 +120,10 @@ export default function Component() {
     }
   }, [historyCurrentPage])
 
-  const prolongSiteCareHandler = () => {
+  const prolongSiteCareHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(siteCareOperations.prolongSiteCare(data, setProlongModal, setProlongData))
   }
@@ -114,22 +133,22 @@ export default function Component() {
     setProlongModal(false)
   }
 
-  const prolongEditSiteCareHandler = (values = {}) => {
+  const prolongEditSiteCareHandler = (values = {}, elid = null) => {
     let data = {
-      elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
       p_num,
       ...values,
     }
 
+    setSelctedItem([])
+
     dispatch(siteCareOperations.prolongSiteCare(data, setProlongModal, setProlongData))
   }
 
-  const editSiteCareHandler = () => {
+  const editSiteCareHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
-      elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      elid: elid || parseSelectedItemId(),
+      elname: parseSelectedItemName(),
     }
     dispatch(siteCareOperations.editSiteCare(data, setEditModal, setEditData))
   }
@@ -139,24 +158,35 @@ export default function Component() {
     setEditModal(false)
   }
 
-  const sendEditSiteCareHandler = (values = {}) => {
+  const sendEditSiteCareHandler = (values = {}, elid = null) => {
     let data = {
-      elid: selctedItem?.id?.$,
+      elid: elid || parseSelectedItemId(),
       lang: i18n?.language,
       p_num,
       ...values,
     }
 
+    setSelctedItem([])
+
     dispatch(siteCareOperations.editSiteCare(data, setEditModal, setEditData))
   }
 
-  const deleteSiteCareHandler = () => {
+  const deleteSiteCareHandler = (elid = null) => {
     const data = {
-      elid: selctedItem?.id?.$,
+      elid: elid || parseSelectedItemId(),
       p_num,
     }
 
+    // setSelctedItem([])
     dispatch(siteCareOperations.deleteSiteCare(data, setDeleteModal))
+  }
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(sitecareRenderData?.siteCareList)
+      return
+    }
+    setSelctedItem([])
   }
 
   let rights = checkServicesRights(sitecareRenderData?.siteCarePageRights?.toolgrp)
@@ -180,17 +210,23 @@ export default function Component() {
       <SiteCareFilter
         setIsFiltered={setIsFiltered}
         setSelctedItem={setSelctedItem}
-        historySiteCareHandler={historySiteCareHandler}
-        prolongSiteCareHandler={prolongSiteCareHandler}
-        editSiteCareHandler={editSiteCareHandler}
-        deleteSiteCareHandler={() => setDeleteModal(true)}
-        selctedItem={selctedItem}
         setCurrentPage={setP_num}
         p_cnt={p_cnt}
         isFiltered={isFiltered}
         isFilterActive={isFiltered || sitecareRenderData?.siteCareList?.length > 0}
         rights={rights}
+        selctedItem={selctedItem}
+        list={sitecareRenderData?.siteCareList}
       />
+
+      <div className={s.checkBoxColumn}>
+        <CheckBox
+          className={s.check_box}
+          initialState={sitecareRenderData?.siteCareList?.length === selctedItem?.length}
+          func={isChecked => setSelectedAll(!isChecked)}
+        />
+        <span>{t('Choose all', { ns: 'other' })}</span>
+      </div>
 
       {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
@@ -240,17 +276,17 @@ export default function Component() {
           setSelctedItem={setSelctedItem}
           list={sitecareRenderData?.siteCareList}
           rights={rights}
+          setDeleteIds={setDeleteIds}
         />
       )}
 
-      {/* {Number(siteCareCount) <= 30 &&
-        widerThan1600 &&
-        !isLoading &&
-        sitecareRenderData?.siteCareList?.length !== 0 && (
-          <div className={s.total_pagination_price}>
-            {t('Sum', { ns: 'other' })}: {`${+sitecareTotalPrice?.toFixed(4)} EUR`}
-          </div>
-        )} */}
+      <SiteCareBottomBar
+        selctedItem={selctedItem}
+        renewDomainHandler={prolongSiteCareHandler}
+        deleteSiteCare={() => setDeleteModal(true)}
+        setDeleteIds={setDeleteIds}
+        rights={rights}
+      />
 
       {siteCareCount > 5 && (
         <div className={s.pagination}>
@@ -271,7 +307,7 @@ export default function Component() {
       >
         <SiteCareHistoryModal
           historyList={historyList}
-          name={selctedItem?.name?.$}
+          name={parseSelectedItemNameArr()}
           closeHistoryModalHandler={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
@@ -286,7 +322,7 @@ export default function Component() {
       >
         <SiteCareProlongModal
           prolongData={prolongData}
-          name={selctedItem?.name?.$}
+          name={parseSelectedItemNameArr()}
           closeProlongModalHandler={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditSiteCareHandler}
         />
@@ -299,7 +335,7 @@ export default function Component() {
       >
         <SiteCareEditModal
           editData={editData}
-          name={selctedItem?.name?.$}
+          name={parseSelectedItemNameArr()}
           closeEditModalHandler={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
         />
@@ -311,9 +347,13 @@ export default function Component() {
         onClick={() => setDeleteModal(false)}
       >
         <SiteCareDeleteModal
-          closeDeleteModalHandler={() => setDeleteModal(false)}
+          closeDeleteModalHandler={() => {
+            setDeleteModal(false)
+            setDeleteIds(null)
+          }}
+          deleteIds={deleteIds}
           deleteSiteCareHandler={deleteSiteCareHandler}
-          name={selctedItem?.name?.$}
+          name={parseSelectedItemNameArr()}
         />
       </Backdrop>
     </div>

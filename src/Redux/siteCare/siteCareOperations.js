@@ -168,7 +168,8 @@ const prolongSiteCare =
         '/',
         qs.stringify({
           auth: sessionId,
-          func: 'service.prolong',
+          func: body?.elid?.split(', ')?.length > 1 ? 'groupedit' : 'service.prolong',
+          faction: 'service.prolong',
           out: 'json',
           ...body,
         }),
@@ -188,6 +189,7 @@ const prolongSiteCare =
           newexpiredate: data?.doc?.newexpiredate?.$,
           status: data?.doc?.status?.$,
           period: data?.doc?.period?.$,
+          site_care_id: data?.doc?.elid?.$,
 
           item_status: data?.doc?.messages?.msg?.item_status,
           item_status_0: data?.doc?.messages?.msg?.item_status_0,
@@ -291,6 +293,7 @@ const editSiteCare =
           status: data?.doc?.status?.$,
           period: data?.doc?.period?.$,
           orderinfo: data?.doc?.orderinfo?.$,
+          sitecare_id: data?.doc?.elid?.$,
 
           autoprolong: data?.doc?.autoprolong?.$,
           stored_method: data?.doc?.stored_method?.$,
@@ -339,6 +342,8 @@ const deleteSiteCare =
   (body = {}, setDeleteModal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
+
+    console.log(body)
 
     const {
       auth: { sessionId },

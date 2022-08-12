@@ -35,7 +35,7 @@
   "Site care edited successfully": "საიტზე ზრუნვის მომსახურება წარმატებით შეიცვალა",
   "Pause site check": "საიტის შემოწმების შეჩერება",
   "Deleting a service": "მომსახურების წაშლა",
-  "Are you sure you want to delete the service \"{{name}}\"?": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ \" {{name}}\" მომსახურება?",
+  "Are you sure you want to delete the service \"{{name}}\"?": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ {{name}} მომსახურება?",
   "Website care order": "შეუკვეთე საიტზე ზრუნვა",
   "Port": "პორტი",
 
