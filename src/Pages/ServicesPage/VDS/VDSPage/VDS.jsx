@@ -190,7 +190,7 @@ export default function VDS() {
   }
 
   const goToPanelFn = id => {
-    dispatch(dedicOperations.goToPanelFn(id))
+    dispatch(dedicOperations.goToPanel(id))
   }
 
   const isLoading = useSelector(selectors.getIsLoadding)
