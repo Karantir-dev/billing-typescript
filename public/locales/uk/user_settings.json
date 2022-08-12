@@ -5,7 +5,7 @@
   "Upload a photo": "Завантажити фото",
   "jpg, png, gif 80x80 до 64 Кб": "jpg, png, gif 80x80 до 64 Кб",
   "Notification settings": "Налаштування повідомлень",
-  "Для отримання повідомлень за допомогою телеграми, запишіть вашу статтю": "Для отримання повідомлень за допомогою Telegram напишіть нашому боту",
+  "To receive notifications using Telegram": "Для отримання повідомлень за допомогою Telegram:",
   "Enter your telegram": "Введіть ваш telegram",
   "Support service": "Служба підтримки",
   "Notification methods": "Спосіб сповіщень",
@@ -57,5 +57,9 @@
   "Invalid confirmation code": "Невірний код підтвердження",
 
   "existing social network": "Ця соціальна мережа вже використовується прив'язана до іншого Вашого облікового запису. Якщо Ви бажаєте прив'язати її тут, будь ласка, видаліть прив'язку в іншому обліковому записі",
-  "disconnect from": "Від'єднати від"
+  "disconnect from": "Від'єднати від",
+  "Setting up Telegram notifications": "Налаштування Telegram повідомлень",
+  "Click \"send confirmation\" for resending": "Натисніть \"Вислати підтвердження\" для повторного надсилання",
+  "Enter your login in the form below": "Введіть свій логін у форму нижче",
+  "Write to our bot": "Напишіть нашому боту"
 }

@@ -367,29 +367,6 @@ export default function Component({ isComponentAllowedToEdit }) {
                   </button>
                 )}
               </div>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
-                <div className={s.securNotification}>
-                  <div className={s.securNotifnEmailBlock}>
-                    <div className={s.securNotifText}>
-                      {t('Send e-mail messages about authorization')}
-                    </div>
-                    <Toggle
-                      setValue={value => setFieldValue('sendemail', value)}
-                      initialState={userParams?.sendemail === 'on'}
-                    />
-                  </div>
-                  <div className={s.securNotifnGeoBlock}>
-                    <div className={s.securNotifText}>
-                      {t('Use GeoIP (region tracking by IP)')}
-                    </div>
-                    <Toggle
-                      setValue={value => setFieldValue('setgeoip', value)}
-                      initialState={userParams?.setgeoip === 'on'}
-                    />
-                  </div>
-                </div>
-              </div>
               <div className={s.btnBlock}>
                 <Button
                   className={cn({

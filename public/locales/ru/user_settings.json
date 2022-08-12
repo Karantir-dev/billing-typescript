@@ -5,7 +5,7 @@
   "Upload a photo": "Загрузить фото",
   "jpg, png, gif 80x80 up to 64 Kb": "jpg, png, gif 80x80 до 64 Кб",
   "Notification settings": "Настройка уведомлений",
-  "To receive notifications via Telegram, write to our bot": "Для получения уведомлений с помощью Telegram напишите нашему боту",
+  "To receive notifications using Telegram": "Для получения уведомлений с помощью Telegram:",
   "Enter your telegram": "Введите ваш telegram",
   "Support service": "Служба поддержки",
   "Notification methods": "Способы уведомлений",
@@ -56,5 +56,9 @@
   "Disable 2-Step Verification": "Отключить двухэтапную аутентификацию",
   "Invalid confirmation code": "Неверный код подтверждения",
   "existing social network": "Данная социальная сеть уже используется привязана к другому Вашему аккаунту. Если Вы хотите привязать её здесь, пожалуйста, удалите привязку в другом аккаунте",
-  "disconnect from": "Отсоединить от"
+  "disconnect from": "Отсоединить от",
+  "Setting up Telegram notifications": "Настройка Telegram уведомлений",
+  "Click \"send confirmation\" for resending": "Нажмите \"Выслать подтверждение\" для повторной отправки",
+  "Enter your login in the form below": "Введите свой логин в форму ниже",
+  "Write to our bot": "Напишите нашему боту"
 }

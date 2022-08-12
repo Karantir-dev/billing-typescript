@@ -5,7 +5,7 @@
   "Upload a photo": "ატვირთე ფოტო",
   "jpg, png, gif 80x80 up to 64 Kb": "jpg, png, gif 80x80 64 Kb-მდე",
   "Notification settings": "შეტყობინებების პარამეტრები",
-  "To receive notifications via Telegram, write to our bot": "Telegram-ის საშუალებით შეტყობინებების მისაღებად მისწერეთ ჩვენს ბოტს",
+  "To receive notifications using Telegram": "შეტყობინებების მისაღებად Telegram-ის გამოყენებით:",
   "Enter your telegram": "შეიყვანეთ თქვენი telegram",
   "Support service": "მხარდაჭერის სამსახური",
   "Notification methods": "შეტყობინების მეთოდი",
@@ -56,5 +56,9 @@
   "Disable 2-Step Verification": "ორსაფეხურიანი ავთენტიფიკაციის ჩართვა",
   "Invalid confirmation code": "დადასტურების არასწორი კოდი",
   "existing social network": "ეს სოციალური ქსელი უკვე გამოიყენება, რომელიც დაკავშირებულია თქვენს სხვა ანგარიშთან. თუ გსურთ მისი აქ მიბმა, გთხოვთ გააუქმოთ ის სხვა ანგარიშში",
-  "disconnect from": "დაშორება"
+  "disconnect from": "დაშორება",
+  "Setting up Telegram notifications": "Telegram შეტყობინებების დაყენება",
+  "Click \"send confirmation\" for resending": "ხელახლა გასაგზავნად დააწკაპუნეთ \"დადასტურების გაგზავნა\".",
+  "Enter your login in the form below": "შეიყვანეთ თქვენი შესვლა ქვემოთ მოცემულ ფორმაში",
+  "Write to our bot": "მოგვწერეთ ჩვენს ბოტს"
 }
