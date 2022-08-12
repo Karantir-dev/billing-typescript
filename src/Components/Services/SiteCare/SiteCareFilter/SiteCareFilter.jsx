@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 
-import { Button, IconButton, HintWrapper, Portal } from '../../..'
+import { Button, IconButton, Portal, CheckBox } from '../../..'
 import SiteCareFiltertsModal from '../SiteCareFiltertsModal/SiteCareFiltertsModal'
 import * as routes from '../../../../routes'
 import s from './SiteCareFilter.module.scss'
@@ -18,18 +18,16 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
-    selctedItem,
     setCurrentPage,
-    historySiteCareHandler,
-    prolongSiteCareHandler,
-    editSiteCareHandler,
-    deleteSiteCareHandler,
     setIsFiltered,
     setSelctedItem,
     isFilterActive,
     isFiltered,
     rights,
     p_cnt,
+
+    list,
+    selctedItem,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -46,6 +44,14 @@ export default function Component(props) {
   const filtersList = useSelector(siteCareSelectors.getSiteCareFiltersList)
 
   const dispatch = useDispatch()
+
+  const setSelectedAll = val => {
+    if (val) {
+      setSelctedItem(list)
+      return
+    }
+    setSelctedItem([])
+  }
 
   const resetFilterHandler = () => {
     const clearField = {
@@ -66,10 +72,12 @@ export default function Component(props) {
       autoprolong: '',
     }
     setIsFiltered(false)
-    setSelctedItem(null)
+    setSelctedItem([])
     setCurrentPage(1)
     setFilterModal(false)
-    dispatch(siteCareOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true))
+    dispatch(
+      siteCareOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true),
+    )
   }
 
   useEffect(() => {
@@ -80,13 +88,21 @@ export default function Component(props) {
     setCurrentPage(1)
     setFilterModal(false)
     setIsFiltered(true)
-    setSelctedItem(null)
+    setSelctedItem([])
     dispatch(siteCareOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={list?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
         <div className={s.filterBtnBlock}>
           <IconButton
             onClick={() => setFilterModal(true)}
@@ -124,7 +140,7 @@ export default function Component(props) {
           )}
         </div>
 
-        <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
+        {/* <HintWrapper wrapperClassName={s.archiveBtn} label={t('edit', { ns: 'other' })}>
           <IconButton
             disabled={!selctedItem || !rights?.edit}
             onClick={editSiteCareHandler}
@@ -160,7 +176,7 @@ export default function Component(props) {
             onClick={deleteSiteCareHandler}
             icon="delete"
           />
-        </HintWrapper>
+        </HintWrapper> */}
       </div>
       <Button
         disabled={!rights?.new}

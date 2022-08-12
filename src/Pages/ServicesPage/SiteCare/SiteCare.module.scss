@@ -103,6 +103,10 @@
   font-weight: 600;
 }
 
+.checkBoxColumn {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;
@@ -111,8 +115,23 @@
   .no_service_wrapper {
     margin: 60px auto 0px;
   }
-}
 
+  .checkBoxColumn {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+
+    span {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
+      color: var(--main-text);
+      margin-left: 16px;
+    }
+  }
+}
 
 @media screen and (min-width: 1024px) {
   .pagination {
@@ -123,6 +142,10 @@
 @media screen and (min-width: 1550px) {
   .pagination {
     margin-top: 30px;
+  }
+
+  .checkBoxColumn {
+    display: none;
   }
 }
 

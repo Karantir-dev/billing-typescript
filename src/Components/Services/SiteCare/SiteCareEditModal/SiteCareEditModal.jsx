@@ -8,11 +8,11 @@ import s from './SiteCareEditModal.module.scss'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains'])
 
-  const { name, closeEditModalHandler, editData, sendEditSiteCareHandler } = props
+  const { closeEditModalHandler, editData, sendEditSiteCareHandler } = props
 
   const editHandler = values => {
     const data = { ...values, sok: 'ok' }
-    sendEditSiteCareHandler(data)
+    sendEditSiteCareHandler(data, editData?.sitecare_id)
   }
 
   return (
@@ -20,7 +20,6 @@ export default function Component(props) {
       <div className={s.modalHeader}>
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
-          <span className={s.vhostName}>({name})</span>
         </div>
         <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
       </div>

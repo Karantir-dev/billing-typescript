@@ -35,7 +35,7 @@
   "Site care edited successfully": "Сайтқа күтім жасау сәтті өзгертілді",
   "Pause site check": "Сайт тексеруді тоқтату",
   "Deleting a service": "Қызметті жою",
-  "Are you sure you want to delete the service \"{{name}}\"?": "\"{{name}}\" қызметін жою қажет пе?",
+  "Are you sure you want to delete the service \"{{name}}\"?": "{{name}} қызметін жою қажет пе?",
   "Website care order": "Сайтқа күтім жасау тапсырысы",
   "Port": "Порт",
 

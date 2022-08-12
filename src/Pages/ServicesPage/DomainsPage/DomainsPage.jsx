@@ -34,8 +34,8 @@ export default function Component() {
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
 
   const [p_cnt, setP_cnt] = useState(10)
-
   const [p_num, setP_num] = useState(1)
+
   const [selctedItem, setSelctedItem] = useState([])
 
   const [historyModal, setHistoryModal] = useState(false)

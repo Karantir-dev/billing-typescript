@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
@@ -12,20 +12,70 @@ export default function Component(props) {
   const { name, closeProlongModalHandler, prolongData, prolongEditSiteCareHandler } =
     props
 
+  const [more, setMore] = useState(false)
+  const [namesToRender, setNamesToRender] = useState(
+    name?.length > 1 ? name?.slice(0, 1) : name,
+  )
+
   const editHandler = values => {
     const data = { ...values, sok: 'ok', clicked_button: 'basket' }
-    prolongEditSiteCareHandler(data)
+    prolongEditSiteCareHandler(data, prolongData?.site_care_id)
   }
 
+  const handleMoreBtn = e => {
+    e.preventDefault()
+    setMore(!more)
+    setNamesToRender(!more ? name : name?.slice(0, 1))
+  }
+
+  console.log(prolongData)
   return (
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service extension')}</span>
-          <span className={s.vhostName}>{name}</span>
         </div>
         <Cross onClick={closeProlongModalHandler} className={s.crossIcon} />
       </div>
+      {prolongData?.site_care_id?.split(',')?.length > 1 && (
+        <div className={s.namesBlock}>
+          <p className={s.warning_text}>
+            {t('Attention, edit few services', { ns: 'other' })}:
+          </p>
+
+          <div
+            className={cn({
+              [s.services_names_wrapper]: true,
+              [s.active]: more,
+            })}
+          >
+            {namesToRender?.map((item, idx) => {
+              return (
+                <span className={s.item} key={item}>
+                  {item
+                    ?.split(' (')[0]
+                    ?.replace('for', t('for', { ns: 'dns' }))
+                    ?.replace('domains', t('domains', { ns: 'dns' }))
+                    ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+
+                  {name.length <= 3 && idx === name.length - 1 ? '' : ', '}
+                </span>
+              )
+            })}
+          </div>
+          {name?.length > 1 && (
+            <button onClick={handleMoreBtn} className={s.hidden_area}>
+              {!more
+                ? t('and_more', {
+                    ns: 'other',
+                    value: +name.length - 1,
+                  })
+                : t('trusted_users.read_less', { ns: 'trusted_users' })}
+            </button>
+          )}
+        </div>
+      )}
+
       <div className={s.statusBlock}>
         <div className={s.statusItem}>
           <span>{t('status', { ns: 'other' })}:</span>
