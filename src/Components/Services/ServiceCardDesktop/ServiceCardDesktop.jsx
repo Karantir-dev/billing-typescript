@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import s from './ServiceCard.module.scss'
+import s from './ServiceCardDesktop.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 export default function ServiceCard(props) {
-  const { title, index, route, iconName, iconWidth, iconHeight, className } = props
+  const { title, index, route, iconName, className } = props
   const { t } = useTranslation('other')
 
   return (
@@ -27,11 +27,9 @@ export default function ServiceCard(props) {
               <img
                 alt={iconName}
                 src={iconName && require(`../../../images/services/${iconName}.webp`)}
-                className={cn(s['icon_' + iconName], {
-                  [s.forexbox]: iconName === 'forexbox',
-                })}
-                width={iconWidth}
-                height={iconHeight}
+                className={cn(s.icon, { [s.forebox]: iconName === 'forexbox' })}
+                // width={iconWidth}
+                // height={iconHeight}
               />
             </div>
           </div>
