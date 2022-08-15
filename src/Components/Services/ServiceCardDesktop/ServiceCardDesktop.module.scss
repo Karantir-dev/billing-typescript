@@ -7,8 +7,8 @@
 }
 
 .card_container {
-  min-width: 237px;
-  height: 289px;
+  min-width: 306px;
+  height: 201px;
 }
 
 .container {
@@ -32,6 +32,7 @@
   line-height: 113%;
   color: var(--main-text);
   transition: font-size 0.1s, color 0.2s;
+  max-width: 150px;
 }
 
 .goto {
@@ -66,35 +67,24 @@
   z-index: -1;
 }
 
-.icon_domains,
-.icon_domains_lt,
-.icon_vds,
-.icon_dedicated,
-.icon_dns_hosting,
-.icon_dns_hosting_lt,
-.icon_dns_hosting_min,
-.icon_ftp_storage,
-.icon_care,
-.icon_forexbox,
-.icon_vpn,
-.icon_virtual_hosting {
+.icon {
   position: absolute;
-  right: 15px;
-  bottom: 20px;
-}
-
-.icon_forexbox {
-  width: 85%;
+  right: 10px;
+  bottom: 25px;
+  width: auto;
   height: auto;
-  right: 0;
-  bottom: 5px;
-}
+  object-fit: contain;
 
+  &.forebox {
+    right: 0px;
+    bottom: 0px;
+    width: auto;
+    height: auto;
+  }
+}
 
 @media screen and (min-width: 768px) {
   .card_container {
-    width: 306px;
-    height: 160px;
     transition: transform 0.2s;
 
     &:hover {
@@ -120,14 +110,6 @@
     }
   }
 
-  .icon_virtual_hosting {
-    bottom: 10px;
-    right: 10px;
-  }
-  .icon_ftp_storage {
-    right: 10px;
-  }
-
   .triangle {
     left: unset;
     right: 0;
@@ -143,11 +125,6 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .card_container {
-    width: 260px;
-    height: 280px;
-  }
-
   .container {
     max-width: 300px;
   }
@@ -157,49 +134,6 @@
     width: 260px;
     height: 136px;
   }
-
-  //icons
-  .icon_domains,
-  .icon_domains_lt {
-    width: 115;
-    height: 125;
-  }
-  .icon_vds {
-    width: 93px;
-    height: 109px;
-  }
-  .icon_dedicated {
-    width: 96px;
-    height: 146px;
-  }
-
-  .icon_virtual_hosting {
-    width: 128px;
-    height: 98px;
-    right: 20px;
-    bottom: 15px;
-  }
-
-  .icon_dns_hosting,
-  .icon_dns_hosting_lt {
-    width: 212px;
-    height: 105px;
-  }
-
-  .icon_ftp_storage {
-    width: 129px;
-    height: 112px;
-    right: 20px;
-  }
-  .icon_care {
-    width: 128px;
-    height: 118px;
-  }
-  .icon_forexbox {
-    width: auto;
-    height: auto;
-  }
-
   .card_title {
     font-size: 21px;
   }
@@ -208,55 +142,23 @@
   }
 }
 
-@media screen and (min-width: 1900px) {
+@media screen and (min-width: 1550px) {
   .card_container {
-    width: 268px;
-    height: 285px;
+    min-width: 339px;
+    height: 201px;
   }
 
+  .icon {
+    right: 30px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media screen and (min-width: 1900px) {
   .triangle {
     left: unset;
     width: 268px;
     height: 142px;
-  }
-
-  //icons
-
-  .icon_domains,
-  .icon_domains_lt {
-    width: 118;
-    height: 128;
-  }
-  .icon_vds {
-    width: 96px;
-    height: 112px;
-  }
-  .icon_dedicated {
-    width: 99px;
-    height: 151px;
-  }
-
-  .icon_virtual_hosting {
-    width: 132px;
-    height: 101px;
-  }
-
-  .icon_dns_hosting,
-  .icon_dns_hosting_lt {
-    width: 219px;
-    height: 108px;
-  }
-
-  .icon_ftp_storage {
-    width: 133px;
-    height: 116px;
-  }
-  .icon_care {
-    width: 132px;
-    height: 122px;
-  }
-  .icon_forexbox {
-    width: 127px;
-    height: 94px;
   }
 }

@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
 import { usePageRender } from '../../../utils'
 import ServiceCard from '../ServiceCard/ServiceCard'
+import ServiceCardDesktop from '../ServiceCardDesktop/ServiceCardDesktop'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
@@ -19,7 +20,6 @@ SwiperCore.use([EffectCoverflow, Pagination])
 
 export default function ServicesList() {
   const { t } = useTranslation('container')
-  const tabletOrLower = useMediaQuery({ query: '(max-width: 1199px)' })
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
@@ -40,8 +40,8 @@ export default function ServicesList() {
   const [dark, setDark] = useState(darkTheme)
   // const [clickedSlider, setClickedSlider] = useState(0)
 
-  let dnsPicture = dark ? 'dns_hosting_lt' : 'dns_hosting'
-  let domainsPicture = dark ? 'domains_lt' : 'domains'
+  let dnsPicture = 'dns_hosting'
+  let domainsPicture = dark ? 'domains' : 'domains_lt'
 
   const servicesMenuList = [
     {
@@ -85,7 +85,7 @@ export default function ServicesList() {
       id: 5,
       routeName: routes.DNS,
       allowedToRender: isDnsAllowedToRender,
-      icon_name: tabletOrLower ? 'dns_hosting_min' : dnsPicture,
+      icon_name: dnsPicture,
       icon_width: '84',
       icon_height: '93',
     },
@@ -115,6 +115,15 @@ export default function ServicesList() {
       icon_name: 'forexbox',
       icon_width: '109',
       icon_height: '81',
+    },
+    {
+      name: t('VPN'),
+      id: 9,
+      routeName: '#',
+      allowedToRender: true,
+      icon_name: 'vpn',
+      icon_width: '106',
+      icon_height: '130',
     },
   ]
 
@@ -156,7 +165,7 @@ export default function ServicesList() {
           const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
           return (
-            <ServiceCard
+            <ServiceCardDesktop
               key={id}
               title={name.toUpperCase()}
               index={index + 1}
