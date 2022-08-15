@@ -130,7 +130,7 @@ export default function DedicOrderPage() {
     dataArr?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
-      if (!Object.hasOwn(elemsData, itemName)) {
+      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
         elemsData[itemName] = [element]
       } else {
         elemsData[itemName].push(element)

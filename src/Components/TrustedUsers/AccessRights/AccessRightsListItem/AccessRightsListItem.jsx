@@ -213,7 +213,7 @@ export default function AccessRightsListItem({
     }
   })
 
-  if (Object.hasOwn(item, 'active')) {
+  if (Object.prototype.hasOwnProperty.call(item, 'active')) {
     return (
       <div
         data-testid="modal_rihgts_list_item"
