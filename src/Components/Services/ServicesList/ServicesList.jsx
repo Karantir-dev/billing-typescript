@@ -36,6 +36,8 @@ export default function ServicesList() {
 
   const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false)
 
+  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false)
+
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)
   // const [clickedSlider, setClickedSlider] = useState(0)
@@ -119,8 +121,8 @@ export default function ServicesList() {
     {
       name: t('VPN'),
       id: 9,
-      routeName: '#',
-      allowedToRender: true,
+      routeName: routes.VPN,
+      allowedToRender: isVPNAllowedToRender,
       icon_name: 'vpn',
       icon_width: '106',
       icon_height: '130',

@@ -31,6 +31,7 @@ import {
   dedicReducer,
   forexReducer,
   siteCareReducer,
+  vpnReducer,
 } from '.'
 import { theme, isLoading, pinned, scrollForbidden } from './reducer'
 
@@ -63,6 +64,7 @@ const rootReducer = combineReducers({
   dns: dnsReducer,
   forex: forexReducer,
   sitecare: siteCareReducer,
+  vpn: vpnReducer,
   affiliateProgram: affiliateReducer,
   theme,
   isLoading,
