@@ -43,6 +43,8 @@ import {
   ForexOrderPage,
   SiteCare,
   SiteCareOrder,
+  VPN,
+  VpnOrder,
 } from '../../Pages'
 import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
 import { cartSelectors } from '../../Redux'
@@ -110,7 +112,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.SHARED_HOSTING}
           element={
@@ -135,7 +136,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.SITE_CARE}
           element={
@@ -157,6 +157,26 @@ const Component = () => {
               })}`}
             >
               <PrivateRoute redirectTo={route.LOGIN} children={<SiteCareOrder />} />
+            </PageTitleRender>
+          }
+        />
+        <Route
+          path={route.VPN}
+          element={
+            <PageTitleRender title={`${t('aside_menu.services')}/${t('VPN')}`}>
+              <PrivateRoute redirectTo={route.LOGIN} children={<VPN />} />
+            </PageTitleRender>
+          }
+        />
+        <Route
+          path={route.VPN_ORDER}
+          element={
+            <PageTitleRender
+              title={`${t('aside_menu.services')}/${t('vpn_order', {
+                ns: 'crumbs',
+              })}`}
+            >
+              <PrivateRoute redirectTo={route.LOGIN} children={<VpnOrder />} />
             </PageTitleRender>
           }
         />
@@ -269,7 +289,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.DEDICATED_SERVERS}
           element={
@@ -285,7 +304,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.DEDICATED_SERVERS_ORDER}
           element={
@@ -298,7 +316,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.DEDICATED_SERVERS_IP}
           element={
@@ -309,7 +326,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.FTP}
           element={
@@ -332,7 +348,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.DNS}
           element={
@@ -355,7 +370,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.FOREX}
           element={
@@ -376,7 +390,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.ACCESS_LOG}
           element={
@@ -385,17 +398,14 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={`${route.SUPPORT}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />}
         />
-
         <Route
           path={`${route.BILLING}/*`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />}
         />
-
         <Route
           path={route.PAYERS}
           element={
@@ -412,7 +422,6 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={`${route.USER_SETTINGS}`}
           element={<PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />}
@@ -424,7 +433,6 @@ const Component = () => {
             }
           />
         </Route>
-
         <Route
           path={route.SOC_NET_AUTH}
           element={
@@ -435,14 +443,12 @@ const Component = () => {
             />
           }
         />
-
         <Route
           path={`${route.AFFILIATE_PROGRAM}/*`}
           element={
             <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
           }
         />
-
         <Route
           path={route.TRUSTED_USERS}
           element={
@@ -451,14 +457,12 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-
         <Route
           path={route.CONFIRM_EMAIL}
           element={
             <PrivateRoute children={<EmailConfirmation />} redirectTo={route.LOGIN} />
           }
         />
-
         <Route
           path={`${route.ERROR_PAGE}/*`}
           element={<PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />}

@@ -83,3 +83,4 @@ export { default as Infinity } from './svg/Infinity.jsx'
 
 export { default as SiteCareIcon } from './svg/SiteCareIcon.jsx'
 export { default as Plus } from './svg/Plus.jsx'
+export { default as VpnIcon } from './svg/VpnIcon.jsx'

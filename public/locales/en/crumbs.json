@@ -20,5 +20,7 @@
   "forex": "Forex server",
   "forex_order": "Order forex server",
   "site_care": "Website care",
-  "site_care_order": "Website care order"
+  "site_care_order": "Website care order",
+  "vpn": "VPN",
+  "vpn_order": "VPN order"
 }

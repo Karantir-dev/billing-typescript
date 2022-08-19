@@ -20,5 +20,7 @@
   "forex": "Forex сервері",
   "forex_order": "Forex серверінің тапсырысы",
   "site_care": "Сайтқа күтім жасау",
-  "site_care_order": "Сайтқа күтім жасау тапсырысы"
+  "site_care_order": "Сайтқа күтім жасау тапсырысы",
+  "vpn": "VPN",
+  "vpn_order": "VPN тапсырысы"
 }
