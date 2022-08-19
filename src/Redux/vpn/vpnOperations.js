@@ -297,12 +297,9 @@ const editSiteCare =
 
           autoprolong: data?.doc?.autoprolong?.$,
           stored_method: data?.doc?.stored_method?.$,
-          ipServer: data?.doc?.ipServer?.$,
-          loginServer: data?.doc?.loginServer?.$,
-          passwordServer: data?.doc?.passwordServer?.$,
-          port: data?.doc?.port?.$,
-          url: data?.doc?.url?.$,
-          pause: data?.doc?.pause?.$,
+
+          vpn_username: data?.doc?.vpn_username?.$,
+          vpn_password: data?.doc?.vpn_password?.$,
         }
 
         data.doc?.slist?.forEach(list => {
@@ -319,12 +316,9 @@ const editSiteCare =
         if (body?.sok === 'ok') {
           setEditData && setEditData(null)
           setEditModal && setEditModal(false)
-          toast.success(
-            i18n.t('Site care edited successfully', { ns: 'virtual_hosting' }),
-            {
-              position: 'bottom-right',
-            },
-          )
+          toast.success(i18n.t('VPN edited successfully', { ns: 'other' }), {
+            position: 'bottom-right',
+          })
           return dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
@@ -342,8 +336,6 @@ const deleteSiteCare =
   (body = {}, setDeleteModal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
-
-    console.log(body)
 
     const {
       auth: { sessionId },
@@ -402,7 +394,7 @@ const deleteSiteCare =
           throw new Error(data.doc.error.msg.$)
         }
 
-        toast.success(i18n.t('Site care deleted successfully', { ns: 'domains' }), {
+        toast.success(i18n.t('VPN deleted successfully', { ns: 'other' }), {
           position: 'bottom-right',
         })
 

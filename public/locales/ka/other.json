@@ -174,5 +174,13 @@
   "DISCOUNT -10% ON DEDICATED SERVERS": "ფასდაკლება -10% გამოყოფილ სერვერებზე",
   "DISCOUNT -20% ON VDS/VPS": "ფასდაკლება -20% VDS/VPS-ზე",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ფასდაკლება -20% პირველ თვეზე 'საიტის მოვლა' სერვისზე",
-  "You can get a discount using a promo code": "შეგიძლიათ მიიღოთ ფასდაკლება პრომო კოდის გამოყენებით"
+  "You can get a discount using a promo code": "შეგიძლიათ მიიღოთ ფასდაკლება პრომო კოდის გამოყენებით",
+  "VPN deleted successfully": "VPN წარმატებით წაიშალა",
+  "Are you sure you want to delete the service?": "დარწმუნებული ხართ, რომ გსურთ სერვისის წაშლა?",
+  "VPN edited successfully": "VPN წარმატებით დაარედაქტირდა",
+  "Protect yourself and your devices": "დაიცავით საკუთარი თავი და თქვენი მოწყობილობები.\nVPN (ვირტუალური კერძო ქსელი) არის სერვისი, რომელიც ქმნის უსაფრთხო და დაშიფრულ ინტერნეტ კავშირს.",
+  "No tariff plans available for order": "არ არის ხელმისაწვდომი სატარიფო გეგმები შეკვეთისთვის",
+  "Service not active": "სერვისი არ არის აქტიური",
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "ამ სერვისის განახლება შეუძლებელია: სერვისი ჯერ არ დამუშავებულა, სერვისი წაიშალა ან წაიშალა/გახანგრძლივდა ამ მომენტში"
+
 }

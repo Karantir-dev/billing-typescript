@@ -6,7 +6,7 @@ import {
   VpnTable,
   SiteCareHistoryModal,
   SiteCareProlongModal,
-  SiteCareEditModal,
+  VpnEditModal,
   SiteCareDeleteModal,
   Backdrop,
   CheckBox,
@@ -267,7 +267,7 @@ export default function Component() {
             </p>
 
             <p className={s.no_service_description}>
-              {t('Бла бла якийсь текс люблю котиків і наших розробників :3', {
+              {t('Protect yourself and your devices', {
                 ns: 'other',
               })}
             </p>
@@ -342,7 +342,7 @@ export default function Component() {
         isOpened={Boolean(editModal && editData)}
         onClick={closeEditModalHandler}
       >
-        <SiteCareEditModal
+        <VpnEditModal
           editData={editData}
           name={parseSelectedItemNameArr()}
           closeEditModalHandler={closeEditModalHandler}

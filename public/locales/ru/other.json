@@ -174,5 +174,12 @@
   "DISCOUNT -10% ON DEDICATED SERVERS": "СКИДКА -10% НА ВЫДЕЛЕННЫЕ СЕРВЕРА",
   "DISCOUNT -20% ON VDS/VPS": "СКИДКА -20% НА VDS/VPS",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "СКИДКА -20% НА ПЕРВЫЙ МЕСЯЦ НА УСЛУГУ 'УХОД ЗА САЙТОМ'",
-  "You can get a discount using a promo code": "Вы можете получить скидку по промокоду"
+  "You can get a discount using a promo code": "Вы можете получить скидку по промокоду",
+  "VPN deleted successfully": "VPN успешно удален",
+  "Are you sure you want to delete the service?": "Вы уверены, что хотите удалить службу?",
+  "VPN edited successfully": "VPN изменен успешно",
+  "Protect yourself and your devices": "Защитите себя и свои устройства.\nVPN (виртуальная частная сеть) — это услуга, которая создает безопасное и зашифрованное подключение к Интернету.",
+  "No tariff plans available for order": "Нет доступных для заказа тарифных планов",
+  "Service not active": "Сервис не активен",
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Невозможно продлить эту услугу: услуга еще не обработана, в данный момент услуга удалена или удаляется/продлевается"
 }

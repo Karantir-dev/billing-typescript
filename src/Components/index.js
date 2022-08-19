@@ -152,6 +152,7 @@ export { default as VdsInstructionModal } from './Services/vds/InstructionModal/
 export { default as VpnFilter } from './Services/vpn/VpnFilter/VpnFilter'
 export { default as VpnTable } from './Services/vpn/VpnTable/VpnTable'
 export { default as VpnTarifCard } from './Services/vpn/VpnTarifCard/VpnTarifCard'
+export { default as VpnEditModal } from './Services/vpn/VpnEditModal/VpnEditModal'
 
 //==========================================FTP==========================================//
 export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'
@@ -183,4 +184,3 @@ export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
 export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
-

@@ -22,7 +22,9 @@ export default function Component(props) {
         <Cross onClick={closeDeleteModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.deleteInfo}>
-        {t('Are you sure you want to delete the service "{{name}}"?', { name: name })}
+        {name?.length > 0
+          ? t('Are you sure you want to delete the service "{{name}}"?', { name: name })
+          : t('Are you sure you want to delete the service?', { ns: 'other' })}
       </div>
       <div className={s.btnBlock}>
         <Button

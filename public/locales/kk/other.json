@@ -175,5 +175,12 @@
   "DISCOUNT -10% ON DEDICATED SERVERS": "АРНАЛҒАН СЕРВЕРЛЕРГЕ -10% ЖЕҢІЛДІК",
   "DISCOUNT -20% ON VDS/VPS": "VDS/VPS бойынша -20% ЖЕҢІЛДІК",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "БІРІНШІ АЙ ҮШІН -20% ЖЕҢІЛДІК 'Сайтқа күтім жасау' ҚЫЗМЕТІ ҮШІН",
-  "You can get a discount using a promo code": "Сіз промокодты пайдаланып жеңілдік ала аласыз"
+  "You can get a discount using a promo code": "Сіз промокодты пайдаланып жеңілдік ала аласыз",
+  "VPN deleted successfully": "VPN сәтті жойылды",
+  "Are you sure you want to delete the service?": "Қызметті шынымен жойғыңыз келе ме?",
+  "VPN edited successfully": "VPN сәтті өңделді",
+  "Protect yourself and your devices": "Өзіңізді және құрылғыларыңызды қорғаңыз.\nVPN (виртуалды жеке желі) – қауіпсіз және шифрланған интернет қосылымын жасайтын қызмет.",
+  "No tariff plans available for order": "Тапсырыс беру үшін тарифтік жоспарлар жоқ",
+  "Service not active": "Қызмет белсенді емес",
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Бұл қызметті ұзарту мүмкін емес: қызмет әлі өңделмеді, қызмет жойылды немесе қазіргі уақытта жойылуда/ұзартуда."
 }
