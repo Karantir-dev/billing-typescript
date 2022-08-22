@@ -169,7 +169,7 @@ export default function Component() {
     const data = {
       elid: elid || parseSelectedItemId(),
     }
-    console.log(data)
+
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 

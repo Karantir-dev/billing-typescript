@@ -96,5 +96,7 @@
 
   "Select": "Вибрати",
   "Selected": "Вибрані",
-  "View/change the list of name servers": "Переглянути/змінити список серверів імен"
+  "View/change the list of name servers": "Переглянути/змінити список серверів імен",
+  "record_format": "Формат запису \"ns.example.com\" або \"ns.example.com/1.1.1.1\" або \"ns.example.com/1.1.1.1,2.2.2.2\"",
+  "Add NS": "Додати NS"
 }
