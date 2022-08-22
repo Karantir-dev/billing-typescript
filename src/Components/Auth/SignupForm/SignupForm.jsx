@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
-// import { RECAPTCHA_KEY } from '../../../config/config'
-// import ReCAPTCHA from 'react-google-recaptcha'
+import { RECAPTCHA_KEY } from '../../../config/config'
+import ReCAPTCHA from 'react-google-recaptcha'
 
-import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+// import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -34,7 +34,7 @@ export default function SignupForm() {
   const location = useLocation()
   const recaptchaEl = useRef()
 
-  const { executeRecaptcha } = useGoogleReCaptcha()
+  // const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   // const [socialLinks, setSocialLinks] = useState({})
@@ -58,9 +58,9 @@ export default function SignupForm() {
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
-    // reCaptcha: Yup.string()
-    //   .typeError(t('warnings.recaptcha'))
-    //   .required(t('warnings.recaptcha')),
+    reCaptcha: Yup.string()
+      .typeError(t('warnings.recaptcha'))
+      .required(t('warnings.recaptcha')),
     country: Yup.number()
       .min(1, t('warnings.country_required'))
       .required(t('warnings.country_required')),
@@ -80,10 +80,10 @@ export default function SignupForm() {
       setFieldValue('reCaptcha', '')
     }
 
-    if (executeRecaptcha) {
-      const newToken = await executeRecaptcha('signup')
-      values.reCaptcha = newToken
-    }
+    // if (executeRecaptcha) {
+    //   const newToken = await executeRecaptcha('signup')
+    //   values.reCaptcha = newToken
+    // }
 
     dispatch(
       authOperations.register(
@@ -185,20 +185,20 @@ export default function SignupForm() {
                 touched={touched}
               />
 
-              <GoogleReCaptcha
+              {/* <GoogleReCaptcha
                 onChange={value => {
                   setFieldValue('reCaptcha', value)
                 }}
-              />
+              /> */}
 
-              {/* <ReCAPTCHA
+              <ReCAPTCHA
                 className={s.captcha}
                 ref={recaptchaEl}
                 sitekey={RECAPTCHA_KEY}
                 onChange={value => {
                   setFieldValue('reCaptcha', value)
                 }}
-              /> */}
+              />
 
               <ErrorMessage
                 className={s.error_message}
