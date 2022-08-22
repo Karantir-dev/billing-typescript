@@ -80,7 +80,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
 }
 
 const editVDS =
-  (elid, values, register, selectedField, mutateOptionsListData, setOrderInfo) =>
+  (elid, values, register, selectedField, mutateOptionsListData, setOrderInfo, getVDSHandler) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -148,10 +148,13 @@ const editVDS =
           }
         }
 
+        getVDSHandler && getVDSHandler()
+
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         errorHandler(err.message, dispatch)
+        getVDSHandler && getVDSHandler()
         dispatch(actions.hideLoader())
         console.log('editVDS - ', err.message)
       })

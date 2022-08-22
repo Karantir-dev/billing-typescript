@@ -92,11 +92,13 @@ export default function VDS() {
     }
   }, [isFiltersOpened])
 
+  const getVDSHandler = () => {
+    dispatch(vdsOperations.getVDS({ setServers, setRights, setElemsTotal, p_num, p_cnt }))
+  }
+
   useEffect(() => {
     if (!firstRender) {
-      dispatch(
-        vdsOperations.getVDS({ setServers, setRights, setElemsTotal, p_num, p_cnt }),
-      )
+      getVDSHandler()
       setActiveServices([])
     }
   }, [p_num, p_cnt])
@@ -394,7 +396,11 @@ export default function VDS() {
         isOpened={Boolean(elidForEditModal)}
         onClick={() => setIdForEditModal(0)}
       >
-        <EditModal elid={elidForEditModal} closeFn={() => setIdForEditModal(0)} />
+        <EditModal
+          getVDSHandler={getVDSHandler}
+          elid={elidForEditModal}
+          closeFn={() => setIdForEditModal(0)}
+        />
       </Backdrop>
 
       <Backdrop

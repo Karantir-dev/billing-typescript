@@ -219,14 +219,18 @@ export default function Component() {
         list={sitecareRenderData?.siteCareList}
       />
 
-      <div className={s.checkBoxColumn}>
-        <CheckBox
-          className={s.check_box}
-          initialState={sitecareRenderData?.siteCareList?.length === selctedItem?.length}
-          func={isChecked => setSelectedAll(!isChecked)}
-        />
-        <span>{t('Choose all', { ns: 'other' })}</span>
-      </div>
+      {sitecareRenderData?.siteCareList?.length > 0 && (
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={
+              sitecareRenderData?.siteCareList?.length === selctedItem?.length
+            }
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
+      )}
 
       {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>

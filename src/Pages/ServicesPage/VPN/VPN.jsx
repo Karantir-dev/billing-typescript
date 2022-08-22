@@ -237,14 +237,16 @@ export default function Component() {
         list={vpnRenderData?.vpnList}
       />
 
-      <div className={s.checkBoxColumn}>
-        <CheckBox
-          className={s.check_box}
-          initialState={vpnRenderData?.vpnList?.length === selctedItem?.length}
-          func={isChecked => setSelectedAll(!isChecked)}
-        />
-        <span>{t('Choose all', { ns: 'other' })}</span>
-      </div>
+      {vpnRenderData?.vpnList?.length > 0 && (
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={vpnRenderData?.vpnList?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
+      )}
 
       {vpnRenderData?.vpnList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>
