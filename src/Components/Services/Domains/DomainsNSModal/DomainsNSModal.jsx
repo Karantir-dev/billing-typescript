@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross, Info } from '../../../../images'
 import { InputField, Button } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
+
+const nslists = ['ns0', 'ns1', 'ns2', 'ns3', 'ns_additional']
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other'])
 
   const { names, closeNSModalHandler, NSData, NSEditDomainHandler } = props
+
+  const [shownElem, setShownElem] = useState(1)
+
+  const dropdownDescription = useRef(null)
 
   const [more, setMore] = useState(false)
   const [namesToRender, setNamesToRender] = useState(
@@ -26,6 +32,18 @@ export default function Component(props) {
     setMore(!more)
     setNamesToRender(!more ? names : names?.slice(0, 1))
   }
+
+  useEffect(() => {
+    if (NSData && NSData?.ns2 && NSData?.ns2?.length !== 0) {
+      setShownElem(2)
+    }
+    if (NSData && NSData?.ns3 && NSData?.ns3?.length !== 0) {
+      setShownElem(3)
+    }
+    if (NSData && NSData?.ns_additional && NSData?.ns_additional?.length !== 0) {
+      setShownElem(4)
+    }
+  }, [NSData])
 
   return (
     <div className={s.modalBlock}>
@@ -88,56 +106,47 @@ export default function Component(props) {
               <div className={s.form}>
                 <div className={s.formBlock}>
                   <div className={s.formFieldsBlock}>
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name={'ns0'}
-                      label={`${t('NS')}:`}
-                      placeholder={t('Enter text', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors['s0']}
-                      touched={!!touched['ns0']}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name={'ns1'}
-                      label={`${t('NS')}:`}
-                      placeholder={t('Enter text', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors['ns1']}
-                      touched={!!touched['ns1']}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name={'ns2'}
-                      label={`${t('NS')}:`}
-                      placeholder={t('Enter text', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors['ns2']}
-                      touched={!!touched['ns2']}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name={'ns3'}
-                      label={`${t('NS')}:`}
-                      placeholder={t('Enter text', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors['ns3']}
-                      touched={!!touched['ns3']}
-                    />
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name={'ns_additional'}
-                      label={`${t('Additional NS')}:`}
-                      placeholder={t('Enter text', { ns: 'other' })}
-                      isShadow
-                      className={s.input}
-                      error={!!errors['ns_additional']}
-                      touched={!!touched['ns_additional']}
-                    />
+                    {nslists?.map((el, index) => {
+                      if (index > shownElem) {
+                        return
+                      }
+                      return (
+                        <div className={s.nsInputBlock} key={el}>
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name={el}
+                            label={`${t(
+                              el === 'ns_additional' ? 'Additional NS' : 'NS',
+                            )}:`}
+                            placeholder={t('Enter text', { ns: 'other' })}
+                            isShadow
+                            className={s.input}
+                            error={!!errors[el]}
+                            touched={!!touched[el]}
+                          />
+                          <button
+                            type="button"
+                            className={s.infoBtn}
+                            style={{ zIndex: 2 * nslists?.length - index }}
+                          >
+                            <Info />
+                            <div ref={dropdownDescription} className={s.descriptionBlock}>
+                              {t('record_format')}
+                            </div>
+                          </button>
+                        </div>
+                      )
+                    })}
+
+                    {shownElem + 1 !== nslists?.length && (
+                      <button
+                        onClick={() => setShownElem(s => s + 1)}
+                        type="button"
+                        className={s.addNs}
+                      >
+                        <span>+</span> <span>{t('Add NS')}</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

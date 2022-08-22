@@ -95,5 +95,7 @@
 
   "Select": "Таңдау",
   "Selected": "Таңдалған",
-  "View/change the list of name servers": "Атау серверлерінің тізімін қарау/өзгерту"
+  "View/change the list of name servers": "Атау серверлерінің тізімін қарау/өзгерту",
+  "record_format": "Жазба пішімі \"ns.example.com\" немесе \"ns.example.com/1.1.1.1\" немесе \"ns.example.com/1.1.1.1,2.2.2.2\"",
+  "Add NS": "NS қосыңыз"
 }

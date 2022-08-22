@@ -790,7 +790,8 @@ const editDomainNS =
         '/',
         qs.stringify({
           auth: sessionId,
-          func: 'domain.ns',
+          func: body?.elid?.split(', ')?.length > 1 ? 'groupedit' : 'domain.ns',
+          faction: 'domain.ns',
           out: 'json',
           ...body,
         }),
