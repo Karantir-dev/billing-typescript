@@ -112,3 +112,9 @@ export { default as siteCareReducer } from './siteCare/siteCareReducer'
 export { default as siteCareActions } from './siteCare/siteCareActions'
 export { default as siteCareOperations } from './siteCare/siteCareOperations'
 export { default as siteCareSelectors } from './siteCare/siteCareSelectors'
+
+//===========================================VPN=================================//
+export { default as vpnReducer } from './vpn/vpnReducer'
+export { default as vpnActions } from './vpn/vpnActions'
+export { default as vpnOperations } from './vpn/vpnOperations'
+export { default as vpnSelectors } from './vpn/vpnSelectors'

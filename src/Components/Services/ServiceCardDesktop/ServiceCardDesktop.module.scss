@@ -1,0 +1,166 @@
+.card {
+  overflow: hidden;
+  background-color: var(--carousel-elements-bgc);
+  box-shadow: var(--forms2_shadow);
+  position: relative;
+  z-index: 1;
+}
+
+.card_container {
+  min-width: 306px;
+  height: 201px;
+}
+
+.container {
+  height: 146px;
+  padding: 29px 25px 0 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card_numeric {
+  display: block;
+  font-size: 16px;
+  line-height: 113%;
+  color: #b3a9c1;
+  transition: color 0.2s;
+}
+
+.card_title {
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+  transition: font-size 0.1s, color 0.2s;
+  max-width: 150px;
+}
+
+.goto {
+  font-size: 18px;
+  line-height: 113%;
+  text-decoration: underline;
+  color: #b3a9c1;
+  padding-right: 13px;
+  transition: color 0.2s;
+}
+
+.arrow {
+  font-size: 18px;
+  line-height: 113%;
+  color: #b3a9c1;
+  transition: color 0.2s;
+}
+
+.triangle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 237px;
+  height: 140px;
+  background: linear-gradient(
+    to bottom right,
+    var(--carousel-elements-bgc) 0%,
+    var(--carousel-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 50%,
+    var(--carousel-nearby-elements-bgc) 100%
+  );
+  z-index: -1;
+}
+
+.icon {
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+
+  &.forebox {
+    right: 0px;
+    bottom: 0px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .card_container {
+    transition: transform 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.05);
+
+      .card_numeric {
+        color: var(--main-text);
+        font-size: 18px;
+      }
+      .card_title {
+        background: var(--accent-text-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        max-width: 200px;
+      }
+      
+      .goto {
+        color: var(--main-text);
+      }
+      .arrow {
+        color: var(--main-text);
+      }
+    }
+  }
+
+  .triangle {
+    left: unset;
+    right: 0;
+    width: 206px;
+    height: 160px;
+  }
+
+  .container {
+    max-width: 180px;
+    height: 140px;
+  }
+
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: 300px;
+  }
+
+  .triangle {
+    left: unset;
+    width: 260px;
+    height: 136px;
+  }
+  .card_title {
+    font-size: 21px;
+  }
+  .goto {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .card_container {
+    min-width: 339px;
+    height: 201px;
+  }
+
+  .icon {
+    right: 30px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .triangle {
+    left: unset;
+    width: 268px;
+    height: 142px;
+  }
+}

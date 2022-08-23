@@ -24,21 +24,12 @@ export default function ServiceCard(props) {
             </div>
 
             <div className={s.triangle}>
-              {iconName === 'forexbox' && (
-                <img
-                  alt="forexbox_graphic"
-                  src={
-                    iconName &&
-                    require('../../../images/services/forexbox_graphic_large.webp')
-                  }
-                  className={s.forexbox_graphic}
-                />
-              )}
-
               <img
                 alt={iconName}
                 src={iconName && require(`../../../images/services/${iconName}.webp`)}
-                className={s['icon_' + iconName]}
+                className={cn(s['icon_' + iconName], {
+                  [s.forexbox]: iconName === 'forexbox',
+                })}
                 width={iconWidth}
                 height={iconHeight}
               />

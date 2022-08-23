@@ -89,9 +89,11 @@
   "Instruction": "Instruction",
   "YOU DO NOT HAVE A DOMAIN YET": "YOU DO NOT HAVE A DOMAIN YET",
   "no services description": "Register a domain with Zomro quickly, cheaply and conveniently",
-  
+
   "Select": "Select",
   "Selected": "Selected",
 
-  "View/change the list of name servers": "View/change the list of name servers"
+  "View/change the list of name servers": "View/change the list of name servers",
+  "record_format": "Record format \"ns.example.com\" or \"ns.example.com/1.1.1.1\" or \"ns.example.com/1.1.1.1,2.2.2.2\"",
+  "Add NS": "Add NS"
 }

@@ -169,7 +169,7 @@ export default function Component() {
     const data = {
       elid: elid || parseSelectedItemId(),
     }
-    console.log(data)
+
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 
@@ -249,15 +249,16 @@ export default function Component() {
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
         rights={rights}
       />
-
-      <div className={s.checkBoxColumn}>
-        <CheckBox
-          className={s.check_box}
-          initialState={domainsRenderData?.domainsList?.length === selctedItem?.length}
-          func={isChecked => setSelectedAll(!isChecked)}
-        />
-        <span>{t('Choose all', { ns: 'other' })}</span>
-      </div>
+      {domainsRenderData?.domainsList?.length > 0 && (
+        <div className={s.checkBoxColumn}>
+          <CheckBox
+            className={s.check_box}
+            initialState={domainsRenderData?.domainsList?.length === selctedItem?.length}
+            func={isChecked => setSelectedAll(!isChecked)}
+          />
+          <span>{t('Choose all', { ns: 'other' })}</span>
+        </div>
+      )}
 
       {domainsRenderData?.domainsList?.length < 1 && isFiltered && (
         <div className={s.no_vds_wrapper}>

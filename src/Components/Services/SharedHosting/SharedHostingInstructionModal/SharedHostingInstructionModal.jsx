@@ -12,7 +12,7 @@ export default function Component(props) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>
-          {t('Instruction')} - {name}
+          {t('Instruction')} {name}
         </span>
         <Cross onClick={closeInstructionModalHandler} className={s.crossIcon} />
       </div>

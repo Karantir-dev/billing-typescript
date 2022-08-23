@@ -20,5 +20,7 @@
   "forex": "Сервер для Forex",
   "forex_order": "Замовлення Forex сервера",
   "site_care": "Турбота про сайт",
-  "site_care_order": "Замовлення догляду за сайтом"
+  "site_care_order": "Замовлення догляду за сайтом",
+  "vpn": "VPN",
+  "vpn_order": "Замовлення VPN"
 }

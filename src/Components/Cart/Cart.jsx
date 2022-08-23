@@ -19,6 +19,7 @@ import {
   VhostItem,
   ForexItem,
   SiteCareItem,
+  VpnItem,
 } from '..'
 import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
 import * as Yup from 'yup'
@@ -143,6 +144,8 @@ export default function Component() {
       elem => elem['item.type']?.$ === 'zabota-o-servere',
     )
 
+    const vpnList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vpn')
+
     const filteredVdsList = []
 
     vdsList?.forEach(elem => {
@@ -256,6 +259,28 @@ export default function Component() {
 
     return (
       <>
+        {vpnList?.length > 0 && (
+          <div className={s.padding}>
+            <div className={s.formBlockTitle}>{t('Site care')}:</div>
+            {vpnList?.map(el => {
+              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+              return (
+                <VpnItem
+                  key={id?.$}
+                  desc={desc?.$}
+                  cost={cost?.$}
+                  discount_percent={discount_percent?.$}
+                  fullcost={fullcost?.$}
+                  itemId={el['item.id']?.$}
+                  pricelist_name={pricelist_name?.$}
+                  deleteItemHandler={
+                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
+                  }
+                />
+              )
+            })}
+          </div>
+        )}
         {siteCareList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
@@ -278,7 +303,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
@@ -312,7 +336,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {domainsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
@@ -333,7 +356,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {filteredDedicList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
@@ -368,7 +390,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {filteredVdsList?.length > 0 && (
           <div className={s.vds_wrapper}>
             <div className={cn(s.formBlockTitle, s.padding)}>
@@ -392,7 +413,6 @@ export default function Component() {
             </div>
           </div>
         )}
-
         {filteredFtpList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>
@@ -427,7 +447,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {filteredDnsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
@@ -460,7 +479,6 @@ export default function Component() {
             })}
           </div>
         )}
-
         {filteredForexList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>

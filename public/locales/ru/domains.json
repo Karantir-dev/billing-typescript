@@ -94,5 +94,7 @@
 
   "Select": "Выбрать",
   "Selected": "Выбрано",
-  "View/change the list of name servers": "Посмотреть/изменить список серверов имен"
+  "View/change the list of name servers": "Посмотреть/изменить список серверов имен",
+  "record_format": "Формат записи \"ns.example.com\" или \"ns.example.com/1.1.1.1\" или \"ns.example.com/1.1.1.1,2.2.2.2\"",
+  "Add NS": "Добавить NS"
 }

@@ -20,5 +20,7 @@
   "forex": "სერვერი ფორექსისთვის",
   "forex_order": "Forex სერვერის შეკვეთა",
   "site_care": "საიტზე ზრუნვა",
-  "site_care_order": "საიტზე ზრუნვის შეკვეთა"
+  "site_care_order": "საიტზე ზრუნვის შეკვეთა",
+  "vpn": "VPN",
+  "vpn_order": "VPN შეკვეთა"
 }

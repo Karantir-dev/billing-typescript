@@ -10,7 +10,7 @@ import s from './EditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import { Select, Button } from '../../..'
 
-export default function EditModal({ elid, closeFn }) {
+export default function EditModal({ elid, closeFn, getVDSHandler }) {
   const { t } = useTranslation(['vds', 'other'])
   const dispatch = useDispatch()
   const addOnsEl = useRef(null)
@@ -106,7 +106,7 @@ export default function EditModal({ elid, closeFn }) {
 
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
-    dispatch(vdsOperations.editVDS(elid, mutatedValues, initialState.register))
+    dispatch(vdsOperations.editVDS(elid, mutatedValues, initialState.register, null, null, null, getVDSHandler))
     closeFn()
   }
 

@@ -2,6 +2,9 @@ import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
+
+// import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
@@ -30,6 +33,8 @@ export default function SignupForm() {
   const navigate = useNavigate()
   const location = useLocation()
   const recaptchaEl = useRef()
+
+  // const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   // const [socialLinks, setSocialLinks] = useState({})
@@ -68,11 +73,17 @@ export default function SignupForm() {
     }),
   })
   const partner = Cookies.get('billpartner')
-  const handleSubmit = (values, { setFieldValue }) => {
+
+  const handleSubmit = async (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
+
+    // if (executeRecaptcha) {
+    //   const newToken = await executeRecaptcha('signup')
+    //   values.reCaptcha = newToken
+    // }
 
     dispatch(
       authOperations.register(
@@ -173,6 +184,12 @@ export default function SignupForm() {
                 errors={errors}
                 touched={touched}
               />
+
+              {/* <GoogleReCaptcha
+                onChange={value => {
+                  setFieldValue('reCaptcha', value)
+                }}
+              /> */}
 
               <ReCAPTCHA
                 className={s.captcha}

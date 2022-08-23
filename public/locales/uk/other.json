@@ -143,6 +143,7 @@
   "Virtual server activation": "Активація віртуального сервера",
   "no services sitecare description": "Ми не просто проінформуємо Вас про падіння сервера або помилку в роботі, але й зробимо все можливе для усунення несправностей.",
   "YOU DONT HAVE A WEBSITE YET": "У ВАС ЩЕ НЕМАЄ ТУРБОТИ ПРО САЙТ",
+  "YOU DONT HAVE A VPN YET": "У ВАС ЩЕ НЕМАЄ VPN",
   "YOU DO NOT HAVE A FOREX SERVER YET": "У ВАС ЩЕ НЕМАЄ СЕРВЕРУ ДЛЯ FOREX",
   "no services forex description": "Тільки для терміналів ваших брокерів та торгових систем. 100% налаштований сервер, без зайвих зусиль",
   "Period": "Період",
@@ -176,5 +177,14 @@
   "DISCOUNT -10% ON DEDICATED SERVERS": "ЗНИЖКА -10% НА ВИДІЛЕНІ СЕРВЕРИ",
   "DISCOUNT -20% ON VDS/VPS": "ЗНИЖКА -20% НА VDS/VPS",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ЗНИЖКА -20% НА ПЕРШИЙ МІСЯЦЬ НА ПОСЛУГУ 'ДОГЛЯД ЗА САЙТОМ'",
-  "You can get a discount using a promo code": "Ви можете отримати знижку за промокодом"
+  "You can get a discount using a promo code": "Ви можете отримати знижку за промокодом",
+  "VPN deleted successfully": "VPN успішно видалено",
+  "Are you sure you want to delete the service?": "Вы уверены, что хотите удалить службу?",
+  "VPN edited successfully": "VPN успішно відредаговано",
+  "Protect yourself and your devices": "Захистіть себе та свої пристрої.\nVPN (віртуальна приватна мережа) — це служба, яка створює безпечне та зашифроване підключення до Інтернету.",
+  "No tariff plans available for order": "Немає доступних для замовлення тарифних планів",
+  "Service not active": "Послуга не активна",
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Неможливо продовжити цю послугу: послугу ще не оброблено, послугу видалено або наразі видаляється/продовжується"
+
+
 }
