@@ -136,6 +136,8 @@ export default function Component() {
                   getElement={item => {
                     setFieldValue('period', item)
                     setFieldValue('pricelist', '')
+                    setFieldValue('licence_agreement_error', 'off')
+                    setLicence_agreement(false)
                     setParamsData(null)
                     dispatch(vpnOperations.orderSiteCare({ period: item }, setData))
                   }}
