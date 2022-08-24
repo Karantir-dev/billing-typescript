@@ -427,6 +427,7 @@ const orderSiteCare =
           auth: sessionId,
           func: 'vpn.order',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )
