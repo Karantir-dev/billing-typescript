@@ -283,7 +283,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
     setgeoip: data?.setgeoip ? 'on' : 'off',
   }
 
-  if(data?.email_notif?.length === 0) {
+  if (data?.email_notif?.length === 0) {
     userParamsData.sendemail = 'off'
     userParamsData.setgeoip = 'off'
   }
@@ -705,6 +705,36 @@ const confirmEmail = key => (dispatch, getState) => {
     })
 }
 
+const changeLang = (elid, lang) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'usrparam',
+        out: 'json',
+        sok: 'ok',
+        elid,
+        auth: sessionId,
+        clicked_button: 'ok',
+        lang,
+      }),
+    )
+    .then(() => {
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getUserEdit,
   getUserParams,
@@ -719,4 +749,5 @@ export default {
   setTotpPassword,
   confirmEmail,
   changeSocialLinkStatus,
+  changeLang,
 }
