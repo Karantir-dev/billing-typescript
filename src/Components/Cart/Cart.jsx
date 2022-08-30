@@ -21,7 +21,7 @@ import {
   SiteCareItem,
   VpnItem,
 } from '..'
-import { cartOperations, payersOperations, payersSelectors } from '../../Redux'
+import { cartOperations, payersOperations, payersSelectors, selectors } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL } from '../../config/config'
@@ -48,6 +48,7 @@ export default function Component() {
 
   const [isClosing, setIsClosing] = useState(false)
 
+  const isLoading = useSelector(selectors.getIsLoadding)
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -669,7 +670,7 @@ export default function Component() {
                     </div>
 
                     <div className={s.formBlock}>
-                      {paymentsMethodList?.length === 0 && (
+                      {!isLoading && paymentsMethodList?.length === 0 && (
                         <div className={s.notAllowPayMethod}>
                           {t('order_amount_is_less')}
                         </div>
