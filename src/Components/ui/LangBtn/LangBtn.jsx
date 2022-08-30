@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Shevron } from '../../../images/'
-import { actions } from '../../../Redux'
-import { useDispatch } from 'react-redux'
+import { actions, settingsOperations, userSelectors } from '../../../Redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import s from './LangBtn.module.scss'
 
@@ -25,6 +25,8 @@ export default function LangBtn({ burgerType, authType, mainType }) {
   if (!LANGUAGES.some(lang => lang.langCode === currentLang)) {
     i18n.changeLanguage('en')
   }
+
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const availableLangs = LANGUAGES.filter(lang => currentLang !== lang.langCode)
   const langCodeForWeb = LANGUAGES.find(lang => lang.langCode === currentLang)
@@ -49,7 +51,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       <div className={s.lang_dropdown}>
         <ul className={s.dropdown_list}>
           <li className={s.shevron_wrapper}>
-            <div className={s.dropdown_shevron}></div>
+            <div className={s.dropdown_shevron} />
           </li>
           {availableLangs.map(lang => {
             return (
@@ -58,7 +60,16 @@ export default function LangBtn({ burgerType, authType, mainType }) {
                   className={s.lang_btn}
                   type="button"
                   onClick={() => {
-                    dispatch(actions.showLoader())
+                    if (userInfo && userInfo?.$id) {
+                      dispatch(
+                        settingsOperations.changeLang(
+                          userInfo?.$id,
+                          lang?.showLangCode === 'kz' ? 'kk' : lang?.showLangCode,
+                        ),
+                      )
+                    } else {
+                      dispatch(actions.showLoader())
+                    }
                     i18n.changeLanguage(lang.langCode)
                   }}
                 >
