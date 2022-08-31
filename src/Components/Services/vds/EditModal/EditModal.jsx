@@ -47,7 +47,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
   const getOptionsListExtended = fieldName => {
     if (!initialState || initialState?.slist?.length === 0) {
-      return [{ value: '', label: '' }] 
+      return [{ value: '', label: '' }]
     }
 
     let optionsList = []
@@ -75,11 +75,13 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
   }
 
   const getOptionsList = fieldName => {
-    const optionsList = initialState.slist.find(elem => elem.$name === fieldName).val
+    const optionsList = initialState?.slist?.find(elem => elem.$name === fieldName)?.val
 
-    return optionsList
-      .filter(el => el?.$)
-      .map(({ $key, $ }) => ({ value: $key, label: t($.trim()) }))
+    if (optionsList) {
+      return optionsList
+        .filter(el => el?.$)
+        .map(({ $key, $ }) => ({ value: $key, label: t($.trim()) }))
+    }
   }
 
   const handleAddOnsClick = () => {
@@ -106,7 +108,17 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
-    dispatch(vdsOperations.editVDS(elid, mutatedValues, initialState.register, null, null, null, getVDSHandler))
+    dispatch(
+      vdsOperations.editVDS(
+        elid,
+        mutatedValues,
+        initialState.register,
+        null,
+        null,
+        null,
+        getVDSHandler,
+      ),
+    )
     closeFn()
   }
 
@@ -142,28 +154,28 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
       <Formik
         initialValues={{
-          autoprolong: initialState.autoprolong.$,
-          stored_method: initialState.stored_method.$,
-          domainName: initialState.domain.$,
-          userName: initialState.username.$,
-          serverid: initialState.serverid.$,
+          autoprolong: initialState?.autoprolong?.$,
+          stored_method: initialState?.stored_method?.$,
+          domainName: initialState?.domain?.$,
+          userName: initialState?.username?.$,
+          serverid: initialState?.serverid?.$,
           preinstalledSoft:
             initialState?.recipe?.$ === 'null' || !initialState?.recipe?.$
               ? t('not_installed')
-              : initialState.recipe.$,
-          IP: initialState.ip.$,
-          password: initialState.password.$,
-          userpassword: initialState.userpassword.$,
-          ostempl: initialState.ostempl.$,
-          Control_panel: initialState.Control_panel,
-          processors: initialState.CPU_count,
-          diskSpace: initialState.Disk_space,
+              : initialState?.recipe?.$,
+          IP: initialState?.ip?.$,
+          password: initialState?.password?.$,
+          userpassword: initialState?.userpassword?.$,
+          ostempl: initialState?.ostempl?.$,
+          Control_panel: initialState?.Control_panel,
+          processors: initialState?.CPU_count,
+          diskSpace: initialState?.Disk_space,
           portSpeed:
             initialState?.slist?.length > 0
               ? initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$
               : '',
-          memory: initialState.Memory,
-          IPcount: initialState.IP_addresses_count,
+          memory: initialState?.Memory,
+          IPcount: initialState?.IP_addresses_count,
         }}
         onSubmit={handleFormSubmit}
       >
@@ -316,7 +328,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     itemsList={getOptionsListExtended('Disk_space')}
                     label={`${t('disk_space')}:`}
                     isShadow
-                    disabled={initialState.change_disc_size.$ === 'off'}
+                    disabled={initialState?.change_disc_size?.$ === 'off'}
                   />
 
                   <InputField

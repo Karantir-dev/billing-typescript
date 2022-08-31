@@ -68,6 +68,8 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      console.log(data.doc)
       setInitialState(renameAddonFields(data.doc))
 
       dispatch(actions.hideLoader())
@@ -80,7 +82,15 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
 }
 
 const editVDS =
-  (elid, values, register, selectedField, mutateOptionsListData, setOrderInfo, getVDSHandler) =>
+  (
+    elid,
+    values,
+    register,
+    selectedField,
+    mutateOptionsListData,
+    setOrderInfo,
+    getVDSHandler,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -450,7 +460,6 @@ const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
       toast.success(`${t('passwd_change_success', { ns: 'vds' })} #${id.join(', #')}`, {
         position: 'bottom-right',
         toastId: 'customId',

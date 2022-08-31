@@ -270,9 +270,8 @@
   font-size: 14px;
   line-height: 120%;
   color: var(--main-text);
-  margin-top: 17px;
 
-  padding-bottom: 20px;
+  padding-bottom: 15px;
   border-bottom: 1px solid #e1daea;
 
   span {
@@ -363,7 +362,7 @@
 }
 
 .scroll {
-  padding: 10px 22px 20px;
+  padding: 10px 22px 0px 22px;
   overflow: auto;
   max-height: 380px;
 
@@ -404,7 +403,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 25px;
+    // height: 25px;
     background-image: linear-gradient(
       0deg,
       var(--main-bgc) 20%,
@@ -428,11 +427,11 @@
 }
 
 @media screen and (min-width: 768px) {
-  .formBlock {
-    &:not(:first-child) {
-      margin-top: 20px;
-    }
-  }
+  // .formBlock {
+  //   &:not(:first-child) {
+  //     margin-top: 20px;
+  //   }
+  // }
 
   .modalBg {
     align-items: center;
@@ -445,7 +444,7 @@
   }
 
   .scroll {
-    padding: 10px 35px 20px;
+    padding: 10px 35px 0px 35px;
   }
 
   .padding {
