@@ -27,6 +27,11 @@ export default function Component() {
     dispatch(supportOperations.getTicketsHandler(data))
   }, [p_num, p_cnt])
 
+  const destructuredTickerList = [...tickerList]
+  const sortedList = destructuredTickerList.sort(
+    (a, b) => new Date(b.last_message_utc.$) - new Date(a.last_message_utc.$),
+  )
+
   return (
     <div data-testid="request_support">
       <SupportFilter
@@ -40,9 +45,9 @@ export default function Component() {
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
       </h2>
-      {tickerList?.length > 0 && (
+      {sortedList?.length > 0 && (
         <SupportTable
-          list={tickerList}
+          list={sortedList}
           setSelctedTicket={setSelctedTicket}
           selctedTicket={selctedTicket}
         />
