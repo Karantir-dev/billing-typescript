@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Logo } from '../../images'
+import { useTranslation } from 'react-i18next'
 import { ThemeBtn, LangBtn } from '../../Components'
 import Div100vh from 'react-div-100vh'
 // import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
-
 import s from './AuthPage.module.scss'
+import { authOperations, authSelectors } from '../../Redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function AuthPage({ children }) {
+  const { i18n } = useTranslation()
+  const dispatch = useDispatch()
+  const isLoginedBefore = useSelector(authSelectors.getIsLogined)
+
+  const changeLang = lang => {
+    i18n.changeLanguage(lang || 'en')
+  }
+  useEffect(() => {
+    if (!isLoginedBefore) {
+      dispatch(authOperations.getLocation(changeLang))
+    }
+  }, [])
+
   return (
     <Div100vh className={s.wrapper}>
       <header className={s.header}>
@@ -19,7 +34,7 @@ export default function AuthPage({ children }) {
         </div>
       </header>
       {/* <GoogleReCaptchaProvider reCaptchaKey="6LczA40hAAAAACFSZS6vTOGp0YfBFlmtz6lP7zBx"> */}
-        {children}
+      {children}
       {/* </GoogleReCaptchaProvider> */}
     </Div100vh>
   )
