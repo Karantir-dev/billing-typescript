@@ -77,8 +77,22 @@ const getTarifs =
         const { val: period } = data.doc.slist[0]
         const { $: currentDatacenter } = data.doc.datacenter
 
+        const transformedTarifList = tarifList?.map((elem, index) => {
+          const currentForexRate = elem?.desc?.$?.split(' ')[2]
+          elem.countTerminal = currentForexRate
+          if (index === 0) {
+            elem.countRAM = currentForexRate * 500
+          } else {
+            elem.countRAM = currentForexRate * 0.5
+          }
+          elem.countMemory = currentForexRate + ' ' + 'Gb'
+          elem.osName = 'Windows'
+
+          return elem
+        })
+
         const orderData = {
-          tarifList,
+          transformedTarifList,
           datacenter,
           period,
           currentDatacenter,
