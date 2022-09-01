@@ -11,7 +11,7 @@ import InputField from '../../../ui/InputField/InputField'
 import { Select, Button } from '../../..'
 
 export default function EditModal({ elid, closeFn, getVDSHandler }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['vds', 'other', 'billing'])
   const dispatch = useDispatch()
   const addOnsEl = useRef(null)
 
@@ -108,6 +108,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
+    console.log(mutatedValues)
     dispatch(
       vdsOperations.editVDS(
         elid,
@@ -188,7 +189,12 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     className={s.mb}
                     inputClassName={s.bgc}
                     value={values.autoprolong}
-                    getElement={value => setFieldValue('autoprolong', value)}
+                    getElement={value => {
+                      setFieldValue('autoprolong', value)
+                      if (value === 'null') {
+                        setFieldValue('stored_method', '')
+                      }
+                    }}
                     itemsList={getOptionsListExtended('autoprolong')}
                     label={`${t('autoprolong')}:`}
                     isShadow
@@ -203,6 +209,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     label={`${t('payment_method')}:`}
                     isShadow
                     disabled={values.autoprolong === 'null'}
+                    placeholder={t('Select a Payment Method', { ns: 'billing' })}
                   />
 
                   <InputField
