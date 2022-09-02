@@ -4,6 +4,8 @@ const registrationSuccess = createAction('REGISTRATION_SUCCESS')
 
 const loginSuccess = createAction('LOGIN_SUCCESS')
 
+const isLogined = createAction('IS_LOGINED')
+
 const logoutSuccess = createAction('LOGOUT_SUCCESS')
 
 const openTotpForm = createAction('OPEN_TOTP_FORM')
@@ -27,4 +29,5 @@ export default {
   getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
+  isLogined,
 }
