@@ -43,7 +43,7 @@ const rootPersistConfig = {
 const authPersistConfig = {
   key: 'sessionId',
   storage,
-  whitelist: ['sessionId'],
+  whitelist: ['sessionId', 'isLogined'],
 }
 
 const rootReducer = combineReducers({

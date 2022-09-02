@@ -1,5 +1,6 @@
 import qs from 'qs'
 import authActions from './authActions'
+import axios from 'axios'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
 import userOperations from '../userInfo/userOperations'
@@ -48,6 +49,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           }
 
           dispatch(authActions.loginSuccess(sessionId))
+          dispatch(authActions.isLogined(true))
           dispatch(userOperations.getUserInfo(sessionId))
         })
     })
@@ -540,6 +542,41 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
     })
 }
 
+const getLocation = setLang => () => {
+  axios
+    .get('https://api.server-panel.net/api/service/geo/')
+    .then(({ data }) => {
+      const country = data?.clients_country_code
+      if (country === 'UA') {
+        setLang('uk')
+      } else if (
+        country === 'AZ' ||
+        country === 'AM' ||
+        country === 'BY' ||
+        country === 'KG' ||
+        country === 'LV' ||
+        country === 'LT' ||
+        country === 'MD' ||
+        country === 'RU' ||
+        country === 'TJ' ||
+        country === 'TM' ||
+        country === 'UZ' ||
+        country === 'EE'
+      ) {
+        setLang('ru')
+      } else if (country === 'KK' || country === 'KZ') {
+        setLang('kk')
+      } else if (country === 'GE' || country === 'KA') {
+        setLang('ka')
+      } else {
+        setLang('en')
+      }
+    })
+    .catch(() => {
+      setLang('en')
+    })
+}
+
 export default {
   login,
   register,
@@ -553,4 +590,5 @@ export default {
   getLoginSocLinks,
   addLoginWithSocial,
   getRedirectLink,
+  getLocation,
 }
