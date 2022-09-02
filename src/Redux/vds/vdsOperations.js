@@ -69,7 +69,6 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      console.log(data.doc)
       setInitialState(renameAddonFields(data.doc))
 
       dispatch(actions.hideLoader())
