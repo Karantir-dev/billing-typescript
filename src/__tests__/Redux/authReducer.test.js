@@ -8,6 +8,7 @@ describe('dataloader reducers', () => {
     expect(newState).toEqual({
       sessionId: 'testSessionId',
       temporaryId: null,
+      isLogined: false,
       totpFormVisibility: 'hidden',
     })
   })
@@ -19,6 +20,7 @@ describe('dataloader reducers', () => {
     expect(newState).toEqual({
       sessionId: null,
       temporaryId: null,
+      isLogined: false,
       totpFormVisibility: 'hidden',
     })
   })
@@ -29,6 +31,7 @@ describe('dataloader reducers', () => {
     const newState = authReducer(initialState, action)
     expect(newState).toEqual({
       sessionId: null,
+      isLogined: false,
       temporaryId: 'testTemporaryId',
       totpFormVisibility: 'hidden',
     })
@@ -41,6 +44,7 @@ describe('dataloader reducers', () => {
     expect(newState).toEqual({
       sessionId: null,
       temporaryId: null,
+      isLogined: false,
       totpFormVisibility: 'hidden',
     })
   })
@@ -52,6 +56,7 @@ describe('dataloader reducers', () => {
     expect(newState).toEqual({
       sessionId: null,
       temporaryId: null,
+      isLogined: false,
       totpFormVisibility: 'shown',
     })
   })
@@ -63,6 +68,7 @@ describe('dataloader reducers', () => {
     expect(newState).toEqual({
       sessionId: null,
       temporaryId: null,
+      isLogined: false,
       totpFormVisibility: 'hidden',
     })
   })
