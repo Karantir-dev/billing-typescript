@@ -35,5 +35,6 @@
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "Выберите этот отдел, если ваш вопрос связан с настройкой серверов, установкой панелей управления, перемещением сайтов. А также вопросы по техническим особенностям хостинга, VDS, Dedicated - в этот отдел.",
   "Refresh": "Обновить",
   "To the archive": "В архив",
-  "Select a department": "Выберите отдел"
+  "Select a department": "Выберите отдел",
+  "The following services were suspended due to no actions from you": "Следующие услуги были приостановлены из-за отсутствия действий с вашей стороны"
 }

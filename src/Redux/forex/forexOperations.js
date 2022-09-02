@@ -80,12 +80,12 @@ const getTarifs =
         const transformedTarifList = tarifList?.map((elem, index) => {
           const currentForexRate = elem?.desc?.$?.split(' ')[2]
           elem.countTerminal = currentForexRate
-          if (index === 0) {
-            elem.countRAM = currentForexRate * 500
+          if (index === 0 || index === 1) {
+            elem.countRAM = 1
           } else {
             elem.countRAM = currentForexRate * 0.5
           }
-          elem.countMemory = currentForexRate + ' ' + 'Gb'
+          elem.countMemory = currentForexRate * 3 + ' ' + 'Gb'
           elem.osName = 'Windows'
 
           return elem

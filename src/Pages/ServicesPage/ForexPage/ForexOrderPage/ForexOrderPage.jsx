@@ -275,15 +275,7 @@ export default function ForexOrderPage() {
                               ns: 'other',
                             })}`}
                           </span>
-                          <span className={s.tarif_card_option}>{`${t(
-                            'os',
-                          )} ${osName}`}</span>
-
-                          {/* {descriptionBlocks.slice(1).map((el, i) => (
-                            <span key={i} className={s.card_subtitles}>
-                              {el}
-                            </span>
-                          ))} */}
+                          <span className={s.tarif_card_option}>{`${t(osName)}`}</span>
                         </button>
                       </div>
                     )

@@ -306,11 +306,11 @@ export default function DedicOrderPage() {
               </div>
               <div
                 className={classNames({
-                  [s.datacenter_block]: true,
+                  [s.processors_block]: true,
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.slice(0, 2).map(item => {
+                  {tarifList?.fpricelist?.slice(0, 1).map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -337,7 +337,7 @@ export default function DedicOrderPage() {
                   })}
                 </div>
                 <div className={s.second_processors_block}>
-                  {tarifList?.fpricelist?.slice(2).map(item => {
+                  {tarifList?.fpricelist?.slice(1).map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {

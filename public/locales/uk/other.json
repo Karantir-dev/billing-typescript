@@ -184,7 +184,8 @@
   "Protect yourself and your devices": "Захистіть себе та свої пристрої.\nVPN (віртуальна приватна мережа) — це служба, яка створює безпечне та зашифроване підключення до Інтернету.",
   "No tariff plans available for order": "Немає доступних для замовлення тарифних планів",
   "Service not active": "Послуга не активна",
-  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Неможливо продовжити цю послугу: послугу ще не оброблено, послугу видалено або наразі видаляється/продовжується"
-
-
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Неможливо продовжити цю послугу: послугу ще не оброблено, послугу видалено або наразі видаляється/продовжується",
+  "terminal": "термінал",
+  "terminals": "термінали",
+  "memory": "пам'яті"
 }

@@ -181,6 +181,8 @@
   "Protect yourself and your devices": "დაიცავით საკუთარი თავი და თქვენი მოწყობილობები.\nVPN (ვირტუალური კერძო ქსელი) არის სერვისი, რომელიც ქმნის უსაფრთხო და დაშიფრულ ინტერნეტ კავშირს.",
   "No tariff plans available for order": "არ არის ხელმისაწვდომი სატარიფო გეგმები შეკვეთისთვის",
   "Service not active": "სერვისი არ არის აქტიური",
-  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "ამ სერვისის განახლება შეუძლებელია: სერვისი ჯერ არ დამუშავებულა, სერვისი წაიშალა ან წაიშალა/გახანგრძლივდა ამ მომენტში"
-
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "ამ სერვისის განახლება შეუძლებელია: სერვისი ჯერ არ დამუშავებულა, სერვისი წაიშალა ან წაიშალა/გახანგრძლივდა ამ მომენტში",
+  "terminal": "ტერმინალი",
+  "terminals": "ტერმინალი",
+  "memory": "მეხსიერება"
 }

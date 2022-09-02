@@ -1,20 +1,23 @@
 .cardBg {
   border-radius: 3px;
   flex-basis: 100%;
-  min-width: 252px;
+  // min-width: 252px;
+  width: 252px;
   max-width: 252px;
   margin-top: 20px;
   cursor: pointer;
+  border-radius: 3px;
 
   .cardBlock {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 21px 10px;
-    min-height: 183px;
+    padding: 15px 10px 22px;
+    // max-height: 157px;
     background: var(--forms_bgc_2);
     box-shadow: var(--forms2_shadow);
+    border-radius: 3px;
   }
 
   .line {
@@ -26,7 +29,7 @@
   .tariffName {
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 130%;
     text-align: center;
     background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
@@ -35,22 +38,21 @@
     background-clip: text;
     text-fill-color: transparent;
     text-transform: uppercase;
+    margin-bottom: 11px;
   }
 
   .tariffPrice {
     font-style: normal;
-    font-weight: 300;
     font-size: 18px;
-    line-height: 130%;
+    line-height: 70.9%;
     color: var(--main-text);
-    margin: 15px 0;
   }
 
   .charBlock {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 18px;
 
     .charText {
       margin-top: 15px;
@@ -92,14 +94,15 @@
 
 @media screen and (min-width: 768px) {
   .cardBg {
-    flex-basis: 46%;
+    // flex-basis: 46%;
     margin-right: 15px;
+    max-width: 235px;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .cardBg {
-    flex-basis: 22%;
+    // flex-basis: 22%;
     margin-right: 30px;
   }
 }

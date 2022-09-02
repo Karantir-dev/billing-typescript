@@ -15,12 +15,14 @@
 }
 
 .select {
-  max-width: 100%;
+  max-width: 252px;
+  width: 100%;
   margin-top: 10px;
 }
 
 .input {
-  max-width: 100%;
+  width: 100%;
+  max-width: 252px;
   margin-top: 10px;
 }
 
@@ -31,7 +33,7 @@
 .cardContainer {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
@@ -85,10 +87,11 @@
   align-items: center;
   justify-content: space-between;
   left: 0;
-  padding: 17px 30px 25px 30px;
+  padding: 15px 30px;
   width: 100%;
   bottom: 0;
-  background: var(--forms_bgc_2);
+  // background: var(--forms_bgc_2);
+  background: var(--elements-bgc);
   box-shadow: var(--menu_down_black_shadow);
 
   .buy_btn {
@@ -124,21 +127,21 @@
   }
 }
 
-.inputsBlock {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 530px;
-}
+// .inputsBlock {
+//   display: flex;
+//   align-items: center;
+//   flex-wrap: wrap;
+//   max-width: 530px;
+// }
 
 @media screen and (min-width: 768px) {
   .select {
-    max-width: 250px;
+    max-width: 235px;
     margin-right: 15px;
   }
 
   .input {
-    max-width: 250px;
+    max-width: 235px;
     margin-right: 15px;
   }
 
@@ -148,6 +151,9 @@
 
   .paymentBlock {
     flex-direction: row;
+    height: 85px;
+    padding: 15px 60px;
+
     .amountPayBlock {
       span:first-child {
         display: block;
@@ -157,23 +163,27 @@
       }
     }
   }
+
+  .cardContainer {
+    margin-bottom: 35px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
   .paymentBlock {
-    padding: 17px 160px 25px 210px;
+    padding: 15px 60px 15px 200px;
   }
 }
 
 @media screen and (min-width: 1550px) {
   .paymentBlock {
-    padding: 17px 160px 25px 270px;
+    padding: 15px 140px 15px 260px;
   }
-
 }
 
 @media screen and (min-width: 1918px) {
   .paymentBlock {
-    padding: 17px 160px 25px 290px;
+    height: 90px;
+    padding: 15px 155px 15px 290px;
   }
 }
