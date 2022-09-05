@@ -31,7 +31,7 @@ export default function DedicOrderPage() {
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
-  const { t } = useTranslation(['dedicated_servers', 'other'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'vds'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState(tarifsList)
@@ -306,11 +306,11 @@ export default function DedicOrderPage() {
               </div>
               <div
                 className={classNames({
-                  [s.datacenter_block]: true,
+                  [s.processors_block]: true,
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.slice(0, 2).map(item => {
+                  {tarifList?.fpricelist?.slice(0, 1).map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -337,7 +337,7 @@ export default function DedicOrderPage() {
                   })}
                 </div>
                 <div className={s.second_processors_block}>
-                  {tarifList?.fpricelist?.slice(2).map(item => {
+                  {tarifList?.fpricelist?.slice(1).map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -499,7 +499,7 @@ export default function DedicOrderPage() {
                     <Select
                       height={50}
                       value={values.autoprolong}
-                      label={t('autoprolong')}
+                      label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={values?.autoprolonglList?.map(el => {
@@ -518,8 +518,8 @@ export default function DedicOrderPage() {
                       className={s.select}
                     />
                     <InputField
-                      label={t('domain_name')}
-                      placeholder={t('domain_placeholder')}
+                      label={`${t('domain_name')}:`}
+                      placeholder={`${t('domain_placeholder')}:`}
                       name="domainname"
                       isShadow
                       error={!!errors.domainname}
@@ -577,7 +577,7 @@ export default function DedicOrderPage() {
                         updatePrice({ ...values, managePanel: item }, dispatch, setPrice)
                       }}
                       isShadow
-                      label={t('manage_panel')}
+                      label={`${t('license_to_panel', { ns: 'vds' })}:`}
                       itemsList={values?.managePanellList?.map(el => {
                         let labelText = el.$
 
@@ -616,7 +616,7 @@ export default function DedicOrderPage() {
                           updatePrice({ ...values, portSpeed: item }, dispatch, setPrice)
                         }}
                         isShadow
-                        label={t('port_speed')}
+                        label={`${t('port_speed')}:`}
                         itemsList={values?.portSpeedlList?.map(el => {
                           let labelText = el.$
                           if (labelText.includes('per month')) {
@@ -644,7 +644,7 @@ export default function DedicOrderPage() {
                         updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
                       }}
                       isShadow
-                      label={t('count_ip')}
+                      label={`${t('count_ip')}:`}
                       itemsList={values?.ipList?.map(el => {
                         return {
                           label: `${el?.value}

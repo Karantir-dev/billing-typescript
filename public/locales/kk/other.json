@@ -182,5 +182,8 @@
   "Protect yourself and your devices": "Өзіңізді және құрылғыларыңызды қорғаңыз.\nVPN (виртуалды жеке желі) – қауіпсіз және шифрланған интернет қосылымын жасайтын қызмет.",
   "No tariff plans available for order": "Тапсырыс беру үшін тарифтік жоспарлар жоқ",
   "Service not active": "Қызмет белсенді емес",
-  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Бұл қызметті ұзарту мүмкін емес: қызмет әлі өңделмеді, қызмет жойылды немесе қазіргі уақытта жойылуда/ұзартуда."
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Бұл қызметті ұзарту мүмкін емес: қызмет әлі өңделмеді, қызмет жойылды немесе қазіргі уақытта жойылуда/ұзартуда.",
+  "terminal": "терминал",
+  "terminals": "терминал",
+  "memory": "жад"
 }

@@ -34,5 +34,6 @@
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "აირჩიეთ ეს დეპარტამენტი, თუ თქვენი შეკითხვა დაკავშირებულია სერვერების დაყენებასთან, მართვის პანელების დაყენებასთან, საიტების გადაადგილებასთან. ასევე კითხვები ჰოსტინგის ტექნიკურ მახასიათებლებზე, VDS, Dedicated - ამ დეპარტამენტისთვის.",
   "Refresh": "განაახლეთ",
   "To the archive": "არქივისკენ",
-  "Select a department": "აირჩიეთ განყოფილება"
+  "Select a department": "აირჩიეთ განყოფილება",
+  "The following services were suspended due to no actions from you": "შემდეგი სერვისები შეჩერდა თქვენი ქმედებების გამო"
 }

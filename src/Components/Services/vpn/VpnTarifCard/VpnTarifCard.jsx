@@ -65,9 +65,10 @@ export default function Component(props) {
       className={cn(s.cardBg, { [s.selected]: selected })}
     >
       <div className={s.cardBlock}>
+        <div className={s.tariffName}>{data?.name}</div>
+
         <img src={require('../../../../images/services/vpn.png')} alt={'vpn'} />
         <div className={s.charBlock}>
-          <div className={s.tariffName}>{data?.name}</div>
           <div className={s.tariffPrice}>
             {parsePrice(tariff?.price?.$)?.amount} EUR/{t(period, { ns: 'other' })}
           </div>

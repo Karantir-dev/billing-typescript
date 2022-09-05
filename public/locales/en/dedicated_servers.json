@@ -127,5 +127,6 @@
   "A new value is set for": "A new value is set for",
   "dedic no services description": "Dedicated server - a separate physical server in the data center, all the capacities of which will be completely yours. This is a service for projects requiring high performance, security and reliability.",
   "YOU DO NOT HAVE A DEDICATED SERVER YET": "YOU DO NOT HAVE A DEDICATED SERVER YET",
-  "Late fee will be charged to the expired service": "Late fee will be charged to the expired service that was not renewed by due time: '{{value}}' EUR will be charged from your account"
+  "Late fee will be charged to the expired service": "Late fee will be charged to the expired service that was not renewed by due time: '{{value}}' EUR will be charged from your account",
+  "Windows": "OS Windows"
 }
