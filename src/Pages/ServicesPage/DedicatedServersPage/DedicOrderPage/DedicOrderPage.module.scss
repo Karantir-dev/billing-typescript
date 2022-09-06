@@ -523,7 +523,7 @@
 
 @media screen and (min-width: 1024px) {
   .terms_block {
-    margin-bottom: 250px;
+    margin-bottom: 80px;
   }
 
   // .tarifs_block {
@@ -557,11 +557,17 @@
     align-items: center;
     font-size: 18px;
   }
+  .terms_block {
+    margin-bottom: 0px;
+  }
 }
 
-@media screen and (min-width: 1900px) {
+@media screen and (min-width: 1920px) {
   .datacenter_card {
     max-width: 252px;
+  }
+  .terms_block {
+    margin-bottom: 80px;
   }
 }
 

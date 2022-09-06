@@ -521,7 +521,7 @@ export default function VDSOrder() {
                       />
                     </div>
 
-                    <div style={{ paddingBottom: '30px' }} ref={agreementEl}>
+                    <div ref={agreementEl}>
                       <div className={s.agreement_wrapper}>
                         <div className={s.checkbox_wrapper}>
                           <input
