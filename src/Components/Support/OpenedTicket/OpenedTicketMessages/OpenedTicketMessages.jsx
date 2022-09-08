@@ -2,9 +2,12 @@ import React from 'react'
 import MessageItem from '../MessageItem/MessageItem'
 import PropTypes from 'prop-types'
 import s from './OpenedTicketMessages.module.scss'
+import { systemNotificationsTranslate } from '../../../../utils'
+import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
   const { messages } = props
+  const { t } = useTranslation('support')
 
   return (
     <div className={s.messagesBlock}>
@@ -13,7 +16,7 @@ export default function Component(props) {
           if (el.$type === 'system') {
             return (
               <div key={el?.$id} className={s.archiveTicket}>
-                {el?.body?.$}
+                {systemNotificationsTranslate(el?.body?.$, t)}
               </div>
             )
           }

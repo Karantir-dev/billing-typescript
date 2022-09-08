@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 
 import Select from '../../../../Components/ui/Select/Select'
-import { forexOperations } from '../../../../Redux'
+import { forexOperations, selectors } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
@@ -22,9 +22,16 @@ export default function ForexOrderPage() {
   const licenceCheck = useRef()
   const secondTarrif = useRef(null)
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'other',
+    'crumbs',
+    'dns',
+    'virtual_hosting',
+  ])
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
@@ -180,9 +187,10 @@ export default function ForexOrderPage() {
               /> */}
 
               <div className={s.tarifs_block}>
-                {tarifList?.tarifList
+                {tarifList?.transformedTarifList
                   ?.filter(item => item.order_available.$ === 'on')
                   ?.map((item, index) => {
+                    const { countTerminal, countRAM, countMemory, osName } = item
                     const descriptionBlocks = item?.desc?.$.split('/')
                     const cardTitle = descriptionBlocks[0]
 
@@ -218,39 +226,56 @@ export default function ForexOrderPage() {
                           type="button"
                           className={s.tarif_card_btn}
                         >
-                          <span
+                          <div className={s.dns_img_container}>
+                            <img
+                              className={s.dns_img}
+                              src={require(`../../../../images/forex/${cardTitle
+                                .toLocaleLowerCase()
+                                .replaceAll(' ', '_')}.webp`)}
+                              alt="dns"
+                            />
+                          </div>
+
+                          <div
                             className={classNames({
-                              [s.card_title]: true,
-                              [s.selected]: item?.pricelist?.$ === values.pricelist,
+                              [s.card_title_wrapper]: true,
+                              [s.dt]: darkTheme,
                             })}
                           >
-                            {cardTitle}
-                          </span>
-
-                          <img
-                            className={s.dns_img}
-                            src={require(`../../../../images/forex/${cardTitle
-                              .toLocaleLowerCase()
-                              .replaceAll(' ', '_')}.webp`)}
-                            alt="dns"
-                          />
-
-                          <div className={s.price_wrapper}>
                             <span
                               className={classNames({
-                                [s.price]: true,
+                                [s.card_title]: true,
                                 [s.selected]: item?.pricelist?.$ === values.pricelist,
                               })}
                             >
-                              {priceAmount + ' €' + '/' + periodName}
+                              {cardTitle}
                             </span>
+                            <div className={s.price_wrapper}>
+                              <span
+                                className={classNames({
+                                  [s.price]: true,
+                                  [s.selected]: item?.pricelist?.$ === values.pricelist,
+                                })}
+                              >
+                                {priceAmount + ' €' + '/' + periodName}
+                              </span>
+                            </div>
                           </div>
 
-                          {descriptionBlocks.slice(1).map((el, i) => (
-                            <span key={i} className={s.card_subtitles}>
-                              {el}
-                            </span>
-                          ))}
+                          <span className={s.tarif_card_option}>{`${countTerminal} ${
+                            countTerminal > 1
+                              ? t('terminals', { ns: 'other' })
+                              : t('terminal', { ns: 'other' })
+                          }`}</span>
+                          <span className={s.tarif_card_option}>{`${countRAM} ${
+                            countRAM === 500 ? 'Mb' : 'Gb'
+                          } ${t('RAM', { ns: 'virtual_hosting' })}`}</span>
+                          <span className={s.tarif_card_option}>
+                            {`${countMemory} ${t('memory', {
+                              ns: 'other',
+                            })}`}
+                          </span>
+                          <span className={s.tarif_card_option}>{`${t(osName)}`}</span>
                         </button>
                       </div>
                     )

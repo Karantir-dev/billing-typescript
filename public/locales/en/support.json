@@ -34,5 +34,6 @@
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "Select this department if your question is related to setting up servers, installing control panels, moving sites. And also questions about technical features of hosting, VDS, Dedicated - should be sent to this department.",
   "Refresh": "Refresh",
   "To the archive": "To the archive",
-  "Select a department": "Select a department"
+  "Select a department": "Select a department",
+  "The following services were suspended due to no actions from you": "The following services were suspended due to no actions from you"
 }

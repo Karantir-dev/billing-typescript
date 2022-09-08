@@ -184,5 +184,8 @@
   "Protect yourself and your devices": "Protect yourself and your devices.\nVPN (virtual private network) is a service that creates a secure and encrypted Internet connection.",
   "No tariff plans available for order": "No tariff plans available for order",
   "Service not active": "Service not active",
-  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment"
+  "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment",
+  "terminal": "terminal",
+  "terminals": "terminals",
+  "memory": "memory"
 }

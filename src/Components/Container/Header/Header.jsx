@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import { userSelectors, authOperations, selectors } from '../../../Redux'
+import { userSelectors, authOperations, selectors, authActions } from '../../../Redux'
 import {
   NotificationsBar,
   ThemeBtn,
@@ -104,6 +104,7 @@ export default function Header() {
   }
 
   const logOut = () => {
+    dispatch(authActions.isLogined(false))
     dispatch(authOperations.logout())
   }
 

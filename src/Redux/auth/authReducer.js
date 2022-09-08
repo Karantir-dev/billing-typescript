@@ -5,6 +5,7 @@ import authActions from './authActions'
 const initialState = {
   sessionId: null,
   temporaryId: null,
+  isLogined: false,
   totpFormVisibility: 'hidden',
 }
 
@@ -20,6 +21,10 @@ const sessionId = createReducer(initialState.sessionId, {
   // [authActions.getCurrentUserError]: () => null,
 })
 
+const isLogined = createReducer(initialState.isLogined, {
+  [authActions.isLogined]: (_, { payload }) => payload,
+})
+
 const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
   [authActions.openTotpForm]: () => 'shown',
   [authActions.closeTotpForm]: () => 'hidden',
@@ -29,6 +34,7 @@ const authReducer = combineReducers({
   sessionId,
   temporaryId,
   totpFormVisibility,
+  isLogined,
 })
 
 export default authReducer

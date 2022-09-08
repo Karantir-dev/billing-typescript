@@ -36,5 +36,6 @@
   "Business hours: 24/7": "Жұмыс уақыты: 24/7",
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "Сұрағыңыз серверлерді орнатуға, басқару панелін орнатуға, сайттарды жылжытуға қатысты болса, осы бөлімді таңдаңыз. Сондай-ақ хостингтің техникалық ерекшеліктері бойынша сұрақтар, VDS, Dedicated – осы бөлімге.",
   "To the archive": "Мұрағатқа",
-  "Select a department": "Бөлімді таңдаңыз"
+  "Select a department": "Бөлімді таңдаңыз",
+  "The following services were suspended due to no actions from you": "Сіз жасаған әрекеттерге байланысты келесі қызметтер тоқтатылды"
 }
