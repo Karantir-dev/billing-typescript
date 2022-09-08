@@ -413,7 +413,7 @@
 
 @media screen and (min-width: 1024px) {
   .terms_block {
-    margin-bottom: 250px;
+    margin-bottom: 80px;
   }
 }
 
@@ -421,6 +421,9 @@
   .page_title {
     font-size: 22px;
     margin-bottom: 30px;
+  }
+  .terms_block {
+    margin-bottom: 0px;
   }
 
   .tarifs_block {
@@ -440,10 +443,13 @@
   }
 }
 
-@media screen and (min-width: 1900px) {
+@media screen and (min-width: 1920px) {
   .tarifs_block {
     grid-template-columns: repeat(6, 191px);
     grid-column-gap: 22px;
+  }
+  .terms_block {
+    margin-bottom: 80px;
   }
 }
 

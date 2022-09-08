@@ -144,10 +144,13 @@
     max-width: 235px;
     margin-right: 15px;
   }
-
-  .page_wrapper {
-    padding-bottom: 50px;
+  .form {
+    padding-bottom: 0px;
   }
+
+  // .page_wrapper {
+  //   padding-bottom: 50px;
+  // }
 
   .paymentBlock {
     flex-direction: row;
@@ -173,11 +176,17 @@
   .paymentBlock {
     padding: 15px 60px 15px 200px;
   }
+  .form {
+    padding-bottom: 80px;
+  }
 }
 
 @media screen and (min-width: 1550px) {
   .paymentBlock {
     padding: 15px 140px 15px 260px;
+  }
+  .form {
+    padding-bottom: 0px;
   }
 }
 
@@ -185,5 +194,8 @@
   .paymentBlock {
     height: 90px;
     padding: 15px 155px 15px 290px;
+  }
+  .form {
+    padding-bottom: 80px;
   }
 }

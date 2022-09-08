@@ -247,6 +247,7 @@ const getCountriesForRegister =
         qs.stringify({
           func: 'register',
           out: 'json',
+          lang: 'en',
         }),
       )
       .then(({ data }) => {
