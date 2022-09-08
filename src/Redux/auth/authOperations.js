@@ -543,9 +543,11 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
 }
 
 const getLocation = setLang => () => {
+  console.log('here')
   axios
     .get('https://api.server-panel.net/api/service/geo/')
     .then(({ data }) => {
+      console.log(data)
       const country = data?.clients_country_code
       if (country === 'UA') {
         setLang('uk')

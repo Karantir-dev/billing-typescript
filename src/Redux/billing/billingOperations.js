@@ -424,7 +424,7 @@ const getPayers =
           func: 'profile',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
+          p_cnt: 300,
           p_col: '+time',
           clickstat: 'yes',
           ...body,
@@ -475,6 +475,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
         profiletype: filters?.profiletype[0]?.$key,
       }
 
+      dispatch(payersActions.setPayersSelectLists(filters))
       dispatch(getPaymentMethod({}, d))
     })
     .catch(error => {
@@ -526,8 +527,6 @@ const getPaymentMethod =
         } else {
           d['payment_currency_list'] = [{ $: 'EUR', $key: data.doc?.payment_currency?.$ }]
         }
-
-        console.log(data.doc)
 
         dispatch(billingActions.setPaymentCurrencyList(d))
 

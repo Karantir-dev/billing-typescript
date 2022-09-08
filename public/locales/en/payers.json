@@ -19,5 +19,9 @@
   "By post": "By post",
   "By email": "By email",
   "Add new payer": "+ Add",
-  "You cannot delete the payer who already made payments": "You cannot delete the payer who already made payments"
+  "You cannot delete the payer who already made payments": "You cannot delete the payer who already made payments",
+  "Company name": "Company name",
+  "Company": "Company",
+  "Sole proprietor": "Sole proprietor",
+  "does not correspond to country": "The VAT-number does not correspond to the payer's country"
 }

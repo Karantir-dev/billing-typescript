@@ -20,5 +20,9 @@
 "By email": "Електронною поштою",
 "Add new payer": "+ Додати",
 
-"You cannot delete the payer who already made payments": "Ви не можете видалити платника, який уже робив платежі"
+"You cannot delete the payer who already made payments": "Ви не можете видалити платника, який уже робив платежі",
+"Company name": "Назва компанії",
+"Company": "Компанія",
+"Sole proprietor": "Одноосібний власник",
+"does not correspond to country": "ПДВ-номер не відповідає країні платника"
 }

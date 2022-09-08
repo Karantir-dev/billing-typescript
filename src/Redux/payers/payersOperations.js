@@ -137,11 +137,25 @@ const getPayerModalInfo =
           func: 'profile.add.profiledata',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
 
         if (isCreate) {
           closeModal()
@@ -149,8 +163,8 @@ const getPayerModalInfo =
         }
 
         let linkName = ''
-
         let passportField = false
+        let euVatField = false
 
         data.doc?.metadata?.form?.page?.forEach(e => {
           if (e?.$name === 'offer' && e?.field && e?.field?.length !== 0) {
@@ -160,6 +174,13 @@ const getPayerModalInfo =
             e?.field?.forEach(field => {
               if (field?.$name === 'passport') {
                 passportField = true
+              }
+            })
+          }
+          if (e?.$name === 'buh_settings' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'eu_vat') {
+                euVatField = true
               }
             })
           }
@@ -183,6 +204,7 @@ const getPayerModalInfo =
           offer_name: linkText || '',
           offer_field: linkName || '',
           passport_field: passportField,
+          eu_vat_field: euVatField,
         }
 
         const filters = {}
@@ -220,11 +242,25 @@ const getPayerEditInfo =
           func: 'profile.edit',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
 
         if (isCreate) {
           closeModal()
@@ -232,12 +268,20 @@ const getPayerEditInfo =
         }
 
         let passportField = false
+        let euVatField = false
 
         data.doc?.metadata?.form?.page?.forEach(e => {
           if (e?.$name === 'contract' && e?.field && e?.field?.length !== 0) {
             e?.field?.forEach(field => {
               if (field?.$name === 'passport') {
                 passportField = true
+              }
+            })
+          }
+          if (e?.$name === 'buh_settings' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'eu_vat') {
+                euVatField = true
               }
             })
           }
@@ -260,9 +304,12 @@ const getPayerEditInfo =
           maildocs: mailDocs || '',
           person: data.doc?.person?.$ || '',
           phone: data.doc?.phone?.$ || '',
+          name: data.doc?.name?.$ || '',
+          eu_vat: data.doc?.eu_vat?.$ || '',
           postcode_physical: data.doc?.postcode_physical?.$ || '',
           passport: data.doc?.passport?.$ || '',
           passport_field: passportField,
+          eu_vat_field: euVatField,
         }
 
         const filters = {}

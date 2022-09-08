@@ -34,7 +34,7 @@
 
 .form {
   padding: 0px 22px;
-  max-height: 55vh;
+  max-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -120,6 +120,11 @@
 }
 
 .select {
+  max-width: 100%;
+  margin-top: 15px;
+}
+
+.inputBig {
   max-width: 100%;
   margin-top: 15px;
 }
@@ -300,6 +305,15 @@
   flex-direction: column;
 }
 
+.countrySelectItem {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 13px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .paymentMethodBtn {
     max-width: 30%;
@@ -326,8 +340,21 @@
   }
 
   .select {
-    max-width: 30%;
+    max-width: 48%;
     margin-right: 20px;
+
+    &:nth-child(2n) {
+      margin-right: 0px;
+    }
+  }
+
+  .inputBig {
+    max-width: 48%;
+    margin-right: 20px;
+
+    &:nth-child(2n) {
+      margin-right: 0px;
+    }
   }
 
   .modalBg {
@@ -346,7 +373,7 @@
 
   .form {
     padding: 0px 50px;
-    max-height: 90vh;
+    max-height: 65vh;
   }
 
   .btnBlock {

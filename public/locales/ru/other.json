@@ -184,5 +184,6 @@
   "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Невозможно продлить эту услугу: услуга еще не обработана, в данный момент услуга удалена или удаляется/продлевается",
   "terminal": "терминал",
   "terminals": "терминала",
-  "memory": "памяти"
+  "memory": "памяти",
+  "nothing_found": "Ничего не найдено"
 }

@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { Check, Cross } from '../../../images'
-import { Button, Select, InputField, CheckBox, PaymentCurrencyBtn } from '../..'
+import { Button, Select, InputField, PaymentCurrencyBtn } from '../..'
 import {
   billingOperations,
   billingSelectors,
-  payersOperations,
+  // payersOperations,
   payersSelectors,
 } from '../../../Redux'
 import s from './ModalCreatePayment.module.scss'
@@ -26,31 +26,32 @@ export default function Component(props) {
   const payersList = useSelector(payersSelectors.getPayersList)
 
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
+  const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
 
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
 
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
-  const [newPayer, setNewPayer] = useState(false)
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
   }, [])
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  }
-
-  const payers = newPayer
-    ? [
-        ...payersList,
-        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
-      ]
-    : payersList
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+  // }
 
   const createPaymentMethodHandler = values => {
     const data = {
+      postcode_physical: values?.postcode_physical,
+      city_physical: values?.city_physical,
+      address_physical: values?.address_physical,
+      postcode: values?.postcode_physical,
+      city: values?.city_physical,
+      address: values?.address_physical,
+      country_physical:
+        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profile: values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
@@ -59,12 +60,17 @@ export default function Component(props) {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: payersSelectedFields?.profiletype || '',
       person:
-        values?.person || payers?.find(e => e?.id?.$ === values?.profile)?.name?.$ || ' ',
+        // 'Van Vanov70',
+        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        values?.person ||
+        ' ',
       name: values?.person,
       [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
         ? 'on'
         : 'off',
     }
+
+    console.log(data)
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
@@ -80,10 +86,8 @@ export default function Component(props) {
       )
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    person: newPayer
-      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-      : null,
-    [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
+    // person: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    [payersSelectedFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   return (
@@ -102,7 +106,7 @@ export default function Component(props) {
             amount: '',
             slecetedPayMethod: undefined,
             person: '',
-            [payersSelectedFields?.offer_field]: false,
+            [payersSelectedFields?.offer_field]: true,
             payment_currency: {
               title: paymentsCurrency?.payment_currency_list?.filter(
                 e => e?.$key === paymentsCurrency?.payment_currency,
@@ -113,6 +117,7 @@ export default function Component(props) {
           onSubmit={createPaymentMethodHandler}
         >
           {({ values, setFieldValue, touched, errors }) => {
+            console.log(errors)
             const parsePaymentInfo = text => {
               const splittedText = text?.split('<p>')
               if (splittedText?.length > 0) {
@@ -140,11 +145,6 @@ export default function Component(props) {
 
             const setPayerHandler = val => {
               setFieldValue('profile', val)
-              if (val === 'add_new') {
-                setNewPayer(true)
-              } else {
-                setNewPayer(false)
-              }
             }
 
             return (
@@ -153,78 +153,89 @@ export default function Component(props) {
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>1. {t('Payers choice')}</div>
                     <div className={cn(s.formFieldsBlock, s.first)}>
-                      {payers?.length !== 0 && (
+                      <div className={s.addPayerBlock}>
                         <Select
                           placeholder={t('Not chosen', { ns: 'other' })}
+                          label={`${t('Payer status', { ns: 'payers' })}:`}
+                          value={values.profiletype}
+                          getElement={item => setFieldValue('profiletype', item)}
+                          isShadow
+                          className={s.select}
+                          dropdownClass={s.selectDropdownClass}
+                          itemsList={payersSelectLists?.profiletype?.map(
+                            ({ $key, $ }) => ({
+                              label: t(`${$.trim()}`),
+                              value: $key,
+                            }),
+                          )}
+                        />
+
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          label={`${t('Full name', { ns: 'other' })}:`}
                           value={values.profile}
                           getElement={item => setPayerHandler(item)}
                           isShadow
                           className={s.select}
-                          itemsList={payers?.map(({ name, id }) => ({
+                          itemsList={payersList?.map(({ name, id }) => ({
                             label: t(`${name?.$?.trim()}`),
                             value: id?.$,
                           }))}
                         />
-                      )}
-                      {!newPayer && (
-                        <div className={s.addPayerBtnBlock}>
-                          <button
-                            onClick={() => setPayerHandler('add_new')}
-                            type="button"
-                            className={s.addNewPayerBtn}
-                          >
-                            {t('Add new payer', { ns: 'payers' })}
-                          </button>
-                          <ErrorMessage
-                            className={s.error_message_addpayer}
-                            name={'profile'}
-                            component="span"
-                          />
-                        </div>
-                      )}
-                      {newPayer && (
-                        <div className={s.addPayerBlock}>
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="person"
-                            label={`${t('The contact person', { ns: 'payers' })}:`}
-                            placeholder={t('Enter data', { ns: 'other' })}
-                            isShadow
-                            className={s.inputPerson}
-                            error={!!errors.person}
-                            touched={!!touched.person}
-                            isRequired
-                          />
-                          {payersSelectedFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                initialState={values[payersSelectedFields?.offer_field]}
-                                setValue={item =>
-                                  setFieldValue(
-                                    `${payersSelectedFields?.offer_field}`,
-                                    item,
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[payersSelectedFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer', {
-                                  ns: 'payers',
-                                })}
-                                <br />
-                                <button
-                                  onClick={offerTextHandler}
-                                  type="button"
-                                  className={s.offerBlockLink}
-                                >
-                                  {payersSelectedFields?.offer_name}
-                                </button>
-                              </div>
-                            </div>
+
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          label={`${t('The country', { ns: 'other' })}:`}
+                          value={values.country}
+                          getElement={item => setFieldValue('country', item)}
+                          isShadow
+                          className={s.select}
+                          itemsList={payersSelectLists?.country?.map(
+                            ({ $key, $, $image }) => ({
+                              label: (
+                                <div className={s.countrySelectItem}>
+                                  <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                  {t(`${$.trim()}`)}
+                                </div>
+                              ),
+                              value: $key,
+                            }),
                           )}
-                        </div>
-                      )}
+                        />
+
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="postcode_physical"
+                          label={`${t('Index', { ns: 'other' })}:`}
+                          placeholder={t('Enter index', { ns: 'other' })}
+                          isShadow
+                          className={s.inputBig}
+                          error={!!errors.postcode_physical}
+                          touched={!!touched.postcode_physical}
+                        />
+
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="city_physical"
+                          label={`${t('City', { ns: 'other' })}:`}
+                          placeholder={t('Enter city', { ns: 'other' })}
+                          isShadow
+                          className={s.inputBig}
+                          error={!!errors.city_physical}
+                          touched={!!touched.city_physical}
+                        />
+
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="address_physical"
+                          label={`${t('The address', { ns: 'other' })}:`}
+                          placeholder={t('Enter address', { ns: 'other' })}
+                          isShadow
+                          className={s.inputBig}
+                          error={!!errors.address_physical}
+                          touched={!!touched.address_physical}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className={s.formBlock}>
@@ -321,6 +332,31 @@ export default function Component(props) {
                     )}
                   </div>
                 </div>
+                {/* {payersSelectedFields?.offer_link && (
+                  <div className={s.offerBlock}>
+                    <CheckBox
+                      initialState={values[payersSelectedFields?.offer_field]}
+                      setValue={item =>
+                        setFieldValue(`${payersSelectedFields?.offer_field}`, item)
+                      }
+                      className={s.checkbox}
+                      error={!!errors[payersSelectedFields?.offer_field]}
+                    />
+                    <div className={s.offerBlockText}>
+                      {t('I agree with the terms of the offer', {
+                        ns: 'payers',
+                      })}
+                      <br />
+                      <button
+                        onClick={offerTextHandler}
+                        type="button"
+                        className={s.offerBlockLink}
+                      >
+                        {payersSelectedFields?.offer_name}
+                      </button>
+                    </div>
+                  </div>
+                )} */}
                 <div className={s.btnBlock}>
                   <Button
                     disabled={

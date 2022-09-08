@@ -38,24 +38,30 @@ export default function Component() {
   return (
     <>
       <div className={s.body}>
-        <h1 className={s.pageTitle}>{t('Payers')}</h1>
-        <Button
-          onClick={() => setAddPayerModal(!addPayerModal)}
-          label={t('Add')}
-          isShadow
-          className={s.addBtn}
-        />
-        <PayersTable openEditModalHandler={openEditModalHandler} list={payersList} />
         <div className={s.content}>
-          <div className={s.pagination}>
-            <Pagination
-              totalCount={Number(payersCount)}
-              currentPage={p_num}
-              pageSize={p_cnt}
-              onPageChange={page => setP_num(page)}
-              onPageItemChange={items => setP_cnt(items)}
-            />
-          </div>
+          <h1 className={s.pageTitle}>{t('Payers')}</h1>
+          <Button
+            onClick={() => setAddPayerModal(!addPayerModal)}
+            label={t('Add')}
+            isShadow
+            className={s.addBtn}
+          />
+          {payersList?.length !== 0 ? (
+            <PayersTable openEditModalHandler={openEditModalHandler} list={payersList} />
+          ) : (
+            <div className={s.noResults}>{t('nothing_found', { ns: 'other' })}</div>
+          )}
+          {payersCount > 5 && (
+            <div className={s.pagination}>
+              <Pagination
+                totalCount={Number(payersCount)}
+                currentPage={p_num}
+                pageSize={p_cnt}
+                onPageChange={page => setP_num(page)}
+                onPageItemChange={items => setP_cnt(items)}
+              />
+            </div>
+          )}
         </div>
       </div>
       <Portal>

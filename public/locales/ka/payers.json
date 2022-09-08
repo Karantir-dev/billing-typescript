@@ -19,5 +19,9 @@
   "By post": "ფოსტით",
   "By email": "ელ. ფოსტით",
   "Add new payer": "+ დამატება",
-  "You cannot delete the payer who already made payments": "თქვენ არ შეგიძლიათ წაშალოთ გადამხდელი, რომელმაც უკვე განახორციელა გადახდები"
+  "You cannot delete the payer who already made payments": "თქვენ არ შეგიძლიათ წაშალოთ გადამხდელი, რომელმაც უკვე განახორციელა გადახდები",
+  "Company name": "Კომპანიის სახელი",
+  "Company": "კომპანია",
+  "Sole proprietor": "ინდივიდუალური მეწარმე",
+  "does not correspond to country": "დღგ-ს ნომერი არ შეესაბამება გადამხდელის ქვეყანას"
 }

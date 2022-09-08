@@ -20,5 +20,9 @@
   "By email": "Электрондық пошта бойынша",
   "Add new payer": "+ Қосу",
 
-  "You cannot delete the payer who already made payments": "Төлем жасаған төлеушіні жою мүмкін емес"
+  "You cannot delete the payer who already made payments": "Төлем жасаған төлеушіні жою мүмкін емес",
+  "Company name": "Компанияның Аты",
+  "Company": "Компания",
+  "Sole proprietor": "Жеке кәсіпкер",
+  "does not correspond to country": "ҚҚС-нөмірі төлеушінің еліне сәйкес келмейді"
 }
