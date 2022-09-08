@@ -343,8 +343,6 @@ const deleteSiteCare =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
-    console.log(body)
-
     const {
       auth: { sessionId },
     } = getState()

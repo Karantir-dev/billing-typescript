@@ -6,10 +6,10 @@ import { Cross } from '../../../images'
 import {
   Select,
   InputField,
-  CustomPhoneInput,
+  // CustomPhoneInput,
   Button,
   CheckBox,
-  SelectMultiple,
+  // SelectMultiple,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
 import { BASE_URL } from '../../../config/config'
@@ -48,16 +48,9 @@ export default function Component(props) {
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(
-      t('trusted_users.form_errors.email', { ns: 'trusted_users' }),
-    ),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    postcode_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    eu_vat: payersSelectedFields?.eu_vat_field
-      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-      : null,
     name:
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
@@ -129,7 +122,7 @@ export default function Component(props) {
           }}
           onSubmit={elid ? editPayerHandler : createPayerHandler}
         >
-          {({ errors, touched, setFieldValue, values, handleBlur }) => {
+          {({ errors, touched, setFieldValue, values }) => {
             const onProfileTypeChange = item => {
               setFieldValue('profiletype', item)
               let data = {
@@ -190,7 +183,7 @@ export default function Component(props) {
                         isRequired
                       />
 
-                      <CustomPhoneInput
+                      {/* <CustomPhoneInput
                         containerClass={s.phoneInputContainer}
                         inputClass={s.phoneInputClass}
                         value={values.phone}
@@ -224,7 +217,7 @@ export default function Component(props) {
                           label: t(`${$.trim()}`),
                           value: $key,
                         }))}
-                      />
+                      /> */}
 
                       {payersSelectedFields?.eu_vat_field ? (
                         <InputField
@@ -236,7 +229,6 @@ export default function Component(props) {
                           className={s.input}
                           error={!!errors.eu_vat}
                           touched={!!touched.eu_vat}
-                          isRequired
                         />
                       ) : null}
                     </div>
@@ -262,8 +254,9 @@ export default function Component(props) {
                             value: $key,
                           }),
                         )}
+                        isRequired
                       />
-                      <InputField
+                      {/* <InputField
                         inputWrapperClass={s.inputHeight}
                         name="postcode_physical"
                         label={`${t('Index', { ns: 'other' })}:`}
@@ -272,7 +265,8 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.postcode_physical}
                         touched={!!touched.postcode_physical}
-                      />
+                        isRequired
+                      /> */}
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="city_physical"
@@ -282,6 +276,7 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.city_physical}
                         touched={!!touched.city_physical}
+                        isRequired
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}
@@ -292,16 +287,18 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.address_physical}
                         touched={!!touched.address_physical}
+                        isRequired
                       />
                     </div>
                   </div>
-                  {(payersSelectedFields?.passport_field || !elid) && (
-                    <div className={s.formBlock}>
-                      <div className={s.formBlockTitle}>
-                        3. {t('Data for the contract')}
-                      </div>
-                      <div className={s.formFieldsBlock}>
-                        {payersSelectedFields?.passport_field && (
+                  {payersSelectedFields?.offer_link &&
+                    (payersSelectedFields?.passport_field || !elid) && (
+                      <div className={s.formBlock}>
+                        <div className={s.formBlockTitle}>
+                          3. {t('Data for the contract')}
+                        </div>
+                        <div className={s.formFieldsBlock}>
+                          {/* {payersSelectedFields?.passport_field && (
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="passport"
@@ -312,36 +309,36 @@ export default function Component(props) {
                             error={!!errors.passport}
                             touched={!!touched.passport}
                           />
-                        )}
-                        {payersSelectedFields?.offer_link && (
-                          <div className={s.offerBlock}>
-                            <CheckBox
-                              initialState={values[payersSelectedFields?.offer_field]}
-                              setValue={item =>
-                                setFieldValue(
-                                  `${payersSelectedFields?.offer_field}`,
-                                  item,
-                                )
-                              }
-                              className={s.checkbox}
-                              error={!!errors[payersSelectedFields?.offer_field]}
-                            />
-                            <div className={s.offerBlockText}>
-                              {t('I agree with the terms of the offer')}
-                              <br />
-                              <button
-                                onClick={offerTextHandler}
-                                type="button"
-                                className={s.offerBlockLink}
-                              >
-                                {payersSelectedFields?.offer_name}
-                              </button>
+                        )} */}
+                          {payersSelectedFields?.offer_link && (
+                            <div className={s.offerBlock}>
+                              <CheckBox
+                                initialState={values[payersSelectedFields?.offer_field]}
+                                setValue={item =>
+                                  setFieldValue(
+                                    `${payersSelectedFields?.offer_field}`,
+                                    item,
+                                  )
+                                }
+                                className={s.checkbox}
+                                error={!!errors[payersSelectedFields?.offer_field]}
+                              />
+                              <div className={s.offerBlockText}>
+                                {t('I agree with the terms of the offer')}
+                                <br />
+                                <button
+                                  onClick={offerTextHandler}
+                                  type="button"
+                                  className={s.offerBlockLink}
+                                >
+                                  {payersSelectedFields?.offer_name}
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
                 <div className={s.btnBlock}>
                   <Button

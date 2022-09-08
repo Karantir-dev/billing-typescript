@@ -123,7 +123,7 @@ const deletePayer = elid => (dispatch, getState) => {
 }
 
 const getPayerModalInfo =
-  (body = {}, isCreate = false, closeModal) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const {
@@ -146,6 +146,20 @@ const getPayerModalInfo =
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
               i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
                 ns: 'payers',
               }),
               {
@@ -205,6 +219,7 @@ const getPayerModalInfo =
           offer_field: linkName || '',
           passport_field: passportField,
           eu_vat_field: euVatField,
+          profile: newPayer ? 'new' : null,
         }
 
         const filters = {}
@@ -212,6 +227,11 @@ const getPayerModalInfo =
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
+
+        if (setSelectedPayerFields) {
+          setSelectedPayerFields(selectedFields)
+          return dispatch(actions.hideLoader())
+        }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
@@ -227,7 +247,7 @@ const getPayerModalInfo =
   }
 
 const getPayerEditInfo =
-  (body = {}, isCreate = false, closeModal) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -259,11 +279,25 @@ const getPayerEditInfo =
               },
             )
           }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
           throw new Error(data.doc.error.msg.$)
         }
 
         if (isCreate) {
-          closeModal()
+          closeModal && closeModal()
           return dispatch(getPayers())
         }
 
@@ -310,6 +344,7 @@ const getPayerEditInfo =
           passport: data.doc?.passport?.$ || '',
           passport_field: passportField,
           eu_vat_field: euVatField,
+          profile: data.doc?.elid?.$ || '',
         }
 
         const filters = {}
@@ -317,6 +352,11 @@ const getPayerEditInfo =
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
+
+        if (setSelectedPayerFields) {
+          setSelectedPayerFields(selectedFields)
+          return dispatch(actions.hideLoader())
+        }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 

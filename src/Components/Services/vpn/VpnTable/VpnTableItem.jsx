@@ -126,7 +126,6 @@ export default function Component(props) {
               <button
                 className={s.settings_btn}
                 onClick={() => {
-                  console.log(id, 'id')
                   deleteSiteCareHandler(id)
                   setDeleteIds(id)
                 }}
