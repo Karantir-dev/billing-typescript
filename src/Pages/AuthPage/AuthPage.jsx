@@ -23,6 +23,8 @@ export default function AuthPage({ children }) {
   useEffect(() => {
     if (!isLoginedBefore) {
       dispatch(authOperations.getLocation(changeLang))
+    } else {
+      setIsLangLoading(false)
     }
   }, [])
 
