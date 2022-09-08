@@ -60,8 +60,10 @@ export default function Component(props) {
   }, [payersList, payersSelectLists])
 
   const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+    dispatch(payersOperations.getPayerOfferText(selectedPayerFields?.offer_link))
   }
+
+  console.log(selectedPayerFields?.offer_link)
 
   const createPaymentMethodHandler = values => {
     const data = {
@@ -94,7 +96,7 @@ export default function Component(props) {
         values?.person ||
         ' ',
       name: values?.person,
-      [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
+      [selectedPayerFields?.offer_field]: values[selectedPayerFields?.offer_field]
         ? 'on'
         : 'off',
     }
@@ -121,7 +123,9 @@ export default function Component(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [payersSelectedFields?.offer_field]: Yup.bool().oneOf([true]),
+    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
+      ? Yup.bool().oneOf([true])
+      : null,
   })
 
   return (
@@ -150,7 +154,7 @@ export default function Component(props) {
                 '',
               profiletype: payersSelectedFields?.profiletype,
               eu_vat: selectedPayerFields?.eu_vat || '',
-              [payersSelectedFields?.offer_field]: false,
+              [selectedPayerFields?.offer_field]: false,
               payment_currency: {
                 title: paymentsCurrency?.payment_currency_list?.filter(
                   e => e?.$key === paymentsCurrency?.payment_currency,
@@ -347,18 +351,20 @@ export default function Component(props) {
                               touched={!!touched.eu_vat}
                             />
                           ) : null}
-                          {payersSelectedFields?.offer_link && (
+                          {selectedPayerFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox
-                                // initialState={values[payersSelectedFields?.offer_field]}
+                                initialState={
+                                  values[selectedPayerFields?.offer_field] || false
+                                }
                                 setValue={item =>
                                   setFieldValue(
-                                    `${payersSelectedFields?.offer_field}`,
+                                    `${selectedPayerFields?.offer_field}`,
                                     item,
                                   )
                                 }
                                 className={s.checkbox}
-                                error={!!errors[payersSelectedFields?.offer_field]}
+                                error={!!errors[selectedPayerFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
                                 {t('I agree with the terms of the offer', {
@@ -370,7 +376,7 @@ export default function Component(props) {
                                   type="button"
                                   className={s.offerBlockLink}
                                 >
-                                  {payersSelectedFields?.offer_name}
+                                  {selectedPayerFields?.offer_name}
                                 </button>
                               </div>
                             </div>

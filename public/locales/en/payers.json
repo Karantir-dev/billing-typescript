@@ -24,5 +24,6 @@
   "Company": "Company",
   "Sole proprietor": "Sole proprietor",
   "does not correspond to country": "The VAT-number does not correspond to the payer's country",
-  "The maximum number of payers Company": "The maximum number of payers  'Company': 1. You have exceeded the limit. You can use the existing payer, or create a new payer of another type. Contact Technical support, if you need other variants"
+  "The maximum number of payers Company": "The maximum number of payers  'Company': 1. You have exceeded the limit. You can use the existing payer, or create a new payer of another type. Contact Technical support, if you need other variants",
+  "eu_vat field has invalid value": "The VAT-number has invalid value"
 }

@@ -107,7 +107,9 @@ export default function Component() {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [payersSelectedFields?.offer_field]: Yup.bool().oneOf([true]),
+    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
+      ? Yup.bool().oneOf([true])
+      : null,
   })
 
   const offerTextHandler = () => {
@@ -160,7 +162,7 @@ export default function Component() {
         ' ',
       promocode: values?.promocode || '',
       name: values?.person,
-      [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
+      [selectedPayerFields?.offer_field]: values[selectedPayerFields?.offer_field]
         ? 'on'
         : 'off',
     }
@@ -591,7 +593,7 @@ export default function Component() {
                     '',
                   profiletype: selectedPayerFields?.profiletype,
                   eu_vat: selectedPayerFields?.eu_vat || '',
-                  [payersSelectedFields?.offer_field]: false,
+                  [selectedPayerFields?.offer_field]: false,
 
                   slecetedPayMethod: undefined,
                   promocode: '',
@@ -806,18 +808,18 @@ export default function Component() {
                               touched={!!touched.eu_vat}
                             />
                           ) : null}
-                          {payersSelectedFields?.offer_link && (
+                          {selectedPayerFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox
-                                // initialState={values[payersSelectedFields?.offer_field]}
+                                initialState={values[selectedPayerFields?.offer_field] || false}
                                 setValue={item =>
                                   setFieldValue(
-                                    `${payersSelectedFields?.offer_field}`,
+                                    `${selectedPayerFields?.offer_field}`,
                                     item,
                                   )
                                 }
                                 className={s.checkbox}
-                                error={!!errors[payersSelectedFields?.offer_field]}
+                                error={!!errors[selectedPayerFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
                                 {t('I agree with the terms of the offer', {
@@ -829,7 +831,7 @@ export default function Component() {
                                   type="button"
                                   className={s.offerBlockLink}
                                 >
-                                  {payersSelectedFields?.offer_name}
+                                  {selectedPayerFields?.offer_name}
                                 </button>
                               </div>
                             </div>
