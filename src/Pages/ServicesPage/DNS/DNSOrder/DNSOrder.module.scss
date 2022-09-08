@@ -420,7 +420,7 @@
 
 @media screen and (min-width: 1024px) {
   .terms_block {
-    margin-bottom: 250px;
+    margin-bottom: 80px;
   }
 }
 
@@ -440,10 +440,14 @@
     align-items: center;
     font-size: 18px;
   }
+  .terms_block {
+    margin-bottom: 0px;
+  }
 }
 
-@media screen and (min-width: 1900px) {
-  .tarifs_block {
+@media screen and (min-width: 1920px) {
+  .terms_block {
+    margin-bottom: 80px;
   }
 }
 

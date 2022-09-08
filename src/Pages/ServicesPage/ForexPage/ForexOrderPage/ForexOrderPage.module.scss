@@ -484,7 +484,7 @@
 
 @media screen and (min-width: 1024px) {
   .terms_block {
-    margin-bottom: 250px;
+    margin-bottom: 80px;
   }
 
   .tarifs_block {
@@ -508,6 +508,9 @@
     font-size: 22px;
     margin-bottom: 30px;
   }
+  .terms_block {
+    margin-bottom: 0px;
+  }
 
   .tarif_card {
     & .tarif_card_btn {
@@ -520,6 +523,12 @@
     display: flex;
     align-items: center;
     font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .terms_block {
+    margin-bottom: 80px;
   }
 }
 
