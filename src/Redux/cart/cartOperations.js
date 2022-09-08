@@ -212,70 +212,126 @@ const setPaymentMethods =
       .post(
         '/',
         qs.stringify({
-          func: 'payment.add.method',
+          func:
+            body?.profile && body?.profile?.length > 0
+              ? 'profile.edit'
+              : 'profile.add.profiledata',
           out: 'json',
+          auth: sessionId,
           lang: 'en',
           sok: 'ok',
-          auth: sessionId,
           ...body,
+          elid: body?.profile && body?.profile?.length > 0 ? body?.profile : null,
         }),
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          if (
-            data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
-            'The Contact person field has invalid value. The value cannot be empty'
-          )
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
-              i18n?.t('The payer is not valid, change the payer or add a new one', {
-                ns: 'cart',
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
               }),
               {
                 position: 'bottom-right',
                 toastId: 'customId',
               },
             )
+          }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
           throw new Error(data.doc.error.msg.$)
         }
 
-        if (cartData) {
-          const items = cartData?.elemList?.map(e => {
-            return {
-              item_name: e.pricelist_name?.$ || '',
-              item_id: e.id?.$ || '',
-              price: Number(e.cost?.$) || 0,
-              item_category: e['item.type']?.$ || '',
-              quantity: 1,
+        if (!(body?.profile && body?.profile?.length > 0)) {
+          body.profile = data?.doc?.id?.$
+        }
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'payment.add.method',
+              out: 'json',
+              lang: 'en',
+              sok: 'ok',
+              auth: sessionId,
+              ...body,
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc.error) {
+              if (
+                data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
+                'The Contact person field has invalid value. The value cannot be empty'
+              )
+                toast.error(
+                  i18n?.t('The payer is not valid, change the payer or add a new one', {
+                    ns: 'cart',
+                  }),
+                  {
+                    position: 'bottom-right',
+                    toastId: 'customId',
+                  },
+                )
+              throw new Error(data.doc.error.msg.$)
             }
+
+            if (cartData) {
+              const items = cartData?.elemList?.map(e => {
+                return {
+                  item_name: e.pricelist_name?.$ || '',
+                  item_id: e.id?.$ || '',
+                  price: Number(e.cost?.$) || 0,
+                  item_category: e['item.type']?.$ || '',
+                  quantity: 1,
+                }
+              })
+
+              window.dataLayer.push({
+                event: 'purchase',
+                ecommerce: {
+                  transaction_id: cartData?.billorder,
+                  affiliation: 'cp.zomro.com',
+                  value: Number(cartData?.total_sum) || 0,
+                  currency: 'EUR',
+                  coupon: body?.promocode,
+                  items: items,
+                },
+              })
+            }
+
+            if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+              dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
+            }
+
+            navigate && navigate(cartState?.redirectPath)
+            dispatch(
+              cartActions.setCartIsOpenedState({
+                isOpened: false,
+                redirectPath: '',
+              }),
+            )
+            dispatch(actions.hideLoader())
           })
-
-          window.dataLayer.push({
-            event: 'purchase',
-            ecommerce: {
-              transaction_id: cartData?.billorder,
-              affiliation: 'cp.zomro.com',
-              value: Number(cartData?.total_sum) || 0,
-              currency: 'EUR',
-              coupon: body?.promocode,
-              items: items,
-            },
+          .then(() => dispatch(userOperations.getNotify()))
+          .catch(error => {
+            console.log('error', error)
+            errorHandler(error.message, dispatch)
+            dispatch(actions.hideLoader())
           })
-        }
-
-        if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
-          dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
-        }
-
-        navigate && navigate(cartState?.redirectPath)
-        dispatch(
-          cartActions.setCartIsOpenedState({
-            isOpened: false,
-            redirectPath: '',
-          }),
-        )
-        dispatch(actions.hideLoader())
       })
-      .then(() => dispatch(userOperations.getNotify()))
       .catch(error => {
         console.log('error', error)
         errorHandler(error.message, dispatch)

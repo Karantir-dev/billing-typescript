@@ -14,7 +14,6 @@ export default function VDS(props) {
   const domainsTotalPrice = selctedItem?.reduce((curServer, nextServer) => {
     return curServer + +nextServer?.item_cost?.$
   }, 0)
-  console.log(domainsTotalPrice)
 
   const checkProlongSelctedItemStatus = () => {
     let blocked = false

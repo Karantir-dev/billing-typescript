@@ -56,7 +56,6 @@ export default function Component(props) {
     initialValues[editData?.addon] = editData[editData?.addon]?.$
   }
 
-  console.log(editData, 'editData')
   return (
     <div className={cn(s.modalBg, { [s.profileOpened]: isOpenProfile })}>
       <div className={s.modalBlock}>

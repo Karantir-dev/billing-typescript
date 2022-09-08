@@ -163,6 +163,11 @@
   }
 }
 
+.inputBig {
+  max-width: 100%;
+  margin-top: 10px;
+}
+
 .error_message {
   margin-left: 2px;
   color: var(--error-color);
@@ -427,6 +432,15 @@
   margin-top: 15px;
 }
 
+.countrySelectItem {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 13px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   // .formBlock {
   //   &:not(:first-child) {
@@ -482,9 +496,18 @@
   }
 
   .select {
-    max-width: 313px;
+    max-width: 46%;
     margin-top: 10px;
     margin-right: 20px;
+  }
+
+  .inputBig {
+    max-width: 46%;
+    margin-right: 20px;
+
+    &:nth-child(2n) {
+      margin-right: 0px;
+    }
   }
 
   .btnBlock {
