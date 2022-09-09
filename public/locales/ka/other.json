@@ -184,5 +184,6 @@
   "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "ამ სერვისის განახლება შეუძლებელია: სერვისი ჯერ არ დამუშავებულა, სერვისი წაიშალა ან წაიშალა/გახანგრძლივდა ამ მომენტში",
   "terminal": "ტერმინალი",
   "terminals": "ტერმინალი",
-  "memory": "მეხსიერება"
+  "memory": "მეხსიერება",
+  "nothing_found": "Არაფერი არ არის ნაპოვნი"
 }

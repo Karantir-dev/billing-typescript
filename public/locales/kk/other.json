@@ -185,5 +185,6 @@
   "Cannot renew this service: the service has not been processed yet, the service was deleted or being deleted/prolonged at the moment": "Бұл қызметті ұзарту мүмкін емес: қызмет әлі өңделмеді, қызмет жойылды немесе қазіргі уақытта жойылуда/ұзартуда.",
   "terminal": "терминал",
   "terminals": "терминал",
-  "memory": "жад"
+  "memory": "жад",
+  "nothing_found": "Ештеңе табылмады"
 }

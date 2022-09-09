@@ -108,7 +108,6 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
-    console.log(mutatedValues)
     dispatch(
       vdsOperations.editVDS(
         elid,

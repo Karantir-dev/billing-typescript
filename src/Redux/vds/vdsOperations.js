@@ -47,6 +47,7 @@ const getVDS =
       .catch(err => {
         errorHandler(err.message, dispatch)
         dispatch(actions.hideLoader())
+
         console.log('getVDS - ', err.message)
       })
   }

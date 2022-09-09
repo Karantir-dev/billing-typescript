@@ -123,7 +123,7 @@ const deletePayer = elid => (dispatch, getState) => {
 }
 
 const getPayerModalInfo =
-  (body = {}, isCreate = false, closeModal) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const {
@@ -137,11 +137,53 @@ const getPayerModalInfo =
           func: 'profile.add.profiledata',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
 
         if (isCreate) {
           closeModal()
@@ -149,8 +191,8 @@ const getPayerModalInfo =
         }
 
         let linkName = ''
-
         let passportField = false
+        let euVatField = false
 
         data.doc?.metadata?.form?.page?.forEach(e => {
           if (e?.$name === 'offer' && e?.field && e?.field?.length !== 0) {
@@ -160,6 +202,13 @@ const getPayerModalInfo =
             e?.field?.forEach(field => {
               if (field?.$name === 'passport') {
                 passportField = true
+              }
+            })
+          }
+          if (e?.$name === 'buh_settings' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'eu_vat') {
+                euVatField = true
               }
             })
           }
@@ -183,6 +232,8 @@ const getPayerModalInfo =
           offer_name: linkText || '',
           offer_field: linkName || '',
           passport_field: passportField,
+          eu_vat_field: euVatField,
+          profile: newPayer ? 'new' : null,
         }
 
         const filters = {}
@@ -190,6 +241,11 @@ const getPayerModalInfo =
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
+
+        if (setSelectedPayerFields) {
+          setSelectedPayerFields(selectedFields)
+          return dispatch(actions.hideLoader())
+        }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
@@ -205,7 +261,7 @@ const getPayerModalInfo =
   }
 
 const getPayerEditInfo =
-  (body = {}, isCreate = false, closeModal) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -220,24 +276,74 @@ const getPayerEditInfo =
           func: 'profile.edit',
           out: 'json',
           auth: sessionId,
+          lang: 'en',
           ...body,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
 
         if (isCreate) {
-          closeModal()
+          closeModal && closeModal()
           return dispatch(getPayers())
         }
 
         let passportField = false
+        let euVatField = false
 
         data.doc?.metadata?.form?.page?.forEach(e => {
           if (e?.$name === 'contract' && e?.field && e?.field?.length !== 0) {
             e?.field?.forEach(field => {
               if (field?.$name === 'passport') {
                 passportField = true
+              }
+            })
+          }
+          if (e?.$name === 'buh_settings' && e?.field && e?.field?.length !== 0) {
+            e?.field?.forEach(field => {
+              if (field?.$name === 'eu_vat') {
+                euVatField = true
               }
             })
           }
@@ -260,9 +366,13 @@ const getPayerEditInfo =
           maildocs: mailDocs || '',
           person: data.doc?.person?.$ || '',
           phone: data.doc?.phone?.$ || '',
+          name: data.doc?.name?.$ || '',
+          eu_vat: data.doc?.eu_vat?.$ || '',
           postcode_physical: data.doc?.postcode_physical?.$ || '',
           passport: data.doc?.passport?.$ || '',
           passport_field: passportField,
+          eu_vat_field: euVatField,
+          profile: data.doc?.elid?.$ || '',
         }
 
         const filters = {}
@@ -270,6 +380,11 @@ const getPayerEditInfo =
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
+
+        if (setSelectedPayerFields) {
+          setSelectedPayerFields(selectedFields)
+          return dispatch(actions.hideLoader())
+        }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
@@ -291,6 +406,7 @@ const getPayerOfferText = link => (dispatch, getState) => {
     auth: { sessionId },
   } = getState()
 
+  link = `/billmgr?func=license.print&out=doc_print&elid=5768&auth=${sessionId}`
   axiosInstance
     .get(
       link,

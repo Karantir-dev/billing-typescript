@@ -424,7 +424,7 @@ const getPayers =
           func: 'profile',
           out: 'json',
           auth: sessionId,
-          p_cnt: 30,
+          p_cnt: 300,
           p_col: '+time',
           clickstat: 'yes',
           ...body,
@@ -475,6 +475,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
         profiletype: filters?.profiletype[0]?.$key,
       }
 
+      dispatch(payersActions.setPayersSelectLists(filters))
       dispatch(getPaymentMethod({}, d))
     })
     .catch(error => {
@@ -527,8 +528,6 @@ const getPaymentMethod =
           d['payment_currency_list'] = [{ $: 'EUR', $key: data.doc?.payment_currency?.$ }]
         }
 
-        console.log(data.doc)
-
         dispatch(billingActions.setPaymentCurrencyList(d))
 
         if (payerModalInfoData) {
@@ -556,21 +555,90 @@ const createPaymentMethod =
       .post(
         '/',
         qs.stringify({
-          func: 'payment.add.method',
+          func:
+            body?.profile && body?.profile?.length > 0
+              ? 'profile.edit'
+              : 'profile.add.profiledata',
           out: 'json',
           auth: sessionId,
           lang: 'en',
           sok: 'ok',
           ...body,
+          elid: body?.profile && body?.profile?.length > 0 ? body?.profile : null,
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        if (data.doc.ok) {
-          dispatch(getPaymentMethodPage(data.doc.ok.$))
-          setCreatePaymentModal(false)
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error.msg.$.includes('The maximum number of payers') &&
+            data.doc.error.msg.$.includes('Company')
+          ) {
+            toast.error(
+              i18n.t('The maximum number of payers Company', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+          throw new Error(data.doc.error.msg.$)
         }
+
+        if (!(body?.profile && body?.profile?.length > 0)) {
+          body.profile = data?.doc?.id?.$
+        }
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'payment.add.method',
+              out: 'json',
+              auth: sessionId,
+              lang: 'en',
+              sok: 'ok',
+              ...body,
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+            if (data.doc.ok) {
+              dispatch(getPaymentMethodPage(data.doc.ok.$))
+              setCreatePaymentModal(false)
+            }
+          })
+          .catch(error => {
+            console.log('error', error)
+            errorHandler(error.message, dispatch)
+            dispatch(actions.hideLoader())
+          })
       })
       .catch(error => {
         console.log('error', error)

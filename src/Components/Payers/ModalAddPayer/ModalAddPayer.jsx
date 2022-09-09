@@ -6,10 +6,10 @@ import { Cross } from '../../../images'
 import {
   Select,
   InputField,
-  CustomPhoneInput,
+  // CustomPhoneInput,
   Button,
   CheckBox,
-  SelectMultiple,
+  // SelectMultiple,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
 import { BASE_URL } from '../../../config/config'
@@ -48,17 +48,21 @@ export default function Component(props) {
   }
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(
-      t('trusted_users.form_errors.email', { ns: 'trusted_users' }),
-    ),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    name:
+      payersSelectedFields?.profiletype === '2' ||
+      payersSelectedFields?.profiletype === '3'
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     [payersSelectedFields?.offer_field]: elid ? null : Yup.bool().oneOf([true]),
   })
 
   const createPayerHandler = values => {
     let data = {
       ...values,
-      name: '',
+      name: values?.name,
       clicked_button: 'finish',
       progressid: false,
       sok: 'ok',
@@ -72,6 +76,7 @@ export default function Component(props) {
   const editPayerHandler = values => {
     let data = {
       ...values,
+      country_physical: values?.country,
       sok: 'ok',
       elid: elid,
     }
@@ -103,6 +108,12 @@ export default function Component(props) {
             email: payersSelectedFields?.email || '',
             phone: payersSelectedFields?.phone || '',
             person: payersSelectedFields?.person || '',
+            name: payersSelectedFields?.name || '',
+            eu_vat: payersSelectedFields?.eu_vat || '',
+            country_physical:
+              payersSelectedFields?.country ||
+              payersSelectedFields?.country_physical ||
+              '',
             postcode_physical: payersSelectedFields?.postcode_physical || '',
             passport: payersSelectedFields?.passport || '',
             address_physical: payersSelectedFields?.address_physical || '',
@@ -111,7 +122,21 @@ export default function Component(props) {
           }}
           onSubmit={elid ? editPayerHandler : createPayerHandler}
         >
-          {({ errors, touched, setFieldValue, values, handleBlur }) => {
+          {({ errors, touched, setFieldValue, values }) => {
+            const onProfileTypeChange = item => {
+              setFieldValue('profiletype', item)
+              let data = {
+                country: payersSelectLists?.country[0]?.$key,
+                profiletype: item,
+              }
+              if (elid) {
+                data = { elid }
+                dispatch(payersOperations.getPayerEditInfo(data))
+                return
+              }
+              dispatch(payersOperations.getPayerModalInfo(data))
+            }
+
             return (
               <Form>
                 <div className={s.form}>
@@ -122,7 +147,7 @@ export default function Component(props) {
                         placeholder={t('Not chosen', { ns: 'other' })}
                         label={`${t('Payer status')}:`}
                         value={values.profiletype}
-                        getElement={item => setFieldValue('profiletype', item)}
+                        getElement={item => onProfileTypeChange(item)}
                         isShadow
                         className={s.select}
                         dropdownClass={s.selectDropdownClass}
@@ -131,6 +156,21 @@ export default function Component(props) {
                           value: $key,
                         }))}
                       />
+
+                      {values?.profiletype === '3' || values?.profiletype === '2' ? (
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="name"
+                          label={`${t('Company name')}:`}
+                          placeholder={t('Enter data', { ns: 'other' })}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.name}
+                          touched={!!touched.name}
+                          isRequired
+                        />
+                      ) : null}
+
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="person"
@@ -142,7 +182,8 @@ export default function Component(props) {
                         touched={!!touched.person}
                         isRequired
                       />
-                      <CustomPhoneInput
+
+                      {/* <CustomPhoneInput
                         containerClass={s.phoneInputContainer}
                         inputClass={s.phoneInputClass}
                         value={values.phone}
@@ -176,7 +217,20 @@ export default function Component(props) {
                           label: t(`${$.trim()}`),
                           value: $key,
                         }))}
-                      />
+                      /> */}
+
+                      {payersSelectedFields?.eu_vat_field ? (
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name="eu_vat"
+                          label={`${t('EU VAT-number')}:`}
+                          placeholder={t('Enter data', { ns: 'other' })}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.eu_vat}
+                          touched={!!touched.eu_vat}
+                        />
+                      ) : null}
                     </div>
                   </div>
                   <div className={s.formBlock}>
@@ -200,8 +254,9 @@ export default function Component(props) {
                             value: $key,
                           }),
                         )}
+                        isRequired
                       />
-                      <InputField
+                      {/* <InputField
                         inputWrapperClass={s.inputHeight}
                         name="postcode_physical"
                         label={`${t('Index', { ns: 'other' })}:`}
@@ -210,7 +265,8 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.postcode_physical}
                         touched={!!touched.postcode_physical}
-                      />
+                        isRequired
+                      /> */}
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="city_physical"
@@ -220,6 +276,7 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.city_physical}
                         touched={!!touched.city_physical}
+                        // isRequired
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}
@@ -230,16 +287,18 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.address_physical}
                         touched={!!touched.address_physical}
+                        isRequired
                       />
                     </div>
                   </div>
-                  {(payersSelectedFields?.passport_field || !elid) && (
-                    <div className={s.formBlock}>
-                      <div className={s.formBlockTitle}>
-                        3. {t('Data for the contract')}
-                      </div>
-                      <div className={s.formFieldsBlock}>
-                        {payersSelectedFields?.passport_field && (
+                  {payersSelectedFields?.offer_link &&
+                    (payersSelectedFields?.passport_field || !elid) && (
+                      <div className={s.formBlock}>
+                        <div className={s.formBlockTitle}>
+                          3. {t('Data for the contract')}
+                        </div>
+                        <div className={s.formFieldsBlock}>
+                          {/* {payersSelectedFields?.passport_field && (
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="passport"
@@ -250,36 +309,36 @@ export default function Component(props) {
                             error={!!errors.passport}
                             touched={!!touched.passport}
                           />
-                        )}
-                        {payersSelectedFields?.offer_link && (
-                          <div className={s.offerBlock}>
-                            <CheckBox
-                              initialState={values[payersSelectedFields?.offer_field]}
-                              setValue={item =>
-                                setFieldValue(
-                                  `${payersSelectedFields?.offer_field}`,
-                                  item,
-                                )
-                              }
-                              className={s.checkbox}
-                              error={!!errors[payersSelectedFields?.offer_field]}
-                            />
-                            <div className={s.offerBlockText}>
-                              {t('I agree with the terms of the offer')}
-                              <br />
-                              <button
-                                onClick={offerTextHandler}
-                                type="button"
-                                className={s.offerBlockLink}
-                              >
-                                {payersSelectedFields?.offer_name}
-                              </button>
+                        )} */}
+                          {payersSelectedFields?.offer_link && (
+                            <div className={s.offerBlock}>
+                              <CheckBox
+                                initialState={values[payersSelectedFields?.offer_field]}
+                                setValue={item =>
+                                  setFieldValue(
+                                    `${payersSelectedFields?.offer_field}`,
+                                    item,
+                                  )
+                                }
+                                className={s.checkbox}
+                                error={!!errors[payersSelectedFields?.offer_field]}
+                              />
+                              <div className={s.offerBlockText}>
+                                {t('I agree with the terms of the offer')}
+                                <br />
+                                <button
+                                  onClick={offerTextHandler}
+                                  type="button"
+                                  className={s.offerBlockLink}
+                                >
+                                  {payersSelectedFields?.offer_name}
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
                 <div className={s.btnBlock}>
                   <Button

@@ -28,7 +28,6 @@ export default function Component(props) {
     setNamesToRender(!more ? name : name?.slice(0, 1))
   }
 
-  console.log(prolongData)
   return (
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>

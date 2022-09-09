@@ -20,5 +20,11 @@
   "By email": "Электрондық пошта бойынша",
   "Add new payer": "+ Қосу",
 
-  "You cannot delete the payer who already made payments": "Төлем жасаған төлеушіні жою мүмкін емес"
+  "You cannot delete the payer who already made payments": "Төлем жасаған төлеушіні жою мүмкін емес",
+  "Company name": "Компанияның Аты",
+  "Company": "Компания",
+  "Sole proprietor": "Жеке кәсіпкер",
+  "does not correspond to country": "ҚҚС-нөмірі төлеушінің еліне сәйкес келмейді",
+  "The maximum number of payers Company": "«Компания» төлеушілердің ең көп саны: 1. Сіз лимиттен асып кеттіңіз. Сіз бар төлеушіні пайдалана аласыз немесе басқа түрдегі жаңа төлеушіні жасай аласыз. Басқа нұсқалар қажет болса, техникалық қолдау қызметіне хабарласыңыз",
+  "eu_vat field has invalid value": "ҚҚС нөмірі жарамсыз мәнге ие"
 }
