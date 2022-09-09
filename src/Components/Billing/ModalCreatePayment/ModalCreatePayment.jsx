@@ -115,7 +115,7 @@ export default function Component(props) {
       )
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
@@ -324,7 +324,7 @@ export default function Component(props) {
                             className={s.inputBig}
                             error={!!errors.city_physical}
                             touched={!!touched.city_physical}
-                            isRequired
+                            // isRequired
                           />
 
                           <InputField
