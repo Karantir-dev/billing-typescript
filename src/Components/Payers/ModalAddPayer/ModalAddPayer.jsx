@@ -49,7 +49,7 @@ export default function Component(props) {
 
   const validationSchema = Yup.object().shape({
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||
@@ -276,7 +276,7 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.city_physical}
                         touched={!!touched.city_physical}
-                        isRequired
+                        // isRequired
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}

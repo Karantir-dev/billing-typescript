@@ -100,7 +100,7 @@ export default function Component() {
     profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||
@@ -781,7 +781,7 @@ export default function Component() {
                             className={s.inputBig}
                             error={!!errors.city_physical}
                             touched={!!touched.city_physical}
-                            isRequired
+                            // isRequired
                           />
 
                           <InputField
