@@ -168,6 +168,20 @@ const getPayerModalInfo =
               },
             )
           }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
           throw new Error(data.doc.error.msg.$)
         }
 
@@ -293,6 +307,20 @@ const getPayerEditInfo =
               },
             )
           }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
           throw new Error(data.doc.error.msg.$)
         }
 
@@ -378,6 +406,7 @@ const getPayerOfferText = link => (dispatch, getState) => {
     auth: { sessionId },
   } = getState()
 
+  link = `/billmgr?func=license.print&out=doc_print&elid=5768&auth=${sessionId}`
   axiosInstance
     .get(
       link,

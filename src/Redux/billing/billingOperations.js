@@ -594,6 +594,20 @@ const createPaymentMethod =
               },
             )
           }
+          if (
+            data.doc.error?.$object === 'eu_vat' &&
+            data.doc.error.msg.$.includes('field has invalid value')
+          ) {
+            toast.error(
+              i18n.t('eu_vat field has invalid value', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
           throw new Error(data.doc.error.msg.$)
         }
 
