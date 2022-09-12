@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik, Form, ErrorMessage } from 'formik'
+import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '../../routes'
 import { Cross, Check } from '../../images'
@@ -655,8 +655,60 @@ export default function Component() {
                     }
                   }
 
+                  const getFieldErrorNames = formikErrors => {
+                    const transformObjectToDotNotation = (
+                      obj,
+                      prefix = '',
+                      result = [],
+                    ) => {
+                      Object.keys(obj).forEach(key => {
+                        const value = obj[key]
+                        if (!value) return
+
+                        const nextKey = prefix ? `${prefix}.${key}` : key
+                        if (typeof value === 'object') {
+                          transformObjectToDotNotation(value, nextKey, result)
+                        } else {
+                          result.push(nextKey)
+                        }
+                      })
+
+                      return result
+                    }
+
+                    return transformObjectToDotNotation(formikErrors)
+                  }
+
+                  const ScrollToFieldError = ({
+                    scrollBehavior = { behavior: 'smooth', block: 'center' },
+                  }) => {
+                    const { submitCount, isValid, errors } = useFormikContext()
+
+                    useEffect(() => {
+                      if (isValid) return
+
+                      const fieldErrorNames = getFieldErrorNames(errors)
+                      if (fieldErrorNames.length <= 0) return
+
+                      const element = document.querySelector(
+                        `input[name='${fieldErrorNames[0]}']`,
+                      )
+                      if (!element) return
+
+                      // Scroll to first known error into view
+                      element.scrollIntoView(scrollBehavior)
+
+                      // Formik doesn't (yet) provide a callback for a client-failed submission,
+                      // thus why this is implemented through a hook that listens to changes on
+                      // the submit count.
+                    }, [submitCount])
+
+                    return null
+                  }
+
                   return (
                     <Form className={s.form}>
+                      <ScrollToFieldError />
                       <div className={s.formBlock}>
                         <div className={s.formBlockTitle}>{t('Promo code')}:</div>
                         <div className={cn(s.formFieldsBlock, s.first)}>
@@ -811,7 +863,9 @@ export default function Component() {
                           {selectedPayerFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox
-                                initialState={values[selectedPayerFields?.offer_field] || false}
+                                initialState={
+                                  values[selectedPayerFields?.offer_field] || false
+                                }
                                 setValue={item =>
                                   setFieldValue(
                                     `${selectedPayerFields?.offer_field}`,
