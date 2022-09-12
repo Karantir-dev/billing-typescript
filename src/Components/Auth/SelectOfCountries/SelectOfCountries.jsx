@@ -53,7 +53,7 @@ export default function SelectOfCountries({
       countries?.forEach(c => {
         const countryCode = c?.$image?.slice(-6, -4)?.toLowerCase()
         if (countryCode === geoLang.toLowerCase()) {
-          handleCountryClick(countryCode, c?.$, c?.$key)
+          handleCountryClick(countryCode, t(c?.$, { ns: 'countries' }), c?.$key)
         }
       })
     }
