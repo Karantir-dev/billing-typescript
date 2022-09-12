@@ -18,7 +18,7 @@ export default function SelectOfCountries({
   touched,
   // setSocialLinks,
 }) {
-  const { t } = useTranslation('auth')
+  const { t } = useTranslation(['auth', 'countries'])
   const dispatch = useDispatch()
 
   const [countrySearchQuery, setCountrySearchQuery] = useState('')
@@ -162,7 +162,13 @@ export default function SelectOfCountries({
                       <button
                         className={s.country_btn}
                         type="button"
-                        onClick={() => handleCountryClick(countryCode, countryName, $key)}
+                        onClick={() =>
+                          handleCountryClick(
+                            countryCode,
+                            t(countryName, { ns: 'countries' }),
+                            $key,
+                          )
+                        }
                       >
                         <img
                           className={s.country_img}
@@ -171,7 +177,9 @@ export default function SelectOfCountries({
                           height={14}
                           alt="flag"
                         />
-                        <span className={s.country_name}>{countryName}</span>
+                        <span className={s.country_name}>
+                          {t(countryName, { ns: 'countries' })}
+                        </span>
                       </button>
                     </li>
                   )
