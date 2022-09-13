@@ -159,7 +159,7 @@ InputField.propTypes = {
   error: PropTypes.bool,
   touched: PropTypes.bool,
   isShadow: PropTypes.bool.isRequired,
-  autoComplete: PropTypes.bool,
+  autoComplete: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   height: PropTypes.number,
   background: PropTypes.bool,
   disabled: PropTypes.bool,
