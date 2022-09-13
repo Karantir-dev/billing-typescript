@@ -548,30 +548,8 @@ const getLocation = setLang => () => {
     .get('https://api.server-panel.net/api/service/geo/')
     .then(({ data }) => {
       const country = data?.clients_country_code
-      if (country === 'UA') {
-        setLang('uk')
-      } else if (
-        country === 'AZ' ||
-        country === 'AM' ||
-        country === 'BY' ||
-        country === 'KG' ||
-        country === 'LV' ||
-        country === 'LT' ||
-        country === 'MD' ||
-        country === 'RU' ||
-        country === 'TJ' ||
-        country === 'TM' ||
-        country === 'UZ' ||
-        country === 'EE'
-      ) {
-        setLang('ru')
-      } else if (country === 'KK' || country === 'KZ') {
-        setLang('kk')
-      } else if (country === 'GE' || country === 'KA') {
-        setLang('ka')
-      } else {
-        setLang('en')
-      }
+
+      setLang(country)
     })
     .catch(() => {
       setLang('en')

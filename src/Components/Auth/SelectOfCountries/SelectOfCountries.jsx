@@ -16,9 +16,11 @@ export default function SelectOfCountries({
   setFieldTouched,
   errors,
   touched,
+  autoDetectCounty,
+  geoLang,
   // setSocialLinks,
 }) {
-  const { t } = useTranslation('auth')
+  const { t } = useTranslation(['auth', 'countries'])
   const dispatch = useDispatch()
 
   const [countrySearchQuery, setCountrySearchQuery] = useState('')
@@ -45,6 +47,17 @@ export default function SelectOfCountries({
       ),
     )
   }, [])
+
+  useEffect(() => {
+    if (autoDetectCounty && countries && geoLang) {
+      countries?.forEach(c => {
+        const countryCode = c?.$image?.slice(-6, -4)?.toLowerCase()
+        if (countryCode === geoLang.toLowerCase()) {
+          handleCountryClick(countryCode, t(c?.$, { ns: 'countries' }), c?.$key)
+        }
+      })
+    }
+  }, [countries, geoLang])
 
   const countriesWithRegions = regions.reduce((acc, { $depend }) => {
     if (acc.includes($depend)) {
@@ -162,7 +175,13 @@ export default function SelectOfCountries({
                       <button
                         className={s.country_btn}
                         type="button"
-                        onClick={() => handleCountryClick(countryCode, countryName, $key)}
+                        onClick={() =>
+                          handleCountryClick(
+                            countryCode,
+                            t(countryName, { ns: 'countries' }),
+                            $key,
+                          )
+                        }
                       >
                         <img
                           className={s.country_img}
@@ -171,7 +190,9 @@ export default function SelectOfCountries({
                           height={14}
                           alt="flag"
                         />
-                        <span className={s.country_name}>{countryName}</span>
+                        <span className={s.country_name}>
+                          {t(countryName, { ns: 'countries' })}
+                        </span>
                       </button>
                     </li>
                   )
@@ -202,4 +223,6 @@ SelectOfCountries.propTypes = {
   setFieldTouched: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
+  autoDetectCounty: PropTypes.bool,
+  geoLang: PropTypes.string,
 }
