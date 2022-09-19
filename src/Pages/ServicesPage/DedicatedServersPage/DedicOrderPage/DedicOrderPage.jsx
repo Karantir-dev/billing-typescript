@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
@@ -10,6 +10,7 @@ import {
   Select,
   InputField,
 } from '../../../../Components'
+import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -20,7 +21,16 @@ import { useTranslation } from 'react-i18next'
 import { dedicOperations, dedicSelectors } from '../../../../Redux'
 import * as route from '../../../../routes'
 
+import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper-bundle.min.css'
+import 'swiper/swiper.min.css'
+
 import s from './DedicOrderPage.module.scss'
+import './DedicSwiper.scss'
+import { ArrowSign } from '../../../../images'
+
+SwiperCore.use([EffectCoverflow, Pagination])
 
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
@@ -33,6 +43,7 @@ export default function DedicOrderPage() {
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other', 'vds'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const deskOrHigher = useMediaQuery({ query: '(min-width: 1549px)' })
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
@@ -112,7 +123,6 @@ export default function DedicOrderPage() {
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
-
     pathnames = pathnames.filter(p => p.length !== 0)
 
     return pathnames
@@ -178,6 +188,52 @@ export default function DedicOrderPage() {
       }
     })
   }
+
+  //swiper
+  const [swiperRef, setSwiperRef] = useState()
+  const [isSwiperBeginning, setIsSwiperBeginning] = useState(true)
+  const [isSwiperEnd, setIsSwiperEnd] = useState(false)
+
+  const handleLeftClick = useCallback(() => {
+    if (!swiperRef) return
+    swiperRef.slidePrev()
+    setIsSwiperBeginning(swiperRef.isBeginning)
+    setIsSwiperEnd(swiperRef.isEnd)
+  }, [swiperRef])
+
+  const handleRightClick = useCallback(() => {
+    if (!swiperRef) return
+    swiperRef.slideNext()
+    setIsSwiperBeginning(swiperRef.isBeginning)
+    setIsSwiperEnd(swiperRef.isEnd)
+  }, [swiperRef])
+
+  useEffect(() => {
+    const mainSwiper = document.querySelector('.swiper-wrapper')
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('notInViewport')
+          } else {
+            entry.target.classList.add('notInViewport')
+          }
+        })
+      },
+      { mainSwiper, threshold: 1 },
+    )
+
+    const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
+
+    if (slides.length > 0) {
+      slides.forEach(slide => {
+        observer.observe(slide)
+      })
+    }
+  })
+
+  //swiper
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
@@ -391,88 +447,86 @@ export default function DedicOrderPage() {
                 })}
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               />
-              <div className={s.tarifs_block}>
-                {tariffsListToRender
-                  ?.filter(item => item.order_available.$ === 'on')
-                  ?.map(item => {
-                    const descriptionBlocks = item?.desc?.$.split('/')
-                    const cardTitle = descriptionBlocks[0]
 
-                    const parsedPrice = parsePrice(item?.price?.$)
-
-                    const priceAmount = parsedPrice.amoumt
-                    const pricePercent = parsedPrice.percent
-                    const priceSale = parsedPrice.sale
-                    const hasSale = parsedPrice.length
-
-                    return (
-                      <div
-                        className={classNames(s.tarif_card, {
-                          [s.selected]: item?.pricelist?.$ === values.tarif,
+              {deskOrHigher ? (
+                <div className={s.tarifs_block}>
+                  {tariffsListToRender
+                    ?.filter(item => item.order_available.$ === 'on')
+                    ?.map(item => {
+                      return (
+                        <DedicTarifCard
+                          key={item?.desc?.$}
+                          parsePrice={parsePrice}
+                          item={item}
+                          values={values}
+                          setParameters={setParameters}
+                          setFieldValue={setFieldValue}
+                          setPrice={setPrice}
+                          setTarifChosen={setTarifChosen}
+                          periodName={periodName}
+                        />
+                      )
+                    })}
+                </div>
+              ) : (
+                <div className={s.dedic_swiper_rel_container}>
+                  <div className={s.doubled_dedic_swiper_rel_container}>
+                    <Swiper
+                      className="dedic-swiper"
+                      spaceBetween={0}
+                      slidesPerView={'auto'}
+                      effect={'creative'}
+                      pagination={{
+                        clickable: true,
+                        el: '[data-dedic-swiper-pagination]',
+                        dynamicBullets: true,
+                        dynamicMainBullets: 3,
+                      }}
+                      onSwiper={setSwiperRef}
+                    >
+                      {tariffsListToRender
+                        ?.filter(item => item.order_available.$ === 'on')
+                        ?.map(item => {
+                          return (
+                            <SwiperSlide
+                              className="dedic-swiper-element"
+                              key={item?.desc?.$}
+                            >
+                              <DedicTarifCard
+                                key={item?.desc?.$}
+                                parsePrice={parsePrice}
+                                item={item}
+                                values={values}
+                                setParameters={setParameters}
+                                setFieldValue={setFieldValue}
+                                setPrice={setPrice}
+                                setTarifChosen={setTarifChosen}
+                                periodName={periodName}
+                              />
+                            </SwiperSlide>
+                          )
                         })}
-                        key={item?.desc?.$}
-                      >
-                        <button
-                          onClick={() => {
-                            setParameters(null)
-                            setFieldValue('tarif', item?.pricelist?.$)
-                            setPrice(priceAmount)
-                            setTarifChosen(true)
+                    </Swiper>
+                  </div>
+                </div>
+              )}
 
-                            dispatch(
-                              dedicOperations.getParameters(
-                                values.period,
-                                values.datacenter,
-                                item?.pricelist?.$,
-                                setParameters,
-                                setFieldValue,
-                              ),
-                            )
-                          }}
-                          type="button"
-                          className={s.tarif_card_btn}
-                        >
-                          {hasSale === 3 && (
-                            <span
-                              className={classNames({
-                                [s.sale_percent]: hasSale === 3,
-                              })}
-                            >
-                              {pricePercent}
-                            </span>
-                          )}
-
-                          <span
-                            className={classNames({
-                              [s.card_title]: true,
-                              [s.selected]: item?.pricelist?.$ === values.tarif,
-                            })}
-                          >
-                            {cardTitle}
-                          </span>
-                          <div className={s.price_wrapper}>
-                            <span
-                              className={classNames({
-                                [s.price]: true,
-                                [s.selected]: item?.pricelist?.$ === values.tarif,
-                              })}
-                            >
-                              {priceAmount + ' €' + '/' + periodName}
-                            </span>
-                            {hasSale === 3 && (
-                              <span className={s.sale_price}>{`${priceSale}`}</span>
-                            )}
-                          </div>
-
-                          {descriptionBlocks.slice(1).map((el, i) => (
-                            <span key={i} className={s.card_subtitles}>
-                              {el}
-                            </span>
-                          ))}
-                        </button>
-                      </div>
-                    )
-                  })}
+              <div className="dedic_swiper_pagination">
+                <button onClick={handleLeftClick}>
+                  <ArrowSign
+                    className={`swiper-prev ${
+                      isSwiperBeginning ? 'swiper-button-disabled' : ''
+                    }`}
+                  />
+                </button>
+                <div data-dedic-swiper-pagination></div>
+                <button onClick={handleRightClick}>
+                  <ArrowSign
+                    className={`swiper-next ${
+                      isSwiperEnd ? 'swiper-button-disabled' : ''
+                    }`}
+                  />
+                </button>
               </div>
 
               {parameters && (
