@@ -1,0 +1,117 @@
+.dedic-swiper {
+  & .swiper-wrapper {
+    padding-bottom: 30px;
+    margin-top: 5px;
+    // margin-right: 5px;
+    // margin-left: 5px;
+    margin-left: 5px;
+    margin-right: 20px;
+  }
+}
+
+.dedic-swiper.swiper-container {
+  // position: absolute;
+}
+
+.dedic-swiper-element {
+  &.swiper-slide {
+    height: auto;
+    width: 247px;
+
+    margin-right: 20px;
+    &:last-child {
+      margin-right: 15px;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.dedic_swiper_pagination {
+  width: 100%;
+  // position: initial;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  z-index: initial;
+
+  & .swiper-pagination-bullet {
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}
+
+.swiper-prev,
+.swiper-next {
+  width: 20px;
+  height: 20px;
+  transform: rotateZ(90deg);
+  cursor: pointer;
+  stroke: url(#gradient);
+  margin-bottom: 0;
+}
+.swiper-next {
+  transform: rotateZ(-90deg);
+  margin-left: 5px;
+}
+.swiper-prev {
+  margin-right: 5px;
+}
+.swiper-prev.swiper-button-disabled,
+.swiper-next.swiper-button-disabled {
+  cursor: initial;
+}
+
+.swiper-pagination-fraction {
+  color: var(--accent-gradient);
+  font-size: 18px;
+  font-weight: 600;
+}
+.swiper-button-disabled {
+  stroke: rgba(254, 60, 178, 0.25);
+}
+.dedic_swiper_pagination {
+  .swiper-pagination-bullets {
+    min-width: fit-content;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (min-width: 430px) {
+  .dedic_swiper_pagination {
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+
+    & .swiper-pagination-bullet {
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  .dedic-swiper-element {
+    &.swiper-slide {
+      width: 201px;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .dedic-swiper-element {
+    &.swiper-slide {
+      width: 240px;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .dedic_swiper_pagination {
+    display: none;
+  }
+}
