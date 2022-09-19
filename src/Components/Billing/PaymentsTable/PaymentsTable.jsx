@@ -7,7 +7,8 @@ import s from './PaymentsTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])
-  const { list, downloadPdfHandler, deletePayment, payHandler } = props
+  const { list, downloadPdfHandler, deletePayment, payHandler, setCreatePaymentModal } =
+    props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
@@ -41,6 +42,7 @@ export default function Component(props) {
           sender_name,
           paymethodamount_iso,
           paymethod_name,
+          allowrefund,
         } = el
 
         return (
@@ -53,9 +55,11 @@ export default function Component(props) {
             payer={sender_name?.$}
             sum={paymethodamount_iso?.$}
             paymethod={paymethod_name?.$}
+            allowrefund={allowrefund?.$}
             downloadPdfHandler={downloadPdfHandler}
             deletePayment={deletePayment}
             payHandler={payHandler}
+            setCreatePaymentModal={setCreatePaymentModal}
           />
         )
       })}

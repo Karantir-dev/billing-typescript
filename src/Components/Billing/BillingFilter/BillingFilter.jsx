@@ -17,7 +17,15 @@ import {
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
-  const { setCurrentPage, setIsFiltered, isFilterActive, isFiltered, p_cnt } = props
+  const {
+    setCurrentPage,
+    setIsFiltered,
+    isFilterActive,
+    isFiltered,
+    p_cnt,
+    setCreatePaymentModal,
+    createPaymentModal,
+  } = props
 
   const { t } = useTranslation(['billing', 'other'])
   const dispatch = useDispatch()
@@ -35,7 +43,6 @@ export default function Component(props) {
   }, [])
 
   const [filterModal, setFilterModal] = useState(false)
-  const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
   useEffect(() => {
     if (filterModal) {
