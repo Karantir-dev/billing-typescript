@@ -20,6 +20,8 @@ export default function Component(props) {
     downloadPdfHandler,
     deletePayment,
     payHandler,
+    allowrefund,
+    setCreatePaymentModal,
   } = props
   const { t } = useTranslation(['billing', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
@@ -86,7 +88,12 @@ export default function Component(props) {
           ref={dropDownEl}
         >
           {status.trim() !== 'Paid' && (
-            <button className={s.settings_btn} onClick={payRedirectHandler}>
+            <button
+              className={s.settings_btn}
+              onClick={() =>
+                allowrefund === 'off' ? setCreatePaymentModal(true) : payRedirectHandler()
+              }
+            >
               <Pay />
               <p className={s.setting_text}>{t('Pay')}</p>
             </button>
@@ -110,7 +117,12 @@ export default function Component(props) {
     return (
       <div className={s.btnsBlock}>
         {status.trim() !== 'Paid' && (
-          <button onClick={payRedirectHandler} className={s.mobileBtn}>
+          <button
+            onClick={() =>
+              allowrefund === 'off' ? setCreatePaymentModal(true) : payRedirectHandler()
+            }
+            className={s.mobileBtn}
+          >
             <Pay />
             <div>{t('Pay')}</div>
           </button>

@@ -23,6 +23,7 @@ const Component = () => {
 
   const [isLangLoading, setIsLangLoading] = useState(true)
   const [geoLang, setGeoLang] = useState('')
+  const [geoCountryId, setCountryId] = useState('')
 
   const changeLang = country => {
     let language = 'en'
@@ -65,7 +66,7 @@ const Component = () => {
   }, [geoLang])
 
   useEffect(() => {
-    dispatch(authOperations.getLocation(setGeoLang))
+    dispatch(authOperations.getLocation(setGeoLang, setCountryId))
   }, [])
   return (
     <>
@@ -84,7 +85,7 @@ const Component = () => {
           path={route.REGISTRATION}
           element={
             <PublicRoute
-              children={<AuthPage children={<SignupForm geoLang={geoLang} />} />}
+              children={<AuthPage children={<SignupForm geoCountryId={geoCountryId} />} />}
               restricted
               redirectTo={route.SERVICES}
             />

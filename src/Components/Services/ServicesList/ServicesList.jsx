@@ -158,7 +158,7 @@ export default function ServicesList() {
         observer.observe(slide)
       })
     }
-  }, [])
+  })
 
   return (
     <ul className="swiper_services_list">

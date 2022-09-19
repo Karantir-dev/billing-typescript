@@ -27,7 +27,7 @@ const GOOGLE_LINK =
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
-export default function SignupForm({ geoLang }) {
+export default function SignupForm({ geoCountryId }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -181,7 +181,7 @@ export default function SignupForm({ geoLang }) {
                 // setSocialLinks={setSocialLinks}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
-                geoLang={geoLang}
+                geoCountryId={geoCountryId}
                 autoDetectCounty={true}
                 errors={errors}
                 touched={touched}
