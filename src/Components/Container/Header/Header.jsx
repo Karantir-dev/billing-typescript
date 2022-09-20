@@ -108,6 +108,8 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
+  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
+
   return (
     <>
       <header className={s.main_header}>
@@ -133,7 +135,7 @@ export default function Header() {
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
                         {userItems?.$balance
-                          ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
+                          ? Number(userBalance)?.toFixed(2)
                           : $balance && Number($balance)?.toFixed(2)}
                         EUR
                       </span>
