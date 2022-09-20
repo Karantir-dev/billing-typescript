@@ -203,7 +203,12 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { active: false, listId: 5, listName: 'support' },
   ])
 
-  const userBalance = userItems?.$balance.replace(' €', '').replace(' EUR', '')
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec)
+    return Math.trunc(num * calcDec) / calcDec
+  }
+
+  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
 
   return (
     <>
@@ -245,8 +250,8 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 <p className={s.balance_text}>{t('balance')}</p>
                 <p className={s.balance_sum}>
                   {userItems?.$balance
-                    ? Number(userBalance)?.toFixed(2)
-                    : $balance && Number($balance)?.toFixed(2)}{' '}
+                    ? truncateToDecimals(userBalance, 2)?.toFixed(2)
+                    : truncateToDecimals($balance, 2)?.toFixed(2)}
                   EUR
                 </p>
               </button>
