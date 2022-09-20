@@ -108,6 +108,10 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
+  function truncateToDecimals(num, dec = 2) {
+    const calcDec = Math.pow(10, dec)
+    return Math.trunc(num * calcDec) / calcDec
+  }
   const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
 
   return (
@@ -135,8 +139,8 @@ export default function Header() {
                       {t('balance')}{' '}
                       <span className={s.balance_sum}>
                         {userItems?.$balance
-                          ? Number(userBalance)?.toFixed(2)
-                          : $balance && Number($balance)?.toFixed(2)}
+                          ? truncateToDecimals(userBalance, 2)?.toFixed(2)
+                          : $balance && truncateToDecimals($balance, 2)?.toFixed(2)}
                         EUR
                       </span>
                     </p>
