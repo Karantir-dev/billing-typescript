@@ -203,6 +203,8 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     { active: false, listId: 5, listName: 'support' },
   ])
 
+  const userBalance = userItems?.$balance.replace(' €', '').replace(' EUR', '')
+
   return (
     <>
       <div className={isOpened ? s.burger : ''}>
@@ -243,7 +245,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                 <p className={s.balance_text}>{t('balance')}</p>
                 <p className={s.balance_sum}>
                   {userItems?.$balance
-                    ? userItems?.$balance.replace(' €', '').replace(' EUR', '')
+                    ? Number(userBalance)?.toFixed(2)
                     : $balance && Number($balance)?.toFixed(2)}{' '}
                   EUR
                 </p>
