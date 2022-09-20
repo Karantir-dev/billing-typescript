@@ -19,6 +19,8 @@ export default function Component() {
 
   const [firstOpen, setFirstOpen] = useState(true)
 
+  const [createPaymentModal, setCreatePaymentModal] = useState(false)
+
   const { t } = useTranslation(['billing', 'access_log'])
 
   useEffect(() => {
@@ -51,6 +53,8 @@ export default function Component() {
         isFilterActive={isFiltered || paymentsList?.length > 0}
         setCurrentPage={setP_num}
         downloadPdfHandler={downloadPdfHandler}
+        setCreatePaymentModal={setCreatePaymentModal}
+        createPaymentModal={createPaymentModal}
       />
 
       {isFiltered && paymentsList?.length === 0 && (
@@ -73,6 +77,7 @@ export default function Component() {
           downloadPdfHandler={downloadPdfHandler}
           deletePayment={deletePayment}
           payHandler={payHandler}
+          setCreatePaymentModal={setCreatePaymentModal}
         />
       )}
 

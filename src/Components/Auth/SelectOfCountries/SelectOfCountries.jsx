@@ -17,7 +17,7 @@ export default function SelectOfCountries({
   errors,
   touched,
   autoDetectCounty,
-  geoLang,
+  geoCountryId,
   // setSocialLinks,
 }) {
   const { t } = useTranslation(['auth', 'countries'])
@@ -49,15 +49,15 @@ export default function SelectOfCountries({
   }, [])
 
   useEffect(() => {
-    if (autoDetectCounty && countries && geoLang) {
+    if (autoDetectCounty && countries && geoCountryId) {
       countries?.forEach(c => {
         const countryCode = c?.$image?.slice(-6, -4)?.toLowerCase()
-        if (countryCode === geoLang.toLowerCase()) {
+        if (c?.$key === geoCountryId) {
           handleCountryClick(countryCode, t(c?.$, { ns: 'countries' }), c?.$key)
         }
       })
     }
-  }, [countries, geoLang])
+  }, [countries, geoCountryId])
 
   const countriesWithRegions = regions.reduce((acc, { $depend }) => {
     if (acc.includes($depend)) {
@@ -224,5 +224,5 @@ SelectOfCountries.propTypes = {
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
   autoDetectCounty: PropTypes.bool,
-  geoLang: PropTypes.string,
+  geoCountryId: PropTypes.string,
 }

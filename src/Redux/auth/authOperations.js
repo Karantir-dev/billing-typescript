@@ -543,13 +543,14 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
     })
 }
 
-const getLocation = setLang => () => {
+const getLocation = (setLang, setCountrie) => () => {
   axios
     .get('https://api.server-panel.net/api/service/geo/')
     .then(({ data }) => {
-      const country = data?.clients_country_code
-
-      setLang(country)
+      const lang = data?.clients_country_code
+      const country = data?.clients_country_id
+      setLang(lang)
+      setCountrie(country)
     })
     .catch(() => {
       setLang('en')
