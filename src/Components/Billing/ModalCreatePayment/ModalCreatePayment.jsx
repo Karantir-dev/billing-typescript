@@ -10,6 +10,7 @@ import {
   billingSelectors,
   payersOperations,
   payersSelectors,
+  authSelectors,
 } from '../../../Redux'
 import s from './ModalCreatePayment.module.scss'
 import { BASE_URL } from '../../../config/config'
@@ -27,6 +28,8 @@ export default function Component(props) {
 
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
+
+  const geoData = useSelector(authSelectors.getGeoData)
 
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
@@ -144,7 +147,8 @@ export default function Component(props) {
               slecetedPayMethod: undefined,
               name: selectedPayerFields?.name || '',
               address_physical: selectedPayerFields?.address_physical || '',
-              city_physical: selectedPayerFields?.city_physical || '',
+              city_physical:
+                selectedPayerFields?.city_physical || geoData?.clients_city || '',
               person: selectedPayerFields?.person || '',
               country:
                 payersSelectedFields?.country ||

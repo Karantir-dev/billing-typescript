@@ -32,6 +32,12 @@
     left: 1px;
     border-color: transparent;
   }
+
+  &.disabled {
+    opacity: 1;
+    -webkit-text-fill-color: var(--transparent-color);
+    color: var(--transparent-color);
+  }
 }
 
 .field_icon {
