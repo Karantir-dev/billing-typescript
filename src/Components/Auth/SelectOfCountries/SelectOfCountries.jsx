@@ -18,6 +18,8 @@ export default function SelectOfCountries({
   touched,
   autoDetectCounty,
   geoCountryId,
+  geoStateId,
+  disabled,
   // setSocialLinks,
 }) {
   const { t } = useTranslation(['auth', 'countries'])
@@ -57,7 +59,7 @@ export default function SelectOfCountries({
         }
       })
     }
-  }, [countries, geoCountryId])
+  }, [countries, geoCountryId, regions])
 
   const countriesWithRegions = regions.reduce((acc, { $depend }) => {
     if (acc.includes($depend)) {
@@ -123,10 +125,12 @@ export default function SelectOfCountries({
               [s.input]: true,
               [s.pr]: true,
               [s.pl]: true,
+              [s.disabled]: disabled,
               [s.error]: errors.country && touched.country,
             })}
             name="country"
             type="text"
+            disabled={disabled}
             value={countrySearchQuery}
             placeholder={t('country_placeholder')}
             autoComplete="off"
@@ -149,9 +153,11 @@ export default function SelectOfCountries({
           )}
 
           <div className={s.input_border}></div>
-          <Shevron
-            className={cn({ [s.right_icon]: true, [s.opened]: countriesListOpened })}
-          />
+          {!disabled && (
+            <Shevron
+              className={cn({ [s.right_icon]: true, [s.opened]: countriesListOpened })}
+            />
+          )}
         </div>
         <ErrorMessage className={s.error_message} name="country" component="span" />
 
@@ -209,6 +215,7 @@ export default function SelectOfCountries({
           filterItems={filterItems}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
+          geoStateId={geoStateId}
           errors={errors}
           touched={touched}
         />

@@ -5,6 +5,7 @@ const registrationSuccess = createAction('REGISTRATION_SUCCESS')
 const loginSuccess = createAction('LOGIN_SUCCESS')
 
 const isLogined = createAction('IS_LOGINED')
+const geoData = createAction('GEO_DATA')
 
 const logoutSuccess = createAction('LOGOUT_SUCCESS')
 
@@ -30,4 +31,5 @@ export default {
   getCurrentUserSuccess,
   getCurrentUserError,
   isLogined,
+  geoData,
 }

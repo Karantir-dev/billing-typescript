@@ -20,10 +20,9 @@ const Component = () => {
   const { i18n } = useTranslation()
   const dispatch = useDispatch()
   const isLoginedBefore = useSelector(authSelectors.getIsLogined)
+  const geoData = useSelector(authSelectors.getGeoData)
 
   const [isLangLoading, setIsLangLoading] = useState(true)
-  const [geoLang, setGeoLang] = useState('')
-  const [geoCountryId, setCountryId] = useState('')
 
   const changeLang = country => {
     let language = 'en'
@@ -56,17 +55,17 @@ const Component = () => {
   }
 
   useEffect(() => {
-    if (geoLang && !isLoginedBefore) {
-      changeLang(geoLang)
+    if (geoData && geoData?.clients_country_code && !isLoginedBefore) {
+      changeLang(geoData?.clients_country_code)
     } else {
-      if (geoLang) {
+      if (geoData?.clients_country_code) {
         setIsLangLoading(false)
       }
     }
-  }, [geoLang])
+  }, [geoData])
 
   useEffect(() => {
-    dispatch(authOperations.getLocation(setGeoLang, setCountryId))
+    dispatch(authOperations.getLocation())
   }, [])
   return (
     <>
@@ -85,7 +84,16 @@ const Component = () => {
           path={route.REGISTRATION}
           element={
             <PublicRoute
-              children={<AuthPage children={<SignupForm geoCountryId={geoCountryId} />} />}
+              children={
+                <AuthPage
+                  children={
+                    <SignupForm
+                      geoCountryId={geoData?.clients_country_id}
+                      geoStateId={geoData?.state_id}
+                    />
+                  }
+                />
+              }
               restricted
               redirectTo={route.SERVICES}
             />

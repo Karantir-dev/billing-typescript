@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
@@ -13,12 +13,23 @@ export default function SelectOfRegions({
   setFieldValue,
   errors,
   touched,
+  geoStateId,
 }) {
   const { t } = useTranslation('auth')
 
   const [regionSearchQuery, setRegionSearchQuery] = useState('')
   const [regionsListOpened, setRegionsListOpened] = useState(false)
   const [filteredRegions, setFilteredRegions] = useState(currentRegions)
+
+  useEffect(() => {
+    if (filteredRegions && geoStateId) {
+      filteredRegions?.forEach(c => {
+        if (c?.$key === geoStateId) {
+          handleRegionClick(c?.$, c?.$key)
+        }
+      })
+    }
+  }, [filteredRegions, geoStateId])
 
   const handleRegionInputChange = value => {
     setRegionSearchQuery(value)

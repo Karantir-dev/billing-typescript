@@ -7,6 +7,7 @@ const initialState = {
   temporaryId: null,
   isLogined: false,
   totpFormVisibility: 'hidden',
+  geoData: null,
 }
 
 const temporaryId = createReducer(initialState.temporaryId, {
@@ -25,6 +26,10 @@ const isLogined = createReducer(initialState.isLogined, {
   [authActions.isLogined]: (_, { payload }) => payload,
 })
 
+const geoData = createReducer(initialState.geoData, {
+  [authActions.geoData]: (_, { payload }) => payload,
+})
+
 const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
   [authActions.openTotpForm]: () => 'shown',
   [authActions.closeTotpForm]: () => 'hidden',
@@ -35,6 +40,7 @@ const authReducer = combineReducers({
   temporaryId,
   totpFormVisibility,
   isLogined,
+  geoData,
 })
 
 export default authReducer
