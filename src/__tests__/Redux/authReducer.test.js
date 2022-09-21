@@ -10,6 +10,7 @@ describe('dataloader reducers', () => {
       temporaryId: null,
       isLogined: false,
       totpFormVisibility: 'hidden',
+      geoData: null,
     })
   })
 
@@ -22,6 +23,7 @@ describe('dataloader reducers', () => {
       temporaryId: null,
       isLogined: false,
       totpFormVisibility: 'hidden',
+      geoData: null,
     })
   })
 
@@ -34,6 +36,7 @@ describe('dataloader reducers', () => {
       isLogined: false,
       temporaryId: 'testTemporaryId',
       totpFormVisibility: 'hidden',
+      geoData: null,
     })
   })
 
@@ -46,6 +49,7 @@ describe('dataloader reducers', () => {
       temporaryId: null,
       isLogined: false,
       totpFormVisibility: 'hidden',
+      geoData: null,
     })
   })
 
@@ -58,6 +62,7 @@ describe('dataloader reducers', () => {
       temporaryId: null,
       isLogined: false,
       totpFormVisibility: 'shown',
+      geoData: null,
     })
   })
 
@@ -70,6 +75,7 @@ describe('dataloader reducers', () => {
       temporaryId: null,
       isLogined: false,
       totpFormVisibility: 'hidden',
+      geoData: null,
     })
   })
 })
