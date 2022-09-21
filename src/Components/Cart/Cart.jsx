@@ -27,6 +27,7 @@ import {
   payersSelectors,
   selectors,
   billingOperations,
+  authSelectors,
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -54,6 +55,8 @@ export default function Component() {
   const [cartData, setCartData] = useState(null)
 
   const [isClosing, setIsClosing] = useState(false)
+
+  const geoData = useSelector(authSelectors.getGeoData)
 
   const isLoading = useSelector(selectors.getIsLoadding)
   const payersList = useSelector(payersSelectors.getPayersList)
@@ -585,7 +588,8 @@ export default function Component() {
                     payersList[payersList?.length - 1]?.id?.$,
                   name: selectedPayerFields?.name || '',
                   address_physical: selectedPayerFields?.address_physical || '',
-                  city_physical: selectedPayerFields?.city_physical || '',
+                  city_physical:
+                    selectedPayerFields?.city_physical || geoData?.clients_city || '',
                   person: selectedPayerFields?.person || '',
                   country:
                     selectedPayerFields?.country ||

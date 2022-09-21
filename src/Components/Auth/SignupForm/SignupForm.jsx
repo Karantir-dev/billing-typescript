@@ -27,7 +27,7 @@ const GOOGLE_LINK =
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
-export default function SignupForm({ geoCountryId }) {
+export default function SignupForm({ geoCountryId, geoStateId }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -182,9 +182,11 @@ export default function SignupForm({ geoCountryId }) {
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 geoCountryId={geoCountryId}
+                geoStateId={geoStateId}
                 autoDetectCounty={true}
                 errors={errors}
                 touched={touched}
+                disabled
               />
 
               {/* <GoogleReCaptcha
