@@ -189,5 +189,6 @@
   "terminals": "terminals",
   "memory": "memory",
   "nothing_found": "Nothing found",
-  "Something went wrong. Try again.": "Something went wrong. Try again."
+  "Something went wrong. Try again.": "Something went wrong. Try again.",
+  "address_format": "Enter the address in the format district, street, building, apartment"
 }

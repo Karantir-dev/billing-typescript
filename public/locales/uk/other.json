@@ -189,5 +189,6 @@
   "terminals": "термінали",
   "memory": "пам'яті",
   "nothing_found": "Нічого не знайдено",
-  "Something went wrong. Try again.": "Щось пішло не так. Спробуйте знову."
+  "Something went wrong. Try again.": "Щось пішло не так. Спробуйте знову.",
+  "address_format": "Введіть адресу у форматі район, вулиця, будинок, квартира"
 }
