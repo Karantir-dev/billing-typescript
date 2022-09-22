@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import cn from 'classnames'
 import { Formik, Form } from 'formik'
-import { Cross } from '../../../images'
+import { Cross, Info } from '../../../images'
 import {
   Select,
   InputField,
@@ -22,6 +23,8 @@ export default function Component(props) {
   const { t } = useTranslation(['payers', 'other', 'trusted_users'])
 
   const { elid, closeAddModalHandler } = props
+
+  const dropdownDescription = useRef(null)
 
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -278,17 +281,27 @@ export default function Component(props) {
                         touched={!!touched.city_physical}
                         // isRequired
                       />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name="address_physical"
-                        label={`${t('The address', { ns: 'other' })}:`}
-                        placeholder={t('Enter address', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.address_physical}
-                        touched={!!touched.address_physical}
-                        isRequired
-                      />
+
+                      <div className={s.nsInputBlock}>
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          inputClassName={s.inputAddressWrapp}
+                          name="address_physical"
+                          label={`${t('The address', { ns: 'other' })}:`}
+                          placeholder={t('Enter address', { ns: 'other' })}
+                          isShadow
+                          className={cn(s.input, s.inputAddress)}
+                          error={!!errors.address_physical}
+                          touched={!!touched.address_physical}
+                          isRequired
+                        />
+                        <button type="button" className={s.infoBtn}>
+                          <Info />
+                          <div ref={dropdownDescription} className={s.descriptionBlock}>
+                            {t('address_format', { ns: 'other' })}
+                          </div>
+                        </button>
+                      </div>
                     </div>
                   </div>
                   {payersSelectedFields?.offer_link &&

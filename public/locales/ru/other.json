@@ -185,5 +185,8 @@
   "terminal": "терминал",
   "terminals": "терминала",
   "memory": "памяти",
-  "nothing_found": "Ничего не найдено"
+  "nothing_found": "Ничего не найдено",
+  "Something went wrong. Try again.": "Что-то пошло не так. Попробуйте еще раз.",
+  "address_format": "Введите адрес в формате район, улица, дом, квартира"
+  
 }

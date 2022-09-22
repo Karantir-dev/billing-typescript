@@ -441,12 +441,86 @@
   }
 }
 
+.nsInputBlock {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.infoBtn {
+  position: absolute;
+  margin-left: auto;
+  top: 45%;
+  right: 0px;
+  z-index: 2;
+  padding: 12px 12px 12px 0px;
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+    .descriptionBlock {
+      opacity: 1;
+      height: auto;
+      overflow: auto;
+      padding: 15px;
+    }
+  }
+}
+
+.descriptionBlock {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--forms_bgc_4);
+  padding: 0;
+  top: 90%;
+  right: 0;
+  width: 232px;
+  z-index: 3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  text-align: start;
+  transition: 0.05s linear;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 89%;
+    bottom: 99%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--forms_bgc_4);
+    clear: both;
+  }
+}
+
+.inputAddressWrapp {
+  padding-right: 35px;
+}
+
 @media screen and (min-width: 768px) {
   // .formBlock {
   //   &:not(:first-child) {
   //     margin-top: 20px;
   //   }
   // }
+
+  .nsInputBlock {
+    position: relative;
+    width: 100%;
+    max-width: 46%;
+  }
 
   .modalBg {
     align-items: center;
@@ -504,6 +578,10 @@
   .inputBig {
     max-width: 46%;
     margin-right: 20px;
+
+    &.inputAddress {
+      max-width: 100%;
+    }
 
     &:nth-child(2n) {
       margin-right: 0px;

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '../../routes'
-import { Cross, Check } from '../../images'
+import { Cross, Check, Info } from '../../images'
 import {
   Select,
   InputField,
@@ -38,6 +38,8 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
+
+  const dropdownDescription = useRef(null)
 
   const { t } = useTranslation([
     'cart',
@@ -755,7 +757,6 @@ export default function Component() {
                               }),
                             )}
                           />
-
                           {values?.profiletype === '3' || values?.profiletype === '2' ? (
                             <InputField
                               inputWrapperClass={s.inputHeight}
@@ -769,7 +770,6 @@ export default function Component() {
                               isRequired
                             />
                           ) : null}
-
                           {values?.profiletype === '1' && payersList?.length !== 0 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}
@@ -790,7 +790,6 @@ export default function Component() {
                               }))}
                             />
                           )}
-
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="person"
@@ -806,7 +805,6 @@ export default function Component() {
                             touched={!!touched.person}
                             isRequired
                           />
-
                           <Select
                             placeholder={t('Not chosen', { ns: 'other' })}
                             label={`${t('The country', { ns: 'other' })}:`}
@@ -827,7 +825,6 @@ export default function Component() {
                             )}
                             isRequired
                           />
-
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="city_physical"
@@ -839,18 +836,29 @@ export default function Component() {
                             touched={!!touched.city_physical}
                             // isRequired
                           />
-
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="address_physical"
-                            label={`${t('The address', { ns: 'other' })}:`}
-                            placeholder={t('Enter address', { ns: 'other' })}
-                            isShadow
-                            className={s.inputBig}
-                            error={!!errors.address_physical}
-                            touched={!!touched.address_physical}
-                            isRequired
-                          />
+                          <div className={s.nsInputBlock}>
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              inputClassName={s.inputAddressWrapp}
+                              name="address_physical"
+                              label={`${t('The address', { ns: 'other' })}:`}
+                              placeholder={t('Enter address', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.inputAddress)}
+                              error={!!errors.address_physical}
+                              touched={!!touched.address_physical}
+                              isRequired
+                            />
+                            <button type="button" className={s.infoBtn}>
+                              <Info />
+                              <div
+                                ref={dropdownDescription}
+                                className={s.descriptionBlock}
+                              >
+                                {t('address_format', { ns: 'other' })}
+                              </div>
+                            </button>
+                          </div>
 
                           {payersSelectedFields?.eu_vat_field ? (
                             <InputField
