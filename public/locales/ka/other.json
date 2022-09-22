@@ -186,5 +186,6 @@
   "terminals": "ტერმინალი",
   "memory": "მეხსიერება",
   "nothing_found": "Არაფერი არ არის ნაპოვნი",
-  "Something went wrong. Try again.": "Რაღაც არასწორად წავიდა. Კიდევ სცადე."
+  "Something went wrong. Try again.": "Რაღაც არასწორად წავიდა. Კიდევ სცადე.",
+  "address_format": "შეიყვანეთ მისამართი ფორმატში უბანი, ქუჩა, კორპუსი, ბინა"
 }

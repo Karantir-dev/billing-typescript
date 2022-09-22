@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
-import { Check, Cross } from '../../../images'
+import { Check, Cross, Info } from '../../../images'
 import { Button, Select, InputField, PaymentCurrencyBtn, CheckBox } from '../..'
 import {
   billingOperations,
@@ -36,6 +36,8 @@ export default function Component(props) {
 
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
+
+  const dropdownDescription = useRef(null)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -377,17 +379,29 @@ export default function Component(props) {
                             // isRequired
                           />
 
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="address_physical"
-                            label={`${t('The address', { ns: 'other' })}:`}
-                            placeholder={t('Enter address', { ns: 'other' })}
-                            isShadow
-                            className={s.inputBig}
-                            error={!!errors.address_physical}
-                            touched={!!touched.address_physical}
-                            isRequired
-                          />
+                          <div className={s.nsInputBlock}>
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="address_physical"
+                              label={`${t('The address', { ns: 'other' })}:`}
+                              placeholder={t('Enter address', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.inputAddress)}
+                              inputClassName={s.inputAddressWrapp}
+                              error={!!errors.address_physical}
+                              touched={!!touched.address_physical}
+                              isRequired
+                            />
+                            <button type="button" className={s.infoBtn}>
+                              <Info />
+                              <div
+                                ref={dropdownDescription}
+                                className={s.descriptionBlock}
+                              >
+                                {t('address_format', { ns: 'other' })}
+                              </div>
+                            </button>
+                          </div>
 
                           {payersSelectedFields?.eu_vat_field ? (
                             <InputField

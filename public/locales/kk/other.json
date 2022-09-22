@@ -187,5 +187,6 @@
   "terminals": "терминал",
   "memory": "жад",
   "nothing_found": "Ештеңе табылмады",
-  "Something went wrong. Try again.": "Бірдеңе дұрыс болмады. Қайтадан көріңіз."
+  "Something went wrong. Try again.": "Бірдеңе дұрыс болмады. Қайтадан көріңіз.",
+  "address_format": "Аудан, көше, ғимарат, пәтер форматында мекенжайды енгізіңіз"
 }
