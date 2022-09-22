@@ -186,5 +186,6 @@
   "terminal": "терминал",
   "terminals": "терминал",
   "memory": "жад",
-  "nothing_found": "Ештеңе табылмады"
+  "nothing_found": "Ештеңе табылмады",
+  "Something went wrong. Try again.": "Бірдеңе дұрыс болмады. Қайтадан көріңіз."
 }

@@ -185,5 +185,6 @@
   "terminal": "ტერმინალი",
   "terminals": "ტერმინალი",
   "memory": "მეხსიერება",
-  "nothing_found": "Არაფერი არ არის ნაპოვნი"
+  "nothing_found": "Არაფერი არ არის ნაპოვნი",
+  "Something went wrong. Try again.": "Რაღაც არასწორად წავიდა. Კიდევ სცადე."
 }
