@@ -188,5 +188,6 @@
   "terminal": "terminal",
   "terminals": "terminals",
   "memory": "memory",
-  "nothing_found": "Nothing found"
+  "nothing_found": "Nothing found",
+  "Something went wrong. Try again.": "Something went wrong. Try again."
 }

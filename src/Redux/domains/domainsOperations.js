@@ -131,7 +131,14 @@ const getDomainsOrderName =
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (typeof data === 'string') {
+          toast.error(`${i18n.t('Something went wrong. Try again.', { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
+        }
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
 
         const domainData = data?.doc
 
