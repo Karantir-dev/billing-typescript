@@ -79,7 +79,7 @@ export default function VDSOrder() {
     return (
       labelArr[0] +
       'EUR ' +
-      t(labelArr[1].replace(')', '')) +
+      t(labelArr[1]?.replace(')', '')) +
       (sentence.includes(')') ? ')' : '')
     )
   }
@@ -107,19 +107,19 @@ export default function VDSOrder() {
     return optionsList?.map(({ $key, $ }) => {
       let label = translatePeriodText($.trim())
 
-      label = t(label.split(' (')[0]) + ' (' + label.split(' (')[1]
+      label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
       return { value: $key, label: label }
     })
   }
 
   const translate = string => {
-    return string.split('EUR ')[0] + 'EUR ' + t(string.split('EUR ')[1])
+    return string?.split('EUR ')[0] + 'EUR ' + t(string?.split('EUR ')[1])
   }
 
   const parseTariffPrice = price => {
-    let percent = price.match(/<b>(.+?)(?=<\/b>)/g)[0].replace('<b>', '')
-    let newPrice = price.match(/<b>(.+?)(?=<\/b>)/g)[1].replace('<b>', '')
-    let oldPrice = price.match(/<del>(.+?)(?=<\/del>)/g)[0].replace('<del>', '')
+    let percent = price.match(/<b>(.+?)(?=<\/b>)/g)[0]?.replace('<b>', '')
+    let newPrice = price.match(/<b>(.+?)(?=<\/b>)/g)[1]?.replace('<b>', '')
+    let oldPrice = price.match(/<del>(.+?)(?=<\/del>)/g)[0]?.replace('<del>', '')
 
     newPrice = translate(newPrice)
     oldPrice = translate(oldPrice)
@@ -236,7 +236,9 @@ export default function VDSOrder() {
     domain: Yup.string().matches(DOMAIN_REGEX, t('warning_domain')),
   })
 
-  const totalPrice = +parametersInfo?.orderinfo?.$.match(/Total amount: (.+?)(?= EUR)/)[1]
+  const totalPrice = +parametersInfo?.orderinfo?.$?.match(
+    /Total amount: (.+?)(?= EUR)/,
+  )[1]
 
   const getPortSpeed = () => {
     const temp = parametersInfo?.slist?.find(el => el.$name === 'Port_speed')?.val
@@ -246,6 +248,25 @@ export default function VDSOrder() {
 
   const openTermsHandler = () => {
     dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
+  }
+
+  const translatePeriod = (periodName, t) => {
+    let period = ''
+    if (periodName === '1') {
+      period = t('per month')
+    } else if (periodName === '3') {
+      period = t('for three months')
+    } else if (periodName === '6') {
+      period = t('half a year')
+    } else if (periodName === '12') {
+      period = t('per year')
+    } else if (periodName === '24') {
+      period = t('for two years')
+    } else if (periodName === '36') {
+      period = t('for three years')
+    }
+
+    return period
   }
 
   return (
@@ -325,6 +346,7 @@ export default function VDSOrder() {
                     if (price.$.includes('<')) {
                       parsedPrice = parseTariffPrice(price.$)
                     }
+
                     return (
                       <li
                         className={cn(s.tariff_item, {
@@ -575,7 +597,7 @@ export default function VDSOrder() {
                             setCount(+count - 1)
                             setFieldValue(
                               'finalTotalPrice',
-                              +(values.totalPrice * (+count - 1)).toFixed(4),
+                              +(values.totalPrice * (+count - 1))?.toFixed(4),
                             )
                           }}
                           disabled={+count <= 1}
@@ -587,7 +609,7 @@ export default function VDSOrder() {
                             onChange={event => {
                               const value =
                                 event.target.value.length > 1
-                                  ? event.target.value.replace(/^0/, '')
+                                  ? event.target.value?.replace(/^0/, '')
                                   : event.target.value
 
                               setCount(+event.target.value > 50 ? 50 : value)
@@ -607,7 +629,7 @@ export default function VDSOrder() {
                             setCount(+count + 1)
                             setFieldValue(
                               'finalTotalPrice',
-                              +(values.totalPrice * (+count + 1)).toFixed(4),
+                              +(values.totalPrice * (+count + 1))?.toFixed(4),
                             )
                           }}
                           disabled={+count >= 50}
@@ -622,14 +644,15 @@ export default function VDSOrder() {
                       <span className={s.tablet_price_sentence}>
                         <span className={s.tablet_price}>
                           {values.finalTotalPrice} EUR
-                        </span>{' '}
-                        {t(parametersInfo?.orderinfo.$.match(/EUR (.+?)(?= <br\/>)/)[1])}
+                        </span>
+                        {` ${translatePeriod(period, t)}`}
                       </span>
                     </p>
                   ) : (
                     <p className={s.price_wrapper}>
                       <span className={s.price}>€{values.finalTotalPrice}</span>
-                      {t(parametersInfo?.orderinfo.$.match(/EUR (.+?)(?= <br\/>)/)[1])}
+                      {` ${translatePeriod(period, t)}`}
+                      {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>
                   )}
 
