@@ -275,7 +275,8 @@ const getCountriesForRegister =
   }
 
 const register =
-  (values, partner, setErrMsg, successRegistration, resetRecaptcha) => dispatch => {
+  (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
+  dispatch => {
     dispatch(actions.showLoader())
 
     axiosInstance
@@ -290,6 +291,7 @@ const register =
           country: values.country,
           state: values.region,
           partner: partner,
+          sesid: sesid,
           'g-recaptcha-response': values.reCaptcha,
           out: 'json',
           sok: 'ok',
