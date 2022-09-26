@@ -366,7 +366,7 @@ export default function VDS() {
         </p>
       </div>
 
-      {servers?.length < 1 && !isSearchMade && !isLoading && (
+      {servers?.length < 1 && !isSearchMade && !isLoading && servers && (
         <div className={s.no_vds_wrapper}>
           <img className={s.no_vds} src={no_vds} alt="no_vds" />
           <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
