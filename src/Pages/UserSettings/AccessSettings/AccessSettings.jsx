@@ -29,7 +29,7 @@ import { toast } from 'react-toastify'
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { t } = useTranslation(['user_settings', 'other'])
+  const { t } = useTranslation(['user_settings', 'other', 'auth'])
   const location = useLocation()
   const existingSocial = location?.state?.isCurrentSocialExist
 
@@ -48,8 +48,8 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   const validationSchema = Yup.object().shape({
     passwd: Yup.string()
-      .min(6, t('Password must contain at least 6 characters', { ns: 'other' }))
-      .max(48, t('Password must contain no more than 48 characters', { ns: 'other' }))
+      .min(12, t('warnings.invalid_pass', { ns: 'auth' }))
+      .max(48, t('warnings.invalid_pass', { ns: 'auth' }))
       .matches(
         /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
         t('Password must contain at least one uppercase and lowercase letter', {
