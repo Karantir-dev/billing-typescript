@@ -25,10 +25,10 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       }),
     )
     .then(({ data }) => {
-      console.log(data, 'data in login request')
+      // console.log(data, 'data in login request')
       console.log(redirectID, 'redirectID in login request')
 
-      console.log(data?.doc?.auth?.$id, 'sessionID')
+      // console.log(data?.doc?.auth?.$id, 'sessionID')
 
       localStorage.removeItem('redirectID')
       if (data.doc.error) throw data.doc.error
