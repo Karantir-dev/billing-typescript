@@ -138,7 +138,7 @@ const Component = () => {
             <PublicRoute
               children={<AuthPage children={<ConfirmGeo />} />}
               restricted
-              redirectTo={route.SERVICES}
+              redirectTo={route.LOGIN}
             />
           }
         />

@@ -28,18 +28,13 @@ export default function SocialNetAuth() {
 
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
-    const redirect = location.search.match(/redirect=(.+?)(?=&|$)/)?.[1]
 
-    if (redirect && !state) {
-      navigate(route.GEO_CONFIRM, { replace: true })
+    if (!state) {
+      navigate(route.LOGIN, { replace: true })
     } else {
-      if (!state) {
-        navigate(route.LOGIN, { replace: true })
-      } else {
-        dispatch(
-          authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),
-        )
-      }
+      dispatch(
+        authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),
+      )
     }
   }, [])
 
