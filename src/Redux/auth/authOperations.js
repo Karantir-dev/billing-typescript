@@ -458,6 +458,32 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
 }
 
+const geoConfirm = (redirect, redirectToLogin) => dispatch => {
+  dispatch(actions.showLoader())
+
+  axiosInstance
+    .get(
+      '?' +
+        qs.stringify({
+          func: 'logon',
+          redirect: redirect,
+          sok: 'ok',
+          out: 'json',
+          lang: 'en',
+        }),
+    )
+    .then(resp => {
+      console.log(resp, resp)
+      dispatch(actions.hideLoader())
+      redirectToLogin()
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+
+      console.log('checkLoginWithSocial - ', err)
+    })
+}
+
 const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
   const {
     auth: { sessionId },
@@ -573,4 +599,5 @@ export default {
   addLoginWithSocial,
   getRedirectLink,
   getLocation,
+  geoConfirm,
 }
