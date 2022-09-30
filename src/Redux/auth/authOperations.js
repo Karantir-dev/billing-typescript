@@ -11,25 +11,25 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
   dispatch(actions.showLoader())
 
   const redirectID = localStorage.getItem('redirectID')
+
+  const formDataLogin = new FormData()
+
+  formDataLogin.append('func', 'auth')
+  formDataLogin.append('username', email)
+  formDataLogin.append('password', password)
+
+  formDataLogin.append('out', 'json')
+  formDataLogin.append('g-recaptcha-response', reCaptcha)
+  formDataLogin.append('sok', 'ok')
+
+  if (redirectID) {
+    formDataLogin.append('redirect', redirectID)
+    formDataLogin.append('forget', 'on')
+  }
+
   axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'auth',
-        redirect: redirectID ? redirectID : '',
-        username: email,
-        password: password,
-        sok: 'ok',
-        out: 'json',
-        'g-recaptcha-response': reCaptcha,
-      }),
-    )
+    .post('/', formDataLogin)
     .then(({ data }) => {
-      // console.log(data, 'data in login request')
-      console.log(redirectID, 'redirectID in login request')
-
-      // console.log(data?.doc?.auth?.$id, 'sessionID')
-
       localStorage.removeItem('redirectID')
       if (data.doc.error) throw data.doc.error
 
@@ -466,31 +466,11 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
 }
 
-const geoConfirm = (redirect, redirectToLogin) => dispatch => {
-  dispatch(actions.showLoader())
+const geoConfirm = (redirect, redirectToLogin) => () => {
+  redirect = decodeURIComponent(redirect)
 
-  axiosInstance
-    .get(
-      '?' +
-        qs.stringify({
-          func: 'logon',
-          redirect: redirect,
-          sok: 'ok',
-          out: 'json',
-          lang: 'en',
-        }),
-    )
-    .then(resp => {
-      console.log(resp, resp)
-      localStorage.setItem('redirectID', redirect)
-      dispatch(actions.hideLoader())
-      redirectToLogin(redirect)
-    })
-    .catch(err => {
-      dispatch(actions.hideLoader())
-
-      console.log('geoConfirm - ', err)
-    })
+  localStorage.setItem('redirectID', redirect)
+  redirectToLogin(redirect)
 }
 
 const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
