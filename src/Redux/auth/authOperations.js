@@ -10,11 +10,13 @@ const SERVER_ERR_MSG = 'auth_error'
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
 
+  const redirectID = localStorage.getItem('redirectID')
   axiosInstance
     .post(
       '/',
       qs.stringify({
         func: 'auth',
+        redirect: redirectID ? redirectID : '',
         username: email,
         password: password,
         sok: 'ok',
@@ -23,6 +25,12 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       }),
     )
     .then(({ data }) => {
+      // console.log(data, 'data in login request')
+      console.log(redirectID, 'redirectID in login request')
+
+      // console.log(data?.doc?.auth?.$id, 'sessionID')
+
+      localStorage.removeItem('redirectID')
       if (data.doc.error) throw data.doc.error
 
       const sessionId = data?.doc?.auth?.$id
@@ -474,13 +482,14 @@ const geoConfirm = (redirect, redirectToLogin) => dispatch => {
     )
     .then(resp => {
       console.log(resp, resp)
+      localStorage.setItem('redirectID', redirect)
       dispatch(actions.hideLoader())
-      redirectToLogin()
+      redirectToLogin(redirect)
     })
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log('checkLoginWithSocial - ', err)
+      console.log('geoConfirm - ', err)
     })
 }
 

@@ -10,8 +10,11 @@ export default function ConfrimGeo() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const redirectToLogin = () => {
+  const redirectToLogin = redirect => {
     navigate(route.LOGIN, {
+      state: {
+        redirect: redirect,
+      },
       replace: true,
     })
   }
@@ -21,6 +24,8 @@ export default function ConfrimGeo() {
 
     if (redirect) {
       dispatch(authOperations.geoConfirm(redirect, redirectToLogin))
+    } else {
+      redirectToLogin()
     }
   }, [])
 

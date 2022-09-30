@@ -27,6 +27,9 @@ export default function LoginForm() {
   const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
   const recaptchaEl = useRef()
 
+  // const redirectID = location?.state?.redirect
+  // console.log(redirectID, 'from login form')
+
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   // const [socialLinks, setSocialLinks] = useState({})
 
