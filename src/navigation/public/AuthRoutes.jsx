@@ -8,6 +8,7 @@ import {
   PublicRoute,
   SignupForm,
   SocialNetAuth,
+  ConfirmGeo,
   Portal,
   Loader,
 } from '../../Components'
@@ -127,6 +128,17 @@ const Component = () => {
               children={<AuthPage children={<SocialNetAuth />} />}
               restricted
               redirectTo={route.SERVICES}
+            />
+          }
+        />
+
+        <Route
+          path={route.GEO_CONFIRM}
+          element={
+            <PublicRoute
+              children={<AuthPage children={<ConfirmGeo />} />}
+              restricted
+              redirectTo={route.LOGIN}
             />
           }
         />

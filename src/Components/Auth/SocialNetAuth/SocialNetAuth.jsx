@@ -28,6 +28,7 @@ export default function SocialNetAuth() {
 
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
+
     if (!state) {
       navigate(route.LOGIN, { replace: true })
     } else {

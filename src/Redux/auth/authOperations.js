@@ -10,19 +10,27 @@ const SERVER_ERR_MSG = 'auth_error'
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
 
+  const redirectID = localStorage.getItem('redirectID')
+
+  const formDataLogin = new FormData()
+
+  formDataLogin.append('func', 'auth')
+  formDataLogin.append('username', email)
+  formDataLogin.append('password', password)
+
+  formDataLogin.append('out', 'json')
+  formDataLogin.append('g-recaptcha-response', reCaptcha)
+  formDataLogin.append('sok', 'ok')
+
+  if (redirectID) {
+    formDataLogin.append('redirect', redirectID)
+    formDataLogin.append('forget', 'on')
+  }
+
   axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'auth',
-        username: email,
-        password: password,
-        sok: 'ok',
-        out: 'json',
-        'g-recaptcha-response': reCaptcha,
-      }),
-    )
+    .post('/', formDataLogin)
     .then(({ data }) => {
+      localStorage.removeItem('redirectID')
       if (data.doc.error) throw data.doc.error
 
       const sessionId = data?.doc?.auth?.$id
@@ -458,6 +466,13 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
 }
 
+const geoConfirm = (redirect, redirectToLogin) => () => {
+  redirect = decodeURIComponent(redirect)
+
+  localStorage.setItem('redirectID', redirect)
+  redirectToLogin(redirect)
+}
+
 const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) => {
   const {
     auth: { sessionId },
@@ -573,4 +588,5 @@ export default {
   addLoginWithSocial,
   getRedirectLink,
   getLocation,
+  geoConfirm,
 }
