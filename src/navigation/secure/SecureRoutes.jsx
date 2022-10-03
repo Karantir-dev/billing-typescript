@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
   Cart,
   Container,
@@ -9,6 +9,7 @@ import {
   PrivateRoute,
   ServicesList,
   TrustedUsers,
+  CartFromSite,
   PageTitleRender,
 } from '../../Components'
 import { useTranslation } from 'react-i18next'
@@ -57,6 +58,8 @@ import * as route from '../../routes'
 // )
 
 const Component = () => {
+  const navigate = useNavigate()
+
   const { t } = useTranslation([
     'container',
     'vds',
@@ -69,6 +72,15 @@ const Component = () => {
     'trusted_users',
   ])
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    if (cartFromSite) {
+      if (JSON.parse(cartFromSite)?.func === 'vds.order.param') {
+        navigate(route.VDS_ORDER)
+      }
+    }
+  }, [])
 
   return (
     <Container>
@@ -467,6 +479,18 @@ const Component = () => {
           path={`${route.ERROR_PAGE}/*`}
           element={<PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />}
         />
+
+        <Route
+          path={route.SITE_CART}
+          element={
+            <PrivateRoute
+              children={<CartFromSite isAuth />}
+              restricted
+              redirectTo={route.LOGIN}
+            />
+          }
+        />
+
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
 

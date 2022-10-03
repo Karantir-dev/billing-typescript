@@ -5,6 +5,7 @@ export const REGISTRATION = '/signup'
 // перейменувати /google на якусь загальну назву для всіх соц мереж
 export const SOC_NET_AUTH = '/socialnetwork'
 export const GEO_CONFIRM = '/geoconfirm'
+export const SITE_CART = '/site_cart'
 
 export const HOME = '/'
 export const ACCESS_LOG = '/access_log'

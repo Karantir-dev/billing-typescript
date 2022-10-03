@@ -44,9 +44,7 @@ export default function LoginForm() {
       recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
-    // if (reCaptcha) {
-    //   return console.log(reCaptcha)
-    // }
+
     dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
   }
 
