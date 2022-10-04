@@ -16,6 +16,7 @@ export { default as SelectOfRegions } from './Auth/SelectOfRegions/SelectOfRegio
 export { default as VerificationModal } from './Auth/VerificationModal/VerificationModal'
 export { default as SocialNetAuth } from './Auth/SocialNetAuth/SocialNetAuth'
 export { default as ConfirmGeo } from './Auth/ConfirmGeo/ConrimGeo'
+export { default as CartFromSite } from './Auth/CartFromSite/CartFromSite'
 
 //==========================================ROUTES==========================================//
 export { default as PrivateRoute } from './Routes/PrivateRoute'
