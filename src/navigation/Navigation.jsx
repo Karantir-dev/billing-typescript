@@ -1,12 +1,8 @@
-import React from 'react' // useEffect
+import React from 'react'
 import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  actions,
-  authSelectors,
-  //  supportSelectors
-} from '../Redux'
+import { actions, authSelectors } from '../Redux'
 import i18n from 'i18next'
 
 function getFaviconEl() {
@@ -19,10 +15,6 @@ function getFaviconMobEl() {
 
 const Component = () => {
   const dispatch = useDispatch()
-
-  // const notifications = useSelector(userSelectors.getUserItems)
-  // let areNewTickets = useSelector(supportSelectors.getTicket)
-  // areNewTickets = true
 
   i18n.on('languageChanged', l => {
     const favicon = getFaviconEl()

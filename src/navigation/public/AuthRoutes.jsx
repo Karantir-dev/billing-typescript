@@ -11,6 +11,7 @@ import {
   ConfirmGeo,
   Portal,
   Loader,
+  CartFromSite,
 } from '../../Components'
 import { useTranslation } from 'react-i18next'
 import { authOperations, authSelectors } from '../../Redux'
@@ -100,7 +101,6 @@ const Component = () => {
             />
           }
         />
-
         <Route
           path={route.RESET_PASSWORD}
           element={
@@ -131,12 +131,21 @@ const Component = () => {
             />
           }
         />
-
         <Route
           path={route.GEO_CONFIRM}
           element={
             <PublicRoute
               children={<AuthPage children={<ConfirmGeo />} />}
+              restricted
+              redirectTo={route.LOGIN}
+            />
+          }
+        />
+        <Route
+          path={route.SITE_CART}
+          element={
+            <PublicRoute
+              children={<AuthPage children={<CartFromSite />} />}
               restricted
               redirectTo={route.LOGIN}
             />

@@ -36,6 +36,8 @@ export default function VDSOrder() {
   const [parametersInfo, setParametersInfo] = useState()
   const [count, setCount] = useState(1)
 
+  const [dataFromSite, setDataFromSite] = useState(null)
+
   const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
@@ -54,6 +56,29 @@ export default function VDSOrder() {
   useEffect(() => {
     dispatch(vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList))
   }, [])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
+    if (formInfo && tariffsList && cartFromSiteJson) {
+      setPeriod(cartFromSiteJson?.period)
+      handleTariffClick(cartFromSiteJson?.period, cartFromSiteJson?.pricelist)
+      setRecipe(cartFromSiteJson?.recipe)
+      setCount(Number(cartFromSiteJson?.order_count))
+      setDataFromSite({
+        recipe: cartFromSiteJson?.recipe,
+        ostempl: cartFromSiteJson?.ostempl,
+        domain: cartFromSiteJson?.domain,
+        CPU_count: cartFromSiteJson?.CPUcount,
+        Memory: cartFromSiteJson?.Memory,
+        Disk_space: cartFromSiteJson?.Diskspace,
+        Port_speed: cartFromSiteJson?.Portspeed,
+        Control_panel: cartFromSiteJson?.Controlpanel,
+        autoprolong: cartFromSiteJson?.autoprolong,
+      })
+      localStorage.removeItem('site_cart')
+    }
+  }, [formInfo, tariffsList])
 
   const handleTariffClick = (period, pricelist) => {
     if (selectedTariffId !== pricelist) {
@@ -299,14 +324,16 @@ export default function VDSOrder() {
         <Formik
           enableReinitialize
           initialValues={{
-            ostempl: parametersInfo?.ostempl?.$ || '',
-            autoprolong: parametersInfo?.autoprolong?.$ || '',
-            domain: parametersInfo?.domain?.$ || '',
-            CPU_count: parametersInfo?.CPU_count || '',
-            Memory: parametersInfo?.Memory || '',
-            Disk_space: parametersInfo?.Disk_space || '',
+            ostempl: dataFromSite?.ostempl || parametersInfo?.ostempl?.$ || '',
+            autoprolong:
+              dataFromSite?.autoprolong || parametersInfo?.autoprolong?.$ || '',
+            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || '',
+            CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
+            Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
+            Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
             Port_speed: getPortSpeed(),
-            Control_panel: parametersInfo?.Control_panel || '',
+            Control_panel:
+              dataFromSite?.Control_panel || parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
             agreement: checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: totalPrice,
@@ -316,6 +343,7 @@ export default function VDSOrder() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
+            console.log(values)
             return (
               <Form>
                 <Select
