@@ -2,6 +2,9 @@ import qs from 'qs'
 import { axiosInstance } from '../../config/axiosInstance'
 import { actions, supportActions, userOperations } from '..'
 import { errorHandler } from '../../utils'
+import { toast } from 'react-toastify'
+import i18n from './../../i18n'
+import translateSupportPaymentError from '../../utils/translateSupportPaymentError'
 
 const getTicketsHandler =
   (body = {}) =>
@@ -584,6 +587,50 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
     })
 }
 
+const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'supporttips',
+        sok: 'ok',
+        out: 'json',
+        elid,
+        sessid: sessionId,
+        summattips,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      setSuccessModal(true)
+      dispatch(actions.hideLoader())
+    })
+    .then(() => dispatch(userOperations.getNotify()))
+    .catch(error => {
+      console.log('error in paySupportTips', error.message)
+
+      if (
+        error.message.trim() ===
+        'insufficient funds to complete the operation. Required amount  23.10 EUR. Your current balance: 0.00 EUR, credit limit 0.00'
+      ) {
+        toast.error(`${translateSupportPaymentError(error.message.trim(), i18n.t)}`, {
+          position: 'bottom-right',
+        })
+      }
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTicketsHandler,
   archiveTicketsHandler,
@@ -599,4 +646,5 @@ export default {
   getTicketsFiltersHandler,
   getTicketsArchiveFiltersHandler,
   getTicketsArchiveFiltersSettingsHandler,
+  paySupportTips,
 }

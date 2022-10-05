@@ -35,5 +35,10 @@
   "Refresh": "Refresh",
   "To the archive": "To the archive",
   "Select a department": "Select a department",
-  "The following services were suspended due to no actions from you": "The following services were suspended due to no actions from you"
+  "The following services were suspended due to no actions from you": "The following services were suspended due to no actions from you",
+  "Thank support": "Thank support",
+  "The transfer amount will be debited from your balance": "The transfer amount will be debited from your balance",
+  "THANK YOU": "THANK YOU",
+  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Thank you on behalf of our staff. They will receive this bonus to their salary!",
+  "payment_insufficient_money": "Insufficient funds to complete the operation. Required amount  {{value1}}. Your current balance: {{value2}}, credit limit {{value3}} EUR"
 }

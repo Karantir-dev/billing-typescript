@@ -37,5 +37,10 @@
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "Сұрағыңыз серверлерді орнатуға, басқару панелін орнатуға, сайттарды жылжытуға қатысты болса, осы бөлімді таңдаңыз. Сондай-ақ хостингтің техникалық ерекшеліктері бойынша сұрақтар, VDS, Dedicated – осы бөлімге.",
   "To the archive": "Мұрағатқа",
   "Select a department": "Бөлімді таңдаңыз",
-  "The following services were suspended due to no actions from you": "Сіз жасаған әрекеттерге байланысты келесі қызметтер тоқтатылды"
+  "The following services were suspended due to no actions from you": "Сіз жасаған әрекеттерге байланысты келесі қызметтер тоқтатылды",
+  "Thank support": "Рахмет қолдау",
+  "The transfer amount will be debited from your balance": "Аударым сомасы сіздің балансыңыздан есептен шығарылады",
+  "THANK YOU": "РАҚМЕТ СІЗГЕ",
+  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Қызметкерлеріміздің атынан алғысымызды білдіреміз. Олар бұл бонусты жалақыларына алады!",
+  "payment_insufficient_money": "არასაკმარისი თანხები ოპერაციის დასასრულებლად. საჭირო თანხა {{value1}}. თქვენი მიმდინარე ბალანსი: {{value2}}, საკრედიტო ლიმიტი {{value3}} ევრო"
 }

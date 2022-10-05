@@ -35,5 +35,10 @@
   "Refresh": "განაახლეთ",
   "To the archive": "არქივისკენ",
   "Select a department": "აირჩიეთ განყოფილება",
-  "The following services were suspended due to no actions from you": "შემდეგი სერვისები შეჩერდა თქვენი ქმედებების გამო"
+  "The following services were suspended due to no actions from you": "შემდეგი სერვისები შეჩერდა თქვენი ქმედებების გამო",
+  "Thank support": "მადლობა მხარდაჭერა",
+  "The transfer amount will be debited from your balance": "გადარიცხვის თანხა ჩამოიჭრება თქვენი ბალანსიდან",
+  "THANK YOU": "ᲒᲛᲐᲓᲚᲝᲑᲗ",
+  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "მადლობა ჩვენი თანამშრომლების სახელით. ისინი მიიღებენ ამ პრემიას ხელფასზე!",
+  "payment_insufficient_money": "Oперацияны аяқтау үшін қаражаттың жеткіліксіздігі. Міндетті сома {{value1}}. Ағымдағы баланс: {{value2}}, несие лимиті {{value3}} EUR"
 }
