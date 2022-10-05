@@ -123,7 +123,8 @@ export default function VDSItem({
                       onClick={() => handleToolBtnClick(setIdForPassChange)}
                       disabled={
                         server?.allow_changepassword?.$ !== 'on' ||
-                        !rights?.changepassword
+                        !rights?.changepassword ||
+                        server?.ostempl?.$?.includes('Windows')
                       }
                     >
                       <PassChange className={s.tool_icon} />
