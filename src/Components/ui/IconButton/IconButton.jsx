@@ -25,6 +25,7 @@ import {
   Exchange,
   ChangeTariff,
   DownloadWithFolder,
+  Euro,
 } from '../../../images'
 
 export default function Component(props) {
@@ -76,6 +77,8 @@ export default function Component(props) {
         return <ChangeTariff />
       case 'download-folder':
         return <DownloadWithFolder />
+      case 'euro':
+        return <Euro />
       default:
         return null
     }
@@ -124,6 +127,7 @@ Component.propTypes = {
     'exitSign',
     'exchange',
     'change-tariff',
+    'euro',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,

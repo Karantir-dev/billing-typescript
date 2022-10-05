@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -10,18 +10,29 @@ import {
   Button,
   HintWrapper,
   IconButton,
+  Backdrop,
 } from '../../../Components'
+import TipsModal from '../TipsModal/TipsModal'
 import { supportSelectors, supportOperations, supportActions } from '../../../Redux'
 import * as route from '../../../routes'
 import s from './OpenedTicket.module.scss'
+import { useMediaQuery } from 'react-responsive'
+import { Cross, Smile } from '../../../images'
 
 export default function Component() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['support', 'other'])
   const params = useParams()
   const navigate = useNavigate()
+  const desktop = useMediaQuery({ query: '(min-width: 1920px)' })
+  const [tipsModal, setTipsModa] = useState(false)
+  const [successModal, setSuccessModal] = useState(false)
 
   const ticket = useSelector(supportSelectors.getTicket)
+
+  const closeTipsModal = () => {
+    setTipsModa(!tipsModal)
+  }
 
   useEffect(() => {
     getTicketHandler()
@@ -48,15 +59,7 @@ export default function Component() {
       {ticket && (
         <div className={s.messagesConatiner}>
           <h1 className={s.ticketSubj}>{ticket?.subject?.$}</h1>
-          <div className={s.reloadBtn}>
-            <HintWrapper label={t('Refresh')}>
-              <IconButton
-                className={s.tools_icon}
-                onClick={getTicketHandler}
-                icon="reload"
-              />
-            </HintWrapper>
-          </div>
+
           <div className={s.infoContainer}>
             <div className={s.infoBlock}>
               <span className={s.infoitemName}>{t('created')}: </span>
@@ -74,6 +77,36 @@ export default function Component() {
               {archivePage ? t('closed') : t('In progress')}
             </div>
           </div>
+
+          <div className={s.reloadBtn}>
+            {desktop ? (
+              <Button
+                dataTestid={'support_tips_btn'}
+                size="large"
+                className={s.tipsBtn}
+                label={t('THANK YOU')}
+                onClick={() => setTipsModa(true)}
+                type="button"
+              />
+            ) : (
+              <HintWrapper label={t('THANK YOU')}>
+                <IconButton
+                  className={s.tools_icon}
+                  onClick={() => setTipsModa(true)}
+                  icon="euro"
+                />
+              </HintWrapper>
+            )}
+
+            <HintWrapper label={t('Refresh')}>
+              <IconButton
+                className={s.tools_icon}
+                onClick={getTicketHandler}
+                icon="reload"
+              />
+            </HintWrapper>
+          </div>
+
           <OpenedTicketMessages messages={ticket?.mlist[0]?.message || []} />
           {archivePage ? (
             <Button
@@ -90,6 +123,35 @@ export default function Component() {
           )}
         </div>
       )}
+
+      <Backdrop className={s.backdrop} isOpened={tipsModal} onClick={closeTipsModal}>
+        <TipsModal
+          closeTipsModal={closeTipsModal}
+          elid={params?.id}
+          setSuccessModal={setSuccessModal}
+        />
+      </Backdrop>
+
+      <Backdrop
+        className={s.backdrop}
+        isOpened={successModal}
+        onClick={() => setSuccessModal(false)}
+      >
+        <div className={s.successModal}>
+          <Cross
+            width="17px"
+            height="17px"
+            onClick={() => setSuccessModal(false)}
+            className={s.crossIcon}
+          />
+          <Smile className={s.smileIcon} />
+          <p className={s.thanksText}>
+            {t(
+              'Thank you on behalf of our staff. They will receive this bonus to their salary!',
+            )}
+          </p>
+        </div>
+      </Backdrop>
     </>
   )
 }
