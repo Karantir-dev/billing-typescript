@@ -608,7 +608,7 @@ const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getStat
     )
     .then(({ data }) => {
       if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
+        throw new Error(JSON.parse(data.doc.error.msg[0]?.$)?.msg)
       }
 
       setSuccessModal(true)
@@ -616,13 +616,8 @@ const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getStat
     })
     .then(() => dispatch(userOperations.getNotify()))
     .catch(error => {
-      console.log('error in paySupportTips', error.message)
-
-      if (
-        error.message.trim() ===
-        'insufficient funds to complete the operation. Required amount  23.10 EUR. Your current balance: 0.00 EUR, credit limit 0.00'
-      ) {
-        toast.error(`${translateSupportPaymentError(error.message.trim(), i18n.t)}`, {
+      if (error.message.includes('insufficient funds to complete the operation')) {
+        toast.error(`${translateSupportPaymentError(error.message, i18n.t)}`, {
           position: 'bottom-right',
         })
       }
