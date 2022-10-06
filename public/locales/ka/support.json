@@ -40,5 +40,6 @@
   "The transfer amount will be debited from your balance": "გადარიცხვის თანხა ჩამოიჭრება თქვენი ბალანსიდან",
   "THANK YOU": "ᲒᲛᲐᲓᲚᲝᲑᲗ",
   "Thank you on behalf of our staff. They will receive this bonus to their salary!": "მადლობა ჩვენი თანამშრომლების სახელით. ისინი მიიღებენ ამ პრემიას ხელფასზე!",
-  "payment_insufficient_money": "Oперацияны аяқтау үшін қаражаттың жеткіліксіздігі. Міндетті сома {{value1}}. Ағымдағы баланс: {{value2}}, несие лимиті {{value3}} EUR"
+  "payment_insufficient_money": "არასაკმარისი თანხები ოპერაციის დასასრულებლად. საჭირო თანხა {{value1}}. თქვენი მიმდინარე ბალანსი: {{value2}}, საკრედიტო ლიმიტი {{value3}} ევრო",
+  "You can not make a transfer if the support did not answer": "გადარიცხვა შეუძლებელია, მხარდაჭერა ჯერ არ უპასუხია"
 }
