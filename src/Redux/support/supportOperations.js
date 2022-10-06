@@ -626,6 +626,20 @@ const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getStat
           position: 'bottom-right',
         })
       }
+      if (
+        error.message.trim() ===
+        'You can not make a transfer if the support did not answer'
+      ) {
+        toast.error(
+          i18n.t('You can not make a transfer if the support did not answer', {
+            ns: 'support',
+          }),
+          {
+            position: 'bottom-right',
+          },
+        )
+      }
+
       errorHandler(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
