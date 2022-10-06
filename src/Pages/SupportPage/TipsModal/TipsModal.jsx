@@ -20,7 +20,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   }
 
   const validationSchema = Yup.object().shape({
-    summ: Yup.number()
+    summ: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .min(1, `${t('Мінімальна сума платежу', { ns: 'billing' })}: 1 EUR`),
   })
@@ -47,7 +47,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
         }}
         onSubmit={paymentHandler}
       >
-        {({ values, errors, touched }) => {
+        {({ values, errors, touched, setFieldValue }) => {
           return (
             <Form className={s.form}>
               <div className={s.fieldsBlock}>
@@ -63,6 +63,26 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   autoComplete
                   type="text"
                   value={values?.summ}
+                  onKeyDown={e => {
+                    e.preventDefault()
+
+                    if (
+                      (e.keyCode >= 48 && e.keyCode <= 57) ||
+                      (e.keyCode >= 96 && e.keyCode <= 105) ||
+                      (e.key === ',' &&
+                        !values.summ.includes(',') &&
+                        !values.summ.includes('.') &&
+                        Number(values.summ[0])) ||
+                      (e.key === '.' &&
+                        !values.summ.includes('.') &&
+                        !values.summ.includes(',') &&
+                        Number(values.summ[0]))
+                    ) {
+                      setFieldValue('summ', values.summ + e.key)
+                    } else if (e.keyCode === 8 || e.keyCode === 46) {
+                      setFieldValue('summ', values?.summ?.slice(0, -1))
+                    }
+                  }}
                 />
 
                 <p className={s.note}>
