@@ -30,9 +30,11 @@ export default function Component(props) {
 
     if (isAuth) {
       if (data) {
-        console.log(JSON.parse(data))
-        if (JSON.parse(data)?.func === 'vds.order.param') {
+        const funcName = JSON.parse(data)?.func
+        if (funcName === 'vds.order.param') {
           return navigate(route.VDS_ORDER)
+        } else if (funcName === 'domain.order.name') {
+          return navigate(route.DOMAINS_ORDERS)
         }
       }
     }
