@@ -2,6 +2,9 @@ import qs from 'qs'
 import { axiosInstance } from '../../config/axiosInstance'
 import { actions, supportActions, userOperations } from '..'
 import { errorHandler } from '../../utils'
+import { toast } from 'react-toastify'
+import i18n from './../../i18n'
+import translateSupportPaymentError from '../../utils/translateSupportPaymentError'
 
 const getTicketsHandler =
   (body = {}) =>
@@ -584,6 +587,59 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
     })
 }
 
+const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'supporttips',
+        sok: 'ok',
+        out: 'json',
+        elid,
+        sessid: sessionId,
+        summattips,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throw new Error(JSON.parse(data.doc.error.msg[0]?.$)?.msg)
+      }
+
+      setSuccessModal(true)
+      dispatch(actions.hideLoader())
+    })
+    .then(() => dispatch(userOperations.getNotify()))
+    .catch(error => {
+      if (error.message.includes('insufficient funds to complete the operation')) {
+        toast.error(`${translateSupportPaymentError(error.message, i18n.t)}`, {
+          position: 'bottom-right',
+        })
+      }
+      if (
+        error.message.trim() ===
+        'You can not make a transfer if the support did not answer'
+      ) {
+        toast.error(
+          i18n.t('You can not make a transfer if the support did not answer', {
+            ns: 'support',
+          }),
+          {
+            position: 'bottom-right',
+          },
+        )
+      }
+
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTicketsHandler,
   archiveTicketsHandler,
@@ -599,4 +655,5 @@ export default {
   getTicketsFiltersHandler,
   getTicketsArchiveFiltersHandler,
   getTicketsArchiveFiltersSettingsHandler,
+  paySupportTips,
 }

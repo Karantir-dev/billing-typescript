@@ -37,5 +37,11 @@
   "Select this department if your question is related to setting up servers, installing control panels, moving sites.": "Виберіть цей відділ, якщо ваше питання пов'язане з налаштуванням серверів, встановленням панелей керування, переміщенням сайтів. А також питання щодо технічних особливостей хостингу, VDS, Dedicated - у цей відділ.",
   "To the archive": "В архів",
   "Select a department": "Виберіть відділ",
-  "The following services were suspended due to no actions from you": "Наступні послуги призупинено через відсутність дій з вашого боку"
+  "The following services were suspended due to no actions from you": "Наступні послуги призупинено через відсутність дій з вашого боку",
+  "Thank support": "Подякувати підтримці",
+  "The transfer amount will be debited from your balance": "Сума переказу буде списана з Вашого балансу",
+  "THANK YOU": "ПОДЯКУВАТИ",
+  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Дякуємо від імені наших співробітників. Вони отримають цей бонус до своєї зарплати!",
+  "payment_insufficient_money": "Недостатньо коштів для завершення операції. Необхідна сума {{value1}}. Ваш поточний баланс: {{value2}}, кредитний ліміт {{value3}} EUR",
+  "You can not make a transfer if the support did not answer": "Неможливо зробити переказ, спеціаліст підтримки ще не відповів"
 }

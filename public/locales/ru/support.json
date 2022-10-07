@@ -36,5 +36,11 @@
   "Refresh": "Обновить",
   "To the archive": "В архив",
   "Select a department": "Выберите отдел",
-  "The following services were suspended due to no actions from you": "Следующие услуги были приостановлены из-за отсутствия действий с вашей стороны"
+  "The following services were suspended due to no actions from you": "Следующие услуги были приостановлены из-за отсутствия действий с вашей стороны",
+  "Thank support": "Отблагодарить поддержку",
+  "The transfer amount will be debited from your balance": "Сумма перевода будет списана с Вашего баланса",
+  "THANK YOU": "ОТБЛАГОДАРИТЬ",
+  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Спасибо от имени наших сотрудников. Они получат этот бонус к своей зарплате!",
+  "payment_insufficient_money": "Недостаточно средств для завершения операции. Требуемая сумма {{value1}}. Ваш текущий баланс: {{value2}}, кредитный лимит {{value3}} EUR",
+  "You can not make a transfer if the support did not answer": "Нельзя сделать перевод, специалист поддержки еще не ответил"
 }
