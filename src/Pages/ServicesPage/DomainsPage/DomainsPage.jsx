@@ -212,6 +212,8 @@ export default function Component() {
 
   let rights = checkServicesRights(domainsRenderData?.domainsPageRights?.toolgrp)
 
+  console.log(domainsRenderData)
+
   useEffect(() => {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })

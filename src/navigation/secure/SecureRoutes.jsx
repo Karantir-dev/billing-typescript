@@ -76,8 +76,11 @@ const Component = () => {
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
     if (cartFromSite) {
-      if (JSON.parse(cartFromSite)?.func === 'vds.order.param') {
-        navigate(route.VDS_ORDER)
+      const funcName = JSON.parse(cartFromSite)?.func
+      if (funcName === 'vds.order.param') {
+        return navigate(route.VDS_ORDER)
+      } else if (funcName === 'domain.order.name') {
+        return navigate(route.DOMAINS_ORDERS)
       }
     }
   }, [])
