@@ -3,9 +3,11 @@ import s from './ExpensesTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
+import { HintWrapper } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { expensesTranslateFn } from '../../../utils'
+import { toast } from 'react-toastify'
 
 export default function Component(props) {
   const { id, number, date, sum, name, tax } = props
@@ -23,12 +25,30 @@ export default function Component(props) {
         {mobile && <div className={s.item_title}>{t('Id')}:</div>}
         <div className={cn(s.item_text, s.first_item)}>{id}</div>
       </div>
+
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Name', { ns: 'other' })}:</div>}
-        <div className={cn(s.item_text, s.second_item)}>
-          {expensesTranslateFn(name, t)}
-        </div>
+        <HintWrapper
+          wrapperClassName={s.transferBtn}
+          label={expensesTranslateFn(name, t)}
+        >
+          <div
+            role="button"
+            tabIndex={-1}
+            onKeyDown={() => {}}
+            onClick={() => {
+              navigator.clipboard.writeText(expensesTranslateFn(name, t))
+              toast.success(t('Name is copied!', { ns: 'billing' }), {
+                position: 'bottom-right',
+              })
+            }}
+            className={cn(s.item_text, s.second_item)}
+          >
+            {expensesTranslateFn(name, t)}
+          </div>
+        </HintWrapper>
       </div>
+
       <div className={s.tableBlockThird}>
         {mobile && <div className={s.item_title}>{t('date', { ns: 'other' })}:</div>}
         <div className={cn(s.item_text, s.third_item)}>{datetimeSeparate(date)}</div>
