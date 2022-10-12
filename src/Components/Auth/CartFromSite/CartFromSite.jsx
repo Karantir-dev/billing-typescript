@@ -35,6 +35,9 @@ export default function Component(props) {
           return navigate(route.VDS_ORDER)
         } else if (funcName === 'domain.order.name') {
           return navigate(route.DOMAINS_ORDERS)
+        } else if (funcName === 'vhost.order.param') {
+          console.log('is vhost routed to order?')
+          return navigate(route.SHARED_HOSTING_ORDER)
         }
       }
     }

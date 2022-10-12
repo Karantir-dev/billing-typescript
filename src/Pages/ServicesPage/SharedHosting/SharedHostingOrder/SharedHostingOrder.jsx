@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import {
+  useLocation,
+  // useNavigate
+} from 'react-router-dom'
 import { dnsOperations, vhostOperations } from '../../../../Redux'
-import * as routes from '../../../../routes'
+// import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
 
@@ -18,11 +21,12 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const location = useLocation()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const licenseBlock = useRef()
 
   const [data, setData] = useState(null)
+  // const [dataFromSite, setDataFromSite] = useState(false)
 
   const [period, setPeriod] = useState(data?.period)
   const [price, setPrice] = useState(null)
@@ -34,14 +38,17 @@ export default function Component() {
 
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
 
-  const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
+  // const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 
   useEffect(() => {
-    if (isVhostOrderAllowed) {
-      dispatch(vhostOperations.orderVhost({}, setData))
-    } else {
-      navigate(routes.SHARED_HOSTING, { replace: true })
-    }
+    //ask about rights and state!!! No extra requests
+
+    dispatch(vhostOperations.orderVhost({}, setData))
+    // if (isVhostOrderAllowed) {
+    //   dispatch(vhostOperations.orderVhost({}, setData))
+    // } else {
+    //   navigate(routes.SHARED_HOSTING, { replace: true })
+    // }
   }, [])
 
   useEffect(() => {
@@ -57,20 +64,36 @@ export default function Component() {
   }, [paramsData])
 
   useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
     if (price) {
       dispatch(
         vhostOperations.orderParamVhost(
           {
             period,
-            autoprolong: period,
+            autoprolong: cartFromSiteJson ? autoprolong : period,
             pricelist: price,
             datacenter: data?.datacenter,
           },
           setParamsData,
         ),
       )
+      dispatch(vhostOperations.orderVhost({ period: period }, setData))
     }
   }, [price])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
+    if (cartFromSiteJson && data) {
+      console.log(cartFromSiteJson, 'cartFromSiteJson in vhost')
+
+      setPeriod(cartFromSiteJson?.period)
+      setPrice(cartFromSiteJson?.pricelist)
+      setAutoprolong(cartFromSiteJson?.autoprolong)
+      localStorage.removeItem('site_cart')
+    }
+  }, [data])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
