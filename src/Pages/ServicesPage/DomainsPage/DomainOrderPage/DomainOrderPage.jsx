@@ -51,7 +51,6 @@ export default function Component({ transfer = false }) {
         e => e?.tld?.$ === JSON.parse(cartFromSite)?.zone,
       )
       if (selectedDomain) {
-        console.log(selectedDomain, 'selectedDomain')
         setSelectedDomains([selectedDomain?.id?.$])
       }
       localStorage.removeItem('site_cart')

@@ -29,6 +29,7 @@ export default function FTPOrder() {
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
+  const [dataFromSite, setDataFromSite] = useState(null)
   const [price, setPrice] = useState('')
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
@@ -90,12 +91,26 @@ export default function FTPOrder() {
   }
 
   useEffect(() => {
-    if (isFtpOrderAllowed) {
+    const cartFromSite = localStorage.getItem('site_cart')
+
+    if (isFtpOrderAllowed || cartFromSite) {
       dispatch(ftpOperations.getTarifs(setTarifList))
     } else {
       navigate(route.FTP, { replace: true })
     }
   }, [])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    if (cartFromSite && tarifList?.tarifList?.length > 0) {
+      const cartData = JSON.parse(cartFromSite)
+      setDataFromSite({
+        autoprolong: cartData?.autoprolong,
+        pricelist: cartData?.pricelist,
+      })
+      localStorage.removeItem('site_cart')
+    }
+  }, [tarifList])
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
@@ -129,13 +144,24 @@ export default function FTPOrder() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: tarifList?.currentDatacenter,
-          tarif: null,
+          tarif: dataFromSite?.pricelist || null,
           period: '1',
           license: null,
         }}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+          if (dataFromSite && values.tarif === dataFromSite?.pricelist && !parameters) {
+            dispatch(
+              ftpOperations.getParameters(
+                values.period,
+                values.datacenter,
+                dataFromSite?.pricelist,
+                setParameters,
+                setFieldValue,
+              ),
+            )
+          }
           return (
             <Form className={s.form}>
               <Select
