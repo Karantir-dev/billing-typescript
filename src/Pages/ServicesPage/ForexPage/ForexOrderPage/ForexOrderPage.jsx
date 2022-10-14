@@ -99,7 +99,9 @@ export default function ForexOrderPage() {
   }
 
   useEffect(() => {
-    if (isForexOrderAllowed) {
+    // dispatch(forexOperations.getTarifs(setTarifList))
+    const cartFromSite = localStorage.getItem('site_cart')
+    if (isForexOrderAllowed || cartFromSite) {
       dispatch(forexOperations.getTarifs(setTarifList))
     } else {
       navigate(route.FOREX, { replace: true })
@@ -150,9 +152,6 @@ export default function ForexOrderPage() {
     )
   }
 
-  // console.log(dataFromSite?.pricelist, 'dataFromSite?.pricelist')
-  console.log(parameters, 'params?')
-
   return (
     <div className={s.modalHeader}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -185,7 +184,6 @@ export default function ForexOrderPage() {
           setFieldTouched,
           touched,
         }) => {
-          console.log(values, 'values')
           return (
             <Form className={s.form}>
               {/* <Select
@@ -241,7 +239,6 @@ export default function ForexOrderPage() {
                               : null
                           }
                           onClick={() => {
-                            console.log(item?.pricelist?.$, 'item?.pricelist?.$')
                             const cartFromSite = localStorage.getItem('site_cart')
                             const cartFromSiteJson = JSON.parse(cartFromSite)
                             setParameters(null)
