@@ -38,8 +38,9 @@ export default function Component(props) {
         } else if (funcName === 'vhost.order.param') {
           return navigate(route.SHARED_HOSTING_ORDER)
         } else if (funcName === 'forexbox.order.param') {
-          console.log('is forex routed to order?')
           return navigate(route.FOREX_ORDER)
+        } else if (funcName === 'storage.order.param') {
+          return navigate(route.FTP_ORDER)
         }
       }
     }

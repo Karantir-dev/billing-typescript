@@ -29,8 +29,8 @@ export default function Component(props) {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
 
-    if (words.length > 0) {
-      words.forEach(w => {
+    if (words?.length > 0) {
+      words?.forEach(w => {
         if (!isNaN(w)) {
           amounts.push(w)
         }
@@ -71,14 +71,15 @@ export default function Component(props) {
         {changeTariffInfoData && (
           <div>
             <div className={s.money_info}>
-              {changeTariffInfoData?.money_info?.includes('You will be charged with')
-                ? t(
-                    'You will be charged with {{sum}} when upgrading to a new tariff plan',
-                    { sum: parsePrice(changeTariffInfoData?.money_info)?.sum },
-                  )
-                : t('{{sum}} EUR will be refunded upon plan update', {
-                    sum: parsePrice(changeTariffInfoData?.money_info)?.sum,
-                  })}
+              {parsePrice(changeTariffInfoData?.money_info)?.sum &&
+                (changeTariffInfoData?.money_info?.includes('You will be charged with')
+                  ? t(
+                      'You will be charged with {{sum}} when upgrading to a new tariff plan',
+                      { sum: parsePrice(changeTariffInfoData?.money_info)?.sum },
+                    )
+                  : t('{{sum}} EUR will be refunded upon plan update', {
+                      sum: parsePrice(changeTariffInfoData?.money_info)?.sum,
+                    }))}
             </div>
             <div className={s.pricInfoBlock}>
               <span>{t('Current tariff')}:</span>
@@ -95,6 +96,14 @@ export default function Component(props) {
             <div className={s.pricInfoBlock}>
               <span>{t('New value')}:</span>
               <span>{changeTariffInfoData?.newprice}</span>
+            </div>
+            <div className={s.pricInfoBlock}>
+              <span>{t('Current end date')}:</span>
+              <span>{changeTariffInfoData?.oldDate}</span>
+            </div>
+            <div className={s.pricInfoBlock}>
+              <span>{t('New end date')}:</span>
+              <span>{changeTariffInfoData?.newDate}</span>
             </div>
           </div>
         )}
