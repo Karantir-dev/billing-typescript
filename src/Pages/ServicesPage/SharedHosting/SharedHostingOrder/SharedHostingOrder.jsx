@@ -37,7 +37,9 @@ export default function Component() {
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 
   useEffect(() => {
-    if (isVhostOrderAllowed) {
+    const cartFromSite = localStorage.getItem('site_cart')
+
+    if (isVhostOrderAllowed || cartFromSite) {
       dispatch(vhostOperations.orderVhost({}, setData))
     } else {
       navigate(routes.SHARED_HOSTING, { replace: true })
@@ -57,20 +59,34 @@ export default function Component() {
   }, [paramsData])
 
   useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
     if (price) {
       dispatch(
         vhostOperations.orderParamVhost(
           {
             period,
-            autoprolong: period,
+            autoprolong: cartFromSiteJson ? autoprolong : period,
             pricelist: price,
             datacenter: data?.datacenter,
           },
           setParamsData,
         ),
       )
+      dispatch(vhostOperations.orderVhost({ period: period }, setData))
     }
   }, [price])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
+    if (cartFromSiteJson && data) {
+      setPeriod(cartFromSiteJson?.period)
+      setPrice(cartFromSiteJson?.pricelist)
+      setAutoprolong(cartFromSiteJson?.autoprolong)
+      localStorage.removeItem('site_cart')
+    }
+  }, [data])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
