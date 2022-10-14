@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
-import {
-  useLocation,
-  // useNavigate
-} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
@@ -14,13 +11,13 @@ import { translatePeriod } from '../../../../utils'
 
 import Select from '../../../../Components/ui/Select/Select'
 import { forexOperations, selectors } from '../../../../Redux'
-// import * as route from '../../../../routes'
+import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const licenceCheck = useRef()
   const tariffFromSite = useRef(null)
@@ -43,7 +40,7 @@ export default function ForexOrderPage() {
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
 
-  // const isForexOrderAllowed = location?.state?.isForexOrderAllowed
+  const isForexOrderAllowed = location?.state?.isForexOrderAllowed
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -102,12 +99,11 @@ export default function ForexOrderPage() {
   }
 
   useEffect(() => {
-    dispatch(forexOperations.getTarifs(setTarifList))
-    // if (isForexOrderAllowed) {
-    //   dispatch(forexOperations.getTarifs(setTarifList))
-    // } else {
-    //   navigate(route.FOREX, { replace: true })
-    // }
+    if (isForexOrderAllowed) {
+      dispatch(forexOperations.getTarifs(setTarifList))
+    } else {
+      navigate(route.FOREX, { replace: true })
+    }
   }, [])
 
   useEffect(() => {
@@ -117,13 +113,12 @@ export default function ForexOrderPage() {
     if (cartFromSiteJson) {
       setDataFromSite(cartFromSiteJson)
       tariffFromSite?.current?.click()
-      console.log(parameters, 'parameters')
+
       if (parameters) {
-        console.log('remove from storage')
         localStorage.removeItem('site_cart')
       }
     }
-  }, [parameters])
+  }, [tarifList, parameters])
 
   const validationSchema = Yup.object().shape({
     pricelist: Yup.string().required('tariff is required'),
