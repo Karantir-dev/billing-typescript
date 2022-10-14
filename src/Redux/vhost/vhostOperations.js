@@ -516,6 +516,9 @@ const changeTariffPriceListVhost =
           newpricelist: data.doc?.newpricelist?.$,
           oldprice: data.doc?.oldprice?.$,
           oldpricelist: data.doc?.oldpricelist?.$,
+
+          oldDate: data.doc?.oldexpiredate?.$,
+          newDate: data.doc?.newexpiredate?.$,
         }
 
         setChangeTariffData && setChangeTariffData(d)

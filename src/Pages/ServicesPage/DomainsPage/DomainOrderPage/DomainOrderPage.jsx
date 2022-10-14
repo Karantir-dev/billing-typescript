@@ -30,7 +30,8 @@ export default function Component({ transfer = false }) {
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   useEffect(() => {
-    if (isDomainsOrderAllowed) {
+    const cartFromSite = localStorage.getItem('site_cart')
+    if (isDomainsOrderAllowed || cartFromSite) {
       if (transfer) {
         const dataTransfer = { domain_action: 'transfer' }
         dispatch(domainsOperations.getDomainsOrderName(setDomains, dataTransfer))
@@ -41,6 +42,20 @@ export default function Component({ transfer = false }) {
       navigate(route.DOMAINS, { replace: true })
     }
   }, [])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+
+    if (cartFromSite && domains?.length > 0) {
+      const selectedDomain = domains?.find(
+        e => e?.tld?.$ === JSON.parse(cartFromSite)?.zone,
+      )
+      if (selectedDomain) {
+        setSelectedDomains([selectedDomain?.id?.$])
+      }
+      localStorage.removeItem('site_cart')
+    }
+  }, [domains])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
