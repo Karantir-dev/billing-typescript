@@ -20,7 +20,7 @@ export default function ForexOrderPage() {
   const navigate = useNavigate()
 
   const licenceCheck = useRef()
-  const secondTarrif = useRef(null)
+  const tariffFromSite = useRef(null)
 
   const { t } = useTranslation([
     'dedicated_servers',
@@ -38,6 +38,7 @@ export default function ForexOrderPage() {
   const [price, setPrice] = useState('')
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
+  const [dataFromSite, setDataFromSite] = useState(null)
 
   const isForexOrderAllowed = location?.state?.isForexOrderAllowed
 
@@ -98,12 +99,28 @@ export default function ForexOrderPage() {
   }
 
   useEffect(() => {
-    if (isForexOrderAllowed) {
+    // dispatch(forexOperations.getTarifs(setTarifList))
+    const cartFromSite = localStorage.getItem('site_cart')
+    if (isForexOrderAllowed || cartFromSite) {
       dispatch(forexOperations.getTarifs(setTarifList))
     } else {
       navigate(route.FOREX, { replace: true })
     }
   }, [])
+
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartFromSiteJson = JSON.parse(cartFromSite)
+
+    if (cartFromSiteJson) {
+      setDataFromSite(cartFromSiteJson)
+      tariffFromSite?.current?.click()
+
+      if (parameters) {
+        localStorage.removeItem('site_cart')
+      }
+    }
+  }, [tarifList, parameters])
 
   const validationSchema = Yup.object().shape({
     pricelist: Yup.string().required('tariff is required'),
@@ -145,9 +162,17 @@ export default function ForexOrderPage() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: tarifList?.currentDatacenter,
-          pricelist: null,
-          period: '1',
+          pricelist: dataFromSite?.pricelist || null,
+          period: dataFromSite ? dataFromSite?.period : '1',
           license: null,
+          autoprolong: dataFromSite ? dataFromSite?.autoprolong : '1',
+          autoprolonglList: dataFromSite
+            ? parameters?.paramsList?.find(elem => elem?.$name === 'autoprolong')?.val
+            : [],
+          server_package: dataFromSite
+            ? parameters?.paramsList?.find(elem => elem?.$name === 'server_package')
+                ?.val[0]?.$key
+            : '',
         }}
         onSubmit={handleSubmit}
       >
@@ -189,7 +214,7 @@ export default function ForexOrderPage() {
               <div className={s.tarifs_block}>
                 {tarifList?.transformedTarifList
                   ?.filter(item => item.order_available.$ === 'on')
-                  ?.map((item, index) => {
+                  ?.map(item => {
                     const { countTerminal, countRAM, countMemory, osName } = item
                     const descriptionBlocks = item?.desc?.$.split('/')
                     const cardTitle = descriptionBlocks[0]
@@ -201,17 +226,28 @@ export default function ForexOrderPage() {
                     return (
                       <div
                         className={classNames(s.tarif_card, {
-                          [s.selected]: item?.pricelist?.$ === values.pricelist,
+                          [s.selected]:
+                            item?.pricelist?.$ === values?.pricelist ||
+                            dataFromSite?.pricelist === item?.pricelist?.$,
                         })}
                         key={item?.desc?.$}
                       >
                         <button
-                          ref={index === 2 ? secondTarrif : null}
+                          ref={
+                            dataFromSite?.pricelist === item?.pricelist?.$
+                              ? tariffFromSite
+                              : null
+                          }
                           onClick={() => {
+                            const cartFromSite = localStorage.getItem('site_cart')
+                            const cartFromSiteJson = JSON.parse(cartFromSite)
                             setParameters(null)
                             setFieldValue('pricelist', item?.pricelist?.$)
                             setPrice(priceAmount)
                             setTarifChosen(true)
+                            if (!cartFromSiteJson) {
+                              setDataFromSite(null)
+                            }
 
                             dispatch(
                               forexOperations.getParameters(

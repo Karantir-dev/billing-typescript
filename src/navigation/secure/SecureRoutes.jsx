@@ -81,6 +81,10 @@ const Component = () => {
         return navigate(route.VDS_ORDER)
       } else if (funcName === 'domain.order.name') {
         return navigate(route.DOMAINS_ORDERS)
+      } else if (funcName === 'vhost.order.param') {
+        return navigate(route.SHARED_HOSTING_ORDER)
+      } else if (funcName === 'forexbox.order.param') {
+        return navigate(route.FOREX_ORDER)
       } else if (funcName === 'storage.order.param') {
         return navigate(route.FTP_ORDER)
       }
