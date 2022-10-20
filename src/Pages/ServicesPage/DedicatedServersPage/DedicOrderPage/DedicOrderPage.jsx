@@ -53,6 +53,7 @@ export default function DedicOrderPage() {
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
+  const [dataFromSite, setDataFromSite] = useState(null)
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -304,7 +305,7 @@ export default function DedicOrderPage() {
         validationSchema={validationSchema}
         initialValues={{
           datacenter: tarifList?.currentDatacenter,
-          tarif: null,
+          tarif: dataFromSite?.pricelist || null,
           period: '1',
           processor: null,
           domainname: '',
@@ -315,6 +316,41 @@ export default function DedicOrderPage() {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
+          useEffect(() => {
+            const cartFromSite = localStorage.getItem('site_cart')
+            if (cartFromSite && tarifList?.tarifList?.length > 0) {
+              const cartData = JSON.parse(cartFromSite)
+              if (cartData?.pricelist) {
+                const tariff = tarifList?.tarifList?.find(
+                  e => e?.pricelist?.$ === cartData?.pricelist,
+                )
+                setParameters(null)
+                setTarifChosen(true)
+                if (tariff) {
+                  setPrice(parsePrice(tariff?.price?.$)?.amoumt)
+                  setTarifChosen(true)
+
+                  dispatch(
+                    dedicOperations.getParameters(
+                      '1',
+                      tarifList?.currentDatacenter,
+                      cartData?.pricelist,
+                      setParameters,
+                      setFieldValue,
+                    ),
+                  )
+                }
+              }
+              setDataFromSite({
+                autoprolong: cartData?.autoprolong,
+                pricelist: cartData?.pricelist,
+                ostempl: cartData?.ostempl,
+                recipe: cartData?.recipe,
+                Controlpanel: cartData?.Controlpanel,
+                Portspeed: cartData?.Portspeed,
+              })
+            }
+          }, [tarifList])
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>

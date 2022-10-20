@@ -198,6 +198,17 @@ export default function DedicatedServersPage() {
     }
   }
 
+  useEffect(() => {
+    const cartFromSite = localStorage.getItem('site_cart')
+    const cartData = JSON.parse(cartFromSite)
+    if (cartData?.func === 'dedic.order.param' && rights?.new) {
+      navigate(route.DEDICATED_SERVERS_ORDER, {
+        state: { isDedicOrderAllowed: rights?.new },
+        replace: true,
+      })
+    }
+  }, [rights])
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
