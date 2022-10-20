@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-
-import s from './ServiceCard.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
+
+import s from './ServiceCard.module.scss'
 
 export default function ServiceCard(props) {
   const { title, index, route, iconName, iconWidth, iconHeight, className } = props
   const { t } = useTranslation('other')
 
   return (
-    <li className={cn({ [s.card]: true, [className]: className })}>
+    <div className={cn({ [s.card]: true, [className]: className })} data-service-card>
       <Link to={route}>
         <div className={s.card_container}>
           <div className={s.container}>
@@ -37,7 +37,7 @@ export default function ServiceCard(props) {
           </div>
         </div>
       </Link>
-    </li>
+    </div>
   )
 }
 

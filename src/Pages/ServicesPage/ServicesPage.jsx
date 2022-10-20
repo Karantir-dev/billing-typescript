@@ -9,7 +9,7 @@ export default function ServicesPage({ children }) {
   // const isComponentAllowedToRender = usePageRender('mainmenuservice')
 
   return (
-    <div className={s.page_wrapper}>
+    <div>
       <h3 className={s.page_title}>{t('aside_menu.services')}</h3>
       {children}
     </div>

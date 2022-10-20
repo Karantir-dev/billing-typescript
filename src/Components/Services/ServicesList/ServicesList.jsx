@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
 import { usePageRender } from '../../../utils'
-import ServiceCard from '../ServiceCard/ServiceCard'
-import ServiceCardDesktop from '../ServiceCardDesktop/ServiceCardDesktop'
-
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../Redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
+import SwiperCore, { Pagination } from 'swiper'
+import { ServiceCard, ServiceCardDesktop } from '../../'
 
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
 import './ServicesList.scss'
-import { useSelector } from 'react-redux'
-import { selectors } from '../../../Redux'
 
-SwiperCore.use([EffectCoverflow, Pagination])
+SwiperCore.use([Pagination])
 
 export default function ServicesList() {
   const { t } = useTranslation('container')
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const swiperEl = useRef(null)
 
   const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
   const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
@@ -136,78 +136,77 @@ export default function ServicesList() {
   }, [darkTheme])
 
   useEffect(() => {
-    const mainSwiper = document.querySelector('.swiper-wrapper')
+    if (!laptopAndHigher) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            console.log(entry)
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('notInViewport')
+            } else {
+              entry.target.classList.add('notInViewport')
+            }
+          })
+        },
+        { root: swiperEl.current, threshold: 1 },
+      )
 
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('notInViewport')
-          } else {
-            entry.target.classList.add('notInViewport')
-          }
-        })
-      },
-      { mainSwiper, threshold: 1 },
-    )
+      const slides = swiperEl.current?.querySelectorAll('[data-service-card]')
 
-    const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
-
-    if (slides.length > 0) {
-      slides.forEach(slide => {
+      slides?.forEach(slide => {
         observer.observe(slide)
       })
     }
-  })
+  }, [])
 
-  return (
-    <ul className="swiper_services_list">
-      {laptopAndHigher ? (
-        filteredServicesMenuList.map((item, index) => {
+  return laptopAndHigher ? (
+    <ul className="services_list">
+      {filteredServicesMenuList.map((item, index) => {
+        const { id, name, routeName, icon_name, icon_height, icon_width } = item
+
+        return (
+          <ServiceCardDesktop
+            className="swiper-item"
+            key={id}
+            title={name.toUpperCase()}
+            index={index + 1}
+            route={routeName}
+            iconName={icon_name}
+            iconWidth={icon_width}
+            iconHeight={icon_height}
+          />
+        )
+      })}
+    </ul>
+  ) : (
+    <div className="services_swiper_wrapper">
+      <Swiper
+        className="services_swiper"
+        ref={swiperEl}
+        slidesPerView={'auto'}
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 4,
+        }}
+      >
+        {filteredServicesMenuList.map((item, index) => {
           const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
           return (
-            <ServiceCardDesktop
-              key={id}
-              title={name.toUpperCase()}
-              index={index + 1}
-              route={routeName}
-              iconName={icon_name}
-              className="swiper-item"
-              iconWidth={icon_width}
-              iconHeight={icon_height}
-            />
+            <SwiperSlide key={id}>
+              <ServiceCard
+                title={name.toUpperCase()}
+                index={index + 1}
+                route={routeName}
+                iconName={icon_name}
+                iconWidth={icon_width}
+                iconHeight={icon_height}
+              />
+            </SwiperSlide>
           )
-        })
-      ) : (
-        <Swiper
-          spaceBetween={0}
-          slidesPerView={'auto'}
-          // centeredSlides={true}
-          effect={'creative'}
-          pagination={{
-            clickable: true,
-          }}
-        >
-          {filteredServicesMenuList.map((item, index) => {
-            const { id, name, routeName, icon_name, icon_height, icon_width } = item
-
-            return (
-              <SwiperSlide key={id}>
-                <ServiceCard
-                  title={name.toUpperCase()}
-                  index={index + 1}
-                  route={routeName}
-                  iconName={icon_name}
-                  className={'card'}
-                  iconWidth={icon_width}
-                  iconHeight={icon_height}
-                />
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
-      )}
-    </ul>
+        })}
+      </Swiper>
+    </div>
   )
 }
