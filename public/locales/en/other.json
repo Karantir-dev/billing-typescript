@@ -190,5 +190,10 @@
   "memory": "memory",
   "nothing_found": "Nothing found",
   "Something went wrong. Try again.": "Something went wrong. Try again.",
-  "address_format": "Enter the address in the format district, street, building, apartment"
+  "address_format": "Enter the address in the format district, street, building, apartment",
+  "email_trigger": "Confirm the email to be able to receive notifications",
+  "email_sended": "Verification email has been sent to {{email}}",
+  "email_verification": "Email verification",
+  "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
+  "email_confirmed": "Email address {{email}} confirmed"
 }

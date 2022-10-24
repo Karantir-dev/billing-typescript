@@ -12,6 +12,7 @@
   box-shadow: var(--forms_shadow);
   background: var(--forms_bgc_2);
   border-radius: 3px;
+  cursor: pointer;
 
   &.notConnected {
     svg {
@@ -26,6 +27,7 @@
   display: flex;
   align-items: center;
   margin-top: 15px;
+  cursor: pointer;
 }
 
 .linkTo {

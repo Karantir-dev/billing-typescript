@@ -2,7 +2,7 @@ export const CHANGE_PASSWORD = '/change_pass'
 export const RESET_PASSWORD = '/reset_pass'
 export const LOGIN = '/login'
 export const REGISTRATION = '/signup'
-// перейменувати /google на якусь загальну назву для всіх соц мереж
+
 export const SOC_NET_AUTH = '/socialnetwork'
 export const GEO_CONFIRM = '/geoconfirm'
 export const SITE_CART = '/site_cart'
@@ -20,6 +20,7 @@ export const BILLING = '/billing'
 export const PAYERS = '/payers'
 
 export const CONFIRM_EMAIL = '/confrim_email'
+export const CONFIRM_MAIN_EMAIL = '/email_confirmation'
 
 export const ERROR_PAGE = '/error_page'
 

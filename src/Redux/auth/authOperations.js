@@ -492,7 +492,11 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
       }),
     )
     .then(({ data }) => {
-      if (data?.doc?.ok?.$?.includes('linkexists')) {
+      if (
+        data?.doc?.ok?.$?.includes('linkexists') ||
+        data?.doc?.ok?.$?.includes('nouser') ||
+        data?.doc?.error
+      ) {
         redirectToSettings('denied')
       } else {
         redirectToSettings('success')

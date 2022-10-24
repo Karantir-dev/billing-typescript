@@ -12,6 +12,7 @@ import {
   Portal,
   Loader,
   CartFromSite,
+  MainEmailConfirmation,
 } from '../../Components'
 import { useTranslation } from 'react-i18next'
 import { authOperations, authSelectors } from '../../Redux'
@@ -69,6 +70,7 @@ const Component = () => {
   useEffect(() => {
     dispatch(authOperations.getLocation())
   }, [])
+
   return (
     <>
       <Routes>
@@ -151,6 +153,8 @@ const Component = () => {
             />
           }
         />
+
+        <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
         <Route path="*" element={<Navigate replace to={route.LOGIN} />} />
       </Routes>

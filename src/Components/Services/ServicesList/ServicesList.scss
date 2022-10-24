@@ -1,9 +1,17 @@
-.swiper_services_list {
+.services_list {
   display: flex;
-  width: 100%;
-  position: fixed;
-  left: 0px;
-  top: 158px;
+}
+
+.services_swiper_wrapper {
+  position: relative;
+}
+
+.services_swiper {
+  padding-top: 15px;
+  width: 100vw;
+  position: absolute;
+  left: -30px;
+  top: 0;
 }
 
 .swiper-wrapper {
@@ -16,7 +24,11 @@
   background-size: cover;
   width: 237px;
   height: 289px;
-  margin-right: 15px;
+  margin-left: 30px;
+
+  &:last-child {
+    margin-right: 30px;
+  }
 }
 
 .swiper-pagination.swiper-pagination-bullets {
@@ -38,79 +50,30 @@
 
 .swiper-wrapper {
   & .swiper-slide:nth-child(1) {
-  margin-left: 30px;
+    margin-left: 30px;
   }
 }
 
-.swiper-slide {
-  opacity: 1;
-  transition: opacity 0.1s ease;
-
-
-  // & li {
-  //   opacity: 0.4;
-  //   visibility: visible;
-  // }
-
-
-    & li {
-      opacity: 1;
-      & h3 {
-        font-weight: 700;
-        font-size: 25px;
-        line-height: 113%;
-        background: var(--accent-text-gradient);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      & span {
-        color: var(--main-text);
-      }
-    }
-
-
-}
-
-.notInViewport {
-  opacity: .25;
-}
-
-
 @media screen and (min-width: 768px) {
-  .swiper_services_list {
+  .services_list {
     position: static;
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, max-content);
-    gap: 35px;
+    grid-template-columns: repeat(auto-fill, minmax(306px, 306px));
+    gap: 30px;
     justify-content: center;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .swiper_services_list {
+  .services_list {
     justify-content: start;
   }
 }
 
-@media screen and (min-width: 1200px) {
-  .swiper_services_list {
-    grid-template-columns: repeat(3, max-content);
-    gap: 39px;
-  }
-}
-
-@media screen and (min-width: 1400px) {
-  .swiper_services_list {
-    grid-template-columns: repeat(3, max-content);
-    gap: 32px;
-  }
-}
-
 @media screen and (min-width: 1550px) {
-  .swiper_services_list {
-    grid-template-columns: repeat(3, max-content);
+  .services_list {
     gap: 40px;
+    grid-template-columns: repeat(3, 339px);
   }
 }

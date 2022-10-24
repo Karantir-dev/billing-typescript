@@ -41,6 +41,8 @@ export default function Component(props) {
           return navigate(route.FOREX_ORDER)
         } else if (funcName === 'storage.order.param') {
           return navigate(route.FTP_ORDER)
+        } else if (funcName === 'dedic.order.param') {
+          return navigate(route.DEDICATED_SERVERS_ORDER)
         }
       }
     }

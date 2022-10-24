@@ -24,7 +24,7 @@ export default function Component() {
   const { t } = useTranslation(['support', 'other'])
   const params = useParams()
   const navigate = useNavigate()
-  const desktop = useMediaQuery({ query: '(min-width: 1920px)' })
+  const desktop = useMediaQuery({ query: '(min-width: 1919px)' })
   const [tipsModal, setTipsModa] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
 
@@ -81,9 +81,10 @@ export default function Component() {
           <div className={s.reloadBtn}>
             {desktop ? (
               <Button
+                className={s.tipsBtn}
                 dataTestid={'support_tips_btn'}
                 size="large"
-                className={s.tipsBtn}
+                isShadow
                 label={t('THANK YOU')}
                 onClick={() => setTipsModa(true)}
                 type="button"
