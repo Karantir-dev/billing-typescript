@@ -272,10 +272,10 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
   } = getState()
 
   axiosInstance
-    .get(
+    .post(
       '/',
       qs.stringify({
-        func: 'user.verifyemail.send',
+        func: 'user.verifyemail.verify',
         out: 'json',
         lang: 'en',
         key,
@@ -284,9 +284,11 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      console.log(data.doc)
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data?.doc?.$notify)
+      console.log(data)
       toast.success(t('email_confirmed', { email: username }))
+      dispatch(userActions.setEmailStatus('on'))
     })
     .catch(error => {
       console.log('error', error)
