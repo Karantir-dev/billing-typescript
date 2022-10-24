@@ -11,6 +11,8 @@ import {
   TrustedUsers,
   CartFromSite,
   PageTitleRender,
+  EmailTrigger,
+  MainEmailConfirmation,
 } from '../../Components'
 import { useTranslation } from 'react-i18next'
 import {
@@ -95,6 +97,7 @@ const Component = () => {
 
   return (
     <Container>
+      <EmailTrigger />
       <Routes>
         <Route
           path={route.SERVICES}
@@ -501,6 +504,8 @@ const Component = () => {
             />
           }
         />
+
+        <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
