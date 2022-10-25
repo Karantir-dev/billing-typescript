@@ -255,7 +255,9 @@ const sendVerificationEmail = email => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      toast.success(t('email_sended', { email: email }))
+      toast.success(t('email_sended', { email: email }), {
+        position: 'bottom-right',
+      })
     })
     .catch(error => {
       console.log('error', error)
@@ -287,12 +289,16 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
       if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
       console.log(data?.doc?.$notify)
       console.log(data)
-      toast.success(t('email_confirmed', { email: username }))
+      toast.success(t('email_confirmed', { email: username }), {
+        position: 'bottom-right',
+      })
       dispatch(userActions.setEmailStatus('on'))
     })
     .catch(error => {
       console.log('error', error)
-      toast.error(t('unknown_error'))
+      toast.error(t('unknown_error'), {
+        position: 'bottom-right',
+      })
       errorHandler(error.message, dispatch)
     })
     .finally(() => dispatch(actions.hideLoader()))
