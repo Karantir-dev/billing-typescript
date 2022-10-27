@@ -33,6 +33,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 
       const cartData = {
         total_sum: data.doc?.total_sum?.$,
+        tax: data.doc?.tax?.$,
         full_discount: data.doc?.total_sum?.$,
         billorder: data?.doc?.billorder?.$,
       }

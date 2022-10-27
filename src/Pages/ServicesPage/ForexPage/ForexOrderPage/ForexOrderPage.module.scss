@@ -329,6 +329,66 @@
   color: var(--red-text);
 }
 
+.countyBtnsBlock {
+  width: 100%;
+  max-width: 255px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  background: var(--forms_bgc_2);
+  padding: 6px;
+  max-height: 50px;
+  margin: 11px 0 35px;
+
+  .countyBtn {
+    flex-basis: 48%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 3px;
+    height: 39px;
+    padding: 3px;
+
+    &:first-child {
+      margin-right: 5px;
+    }
+
+    svg {
+      width: 21px;
+      margin-right: 6px;
+    }
+
+    span {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 70.9%;
+      color: var(--main-text);
+    }
+
+    &.selected {
+      background: #f0f0f7;
+    }
+
+    &:hover {
+      background: #f0f0f7;
+    }
+
+    &.dt {
+      &.selected {
+        background: #423c4e;
+      }
+      &:hover {
+        background: #423c4e;
+      }
+    }
+  }
+}
+
 // ADAPTIVE
 @media screen and (min-width: 500px) {
   .tarifs_block {
