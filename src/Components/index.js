@@ -95,6 +95,8 @@ export { default as ModalAddPayer } from './Payers/ModalAddPayer/ModalAddPayer'
 
 //==========================================SERVICES==========================================//
 export { default as ServicesList } from './Services/ServicesList/ServicesList'
+export { default as ServiceCard } from './Services/ServiceCard/ServiceCard'
+export { default as ServiceCardDesktop } from './Services/ServiceCardDesktop/ServiceCardDesktop'
 
 export { default as DomainFilters } from './Services/Domains/DomainFilters/DomainFilters'
 export { default as DomainsHistoryModal } from './Services/Domains/DomainsHistoryModal/DomainsHistoryModal'
@@ -186,3 +188,6 @@ export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
 export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
+
+export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
+export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'

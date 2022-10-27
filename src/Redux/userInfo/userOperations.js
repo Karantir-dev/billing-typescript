@@ -1,13 +1,24 @@
 import qs from 'qs'
-
+import { toast } from 'react-toastify'
+import { t } from 'i18next'
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
 import { errorHandler } from '../../utils'
 import cartOperations from '../cart/cartOperations'
+import actions from '../actions'
 
 const userInfo = (data, dispatch) => {
-  const { $realname, $balance, $email, $phone, $id } = data.doc.user
-  dispatch(userActions.setUserInfo({ $realname, $balance, $email, $phone, $id }))
+  const { $realname, $balance, $email, $phone, $id, $email_verified } = data.doc.user
+  dispatch(
+    userActions.setUserInfo({
+      $realname,
+      $balance,
+      $email,
+      $phone,
+      $id,
+      $email_verified,
+    }),
+  )
 }
 
 const userTickets = (data, dispatch) => {
@@ -223,10 +234,82 @@ const getTickets = () => (dispatch, getState) => {
     })
 }
 
+const sendVerificationEmail = email => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.verifyemail.send',
+        out: 'json',
+        sok: 'ok',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      toast.success(t('email_sended', { email: email }), {
+        position: 'bottom-right',
+      })
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+    })
+    .finally(() => dispatch(actions.hideLoader()))
+}
+
+const verifyMainEmail = (key, username) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'user.verifyemail.verify',
+        out: 'json',
+        lang: 'en',
+        key,
+        username,
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+      console.log(data?.doc?.$notify)
+      console.log(data)
+      toast.success(t('email_confirmed', { email: username }), {
+        position: 'bottom-right',
+      })
+      dispatch(userActions.setEmailStatus('on'))
+    })
+    .catch(error => {
+      console.log('error', error)
+      toast.error(t('unknown_error'), {
+        position: 'bottom-right',
+      })
+      errorHandler(error.message, dispatch)
+    })
+    .finally(() => dispatch(actions.hideLoader()))
+}
+
 export default {
   getUserInfo,
   removeItems,
   getDashboardTickets,
   getNotify,
   getTickets,
+  sendVerificationEmail,
+  verifyMainEmail,
 }

@@ -4,6 +4,7 @@
   box-shadow: var(--forms2_shadow);
   position: relative;
   z-index: 1;
+  transition: opacity 0.1s;
 }
 
 .card_container {
@@ -23,13 +24,17 @@
   display: block;
   font-size: 16px;
   line-height: 113%;
-  color: #b3a9c1;
+  color: var(--main-text);
   transition: color 0.2s;
 }
 
 .card_title {
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 25px;
   line-height: 113%;
+  background: var(--accent-text-gradient);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: var(--main-text);
   transition: font-size 0.1s, color 0.2s;
 }
@@ -90,7 +95,6 @@
   bottom: 5px;
 }
 
-
 @media screen and (min-width: 768px) {
   .card_container {
     width: 306px;
@@ -139,7 +143,6 @@
     max-width: 180px;
     height: 140px;
   }
-
 }
 
 @media screen and (min-width: 1200px) {

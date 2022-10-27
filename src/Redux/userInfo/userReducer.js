@@ -12,6 +12,10 @@ const initialState = {
 
 const userInfo = createReducer(initialState.userInfo, {
   [userActions.setUserInfo]: (_, { payload }) => payload,
+  [userActions.setEmailStatus]: (state, { payload }) => {
+    state.$email_verified = payload
+    return state
+  },
 })
 const userTickets = createReducer(initialState.userTickets, {
   [userActions.setTickets]: (_, { payload }) => payload,
