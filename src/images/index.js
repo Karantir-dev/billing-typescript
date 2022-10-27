@@ -86,3 +86,6 @@ export { default as Smile } from './svg/Smile.jsx'
 export { default as SiteCareIcon } from './svg/SiteCareIcon.jsx'
 export { default as Plus } from './svg/Plus.jsx'
 export { default as VpnIcon } from './svg/VpnIcon.jsx'
+
+export { default as Germany } from './svg/Germany.jsx'
+export { default as Usa } from './svg/Usa.jsx'
