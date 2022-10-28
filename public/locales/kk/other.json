@@ -193,5 +193,16 @@
   "email_sended": "Растау электрондық поштасы {{email}} мекенжайына жіберілді",
   "email_verification": "Электрондық поштаны тексеру",
   "email_verification_text": "“ЖІБЕРУ” түймесін басу “{{email}}” мекенжайына растау электрондық хабарын жібереді.",
-  "email_confirmed": "{{email}} электрондық пошта мекенжайы расталды"
+  "email_confirmed": "{{email}} электрондық пошта мекенжайы расталды",
+
+  "discounts_up_to": "{{amount}} ДЕЙІН ЖЕҢІЛДІКТЕР",
+  "halloween_discount": "хостинг, VDS/VPS, арнайы серверлер және VPN үшін",
+  "discounts": "ЖЕҢІЛДІКТЕР",
+  "on_halloween": "ХЭЛЛОУИНДЕ",
+  "promotion_period": "Науқан 31 қазан мен 2 қараша аралығында жарамды",
+
+  "for virtual hosting": "виртуалды хостинг үшін",
+  "for VDS/VPS": "VDS/VPS үшін",
+  "for dedicated servers": "арнайы серверлер үшін",
+  "for VPN": "VPN үшін"
 }

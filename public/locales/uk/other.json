@@ -195,5 +195,16 @@
   "email_sended": "Лист для підтвердження відправлений на пошту {{email}}",
   "email_verification": "Підтвердження email",
   "email_verification_text": "Для відправки листа підтвердження на пошту “{{email}}” натисніть “Надіслати”",
-  "email_confirmed": "Електронну адресу {{email}} підтверджено"
+  "email_confirmed": "Електронну адресу {{email}} підтверджено",
+
+  "discounts_up_to": "ЗНИЖКИ ДО {{amount}}",
+  "halloween_discount": "на Хостинг, VDS/VPS, Виділені сервери та VPN",
+  "discounts": "ЗНИЖКИ",
+  "on_halloween": "НА ХЕЛОУІН",
+  "promotion_period": "Акція діє з 31 жовтня до 2 листопада",
+
+  "for virtual hosting": "на віртуальний хостинг",
+  "for VDS/VPS": "на VDS/VPS",
+  "for dedicated servers": "на виділені сервери",
+  "for VPN": "на VPN"
 }
