@@ -195,5 +195,15 @@
   "email_sended": "Verification email has been sent to {{email}}",
   "email_verification": "Email verification",
   "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
-  "email_confirmed": "Email address {{email}} confirmed"
+  "email_confirmed": "Email address {{email}} confirmed",
+
+  "discounts_up_to": "DISCOUNTS UP TO {{amount}}",
+  "halloween_discount": "for Hosting, VDS/VPS, Dedicated Servers and VPN",
+  "discounts": "DISCOUNTS",
+  "on_halloween": "ON HALLOWEEN",
+  "promotion_period": "The promotion is valid from October 31 to November 2",
+  "for virtual hosting": "for virtual hosting",
+  "for VDS/VPS": "for VDS/VPS",
+  "for dedicated servers": "for dedicated servers",
+  "for VPN": "for VPN"
 }

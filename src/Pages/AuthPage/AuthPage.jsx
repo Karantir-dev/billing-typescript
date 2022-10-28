@@ -2,10 +2,16 @@ import React from 'react'
 import { Logo } from '../../images'
 import { ThemeBtn, LangBtn } from '../../Components'
 import Div100vh from 'react-div-100vh'
+import cn from 'classnames'
 // import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import HalloweenBigBaner from './Banners/HalloweenBigBaner'
+import HalloweenSmallBaner from './Banners/HalloweenSmallBaner'
+
 import s from './AuthPage.module.scss'
 
 export default function AuthPage({ children }) {
+  const banner = true
+
   return (
     <Div100vh className={s.wrapper}>
       <header className={s.header}>
@@ -18,7 +24,21 @@ export default function AuthPage({ children }) {
         </div>
       </header>
       {/* <GoogleReCaptchaProvider reCaptchaKey="6LczA40hAAAAACFSZS6vTOGp0YfBFlmtz6lP7zBx"> */}
-      {children}
+      <div className={s.authScreens}>
+        {banner && (
+          <div className={s.bannerBlock}>
+            <HalloweenBigBaner />
+          </div>
+        )}
+        <div className={cn({ [s.blockWithBaner]: banner })}>
+          {banner && (
+            <div className={s.bannerSmallBlock}>
+              <HalloweenSmallBaner />
+            </div>
+          )}
+          {children}
+        </div>
+      </div>
       {/* </GoogleReCaptchaProvider> */}
     </Div100vh>
   )
