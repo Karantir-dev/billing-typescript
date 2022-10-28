@@ -14,6 +14,7 @@ import { forexOperations, selectors } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
+import { Germany, Usa } from '../../../../images'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
@@ -28,6 +29,7 @@ export default function ForexOrderPage() {
     'crumbs',
     'dns',
     'virtual_hosting',
+    'countries',
   ])
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -210,6 +212,47 @@ export default function ForexOrderPage() {
                 })}
                 className={classNames({ [s.select]: true, [s.period_select]: true })}
               /> */}
+
+              {tarifList?.datacenter?.length > 0 && (
+                <div>
+                  <span>{t('datacenter', { ns: 'dedicated_servers' })}:</span>
+                  <div className={classNames(s.countyBtnsBlock)}>
+                    {tarifList?.datacenter?.map(el => {
+                      const selected = el?.$key === values.datacenter
+                      let flag = <Germany />
+                      let name = el?.$
+                      if (el?.$?.toLocaleLowerCase()?.includes('germany')) {
+                        flag = <Germany />
+                        name = 'Germany'
+                      } else if (el?.$?.toLocaleLowerCase()?.includes('usa')) {
+                        flag = <Usa />
+                        name = 'USA'
+                      }
+                      return (
+                        <button
+                          key={el?.$key}
+                          onClick={() => {
+                            setFieldValue('datacenter', el?.$key)
+                            dispatch(
+                              forexOperations.getTarifs(setTarifList, {
+                                datacenter: el?.$key,
+                              }),
+                            )
+                          }}
+                          className={classNames(s.countyBtn, {
+                            [s.dt]: darkTheme,
+                            [s.selected]: selected,
+                          })}
+                          disabled={selected}
+                        >
+                          {flag}
+                          <span>{t(name, { ns: 'countries' })}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className={s.tarifs_block}>
                 {tarifList?.transformedTarifList
