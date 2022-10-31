@@ -181,9 +181,11 @@ export default function InputWithAutocomplete({
       </div>
 
       {hasSuggestions && (
-        <ul className={ss.dropdown} onMouseLeave={handleLeave}>
-          {renderSuggestions()}
-        </ul>
+        <div className={ss.dropdown_wrapper}>
+          <ul className={ss.dropdown} onMouseLeave={handleLeave}>
+            {renderSuggestions()}
+          </ul>
+        </div>
       )}
     </div>
   )
