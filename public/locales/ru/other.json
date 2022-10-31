@@ -194,5 +194,16 @@
   "email_verification_text": "При нажатии кнопки “ОТПРАВИТЬ” электронное письмо с подтверждением будет отправлено на адрес “{{email}}”.",
   "email_confirmed": "Почтовый адрес {{email}} подтвержден",
   "address_error_msg": "Введите полный адрес",
-  "symbols_restricted": "Спецсимволы не допустимы"
+  "symbols_restricted": "Спецсимволы не допустимы",
+
+  "discounts_up_to": "СКИДКИ ДО {{amount}}",
+  "halloween_discount": "на Хостинг, VDS/VPS, Выделенные серверы и VPN",
+  "discounts": "СКИДКИ",
+  "on_halloween": "НА ХЭЛЛОУИН",
+  "promotion_period": "Акция действует с 31 октября до 2 ноября",
+
+  "for virtual hosting": "на виртуальный хостинг",
+  "for VDS/VPS": "на VDS/VPS",
+  "for dedicated servers": "на выделенные серверы",
+  "for VPN": "на VPN"
 }

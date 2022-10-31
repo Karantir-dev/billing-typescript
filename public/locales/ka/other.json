@@ -194,5 +194,16 @@
   "email_verification_text": "„გაგზავნაზე“ დაწკაპუნებით დამადასტურებელი ელ.წერილი გამოგიგზავნით „{{email}}“-ს",
   "email_confirmed": "ელფოსტის მისამართი {{email}} დადასტურებულია",
   "address_error_msg": "შეიყვანეთ თქვენი სრული მისამართი",
-  "symbols_restricted": "სპეციალური სიმბოლოები დაუშვებელია"
+  "symbols_restricted": "სპეციალური სიმბოლოები დაუშვებელია",
+
+  "discounts_up_to": "ფასდაკლება {{amount}}-მდე",
+  "halloween_discount": "ჰოსტინგისთვის, VDS/VPS, გამოყოფილი სერვერები და VPN",
+  "discounts": "ფასდაკლებები",
+  "on_halloween": "ჰელოუინზე",
+  "promotion_period": "აქცია მოქმედებს 31 ოქტომბრიდან 2 ნოემბრის ჩათვლით",
+
+  "for virtual hosting": "ვირტუალური ჰოსტინგისთვის",
+  "for VDS/VPS": "VDS/VPS-სთვის",
+  "for dedicated servers": "გამოყოფილი სერვერებისთვის",
+  "for VPN": "VPN-სთვის"
 }

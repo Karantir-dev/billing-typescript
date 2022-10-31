@@ -340,6 +340,7 @@ export default function DedicOrderPage() {
                     ),
                   )
                 }
+                localStorage.removeItem('site_cart')
               }
               setDataFromSite({
                 autoprolong: cartData?.autoprolong,
