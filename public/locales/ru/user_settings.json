@@ -30,6 +30,7 @@
   "2-Step Verification": "Двухэтапная аутентификация",
   "Enable 2-Step Verification": "Включить двухэтапную аутентификацию",
   "Security notification settings": "Настройки уведомлений безопасности",
+  "security_email_placeholder": "Email для уведомлений безопасности",
   "Send e-mail messages about authorization": "Присылать на e-mail сообщения об авторизации",
   "Use GeoIP (region tracking by IP)": "Использовать GeoIP\n(отслеживание региона по IP)",
   "From any IP": "С любого IP",

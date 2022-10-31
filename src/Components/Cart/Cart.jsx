@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
+import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '../../routes'
 import { Cross, Check, Info } from '../../images'
@@ -20,6 +20,8 @@ import {
   ForexItem,
   SiteCareItem,
   VpnItem,
+  InputWithAutocomplete,
+  ScrollToFieldError,
 } from '..'
 import {
   cartOperations,
@@ -106,7 +108,10 @@ export default function Component() {
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string()
+      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
@@ -661,57 +666,6 @@ export default function Component() {
                     }
                   }
 
-                  const getFieldErrorNames = formikErrors => {
-                    const transformObjectToDotNotation = (
-                      obj,
-                      prefix = '',
-                      result = [],
-                    ) => {
-                      Object.keys(obj).forEach(key => {
-                        const value = obj[key]
-                        if (!value) return
-
-                        const nextKey = prefix ? `${prefix}.${key}` : key
-                        if (typeof value === 'object') {
-                          transformObjectToDotNotation(value, nextKey, result)
-                        } else {
-                          result.push(nextKey)
-                        }
-                      })
-
-                      return result
-                    }
-
-                    return transformObjectToDotNotation(formikErrors)
-                  }
-
-                  const ScrollToFieldError = ({
-                    scrollBehavior = { behavior: 'smooth', block: 'center' },
-                  }) => {
-                    const { submitCount, isValid, errors } = useFormikContext()
-
-                    useEffect(() => {
-                      if (isValid) return
-
-                      const fieldErrorNames = getFieldErrorNames(errors)
-                      if (fieldErrorNames.length <= 0) return
-
-                      const element = document.querySelector(
-                        `input[name='${fieldErrorNames[0]}']`,
-                      )
-                      if (!element) return
-
-                      // Scroll to first known error into view
-                      element.scrollIntoView(scrollBehavior)
-
-                      // Formik doesn't (yet) provide a callback for a client-failed submission,
-                      // thus why this is implemented through a hook that listens to changes on
-                      // the submit count.
-                    }, [submitCount])
-
-                    return null
-                  }
-
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
@@ -741,7 +695,7 @@ export default function Component() {
 
                       <div className={s.formBlock}>
                         <div className={s.formBlockTitle}>{t('Payer')}:</div>
-                        <div className={cn(s.formFieldsBlock, s.first)}>
+                        <div className={s.fieldsGrid}>
                           <Select
                             placeholder={t('Not chosen', { ns: 'other' })}
                             label={`${t('Payer status', { ns: 'payers' })}:`}
@@ -836,8 +790,8 @@ export default function Component() {
                             touched={!!touched.city_physical}
                             // isRequired
                           />
-                          <div className={s.nsInputBlock}>
-                            <InputField
+                          <div className={cn(s.nsInputBlock, s.inputBig)}>
+                            {/* <InputField
                               inputWrapperClass={s.inputHeight}
                               inputClassName={s.inputAddressWrapp}
                               name="address_physical"
@@ -848,7 +802,18 @@ export default function Component() {
                               error={!!errors.address_physical}
                               touched={!!touched.address_physical}
                               isRequired
+                            /> */}
+
+                            <InputWithAutocomplete
+                              fieldName="address_physical"
+                              error={!!errors.address_physical}
+                              touched={!!touched.address_physical}
+                              externalValue={values.address_physical}
+                              setFieldValue={val => {
+                                setFieldValue('address_physical', val)
+                              }}
                             />
+
                             <button type="button" className={s.infoBtn}>
                               <Info />
                               <div
