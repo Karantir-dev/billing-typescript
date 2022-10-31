@@ -1,6 +1,5 @@
 .modalBg {
   position: absolute;
-
   height: 100vh;
   width: 100%;
   top: 0;
@@ -82,23 +81,20 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 70.9%;
   margin-bottom: 5px;
   color: var(--main-text);
 }
 
 .formFieldsBlock {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 14px;
+  column-gap: 20px;
 }
 
 .input {
   max-width: 100%;
-  margin-top: 13px;
-}
-
-.inputHeight {
-  height: 46px;
+  // margin-top: 13px;
 }
 
 .phoneInputLabel {
@@ -107,7 +103,7 @@
 
 .select {
   max-width: 100%;
-  margin-top: 13px;
+  // margin-top: 13px;
 
   span {
     font-size: 16px;
@@ -201,6 +197,7 @@
   color: var(--link-color);
   text-decoration: underline;
   cursor: pointer;
+  text-align: start;
 }
 
 .nsInputBlock {
@@ -212,7 +209,7 @@
 .infoBtn {
   position: absolute;
   margin-left: auto;
-  top: 45%;
+  top: 23px;
   right: 0px;
   z-index: 2;
   padding: 12px 12px 12px 0px;
@@ -272,12 +269,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .nsInputBlock {
-    position: relative;
-    width: 100%;
-    max-width: 46%;
-  }
-
   .saveBtn {
     font-size: 20px;
   }
@@ -316,18 +307,18 @@
   }
 
   .input {
-    max-width: 48%;
-    margin-right: 20px;
+    // max-width: 48%;
+    // margin-right: 20px;
 
     &.inputAddress {
       max-width: 100%;
     }
   }
 
-  .select {
-    max-width: 48%;
-    margin-right: 20px;
-  }
+  // .select {
+  //   max-width: 48%;
+  //   margin-right: 20px;
+  // }
 
   .btnBlock {
     flex-direction: row;
@@ -342,7 +333,13 @@
     margin-left: 20px;
   }
 
-  .formFieldsBlock > div:nth-child(2n) {
-    margin-right: 0px;
+  .formFieldsBlock {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .infoBtn {
+    top: 26px;
   }
 }

@@ -194,6 +194,8 @@
   "email_verification": "Электрондық поштаны тексеру",
   "email_verification_text": "“ЖІБЕРУ” түймесін басу “{{email}}” мекенжайына растау электрондық хабарын жібереді.",
   "email_confirmed": "{{email}} электрондық пошта мекенжайы расталды",
+  "address_error_msg": "Толық мекен-жайыңызды енгізіңіз",
+  "symbols_restricted": "Арнайы таңбаларға рұқсат етілмейді",
 
   "discounts_up_to": "{{amount}} ДЕЙІН ЖЕҢІЛДІКТЕР",
   "halloween_discount": "хостинг, VDS/VPS, арнайы серверлер және VPN үшін",

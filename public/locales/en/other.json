@@ -196,6 +196,8 @@
   "email_verification": "Email verification",
   "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
   "email_confirmed": "Email address {{email}} confirmed",
+  "address_error_msg": "Enter your full address",
+  "symbols_restricted": "Special characters are not allowed",
 
   "discounts_up_to": "DISCOUNTS UP TO {{amount}}",
   "halloween_discount": "for Hosting, VDS/VPS, Dedicated Servers and VPN",

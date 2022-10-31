@@ -196,6 +196,8 @@
   "email_verification": "Підтвердження email",
   "email_verification_text": "Для відправки листа підтвердження на пошту “{{email}}” натисніть “Надіслати”",
   "email_confirmed": "Електронну адресу {{email}} підтверджено",
+  "address_error_msg": "Введіть повну адресу",
+  "symbols_restricted": "Спеціальні символи заборонені",
 
   "discounts_up_to": "ЗНИЖКИ ДО {{amount}}",
   "halloween_discount": "на Хостинг, VDS/VPS, Виділені сервери та VPN",
