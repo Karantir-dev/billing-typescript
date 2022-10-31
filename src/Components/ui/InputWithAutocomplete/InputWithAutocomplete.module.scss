@@ -1,0 +1,31 @@
+@import '../../../scss/placeholders.scss';
+
+.pr35 {
+  padding-right: 35px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  width: 100%;
+  border-radius: 5px;
+  z-index: 1;
+  overflow: hidden;
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--forms2_shadow);
+}
+
+.suggestion_btn {
+  width: 100%;
+  padding: 10px 20px;
+  text-align: start;
+  cursor: pointer;
+
+  &.active {
+    background-color: var(--select_option_bgc);
+  }
+}
+
+.suggestion_main_text {
+  font-weight: 500;
+}

@@ -195,5 +195,7 @@
   "email_sended": "Лист для підтвердження відправлений на пошту {{email}}",
   "email_verification": "Підтвердження email",
   "email_verification_text": "Для відправки листа підтвердження на пошту “{{email}}” натисніть “Надіслати”",
-  "email_confirmed": "Електронну адресу {{email}} підтверджено"
+  "email_confirmed": "Електронну адресу {{email}} підтверджено",
+  "address_error_msg": "Введіть повну адресу",
+  "symbols_restricted": "Спеціальні символи заборонені"
 }

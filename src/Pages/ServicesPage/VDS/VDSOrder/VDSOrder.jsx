@@ -343,7 +343,6 @@ export default function VDSOrder() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            console.log(values)
             return (
               <Form>
                 <Select

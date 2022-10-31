@@ -16,15 +16,17 @@
 .input_wrapper {
   width: 100%;
   position: relative;
-  height: 47px;
+  height: 45px;
 }
 
 .input {
   @extend %input;
-  top: 1px;
-  right: 1px;
-  bottom: 1px;
-  left: 1px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -55,7 +57,8 @@
 
 .required_star {
   color: #d93f21;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .placeholder {
@@ -197,6 +200,6 @@
 
 @media screen and (min-width: 1281px) {
   .input_wrapper {
-    height: 52px;
+    height: 50px;
   }
 }

@@ -192,5 +192,7 @@
   "email_sended": "Письмо с подтверждением отправлено на {{email}}",
   "email_verification": "Подтверждение email",
   "email_verification_text": "При нажатии кнопки “ОТПРАВИТЬ” электронное письмо с подтверждением будет отправлено на адрес “{{email}}”.",
-  "email_confirmed": "Почтовый адрес {{email}} подтвержден"
+  "email_confirmed": "Почтовый адрес {{email}} подтвержден",
+  "address_error_msg": "Введите полный адрес",
+  "symbols_restricted": "Спецсимволы не допустимы"
 }

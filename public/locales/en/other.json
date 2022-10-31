@@ -195,5 +195,7 @@
   "email_sended": "Verification email has been sent to {{email}}",
   "email_verification": "Email verification",
   "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
-  "email_confirmed": "Email address {{email}} confirmed"
+  "email_confirmed": "Email address {{email}} confirmed",
+  "address_error_msg": "Enter your full address",
+  "symbols_restricted": "Special characters are not allowed"
 }
