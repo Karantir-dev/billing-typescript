@@ -9,7 +9,6 @@
 .card_container {
   min-width: 306px;
   height: 201px;
-  // transition: transform 0.2s;
 }
 
 .container {
@@ -87,7 +86,6 @@
 @media screen and (min-width: 768px) {
   .card {
     border-radius: 3px;
-    position: relative;
     transition: box-shadow 0.2s;
 
     &:hover {
