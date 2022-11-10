@@ -212,25 +212,29 @@ export default function DedicOrderPage() {
   useEffect(() => {
     const mainSwiper = document.querySelector('.swiper-wrapper')
 
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('notInViewport')
-          } else {
-            entry.target.classList.add('notInViewport')
-          }
+    try {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('notInViewport')
+            } else {
+              entry.target.classList.add('notInViewport')
+            }
+          })
+        },
+        { mainSwiper, threshold: 1 },
+      )
+
+      const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
+
+      if (slides.length > 0) {
+        slides.forEach(slide => {
+          observer.observe(slide)
         })
-      },
-      { mainSwiper, threshold: 1 },
-    )
-
-    const slides = mainSwiper ? mainSwiper.querySelectorAll('.swiper-slide') : []
-
-    if (slides.length > 0) {
-      slides.forEach(slide => {
-        observer.observe(slide)
-      })
+      }
+    } catch (e) {
+      console.log(e.message)
     }
   })
 
