@@ -31,7 +31,7 @@
       stroke: url(#gradient);
     }
   }
-  cursor: pointer;
+  // cursor: pointer;
 }
 
 .exit_list_item {
@@ -128,7 +128,7 @@
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .exit_wrapper {
-    padding: 60px 60px 0 48px;
+    padding: 35px 60px 0 48px;
   }
   .balance_wrapper_dt,
   .balance_wrapper_lt {

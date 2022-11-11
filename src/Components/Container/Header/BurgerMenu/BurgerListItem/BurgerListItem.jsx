@@ -70,8 +70,9 @@ export default function BurgerListItem({
                       onKeyDown={() => {}}
                       onClick={controlMenu}
                     >
-                      <NavLink to={item.routeName}>
-                        <p className={s.list_item_name}>{item.name}</p>
+                      <NavLink className={s.list_item_link} to={item.routeName}>
+                        {item.name}
+                        {/* <p className={s.list_item_name}>{item.name}</p> */}
                       </NavLink>
                     </div>
                   </li>
