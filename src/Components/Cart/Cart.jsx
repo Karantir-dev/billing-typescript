@@ -956,7 +956,7 @@ export default function Component() {
                       <div className={s.totalSum}>
                         {t('Total')}: <b>{cartData?.total_sum} EUR</b>
                       </div>
-                      
+
                       {Number(cartData?.tax) > 0 ? (
                         <div className={s.totalSum}>
                           {t('Tax included')}: <b>{cartData?.tax} EUR</b>
