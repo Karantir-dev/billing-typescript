@@ -5,7 +5,6 @@ import {
   LoginForm,
   PasswordChange,
   PasswordReset,
-  PublicRoute,
   SignupForm,
   SocialNetAuth,
   ConfirmGeo,
@@ -74,85 +73,31 @@ const Component = () => {
   return (
     <>
       <Routes>
-        <Route
-          path={route.LOGIN}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<LoginForm />} />}
-              restricted
-              redirectTo={route.SERVICES}
-            />
-          }
-        />
+        <Route path={route.LOGIN} element={<AuthPage children={<LoginForm />} />} />
         <Route
           path={route.REGISTRATION}
           element={
-            <PublicRoute
+            <AuthPage
               children={
-                <AuthPage
-                  children={
-                    <SignupForm
-                      geoCountryId={geoData?.clients_country_id}
-                      geoStateId={geoData?.state_id}
-                    />
-                  }
+                <SignupForm
+                  geoCountryId={geoData?.clients_country_id}
+                  geoStateId={geoData?.state_id}
                 />
               }
-              restricted
-              redirectTo={route.SERVICES}
             />
           }
         />
         <Route
           path={route.RESET_PASSWORD}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<PasswordReset />} />}
-              restricted
-              redirectTo={route.SERVICES}
-            />
-          }
+          element={<AuthPage children={<PasswordReset />} />}
         />
-        <Route
-          path={route.CHANGE_PASSWORD}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<PasswordChange />} />}
-              restricted
-              redirectTo={route.SERVICES}
-            />
-          }
-        />
-        <Route
-          path={route.SOC_NET_AUTH}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<SocialNetAuth />} />}
-              restricted
-              redirectTo={route.SERVICES}
-            />
-          }
-        />
+        <Route path={route.CHANGE_PASSWORD} element={<PasswordChange />} />
+        <Route path={route.SOC_NET_AUTH} element={<SocialNetAuth />} />
         <Route
           path={route.GEO_CONFIRM}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<ConfirmGeo />} />}
-              restricted
-              redirectTo={route.LOGIN}
-            />
-          }
+          element={<AuthPage children={<ConfirmGeo />} />}
         />
-        <Route
-          path={route.SITE_CART}
-          element={
-            <PublicRoute
-              children={<AuthPage children={<CartFromSite />} />}
-              restricted
-              redirectTo={route.LOGIN}
-            />
-          }
-        />
+        <Route path={route.SITE_CART} element={<CartFromSite />} />
 
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 

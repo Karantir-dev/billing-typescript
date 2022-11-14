@@ -18,10 +18,6 @@ export { default as SocialNetAuth } from './Auth/SocialNetAuth/SocialNetAuth'
 export { default as ConfirmGeo } from './Auth/ConfirmGeo/ConrimGeo'
 export { default as CartFromSite } from './Auth/CartFromSite/CartFromSite'
 
-//==========================================ROUTES==========================================//
-export { default as PrivateRoute } from './Routes/PrivateRoute'
-export { default as PublicRoute } from './Routes/PublicRoute'
-
 export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
 export { default as TrustedUsers } from '../Pages/TrustedUsers/TrustedUsers'
 

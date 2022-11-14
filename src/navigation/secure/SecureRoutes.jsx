@@ -6,7 +6,6 @@ import {
   Container,
   EmailConfirmation,
   Portal,
-  PrivateRoute,
   ServicesList,
   TrustedUsers,
   CartFromSite,
@@ -103,10 +102,7 @@ const Component = () => {
           path={route.SERVICES}
           element={
             <PageTitleRender title={t('aside_menu.services')}>
-              <PrivateRoute
-                children={<ServicesPage children={<ServicesList />} />}
-                redirectTo={route.LOGIN}
-              />
+              <ServicesPage children={<ServicesList />} />
             </PageTitleRender>
           }
         />
@@ -114,7 +110,7 @@ const Component = () => {
           path={route.VDS}
           element={
             <PageTitleRender title={`${t('aside_menu.services')}/VDS `}>
-              <PrivateRoute redirectTo={route.LOGIN} children={<VDS />} />
+              <VDS />
             </PageTitleRender>
           }
         />
@@ -124,7 +120,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('vds_order', { ns: 'crumbs' })} `}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<VDSOrder />} />
+              <VDSOrder />
             </PageTitleRender>
           }
         />
@@ -134,7 +130,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/VDS ${t('ip_address', { ns: 'vds' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<VDSip />} />
+              <VDSip />
             </PageTitleRender>
           }
         />
@@ -146,7 +142,7 @@ const Component = () => {
                 'burger_menu.services.services_list.virtual_hosting',
               )}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<SharedHosting />} />
+              <SharedHosting />
             </PageTitleRender>
           }
         />
@@ -158,7 +154,7 @@ const Component = () => {
                 ns: 'virtual_hosting',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<SharedHostingOrder />} />
+              <SharedHostingOrder />
             </PageTitleRender>
           }
         />
@@ -170,7 +166,7 @@ const Component = () => {
                 'burger_menu.services.services_list.wetsite_care',
               )}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<SiteCare />} />
+              <SiteCare />
             </PageTitleRender>
           }
         />
@@ -182,7 +178,7 @@ const Component = () => {
                 ns: 'virtual_hosting',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<SiteCareOrder />} />
+              <SiteCareOrder />
             </PageTitleRender>
           }
         />
@@ -190,7 +186,7 @@ const Component = () => {
           path={route.VPN}
           element={
             <PageTitleRender title={`${t('aside_menu.services')}/${t('VPN')}`}>
-              <PrivateRoute redirectTo={route.LOGIN} children={<VPN />} />
+              <VPN />
             </PageTitleRender>
           }
         />
@@ -202,7 +198,7 @@ const Component = () => {
                 ns: 'crumbs',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<VpnOrder />} />
+              <VpnOrder />
             </PageTitleRender>
           }
         />
@@ -215,7 +211,7 @@ const Component = () => {
                 'burger_menu.services.services_list.domains',
               )}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DomainsPage />} />
+              <DomainsPage />
             </PageTitleRender>
           }
         />
@@ -227,7 +223,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DomainOrderPage />} />
+              <DomainOrderPage />
             </PageTitleRender>
           }
         />
@@ -241,10 +237,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute
-                redirectTo={route.LOGIN}
-                children={<DomainContactInfoPage />}
-              />
+              <DomainContactInfoPage />
             </PageTitleRender>
           }
         />
@@ -260,7 +253,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DomainsNsPage />} />
+              <DomainsNsPage />
             </PageTitleRender>
           }
         />
@@ -272,10 +265,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute
-                redirectTo={route.LOGIN}
-                children={<DomainOrderPage transfer />}
-              />
+              <DomainOrderPage transfer />
             </PageTitleRender>
           }
         />
@@ -289,10 +279,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute
-                redirectTo={route.LOGIN}
-                children={<DomainContactInfoPage transfer />}
-              />
+              <DomainContactInfoPage transfer />
             </PageTitleRender>
           }
         />
@@ -308,10 +295,7 @@ const Component = () => {
                 ns: 'domains',
               })}`}
             >
-              <PrivateRoute
-                redirectTo={route.LOGIN}
-                children={<DomainsNsPage transfer />}
-              />
+              <DomainsNsPage transfer />
             </PageTitleRender>
           }
         />
@@ -323,10 +307,7 @@ const Component = () => {
                 'burger_menu.services.services_list.dedicated_servers',
               )}`}
             >
-              <PrivateRoute
-                redirectTo={route.LOGIN}
-                children={<DedicatedServersPage />}
-              />
+              <DedicatedServersPage />
             </PageTitleRender>
           }
         />
@@ -338,7 +319,7 @@ const Component = () => {
                 ns: 'dedicated_servers',
               })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DedicOrderPage />} />
+              <DedicOrderPage />
             </PageTitleRender>
           }
         />
@@ -348,7 +329,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('ip', { ns: 'crumbs' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DedicIPpage />} />
+              <DedicIPpage />
             </PageTitleRender>
           }
         />
@@ -360,7 +341,7 @@ const Component = () => {
                 'burger_menu.services.services_list.external_ftp',
               )}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<FTP />} />
+              <FTP />
             </PageTitleRender>
           }
         />
@@ -370,7 +351,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('ftp_order', { ns: 'crumbs' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<FTPOrder />} />
+              <FTPOrder />
             </PageTitleRender>
           }
         />
@@ -382,7 +363,7 @@ const Component = () => {
                 'burger_menu.services.services_list.dns_hosting',
               )}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DNS />} />
+              <DNS />
             </PageTitleRender>
           }
         />
@@ -392,7 +373,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('dns_order', { ns: 'crumbs' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<DNSOrder />} />
+              <DNSOrder />
             </PageTitleRender>
           }
         />
@@ -402,7 +383,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('forex', { ns: 'crumbs' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<ForexPage />} />
+              <ForexPage />
             </PageTitleRender>
           }
         />
@@ -412,7 +393,7 @@ const Component = () => {
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('forex_order', { ns: 'crumbs' })}`}
             >
-              <PrivateRoute redirectTo={route.LOGIN} children={<ForexOrderPage />} />
+              <ForexOrderPage />
             </PageTitleRender>
           }
         />
@@ -420,23 +401,17 @@ const Component = () => {
           path={route.ACCESS_LOG}
           element={
             <PageTitleRender title={t('access_log', { ns: 'access_log' })}>
-              <PrivateRoute redirectTo={route.LOGIN} children={<AccessLogPage />} />
+              <AccessLogPage />
             </PageTitleRender>
           }
         />
-        <Route
-          path={`${route.SUPPORT}/*`}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<SupportScreen />} />}
-        />
-        <Route
-          path={`${route.BILLING}/*`}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<BillingScreen />} />}
-        />
+        <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
+        <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
         <Route
           path={route.PAYERS}
           element={
             <PageTitleRender title={t('Payers', { ns: 'payers' })}>
-              <PrivateRoute redirectTo={route.LOGIN} children={<PayersPage />} />
+              <PayersPage />
             </PageTitleRender>
           }
         />
@@ -444,66 +419,27 @@ const Component = () => {
           path={route.CONTRACTS}
           element={
             <PageTitleRender title={t('profile.contracts')}>
-              <PrivateRoute children={<Contracts />} redirectTo={route.LOGIN} />
+              <Contracts />
             </PageTitleRender>
           }
         />
-        <Route
-          path={`${route.USER_SETTINGS}`}
-          element={<PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />}
-        >
-          <Route
-            path=":path/"
-            element={
-              <PrivateRoute redirectTo={route.LOGIN} children={<UserSettings />} />
-            }
-          />
+        <Route path={`${route.USER_SETTINGS}`} element={<UserSettings />}>
+          <Route path=":path/" element={<UserSettings />} />
         </Route>
-        <Route
-          path={route.SOC_NET_AUTH}
-          element={
-            <PrivateRoute
-              children={<SocialNetAdd />}
-              restricted
-              redirectTo={route.SERVICES}
-            />
-          }
-        />
-        <Route
-          path={`${route.AFFILIATE_PROGRAM}/*`}
-          element={
-            <PrivateRoute children={<AffiliateProgram />} redirectTo={route.LOGIN} />
-          }
-        />
+        <Route path={route.SOC_NET_AUTH} element={<SocialNetAdd />} />
+        <Route path={`${route.AFFILIATE_PROGRAM}/*`} element={<AffiliateProgram />} />
         <Route
           path={route.TRUSTED_USERS}
           element={
             <PageTitleRender title={t('trusted_users.title', { ns: 'trusted_users' })}>
-              <PrivateRoute children={<TrustedUsers />} redirectTo={route.LOGIN} />
+              <TrustedUsers />
             </PageTitleRender>
           }
         />
-        <Route
-          path={route.CONFIRM_EMAIL}
-          element={
-            <PrivateRoute children={<EmailConfirmation />} redirectTo={route.LOGIN} />
-          }
-        />
-        <Route
-          path={`${route.ERROR_PAGE}/*`}
-          element={<PrivateRoute children={<ErrorPage />} redirectTo={route.LOGIN} />}
-        />
+        <Route path={route.CONFIRM_EMAIL} element={<EmailConfirmation />} />
+        <Route path={`${route.ERROR_PAGE}/*`} element={<ErrorPage />} />
 
-        <Route
-          path={route.SITE_CART}
-          element={
-            <PrivateRoute
-              children={<CartFromSite isAuth />}
-              restricted
-              redirectTo={route.LOGIN}
-            />
-          }
-        />
+        <Route path={route.SITE_CART} element={<CartFromSite isAuth />} />
 
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
@@ -534,21 +470,16 @@ const SupportScreen = () => {
         path=":path/*"
         element={
           <PageTitleRender title={t('support')}>
-            <PrivateRoute redirectTo={route.LOGIN} children={<SupportPage />} />
+            <SupportPage />
           </PageTitleRender>
         }
       />
       <Route
         path=":path/:id"
         element={
-          <PrivateRoute
-            redirectTo={route.LOGIN}
-            children={
-              <PageTitleRender title={t('support') + '/' + t('Message')}>
-                <OpenedTicker />
-              </PageTitleRender>
-            }
-          />
+          <PageTitleRender title={t('support') + '/' + t('Message')}>
+            <OpenedTicker />
+          </PageTitleRender>
         }
       />
     </Routes>
@@ -570,7 +501,7 @@ const BillingScreen = () => {
         path=":path/*"
         element={
           <PageTitleRender title={t('Finance')}>
-            <PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />
+            <BillingPage />
           </PageTitleRender>
         }
       />
@@ -578,7 +509,7 @@ const BillingScreen = () => {
         path=":path/:result"
         element={
           <PageTitleRender title={t('Finance')}>
-            <PrivateRoute redirectTo={route.LOGIN} children={<BillingPage />} />
+            <BillingPage />
           </PageTitleRender>
         }
       />
