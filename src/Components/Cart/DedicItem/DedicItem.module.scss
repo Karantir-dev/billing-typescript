@@ -74,9 +74,16 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 70.9%;
+  line-height: 101%;
   color: var(--main-text);
   margin-bottom: 4px;
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+
+  span {
+    max-width: 190px;
+  }
 }
 
 .domainProtect {
@@ -158,13 +165,7 @@
 }
 
 .countItem {
-  padding: 5px 5px;
-  background-color: rgba(174, 156, 205, 0.15);
-  border-radius: 3px;
-  min-width: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-left: 10px;
 
   font-weight: 400;
   font-size: 18px;
@@ -189,6 +190,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   }
 
   .additional_info_item {
@@ -219,18 +221,18 @@
     width: 100%;
     margin-top: 0;
 
-    & :not(:last-child) {
-      margin-right: 10px;
-    }
-    & :nth-child(1) {
-      flex-basis: 20%;
-    }
-    & :nth-child(2) {
-      flex-basis: 40%;
-    }
-    & :nth-child(3) {
-      flex-basis: 25%;
-    }
+    // & :not(:last-child) {
+    //   margin-right: 10px;
+    // }
+    // & :nth-child(1) {
+    //   flex-basis: 50%;
+    // }
+    // & :nth-child(2) {
+    //   flex-basis: 40%;
+    // }
+    // & :nth-child(3) {
+    //   flex-basis: 25%;
+    // }
   }
 
   .costBlock {

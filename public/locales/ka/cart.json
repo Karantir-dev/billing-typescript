@@ -25,5 +25,9 @@
   "For residents of Russia.Refunds are not available for this payment method.": "რუსეთის მაცხოვრებლებისთვის. ამ გადახდის მეთოდისთვის თანხის დაბრუნება შეუძლებელია.",
   "Late fee": "დაგვიანებული გადასახადი",
   "order_amount_is_less": "შეკვეთის თანხა ნაკლებია გადახდის მინიმალურ თანხაზე შერჩეული გადახდის მეთოდებისთვის. თქვენ შეგიძლიათ დაამატოთ მინიმალური თანხა და გადაიხადოთ შეკვეთა თქვენს ანგარიშზე არსებული თანხების გამოყენებით",
-  "Tax included": "გადასახადი შედის"
+  "Tax included": "გადასახადი შედის",
+  "Gift": "საჩუქარი",
+  "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "უფასო სერვისის მისაღებად შეასრულეთ შემდეგი შეკვეთა (შეძენის შემდეგ ცალკე ჩეკით) და შეიყვანეთ სარეკლამო კოდი",
+  "can be used only once": "შეიძლება გამოყენებულ იქნას მხოლოდ ერთხელ",
+  "Is free": "Თავისუფალია"
 }

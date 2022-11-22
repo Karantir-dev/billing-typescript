@@ -89,19 +89,16 @@ export default function DedicItem(props) {
             />
           </button>
 
-          {tabletOrHigher && (
+          {/* {tabletOrHigher && (
             <img
               src={require('./../../../images/services/dedicated.webp')}
               alt="dedicated_servers"
             />
-          )}
+          )} */}
 
           <div className={s.priceList}>
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
-                <p className={s.countItem}>
-                  {count} {t('psc.', { ns: 'vds' })}
-                </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
                     className={s.btn_delete}
@@ -113,15 +110,20 @@ export default function DedicItem(props) {
                 )}
               </div>
             )}
-
+            {/* 
             {tabletOrHigher && (
               <p className={s.countItem}>
                 {count} {t('psc.', { ns: 'vds' })}
               </p>
-            )}
+            )} */}
 
             <div className={s.server_info}>
-              <span className={s.domainName}>{pricelist_name}</span>
+              <span className={s.domainName}>
+                <span>{pricelist_name}</span>
+                <p className={s.countItem}>
+                  {count} {t('psc.', { ns: 'vds' })}
+                </p>
+              </span>
             </div>
             <div className={s.costBlock}>
               <div className={s.cost}>

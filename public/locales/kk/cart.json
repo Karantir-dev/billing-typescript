@@ -26,5 +26,9 @@
   "For residents of Russia.Refunds are not available for this payment method.": "Ресей тұрғындары үшін. Бұл төлем әдісі үшін ақшаны қайтару мүмкін емес.",
   "Late fee": "Кешіктірілген төлем",
   "order_amount_is_less": "Тапсырыс сомасы таңдалған төлем әдістері үшін ең төменгі төлем сомасынан аз. Сіз өзіңіздің шотыңыздағы қаражатты пайдалана отырып, ең аз қаражат сомасын қосып, тапсырыс үшін төлей аласыз",
-  "Tax included": "Салық қосылған"
+  "Tax included": "Салық қосылған",
+  "Gift": "Сыйлық",
+  "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "Тегін қызметті алу үшін келесі тапсырысты орындаңыз (сатып алғаннан кейін бөлек чекпен) және жарнамалық кодты енгізіңіз",
+  "can be used only once": "бір рет қана қолдануға болады",
+  "Is free": "Тегін"
 }

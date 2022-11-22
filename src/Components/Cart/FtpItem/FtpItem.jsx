@@ -76,19 +76,16 @@ export default function FtpItem(props) {
     <>
       <div className={s.server_item}>
         <div className={s.tarif_info}>
-          {tabletOrHigher && (
+          {/* {tabletOrHigher && (
             <img
               src={require('./../../../images/services/ftp_storage.webp')}
               alt="dedicated_servers"
             />
-          )}
+          )} */}
 
           <div className={s.priceList}>
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
-                <p className={s.countItem}>
-                  {count} {t('psc.', { ns: 'vds' })}
-                </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
                     className={s.btn_delete}
@@ -101,14 +98,9 @@ export default function FtpItem(props) {
               </div>
             )}
 
-            {tabletOrHigher && (
-              <p className={s.countItem}>
-                {count} {t('psc.', { ns: 'vds' })}
-              </p>
-            )}
-
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
+              &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
             </div>
             <div className={s.costBlock}>
               <div className={s.cost}>

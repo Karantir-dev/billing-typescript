@@ -22,6 +22,7 @@ import {
   VpnItem,
   InputWithAutocomplete,
   ScrollToFieldError,
+  BlackFridayGift,
 } from '..'
 import {
   cartOperations,
@@ -59,6 +60,8 @@ export default function Component() {
   const [cartData, setCartData] = useState(null)
 
   const [isClosing, setIsClosing] = useState(false)
+
+  const [blackFridayData, setBlackFridayData] = useState(null)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -128,7 +131,13 @@ export default function Component() {
 
   const setPromocodeToCart = promocode => {
     dispatch(
-      cartOperations.setBasketPromocode(promocode, setCartData, setPaymentsMethodList),
+      cartOperations.setBasketPromocode(
+        promocode,
+        setCartData,
+        setPaymentsMethodList,
+        setBlackFridayData,
+        cartData?.elemList[0]['item.type']?.$,
+      ),
     )
   }
 
@@ -669,29 +678,6 @@ export default function Component() {
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
-                      <div className={s.formBlock}>
-                        <div className={s.formBlockTitle}>{t('Promo code')}:</div>
-                        <div className={cn(s.formFieldsBlock, s.first)}>
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="promocode"
-                            placeholder={t('Enter promo code', { ns: 'other' })}
-                            isShadow
-                            className={s.inputPerson}
-                            error={!!errors.promocode}
-                            touched={!!touched.promocode}
-                            isRequired
-                          />
-                          <button
-                            onClick={() => setPromocodeToCart(values?.promocode)}
-                            disabled={values?.promocode?.length === 0}
-                            type="button"
-                            className={s.promocodeBtn}
-                          >
-                            {t('Apply', { ns: 'other' })}
-                          </button>
-                        </div>
-                      </div>
 
                       <div className={s.formBlock}>
                         <div className={s.formBlockTitle}>{t('Payer')}:</div>
@@ -943,6 +929,35 @@ export default function Component() {
                               )}
                             </div>
                           )}
+                      </div>
+
+                      <div className={cn(s.formBlock, s.promocodeBlock)}>
+                        <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name="promocode"
+                            label={`${t('Promo code')}:`}
+                            placeholder={t('Enter promo code', { ns: 'other' })}
+                            isShadow
+                            className={s.inputPerson}
+                            error={!!errors.promocode}
+                            touched={!!touched.promocode}
+                          />
+                          <button
+                            onClick={() => setPromocodeToCart(values?.promocode)}
+                            disabled={values?.promocode?.length === 0}
+                            type="button"
+                            className={s.promocodeBtn}
+                          >
+                            {t('Apply', { ns: 'other' })}
+                          </button>
+                        </div>
+
+                        <div className={cn(s.formFieldsBlock)}>
+                          {blackFridayData && blackFridayData?.success && (
+                            <BlackFridayGift code={blackFridayData?.promo_of_service} />
+                          )}
+                        </div>
                       </div>
 
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (

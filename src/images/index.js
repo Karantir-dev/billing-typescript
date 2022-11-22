@@ -89,3 +89,5 @@ export { default as VpnIcon } from './svg/VpnIcon.jsx'
 
 export { default as Germany } from './svg/Germany.jsx'
 export { default as Usa } from './svg/Usa.jsx'
+export { default as Gift } from './svg/Gift.jsx'
+export { default as GiftDt } from './svg/GiftDt.jsx'

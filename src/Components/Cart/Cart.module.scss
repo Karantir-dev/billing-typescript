@@ -85,6 +85,11 @@
   display: flex;
   flex-direction: column;
 
+  &.promocodeBlock {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e1daea;
+  }
+
   &.last {
     padding-bottom: 25px;
     border-bottom: 1px solid #e1daea;
@@ -115,6 +120,10 @@
 
   &.first {
     align-items: center;
+  }
+
+  &.promocode {
+    margin-top: 20px;
   }
 }
 
