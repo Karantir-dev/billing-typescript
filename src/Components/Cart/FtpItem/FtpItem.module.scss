@@ -29,6 +29,8 @@
 
 .server_info {
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .additional_info_item {
@@ -77,7 +79,6 @@
   font-size: 18px;
   line-height: 70.9%;
   color: var(--main-text);
-  margin-bottom: 4px;
 }
 
 .domainProtect {
@@ -156,21 +157,10 @@
 }
 
 .countItem {
-  // position: absolute;
-  // top: 15px;
-  // left: -5px;
-  padding: 5px 5px;
-  background-color: rgba(174, 156, 205, 0.15);
-  border-radius: 3px;
-  min-width: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   font-weight: 400;
   font-size: 18px;
   color: var(--main-text);
-  // margin-left: 20px;
+  margin-left: 10px;
 }
 .btn_delete {
   // position: absolute;
@@ -220,7 +210,7 @@
 
   .priceList {
     display: flex;
-    margin-left: 20px;
+    // margin-left: 20px;
     padding: 0;
     align-items: center;
     justify-content: space-between;
@@ -228,18 +218,18 @@
     width: 100%;
     margin-top: 0;
 
-    & :not(:last-child) {
-      margin-right: 10px;
-    }
-    & :nth-child(1) {
-      flex-basis: 20%;
-    }
-    & :nth-child(2) {
-      flex-basis: 30%;
-    }
-    & :nth-child(3) {
-      flex-basis: 30%;
-    }
+    // & :not(:last-child) {
+    //   margin-right: 10px;
+    // }
+    // & :nth-child(1) {
+    //   flex-basis: 20%;
+    // }
+    // & :nth-child(2) {
+    //   flex-basis: 30%;
+    // }
+    // & :nth-child(3) {
+    //   flex-basis: 30%;
+    // }
   }
 
   .costBlock {

@@ -7,7 +7,7 @@ export default function Component(props) {
 
   return (
     <div className={s.domainItem}>
-      <img src={require('./../../../images/cart/sitecare.png')} alt="vhost" />
+      {/* <img src={require('./../../../images/cart/sitecare.png')} alt="vhost" /> */}
       <div className={s.priceList}>
         <div className={s.domainInfo}>
           <span className={s.domainName}>

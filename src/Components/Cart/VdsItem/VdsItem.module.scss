@@ -45,22 +45,26 @@
   font-size: 16px;
   padding-right: 20px;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .countItem {
   // position: absolute;
   // right: 10px;
-  padding: 5px 5px;
-  background-color: rgba(174, 156, 205, 0.15);
-  border-radius: 3px;
-  min-width: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // padding: 5px 5px;
+  // background-color: rgba(174, 156, 205, 0.15);
+  // border-radius: 3px;
+  // min-width: 65px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 
   font-weight: 400;
   font-size: 18px;
   color: var(--main-text);
+  margin-left: 10px;
   // margin-left: 20px;
 }
 
@@ -108,21 +112,16 @@
 
 @media screen and (min-width: 768px) {
   .server_item {
+    justify-content: center;
     min-height: 60px;
     padding: 10px 30px 10px 40px;
   }
 
   .main_info_wrapper {
-    display: grid;
-    grid-template-columns: 40px 65px 130px 205px 50px;
-    column-gap: 20px;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    max-width: 550px;
-
-    & :nth-child(4) {
-      word-break: break-all;
-      overflow-wrap: break-word;
-    }
+    justify-content: space-between;
   }
 
   .shevron_btn {

@@ -26,5 +26,9 @@
   "For residents of Russia.Refunds are not available for this payment method.": "Для резидентов России. Возврат денежных средств по данному способу оплаты невозможен.",
   "Late fee": "Штраф за просрочку",
   "order_amount_is_less": "Сумма заказа меньше минимальной суммы платежа для выбранных способов оплаты. Вы можете внести минимальную сумму средств и оплатить заказ средствами на своем счету",
-  "Tax included": "С учетом налогов"
+  "Tax included": "С учетом налогов",
+  "Gift": "Подарок",
+  "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "Для получения бесплатной услуги оформите следующим заказом (отдельным чеком после покупки) и укажите промокод",
+  "can be used only once": "можно использовать только один раз",
+  "Is free": "Бесплатно"
 }
