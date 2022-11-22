@@ -15,6 +15,7 @@ import {
   ToggleBlock,
   Toggle,
   HintWrapper,
+  ScrollToFieldError,
 } from '../../../Components'
 import { BASE_URL } from '../../../config/config'
 import { Form, Formik } from 'formik'
@@ -123,8 +124,10 @@ export default function Component({ isComponentAllowedToEdit }) {
             dispatch(settingsOperations.getTimeByTimeZone(item))
             setFieldValue('timezone', item)
           }
+
           return (
             <Form className={s.personalBlock}>
+              <ScrollToFieldError />
               <div className={s.topBlock}>
                 <h2 className={s.settingsTitle}>{t('User Settings')}</h2>
                 <label className={s.avatarBlock} htmlFor="avatar">
@@ -224,24 +227,28 @@ export default function Component({ isComponentAllowedToEdit }) {
                 </div>
               </div>
               <div className={s.bottomBlock}>
-                <h2 className={s.settingsTitle}>{t('Notification settings')}</h2>
+                <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
 
                 <div className={cn(s.formRow, s.rowMessages)}>
                   <div className={s.emailBlock}>
                     <InputField
                       name="email_notif"
                       label={`${t('Email')}:`}
-                      placeholder={t('email_placeholder', { ns: 'auth' })}
+                      placeholder={t('security_email_placeholder', {
+                        ns: 'user_settings',
+                      })}
                       isShadow
                       className={cn(s.emailInput, s.notifEmail)}
                       error={!!errors.email_notif}
                       touched={!!touched.email_notif}
                     />
+
                     {confirmEmailBtnRender(
                       userParams?.email_confirmed_status,
                       values.email_notif,
                     ) &&
-                      values?.email_notif?.length > 0 && (
+                      values?.email_notif?.length > 0 &&
+                      !errors.email_notif && (
                         <button
                           className={s.confirmBtn}
                           onClick={() => confirmEmailHandler(values)}

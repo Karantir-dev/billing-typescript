@@ -44,7 +44,7 @@
   padding: 25px 0;
   margin: 20px auto;
   max-width: 690px;
-  width: 100%;
+  width: 90vw;
 }
 
 .modalCloseBlock {
@@ -93,12 +93,20 @@
 
 .formBlockTitle {
   font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 18px;
   line-height: 120%;
   color: var(--main-text);
-  margin-left: 10px;
+  // margin-left: 10px;
   margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 20px;
+  row-gap: 14px;
 }
 
 .formFieldsBlock {
@@ -156,16 +164,16 @@
 
 .select {
   max-width: 100%;
-  margin-top: 10px;
+  // margin-top: 10px;
 
-  button {
-    height: 50px;
-  }
+  // button {
+  //   height: 50px;
+  // }
 }
 
 .inputBig {
   max-width: 100%;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 
 .error_message {
@@ -310,8 +318,7 @@
 .promocodeBtn {
   margin: 10px 15px 15px;
   display: flex;
-  width: 100%;
-
+  width: fit-content;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -354,7 +361,7 @@
 }
 
 .inputPerson {
-  margin-top: 10px;
+  // margin-top: 10px;
   max-width: 100%;
 }
 
@@ -368,7 +375,7 @@
 }
 
 .scroll {
-  padding: 10px 22px 0px 22px;
+  padding: 10px 22px 10px 22px;
   overflow: auto;
   max-height: 380px;
 
@@ -450,7 +457,7 @@
 .infoBtn {
   position: absolute;
   margin-left: auto;
-  top: 45%;
+  top: 23px;
   right: 0px;
   z-index: 2;
   padding: 12px 12px 12px 0px;
@@ -516,10 +523,14 @@
   //   }
   // }
 
+  .fieldsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .nsInputBlock {
     position: relative;
     width: 100%;
-    max-width: 46%;
+    // max-width: 46%;
   }
 
   .modalBg {
@@ -569,24 +580,24 @@
     margin-right: 20px;
   }
 
-  .select {
-    max-width: 46%;
-    margin-top: 10px;
-    margin-right: 20px;
-  }
+  // .select {
+  //   max-width: 46%;
+  //   margin-top: 10px;
+  //   margin-right: 20px;
+  // }
 
-  .inputBig {
-    max-width: 46%;
-    margin-right: 20px;
+  // .inputBig {
+  //   max-width: 46%;
+  //   margin-right: 20px;
 
-    &.inputAddress {
-      max-width: 100%;
-    }
+  //   &.inputAddress {
+  //     max-width: 100%;
+  //   }
 
-    &:nth-child(2n) {
-      margin-right: 0px;
-    }
-  }
+  //   &:nth-child(2n) {
+  //     margin-right: 0px;
+  //   }
+  // }
 
   .btnBlock {
     flex-direction: row;
@@ -603,6 +614,12 @@
   .cancel {
     margin-top: 0px;
     margin-left: 20px;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .infoBtn {
+    top: 26px;
   }
 }
 

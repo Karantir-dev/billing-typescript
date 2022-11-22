@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
+// import cn from 'classnames'
 import { Formik, Form } from 'formik'
 import { Cross, Info } from '../../../images'
 import {
@@ -10,7 +10,7 @@ import {
   // CustomPhoneInput,
   Button,
   CheckBox,
-  // SelectMultiple,
+  InputWithAutocomplete,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
 import { BASE_URL } from '../../../config/config'
@@ -53,7 +53,10 @@ export default function Component(props) {
   const validationSchema = Yup.object().shape({
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string()
+      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
@@ -98,8 +101,8 @@ export default function Component(props) {
         <Formik
           enableReinitialize
           validateOnMount={false}
-          validateOnBlur={false}
-          validateOnChange={false}
+          // validateOnBlur={false}
+          // validateOnChange={false}
           validationSchema={validationSchema}
           initialValues={{
             country:
@@ -283,7 +286,7 @@ export default function Component(props) {
                       />
 
                       <div className={s.nsInputBlock}>
-                        <InputField
+                        {/* <InputField
                           inputWrapperClass={s.inputHeight}
                           inputClassName={s.inputAddressWrapp}
                           name="address_physical"
@@ -294,7 +297,18 @@ export default function Component(props) {
                           error={!!errors.address_physical}
                           touched={!!touched.address_physical}
                           isRequired
+                        /> */}
+
+                        <InputWithAutocomplete
+                          fieldName="address_physical"
+                          error={!!errors.address_physical}
+                          touched={!!touched.address_physical}
+                          externalValue={values.address_physical}
+                          setFieldValue={val => {
+                            setFieldValue('address_physical', val)
+                          }}
                         />
+
                         <button type="button" className={s.infoBtn}>
                           <Info />
                           <div ref={dropdownDescription} className={s.descriptionBlock}>
@@ -310,7 +324,7 @@ export default function Component(props) {
                         <div className={s.formBlockTitle}>
                           3. {t('Data for the contract')}
                         </div>
-                        <div className={s.formFieldsBlock}>
+                        <div>
                           {/* {payersSelectedFields?.passport_field && (
                           <InputField
                             inputWrapperClass={s.inputHeight}

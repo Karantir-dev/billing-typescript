@@ -9,9 +9,117 @@
     <link id="favicon_mob" rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Zomro dashboard</title>
+
+    <style media="screen" type="text/css">
+      .backdrop {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 150;
+        background-color: rgba(0, 0, 0, 0.2);
+        transition: opacity 0.15s;
+        pointer-events: none;
+        opacity: 1;
+      }
+      .loader {
+        --delayRange: 0.32s;
+        --size: 50px;
+        display: flex;
+        justify-content: space-between;
+        width: calc(var(--size) * 1.2);
+        margin: 30px auto 0;
+        text-align: center;
+      }
+
+      .main_lt {
+        background-color: #fefdff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .main_lt.dark {
+        background-color: #201a2a;
+      }
+
+      #preload-logo-dark {
+        display: none;
+      }
+
+      .loader_circle {
+        width: calc(var(--size) / 4);
+        height: calc(var(--size) / 4);
+        background-color: #ff50bf;
+        border-radius: 100%;
+        display: inline-block;
+        animation: three-bounce 1.4s ease-in-out 0s infinite both;
+      }
+
+      .loader_circle.first {
+        animation-delay: var(--delayRange);
+      }
+      .loader_circle.second {
+        animation-delay: calc(var(--delayRange) / 2);
+      }
+
+      @keyframes three-bounce {
+        0%,
+        80%,
+        100% {
+          transform: scale(0);
+        }
+        40% {
+          transform: scale(1);
+        }
+      }
+    </style>
   </head>
+
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="main_lt backdrop" id="preload_loader">
+        <img
+          width="115px"
+          height="53px"
+          id="preload-logo"
+          alt="preload-logo"
+          src="/preload-logo.svg"
+        />
+        <img
+          width="115px"
+          height="53px"
+          id="preload-logo-dark"
+          src="/preload-logo-dark.svg"
+          alt="preload-logo"
+        />
+        <div class="loader">
+          <div class="loader_circle first"></div>
+          <div class="loader_circle second"></div>
+          <div class="loader_circle"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const themeData = localStorage.getItem('persist:theme')
+      const theme = JSON.parse(themeData)?.theme
+      const preloadLoader = document.getElementById('preload_loader')
+      const darkLogo = document.getElementById('preload-logo-dark')
+      const lightLogo = document.getElementById('preload-logo')
+
+      if (theme === '"dark"') {
+        lightLogo.style.display = 'none'
+        darkLogo.style.display = 'block'
+        preloadLoader.classList.add('dark')
+      }
+    </script>
+
     <div id="portal"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmn43GdPCBuZpFkIsWkFpU__Ycd1qusZE&libraries=places"></script>
   </body>
 </html>

@@ -30,6 +30,7 @@
   "2-Step Verification": "Екі кезеңді аутентификация",
   "Enable 2-Step Verification": "Екі кезеңді аутентификацияны қосу",
   "Security notification settings": "Қауіпсіздік хабарландыру параметрлері",
+  "security_email_placeholder": "Қауіпсіздік хабарландырулары үшін электрондық пошта",
   "Send e-mail messages about authorization": "Авторизация туралы электрондық пошта хабарларын жіберу",
   "Use GeoIP (region tracking by IP)": "GeoIP пайдалану\n(аймақты IP бойынша бақылау)",
   "From any IP": "Кез келген IP мекенжайынан",

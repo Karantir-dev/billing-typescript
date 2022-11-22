@@ -323,7 +323,7 @@
 .infoBtn {
   position: absolute;
   margin-left: auto;
-  top: 45%;
+  top: 23px;
   right: 0px;
   z-index: 2;
   padding: 12px 12px 12px 0px;
@@ -377,11 +377,6 @@
     clear: both;
   }
 }
-
-.inputAddressWrapp {
-  padding-right: 35px;
-}
-
 
 @media screen and (min-width: 768px) {
   .paymentMethodBtn {
@@ -465,5 +460,11 @@
 
   .addPayerBlock {
     flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  .infoBtn {
+    top: 26px;
   }
 }

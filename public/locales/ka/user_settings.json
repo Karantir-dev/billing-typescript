@@ -30,6 +30,7 @@
   "2-Step Verification": "ორსაფეხურიანი ავთენტიფიკაცია",
   "Enable 2-Step Verification": "ორსაფეხურიანი ავთენტიფიკაციის ჩართვა",
   "Security notification settings": "უსაფრთხოების შესახებ შეტყობინების პარამეტრები",
+  "security_email_placeholder": "ელფოსტა უსაფრთხოების შეტყობინებებისთვის",
   "Send e-mail messages about authorization": "ავტორიზაციის შესახებ შეტყობინების გაგზავნა ელ. ფოსტაზე",
   "Use GeoIP (region tracking by IP)": "გამოიყენეთ GeoIP\n (რეგიონის მიკვლევა IP-ით)",
   "From any IP": "ნებისმიერი IP-დან",

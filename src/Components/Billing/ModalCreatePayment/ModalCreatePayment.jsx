@@ -4,7 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
 import { Check, Cross, Info } from '../../../images'
-import { Button, Select, InputField, PaymentCurrencyBtn, CheckBox } from '../..'
+import {
+  Button,
+  Select,
+  InputField,
+  PaymentCurrencyBtn,
+  CheckBox,
+  InputWithAutocomplete,
+} from '../..'
 import {
   billingOperations,
   billingSelectors,
@@ -12,10 +19,11 @@ import {
   payersSelectors,
   authSelectors,
 } from '../../../Redux'
-import s from './ModalCreatePayment.module.scss'
 import { BASE_URL } from '../../../config/config'
 import * as Yup from 'yup'
 import { replaceAllFn } from '../../../utils'
+
+import s from './ModalCreatePayment.module.scss'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -119,7 +127,10 @@ export default function Component(props) {
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string()
+      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||
@@ -227,7 +238,11 @@ export default function Component(props) {
                   if (!element) return
 
                   // Scroll to first known error into view
-                  element.scrollIntoView(scrollBehavior)
+                  try {
+                    element.scrollIntoView(scrollBehavior)
+                  } catch (e) {
+                    console.log(e.message)
+                  }
 
                   // Formik doesn't (yet) provide a callback for a client-failed submission,
                   // thus why this is implemented through a hook that listens to changes on
@@ -379,8 +394,8 @@ export default function Component(props) {
                             // isRequired
                           />
 
-                          <div className={s.nsInputBlock}>
-                            <InputField
+                          <div className={cn(s.inputBig, s.nsInputBlock)}>
+                            {/* <InputField
                               inputWrapperClass={s.inputHeight}
                               name="address_physical"
                               label={`${t('The address', { ns: 'other' })}:`}
@@ -391,7 +406,18 @@ export default function Component(props) {
                               error={!!errors.address_physical}
                               touched={!!touched.address_physical}
                               isRequired
+                            /> */}
+
+                            <InputWithAutocomplete
+                              fieldName="address_physical"
+                              error={!!errors.address_physical}
+                              touched={!!touched.address_physical}
+                              externalValue={values.address_physical}
+                              setFieldValue={val => {
+                                setFieldValue('address_physical', val)
+                              }}
                             />
+
                             <button type="button" className={s.infoBtn}>
                               <Info />
                               <div
