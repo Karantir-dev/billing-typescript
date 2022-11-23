@@ -10,8 +10,6 @@ export default function Component(props) {
 
   const { t } = useTranslation(['cart', 'other'])
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  console.log(darkTheme)
-  console.log(code)
 
   return (
     <div className={s.giftBlock}>
