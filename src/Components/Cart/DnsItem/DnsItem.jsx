@@ -86,19 +86,16 @@ export default function DnsItem(props) {
     <>
       <div className={s.server_item}>
         <div className={s.tarif_info}>
-          {tabletOrHigher && (
+          {/* {tabletOrHigher && (
             <img
               src={require('./../../../images/services/dns_hosting_middle.webp')}
               alt="dns"
             />
-          )}
+          )} */}
 
           <div className={s.priceList}>
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
-                <p className={s.countItem}>
-                  {count} {t('psc.', { ns: 'vds' })}
-                </p>
                 {typeof deleteItemHandler === 'function' && (
                   <button
                     className={s.btn_delete}
@@ -110,19 +107,20 @@ export default function DnsItem(props) {
                 )}
               </div>
             )}
-
+            {/* 
             {tabletOrHigher && (
               <p className={s.countItem}>
                 {count} {t('psc.', { ns: 'vds' })}
               </p>
-            )}
+            )} */}
 
             <div className={s.server_info}>
               <span className={s.domainName}>
                 {pricelist_name
                   ?.replace('for', t('for', { ns: 'dns' }))
                   ?.replace('domains', t('domains', { ns: 'dns' }))
-                  ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
+                  ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}{' '}
+                &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
               </span>
             </div>
             <div className={s.costBlock}>

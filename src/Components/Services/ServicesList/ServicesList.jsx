@@ -137,25 +137,28 @@ export default function ServicesList() {
 
   useEffect(() => {
     if (!laptopAndHigher) {
-      const observer = new IntersectionObserver(
-        entries => {
-          entries.forEach(entry => {
-            console.log(entry)
-            if (entry.isIntersecting) {
-              entry.target.classList.remove('notInViewport')
-            } else {
-              entry.target.classList.add('notInViewport')
-            }
-          })
-        },
-        { root: swiperEl.current, threshold: 1 },
-      )
+      try {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.remove('notInViewport')
+              } else {
+                entry.target.classList.add('notInViewport')
+              }
+            })
+          },
+          { root: swiperEl.current, threshold: 1 },
+        )
 
-      const slides = swiperEl.current?.querySelectorAll('[data-service-card]')
+        const slides = swiperEl.current?.querySelectorAll('[data-service-card]')
 
-      slides?.forEach(slide => {
-        observer.observe(slide)
-      })
+        slides?.forEach(slide => {
+          observer.observe(slide)
+        })
+      } catch (e) {
+        console.log(e.message)
+      }
     }
   }, [])
 

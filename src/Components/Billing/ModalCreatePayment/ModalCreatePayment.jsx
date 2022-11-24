@@ -238,7 +238,11 @@ export default function Component(props) {
                   if (!element) return
 
                   // Scroll to first known error into view
-                  element.scrollIntoView(scrollBehavior)
+                  try {
+                    element.scrollIntoView(scrollBehavior)
+                  } catch (e) {
+                    console.log(e.message)
+                  }
 
                   // Formik doesn't (yet) provide a callback for a client-failed submission,
                   // thus why this is implemented through a hook that listens to changes on

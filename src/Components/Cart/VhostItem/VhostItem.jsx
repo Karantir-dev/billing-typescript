@@ -19,15 +19,12 @@ export default function Component(props) {
 
   return (
     <div className={s.domainItem}>
-      {tabletOrHigher && (
+      {/* {tabletOrHigher && (
         <img src={require('./../../../images/cart/vhost.png')} alt="vhost" />
-      )}
+      )} */}
       <div className={s.priceList}>
         {!tabletOrHigher && (
           <div className={s.control_bts_wrapper}>
-            <p className={s.countItem}>
-              {count} {t('psc.', { ns: 'vds' })}
-            </p>
             {typeof deleteItemHandler === 'function' && (
               <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
                 <Delete />
@@ -36,15 +33,15 @@ export default function Component(props) {
           </div>
         )}
 
-        {tabletOrHigher && (
+        {/* {tabletOrHigher && (
           <p className={s.countItem}>
             {count} {t('psc.', { ns: 'vds' })}
           </p>
-        )}
+        )} */}
 
         <div className={s.domainInfo}>
           <span className={s.domainName}>
-            {pricelist_name} #{itemId}
+            {pricelist_name} #{itemId} &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
           </span>
         </div>
         <div className={s.costBlock}>

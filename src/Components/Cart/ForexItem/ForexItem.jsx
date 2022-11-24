@@ -86,7 +86,7 @@ export default function ForexItem(props) {
     <>
       <div className={s.server_item}>
         <div className={s.tarif_info}>
-          {tabletOrHigher && (
+          {/* {tabletOrHigher && (
             <img
               className={s.img}
               width="28"
@@ -94,13 +94,13 @@ export default function ForexItem(props) {
               src={require('./../../../images/forex/vps_fx_1.webp')}
               alt="forex"
             />
-          )}
+          )} */}
           <div className={s.priceList}>
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
-                <p className={s.countItem}>
+                {/* <p className={s.countItem}>
                   {count} {t('psc.', { ns: 'vds' })}
-                </p>
+                </p> */}
                 {typeof deleteItemHandler === 'function' && (
                   <button
                     className={s.btn_delete}
@@ -113,14 +113,16 @@ export default function ForexItem(props) {
               </div>
             )}
 
-            {tabletOrHigher && (
+            {/* {tabletOrHigher && (
               <p className={s.countItem}>
                 {count} {t('psc.', { ns: 'vds' })}
               </p>
-            )}
+            )} */}
 
             <div className={s.server_info}>
-              <span className={s.domainName}>{pricelist_name}</span>
+              <span className={s.domainName}>
+                {pricelist_name} &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
+              </span>
             </div>
             <div className={s.costBlock}>
               <div className={s.cost}>

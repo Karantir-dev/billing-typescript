@@ -18,10 +18,6 @@ export { default as SocialNetAuth } from './Auth/SocialNetAuth/SocialNetAuth'
 export { default as ConfirmGeo } from './Auth/ConfirmGeo/ConrimGeo'
 export { default as CartFromSite } from './Auth/CartFromSite/CartFromSite'
 
-//==========================================ROUTES==========================================//
-export { default as PrivateRoute } from './Routes/PrivateRoute'
-export { default as PublicRoute } from './Routes/PublicRoute'
-
 export { default as NotificationsBar } from './NotificationsBar/NotificationsBar'
 export { default as TrustedUsers } from '../Pages/TrustedUsers/TrustedUsers'
 
@@ -188,6 +184,7 @@ export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
 export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
+export { default as BlackFridayGift } from './Cart/BlackFridayGift/BlackFridayGift'
 
 export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
 export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'

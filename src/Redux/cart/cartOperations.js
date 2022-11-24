@@ -7,6 +7,7 @@ import {
   payersOperations,
   userOperations,
 } from '..'
+import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { errorHandler } from '../../utils'
@@ -56,7 +57,8 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 }
 
 const setBasketPromocode =
-  (promocode, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
+  (promocode, setCartData, setPaymentsMethodList, setBlackFridayData, service) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -76,6 +78,19 @@ const setBasketPromocode =
         }),
       )
       .then(({ data }) => {
+        if (service && setBlackFridayData) {
+          const dataCheckPromo = {
+            promocode: promocode,
+            service: service,
+          }
+
+          axios
+            .post('https://api.server-panel.net/api/service/promo/', dataCheckPromo)
+            .then(({ data }) => {
+              setBlackFridayData(data)
+            })
+        }
+
         if (data.doc.error) {
           toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
             position: 'bottom-right',

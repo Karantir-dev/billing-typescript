@@ -3,7 +3,7 @@ import Pumpkins from './Pumpkins'
 import PumpkinsText from './PumpkinsText'
 import { useTranslation } from 'react-i18next'
 
-import s from '../AuthPage.module.scss'
+import s from '../../AuthPage.module.scss'
 
 export default function Component() {
   const { t } = useTranslation('other')

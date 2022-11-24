@@ -89,20 +89,12 @@
   }
 }
 
-.list .list_item:not(:last-child) .list_item_name {
-  padding-bottom: 20px;
-}
-.list .list_item:last-child .list_item_name {
-  padding-bottom: 7px;
-}
-.list .list_item:first-child .list_item_name {
-  padding-top: 7px;
-}
-
-.list_item_name {
+.list_item_link {
   font-size: 16px;
-  line-height: 70.9%;
   color: var(--main-text);
+  display: flex;
+  align-items: center;
+  height: 31px;
 }
 
 // ADAPTIVE
@@ -112,12 +104,9 @@
     font-size: 20px;
   }
 
-  .list .list_item:not(:last-child) .list_item_name {
-    padding-bottom: 30px;
-  }
-
-  .list_item_name {
+  .list_item_link {
     font-size: 18px;
+    height: 43px;
   }
 
   .list_item_container {
