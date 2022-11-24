@@ -198,7 +198,7 @@
   "symbols_restricted": "Арнайы таңбаларға рұқсат етілмейді",
 
   "discounts_up_to": "{{amount}} ДЕЙІН ЖЕҢІЛДІКТЕР",
-  "halloween_discount": "хостинг, VDS/VPS, арнайы серверлер және VPN үшін",
+  "halloween_discount": "хостинг, VDS/VPS, арнайы серверлер және Forex үшін",
   "discounts": "ЖЕҢІЛДІКТЕР",
   "on_halloween": "ХЭЛЛОУИНДЕ",
   "promotion_period": "Науқан 31 қазан мен 2 қараша аралығында жарамды",
@@ -206,5 +206,22 @@
   "for virtual hosting": "виртуалды хостинг үшін",
   "for VDS/VPS": "VDS/VPS үшін",
   "for dedicated servers": "арнайы серверлер үшін",
-  "for VPN": "VPN үшін"
+  "for VPN": "VPN үшін",
+  "BLACK FRIDAY": "ҚАРА ЖҰМА",
+  "IN ZOMRO": "ZOMRO ішінде",
+
+  "Shared hosting": "Ортақ хостинг",
+  "Dedicated server": "Арнайы сервер",
+  "Server for Forex": "Форекске арналған сервер",
+  "Discount promo code": "Жеңілдік промо коды",
+  "promo code can be used multiple times": "промокод бірнеше рет қолданылуы мүмкін",
+  "As a gift": "Сыйлық ретінде",
+  "1 VPN - free for 1 month": "1 VPN - 1 ай тегін",
+  "1 FTP storage for 100 GB - free for 1 month": "100 ГБ үшін 1 FTP жады - 1 айға тегін",
+  "1 Site care - free for 3 months": "1 сайтқа күтім жасау – 3 ай тегін",
+  "Subject to purchase (second order, separate check)": "Сатып алуға жатады (екінші тапсырыс, бөлек чек)",
+  "Hosting (promo code VR87FR)": "Хостинг (промокод VR87FR)",
+  "VDS/VPS (promo code OM34VS)": "VDS/VPS (промокод OM34VS)",
+  "Dedicated server (promo code YT52BD)": "Арнайы сервер (промокод YT52BD)",
+  "The above promo codes can only be used once.": "Жоғарыдағы промокодтарды тек бір рет пайдалануға болады."
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import s from '../AuthPage.module.scss'
+import s from '../../AuthPage.module.scss'
 
 export default function Component() {
   const { t } = useTranslation('other')
@@ -10,7 +10,7 @@ export default function Component() {
       <img
         id="banner-img"
         className={s.bannerImg}
-        src={require('../../../images/banners/HalloweenBig.png')}
+        src={require('../../../../images/banners/HalloweenBig.png')}
         alt="banner"
       />
       <div className={s.saleHalloween}>
@@ -23,7 +23,7 @@ export default function Component() {
               <b>– 70%</b> {t('for virtual hosting')}
             </li>
             <li>
-              <b>– 40%</b> {('for VDS/VPS')}
+              <b>– 40%</b> {'for VDS/VPS'}
             </li>
             <li>
               <b>– 15%</b> {t('for dedicated servers')}

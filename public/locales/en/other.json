@@ -200,12 +200,29 @@
   "symbols_restricted": "Special characters are not allowed",
 
   "discounts_up_to": "DISCOUNTS UP TO {{amount}}",
-  "halloween_discount": "for Hosting, VDS/VPS, Dedicated Servers and VPN",
+  "halloween_discount": "for Hosting, VDS/VPS, Dedicated Servers and Forex",
   "discounts": "DISCOUNTS",
   "on_halloween": "ON HALLOWEEN",
   "promotion_period": "The promotion is valid from October 31 to November 2",
   "for virtual hosting": "for virtual hosting",
   "for VDS/VPS": "for VDS/VPS",
   "for dedicated servers": "for dedicated servers",
-  "for VPN": "for VPN"
+  "for VPN": "for VPN",
+  "BLACK FRIDAY": "BLACK FRIDAY",
+  "IN ZOMRO": "IN ZOMRO",
+
+  "Shared hosting": "Shared hosting",
+  "Dedicated server": "Dedicated server",
+  "Server for Forex": "Server for Forex",
+  "Discount promo code": "Discount promo code",
+  "promo code can be used multiple times": "promo code can be used multiple times",
+  "As a gift": "As a gift",
+  "1 VPN - free for 1 month": "1 VPN - free for 1 month",
+  "1 FTP storage for 100 GB - free for 1 month": "1 FTP storage for 100 GB - free for 1 month",
+  "1 Site care - free for 3 months": "1 Site care - free for 3 months",
+  "Subject to purchase (second order, separate check)": "Subject to purchase (second order, separate check)",
+  "Hosting (promo code VR87FR)": "Hosting (promo code VR87FR)",
+  "VDS/VPS (promo code OM34VS)": "VDS/VPS (promo code OM34VS)",
+  "Dedicated server (promo code YT52BD)": "Dedicated server (promo code YT52BD)",
+  "The above promo codes can only be used once.": "The above promo codes can only be used once."
 }

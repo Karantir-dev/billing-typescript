@@ -3,7 +3,6 @@ import { useMediaQuery } from 'react-responsive'
 
 function Icon(props) {
   const widerThanMobile = useMediaQuery({ query: '(min-width: 1024px)' })
-  console.log(widerThanMobile)
   if (!widerThanMobile) {
     return (
       <svg
