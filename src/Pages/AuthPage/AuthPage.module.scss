@@ -103,11 +103,11 @@
 .bannerSmallBlock {
   display: block;
   position: absolute;
-  top: 15px;
-  left: -25px;
+  top: 0px;
+  left: -30px;
 
   svg:first-child {
-    width: 50px;
+    width: 60px;
   }
 
   .pumpkinsTextIcon {
@@ -119,11 +119,11 @@
   .pumpkinsText {
     position: absolute;
     top: -80px;
-    width: 190px;
+    width: 195px;
     left: 35px;
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 19px;
     text-align: center;
 
@@ -133,7 +133,7 @@
       font-weight: 800;
       font-size: 16px;
       line-height: 22px;
-      background: linear-gradient(89.92deg, #ed9a14 1%, #f7680c 19.44%);
+      background: linear-gradient(90.13deg, #ff42a8 0.11%, #e030bd 98.12%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -142,11 +142,166 @@
   }
 }
 
+.saleDescrBlock {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 0;
+
+  .saleDescrRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    &:last-child {
+      margin-top: 15px;
+    }
+
+    .saleDescrItem {
+      flex-basis: 49%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}
+
+.saleDecrName {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #ffffff;
+  max-width: 110px;
+  margin-left: 14px;
+}
+
+.starBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    position: absolute;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ffffff;
+  }
+}
+
+.mainPromoBlock {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #ffffff;
+
+    &:first-child {
+      font-size: 20px;
+      line-height: 24px;
+
+      b {
+        font-weight: 800;
+        color: rgba(251, 99, 168, 1);
+      }
+    }
+  }
+}
+
+.addGiftBlock {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+
+  .addGift {
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+
+  .giftList {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    span {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+      color: #ffffff;
+
+      svg {
+        margin-right: 14px;
+      }
+    }
+  }
+}
+
+.ruleGift {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+
+  .ruleTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #ffffff;
+  }
+
+  .ruleList {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+
+    span {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 22px;
+
+      color: #ffffff;
+    }
+  }
+
+  .ruleDescr {
+    margin-top: 20px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #ffffff;
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .bannerSmallBlock {
+    top: 0px;
+    left: -10px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
   .bannerSmallBlock {
+    top: 0px;
+    left: -10px;
     .pumpkinsTextIcon {
       position: absolute;
       top: -130px;
@@ -166,6 +321,13 @@
     svg:first-child {
       width: 72px;
     }
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .bannerSmallBlock {
+    top: 10px;
+    left: 7px;
   }
 }
 
@@ -189,21 +351,20 @@
       .saleText {
         font-style: normal;
         font-weight: 900;
-        font-size: 55px;
-        line-height: 67px;
+        font-size: 45px;
+        line-height: 55px;
 
-        color: #ffffff;
-
-        text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
+        -webkit-text-stroke: 1.2px #ff00ec;
+        -webkit-text-fill-color: transparent;
       }
 
       .halloweenText {
         font-style: normal;
         font-weight: 900;
-        font-size: 55px;
-        line-height: 67px;
-        color: transparent;
-        -webkit-text-stroke: 1px #ffffff;
+        font-size: 45px;
+        line-height: 55px;
+        color: #ffffff;
+        text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
       }
 
       .halloweenPeriod {

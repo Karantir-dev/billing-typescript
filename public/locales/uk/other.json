@@ -200,7 +200,7 @@
   "symbols_restricted": "Спеціальні символи заборонені",
 
   "discounts_up_to": "ЗНИЖКИ ДО {{amount}}",
-  "halloween_discount": "на Хостинг, VDS/VPS, Виділені сервери та VPN",
+  "halloween_discount": "на Хостинг, VDS/VPS, Виділені сервери та Сервер для Forex",
   "discounts": "ЗНИЖКИ",
   "on_halloween": "НА ХЕЛОУІН",
   "promotion_period": "Акція діє з 31 жовтня до 2 листопада",
@@ -208,5 +208,22 @@
   "for virtual hosting": "на віртуальний хостинг",
   "for VDS/VPS": "на VDS/VPS",
   "for dedicated servers": "на виділені сервери",
-  "for VPN": "на VPN"
+  "for VPN": "на VPN",
+  "BLACK FRIDAY": "ЧОРНА П`ЯТНИЦЯ",
+  "IN ZOMRO": "В ZOMRO",
+
+  "Shared hosting": "Віртуальний хостингг",
+  "Dedicated server": "Виділений сервер",
+  "Server for Forex": "Сервер для Forex",
+  "Discount promo code": "Промокод на знижку",
+  "promo code can be used multiple times": "промокод можна використовувати багато разів",
+  "As a gift": "У подарунок",
+  "1 VPN - free for 1 month": "1 VPN – безкоштовно на 1 місяць",
+  "1 FTP storage for 100 GB - free for 1 month": "1 FTP сховище на 100 Гб – безкоштовно на 1 місяць",
+  "1 Site care - free for 3 months": "1 Турбота про сайт – безкоштовно на 3 місяці",
+  "Subject to purchase (second order, separate check)": "За умови покупки (другим замовленням, окремим чеком)",
+  "Hosting (promo code VR87FR)": "Хостингу (промокод VR87FR)",
+  "VDS/VPS (promo code OM34VS)": "VDS/VPS (промокод OM34VS)",
+  "Dedicated server (promo code YT52BD)": "Виділений сервер (промокод YT52BD)",
+  "The above promo codes can only be used once.": "Наведені вище промокоди можна використовувати лише 1 раз"
 }
