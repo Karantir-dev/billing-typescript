@@ -1,5 +1,4 @@
 import React from 'react'
-import GiftIcon from './GiftIcon'
 import PumpkinsText from './PumpkinsText'
 import { useTranslation } from 'react-i18next'
 
@@ -10,7 +9,7 @@ export default function Component() {
 
   return (
     <>
-      <GiftIcon />
+      <img src={require('../../../../images/banners/Gift.png')} alt="gift" />
       <PumpkinsText className={s.pumpkinsTextIcon} />
       <div className={s.pumpkinsText}>
         <div>{t('discounts_up_to', { amount: '-90%' })}</div>
