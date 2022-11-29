@@ -450,11 +450,12 @@ export default function Component(props) {
                                 setValue={item =>
                                   setFieldValue(
                                     `${selectedPayerFields?.offer_field}`,
-                                    item,
+                                    item, 
                                   )
                                 }
                                 className={s.checkbox}
                                 error={!!errors[selectedPayerFields?.offer_field]}
+                                touched={!!touched[selectedPayerFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
                                 {t('I agree with the terms of the offer', {
