@@ -349,6 +349,7 @@ export default function Component(props) {
                                 }
                                 className={s.checkbox}
                                 error={!!errors[payersSelectedFields?.offer_field]}
+                                touched={!!touched[payersSelectedFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
                                 {t('I agree with the terms of the offer')}
