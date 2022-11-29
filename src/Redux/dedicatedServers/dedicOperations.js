@@ -80,7 +80,7 @@ const getTarifs = () => (dispatch, getState) => {
       const { $: currentDatacenter } = data.doc.datacenter
 
       const orderData = {
-        fpricelist,
+        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
         tarifList,
         datacenter,
         period,
@@ -127,7 +127,7 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
       // console.log(data)
 
       const orderData = {
-        fpricelist,
+        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
         tarifList,
         datacenter,
         period,
@@ -172,7 +172,7 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
       const { $: currentDatacenter } = data.doc.datacenter
 
       const orderData = {
-        fpricelist,
+        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
         tarifList,
         datacenter,
         period,
