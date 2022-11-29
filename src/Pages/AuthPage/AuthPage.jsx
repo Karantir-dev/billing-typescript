@@ -10,7 +10,7 @@ import BlackFridaySmallBaner from './Banners/BlackFriday/BlackFridaySmallBaner'
 import s from './AuthPage.module.scss'
 
 export default function AuthPage({ children }) {
-  const banner = true
+  const banner = false
 
   return (
     <Div100vh className={s.wrapper}>
