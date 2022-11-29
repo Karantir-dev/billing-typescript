@@ -30,5 +30,12 @@
   "Gift": "Подарок",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "Для получения бесплатной услуги оформите следующим заказом (отдельным чеком после покупки) и укажите промокод",
   "can be used only once": "можно использовать только один раз",
-  "Is free": "Бесплатно"
+  "Is free": "Бесплатно",
+  "Payment amount from 10.00 EUR. Commission 3%.": "Сумма платежа от 10,00 евро. Комиссия 3%.",
+  "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "Оплата криптовалютой. Для этого способа оплаты возврат средств невозможен. Обработка платежа может занять до нескольких часов. При оплате через сторонние сервисы, биржи - учитывайте их комиссию и добавляйте ее к стоимости платежа.",
+  "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Сумма платежа от 1.00 EUR до 200.00 EUR . Комиссия 0,40 евро + 7%.",
+  "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "Для оплаты необходимо иметь статус QIWI Кошелька «Базовый» или «Профессиональный».",
+
+  "Payment amount from 1.00 EUR till  1000.00 EUR": "Сумма платежа от 1.00 EUR до 1000.00 EUR",
+  "Payment amount from 1.00 EUR.": "Сумма платежа от 1.00 EUR."
 }

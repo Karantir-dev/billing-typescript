@@ -29,5 +29,11 @@
   "Gift": "Gift",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code",
   "can be used only once": "can be used only once",
-  "Is free": "Free"
+  "Is free": "Free",
+  "Payment amount from 10.00 EUR. Commission 3%.": "Payment amount from 10.00 EUR. Commission 3%.",
+  "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.",
+  "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Payment amount from 1.00 EUR till 200.00 EUR . Commission 0.40 EUR + 7%.",
+  "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "For payment you need to have status of QIWI Wallet «Basic» or «Professional»",
+  "Payment amount from 1.00 EUR till  1000.00 EUR": "Payment amount from 1.00 EUR till  1000.00 EUR",
+  "Payment amount from 1.00 EUR.": "Payment amount from 1.00 EUR."
 }

@@ -705,35 +705,38 @@ const confirmEmail = key => (dispatch, getState) => {
     })
 }
 
-const changeLang = (elid, lang) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const changeLang =
+  () =>
+  // elid, lang
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'usrparam',
-        out: 'json',
-        sok: 'ok',
-        elid,
-        auth: sessionId,
-        clicked_button: 'ok',
-        lang,
-      }),
-    )
-    .then(() => {
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'usrparam',
+          out: 'json',
+          // sok: 'ok',
+          // elid,
+          auth: sessionId,
+          // clicked_button: 'ok',
+          // lang,
+        }),
+      )
+      .then(() => {
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 export default {
   getUserEdit,

@@ -561,9 +561,11 @@ export default function Component(props) {
                     <div className={s.infotext}>
                       {values?.slecetedPayMethod && (
                         <div>
-                          <span>{t(`${parsedText?.minAmount}`, { ns: 'cart' })}</span>
+                          <span>
+                            {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                          </span>
                           {parsedText?.infoText && (
-                            <p>{t(`${parsedText?.infoText}`, { ns: 'cart' })}</p>
+                            <p>{t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}</p>
                           )}
                         </div>
                       )}
