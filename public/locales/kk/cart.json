@@ -30,5 +30,12 @@
   "Gift": "Сыйлық",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "Тегін қызметті алу үшін келесі тапсырысты орындаңыз (сатып алғаннан кейін бөлек чекпен) және жарнамалық кодты енгізіңіз",
   "can be used only once": "бір рет қана қолдануға болады",
-  "Is free": "Тегін"
+  "Is free": "Тегін",
+  "Payment amount from 10.00 EUR. Commission 3%.": "Төлем сомасы 10,00 EUR. Комиссия 3%.",
+  "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "Криптовалюта төлемі. Бұл төлем әдісі үшін ақшаны қайтару мүмкін емес. Төлемді өңдеу бірнеше сағатқа созылуы мүмкін. Үшінші тарап қызметтері арқылы төлем жасағанда, айырбастау – олардың комиссиясын ескеріп, оны төлем құнына қосыңыз.",
+  "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Төлем сомасы 1,00 евродан 200,00 евроға дейін. Комиссия 0,40 EUR + 7%.",
+  "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "Төлем үшін сізде QIWI әмиянының «Basic» немесе «Professional» мәртебесі болуы керек.",
+
+  "Payment amount from 1.00 EUR till  1000.00 EUR": "Төлем сомасы 1.00 евродан 1000.00 евроға дейін",
+  "Payment amount from 1.00 EUR.": "Төлем сомасы 1.00 EUR."
 }
