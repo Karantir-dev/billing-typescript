@@ -10,6 +10,7 @@ export default function Component({
   disabled,
   className,
   error,
+  touched,
   func,
 }) {
   const [isChecked, setIsChecked] = useState(false)
@@ -32,7 +33,7 @@ export default function Component({
       disabled={disabled}
       className={cn({
         [s.btn]: true,
-        [s.error]: error,
+        [s.error]: touched && error,
         [s.active]: isChecked,
         [s.disabled]: disabled,
         [className]: className,

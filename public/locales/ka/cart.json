@@ -29,5 +29,13 @@
   "Gift": "საჩუქარი",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "უფასო სერვისის მისაღებად შეასრულეთ შემდეგი შეკვეთა (შეძენის შემდეგ ცალკე ჩეკით) და შეიყვანეთ სარეკლამო კოდი",
   "can be used only once": "შეიძლება გამოყენებულ იქნას მხოლოდ ერთხელ",
-  "Is free": "Თავისუფალია"
+  "Is free": "Თავისუფალია",
+  "Payment amount from 10.00 EUR. Commission 3%.": "გადახდის თანხა 10.00 ევროდან. საკომისიო 3%.",
+  "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "კრიპტოვალუტით გადახდა. ამ გადახდის მეთოდისთვის თანხის დაბრუნება მიუწვდომელია. გადახდის დამუშავებას შეიძლება რამდენიმე საათი დასჭირდეს. მესამე მხარის სერვისებით გადახდისას, გაცვლა - გაითვალისწინეთ მათი საკომისიო და დაამატეთ იგი გადახდის ღირებულებაში.",
+  "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "გადახდის თანხა 1.00 ევროდან 200.00 ევრომდე. საკომისიო 0.40 ევრო + 7%.",
+  "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "გადახდისთვის თქვენ უნდა გქონდეთ QIWI საფულის სტატუსი «Basic» ან «Professional»",
+
+  "Payment amount from 1.00 EUR till  1000.00 EUR": "გადახდის თანხა 1.00 ევროდან 1000.00 ევრომდე",
+  "Payment amount from 1.00 EUR.": "გადახდის თანხა 1.00 ევროდან."
+
 }
