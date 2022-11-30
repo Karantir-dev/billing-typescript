@@ -1,9 +1,9 @@
 .btn {
   position: relative;
-  width: 64px;
-  height: 33px;
-  border-radius: 99px;
-  background-color: var(--main-text);
+  // width: 64px;
+  // height: 33px;
+  // border-radius: 99px;
+  // background-color: var(--main-text);
   cursor: pointer;
 
   &.burger_type {
@@ -11,29 +11,29 @@
     height: 36px;
   }
 
-  &.auth_type {
-    width: 66px;
-    height: 33px;
-  }
+  // &.auth_type {
+  //   width: 66px;
+  //   height: 33px;
+  // }
 
-  &.main_type {
-    width: 62px;
-    height: 33px;
-  }
+  // &.main_type {
+  //   width: 62px;
+  //   height: 33px;
+  // }
 
   &.turnedOff {
     &:hover {
-      .icon_moon {
-        animation: onHoverMoon 0.6s;
-      }
+      // .icon_moon {
+      //   animation: onHoverMoon 0.6s;
+      // }
     }
   }
 
   &.turnedOn {
-    .icon_moon,
-    .icon_sun {
-      left: calc(100% - var(--icon-width) - 7px);
-    }
+    // .icon_moon,
+    // .icon_sun {
+    //   left: calc(100% - var(--icon-width) - 7px);
+    // }
 
     .icon_sun {
       opacity: 1;
@@ -43,9 +43,9 @@
     }
 
     &:hover {
-      .icon_sun {
-        animation: onHoverSun 0.6s;
-      }
+      // .icon_sun {
+      //   animation: onHoverSun 0.6s;
+      // }
     }
   }
 }
@@ -143,13 +143,13 @@
 @media screen and (min-width: 768px) {
   .btn {
     &.burger_type {
-      width: 72px;
+      width: 35px;
       height: 39px;
     }
 
-    &.auth_type {
-      width: 75px;
-      height: 40px;
-    }
+    // &.auth_type {
+    //   width: 75px;
+    //   height: 40px;
+    // }
   }
 }

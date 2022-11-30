@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '../../../images/'
+// import { Shevron } from '../../../images/'
 import { actions, settingsOperations, userSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -10,11 +10,36 @@ import s from './LangBtn.module.scss'
 
 // const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
 const LANGUAGES = [
-  { langCode: 'uk', showLangCode: 'ua' },
-  { langCode: 'en', showLangCode: 'en' },
-  { langCode: 'kk', showLangCode: 'kz' },
-  { langCode: 'ka', showLangCode: 'ge' },
-  { langCode: 'ru', showLangCode: 'ru' },
+  {
+    langCode: 'uk',
+    showLangCode: 'ua',
+    name: 'Ukrainian',
+    flag: require('../../../images/lang/ukraine_lang.png'),
+  },
+  {
+    langCode: 'en',
+    showLangCode: 'en',
+    name: 'English',
+    flag: require('../../../images/lang/uk_lang.png'),
+  },
+  {
+    langCode: 'kk',
+    showLangCode: 'kz',
+    name: 'Kazakh',
+    flag: require('../../../images/lang/kazakhstan_lang.png'),
+  },
+  {
+    langCode: 'ka',
+    showLangCode: 'ge',
+    name: 'Georgian',
+    flag: require('../../../images/lang/georgia_lang.png'),
+  },
+  {
+    langCode: 'ru',
+    showLangCode: 'ru',
+    name: 'Russian',
+    flag: require('../../../images/lang/russia_lang.png'),
+  },
 ]
 
 export default function LangBtn({ burgerType, authType, mainType }) {
@@ -42,10 +67,11 @@ export default function LangBtn({ burgerType, authType, mainType }) {
       })}
     >
       <div className={s.current_lang}>
+        <img src={langCodeForWeb?.flag} alt="country flag" />
         {checkIfLangIsLocale
           ? langCodeForWeb?.showLangCode?.split('-')[0]
           : langCodeForWeb?.showLangCode}
-        <Shevron className={s.icon} />
+        {/* <Shevron className={s.icon} /> */}
       </div>
 
       <div className={s.lang_dropdown}>
@@ -73,7 +99,8 @@ export default function LangBtn({ burgerType, authType, mainType }) {
                     i18n.changeLanguage(lang.langCode)
                   }}
                 >
-                  {lang.showLangCode}
+                  <img src={lang?.flag} alt="country flag" />
+                  {`${lang.showLangCode} (${lang.name})`}
                 </button>
               </li>
             )
