@@ -298,7 +298,8 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
       qs.stringify({
         func: 'user.edit',
         sok: 'ok',
-        lang: 'en',
+        lang:
+          i18n.language === 'uk' ? 'ua' : i18n?.language === 'kz' ? 'kk' : i18n.language,
         out: 'json',
         auth: sessionId,
         elid,
@@ -314,7 +315,12 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
             func: 'usrparam',
             out: 'json',
             sok: 'ok',
-            lang: 'en',
+            lang:
+              i18n.language === 'uk'
+                ? 'ua'
+                : i18n?.language === 'kz'
+                ? 'kk'
+                : i18n.language,
             elid,
             auth: sessionId,
             ...userParamsData,
@@ -705,38 +711,83 @@ const confirmEmail = key => (dispatch, getState) => {
     })
 }
 
-const changeLang =
-  () =>
-  // elid, lang
-  (dispatch, getState) => {
-    dispatch(actions.showLoader())
+const changeLang = (elid, lang) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-    const {
-      auth: { sessionId },
-    } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'usrparam',
-          out: 'json',
-          // sok: 'ok',
-          // elid,
-          auth: sessionId,
-          // clicked_button: 'ok',
-          // lang,
-        }),
-      )
-      .then(() => {
-        dispatch(actions.hideLoader())
-      })
-      .catch(error => {
-        console.log('error', error)
-        errorHandler(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'usrparam',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      const updatedData = {
+        finance_notice_ntemail: data?.doc?.finance_notice_ntemail?.$ || '',
+        finance_notice_ntmessenger: data?.doc?.finance_notice_ntmessenger?.$ || '',
+        finance_notice_ntsms: data?.doc?.finance_notice_ntsms?.$ || '',
+        news_notice_ntemail: data?.doc?.news_notice_ntemail?.$ || '',
+        news_notice_ntmessenger: data?.doc?.news_notice_ntmessenger?.$ || '',
+        news_notice_ntsms: data?.doc?.news_notice_ntsms?.$ || '',
+        service_notice_ntemail: data?.doc?.service_notice_ntemail?.$ || '',
+        service_notice_ntmessenger: data?.doc?.service_notice_ntmessenger?.$ || '',
+        service_notice_ntsms: data?.doc?.service_notice_ntsms?.$ || '',
+        support_notice_ntemail: data?.doc?.support_notice_ntemail?.$ || '',
+        support_notice_ntmessenger: data?.doc?.support_notice_ntmessenger?.$ || '',
+        support_notice_ntsms: data?.doc?.support_notice_ntsms?.$ || '',
+
+        timezone: data?.doc?.timezone?.$ || '',
+        atype: data?.doc?.atype?.$ || '',
+        secureip: data?.doc?.secureip?.$ || '',
+        setgeoip: data?.doc?.setgeoip?.$ || '',
+        addr: data?.doc?.addr?.$ || '',
+        sendemail: data?.doc?.sendemail?.$ || '',
+        time: data?.doc?.time?.$ || '',
+        telegram_id: data?.doc?.telegram_id?.$ || '',
+        status_totp: data?.doc?.status_totp?.$ || '',
+        email: data?.doc?.email?.$ || '', 
+        email_confirmed_status: data?.doc?.email_confirmed_status?.$ || '',
+        vkontakte_status: data?.doc?.vkontakte_status?.$,
+        facebook_status: data?.doc?.facebook_status?.$,
+        google_status: data?.doc?.google_status?.$,
+      }
+
+      axiosInstance
+        .post(
+          '/',
+          qs.stringify({
+            func: 'usrparam',
+            out: 'json',
+            sok: 'ok',
+            elid,
+            auth: sessionId,
+            clicked_button: 'ok',
+            lang,
+            ...updatedData,
+          }),
+        )
+        .then(() => {
+          dispatch(actions.hideLoader())
+        })
+        .catch(error => {
+          console.log('error', error)
+          errorHandler(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        })
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 export default {
   getUserEdit,
