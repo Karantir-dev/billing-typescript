@@ -137,6 +137,47 @@
   }
 }
 
+.btn_more {
+  margin-bottom: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid;
+}
+
+.description_wrapper {
+  position: relative;
+  height: 135px;
+  overflow: hidden;
+  padding-top: 16px;
+  transition: height 0.15s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background-image: linear-gradient(
+      0deg,
+      var(--main-bgc) 30%,
+      rgba(0, 0, 0, 0.001) 100%
+    );
+  }
+}
+
+.paragraph {
+  white-space: pre-line;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130.5%;
+  color: var(--main-text);
+
+  &:first-child {
+    margin-bottom: 10px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .addNewPayerBtn {
     width: auto;
@@ -161,5 +202,22 @@
 
   .offerBlock {
     margin-top: 33px;
+  }
+
+  .description_wrapper {
+    height: fit-content;
+    flex-basis: 60%;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .description_wrapper {
+    padding: 0;
+    max-width: 920px;
+    flex: none;
   }
 }

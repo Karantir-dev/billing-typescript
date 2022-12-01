@@ -11,6 +11,7 @@ export { default as Box } from './svg/Box.jsx'
 export { default as Wallet } from './svg/Wallet.jsx'
 export { default as Social } from './svg/Social.jsx'
 export { default as Support } from './svg/Support.jsx'
+export { default as WalletBalance } from './svg/WalletBalance.jsx'
 
 export { default as Facebook } from './svg/Facebook.jsx'
 export { default as Google } from './svg/Google.jsx'
