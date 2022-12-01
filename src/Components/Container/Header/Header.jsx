@@ -13,7 +13,14 @@ import {
   ModalCreatePayment,
   Portal,
 } from '../../../Components'
-import { Logo, FilledEnvelope, Bell, Profile, Shevron } from '../../../images'
+import {
+  Logo,
+  FilledEnvelope,
+  Bell,
+  Profile,
+  Shevron,
+  WalletBalance,
+} from '../../../images'
 import * as routes from '../../../routes'
 import { useOutsideAlerter, usePageRender } from '../../../utils'
 
@@ -135,25 +142,19 @@ export default function Header() {
                     onClick={() => setCreatePaymentModal(!createPaymentModal)}
                     className={s.balance_wrapper}
                   >
-                    <p className={s.balance_text}>
-                      {t('balance')}{' '}
+                    <div className={s.balance_text}>
+                      {/* {t('balance')}{' '} */}
+                      <WalletBalance />
                       <span className={s.balance_sum}>
                         {userItems?.$balance
                           ? truncateToDecimals(userBalance, 2)?.toFixed(2)
                           : $balance && truncateToDecimals($balance, 2)?.toFixed(2)}
                         EUR
                       </span>
-                    </p>
+                    </div>
                   </button>
                 </li>
-                <li
-                  className={cn({
-                    [s.item]: true,
-                    [s.theme_item]: true,
-                  })}
-                >
-                  <ThemeBtn mainType={true} />
-                </li>
+                <li className={s.header__slash}></li>
                 <li
                   className={cn({
                     [s.item]: true,
@@ -162,6 +163,16 @@ export default function Header() {
                 >
                   <LangBtn mainType={true} />
                 </li>
+                <li className={s.header__slash}></li>
+                <li
+                  className={cn({
+                    [s.item]: true,
+                    [s.theme_item]: true,
+                  })}
+                >
+                  <ThemeBtn mainType={true} />
+                </li>
+                <li className={s.header__slash}></li>
                 {isEnvelopeAllowedToRender && (
                   <li
                     className={cn({
