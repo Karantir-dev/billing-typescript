@@ -14,6 +14,7 @@
   "Download": "Скачать",
   "Delete": "Удалить",
   "Payment deleted successfully": "Платеж успешно удален",
+  "Payment method deleted successfully": "Способ оплаты успешно удален",
   "Payment number": "Номер платежа",
   "Enter payment number": "Введите номер платежа",
   "Payer": "Плательщик",
@@ -82,5 +83,9 @@
   "no services description": "В этом разделе Вы можете найти подробную информацию о платежах",
   "YOU DO NOT HAVE EXPENSES YET": "У ВАС ПОКА НЕТ РАСХОДОВ",
   "no services description expenses": "В этом разделе Вы можете найти подробную информацию о ваших расходах",
-  "Name is copied!": "Имя скопировано!"
+  "Name is copied!": "Имя скопировано!",
+
+  "New payment method": "Новый способ оплаты",
+  "FINISH": "ЗАВЕРШИТЬ",
+  "click_finish_btn": "Нажав на кнопку «Завершить», вы будете перенаправлены на страницу платежной системы для дальнейшей настройки сохраненного способа оплаты"
 }

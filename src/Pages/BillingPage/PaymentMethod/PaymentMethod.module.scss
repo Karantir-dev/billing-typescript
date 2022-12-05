@@ -1,0 +1,76 @@
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.no_service_wrapper {
+  max-width: 531px;
+  margin: 60px auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    margin-bottom: 40px;
+  }
+}
+
+.no_service_title {
+  font-weight: 600;
+  text-align: center;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-bottom: 25px;
+}
+
+.no_service_description {
+  font-weight: 300;
+  text-align: center;
+  font-size: 16px;
+  color: var(--main-text);
+}
+
+.no_results_wrapper {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 500px;
+}
+.no_results_text {
+  font-size: 20px;
+  color: var(--transparent-color);
+}
+
+.addBtn {
+  max-width: 260px;
+  margin-top: 40px;
+  button {
+    height: 55px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .pagination {
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pagination {
+    margin-top: 25px;
+  }
+}
+
+@media screen and (min-width: 1550px) {
+  .pagination {
+    margin-top: 30px;
+  }
+}
+
+@media screen and (min-width: 1918px) {
+  .pagination {
+    margin-top: 40px;
+  }
+}

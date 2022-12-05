@@ -222,5 +222,7 @@
   "Hosting (promo code VR87FR)": "ჰოსტინგი (პრომო კოდი VR87FR)",
   "VDS/VPS (promo code OM34VS)": "VDS/VPS (პრომო კოდი OM34VS)",
   "Dedicated server (promo code YT52BD)": "გამოყოფილი სერვერი (პრომო კოდი YT52BD)",
-  "The above promo codes can only be used once.": "ზემოხსენებული პრომო კოდების გამოყენება შესაძლებელია მხოლოდ ერთხელ."
+  "The above promo codes can only be used once.": "ზემოხსენებული პრომო კოდების გამოყენება შესაძლებელია მხოლოდ ერთხელ.",
+
+  "Number of auto-renewable services": "ავტომატური განახლებადი სერვისების რაოდენობა"
 }

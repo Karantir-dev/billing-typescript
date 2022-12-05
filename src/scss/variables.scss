@@ -63,6 +63,7 @@ body {
     rgba(146, 78, 232, 0.03) 0%,
     rgba(198, 48, 187, 0.03) 100%
   );
+  --red-bg: #fdf0f1;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -149,6 +150,8 @@ body.dark-theme {
   --switchers-dot-bg: #aaa4b6;
   --switchers-dot-bg-active: linear-gradient(251.29deg, #ffffff 11.47%, #fafafa 89.97%);
   --servers_price_bgc: #484452;
+
+  --red-bg: rgba(211, 87, 87, 0.2);;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

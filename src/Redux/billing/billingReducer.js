@@ -8,6 +8,9 @@ const initialState = {
   expensesList: null,
   expensesCount: 0,
 
+  paymentMethodList: null,
+  paymentMethodCount: 0,
+
   paymentsFiltersList: null,
   paymentsFilters: null,
 
@@ -31,6 +34,18 @@ const paymentsList = createReducer(initialState.paymentsList, {
 const paymentsCount = createReducer(initialState.paymentsCount, {
   [billingActions.setPaymentsCount]: (_, { payload }) => payload,
   [billingActions.clearPaymentsCount]: () => 0,
+})
+
+const paymentMethodList = createReducer(initialState.paymentMethodList, {
+  [billingActions.setPaymentMethodList]: (_, { payload }) => payload,
+  [billingActions.deletePaymentMethod]: (state, { payload }) =>
+    (state = current(state)?.filter(el => el?.recurring?.$ !== payload)),
+  [billingActions.clearPaymentMethodList]: () => [],
+})
+
+const paymentsMethodCount = createReducer(initialState.paymentMethodCount, {
+  [billingActions.setPaymentMethodCount]: (_, { payload }) => payload,
+  [billingActions.clearPaymentMethodCount]: () => 0,
 })
 
 const expensesList = createReducer(initialState.expensesList, {
@@ -94,6 +109,9 @@ const billingReducer = combineReducers({
 
   autoPaymentsList,
   autoPaymentConfig,
+
+  paymentsMethodCount,
+  paymentMethodList,
 })
 
 export default billingReducer

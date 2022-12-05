@@ -862,6 +862,213 @@ const createAutoPayment =
       })
   }
 
+const getPaymentMethods =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.recurring.stored_methods',
+          out: 'json',
+          auth: sessionId,
+          p_col: '+time',
+          clickstat: 'yes',
+          p_cnt: body?.p_cnt || 10,
+          lang: 'en',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const elem = data?.doc?.elem || []
+        const count = data?.doc?.p_elems?.$ || 0
+
+        dispatch(billingActions.setPaymentMethodList(elem))
+        dispatch(billingActions.setPaymentMethodCount(count))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getPaymentMethodReconfig = (elid, elname) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.recurring.stored_methods.reconfigure',
+        auth: sessionId,
+        out: 'json',
+        sok: 'ok',
+        lang: 'en',
+        elid,
+        elname,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      if (data.doc.ok) {
+        dispatch(getPaymentMethodPage(data.doc.ok.$))
+      }
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const deletePaymentMethod = elid => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.recurring.stored_methods.delete',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        if (data.doc.error.$type === 'access') {
+          data.doc.error.param.forEach(e => {
+            if (e.$name === 'value') {
+              toast.error(
+                `${i18n.t('Insufficient privileges to access', { ns: 'other' })} ${e.$}`,
+                {
+                  position: 'bottom-right',
+                },
+              )
+            }
+          })
+        }
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      toast.success(i18n.t('Payment method deleted successfully', { ns: 'billing' }), {
+        position: 'bottom-right',
+      })
+
+      dispatch(billingActions.deletePaymentMethod(elid))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      console.log('error', error)
+      errorHandler(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const addPaymentMethod =
+  (body = {}, setAddPaymentMethodData) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.stored_methods.add',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
+            toast.error(
+              i18n.t('does not correspond to country', {
+                ns: 'payers',
+              }),
+              {
+                position: 'bottom-right',
+                toastId: 'customId',
+              },
+            )
+          }
+
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        dispatch(actions.hideLoader())
+        setAddPaymentMethodData && setAddPaymentMethodData(data.doc)
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const finishAddPaymentMethod =
+  (body = {}) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.stored_methods.add.finish',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          sok: 'ok',
+          clicked_button: 'finish',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        if (data.doc.ok) {
+          dispatch(getPaymentMethodPage(data.doc.ok.$))
+        }
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -880,4 +1087,10 @@ export default {
   stopAutoPayments,
   createAutoPayment,
   getPayers,
+  getPaymentMethods,
+  getPaymentMethodReconfig,
+  deletePaymentMethod,
+
+  addPaymentMethod,
+  finishAddPaymentMethod,
 }

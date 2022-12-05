@@ -16,6 +16,9 @@ const getPaymentsCurrencyList = state => state.billing.paymentsCurrencyList
 const getAutoPaymentsList = state => state.billing.autoPaymentsList
 const getAutoPaymentConfig = state => state.billing.autoPaymentConfig
 
+const getPaymentMethodList = state => state.billing.paymentMethodList
+const getPaymentMethodCount = state => state.billing.paymentMethodCount
+
 export default {
   getPaymentsList,
   getPaymentsCount,
@@ -34,4 +37,7 @@ export default {
 
   getAutoPaymentsList,
   getAutoPaymentConfig,
+
+  getPaymentMethodList,
+  getPaymentMethodCount,
 }
