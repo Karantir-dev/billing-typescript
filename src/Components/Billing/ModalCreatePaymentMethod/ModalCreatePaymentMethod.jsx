@@ -38,8 +38,6 @@ export default function Component(props) {
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
-  console.log(paymentsMethodList)
-
   useEffect(() => {
     dispatch(billingOperations.getPayers())
   }, [])

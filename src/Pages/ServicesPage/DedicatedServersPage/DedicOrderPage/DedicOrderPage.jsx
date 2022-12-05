@@ -299,8 +299,6 @@ export default function DedicOrderPage() {
     )
   }
 
-  console.log(tarifList?.fpricelist, 'tarifList?.fpricelist')
-
   return (
     <div className={s.modalHeader}>
       <BreadCrumbs pathnames={parseLocations()} />

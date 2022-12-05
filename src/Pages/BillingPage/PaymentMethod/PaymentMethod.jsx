@@ -25,8 +25,6 @@ export default function Component() {
 
   const { t } = useTranslation(['billing', 'access_log', 'payers'])
 
-  console.log(createPaymentModal)
-
   useEffect(() => {
     const data = { p_num, p_cnt }
     dispatch(billingOperations.getPaymentMethods(data))
