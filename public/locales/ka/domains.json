@@ -97,5 +97,7 @@
 
   "View/change the list of name servers": "იხილეთ/შეცვალეთ სახელების სერვერების სია",
   "record_format": "ჩანაწერის ფორმატი \"ns.example.com\" ან \"ns.example.com/1.1.1.1\" ან \"ns.example.com/1.1.1.1,2.2.2.2\"",
-  "Add NS": "დაამატეთ NS"
+  "Add NS": "დაამატეთ NS",
+
+  "Configuring": "კონფიგურაცია"
 }

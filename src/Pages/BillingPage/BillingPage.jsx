@@ -10,6 +10,7 @@ import {
 } from '../../Components'
 import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
+import PaymentMethod from './PaymentMethod/PaymentMethod'
 import AutoPayment from './AutoPayment/AutoPayment'
 import s from './BillingPgae.module.scss'
 
@@ -27,6 +28,11 @@ export default function Component() {
     'payment.recurring.settings',
   )
 
+  const isPaymentMethodComponentAllowedToRender = usePageRender(
+    'finance',
+    'payment.recurring.stored_methods',
+  )
+
   const tavBarSections = [
     {
       route: `${route.BILLING}/payments`,
@@ -42,6 +48,11 @@ export default function Component() {
       route: `${route.BILLING}/auto_payment`,
       label: t('Auto payment'),
       allowToRender: isAutoPaymentComponentAllowedToRender,
+    },
+    {
+      route: `${route.BILLING}/payment_method`,
+      label: t('Payment method'),
+      allowToRender: isPaymentMethodComponentAllowedToRender,
     },
   ]
 
@@ -70,6 +81,12 @@ export default function Component() {
       return (
         <PageTitleRender title={t('Finance') + '/' + t('Auto payment')}>
           <AutoPayment />
+        </PageTitleRender>
+      )
+    } else if (path === 'payment_method' && isPaymentMethodComponentAllowedToRender) {
+      return (
+        <PageTitleRender title={t('Finance') + '/' + t('Payment method')}>
+          <PaymentMethod />
         </PageTitleRender>
       )
     } else {

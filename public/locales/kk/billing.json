@@ -14,6 +14,7 @@
   "Download": "Жүктеп алу",
   "Delete": "Жою",
   "Payment deleted successfully": "Төлем сәтті түрде жойылды",
+  "Payment method deleted successfully": "Төлеу әдісі сәтті жойылды",
   "Payment number": "Төлем нөмірі",
   "Enter payment number": "Төлем нөмірін енгізіңіз",
   "Payer": "Төлеуші",
@@ -83,5 +84,9 @@
   "no services description": "Бұл бөлімде сіз төлемдер туралы мәліметтерді таба аласыз",
   "YOU DO NOT HAVE EXPENSES YET": "ӘЛІ ШЫҒЫНЫҢЫЗ ЖОҚ",
   "no services description expenses": "Бұл бөлімде сіз өзіңіздің шығындарыңыз туралы толық ақпаратты таба аласыз",
-  "Name is copied!": "Аты көшірілген!"
+  "Name is copied!": "Аты көшірілген!",
+
+  "New payment method": "Жаңа төлем әдісі",
+  "FINISH": "დასრულება",
+  "click_finish_btn": "\"Аяқтау\" түймесін басу арқылы сіз сақталған төлем әдісін әрі қарай орнату үшін төлем жүйесінің бетіне қайта бағытталасыз"
 }

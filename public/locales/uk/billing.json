@@ -14,6 +14,7 @@
   "Download": "Завантажити",
   "Delete": "Видалити",
   "Payment deleted successfully": "Платіж успішно видалено",
+  "Payment method deleted successfully": "Спосіб оплати успішно видалено",
   "Payment number": "Номер платежу",
   "Enter payment number": "Введіть номер платежу",
   "Payer": "Платник",
@@ -84,5 +85,9 @@
   "YOU DO NOT HAVE EXPENSES YET": "У ВАС ЩЕ НЕМАЄ ВИТРАТ",
   "no services description expenses": "У цьому розділі  Ви можете знайти детальну інформацію про свої витрати",
 
-  "Name is copied!": "Ім'я скопійовано!"
+  "Name is copied!": "Ім'я скопійовано!",
+
+  "New payment method": "Новий спосіб оплати",
+  "FINISH": "ЗАВЕРШИТИ",
+  "click_finish_btn": "Натиснувши кнопку \"Завершити\", ви будете перенаправлені на сторінку платіжної системи для подальшого налаштування збереженого способу оплати"
 }
