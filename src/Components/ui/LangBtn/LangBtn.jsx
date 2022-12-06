@@ -8,37 +8,43 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import s from './LangBtn.module.scss'
 
+import ukraine_lang from '../../../images/lang/ukraine_lang.svg'
+import uk_lang from '../../../images/lang/uk_lang.svg'
+import kazakhstan_lang from '../../../images/lang/kazakhstan_lang.svg'
+import georgia_lang from '../../../images/lang/georgia_lang.svg'
+import goblin_lang from '../../../images/lang/russia_lang.svg'
+
 // const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
 const LANGUAGES = [
   {
     langCode: 'uk',
     showLangCode: 'ua',
     name: 'Ukrainian',
-    flag: require('../../../images/lang/ukraine_lang.png'),
+    flag: ukraine_lang,
   },
   {
     langCode: 'en',
     showLangCode: 'en',
     name: 'English',
-    flag: require('../../../images/lang/uk_lang.png'),
+    flag: uk_lang,
   },
   {
     langCode: 'kk',
     showLangCode: 'kz',
     name: 'Kazakh',
-    flag: require('../../../images/lang/kazakhstan_lang.png'),
+    flag: kazakhstan_lang,
   },
   {
     langCode: 'ka',
     showLangCode: 'ge',
     name: 'Georgian',
-    flag: require('../../../images/lang/georgia_lang.png'),
+    flag: georgia_lang,
   },
   {
     langCode: 'ru',
     showLangCode: 'ru',
     name: 'Russian',
-    flag: require('../../../images/lang/russia_lang.png'),
+    flag: goblin_lang,
   },
 ]
 
