@@ -25,9 +25,13 @@ export default function Component() {
 
   const { t } = useTranslation(['billing', 'access_log', 'payers'])
 
-  useEffect(() => {
+  const getPageData = () => {
     const data = { p_num, p_cnt }
     dispatch(billingOperations.getPaymentMethods(data))
+  }
+
+  useEffect(() => {
+    getPageData()
   }, [p_num, p_cnt])
 
   const reconfigHandler = (elid, elname) => {
@@ -36,6 +40,10 @@ export default function Component() {
 
   const deleteItemHandler = elid => {
     dispatch(billingOperations.deletePaymentMethod(elid))
+  }
+
+  const editItemNameHandler = (elid, customname) => {
+    dispatch(billingOperations.editNamePaymentMethod({ elid, customname }, getPageData))
   }
 
   return (
@@ -53,10 +61,12 @@ export default function Component() {
           reconfigHandler={reconfigHandler}
           deleteItemHandler={deleteItemHandler}
           list={paymentsList}
+          editItemNameHandler={editItemNameHandler}
         />
       )}
       <div className={s.addBtn}>
         <Button
+          isShadow
           label={t('Add', { ns: 'payers' })}
           onClick={() => setCreatePaymentModal(!createPaymentModal)}
         />

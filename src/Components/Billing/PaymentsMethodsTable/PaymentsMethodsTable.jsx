@@ -7,7 +7,7 @@ import s from './PaymentsMethodsTable.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])
-  const { list, reconfigHandler, deleteItemHandler } = props
+  const { list, reconfigHandler, deleteItemHandler, editItemNameHandler } = props
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
@@ -33,18 +33,22 @@ export default function Component(props) {
           status_msg,
           paymethod_name,
           recurring,
+          customname,
         } = el
 
         return (
           <PaymentsMethodsTableItem
             key={recurring?.$}
             id={recurring?.$}
-            name={name?.$ || fullname?.$}
+            customname={customname?.$}
+            name={name?.$}
+            fullname={fullname?.$}
             num_prolong_items={num_prolong_items?.$}
             status={status_msg?.$}
             paymethod_name={paymethod_name?.$}
             reconfigHandler={reconfigHandler}
             deleteItemHandler={deleteItemHandler}
+            editItemNameHandler={editItemNameHandler}
           />
         )
       })}

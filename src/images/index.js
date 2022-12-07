@@ -13,6 +13,8 @@ export { default as Social } from './svg/Social.jsx'
 export { default as Support } from './svg/Support.jsx'
 export { default as WalletBalance } from './svg/WalletBalance.jsx'
 
+export { default as EditPencil } from './svg/EditPencil.jsx'
+
 export { default as Facebook } from './svg/Facebook.jsx'
 export { default as Google } from './svg/Google.jsx'
 export { default as Vk } from './svg/Vk.jsx'
@@ -92,3 +94,5 @@ export { default as Germany } from './svg/Germany.jsx'
 export { default as Usa } from './svg/Usa.jsx'
 export { default as Gift } from './svg/Gift.jsx'
 export { default as GiftDt } from './svg/GiftDt.jsx'
+
+export { default as CheckEdit } from './svg/CheckEdit.jsx'

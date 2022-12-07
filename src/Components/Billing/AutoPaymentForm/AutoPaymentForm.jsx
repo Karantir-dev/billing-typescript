@@ -76,8 +76,8 @@ export default function Component(props) {
 
   const payers = newPayer
     ? [
-        ...payersList,
         { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+        ...payersList,
       ]
     : payersList
 
