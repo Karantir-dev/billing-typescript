@@ -1069,6 +1069,41 @@ const finishAddPaymentMethod =
       })
   }
 
+const editNamePaymentMethod =
+  (body = {}, func) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.recurring.stored_methods.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          sok: 'ok',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        func && func()
+      })
+      .catch(error => {
+        console.log('error', error)
+        errorHandler(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1093,4 +1128,5 @@ export default {
 
   addPaymentMethod,
   finishAddPaymentMethod,
+  editNamePaymentMethod,
 }

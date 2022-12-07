@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import s from './PaymentsMethodsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Reload } from '../../../images'
+import { MoreDots, Delete, Reload, Edit, EditPencil, CheckEdit } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '../../../utils'
@@ -11,17 +11,23 @@ export default function Component(props) {
   const {
     id,
     name,
+    fullname,
+    customname,
     num_prolong_items,
     status,
     paymethod_name,
     reconfigHandler,
     deleteItemHandler,
+    editItemNameHandler,
   } = props
   const { t } = useTranslation(['billing', 'other', 'domains', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
 
   const dropDownEl = useRef()
   const [isOpened, setIsOpened] = useState(false)
+
+  const [isEdit, setIsEdit] = useState(false)
+  const [editName, setEditName] = useState('')
 
   const closeMenuHandler = () => {
     setIsOpened(!isOpened)
@@ -30,17 +36,16 @@ export default function Component(props) {
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
   const renderStatus = string => {
-    const status = t(string.trim())
+    const status = string?.trim()
     let color = '#11A63A'
-    if (string.trim() === 'Configuring') {
+    if (status === 'Configuring') {
       color = '#ED801B'
-    } else if (string.trim() === 'Enabled') {
+    } else if (status === 'Enabled') {
       color = '#45A884'
-    } else if (string.trim() === 'Disabled') {
+    } else if (status === 'Disabled') {
       color = '#D93F21'
     }
     return {
-      status,
       color,
     }
   }
@@ -53,6 +58,12 @@ export default function Component(props) {
   const deleteHandler = () => {
     deleteItemHandler(id)
     setIsOpened(false)
+  }
+
+  const editNameHandler = () => {
+    editItemNameHandler(id, editName)
+
+    setIsEdit(false)
   }
 
   const renderDesktopLastColumn = () => {
@@ -89,8 +100,38 @@ export default function Component(props) {
     <div className={s.item}>
       <div className={s.tableBlockFirst}>
         {mobile && <div className={s.item_title}>{t('Name')}:</div>}
-        <div className={cn(s.item_text, s.first_item)}>
-          {t(name?.trim(), { ns: 'vds' })}
+        <div
+          style={isEdit ? { overflow: 'inherit' } : {}}
+          className={cn(s.item_text, s.first_item)}
+        >
+          {!isEdit ? (
+            <>
+              {fullname?.trim() === 'Personal account' ? (
+                <button disabled>
+                  <Edit />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setIsEdit(!isEdit)
+                    setEditName(customname?.trim() || name?.trim() || fullname?.trim())
+                  }}
+                >
+                  <EditPencil />
+                </button>
+              )}
+              {t(editName || customname?.trim() || name?.trim() || fullname?.trim(), {
+                ns: 'vds',
+              })}
+            </>
+          ) : (
+            <div className={s.editBlock}>
+              <button onClick={editNameHandler}>
+                <CheckEdit />
+              </button>
+              <input value={editName} onChange={e => setEditName(e.target.value)} />
+            </div>
+          )}
         </div>
       </div>
       <div className={s.tableBlockSecond}>
@@ -110,13 +151,13 @@ export default function Component(props) {
       <div className={s.tableBlockFourth}>
         {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}
         <div
-          style={{ color: renderStatus(status).color }}
+          style={status ? { color: renderStatus(status).color } : {}}
           className={cn(s.item_text, s.fourth_item)}
         >
-          {t(status.trim() || '-', { ns: 'domains' })}
+          {t(status?.trim() || '-', { ns: 'domains' })}
         </div>
       </div>
-      {name.trim() !== 'Personal account' && (
+      {fullname?.trim() !== 'Personal account' && (
         <div className={s.tableBlockFifth}>{renderDesktopLastColumn()}</div>
       )}
     </div>

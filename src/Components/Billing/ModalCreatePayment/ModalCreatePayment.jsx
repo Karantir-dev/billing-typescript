@@ -333,11 +333,11 @@ export default function Component(props) {
                               isShadow
                               className={s.select}
                               itemsList={[
-                                ...payersList,
                                 {
                                   name: { $: t('Add new payer', { ns: 'payers' }) },
                                   id: { $: 'new' },
                                 },
+                                ...payersList,
                               ]?.map(({ name, id }) => ({
                                 label: t(`${name?.$?.trim()}`),
                                 value: id?.$,
@@ -450,7 +450,7 @@ export default function Component(props) {
                                 setValue={item =>
                                   setFieldValue(
                                     `${selectedPayerFields?.offer_field}`,
-                                    item, 
+                                    item,
                                   )
                                 }
                                 className={s.checkbox}

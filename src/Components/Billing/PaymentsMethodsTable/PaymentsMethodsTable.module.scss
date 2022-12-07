@@ -6,7 +6,7 @@
 
 .tableHeader {
   display: none;
-  padding: 20px 23px;
+  padding: 20px 23px 10px;
   width: 100%;
 }
 
@@ -213,11 +213,34 @@
     margin-right: 6px;
   }
 }
+
+.editBlock {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 1px;
+  border: 1px solid rgba(255, 66, 168, 1);
+  height: 39px;
+  max-height: 39px;
+  padding: 10px;
+
+  input {
+    border: none;
+    outline: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    
+    color: var(--main-text);
+  }
+}
+
 @media screen and (min-width: 540px) {
   .item {
     flex-basis: 48%;
     margin-right: 0;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 
     &:nth-child(2n) {
       margin-right: 15px;
@@ -241,7 +264,7 @@
   .item {
     flex-basis: 48.7%;
     margin-right: 0;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 
     &:nth-child(2n) {
       margin-right: 15px;
@@ -276,7 +299,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px;
+    padding: 20px 26px 10px;
   }
 
   .item {
@@ -311,7 +334,7 @@
   }
 
   .tableBlockFifth {
-    flex-basis: 5%;
+    flex-basis: 4%;
     display: flex;
     justify-content: flex-end;
     margin-right: 0px;
@@ -321,9 +344,26 @@
     font-size: 14px;
     align-items: center;
 
-    // &.first_item {
-    //   max-width: 80px;
-    // }
+    &.first_item {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: row;
+
+      button {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &:disabled {
+          pointer-events: none;
+        }
+      }
+    }
 
     &.second_item {
       max-width: 90px;
@@ -343,7 +383,7 @@
 
 @media screen and (min-width: 1550px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 10px;
   }
 
   .item {
@@ -373,7 +413,7 @@
   }
 
   .tableBlockFifth {
-    flex-basis: 9%;
+    flex-basis: 10%;
     display: flex;
     justify-content: flex-end;
     margin-right: 0px;
@@ -382,7 +422,7 @@
 
 @media screen and (min-width: 1918px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 22px 27px 10px;
   }
 
   .item_text {
