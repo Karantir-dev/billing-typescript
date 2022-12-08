@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import s from './PaymentsMethodsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Reload, Edit, EditPencil, CheckEdit } from '../../../images'
+import { MoreDots, Delete, Reload, Edit, CheckEdit } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '../../../utils'
@@ -34,6 +34,15 @@ export default function Component(props) {
   }
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
+
+  const editField = useRef()
+
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
 
   const renderStatus = string => {
     const status = string?.trim()
@@ -103,13 +112,12 @@ export default function Component(props) {
         <div
           style={isEdit ? { overflow: 'inherit' } : {}}
           className={cn(s.item_text, s.first_item)}
+          ref={editField}
         >
           {!isEdit ? (
             <>
               {fullname?.trim() === 'Personal account' ? (
-                <button disabled>
-                  <Edit />
-                </button>
+                <button disabled></button>
               ) : (
                 <button
                   onClick={() => {
@@ -117,7 +125,7 @@ export default function Component(props) {
                     setEditName(customname?.trim() || name?.trim() || fullname?.trim())
                   }}
                 >
-                  <EditPencil />
+                  <Edit />
                 </button>
               )}
               {t(editName || customname?.trim() || name?.trim() || fullname?.trim(), {
