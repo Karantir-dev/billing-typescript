@@ -17,17 +17,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install -f
       - run: npm run test
-      - name: test status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: 'channel'
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+#       - name: test status
+#         uses: 8398a7/action-slack@v3
+#         with:
+#           status: ${{ job.status }}
+#           fields: all
+#           mention: 'channel'
+#           channel: 'github-actions'
+#           if_mention: always
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#         if: always()
   eslint:
     runs-on: ubuntu-latest
     strategy:
@@ -42,17 +42,17 @@ jobs:
       - run: npm install -g npm
       - run: npm install
       - run: npm run lint
-      - name: linter status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: 'channel'
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+#       - name: linter status
+#         uses: 8398a7/action-slack@v3
+#         with:
+#           status: ${{ job.status }}
+#           fields: all
+#           mention: 'channel'
+#           channel: 'github-actions'
+#           if_mention: always
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#         if: always()
 
   deploy:
     needs: [jest]
@@ -103,14 +103,14 @@ jobs:
       - name: Verify deployment
         run: kubectl rollout status deployment/zomro-bill-prod-deployment -n prod
       
-      - name: Deploy status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: 'channel'
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - name: Deploy status
+#         uses: 8398a7/action-slack@v3
+#         with:
+#           status: ${{ job.status }}
+#           fields: all
+#           mention: 'channel'
+#           channel: 'github-actions'
+#           if_mention: always
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
