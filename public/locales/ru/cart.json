@@ -37,5 +37,8 @@
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "Для оплаты необходимо иметь статус QIWI Кошелька «Базовый» или «Профессиональный».",
 
   "Payment amount from 1.00 EUR till  1000.00 EUR": "Сумма платежа от 1.00 EUR до 1000.00 EUR",
-  "Payment amount from 1.00 EUR.": "Сумма платежа от 1.00 EUR."
+  "Payment amount from 1.00 EUR.": "Сумма платежа от 1.00 EUR.",
+
+  "Excluding VAT": "Без учета НДС",
+  "Saving": "Экономия"
 }

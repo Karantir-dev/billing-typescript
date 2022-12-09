@@ -13,7 +13,7 @@ import {
   InputWithAutocomplete,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
-import { BASE_URL } from '../../../config/config'
+import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
@@ -29,9 +29,9 @@ export default function Component(props) {
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  }
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+  // }
 
   useEffect(() => {
     let data = {
@@ -354,13 +354,14 @@ export default function Component(props) {
                               <div className={s.offerBlockText}>
                                 {t('I agree with the terms of the offer')}
                                 <br />
-                                <button
-                                  onClick={offerTextHandler}
-                                  type="button"
+                                <a
+                                  target="_blank"
+                                  href={PRIVACY_URL}
+                                  rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
                                   {payersSelectedFields?.offer_name}
-                                </button>
+                                </a>
                               </div>
                             </div>
                           )}

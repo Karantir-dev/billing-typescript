@@ -26,14 +26,15 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const onShevronClick = () => {
     if (!dropOpened) {
       dropdownEl.current.style.height = dropdownEl.current.scrollHeight + 'px'
+      priceEl.current.style.height = dropdownEl.current.scrollHeight + 80 + 'px'
       if (!tabletOrHigher) {
-        priceEl.current.style.marginBottom = '15px'
+        //
       } else {
         infoEl.current.style.marginBottom = '15px'
       }
     } else {
       dropdownEl.current.style.height = '0'
-      priceEl.current.style.marginBottom = '0'
+      priceEl.current.style.height = '70px'
       infoEl.current.style.marginBottom = '0'
     }
     setDropOpened(!dropOpened)
@@ -62,33 +63,28 @@ export default function VdsItem({ el, deleteItemHandler }) {
       : string
   }
 
-  const priceDescription = el?.desc?.$?.replace('CPU', ' ')
-    ?.replace('(renewal)', '')
-    ?.trim()
-    ?.match(/EUR (.+?)(?=<br\/>)/)
+  // const priceDescription = el?.desc?.$?.replace('CPU', ' ')
+  //   ?.replace('(renewal)', '')
+  //   ?.trim()
+  //   ?.match(/EUR (.+?)(?=<br\/>)/)
 
   const IPaddressesCountText = el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)
 
   return (
     <>
       <div className={s.server_item}>
-        <button className={s.shevron_btn} type="button" onClick={onShevronClick}>
+        <button
+          className={cn(s.shevron_btn, { [s.opened]: dropOpened })}
+          ref={priceEl}
+          type="button"
+          onClick={onShevronClick}
+        >
           <Shevron
             width={11}
             className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
           />
         </button>
-
         <div className={s.main_info_wrapper} ref={infoEl}>
-          {/* {tabletOrHigher && (
-            <img
-              width={27}
-              height={33}
-              src={require('./../../../images/cart/vds.png')}
-              alt="vds"
-            />
-          )} */}
-
           {!tabletOrHigher && (
             <div className={s.control_bts_wrapper}>
               {typeof deleteItemHandler === 'function' && (
@@ -102,42 +98,19 @@ export default function VdsItem({ el, deleteItemHandler }) {
               )}
             </div>
           )}
-          {/* 
-          {tabletOrHigher && (
-            <p className={s.countItem}>
-              {el?.count} {t('psc.')}
-            </p>
-          )} */}
 
-          <p className={s.tariff_name}>
-            {tariffName}{' '}
-            <p className={s.countItem}>
-              {el?.count} {t('psc.')}
-            </p>
-          </p>
-          <div className={s.price_wrapper}>
-            {el?.discount_percent?.$ && (
-              <p className={s.discount_wrapper}>
-                <span className={s.percent}>-{el?.discount_percent?.$}</span>
-                <span className={s.old_price}>{el?.fullcost?.$} EUR</span>
-              </p>
-            )}
-
-            <p className={s.price} ref={priceEl}>
-              {el?.cost?.$} EUR{' '}
-              {tabletOrHigher && (
-                <span className={s.period}>
-                  {!el?.desc?.$?.includes('renewal')
-                    ? t(el?.desc?.$?.match(/EUR (.+?)(?= <br\/>)/))
-                    : t(priceDescription[1].trim()) +
-                      ' (' +
-                      t('Service extension', {
-                        ns: 'virtual_hosting',
-                      }).toLocaleLowerCase() +
-                      ')'}
-                </span>
-              )}
-            </p>
+          <div>
+            <div className={s.periodInfo}>
+              <span>
+                {t('Period', { ns: 'other' })}: {el?.count}{' '}
+                {t('per month', { ns: 'other' })}
+              </span>
+              <span>
+                {t('amount', { ns: 'vds' })}: {el?.count} {t('psc.', { ns: 'vds' })}
+              </span>
+              <span></span>
+            </div>
+            <p className={s.tariff_name}>{tariffName} </p>
           </div>
 
           {typeof deleteItemHandler === 'function' && tabletOrHigher && (
@@ -149,66 +122,54 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
         <div className={s.dropdown} ref={dropdownEl}>
           {hasBasePrice && (
-            <p className={s.value_item}>
-              {t('processors')}:
-              <span className={s.value}>
-                {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)}
-              </span>
-            </p>
+            <span className={s.value}>
+              {t('processors')}:{getTranslatedText(/CPU count(.+?)(?=<br\/>)/)?.trim()},
+              &nbsp;
+            </span>
           )}
 
           {hasBasePrice && (
-            <p className={s.value_item}>
-              {t('memory')}:
-              <span className={s.value}>
-                {getTranslatedText(/Memory(.+?)(?=<br\/>)/)}
-              </span>
-            </p>
+            <span className={s.value}>
+              {t('memory')}:{getTranslatedText(/Memory(.+?)(?=<br\/>)/)}, &nbsp;
+            </span>
           )}
 
           {hasBasePrice && (
-            <p className={s.value_item}>
-              {t('disk_space')}:
-              <span className={s.value}>
-                {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}
-              </span>
-            </p>
+            <span className={s.value}>
+              {t('disk_space')}:{getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}, &nbsp;
+            </span>
           )}
 
           {IPaddresses && (
-            <p className={s.value_item}>
+            <span className={s.value}>
               {t('IPcount')}:
-              <span className={s.value}>
-                {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
-                  ? IPaddressesCountText[1].replace('Unit', t('Unit'))
-                  : ''}
-              </span>
-            </p>
+              {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
+                ? IPaddressesCountText[1].replace('Unit', t('Unit'))
+                : ''}
+              , &nbsp;
+            </span>
           )}
 
           {hasBasePrice && (
-            <p className={s.value_item}>
+            <span className={s.value}>
               {t('port_speed')}:
-              <span className={s.value}>
-                {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)}
-              </span>
-            </p>
+              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)},
+              &nbsp;
+            </span>
           )}
 
           {controlPanel && (
-            <p className={s.value_item}>
+            <span className={s.value}>
               {t('license_to_panel')}:{' '}
-              <span className={s.value}>
-                {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}
-              </span>
-            </p>
+              {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}{' '}
+              &nbsp;
+            </span>
           )}
 
           {el?.desc?.$.includes('Service limits') && (
-            <p className={s.value_item}>
-              {t('Service limits')}:{' '}
-              <span className={s.value}>{t('port_speed_limits')}</span>
-            </p>
+            <span className={s.value}>
+              {t('Service limits')}: {t('port_speed_limits')} &nbsp;
+            </span>
           )}
         </div>
       </div>

@@ -107,6 +107,12 @@
   margin-bottom: 20px;
 }
 
+.actLine {
+  width: 100%;
+  height: 1px;
+  background: rgba(179, 169, 193, 0.51);
+}
+
 .fieldsGrid {
   display: grid;
   grid-template-columns: 1fr;
@@ -381,6 +387,35 @@
   font-size: 18px;
   line-height: 130.5%;
   color: var(--main-text);
+  display: flex;
+  flex-direction: column;
+
+  span {
+    margin-top: 9px;
+  }
+
+  span:last-child {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130.5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .infoBtn {
+      position: relative;
+      top: 0;
+      margin-left: 7px;
+
+      .descriptionBlock {
+        top: auto;
+        bottom: 90%;
+        right: auto;
+        left: 0;
+      }
+    }
+  }
 }
 
 .scroll {

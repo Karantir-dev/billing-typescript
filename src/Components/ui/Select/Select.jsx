@@ -24,6 +24,7 @@ export default function Select(props) {
     isRequired,
     error,
     hasNotSelectedOption,
+    saleIcon,
   } = props
   const { t } = useTranslation('other')
 
@@ -70,7 +71,10 @@ export default function Select(props) {
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && (
-        <label className={s.label}> {isRequired ? requiredLabel(label) : label}</label>
+        <label className={s.label}>
+          {' '}
+          {isRequired ? requiredLabel(label) : label} {saleIcon}
+        </label>
       )}
       <button
         type="button"

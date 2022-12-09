@@ -3,7 +3,8 @@ import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Co
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { dnsOperations, vhostOperations } from '../../../../Redux'
+import { vhostOperations } from '../../../../Redux'
+import { PRIVACY_URL } from '../../../../config/config'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -96,9 +97,9 @@ export default function Component() {
     return pathnames
   }
 
-  const openTermsHandler = () => {
-    dispatch(dnsOperations?.getPrintLicense(price))
-  }
+  // const openTermsHandler = () => {
+  //   dispatch(dnsOperations?.getPrintLicense(price))
+  // }
 
   const buyVhostHandler = () => {
     if (!licence_agreement) {
@@ -239,10 +240,10 @@ export default function Component() {
               <span className={s.agreeTerms}>
                 {t('I have read and agree to the', { ns: 'domains' })}
                 {'\n'}
-                <button onClick={openTermsHandler} type="button">{`"${t(
+                <a target="_blank" href={PRIVACY_URL} rel="noreferrer">{`"${t(
                   'Terms of Service',
                   { ns: 'domains' },
-                )}"`}</button>
+                )}"`}</a>
               </span>
             </div>
           </div>

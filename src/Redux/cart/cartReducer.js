@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import cartActions from './cartActions'
 
 const initialState = {
-  cartState: { isOpened: false, redirectPath: '' },
+  cartState: { isOpened: false, redirectPath: '', salePromocode: false },
 }
 
 const cartState = createReducer(initialState.cartState, {

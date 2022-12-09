@@ -35,5 +35,8 @@
   "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Payment amount from 1.00 EUR till 200.00 EUR . Commission 0.40 EUR + 7%.",
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "For payment you need to have status of QIWI Wallet «Basic» or «Professional»",
   "Payment amount from 1.00 EUR till  1000.00 EUR": "Payment amount from 1.00 EUR till  1000.00 EUR",
-  "Payment amount from 1.00 EUR.": "Payment amount from 1.00 EUR."
+  "Payment amount from 1.00 EUR.": "Payment amount from 1.00 EUR.",
+
+  "Excluding VAT": "Excluding VAT",
+  "Saving": "Saving"
 }

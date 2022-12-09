@@ -96,3 +96,4 @@ export { default as Gift } from './svg/Gift.jsx'
 export { default as GiftDt } from './svg/GiftDt.jsx'
 
 export { default as CheckEdit } from './svg/CheckEdit.jsx'
+export { default as SaleFiftyFive } from './svg/SaleFiftyFive.jsx'

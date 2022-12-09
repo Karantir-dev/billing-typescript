@@ -20,6 +20,11 @@
   max-width: 820px;
 }
 
+.memorySale {
+  text-decoration: line-through;
+  color: var(--red-text);
+}
+
 .category_item {
   display: flex;
   justify-content: center;
@@ -308,7 +313,7 @@
   height: 25px;
   position: relative;
   border-radius: 4px;
-  background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
+  // background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
 }
 
 .count_input {
@@ -320,6 +325,17 @@
   padding: 2px 5px;
   top: 0;
   left: 0;
+  border: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px !important;
+  line-height: 71.5%;
+
+  background-image: var(--accent-text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   &:focus {
     height: calc(100% - 2px);

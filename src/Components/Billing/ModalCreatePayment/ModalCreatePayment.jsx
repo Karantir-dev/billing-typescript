@@ -19,7 +19,7 @@ import {
   payersSelectors,
   authSelectors,
 } from '../../../Redux'
-import { BASE_URL } from '../../../config/config'
+import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
 import { replaceAllFn } from '../../../utils'
 
@@ -72,9 +72,9 @@ export default function Component(props) {
     }
   }, [payersList, payersSelectLists])
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(selectedPayerFields?.offer_link))
-  }
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(selectedPayerFields?.offer_link))
+  // }
 
   const createPaymentMethodHandler = values => {
     const data = {
@@ -462,13 +462,14 @@ export default function Component(props) {
                                   ns: 'payers',
                                 })}
                                 <br />
-                                <button
-                                  onClick={offerTextHandler}
-                                  type="button"
+                                <a
+                                  target="_blank"
+                                  href={PRIVACY_URL}
+                                  rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
                                   {selectedPayerFields?.offer_name}
-                                </button>
+                                </a>
                               </div>
                             </div>
                           )}
