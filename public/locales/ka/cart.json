@@ -36,6 +36,8 @@
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "გადახდისთვის თქვენ უნდა გქონდეთ QIWI საფულის სტატუსი «Basic» ან «Professional»",
 
   "Payment amount from 1.00 EUR till  1000.00 EUR": "გადახდის თანხა 1.00 ევროდან 1000.00 ევრომდე",
-  "Payment amount from 1.00 EUR.": "გადახდის თანხა 1.00 ევროდან."
+  "Payment amount from 1.00 EUR.": "გადახდის თანხა 1.00 ევროდან.",
 
+  "Excluding VAT": "დღგ-ს გარეშე",
+  "Saving": "Შენახვა"
 }

@@ -10,7 +10,8 @@ import {
   payersOperations,
   billingOperations,
 } from '../../../Redux'
-import { BASE_URL } from '../../../config/config'
+
+import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -49,9 +50,9 @@ export default function Component(props) {
     }
   }, [autoPaymentConfig])
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  }
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+  // }
 
   const getAmountsFromString = string => {
     const words = string?.match(/[\d|.|\\+]+/g)
@@ -282,13 +283,14 @@ export default function Component(props) {
                     <div className={s.offerBlockText}>
                       {t('I agree with the terms of the offer', { ns: 'payers' })}
                       <br />
-                      <button
-                        onClick={offerTextHandler}
-                        type="button"
+                      <a
+                        target="_blank"
+                        href={PRIVACY_URL}
+                        rel="noreferrer"
                         className={s.offerBlockLink}
                       >
                         {payersSelectedFields?.offer_name}
-                      </button>
+                      </a>
                     </div>
                   </div>
                 )}

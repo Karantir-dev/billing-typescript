@@ -34,7 +34,7 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL } from '../../config/config'
+import { BASE_URL, PRIVACY_URL } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -43,6 +43,7 @@ export default function Component() {
   const navigate = useNavigate()
 
   const dropdownDescription = useRef(null)
+  const dropdownSale = useRef(null)
 
   const { t } = useTranslation([
     'cart',
@@ -125,9 +126,9 @@ export default function Component() {
       : null,
   })
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  }
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+  // }
 
   const setPromocodeToCart = promocode => {
     dispatch(
@@ -582,6 +583,36 @@ export default function Component() {
     )
   }
 
+  const renderActiveDiscounts = () => {
+    const arr = cartData?.elemList[0]?.price_hint?.$?.split('<br/>')
+
+    const services = arr?.filter(
+      e =>
+        !e?.includes('Active discounts') &&
+        !e?.includes('Total discount') &&
+        e?.length > 0,
+    )
+
+    const total = arr
+      ?.find(e => e?.includes('Total discount'))
+      ?.replace('Total discount ~', '')
+
+    return (
+      <div>
+        <b>{t('Active discounts')}</b>
+        <br />
+        <br />
+        {services?.map(e => (
+          <p key={e}>{e}</p>
+        ))}
+        <br />
+        <div className={s.actLine} />
+        <br />
+        {t('Total discounts')}: ≈ {total}
+      </div>
+    )
+  }
+
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
       {payersSelectedFields && selectedPayerFields && payersSelectLists ? (
@@ -844,13 +875,14 @@ export default function Component() {
                                   ns: 'payers',
                                 })}
                                 <br />
-                                <button
-                                  onClick={offerTextHandler}
-                                  type="button"
+                                <a
+                                  target="_blank"
+                                  href={PRIVACY_URL}
+                                  rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
                                   {selectedPayerFields?.offer_name}
-                                </button>
+                                </a>
                               </div>
                             </div>
                           )}
@@ -970,7 +1002,24 @@ export default function Component() {
                       )}
 
                       <div className={s.totalSum}>
-                        {t('Total')}: <b>{cartData?.total_sum} EUR</b>
+                        <b>{t('Total')}:</b>
+                        <span>
+                          {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
+                        </span>
+                        <span>
+                          {cartData?.full_discount &&
+                          Number(cartData?.full_discount) !== 0 ? (
+                            <>
+                              {t('Saving')}: {cartData?.full_discount} EUR{' '}
+                              <button type="button" className={s.infoBtn}>
+                                <Info />
+                                <div ref={dropdownSale} className={s.descriptionBlock}>
+                                  {renderActiveDiscounts()}
+                                </div>
+                              </button>
+                            </>
+                          ) : null}
+                        </span>
                       </div>
 
                       {Number(cartData?.tax) > 0 ? (

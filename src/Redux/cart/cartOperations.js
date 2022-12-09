@@ -17,6 +17,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 
   const {
     auth: { sessionId },
+    cart: { cartState },
   } = getState()
 
   axiosInstance
@@ -35,7 +36,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       const cartData = {
         total_sum: data.doc?.total_sum?.$,
         tax: data.doc?.tax?.$,
-        full_discount: data.doc?.total_sum?.$,
+        full_discount: data.doc?.full_discount?.$,
         billorder: data?.doc?.billorder?.$,
       }
 
@@ -48,6 +49,15 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       setCartData && setCartData(cartData)
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
+
+      if (cartState?.salePromocode) {
+        setCartData &&
+          setPaymentsMethodList &&
+          dispatch(
+            setBasketPromocode('asfsghfgihjlj', setCartData, setPaymentsMethodList),
+          )
+        dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
+      }
     })
     .catch(error => {
       console.log('error', error)

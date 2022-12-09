@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-
+import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
 import { forexOperations, selectors } from '../../../../Redux'
 import * as route from '../../../../routes'
@@ -401,15 +401,14 @@ export default function ForexOrderPage() {
                       <div className={s.terms_text}>
                         {t('terms')}
                         <br />
-                        <button
-                          type="button"
+                        <a
                           className={s.turn_link}
-                          onClick={() => {
-                            dispatch(forexOperations.getPrintLicense(values.pricelist))
-                          }}
+                          target="_blank"
+                          href={PRIVACY_URL}
+                          rel="noreferrer"
                         >
                           {`"${t('terms_2')}"`}
-                        </button>
+                        </a>
                       </div>
                     </div>
                     {!!errors.license && touched.license && (

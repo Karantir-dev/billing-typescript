@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
+import { PRIVACY_URL } from '../../../../config/config'
 import { domainsOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
@@ -94,9 +95,9 @@ export default function Component({ transfer = false }) {
     dispatch(domainsOperations.createDomain(data, navigate))
   }
 
-  const openTermsHandler = link => {
-    dispatch(domainsOperations?.getTermsOfConditionalText(link))
-  }
+  // const openTermsHandler = link => {
+  //   dispatch(domainsOperations?.getTermsOfConditionalText(link))
+  // }
 
   return (
     <div className={s.page_wrapper}>
@@ -372,14 +373,11 @@ export default function Component({ transfer = false }) {
                                   <span className={s.agreeTerms}>
                                     {t('I have read and agree to the')}
                                     {'\n'}
-                                    <button
-                                      onClick={() =>
-                                        openTermsHandler(
-                                          paymentData[`licence_link_${select}`]?.$,
-                                        )
-                                      }
-                                      type="button"
-                                    >{`"${t('Terms of Service')}"`}</button>
+                                    <a
+                                      target="_blank"
+                                      href={PRIVACY_URL}
+                                      rel="noreferrer"
+                                    >{`"${t('Terms of Service')}"`}</a>
                                   </span>
                                 </div>
                               </div>

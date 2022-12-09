@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-
+import { PRIVACY_URL } from '../../../../config/config'
 import { ftpOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
@@ -298,15 +298,14 @@ export default function FTPOrder() {
                       <div className={s.terms_text}>
                         {t('terms')}
                         <br />
-                        <button
-                          type="button"
+                        <a
                           className={s.turn_link}
-                          onClick={() => {
-                            dispatch(ftpOperations.getPrintLicense(values.tarif))
-                          }}
+                          target="_blank"
+                          href={PRIVACY_URL}
+                          rel="noreferrer"
                         >
                           {`"${t('terms_2')}"`}
-                        </button>
+                        </a>
                       </div>
                     </div>
                     {!!errors.license && touched.license && (
