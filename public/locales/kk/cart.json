@@ -37,5 +37,8 @@
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "Төлем үшін сізде QIWI әмиянының «Basic» немесе «Professional» мәртебесі болуы керек.",
 
   "Payment amount from 1.00 EUR till  1000.00 EUR": "Төлем сомасы 1.00 евродан 1000.00 евроға дейін",
-  "Payment amount from 1.00 EUR.": "Төлем сомасы 1.00 EUR."
+  "Payment amount from 1.00 EUR.": "Төлем сомасы 1.00 EUR.",
+
+  "Excluding VAT": "ҚҚС-сыз",
+  "Saving": "Сақтау"
 }

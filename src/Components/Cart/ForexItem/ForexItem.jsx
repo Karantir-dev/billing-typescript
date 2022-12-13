@@ -23,7 +23,7 @@ export default function ForexItem(props) {
     discount_percent,
     fullcost,
     pricelist_name,
-    count,
+    // count,
     deleteItemHandler,
   } = props
 
@@ -121,7 +121,7 @@ export default function ForexItem(props) {
 
             <div className={s.server_info}>
               <span className={s.domainName}>
-                {pricelist_name} &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
+                {pricelist_name}
               </span>
             </div>
             <div className={s.costBlock}>

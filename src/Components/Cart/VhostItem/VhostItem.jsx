@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { Delete } from '../../../images'
 import s from './VhostItem.module.scss'
@@ -11,11 +11,11 @@ export default function Component(props) {
     fullcost,
     pricelist_name,
     itemId,
-    count,
+    // count,
     deleteItemHandler,
   } = props
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
+  // const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
   return (
     <div className={s.domainItem}>
@@ -41,7 +41,7 @@ export default function Component(props) {
 
         <div className={s.domainInfo}>
           <span className={s.domainName}>
-            {pricelist_name} #{itemId} &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
+            {pricelist_name} #{itemId}
           </span>
         </div>
         <div className={s.costBlock}>

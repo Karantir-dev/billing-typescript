@@ -13,8 +13,9 @@ import {
   Button,
 } from '../../../../Components'
 import { Check } from '../../../../images'
-import { vdsOperations, dnsOperations } from '../../../../Redux'
+import { vdsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
+import { PRIVACY_URL } from '../../../../config/config'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -112,17 +113,49 @@ export default function VDSOrder() {
   const getOptionsListExtended = fieldName => {
     const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
+    let firstItem = 0
+
     return optionsList
       ?.filter(el => el?.$)
-      ?.map(({ $key, $ }) => {
+      ?.map(({ $key, $ }, index) => {
         let label = ''
+        let withSale = false
+        let words = []
 
-        if ($.includes('EUR ')) {
+        if (fieldName === 'Memory') {
+          words = $?.match(/[\d|.|\\+]+/g)
+
+          if (words?.length > 0 && index === 0) {
+            firstItem = words[0]
+          }
+
+          if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+            withSale = true
+          }
+        }
+
+        // if (withSale && words?.length > 0) {
+        //   label = (
+        //     <span>
+        //       {`${words[0]} Gb (`}
+        //       <span className={s.memorySale}>{words[1]}</span>
+        //       {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+        //         'short_month',
+        //         {
+        //           ns: 'other',
+        //         },
+        //       )})`}
+        //     </span>
+        //   )
+        // } else
+        if (fieldName === 'Memory') {
+          label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
+        } else if ($.includes('EUR ')) {
           label = translatePeriodText($.trim())
         } else {
           label = t($.trim())
         }
-        return { value: $key, label: label }
+        return { value: $key, label: label, sale: withSale }
       })
   }
 
@@ -241,6 +274,10 @@ export default function VDSOrder() {
   }
 
   const onFormSubmit = values => {
+    const saleMemory = getOptionsListExtended('Memory')?.find(
+      e => e?.value === values.Memory,
+    ).sale
+
     dispatch(
       vdsOperations.setOrderData(
         period,
@@ -249,6 +286,7 @@ export default function VDSOrder() {
         values,
         selectedTariffId,
         parametersInfo.register,
+        saleMemory,
       ),
     )
   }
@@ -271,9 +309,9 @@ export default function VDSOrder() {
     return value ? value : ''
   }
 
-  const openTermsHandler = () => {
-    dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
-  }
+  // const openTermsHandler = () => {
+  //   dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
+  // }
 
   const translatePeriod = (periodName, t) => {
     let period = ''
@@ -500,6 +538,11 @@ export default function VDSOrder() {
                       <Select
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
+                        // saleIcon={
+                        //   <SaleFiftyFive
+                        //     style={{ marginLeft: 7, position: 'absolute', top: -10 }}
+                        //   />
+                        // }
                         label={`${t('memory')}:`}
                         getElement={value => {
                           setFieldValue('Memory', value)
@@ -593,13 +636,14 @@ export default function VDSOrder() {
 
                         <p className={s.agreement_text}>
                           {t('terms', { ns: 'dedicated_servers' })}{' '}
-                          <button
+                          <a
                             className={s.link}
-                            type="button"
-                            onClick={openTermsHandler}
+                            target="_blank"
+                            href={PRIVACY_URL}
+                            rel="noreferrer"
                           >
                             &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
-                          </button>
+                          </a>
                         </p>
                       </div>
                       <ErrorMessage

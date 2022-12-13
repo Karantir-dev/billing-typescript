@@ -84,6 +84,9 @@ export { default as CurrentAutoPayments } from './Billing/CurrentAutoPayments/Cu
 export { default as AutoPaymentForm } from './Billing/AutoPaymentForm/AutoPaymentForm'
 export { default as SuccessPayment } from './Billing/SuccessPayment/SuccessPayment'
 export { default as ErrorPayment } from './Billing/ErrorPayment/ErrorPayment'
+export { default as PaymentsMethodsTable } from './Billing/PaymentsMethodsTable/PaymentsMethodsTable'
+
+export { default as ModalCreatePaymentMethod } from './Billing/ModalCreatePaymentMethod/ModalCreatePaymentMethod'
 
 //==========================================PAYERS==========================================//
 export { default as PayersTable } from './Payers/PayersTable/PayersTable'

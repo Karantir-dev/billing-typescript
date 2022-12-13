@@ -3,10 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--header-btn-width);
-  height: var(--header-btn-height);
-  border-radius: 99px;
-  background-image: var(--accent-gradient);
+  // width: var(--header-btn-width);
+  // height: var(--header-btn-height);
+  // border-radius: 99px;
+  // background-image: var(--accent-gradient);
 
   &.burger_type {
     --header-btn-width: 66px;
@@ -38,14 +38,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(var(--header-btn-width) - 4px);
-  height: calc(var(--header-btn-height) - 4px);
+  width: calc(var(--header-btn-width));
+  height: calc(var(--header-btn-height));
   border-radius: 99px;
-  background-color: var(--elements-bgc);
   text-transform: uppercase;
-  font-weight: 600;
+  font-style: normal;
+  font-weight: 400;
   font-size: 16px;
+  line-height: 19px;
+  color: var(--main-text);
+
   line-height: 1;
+  
+  &:hover {
+    color: var(--accent-color-light);
+  }
+
+  img {
+    margin-right: 7px;
+  }
 }
 
 .icon {
@@ -61,7 +72,7 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% + 20px);
+  width: calc(100% + 150px);
   padding: 15px 0 10px;
   display: flex;
   justify-content: center;
@@ -73,7 +84,7 @@
 
 .dropdown_list {
   position: relative;
-  width: calc(100% - 20px);
+  max-width: calc(100% + 50px);
   height: fit-content;
   padding: 10px 0;
   border-radius: 8px;
@@ -113,11 +124,16 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  padding: 0 15px;
+  justify-content: flex-start;
   align-items: center;
   text-transform: uppercase;
   font-size: 16px;
   cursor: pointer;
+
+  img {
+    margin-right: 7px;
+  }
 
   &:hover {
     color: var(--accent-color-light);

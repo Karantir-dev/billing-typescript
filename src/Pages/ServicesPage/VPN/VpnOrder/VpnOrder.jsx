@@ -9,8 +9,9 @@ import {
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { PRIVACY_URL } from '../../../../config/config'
 import { Formik, Form } from 'formik'
-import { dnsOperations, vpnOperations } from '../../../../Redux'
+import { vpnOperations } from '../../../../Redux'
 import s from './VpnOrder.module.scss'
 import * as routes from '../../../../routes'
 
@@ -52,9 +53,9 @@ export default function Component() {
     return pathnames
   }
 
-  const openTermsHandler = price => {
-    dispatch(dnsOperations?.getPrintLicense(price))
-  }
+  // const openTermsHandler = price => {
+  //   dispatch(dnsOperations?.getPrintLicense(price))
+  // }
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -214,10 +215,10 @@ export default function Component() {
                         <span className={s.agreeTerms}>
                           {t('I have read and agree to the', { ns: 'domains' })}
                           {'\n'}
-                          <button
-                            onClick={() => openTermsHandler(values.pricelist)}
-                            type="button"
-                          >{`"${t('Terms of Service', { ns: 'domains' })}"`}</button>
+                          <a target="_blank" href={PRIVACY_URL} rel="noreferrer">{`"${t(
+                            'Terms of Service',
+                            { ns: 'domains' },
+                          )}"`}</a>
                         </span>
                       </div>
                     </div>

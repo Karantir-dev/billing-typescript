@@ -27,7 +27,20 @@ const setAutoPaymentsList = createAction('SET_AUTO_PAYMENTS_LIST')
 const setAutoPaymentConfig = createAction('SET_AUTO_PAYMENT_CONFIG')
 const deleteAutoPayment = createAction('DELETE_AUTO_PAYMENT')
 
+const setPaymentMethodList = createAction('SET_PAYMENT_METHOD_LIST')
+const deletePaymentMethod = createAction('DELETE_PAYMENT_METHOD')
+const clearPaymentMethodList = createAction('CLEAR_PAYMENT_METHOD_LIST')
+
+const setPaymentMethodCount = createAction('SET_PAYMENT_METHOD_COUNT')
+const clearPaymentMethodCount = createAction('CLEAR_PAYMENT_METHOD_COUNT')
+
 export default {
+  setPaymentMethodList,
+  deletePaymentMethod,
+  clearPaymentMethodList,
+  setPaymentMethodCount,
+  clearPaymentMethodCount,
+
   setPaymentsList,
   setPaymentsCount,
   clearPaymentsList,

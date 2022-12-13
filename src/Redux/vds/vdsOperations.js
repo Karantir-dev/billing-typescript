@@ -315,7 +315,7 @@ const changeOrderFormField =
   }
 
 const setOrderData =
-  (period, count, recipe, values, pricelist, register) => (dispatch, getState) => {
+  (period, count, recipe, values, pricelist, register, sale) => (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -351,6 +351,7 @@ const setOrderData =
           cartActions.setCartIsOpenedState({
             isOpened: true,
             redirectPath: routes.VDS,
+            salePromocode: sale,
           }),
         )
         dispatch(actions.hideLoader())

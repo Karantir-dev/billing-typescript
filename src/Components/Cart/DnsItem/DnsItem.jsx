@@ -23,7 +23,7 @@ export default function DnsItem(props) {
     discount_percent,
     fullcost,
     pricelist_name,
-    count,
+    // count,
     deleteItemHandler,
   } = props
 
@@ -120,7 +120,6 @@ export default function DnsItem(props) {
                   ?.replace('for', t('for', { ns: 'dns' }))
                   ?.replace('domains', t('domains', { ns: 'dns' }))
                   ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}{' '}
-                &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })}
               </span>
             </div>
             <div className={s.costBlock}>

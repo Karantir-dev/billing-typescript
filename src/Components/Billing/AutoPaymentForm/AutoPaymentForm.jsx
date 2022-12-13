@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
@@ -10,13 +10,18 @@ import {
   payersOperations,
   billingOperations,
 } from '../../../Redux'
-import { BASE_URL } from '../../../config/config'
+
+import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Component(props) {
   const dispatch = useDispatch()
   const { t } = useTranslation(['billing', 'other', 'payers'])
+  const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const descrWrapper = useRef(null)
 
   const { setIsConfigure } = props
 
@@ -28,6 +33,7 @@ export default function Component(props) {
 
   const [selectedMethod, setSelectedMethod] = useState(null)
   const [newPayer, setNewPayer] = useState(false)
+  const [isDescrOpened, setIsDescrOpened] = useState(false)
 
   useEffect(() => {
     const data = {
@@ -44,9 +50,9 @@ export default function Component(props) {
     }
   }, [autoPaymentConfig])
 
-  const offerTextHandler = () => {
-    dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  }
+  // const offerTextHandler = () => {
+  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
+  // }
 
   const getAmountsFromString = string => {
     const words = string?.match(/[\d|.|\\+]+/g)
@@ -71,8 +77,8 @@ export default function Component(props) {
 
   const payers = newPayer
     ? [
-        ...payersList,
         { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
+        ...payersList,
       ]
     : payersList
 
@@ -125,15 +131,38 @@ export default function Component(props) {
     dispatch(billingOperations.createAutoPayment(data, setIsConfigure))
   }
 
+  const toggleDescrHeight = () => {
+    if (!isDescrOpened) {
+      descrWrapper.current.style.height = descrWrapper.current.scrollHeight + 10 + 'px'
+    } else {
+      descrWrapper.current.removeAttribute('style')
+    }
+    setIsDescrOpened(!isDescrOpened)
+  }
+
   return (
     <>
-      <div className={s.autoPayTitle}>
-        {t('Auto payment form instruction', {
-          max_pay_amount: autoPaymentConfig?.maxamount || '0.00',
-          min_amount: getAmountsFromString(autoPaymentConfig?.info)?.min_amount || '0.00',
-          max_amount: getAmountsFromString(autoPaymentConfig?.info)?.max_amount || '0.00',
-        })}
+      <div className={s.description_wrapper} ref={descrWrapper}>
+        <p className={s.paragraph}>
+          {t('Auto payment form instruction', {
+            max_pay_amount: autoPaymentConfig?.maxamount || '0.00',
+            min_amount:
+              getAmountsFromString(autoPaymentConfig?.info)?.min_amount || '0.00',
+            max_amount:
+              getAmountsFromString(autoPaymentConfig?.info)?.max_amount || '0.00',
+          })}
+        </p>
       </div>
+      {!higherThanMobile && (
+        <button
+          className={s.btn_more}
+          type="button"
+          onClick={toggleDescrHeight}
+          data-testid="btn_more"
+        >
+          {t(isDescrOpened ? 'collapse' : 'read_more', { ns: 'other' })}
+        </button>
+      )}
       <Formik
         enableReinitialize
         validationSchema={validationSchema}
@@ -192,42 +221,17 @@ export default function Component(props) {
               </div>
               <div className={cn(s.formFieldsBlock, s.first)}>
                 {newPayer && (
-                  <>
-                    <InputField
-                      inputWrapperClass={s.inputHeight}
-                      name="person"
-                      label={`${t('The contact person', { ns: 'payers' })}:`}
-                      placeholder={t('Enter data', { ns: 'other' })}
-                      isShadow
-                      className={s.inputPerson}
-                      error={!!errors.person}
-                      touched={!!touched.person}
-                      isRequired
-                    />
-                    {payersSelectedFields?.offer_link && (
-                      <div className={s.offerBlock}>
-                        <CheckBox
-                          initialState={values[payersSelectedFields?.offer_field]}
-                          setValue={item =>
-                            setFieldValue(`${payersSelectedFields?.offer_field}`, item)
-                          }
-                          className={s.checkbox}
-                          error={!!errors[payersSelectedFields?.offer_field]}
-                        />
-                        <div className={s.offerBlockText}>
-                          {t('I agree with the terms of the offer', { ns: 'payers' })}
-                          <br />
-                          <button
-                            onClick={offerTextHandler}
-                            type="button"
-                            className={s.offerBlockLink}
-                          >
-                            {payersSelectedFields?.offer_name}
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="person"
+                    label={`${t('The contact person', { ns: 'payers' })}:`}
+                    placeholder={t('Enter data', { ns: 'other' })}
+                    isShadow
+                    className={s.inputPerson}
+                    error={!!errors.person}
+                    touched={!!touched.person}
+                    isRequired
+                  />
                 )}
               </div>
               <div className={s.formFieldsBlock}>
@@ -264,6 +268,32 @@ export default function Component(props) {
                     }),
                   )}
                 />
+              </div>
+              <div className={s.formFieldsBlock}>
+                {payersSelectedFields?.offer_link && newPayer && (
+                  <div className={s.offerBlock}>
+                    <CheckBox
+                      initialState={false}
+                      setValue={item =>
+                        setFieldValue(`${payersSelectedFields?.offer_field}`, item)
+                      }
+                      className={s.checkbox}
+                      error={!!errors[payersSelectedFields?.offer_field]}
+                    />
+                    <div className={s.offerBlockText}>
+                      {t('I agree with the terms of the offer', { ns: 'payers' })}
+                      <br />
+                      <a
+                        target="_blank"
+                        href={PRIVACY_URL}
+                        rel="noreferrer"
+                        className={s.offerBlockLink}
+                      >
+                        {payersSelectedFields?.offer_name}
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
               <Button
                 dataTestid={'back_btn'}

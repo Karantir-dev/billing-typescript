@@ -19,6 +19,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import { dedicOperations, dedicSelectors } from '../../../../Redux'
+import { PRIVACY_URL } from '../../../../config/config'
 import * as route from '../../../../routes'
 
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
@@ -298,8 +299,6 @@ export default function DedicOrderPage() {
       ),
     )
   }
-
-  console.log(tarifList?.fpricelist, 'tarifList?.fpricelist')
 
   return (
     <div className={s.modalHeader}>
@@ -773,15 +772,14 @@ export default function DedicOrderPage() {
                       <div className={s.terms_text}>
                         {t('terms')}
                         <br />
-                        <button
-                          type="button"
+                        <a
                           className={s.turn_link}
-                          onClick={() => {
-                            dispatch(dedicOperations.getPrintLicense(values.tarif))
-                          }}
+                          target="_blank"
+                          href={PRIVACY_URL}
+                          rel="noreferrer"
                         >
                           {`"${t('terms_2')}"`}
-                        </button>
+                        </a>
                       </div>
                     </div>
                     {!values.license && touched?.license && (

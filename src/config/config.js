@@ -4,4 +4,5 @@
 
 // ---- production ------
 export const BASE_URL = 'https://api.zomro.com'
+export const PRIVACY_URL = 'https://zomro.com/privacy-policy'
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
