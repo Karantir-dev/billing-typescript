@@ -87,5 +87,6 @@
   "Name is copied!": "Name is copied!",
   "New payment method": "New payment method",
   "FINISH": "FINISH",
-  "click_finish_btn": "By clicking on the “Finish” button, you will be redirected to the payment system page for further setting up the saved payment method"
+  "click_finish_btn": "By clicking on the “Finish” button, you will be redirected to the payment system page for further setting up the saved payment method",
+  "Re-configure": "Re-configure"
 }
