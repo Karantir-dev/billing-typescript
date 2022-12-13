@@ -95,7 +95,14 @@
     button {
       margin-left: 10px;
       position: relative;
+      cursor: pointer;
       top: 2px;
+    }
+
+    .editBtnOk {
+      margin-left: 0px;
+      margin-right: 10px;
+      cursor: pointer;
     }
   }
 }
@@ -108,7 +115,6 @@
 
 .list {
   position: absolute;
-  width: 215px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: -20px;
@@ -164,11 +170,11 @@
 .setting_text {
   margin-left: 18px;
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 18px;
-  line-height: 70.9%;
+  line-height: 100.9%;
   &:hover {
-    font-weight: 400;
+    font-weight: 500;
   }
 }
 
