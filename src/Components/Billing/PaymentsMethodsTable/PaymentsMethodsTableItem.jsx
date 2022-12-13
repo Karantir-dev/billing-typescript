@@ -134,7 +134,7 @@ export default function Component(props) {
             </>
           ) : (
             <div className={s.editBlock}>
-              <button onClick={editNameHandler}>
+              <button className={s.editBtnOk} onClick={editNameHandler}>
                 <CheckEdit />
               </button>
               <input value={editName} onChange={e => setEditName(e.target.value)} />
