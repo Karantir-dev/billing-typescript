@@ -106,7 +106,7 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.item}>
+    <div className={cn(s.item, { [s.edited]: isEdit })}>
       <div className={s.tableBlockFirst}>
         {mobile && <div className={s.item_title}>{t('Name')}:</div>}
         <div

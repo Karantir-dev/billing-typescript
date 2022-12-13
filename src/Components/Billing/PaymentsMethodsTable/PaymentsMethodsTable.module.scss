@@ -6,7 +6,7 @@
 
 .tableHeader {
   display: none;
-  padding: 20px 23px 10px;
+  padding: 10px 23px 10px;
   width: 100%;
 }
 
@@ -87,17 +87,28 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre;
+
+  &.first_item {
+    display: flex;
+    flex-direction: row-reverse;
+
+    button {
+      margin-left: 10px;
+      position: relative;
+      top: 2px;
+    }
+  }
 }
 
-// .dotIcons {
-//   position: absolute;
-//   top: 10px;
-//   right: 20px;
-// }
+.dotIcons {
+  &:hover {
+    fill: url(#gradient);
+  }
+}
 
 .list {
   position: absolute;
-  width: 180px;
+  width: 215px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: -20px;
@@ -140,7 +151,7 @@
 
   svg,
   path {
-    fill: var(--transparent-color);
+    fill: var(--icon-color_2);
   }
   &:hover {
     svg,
@@ -233,7 +244,7 @@
     line-height: 130%;
 
     background: transparent;
-    
+
     color: var(--main-text);
   }
 }
@@ -301,13 +312,17 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px 10px;
+    padding: 10px 26px 10px;
   }
 
   .item {
     flex-direction: row;
     align-items: center;
     padding: 20px 26px;
+
+    &.edited {
+      padding: 11.5px 27px;
+    }
   }
 
   .tableBlockFirst,
@@ -348,13 +363,16 @@
 
     &.first_item {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       flex-direction: row;
 
       button {
         width: 20px;
         height: 20px;
         margin-right: 10px;
+        margin-top: 2px;
+        position: relative;
+        top: 1px;
         cursor: pointer;
 
         &:active {
@@ -385,11 +403,15 @@
 
 @media screen and (min-width: 1550px) {
   .tableHeader {
-    padding: 22px 27px 10px;
+    padding: 10px 27px 10px;
   }
 
   .item {
     padding: 22px 27px;
+
+    &.edited {
+      padding: 13.8px 27px;
+    }
   }
 
   .item_text {
@@ -424,7 +446,7 @@
 
 @media screen and (min-width: 1918px) {
   .tableHeader {
-    padding: 22px 27px 10px;
+    padding: 10px 27px 10px;
   }
 
   .item_text {
