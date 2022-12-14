@@ -19,6 +19,7 @@ export default function ServicesSelect({ setServiseName }) {
     { linkName: 'big_vds', text: t('big_vds') },
     { linkName: 'dedicated', text: t('dedicated_servers') },
     { linkName: 'virtual', text: t('shared_hosting') },
+    { linkName: 'server-for-forex', text: t('servers_for_forex') },
   ]
 
   const handleBackdropClick = () => {
