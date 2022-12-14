@@ -48,6 +48,11 @@
   position: relative;
 }
 
+// .HintWrapper {
+//   max-width: 300px;
+//   white-space: break-spaces;
+// }
+
 .tableBlockFirst,
 .tableBlockSecond,
 .tableBlockThird,
@@ -91,6 +96,7 @@
   &.first_item {
     display: flex;
     flex-direction: row-reverse;
+    position: relative;
 
     button {
       margin-left: 10px;
