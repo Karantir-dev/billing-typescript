@@ -59,7 +59,7 @@ export default function Select(props) {
   }, [value, itemsList])
 
   useEffect(() => {
-    if (dropdown.current.scrollHeight === 260) {
+    if (dropdown.current?.scrollHeight === 260) {
       dropdown.current.classList.add(s.scrollable)
     }
   }, [isOpened])

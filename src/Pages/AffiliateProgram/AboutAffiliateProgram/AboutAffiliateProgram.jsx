@@ -18,13 +18,11 @@ export default function AboutAffiliateProgram() {
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const higherThan1550px = useMediaQuery({ query: '(min-width: 1550px)' })
   const descrWrapper = useRef(null)
-  const refLinkEl = useRef(null)
-  const promocodeEl = useRef(null)
   const referralLink = useSelector(affiliateSelectors.getRefLink)
   const promocode = useSelector(affiliateSelectors.getPromocode)
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
-  // const [serviceSelected, setServiceSelected] = useState(false)
+
   const [link, setLink] = useState('')
   const [promocodeCopied, setPromocodeCopied] = useState(false)
   const [refLinkCopied, setRefLinkCopied] = useState(false)
@@ -61,16 +59,17 @@ export default function AboutAffiliateProgram() {
     setLink(newLink)
   }
 
-  const handleCopyText = el => {
-    if (el.current === refLinkEl.current) {
+  const handleCopyText = field => {
+    if (field === 'link') {
       if (!link) {
         return
       }
+
       showPrompt(setRefLinkCopied)
-      navigator.clipboard.writeText(el.current.textContent)
-    } else {
+      navigator.clipboard.writeText(link)
+    } else if (field === 'promocode') {
       showPrompt(setPromocodeCopied)
-      navigator.clipboard.writeText(el.current.textContent)
+      navigator.clipboard.writeText(promocode)
     }
   }
 
@@ -141,18 +140,12 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}> {t('about_section.referral_link')}: </label>
           <div
             className={cn(s.copy_field, { [s.selected]: link })}
-            onClick={() => handleCopyText(refLinkEl)}
+            onClick={() => handleCopyText('link')}
             role="button"
             tabIndex={0}
             onKeyUp={() => {}}
             data-testid={'ref_link_field'}
           >
-            {/* <span
-              className={cn(s.field_text, { [s.selected]: serviceSelected })}
-              ref={refLinkEl}
-            >
-              {t('about_section.referral_link')}
-            </span> */}
             <input
               className={cn(s.field_text, { [s.selected]: link })}
               type="text"
@@ -180,15 +173,20 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}>{t('about_section.promocode')}:</label>
           <div
             className={cn(s.copy_field, s.selected)}
-            onClick={() => handleCopyText(promocodeEl)}
+            onClick={() => handleCopyText('promocode')}
             role="button"
             tabIndex={0}
             onKeyUp={() => {}}
             data-testid="promocode_field"
           >
-            <span className={cn(s.field_text, s.selected)} ref={promocodeEl}>
-              {promocode}
-            </span>
+            <input
+              className={cn(s.field_text, s.selected)}
+              type="text"
+              placeholder={'promocode'}
+              disabled
+              value={promocode}
+            />
+
             <Copy className={cn(s.copy_icon, s.selected)} />
 
             <CSSTransition
