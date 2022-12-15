@@ -65,21 +65,4 @@ describe('AboutAffiliateProgram Page jsx', () => {
     await user.click(screen.getByTestId('promocode_field'))
     screen.getByText('about_section.promocode_copied')
   })
-
-  test('referral link generation & refferal link copying', async () => {
-    renderComponent(767)
-
-    const user = userEvent.setup()
-
-    await user.click(screen.getByRole('button', { name: 'service_placeholder' }))
-    expect(screen.getByTestId('services_dropdown')).toBeVisible()
-
-    await user.click(screen.getByRole('button', { name: 'vds' }))
-    expect(screen.getByTestId('services_dropdown')).not.toBeVisible()
-    expect(screen.getByTestId('custom_select').textContent).toBe('vds')
-
-    expect(screen.queryByText('about_section.link_copied')).toBeNull()
-    await user.click(screen.getByTestId('ref_link_field'))
-    screen.getByText('about_section.link_copied')
-  })
 })
