@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Gradient from './Gradient'
 
 export default function SvgComponent(props) {
   const { className } = props
@@ -15,7 +14,6 @@ export default function SvgComponent(props) {
         d="M21.45 11.5h-3.662a3.141 3.141 0 0 0-3.14 3.136 3.141 3.141 0 0 0 3.14 3.137h3.662a1.57 1.57 0 0 0 1.57-1.569v-3.136a1.57 1.57 0 0 0-1.57-1.568Zm-3.662 4.182c-.577 0-1.046-.47-1.046-1.046a1.047 1.047 0 0 1 2.092 0c0 .577-.47 1.046-1.046 1.046Z"
         fill="#D9D0EB"
       />
-      <Gradient />
     </svg>
   )
 }
