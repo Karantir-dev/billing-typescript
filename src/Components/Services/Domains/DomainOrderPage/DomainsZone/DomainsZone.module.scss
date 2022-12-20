@@ -26,35 +26,25 @@
   }
 }
 
+.domainsBlock {
+  display: flex;
+  flex-direction: column;
+  max-width: 1250px;
+  margin-top: 10px;
+  gap: 20px;
+}
+
 .domainItemBg {
-  flex-basis: 100%;
-  margin-top: 20px;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-
+  border-radius: 5px;
+  padding: 2px;
   cursor: pointer;
 
   &.selected {
-    padding: 1.5px;
-    border-radius: 5px;
+    background: var(--line-gradient);
 
-    .domainName {
-      font-weight: 400;
-    }
-
-    .domainPrice {
-      font-weight: 400;
-    }
-
-    .saleEur {
-      font-weight: 400;
-    }
-  }
-
-  &:hover {
     .domainName {
       font-weight: 400;
     }
@@ -79,13 +69,10 @@
   box-shadow: var(--forms2_shadow);
   background: var(--forms_bgc_2);
   position: relative;
-}
 
-.domainsBlock {
-  display: flex;
-  max-width: 1250px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+  &:hover {
+    background-color: var(--domains_hover_bgc);
+  }
 }
 
 .domainName {
@@ -152,13 +139,23 @@
   text-transform: lowercase;
 }
 
+.checkbox {
+  background-color: var(--forms_bgc_4);
+}
+
 @media screen and (min-width: 768px) {
   .domainItemBg {
-    flex-basis: 21%;
-    margin-right: 25px;
+    // flex-basis: 21%;
+    // margin-right: 25px;
 
     &.transfer {
-      flex-basis: 31%;
+      // flex-basis: 31%;
     }
+  }
+
+  .domainsBlock {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
   }
 }
