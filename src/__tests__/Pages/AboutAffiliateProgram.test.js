@@ -72,6 +72,7 @@ describe('AboutAffiliateProgram Page jsx', () => {
     const user = userEvent.setup()
 
     await user.click(screen.getByRole('button', { name: 'service_placeholder' }))
+
     expect(screen.getByTestId('services_dropdown')).toBeVisible()
 
     await user.click(screen.getByRole('button', { name: 'vds' }))

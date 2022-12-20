@@ -18,7 +18,8 @@
 
 .check {
   display: none;
-  stroke: url(#gradient);
+  stroke: var(--accent-color-light);
+
   &.active {
     display: flex;
   }

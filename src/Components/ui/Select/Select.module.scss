@@ -115,7 +115,7 @@
     z-index: 11;
   }
 
-  &::after {
+  &.scrollable::after {
     content: '';
     position: absolute;
     bottom: 0;

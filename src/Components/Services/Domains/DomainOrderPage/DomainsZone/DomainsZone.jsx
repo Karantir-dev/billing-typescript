@@ -67,33 +67,41 @@ export default function ServicesPage(props) {
     }
   }
 
-  const setIsSelectedAllHandler = val => {
-    if (val) {
-      const items = []
+  /* 
+      commented all domains checkbox while we have a trouble with long request 
+    */
+  // const setIsSelectedAllHandler = val => {
+  //   if (val) {
+  //     const items = []
 
-      domains.forEach(d => {
-        items.push(d?.id?.$)
-      })
+  //     domains.forEach(d => {
+  //       items.push(d?.id?.$)
+  //     })
 
-      setSelectedDomains(items)
-    } else if (domains.length === selectedDomains.length) {
-      setSelectedDomains([])
-    }
-  }
+  //     setSelectedDomains(items)
+  //   } else if (domains.length === selectedDomains.length) {
+  //     setSelectedDomains([])
+  //   }
+  // }
 
   return (
     <div className={s.domainsZone}>
       <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
-      <div className={s.chooseAllBlock}>
+
+      {/* 
+        commented all domains checkbox while we have a trouble with long request 
+      */}
+      {/* <div className={s.chooseAllBlock}>
         <CheckBox
           initialState={domains.length === selectedDomains.length}
           setValue={val => setIsSelectedAllHandler(val)}
         />
         <div className={s.chooseAllText}>{t('Choose all', { ns: 'other' })}</div>
-      </div>
+      </div> */}
       <div className={s.domainsBlock}>
         {domains?.map(d => {
           const { id, tld, price } = d
+          const selected = itemIsSelected(id?.$)
 
           return (
             <div
@@ -102,19 +110,18 @@ export default function ServicesPage(props) {
               onKeyDown={null}
               key={id?.$}
               className={cn(s.domainItemBg, {
-                [s.selected]: itemIsSelected(id?.$),
+                [s.selected]: selected,
                 [s.transfer]: transfer,
               })}
               onClick={() => setIsSelectedHandler(id?.$)}
             >
-              <div className={s.domainItem}>
+              <div className={cn(s.domainItem)}>
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
-                <CheckBox initialState={itemIsSelected(id?.$)} />
-                <div
-                  className={cn(s.domainName, { [s.selected]: itemIsSelected(id?.$) })}
-                >
+                <CheckBox className={s.checkbox} initialState={selected} />
+
+                <div className={cn(s.domainName, { [s.selected]: selected })}>
                   {tld?.$}
                 </div>
                 <div className={s.pricesBlock}>
