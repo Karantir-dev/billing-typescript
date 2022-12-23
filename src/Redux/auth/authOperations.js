@@ -92,15 +92,16 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
     )
     .then(data => {
       if (data.status === 200) {
-        if (data?.data?.doc?.error?.$type === 'access') {
+        const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
+        if (tokenIsExpired) {
           dispatch(authActions.logoutSuccess())
         }
       } else {
-        throw new Error(data.doc.error.msg.$)
+        if (data.doc.error.msg.$) throw new Error(data.doc.error.msg.$)
       }
     })
     .catch(e => {
-      console.log('error during getCurrentSessionStatus', e.message)
+      console.log('error during getCurrentSessionStatus', e.message || e)
     })
 }
 

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { t } from 'i18next'
 import userActions from './userActions'
 import { axiosInstance } from './../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import cartOperations from '../cart/cartOperations'
 import actions from '../actions'
 
@@ -132,7 +132,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       dispatch(userActions.hideUserInfoLoading())
       setLoading && setLoading(false)
       console.log('getUserInfo - ', err.message)
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 
@@ -152,8 +152,8 @@ const removeItems = (sessionId, id) => dispatch => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
     })
     .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
+      console.log('removeItems - ', error)
+      checkIfTokenAlive(error.message, dispatch)
     })
 }
 
@@ -177,8 +177,8 @@ const getDashboardTickets = () => (dispatch, getState) => {
       userTickets(data, dispatch)
     })
     .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
+      console.log('getDashboardTickets - ', error)
+      checkIfTokenAlive(error.message, dispatch)
     })
 }
 
@@ -203,8 +203,8 @@ const getNotify = () => (dispatch, getState) => {
       userNotifications(data, dispatch)
     })
     .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
+      console.log('getNotify - ', error)
+      checkIfTokenAlive(error.message, dispatch)
     })
 }
 
@@ -229,8 +229,8 @@ const getTickets = () => (dispatch, getState) => {
       dispatch(userActions.setTickets(elem))
     })
     .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
+      console.log('getTickets - ', error)
+      checkIfTokenAlive(error.message, dispatch)
     })
 }
 
@@ -260,8 +260,8 @@ const sendVerificationEmail = email => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('error', error)
-      errorHandler(error.message, dispatch)
+      console.log('sendVerificationEmail - ', error)
+      checkIfTokenAlive(error.message, dispatch)
     })
     .finally(() => dispatch(actions.hideLoader()))
 }
@@ -295,11 +295,11 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
       dispatch(userActions.setEmailStatus('on'))
     })
     .catch(error => {
-      console.log('error', error)
+      console.log('verifyMainEmail - ', error)
       toast.error(t('unknown_error'), {
         position: 'bottom-right',
       })
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
     })
     .finally(() => dispatch(actions.hideLoader()))
 }

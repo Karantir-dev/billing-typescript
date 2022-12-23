@@ -9,6 +9,7 @@ import Div100vh from 'react-div-100vh'
 import cn from 'classnames'
 
 import s from './Container.module.scss'
+import { toast } from 'react-toastify'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -28,6 +29,7 @@ export default function Component({ children }) {
   const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
   const scrollForbidden = useSelector(selectors.isScrollForbidden)
+  const online = useSelector(selectors.onlineStatus)
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -37,12 +39,12 @@ export default function Component({ children }) {
 
     let intervalId
 
-    if (sessionId) {
+    if (sessionId && online) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
         // dispatch(userOperations.getUserInfo(sessionId))
-      }, 60000)
+      }, 3000)
     }
 
     return () => {
@@ -50,7 +52,7 @@ export default function Component({ children }) {
     }
 
     // getNotifyHandler()
-  }, [sessionId])
+  }, [sessionId, online])
 
   // const getNotifyHandler = () => {
   //   if (sessionId) {

@@ -9,6 +9,9 @@ const hideLoader = createAction('HIDE_LOADER')
 const disableScrolling = createAction('DISABLE_SCROLLING')
 const enableScrolling = createAction('ENABLE_SCROLLING')
 
+const setOnline = createAction('SET_ONLINE')
+const setOffline = createAction('SET_OFFLINE')
+
 export default {
   changeTheme,
   showLoader,
@@ -16,4 +19,6 @@ export default {
   changeIsPinned,
   disableScrolling,
   enableScrolling,
+  setOnline,
+  setOffline,
 }

@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { axiosInstance } from './../../config/axiosInstance'
 import { actions, affiliateActions, authSelectors } from '..'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -26,7 +26,7 @@ const getReferralLink = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getReferralLink - ', err.message)
     })
@@ -78,7 +78,7 @@ const getInitialIncomeInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialIncomeInfo - ', err.message)
       })
@@ -126,7 +126,7 @@ const getChartInfo =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getChartInfo - ', err.message)
       })
@@ -153,7 +153,7 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getDayDetails - ', err.message)
     })
@@ -203,7 +203,7 @@ const getInitialStatistics =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getInitialStatistics - ', err)
       })
@@ -254,7 +254,7 @@ const getFilteredStatistics =
           })
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getFilteredStatistics - ', err.message)
       })
@@ -285,7 +285,7 @@ const getNextPageStatistics =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getNextPageStatistics - ', err.message)
       })
@@ -329,7 +329,7 @@ const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
         })
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('dropFilters - ', err.message)
     })
