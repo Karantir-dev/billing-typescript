@@ -9,7 +9,6 @@ import Div100vh from 'react-div-100vh'
 import cn from 'classnames'
 
 import s from './Container.module.scss'
-import { toast } from 'react-toastify'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
