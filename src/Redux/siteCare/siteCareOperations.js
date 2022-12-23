@@ -3,7 +3,7 @@ import i18n from '../../i18n'
 import { actions, cartActions, siteCareActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import * as route from '../../routes'
 
 const getSiteCare =
@@ -44,7 +44,7 @@ const getSiteCare =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -106,7 +106,7 @@ const getSiteCareFilters =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -149,7 +149,7 @@ const getHistorySiteCare =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -253,7 +253,7 @@ const prolongSiteCare =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -333,7 +333,7 @@ const editSiteCare =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -412,7 +412,7 @@ const deleteSiteCare =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -471,7 +471,7 @@ const orderSiteCare =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -533,7 +533,7 @@ const orderSiteCarePricelist =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

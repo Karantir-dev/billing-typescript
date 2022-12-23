@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux'
-import Gradient from './Gradient'
 
 const SvgComponent = props => {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -16,7 +15,6 @@ const SvgComponent = props => {
           <path fill="#fff" d="M0 0h21v21H0z" />
         </clipPath>
       </defs>
-      <Gradient />
     </svg>
   )
 }

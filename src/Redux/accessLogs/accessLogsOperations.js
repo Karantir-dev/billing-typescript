@@ -3,7 +3,7 @@ import accessLogsActions from './accessLogsActions'
 import { axiosInstance } from './../../config/axiosInstance'
 import { actions } from '../'
 import i18n from 'i18next'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 const getAccessLogsHandler =
   (body = {}) =>
@@ -38,7 +38,7 @@ const getAccessLogsHandler =
       })
       .catch(error => {
         console.log('logs -', error.message)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -75,7 +75,7 @@ const getAccessLogsFiltersHandler =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         console.log('logs -', error.message)
       })
   }
@@ -127,7 +127,7 @@ const filterDataHandler =
             dispatch(actions.hideLoader())
           })
           .catch(error => {
-            errorHandler(error.message, dispatch)
+            checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
             console.log('logs -', error.message)
           })

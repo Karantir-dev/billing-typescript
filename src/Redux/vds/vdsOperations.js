@@ -4,7 +4,7 @@ import { actions, cartActions } from '../'
 import authSelectors from '../auth/authSelectors'
 import * as routes from '../../routes'
 import { toast } from 'react-toastify'
-import { errorHandler, renameAddonFields } from '../../utils'
+import { checkIfTokenAlive, renameAddonFields } from '../../utils'
 import { t } from 'i18next'
 import i18n from './../../i18n'
 
@@ -45,7 +45,7 @@ const getVDS =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
 
         console.log('getVDS - ', err.message)
@@ -75,7 +75,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getEditFieldsVDS - ', err.message)
     })
@@ -163,7 +163,7 @@ const editVDS =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         getVDSHandler && getVDSHandler()
         dispatch(actions.hideLoader())
         console.log('editVDS - ', err.message)
@@ -193,7 +193,7 @@ const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) =>
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getVDSOrderInfo - ', err.message)
     })
@@ -221,7 +221,7 @@ const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getNewPeriodInfo - ', err.message)
     })
@@ -254,7 +254,7 @@ const getTariffParameters =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('getTariffParameters - ', err)
       })
@@ -308,7 +308,7 @@ const changeOrderFormField =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('changeOrderFormField - ', err)
       })
@@ -357,7 +357,7 @@ const setOrderData =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('setOrderData - ', err)
       })
@@ -389,7 +389,7 @@ const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getStat
       })
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       closeFn()
       toast.error(t('unknown_error', { ns: 'other' }), {
         position: 'bottom-right',
@@ -431,7 +431,7 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       toast.error(t('unknown_error', { ns: 'other' }), {
         position: 'bottom-right',
       })
@@ -469,7 +469,7 @@ const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       toast.error(t('unknown_error', { ns: 'other' }), {
         position: 'bottom-right',
       })
@@ -502,7 +502,7 @@ const rebootServer = id => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       toast.error(t('unknown_error', { ns: 'other' }), {
         position: 'bottom-right',
       })
@@ -535,7 +535,7 @@ const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getIpInfo - ', err)
     })
@@ -564,7 +564,7 @@ const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) =>
       dispatch(actions.hideLoader())
     })
     .catch(err => {
-      errorHandler(err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
       console.log('getEditIPInfo - ', err)
     })
@@ -615,7 +615,7 @@ const changeDomainName =
         })
       })
       .catch(err => {
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('changeDomainName - ', err)
       })
@@ -701,7 +701,7 @@ const setVdsFilters =
           dispatch(getVDS({ setServers, setRights, setElemsTotal }))
         }
 
-        errorHandler(err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
         console.log('setVdsFilters - ', err)
       })

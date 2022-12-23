@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions } from '../'
 import i18n from '../../i18n'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 import { axiosInstance } from './../../config/axiosInstance'
 import usersActions from './usersActions'
@@ -32,7 +32,7 @@ const getUsers = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -64,7 +64,7 @@ const changeUserRights = (id, switchAccess, updateAccessFunc) => (dispatch, getS
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -95,7 +95,7 @@ const changeUserStatus = (id, changeStatus, updateStatusFunc) => (dispatch, getS
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -129,7 +129,7 @@ const createNewUser =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -170,7 +170,7 @@ const editUserInfo =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -216,7 +216,7 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
           },
         )
       }
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -251,7 +251,7 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -282,7 +282,7 @@ const getSubRights =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -310,7 +310,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -341,7 +341,7 @@ const getAvailableRights = (funcName, setRights) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

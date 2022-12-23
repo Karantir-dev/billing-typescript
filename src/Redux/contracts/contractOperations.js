@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { actions, contarctsActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 const getContracts = data => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -38,7 +38,7 @@ const getContracts = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -74,7 +74,7 @@ const getPdfFile = (elid, name) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -112,7 +112,7 @@ const getPrintFile = elid => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

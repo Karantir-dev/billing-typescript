@@ -28,6 +28,7 @@ export default function Component({ children }) {
   const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
   const scrollForbidden = useSelector(selectors.isScrollForbidden)
+  const online = useSelector(selectors.onlineStatus)
 
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
@@ -37,7 +38,7 @@ export default function Component({ children }) {
 
     let intervalId
 
-    if (sessionId) {
+    if (sessionId && online) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
@@ -50,7 +51,7 @@ export default function Component({ children }) {
     }
 
     // getNotifyHandler()
-  }, [sessionId])
+  }, [sessionId, online])
 
   // const getNotifyHandler = () => {
   //   if (sessionId) {

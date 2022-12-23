@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler, replaceAllFn } from '../../utils'
+import { checkIfTokenAlive, replaceAllFn } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
 
@@ -46,7 +46,7 @@ const getServersList = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -92,7 +92,7 @@ const getTarifs = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -139,7 +139,7 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -184,7 +184,7 @@ const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getSta
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -270,7 +270,7 @@ const getParameters =
 
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -326,7 +326,7 @@ const updatePrice =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -389,7 +389,7 @@ const orderServer =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -427,7 +427,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -526,7 +526,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -609,7 +609,7 @@ const editDedicServer =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -675,7 +675,7 @@ const editDedicServerNoExtraPay =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -734,7 +734,7 @@ const updatePriceEditModal =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -767,7 +767,7 @@ const getIPList = (elid, setIPlist, setRights) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -801,7 +801,7 @@ const getInfoEditIP = (elid, plid, setInitialState) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -843,7 +843,7 @@ const editIP =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -894,7 +894,7 @@ const removeIP = (elid, plid, handleRemoveIPModal) => (dispatch, getState) => {
         )
         handleRemoveIPModal()
       }
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -928,7 +928,7 @@ const orderIPInfo = (ipPlid, setInitialValues) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -973,7 +973,7 @@ const orderNewIP =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -1023,7 +1023,7 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1074,7 +1074,7 @@ const getProlongInfoForFewElems = (elid, setInitialState) => (dispatch, getState
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1106,7 +1106,7 @@ const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getS
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1161,7 +1161,7 @@ const payProlongPeriod =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -1228,7 +1228,7 @@ const payProlongPeriodFewElems =
             toastId: 'customId',
           })
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -1265,7 +1265,7 @@ const getServiceHistory =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -1296,7 +1296,7 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1331,7 +1331,7 @@ const rebootServer = (elid, manageModal) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1367,7 +1367,7 @@ const goToPanel = elid => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -1433,7 +1433,7 @@ const getDedicFilters =
         if (error.message.includes('filter')) {
           dispatch(getServersList({ p_num: 1 }))
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

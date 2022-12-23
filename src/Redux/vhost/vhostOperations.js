@@ -3,7 +3,7 @@ import i18n from './../../i18n'
 import { actions, cartActions, vhostActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import * as route from '../../routes'
 
 const getVhosts =
@@ -45,7 +45,7 @@ const getVhosts =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -107,7 +107,7 @@ const getVhostFilters =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -150,7 +150,7 @@ const getHistoryVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -194,7 +194,7 @@ const getInsructionVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -242,7 +242,7 @@ const openPlatformVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -343,7 +343,7 @@ const prolongVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -424,7 +424,7 @@ const editVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -476,7 +476,7 @@ const changeTariffVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -528,7 +528,7 @@ const changeTariffPriceListVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -577,7 +577,7 @@ const changeTariffSaveVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -637,7 +637,7 @@ const orderVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -700,7 +700,7 @@ const orderParamVhost =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
