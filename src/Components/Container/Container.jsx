@@ -44,7 +44,7 @@ export default function Component({ children }) {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
         // dispatch(userOperations.getUserInfo(sessionId))
-      }, 3000)
+      }, 60000)
     }
 
     return () => {
