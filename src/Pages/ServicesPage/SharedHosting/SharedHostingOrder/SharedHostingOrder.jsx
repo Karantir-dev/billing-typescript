@@ -3,7 +3,7 @@ import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Co
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { vhostOperations } from '../../../../Redux'
+import { userOperations, vhostOperations } from '../../../../Redux'
 import { PRIVACY_URL } from '../../../../config/config'
 import * as routes from '../../../../routes'
 
@@ -115,7 +115,12 @@ export default function Component() {
       datacenter: data?.datacenter,
       sok: 'ok',
     }
-    dispatch(vhostOperations.orderParamVhost(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(vhostOperations.orderParamVhost(d, setParamsData)),
+      ),
+    )
   }
 
   const parsePrice = price => {

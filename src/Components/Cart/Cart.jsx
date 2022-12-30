@@ -52,6 +52,7 @@ export default function Component() {
     'billing',
     'dedicated_servers',
     'crumbs',
+    'domains',
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -121,9 +122,7 @@ export default function Component() {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
-      ? Yup.bool().oneOf([true])
-      : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   // const offerTextHandler = () => {
@@ -602,9 +601,31 @@ export default function Component() {
         <b>{t('Active discounts')}</b>
         <br />
         <br />
-        {services?.map(e => (
-          <p key={e}>{e}</p>
-        ))}
+        {services?.map(e => {
+          function getString(str) {
+            let result = str?.match(/(-?\d+(\.\d+)?)/g)?.map(v => +v)
+            return result
+          }
+          if (getString(e)?.length !== 0) {
+            return (
+              <p
+                key={e}
+                className={s.discItem}
+                dangerouslySetInnerHTML={{
+                  __html: e
+                    ?.replace(' -', ':')
+                    ?.replace('%', '')
+                    ?.replace(
+                      getString(e?.replace(' -', ':'))[0],
+                      `<span style='color: #FA6848'>-${
+                        getString(e?.replace(' -', ':'))[0]
+                      }%</span>`,
+                    ),
+                }}
+              />
+            )
+          }
+        })}
         <br />
         <div className={s.actLine} />
         <br />
@@ -771,8 +792,9 @@ export default function Component() {
                           component="span"
                         />
                       </div>
-                      {values?.slecetedPayMethod?.name?.$?.includes('balance') &&
-                      values?.slecetedPayMethod?.paymethod_type?.$ === '0' ? null : (
+                      {(values?.slecetedPayMethod?.name?.$?.includes('balance') &&
+                        values?.slecetedPayMethod?.paymethod_type?.$ === '0') ||
+                      !values?.slecetedPayMethod ? null : (
                         <div className={s.formBlock}>
                           <div className={s.formBlockTitle}>{t('Payer')}:</div>
                           <div className={s.fieldsGrid}>
@@ -1041,7 +1063,7 @@ export default function Component() {
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
-                            {'Договор публичной оферты | Omro'}
+                            {t('Terms of Service', { ns: 'domains' })}
                           </a>
                         </div>
                       </div>

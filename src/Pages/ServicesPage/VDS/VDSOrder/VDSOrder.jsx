@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../../Components'
 import { Check } from '../../../../images'
-import { vdsOperations } from '../../../../Redux'
+import { userOperations, vdsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
 import { PRIVACY_URL } from '../../../../config/config'
 import cn from 'classnames'
@@ -279,14 +279,18 @@ export default function VDSOrder() {
     ).sale
 
     dispatch(
-      vdsOperations.setOrderData(
-        period,
-        count,
-        recipe,
-        values,
-        selectedTariffId,
-        parametersInfo.register,
-        saleMemory,
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          vdsOperations.setOrderData(
+            period,
+            count,
+            recipe,
+            values,
+            selectedTariffId,
+            parametersInfo.register,
+            saleMemory,
+          ),
+        ),
       ),
     )
   }

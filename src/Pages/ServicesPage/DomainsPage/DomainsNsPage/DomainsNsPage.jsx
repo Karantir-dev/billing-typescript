@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { PRIVACY_URL } from '../../../../config/config'
-import { domainsOperations } from '../../../../Redux'
+import { domainsOperations, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
@@ -92,7 +92,11 @@ export default function Component({ transfer = false }) {
       data['period'] = -200
     }
 
-    dispatch(domainsOperations.createDomain(data, navigate))
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(domainsOperations.createDomain(data, navigate)),
+      ),
+    )
   }
 
   // const openTermsHandler = link => {

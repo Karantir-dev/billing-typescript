@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 import { PRIVACY_URL } from '../../../../config/config'
-import { ftpOperations } from '../../../../Redux'
+import { ftpOperations, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './FTPOrder.module.scss'
@@ -131,7 +131,11 @@ export default function FTPOrder() {
   const handleSubmit = values => {
     const { datacenter, tarif, period, autoprolong } = values
 
-    dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif)),
+      ),
+    )
   }
 
   return (

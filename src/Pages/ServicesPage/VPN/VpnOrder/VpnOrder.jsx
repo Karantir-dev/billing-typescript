@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PRIVACY_URL } from '../../../../config/config'
 import { Formik, Form } from 'formik'
-import { vpnOperations } from '../../../../Redux'
+import { userOperations, vpnOperations } from '../../../../Redux'
 import s from './VpnOrder.module.scss'
 import * as routes from '../../../../routes'
 
@@ -109,7 +109,12 @@ export default function Component() {
       sok: 'ok',
       ...values,
     }
-    dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData)),
+      ),
+    )
   }
 
   return (
