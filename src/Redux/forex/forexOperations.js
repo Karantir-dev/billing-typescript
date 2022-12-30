@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
 import { actions, cartActions, forexActions } from '..'
@@ -44,7 +44,7 @@ const getForexList = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -109,7 +109,7 @@ const getTarifs =
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -156,7 +156,7 @@ const getParameters =
 
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -198,7 +198,7 @@ const orderForex =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -236,7 +236,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -313,7 +313,7 @@ const getCurrentForexInfo = (elid, setInitialParams) => (dispatch, getState) => 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -356,7 +356,7 @@ const editForex =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -396,7 +396,7 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -459,7 +459,7 @@ const getForexFilters =
         if (error.message.includes('filter')) {
           dispatch(getForexList({ p_num: 1 }))
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, ftpActions, cartActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
 
@@ -44,7 +44,7 @@ const getFTPList = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -89,7 +89,7 @@ const getTarifs =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -134,7 +134,7 @@ const getParameters =
 
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -176,7 +176,7 @@ const orderFTP = (autoprolong, datacenter, period, pricelist) => (dispatch, getS
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -200,7 +200,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       { responseType: 'blob' },
     )
     .then(response => {
-      
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
@@ -215,7 +214,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -277,7 +276,7 @@ const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) =
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -317,7 +316,7 @@ const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -348,7 +347,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -416,7 +415,7 @@ const getFTPFilters =
           dispatch(getFTPList({ p_num: 1 }))
         }
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

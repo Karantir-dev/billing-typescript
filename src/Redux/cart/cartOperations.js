@@ -10,7 +10,7 @@ import {
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -61,7 +61,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -113,7 +113,7 @@ const setBasketPromocode =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -146,7 +146,7 @@ const deleteBasketItem =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -180,7 +180,7 @@ const clearBasket = id => (dispatch, getState) => {
     .catch(error => {
       console.log('error', error)
       dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -217,7 +217,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -368,13 +368,13 @@ const setPaymentMethods =
           .then(() => dispatch(userOperations.getNotify()))
           .catch(error => {
             console.log('error', error)
-            errorHandler(error.message, dispatch)
+            checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
           })
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

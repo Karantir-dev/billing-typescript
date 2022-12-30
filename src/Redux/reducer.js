@@ -5,9 +5,9 @@ import { actions, authActions } from './'
 const initialState = {
   theme: 'light',
   isLoading: false,
-  userInfo: [],
   pinned: false,
   scrollForbidden: false,
+  online: true,
 }
 
 export const theme = createReducer(initialState.theme, {
@@ -31,6 +31,7 @@ export const scrollForbidden = createReducer(initialState.scrollForbidden, {
   [actions.enableScrolling]: () => false,
 })
 
-// export const userInfo = createReducer(initialState.userInfo, {
-//   [actions.getUserInfo]: state => {},
-// })
+export const online = createReducer(initialState.online, {
+  [actions.setOffline]: () => false,
+  [actions.setOnline]: () => true,
+})

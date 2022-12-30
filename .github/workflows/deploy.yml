@@ -1,8 +1,13 @@
-name: Ansible Deployment
+name: Deployment - Dev
 on:
   push:
     branches:
       - 'dev'
+
+env:
+  IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-dev
+  PREFIX: _${{ github.run_number }}
+
 jobs:
   jest:
     runs-on: ubuntu-latest
@@ -54,40 +59,81 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always()
 
-  deploy:
-    needs: [jest]
-    name: Deploy image to server
+  build_and_push:
+      needs: [jest, eslint]
+      name: Build and push bill docker
+      runs-on: ubuntu-latest
+      env:
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v1
+
+        - name: Get current date
+          id: date
+          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+        - name: Test with environment variables
+          run: |
+            echo $TAG_NAME - $RELEASE_NAME
+          env:
+            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+
+        - name: Login to docker hub
+          run:
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+        - name: Build image
+          env:
+            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          run: |
+            docker build -f Dockerfile -t $IMAGE_NAME .
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$RELEASE_NAME
+        - name: Push in dockerhub
+          env:
+            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          run: |
+            docker push $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:$RELEASE_NAME
+        - name: Push status
+          uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: all
+            mention: 'channel'
+            channel: 'github-actions'
+            if_mention: always
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: always()
+
+
+  deploy_on_server:
+    needs: [build_and_push]
+    name: Deploy version on server
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H')"
-      
-      - name: Test with environment variables
-        run: echo $TAG_NAME - $RELEASE_NAME
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Login to docker hub
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}
+      - name: Test with environment variables
         run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t zomro-bill-dev .
-          docker tag zomro-bill-dev:latest zomrocom/zomro-bill-dev:latest
-          docker tag zomrocom/zomro-bill-dev:latest zomrocom/zomro-bill-dev:$RELEASE_NAME
-          docker push $DOCKER_USERNAME/zomro-bill-dev:latest
-          docker push $DOCKER_USERNAME/zomro-bill-dev:$RELEASE_NAME
+          echo $TAG_NAME - $RELEASE_NAME
+        env:
+          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+
       - name: Update Version
         env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}
+          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
         run: |
-          sed -i "s|zomrocom/zomro-bill-dev|zomrocom/zomro-bill-dev:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -102,7 +148,7 @@ jobs:
 
       - name: Verify deployment
         run: kubectl rollout status deployment/zomro-bill-deployment -n dev
-      
+
       - name: Deploy status
         uses: 8398a7/action-slack@v3
         with:

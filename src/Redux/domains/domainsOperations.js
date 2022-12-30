@@ -3,7 +3,7 @@ import i18n from './../../i18n'
 import { actions, domainsActions, cartActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import * as route from '../../routes'
 
 const getDomains =
@@ -45,7 +45,7 @@ const getDomains =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -105,7 +105,7 @@ const getDomainsFilters =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -197,7 +197,7 @@ const getDomainsOrderName =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -353,7 +353,7 @@ const getDomainsContacts =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -388,7 +388,7 @@ const getDomainsNS =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -452,7 +452,7 @@ const getDomainPaymentInfo =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -497,7 +497,7 @@ const createDomain =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -649,7 +649,7 @@ const renewService =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -693,7 +693,7 @@ const deleteDomain =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -737,7 +737,7 @@ const getHistoryDomain =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -778,7 +778,7 @@ const getWhoisDomain =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -836,7 +836,7 @@ const editDomainNS =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -931,7 +931,7 @@ const editDomain =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -1004,7 +1004,7 @@ const getServiceProfile =
       .catch(error => {
         console.log(error)
 
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

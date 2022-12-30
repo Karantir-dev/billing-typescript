@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 import i18n from '../../i18n'
 import * as route from '../../routes'
 import { actions, cartActions, dnsActions } from '..'
@@ -44,7 +44,7 @@ const getDNSList = data => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -92,7 +92,7 @@ const getTarifs =
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -158,7 +158,7 @@ const getParameters =
 
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -192,7 +192,7 @@ const updateDNSPrice =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -234,7 +234,7 @@ const orderDNS =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -272,7 +272,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -363,7 +363,7 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -404,7 +404,7 @@ const editDNS = (elid, autoprolong, handleModal) => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -438,7 +438,7 @@ const getDNSExtraPayText =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -480,7 +480,7 @@ const editDNSWithExtraCosts =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -510,7 +510,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -573,7 +573,7 @@ const getDNSFilters =
         if (error.message.includes('filter')) {
           dispatch(getDNSList({ p_num: 1 }))
         }
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -604,7 +604,7 @@ const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState)
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

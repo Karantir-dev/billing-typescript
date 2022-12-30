@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { actions, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import i18n from '../../i18n'
-import { errorHandler } from '../../utils'
+import { checkIfTokenAlive } from '../../utils'
 
 const getPayers =
   (body = {}) =>
@@ -38,7 +38,7 @@ const getPayers =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -71,7 +71,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
     })
     .catch(error => {
       console.log('error', error)
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -117,7 +117,7 @@ const deletePayer = elid => (dispatch, getState) => {
         )
       }
 
-      errorHandler(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -255,7 +255,7 @@ const getPayerModalInfo =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -394,7 +394,7 @@ const getPayerEditInfo =
       })
       .catch(error => {
         console.log('error', error)
-        errorHandler(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
