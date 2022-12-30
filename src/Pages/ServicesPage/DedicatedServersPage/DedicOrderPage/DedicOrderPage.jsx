@@ -18,7 +18,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import { dedicOperations, dedicSelectors } from '../../../../Redux'
+import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
 import { PRIVACY_URL } from '../../../../config/config'
 import * as route from '../../../../routes'
 
@@ -282,20 +282,24 @@ export default function DedicOrderPage() {
     } = values
 
     dispatch(
-      dedicOperations.orderServer(
-        autoprolong,
-        datacenter,
-        period,
-        tarif,
-        domainname,
-        ostempl,
-        recipe,
-        portSpeed,
-        portSpeedName,
-        managePanelName,
-        ipTotal,
-        ipName,
-        managePanel,
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          dedicOperations.orderServer(
+            autoprolong,
+            datacenter,
+            period,
+            tarif,
+            domainname,
+            ostempl,
+            recipe,
+            portSpeed,
+            portSpeedName,
+            managePanelName,
+            ipTotal,
+            ipName,
+            managePanel,
+          ),
+        ),
       ),
     )
   }

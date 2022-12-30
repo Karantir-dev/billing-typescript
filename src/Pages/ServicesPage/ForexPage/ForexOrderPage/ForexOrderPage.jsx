@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
-import { forexOperations, selectors } from '../../../../Redux'
+import { forexOperations, selectors, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
@@ -144,13 +144,17 @@ export default function ForexOrderPage() {
     const { datacenter, pricelist, period, autoprolong, server_package } = values
 
     dispatch(
-      forexOperations.orderForex({
-        autoprolong,
-        datacenter,
-        period,
-        pricelist,
-        server_package,
-      }),
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          forexOperations.orderForex({
+            autoprolong,
+            datacenter,
+            period,
+            pricelist,
+            server_package,
+          }),
+        ),
+      ),
     )
   }
 

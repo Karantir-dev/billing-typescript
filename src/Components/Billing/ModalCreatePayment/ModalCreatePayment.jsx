@@ -290,8 +290,49 @@ export default function Component(props) {
                 <Form>
                   <ScrollToFieldError />
                   <div className={s.form}>
+            
                     <div className={s.formBlock}>
-                      <div className={s.formBlockTitle}>1. {t('Payers choice')}</div>
+                      <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
+                      <div className={s.formFieldsBlock}>
+                        {paymentsMethodList?.map(method => {
+                          const {
+                            paymethod,
+                            image,
+                            name,
+                            payment_minamount,
+                            payment_maxamount,
+                          } = method
+                          return (
+                            <button
+                              onClick={() => {
+                                setFieldValue('slecetedPayMethod', method)
+                                setMinAmount(Number(payment_minamount?.$))
+                                setMaxAmount(Number(payment_maxamount?.$))
+                              }}
+                              type="button"
+                              className={cn(s.paymentMethodBtn, {
+                                [s.selected]:
+                                  paymethod?.$ ===
+                                  values?.slecetedPayMethod?.paymethod?.$,
+                              })}
+                              key={paymethod?.$}
+                            >
+                              <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                              <span>{name?.$}</span>
+                              <Check className={s.iconCheck} />
+                            </button>
+                          )
+                        })}
+                      </div>
+                      <ErrorMessage
+                        className={s.error_message}
+                        name={'slecetedPayMethod'}
+                        component="span"
+                      />
+                    </div>
+
+                    <div className={s.formBlock}>
+                      <div className={s.formBlockTitle}>2. {t('Payers choice')}</div>
                       <div className={cn(s.formFieldsBlock, s.first)}>
                         <div className={s.addPayerBlock}>
                           <Select
@@ -476,45 +517,7 @@ export default function Component(props) {
                         </div>
                       </div>
                     </div>
-                    <div className={s.formBlock}>
-                      <div className={s.formBlockTitle}>2. {t('Payment method')}</div>
-                      <div className={s.formFieldsBlock}>
-                        {paymentsMethodList?.map(method => {
-                          const {
-                            paymethod,
-                            image,
-                            name,
-                            payment_minamount,
-                            payment_maxamount,
-                          } = method
-                          return (
-                            <button
-                              onClick={() => {
-                                setFieldValue('slecetedPayMethod', method)
-                                setMinAmount(Number(payment_minamount?.$))
-                                setMaxAmount(Number(payment_maxamount?.$))
-                              }}
-                              type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod?.$ ===
-                                  values?.slecetedPayMethod?.paymethod?.$,
-                              })}
-                              key={paymethod?.$}
-                            >
-                              <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                              <span>{name?.$}</span>
-                              <Check className={s.iconCheck} />
-                            </button>
-                          )
-                        })}
-                      </div>
-                      <ErrorMessage
-                        className={s.error_message}
-                        name={'slecetedPayMethod'}
-                        component="span"
-                      />
-                    </div>
+
                     <div
                       className={cn(s.formBlock, s.last, {
                         [s.border]:

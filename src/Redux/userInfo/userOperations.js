@@ -304,6 +304,40 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
     .finally(() => dispatch(actions.hideLoader()))
 }
 
+const cleanBsketHandler = func => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'basket',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
+      const { billorder } = data.doc
+      if (billorder) {
+        dispatch(cartOperations.clearBasket(billorder?.$))
+      }
+    })
+    .then(() => func && func())
+    .catch(error => {
+      dispatch(actions.hideLoader())
+      toast.error(t('unknown_error'), {
+        position: 'bottom-right',
+      })
+      checkIfTokenAlive(error.message, dispatch)
+    })
+}
+
 export default {
   getUserInfo,
   removeItems,
@@ -312,4 +346,5 @@ export default {
   getTickets,
   sendVerificationEmail,
   verifyMainEmail,
+  cleanBsketHandler,
 }

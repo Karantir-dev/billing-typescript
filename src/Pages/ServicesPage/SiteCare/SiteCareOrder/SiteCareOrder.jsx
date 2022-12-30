@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { PRIVACY_URL } from '../../../../config/config'
-import { siteCareOperations } from '../../../../Redux'
+import { siteCareOperations, userOperations } from '../../../../Redux'
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
 import * as routes from '../../../../routes'
@@ -110,7 +110,12 @@ export default function Component() {
       sok: 'ok',
       ...values,
     }
-    dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData)),
+      ),
+    )
   }
 
   const validationSchema = Yup.object().shape({
