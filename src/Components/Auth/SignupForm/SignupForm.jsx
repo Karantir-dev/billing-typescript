@@ -111,7 +111,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   }
 
   useEffect(() => {
-    if (geoCountryId === '230' || geoCountryId === '182') {
+    if (geoCountryId === '182') {
       setInterval(() => timer(seconds), 1000)
     }
   }, [geoCountryId])
@@ -122,7 +122,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     }
   }, [seconds])
 
-  if (geoCountryId === '230' || geoCountryId === '182') {
+  if (geoCountryId === '182') {
     return (
       <div className={s.form_wrapper}>
         <LoginBtnBlock />
