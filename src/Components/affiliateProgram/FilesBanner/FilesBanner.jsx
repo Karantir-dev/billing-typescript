@@ -15,7 +15,7 @@ export default function Banner({ dataTestid }) {
 
       <a
         className={s.download_link}
-        href={isEnglishInterface ? '/banners_en.zip' : '/banners.zip'}
+        href={isEnglishInterface ? '/banners.zip' : '/banners.zip'}
         download
       >
         <span className={s.btn_text}>{t('about_section.banners_download_link')}</span>
