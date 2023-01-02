@@ -118,7 +118,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
   useEffect(() => {
     if (seconds <= 0) {
-      window.location.href = 'https://cp.omro.host/'
+      window.location.href = 'https://cp.omro.host/signup'
     }
   }, [seconds])
 
@@ -128,13 +128,13 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         <LoginBtnBlock />
         <div className={classNames(s.form, s.rusForm)}>
           <span className={s.rusText}>
-            Здравствуйте. Мы видим, что Вы из Российской Федерации. К сожалению, гражданам
-            РФ регистрация на данный момент недоступна. Вы можете купить услуги другой
-            хостинговой компании <a href="https://cp.omro.host/">ТУТ</a>.
+            {t('rus_hello')} <a href="https://cp.omro.host/signup">{t('HERE')}</a>.
           </span>
 
           <div className={s.redirectBlock}>
-            <span>Переход на omro.com через {seconds <= 0 ? '0' : seconds} сек.</span>
+            <span>
+              {t('Go to omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
+            </span>
           </div>
         </div>
       </div>
