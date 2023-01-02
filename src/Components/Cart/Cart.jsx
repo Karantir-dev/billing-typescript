@@ -1059,7 +1059,7 @@ export default function Component() {
                           {/* <br /> */}{' '}
                           <a
                             target="_blank"
-                            href={'https://omro.host/oferta'}
+                            href={PRIVACY_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
