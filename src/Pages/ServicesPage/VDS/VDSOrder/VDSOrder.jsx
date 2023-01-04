@@ -377,7 +377,7 @@ export default function VDSOrder() {
             Control_panel:
               dataFromSite?.Control_panel || parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
-            agreement: checkboxEl.current?.checked ? 'on' : 'off',
+            agreement: 'on', //checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: totalPrice,
             finalTotalPrice: +(totalPrice * count).toFixed(4),
           }}
@@ -617,7 +617,7 @@ export default function VDSOrder() {
                       />
                     </div>
 
-                    <div ref={agreementEl}>
+                    {/* <div ref={agreementEl}>
                       <div className={s.agreement_wrapper}>
                         <div className={s.checkbox_wrapper}>
                           <input
@@ -655,7 +655,7 @@ export default function VDSOrder() {
                         name="agreement"
                         component="p"
                       />
-                    </div>
+                    </div> */}
                   </>
                 )}
 

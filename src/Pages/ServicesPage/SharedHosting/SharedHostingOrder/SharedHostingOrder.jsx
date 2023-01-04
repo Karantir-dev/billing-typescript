@@ -31,7 +31,7 @@ export default function Component() {
   const [paramsData, setParamsData] = useState(null)
 
   const [autoprolong, setAutoprolong] = useState(null)
-  const [licence_agreement, setLicence_agreement] = useState(false)
+  const [licence_agreement, setLicence_agreement] = useState(true)
 
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
 
@@ -109,7 +109,7 @@ export default function Component() {
 
     const d = {
       period,
-      licence_agreement: licence_agreement ? 'on' : 'off',
+      licence_agreement: 'on', //licence_agreement ? 'on' : 'off',
       autoprolong,
       pricelist: price,
       datacenter: data?.datacenter,
@@ -177,7 +177,7 @@ export default function Component() {
             setPeriod(item)
             setPrice(null)
             setParamsData(null)
-            setLicence_agreement(false)
+            // setLicence_agreement(false)
             dispatch(vhostOperations.orderVhost({ period: item }, setData))
           }}
           value={period}
@@ -232,7 +232,7 @@ export default function Component() {
                 isShadow
               />
             ) : null}
-            <div ref={licenseBlock} className={s.useFirstCheck}>
+            {/* <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}
                 setValue={item => {
@@ -250,7 +250,7 @@ export default function Component() {
                   { ns: 'domains' },
                 )}"`}</a>
               </span>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

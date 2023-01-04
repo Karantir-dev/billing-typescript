@@ -33,7 +33,7 @@ export default function Component() {
 
   const [paramsData, setParamsData] = useState(null)
 
-  const [licence_agreement, setLicence_agreement] = useState(false)
+  const [licence_agreement, setLicence_agreement] = useState(true)
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
   const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
 
@@ -99,13 +99,13 @@ export default function Component() {
   }
 
   const buyVhostHandler = values => {
-    if (!licence_agreement) {
-      setLicence_agreement_error(true)
-      return licenseBlock.current.scrollIntoView()
-    }
+    // if (!licence_agreement) {
+    //   setLicence_agreement_error(true)
+    //   return licenseBlock.current.scrollIntoView()
+    // }
 
     const d = {
-      licence_agreement: licence_agreement ? 'on' : 'off',
+      licence_agreement: 'on', //licence_agreement ? 'on' : 'off',
       sok: 'ok',
       ...values,
     }
@@ -142,8 +142,8 @@ export default function Component() {
                   getElement={item => {
                     setFieldValue('period', item)
                     setFieldValue('pricelist', '')
-                    setFieldValue('licence_agreement_error', 'off')
-                    setLicence_agreement(false)
+                    // setFieldValue('licence_agreement_error', 'off')
+                    // setLicence_agreement(false)
                     setParamsData(null)
                     dispatch(vpnOperations.orderSiteCare({ period: item }, setData))
                   }}
@@ -207,7 +207,7 @@ export default function Component() {
                         isShadow
                       />
 
-                      <div ref={licenseBlock} className={s.useFirstCheck}>
+                      {/* <div ref={licenseBlock} className={s.useFirstCheck}>
                         <CheckBox
                           initialState={licence_agreement}
                           setValue={item => {
@@ -225,7 +225,7 @@ export default function Component() {
                             { ns: 'domains' },
                           )}"`}</a>
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}

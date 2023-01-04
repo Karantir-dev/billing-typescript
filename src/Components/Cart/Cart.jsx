@@ -34,7 +34,7 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL } from '../../config/config'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -1053,17 +1053,26 @@ export default function Component() {
                           touched={!!touched[selectedPayerFields?.offer_field]}
                         />
                         <div className={s.offerBlockText}>
-                          {t('I agree with the terms of the offer', {
+                          {t('I agree with', {
                             ns: 'payers',
                           })}
                           {/* <br /> */}{' '}
                           <a
                             target="_blank"
-                            href={'https://omro.host/oferta'}
+                            href={PRIVACY_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
                             {t('Terms of Service', { ns: 'domains' })}
+                          </a>{' '}
+                          |{' '}
+                          <a
+                            target="_blank"
+                            href={OFERTA_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of the offer', { ns: 'domains' })}
                           </a>
                         </div>
                       </div>

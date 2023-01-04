@@ -150,7 +150,7 @@ export default function FTPOrder() {
           datacenter: tarifList?.currentDatacenter,
           tarif: dataFromSite?.pricelist || null,
           period: '1',
-          license: null,
+          license: true,
         }}
         onSubmit={handleSubmit}
       >
@@ -285,7 +285,7 @@ export default function FTPOrder() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -315,7 +315,7 @@ export default function FTPOrder() {
                     {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 

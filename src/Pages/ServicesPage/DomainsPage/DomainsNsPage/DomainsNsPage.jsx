@@ -92,6 +92,12 @@ export default function Component({ transfer = false }) {
       data['period'] = -200
     }
 
+    for (let key in values) {
+      if (key?.includes('licence_agreement_')) {
+        data[key] = 'on'
+      }
+    }
+
     dispatch(
       userOperations.cleanBsketHandler(() =>
         dispatch(domainsOperations.createDomain(data, navigate)),
@@ -360,7 +366,7 @@ export default function Component({ transfer = false }) {
                                     {t('Total payable')}: {sums[3]} EUR
                                   </div>
                                 </div>
-                                <div className={s.useFirstCheck}>
+                                {/* <div className={s.useFirstCheck}>
                                   <CheckBox
                                     initialState={
                                       values[`licence_agreement_${select}`] === 'on'
@@ -383,7 +389,7 @@ export default function Component({ transfer = false }) {
                                       rel="noreferrer"
                                     >{`"${t('Terms of Service')}"`}</a>
                                   </span>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>
