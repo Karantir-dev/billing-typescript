@@ -170,7 +170,7 @@ export default function ForexOrderPage() {
           datacenter: tarifList?.currentDatacenter,
           pricelist: dataFromSite?.pricelist || null,
           period: dataFromSite ? dataFromSite?.period : '1',
-          license: null,
+          license: true,
           autoprolong: dataFromSite ? dataFromSite?.autoprolong : '1',
           autoprolonglList: dataFromSite
             ? parameters?.paramsList?.find(elem => elem?.$name === 'autoprolong')?.val
@@ -388,7 +388,7 @@ export default function ForexOrderPage() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -418,7 +418,7 @@ export default function ForexOrderPage() {
                     {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 

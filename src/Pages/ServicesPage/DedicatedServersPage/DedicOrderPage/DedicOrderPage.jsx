@@ -320,7 +320,7 @@ export default function DedicOrderPage() {
           domainname: '',
           ipTotal: '1',
           price: null,
-          license: null,
+          license: true,
         }}
         onSubmit={handleSubmit}
       >
@@ -759,7 +759,7 @@ export default function DedicOrderPage() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -789,7 +789,7 @@ export default function DedicOrderPage() {
                     {!values.license && touched?.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 
