@@ -106,7 +106,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
                 {t('per month', { ns: 'other' })}
               </span>
               <span>
-                {t('amount', { ns: 'vds' })}: {el?.count} {t('psc.', { ns: 'vds' })}
+                {t('amount', { ns: 'vds' })}: {el?.count} {t('pcs.', { ns: 'vds' })}
               </span>
               <span></span>
             </div>

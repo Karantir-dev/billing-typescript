@@ -748,7 +748,7 @@ export default function DedicOrderPage() {
                       itemsList={values?.ipList?.map(el => {
                         return {
                           label: `${el?.value}
-                          ${t('psc.', {
+                          ${t('pcs.', {
                             ns: 'vds',
                           })}
                           (${el?.cost} EUR)`,
