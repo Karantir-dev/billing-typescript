@@ -8,7 +8,8 @@
   ],
   "plugins": ["react", "import", "jsx-a11y", "jest", "auto-import"],
   "rules": {
-    "no-unused-vars": ["warn"],
+    "no-unused-vars": ["error"],
+    "import/no-duplicates": ["error", { "considerQueryString": true }],
     "react/prop-types": 0,
     "jsx-a11y/no-autofocus": 0,
     "react/no-children-prop": 0,
