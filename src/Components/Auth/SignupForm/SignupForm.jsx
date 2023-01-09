@@ -127,13 +127,13 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         <LoginBtnBlock />
         <div className={classNames(s.form, s.rusForm)}>
           <span className={s.rusText}>
-            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'omro.host'}</a>.{' '}
+            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'cp.omro.host'}</a>.{' '}
             {t('rus_hello_2')}
           </span>
 
           <div className={s.redirectBlock}>
             <span>
-              {t('Go to omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
+              {t('Go to cp.omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
             </span>
           </div>
         </div>
