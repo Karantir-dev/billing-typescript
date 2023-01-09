@@ -1,17 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react'
-import {
-  BreadCrumbs,
-  Select,
-  VpnTarifCard,
-  Button,
-  CheckBox,
-} from '../../../../Components'
+import React, { useEffect, useState } from 'react'
+import { BreadCrumbs, Select, VpnTarifCard, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { PRIVACY_URL } from '../../../../config/config'
 import { Formik, Form } from 'formik'
-import { vpnOperations } from '../../../../Redux'
+import { userOperations, vpnOperations } from '../../../../Redux'
 import s from './VpnOrder.module.scss'
 import * as routes from '../../../../routes'
 
@@ -26,15 +19,12 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const location = useLocation()
-  const licenseBlock = useRef()
   const navigate = useNavigate()
 
   const [data, setData] = useState(null)
 
   const [paramsData, setParamsData] = useState(null)
 
-  const [licence_agreement, setLicence_agreement] = useState(false)
-  const [licence_agreement_error, setLicence_agreement_error] = useState(false)
   const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
 
   useEffect(() => {
@@ -99,17 +89,22 @@ export default function Component() {
   }
 
   const buyVhostHandler = values => {
-    if (!licence_agreement) {
-      setLicence_agreement_error(true)
-      return licenseBlock.current.scrollIntoView()
-    }
+    // if (!licence_agreement) {
+    //   setLicence_agreement_error(true)
+    //   return licenseBlock.current.scrollIntoView()
+    // }
 
     const d = {
-      licence_agreement: licence_agreement ? 'on' : 'off',
+      licence_agreement: 'on', //licence_agreement ? 'on' : 'off',
       sok: 'ok',
       ...values,
     }
-    dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData)),
+      ),
+    )
   }
 
   return (
@@ -137,8 +132,8 @@ export default function Component() {
                   getElement={item => {
                     setFieldValue('period', item)
                     setFieldValue('pricelist', '')
-                    setFieldValue('licence_agreement_error', 'off')
-                    setLicence_agreement(false)
+                    // setFieldValue('licence_agreement_error', 'off')
+                    // setLicence_agreement(false)
                     setParamsData(null)
                     dispatch(vpnOperations.orderSiteCare({ period: item }, setData))
                   }}
@@ -202,7 +197,7 @@ export default function Component() {
                         isShadow
                       />
 
-                      <div ref={licenseBlock} className={s.useFirstCheck}>
+                      {/* <div ref={licenseBlock} className={s.useFirstCheck}>
                         <CheckBox
                           initialState={licence_agreement}
                           setValue={item => {
@@ -220,7 +215,7 @@ export default function Component() {
                             { ns: 'domains' },
                           )}"`}</a>
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ErrorMessage, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -12,10 +12,8 @@ import {
   SoftwareOSSelect,
   Button,
 } from '../../../../Components'
-import { Check } from '../../../../images'
-import { vdsOperations } from '../../../../Redux'
+import { userOperations, vdsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -27,7 +25,6 @@ export default function VDSOrder() {
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
-  const checkboxEl = useRef()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -279,14 +276,18 @@ export default function VDSOrder() {
     ).sale
 
     dispatch(
-      vdsOperations.setOrderData(
-        period,
-        count,
-        recipe,
-        values,
-        selectedTariffId,
-        parametersInfo.register,
-        saleMemory,
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          vdsOperations.setOrderData(
+            period,
+            count,
+            recipe,
+            values,
+            selectedTariffId,
+            parametersInfo.register,
+            saleMemory,
+          ),
+        ),
       ),
     )
   }
@@ -373,7 +374,7 @@ export default function VDSOrder() {
             Control_panel:
               dataFromSite?.Control_panel || parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
-            agreement: checkboxEl.current?.checked ? 'on' : 'off',
+            agreement: 'on', //checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: totalPrice,
             finalTotalPrice: +(totalPrice * count).toFixed(4),
           }}
@@ -613,7 +614,7 @@ export default function VDSOrder() {
                       />
                     </div>
 
-                    <div ref={agreementEl}>
+                    {/* <div ref={agreementEl}>
                       <div className={s.agreement_wrapper}>
                         <div className={s.checkbox_wrapper}>
                           <input
@@ -651,7 +652,7 @@ export default function VDSOrder() {
                         name="agreement"
                         component="p"
                       />
-                    </div>
+                    </div> */}
                   </>
                 )}
 

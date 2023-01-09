@@ -26,6 +26,7 @@ export { default as Container } from './Container/Container'
 //==========================================UI==========================================//
 export { default as InputField } from './ui/InputField/InputField'
 export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneInput'
+export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
 
 export { default as Select } from './ui/Select/Select'
 export { default as SelectMultiple } from './ui/SelectMultiple/SelectMultiple'

@@ -102,7 +102,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
           <div>
             <div className={s.periodInfo}>
               <span>
-                {t('Period', { ns: 'other' })}: {el?.count}{' '}
+                {t('Period', { ns: 'other' })}: {el['item.period']?.$}{' '}
                 {t('per month', { ns: 'other' })}
               </span>
               <span>

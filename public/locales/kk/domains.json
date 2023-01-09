@@ -39,6 +39,7 @@
   "off": "Өшіру",
   "I have read and agree to the": "Оқып шығып, келісім бердім",
   "Terms of Service": "Қызмет көрсету шарттарына",
+  "Terms of the offer": "Құпиялылық саясаты",
   "Total payable": "Жалпы төленеді",
   "Disabled": "Өшіру",
   "Transfer": "Тасымалдау",
@@ -98,5 +99,7 @@
   "View/change the list of name servers": "Атау серверлерінің тізімін қарау/өзгерту",
   "record_format": "Жазба пішімі \"ns.example.com\" немесе \"ns.example.com/1.1.1.1\" немесе \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "NS қосыңыз",
-  "Configuring": "Конфигурациялануда"
+  "Configuring": "Конфигурациялануда",
+
+  "and": "және"
 }

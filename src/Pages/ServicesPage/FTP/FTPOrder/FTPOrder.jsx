@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox, Select } from '../../../../Components'
+import { BreadCrumbs, Button, Select } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,8 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
-import { ftpOperations } from '../../../../Redux'
+import { ftpOperations, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './FTPOrder.module.scss'
@@ -131,7 +130,11 @@ export default function FTPOrder() {
   const handleSubmit = values => {
     const { datacenter, tarif, period, autoprolong } = values
 
-    dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif))
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif)),
+      ),
+    )
   }
 
   return (
@@ -146,11 +149,11 @@ export default function FTPOrder() {
           datacenter: tarifList?.currentDatacenter,
           tarif: dataFromSite?.pricelist || null,
           period: '1',
-          license: null,
+          license: true,
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+        {({ values, setFieldValue, resetForm, setFieldTouched }) => {
           if (dataFromSite && values.tarif === dataFromSite?.pricelist && !parameters) {
             dispatch(
               ftpOperations.getParameters(
@@ -281,7 +284,7 @@ export default function FTPOrder() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -311,7 +314,7 @@ export default function FTPOrder() {
                     {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 

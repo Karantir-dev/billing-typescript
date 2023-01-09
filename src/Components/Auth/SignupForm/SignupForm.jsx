@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -8,15 +8,16 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import { authOperations } from '../../../Redux'
-import { SelectOfCountries, InputField, Button } from '../..'
+import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
+import classNames from 'classnames'
 
 const FACEBOOK_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
@@ -33,6 +34,8 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   const navigate = useNavigate()
   const location = useLocation()
   const recaptchaEl = useRef()
+
+  const [seconds, setSeconds] = useState(20)
 
   // const { executeRecaptcha } = useGoogleReCaptcha()
 
@@ -97,14 +100,52 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       ),
     )
   }
+
+  const timer = s => {
+    if (s - 1 <= 0) {
+      window.location.href = 'https://cp.omro.host/'
+    } else {
+      setSeconds(s => s - 1)
+    }
+  }
+
+  useEffect(() => {
+    if (geoCountryId === '182') {
+      setInterval(() => timer(seconds), 1000)
+    }
+  }, [geoCountryId])
+
+  useEffect(() => {
+    if (seconds <= 0) {
+      window.location.href = 'https://cp.omro.host/signup'
+    }
+  }, [seconds])
+
+  if (geoCountryId === '182') {
+    return (
+      <div className={s.form_wrapper}>
+        <LoginBtnBlock />
+        <div className={classNames(s.form, s.rusForm)}>
+          <span className={s.rusText}>
+            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'cp.omro.host'}</a>.{' '}
+            {t('rus_hello_2')}
+          </span>
+
+          <div className={s.redirectBlock}>
+            <span>
+              {t('20_sec_omro', {
+                sec: seconds <= 0 ? '0' : seconds,
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={s.form_wrapper}>
-      <div className={s.auth_links_wrapper}>
-        <Link className={s.auth_link} to={routes.LOGIN}>
-          {t('logIn')}
-        </Link>
-        <span className={s.current_auth_link}>{t('registration')}</span>
-      </div>
+      <LoginBtnBlock />
 
       <Formik
         initialValues={{

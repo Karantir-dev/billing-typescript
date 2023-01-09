@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
   Button,
-  CheckBox,
   SoftwareOSBtn,
   SoftwareOSSelect,
   Toggle,
@@ -18,8 +17,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
-import { dedicOperations, dedicSelectors } from '../../../../Redux'
-import { PRIVACY_URL } from '../../../../config/config'
+import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
@@ -282,20 +280,24 @@ export default function DedicOrderPage() {
     } = values
 
     dispatch(
-      dedicOperations.orderServer(
-        autoprolong,
-        datacenter,
-        period,
-        tarif,
-        domainname,
-        ostempl,
-        recipe,
-        portSpeed,
-        portSpeedName,
-        managePanelName,
-        ipTotal,
-        ipName,
-        managePanel,
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          dedicOperations.orderServer(
+            autoprolong,
+            datacenter,
+            period,
+            tarif,
+            domainname,
+            ostempl,
+            recipe,
+            portSpeed,
+            portSpeedName,
+            managePanelName,
+            ipTotal,
+            ipName,
+            managePanel,
+          ),
+        ),
       ),
     )
   }
@@ -316,7 +318,7 @@ export default function DedicOrderPage() {
           domainname: '',
           ipTotal: '1',
           price: null,
-          license: null,
+          license: true,
         }}
         onSubmit={handleSubmit}
       >
@@ -755,7 +757,7 @@ export default function DedicOrderPage() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -785,7 +787,7 @@ export default function DedicOrderPage() {
                     {!values.license && touched?.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 

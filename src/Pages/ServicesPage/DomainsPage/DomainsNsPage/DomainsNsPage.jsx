@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { PRIVACY_URL } from '../../../../config/config'
-import { domainsOperations } from '../../../../Redux'
+import { domainsOperations, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
@@ -92,7 +91,17 @@ export default function Component({ transfer = false }) {
       data['period'] = -200
     }
 
-    dispatch(domainsOperations.createDomain(data, navigate))
+    for (let key in values) {
+      if (key?.includes('licence_agreement_')) {
+        data[key] = 'on'
+      }
+    }
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(domainsOperations.createDomain(data, navigate)),
+      ),
+    )
   }
 
   // const openTermsHandler = link => {
@@ -356,7 +365,7 @@ export default function Component({ transfer = false }) {
                                     {t('Total payable')}: {sums[3]} EUR
                                   </div>
                                 </div>
-                                <div className={s.useFirstCheck}>
+                                {/* <div className={s.useFirstCheck}>
                                   <CheckBox
                                     initialState={
                                       values[`licence_agreement_${select}`] === 'on'
@@ -379,7 +388,7 @@ export default function Component({ transfer = false }) {
                                       rel="noreferrer"
                                     >{`"${t('Terms of Service')}"`}</a>
                                   </span>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>

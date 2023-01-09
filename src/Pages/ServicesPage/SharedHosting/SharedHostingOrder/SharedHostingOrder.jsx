@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Components'
+import { BreadCrumbs, Select, TarifCard, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { vhostOperations } from '../../../../Redux'
-import { PRIVACY_URL } from '../../../../config/config'
+import { userOperations, vhostOperations } from '../../../../Redux'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -31,9 +30,9 @@ export default function Component() {
   const [paramsData, setParamsData] = useState(null)
 
   const [autoprolong, setAutoprolong] = useState(null)
-  const [licence_agreement, setLicence_agreement] = useState(false)
+  const [licence_agreement] = useState(true)
 
-  const [licence_agreement_error, setLicence_agreement_error] = useState(false)
+  const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 
@@ -109,13 +108,18 @@ export default function Component() {
 
     const d = {
       period,
-      licence_agreement: licence_agreement ? 'on' : 'off',
+      licence_agreement: 'on', //licence_agreement ? 'on' : 'off',
       autoprolong,
       pricelist: price,
       datacenter: data?.datacenter,
       sok: 'ok',
     }
-    dispatch(vhostOperations.orderParamVhost(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(vhostOperations.orderParamVhost(d, setParamsData)),
+      ),
+    )
   }
 
   const parsePrice = price => {
@@ -172,7 +176,7 @@ export default function Component() {
             setPeriod(item)
             setPrice(null)
             setParamsData(null)
-            setLicence_agreement(false)
+            // setLicence_agreement(false)
             dispatch(vhostOperations.orderVhost({ period: item }, setData))
           }}
           value={period}
@@ -227,7 +231,7 @@ export default function Component() {
                 isShadow
               />
             ) : null}
-            <div ref={licenseBlock} className={s.useFirstCheck}>
+            {/* <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}
                 setValue={item => {
@@ -245,7 +249,7 @@ export default function Component() {
                   { ns: 'domains' },
                 )}"`}</a>
               </span>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

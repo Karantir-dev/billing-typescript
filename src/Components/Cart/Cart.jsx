@@ -34,7 +34,7 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL } from '../../config/config'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -52,6 +52,7 @@ export default function Component() {
     'billing',
     'dedicated_servers',
     'crumbs',
+    'domains',
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -121,9 +122,7 @@ export default function Component() {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
-      ? Yup.bool().oneOf([true])
-      : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   // const offerTextHandler = () => {
@@ -602,9 +601,31 @@ export default function Component() {
         <b>{t('Active discounts')}</b>
         <br />
         <br />
-        {services?.map(e => (
-          <p key={e}>{e}</p>
-        ))}
+        {services?.map(e => {
+          function getString(str) {
+            let result = str?.match(/(-?\d+(\.\d+)?)/g)?.map(v => +v)
+            return result
+          }
+          if (getString(e)?.length !== 0) {
+            return (
+              <p
+                key={e}
+                className={s.discItem}
+                dangerouslySetInnerHTML={{
+                  __html: e
+                    ?.replace(' -', ':')
+                    ?.replace('%', '')
+                    ?.replace(
+                      getString(e?.replace(' -', ':'))[0],
+                      `<span style='color: #FA6848'>-${
+                        getString(e?.replace(' -', ':'))[0]
+                      }%</span>`,
+                    ),
+                }}
+              />
+            )
+          }
+        })}
         <br />
         <div className={s.actLine} />
         <br />
@@ -709,186 +730,6 @@ export default function Component() {
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
-
-                      <div className={s.formBlock}>
-                        <div className={s.formBlockTitle}>{t('Payer')}:</div>
-                        <div className={s.fieldsGrid}>
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('Payer status', { ns: 'payers' })}:`}
-                            value={values.profiletype}
-                            getElement={item => setFieldValue('profiletype', item)}
-                            isShadow
-                            className={s.select}
-                            dropdownClass={s.selectDropdownClass}
-                            itemsList={payersSelectLists?.profiletype?.map(
-                              ({ $key, $ }) => ({
-                                label: t(`${$.trim()}`, { ns: 'payers' }),
-                                value: $key,
-                              }),
-                            )}
-                          />
-                          {values?.profiletype === '3' || values?.profiletype === '2' ? (
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name="name"
-                              label={`${t('Company name', { ns: 'payers' })}:`}
-                              placeholder={t('Enter data', { ns: 'other' })}
-                              isShadow
-                              className={s.inputBig}
-                              error={!!errors.name}
-                              touched={!!touched.name}
-                              isRequired
-                            />
-                          ) : null}
-                          {values?.profiletype === '1' && payersList?.length !== 0 && (
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('Choose payer', { ns: 'billing' })}:`}
-                              value={values.profile}
-                              getElement={item => setPayerHandler(item)}
-                              isShadow
-                              className={s.select}
-                              itemsList={[
-                                {
-                                  name: { $: t('Add new payer', { ns: 'payers' }) },
-                                  id: { $: 'new' },
-                                },
-                                ...payersList,
-                              ]?.map(({ name, id }) => ({
-                                label: t(`${name?.$?.trim()}`),
-                                value: id?.$,
-                              }))}
-                            />
-                          )}
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="person"
-                            label={
-                              values?.profiletype === '1'
-                                ? `${t('Full name', { ns: 'other' })}:`
-                                : `${t('The contact person', { ns: 'payers' })}:`
-                            }
-                            placeholder={t('Enter data', { ns: 'other' })}
-                            isShadow
-                            className={s.inputBig}
-                            error={!!errors.person}
-                            touched={!!touched.person}
-                            isRequired
-                          />
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('The country', { ns: 'other' })}:`}
-                            value={values.country}
-                            getElement={item => setFieldValue('country', item)}
-                            isShadow
-                            className={s.select}
-                            itemsList={payersSelectLists?.country?.map(
-                              ({ $key, $, $image }) => ({
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
-                                  </div>
-                                ),
-                                value: $key,
-                              }),
-                            )}
-                            isRequired
-                          />
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="city_physical"
-                            label={`${t('City', { ns: 'other' })}:`}
-                            placeholder={t('Enter city', { ns: 'other' })}
-                            isShadow
-                            className={s.inputBig}
-                            error={!!errors.city_physical}
-                            touched={!!touched.city_physical}
-                            // isRequired
-                          />
-                          <div className={cn(s.nsInputBlock, s.inputBig)}>
-                            {/* <InputField
-                              inputWrapperClass={s.inputHeight}
-                              inputClassName={s.inputAddressWrapp}
-                              name="address_physical"
-                              label={`${t('The address', { ns: 'other' })}:`}
-                              placeholder={t('Enter address', { ns: 'other' })}
-                              isShadow
-                              className={cn(s.inputBig, s.inputAddress)}
-                              error={!!errors.address_physical}
-                              touched={!!touched.address_physical}
-                              isRequired
-                            /> */}
-
-                            <InputWithAutocomplete
-                              fieldName="address_physical"
-                              error={!!errors.address_physical}
-                              touched={!!touched.address_physical}
-                              externalValue={values.address_physical}
-                              setFieldValue={val => {
-                                setFieldValue('address_physical', val)
-                              }}
-                            />
-
-                            <button type="button" className={s.infoBtn}>
-                              <Info />
-                              <div
-                                ref={dropdownDescription}
-                                className={s.descriptionBlock}
-                              >
-                                {t('address_format', { ns: 'other' })}
-                              </div>
-                            </button>
-                          </div>
-
-                          {payersSelectedFields?.eu_vat_field ? (
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name="eu_vat"
-                              label={`${t('EU VAT-number')}:`}
-                              placeholder={t('Enter data', { ns: 'other' })}
-                              isShadow
-                              className={s.inputBig}
-                              error={!!errors.eu_vat}
-                              touched={!!touched.eu_vat}
-                            />
-                          ) : null}
-                          {selectedPayerFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                initialState={
-                                  values[selectedPayerFields?.offer_field] || false
-                                }
-                                setValue={item =>
-                                  setFieldValue(
-                                    `${selectedPayerFields?.offer_field}`,
-                                    item,
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[selectedPayerFields?.offer_field]}
-                                touched={!!touched[selectedPayerFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer', {
-                                  ns: 'payers',
-                                })}
-                                <br />
-                                <a
-                                  target="_blank"
-                                  href={PRIVACY_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {selectedPayerFields?.offer_name}
-                                </a>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
                       <div className={s.formBlock}>
                         {!isLoading && paymentsMethodList?.length === 0 && (
                           <div className={s.notAllowPayMethod}>
@@ -951,7 +792,189 @@ export default function Component() {
                           component="span"
                         />
                       </div>
+                      {(values?.slecetedPayMethod?.name?.$?.includes('balance') &&
+                        values?.slecetedPayMethod?.paymethod_type?.$ === '0') ||
+                      !values?.slecetedPayMethod ? null : (
+                        <div className={s.formBlock}>
+                          <div className={s.formBlockTitle}>{t('Payer')}:</div>
+                          <div className={s.fieldsGrid}>
+                            <Select
+                              placeholder={t('Not chosen', { ns: 'other' })}
+                              label={`${t('Payer status', { ns: 'payers' })}:`}
+                              value={values.profiletype}
+                              getElement={item => setFieldValue('profiletype', item)}
+                              isShadow
+                              className={s.select}
+                              dropdownClass={s.selectDropdownClass}
+                              itemsList={payersSelectLists?.profiletype?.map(
+                                ({ $key, $ }) => ({
+                                  label: t(`${$.trim()}`, { ns: 'payers' }),
+                                  value: $key,
+                                }),
+                              )}
+                            />
+                            {values?.profiletype === '3' ||
+                            values?.profiletype === '2' ? (
+                              <InputField
+                                inputWrapperClass={s.inputHeight}
+                                name="name"
+                                label={`${t('Company name', { ns: 'payers' })}:`}
+                                placeholder={t('Enter data', { ns: 'other' })}
+                                isShadow
+                                className={s.inputBig}
+                                error={!!errors.name}
+                                touched={!!touched.name}
+                                isRequired
+                              />
+                            ) : null}
+                            {values?.profiletype === '1' && payersList?.length !== 0 && (
+                              <Select
+                                placeholder={t('Not chosen', { ns: 'other' })}
+                                label={`${t('Choose payer', { ns: 'billing' })}:`}
+                                value={values.profile}
+                                getElement={item => setPayerHandler(item)}
+                                isShadow
+                                className={s.select}
+                                itemsList={[
+                                  {
+                                    name: { $: t('Add new payer', { ns: 'payers' }) },
+                                    id: { $: 'new' },
+                                  },
+                                  ...payersList,
+                                ]?.map(({ name, id }) => ({
+                                  label: t(`${name?.$?.trim()}`),
+                                  value: id?.$,
+                                }))}
+                              />
+                            )}
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="person"
+                              label={
+                                values?.profiletype === '1'
+                                  ? `${t('Full name', { ns: 'other' })}:`
+                                  : `${t('The contact person', { ns: 'payers' })}:`
+                              }
+                              placeholder={t('Enter data', { ns: 'other' })}
+                              isShadow
+                              className={s.inputBig}
+                              error={!!errors.person}
+                              touched={!!touched.person}
+                              isRequired
+                            />
+                            <Select
+                              placeholder={t('Not chosen', { ns: 'other' })}
+                              label={`${t('The country', { ns: 'other' })}:`}
+                              value={values.country}
+                              getElement={item => setFieldValue('country', item)}
+                              isShadow
+                              className={s.select}
+                              itemsList={payersSelectLists?.country?.map(
+                                ({ $key, $, $image }) => ({
+                                  label: (
+                                    <div className={s.countrySelectItem}>
+                                      <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                      {t(`${$.trim()}`)}
+                                    </div>
+                                  ),
+                                  value: $key,
+                                }),
+                              )}
+                              isRequired
+                            />
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="city_physical"
+                              label={`${t('City', { ns: 'other' })}:`}
+                              placeholder={t('Enter city', { ns: 'other' })}
+                              isShadow
+                              className={s.inputBig}
+                              error={!!errors.city_physical}
+                              touched={!!touched.city_physical}
+                              // isRequired
+                            />
+                            <div className={cn(s.nsInputBlock, s.inputBig)}>
+                              {/* <InputField
+                              inputWrapperClass={s.inputHeight}
+                              inputClassName={s.inputAddressWrapp}
+                              name="address_physical"
+                              label={`${t('The address', { ns: 'other' })}:`}
+                              placeholder={t('Enter address', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.inputAddress)}
+                              error={!!errors.address_physical}
+                              touched={!!touched.address_physical}
+                              isRequired
+                            /> */}
 
+                              <InputWithAutocomplete
+                                fieldName="address_physical"
+                                error={!!errors.address_physical}
+                                touched={!!touched.address_physical}
+                                externalValue={values.address_physical}
+                                setFieldValue={val => {
+                                  setFieldValue('address_physical', val)
+                                }}
+                              />
+
+                              <button type="button" className={s.infoBtn}>
+                                <Info />
+                                <div
+                                  ref={dropdownDescription}
+                                  className={s.descriptionBlock}
+                                >
+                                  {t('address_format', { ns: 'other' })}
+                                </div>
+                              </button>
+                            </div>
+
+                            {payersSelectedFields?.eu_vat_field ? (
+                              <InputField
+                                inputWrapperClass={s.inputHeight}
+                                name="eu_vat"
+                                label={`${t('EU VAT-number')}:`}
+                                placeholder={t('Enter data', { ns: 'other' })}
+                                isShadow
+                                className={s.inputBig}
+                                error={!!errors.eu_vat}
+                                touched={!!touched.eu_vat}
+                              />
+                            ) : null}
+                            {/* {selectedPayerFields?.offer_link && (
+                            <div className={s.offerBlock}>
+                              <CheckBox
+                                initialState={
+                                  values[selectedPayerFields?.offer_field] || false
+                                }
+                                setValue={item =>
+                                  setFieldValue(
+                                    `${selectedPayerFields?.offer_field}`,
+                                    item,
+                                  )
+                                }
+                                className={s.checkbox}
+                                error={!!errors[selectedPayerFields?.offer_field]}
+                                touched={!!touched[selectedPayerFields?.offer_field]}
+                              />
+                              <div className={s.offerBlockText}>
+                                {t('I agree with the terms of the offer', {
+                                  ns: 'payers',
+                                })}
+                                <br />
+                                <a
+                                  target="_blank"
+                                  href={PRIVACY_URL}
+                                  rel="noreferrer"
+                                  className={s.offerBlockLink}
+                                >
+                                  {selectedPayerFields?.offer_name}
+                                </a>
+                              </div>
+                            </div>
+                          )} */}
+                          </div>
+                        </div>
+                      )}
                       <div className={s.infotext}>
                         {values?.slecetedPayMethod &&
                           values?.slecetedPayMethod?.payment_minamount && (
@@ -963,7 +986,6 @@ export default function Component() {
                             </div>
                           )}
                       </div>
-
                       <div className={cn(s.formBlock, s.promocodeBlock)}>
                         <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
                           <InputField
@@ -992,7 +1014,6 @@ export default function Component() {
                           )}
                         </div>
                       </div>
-
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                         <div className={s.penalty_sum}>
                           {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
@@ -1000,7 +1021,6 @@ export default function Component() {
                       ) : (
                         ''
                       )}
-
                       <div className={s.totalSum}>
                         <b>{t('Total')}:</b>
                         <span>
@@ -1022,12 +1042,46 @@ export default function Component() {
                         </span>
                       </div>
 
+                      <div className={s.offerBlock}>
+                        <CheckBox
+                          initialState={values[selectedPayerFields?.offer_field] || false}
+                          setValue={item =>
+                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
+                          }
+                          className={s.checkbox}
+                          error={!!errors[selectedPayerFields?.offer_field]}
+                          touched={!!touched[selectedPayerFields?.offer_field]}
+                        />
+                        <div className={s.offerBlockText}>
+                          {t('I agree with', {
+                            ns: 'payers',
+                          })}
+                          {/* <br /> */}{' '}
+                          <a
+                            target="_blank"
+                            href={PRIVACY_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of Service', { ns: 'domains' })}
+                          </a>{' '}
+                          {t('and', { ns: 'domains' })}{' '}
+                          <a
+                            target="_blank"
+                            href={OFERTA_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of the offer', { ns: 'domains' })}
+                          </a>
+                        </div>
+                      </div>
+
                       {Number(cartData?.tax) > 0 ? (
                         <div className={s.totalSum}>
                           {t('Tax included')}: <b>{cartData?.tax} EUR</b>
                         </div>
                       ) : null}
-
                       <div className={s.btnBlock}>
                         {paymentsMethodList?.length === 0 ? (
                           <Button

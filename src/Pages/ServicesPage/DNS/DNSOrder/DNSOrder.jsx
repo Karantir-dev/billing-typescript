@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
+import { BreadCrumbs, Button } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,9 +8,8 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
-import { dnsOperations } from '../../../../Redux'
+import { dnsOperations, userOperations } from '../../../../Redux'
 import * as routes from '../../../../routes'
 
 import s from './DNSOrder.module.scss'
@@ -116,10 +115,20 @@ export default function FTPOrder() {
   })
 
   const handleSubmit = values => {
-    const { datacenter, pricelist, period, autoprolong, addon_961 } = values
+    const { datacenter, pricelist, period, autoprolong, domainLimit } = values
 
     dispatch(
-      dnsOperations.orderDNS({ autoprolong, datacenter, period, pricelist, addon_961 }),
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          dnsOperations.orderDNS({
+            autoprolong,
+            datacenter,
+            period,
+            pricelist,
+            [parameters.domainLimit]: domainLimit,
+          }),
+        ),
+      ),
     )
   }
 
@@ -135,11 +144,11 @@ export default function FTPOrder() {
           datacenter: tarifList?.currentDatacenter,
           pricelist: null,
           period: '1',
-          license: null,
+          license: true,
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+        {({ values, setFieldValue, resetForm, setFieldTouched }) => {
           return (
             <Form className={s.form}>
               <Select
@@ -302,7 +311,7 @@ export default function FTPOrder() {
                     )}
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -332,7 +341,7 @@ export default function FTPOrder() {
                     {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 
