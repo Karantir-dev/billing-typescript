@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -18,7 +18,6 @@ import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
-import { useEffect } from 'react'
 
 const FACEBOOK_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='

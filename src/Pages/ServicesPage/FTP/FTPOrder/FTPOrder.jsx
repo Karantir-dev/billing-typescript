@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox, Select } from '../../../../Components'
+import { BreadCrumbs, Button, Select } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,7 +8,6 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import { ftpOperations, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
@@ -154,7 +153,7 @@ export default function FTPOrder() {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+        {({ values, setFieldValue, resetForm, setFieldTouched }) => {
           if (dataFromSite && values.tarif === dataFromSite?.pricelist && !parameters) {
             dispatch(
               ftpOperations.getParameters(

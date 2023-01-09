@@ -18,7 +18,6 @@ import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
-import { SaleFiftyFive } from '../../../../images'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -145,7 +144,7 @@ export default function VDSOrder() {
         //       )})`}
         //     </span>
         //   )
-        // } else 
+        // } else
         if (fieldName === 'Memory') {
           label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
         } else if ($.includes('EUR ')) {

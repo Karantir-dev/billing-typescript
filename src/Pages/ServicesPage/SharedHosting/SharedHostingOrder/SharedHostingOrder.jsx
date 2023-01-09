@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BreadCrumbs, Select, TarifCard, CheckBox, Button } from '../../../../Components'
+import { BreadCrumbs, Select, TarifCard, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { userOperations, vhostOperations } from '../../../../Redux'
-import { PRIVACY_URL } from '../../../../config/config'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -31,9 +30,9 @@ export default function Component() {
   const [paramsData, setParamsData] = useState(null)
 
   const [autoprolong, setAutoprolong] = useState(null)
-  const [licence_agreement, setLicence_agreement] = useState(true)
+  const [licence_agreement] = useState(true)
 
-  const [licence_agreement_error, setLicence_agreement_error] = useState(false)
+  const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 

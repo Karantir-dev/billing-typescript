@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
+import { BreadCrumbs, Button } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,7 +8,6 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
 import { forexOperations, selectors, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
@@ -185,10 +184,8 @@ export default function ForexOrderPage() {
         {({
           values,
           setFieldValue,
-          errors,
           //   resetForm,
           setFieldTouched,
-          touched,
         }) => {
           return (
             <Form className={s.form}>
