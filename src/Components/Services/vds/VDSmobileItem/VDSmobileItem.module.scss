@@ -16,6 +16,34 @@
   color: var(--transparent-color);
 }
 
+.dailyCharge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+  }
+
+  a {
+    margin-left: 10px;
+
+    div {
+      content: url('../../../../images/vds_question.svg');
+    }
+
+    &:hover {
+      div {
+        content: url('../../../../images/vds_question_hover.svg');
+      }
+    }
+  }
+}
+
 .value {
   font-size: 15px;
   word-break: break-all;

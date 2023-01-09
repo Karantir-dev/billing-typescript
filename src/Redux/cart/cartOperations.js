@@ -17,7 +17,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 
   const {
     auth: { sessionId },
-    // cart: { cartState },
+    cart: { cartState },
   } = getState()
 
   axiosInstance
@@ -50,14 +50,14 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
 
-      // if (cartState?.salePromocode) {
-      //   setCartData &&
-      //     setPaymentsMethodList &&
-      //     dispatch(
-      //       setBasketPromocode('asfsghfgihjlj', setCartData, setPaymentsMethodList),
-      //     )
-      //   dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
-      // }
+      if (cartState?.salePromocode) {
+        setCartData &&
+          setPaymentsMethodList &&
+          dispatch(
+            setBasketPromocode('asfsghfgihjlj', setCartData, setPaymentsMethodList),
+          )
+        dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
+      }
     })
     .catch(error => {
       console.log('error', error)

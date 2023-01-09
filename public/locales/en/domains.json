@@ -39,7 +39,7 @@
   "off": "Off",
   "I have read and agree to the": "I have read and agree to the",
   "Terms of Service": "Terms of Service",
-  "Terms of the offer": "Terms of the offer",
+  "Terms of the offer": "Privacy policy",
   "Total payable": "Total payable",
   "Disabled": "Disabled",
   "Configuring": "Configuring",
@@ -97,5 +97,7 @@
 
   "View/change the list of name servers": "View/change the list of name servers",
   "record_format": "Record format \"ns.example.com\" or \"ns.example.com/1.1.1.1\" or \"ns.example.com/1.1.1.1,2.2.2.2\"",
-  "Add NS": "Add NS"
+  "Add NS": "Add NS",
+
+  "and": "and"
 }

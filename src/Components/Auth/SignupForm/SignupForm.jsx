@@ -110,11 +110,11 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     }
   }
 
-  // useEffect(() => {
-  //   if (geoCountryId === '182') {
-  //     setInterval(() => timer(seconds), 1000)
-  //   }
-  // }, [geoCountryId])
+  useEffect(() => {
+    if (geoCountryId === '182') {
+      setInterval(() => timer(seconds), 1000)
+    }
+  }, [geoCountryId])
 
   useEffect(() => {
     if (seconds <= 0) {
@@ -122,24 +122,26 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     }
   }, [seconds])
 
-  // if (geoCountryId === '182') {
-  //   return (
-  //     <div className={s.form_wrapper}>
-  //       <LoginBtnBlock />
-  //       <div className={classNames(s.form, s.rusForm)}>
-  //         <span className={s.rusText}>
-  //           {t('rus_hello')} <a href="https://cp.omro.host/signup">{t('HERE')}</a>.
-  //         </span>
+  if (geoCountryId === '182') {
+    return (
+      <div className={s.form_wrapper}>
+        <LoginBtnBlock />
+        <div className={classNames(s.form, s.rusForm)}>
+          <span className={s.rusText}>
+            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'omro.host'}</a>.{' '}
+            {t('rus_hello_2')}
+          </span>
 
-  //         <div className={s.redirectBlock}>
-  //           <span>
-  //             {t('Go to omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
-  //           </span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+          <div className={s.redirectBlock}>
+            <span>
+              {t('Go to omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={s.form_wrapper}>
       <LoginBtnBlock />

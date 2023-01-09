@@ -96,5 +96,7 @@
   "reboot_launched": "Запущен процесс перезагрузки сервера",
 
   "psc.": "шт.",
-  "Suspended due to abuse": "Остановлен за нарушение"
+  "Suspended due to abuse": "Остановлен за нарушение",
+
+  "daily charges": "ежедневные\nсписания"
 }
