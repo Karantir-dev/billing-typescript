@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
-import { forexOperations, selectors } from '../../../../Redux'
+import { forexOperations, selectors, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
 
 import s from './ForexOrderPage.module.scss'
@@ -144,13 +144,17 @@ export default function ForexOrderPage() {
     const { datacenter, pricelist, period, autoprolong, server_package } = values
 
     dispatch(
-      forexOperations.orderForex({
-        autoprolong,
-        datacenter,
-        period,
-        pricelist,
-        server_package,
-      }),
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          forexOperations.orderForex({
+            autoprolong,
+            datacenter,
+            period,
+            pricelist,
+            server_package,
+          }),
+        ),
+      ),
     )
   }
 
@@ -166,7 +170,7 @@ export default function ForexOrderPage() {
           datacenter: tarifList?.currentDatacenter,
           pricelist: dataFromSite?.pricelist || null,
           period: dataFromSite ? dataFromSite?.period : '1',
-          license: null,
+          license: true,
           autoprolong: dataFromSite ? dataFromSite?.autoprolong : '1',
           autoprolonglList: dataFromSite
             ? parameters?.paramsList?.find(elem => elem?.$name === 'autoprolong')?.val
@@ -384,7 +388,7 @@ export default function ForexOrderPage() {
                     />
                   </div>
 
-                  <div className={s.terms_block} ref={licenceCheck}>
+                  {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -414,7 +418,7 @@ export default function ForexOrderPage() {
                     {!!errors.license && touched.license && (
                       <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               )}
 

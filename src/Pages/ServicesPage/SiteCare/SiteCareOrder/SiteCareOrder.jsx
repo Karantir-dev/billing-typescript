@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { PRIVACY_URL } from '../../../../config/config'
-import { siteCareOperations } from '../../../../Redux'
+import { siteCareOperations, userOperations } from '../../../../Redux'
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
 import * as routes from '../../../../routes'
@@ -34,7 +34,7 @@ export default function Component() {
 
   const [paramsData, setParamsData] = useState(null)
 
-  const [licence_agreement, setLicence_agreement] = useState(false)
+  const [licence_agreement, setLicence_agreement] = useState(true)
   const [licence_agreement_error, setLicence_agreement_error] = useState(false)
   const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
 
@@ -100,17 +100,22 @@ export default function Component() {
   }
 
   const buyVhostHandler = values => {
-    if (!licence_agreement) {
-      setLicence_agreement_error(true)
-      return licenseBlock.current.scrollIntoView()
-    }
+    // if (!licence_agreement) {
+    //   setLicence_agreement_error(true)
+    //   return licenseBlock.current.scrollIntoView()
+    // }
 
     const d = {
-      licence_agreement: licence_agreement ? 'on' : 'off',
+      licence_agreement: 'on',  //licence_agreement ? 'on' : 'off',
       sok: 'ok',
       ...values,
     }
-    dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData))
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData)),
+      ),
+    )
   }
 
   const validationSchema = Yup.object().shape({
@@ -274,7 +279,7 @@ export default function Component() {
                         isRequired
                       />
 
-                      <div ref={licenseBlock} className={s.useFirstCheck}>
+                      {/* <div ref={licenseBlock} className={s.useFirstCheck}>
                         <CheckBox
                           initialState={licence_agreement}
                           setValue={item => {
@@ -292,7 +297,7 @@ export default function Component() {
                             { ns: 'domains' },
                           )}"`}</a>
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}

@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { authOperations, authSelectors } from '../../../Redux'
-import { VerificationModal, Button, InputField } from '../..'
+import { VerificationModal, Button, InputField, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import { Facebook, Google, Vk } from '../../../images'
@@ -74,12 +74,7 @@ export default function LoginForm() {
 
   return (
     <div className={s.form_wrapper}>
-      <div className={s.auth_links_wrapper}>
-        <span className={s.current_auth_link}>{t('logIn')}</span>
-        <Link className={s.auth_link} to={routes.REGISTRATION}>
-          {t('registration')}
-        </Link>
-      </div>
+      <LoginBtnBlock login />
       <Formik
         initialValues={{ email: '', password: '', reCaptcha: '' }}
         onSubmit={handleSubmit}
