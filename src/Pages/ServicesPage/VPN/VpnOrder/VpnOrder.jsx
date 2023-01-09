@@ -1,15 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react'
-import {
-  BreadCrumbs,
-  Select,
-  VpnTarifCard,
-  Button,
-  CheckBox,
-} from '../../../../Components'
+import React, { useEffect, useState } from 'react'
+import { BreadCrumbs, Select, VpnTarifCard, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { PRIVACY_URL } from '../../../../config/config'
 import { Formik, Form } from 'formik'
 import { userOperations, vpnOperations } from '../../../../Redux'
 import s from './VpnOrder.module.scss'
@@ -26,15 +19,12 @@ export default function Component() {
   const dispatch = useDispatch()
 
   const location = useLocation()
-  const licenseBlock = useRef()
   const navigate = useNavigate()
 
   const [data, setData] = useState(null)
 
   const [paramsData, setParamsData] = useState(null)
 
-  const [licence_agreement, setLicence_agreement] = useState(true)
-  const [licence_agreement_error, setLicence_agreement_error] = useState(false)
   const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
 
   useEffect(() => {

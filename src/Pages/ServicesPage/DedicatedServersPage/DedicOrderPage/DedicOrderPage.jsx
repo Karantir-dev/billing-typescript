@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
   Button,
-  CheckBox,
   SoftwareOSBtn,
   SoftwareOSSelect,
   Toggle,
@@ -19,7 +18,6 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
-import { PRIVACY_URL } from '../../../../config/config'
 import * as route from '../../../../routes'
 
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
