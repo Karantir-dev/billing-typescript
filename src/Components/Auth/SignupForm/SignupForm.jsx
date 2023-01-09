@@ -133,7 +133,9 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
           <div className={s.redirectBlock}>
             <span>
-              {t('Go to cp.omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
+              {t('20_sec_omro', {
+                sec: seconds <= 0 ? '0' : seconds,
+              })}
             </span>
           </div>
         </div>
