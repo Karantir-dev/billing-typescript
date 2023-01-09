@@ -407,7 +407,7 @@
 
   .parameters_list {
     gap: 20px;
-    grid-template-columns: repeat(auto-fill, 280px);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 
   .agreement_wrapper {
