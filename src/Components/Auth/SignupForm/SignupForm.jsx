@@ -109,7 +109,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       setSeconds(s => s - 1)
     }
   }
-
+  console.log('1')
   // useEffect(() => {
   //   if (geoCountryId === '182') {
   //     setInterval(() => timer(seconds), 1000)
