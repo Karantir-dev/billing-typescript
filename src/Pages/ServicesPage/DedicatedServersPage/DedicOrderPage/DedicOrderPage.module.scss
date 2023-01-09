@@ -84,32 +84,10 @@
   // flex-wrap: wrap;
 }
 
-.first_processors_block {
+.first_processors_block,.second_processors_block {
   // width: 255px;
-  display: flex;
+  gap: 15px;
   // justify-content: space-between;
-
-  & .processor_card {
-    &:nth-child(2) {
-      margin-left: 15px;
-    }
-    &:nth-child(3) {
-      margin-left: 15px;
-    }
-  }
-}
-
-.second_processors_block {
-  display: flex;
-
-  & .processor_card {
-    &:nth-child(2) {
-      margin-left: 15px;
-    }
-    &:nth-child(3) {
-      margin-left: 15px;
-    }
-  }
 }
 
 .processor_card {
