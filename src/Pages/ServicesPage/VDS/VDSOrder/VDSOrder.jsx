@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ErrorMessage, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -12,14 +12,13 @@ import {
   SoftwareOSSelect,
   Button,
 } from '../../../../Components'
-import { Check } from '../../../../images'
 import { userOperations, vdsOperations } from '../../../../Redux'
 import { DOMAIN_REGEX } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
+import { SaleFiftyFive } from '../../../../images'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -27,7 +26,6 @@ export default function VDSOrder() {
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
-  const checkboxEl = useRef()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -147,7 +145,7 @@ export default function VDSOrder() {
         //       )})`}
         //     </span>
         //   )
-        // } else
+        // } else 
         if (fieldName === 'Memory') {
           label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
         } else if ($.includes('EUR ')) {

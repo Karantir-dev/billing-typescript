@@ -39,7 +39,7 @@
   "off": "გამორთვა",
   "I have read and agree to the": "წავიკითხე და ვეთანხმები",
   "Terms of Service": "მომსახურების მიწოდების პირობებს",
-  "Terms of the offer": "შეთავაზების პირობები",
+  "Terms of the offer": "Კონფიდენციალურობის პოლიტიკა",
   "Total payable": "სულ გადასახდელი",
   "Transfer": "ტრანსფერი",
   "Getting information about a domain using the whois protocol": "დომენის შესახებ ინფორმაციის მიღება whois პროტოკოლით",
@@ -100,5 +100,7 @@
   "record_format": "ჩანაწერის ფორმატი \"ns.example.com\" ან \"ns.example.com/1.1.1.1\" ან \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "დაამატეთ NS",
 
-  "Configuring": "კონფიგურაცია"
+  "Configuring": "კონფიგურაცია",
+
+  "and": "და"
 }
