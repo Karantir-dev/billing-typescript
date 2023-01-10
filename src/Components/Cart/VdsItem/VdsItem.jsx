@@ -153,7 +153,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
           {hasBasePrice && (
             <span className={s.value}>
               {t('port_speed')}:
-              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)},
+              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]},
               &nbsp;
             </span>
           )}
