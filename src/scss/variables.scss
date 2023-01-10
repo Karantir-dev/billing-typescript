@@ -65,7 +65,7 @@ body {
   );
   --red-bg: #fdf0f1;
   --domains_hover_bgc: #faf5fe;
-  --dropdown-hover-bgc: #484352;
+  --dropdown-hover-bgc: rgba(217, 208, 235, 0.19);
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -154,6 +154,7 @@ body.dark-theme {
   --servers_price_bgc: #484452;
   --red-bg: rgba(211, 87, 87, 0.2);
   --domains_hover_bgc: #4a4457;
+  --dropdown-hover-bgc: #484352;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

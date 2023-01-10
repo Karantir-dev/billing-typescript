@@ -141,9 +141,11 @@
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
+  transition: background-color .2s ease-in;
 
   &:hover {
-    background-color: var(--select_option_bgc);
+    background-color: var(--dropdown-hover-bgc);
+    
     svg {
       fill: url('#gradient');
     }
