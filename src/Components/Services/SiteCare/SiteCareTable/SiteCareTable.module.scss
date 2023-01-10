@@ -141,11 +141,10 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-
+  width: 100%;
   color: var(--main-text);
-  &:not(:last-child) {
-    margin-bottom: 18px;
-  }
+  padding: 18px;
+  transition: background-color 0.2s ease-in;
 
   svg {
     width: 16px;
@@ -156,10 +155,22 @@
     fill: var(--transparent-color);
   }
   &:hover {
+    background-color: var(--dropdown-hover-bgc);
+
     svg,
     path {
       fill: url(#gradient);
     }
+  }
+
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 }
 
@@ -169,9 +180,6 @@
   font-weight: 300;
   font-size: 16px;
   line-height: 70.9%;
-  &:hover {
-    font-weight: 400;
-  }
 }
 
 .line {
