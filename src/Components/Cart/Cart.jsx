@@ -34,7 +34,7 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL, SALE_55_PROMOCODE } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -76,6 +76,8 @@ export default function Component() {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
     dispatch(billingOperations.getPayers())
   }, [])
+
+  console.log(cartData)
 
   useEffect(() => {
     if (payersSelectLists) {
@@ -1007,6 +1009,10 @@ export default function Component() {
                             {t('Apply', { ns: 'other' })}
                           </button>
                         </div>
+
+                        {cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE) ? (
+                          <div className={s.sale55Promo}>{t('sale_55_text')}</div>
+                        ) : null}
 
                         <div className={cn(s.formFieldsBlock)}>
                           {blackFridayData && blackFridayData?.success && (

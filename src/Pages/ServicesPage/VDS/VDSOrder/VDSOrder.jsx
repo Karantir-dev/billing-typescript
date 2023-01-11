@@ -18,6 +18,8 @@ import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
+import { SALE_55_PROMOCODE } from '../../../../config/config'
+import { SaleFiftyFive } from '../../../../images'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -131,21 +133,20 @@ export default function VDSOrder() {
           }
         }
 
-        // if (withSale && words?.length > 0) {
-        //   label = (
-        //     <span>
-        //       {`${words[0]} Gb (`}
-        //       <span className={s.memorySale}>{words[1]}</span>
-        //       {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-        //         'short_month',
-        //         {
-        //           ns: 'other',
-        //         },
-        //       )})`}
-        //     </span>
-        //   )
-        // } else
-        if (fieldName === 'Memory') {
+        if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
+          label = (
+            <span>
+              {`${words[0]} Gb (`}
+              <span className={s.memorySale}>{words[1]}</span>
+              {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+                'short_month',
+                {
+                  ns: 'other',
+                },
+              )})`}
+            </span>
+          )
+        } else if (fieldName === 'Memory') {
           label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
         } else if ($.includes('EUR ')) {
           label = translatePeriodText($.trim())
@@ -539,11 +540,13 @@ export default function VDSOrder() {
                       <Select
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
-                        // saleIcon={
-                        //   <SaleFiftyFive
-                        //     style={{ marginLeft: 7, position: 'absolute', top: -10 }}
-                        //   />
-                        // }
+                        saleIcon={
+                          SALE_55_PROMOCODE ? (
+                            <SaleFiftyFive
+                              style={{ marginLeft: 7, position: 'absolute', top: -10 }}
+                            />
+                          ) : null
+                        }
                         label={`${t('memory')}:`}
                         getElement={value => {
                           setFieldValue('Memory', value)
