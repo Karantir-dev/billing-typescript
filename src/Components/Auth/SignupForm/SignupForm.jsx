@@ -52,6 +52,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .matches(/^[^!@#$_%^\\&*()\]~+/}[{=?|"<>:;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
+      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;+]+$/g, t('warnings.special_characters'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
