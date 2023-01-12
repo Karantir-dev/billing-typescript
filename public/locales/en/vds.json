@@ -95,5 +95,7 @@
   "reboot_launched": "Server reboot process started",
 
   "pcs.": "pcs.",
-  "Suspended due to abuse": "Suspended due to abuse"
+  "Suspended due to abuse": "Suspended due to abuse",
+
+  "daily charges": "daily\ncharges"
 }

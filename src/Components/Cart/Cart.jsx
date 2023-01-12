@@ -1069,7 +1069,7 @@ export default function Component() {
                           >
                             {t('Terms of Service', { ns: 'domains' })}
                           </a>{' '}
-                          |{' '}
+                          {t('and', { ns: 'domains' })}{' '}
                           <a
                             target="_blank"
                             href={OFERTA_URL}

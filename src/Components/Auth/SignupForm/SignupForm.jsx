@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -18,7 +18,6 @@ import { Facebook, Google, Vk } from './../../../images'
 
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
-import { useEffect } from 'react'
 
 const FACEBOOK_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
@@ -110,12 +109,12 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       setSeconds(s => s - 1)
     }
   }
-  console.log('1')
-  // useEffect(() => {
-  //   if (geoCountryId === '182') {
-  //     setInterval(() => timer(seconds), 1000)
-  //   }
-  // }, [geoCountryId])
+
+  useEffect(() => {
+    if (geoCountryId === '182') {
+      setInterval(() => timer(seconds), 1000)
+    }
+  }, [geoCountryId])
 
   useEffect(() => {
     if (seconds <= 0) {
@@ -123,24 +122,28 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     }
   }, [seconds])
 
-  // if (geoCountryId === '182') {
-  //   return (
-  //     <div className={s.form_wrapper}>
-  //       <LoginBtnBlock />
-  //       <div className={classNames(s.form, s.rusForm)}>
-  //         <span className={s.rusText}>
-  //           {t('rus_hello')} <a href="https://cp.omro.host/signup">{t('HERE')}</a>.
-  //         </span>
+  if (geoCountryId === '182') {
+    return (
+      <div className={s.form_wrapper}>
+        <LoginBtnBlock />
+        <div className={classNames(s.form, s.rusForm)}>
+          <span className={s.rusText}>
+            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'cp.omro.host'}</a>.{' '}
+            {t('rus_hello_2')}
+          </span>
 
-  //         <div className={s.redirectBlock}>
-  //           <span>
-  //             {t('Go to omro.host after 20 sec.', { sec: seconds <= 0 ? '0' : seconds })}
-  //           </span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
+          <div className={s.redirectBlock}>
+            <span>
+              {t('20_sec_omro', {
+                sec: seconds <= 0 ? '0' : seconds,
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={s.form_wrapper}>
       <LoginBtnBlock />

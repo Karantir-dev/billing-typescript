@@ -77,7 +77,18 @@ export default function VDSItem({
         <span className={s.value}>{server?.ostempl?.$}</span>
         <span className={s.value}>{server?.datacentername?.$}</span>
         <span className={s.value}>{server?.createdate?.$}</span>
-        <span className={s.value}>{server?.expiredate?.$}</span>
+        <span className={s.value}>
+          {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
+            <div className={s.dailyCharge}>
+              <span>{t('daily charges')}</span>
+              <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
+                <div />
+              </a>
+            </div>
+          ) : (
+            server?.expiredate?.$
+          )}
+        </span>
         <ServerState className={s.value} server={server} />
         <span className={s.value}>
           {server?.pricelist?.$}

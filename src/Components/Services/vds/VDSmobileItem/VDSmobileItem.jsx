@@ -247,7 +247,18 @@ export default function VDSmobileItem({
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>
-      <span className={s.value}>{server?.expiredate?.$}</span>
+      <span className={s.value}>
+        {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
+          <div className={s.dailyCharge}>
+            <span>{t('daily charges')}</span>
+            <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
+              <div />
+            </a>
+          </div>
+        ) : (
+          server?.expiredate?.$
+        )}
+      </span>
     </li>
   )
 }
