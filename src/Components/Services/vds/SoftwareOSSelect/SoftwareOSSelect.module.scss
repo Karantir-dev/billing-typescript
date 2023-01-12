@@ -24,10 +24,10 @@
   position: relative;
   height: 100%;
   width: 100%;
-  padding: 15px 20px;
+  padding: 15px 50px 15px 20px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
@@ -36,7 +36,6 @@
   > p {
     text-align: start;
     font-size: 16px;
-    max-width: 180px;
   }
 }
 
@@ -55,11 +54,11 @@
   display: flex;
   gap: 15px;
   align-items: center;
-  padding: 15px;
+  padding: 15px 20px;
   transition: background-color 0.2s ease-in;
 
   &:hover {
-    background-color: var(--dropdown-hover-bgc);
+    background-color: var(--select_option_bgc);
 
     .img {
       filter: grayscale(0);
@@ -67,8 +66,8 @@
   }
 
   &:first-of-type {
-   border-top-right-radius: 3px;
-   border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
   }
 
   &:last-of-type {

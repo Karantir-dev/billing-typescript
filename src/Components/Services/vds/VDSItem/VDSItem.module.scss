@@ -144,7 +144,7 @@
   transition: background-color .2s ease-in;
 
   &:hover {
-    background-color: var(--dropdown-hover-bgc);
+    background-color: var(--select_option_bgc);
     
     svg {
       fill: url('#gradient');

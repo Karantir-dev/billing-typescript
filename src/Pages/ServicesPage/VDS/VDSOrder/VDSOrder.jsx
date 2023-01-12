@@ -210,7 +210,7 @@ export default function VDSOrder() {
           value: $key,
           label: $,
         }))
-
+        
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
@@ -236,7 +236,7 @@ export default function VDSOrder() {
               }
             }}
           />
-        )
+          )
       } else {
         return (
           <SoftwareOSBtn
