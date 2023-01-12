@@ -11,13 +11,14 @@ import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '../../utils'
+import { SALE_55_PROMOCODE } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
-    // cart: { cartState },
+    cart: { cartState },
   } = getState()
 
   axiosInstance
@@ -50,14 +51,14 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
 
-      // if (cartState?.salePromocode) {
-      //   setCartData &&
-      //     setPaymentsMethodList &&
-      //     dispatch(
-      //       setBasketPromocode('asfsghfgihjlj', setCartData, setPaymentsMethodList),
-      //     )
-      //   dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
-      // }
+      if (cartState?.salePromocode && SALE_55_PROMOCODE) {
+        setCartData &&
+          setPaymentsMethodList &&
+          dispatch(
+            setBasketPromocode(SALE_55_PROMOCODE, setCartData, setPaymentsMethodList),
+          )
+        dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
+      }
     })
     .catch(error => {
       console.log('error', error)

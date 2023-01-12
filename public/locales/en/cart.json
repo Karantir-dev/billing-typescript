@@ -38,5 +38,7 @@
   "Payment amount from 1.00 EUR.": "Payment amount from 1.00 EUR.",
 
   "Excluding VAT": "Excluding VAT",
-  "Saving": "Saving"
+  "Saving": "Saving",
+
+  "sale_55_text": "Promo codes cannot be used in conjunction with the RAM discount"
 }
