@@ -136,7 +136,8 @@ export default function VDSOrder() {
 
         if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
           label = (
-            <span>
+            <span className={s.selectWithSale}>
+              <div className={s.sale55Icon}>-55%</div>
               {`${words[0]} Gb (`}
               <span className={s.memorySale}>{words[1]}</span>
               {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
@@ -527,20 +528,6 @@ export default function VDSOrder() {
                     <p className={s.section_title}>{t('characteristics')}</p>
                     <div className={s.parameters_list}>
                       <Select
-                        value={values.Control_panel}
-                        itemsList={getControlPanelList('Control_panel')}
-                        getElement={value => {
-                          setFieldValue('Control_panel', value)
-                          onChangeField(
-                            period,
-                            { ...values, Control_panel: value },
-                            'Control_panel',
-                          )
-                        }}
-                        label={`${t('license_to_panel')}:`}
-                        isShadow
-                      />
-                      <Select
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
                         saleIcon={
@@ -558,6 +545,22 @@ export default function VDSOrder() {
                         }}
                         isShadow
                       />
+
+                      <Select
+                        value={values.Control_panel}
+                        itemsList={getControlPanelList('Control_panel')}
+                        getElement={value => {
+                          setFieldValue('Control_panel', value)
+                          onChangeField(
+                            period,
+                            { ...values, Control_panel: value },
+                            'Control_panel',
+                          )
+                        }}
+                        label={`${t('license_to_panel')}:`}
+                        isShadow
+                      />
+
                       <Select
                         value={values.Disk_space}
                         itemsList={getOptionsListExtended('Disk_space')}
