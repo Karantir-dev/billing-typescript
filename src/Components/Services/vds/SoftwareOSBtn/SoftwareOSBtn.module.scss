@@ -42,13 +42,8 @@
   }
 }
 
-.img {
-  width: 30px;
-  aspect-ratio: 1/1;
-
-  &.without {
-    width: 17px;
-  }
+.img .without {
+  width: 17px;
 }
 
 .list_item {
