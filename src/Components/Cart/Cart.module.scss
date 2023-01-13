@@ -433,7 +433,7 @@
 .scroll {
   padding: 10px 22px;
   overflow-y: auto;
-  max-height: 267px;
+  max-height: 277px;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -600,7 +600,7 @@
   }
 
   .scroll {
-    padding: 10px 35px 0px;
+    padding: 10px 35px;
   }
 
   .padding {
