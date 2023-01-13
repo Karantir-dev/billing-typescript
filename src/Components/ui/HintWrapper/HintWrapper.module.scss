@@ -1,9 +1,6 @@
 .hint_wrapper {
   display: inline-block;
   position: relative;
-  max-width: 300px;
-  overflow-x: hidden;
-  // width: fit-content;
 
   &:hover .hint_popup {
     animation: popup 0.5s forwards;
@@ -21,9 +18,12 @@
   text-align: center;
   background-color: var(--forms_bgc_4);
   box-shadow: var(--forms2_shadow);
-  white-space: nowrap;
   border-radius: 3px;
   z-index: 1;
+  max-width: 310px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .hint_pointer_wrapper {
