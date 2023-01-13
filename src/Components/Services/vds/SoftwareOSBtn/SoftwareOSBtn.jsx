@@ -12,7 +12,7 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
     <div className={cn(s.bg, { [s.selected]: value === state })}>
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         <img
-          className={s.img}
+          className={cn(s.img,`${iconName === 'null' ? s.without : ''}`)}
           src={require(`../../../../images/soft_os/${
             darkTheme ? iconName + '_dt' : iconName
           }.png`)}

@@ -35,6 +35,7 @@ export default function VDSOrder() {
   const [selectedTariffId, setSelectedTariffId] = useState()
   const [parametersInfo, setParametersInfo] = useState()
   const [count, setCount] = useState(1)
+  const [domainName, setDomainName] = useState('')
 
   const [dataFromSite, setDataFromSite] = useState(null)
 
@@ -207,7 +208,7 @@ export default function VDSOrder() {
           value: $key,
           label: $,
         }))
-
+        
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
@@ -233,7 +234,7 @@ export default function VDSOrder() {
               }
             }}
           />
-        )
+          )
       } else {
         return (
           <SoftwareOSBtn
@@ -333,6 +334,8 @@ export default function VDSOrder() {
 
     return period
   }
+
+  const nahdleDomainChange = e => setDomainName(e.target.value)
 
   return (
     <div className={s.pb}>
@@ -608,6 +611,8 @@ export default function VDSOrder() {
                         error={!!errors.domain}
                         touched={!!touched.domain}
                         isShadow
+                        value={domainName}
+                        onChange={nahdleDomainChange}
                       />
                       <InputField
                         name="IP_addresses_count"

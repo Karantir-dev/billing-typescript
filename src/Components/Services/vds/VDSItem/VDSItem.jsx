@@ -82,7 +82,7 @@ export default function VDSItem({
             <div className={s.dailyCharge}>
               <span>{t('daily charges')}</span>
               <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
-                <div />
+                <div></div>
               </a>
             </div>
           ) : (

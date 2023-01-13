@@ -84,32 +84,10 @@
   // flex-wrap: wrap;
 }
 
-.first_processors_block {
+.first_processors_block,.second_processors_block {
   // width: 255px;
-  display: flex;
+  gap: 25px;
   // justify-content: space-between;
-
-  & .processor_card {
-    &:nth-child(2) {
-      margin-left: 15px;
-    }
-    &:nth-child(3) {
-      margin-left: 15px;
-    }
-  }
-}
-
-.second_processors_block {
-  display: flex;
-
-  & .processor_card {
-    &:nth-child(2) {
-      margin-left: 15px;
-    }
-    &:nth-child(3) {
-      margin-left: 15px;
-    }
-  }
 }
 
 .processor_card {
@@ -131,7 +109,7 @@
 }
 
 .processor_name {
-  margin-right: 5px;
+  margin-right: 15px;
 }
 .select {
   margin-bottom: 15px;
@@ -519,6 +497,7 @@
     justify-content: space-between;
     align-items: stretch;
     margin-bottom: 30px;
+    gap: 16px;
   }
 
   .first_processors_block {
@@ -529,7 +508,6 @@
   }
 
   .second_processors_block {
-    height: 62px;
     width: fit-content;
     display: flex;
     // flex-direction: column;

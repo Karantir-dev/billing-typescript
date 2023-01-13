@@ -1,6 +1,8 @@
 .hint_wrapper {
   display: inline-block;
   position: relative;
+  max-width: 300px;
+  overflow-x: hidden;
   // width: fit-content;
 
   &:hover .hint_popup {

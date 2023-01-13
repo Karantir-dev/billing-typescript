@@ -8,11 +8,6 @@
   cursor: pointer;
 }
 
-.remove_btn.btn {
-  padding-top: 18px;
-  padding-bottom: 18px;
-}
-
 .dot {
   position: relative;
 
@@ -33,7 +28,6 @@
   background-color: var(--forms_bgc_4);
   top: 40px;
   right: -21px;
-  padding: 15px 16px;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
@@ -49,6 +43,7 @@
     top: -7px;
     right: 27px;
     box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+    z-index: -1;
   }
 
   &.opened {
@@ -57,25 +52,33 @@
 }
 
 .access_rights_btn,
-.settings_btn {
-  display: flex;
-  margin-bottom: 25px;
-  align-items: center;
-}
-
+.settings_btn,
 .remove_btn {
+  padding: 18px;
   display: flex;
   align-items: center;
-}
-.setting_text {
-  margin-left: 18px;
-  font-weight: 300;
-}
-.access_text {
-  margin-left: 15px;
-}
-.delete_text {
-  margin-left: 22px;
+  gap: 18px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+
+  &:hover {
+    background-color: var(--select_option_bgc);
+
+    & .icon {
+      fill: url(#gradient);
+    }
+  }
+
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 }
 
 .has_access {
@@ -101,11 +104,6 @@
     opacity: 0.3;
 
     &:hover {
-      & .setting_text,
-      .delete_text,
-      .access_text {
-        font-weight: 300;
-      }
       & .icon {
         fill: var(--icon-color);
       }
@@ -115,19 +113,6 @@
 .settings_btn,
 .access_rights_btn,
 .remove_btn {
-  cursor: pointer;
-
-  &:hover {
-    & .setting_text,
-    .delete_text,
-    .access_text {
-      font-weight: 400;
-    }
-
-    & .icon {
-      fill: url(#gradient);
-    }
-  }
 }
 
 .icon {

@@ -99,7 +99,7 @@ export default function ForexItem(props) {
             {!tabletOrHigher && (
               <div className={s.control_bts_wrapper}>
                 {/* <p className={s.countItem}>
-                  {count} {t('psc.', { ns: 'vds' })}
+                  {count} {t('pcs.', { ns: 'vds' })}
                 </p> */}
                 {typeof deleteItemHandler === 'function' && (
                   <button
@@ -115,7 +115,7 @@ export default function ForexItem(props) {
 
             {/* {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.', { ns: 'vds' })}
+                {count} {t('pcs.', { ns: 'vds' })}
               </p>
             )} */}
 

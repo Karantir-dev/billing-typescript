@@ -32,7 +32,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
           }.png`)}
           alt="icon"
         />
-        {selectedItem?.label}
+        <p>{selectedItem?.label}</p>
 
         <Shevron className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
       </button>

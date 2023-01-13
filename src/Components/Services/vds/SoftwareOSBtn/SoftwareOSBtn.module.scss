@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  // height: 60px;
   border-radius: 4px;
 
   &.selected {
@@ -24,7 +24,7 @@
   position: relative;
   height: 100%;
   width: 100%;
-  padding: 10px 10px 10px 50px;
+  padding: 15px 20px;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
@@ -33,6 +33,9 @@
   transform: scale(1);
   transition: transform 80ms;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 
   &:active {
     transform: scale(0.97);
@@ -40,11 +43,12 @@
 }
 
 .img {
-  position: absolute;
-  left: 27px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  width: 30px;
+  aspect-ratio: 1/1;
+
+  &.without {
+    width: 17px;
+  }
 }
 
 .list_item {
