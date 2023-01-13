@@ -42,7 +42,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(var(--header-btn-width));
+  width: fit-content;
   height: calc(var(--header-btn-height));
   border-radius: 99px;
   text-transform: uppercase;
@@ -65,9 +65,9 @@
 .icon {
   stroke: var(--main-text);
   transform: rotateZ(180deg);
-  stroke-width: 3;
+  stroke-width: 3px;
   height: 6px;
-  width: 11px;
+  width: 10px;
   margin-left: 5px;
   transition: transform 0.2s ease-in;
 }
@@ -163,11 +163,11 @@
     font-size: 18px;
   }
 
-  .lang_dropdown{
+  .lang_dropdown {
     left: 50%;
   }
 
-  .shevron_wrapper{
+  .shevron_wrapper {
     left: 50%;
   }
 }
