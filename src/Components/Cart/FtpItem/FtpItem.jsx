@@ -100,7 +100,7 @@ export default function FtpItem(props) {
 
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
-              {/* &nbsp; &nbsp; {count} {t('psc.', { ns: 'vds' })} */}
+              {/* &nbsp; &nbsp; {count} {t('pcs.', { ns: 'vds' })} */}
             </div>
             <div className={s.costBlock}>
               <div className={s.cost}>

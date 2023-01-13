@@ -4,6 +4,7 @@
   width: 44px;
   cursor: pointer;
   &.disabled {
+    cursor: default;
     opacity: 0.5;
   }
 }

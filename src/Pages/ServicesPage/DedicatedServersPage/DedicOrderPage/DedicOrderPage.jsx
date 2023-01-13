@@ -410,7 +410,7 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.slice(0, 1).map(item => {
+                  {tarifList?.fpricelist?.map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -436,7 +436,7 @@ export default function DedicOrderPage() {
                     )
                   })}
                 </div>
-                <div className={s.second_processors_block}>
+                {/* <div className={s.second_processors_block}>
                   {tarifList?.fpricelist?.slice(1).map(item => {
                     return (
                       <div
@@ -462,7 +462,7 @@ export default function DedicOrderPage() {
                       </div>
                     )
                   })}
-                </div>
+                </div> */}
               </div>
 
               <Select
@@ -746,7 +746,7 @@ export default function DedicOrderPage() {
                       itemsList={values?.ipList?.map(el => {
                         return {
                           label: `${el?.value}
-                          ${t('psc.', {
+                          ${t('pcs.', {
                             ns: 'vds',
                           })}
                           (${el?.cost} EUR)`,

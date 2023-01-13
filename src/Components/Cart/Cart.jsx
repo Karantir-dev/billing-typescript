@@ -406,24 +406,28 @@ export default function Component() {
           </div>
         )}
         {domainsList?.length > 0 && (
-          <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
-            {domainsList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent } = el
-              return (
-                <DomainItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
-          </div>
+          <>
+            <div className={cn(s.formBlockTitle, s.padding)}>{t('Domain registration')}:</div>
+            <div className={s.scroll}>
+              {domainsList?.map(el => {
+                const { id, desc, cost, fullcost, discount_percent } = el
+                return (
+                  <DomainItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+          </>
         )}
         {filteredDedicList?.length > 0 && (
           <div className={s.padding}>
@@ -465,7 +469,7 @@ export default function Component() {
               {t('services.Virtual server', { ns: 'other' })}:
             </div>
 
-            <div className={s.scroll}>
+            <div className={s.padding}>
               {filteredVdsList?.map(el => {
                 return (
                   <VdsItem
