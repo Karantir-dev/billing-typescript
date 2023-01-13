@@ -160,7 +160,8 @@
   cursor: pointer;
   width: 100%;
   color: var(--main-text);
-  padding: 18px;
+  padding: 8px 12px;
+  gap: 12px;
 
   svg {
     width: 16px;
@@ -199,7 +200,6 @@
 }
 
 .setting_text {
-  margin-left: 18px;
   font-style: normal;
   font-weight: 300;
   font-size: 16px;

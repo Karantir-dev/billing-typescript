@@ -153,20 +153,20 @@
   box-shadow: var(--forms2_shadow);
 }
 
-.tool_item {
-  &:first-child .tool_btn {
-    padding-top: 12px;
-  }
-  &:last-child .tool_btn {
-    padding-bottom: 12px;
-  }
-}
+// .tool_item {
+//   &:first-child .tool_btn {
+//     padding-top: 12px;
+//   }
+//   &:last-child .tool_btn {
+//     padding-bottom: 12px;
+//   }
+// }
 
 .tool_btn {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 6px 20px;
+  padding: 8px 12px;
   white-space: nowrap;
   cursor: pointer;
   font-size: 18px;
@@ -183,6 +183,7 @@
   &:disabled {
     color: var(--transparent-color);
     pointer-events: none;
+
     svg {
       fill: var(--disabled_icon_color);
     }

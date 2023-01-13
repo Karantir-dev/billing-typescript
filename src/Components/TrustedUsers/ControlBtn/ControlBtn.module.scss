@@ -54,10 +54,10 @@
 .access_rights_btn,
 .settings_btn,
 .remove_btn {
-  padding: 18px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   width: 100%;
   cursor: pointer;
 
@@ -108,10 +108,6 @@
       }
     }
   }
-}
-.settings_btn,
-.access_rights_btn,
-.remove_btn {
 }
 
 .icon {

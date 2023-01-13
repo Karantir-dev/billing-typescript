@@ -158,10 +158,12 @@
 }
 
 .settings_btn {
+  width: 100%;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 105px;
+  gap: 12px;
 
   color: var(--main-text);
 
@@ -173,20 +175,27 @@
   path {
     fill: var(--icon-color);
   }
+
   &:hover {
-    .setting_text {
-      font-weight: 400;
-    }
+    background-color: var(--select_option_bgc);
 
     svg,
     path {
       fill: url(#gradient);
     }
   }
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 }
 
 .setting_text {
-  margin-left: 18px;
   font-style: normal;
   font-weight: 300;
   font-size: 18px;
