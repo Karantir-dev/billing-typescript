@@ -72,7 +72,6 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           : SERVER_ERR_MSG
 
       setErrMsg(errText)
-      console.log('auth -', error?.msg?.$ || error.message)
     })
 }
 
@@ -101,7 +100,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      console.log('error during getCurrentSessionStatus', e.message || e)
+      console.error('error during getCurrentSessionStatus', e.message || e)
     })
 }
 
@@ -136,7 +135,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('totp.confirm - ', err.message)
+      console.error('totp.confirm - ', err.message)
     })
 }
 
@@ -169,7 +168,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('recovery - ', err.message)
+      console.error('recovery - ', err.message)
     })
 }
 
@@ -211,7 +210,7 @@ const changePassword =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('recovery.change - ', err.message)
+        console.error('recovery.change - ', err.message)
       })
   }
 
@@ -241,7 +240,7 @@ const logout = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      console.log('error during logging out', e.message)
+      console.error('error during logging out', e.message)
       dispatch(actions.hideLoader())
     })
 }
@@ -279,7 +278,7 @@ const getCountriesForRegister =
       .catch(err => {
         dispatch(actions.hideLoader())
         setErrMsg(SERVER_ERR_MSG)
-        console.log('getCountriesForRegister - ', err.message)
+        console.error('getCountriesForRegister - ', err.message)
       })
   }
 
@@ -323,7 +322,6 @@ const register =
         'This email is already registered in the system. If you forgot your password, please use the password recovery form'
           ? setErrMsg('soc_email_exist')
           : setErrMsg(SERVER_ERR_MSG)
-        console.log('registration - ', err.message)
       })
   }
 
@@ -430,7 +428,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log('checkGoogleState - ', err)
+      console.error('checkGoogleState - ', err)
     })
 }
 
@@ -463,7 +461,7 @@ const getRedirectLink = network => (dispatch, getState) => {
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log(' redirect link - ', err)
+      console.error(' redirect link - ', err)
     })
 }
 
@@ -508,7 +506,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log('checkLoginWithSocial - ', err)
+      console.error('checkLoginWithSocial - ', err)
     })
 }
 
@@ -545,8 +543,6 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
       //   .then(({ data }) => {
       //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-      //     console.log(data.doc)
-
       //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
       //       dispatch(authActions.setTemporaryId(sessionId))
 
@@ -561,7 +557,7 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
     })
     .catch(error => {
       dispatch(actions.hideLoader())
-      console.log('getLoginSocLinks -', error)
+      console.error('getLoginSocLinks -', error)
     })
 }
 

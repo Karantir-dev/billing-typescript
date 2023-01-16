@@ -61,7 +61,6 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       }
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -113,7 +112,6 @@ const setBasketPromocode =
         dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -146,7 +144,6 @@ const deleteBasketItem =
         dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -179,7 +176,6 @@ const clearBasket = id => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
@@ -217,7 +213,6 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
       // dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -368,13 +363,11 @@ const setPaymentMethods =
           })
           .then(() => dispatch(userOperations.getNotify()))
           .catch(error => {
-            console.log('error', error)
             checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
           })
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

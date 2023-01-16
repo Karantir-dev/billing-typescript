@@ -45,7 +45,6 @@ const getDomains =
         dispatch(getDomainsFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -105,7 +104,6 @@ const getDomainsFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -221,7 +219,6 @@ const getDomainsOrderName =
           })
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -377,7 +374,6 @@ const getDomainsContacts =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -412,7 +408,6 @@ const getDomainsNS =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -442,11 +437,7 @@ const getDomainPaymentInfo =
 
         const selectedDomains = body?.selected_domain?.split(', ')
 
-        console.log(selectedDomains, 'selectedDomains')
-
         const paymentData = {}
-
-        console.log(data?.doc, ' data?.doc')
 
         selectedDomains?.forEach(selected => {
           paymentData[`autoprolong_${selected}`] = data?.doc[`autoprolong_${selected}`]
@@ -480,7 +471,6 @@ const getDomainPaymentInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -524,8 +514,6 @@ const createDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -554,8 +542,7 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(() => {
       dispatch(actions.hideLoader())
     })
 }
@@ -676,8 +663,6 @@ const renewService =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -720,8 +705,6 @@ const deleteDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -764,8 +747,6 @@ const getHistoryDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -805,8 +786,6 @@ const getWhoisDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -863,8 +842,6 @@ const editDomainNS =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -958,8 +935,6 @@ const editDomain =
         dispatch(getServiceProfile(data?.doc?.service_profile_owner?.$, setEditData, d))
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -1031,8 +1006,6 @@ const getServiceProfile =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

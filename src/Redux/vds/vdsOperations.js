@@ -47,8 +47,6 @@ const getVDS =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-
-        console.log('getVDS - ', err.message)
       })
   }
 
@@ -77,7 +75,6 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getEditFieldsVDS - ', err.message)
     })
 }
 
@@ -166,7 +163,6 @@ const editVDS =
         checkIfTokenAlive(err.message, dispatch)
         getVDSHandler && getVDSHandler()
         dispatch(actions.hideLoader())
-        console.log('editVDS - ', err.message)
       })
   }
 
@@ -195,7 +191,6 @@ const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) =>
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getVDSOrderInfo - ', err.message)
     })
 }
 
@@ -223,7 +218,6 @@ const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getNewPeriodInfo - ', err.message)
     })
 }
 
@@ -256,7 +250,6 @@ const getTariffParameters =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getTariffParameters - ', err)
       })
   }
 
@@ -310,7 +303,6 @@ const changeOrderFormField =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('changeOrderFormField - ', err)
       })
   }
 
@@ -359,7 +351,6 @@ const setOrderData =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('setOrderData - ', err)
       })
   }
 
@@ -395,7 +386,6 @@ const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getStat
         position: 'bottom-right',
       })
       dispatch(actions.hideLoader())
-      console.log('deleteVDS - ', err)
     })
 }
 
@@ -436,7 +426,6 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
         position: 'bottom-right',
       })
       dispatch(actions.hideLoader())
-      console.log('changePassword - ', err)
     })
 }
 
@@ -474,7 +463,6 @@ const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
         position: 'bottom-right',
       })
       dispatch(actions.hideLoader())
-      console.log('groupChangePassword - ', err)
     })
 }
 
@@ -507,7 +495,6 @@ const rebootServer = id => (dispatch, getState) => {
         position: 'bottom-right',
       })
       dispatch(actions.hideLoader())
-      console.log('rebootServer - ', err)
     })
 }
 
@@ -537,7 +524,6 @@ const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getIpInfo - ', err)
     })
 }
 
@@ -566,7 +552,6 @@ const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) =>
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getEditIPInfo - ', err)
     })
 }
 
@@ -617,7 +602,6 @@ const changeDomainName =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('changeDomainName - ', err)
       })
   }
 
@@ -703,7 +687,6 @@ const setVdsFilters =
 
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('setVdsFilters - ', err)
       })
   }
 

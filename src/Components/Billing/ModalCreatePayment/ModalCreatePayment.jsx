@@ -241,7 +241,7 @@ export default function Component(props) {
                   try {
                     element.scrollIntoView(scrollBehavior)
                   } catch (e) {
-                    console.log(e.message)
+                    console.error(e.message)
                   }
 
                   // Formik doesn't (yet) provide a callback for a client-failed submission,
@@ -290,7 +290,6 @@ export default function Component(props) {
                 <Form>
                   <ScrollToFieldError />
                   <div className={s.form}>
-            
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
                       <div className={s.formFieldsBlock}>

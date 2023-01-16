@@ -192,7 +192,7 @@ export default function AccessRightsListItem({
           }
         }
       } catch (e) {
-        console.log('Error in AccessRightsListItem - ', e.message)
+        console.error('Error in AccessRightsListItem - ', e.message)
       }
     })
   }

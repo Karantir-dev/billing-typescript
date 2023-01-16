@@ -233,7 +233,7 @@ export default function DedicOrderPage() {
         })
       }
     } catch (e) {
-      console.log(e.message)
+      console.error(e.message)
     }
   })
 

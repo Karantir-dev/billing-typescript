@@ -157,7 +157,7 @@ export default function ServicesList() {
           observer.observe(slide)
         })
       } catch (e) {
-        console.log(e.message)
+        console.error(e.message)
       }
     }
   }, [])

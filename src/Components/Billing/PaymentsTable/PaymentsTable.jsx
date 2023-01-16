@@ -45,8 +45,6 @@ export default function Component(props) {
           allowrefund,
         } = el
 
-        console.log(el)
-
         return (
           <PaymentsTableItem
             key={id?.$}

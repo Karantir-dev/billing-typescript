@@ -37,7 +37,6 @@ const getAccessLogsHandler =
         dispatch(getAccessLogsFiltersHandler())
       })
       .catch(error => {
-        console.log('logs -', error.message)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -76,7 +75,6 @@ const getAccessLogsFiltersHandler =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        console.log('logs -', error.message)
       })
   }
 
@@ -129,12 +127,11 @@ const filterDataHandler =
           .catch(error => {
             checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
-            console.log('logs -', error.message)
           })
       })
       .catch(error => {
         dispatch(actions.hideLoader())
-        console.log('logs -', error.message)
+        console.error('logs -', error.message)
       })
   }
 

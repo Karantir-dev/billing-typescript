@@ -194,7 +194,7 @@ export default function Component(props) {
                   try {
                     element.scrollIntoView(scrollBehavior)
                   } catch (e) {
-                    console.log(e.message)
+                    console.error(e.message)
                   }
                 }, [submitCount])
 
