@@ -166,7 +166,7 @@ export default function ServicesPage(props) {
         {domainsList?.allResults?.map(d => {
           const { id, domain, price } = d
 
-          const notAvailable = d?.desc?.$?.includes('Not available')
+          const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
 
           return (
             <div
@@ -223,7 +223,7 @@ export default function ServicesPage(props) {
           {domainsList?.map(d => {
             const { id, domain, price } = d
 
-            const notAvailable = d?.desc?.$.includes('Not registered')
+            const notAvailable = d?.desc?.$.includes('Not registered') || d.premium
             const available = d?.desc?.$.includes('Registered')
 
             return (

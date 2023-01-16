@@ -54,11 +54,21 @@ export default function Component({ transfer = false }) {
 
   const validationSchema = Yup.object().shape({
     owner_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    owner_firstname: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_firstname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Name can only contain Latin letters'),
+      )
+      .required(t('Is a required field', { ns: 'other' })),
     owner_firstname_locale: Yup.string().required(
       t('Is a required field', { ns: 'other' }),
     ),
-    owner_lastname: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    owner_lastname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Lastname can only contain Latin letters'),
+      )
+      .required(t('Is a required field', { ns: 'other' })),
     owner_lastname_locale: Yup.string().required(
       t('Is a required field', { ns: 'other' }),
     ),
@@ -87,18 +97,28 @@ export default function Component({ transfer = false }) {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    admin_firstname: Yup.string().when('admin_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    admin_firstname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Name can only contain Latin letters'),
+      )
+      .when('admin_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     admin_firstname_locale: Yup.string().when('admin_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    admin_lastname: Yup.string().when('admin_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    admin_lastname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Lastname can only contain Latin letters'),
+      )
+      .when('admin_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     admin_lastname_locale: Yup.string().when('admin_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -144,18 +164,28 @@ export default function Component({ transfer = false }) {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    tech_firstname: Yup.string().when('tech_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    tech_firstname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Name can only contain Latin letters'),
+      )
+      .when('tech_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     tech_firstname_locale: Yup.string().when('tech_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    tech_lastname: Yup.string().when('tech_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    tech_lastname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Lastname can only contain Latin letters'),
+      )
+      .when('tech_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     tech_lastname_locale: Yup.string().when('tech_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -201,18 +231,28 @@ export default function Component({ transfer = false }) {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    bill_firstname: Yup.string().when('bill_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    bill_firstname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Name can only contain Latin letters'),
+      )
+      .when('bill_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     bill_firstname_locale: Yup.string().when('bill_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    bill_lastname: Yup.string().when('bill_contact_use_first', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
+    bill_lastname: Yup.string()
+      .matches(
+        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+        t('Lastname can only contain Latin letters'),
+      )
+      .when('bill_contact_use_first', {
+        is: 'off',
+        then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+      }),
     bill_lastname_locale: Yup.string().when('bill_contact_use_first', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -1523,6 +1563,20 @@ export default function Component({ transfer = false }) {
               <div className={s.btnBlock}>
                 <Button
                   className={s.saveBtn}
+                  disabled={
+                    !values.owner_name ||
+                    !values.owner_firstname ||
+                    !values.owner_firstname_locale ||
+                    !values.owner_lastname ||
+                    !values.owner_lastname_locale ||
+                    !values.owner_email ||
+                    !values.owner_phone ||
+                    !values.owner_location_country ||
+                    !values.owner_location_postcode ||
+                    !values.owner_location_state ||
+                    !values.owner_location_city ||
+                    !values.owner_location_address
+                  }
                   isShadow
                   size="medium"
                   label={t('Proceed', { ns: 'other' })}

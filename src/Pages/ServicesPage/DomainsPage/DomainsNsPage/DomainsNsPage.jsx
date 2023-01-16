@@ -30,6 +30,7 @@ export default function Component({ transfer = false }) {
     if (transfer) {
       data['period'] = -200
     }
+
     setSelectedDomain(state?.contacts?.selected_domain?.split(', '))
     dispatch(domainsOperations.getDomainsNS(data))
     dispatch(domainsOperations.getDomainPaymentInfo(data, setPaymentData))
@@ -351,19 +352,22 @@ export default function Component({ transfer = false }) {
                               <h1 className={s.page_title}>{t('Order Details')}</h1>
                               <div className={cn(s.formFieldsBlock, s.flexStart)}>
                                 <div className={s.details}>
-                                  <div>
-                                    {domenName} - {sums[2]} EUR {t('per year')}
-                                  </div>
+                                  {sums?.length > 2 && (
+                                    <div>
+                                      {domenName} - {sums[2]} EUR {t('per year')}
+                                    </div>
+                                  )}
                                   {checkBoxName && (
                                     <div>
                                       {t('Data protection')}:{' '}
                                       {`(${t(values[checkBoxName])})`}
                                     </div>
                                   )}
-
-                                  <div className={s.totalAmount}>
-                                    {t('Total payable')}: {sums[3]} EUR
-                                  </div>
+                                  {sums?.length > 3 && (
+                                    <div className={s.totalAmount}>
+                                      {t('Total payable')}: {sums[3]} EUR
+                                    </div>
+                                  )}
                                 </div>
                                 {/* <div className={s.useFirstCheck}>
                                   <CheckBox

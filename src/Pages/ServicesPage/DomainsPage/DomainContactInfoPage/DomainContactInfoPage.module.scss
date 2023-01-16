@@ -211,12 +211,11 @@
     overflow-y: hidden;
     padding-bottom: 21px;
     transition: linear 0.2s;
-  
+
     &.isOpen {
-      height: 1050px;
+      height: 1150px;
     }
   }
-  
 }
 
 @media screen and (min-width: 1024px) {
