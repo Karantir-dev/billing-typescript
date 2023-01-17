@@ -596,6 +596,8 @@ const renewService =
           throw new Error(data.doc.error.msg.$)
         }
 
+        console.log(data.doc)
+
         const d = {
           title_name: data?.doc?.title_name?.$,
           expiredate: data?.doc?.expiredate?.$,
@@ -637,6 +639,7 @@ const renewService =
           item_status_reboot: data?.doc?.messages?.msg?.item_status_reboot,
           item_status_service_nosuitable:
             data?.doc?.messages?.msg?.item_status_service_nosuitable,
+          elid: data?.doc?.elid?.$,
         }
 
         data?.doc?.slist?.forEach(list => {

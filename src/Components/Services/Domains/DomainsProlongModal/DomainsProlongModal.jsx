@@ -19,7 +19,7 @@ export default function Component(props) {
 
   const editHandler = values => {
     const data = { ...values, sok: 'ok', clicked_button: 'basket' }
-    prolongEditSiteCareHandler(data)
+    prolongEditSiteCareHandler(data, prolongData?.elid)
   }
 
   const handleMoreBtn = e => {
