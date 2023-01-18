@@ -131,7 +131,7 @@ const filterDataHandler =
       })
       .catch(error => {
         dispatch(actions.hideLoader())
-        console.error('logs -', error.message)
+        checkIfTokenAlive('logs -' + error.message, dispatch)
       })
   }
 
