@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as routes from '../../../routes'
-import { usePageRender } from '../../../utils'
-import { useSelector } from 'react-redux'
+import { checkIfTokenAlive, usePageRender } from '../../../utils'
+import { useSelector, useDispatch } from 'react-redux'
 import { selectors } from '../../../Redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination } from 'swiper'
@@ -19,6 +19,8 @@ SwiperCore.use([Pagination])
 export default function ServicesList() {
   const { t } = useTranslation('container')
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const dispatch = useDispatch()
 
   const swiperEl = useRef(null)
 
@@ -157,7 +159,7 @@ export default function ServicesList() {
           observer.observe(slide)
         })
       } catch (e) {
-        console.error(e.message)
+        checkIfTokenAlive(e?.message, dispatch)
       }
     }
   }, [])

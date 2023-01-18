@@ -207,7 +207,8 @@ const getDomainsOrderName =
             setDomains && setDomains(domainsData)
             dispatch(actions.hideLoader())
           })
-          .catch(() => {
+          .catch(err => {
+            checkIfTokenAlive(err?.message, dispatch)
             const domainsData = {
               list: domains,
               checked_domain: domainData?.checked_domain,
@@ -542,7 +543,8 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

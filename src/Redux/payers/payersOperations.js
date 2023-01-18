@@ -423,7 +423,8 @@ const getPayerOfferText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(() => {
+    .catch((err) => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

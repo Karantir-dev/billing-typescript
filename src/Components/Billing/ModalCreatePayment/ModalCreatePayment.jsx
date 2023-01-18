@@ -21,7 +21,7 @@ import {
 } from '../../../Redux'
 import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
-import { replaceAllFn } from '../../../utils'
+import { checkIfTokenAlive, replaceAllFn } from '../../../utils'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -241,7 +241,7 @@ export default function Component(props) {
                   try {
                     element.scrollIntoView(scrollBehavior)
                   } catch (e) {
-                    console.error(e.message)
+                    checkIfTokenAlive(e?.message, dispatch)
                   }
 
                   // Formik doesn't (yet) provide a callback for a client-failed submission,

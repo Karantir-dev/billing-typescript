@@ -28,6 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
+import { checkIfTokenAlive } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -233,7 +234,7 @@ export default function DedicOrderPage() {
         })
       }
     } catch (e) {
-      console.error(e.message)
+      checkIfTokenAlive(e?.message, dispatch)
     }
   })
 

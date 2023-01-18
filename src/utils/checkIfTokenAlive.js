@@ -6,5 +6,7 @@ export default function checkIfTokenAlive(errMessage, dispatch) {
     errMessage.includes('Insufficient privileges to perform')
   ) {
     dispatch(authOperations.getCurrentSessionStatus())
+  } else {
+    console.error(errMessage)
   }
 }

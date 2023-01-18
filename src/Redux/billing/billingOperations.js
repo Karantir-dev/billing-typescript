@@ -662,7 +662,8 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       dispatch(actions.hideLoader())
       dispatch(getPayments())
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -694,7 +695,8 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -727,7 +729,8 @@ const getAutoPayments = () => (dispatch, getState) => {
 
       dispatch(getAutoPaymentsAdd())
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -767,7 +770,8 @@ const getAutoPaymentsAdd = () => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -802,7 +806,8 @@ const stopAutoPayments = id => (dispatch, getState) => {
       }
       dispatch(actions.hideLoader())
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -907,7 +912,8 @@ const getPaymentMethodReconfig = (elid, elname) => (dispatch, getState) => {
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
-    .catch(() => {
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
