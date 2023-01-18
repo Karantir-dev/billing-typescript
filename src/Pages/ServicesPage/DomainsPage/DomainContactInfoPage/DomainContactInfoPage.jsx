@@ -18,6 +18,7 @@ import { BASE_URL } from '../../../../config/config'
 import * as route from '../../../../routes'
 import * as Yup from 'yup'
 import s from './DomainContactInfoPage.module.scss'
+import { LATIN_REGEX } from '../../../../utils/constants'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other', 'trusted_users'])
@@ -55,19 +56,13 @@ export default function Component({ transfer = false }) {
   const validationSchema = Yup.object().shape({
     owner_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
     owner_firstname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Name can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
       .required(t('Is a required field', { ns: 'other' })),
     owner_firstname_locale: Yup.string().required(
       t('Is a required field', { ns: 'other' }),
     ),
     owner_lastname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Lastname can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
       .required(t('Is a required field', { ns: 'other' })),
     owner_lastname_locale: Yup.string().required(
       t('Is a required field', { ns: 'other' }),
@@ -98,10 +93,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     admin_firstname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Name can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
       .when('admin_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -111,10 +103,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     admin_lastname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Lastname can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
       .when('admin_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -165,10 +154,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     tech_firstname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Name can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
       .when('tech_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -178,10 +164,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     tech_lastname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Lastname can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
       .when('tech_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -232,10 +215,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     bill_firstname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Name can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
       .when('bill_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -245,10 +225,7 @@ export default function Component({ transfer = false }) {
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     bill_lastname: Yup.string()
-      .matches(
-        /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-        t('Lastname can only contain Latin letters'),
-      )
+      .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
       .when('bill_contact_use_first', {
         is: 'off',
         then: Yup.string().required(t('Is a required field', { ns: 'other' })),
