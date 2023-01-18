@@ -77,8 +77,6 @@ export default function Component() {
     dispatch(billingOperations.getPayers())
   }, [])
 
-  console.log(cartData)
-
   useEffect(() => {
     if (payersSelectLists) {
       if (!payersSelectedFields?.country || !payersSelectedFields?.country_physical) {
@@ -407,7 +405,9 @@ export default function Component() {
         )}
         {domainsList?.length > 0 && (
           <>
-            <div className={cn(s.formBlockTitle, s.padding)}>{t('Domain registration')}:</div>
+            <div className={cn(s.formBlockTitle, s.padding)}>
+              {t('Domain registration')}:
+            </div>
             <div className={s.scroll}>
               {domainsList?.map(el => {
                 const { id, desc, cost, fullcost, discount_percent } = el

@@ -131,7 +131,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
     .catch(err => {
       dispatch(userActions.hideUserInfoLoading())
       setLoading && setLoading(false)
-      console.log('getUserInfo - ', err.message)
+
       checkIfTokenAlive(err.message, dispatch)
     })
 }
@@ -152,7 +152,6 @@ const removeItems = (sessionId, id) => dispatch => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
     })
     .catch(error => {
-      console.log('removeItems - ', error)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -177,7 +176,6 @@ const getDashboardTickets = () => (dispatch, getState) => {
       userTickets(data, dispatch)
     })
     .catch(error => {
-      console.log('getDashboardTickets - ', error)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -203,7 +201,6 @@ const getNotify = () => (dispatch, getState) => {
       userNotifications(data, dispatch)
     })
     .catch(error => {
-      console.log('getNotify - ', error)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -229,7 +226,6 @@ const getTickets = () => (dispatch, getState) => {
       dispatch(userActions.setTickets(elem))
     })
     .catch(error => {
-      console.log('getTickets - ', error)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -260,7 +256,6 @@ const sendVerificationEmail = email => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('sendVerificationEmail - ', error)
       checkIfTokenAlive(error.message, dispatch)
     })
     .finally(() => dispatch(actions.hideLoader()))
@@ -287,15 +282,13 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
-      console.log(data?.doc?.$notify)
-      console.log(data)
+
       toast.success(t('email_confirmed', { email: username }), {
         position: 'bottom-right',
       })
       dispatch(userActions.setEmailStatus('on'))
     })
     .catch(error => {
-      console.log('verifyMainEmail - ', error)
       toast.error(t('unknown_error'), {
         position: 'bottom-right',
       })

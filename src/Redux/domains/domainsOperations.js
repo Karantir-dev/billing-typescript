@@ -1,6 +1,7 @@
 import qs from 'qs'
 import i18n from './../../i18n'
 import { actions, domainsActions, cartActions } from '..'
+import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '../../utils'
@@ -44,7 +45,6 @@ const getDomains =
         dispatch(getDomainsFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -104,7 +104,6 @@ const getDomainsFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -130,7 +129,7 @@ const getDomainsOrderName =
           ...body,
         }),
       )
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         if (typeof data === 'string') {
           toast.error(`${i18n.t('Something went wrong. Try again.', { ns: 'other' })}`, {
             position: 'bottom-right',
@@ -185,18 +184,42 @@ const getDomainsOrderName =
           }
         }
 
-        const domainsData = {
-          list: domains,
-          checked_domain: domainData?.checked_domain,
-          selected: selected,
-          domain_name: domainData?.tparams?.domain_name?.$,
-        }
+        await axios
+          .post('https://api.server-panel.net/api/domain/check/premium/', {
+            host: domains?.map(e => e?.domain?.$)?.join(','),
+          })
+          .then(({ data }) => {
+            const newArr = []
+            data?.domains?.forEach(d => {
+              domains?.forEach(dom => {
+                if (dom?.domain?.$ === d.host) {
+                  return newArr?.push({ ...dom, premium: d.premium })
+                }
+              })
+            })
+            const domainsData = {
+              list: newArr,
+              checked_domain: domainData?.checked_domain,
+              selected: selected,
+              domain_name: domainData?.tparams?.domain_name?.$,
+            }
 
-        setDomains && setDomains(domainsData)
-        dispatch(actions.hideLoader())
+            setDomains && setDomains(domainsData)
+            dispatch(actions.hideLoader())
+          })
+          .catch(err => {
+            checkIfTokenAlive(err?.message, dispatch)
+            const domainsData = {
+              list: domains,
+              checked_domain: domainData?.checked_domain,
+              selected: selected,
+              domain_name: domainData?.tparams?.domain_name?.$,
+            }
+            setDomains && setDomains(domainsData)
+            dispatch(actions.hideLoader())
+          })
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -352,7 +375,6 @@ const getDomainsContacts =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -387,7 +409,6 @@ const getDomainsNS =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -451,7 +472,6 @@ const getDomainPaymentInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -495,8 +515,6 @@ const createDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -525,8 +543,8 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -580,6 +598,8 @@ const renewService =
           throw new Error(data.doc.error.msg.$)
         }
 
+        console.log(data.doc)
+
         const d = {
           title_name: data?.doc?.title_name?.$,
           expiredate: data?.doc?.expiredate?.$,
@@ -621,6 +641,7 @@ const renewService =
           item_status_reboot: data?.doc?.messages?.msg?.item_status_reboot,
           item_status_service_nosuitable:
             data?.doc?.messages?.msg?.item_status_service_nosuitable,
+          elid: data?.doc?.elid?.$,
         }
 
         data?.doc?.slist?.forEach(list => {
@@ -647,8 +668,6 @@ const renewService =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -691,8 +710,6 @@ const deleteDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -735,8 +752,6 @@ const getHistoryDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -776,8 +791,6 @@ const getWhoisDomain =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -834,8 +847,6 @@ const editDomainNS =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -929,8 +940,6 @@ const editDomain =
         dispatch(getServiceProfile(data?.doc?.service_profile_owner?.$, setEditData, d))
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -1002,8 +1011,6 @@ const getServiceProfile =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

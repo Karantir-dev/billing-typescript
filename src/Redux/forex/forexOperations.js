@@ -43,7 +43,6 @@ const getForexList = data => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -104,8 +103,6 @@ const getTarifs =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
-
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
@@ -155,7 +152,6 @@ const getParameters =
       })
 
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -197,7 +193,6 @@ const orderForex =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -235,7 +230,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -312,7 +306,6 @@ const getCurrentForexInfo = (elid, setInitialParams) => (dispatch, getState) => 
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -355,7 +348,6 @@ const editForex =
         handleModal()
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -363,8 +355,6 @@ const editForex =
 
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
-
-  console.log(elid)
 
   const {
     auth: { sessionId },
@@ -395,7 +385,6 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -455,7 +444,6 @@ const getForexFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         if (error.message.includes('filter')) {
           dispatch(getForexList({ p_num: 1 }))
         }

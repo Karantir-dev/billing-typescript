@@ -43,7 +43,6 @@ const getFTPList = data => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -88,7 +87,6 @@ const getTarifs =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -133,7 +131,6 @@ const getParameters =
       })
 
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -175,7 +172,6 @@ const orderFTP = (autoprolong, datacenter, period, pricelist) => (dispatch, getS
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -213,7 +209,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -275,7 +270,6 @@ const getCurrentStorageInfo = (elid, setInitialParams) => (dispatch, getState) =
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -315,7 +309,6 @@ const editFTP = (elid, autoprolong, handleModal) => (dispatch, getState) => {
       handleModal()
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -346,7 +339,6 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -409,8 +401,6 @@ const getFTPFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
-
         if (error.message.includes('filter')) {
           dispatch(getFTPList({ p_num: 1 }))
         }

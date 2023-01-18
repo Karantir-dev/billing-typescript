@@ -37,7 +37,6 @@ const getPayers =
         dispatch(getPayerCountryType())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -70,7 +69,6 @@ const getPayerCountryType = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -101,8 +99,6 @@ const deletePayer = elid => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
-
       if (
         error.message.trim() === 'You cannot delete the payer who already made payments'
       ) {
@@ -254,7 +250,6 @@ const getPayerModalInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -393,7 +388,6 @@ const getPayerEditInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -429,8 +423,8 @@ const getPayerOfferText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch((err) => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

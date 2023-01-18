@@ -39,7 +39,6 @@ const getTicketsHandler =
         dispatch(getTicketsFiltersSettingsHandler())
       })
       .catch(error => {
-        console.log('support -', error.message)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -72,7 +71,6 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('support -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -104,7 +102,6 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('support archive -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -143,7 +140,6 @@ const getTicketsArchiveHandler =
         dispatch(getTicketsArchiveFiltersSettingsHandler())
       })
       .catch(error => {
-        console.log('support -', error.message)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -207,7 +203,6 @@ const setRate = (type, elid, plid, setStatus) => (dispatch, getState) => {
       setStatus(type)
     })
     .catch(error => {
-      console.log('support rate-', error.message)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -239,7 +234,6 @@ const sendMessage = (elid, data) => (dispatch, getState) => {
     })
     .catch(error => {
       dispatch(actions.hideLoader())
-      console.log('support rate-', error.message)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -270,7 +264,6 @@ const getDepartmenList = () => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('support rate-', error.message)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -307,7 +300,6 @@ const getServiceList = () => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('support rate-', error.message)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -342,7 +334,6 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
       setCreateTicketModal(false)
     })
     .catch(error => {
-      console.log('support rate-', error.message)
       dispatch(actions.hideLoader())
       checkIfTokenAlive(error.message, dispatch)
       setCreateTicketModal(false)
@@ -410,7 +401,6 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('support -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -462,7 +452,6 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
       dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }))
     })
     .catch(error => {
-      console.log('support -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -529,7 +518,6 @@ const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('support -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -581,7 +569,6 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
       dispatch(getTicketsArchiveHandler())
     })
     .catch(error => {
-      console.log('support -', error.message)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

@@ -28,7 +28,6 @@ const getReferralLink = () => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getReferralLink - ', err.message)
     })
 }
 
@@ -80,7 +79,6 @@ const getInitialIncomeInfo =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getInitialIncomeInfo - ', err.message)
       })
   }
 
@@ -128,7 +126,6 @@ const getChartInfo =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getChartInfo - ', err.message)
       })
   }
 
@@ -155,7 +152,6 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('getDayDetails - ', err.message)
     })
 }
 
@@ -205,7 +201,6 @@ const getInitialStatistics =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getInitialStatistics - ', err)
       })
   }
 
@@ -256,7 +251,6 @@ const getFilteredStatistics =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getFilteredStatistics - ', err.message)
       })
   }
 
@@ -287,7 +281,6 @@ const getNextPageStatistics =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
-        console.log('getNextPageStatistics - ', err.message)
       })
   }
 
@@ -331,7 +324,6 @@ const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       dispatch(actions.hideLoader())
-      console.log('dropFilters - ', err.message)
     })
 }
 

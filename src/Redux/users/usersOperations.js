@@ -31,7 +31,6 @@ const getUsers = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -63,7 +62,6 @@ const changeUserRights = (id, switchAccess, updateAccessFunc) => (dispatch, getS
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -89,12 +87,11 @@ const changeUserStatus = (id, changeStatus, updateStatusFunc) => (dispatch, getS
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      // console.log(data)
+
       updateStatusFunc()
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -128,7 +125,6 @@ const createNewUser =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -169,7 +165,6 @@ const editUserInfo =
         controlForm()
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -200,7 +195,6 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       if (
         error.message.trim() ===
         'Unable to delete item due to dependencies.  Delete the objects that depend on it and try again'
@@ -250,7 +244,6 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -281,7 +274,6 @@ const getSubRights =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -309,7 +301,6 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
       // dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -340,7 +331,6 @@ const getAvailableRights = (funcName, setRights) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
