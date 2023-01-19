@@ -60,9 +60,6 @@ export default function AccessRightsListItem({
       }
     })
 
-    // const filter = modifiedList.map(el => newItem.name.$ === el.name.$ 
-    //   && {...el, isSelected: !newItem.isSelected});
-
     setSelectedSub([...filter])
   }
 
@@ -99,9 +96,6 @@ export default function AccessRightsListItem({
     let type = item.name.$.split('.').slice(0, 1).join('')
     let subType = item.name.$.split('#').slice(-1).join('')
 
-    console.log('type is: ', type);
-    console.log('subType data:', subType);
-
     if (type === 'promisepayment') {
       type = type + '.add'
     }
@@ -112,36 +106,25 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
+        setCurrentRightState(!currentRightState)
         if (allowAll) {
           const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
               el.active.$ = 'off'
-            } else {
+            } else if (!allRightsState || !isAllTurnedOn) {
               el.active.$ = 'on'
             }
 
             return el
           })
 
-          // const map = selectedSubWithoutFilters.map(el => {
-          //   if (allRightsState || isAllTurnedOn) {
-          //     el.active.$ = 'off'
-          //   } else if (!allRightsState || !isAllTurnedOn) {
-          //     el.active.$ = 'on'
-          //   }
-
-          //   return el
-          // })
-
           setSelectedSub([])
-          setCurrentRightState(!currentRightState)
           setSelectedSub([...map])
 
           setAllRightsState
             ? setAllRightsState(!allRightsState)
             : setIsAllTurnedOn(!isAllTurnedOn)
         } else {
-          setCurrentRightState(!currentRightState)
 
           if (allRightsState || isAllTurnedOn) {
             setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
@@ -154,7 +137,7 @@ export default function AccessRightsListItem({
                 : selectedSubList
 
             const filteredArray = list.map(el => {
-              el.active.$ = 'off'
+              el.active.$ = 'on'
               return el
             })
 

@@ -308,6 +308,17 @@
       "wuwuwuw_edit#read": "მომსახურების რედაქტირება (ხელმისაწვდომია ფორმის მონაცემების წაკითხვა)",
       "wuwuwuw_edit#write": "მომსახურების რედაქტირება (ხელმისაწვდომია მონაცემთა შენახვა)",
 
+      "vpn": "VPN",
+      "vpn_order": "შეკვეთა",
+      "vpn_order#create": "$t(შეკვეთა)",
+      "vpn_edit": "$t(რედაქტირება)",
+      "vpn_delete": "$t(წაშლა)",
+      "vpn_resume": "$t(აქტივაცია)",
+      "vpn_suspend": "$t(დეაქტივაცია)",
+      "vpn_edit#read": "მომსახურების რედაქტირება (ხელმისაწვდომია ფორმის მონაცემების წაკითხვა)",
+      "vpn_edit#write": "მომსახურების რედაქტირება (ხელმისაწვდომია მონაცემთა შენახვა)",
+      "vpn_filter#create": "$t(ფილტრი)",
+
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "Finance": "ფინანსები",
       "payment_recurring_settings": "ავტოგადახდა",

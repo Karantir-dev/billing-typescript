@@ -309,8 +309,8 @@
       "wuwuwuw_edit#read": "Қызметті өңдеу (пішін деректерін оқуға қолжетімді)",
       "wuwuwuw_edit#write": "Қызметті өңдеу (деректерді сақтауға қолжетімді)",
 
-      "vpn": "ВПН",
-      "vpn_order": "Додати",
+      "vpn": "VPN",
+      "vpn_order": "қосу",
       "vpn_order#create": "$t(Тапсырыс беру)",
       "vpn_edit": "$t(Өңдеу)",
       "vpn_delete": "$t(Жою)",
@@ -318,6 +318,7 @@
       "vpn_suspend": "$t(Тоқтату)",
       "vpn_edit#read": "Қызметті өңдеу (пішін деректерін оқуға қолжетімді)",
       "vpn_edit#write": "Қызметті өңдеу (деректерді сақтауға қолжетімді)",
+      "vpn_filter#create": "$t(Сүзгі)",
 
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Қаржы",

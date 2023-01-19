@@ -130,7 +130,6 @@ export default function ManageUserForm({
                       name={'email' + userId}
                       error={!!errors['email' + userId]}
                       touched={!!touched['email' + userId]}
-                      // className={s.field_input}
                       isShadow={true}
                       background={true}
                       autoComplete
@@ -152,7 +151,6 @@ export default function ManageUserForm({
                       name={'name' + userId}
                       error={!!errors['name' + userId]}
                       touched={!!touched['name' + userId]}
-                      // className={s.field_input}
                       isShadow={true}
                       background={true}
                       disabled={formName === 'settings'}
@@ -184,7 +182,6 @@ export default function ManageUserForm({
                       error={!!errors['password' + userId]}
                       touched={!!touched['password' + userId]}
                       type="password"
-                      // className={s.field_input}
                       isShadow={true}
                       background={true}
                     />
@@ -202,7 +199,6 @@ export default function ManageUserForm({
                       error={!!errors['passConfirmation' + userId]}
                       touched={!!touched['passConfirmation' + userId]}
                       type="password"
-                      // className={s.field_input}
                       isShadow={true}
                       background={true}
                     />

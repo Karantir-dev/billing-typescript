@@ -309,8 +309,8 @@
       "wuwuwuw_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "wuwuwuw_edit#write": "Редактирование услуги (доступно сохранение данных)",
 
-      "vpn": "ВПН",
-      "vpn_order": "Додати",
+      "vpn": "VPN",
+      "vpn_order": "Заказать",
       "vpn_order#create": "$t(Заказать)",
       "vpn_edit": "$t(Редактировать)",
       "vpn_delete": "$t(Удалить)",
@@ -318,6 +318,7 @@
       "vpn_suspend": "$t(Деактивировать)",
       "vpn_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "vpn_edit#write": "Редактирование услуги (доступно сохранение данных)",
+      "vpn_filter#create": "$t(Фильтр)",
 
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Финансы",
