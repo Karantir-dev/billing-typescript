@@ -223,6 +223,8 @@ const setPaymentMethods =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
+    console.log('button clicked loader start')
+
     window.dataLayer.push({ ecommerce: null })
 
     const {
@@ -247,6 +249,7 @@ const setPaymentMethods =
         }),
       )
       .then(({ data }) => {
+        console.log('button clicked promises success')
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
@@ -368,6 +371,7 @@ const setPaymentMethods =
           })
       })
       .catch(error => {
+        console.log('button clicked promises error')
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
