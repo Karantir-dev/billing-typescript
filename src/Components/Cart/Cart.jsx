@@ -150,6 +150,7 @@ export default function Component() {
   }
 
   const payBasketHandler = values => {
+    console.log('button clicked')
     const data = {
       postcode_physical: values?.postcode_physical,
       eu_vat: values?.eu_vat,
@@ -185,6 +186,8 @@ export default function Component() {
         ? 'on'
         : 'off',
     }
+
+    console.log(data, 'button clicked data')
 
     if (values?.slecetedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
@@ -679,6 +682,8 @@ export default function Component() {
                 onSubmit={payBasketHandler}
               >
                 {({ values, setFieldValue, touched, errors }) => {
+                  console.log(values, 'form values')
+                  console.log(errors, 'form errors')
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
@@ -1014,7 +1019,8 @@ export default function Component() {
                           </button>
                         </div>
 
-                        {cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE) ? (
+                        {SALE_55_PROMOCODE?.length > 0 &&
+                        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE) ? (
                           <div className={s.sale55Promo}>{t('sale_55_text')}</div>
                         ) : null}
 
