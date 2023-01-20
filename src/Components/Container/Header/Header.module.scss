@@ -223,8 +223,9 @@
   margin-left: 15px;
   transition: transform 0.3s;
   flex: none;
+  stroke-width: 2px;
   height: 8px;
-  width: 11px;
+  width: 12px;
 
   &.active {
     transform: rotateZ(0deg);
@@ -266,7 +267,6 @@
 
 .lang_item {
   display: none;
-  width: 61px;
   height: 33px;
 }
 

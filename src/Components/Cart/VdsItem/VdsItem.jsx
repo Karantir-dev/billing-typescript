@@ -106,7 +106,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
                 {t('per month', { ns: 'other' })}
               </span>
               <span>
-                {t('amount', { ns: 'vds' })}: {el?.count} {t('psc.', { ns: 'vds' })}
+                {t('amount', { ns: 'vds' })}: {el?.count} {t('pcs.', { ns: 'vds' })}
               </span>
               <span></span>
             </div>
@@ -153,7 +153,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
           {hasBasePrice && (
             <span className={s.value}>
               {t('port_speed')}:
-              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)},
+              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]},
               &nbsp;
             </span>
           )}

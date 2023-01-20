@@ -40,9 +40,6 @@ export default function AccessRightsListItem({
 
   const [selectedSub, setSelectedSub] = useState([])
   const [subList, setSubList] = useState([])
-  // const selectedSubWithoutFilters = selectedSub?.filter(
-  //   item => item?.caption?.$?.trim() !== 'Filter',
-  // )
 
   const selectedSubWithoutFilters = selectedSub
 
@@ -109,6 +106,7 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
+        setCurrentRightState(!currentRightState);
         if (allowAll) {
           const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
@@ -121,14 +119,12 @@ export default function AccessRightsListItem({
           })
 
           setSelectedSub([])
-          setCurrentRightState(!currentRightState)
           setSelectedSub([...map])
 
           setAllRightsState
             ? setAllRightsState(!allRightsState)
             : setIsAllTurnedOn(!isAllTurnedOn)
         } else {
-          setCurrentRightState(!currentRightState)
 
           if (allRightsState || isAllTurnedOn) {
             setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
@@ -141,7 +137,7 @@ export default function AccessRightsListItem({
                 : selectedSubList
 
             const filteredArray = list.map(el => {
-              el.active.$ = 'off'
+              el.active.$ = 'on'
               return el
             })
 

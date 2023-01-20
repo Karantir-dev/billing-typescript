@@ -131,7 +131,6 @@
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: -25px;
-  padding: 15px 0;
   box-shadow: var(--forms2_shadow);
   border-radius: 5px;
   display: none;
@@ -147,6 +146,7 @@
     top: -7px;
     right: 27px;
     box-shadow: -1px -1px 3px -2px rgba(0, 0, 0, 0.5);
+    z-index: -1;
   }
 
   &.opened {
@@ -160,7 +160,8 @@
   text-align: start;
   width: 100%;
   cursor: pointer;
-  padding: 8px 20px;
+  padding: 8px 12px;
+  gap: 12px;
   color: var(--main-text);
 
   svg {
@@ -172,24 +173,31 @@
   path {
     fill: var(--transparent-color);
   }
+
   &:hover {
-    background-color: rgba(217, 208, 235, 0.1);
+    background-color: var(--select_option_bgc);
+
     svg,
     path {
       fill: url(#gradient);
     }
   }
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 }
 
 .setting_text {
-  margin-left: 18px;
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
   line-height: 17.9px;
-  &:hover {
-    font-weight: 400;
-  }
 }
 
 .line {

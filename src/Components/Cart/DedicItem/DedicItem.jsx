@@ -113,7 +113,7 @@ export default function DedicItem(props) {
             {/* 
             {tabletOrHigher && (
               <p className={s.countItem}>
-                {count} {t('psc.', { ns: 'vds' })}
+                {count} {t('pcs.', { ns: 'vds' })}
               </p>
             )} */}
 
@@ -121,7 +121,7 @@ export default function DedicItem(props) {
               <span className={s.domainName}>
                 <span>{pricelist_name}</span>
                 <p className={s.countItem}>
-                  {count} {t('psc.', { ns: 'vds' })}
+                  {count} {t('pcs.', { ns: 'vds' })}
                 </p>
               </span>
             </div>

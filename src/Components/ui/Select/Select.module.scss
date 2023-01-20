@@ -138,27 +138,19 @@
   flex-direction: column;
   overflow-y: auto;
   height: fit-content;
-
   max-height: 260px;
+  border-radius: 3px;
 
   &::-webkit-scrollbar {
-    width: 27px;
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
-    border-top: 10px transparent solid;
-    border-bottom: 10px transparent solid;
-    border-right: 24px transparent solid;
-    background-clip: padding-box;
     background-color: rgba(161, 161, 161, 23%);
   }
 
   &::-webkit-scrollbar-thumb {
     min-height: 35px;
-    border-top: 10px transparent solid;
-    border-bottom: 10px transparent solid;
-    border-right: 24px transparent solid;
-    background-clip: padding-box;
     background-color: #e72690;
   }
 }
@@ -167,10 +159,20 @@
   cursor: pointer;
   align-items: flex-start;
   text-align: start;
-  padding: 8px 8px 8px 16px;
+  padding: 8px 20px;
 
   &:hover {
     background-color: var(--select_option_bgc);
+  }
+
+  &:first-of-type {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
 }
 

@@ -35,7 +35,7 @@ export default function Component(props) {
 
         {/* {tabletOrHigher && (
           <p className={s.countItem}>
-            {count} {t('psc.', { ns: 'vds' })}
+            {count} {t('pcs.', { ns: 'vds' })}
           </p>
         )} */}
 

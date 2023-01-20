@@ -13,10 +13,10 @@
 }
 
 .head_row {
-  width: calc(100% - 55px);
+  width: calc(100% - 50px);
   display: flex;
   gap: 20px;
-  padding: 0 30px;
+  padding: 0 25px;
 }
 
 .table_head {
@@ -41,7 +41,7 @@
     flex-basis: 8%;
   }
   &:nth-child(7) {
-    flex-basis: 8%;
+    flex-basis: 14%;
   }
   &:nth-child(8) {
     flex-basis: 8%;

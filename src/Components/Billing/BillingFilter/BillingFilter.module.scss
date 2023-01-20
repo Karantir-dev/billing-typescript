@@ -58,7 +58,6 @@
 
 .filterModal {
   position: absolute;
-  // padding: 17px 14px;
   box-shadow: var(--forms2_shadow);
   background: var(--elements-bgc);
   border-radius: 3px;
@@ -70,7 +69,7 @@
   position: absolute;
   display: none;
   right: -10px;
-  top: calc(100% + 15px);
+  bottom: calc(100% + 15px);
   z-index: 100;
 
   &.expenses {
@@ -152,6 +151,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  margin-bottom: 20px;
 }
 
 .searchBtn {
@@ -243,21 +243,10 @@
   }
 
   .filterModal {
+    left: 0;
+    right: 0;
+    min-width: 610px;
     padding: 20px;
-    top: calc(90% + 10px);
-    left: -20px;
-    &::after {
-      content: '';
-      position: absolute;
-      left: 15px;
-      top: -10px;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid var(--forms_bgc_2);
-      clear: both;
-    }
   }
 
   .form {
@@ -289,10 +278,28 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    margin-bottom: unset;
   }
 }
 
 @media screen and (min-width: 768px) {
+  .filterModal {
+    right: unset;
+    left: -20px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: -10px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid var(--forms_bgc_2);
+      clear: both;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {

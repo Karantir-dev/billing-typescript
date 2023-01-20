@@ -81,6 +81,8 @@
 .form {
   padding: 18px;
   max-height: 60vh;
+  display: grid;
+  gap: 15px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -95,10 +97,6 @@
   &::-webkit-scrollbar-thumb {
     background: #e72690;
   }
-}
-
-.field_input {
-  margin-bottom: 14px;
 }
 
 .required_star {
@@ -152,70 +150,70 @@
 
 // lang
 
-.lang_container {
-  height: 50px;
-  position: relative;
-}
+// .lang_container {
+//   height: 50px;
+//   position: relative;
+// }
 
-.lang_btn {
-  &.extra_style {
-    background-color: var(--nearby-elements-bgc);
-    border: none;
+// .lang_btn {
+//   &.extra_style {
+//     background-color: var(--nearby-elements-bgc);
+//     border: none;
 
-    &:hover > div {
-      background-color: var(--elements-bgc);
-    }
-  }
-}
+//     &:hover > div {
+//       background-color: var(--elements-bgc);
+//     }
+//   }
+// }
 
-.field_input.lang {
-  width: 100%;
-  border: none;
-  box-shadow: var(--forms_shadow);
-  height: 50px;
-  background-color: var(--nearby-elements-bgc);
+// .field_input.lang {
+//   width: 100%;
+//   border: none;
+//   box-shadow: var(--forms_shadow);
+//   height: 50px;
+//   background-color: var(--nearby-elements-bgc);
 
-  @extend %input;
-  position: static;
-  padding-left: 40px;
-}
+//   @extend %input;
+//   position: static;
+//   padding-left: 40px;
+// }
 
-.drop_down {
-  &.list {
-    background-color: var(--icon-color);
-  }
+// .drop_down {
+//   &.list {
+//     background-color: var(--icon-color);
+//   }
 
-  &.list {
-    &.list_hover {
-      width: 200px;
-      &::-webkit-scrollbar {
-        width: 4px;
-      }
-      &::-webkit-scrollbar-track {
-        background: rgb(36, 57, 95);
-        border-radius: 5px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: var(--accent-gradient);
-        border-radius: 5px;
-      }
+//   &.list {
+//     &.list_hover {
+//       width: 200px;
+//       &::-webkit-scrollbar {
+//         width: 4px;
+//       }
+//       &::-webkit-scrollbar-track {
+//         background: rgb(36, 57, 95);
+//         border-radius: 5px;
+//       }
+//       &::-webkit-scrollbar-thumb {
+//         background: var(--accent-gradient);
+//         border-radius: 5px;
+//       }
 
-      & li:hover {
-        background-color: var(--elements-bgc);
-      }
+//       & li:hover {
+//         background-color: var(--elements-bgc);
+//       }
 
-      & span:last-child {
-        color: var(--main-text);
-      }
-    }
-  }
-}
+//       & span:last-child {
+//         color: var(--main-text);
+//       }
+//     }
+//   }
+// }
 
-.drop_search {
-  &:hover {
-    background-color: red;
-  }
-}
+// .drop_search {
+//   &:hover {
+//     background-color: red;
+//   }
+// }
 
 // ADAPTIVE
 
