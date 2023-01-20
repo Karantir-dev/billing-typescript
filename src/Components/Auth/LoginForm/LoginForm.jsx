@@ -56,7 +56,7 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;+]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),

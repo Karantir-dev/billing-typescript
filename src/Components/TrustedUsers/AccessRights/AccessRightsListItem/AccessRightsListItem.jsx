@@ -106,7 +106,7 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
-        setCurrentRightState(!currentRightState)
+        setCurrentRightState(!currentRightState);
         if (allowAll) {
           const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
