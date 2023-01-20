@@ -177,7 +177,7 @@ export default function ManageUserForm({
                           : requiredLabel(`${t('trusted_users.form.password')}:`)
                       }
                       placeholder={t('trusted_users.form_placeholders.password')}
-                      autoComplete='new-password'
+                      autoComplete="off"
                       name={'password' + userId}
                       error={!!errors['password' + userId]}
                       touched={!!touched['password' + userId]}
@@ -194,7 +194,7 @@ export default function ManageUserForm({
                           : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
                       }
                       placeholder={t('trusted_users.form_placeholders.conf_password')}
-                      autoComplete='new-password'
+                      autoComplete="off"
                       name={'passConfirmation' + userId}
                       error={!!errors['passConfirmation' + userId]}
                       touched={!!touched['passConfirmation' + userId]}
