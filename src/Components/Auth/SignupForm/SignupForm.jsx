@@ -189,7 +189,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 error={!!errors.email}
                 touched={!!touched.email}
                 className={s.input_field_wrapper}
-                autoComplete={false}
+                autoComplete="off"
                 inputAuth
               />
 

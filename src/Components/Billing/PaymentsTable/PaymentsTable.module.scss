@@ -46,14 +46,14 @@
 
 .item {
   flex-direction: column;
-  padding: 15px 17px;
+  padding: 18px 17px 16px 18px;
   width: 100%;
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
-  margin-bottom: 7px;
+  margin-bottom: 15px;
   position: relative;
 }
 
@@ -68,8 +68,11 @@
   flex-direction: row;
   display: flex;
   width: 100%;
-  margin-top: 20px;
   align-items: baseline;
+
+  &:not(:first-child) {
+    margin-top: 14px;
+  }
 }
 
 .item_title {
@@ -78,7 +81,6 @@
   font-size: 14px;
   line-height: 70.9%;
   color: var(--transparent-color);
-  margin-bottom: 10px;
   flex-basis: 35%;
   min-width: 35%;
   margin-right: 20px;
@@ -91,9 +93,6 @@
   line-height: 130%;
   color: var(--main-text);
   word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre;
 }
 
 .dotIcons {
@@ -102,7 +101,6 @@
 
 .list {
   position: absolute;
-  // width: 210px;
   background-color: var(--forms_bgc_4);
   top: calc(50% + 20px);
   right: 23px;
@@ -177,7 +175,7 @@
 .line {
   border: 1px solid #e1daea;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 11px;
 }
 
 .mobileBlock {
@@ -230,7 +228,6 @@
   .item {
     flex-basis: 48%;
     margin-right: 0;
-    margin-bottom: 15px;
 
     &:nth-child(2n) {
       margin-right: 15px;
@@ -238,8 +235,6 @@
   }
 
   .item_text {
-    font-size: 16px;
-
     &.second_item {
       max-width: 130px;
     }
@@ -252,12 +247,12 @@
 
 @media screen and (min-width: 768px) {
   .item {
-    flex-basis: 48.7%;
+    flex-basis: 48%;
     margin-right: 0;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 
     &:nth-child(2n) {
-      margin-right: 15px;
+      margin-right: 20px;
     }
   }
 }
@@ -286,7 +281,8 @@
   .item {
     flex-direction: row;
     align-items: center;
-    padding: 20px 26px;
+    padding: 12px 17px 12px 22px;
+    margin-bottom: 7px;
   }
 
   .tableBlockFirst,
@@ -297,8 +293,11 @@
   .tableBlockSixth,
   .tableBlockSeventh,
   .tableBlockEighth {
-    margin-top: 0px;
     margin-right: 20px;
+
+    &:not(:first-child) {
+      margin-top: unset;
+    }
   }
 
   .tableBlockFirst {
@@ -338,6 +337,9 @@
   .item_text {
     font-size: 14px;
     align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
 
     &.first_item {
       max-width: 80px;
@@ -377,7 +379,8 @@
   }
 
   .item {
-    padding: 22px 27px;
+    padding: 21px 42px 24px 33px;
+    margin-bottom: 8px;
   }
 
   .item_text {

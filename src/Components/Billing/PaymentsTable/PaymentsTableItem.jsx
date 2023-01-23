@@ -7,6 +7,7 @@ import { MoreDots, Pay, Download, Delete } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '../../../utils'
+import { HintWrapper } from '../../../Components'
 
 export default function Component(props) {
   const {
@@ -47,7 +48,7 @@ export default function Component(props) {
       color = '#ED801B'
     } else if (string.trim() === 'Paid') {
       color = '#45A884'
-    } else if (string.trim() === 'Refunded') {
+    } else if (string.trim() === 'Canceled') {
       color = '#D93F21'
     }
     return {
@@ -167,7 +168,13 @@ export default function Component(props) {
         {mobile && (
           <div className={s.item_title}>{t('Payment method', { ns: 'other' })}:</div>
         )}
-        <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
+        {t(paymethod).length > 10 ? (
+          <HintWrapper popupClassName={s.HintWrapper} label={t(paymethod)}>
+            <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
+          </HintWrapper>
+        ) : (
+          <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
+        )}
       </div>
       <div className={s.tableBlockSeventh}>
         {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}
