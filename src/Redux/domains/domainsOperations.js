@@ -598,8 +598,6 @@ const renewService =
           throw new Error(data.doc.error.msg.$)
         }
 
-        console.log(data.doc)
-
         const d = {
           title_name: data?.doc?.title_name?.$,
           expiredate: data?.doc?.expiredate?.$,

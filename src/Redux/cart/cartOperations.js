@@ -1,12 +1,6 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import {
-  actions,
-  cartActions,
-  billingOperations,
-  payersOperations,
-  userOperations,
-} from '..'
+import { actions, cartActions, billingOperations, userOperations } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -209,8 +203,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
         }
       })
 
-      dispatch(payersOperations.getPayers())
-      // dispatch(actions.hideLoader())
+      dispatch(billingOperations.getPayers({}, true))
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
@@ -222,8 +215,6 @@ const setPaymentMethods =
   (body = {}, navigate, cartData = null) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
-
-    console.log('button clicked loader start')
 
     window.dataLayer.push({ ecommerce: null })
 
@@ -249,7 +240,6 @@ const setPaymentMethods =
         }),
       )
       .then(({ data }) => {
-        console.log('button clicked promises success')
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
@@ -371,7 +361,6 @@ const setPaymentMethods =
           })
       })
       .catch(error => {
-        console.log('button clicked promises error')
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
