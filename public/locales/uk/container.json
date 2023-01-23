@@ -49,7 +49,8 @@
         "automatic_payment": "Автоплатіж",
         "payments": "Платежі",
         "expenses": "Витрати",
-        "auto_renewal": "Автопродовження послуг"
+        "auto_renewal": "Автопродовження послуг",
+        "payment_method": "Метод оплати"
       }
     }
   },

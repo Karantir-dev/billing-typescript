@@ -178,6 +178,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     //   routeName: routes.HOME,
     //   allowedToRender: true,
     // },
+    {
+      name: t('burger_menu.finance.finance_list.payment_method'),
+      routeName: `${routes.BILLING}/payment_method`,
+      allowedToRender: true,
+    },
   ]
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'

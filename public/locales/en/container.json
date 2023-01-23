@@ -49,7 +49,8 @@
         "automatic_payment": "Automatic payment",
         "payments": "Payments",
         "expenses": "Outcomes",
-        "auto_renewal": "Auto-renewal"
+        "auto_renewal": "Auto-renewal",
+        "payment_method": "Payment method"
       }
     }
   },
