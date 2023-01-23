@@ -710,7 +710,9 @@ export default function Component({ transfer = false }) {
                   className={s.titleBlock}
                 >
                   <h2 className={s.category_title}>{t('Administrative contact')}</h2>
-                  <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenAdmin })} />
+                  {values.admin_contact_use_first === 'off' && (
+                    <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenAdmin })} />
+                  )}
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox
@@ -989,7 +991,9 @@ export default function Component({ transfer = false }) {
                   className={s.titleBlock}
                 >
                   <h2 className={s.category_title}>{t('Technical contact')}</h2>
-                  <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenTech })} />
+                  {values.tech_contact_use_first === 'off' && (
+                    <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenTech })} />
+                  )}
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox
@@ -1268,7 +1272,9 @@ export default function Component({ transfer = false }) {
                   className={s.titleBlock}
                 >
                   <h2 className={s.category_title}>{t('Financial contact')}</h2>
-                  <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenBill })} />
+                  {values.bill_contact_use_first === 'off' && (
+                    <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenBill })} />
+                  )}
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox

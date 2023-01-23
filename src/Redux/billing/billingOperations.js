@@ -399,7 +399,7 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
 }
 
 const getPayers =
-  (body = {}) =>
+  (body = {}, cart = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -428,7 +428,7 @@ const getPayers =
 
         dispatch(payersActions.setPayersList(elem))
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType())
+        dispatch(getPayerCountryType(cart))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
@@ -436,42 +436,46 @@ const getPayers =
       })
   }
 
-const getPayerCountryType = () => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getPayerCountryType =
+  (cart = false) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'profile.add.country',
-        out: 'json',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'profile.add.country',
+          out: 'json',
+          auth: sessionId,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const filters = {}
+        const filters = {}
 
-      data?.doc?.slist?.forEach(el => {
-        filters[el.$name] = el?.val
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el?.val
+        })
+
+        const d = {
+          country: filters?.country[0]?.$key,
+          profiletype: filters?.profiletype[0]?.$key,
+        }
+
+        dispatch(payersActions.setPayersSelectLists(filters))
+        {
+          !cart && dispatch(getPaymentMethod({}, d))
+        }
       })
-
-      const d = {
-        country: filters?.country[0]?.$key,
-        profiletype: filters?.profiletype[0]?.$key,
-      }
-
-      dispatch(payersActions.setPayersSelectLists(filters))
-      dispatch(getPaymentMethod({}, d))
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getPaymentMethod =
   (body = {}, payerModalInfoData = null) =>

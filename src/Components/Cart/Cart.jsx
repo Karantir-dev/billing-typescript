@@ -29,7 +29,6 @@ import {
   payersOperations,
   payersSelectors,
   selectors,
-  billingOperations,
   authSelectors,
 } from '../../Redux'
 import * as Yup from 'yup'
@@ -65,6 +64,8 @@ export default function Component() {
 
   const [blackFridayData, setBlackFridayData] = useState(null)
 
+  const [slecetedPayMethodState, setSlecetedPayMethodState] = useState(undefined)
+
   const geoData = useSelector(authSelectors.getGeoData)
 
   const isLoading = useSelector(selectors.getIsLoadding)
@@ -74,7 +75,6 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
-    dispatch(billingOperations.getPayers())
   }, [])
 
   useEffect(() => {
@@ -98,7 +98,13 @@ export default function Component() {
       if (payersList?.length !== 0) {
         data = { elid: payersList[payersList?.length - 1]?.id?.$ }
         dispatch(
-          payersOperations.getPayerEditInfo(data, false, null, setSelectedPayerFields),
+          payersOperations.getPayerEditInfo(
+            data,
+            false,
+            null,
+            setSelectedPayerFields,
+            true,
+          ),
         )
         return
       }
@@ -108,19 +114,37 @@ export default function Component() {
     }
   }, [payersList, payersSelectLists])
 
+  //isPersonalBalance
+
   const validationSchema = Yup.object().shape({
-    profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
+    profile:
+      payersList?.length !== 0
+        ? Yup.string().when('isPersonalBalance', {
+            is: false,
+            then: Yup.string().required(t('Choose payer')),
+          })
+        : null,
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    person: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    person: Yup.string().when('isPersonalBalance', {
+      is: false,
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string()
-      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
-      .required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string().when('isPersonalBalance', {
+      is: false,
+      then: Yup.string()
+        .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+        .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
     name:
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? Yup.string().when('isPersonalBalance', {
+            is: false,
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          })
         : null,
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
@@ -150,7 +174,6 @@ export default function Component() {
   }
 
   const payBasketHandler = values => {
-    console.log('button clicked')
     const data = {
       postcode_physical: values?.postcode_physical,
       eu_vat: values?.eu_vat,
@@ -186,8 +209,6 @@ export default function Component() {
         ? 'on'
         : 'off',
     }
-
-    console.log(data, 'button clicked data')
 
     if (values?.slecetedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
@@ -676,14 +697,13 @@ export default function Component() {
                   eu_vat: selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: false,
 
-                  slecetedPayMethod: undefined,
+                  slecetedPayMethod: slecetedPayMethodState || undefined,
                   promocode: '',
+                  isPersonalBalance: false,
                 }}
                 onSubmit={payBasketHandler}
               >
                 {({ values, setFieldValue, touched, errors }) => {
-                  console.log(values, 'form values')
-                  console.log(errors, 'form errors')
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
@@ -766,6 +786,19 @@ export default function Component() {
                                   <button
                                     onClick={() => {
                                       setFieldValue('slecetedPayMethod', method)
+                                      setSlecetedPayMethodState(method)
+
+                                      if (
+                                        values?.slecetedPayMethod?.name?.$?.includes(
+                                          'balance',
+                                        ) &&
+                                        values?.slecetedPayMethod?.paymethod_type?.$ ===
+                                          '0'
+                                      ) {
+                                        setFieldValue('isPersonalBalance', true)
+                                      } else {
+                                        setFieldValue('isPersonalBalance', false)
+                                      }
                                     }}
                                     type="button"
                                     className={cn(s.paymentMethodBtn, {

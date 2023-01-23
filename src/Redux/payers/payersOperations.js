@@ -256,7 +256,7 @@ const getPayerModalInfo =
   }
 
 const getPayerEditInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, cart = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -378,7 +378,9 @@ const getPayerEditInfo =
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
-          return dispatch(actions.hideLoader())
+          return cart
+            ? setTimeout(() => dispatch(actions.hideLoader()), 1000)
+            : dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
@@ -423,7 +425,7 @@ const getPayerOfferText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch((err) => {
+    .catch(err => {
       checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
