@@ -106,7 +106,7 @@ export default function AccessRightsListItem({
 
     res.then(() => {
       try {
-        setCurrentRightState(!currentRightState);
+        setCurrentRightState(!currentRightState)
         if (allowAll) {
           const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
@@ -135,7 +135,7 @@ export default function AccessRightsListItem({
               selectedSubWithoutFilters.length > 0
                 ? selectedSubWithoutFilters
                 : selectedSubList
-
+            console.log('list', list)
             const filteredArray = list.map(el => {
               el.active.$ = 'on'
               return el
