@@ -42,7 +42,7 @@ export default function VDSOrder() {
   const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
-    tariffCategory ? el.filter.tag.$ === tariffCategory : true,
+    tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
 
   useEffect(() => {
