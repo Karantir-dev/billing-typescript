@@ -83,6 +83,7 @@ export default function PasswordChange() {
                 className={s.field_wrapper}
                 error={!!errors.password}
                 inputAuth
+                autoComplete='new-password'
                 touched={!!touched.password}
               />
 
@@ -96,6 +97,7 @@ export default function PasswordChange() {
                 className={s.field_wrapper}
                 error={!!errors.password}
                 inputAuth
+                autoComplete='new-password'
                 touched={!!touched.password}
               />
 

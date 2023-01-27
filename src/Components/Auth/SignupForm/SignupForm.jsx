@@ -218,6 +218,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
+                autoComplete="new-password"
               />
 
               <SelectOfCountries

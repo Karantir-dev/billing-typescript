@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
-import { authSelectors, usersOperations, usersSelectors } from '../../../../Redux'
+import { authSelectors, usersOperations } from '../../../../Redux'
 
 import { Toggle } from '../../..'
 
@@ -28,13 +28,11 @@ export default function AccessRightsListItem({
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
-  const rightsList = useSelector(usersSelectors.getRights)
 
   let rightState = item?.active?.$ === 'on'
 
   const mainTitle = mainListTitle ? mainListTitle : allowAll && item?.caption?.$
 
-  let checkRightsList = rightsList?.find(item => item?.caption?.$ === mainTitle)
   const [isAllTurnedOn, setIsAllTurnedOn] = useState(rightState)
   const [currentRightState, setCurrentRightState] = useState(rightState)
 
@@ -73,7 +71,6 @@ export default function AccessRightsListItem({
         item.name.$ === 'rights2.user' && item.caption.$ === 'Functions'
           ? `${userId}/user/rights2.user`
           : userId
-
       dispatch(
         usersOperations.getSubRights(
           changedUserId,
@@ -105,8 +102,8 @@ export default function AccessRightsListItem({
     )
 
     res.then(() => {
+      setCurrentRightState(!currentRightState)
       try {
-        setCurrentRightState(!currentRightState)
         if (allowAll) {
           const map = selectedSubWithoutFilters.map(el => {
             if (allRightsState || isAllTurnedOn) {
@@ -125,7 +122,6 @@ export default function AccessRightsListItem({
             ? setAllRightsState(!allRightsState)
             : setIsAllTurnedOn(!isAllTurnedOn)
         } else {
-
           if (allRightsState || isAllTurnedOn) {
             setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
           }
@@ -135,7 +131,7 @@ export default function AccessRightsListItem({
               selectedSubWithoutFilters.length > 0
                 ? selectedSubWithoutFilters
                 : selectedSubList
-            console.log('list', list)
+
             const filteredArray = list.map(el => {
               el.active.$ = 'on'
               return el
@@ -185,6 +181,35 @@ export default function AccessRightsListItem({
                 ),
               )
             })
+
+            let list =
+              selectedSubWithoutFilters.length > 0
+                ? selectedSubWithoutFilters
+                : selectedSubList
+
+            const changeArray = list.map(el => {
+              if (el.name.$ === item.name.$) {
+                el.active.$ = 'on'
+              }
+              return el
+            })
+            
+            if (selectedSub.length > 0) {
+              setSelectedSub([])
+              setSelectedSub([...changeArray])
+            } else {
+              setSelectedSubList([])
+              setSelectedSubList([...changeArray])
+            }
+            const shouldBeTurnOn =
+              selectedSubList?.length > 0
+                ? selectedSubList.every(el => el.active.$ === 'on') &&
+                  selectedSub.every(el => el.active.$ === 'on')
+                : selectedSub.every(el => el.active.$ === 'on') &&
+                  typeof selectedSubList === 'undefined'
+
+            setIsAllTurnedOn(shouldBeTurnOn)
+            setAllRightsState(shouldBeTurnOn)
           }
         }
       } catch (e) {
@@ -198,16 +223,28 @@ export default function AccessRightsListItem({
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   useEffect(() => {
-    if ((allRightsState || isAllTurnedOn) && checkRightsList?.active?.$ !== 'on') {
-      setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
-    }
+    // if ((allRightsState || isAllTurnedOn) && checkRightsList?.active?.$ !== 'on') {
+    //   setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
+    // }
 
-    if (!allRightsState || !isAllTurnedOn) {
-      if (checkRightsList?.active?.$ === 'on') {
-        setAllRightsState ? setAllRightsState(true) : setIsAllTurnedOn(true)
-      }
-    }
-  })
+    // if (!isAllTurnedOn) {
+    //   if (checkRightsList?.active?.$ === 'on') {
+    //     setAllRightsState ? setAllRightsState(true) : setIsAllTurnedOn(true)
+    //   }
+    // }
+
+    // console.log('useEffect start working!')
+    // console.log('selectedSub: ', selectedSub)
+    // console.log('selectedSubList: ', selectedSubList)
+    let doesEveryTurnedOn =
+      selectedSubList?.length > 0
+        ? selectedSubList.every(el => el.active.$ === 'on') &&
+          selectedSub.every(el => el.active.$ === 'on')
+        : selectedSub.every(el => el.active.$ === 'on') &&
+          typeof selectedSubList === 'undefined'
+
+    setIsAllTurnedOn(doesEveryTurnedOn)
+  }, [selectedSub])
 
   if (Object.prototype.hasOwnProperty.call(item, 'active')) {
     return (

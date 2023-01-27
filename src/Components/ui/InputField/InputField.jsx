@@ -159,7 +159,7 @@ InputField.propTypes = {
   error: PropTypes.bool,
   touched: PropTypes.bool,
   isShadow: PropTypes.bool.isRequired,
-  autoComplete: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  autoComplete: PropTypes.oneOf(['on','off','new-password']),
   height: PropTypes.number,
   background: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -174,7 +174,7 @@ InputField.propTypes = {
 InputField.defaultProps = {
   type: 'text',
   isShadow: false,
-  autoComplete: false,
+  autoComplete: 'off',
   dataTestid: null,
   disabled: false,
   isRequired: false,
