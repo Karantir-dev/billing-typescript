@@ -132,7 +132,7 @@ export default function ManageUserForm({
                       touched={!!touched['email' + userId]}
                       isShadow={true}
                       background={true}
-                      autoComplete
+                      autoComplete='off'
                       disabled={formName === 'settings'}
                     />
 

@@ -143,7 +143,7 @@ export default function StatisticsFilterModal({
                     placeholder={t('statistics_section.website_url')}
                     touched={false}
                     error={false}
-                    autoComplete
+                    autoComplete='off'
                     isShadow
                   />
 

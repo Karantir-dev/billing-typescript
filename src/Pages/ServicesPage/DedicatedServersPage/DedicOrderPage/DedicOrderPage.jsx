@@ -624,7 +624,7 @@ export default function DedicOrderPage() {
                       touched={!!touched.domainname}
                       className={s.input_field_wrapper}
                       inputClassName={s.text_area}
-                      autoComplete
+                      autoComplete='off'
                       type="text"
                       value={values?.domainname}
                     />

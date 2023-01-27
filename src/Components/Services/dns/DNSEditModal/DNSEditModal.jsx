@@ -133,7 +133,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.payment_method}
                         disabled
@@ -145,7 +145,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.username}
                         disabled
@@ -156,7 +156,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.password}
                         disabled
@@ -167,7 +167,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.ip}
                         disabled

@@ -60,7 +60,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   touched={!!touched.summ}
                   className={s.input_field_wrapper}
                   inputClassName={s.text_area}
-                  autoComplete
+                  autoComplete='off'
                   type="text"
                   value={values?.summ}
                   onKeyDown={e => {

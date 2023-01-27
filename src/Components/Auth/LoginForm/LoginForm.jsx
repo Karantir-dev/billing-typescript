@@ -114,7 +114,7 @@ export default function LoginForm() {
                   touched={!!touched.email}
                   className={s.input_field_wrapper}
                   inputAuth
-                  autoComplete
+                  autoComplete='on'
                 />
 
                 <InputField
