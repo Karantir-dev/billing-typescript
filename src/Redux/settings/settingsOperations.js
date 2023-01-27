@@ -70,7 +70,6 @@ const getUserEdit =
         )
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -100,7 +99,6 @@ const setUserAvatar =
       })
       .then(() => dispatch(actions.hideLoader()))
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -211,7 +209,6 @@ const getUserParams =
         }
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -243,7 +240,6 @@ const getTimeByTimeZone =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -334,13 +330,11 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
           dispatch(getUserEdit(elid))
         })
         .catch(error => {
-          console.log('error', error)
           checkIfTokenAlive(error.message, dispatch)
           dispatch(actions.hideLoader())
         })
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -394,7 +388,6 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
     })
 
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -423,7 +416,6 @@ const sendEmailConfirm = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -486,7 +478,6 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
       dispatch(getUserEdit(elid))
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -520,7 +511,6 @@ const changeSocialLinkStatus = (elid, data) => (dispatch, getState) => {
       dispatch(getUserEdit(elid))
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -559,7 +549,6 @@ const setTotp = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -584,7 +573,6 @@ const getQR = link => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -614,7 +602,6 @@ const getSecretKeyFile = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -659,7 +646,6 @@ const setTotpPassword = (elid, d, setModal) => (dispatch, getState) => {
       dispatch(getUserEdit(elid))
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -706,7 +692,6 @@ const confirmEmail = key => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -752,7 +737,7 @@ const changeLang = (elid, lang) => (dispatch, getState) => {
         time: data?.doc?.time?.$ || '',
         telegram_id: data?.doc?.telegram_id?.$ || '',
         status_totp: data?.doc?.status_totp?.$ || '',
-        email: data?.doc?.email?.$ || '', 
+        email: data?.doc?.email?.$ || '',
         email_confirmed_status: data?.doc?.email_confirmed_status?.$ || '',
         vkontakte_status: data?.doc?.vkontakte_status?.$,
         facebook_status: data?.doc?.facebook_status?.$,
@@ -777,13 +762,11 @@ const changeLang = (elid, lang) => (dispatch, getState) => {
           dispatch(actions.hideLoader())
         })
         .catch(error => {
-          console.log('error', error)
           checkIfTokenAlive(error.message, dispatch)
           dispatch(actions.hideLoader())
         })
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

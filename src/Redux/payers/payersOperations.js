@@ -37,7 +37,6 @@ const getPayers =
         dispatch(getPayerCountryType())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -70,7 +69,6 @@ const getPayerCountryType = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -101,8 +99,6 @@ const deletePayer = elid => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
-
       if (
         error.message.trim() === 'You cannot delete the payer who already made payments'
       ) {
@@ -254,14 +250,13 @@ const getPayerModalInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
 
 const getPayerEditInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, cart = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -383,7 +378,9 @@ const getPayerEditInfo =
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
-          return dispatch(actions.hideLoader())
+          return cart
+            ? setTimeout(() => dispatch(actions.hideLoader()), 1000)
+            : dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
@@ -393,7 +390,6 @@ const getPayerEditInfo =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -429,8 +425,8 @@ const getPayerOfferText = link => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

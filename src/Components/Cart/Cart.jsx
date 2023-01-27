@@ -29,12 +29,11 @@ import {
   payersOperations,
   payersSelectors,
   selectors,
-  billingOperations,
   authSelectors,
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL, SALE_55_PROMOCODE } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -65,6 +64,8 @@ export default function Component() {
 
   const [blackFridayData, setBlackFridayData] = useState(null)
 
+  const [slecetedPayMethodState, setSlecetedPayMethodState] = useState(undefined)
+
   const geoData = useSelector(authSelectors.getGeoData)
 
   const isLoading = useSelector(selectors.getIsLoadding)
@@ -74,7 +75,6 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
-    dispatch(billingOperations.getPayers())
   }, [])
 
   useEffect(() => {
@@ -98,7 +98,13 @@ export default function Component() {
       if (payersList?.length !== 0) {
         data = { elid: payersList[payersList?.length - 1]?.id?.$ }
         dispatch(
-          payersOperations.getPayerEditInfo(data, false, null, setSelectedPayerFields),
+          payersOperations.getPayerEditInfo(
+            data,
+            false,
+            null,
+            setSelectedPayerFields,
+            true,
+          ),
         )
         return
       }
@@ -108,19 +114,37 @@ export default function Component() {
     }
   }, [payersList, payersSelectLists])
 
+  //isPersonalBalance
+
   const validationSchema = Yup.object().shape({
-    profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
+    profile:
+      payersList?.length !== 0
+        ? Yup.string().when('isPersonalBalance', {
+            is: false,
+            then: Yup.string().required(t('Choose payer')),
+          })
+        : null,
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    person: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    person: Yup.string().when('isPersonalBalance', {
+      is: false,
+      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    }),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string()
-      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
-      .required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string().when('isPersonalBalance', {
+      is: false,
+      then: Yup.string()
+        .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+        .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+        .required(t('Is a required field', { ns: 'other' })),
+    }),
+
     name:
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? Yup.string().when('isPersonalBalance', {
+            is: false,
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          })
         : null,
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
@@ -404,24 +428,30 @@ export default function Component() {
           </div>
         )}
         {domainsList?.length > 0 && (
-          <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
-            {domainsList?.map(el => {
-              const { id, desc, cost, fullcost, discount_percent } = el
-              return (
-                <DomainItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
-          </div>
+          <>
+            <div className={cn(s.formBlockTitle, s.padding)}>
+              {t('Domain registration')}:
+            </div>
+            <div className={s.scroll}>
+              {domainsList?.map(el => {
+                const { id, desc, cost, fullcost, discount_percent } = el
+                return (
+                  <DomainItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+          </>
         )}
         {filteredDedicList?.length > 0 && (
           <div className={s.padding}>
@@ -463,7 +493,7 @@ export default function Component() {
               {t('services.Virtual server', { ns: 'other' })}:
             </div>
 
-            <div className={s.scroll}>
+            <div className={s.padding}>
               {filteredVdsList?.map(el => {
                 return (
                   <VdsItem
@@ -667,8 +697,9 @@ export default function Component() {
                   eu_vat: selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: false,
 
-                  slecetedPayMethod: undefined,
+                  slecetedPayMethod: slecetedPayMethodState || undefined,
                   promocode: '',
+                  isPersonalBalance: false,
                 }}
                 onSubmit={payBasketHandler}
               >
@@ -755,6 +786,19 @@ export default function Component() {
                                   <button
                                     onClick={() => {
                                       setFieldValue('slecetedPayMethod', method)
+                                      setSlecetedPayMethodState(method)
+
+                                      if (
+                                        values?.slecetedPayMethod?.name?.$?.includes(
+                                          'balance',
+                                        ) &&
+                                        values?.slecetedPayMethod?.paymethod_type?.$ ===
+                                          '0'
+                                      ) {
+                                        setFieldValue('isPersonalBalance', true)
+                                      } else {
+                                        setFieldValue('isPersonalBalance', false)
+                                      }
                                     }}
                                     type="button"
                                     className={cn(s.paymentMethodBtn, {
@@ -1008,6 +1052,11 @@ export default function Component() {
                           </button>
                         </div>
 
+                        {SALE_55_PROMOCODE?.length > 0 &&
+                        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE) ? (
+                          <div className={s.sale55Promo}>{t('sale_55_text')}</div>
+                        ) : null}
+
                         <div className={cn(s.formFieldsBlock)}>
                           {blackFridayData && blackFridayData?.success && (
                             <BlackFridayGift code={blackFridayData?.promo_of_service} />
@@ -1065,7 +1114,7 @@ export default function Component() {
                           >
                             {t('Terms of Service', { ns: 'domains' })}
                           </a>{' '}
-                          |{' '}
+                          {t('and', { ns: 'domains' })}{' '}
                           <a
                             target="_blank"
                             href={OFERTA_URL}

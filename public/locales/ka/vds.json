@@ -94,6 +94,7 @@
   "Active service": "მომსახურება გააქტიურებულია",
   "reboot_launched": "სერვერის გადატვირთვის პროცესი დაიწყო",
 
-  "psc.": "რამ.",
-  "Suspended due to abuse": "შეჩერდა დარღვევის გამო"
+  "pcs.": "რამ.",
+  "Suspended due to abuse": "შეჩერდა დარღვევის გამო",
+  "daily charges": "ყოველდღიური\nგადასახადი"
 }

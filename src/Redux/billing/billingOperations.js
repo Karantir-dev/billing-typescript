@@ -38,7 +38,6 @@ const getPayments =
         dispatch(getPaymentsFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -89,7 +88,6 @@ const getPaymentsFilters = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -122,7 +120,6 @@ const setPaymentsFilters =
         dispatch(getPayments(body))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -159,7 +156,6 @@ const getPaymentPdf = (elid, name) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -196,7 +192,6 @@ const getPaymentCsv = p_cnt => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -246,7 +241,6 @@ const deletePayment = elid => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -285,7 +279,6 @@ const getExpenses =
         dispatch(getExpensesFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -332,7 +325,6 @@ const getExpensesFilters = () => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -365,7 +357,6 @@ const setExpensesFilters =
         dispatch(getExpenses(body))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -402,14 +393,13 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
 
 const getPayers =
-  (body = {}) =>
+  (body = {}, cart = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -438,52 +428,54 @@ const getPayers =
 
         dispatch(payersActions.setPayersList(elem))
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType())
+        dispatch(getPayerCountryType(cart))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
 
-const getPayerCountryType = () => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getPayerCountryType =
+  (cart = false) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'profile.add.country',
-        out: 'json',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'profile.add.country',
+          out: 'json',
+          auth: sessionId,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const filters = {}
+        const filters = {}
 
-      data?.doc?.slist?.forEach(el => {
-        filters[el.$name] = el?.val
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el?.val
+        })
+
+        const d = {
+          country: filters?.country[0]?.$key,
+          profiletype: filters?.profiletype[0]?.$key,
+        }
+
+        dispatch(payersActions.setPayersSelectLists(filters))
+        {
+          !cart && dispatch(getPaymentMethod({}, d))
+        }
       })
-
-      const d = {
-        country: filters?.country[0]?.$key,
-        profiletype: filters?.profiletype[0]?.$key,
-      }
-
-      dispatch(payersActions.setPayersSelectLists(filters))
-      dispatch(getPaymentMethod({}, d))
-    })
-    .catch(error => {
-      console.log('error', error)
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getPaymentMethod =
   (body = {}, payerModalInfoData = null) =>
@@ -635,13 +627,11 @@ const createPaymentMethod =
             }
           })
           .catch(error => {
-            console.log('error', error)
             checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
           })
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -676,8 +666,8 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       dispatch(actions.hideLoader())
       dispatch(getPayments())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -709,8 +699,8 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -743,8 +733,8 @@ const getAutoPayments = () => (dispatch, getState) => {
 
       dispatch(getAutoPaymentsAdd())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -784,8 +774,8 @@ const getAutoPaymentsAdd = () => (dispatch, getState) => {
 
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -820,8 +810,8 @@ const stopAutoPayments = id => (dispatch, getState) => {
       }
       dispatch(actions.hideLoader())
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -856,7 +846,6 @@ const createAutoPayment =
         }
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -895,7 +884,6 @@ const getPaymentMethods =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -928,8 +916,8 @@ const getPaymentMethodReconfig = (elid, elname) => (dispatch, getState) => {
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
-    .catch(error => {
-      console.log('error', error)
+    .catch(err => {
+      checkIfTokenAlive(err?.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
@@ -978,7 +966,6 @@ const deletePaymentMethod = elid => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -1025,7 +1012,6 @@ const addPaymentMethod =
         setAddPaymentMethodData && setAddPaymentMethodData(data.doc)
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -1063,7 +1049,6 @@ const finishAddPaymentMethod =
         }
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -1098,7 +1083,6 @@ const editNamePaymentMethod =
         func && func()
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

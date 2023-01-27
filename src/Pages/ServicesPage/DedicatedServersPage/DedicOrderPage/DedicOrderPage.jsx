@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
   Button,
-  CheckBox,
   SoftwareOSBtn,
   SoftwareOSSelect,
   Toggle,
@@ -19,7 +18,6 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 
 import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
-import { PRIVACY_URL } from '../../../../config/config'
 import * as route from '../../../../routes'
 
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
@@ -30,6 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
+import { checkIfTokenAlive } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -235,7 +234,7 @@ export default function DedicOrderPage() {
         })
       }
     } catch (e) {
-      console.log(e.message)
+      checkIfTokenAlive(e?.message, dispatch)
     }
   })
 
@@ -412,7 +411,7 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.slice(0, 1).map(item => {
+                  {tarifList?.fpricelist?.map(item => {
                     return (
                       <div
                         className={classNames(s.processor_card, {
@@ -438,7 +437,7 @@ export default function DedicOrderPage() {
                     )
                   })}
                 </div>
-                <div className={s.second_processors_block}>
+                {/* <div className={s.second_processors_block}>
                   {tarifList?.fpricelist?.slice(1).map(item => {
                     return (
                       <div
@@ -464,7 +463,7 @@ export default function DedicOrderPage() {
                       </div>
                     )
                   })}
-                </div>
+                </div> */}
               </div>
 
               <Select
@@ -748,7 +747,7 @@ export default function DedicOrderPage() {
                       itemsList={values?.ipList?.map(el => {
                         return {
                           label: `${el?.value}
-                          ${t('psc.', {
+                          ${t('pcs.', {
                             ns: 'vds',
                           })}
                           (${el?.cost} EUR)`,

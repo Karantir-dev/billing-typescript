@@ -103,8 +103,7 @@
   line-height: 120%;
   color: var(--main-text);
   // margin-left: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 .actLine {
@@ -357,6 +356,16 @@
   // max-width: 270px;
 }
 
+.sale55Promo {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  color: var(--transparent-color);
+  margin-top: 11px;
+  margin-left: 11px;
+}
+
 .discItem {
   display: flex;
   align-items: center;
@@ -432,9 +441,9 @@
 }
 
 .scroll {
-  padding: 10px 22px 10px 22px;
-  overflow: auto;
-  max-height: 380px;
+  padding: 10px 22px;
+  overflow-y: auto;
+  max-height: 267px;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -601,7 +610,7 @@
   }
 
   .scroll {
-    padding: 10px 35px 0px 35px;
+    padding: 10px 35px 0px;
   }
 
   .padding {

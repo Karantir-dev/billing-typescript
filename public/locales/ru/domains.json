@@ -39,7 +39,7 @@
   "off": "Выкл.",
   "I have read and agree to the": "Я прочитал и согласен с",
   "Terms of Service": "Условиями предоставления услуг",
-  "Terms of the offer": "Условиями оферты",
+  "Terms of the offer": "Политикой конфиденциальности",
   "Total payable": "Итого к оплате",
   "Disabled": "Отключить",
   "Transfer": "Трансфер",
@@ -99,5 +99,10 @@
   "record_format": "Формат записи \"ns.example.com\" или \"ns.example.com/1.1.1.1\" или \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "Добавить NS",
 
-  "Configuring": "Настройка"
+  "Configuring": "Настройка",
+
+  "and": "и",
+
+  "Name can only contain Latin letters": "Имя может содержать только латинские буквы",
+  "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы"
 }

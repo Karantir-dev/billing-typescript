@@ -235,6 +235,26 @@
   white-space: nowrap;
 }
 
+.selectWithSale {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 15px;
+
+  .sale55Icon {
+    background: linear-gradient(180.08deg, #ff6f66 12.11%, #fa487d 98.37%);
+    margin-right: 5px;
+    padding: 3px;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #ffffff;
+  }
+}
+
 .price {
   @extend %accent-text-gradient;
   display: block;
@@ -350,7 +370,7 @@
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 7px;
 
   &:nth-child(2) {
     margin-left: 70px;
@@ -407,7 +427,7 @@
 
   .parameters_list {
     gap: 20px;
-    grid-template-columns: repeat(auto-fill, 280px);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 
   .agreement_wrapper {

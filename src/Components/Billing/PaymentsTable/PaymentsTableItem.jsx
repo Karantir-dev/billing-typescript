@@ -90,9 +90,19 @@ export default function Component(props) {
           {status.trim() !== 'Paid' && (
             <button
               className={s.settings_btn}
-              onClick={() =>
-                allowrefund === 'off' ? setCreatePaymentModal(true) : payRedirectHandler()
-              }
+              onClick={() => {
+                if (
+                  status.trim() === 'New' &&
+                  paymethod?.trim().toLowerCase() !== 'select'
+                ) {
+                  return payRedirectHandler()
+                }
+                if (allowrefund === 'off') {
+                  return setCreatePaymentModal(true)
+                } else {
+                  return payRedirectHandler()
+                }
+              }}
             >
               <Pay />
               <p className={s.setting_text}>{t('Pay')}</p>
@@ -118,9 +128,19 @@ export default function Component(props) {
       <div className={s.btnsBlock}>
         {status.trim() !== 'Paid' && (
           <button
-            onClick={() =>
-              allowrefund === 'off' ? setCreatePaymentModal(true) : payRedirectHandler()
-            }
+            onClick={() => {
+              if (
+                status.trim() === 'New' &&
+                paymethod?.trim().toLowerCase() !== 'select'
+              ) {
+                return payRedirectHandler()
+              }
+              if (allowrefund === 'off') {
+                return setCreatePaymentModal(true)
+              } else {
+                return payRedirectHandler()
+              }
+            }}
             className={s.mobileBtn}
           >
             <Pay />

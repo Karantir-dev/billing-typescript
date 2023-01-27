@@ -95,6 +95,8 @@
   "Active service": "Қызмет іске қосылды",
   "reboot_launched": "Серверді қайта іске қосу процесі басталды",
 
-  "psc.": "psc.",
-  "Suspended due to abuse": "Бұзушылық үшін тоқтатылды"
+  "pcs.": "pcs.",
+  "Suspended due to abuse": "Бұзушылық үшін тоқтатылды",
+
+  "daily charges": "күнделікті\nтөлемдер"
 }

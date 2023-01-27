@@ -5,6 +5,7 @@
   border-radius: 5px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 25px;
   gap: 20px;
   position: relative;
@@ -20,6 +21,35 @@
   grid-template-columns: max-content 1fr;
   column-gap: 25px;
   align-items: center;
+}
+
+.dailyCharge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--main-text);
+    width: fit-content;
+    flex-basis: 0;
+  }
+
+  a {
+    div {
+      content: url('../../../../images/vds_question.svg');
+    }
+
+    &:hover {
+      div {
+        content: url('../../../../images/vds_question_hover.svg');
+      }
+    }
+  }
 }
 
 .value {
@@ -46,7 +76,7 @@
     flex-basis: 8%;
   }
   &:nth-child(7) {
-    flex-basis: 8%;
+    flex-basis: 14%;
   }
   &:nth-child(8) {
     flex-basis: 8%;
@@ -141,9 +171,11 @@
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
+  transition: background-color 0.2s ease-in;
 
   &:hover {
     background-color: var(--select_option_bgc);
+
     svg {
       fill: url('#gradient');
     }

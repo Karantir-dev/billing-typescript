@@ -39,7 +39,7 @@
   "off": "Вимк.",
   "I have read and agree to the": "Я прочитав і згоден з",
   "Terms of Service": "Умовами надання послуг",
-  "Terms of the offer": "Умовами оферти",
+  "Terms of the offer": "Політикою конфіденційності",
   "Total payable": "Разом до оплати",
   "Disabled": "Вимкнути",
   "Transfer": "Трансфер",
@@ -101,5 +101,10 @@
   "record_format": "Формат запису \"ns.example.com\" або \"ns.example.com/1.1.1.1\" або \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "Додати NS",
 
-  "Configuring": "Налаштування"
+  "Configuring": "Налаштування",
+
+  "and": "і",
+
+  "Name can only contain Latin letters": "Імʼя може містити лише латинські літери",
+  "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери"
 }

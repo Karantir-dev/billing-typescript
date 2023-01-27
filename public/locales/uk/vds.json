@@ -95,6 +95,7 @@
   "Active service": "Послуга запущена",
   "reboot_launched": "Запущений процес перезавантаження сервера",
 
-  "psc.": "шт.",
-  "Suspended due to abuse": "Зупинено за порушення"
+  "pcs.": "шт.",
+  "Suspended due to abuse": "Зупинено за порушення",
+  "daily charges": "щоденні\nсписання"
 }

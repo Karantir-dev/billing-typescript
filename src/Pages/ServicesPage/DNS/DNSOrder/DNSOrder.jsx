@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, CheckBox } from '../../../../Components'
+import { BreadCrumbs, Button } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -8,7 +8,6 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
-import { PRIVACY_URL } from '../../../../config/config'
 import Select from '../../../../Components/ui/Select/Select'
 import { dnsOperations, userOperations } from '../../../../Redux'
 import * as routes from '../../../../routes'
@@ -149,7 +148,7 @@ export default function FTPOrder() {
         }}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, resetForm, setFieldTouched, touched }) => {
+        {({ values, setFieldValue, resetForm, setFieldTouched }) => {
           return (
             <Form className={s.form}>
               <Select

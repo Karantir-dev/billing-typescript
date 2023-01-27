@@ -28,12 +28,9 @@ export default function LoginForm() {
   const recaptchaEl = useRef()
 
   // const redirectID = location?.state?.redirect
-  // console.log(redirectID, 'from login form')
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   // const [socialLinks, setSocialLinks] = useState({})
-
-  // console.log(socialLinks)
 
   // useEffect(() => {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
@@ -56,7 +53,7 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;+]+$/g, t('warnings.special_characters'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
