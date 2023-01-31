@@ -103,5 +103,8 @@
 
   "Configuring": "Налаштування",
 
-  "and": "і"
+  "and": "і",
+
+  "Name can only contain Latin letters": "Імʼя може містити лише латинські літери",
+  "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери"
 }

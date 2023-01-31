@@ -43,7 +43,6 @@ const getDNSList = data => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -88,7 +87,6 @@ const getTarifs =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
@@ -157,7 +155,6 @@ const getParameters =
       })
 
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -191,7 +188,6 @@ const updateDNSPrice =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -233,7 +229,6 @@ const orderDNS =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -271,7 +266,6 @@ const getPrintLicense = priceId => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -362,7 +356,6 @@ const getCurrentDNSInfo = (elid, setInitialParams) => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -403,7 +396,6 @@ const editDNS = (elid, autoprolong, handleModal) => (dispatch, getState) => {
       handleModal()
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -437,7 +429,6 @@ const getDNSExtraPayText =
         setAdditionalText(data.doc.orderinfo.$)
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -479,7 +470,6 @@ const editDNSWithExtraCosts =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -509,7 +499,6 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -569,7 +558,6 @@ const getDNSFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         if (error.message.includes('filter')) {
           dispatch(getDNSList({ p_num: 1 }))
         }
@@ -603,7 +591,6 @@ const getChangeTariffPricelist = (elid, setInitialState) => (dispatch, getState)
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })

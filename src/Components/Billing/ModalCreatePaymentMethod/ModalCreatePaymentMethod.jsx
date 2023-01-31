@@ -16,6 +16,7 @@ import { BASE_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
+import { checkIfTokenAlive } from '../../../utils'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -194,7 +195,7 @@ export default function Component(props) {
                   try {
                     element.scrollIntoView(scrollBehavior)
                   } catch (e) {
-                    console.log(e.message)
+                    checkIfTokenAlive(e?.message, dispatch)
                   }
                 }, [submitCount])
 

@@ -82,7 +82,7 @@ export default function InputWithAutocomplete({
     // Get latitude and longitude via utility functions
     // getGeocode({ address: value }).then(results => {
     //   const { lat, lng } = getLatLng(results[0])
-    //   console.log('📍 Coordinates: ', { lat, lng })
+
     // })
   }
 

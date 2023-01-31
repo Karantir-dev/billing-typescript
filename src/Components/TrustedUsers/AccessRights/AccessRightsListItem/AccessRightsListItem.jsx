@@ -9,6 +9,7 @@ import { authSelectors, usersOperations } from '../../../../Redux'
 import { Toggle } from '../../..'
 
 import s from './AccessRightsListItem.module.scss'
+import { checkIfTokenAlive } from '../../../../utils'
 
 export default function AccessRightsListItem({
   allRightsState,
@@ -213,7 +214,7 @@ export default function AccessRightsListItem({
           }
         }
       } catch (e) {
-        console.log('Error in AccessRightsListItem - ', e.message)
+        checkIfTokenAlive(`Error in AccessRightsListItem - ${e?.message}`, dispatch)
       }
     })
   }

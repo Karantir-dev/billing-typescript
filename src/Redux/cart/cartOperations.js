@@ -1,23 +1,18 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import {
-  actions,
-  cartActions,
-  billingOperations,
-  payersOperations,
-  userOperations,
-} from '..'
+import { actions, cartActions, billingOperations, userOperations } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '../../utils'
+import { SALE_55_PROMOCODE } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
-    // cart: { cartState },
+    cart: { cartState },
   } = getState()
 
   axiosInstance
@@ -50,17 +45,16 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
 
-      // if (cartState?.salePromocode) {
-      //   setCartData &&
-      //     setPaymentsMethodList &&
-      //     dispatch(
-      //       setBasketPromocode('asfsghfgihjlj', setCartData, setPaymentsMethodList),
-      //     )
-      //   dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
-      // }
+      if (cartState?.salePromocode && SALE_55_PROMOCODE) {
+        setCartData &&
+          setPaymentsMethodList &&
+          dispatch(
+            setBasketPromocode(SALE_55_PROMOCODE, setCartData, setPaymentsMethodList),
+          )
+        dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
+      }
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -112,7 +106,6 @@ const setBasketPromocode =
         dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -145,7 +138,6 @@ const deleteBasketItem =
         dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -178,7 +170,6 @@ const clearBasket = id => (dispatch, getState) => {
       dispatch(actions.hideLoader())
     })
     .catch(error => {
-      console.log('error', error)
       dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
@@ -212,11 +203,9 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
         }
       })
 
-      dispatch(payersOperations.getPayers())
-      // dispatch(actions.hideLoader())
+      dispatch(billingOperations.getPayers({}, true))
     })
     .catch(error => {
-      console.log('error', error)
       checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
@@ -367,13 +356,11 @@ const setPaymentMethods =
           })
           .then(() => dispatch(userOperations.getNotify()))
           .catch(error => {
-            console.log('error', error)
             checkIfTokenAlive(error.message, dispatch)
             dispatch(actions.hideLoader())
           })
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

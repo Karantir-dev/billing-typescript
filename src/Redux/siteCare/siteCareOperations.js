@@ -43,7 +43,6 @@ const getSiteCare =
         dispatch(getSiteCareFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -105,7 +104,6 @@ const getSiteCareFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -147,8 +145,6 @@ const getHistorySiteCare =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -251,8 +247,6 @@ const prolongSiteCare =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -331,8 +325,6 @@ const editSiteCare =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -410,8 +402,6 @@ const deleteSiteCare =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -469,8 +459,6 @@ const orderSiteCare =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -531,8 +519,6 @@ const orderSiteCarePricelist =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

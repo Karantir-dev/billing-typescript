@@ -169,7 +169,7 @@
 
   svg,
   path {
-    fill: var(--transparent-color);
+    fill: var(--icon-color_2);
   }
   &:hover {
     background-color: var(--select_option_bgc);
@@ -183,7 +183,8 @@
   &:disabled {
     color: var(--transparent-color);
     pointer-events: none;
-    svg {
+    svg,
+    path {
       fill: var(--disabled_icon_color);
     }
   }
@@ -191,11 +192,13 @@
   &:first-of-type {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    padding-top: 12px;
   }
 
   &:last-of-type {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    padding-bottom: 12px;
   }
 }
 
@@ -203,7 +206,6 @@
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
-  line-height: 70.9%;
 }
 
 .line {
