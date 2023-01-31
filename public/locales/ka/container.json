@@ -2,7 +2,7 @@
   "aside_menu": {
     "services": "მომსახურება",
     "finance_and_docs": "ფინანსები",
-    "referal_program": "რეფერალური პროგრამა",
+    "referral_program": "რეფერალური პროგრამა",
     "support": "მხარდაჭერა"
   },
   "balance": "ბალანსი",
@@ -49,7 +49,8 @@
         "automatic_payment": "ავტოგადახდა",
         "payments": "გადახდები",
         "Expenses": "ხარჯები",
-        "auto_renewal": "მომსახურების ავტომატური გაგრძელება"
+        "auto_renewal": "მომსახურების ავტომატური გაგრძელება",
+        "payment_method": "გადახდის მეთოდი"
       }
     }
   },

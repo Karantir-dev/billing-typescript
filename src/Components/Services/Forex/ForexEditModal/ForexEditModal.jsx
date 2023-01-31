@@ -142,7 +142,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.server_ip}
                           disabled
@@ -153,7 +153,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.server_hostname}
                           disabled
@@ -166,7 +166,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.server_user}
                           disabled
@@ -177,7 +177,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.server_password}
                           disabled
@@ -188,7 +188,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.server_package}
                           disabled

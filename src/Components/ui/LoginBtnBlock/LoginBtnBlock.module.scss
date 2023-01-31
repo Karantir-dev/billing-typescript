@@ -3,6 +3,7 @@
   justify-content: space-evenly;
   width: 100%;
   height: 30px;
+  text-transform: uppercase;
 }
 
 .current_auth_link {
@@ -44,6 +45,5 @@
 
   .auth_link {
     font-size: 20px;
-    text-transform: uppercase;
   }
 }

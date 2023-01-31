@@ -91,7 +91,7 @@ const AsideServicesMenu = () => {
             >
               <Social className={s.img} />
               {pinnedStatus && (
-                <p className={s.text}>{t('aside_menu.referal_program')}</p>
+                <p className={s.text}>{t('aside_menu.referral_program')}</p>
               )}
             </NavLink>
           </li>

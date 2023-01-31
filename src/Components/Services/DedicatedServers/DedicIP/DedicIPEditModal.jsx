@@ -89,7 +89,7 @@ export default function DedicIPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.mask}
                         disabled
@@ -101,7 +101,7 @@ export default function DedicIPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={values?.gateway}
                         disabled

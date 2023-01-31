@@ -190,7 +190,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.domainname}
                           disabled
@@ -201,7 +201,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.username}
                           disabled
@@ -239,7 +239,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.ip}
                           disabled
@@ -250,7 +250,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.password}
                           disabled
@@ -261,7 +261,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete
+                          autoComplete='off'
                           type="text"
                           value={values?.userpassword}
                           disabled

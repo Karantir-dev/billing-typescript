@@ -319,24 +319,34 @@ export default function VDSOrder() {
 
   const translatePeriod = (periodName, t) => {
     let period = ''
-    if (periodName === '1') {
-      period = t('per month')
-    } else if (periodName === '3') {
-      period = t('for three months')
-    } else if (periodName === '6') {
-      period = t('half a year')
-    } else if (periodName === '12') {
-      period = t('per year')
-    } else if (periodName === '24') {
-      period = t('for two years')
-    } else if (periodName === '36') {
-      period = t('for three years')
+
+    switch (periodName) {
+      case '1':
+        period = t('per month')
+        break
+      case '3':
+        period = t('for three months')
+        break
+      case '6':
+        period = t('half a year')
+        break
+      case '12':
+        period = t('per year')
+        break
+      case '24':
+        period = t('for two years')
+        break
+      case '36':
+        period = t('for three years')
+        break
+      default:
+        period = ''
     }
 
     return period
   }
 
-  const nahdleDomainChange = e => setDomainName(e.target.value)
+  const handleDomainChange = e => setDomainName(e.target.value)
 
   return (
     <div className={s.pb}>
@@ -371,7 +381,7 @@ export default function VDSOrder() {
             ostempl: dataFromSite?.ostempl || parametersInfo?.ostempl?.$ || '',
             autoprolong:
               dataFromSite?.autoprolong || parametersInfo?.autoprolong?.$ || '',
-            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || '',
+            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || domainName,
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
@@ -615,7 +625,7 @@ export default function VDSOrder() {
                         touched={!!touched.domain}
                         isShadow
                         value={domainName}
-                        onChange={nahdleDomainChange}
+                        onChange={handleDomainChange}
                       />
                       <InputField
                         name="IP_addresses_count"

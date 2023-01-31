@@ -2,7 +2,7 @@
   "aside_menu": {
     "services": "Услуги",
     "finance_and_docs": "Финансы",
-    "referal_program": "Реферальная программа",
+    "referral_program": "Реферальная программа",
     "support": "Поддержка"
   },
   "balance": "Баланс",
@@ -49,7 +49,8 @@
         "automatic_payment": "Автоплатеж",
         "payments": "Платежи",
         "expenses": "Расходы",
-        "auto_renewal": "Автопродление услуг"
+        "auto_renewal": "Автопродление услуг",
+        "payment_method": "Метод оплаты"
       }
     }
   },

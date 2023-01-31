@@ -2,7 +2,7 @@
   "aside_menu": {
     "services": "Қызметтер",
     "finance_and_docs": "Қаржы",
-    "referal_program": "Рефералды бағдарлама",
+    "referral_program": "Рефералды бағдарлама",
     "support": "Қолдау"
   },
   "balance": "Баланс",
@@ -49,7 +49,8 @@
         "automatic_payment": "Автоматты төлем",
         "payments": "Төлемдер",
         "expenses": "Шығындар",
-        "auto_renewal": "Қызметтер мерзімін автоматты ұзарту"
+        "auto_renewal": "Қызметтер мерзімін автоматты ұзарту",
+        "payment_method": "Төлем әдісі"
       }
     }
   },

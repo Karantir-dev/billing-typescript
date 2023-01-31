@@ -2,7 +2,7 @@
   "aside_menu": {
     "services": "Services",
     "finance_and_docs": "Finance",
-    "referal_program": "Referal program",
+    "referral_program": "Referral program",
     "support": "Support"
   },
   "balance": "Balance",
@@ -49,7 +49,8 @@
         "automatic_payment": "Automatic payment",
         "payments": "Payments",
         "expenses": "Outcomes",
-        "auto_renewal": "Auto-renewal"
+        "auto_renewal": "Auto-renewal",
+        "payment_method": "Payment method"
       }
     }
   },

@@ -73,8 +73,11 @@ export default function TrustedUsers() {
     dispatch(
       usersOperations.createNewUser(password, email, phone, name, checkIfCreatedUser),
     )
-    handleUserForm()
   }
+
+  useEffect(() => {
+    if (createdNewUser) handleUserForm()
+  }, [createdNewUser])
 
   useEffect(() => {
     if (isComponentAllowedToRender) dispatch(usersOperations.getUsers())
