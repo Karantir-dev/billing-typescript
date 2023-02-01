@@ -310,6 +310,17 @@
       "wuwuwuw_edit#read": "Edit properties of the selected service (data reading is available)",
       "wuwuwuw_edit#write": "Edit properties of the selected service (data saving is available)",
 
+      "vpn": "VPN",
+      "vpn_order": "Order",
+      "vpn_order#create": "$t(Order)",
+      "vpn_edit": "$t(Edit)",
+      "vpn_delete": "$t(Delete)",
+      "vpn_resume": "$t(Enable)",
+      "vpn_suspend": "$t(Disable)",
+      "vpn_edit#read": "Edit properties of the selected service (data reading is available)",
+      "vpn_edit#write": "Edit properties of the selected service (data saving is available)",
+      "vpn_filter#create": "$t(Filter)",
+
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Billing",
       "payment_recurring_settings": "Auto payment",

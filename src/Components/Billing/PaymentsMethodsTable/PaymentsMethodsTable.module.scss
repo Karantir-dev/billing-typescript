@@ -153,8 +153,8 @@
   cursor: pointer;
   width: 100%;
   color: var(--main-text);
-  padding: 18px;
-  transition: background-color 0.2s ease-in;
+  padding: 8px 12px;
+  gap: 12px;
 
   svg {
     width: 16px;
@@ -186,7 +186,6 @@
 }
 
 .setting_text {
-  margin-left: 18px;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;

@@ -54,13 +54,12 @@
 .access_rights_btn,
 .settings_btn,
 .remove_btn {
-  padding: 18px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   width: 100%;
   cursor: pointer;
-  transition: background-color 0.2s ease-in;
 
   &:hover {
     background-color: var(--select_option_bgc);
@@ -68,11 +67,6 @@
     & .icon {
       fill: url(#gradient);
     }
-  }
-
-  &:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
   }
 
   &:last-of-type {
@@ -109,10 +103,6 @@
       }
     }
   }
-}
-.settings_btn,
-.access_rights_btn,
-.remove_btn {
 }
 
 .icon {
