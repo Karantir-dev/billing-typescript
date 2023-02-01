@@ -89,7 +89,9 @@ export default function ServicesPage(props) {
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
 
-    if (index === -1) {
+    console.log(item,'item')
+
+    if (index === -1 && !item.premium) {
       setSelectedDomains(e => [...e, item])
     } else {
       var newArray = selectedDomains.filter(f => {
@@ -125,6 +127,7 @@ export default function ServicesPage(props) {
         {domainsList?.suggested?.map(d => {
           const { id, domain, price } = d
 
+          const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
           return (
             <div
               tabIndex={0}
@@ -132,7 +135,7 @@ export default function ServicesPage(props) {
               onKeyDown={null}
               key={id?.$}
               className={cn(s.domainItem, { [s.selected]: itemIsSelected(d) })}
-              onClick={() => setIsSelectedHandler(d)}
+              onClick={() => !notAvailable && setIsSelectedHandler(d)}
             >
               {parsePrice(price?.$)?.length > 1 && (
                 <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
@@ -151,7 +154,11 @@ export default function ServicesPage(props) {
                 )}
               </div>
               <div className={cn(s.selectBtn, { [s.selected]: itemIsSelected(d) })}>
-                {itemIsSelected(d) ? t('Selected') : t('Select')}
+                {notAvailable
+                  ? t('Not available')
+                  : itemIsSelected(d)
+                  ? t('Selected')
+                  : t('Select')}
               </div>
             </div>
           )
