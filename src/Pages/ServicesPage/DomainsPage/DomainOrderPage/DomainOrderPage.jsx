@@ -77,6 +77,8 @@ export default function Component({ transfer = false }) {
       values['domain_action'] = 'transfer'
     }
     dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
+
+    setSelectedDomainsNames([])
   }
 
   const registerDomainHandler = () => {

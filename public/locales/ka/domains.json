@@ -102,5 +102,7 @@
 
   "Configuring": "კონფიგურაცია",
 
-  "and": "და"
+  "and": "და",
+  "Name can only contain Latin letters": "სახელი შეიძლება შეიცავდეს მხოლოდ ლათინურ ასოებს",
+  "Lastname can only contain Latin letters": "გვარი შეიძლება შეიცავდეს მხოლოდ ლათინურ ასოებს"
 }

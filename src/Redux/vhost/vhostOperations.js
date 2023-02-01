@@ -44,7 +44,6 @@ const getVhosts =
         dispatch(getVhostFilters())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -106,7 +105,6 @@ const getVhostFilters =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log('error', error)
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -148,8 +146,6 @@ const getHistoryVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -192,8 +188,6 @@ const getInsructionVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -240,8 +234,6 @@ const openPlatformVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -341,8 +333,6 @@ const prolongVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -422,8 +412,6 @@ const editVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -474,8 +462,6 @@ const changeTariffVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -526,8 +512,6 @@ const changeTariffPriceListVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -575,8 +559,6 @@ const changeTariffSaveVhost =
         dispatch(getVhosts())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -635,8 +617,6 @@ const orderVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
@@ -698,8 +678,6 @@ const orderParamVhost =
         dispatch(actions.hideLoader())
       })
       .catch(error => {
-        console.log(error)
-
         checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })

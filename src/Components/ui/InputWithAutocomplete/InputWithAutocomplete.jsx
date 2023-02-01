@@ -1,6 +1,6 @@
 import usePlacesAutocomplete from 'use-places-autocomplete'
 import { useOutsideAlerter } from '../../../utils'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
@@ -36,9 +36,21 @@ export default function InputWithAutocomplete({
       componentRestrictions: { country: clients_country_code },
       types: ['route', 'premise', 'street_address', 'street_number'],
     },
+    callbackName: 'initMap',
     language: i18n.language,
     debounce: 300,
   })
+
+  useEffect(() => {
+    const scriptEl = document.querySelector('[data-google-script]')
+    if (!scriptEl) {
+      let script = document.createElement('script')
+      script.src =
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyDmn43GdPCBuZpFkIsWkFpU__Ycd1qusZE&libraries=places&callback=initMap'
+      script.setAttribute('data-google-script', true)
+      document.body.appendChild(script)
+    }
+  }, [])
 
   const hasSuggestions = status === 'OK'
   const uniqueResults = data.reduce((acc, el) => {
@@ -82,7 +94,7 @@ export default function InputWithAutocomplete({
     // Get latitude and longitude via utility functions
     // getGeocode({ address: value }).then(results => {
     //   const { lat, lng } = getLatLng(results[0])
-    //   console.log('📍 Coordinates: ', { lat, lng })
+
     // })
   }
 

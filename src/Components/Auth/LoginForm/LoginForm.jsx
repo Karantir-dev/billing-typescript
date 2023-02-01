@@ -28,12 +28,9 @@ export default function LoginForm() {
   const recaptchaEl = useRef()
 
   // const redirectID = location?.state?.redirect
-  // console.log(redirectID, 'from login form')
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
   // const [socialLinks, setSocialLinks] = useState({})
-
-  // console.log(socialLinks)
 
   // useEffect(() => {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
@@ -114,7 +111,7 @@ export default function LoginForm() {
                   touched={!!touched.email}
                   className={s.input_field_wrapper}
                   inputAuth
-                  autoComplete
+                  autoComplete='on'
                 />
 
                 <InputField

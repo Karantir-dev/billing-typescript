@@ -101,5 +101,8 @@
 
   "Configuring": "Настройка",
 
-  "and": "и"
+  "and": "и",
+
+  "Name can only contain Latin letters": "Имя может содержать только латинские буквы",
+  "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы"
 }

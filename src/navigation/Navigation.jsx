@@ -48,7 +48,7 @@ const Component = () => {
     //       dispatch(actions.setOffline())
     //     })
     //     .finally(() => {
-    //       console.log(online)
+
     //       setTimeout(() => {
     //         checkOnlineStatus(online)
     //       }, 3000)

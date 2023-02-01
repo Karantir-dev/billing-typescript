@@ -18,6 +18,8 @@ import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
+import { SALE_55_PROMOCODE } from '../../../../config/config'
+import { SaleFiftyFive } from '../../../../images'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -40,7 +42,7 @@ export default function VDSOrder() {
   const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
-    tariffCategory ? el.filter.tag.$ === tariffCategory : true,
+    tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
 
   useEffect(() => {
@@ -132,21 +134,21 @@ export default function VDSOrder() {
           }
         }
 
-        // if (withSale && words?.length > 0) {
-        //   label = (
-        //     <span>
-        //       {`${words[0]} Gb (`}
-        //       <span className={s.memorySale}>{words[1]}</span>
-        //       {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-        //         'short_month',
-        //         {
-        //           ns: 'other',
-        //         },
-        //       )})`}
-        //     </span>
-        //   )
-        // } else
-        if (fieldName === 'Memory') {
+        if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
+          label = (
+            <span className={s.selectWithSale}>
+              <div className={s.sale55Icon}>-55%</div>
+              {`${words[0]} Gb (`}
+              <span className={s.memorySale}>{words[1]}</span>
+              {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+                'short_month',
+                {
+                  ns: 'other',
+                },
+              )})`}
+            </span>
+          )
+        } else if (fieldName === 'Memory') {
           label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
         } else if ($.includes('EUR ')) {
           label = translatePeriodText($.trim())
@@ -207,7 +209,7 @@ export default function VDSOrder() {
           value: $key,
           label: $,
         }))
-        
+
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
@@ -233,7 +235,7 @@ export default function VDSOrder() {
               }
             }}
           />
-          )
+        )
       } else {
         return (
           <SoftwareOSBtn
@@ -317,24 +319,34 @@ export default function VDSOrder() {
 
   const translatePeriod = (periodName, t) => {
     let period = ''
-    if (periodName === '1') {
-      period = t('per month')
-    } else if (periodName === '3') {
-      period = t('for three months')
-    } else if (periodName === '6') {
-      period = t('half a year')
-    } else if (periodName === '12') {
-      period = t('per year')
-    } else if (periodName === '24') {
-      period = t('for two years')
-    } else if (periodName === '36') {
-      period = t('for three years')
+
+    switch (periodName) {
+      case '1':
+        period = t('per month')
+        break
+      case '3':
+        period = t('for three months')
+        break
+      case '6':
+        period = t('half a year')
+        break
+      case '12':
+        period = t('per year')
+        break
+      case '24':
+        period = t('for two years')
+        break
+      case '36':
+        period = t('for three years')
+        break
+      default:
+        period = ''
     }
 
     return period
   }
 
-  const nahdleDomainChange = e => setDomainName(e.target.value)
+  const handleDomainChange = e => setDomainName(e.target.value)
 
   return (
     <div className={s.pb}>
@@ -369,7 +381,7 @@ export default function VDSOrder() {
             ostempl: dataFromSite?.ostempl || parametersInfo?.ostempl?.$ || '',
             autoprolong:
               dataFromSite?.autoprolong || parametersInfo?.autoprolong?.$ || '',
-            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || '',
+            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || domainName,
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
@@ -526,6 +538,25 @@ export default function VDSOrder() {
                     <p className={s.section_title}>{t('characteristics')}</p>
                     <div className={s.parameters_list}>
                       <Select
+                        itemsList={getOptionsListExtended('Memory')}
+                        value={values.Memory}
+                        saleIcon={
+                          SALE_55_PROMOCODE ? (
+                            <SaleFiftyFive
+                              style={{ marginLeft: 7, position: 'absolute', top: -10 }}
+                            />
+                          ) : null
+                        }
+                        label={`${t('memory')}:`}
+                        getElement={value => {
+                          setFieldValue('Memory', value)
+
+                          onChangeField(period, { ...values, Memory: value }, 'Memory')
+                        }}
+                        isShadow
+                      />
+
+                      <Select
                         value={values.Control_panel}
                         itemsList={getControlPanelList('Control_panel')}
                         getElement={value => {
@@ -539,22 +570,7 @@ export default function VDSOrder() {
                         label={`${t('license_to_panel')}:`}
                         isShadow
                       />
-                      <Select
-                        itemsList={getOptionsListExtended('Memory')}
-                        value={values.Memory}
-                        // saleIcon={
-                        //   <SaleFiftyFive
-                        //     style={{ marginLeft: 7, position: 'absolute', top: -10 }}
-                        //   />
-                        // }
-                        label={`${t('memory')}:`}
-                        getElement={value => {
-                          setFieldValue('Memory', value)
 
-                          onChangeField(period, { ...values, Memory: value }, 'Memory')
-                        }}
-                        isShadow
-                      />
                       <Select
                         value={values.Disk_space}
                         itemsList={getOptionsListExtended('Disk_space')}
@@ -609,7 +625,7 @@ export default function VDSOrder() {
                         touched={!!touched.domain}
                         isShadow
                         value={domainName}
-                        onChange={nahdleDomainChange}
+                        onChange={handleDomainChange}
                       />
                       <InputField
                         name="IP_addresses_count"

@@ -60,7 +60,15 @@ export default function Component(props) {
                     label={`${t('Auto renewal', { ns: 'domains' })}:`}
                     placeholder={t('Not selected')}
                     value={values.autoprolong}
-                    getElement={item => setFieldValue('autoprolong', item)}
+                    getElement={item => {
+                      setFieldValue('autoprolong', item)
+                      if (item && item !== 'null') {
+                        setFieldValue(
+                          'stored_method',
+                          editData?.stored_method_list[0]?.$key,
+                        )
+                      }
+                    }}
                     isShadow
                     itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
                       label: $.trim(),

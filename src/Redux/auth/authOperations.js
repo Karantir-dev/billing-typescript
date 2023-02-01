@@ -4,6 +4,7 @@ import axios from 'axios'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
 import userOperations from '../userInfo/userOperations'
+import { checkIfTokenAlive } from '../../utils'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -72,7 +73,6 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           : SERVER_ERR_MSG
 
       setErrMsg(errText)
-      console.log('auth -', error?.msg?.$ || error.message)
     })
 }
 
@@ -101,7 +101,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      console.log('error during getCurrentSessionStatus', e.message || e)
+      checkIfTokenAlive('error during getCurrentSessionStatus' + e.message || e, dispatch)
     })
 }
 
@@ -136,7 +136,7 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('totp.confirm - ', err.message)
+      checkIfTokenAlive('totp.confirm - ' + err.message, dispatch)
     })
 }
 
@@ -169,7 +169,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      console.log('recovery - ', err.message)
+      checkIfTokenAlive('recovery - ' + err.message, dispatch)
     })
 }
 
@@ -211,7 +211,7 @@ const changePassword =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        console.log('recovery.change - ', err.message)
+        checkIfTokenAlive('recovery.change - ' + err.message, dispatch)
       })
   }
 
@@ -241,7 +241,8 @@ const logout = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      console.log('error during logging out', e.message)
+      checkIfTokenAlive('error during logging out ' + e.message, dispatch)
+
       dispatch(actions.hideLoader())
     })
 }
@@ -279,7 +280,7 @@ const getCountriesForRegister =
       .catch(err => {
         dispatch(actions.hideLoader())
         setErrMsg(SERVER_ERR_MSG)
-        console.log('getCountriesForRegister - ', err.message)
+        checkIfTokenAlive('getCountriesForRegister ' + err.message, dispatch)
       })
   }
 
@@ -323,7 +324,6 @@ const register =
         'This email is already registered in the system. If you forgot your password, please use the password recovery form'
           ? setErrMsg('soc_email_exist')
           : setErrMsg(SERVER_ERR_MSG)
-        console.log('registration - ', err.message)
       })
   }
 
@@ -430,7 +430,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      console.log('checkGoogleState - ', err)
+      checkIfTokenAlive('checkGoogleState ' + err.message, dispatch)
     })
 }
 
@@ -462,8 +462,7 @@ const getRedirectLink = network => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-
-      console.log(' redirect link - ', err)
+      checkIfTokenAlive('redirect link - ' + err.message, dispatch)
     })
 }
 
@@ -507,8 +506,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-
-      console.log('checkLoginWithSocial - ', err)
+      checkIfTokenAlive('checkLoginWithSocial - ' + err.message, dispatch)
     })
 }
 
@@ -545,8 +543,6 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
       //   .then(({ data }) => {
       //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-      //     console.log(data.doc)
-
       //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
       //       dispatch(authActions.setTemporaryId(sessionId))
 
@@ -561,7 +557,7 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
     })
     .catch(error => {
       dispatch(actions.hideLoader())
-      console.log('getLoginSocLinks -', error)
+      checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
     })
 }
 

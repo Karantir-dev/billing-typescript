@@ -28,6 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
+import { checkIfTokenAlive } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -233,7 +234,7 @@ export default function DedicOrderPage() {
         })
       }
     } catch (e) {
-      console.log(e.message)
+      checkIfTokenAlive(e?.message, dispatch)
     }
   })
 
@@ -624,7 +625,7 @@ export default function DedicOrderPage() {
                       touched={!!touched.domainname}
                       className={s.input_field_wrapper}
                       inputClassName={s.text_area}
-                      autoComplete
+                      autoComplete='off'
                       type="text"
                       value={values?.domainname}
                     />

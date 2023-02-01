@@ -101,5 +101,8 @@
   "Add NS": "NS қосыңыз",
   "Configuring": "Конфигурациялануда",
 
-  "and": "және"
+  "and": "және",
+
+  "Name can only contain Latin letters": "Атау тек латын әріптерін қамтуы мүмкін",
+  "Lastname can only contain Latin letters": "Тегі тек латын әріптерін қамтуы мүмкін"
 }

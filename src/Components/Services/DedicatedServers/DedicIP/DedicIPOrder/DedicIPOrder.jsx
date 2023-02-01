@@ -101,7 +101,7 @@ export default function DedicIPOrder({ closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete
+                        autoComplete='off'
                         type="text"
                         value={t(values?.ipType)}
                         disabled
