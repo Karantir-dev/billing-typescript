@@ -89,8 +89,6 @@ export default function ServicesPage(props) {
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
 
-    console.log(item,'item')
-
     if (index === -1 && !item.premium) {
       setSelectedDomains(e => [...e, item])
     } else {
