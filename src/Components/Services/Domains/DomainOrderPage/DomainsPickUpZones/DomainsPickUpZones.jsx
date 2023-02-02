@@ -89,7 +89,7 @@ export default function ServicesPage(props) {
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
 
-    if (index === -1) {
+    if (index === -1 && !item.premium) {
       setSelectedDomains(e => [...e, item])
     } else {
       var newArray = selectedDomains.filter(f => {
@@ -125,19 +125,23 @@ export default function ServicesPage(props) {
         {domainsList?.suggested?.map(d => {
           const { id, domain, price } = d
 
+          const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
           return (
             <div
               tabIndex={0}
               role="button"
               onKeyDown={null}
               key={id?.$}
-              className={cn(s.domainItem, { [s.selected]: itemIsSelected(d) })}
-              onClick={() => setIsSelectedHandler(d)}
+              className={cn(s.domainItem, {
+                [s.selected]: itemIsSelected(d),
+                [s.notAvailable]: notAvailable,
+              })}
+              onClick={() => !notAvailable && setIsSelectedHandler(d)}
             >
               {parsePrice(price?.$)?.length > 1 && (
                 <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
               )}
-              <div className={s.domainName}>
+              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
                 <div>{domain?.$}</div>
                 <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
                 {parsePrice(price?.$)?.length > 1 && (
@@ -150,8 +154,17 @@ export default function ServicesPage(props) {
                   <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
                 )}
               </div>
-              <div className={cn(s.selectBtn, { [s.selected]: itemIsSelected(d) })}>
-                {itemIsSelected(d) ? t('Selected') : t('Select')}
+              <div
+                className={cn(s.selectBtn, {
+                  [s.selected]: itemIsSelected(d),
+                  [s.notAvailable]: notAvailable,
+                })}
+              >
+                {notAvailable
+                  ? t('Not available')
+                  : itemIsSelected(d)
+                  ? t('Selected')
+                  : t('Select')}
               </div>
             </div>
           )
@@ -183,7 +196,7 @@ export default function ServicesPage(props) {
               {parsePrice(price?.$)?.length > 1 && (
                 <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
               )}
-              <div className={s.domainName}>
+              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
                 <div>{domain?.$}</div>
                 <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
                 {parsePrice(price?.$)?.length > 1 && (
