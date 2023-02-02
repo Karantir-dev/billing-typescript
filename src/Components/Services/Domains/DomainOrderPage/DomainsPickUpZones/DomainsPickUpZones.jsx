@@ -132,13 +132,16 @@ export default function ServicesPage(props) {
               role="button"
               onKeyDown={null}
               key={id?.$}
-              className={cn(s.domainItem, { [s.selected]: itemIsSelected(d) })}
+              className={cn(s.domainItem, {
+                [s.selected]: itemIsSelected(d),
+                [s.notAvailable]: notAvailable,
+              })}
               onClick={() => !notAvailable && setIsSelectedHandler(d)}
             >
               {parsePrice(price?.$)?.length > 1 && (
                 <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
               )}
-              <div className={s.domainName}>
+              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
                 <div>{domain?.$}</div>
                 <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
                 {parsePrice(price?.$)?.length > 1 && (
@@ -151,7 +154,12 @@ export default function ServicesPage(props) {
                   <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
                 )}
               </div>
-              <div className={cn(s.selectBtn, { [s.selected]: itemIsSelected(d) })}>
+              <div
+                className={cn(s.selectBtn, {
+                  [s.selected]: itemIsSelected(d),
+                  [s.notAvailable]: notAvailable,
+                })}
+              >
                 {notAvailable
                   ? t('Not available')
                   : itemIsSelected(d)
@@ -188,7 +196,7 @@ export default function ServicesPage(props) {
               {parsePrice(price?.$)?.length > 1 && (
                 <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
               )}
-              <div className={s.domainName}>
+              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
                 <div>{domain?.$}</div>
                 <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
                 {parsePrice(price?.$)?.length > 1 && (
