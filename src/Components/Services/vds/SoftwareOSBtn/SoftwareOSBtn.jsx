@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../../../Redux'
 
 import s from './SoftwareOSBtn.module.scss'
-import { softwareIconsList } from '../../../../utils/constants'
+import { SOFTWARE_ICONS_LIST } from '../../../../utils/constants'
 
 export default function SoftwareOSBtn({ iconName, label, value, state, onClick }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
-  const inList = softwareIconsList?.includes(iconName)
+  const inList = SOFTWARE_ICONS_LIST?.includes(iconName)
 
   const renderImg = () => {
     if (inList) {

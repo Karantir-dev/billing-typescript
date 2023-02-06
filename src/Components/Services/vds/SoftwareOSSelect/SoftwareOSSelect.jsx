@@ -7,7 +7,7 @@ import { useOutsideAlerter } from '../../../../utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
-import { softwareIconsList } from '../../../../utils/constants'
+import { SOFTWARE_ICONS_LIST } from '../../../../utils/constants'
 
 export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
@@ -23,7 +23,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
     setIsOpened(false)
   }
 
-  const inList = softwareIconsList?.includes(iconName)
+  const inList = SOFTWARE_ICONS_LIST?.includes(iconName)
 
   const renderImg = () => {
     if (inList) {
