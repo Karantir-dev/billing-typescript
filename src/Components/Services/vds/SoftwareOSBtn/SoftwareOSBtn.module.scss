@@ -42,8 +42,17 @@
   }
 }
 
-.img .without {
-  width: 17px;
+.img {
+  width: 30px;
+  aspect-ratio: 1/1;
+
+  &.without {
+    width: 17px;
+  }
+}
+
+.img.notInList {
+  width: 22px;
 }
 
 .list_item {
