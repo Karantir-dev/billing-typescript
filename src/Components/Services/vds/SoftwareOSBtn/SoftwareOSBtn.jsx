@@ -28,7 +28,7 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
           className={cn(s.img, `${iconName === 'null' ? s.without : ''}`, {
             [s.notInList]: !inList,
           })}
-          src={renderImg(iconName)}
+          src={renderImg()}
           alt="icon"
         />
 
