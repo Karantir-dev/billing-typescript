@@ -7,6 +7,7 @@ import { useOutsideAlerter } from '../../../../utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
+import { softwareIconsList } from '../../../../utils/constants'
 
 export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
@@ -22,14 +23,24 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
     setIsOpened(false)
   }
 
+  const inList = softwareIconsList?.includes(iconName)
+
+  const renderImg = () => {
+    if (inList) {
+      return require(`../../../../images/soft_os/${
+        darkTheme ? iconName + '_dt' : iconName
+      }.png`)
+    }
+
+    return require(`../../../../images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+  }
+
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
         <img
-          className={s.img}
-          src={require(`../../../../images/soft_os/${
-            darkTheme ? iconName + '_dt' : iconName
-          }.png`)}
+          className={cn(s.img, { [s.notInList]: !inList })}
+          src={renderImg(iconName)}
           alt="icon"
         />
         <p>{selectedItem?.label}</p>
@@ -51,10 +62,8 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
                   role="button"
                 >
                   <img
-                    className={cn(s.img, s.left, s.grey)}
-                    src={require(`../../../../images/soft_os/${
-                      darkTheme ? iconName + '_dt' : iconName
-                    }.png`)}
+                    className={cn(s.img, s.left, s.grey, { [s.notInList]: !inList })}
+                    src={renderImg(iconName)}
                     alt="icon"
                   />
                   {el.label}
