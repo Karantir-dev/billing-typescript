@@ -8,4 +8,4 @@ export const PRIVACY_URL = 'https://zomro.com/privacy-policy'
 export const OFERTA_URL = 'https://zomro.com/oferta'
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
 
-export const SALE_55_PROMOCODE = '' //'hdffhkjlhgk457585678'
+export const SALE_55_PROMOCODE = 'RAMx2ZM' //'hdffhkjlhgk457585678'
