@@ -125,7 +125,7 @@ const InputField = function InputField(props) {
           type={passShown ? 'text' : type}
           placeholder={placeholder}
           onKeyDown={onKeyDown}
-          autoComplete={autoComplete ? 'on' : 'off'}
+          autoComplete={autoComplete}
           {...anotherProps}
         />
         {tabletOrHigher && iconLeft && renderIcon(iconLeft, 'left')}
@@ -159,7 +159,7 @@ InputField.propTypes = {
   error: PropTypes.bool,
   touched: PropTypes.bool,
   isShadow: PropTypes.bool.isRequired,
-  autoComplete: PropTypes.oneOf(['on','off','new-password']),
+  autoComplete: PropTypes.oneOf(['on', 'off', 'new-password']),
   height: PropTypes.number,
   background: PropTypes.bool,
   disabled: PropTypes.bool,
