@@ -20,7 +20,7 @@ import * as Yup from 'yup'
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['payers', 'other', 'trusted_users'])
+  const { t } = useTranslation(['payers', 'other', 'trusted_users', 'contracts'])
 
   const { elid, closeAddModalHandler } = props
 
@@ -321,9 +321,9 @@ export default function Component(props) {
                   {payersSelectedFields?.offer_link &&
                     (payersSelectedFields?.passport_field || !elid) && (
                       <div className={s.formBlock}>
-                        <div className={s.formBlockTitle}>
+                        {/* <div className={s.formBlockTitle}>
                           3. {t('Data for the contract')}
-                        </div>
+                        </div> */}
                         <div>
                           {/* {payersSelectedFields?.passport_field && (
                           <InputField
@@ -352,15 +352,15 @@ export default function Component(props) {
                                 touched={!!touched[payersSelectedFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer')}
-                                <br />
+                                {t('I agree with the terms of the offer')}{' '}
                                 <a
                                   target="_blank"
                                   href={PRIVACY_URL}
                                   rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
-                                  {payersSelectedFields?.offer_name}
+                                  {t('Public Offer Agreement', { ns: 'contracts' })} |
+                                  Zomro B.V.
                                 </a>
                               </div>
                             </div>

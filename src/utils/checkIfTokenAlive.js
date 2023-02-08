@@ -1,4 +1,4 @@
-import { authOperations } from '../Redux'
+import { authOperations, authActions } from '../Redux'
 
 export default function checkIfTokenAlive(errMessage, dispatch) {
   if (
@@ -6,6 +6,8 @@ export default function checkIfTokenAlive(errMessage, dispatch) {
     errMessage.includes('Insufficient privileges to perform')
   ) {
     dispatch(authOperations.getCurrentSessionStatus())
+  } else if (errMessage.includes('Access from this IP denied')) {
+    dispatch(authActions.logoutSuccess())
   } else {
     console.error(errMessage)
   }
