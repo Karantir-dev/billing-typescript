@@ -177,8 +177,7 @@
 .offerBlock {
   display: flex;
   align-items: center;
-  margin-top: 13px;
-  max-width: 270px;
+  // max-width: 270px;
 }
 
 .checkbox {
@@ -188,16 +187,17 @@
 .offerBlockText {
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 18px;
   color: var(--main-text);
 }
 
 .offerBlockLink {
   color: var(--link-color);
-  text-decoration: underline;
+  // text-decoration: underline;
   cursor: pointer;
   text-align: start;
+  border-bottom: 1px solid var(--link-color);
 }
 
 .nsInputBlock {

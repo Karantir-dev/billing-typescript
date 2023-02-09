@@ -19,7 +19,7 @@ import {
   payersSelectors,
   authSelectors,
 } from '../../../Redux'
-import { BASE_URL, PRIVACY_URL } from '../../../config/config'
+import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '../../../utils'
 
@@ -28,7 +28,7 @@ import s from './ModalCreatePayment.module.scss'
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['billing', 'other', 'payers', 'cart'])
+  const { t } = useTranslation(['billing', 'other', 'payers', 'cart', 'domains'])
 
   const { setCreatePaymentModal } = props
 
@@ -498,17 +498,25 @@ export default function Component(props) {
                                 touched={!!touched[selectedPayerFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer', {
+                                {t('I agree with', {
                                   ns: 'payers',
-                                })}
-                                <br />
+                                })}{' '}
+                                <a
+                                  target="_blank"
+                                  href={OFERTA_URL}
+                                  rel="noreferrer"
+                                  className={s.offerBlockLink}
+                                >
+                                  {t('Terms of Service', { ns: 'domains' })}
+                                </a>{' '}
+                                {t('and', { ns: 'domains' })}{' '}
                                 <a
                                   target="_blank"
                                   href={PRIVACY_URL}
                                   rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
-                                  {selectedPayerFields?.offer_name}
+                                  {t('Terms of the offer', { ns: 'domains' })}
                                 </a>
                               </div>
                             </div>

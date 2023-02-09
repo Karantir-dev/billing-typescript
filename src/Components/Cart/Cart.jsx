@@ -64,7 +64,7 @@ export default function Component() {
 
   const [blackFridayData, setBlackFridayData] = useState(null)
 
-  const [slecetedPayMethodState, setSlecetedPayMethodState] = useState(undefined)
+  // const [slecetedPayMethodState, setSlecetedPayMethodState] = useState(undefined)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -120,18 +120,18 @@ export default function Component() {
     profile:
       payersList?.length !== 0
         ? Yup.string().when('isPersonalBalance', {
-            is: false,
+            is: 'off',
             then: Yup.string().required(t('Choose payer')),
           })
         : null,
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     person: Yup.string().when('isPersonalBalance', {
-      is: false,
+      is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
-      is: false,
+      is: 'off',
       then: Yup.string()
         .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
         .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
@@ -142,7 +142,7 @@ export default function Component() {
       payersSelectedFields?.profiletype === '2' ||
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().when('isPersonalBalance', {
-            is: false,
+            is: 'off',
             then: Yup.string().required(t('Is a required field', { ns: 'other' })),
           })
         : null,
@@ -697,9 +697,9 @@ export default function Component() {
                   eu_vat: selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: false,
 
-                  slecetedPayMethod: slecetedPayMethodState || undefined,
+                  slecetedPayMethod: undefined,
                   promocode: '',
-                  isPersonalBalance: false,
+                  isPersonalBalance: 'off',
                 }}
                 onSubmit={payBasketHandler}
               >
@@ -786,18 +786,14 @@ export default function Component() {
                                   <button
                                     onClick={() => {
                                       setFieldValue('slecetedPayMethod', method)
-                                      setSlecetedPayMethodState(method)
 
                                       if (
-                                        values?.slecetedPayMethod?.name?.$?.includes(
-                                          'balance',
-                                        ) &&
-                                        values?.slecetedPayMethod?.paymethod_type?.$ ===
-                                          '0'
+                                        method?.name?.$?.includes('balance') &&
+                                        method?.paymethod_type?.$ === '0'
                                       ) {
-                                        setFieldValue('isPersonalBalance', true)
+                                        setFieldValue('isPersonalBalance', 'on')
                                       } else {
-                                        setFieldValue('isPersonalBalance', false)
+                                        setFieldValue('isPersonalBalance', 'off')
                                       }
                                     }}
                                     type="button"
@@ -1035,6 +1031,10 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
+                            disabled={
+                              SALE_55_PROMOCODE?.length > 0 &&
+                              cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
+                            }
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1108,7 +1108,7 @@ export default function Component() {
                           {/* <br /> */}{' '}
                           <a
                             target="_blank"
-                            href={PRIVACY_URL}
+                            href={OFERTA_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
@@ -1117,7 +1117,7 @@ export default function Component() {
                           {t('and', { ns: 'domains' })}{' '}
                           <a
                             target="_blank"
-                            href={OFERTA_URL}
+                            href={PRIVACY_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >

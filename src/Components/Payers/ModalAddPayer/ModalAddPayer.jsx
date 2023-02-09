@@ -13,14 +13,14 @@ import {
   InputWithAutocomplete,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
-import { BASE_URL, PRIVACY_URL } from '../../../config/config'
+import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['payers', 'other', 'trusted_users'])
+  const { t } = useTranslation(['payers', 'other', 'trusted_users', 'domains'])
 
   const { elid, closeAddModalHandler } = props
 
@@ -321,9 +321,9 @@ export default function Component(props) {
                   {payersSelectedFields?.offer_link &&
                     (payersSelectedFields?.passport_field || !elid) && (
                       <div className={s.formBlock}>
-                        <div className={s.formBlockTitle}>
+                        {/* <div className={s.formBlockTitle}>
                           3. {t('Data for the contract')}
-                        </div>
+                        </div> */}
                         <div>
                           {/* {payersSelectedFields?.passport_field && (
                           <InputField
@@ -352,15 +352,26 @@ export default function Component(props) {
                                 touched={!!touched[payersSelectedFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer')}
-                                <br />
+                                {t('I agree with', {
+                                  ns: 'payers',
+                                })}
+                                {' '}
+                                <a
+                                  target="_blank"
+                                  href={OFERTA_URL}
+                                  rel="noreferrer"
+                                  className={s.offerBlockLink}
+                                >
+                                  {t('Terms of Service', { ns: 'domains' })}
+                                </a>{' '}
+                                {t('and', { ns: 'domains' })}{' '}
                                 <a
                                   target="_blank"
                                   href={PRIVACY_URL}
                                   rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
-                                  {payersSelectedFields?.offer_name}
+                                  {t('Terms of the offer', { ns: 'domains' })}
                                 </a>
                               </div>
                             </div>

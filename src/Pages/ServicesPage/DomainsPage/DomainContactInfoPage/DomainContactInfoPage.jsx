@@ -496,7 +496,7 @@ export default function Component({ transfer = false }) {
                         }),
                       )}
                     />
-                    <div className={s.useFirstCheck}>
+                    {/* <div className={s.useFirstCheck}>
                       <CheckBox
                         initialState={values?.owner_private === 'on'}
                         setValue={item => {
@@ -505,7 +505,7 @@ export default function Component({ transfer = false }) {
                         className={s.checkbox}
                       />
                       <span>{t('Hide data in WHOIS')}</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -775,7 +775,7 @@ export default function Component({ transfer = false }) {
                           }),
                         )}
                       />
-                      <div className={s.useFirstCheck}>
+                      {/* <div className={s.useFirstCheck}>
                         <CheckBox
                           initialState={values?.admin_private === 'on'}
                           setValue={item => {
@@ -784,7 +784,7 @@ export default function Component({ transfer = false }) {
                           className={s.checkbox}
                         />
                         <span>{t('Hide data in WHOIS')}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
@@ -1056,7 +1056,7 @@ export default function Component({ transfer = false }) {
                           }),
                         )}
                       />
-                      <div className={s.useFirstCheck}>
+                      {/* <div className={s.useFirstCheck}>
                         <CheckBox
                           initialState={values?.tech_private === 'on'}
                           setValue={item => {
@@ -1065,7 +1065,7 @@ export default function Component({ transfer = false }) {
                           className={s.checkbox}
                         />
                         <span>{t('Hide data in WHOIS')}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
@@ -1337,7 +1337,7 @@ export default function Component({ transfer = false }) {
                           }),
                         )}
                       />
-                      <div className={s.useFirstCheck}>
+                      {/* <div className={s.useFirstCheck}>
                         <CheckBox
                           initialState={values?.bill_private === 'on'}
                           setValue={item => {
@@ -1346,7 +1346,7 @@ export default function Component({ transfer = false }) {
                           className={s.checkbox}
                         />
                         <span>{t('Hide data in WHOIS')}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
