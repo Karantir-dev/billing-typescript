@@ -37,8 +37,6 @@ export default function LoginForm() {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
   // }, [])
 
-  console.log(isCaptchaLoaded, 'recaptchaEl')
-
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl && recaptchaEl?.current?.reset()

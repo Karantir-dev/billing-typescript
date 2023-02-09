@@ -111,52 +111,63 @@ export default function VDSOrder() {
   }
 
   const getOptionsListExtended = fieldName => {
-    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
+    if (parametersInfo && parametersInfo.slist) {
+      const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
-    let firstItem = 0
+      let firstItem = 0
 
-    return optionsList
-      ?.filter(el => el?.$)
-      ?.map(({ $key, $ }, index) => {
-        let label = ''
-        let withSale = false
-        let words = []
+      return optionsList
+        ?.filter(el => el?.$)
+        ?.map(({ $key, $ }, index) => {
+          let label = ''
+          let withSale = false
+          let words = []
 
-        if (fieldName === 'Memory') {
-          words = $?.match(/[\d|.|\\+]+/g)
+          if (fieldName === 'Memory') {
+            words = $?.match(/[\d|.|\\+]+/g)
 
-          if (words?.length > 0 && index === 0) {
-            firstItem = words[0]
+            if (words?.length > 0 && index === 0) {
+              firstItem = words[0]
+            }
+
+            if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+              withSale = true
+            }
           }
 
-          if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
-            withSale = true
+          if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
+            label = (
+              <span className={s.selectWithSale}>
+                <div className={s.sale55Icon}>-55%</div>
+                {`${words[0]} Gb (`}
+                <span className={s.memorySale}>{words[1]}</span>
+                {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+                  'short_month',
+                  {
+                    ns: 'other',
+                  },
+                )})`}
+              </span>
+            )
+          } else if (fieldName === 'Memory') {
+            label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', {
+              ns: 'other',
+            })})`
+          } else if ($.includes('EUR ')) {
+            label = translatePeriodText($.trim())
+          } else {
+            label = t($.trim())
           }
-        }
-
-        if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
-          label = (
-            <span className={s.selectWithSale}>
-              <div className={s.sale55Icon}>-55%</div>
-              {`${words[0]} Gb (`}
-              <span className={s.memorySale}>{words[1]}</span>
-              {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-                'short_month',
-                {
-                  ns: 'other',
-                },
-              )})`}
-            </span>
-          )
-        } else if (fieldName === 'Memory') {
-          label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
-        } else if ($.includes('EUR ')) {
-          label = translatePeriodText($.trim())
-        } else {
-          label = t($.trim())
-        }
-        return { value: $key, label: label, sale: withSale }
-      })
+          return {
+            value: $key,
+            label: label,
+            sale: withSale,
+            newPrice: (Number(words[1]) - words[1] * 0.55).toFixed(2),
+            oldPrice: Number(words[1]),
+          }
+        })
+    }
+    return []
   }
 
   const getControlPanelList = fieldName => {
@@ -397,6 +408,17 @@ export default function VDSOrder() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
+            const checkSaleMemory = () => {
+              const item = getOptionsListExtended('Memory')?.find(
+                e => e.value === values.Memory,
+              )
+
+              if (item?.sale) {
+                return item?.oldPrice - item?.newPrice
+              }
+
+              return 0
+            }
             return (
               <Form>
                 <Select
@@ -736,14 +758,16 @@ export default function VDSOrder() {
                       {t('topay', { ns: 'dedicated_servers' })}:
                       <span className={s.tablet_price_sentence}>
                         <span className={s.tablet_price}>
-                          {values.finalTotalPrice} EUR
+                          {(values.finalTotalPrice - checkSaleMemory()).toFixed(2)} EUR
                         </span>
                         {` ${translatePeriod(period, t)}`}
                       </span>
                     </p>
                   ) : (
                     <p className={s.price_wrapper}>
-                      <span className={s.price}>€{values.finalTotalPrice}</span>
+                      <span className={s.price}>
+                        €{(values.finalTotalPrice - checkSaleMemory()).toFixed(2)}
+                      </span>
                       {` ${translatePeriod(period, t)}`}
                       {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>
