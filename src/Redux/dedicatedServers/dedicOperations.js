@@ -1,10 +1,11 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, cartActions, dedicActions } from '..'
+import { actions, cartActions, dedicActions, vdsOperations } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { checkIfTokenAlive, replaceAllFn } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
+import { SALE_55_PROMOCODE } from '../../config/config'
 
 // GET SERVERS OPERATIONS
 
@@ -958,7 +959,7 @@ const orderNewIP =
   }
 
 // PROLONG
-const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
+const getProlongInfo = (elid, setInitialState, isVds) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -998,6 +999,23 @@ const getProlongInfo = (elid, setInitialState) => (dispatch, getState) => {
         status,
         suspendpenaltywarn,
       })
+
+      const setState = vds => {
+        setInitialState({
+          slist,
+          expiredate,
+          newexpiredate,
+          period,
+          title_name,
+          status,
+          suspendpenaltywarn,
+          vds,
+        })
+      }
+
+      if (isVds && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
+        return dispatch(vdsOperations.getEditFieldsVDS(elid, setState))
+      }
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -1088,7 +1106,7 @@ const getUpdateProlongInfo = (elid, period, setNewExpireDate) => (dispatch, getS
 }
 
 const payProlongPeriod =
-  (elid, period, handleModal, pageName) => (dispatch, getState) => {
+  (elid, period, handleModal, pageName, withSale) => (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -1132,6 +1150,7 @@ const payProlongPeriod =
           cartActions.setCartIsOpenedState({
             isOpened: true,
             redirectPath: routeAfterBuying,
+            salePromocode: withSale,
           }),
         )
       })
