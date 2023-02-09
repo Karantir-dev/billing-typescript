@@ -33,7 +33,13 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL, SALE_55_PROMOCODE } from '../../config/config'
+import {
+  BASE_URL,
+  PRIVACY_URL,
+  OFERTA_URL,
+  SALE_55_PROMOCODE,
+  SALE_55_PROMOCODES_LIST,
+} from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -664,6 +670,26 @@ export default function Component() {
     )
   }
 
+  const withSale55Promocode = () => {
+    let withSale = false
+
+    if (cartData) {
+      withSale =
+        SALE_55_PROMOCODE?.length > 0 &&
+        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
+
+      if (SALE_55_PROMOCODES_LIST) {
+        SALE_55_PROMOCODES_LIST?.forEach(e => {
+          if (cartData?.elemList[0]?.price?.$?.includes(e)) {
+            withSale = true
+          }
+        })
+      }
+    }
+
+    return withSale
+  }
+
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
       {payersSelectedFields && selectedPayerFields && payersSelectLists ? (
@@ -1031,10 +1057,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={
-                              SALE_55_PROMOCODE?.length > 0 &&
-                              cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
-                            }
+                            disabled={withSale55Promocode()}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1052,8 +1075,7 @@ export default function Component() {
                           </button>
                         </div>
 
-                        {SALE_55_PROMOCODE?.length > 0 &&
-                        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE) ? (
+                        {withSale55Promocode() ? (
                           <div className={s.sale55Promo}>{t('sale_55_text')}</div>
                         ) : null}
 
@@ -1104,8 +1126,7 @@ export default function Component() {
                         <div className={s.offerBlockText}>
                           {t('I agree with', {
                             ns: 'payers',
-                          })}
-                          {/* <br /> */}{' '}
+                          })}{' '}
                           <a
                             target="_blank"
                             href={OFERTA_URL}

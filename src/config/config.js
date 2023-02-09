@@ -9,3 +9,14 @@ export const OFERTA_URL = 'https://zomro.com/oferta'
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
 
 export const SALE_55_PROMOCODE = 'RAMx2ZM' //'hdffhkjlhgk457585678'
+export const SALE_55_PROMOCODES_LIST = [
+  'RAMvffU',
+  'RAMmrww',
+  'RAMnrmR',
+  'RAML67C',
+  'RAMGvXK',
+  'RAMu6IJ',
+  'RAMMzps',
+  'RAMC1bF',
+  'RAMpG2h',
+]

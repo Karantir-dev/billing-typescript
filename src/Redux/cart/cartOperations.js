@@ -5,7 +5,7 @@ import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '../../utils'
-import { SALE_55_PROMOCODE } from '../../config/config'
+import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -49,7 +49,14 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
         setCartData &&
           setPaymentsMethodList &&
           dispatch(
-            setBasketPromocode(SALE_55_PROMOCODE, setCartData, setPaymentsMethodList),
+            setBasketPromocode(
+              SALE_55_PROMOCODE,
+              setCartData,
+              setPaymentsMethodList,
+              null,
+              null,
+              0,
+            ),
           )
         dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
       }
@@ -61,7 +68,14 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 }
 
 const setBasketPromocode =
-  (promocode, setCartData, setPaymentsMethodList, setBlackFridayData, service) =>
+  (
+    promocode,
+    setCartData,
+    setPaymentsMethodList,
+    setBlackFridayData,
+    service,
+    promoIndex,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -96,9 +110,29 @@ const setBasketPromocode =
         }
 
         if (data.doc.error) {
-          toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
-            position: 'bottom-right',
-          })
+          if (
+            data.doc.error.msg.$?.trim()?.includes(SALE_55_PROMOCODE) ||
+            data.doc.error.msg.$?.trim()?.includes(
+              SALE_55_PROMOCODES_LIST[promoIndex - 1],
+            )
+          ) {
+            if (promoIndex + 1 <= SALE_55_PROMOCODES_LIST?.length) {
+              return dispatch(
+                setBasketPromocode(
+                  SALE_55_PROMOCODES_LIST[promoIndex],
+                  setCartData,
+                  setPaymentsMethodList,
+                  null,
+                  null,
+                  promoIndex + 1,
+                ),
+              )
+            }
+          } else {
+            toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
+              position: 'bottom-right',
+            })
+          }
 
           throw new Error(data.doc.error.msg.$)
         }
