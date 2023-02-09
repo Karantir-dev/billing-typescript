@@ -20,6 +20,8 @@
   color: var(--menu-text-3);
   align-items: center;
   margin-right: 20px;
+  display: flex;
+  align-items: end;
   &.first_item {
     flex-basis: 9.2%;
   }
@@ -174,7 +176,7 @@
 @media screen and (min-width: 1024px) {
   .tableHeader {
     display: flex;
-    padding: 22px 27px;
+    padding: 10px 27px;
   }
 
   .table {

@@ -133,8 +133,8 @@ const createNewUser =
         updateListFunc()
         dispatch(actions.hideLoader())
       })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
+      .catch(() => {
+        // checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

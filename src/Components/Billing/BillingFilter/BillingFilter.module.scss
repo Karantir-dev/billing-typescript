@@ -185,7 +185,7 @@
   fill: var(--main-text);
 }
 
-@media screen and (max-width: 539px) {
+@media screen and (max-width: 649px) {
   .filterBlock {
     flex-direction: column-reverse;
   }
@@ -204,7 +204,7 @@
   }
 }
 
-@media screen and (min-width: 540px) {
+@media screen and (min-width: 650px) {
   .calendarModal {
     &.expenses {
       right: 20px;
