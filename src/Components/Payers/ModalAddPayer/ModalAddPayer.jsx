@@ -13,14 +13,14 @@ import {
   InputWithAutocomplete,
 } from '../..'
 import { payersOperations, payersSelectors } from '../../../Redux'
-import { BASE_URL, PRIVACY_URL } from '../../../config/config'
+import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['payers', 'other', 'trusted_users', 'contracts'])
+  const { t } = useTranslation(['payers', 'other', 'trusted_users', 'domains'])
 
   const { elid, closeAddModalHandler } = props
 
@@ -352,15 +352,26 @@ export default function Component(props) {
                                 touched={!!touched[payersSelectedFields?.offer_field]}
                               />
                               <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer')}{' '}
+                                {t('I agree with', {
+                                  ns: 'payers',
+                                })}
+                                {' '}
+                                <a
+                                  target="_blank"
+                                  href={OFERTA_URL}
+                                  rel="noreferrer"
+                                  className={s.offerBlockLink}
+                                >
+                                  {t('Terms of Service', { ns: 'domains' })}
+                                </a>{' '}
+                                {t('and', { ns: 'domains' })}{' '}
                                 <a
                                   target="_blank"
                                   href={PRIVACY_URL}
                                   rel="noreferrer"
                                   className={s.offerBlockLink}
                                 >
-                                  {t('Public Offer Agreement', { ns: 'contracts' })} |
-                                  Zomro B.V.
+                                  {t('Terms of the offer', { ns: 'domains' })}
                                 </a>
                               </div>
                             </div>

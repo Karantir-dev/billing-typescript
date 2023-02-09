@@ -1108,7 +1108,7 @@ export default function Component() {
                           {/* <br /> */}{' '}
                           <a
                             target="_blank"
-                            href={PRIVACY_URL}
+                            href={OFERTA_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
@@ -1117,7 +1117,7 @@ export default function Component() {
                           {t('and', { ns: 'domains' })}{' '}
                           <a
                             target="_blank"
-                            href={OFERTA_URL}
+                            href={PRIVACY_URL}
                             rel="noreferrer"
                             className={s.offerBlockLink}
                           >
