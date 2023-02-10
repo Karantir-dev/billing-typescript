@@ -139,14 +139,16 @@ export default function VDSOrder() {
             label = (
               <span className={s.selectWithSale}>
                 <div className={s.sale55Icon}>-55%</div>
-                {`${words[0]} Gb (`}
-                <span className={s.memorySale}>{words[1]}</span>
-                {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-                  'short_month',
-                  {
-                    ns: 'other',
-                  },
-                )})`}
+                <span className={s.saleSpan}>
+                  {`${words[0]} Gb (`}
+                  <span className={s.memorySale}>{words[1]}</span>
+                  {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+                    'short_month',
+                    {
+                      ns: 'other',
+                    },
+                  )})`}
+                </span>
               </span>
             )
           } else if (fieldName === 'Memory') {

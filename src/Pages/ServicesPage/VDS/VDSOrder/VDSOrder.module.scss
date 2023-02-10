@@ -27,6 +27,12 @@
   overflow: initial !important;
 }
 
+.saleSpan {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
 .category_item {
   display: flex;
   justify-content: center;
