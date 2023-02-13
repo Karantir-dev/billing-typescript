@@ -140,6 +140,45 @@
       text-fill-color: transparent;
     }
   }
+
+  .valentinesText {
+    position: absolute;
+    top: -80px;
+    width: 205px;
+    left: 35px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 19px;
+    text-align: center;
+
+    color: #392955;
+
+    div:first-child {
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 22px;
+      background: rgba(220, 55, 55, 1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    a {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 19px;
+      text-align: center;
+      text-decoration-line: underline;
+      color: var(--link-text);
+    }
+  }
+
+  .valentinesImg {
+    max-width: 41px;
+    max-height: 51px;
+  }
 }
 
 .saleDescrBlock {
@@ -318,6 +357,34 @@
       }
     }
 
+    .valentinesText {
+      width: 170px;
+      font-size: 14px;
+      top: -110px;
+      left: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      div:first-child {
+        font-size: 16px;
+      }
+
+      div:nth-child(2) {
+        font-size: 16px;
+        max-width: 135px;
+        text-align: center;
+      }
+
+      a {
+        font-size: 16px;
+      }
+    }
+    .valentinesImg {
+      max-width: 52px;
+      max-height: 65px;
+    }
+
     svg:first-child {
       width: 72px;
     }
@@ -351,20 +418,62 @@
       .saleText {
         font-style: normal;
         font-weight: 900;
-        font-size: 45px;
-        line-height: 55px;
+        font-size: 55px;
+        text-transform: uppercase;
 
-        -webkit-text-stroke: 1.2px #ff00ec;
+        -webkit-text-stroke: 1.2px #ffffff;
         -webkit-text-fill-color: transparent;
+        max-width: 450px;
+      }
+
+      .saleDescr {
+        max-width: 527px;
+        margin: 45px 0 330px;
+
+        p {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 22px;
+          color: white;
+
+          &:first-child {
+            margin-bottom: 45px;
+          }
+
+          &:last-child {
+            margin-top: 25px;
+          }
+        }
       }
 
       .halloweenText {
+        display: flex;
         font-style: normal;
         font-weight: 900;
-        font-size: 45px;
+        font-size: 55px;
         line-height: 55px;
         color: #ffffff;
         text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
+
+        .percent {
+          margin-left: 10px;
+          position: relative;
+
+          &::after {
+            content: url('../../images/banners/Heart.png');
+            position: absolute;
+            bottom: 3px;
+            right: -15px;
+          }
+
+          &::before {
+            content: url('../../images/banners/Heart.png');
+            position: absolute;
+            bottom: 23px;
+            right: 13px;
+          }
+        }
       }
 
       .halloweenPeriod {
