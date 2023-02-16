@@ -17,6 +17,8 @@ export default function AccessRights({
 
   const [listArr, setListArr] = useState(modifiedList)
 
+  const [openedCategory, setOpenedCategory] = useState({})
+
   const handleSelect = item => {
     const filter = listArr.map(el => {
       if (item.name.$ === el.name.$) {
@@ -29,9 +31,49 @@ export default function AccessRights({
     setListArr([...filter])
   }
 
+  const checkCategoryIndex = () => {
+    const categories = []
+    listArr?.forEach(e => {
+      if (!Object.prototype.hasOwnProperty.call(e, 'active')) {
+        categories?.push(e)
+      } else {
+        if (!categories[categories?.length - 1].subCateg) {
+          categories[categories?.length - 1].subCateg = []
+        }
+
+        if (!categories[categories?.length - 1]?.subCateg?.includes(e?.name?.$)) {
+          categories[categories?.length - 1].subCateg?.push(e?.name?.$)
+        }
+      }
+    })
+    let newList = []
+
+    categories?.forEach(el => {
+      newList = listArr?.map(e => {
+        if (e?.name?.$ === el?.name?.$) {
+          return el
+        } else {
+          return e
+        }
+      })
+    })
+
+    return newList
+  }
+
   return (
     <div role="list" aria-labelledby="rights-heading" className={s.list}>
-      {listArr.map((item, index) => {
+      {checkCategoryIndex().map((item, index) => {
+        const handleClickCategory = () => {
+          if (!Object.prototype.hasOwnProperty.call(item, 'active')) {
+            if (item === openedCategory) {
+              setOpenedCategory({})
+            } else {
+              setOpenedCategory(item)
+            }
+          }
+        }
+
         return (
           <div
             role="listitem"
@@ -47,6 +89,9 @@ export default function AccessRights({
               item={item}
               userId={userId}
               selected={item.isSelected}
+              isOpenCategory={openedCategory?.subCateg?.includes(item?.name?.$)}
+              openedCategory={openedCategory}
+              handleClickCategory={handleClickCategory}
               allowAll={true}
             />
           </div>

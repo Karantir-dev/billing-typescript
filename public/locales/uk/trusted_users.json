@@ -115,6 +115,10 @@
       "rights2_user_hardfilter": "$t(Фільтр)",
       "rights2_user_filter#create": "$t(Фільтр)",
 
+      "coupon_use": "Використати сертифікат",
+      "coupon_use#read": "Читання даних форми доступне",
+      "coupon_use#write": "Збереження даних доступне",
+
       "profile": "Платники",
       "profile_add#create": "$t(Додати)",
       "profile_edit": "$t(Редагувати)",
@@ -241,6 +245,8 @@
       "domain_doc_download": "$t(Завантажити)",
       "domain_doc_edit#read": "Тип документа (доступ до читання даних форми)",
       "domain_doc_edit#write": "Тип документа (доступ до збереження даних)",
+      "domain_order_register_new#create": "Реєстрація",
+      "domain_order_transfer_new#create": "Перенесення",
 
       "vhost_order#create": "$t(Замовити)",
       "vhost_edit": "$t(Редагувати)",

@@ -15,6 +15,7 @@ body {
 
   // borders
   --center-border-color: #cfc1eb;
+  --center-border-color-pink: rgba(250, 154, 213, 1);
 
   // variables that will be changed on the dark theme
   --main-bgc: #fefdff;
@@ -66,6 +67,14 @@ body {
   --red-bg: #fdf0f1;
   --domains_hover_bgc: #faf5fe;
 
+  --access_rights_bg_item_title: #f6f4fb;
+  --sublist-bgd: #f9f7fc;
+  --access_rights_bg_item_title_gradient: linear-gradient(
+    89.98deg,
+    #feeff7 0.02%,
+    #f5eafe 99.98%
+  );
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
   --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
@@ -108,6 +117,7 @@ body.dark-theme {
     rgba(46, 39, 59, 0) 3.44%,
     #2e273b 89.97%
   );
+  --center-border-color-pink: rgba(205, 104, 166, 1);
 
   --main-bgc: #201a2a;
   --main-text: #fff;
@@ -153,6 +163,10 @@ body.dark-theme {
   --servers_price_bgc: #484452;
   --red-bg: rgba(211, 87, 87, 0.2);
   --domains_hover_bgc: #4a4457;
+
+  --access_rights_bg_item_title: #3f384c;
+  --sublist-bgd: #372f44;
+  --access_rights_bg_item_title_gradient: #3f384c;
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;

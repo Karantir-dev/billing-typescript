@@ -3,7 +3,17 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Shevron } from '../../../../images'
+import {
+  Client,
+  Finance,
+  Help,
+  Home,
+  Instruments,
+  Reference,
+  Services,
+  Shevron,
+  Statistic,
+} from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
 
 import { Toggle } from '../../..'
@@ -26,6 +36,11 @@ export default function AccessRightsListItem({
   setSelectedSubList,
   mainFunc,
   mainListTitle,
+
+  handleClickCategory,
+  openedCategory,
+  isOpenCategory,
+  inserted,
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
@@ -49,6 +64,10 @@ export default function AccessRightsListItem({
   const modifiedList = subList.map(item => {
     return { ...item, isSelected: false }
   })
+
+  useEffect(() => {
+    setCurrentRightState(rightState)
+  }, [rightState])
 
   const handleSubSelect = newItem => {
     const filter = modifiedList.map(el => {
@@ -194,7 +213,7 @@ export default function AccessRightsListItem({
               }
               return el
             })
-            
+
             if (selectedSub.length > 0) {
               setSelectedSub([])
               setSelectedSub([...changeArray])
@@ -224,19 +243,6 @@ export default function AccessRightsListItem({
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   useEffect(() => {
-    // if ((allRightsState || isAllTurnedOn) && checkRightsList?.active?.$ !== 'on') {
-    //   setAllRightsState ? setAllRightsState(false) : setIsAllTurnedOn(false)
-    // }
-
-    // if (!isAllTurnedOn) {
-    //   if (checkRightsList?.active?.$ === 'on') {
-    //     setAllRightsState ? setAllRightsState(true) : setIsAllTurnedOn(true)
-    //   }
-    // }
-
-    // console.log('useEffect start working!')
-    // console.log('selectedSub: ', selectedSub)
-    // console.log('selectedSubList: ', selectedSubList)
     let doesEveryTurnedOn =
       selectedSubList?.length > 0
         ? selectedSubList.every(el => el.active.$ === 'on') &&
@@ -247,68 +253,90 @@ export default function AccessRightsListItem({
     setIsAllTurnedOn(doesEveryTurnedOn)
   }, [selectedSub])
 
+  const renderIcons = icon => {
+    switch (icon) {
+      case 'customer':
+        return <Client />
+      case 'mainmenuservice':
+        return <Services />
+      case 'finance':
+        return <Finance />
+      case 'support':
+        return <Help />
+      case 'mainmenutool':
+        return <Instruments />
+      case 'stat':
+        return <Statistic />
+      case 'mgrhelp':
+        return <Reference />
+      case 'dashboard':
+        return <Home />
+      default:
+        return null
+    }
+  }
+
   if (Object.prototype.hasOwnProperty.call(item, 'active')) {
     return (
       <div
         data-testid="modal_rihgts_list_item"
         className={cn({
           [s.list_item_wrapper]: true,
+          [s.showed]: isOpenCategory,
           [s.opened]: selected,
         })}
       >
         <div
-          role="button"
-          tabIndex={0}
-          onKeyDown={() => null}
-          onClick={hasSubItems ? handleClick : null}
-          className={cn({ [s.list_item]: true, [s.opened]: selected })}
+          className={cn({
+            [s.list_item]: true,
+            [s.opened]: selected,
+          })}
         >
-          <p className={s.list_item_subtitle}>
-            {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
-          </p>
-          <div>
-            {hasSubItems ? (
-              <Shevron className={s.shevron} />
-            ) : (
-              <Toggle
-                func={handleToggleBtns}
-                initialState={currentRightState}
-                disabled={
-                  (!hasAccessToResumeRights && !currentRightState) ||
-                  (!hasAccessToSuspendRights &&
-                    currentRightState &&
-                    !hasAccessToSuspendRightsOnly)
-                }
-              />
-            )}
-
-            {/* <ToggleButton
-                disabled={
-                  (!hasAccessToResumeRights && !currentRightState) ||
-                  (!hasAccessToSuspendRights &&
-                    currentRightState &&
-                    !hasAccessToSuspendRightsOnly)
-                }
-                hasAlert={false}
-                initialState={currentRightState}
-                func={handleToggleBtns}
-                size="small"
-              /> */}
-          </div>
-        </div>
-
-        {selectedSubWithoutFilters && (
           <div
-            data-testid="modal_rihgts_sub_list"
-            className={cn({ [s.sub_list]: true, [s.selected]: selected })}
+            role="button"
+            tabIndex={0}
+            onKeyDown={() => null}
+            onClick={hasSubItems ? handleClick : null}
+            className={cn(s.list_item_subtitle)}
           >
-            {allowAll && (
-              <div className={cn({ [s.allow_all_item]: true })}>
-                <p className={s.list_item_subtitle}>{t('trusted_users.Allow_all')}</p>
-
+            {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
+          </div>
+          <div
+            className={cn({ [s.isToggleBlock]: !hasSubItems, [s.inserted]: inserted })}
+          >
+            {hasSubItems ? (
+              <div className={cn(s.selectedAllBlock)}>
+                {selectedSubWithoutFilters && allowAll && (
+                  <div
+                    className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}
+                  >
+                    <Toggle
+                      func={handleToggleBtns}
+                      initialState={allRightsState || isAllTurnedOn}
+                      disabled={
+                        (!hasAccessToResumeRights && !currentRightState) ||
+                        (!hasAccessToSuspendRights &&
+                          currentRightState &&
+                          !hasAccessToSuspendRightsOnly)
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={() => null}
+                  onClick={hasSubItems ? handleClick : null}
+                  className={cn({ [s.shevronInserted]: inserted })}
+                >
+                  <Shevron className={s.shevron} />
+                </div>
+              </div>
+            ) : (
+              <div className={cn(s.withoutSubItem)}>
                 <Toggle
                   func={handleToggleBtns}
-                  initialState={allRightsState || isAllTurnedOn}
+                  initialState={currentRightState}
                   disabled={
                     (!hasAccessToResumeRights && !currentRightState) ||
                     (!hasAccessToSuspendRights &&
@@ -316,22 +344,19 @@ export default function AccessRightsListItem({
                       !hasAccessToSuspendRightsOnly)
                   }
                 />
-                {/* <ToggleButtonAll
-                  disabled={
-                    (!hasAccessToResumeRights && !currentRightState) ||
-                    (!hasAccessToSuspendRights &&
-                      currentRightState &&
-                      !hasAccessToSuspendRightsOnly)
-                  }
-                  hasAlert={false}
-                  initialState={allRightsState || isAllTurnedOn}
-                  func={handleToggleBtns}
-                  size="small"
-                  id={'123123'}
-                /> */}
               </div>
             )}
+          </div>
+        </div>
 
+        {selectedSubWithoutFilters && (
+          <div
+            data-testid="modal_rihgts_sub_list"
+            className={cn({
+              [s.sub_list]: true,
+              [s.selected]: selected,
+            })}
+          >
             {selectedSubWithoutFilters.map((child, index) => {
               return (
                 <AccessRightsListItem
@@ -349,6 +374,8 @@ export default function AccessRightsListItem({
                   setSelectedSubList={setSelectedSub}
                   mainFunc={mainFuncName}
                   mainListTitle={mainTitle}
+                  isOpenCategory
+                  inserted
                 />
               )
             })}
@@ -358,10 +385,41 @@ export default function AccessRightsListItem({
     )
   } else {
     return (
-      <div data-testid="modal_rihgts_list_item" className={s.list_item_title}>
-        <p className={s.list_item_title_text}>
+      <div className={cn(s.list_item_title, { [s.opened]: openedCategory === item })}>
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={() => null}
+          onClick={handleClickCategory}
+          className={s.list_item_title_text}
+        >
+          {renderIcons(nameWithoutDots)}
           {t(`trusted_users.rights_alert.${nameWithoutDots}`)}
-        </p>
+        </div>
+
+        <div className={cn(s.selectedAllBlock)}>
+          <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
+            <Toggle
+              func={() => null}
+              initialState={false}
+              disabled={
+                (!hasAccessToResumeRights && !currentRightState) ||
+                (!hasAccessToSuspendRights &&
+                  currentRightState &&
+                  !hasAccessToSuspendRightsOnly)
+              }
+            />
+          </div>
+          <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={() => null}
+            onClick={handleClickCategory}
+            className={cn({ [s.shevronInserted]: inserted })}
+          >
+            <Shevron className={s.shevron} />
+          </div>
+        </div>
       </div>
     )
   }

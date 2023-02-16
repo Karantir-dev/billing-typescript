@@ -1,7 +1,32 @@
 .list_item_title {
   margin-bottom: 18px;
-  padding-right: 14px;
-  padding-left: 14px;
+  padding: 12px 20px;
+
+  background: var(--access_rights_bg_item_title);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .shevron {
+    cursor: pointer;
+  }
+
+  &.opened {
+    background: var(--access_rights_bg_item_title_gradient);
+    .shevron {
+      transform: rotateZ(0deg);
+      stroke: url(#gradient);
+    }
+
+    .list_item_title_text {
+      svg {
+        path {
+          fill: url(#gradient);
+        }
+      }
+    }
+  }
 }
 
 button {
@@ -9,10 +34,25 @@ button {
 }
 
 .list_item_title_text {
-  font-weight: 600;
-  font-size: 16px;
+  width: 100%;
+  font-weight: 400;
+  font-size: 18px;
   line-height: 113%;
   color: var(--main-text);
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  cursor: pointer;
+
+  svg {
+    margin-right: 10px;
+
+    path {
+      fill: var(--icon-color_2);
+    }
+  }
 }
 
 .list_item {
@@ -21,27 +61,61 @@ button {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 22px;
+  padding: 0 10px;
   cursor: pointer;
 
   &.opened {
     & .shevron {
       transform: rotateZ(0deg);
+      stroke: url(#gradient);
     }
   }
 }
 
 .list_item_wrapper {
+  display: none;
   &:nth-child(1) {
-    padding: 0px 14px 0px 14px;
+    padding: 0px 14px 10px 14px;
   }
 
   &.opened {
     &:nth-child(1) {
       padding-top: 12px;
       padding-bottom: 10px;
+      margin-top: -18px;
     }
     background-color: var(--sublist-bgd);
     margin-bottom: 12px;
+  }
+
+  &.showed {
+    display: block;
+  }
+}
+
+.isToggleBlock {
+  padding-right: 45px;
+
+  &.inserted {
+    padding-right: 55px;
+  }
+}
+
+.isToggleBlockSelectAll {
+  padding-right: 30px;
+}
+
+.withoutSubItems {
+  margin-right: -10px;
+}
+
+.selectedAllBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .insered {
+    padding-right: 20px;
   }
 }
 
@@ -59,6 +133,8 @@ button {
 .sub_list {
   position: relative;
   display: none;
+
+  padding-left: 25px;
 
   & .list_item_wrapper {
     &:nth-child(1) {
@@ -92,7 +168,7 @@ button {
     content: '';
     width: 3px;
     height: 100%;
-    background-color: var(--center-border-color);
+    background-color: var(--center-border-color-pink);
     border-radius: 5px;
   }
 }
@@ -101,6 +177,14 @@ button {
   stroke: var(--main-text);
   transform: rotateZ(180deg);
   transition: transform 0.2s ease;
+
+  &.inserted {
+    padding-right: 15px;
+  }
+}
+
+.shevronInserted {
+  margin-right: 10px;
 }
 
 // ADAPTIVE

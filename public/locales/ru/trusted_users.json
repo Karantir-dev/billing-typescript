@@ -115,6 +115,10 @@
       "rights2_user_hardfilter": "$t(Фильтр)",
       "rights2_user_filter#create": "$t(Фильтр)",
 
+      "coupon_use": "Использовать сертификат",
+      "coupon_use#read": "Доступно чтение данных формы",
+      "coupon_use#write": "Доступно сохранение данных",
+
       "profile": "Плательщики",
       "profile_add#create": "$t(Добавить)",
       "profile_edit": "$t(Редактировать)",
@@ -241,6 +245,8 @@
       "domain_doc_download": "$t(Скачать)",
       "domain_doc_edit#read": "Тип документа (доступ к чтению данных формы)",
       "domain_doc_edit#write": "Тип документа (доступ к сохранению данных)",
+      "domain_order_register_new#create": "Регистрация",
+      "domain_order_transfer_new#create": "Перенос",
 
       "vhost_order#create": "$t(Заказать)",
       "vhost_edit": "$t(Редактировать)",

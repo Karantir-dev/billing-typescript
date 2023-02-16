@@ -23,10 +23,14 @@
   margin-left: 40px;
 }
 
+.access_rights {
+  width: 90%;
+}
+
 // ADAPTIVE
 @media screen and (min-width: 768px) {
   .access_rights {
-    width: 226px;
+    width: 100%;
   }
 }
 
