@@ -82,7 +82,7 @@
 
   .blockWithBaner {
     position: relative;
-    margin-top: 165px;
+    // margin-top: 165px;
   }
 }
 
@@ -398,18 +398,18 @@
 //   }
 // }
 
-@media screen and (min-width: 1550px) {
-  .authScreens {
-    .bannerBlock {
-      img {
-        max-width: 711px;
-      }
-    }
-    .blockWithBaner {
-      margin-top: 0px;
-      margin-left: calc(50% + 100px);
-    }
-  }
+// @media screen and (min-width: 1550px) {
+  // .authScreens {
+  //   .bannerBlock {
+  //     img {
+  //       max-width: 711px;
+  //     }
+  //   }
+  //   .blockWithBaner {
+  //     margin-top: 0px;
+  //     margin-left: calc(50% + 100px);
+  //   }
+  // }
 //   .bannerSmallBlock {
 //     display: none;
 //   }
@@ -526,24 +526,24 @@
   //     }
   //   }
   // }
-}
+// }
 
-@media screen and (min-width: 1920px) {
+// @media screen and (min-width: 1920px) {
   // .bannerBlock {
   //   display: block;
   // }
 
-  .authScreens {
-    .bannerBlock {
-      img {
-        max-width: 783px;
-      }
-    }
-    .blockWithBaner {
-      margin-left: calc(50% + 150px);
-    }
-  }
-}
+//   .authScreens {
+//     .bannerBlock {
+//       img {
+//         max-width: 783px;
+//       }
+//     }
+//     .blockWithBaner {
+//       margin-left: calc(50% + 150px);
+//     }
+//   }
+// }
 
 // @media screen and (min-width: 1920px) {
 //   .authScreens {
