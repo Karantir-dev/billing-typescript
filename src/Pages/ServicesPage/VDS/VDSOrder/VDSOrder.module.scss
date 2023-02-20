@@ -23,6 +23,14 @@
 .memorySale {
   text-decoration: line-through;
   color: var(--red-text);
+  margin-right: 5px;
+  overflow: initial !important;
+}
+
+.saleSpan {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .category_item {

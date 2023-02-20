@@ -40,6 +40,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   // const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   // const [socialLinks, setSocialLinks] = useState({})
 
   const successRegistration = () => {
@@ -189,7 +190,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 error={!!errors.email}
                 touched={!!touched.email}
                 className={s.input_field_wrapper}
-                autoComplete={false}
+                autoComplete="off"
                 inputAuth
               />
 
@@ -218,6 +219,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 type="password"
                 className={s.input_field_wrapper}
                 inputAuth
+                autoComplete="new-password"
               />
 
               <SelectOfCountries
@@ -233,6 +235,16 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 disabled
               />
 
+              {!isCaptchaLoaded && (
+                <div className={s.loaderBlock}>
+                  <div className={s.loader}>
+                    <div className={`${s.loader_circle} ${s.first}`}></div>
+                    <div className={`${s.loader_circle} ${s.second}`}></div>
+                    <div className={s.loader_circle}></div>
+                  </div>
+                </div>
+              )}
+
               {/* <GoogleReCaptcha
                 onChange={value => {
                   setFieldValue('reCaptcha', value)
@@ -243,6 +255,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
                 className={s.captcha}
                 ref={recaptchaEl}
                 sitekey={RECAPTCHA_KEY}
+                asyncScriptOnLoad={() => setIsCaptchaLoaded(true)}
                 onChange={value => {
                   setFieldValue('reCaptcha', value)
                 }}

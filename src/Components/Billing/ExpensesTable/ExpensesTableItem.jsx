@@ -7,7 +7,6 @@ import { HintWrapper } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { expensesTranslateFn } from '../../../utils'
-import { toast } from 'react-toastify'
 
 export default function Component(props) {
   const { id, number, date, sum, name, tax } = props
@@ -32,18 +31,7 @@ export default function Component(props) {
           wrapperClassName={s.transferBtn}
           label={expensesTranslateFn(name, t)}
         >
-          <div
-            role="button"
-            tabIndex={-1}
-            onKeyDown={() => {}}
-            onClick={() => {
-              navigator.clipboard.writeText(expensesTranslateFn(name, t))
-              toast.success(t('Name is copied!', { ns: 'billing' }), {
-                position: 'bottom-right',
-              })
-            }}
-            className={cn(s.item_text, s.second_item)}
-          >
+          <div className={cn(s.item_text, s.second_item)}>
             {expensesTranslateFn(name, t)}
           </div>
         </HintWrapper>

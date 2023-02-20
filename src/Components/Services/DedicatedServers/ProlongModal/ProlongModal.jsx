@@ -9,6 +9,7 @@ import { Button, Select } from '../../..'
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '../../../../utils'
+import { SALE_55_PROMOCODE } from '../../../../config/config'
 
 export default function ProlongModal({
   elidList,
@@ -37,7 +38,9 @@ export default function ProlongModal({
         dedicOperations.getProlongInfoForFewElems(elidList.join(', '), setInitialState),
       )
     } else {
-      dispatch(dedicOperations.getProlongInfo(elidList[0], setInitialState))
+      dispatch(
+        dedicOperations.getProlongInfo(elidList[0], setInitialState, pageName === 'vds'),
+      )
     }
   }, [])
 
@@ -47,6 +50,16 @@ export default function ProlongModal({
 
   const handleSubmit = values => {
     const { period } = values
+
+    let withSale = false
+
+    if (pageName === 'vds' && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
+      const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
+      const is2xRam =
+        initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
+
+      withSale = is2xRam
+    }
 
     if (elidList?.length > 1) {
       dispatch(
@@ -64,6 +77,7 @@ export default function ProlongModal({
           period,
           handleEditionModal,
           pageName,
+          withSale,
         ),
       )
     }

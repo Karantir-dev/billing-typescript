@@ -30,6 +30,7 @@ export default function LoginForm() {
   // const redirectID = location?.state?.redirect
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   // const [socialLinks, setSocialLinks] = useState({})
 
   // useEffect(() => {
@@ -53,7 +54,7 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;+]+$/g, t('warnings.special_characters'))
+      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;]+$/g, t('warnings.special_characters'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
@@ -111,7 +112,7 @@ export default function LoginForm() {
                   touched={!!touched.email}
                   className={s.input_field_wrapper}
                   inputAuth
-                  autoComplete
+                  autoComplete="on"
                 />
 
                 <InputField
@@ -127,10 +128,21 @@ export default function LoginForm() {
                   touched={!!touched.password}
                 />
 
+                {!isCaptchaLoaded && (
+                  <div className={s.loaderBlock}>
+                    <div className={s.loader}>
+                      <div className={`${s.loader_circle} ${s.first}`}></div>
+                      <div className={`${s.loader_circle} ${s.second}`}></div>
+                      <div className={s.loader_circle}></div>
+                    </div>
+                  </div>
+                )}
+
                 <ReCAPTCHA
                   className={s.captcha}
                   ref={recaptchaEl}
                   sitekey={RECAPTCHA_KEY}
+                  asyncScriptOnLoad={() => setIsCaptchaLoaded(true)}
                   onChange={value => {
                     setFieldValue('reCaptcha', value)
                   }}

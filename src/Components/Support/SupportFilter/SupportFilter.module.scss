@@ -59,6 +59,7 @@
   border-radius: 3px;
   z-index: 141;
   margin-top: 20px;
+  width: 90%;
 }
 
 .calendarModal {
@@ -97,7 +98,7 @@
 
 .select {
   margin-top: 15px;
-  max-width: 295px;
+  max-width: 100%;
   margin-right: 0px;
 }
 
@@ -203,6 +204,7 @@
   .formContainer {
     padding: 0;
     margin-bottom: 10px;
+    display: flex;
   }
 
   .formHeader {
@@ -229,6 +231,7 @@
     margin-top: 0;
     top: calc(120% + 10px);
     left: 0px;
+    width: auto;
     &::after {
       content: '';
       position: absolute;
@@ -244,7 +247,7 @@
   }
   .form {
     min-width: 645px;
-    flex-direction: row;
+    // flex-direction: row;
     flex-wrap: wrap;
   }
   .searchInput {
@@ -285,6 +288,9 @@
 }
 
 @media screen and (min-width: 1024px) {
+  .formContainer {
+    display: block;
+  }
   .select {
     max-width: 287px;
     margin-right: 0px;

@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '../../../images/';
+import { Shevron } from '../../../images/'
 import { actions, settingsOperations, userSelectors } from '../../../Redux'
 import { useDispatch, useSelector } from 'react-redux'
 

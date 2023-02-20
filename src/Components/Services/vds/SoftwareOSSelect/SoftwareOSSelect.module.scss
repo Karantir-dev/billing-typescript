@@ -33,6 +33,10 @@
   box-shadow: var(--forms2_shadow);
   cursor: pointer;
 
+  .img {
+    flex: none;
+  }
+
   > p {
     text-align: start;
     font-size: 16px;
@@ -40,12 +44,13 @@
 }
 
 .img {
-  width: 30px;
-  aspect-ratio: 1/1;
-
   &.grey {
     filter: grayscale(1);
   }
+}
+
+.img.notInList {
+  width: 22px;
 }
 
 .list_item {
@@ -55,7 +60,10 @@
   gap: 15px;
   align-items: center;
   padding: 15px 20px;
-  transition: background-color 0.2s ease-in;
+
+  .img {
+    flex: none;
+  }
 
   &:hover {
     background-color: var(--select_option_bgc);

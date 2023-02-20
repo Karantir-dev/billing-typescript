@@ -92,7 +92,7 @@ export default function Component(props) {
                     error={!!errors.subject}
                     touched={!!touched.subject}
                     className={s.input_field_wrapper}
-                    autoComplete
+                    autoComplete='off'
                   />
                   <label htmlFor={'message'} className={s.label}>
                     {t('Message')}:

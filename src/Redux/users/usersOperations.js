@@ -120,12 +120,21 @@ const createNewUser =
         }),
       )
       .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          const wrongEmail = data.doc.error.msg.$.split('\'').at(1)
+          toast.error(
+            ` ${wrongEmail} ${i18n.t('warnings.email_exist', {ns: 'auth'}).toLowerCase()}`,
+            {
+              position: 'bottom-right',
+              toastId: 'customId',
+            },)
+          throw new Error(data.doc.error.msg.$)
+        }
         updateListFunc()
         dispatch(actions.hideLoader())
       })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
+      .catch(() => {
+        // checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }

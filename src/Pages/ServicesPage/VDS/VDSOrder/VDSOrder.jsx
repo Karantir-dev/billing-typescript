@@ -42,7 +42,7 @@ export default function VDSOrder() {
   const [recipe, setRecipe] = useState('null')
 
   const filteredList = tariffsList.filter(el =>
-    tariffCategory ? el.filter.tag.$ === tariffCategory : true,
+    tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
 
   useEffect(() => {
@@ -111,52 +111,65 @@ export default function VDSOrder() {
   }
 
   const getOptionsListExtended = fieldName => {
-    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
+    if (parametersInfo && parametersInfo.slist) {
+      const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
-    let firstItem = 0
+      let firstItem = 0
 
-    return optionsList
-      ?.filter(el => el?.$)
-      ?.map(({ $key, $ }, index) => {
-        let label = ''
-        let withSale = false
-        let words = []
+      return optionsList
+        ?.filter(el => el?.$)
+        ?.map(({ $key, $ }, index) => {
+          let label = ''
+          let withSale = false
+          let words = []
 
-        if (fieldName === 'Memory') {
-          words = $?.match(/[\d|.|\\+]+/g)
+          if (fieldName === 'Memory') {
+            words = $?.match(/[\d|.|\\+]+/g)
 
-          if (words?.length > 0 && index === 0) {
-            firstItem = words[0]
+            if (words?.length > 0 && index === 0) {
+              firstItem = words[0]
+            }
+
+            if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+              withSale = true
+            }
           }
 
-          if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
-            withSale = true
+          if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
+            label = (
+              <span className={s.selectWithSale}>
+                <div className={s.sale55Icon}>-55%</div>
+                <span className={s.saleSpan}>
+                  {`${words[0]} Gb (`}
+                  <span className={s.memorySale}>{words[1]}</span>
+                  {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
+                    'short_month',
+                    {
+                      ns: 'other',
+                    },
+                  )})`}
+                </span>
+              </span>
+            )
+          } else if (fieldName === 'Memory') {
+            label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', {
+              ns: 'other',
+            })})`
+          } else if ($.includes('EUR ')) {
+            label = translatePeriodText($.trim())
+          } else {
+            label = t($.trim())
           }
-        }
-
-        if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
-          label = (
-            <span className={s.selectWithSale}>
-              <div className={s.sale55Icon}>-55%</div>
-              {`${words[0]} Gb (`}
-              <span className={s.memorySale}>{words[1]}</span>
-              {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-                'short_month',
-                {
-                  ns: 'other',
-                },
-              )})`}
-            </span>
-          )
-        } else if (fieldName === 'Memory') {
-          label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', { ns: 'other' })})`
-        } else if ($.includes('EUR ')) {
-          label = translatePeriodText($.trim())
-        } else {
-          label = t($.trim())
-        }
-        return { value: $key, label: label, sale: withSale }
-      })
+          return {
+            value: $key,
+            label: label,
+            sale: withSale,
+            newPrice: (Number(words[1]) - words[1] * 0.55).toFixed(2),
+            oldPrice: Number(words[1]),
+          }
+        })
+    }
+    return []
   }
 
   const getControlPanelList = fieldName => {
@@ -319,24 +332,34 @@ export default function VDSOrder() {
 
   const translatePeriod = (periodName, t) => {
     let period = ''
-    if (periodName === '1') {
-      period = t('per month')
-    } else if (periodName === '3') {
-      period = t('for three months')
-    } else if (periodName === '6') {
-      period = t('half a year')
-    } else if (periodName === '12') {
-      period = t('per year')
-    } else if (periodName === '24') {
-      period = t('for two years')
-    } else if (periodName === '36') {
-      period = t('for three years')
+
+    switch (periodName) {
+      case '1':
+        period = t('per month')
+        break
+      case '3':
+        period = t('for three months')
+        break
+      case '6':
+        period = t('half a year')
+        break
+      case '12':
+        period = t('per year')
+        break
+      case '24':
+        period = t('for two years')
+        break
+      case '36':
+        period = t('for three years')
+        break
+      default:
+        period = ''
     }
 
     return period
   }
 
-  const nahdleDomainChange = e => setDomainName(e.target.value)
+  const handleDomainChange = e => setDomainName(e.target.value)
 
   return (
     <div className={s.pb}>
@@ -371,7 +394,7 @@ export default function VDSOrder() {
             ostempl: dataFromSite?.ostempl || parametersInfo?.ostempl?.$ || '',
             autoprolong:
               dataFromSite?.autoprolong || parametersInfo?.autoprolong?.$ || '',
-            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || '',
+            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || domainName,
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
@@ -387,6 +410,17 @@ export default function VDSOrder() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
+            const checkSaleMemory = () => {
+              const item = getOptionsListExtended('Memory')?.find(
+                e => e.value === values.Memory,
+              )
+
+              if (item?.sale) {
+                return item?.oldPrice - item?.newPrice
+              }
+
+              return 0
+            }
             return (
               <Form>
                 <Select
@@ -615,7 +649,7 @@ export default function VDSOrder() {
                         touched={!!touched.domain}
                         isShadow
                         value={domainName}
-                        onChange={nahdleDomainChange}
+                        onChange={handleDomainChange}
                       />
                       <InputField
                         name="IP_addresses_count"
@@ -726,14 +760,16 @@ export default function VDSOrder() {
                       {t('topay', { ns: 'dedicated_servers' })}:
                       <span className={s.tablet_price_sentence}>
                         <span className={s.tablet_price}>
-                          {values.finalTotalPrice} EUR
+                          {(values.finalTotalPrice - checkSaleMemory()).toFixed(2)} EUR
                         </span>
                         {` ${translatePeriod(period, t)}`}
                       </span>
                     </p>
                   ) : (
                     <p className={s.price_wrapper}>
-                      <span className={s.price}>€{values.finalTotalPrice}</span>
+                      <span className={s.price}>
+                        €{(values.finalTotalPrice - checkSaleMemory()).toFixed(2)}
+                      </span>
                       {` ${translatePeriod(period, t)}`}
                       {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>

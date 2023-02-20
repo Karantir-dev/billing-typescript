@@ -42,7 +42,7 @@
 
 .calendar_pointer-wrapper {
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   right: 50%;
   width: 25px;
   height: 15px;
@@ -51,7 +51,8 @@
 }
 
 .calendar_pointer {
-  margin: 10px auto 0;
+  // margin: 10px auto 0;
+  margin: -4px 0 10px 10px;
   width: 10px;
   height: 10px;
   transform: rotateZ(45deg);
