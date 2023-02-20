@@ -1,5 +1,5 @@
-import cn from 'classnames'
 import React, { useEffect, useState } from 'react'
+import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,11 +15,9 @@ import {
   Statistic,
 } from '../../../../images'
 import { authSelectors, usersOperations } from '../../../../Redux'
-
 import { Toggle } from '../../..'
-
-import s from './AccessRightsListItem.module.scss'
 import { checkIfTokenAlive } from '../../../../utils'
+import s from './AccessRightsListItem.module.scss'
 
 export default function AccessRightsListItem({
   allRightsState,

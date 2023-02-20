@@ -44,6 +44,7 @@ export default function Component(props) {
 
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
+  const [showMore, setShowMore] = useState(false)
 
   const dropdownDescription = useRef(null)
 
@@ -285,6 +286,10 @@ export default function Component(props) {
                   )
                 }
               }
+
+              const readMore = parsedText?.infoText
+                ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                : parsedText?.minAmount?.length > 150
 
               return (
                 <Form>
@@ -570,7 +575,7 @@ export default function Component(props) {
                       </div>
                     </div>
 
-                    <div className={s.infotext}>
+                    <div className={cn(s.infotext, { [s.showMore]: showMore })}>
                       {values?.slecetedPayMethod && (
                         <div>
                           <span>
@@ -582,6 +587,15 @@ export default function Component(props) {
                         </div>
                       )}
                     </div>
+                    {values?.slecetedPayMethod && readMore && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore(!showMore)}
+                        className={s.readMore}
+                      >
+                        {t(showMore ? 'Collapse' : 'Read more')}
+                      </button>
+                    )}
                   </div>
                   <div className={s.btnBlock}>
                     <Button
