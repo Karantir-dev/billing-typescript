@@ -41,6 +41,7 @@ export default function AccessRightsListItem({
   openedCategory,
   isOpenCategory,
   inserted,
+  categoryIsActive,
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
@@ -401,7 +402,7 @@ export default function AccessRightsListItem({
           <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
             <Toggle
               func={() => null}
-              initialState={false}
+              initialState={categoryIsActive}
               disabled={
                 (!hasAccessToResumeRights && !currentRightState) ||
                 (!hasAccessToSuspendRights &&

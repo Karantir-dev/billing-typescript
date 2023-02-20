@@ -74,6 +74,16 @@ export default function AccessRights({
           }
         }
 
+        const isActiveCategory = []
+
+        item?.subCateg?.forEach(sub => {
+          checkCategoryIndex()?.forEach(i => {
+            if (i?.name?.$ === sub) {
+              isActiveCategory?.push(i?.active?.$ === 'on')
+            }
+          })
+        })
+
         return (
           <div
             role="listitem"
@@ -93,6 +103,7 @@ export default function AccessRights({
               openedCategory={openedCategory}
               handleClickCategory={handleClickCategory}
               allowAll={true}
+              categoryIsActive={!isActiveCategory?.includes(false)}
             />
           </div>
         )
