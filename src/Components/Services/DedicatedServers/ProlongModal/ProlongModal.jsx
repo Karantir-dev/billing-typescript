@@ -55,10 +55,13 @@ export default function ProlongModal({
 
     if (pageName === 'vds' && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
       const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
-      const is2xRam =
-        initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
 
-      withSale = is2xRam
+      if (memoryList) {
+        const is2xRam =
+          initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
+
+        withSale = is2xRam
+      }
     }
 
     if (elidList?.length > 1) {
