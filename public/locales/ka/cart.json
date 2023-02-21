@@ -31,6 +31,7 @@
   "can be used only once": "შეიძლება გამოყენებულ იქნას მხოლოდ ერთხელ",
   "Is free": "Თავისუფალია",
   "Payment amount from 10.00 EUR. Commission 3%.": "გადახდის თანხა 10.00 ევროდან. საკომისიო 3%.",
+  "Payment amount from 10.00 EUR.": "გადახდის თანხა 10.00 ევროდან.",
   "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "კრიპტოვალუტით გადახდა. ამ გადახდის მეთოდისთვის თანხის დაბრუნება მიუწვდომელია. გადახდის დამუშავებას შეიძლება რამდენიმე საათი დასჭირდეს. მესამე მხარის სერვისებით გადახდისას, გაცვლა - გაითვალისწინეთ მათი საკომისიო და დაამატეთ იგი გადახდის ღირებულებაში.",
   "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "გადახდის თანხა 1.00 ევროდან 200.00 ევრომდე. საკომისიო 0.40 ევრო + 7%.",
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "გადახდისთვის თქვენ უნდა გქონდეთ QIWI საფულის სტატუსი «Basic» ან «Professional»",
@@ -41,5 +42,11 @@
   "Excluding VAT": "დღგ-ს გარეშე",
   "Saving": "Შენახვა",
 
-  "sale_55_text": "პრომო კოდების გამოყენება არ შეიძლება RAM-ის ფასდაკლებასთან ერთად"
+  "sale_55_text": "პრომო კოდების გამოყენება არ შეიძლება RAM-ის ფასდაკლებასთან ერთად",
+
+  "Active discounts": "აქტიური ფასდაკლებები",
+  "Total discounts": "სულ ფასდაკლება",
+
+  "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.": "კრიპტოვალუტის გადახდა.ალტკოინები ხელმისაწვდომია 25 ევროდან. მესამე მხარის სერვისების საშუალებით გადახდისას, გაცვლა - გაითვალისწინეთ მათი საკომისიო და დაამატეთ იგი გადახდის ღირებულებაში. თქვენი საფულის ვალუტის ნომინალი შეიძლება დაყენდეს ჩვეულებრივ ვალუტაზე, მაგ. ᲔᲕᲠᲝ. გაცვლითი კურსი შეიძლება განსხვავდებოდეს საფულედან საფულეში. ამიტომ, ყოველთვის გახსოვდეთ კრიპტოვალუტის დასახელების შერჩევა, მაგ. ბიტკოინი, ამიტომ იგზავნება სწორი გადარიცხვის თანხა. გადახდის დასასრულებლად, თქვენ უნდა დაასკანიროთ QR კოდი თქვენი საფულით ან დააკოპიროთ და ჩასვათ დეტალები თქვენს საფულეში. თუ თქვენ უნდა აკრიფოთ ან დააკოპიროთ და ჩასვათ დეტალები, ყოველთვის შეამოწმეთ, რამდენად სწორია ინფორმაცია. მხოლოდ ერთი შეცდომა გამოიწვევს გაუქმებას. თანხის დაბრუნება ხელმისაწვდომია მხოლოდ BTC საფულეზე, 10 ევროდან, გადახდიდან 14 დღემდე.",
+  "Payment amount from 1.00 EUR to 1000.00 EUR": "გადახდის თანხა 1.00 ევროდან 1000.00 ევრომდე"
 }
