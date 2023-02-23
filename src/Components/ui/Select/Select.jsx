@@ -133,6 +133,9 @@ export default function Select(props) {
         >
           <div className={s.list}>
             {itemsList?.map((el, index) => {
+              if (el?.value === '182') {
+                return null
+              }
               return (
                 <div
                   tabIndex={0}
