@@ -88,6 +88,9 @@
   &.promocodeBlock {
     padding-bottom: 25px;
     border-bottom: 1px solid #e1daea;
+
+    margin-top: 15px;
+    border-top: 1px solid #e1daea;
   }
 
   &.last {
@@ -299,12 +302,30 @@
   color: var(--main-text);
   margin-top: 20px;
 
-  padding-bottom: 15px;
-  border-bottom: 1px solid #e1daea;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   span {
     color: var(--error-color);
   }
+
+  &.showMore {
+    -webkit-line-clamp: 50;
+  }
+}
+
+.readMore {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration-line: underline;
+  color: var(--main-text);
+  text-align: start;
+  cursor: pointer;
+
+  margin-top: 5px;
 }
 
 .addNewPayerBtn {

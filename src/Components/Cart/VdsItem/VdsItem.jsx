@@ -10,7 +10,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const { t } = useTranslation(['vds', 'virtual_hosting'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownEl = useRef()
-  const priceEl = useRef()
   const infoEl = useRef()
 
   const [dropOpened, setDropOpened] = useState(false)
@@ -26,15 +25,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const onShevronClick = () => {
     if (!dropOpened) {
       dropdownEl.current.style.height = dropdownEl.current.scrollHeight + 'px'
-      priceEl.current.style.height = dropdownEl.current.scrollHeight + 80 + 'px'
       if (!tabletOrHigher) {
         //
       } else {
-        infoEl.current.style.marginBottom = '15px'
+        infoEl.current.style.marginBottom = '5px'
       }
     } else {
       dropdownEl.current.style.height = '0'
-      priceEl.current.style.height = '70px'
       infoEl.current.style.marginBottom = '0'
     }
     setDropOpened(!dropOpened)
@@ -75,7 +72,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
       <div className={s.server_item}>
         <button
           className={cn(s.shevron_btn, { [s.opened]: dropOpened })}
-          ref={priceEl}
           type="button"
           onClick={onShevronClick}
         >
@@ -84,6 +80,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
           />
         </button>
+
         <div className={s.main_info_wrapper} ref={infoEl}>
           {!tabletOrHigher && (
             <div className={s.control_bts_wrapper}>
@@ -100,6 +97,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
           )}
 
           <div>
+            <p className={s.tariff_name}>{tariffName} </p>
             <div className={s.periodInfo}>
               <span>
                 {t('Period', { ns: 'other' })}: {el['item.period']?.$}{' '}
@@ -110,7 +108,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
               </span>
               <span></span>
             </div>
-            <p className={s.tariff_name}>{tariffName} </p>
           </div>
 
           {typeof deleteItemHandler === 'function' && tabletOrHigher && (
@@ -123,26 +120,27 @@ export default function VdsItem({ el, deleteItemHandler }) {
         <div className={s.dropdown} ref={dropdownEl}>
           {hasBasePrice && (
             <span className={s.value}>
-              {t('processors')}:{getTranslatedText(/CPU count(.+?)(?=<br\/>)/)?.trim()},
+              <b>{t('processors')}:</b>{' '}
+              {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)?.trim()}, &nbsp;
+            </span>
+          )}
+
+          {hasBasePrice && (
+            <span className={s.value}>
+              <b>{t('memory')}:</b> {getTranslatedText(/Memory(.+?)(?=<br\/>)/)}, &nbsp;
+            </span>
+          )}
+
+          {hasBasePrice && (
+            <span className={s.value}>
+              <b>{t('disk_space')}:</b> {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)},
               &nbsp;
-            </span>
-          )}
-
-          {hasBasePrice && (
-            <span className={s.value}>
-              {t('memory')}:{getTranslatedText(/Memory(.+?)(?=<br\/>)/)}, &nbsp;
-            </span>
-          )}
-
-          {hasBasePrice && (
-            <span className={s.value}>
-              {t('disk_space')}:{getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}, &nbsp;
             </span>
           )}
 
           {IPaddresses && (
             <span className={s.value}>
-              {t('IPcount')}:
+              <b>{t('IPcount')}:</b>{' '}
               {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
                 ? IPaddressesCountText[1].replace('Unit', t('Unit'))
                 : ''}
@@ -152,7 +150,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
           {hasBasePrice && (
             <span className={s.value}>
-              {t('port_speed')}:
+              <b>{t('port_speed')}:</b>{' '}
               {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]},
               &nbsp;
             </span>
@@ -160,7 +158,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
           {controlPanel && (
             <span className={s.value}>
-              {t('license_to_panel')}:{' '}
+              <b>{t('license_to_panel')}:</b>{' '}
               {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}{' '}
               &nbsp;
             </span>
@@ -168,7 +166,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
           {el?.desc?.$.includes('Service limits') && (
             <span className={s.value}>
-              {t('Service limits')}: {t('port_speed_limits')} &nbsp;
+              <b>{t('Service limits')}:</b> {t('port_speed_limits')} &nbsp;
             </span>
           )}
         </div>

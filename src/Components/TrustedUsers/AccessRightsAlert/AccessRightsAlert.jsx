@@ -3,14 +3,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
+import { Button } from '../..'
 
-export default function AccessRightsAlert({
-  isOpened,
-  title,
-  list1,
-  list2,
-  controlAlert,
-}) {
+export default function AccessRightsAlert({ isOpened, title, list1, controlAlert }) {
   const getAlerEl = useRef(null)
   const [scrolledDown, setScrolledDown] = useState(false)
 
@@ -37,34 +32,33 @@ export default function AccessRightsAlert({
   }, [])
 
   return (
-    <>
-      <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
-        <div
-          data-testid="trusted_users_rights_alert"
-          className={cn({ [s.alert]: true, [s.scrolled]: scrolledDown })}
-        >
-          <div className={s.title_wrapper}>
-            <h5 className={s.title}>{title}</h5>
-            <div className={s.close_btn_wrapper}>
-              <button
-                className={s.close_btn}
-                data-testid="trusted_users_rights_btn"
-                onClick={controlAlert}
-              ></button>
-            </div>
-          </div>
-
-          <div className={s.text_wrapper} ref={getAlerEl}>
-            <div data-testid="trusted_users_rights_list" className={s.list_one}>
-              {list1}
-            </div>
-            <div data-testid="trusted_users_rights_list" className={s.list_two}>
-              {list2}
-            </div>
+    <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
+      <div
+        data-testid="trusted_users_rights_alert"
+        className={cn({ [s.alert]: true, [s.scrolled]: scrolledDown })}
+      >
+        <div className={s.title_wrapper}>
+          <h5 className={s.title}>{title}</h5>
+          <div className={s.close_btn_wrapper}>
+            <button
+              className={s.close_btn}
+              data-testid="trusted_users_rights_btn"
+              onClick={controlAlert}
+            ></button>
           </div>
         </div>
+
+        <div className={s.text_wrapper} ref={getAlerEl}>
+          <div data-testid="trusted_users_rights_list" className={s.list_one}>
+            {list1}
+          </div>
+        </div>
+
+        <div className={s.footer_wrapper}>
+          <Button onClick={controlAlert} label="OK" isShadow />
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 

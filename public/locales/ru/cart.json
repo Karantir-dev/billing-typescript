@@ -32,6 +32,7 @@
   "can be used only once": "можно использовать только один раз",
   "Is free": "Бесплатно",
   "Payment amount from 10.00 EUR. Commission 3%.": "Сумма платежа от 10,00 евро. Комиссия 3%.",
+  "Payment amount from 10.00 EUR.": "Сумма платежа от 10,00 евро.",
   "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "Оплата криптовалютой. Для этого способа оплаты возврат средств невозможен. Обработка платежа может занять до нескольких часов. При оплате через сторонние сервисы, биржи - учитывайте их комиссию и добавляйте ее к стоимости платежа.",
   "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Сумма платежа от 1.00 EUR до 200.00 EUR . Комиссия 0,40 евро + 7%.",
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "Для оплаты необходимо иметь статус QIWI Кошелька «Базовый» или «Профессиональный».",
@@ -42,6 +43,11 @@
   "Excluding VAT": "Без учета НДС",
   "Saving": "Экономия",
 
+  "sale_55_text": "Промокоды недоступны для использования вместе со скидкой на RAM",
 
-  "sale_55_text": "Промокоды недоступны для использования вместе со скидкой на RAM"
+  "Active discounts": "Активные скидки",
+  "Total discounts": "Всего скидок",
+
+  "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.": "Оплата криптовалютой. Доступны альткоины от 25EUR. При оплате через сторонние сервисы, биржи - учитывайте их комиссию и добавляйте ее к стоимости платежа. В качестве номинала валюты вашего кошелька может быть установлена обычная валюта, например. ЕВРО. Курсы обмена могут отличаться от кошелька к кошельку. Поэтому всегда не забывайте выбирать номинал криптовалюты, например. Биткойн, поэтому отправляется правильная сумма перевода. Чтобы завершить платеж, вам необходимо отсканировать QR-код с помощью кошелька или скопировать и вставить данные в свой кошелек. Если вам нужно ввести или скопировать и вставить данные, всегда дважды проверяйте правильность информации. Всего одна опечатка приведет к отмене. Возврат доступен только на кошелек BTC, от 10 евро, до 14 дней после оплаты.",
+  "Payment amount from 1.00 EUR to 1000.00 EUR": "Сумма платежа от 1.00 EUR до 1000.00 EUR"
 }
