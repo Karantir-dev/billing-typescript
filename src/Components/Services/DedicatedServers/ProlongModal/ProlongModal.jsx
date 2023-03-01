@@ -53,8 +53,13 @@ export default function ProlongModal({
 
     let withSale = false
 
-    if (pageName === 'vds' && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
-      const memoryList = initialState?.slist[0].val
+    if (
+      pageName === 'vds' &&
+      SALE_55_PROMOCODE &&
+      SALE_55_PROMOCODE?.length > 0 &&
+      !(elidList?.length > 1)
+    ) {
+      const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
 
       if (memoryList) {
         const is2xRam =
