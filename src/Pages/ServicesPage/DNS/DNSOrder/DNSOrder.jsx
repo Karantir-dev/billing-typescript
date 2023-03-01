@@ -115,10 +115,11 @@ export default function FTPOrder() {
   })
 
   const handleSubmit = values => {
-    delete values?.autoprolonglList
-    delete values?.limitsList
+    const newData = { ...values }
+    delete newData?.autoprolonglList
+    delete newData?.limitsList
     dispatch(
-      userOperations.cleanBsketHandler(() => dispatch(dnsOperations.orderDNS(values))),
+      userOperations.cleanBsketHandler(() => dispatch(dnsOperations.orderDNS(newData))),
     )
   }
 
