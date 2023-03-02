@@ -94,7 +94,7 @@
 }
 
 .text_wrapper {
-  height: 68vh;
+  height: 72vh;
   overflow: scroll;
   overflow-x: hidden;
   padding-top: 20px;
@@ -256,8 +256,13 @@
 @media screen and (min-width: 1920px) {
   .alert {
     // left: 50%;
+    max-height: 647px;
     width: 647px;
     margin-top: 150px;
+  }
+
+  .text_wrapper {
+    height: 80%;
   }
 
   // .list_one {

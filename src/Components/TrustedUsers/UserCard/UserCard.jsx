@@ -415,6 +415,7 @@ export default function UserCard({
               hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
               hasAccessToSuspendRights={hasAccessToSuspendRights}
               hasAccessToResumeRights={hasAccessToResumeRights}
+              setRightsToRender={setRightsToRender}
               items={listWithoutProfile}
               userId={userId}
             />

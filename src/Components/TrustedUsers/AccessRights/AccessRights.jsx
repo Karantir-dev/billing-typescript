@@ -84,6 +84,8 @@ export default function AccessRights({
           })
         })
 
+        console.log(isActiveCategory)
+
         return (
           <div
             role="listitem"

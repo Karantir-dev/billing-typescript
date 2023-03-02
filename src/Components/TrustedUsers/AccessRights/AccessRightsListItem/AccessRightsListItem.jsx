@@ -286,7 +286,7 @@ export default function AccessRightsListItem({
           [s.list_item_wrapper]: true,
           [s.showed]: isOpenCategory,
           [s.opened]: selected,
-          [s.inserted_item_wrapper]: inserted
+          [s.inserted_item_wrapper]: inserted,
         })}
       >
         <div
@@ -408,7 +408,27 @@ export default function AccessRightsListItem({
         <div className={cn(s.selectedAllBlock)}>
           <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
             <Toggle
-              func={() => null}
+              func={() => {
+                if (categoryIsActive) {
+                  dispatch(
+                    usersOperations.manageUserRight(
+                      userId,
+                      item?.subCateg?.join(', '),
+                      sessionId,
+                      'suspend',
+                    ),
+                  )
+                } else {
+                  dispatch(
+                    usersOperations.manageUserRight(
+                      userId,
+                      item?.subCateg?.join(', '),
+                      sessionId,
+                      'resume',
+                    ),
+                  )
+                }
+              }}
               initialState={categoryIsActive}
               disabled={
                 (!hasAccessToResumeRights && !currentRightState) ||
