@@ -40,7 +40,7 @@ export default function AccessRightsListItem({
   openedCategory,
   isOpenCategory,
   inserted,
-  categoryIsActive,
+  // categoryIsActive,
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
@@ -406,7 +406,7 @@ export default function AccessRightsListItem({
         </div>
 
         <div className={cn(s.selectedAllBlock)}>
-          <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
+          {/* <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
             <Toggle
               func={() => {
                 if (categoryIsActive) {
@@ -437,7 +437,7 @@ export default function AccessRightsListItem({
                   !hasAccessToSuspendRightsOnly)
               }
             />
-          </div>
+          </div> */}
           <div
             role="button"
             tabIndex={0}
