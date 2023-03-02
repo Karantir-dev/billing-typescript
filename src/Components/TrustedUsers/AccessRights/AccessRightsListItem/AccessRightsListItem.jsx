@@ -9,6 +9,7 @@ import {
   Help,
   Home,
   Instruments,
+  Money,
   Reference,
   Services,
   Shevron,
@@ -270,6 +271,8 @@ export default function AccessRightsListItem({
         return <Reference />
       case 'dashboard':
         return <Home />
+      case 'reselling':
+        return <Money />
       default:
         return null
     }
@@ -283,6 +286,7 @@ export default function AccessRightsListItem({
           [s.list_item_wrapper]: true,
           [s.showed]: isOpenCategory,
           [s.opened]: selected,
+          [s.inserted_item_wrapper]: inserted
         })}
       >
         <div
@@ -354,6 +358,7 @@ export default function AccessRightsListItem({
             className={cn({
               [s.sub_list]: true,
               [s.selected]: selected,
+              [s.inserted_sub_list]: inserted,
             })}
           >
             {selectedSubWithoutFilters.map((child, index) => {
@@ -384,7 +389,11 @@ export default function AccessRightsListItem({
     )
   } else {
     return (
-      <div className={cn(s.list_item_title, { [s.opened]: openedCategory === item })}>
+      <div
+        className={cn(s.list_item_title, {
+          [s.opened]: openedCategory?.caption?.$ === item?.caption?.$,
+        })}
+      >
         <div
           role="button"
           tabIndex={0}

@@ -107,7 +107,7 @@
       "user_delete": "$t(Видалити)",
       "user_resume": "$t(Активувати)",
       "user_suspend": "Деактивувати",
-      "rights2_user": "$t(Дозволу)",
+      "rights2_user": "$t(Дозволи)",
       "user_history": "$t(Історія)",
       "user_filter#create": "$t(Фільтр)",
       "rights2_user_resume": "$t(Активувати)",
