@@ -69,8 +69,7 @@ export default function Component() {
   const [isClosing, setIsClosing] = useState(false)
 
   const [blackFridayData, setBlackFridayData] = useState(null)
-
-  // const [slecetedPayMethodState, setSlecetedPayMethodState] = useState(undefined)
+  const [showMore, setShowMore] = useState(false)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -639,7 +638,7 @@ export default function Component() {
         <br />
         {services?.map(e => {
           function getString(str) {
-            let result = str?.match(/(-?\d+(\.\d+)?)/g)?.map(v => +v)
+            let result = str?.match(/(-?\d+(\.\d+)?%)/g)
             return result
           }
           if (getString(e)?.length !== 0) {
@@ -650,12 +649,9 @@ export default function Component() {
                 dangerouslySetInnerHTML={{
                   __html: e
                     ?.replace(' -', ':')
-                    ?.replace('%', '')
                     ?.replace(
-                      getString(e?.replace(' -', ':'))[0],
-                      `<span style='color: #FA6848'>-${
-                        getString(e?.replace(' -', ':'))[0]
-                      }%</span>`,
+                      getString(e)[0],
+                      `<span style='color: #FA6848'>-${getString(e)[0]}</span>`,
                     ),
                 }}
               />
@@ -783,6 +779,10 @@ export default function Component() {
                       )
                     }
                   }
+
+                  const readMore = parsedText?.infoText
+                    ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                    : parsedText?.minAmount?.length > 150
 
                   return (
                     <Form className={s.form}>
@@ -1006,52 +1006,34 @@ export default function Component() {
                                 touched={!!touched.eu_vat}
                               />
                             ) : null}
-                            {/* {selectedPayerFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                initialState={
-                                  values[selectedPayerFields?.offer_field] || false
-                                }
-                                setValue={item =>
-                                  setFieldValue(
-                                    `${selectedPayerFields?.offer_field}`,
-                                    item,
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[selectedPayerFields?.offer_field]}
-                                touched={!!touched[selectedPayerFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with the terms of the offer', {
-                                  ns: 'payers',
-                                })}
-                                <br />
-                                <a
-                                  target="_blank"
-                                  href={PRIVACY_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {selectedPayerFields?.offer_name}
-                                </a>
-                              </div>
-                            </div>
-                          )} */}
                           </div>
                         </div>
                       )}
-                      <div className={s.infotext}>
+                      <div className={cn(s.infotext, { [s.showMore]: showMore })}>
                         {values?.slecetedPayMethod &&
                           values?.slecetedPayMethod?.payment_minamount && (
                             <div>
-                              <span>{t(`${parsedText?.minAmount}`, { ns: 'cart' })}</span>
+                              <span>
+                                {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                              </span>
                               {parsedText?.infoText && (
-                                <p>{t(`${parsedText?.infoText}`, { ns: 'cart' })}</p>
+                                <p>
+                                  {t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}
+                                </p>
                               )}
                             </div>
                           )}
                       </div>
+                      {values?.slecetedPayMethod && readMore && (
+                        <button
+                          type="button"
+                          onClick={() => setShowMore(!showMore)}
+                          className={s.readMore}
+                        >
+                          {t(showMore ? 'Collapse' : 'Read more')}
+                        </button>
+                      )}
+
                       <div className={cn(s.formBlock, s.promocodeBlock)}>
                         <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
                           <InputField

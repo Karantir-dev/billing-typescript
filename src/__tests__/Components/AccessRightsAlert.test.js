@@ -44,7 +44,7 @@ describe('Render AccessRightsAlert', () => {
   test('Render modal window', () => {
     const rightsAlert = screen.getByTestId('trusted_users_rights_alert')
     const lists = screen.getAllByTestId('trusted_users_rights_list')
-    expect(lists).toHaveLength(2)
+    expect(lists).toHaveLength(1)
     expect(rightsAlert).toBeInTheDocument()
   })
 

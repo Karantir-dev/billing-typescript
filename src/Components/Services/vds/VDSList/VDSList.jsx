@@ -52,6 +52,12 @@ export default function VDSList({
 
       <ul className={s.list}>
         {servers?.map(el => {
+          if (
+            el?.pricelist?.$?.includes('VDS/VPS') &&
+            el?.pricelist?.$?.includes('Pro')
+          ) {
+            el.pricelist.$ = 'VDS/VPS «Pro»'
+          }
           return widerThan1600 ? (
             <VDSItem
               key={el.id.$}

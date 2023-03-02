@@ -133,6 +133,10 @@ export default function Select(props) {
         >
           <div className={s.list}>
             {itemsList?.map((el, index) => {
+              //HIDE RU COUNTRY FROM LIST
+              if (el?.value === '182') {
+                return null
+              }
               return (
                 <div
                   tabIndex={0}

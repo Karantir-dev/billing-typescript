@@ -150,7 +150,15 @@ jobs:
 
       - name: Verify deployment
         run: kubectl rollout status deployment/zomro-bill-prod-deployment -n prod
-      
+
+      - name: Clean CloudFlare cache
+        run: |
+          sleep 5;
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/6562ccdfeb6b2a7793f4867f8bf6f955/purge_cache" \
+          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
+          -H "Content-Type:application/json" \
+          --data "{\"purge_everything\":true}"  
+
       - name: Deploy status
         uses: 8398a7/action-slack@v3
         with:

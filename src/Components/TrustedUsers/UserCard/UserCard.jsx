@@ -415,16 +415,8 @@ export default function UserCard({
               hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
               hasAccessToSuspendRights={hasAccessToSuspendRights}
               hasAccessToResumeRights={hasAccessToResumeRights}
-              items={listWithoutProfile.slice(0, 20)}
-              userId={userId}
-            />
-          }
-          list2={
-            <AccessRights
-              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
-              hasAccessToSuspendRights={hasAccessToSuspendRights}
-              hasAccessToResumeRights={hasAccessToResumeRights}
-              items={listWithoutProfile.slice(20, 38)}
+              setRightsToRender={setRightsToRender}
+              items={listWithoutProfile}
               userId={userId}
             />
           }

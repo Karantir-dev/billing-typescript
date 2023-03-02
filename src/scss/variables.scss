@@ -15,6 +15,7 @@ body {
 
   // borders
   --center-border-color: #cfc1eb;
+  --center-border-color-pink: rgba(250, 154, 213, 1);
 
   // variables that will be changed on the dark theme
   --main-bgc: #fefdff;
@@ -66,11 +67,27 @@ body {
   --red-bg: #fdf0f1;
   --domains_hover_bgc: #faf5fe;
 
+  --gradient_cards_static: linear-gradient(
+    90deg,
+    rgba(239, 141, 248, 0.11) 0.03%,
+    rgba(241, 228, 255, 0.22) 99.94%
+  );
+
+  --access_rights_bg_item_title: #f6f4fb;
+  --sublist-bgd: #f9f7fc;
+  --access_rights_bg_item_title_gradient: linear-gradient(
+    89.98deg,
+    #feeff7 0.02%,
+    #f5eafe 99.98%
+  );
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
   --burger-menu-elem-box-shadow: 0px 1px 8px rgba(65, 38, 114, 0.15);
   --elements-shadow: -4px 0px 10px rgba(65, 38, 114, 0.15);
   --line-shadow: -1px -1px 2px rgba(255, 255, 255, 0.49), 1px 1px 2px #cfc4e8;
+
+  --shadow_cards_static: 0px 1px 8px rgba(65, 38, 114, 0.15);
 
   --switchers-shadow: inset -1px 1px 5px rgba(0, 0, 0, 0.15);
   --switchers-dot-shadow: -2px 1px 5px rgba(0, 0, 0, 0.25);
@@ -93,6 +110,9 @@ body {
   --checkbox_shadow: 1px 1px 5px rgba(65, 38, 114, 0.23);
   --service_card_hover_shadow: 2px 3px 8px 2px rgb(0 0 0 / 10%),
     inset 1px 1px 5px 0px rgb(255 255 255 / 15%);
+
+  --header_shadow: 2px 2px 8px rgba(65, 38, 114, 0.12);
+  --footer_shadow: 0px -1px 8px rgba(65, 38, 114, 0.12);
 }
 
 // dark theme variables
@@ -108,6 +128,7 @@ body.dark-theme {
     rgba(46, 39, 59, 0) 3.44%,
     #2e273b 89.97%
   );
+  --center-border-color-pink: rgba(205, 104, 166, 1);
 
   --main-bgc: #201a2a;
   --main-text: #fff;
@@ -154,11 +175,19 @@ body.dark-theme {
   --red-bg: rgba(211, 87, 87, 0.2);
   --domains_hover_bgc: #4a4457;
 
+  --access_rights_bg_item_title: #3f384c;
+  --sublist-bgd: #372f44;
+  --access_rights_bg_item_title_gradient: #3f384c;
+
+  --gradient_cards_static: linear-gradient(90.05deg, #3c354b 0.04%, #433b52 99.97%);
+
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25), -4px -4px 10px #000000;
   --burger-menu-elem-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.21);
   --elements-shadow: -4px 0px 10px rgba(0, 0, 0, 0.15);
   --line-shadow: -1px -1px 2px #1e1a26, 1px 1px 3px #1a1720;
+
+  --shadow_cards_static: 0px 1px 20px rgba(0, 0, 0, 0.35);
 
   --switchers-shadow: 1px 1px 4px #1b1820, inset -3px 3px 5px #514a5f;
   --switchers-dot-shadow: -3px 2px 5px #332f3a;
@@ -179,4 +208,7 @@ body.dark-theme {
   --checkbox_shadow: var(--forms_shadow);
   --service_card_hover_shadow: 2px 3px 10px 4px rgb(0 0 0 / 60%),
     inset 1px 1px 5px 0px rgb(255 255 255 / 15%);
+
+  --header_shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+  --footer_shadow: 0px -1px 10px rgba(0, 0, 0, 0.3);
 }

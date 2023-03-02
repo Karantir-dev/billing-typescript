@@ -107,13 +107,17 @@
       "user_delete": "$t(Видалити)",
       "user_resume": "$t(Активувати)",
       "user_suspend": "Деактивувати",
-      "rights2_user": "$t(Дозволу)",
+      "rights2_user": "$t(Дозволи)",
       "user_history": "$t(Історія)",
       "user_filter#create": "$t(Фільтр)",
       "rights2_user_resume": "$t(Активувати)",
       "rights2_user_suspend": "$t(Деактивувати)",
       "rights2_user_hardfilter": "$t(Фільтр)",
       "rights2_user_filter#create": "$t(Фільтр)",
+
+      "coupon_use": "Використати сертифікат",
+      "coupon_use#read": "Читання даних форми доступне",
+      "coupon_use#write": "Збереження даних доступне",
 
       "profile": "Платники",
       "profile_add#create": "$t(Додати)",
@@ -241,6 +245,8 @@
       "domain_doc_download": "$t(Завантажити)",
       "domain_doc_edit#read": "Тип документа (доступ до читання даних форми)",
       "domain_doc_edit#write": "Тип документа (доступ до збереження даних)",
+      "domain_order_register_new#create": "Реєстрація",
+      "domain_order_transfer_new#create": "Перенесення",
 
       "vhost_order#create": "$t(Замовити)",
       "vhost_edit": "$t(Редагувати)",

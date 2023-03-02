@@ -6,7 +6,7 @@ import s from './DomainItem.module.scss'
 export default function Component(props) {
   const { t } = useTranslation(['cart', 'other'])
 
-  const { desc, cost, discount_percent, fullcost, deleteItemHandler } = props
+  const { desc, deleteItemHandler } = props
 
   const renderDesc = () => {
     const beforeWord = 'Domain registration'
@@ -31,7 +31,6 @@ export default function Component(props) {
 
   return (
     <div className={s.domainItem}>
-      <img src={require('./../../../images/cart/domains.png')} alt="domains" />
       <div className={s.priceList}>
         <div className={s.domainInfo}>
           <span className={s.domainName}>{renderDesc()?.domainName}</span>
@@ -39,17 +38,6 @@ export default function Component(props) {
             <span className={s.domainProtect}>
               {t('Data protection')}: {t(renderDesc()?.dataProtect?.trim())}
             </span>
-          )}
-        </div>
-        <div className={s.costBlock}>
-          <div className={s.cost}>
-            {cost} EUR/{t('year', { ns: 'other' }).toLowerCase()}
-          </div>
-          {discount_percent && (
-            <div className={s.discountBlock}>
-              <span className={s.discountPerCent}>-{discount_percent}</span>
-              <span className={s.fullcost}>{fullcost} EUR</span>
-            </div>
           )}
         </div>
       </div>

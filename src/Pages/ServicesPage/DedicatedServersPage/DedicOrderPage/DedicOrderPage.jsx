@@ -618,14 +618,14 @@ export default function DedicOrderPage() {
                     />
                     <InputField
                       label={`${t('domain_name')}:`}
-                      placeholder={`${t('domain_placeholder')}:`}
+                      placeholder={`${t('domain_placeholder')}`}
                       name="domainname"
                       isShadow
                       error={!!errors.domainname}
                       touched={!!touched.domainname}
                       className={s.input_field_wrapper}
                       inputClassName={s.text_area}
-                      autoComplete='off'
+                      autoComplete="off"
                       type="text"
                       value={values?.domainname}
                     />
@@ -735,27 +735,29 @@ export default function DedicOrderPage() {
                       />
                     )}
 
-                    <Select
-                      height={50}
-                      value={values?.ipTotal?.toString()}
-                      getElement={item => {
-                        setFieldValue('ipTotal', item)
-                        updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
-                      }}
-                      isShadow
-                      label={`${t('count_ip')}:`}
-                      itemsList={values?.ipList?.map(el => {
-                        return {
-                          label: `${el?.value}
+                    {values?.ipList?.length > 0 && (
+                      <Select
+                        height={50}
+                        value={values?.ipTotal?.toString()}
+                        getElement={item => {
+                          setFieldValue('ipTotal', item)
+                          updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
+                        }}
+                        isShadow
+                        label={`${t('count_ip')}:`}
+                        itemsList={values?.ipList?.map(el => {
+                          return {
+                            label: `${el?.value}
                           ${t('pcs.', {
                             ns: 'vds',
                           })}
                           (${el?.cost} EUR)`,
-                          value: el?.value?.toString(),
-                        }
-                      })}
-                      className={s.select}
-                    />
+                            value: el?.value?.toString(),
+                          }
+                        })}
+                        className={s.select}
+                      />
+                    )}
                   </div>
 
                   {/* <div className={s.terms_block} ref={licenceCheck}>

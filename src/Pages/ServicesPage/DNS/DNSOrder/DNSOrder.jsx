@@ -115,20 +115,11 @@ export default function FTPOrder() {
   })
 
   const handleSubmit = values => {
-    const { datacenter, pricelist, period, autoprolong, domainLimit } = values
-
+    const newData = { ...values }
+    delete newData?.autoprolonglList
+    delete newData?.limitsList
     dispatch(
-      userOperations.cleanBsketHandler(() =>
-        dispatch(
-          dnsOperations.orderDNS({
-            autoprolong,
-            datacenter,
-            period,
-            pricelist,
-            [parameters.domainLimit]: domainLimit,
-          }),
-        ),
-      ),
+      userOperations.cleanBsketHandler(() => dispatch(dnsOperations.orderDNS(newData))),
     )
   }
 
@@ -284,13 +275,13 @@ export default function FTPOrder() {
                     {values?.limitsList?.length > 0 && (
                       <Select
                         height={50}
-                        value={values?.addon_961}
+                        value={values[parameters?.domainsLimitAddon]}
                         label={`${t('domains_limit', { ns: 'dns' })}:`}
                         getElement={item => {
-                          setFieldValue('addon_961', item)
+                          setFieldValue(parameters?.domainsLimitAddon, item)
 
                           const data = {
-                            addon_961: item,
+                            [parameters?.domainsLimitAddon]: item,
                             datacenter: values?.datacenter,
                             period: values?.period,
                             pricelist: values?.pricelist,

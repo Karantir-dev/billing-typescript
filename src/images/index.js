@@ -96,3 +96,13 @@ export { default as GiftDt } from './svg/GiftDt.jsx'
 
 export { default as CheckEdit } from './svg/CheckEdit.jsx'
 export { default as SaleFiftyFive } from './svg/SaleFiftyFive.jsx'
+
+export { default as Client } from './svg/Client.jsx'
+export { default as Services } from './svg/Services.jsx'
+export { default as Finance } from './svg/Finance.jsx'
+export { default as Help } from './svg/Help.jsx'
+export { default as Instruments } from './svg/Instruments.jsx'
+export { default as Statistic } from './svg/Statistic.jsx'
+export { default as Reference } from './svg/Reference.jsx'
+export { default as Home } from './svg/Home.jsx'
+export { default as Money } from './svg/Money.jsx'
