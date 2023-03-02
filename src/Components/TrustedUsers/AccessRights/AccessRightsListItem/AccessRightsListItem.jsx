@@ -40,7 +40,7 @@ export default function AccessRightsListItem({
   openedCategory,
   isOpenCategory,
   inserted,
-  categoryIsActive,
+  // categoryIsActive,
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
@@ -286,7 +286,7 @@ export default function AccessRightsListItem({
           [s.list_item_wrapper]: true,
           [s.showed]: isOpenCategory,
           [s.opened]: selected,
-          [s.inserted_item_wrapper]: inserted
+          [s.inserted_item_wrapper]: inserted,
         })}
       >
         <div
@@ -406,9 +406,29 @@ export default function AccessRightsListItem({
         </div>
 
         <div className={cn(s.selectedAllBlock)}>
-          <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
+          {/* <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
             <Toggle
-              func={() => null}
+              func={() => {
+                if (categoryIsActive) {
+                  dispatch(
+                    usersOperations.manageUserRight(
+                      userId,
+                      item?.subCateg?.join(', '),
+                      sessionId,
+                      'suspend',
+                    ),
+                  )
+                } else {
+                  dispatch(
+                    usersOperations.manageUserRight(
+                      userId,
+                      item?.subCateg?.join(', '),
+                      sessionId,
+                      'resume',
+                    ),
+                  )
+                }
+              }}
               initialState={categoryIsActive}
               disabled={
                 (!hasAccessToResumeRights && !currentRightState) ||
@@ -417,7 +437,7 @@ export default function AccessRightsListItem({
                   !hasAccessToSuspendRightsOnly)
               }
             />
-          </div>
+          </div> */}
           <div
             role="button"
             tabIndex={0}

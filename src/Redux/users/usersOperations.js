@@ -299,7 +299,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
         out: 'json',
         auth: sessionId,
         elid: funcName,
-        plid: `${userId}/${type}`,
+        plid: `${userId}${type ? `/${type}`: ''}`,
         lang: 'en',
       }),
     )
