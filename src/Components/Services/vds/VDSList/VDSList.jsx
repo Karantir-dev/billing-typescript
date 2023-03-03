@@ -57,6 +57,11 @@ export default function VDSList({
             el?.pricelist?.$?.includes('Pro')
           ) {
             el.pricelist.$ = 'VDS/VPS «Pro»'
+          } else if (
+            el?.pricelist?.$?.includes('VDS/VPS') &&
+            el?.pricelist?.$?.includes('2xPlatinum')
+          ) {
+            el.pricelist.$ = 'VDS/VPS «2xPlatinum»'
           }
           return widerThan1600 ? (
             <VDSItem
