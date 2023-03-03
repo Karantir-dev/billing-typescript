@@ -18,9 +18,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const hasBasePrice = el?.desc?.$?.includes('base price')
 
   const tariffName = el?.pricelist_name?.$
-  // hasBasePrice
-  //   ? el?.desc?.$.match(/<b>(.+?)(?= \(base price\))/)[1]
-  //   : el?.pricelist_name?.$
 
   const onShevronClick = () => {
     if (!dropOpened) {
@@ -39,10 +36,12 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
   const getTranslatedText = regex => {
     let text = el?.desc?.$?.match(regex)?.[1]
-    if (text?.includes('EUR')) {
-      text = text.replace(text.split('EUR ')[1], t(text.split('EUR ')[1].trim()))
-    } else {
-      text = t(text)
+    if (text) {
+      if (text?.includes('EUR')) {
+        text = text.replace(text.split('EUR ')[1], t(text.split('EUR ')[1].trim()))
+      } else {
+        text = t(text)
+      }
     }
 
     return text
@@ -53,19 +52,16 @@ export default function VdsItem({ el, deleteItemHandler }) {
     if (typeof string === 'string') {
       string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
     }
-    // const partText = string?.match(/^(.+?)(?= - \d+?\.)/g)?.[0]
 
     return typeof partText === 'string' && partText
       ? string.replace(partText, t(partText))
       : string
   }
 
-  // const priceDescription = el?.desc?.$?.replace('CPU', ' ')
-  //   ?.replace('(renewal)', '')
-  //   ?.trim()
-  //   ?.match(/EUR (.+?)(?=<br\/>)/)
-
   const IPaddressesCountText = el?.desc?.$?.match(/IP-addresses count(.+?)(?=<br\/>)/)
+  const portSpeedCountText = el?.desc?.$?.match(
+    /(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/,
+  )
 
   return (
     <>
@@ -138,7 +134,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </span>
           )}
 
-          {IPaddresses && (
+          {IPaddresses && IPaddressesCountText?.length > 0 && (
             <span className={s.value}>
               <b>{t('IPcount')}:</b>{' '}
               {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
@@ -148,11 +144,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </span>
           )}
 
-          {hasBasePrice && (
+          {hasBasePrice && portSpeedCountText?.length > 0 && (
             <span className={s.value}>
               <b>{t('port_speed')}:</b>{' '}
-              {el?.desc?.$?.match(/(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/)[2]},
-              &nbsp;
+              {portSpeedCountText?.length > 1 && portSpeedCountText[2]
+                ? portSpeedCountText[2]
+                : ''}
+              , &nbsp;
             </span>
           )}
 
