@@ -562,7 +562,9 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
 }
 
 const getLocation = () => dispatch => {
-  axios.get('https://api.server-panel.net/api/service/geo/').then(({ data }) => {
+  // changed api. OLD:
+  // https://api.server-panel.net/api/service/geo/
+  axios.get('https://api-ru.server-panel.net/api/service/geo/').then(({ data }) => {
     dispatch(
       authActions.geoData({
         clients_country_code: data?.clients_country_code,
