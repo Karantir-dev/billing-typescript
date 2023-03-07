@@ -66,6 +66,7 @@ body {
   );
   --red-bg: #fdf0f1;
   --domains_hover_bgc: #faf5fe;
+  --card-line: #e1daea;
 
   --gradient_cards_static: linear-gradient(
     90deg,
@@ -100,6 +101,7 @@ body {
   --menu_down_black_shadow: 0px -4px 10px rgba(213, 201, 236, 0.25);
   --forms_shadow: 1px 3px 5px rgba(201, 187, 230, 0.3), -1px -1px 6px #f9f8fd;
   --forms2_shadow: 0px 1px 8px 0px rgba(65, 38, 114, 0.15);
+  --forms_shadow_site: 0px 1px 8px rgba(65, 38, 114, 0.15);
   --buttons_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2, inset 2px 2px 2px #fff;
   --icon_btn_shadow: -4px -4px 4px #fefdff, 2px 4px 5px #e4def2;
   --buttons_shadow_active: 2px 4px 5px rgba(98, 0, 54, 0.25),
@@ -174,6 +176,7 @@ body.dark-theme {
   --servers_price_bgc: #484452;
   --red-bg: rgba(211, 87, 87, 0.2);
   --domains_hover_bgc: #4a4457;
+  --card-line: #514b5c;
 
   --access_rights_bg_item_title: #3f384c;
   --sublist-bgd: #372f44;
@@ -200,6 +203,7 @@ body.dark-theme {
   --menu_down_black_shadow: 0px -4px 15px rgba(0, 0, 0, 0.41);
   --forms_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --forms2_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
+  --forms_shadow_site: 0px 1px 20px rgba(0, 0, 0, 0.35);
   --buttons_shadow: 2px 3px 10px rgba(0, 0, 0, 0.8), inset 3px 3px 4px #585165;
   --icon_btn_shadow: 2px 3px 10px rgba(0, 0, 0, 0.5);
   --404-text-shadow: 6px 3px 10px #000000;
