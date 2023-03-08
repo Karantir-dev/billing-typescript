@@ -242,6 +242,7 @@ export default function ProlongModal({
               </div>
               <div className={s.btns_wrapper}>
                 <Button
+                  disabled={initialState?.status?.$ !== 'status_2'}
                   className={s.buy_btn}
                   isShadow
                   size="medium"
