@@ -102,6 +102,7 @@
     opacity: 0.3;
 
     &:hover {
+      background: unset;
       & .icon {
         fill: var(--icon-color);
       }
