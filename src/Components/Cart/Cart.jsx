@@ -631,6 +631,7 @@ export default function Component() {
       ?.find(e => e?.includes('Total discount'))
       ?.replace('Total discount ~', '')
 
+      // console.log(total)
     return (
       <div>
         <b>{t('Active discounts')}</b>
@@ -683,6 +684,7 @@ export default function Component() {
       }
     }
 
+    // console.log(cartData?.elemList[0]?.discount_percent)
     return withSale
   }
 
@@ -1039,7 +1041,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode()}
+                            disabled={withSale55Promocode() || cartData?.elemList[0]?.discount_percent}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
