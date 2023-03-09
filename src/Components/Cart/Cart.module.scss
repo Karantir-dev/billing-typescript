@@ -130,7 +130,6 @@
 .formFieldsBlock {
   display: flex;
   flex-wrap: wrap;
-  // padding: 0 15px 0 17px;
 
   &.first {
     align-items: center;
@@ -138,6 +137,10 @@
 
   &.promocode {
     margin-top: 20px;
+  }
+
+  .InputField.input {
+    background-color: var(--forms_bgc_3);
   }
 }
 
@@ -649,15 +652,14 @@
   }
 
   // .formFieldsBlock {
-  //   padding: 0 40px 0 30px ;
+  //   .InputField_input {
+  //     background-color: var(--forms_bgc_3);
+  //   }
   // }
-  // .scroll {
-  //   padding: 10px 35px;
-  // }
+
 
   .padding {
     padding: 0 35px;
-    // padding: 17px 0 20px 0;
   }
 
   .paymentMethodBtn {
