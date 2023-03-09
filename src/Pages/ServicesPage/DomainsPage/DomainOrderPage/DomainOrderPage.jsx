@@ -27,7 +27,7 @@ export default function Component({ transfer = false }) {
 
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   useEffect(() => {
@@ -143,7 +143,6 @@ export default function Component({ transfer = false }) {
         }}
         onSubmit={setDomainsNameHandler}
         validateOnChange={true}
-        validateOnBlur={true}
       >
         {({ errors, touched, setFieldValue, setFieldError }) => {
           
