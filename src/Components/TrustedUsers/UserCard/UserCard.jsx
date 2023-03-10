@@ -160,9 +160,9 @@ export default function UserCard({
   }
 
   const alertStatusText =
-    !status === 'on'
-      ? `${t('trusted_users.alerts.status.text')} ${email}?`
-      : `${t('trusted_users.alerts.status.text2')} ${email}?`
+    status === 'on'
+      ? `${t('trusted_users.alerts.status.text2')} ${email}?`
+      : `${t('trusted_users.alerts.status.text')} ${email}?`
 
   return (
     <>
