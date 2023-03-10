@@ -659,7 +659,7 @@ export default function Component() {
         {services?.map(e => {
           function getString(str) {
             let result = str?.match(/(-?\d+(\.\d+)?%)/g)
-            return result
+            return result.at(0) === '0%' ? [] : result
           }
           if (getString(e)?.length !== 0) {
             return (
