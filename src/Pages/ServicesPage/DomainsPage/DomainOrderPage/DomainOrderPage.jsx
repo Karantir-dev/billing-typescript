@@ -69,7 +69,7 @@ export default function Component({ transfer = false }) {
   const validationSchema = Yup.object().shape({
     domain_name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
-      .matches(/^[A-Za-z]+$/, t('Domain name only Latin', { ns: 'domains' })),
+      // .matches(/^[A-Za-z]+$/, t('Domain name only Latin', { ns: 'domains' })),
   })
 
   const setDomainsNameHandler = values => {
@@ -148,7 +148,7 @@ export default function Component({ transfer = false }) {
           
             function validateInput(event) {
               const value = event.target.value;
-              const domainnameRegex = /^[^\u0400-\u04FF]*$/
+              const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
               if (!domainnameRegex.test(value)) {
                 setFieldError('domain_name', t('Domain name only Latin'))
                 touched.domain_name = true;
