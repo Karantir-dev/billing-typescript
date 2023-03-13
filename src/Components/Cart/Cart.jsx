@@ -720,12 +720,15 @@ export default function Component() {
     const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace('%', '')
     const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
 
-    setIsPromocodeAllowed(foundSale &&
-      (
-        selectedPeriod === '12' && Number(cartDiscountPercent) > 8 ||
-        selectedPeriod === '24' && Number(cartDiscountPercent) > 10 ||
-        selectedPeriod === '36' && Number(cartDiscountPercent) > 12
-      ))  
+    if (foundSale) {
+      if (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8 
+        || selectedPeriod === '24' && Number(cartDiscountPercent) <= 10
+        || selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) {
+          setIsPromocodeAllowed(false)
+        } else {
+          setIsPromocodeAllowed(true)
+        }
+    }
   },[salesList])
 
   return (
