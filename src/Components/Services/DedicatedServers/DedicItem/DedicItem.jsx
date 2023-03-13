@@ -153,7 +153,11 @@ export default function DedicItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      disabled={server?.status?.$ === '1' || !rights?.prolong}
+                      disabled={
+                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
+                        !rights?.prolong
+                      }
                       onClick={() =>
                         handleToolBtnClick(setElidForProlongModal, server.id.$)
                       }

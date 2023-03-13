@@ -45,6 +45,7 @@
   "Getting information about a domain using the whois protocol": "დომენის შესახებ ინფორმაციის მიღება whois პროტოკოლით",
   "View/change the list of nameservers": "სახელების სერვერის დათვალიერება/შეცვლა",
   "Domain name transfer": "დომენის სახელის ტრანსფერი",
+  "Domain name only Latin": "დომენის სახელი შეიძლება შეიცავდეს მხოლოდ ლათინურ სიმბოლოებს",
   "Check": "შემოწმება",
   "Registered": "რეგისტრირებულია",
   "Not registered": "არ არის რეგისტრირებული",
