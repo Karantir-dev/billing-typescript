@@ -61,6 +61,8 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [salesList, setSalesList] = useState([])
+  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -80,6 +82,7 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
 
   useEffect(() => {
@@ -631,7 +634,6 @@ export default function Component() {
       ?.find(e => e?.includes('Total discount'))
       ?.replace('Total discount ~', '')
 
-      // console.log(total)
     return (
       <div>
         <b>{t('Active discounts')}</b>
@@ -684,9 +686,27 @@ export default function Component() {
       }
     }
 
-    // console.log(cartData?.elemList[0]?.discount_percent)
     return withSale
   }
+  useEffect(() => {
+    const cartConfigName = cartData?.elemList[0]?.pricelist_name.$
+      ?.slice(0, cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1)
+
+    const foundSale = salesList.find(sale =>
+      sale.promotion.$ === 'Большие скидки на выделенные серверы' &&
+      sale.idname.$.includes(cartConfigName)
+    )
+
+    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace('%', '')
+    const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
+
+    setIsPromocodeAllowed(foundSale &&
+      (
+        selectedPeriod === '12' && Number(cartDiscountPercent) > 8 ||
+        selectedPeriod === '24' && Number(cartDiscountPercent) > 10 ||
+        selectedPeriod === '36' && Number(cartDiscountPercent) > 12
+      ))  
+  },[salesList])
 
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
@@ -1041,7 +1061,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode() || cartData?.elemList[0]?.discount_percent}
+                            disabled={withSale55Promocode() || isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
