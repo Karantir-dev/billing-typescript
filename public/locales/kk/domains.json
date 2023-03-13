@@ -46,6 +46,7 @@
   "Getting information about a domain using the whois protocol": "Whois протоколы бойынша домен туралы ақпарат алу",
   "View/change the list of nameservers": "Атау серверлерінің тізімін қарау/өзгерту",
   "Domain name transfer": "Домен атауын тасымалдау",
+  "Domain name only Latin": "Домен атауында тек латын таңбалары болуы мүмкін",
   "Check": "Тексеру",
   "Registered": "Тіркелген",
   "Not registered": "Тіркелмеген",

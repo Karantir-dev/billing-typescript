@@ -27,6 +27,7 @@ export default function Component({ transfer = false }) {
 
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
+  const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   useEffect(() => {
@@ -66,7 +67,9 @@ export default function Component({ transfer = false }) {
   }
 
   const validationSchema = Yup.object().shape({
-    domain_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    domain_name: Yup.string()
+      .required(t('Is a required field', { ns: 'other' }))
+      // .matches(/^[A-Za-z]+$/, t('Domain name only Latin', { ns: 'domains' })),
   })
 
   const setDomainsNameHandler = values => {
@@ -139,8 +142,22 @@ export default function Component({ transfer = false }) {
           domain_name: '',
         }}
         onSubmit={setDomainsNameHandler}
+        validateOnChange={true}
       >
-        {({ errors, touched }) => {
+        {({ errors, touched, setFieldValue, setFieldError }) => {
+          
+            function validateInput(event) {
+              const value = event.target.value;
+              const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
+              if (!domainnameRegex.test(value)) {
+                setFieldError('domain_name', t('Domain name only Latin'))
+                touched.domain_name = true;
+              } else {
+                setFieldError('domain_name', '')
+                setFieldValue('domain_name', value)
+                setInputValue(value)
+              }
+            }
           return (
             <Form className={s.form}>
               <InputField
@@ -154,6 +171,8 @@ export default function Component({ transfer = false }) {
                 error={!!errors.domain_name}
                 touched={!!touched.domain_name}
                 isShadow
+                value={inputValue}
+                onChange={validateInput}
               />
               <Button
                 className={s.searchBtn}
