@@ -61,6 +61,8 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [salesList, setSalesList] = useState([])
+  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -80,6 +82,7 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
 
   useEffect(() => {
@@ -134,7 +137,6 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
@@ -705,6 +707,28 @@ export default function Component() {
 
     return withSale
   }
+  useEffect(() => {
+    const cartConfigName = cartData?.elemList[0]?.pricelist_name.$
+      ?.slice(0, cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1)
+
+    const foundSale = salesList.find(sale =>
+      sale.promotion.$ === 'Большие скидки на выделенные серверы' &&
+      sale.idname.$.includes(cartConfigName)
+    )
+
+    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace('%', '')
+    const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
+
+    if (foundSale) {
+      if (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8 
+        || selectedPeriod === '24' && Number(cartDiscountPercent) <= 10
+        || selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) {
+          setIsPromocodeAllowed(false)
+        } else {
+          setIsPromocodeAllowed(true)
+        }
+    }
+  },[salesList])
 
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
@@ -1059,7 +1083,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode()}
+                            disabled={withSale55Promocode() || isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow

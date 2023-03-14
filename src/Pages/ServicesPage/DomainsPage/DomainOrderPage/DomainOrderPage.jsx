@@ -69,7 +69,6 @@ export default function Component({ transfer = false }) {
   const validationSchema = Yup.object().shape({
     domain_name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
-      // .matches(/^[A-Za-z]+$/, t('Domain name only Latin', { ns: 'domains' })),
   })
 
   const setDomainsNameHandler = values => {
