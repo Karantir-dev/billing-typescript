@@ -137,7 +137,6 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
