@@ -400,10 +400,47 @@ const setPaymentMethods =
       })
   }
 
+  const getSalesList = (setSalesList) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+  
+    const {
+      auth: { sessionId },
+    } = getState()
+  
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'account.discountinfo',
+          auth: sessionId,
+          out: 'json',
+        }),
+      )
+      .then(({data}) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  
+        const { elem: promoList } = data.doc
+        
+        const promoListData = {
+          promoList,
+        }
+        
+        setSalesList(promoListData.promoList)
+
+        dispatch(actions.hideLoader())
+        return promoListData
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getBasket,
   setBasketPromocode,
   deleteBasketItem,
   clearBasket,
   setPaymentMethods,
+  getSalesList,
 }

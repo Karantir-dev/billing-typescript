@@ -61,6 +61,8 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [salesList, setSalesList] = useState([])
+  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -80,6 +82,7 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
 
   useEffect(() => {
@@ -134,7 +137,6 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
@@ -358,78 +360,88 @@ export default function Component() {
         {vpnList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
-            {vpnList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
-              return (
-                <VpnItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {vpnList?.map(el => {
+                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                return (
+                  <VpnItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {siteCareList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
-            {siteCareList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
-              return (
-                <SiteCareItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {siteCareList?.map(el => {
+                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                return (
+                  <SiteCareItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
-            {filteredVhostList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                pricelist_name,
-                discount_percent,
-                fullcost,
-                count,
-              } = el
-              return (
-                <VhostItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    filteredVhostList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                  count={count}
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {filteredVhostList?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  pricelist_name,
+                  discount_percent,
+                  fullcost,
+                  count,
+                } = el
+                return (
+                  <VhostItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      filteredVhostList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                    count={count}
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {domainsList?.length > 0 && (
@@ -463,33 +475,35 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
-            {filteredDedicList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <DedicItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredDedicList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {filteredDedicList?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <DedicItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredDedicList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {filteredVdsList?.length > 0 && (
@@ -499,19 +513,21 @@ export default function Component() {
             </div>
 
             <div className={s.padding}>
-              {filteredVdsList?.map(el => {
-                return (
-                  <VdsItem
-                    key={el?.id?.$}
-                    el={el}
-                    deleteItemHandler={
-                      filteredVdsList?.length > 1
-                        ? () => deleteBasketItemHandler(el?.id?.$)
-                        : null
-                    }
-                  />
-                )
-              })}
+              <div className={s.scroll}>
+                {filteredVdsList?.map(el => {
+                  return (
+                    <VdsItem
+                      key={el?.id?.$}
+                      el={el}
+                      deleteItemHandler={
+                        filteredVdsList?.length > 1
+                          ? () => deleteBasketItemHandler(el?.id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
             </div>
           </div>
         )}
@@ -520,97 +536,103 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
-            {filteredFtpList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <FtpItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredFtpList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {filteredFtpList?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <FtpItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredFtpList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {filteredDnsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
-            {filteredDnsList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <DnsItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredDnsList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {filteredDnsList?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <DnsItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredDnsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
         {filteredForexList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>
-            {filteredForexList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <ForexItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredForexList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={s.scroll}>
+              {filteredForexList?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <ForexItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredForexList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
           </div>
         )}
       </>
@@ -639,7 +661,7 @@ export default function Component() {
         {services?.map(e => {
           function getString(str) {
             let result = str?.match(/(-?\d+(\.\d+)?%)/g)
-            return result
+            return result.at(0) === '0%' ? [] : result
           }
           if (getString(e)?.length !== 0) {
             return (
@@ -685,6 +707,28 @@ export default function Component() {
 
     return withSale
   }
+  useEffect(() => {
+    const cartConfigName = cartData?.elemList[0]?.pricelist_name.$
+      ?.slice(0, cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1)
+
+    const foundSale = salesList.find(sale =>
+      sale.promotion.$ === 'Большие скидки на выделенные серверы' &&
+      sale.idname.$.includes(cartConfigName)
+    )
+
+    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace('%', '')
+    const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
+
+    if (foundSale) {
+      if (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8 
+        || selectedPeriod === '24' && Number(cartDiscountPercent) <= 10
+        || selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) {
+          setIsPromocodeAllowed(false)
+        } else {
+          setIsPromocodeAllowed(true)
+        }
+    }
+  },[salesList])
 
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
@@ -698,7 +742,7 @@ export default function Component() {
 
             <div className={s.itemsBlock}>{renderItems()}</div>
 
-            <div className={s.padding}>
+            {/* <div className={s.padding}> */}
               <Formik
                 enableReinitialize
                 validationSchema={validationSchema}
@@ -787,7 +831,7 @@ export default function Component() {
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
-                      <div className={s.formBlock}>
+                      <div className={cn(s.formBlock, s.padding)}>
                         {!isLoading && paymentsMethodList?.length === 0 && (
                           <div className={s.notAllowPayMethod}>
                             {t('order_amount_is_less')}
@@ -861,7 +905,7 @@ export default function Component() {
                       {(values?.slecetedPayMethod?.name?.$?.includes('balance') &&
                         values?.slecetedPayMethod?.paymethod_type?.$ === '0') ||
                       !values?.slecetedPayMethod ? null : (
-                        <div className={s.formBlock}>
+                        <div className={(s.formBlock, s.padding)}>
                           <div className={s.formBlockTitle}>{t('Payer')}:</div>
                           <div className={s.fieldsGrid}>
                             <Select
@@ -1009,7 +1053,7 @@ export default function Component() {
                           </div>
                         </div>
                       )}
-                      <div className={cn(s.infotext, { [s.showMore]: showMore })}>
+                      <div className={cn(s.infotext, s.padding, { [s.showMore]: showMore })}>
                         {values?.slecetedPayMethod &&
                           values?.slecetedPayMethod?.payment_minamount && (
                             <div>
@@ -1028,18 +1072,18 @@ export default function Component() {
                         <button
                           type="button"
                           onClick={() => setShowMore(!showMore)}
-                          className={s.readMore}
+                          className={cn(s.readMore, s.padding)}
                         >
                           {t(showMore ? 'Collapse' : 'Read more')}
                         </button>
                       )}
 
-                      <div className={cn(s.formBlock, s.promocodeBlock)}>
+                      <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
                         <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode()}
+                            disabled={withSale55Promocode() || isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1074,61 +1118,62 @@ export default function Component() {
                       ) : (
                         ''
                       )}
-                      <div className={s.totalSum}>
-                        <b>{t('Total')}:</b>
-                        <span>
-                          {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
-                        </span>
-                        <span>
-                          {cartData?.full_discount &&
-                          Number(cartData?.full_discount) !== 0 ? (
-                            <>
-                              {t('Saving')}: {cartData?.full_discount} EUR{' '}
-                              <button type="button" className={s.infoBtn}>
-                                <Info />
-                                <div ref={dropdownSale} className={s.descriptionBlock}>
-                                  {renderActiveDiscounts()}
-                                </div>
-                              </button>
-                            </>
-                          ) : null}
-                        </span>
-                      </div>
+                      <div className={s.padding}>
+                        <div className={s.totalSum}>
+                          <b>{t('Total')}:</b>
+                          <span>
+                            {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
+                          </span>
+                          <span>
+                            {cartData?.full_discount &&
+                            Number(cartData?.full_discount) !== 0 ? (
+                              <>
+                                {t('Saving')}: {cartData?.full_discount} EUR{' '}
+                                <button type="button" className={s.infoBtn}>
+                                  <Info />
+                                  <div ref={dropdownSale} className={s.descriptionBlock}>
+                                    {renderActiveDiscounts()}
+                                  </div>
+                                </button>
+                              </>
+                            ) : null}
+                          </span>
+                        </div>
 
-                      <div className={s.offerBlock}>
-                        <CheckBox
-                          initialState={values[selectedPayerFields?.offer_field] || false}
-                          setValue={item =>
-                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
-                          }
-                          className={s.checkbox}
-                          error={!!errors[selectedPayerFields?.offer_field]}
-                          touched={!!touched[selectedPayerFields?.offer_field]}
-                        />
-                        <div className={s.offerBlockText}>
-                          {t('I agree with', {
-                            ns: 'payers',
-                          })}{' '}
-                          <a
-                            target="_blank"
-                            href={OFERTA_URL}
-                            rel="noreferrer"
-                            className={s.offerBlockLink}
-                          >
-                            {t('Terms of Service', { ns: 'domains' })}
-                          </a>{' '}
-                          {t('and', { ns: 'domains' })}{' '}
-                          <a
-                            target="_blank"
-                            href={PRIVACY_URL}
-                            rel="noreferrer"
-                            className={s.offerBlockLink}
-                          >
-                            {t('Terms of the offer', { ns: 'domains' })}
-                          </a>
+                        <div className={s.offerBlock}>
+                          <CheckBox
+                            initialState={values[selectedPayerFields?.offer_field] || false}
+                            setValue={item =>
+                              setFieldValue(`${selectedPayerFields?.offer_field}`, item)
+                            }
+                            className={s.checkbox}
+                            error={!!errors[selectedPayerFields?.offer_field]}
+                            touched={!!touched[selectedPayerFields?.offer_field]}
+                          />
+                          <div className={s.offerBlockText}>
+                            {t('I agree with', {
+                              ns: 'payers',
+                            })}{' '}
+                            <a
+                              target="_blank"
+                              href={OFERTA_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of Service', { ns: 'domains' })}
+                            </a>{' '}
+                            {t('and', { ns: 'domains' })}{' '}
+                            <a
+                              target="_blank"
+                              href={PRIVACY_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of the offer', { ns: 'domains' })}
+                            </a>
+                          </div>
                         </div>
                       </div>
-
                       {Number(cartData?.tax) > 0 ? (
                         <div className={s.totalSum}>
                           {t('Tax included')}: <b>{cartData?.tax} EUR</b>
@@ -1174,7 +1219,7 @@ export default function Component() {
                   )
                 }}
               </Formik>
-            </div>
+            {/* </div> */}
           </div>
         ) : (
           <div className={s.modalCloseBlock}>
