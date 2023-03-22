@@ -6,38 +6,17 @@
   left: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 149;
-  overflow-y: auto;
+  overflow-y: hidden;
 
   &.closing {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
-  scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: #e72690;
-  }
 }
 
 .modalBlock {
+  position: relative;
   background: var(--elements-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
@@ -75,6 +54,10 @@
   &:active {
     transform: scale(0.95);
   }
+}
+
+.form {
+  margin-bottom: 113px;
 }
 
 .headerText {
@@ -151,6 +134,11 @@
   padding: 18px 20px 23px;
   background: var(--forms_bgc_3);
   box-shadow: var(--menu_shadow);
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: auto;
+  z-index: 2;
 }
 
 .btnCloseBlock {
@@ -479,26 +467,59 @@
   }
 }
 
+// .scroll {
+//   // padding: 10px 22px;
+//   overflow-y: auto;
+//   max-height: 277px;
+
+//   &::-webkit-scrollbar {
+//     width: 5px;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: rgba(161, 161, 161, 23%);
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background: #e72690;
+//   }
+// }
+
+// don't forget to rename this block
 .scroll {
-  // padding: 10px 22px;
+  z-index: 1;
   overflow-y: auto;
-  max-height: 277px;
+  max-height: calc(80vh);
 
   &::-webkit-scrollbar {
     width: 5px;
   }
 
+  /* Track */
   &::-webkit-scrollbar-track {
     background: rgba(161, 161, 161, 23%);
   }
-
+  /* Handle */
   &::-webkit-scrollbar-thumb {
     background: #e72690;
   }
+
+  scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
+  scrollbar-width: thin;
 }
 
 .itemsBlock {
   margin-top: 20px;
+}
+
+.showMoreItemsBtn {
+  margin: 20px 0 0 15px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 11px;
+  text-decoration-line: underline;
+  color: var(--link-color);
+  cursor: pointer;
 }
 
 .closeText {
@@ -532,6 +553,18 @@
 
 .padding {
   padding: 0 22px;
+}
+
+.elements_wrapper {
+  // max-height: 300px;
+  // overflow: hidden;
+
+  transition: max-height 0.3s ease-in-out;
+
+  &.opened {
+    max-height: none;
+    transition: max-height 0.3s ease-in-out;
+  }
 }
 
 .mb {
@@ -682,9 +715,6 @@
     margin: 13px 0 0 0;
   }
 
-  .offerBlock {
-    // margin-top: 33px;
-  }
 
   .inputPerson {
     max-width: 30%;
@@ -738,4 +768,14 @@
   .modalBlock {
     margin: 3% auto;
   }
+}
+
+@media screen and (max-width: 767px) {
+  .form {
+    margin-bottom: 158px;
+  }
+  // .elements_wrapper {
+  //   max-height: 300px;
+  //   overflow: hidden;
+  // }
 }

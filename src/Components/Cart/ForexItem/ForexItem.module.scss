@@ -1,16 +1,15 @@
+@import '../../../scss/placeholders.scss';
+
 .server_item {
-  display: flex;
+  @extend %server_items;
+
   flex-direction: column;
-  width: 100%;
   margin: 10px 0;
-  background: var(--gradient_cards_static);
-  box-shadow: var(--shadow_cards_static);
   padding: 15px;
 
   &:last-child {
     margin-bottom: 0px;
   }
-  // padding: 19px 25px 0 25px;
 }
 
 .tarif_info {

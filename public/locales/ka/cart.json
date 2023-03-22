@@ -47,6 +47,10 @@
   "Active discounts": "აქტიური ფასდაკლებები",
   "Total discounts": "სულ ფასდაკლება",
 
+  "Show": "კიდევ",
+  "more items": "ერთეულის ჩვენება",
+  "Hide": "დამალვა",
+
   "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.": "კრიპტოვალუტის გადახდა.ალტკოინები ხელმისაწვდომია 25 ევროდან. მესამე მხარის სერვისების საშუალებით გადახდისას, გაცვლა - გაითვალისწინეთ მათი საკომისიო და დაამატეთ იგი გადახდის ღირებულებაში. თქვენი საფულის ვალუტის ნომინალი შეიძლება დაყენდეს ჩვეულებრივ ვალუტაზე, მაგ. ᲔᲕᲠᲝ. გაცვლითი კურსი შეიძლება განსხვავდებოდეს საფულედან საფულეში. ამიტომ, ყოველთვის გახსოვდეთ კრიპტოვალუტის დასახელების შერჩევა, მაგ. ბიტკოინი, ამიტომ იგზავნება სწორი გადარიცხვის თანხა. გადახდის დასასრულებლად, თქვენ უნდა დაასკანიროთ QR კოდი თქვენი საფულით ან დააკოპიროთ და ჩასვათ დეტალები თქვენს საფულეში. თუ თქვენ უნდა აკრიფოთ ან დააკოპიროთ და ჩასვათ დეტალები, ყოველთვის შეამოწმეთ, რამდენად სწორია ინფორმაცია. მხოლოდ ერთი შეცდომა გამოიწვევს გაუქმებას. თანხის დაბრუნება ხელმისაწვდომია მხოლოდ BTC საფულეზე, 10 ევროდან, გადახდიდან 14 დღემდე.",
   "Payment amount from 1.00 EUR to 1000.00 EUR": "გადახდის თანხა 1.00 ევროდან 1000.00 ევრომდე"
 }

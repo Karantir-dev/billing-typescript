@@ -122,3 +122,17 @@
     background: #e72690;
   }
 }
+
+%server_items {
+  display: flex;
+  flex-direction: column;
+  
+  width: 100%;
+
+  background: var(--gradient_cards_static);
+  box-shadow: var(--shadow_cards_static);
+
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
