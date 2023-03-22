@@ -272,8 +272,6 @@ export default function Component() {
       }
     })
 
-    // for tests only. Delete after tests
-    // filteredVdsList = Array(5).fill(filteredVdsList.at(0))
     //penalty for vds
     const vdsWithPenalty = vdsList?.filter(el => {
       return el?.desc?.$?.includes('fee will be charged')
