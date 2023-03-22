@@ -1,20 +1,18 @@
+@import '../../../scss/placeholders.scss';
+
 .server_item {
+  @extend %server_items;
+
   position: relative;
-  display: flex;
-  flex-direction: column;
+
   justify-content: center;
-  width: 100%;
+
 
   padding: 15px 15px 65px;
   border-radius: 3px;
-  background: var(--gradient_cards_static);
-  box-shadow: var(--shadow_cards_static);
 
   &:last-child {
     margin-bottom: 5px;
-  }
-  &:not(:first-child) {
-    margin-top: 10px;
   }
 }
 

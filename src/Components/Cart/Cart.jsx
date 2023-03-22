@@ -407,6 +407,22 @@ export default function Component() {
   const shouldRenderButton = screenWidth < 768 
     ? displayedItems?.length > 0
     : displayedItems?.length > 2
+
+
+    const showMoreButton = ({listLength}) => {
+      const toggleShowAllItems = () => setShowAllItems(!showAllItems)
+
+      return (
+      <button 
+        className={s.showMoreItemsBtn} 
+        onClick={toggleShowAllItems}
+      >
+        {!showAllItems 
+          ? `${t('Show')} ${listLength - displayedItems.length} ${t('more items')}`
+          : t('Hide')}
+      </button>)
+    }
+
     return (
       <>
         {vpnList?.length > 0 && (
@@ -437,17 +453,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: vpnList?.length })
+            )}
           </div>
         )}
         {siteCareList?.length > 0 && (
@@ -478,17 +485,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: siteCareList?.length })
+            )}
           </div>
         )}
         {filteredVhostList?.length > 0 && (
@@ -528,17 +526,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: filteredVhostList?.length })
+            )}
           </div>
         )}
         {domainsList?.length > 0 && (
@@ -569,17 +558,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: domainsList?.length })
+            )}
           </>
         )}
         {filteredDedicList?.length > 0 && (
@@ -620,17 +600,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: filteredDedicList?.length })
+            )}
           </div>
         )}
         {filteredVdsList?.length > 0 && (
@@ -659,17 +630,8 @@ export default function Component() {
                 })}
               </div>
               {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+                showMoreButton({ listLength: filteredVdsList?.length })
+              )} 
             </div>
           </div>
         )}
@@ -711,17 +673,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: filteredFtpList?.length })
+            )}
           </div>
         )}
         {filteredDnsList?.length > 0 && (
@@ -761,17 +714,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: filteredDnsList?.length })
+            )}
           </div>
         )}
         {filteredForexList?.length > 0 && (
@@ -810,17 +754,8 @@ export default function Component() {
               })}
             </div>
             {shouldRenderButton && (
-                <button 
-                  className={s.showMoreItemsBtn} 
-                  onClick={()=>{setShowAllItems(!showAllItems)}}
-                >
-                  {
-                  !showAllItems 
-                    ? `${t('Show')} ${filteredVdsList.length - displayedItems.length} ${t('more items')}`
-                    : t('Hide')
-                  }
-                </button>
-              )}
+              showMoreButton({ listLength: filteredForexList?.length })
+            )}
           </div>
         )}
       </>
