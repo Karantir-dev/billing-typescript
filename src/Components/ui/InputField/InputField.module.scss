@@ -2,6 +2,7 @@
 
 .field_wrapper {
   width: 100%;
+  position: relative;
 }
 
 .label {
@@ -125,6 +126,9 @@
 }
 
 .error_message {
+  position: absolute;
+  left: 0%;
+  top: 80px;
   margin-left: 2px;
   color: var(--error-color);
   font-size: 13px;
@@ -150,6 +154,12 @@
     &.iconRight {
       padding-right: 36px;
     }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .field_wrapper {
+    padding-bottom: 20px;
   }
 }
 
