@@ -13,6 +13,9 @@
   &:last-child {
     margin-bottom: 5px;
   }
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
 }
 
 .control_bts_wrapper {

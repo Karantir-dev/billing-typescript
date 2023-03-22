@@ -11,6 +11,9 @@
   &:last-child {
     margin-bottom: 0px;
   }
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
 }
 
 .tarif_info {
