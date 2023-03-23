@@ -278,6 +278,7 @@ export default function DedicOrderPage() {
       ipTotal,
       ipName,
       managePanel,
+      server_name,
     } = values
 
     dispatch(
@@ -297,6 +298,7 @@ export default function DedicOrderPage() {
             ipTotal,
             ipName,
             managePanel,
+            server_name,
           ),
         ),
       ),
@@ -320,6 +322,7 @@ export default function DedicOrderPage() {
           ipTotal: '1',
           price: null,
           license: true,
+          server_name: '',
         }}
         onSubmit={handleSubmit}
       >
@@ -628,6 +631,20 @@ export default function DedicOrderPage() {
                       autoComplete="off"
                       type="text"
                       value={values?.domainname}
+                    />
+
+                    <InputField
+                      label={`${t('server_name')}:`}
+                      placeholder={`${t('server_placeholder')}`}
+                      name="server_name"
+                      isShadow
+                      error={!!errors.server_name}
+                      touched={!!touched.server_name}
+                      className={s.input_field_wrapper}
+                      inputClassName={s.text_area}
+                      autoComplete="off"
+                      type="text"
+                      value={values?.server_name}
                     />
 
                     {/* {

@@ -97,5 +97,8 @@
 
   "pcs.": "шт.",
   "Suspended due to abuse": "Зупинено за порушення",
-  "daily charges": "щоденні\nсписання"
+  "daily charges": "щоденні\nсписання",
+
+  "server_name": "Ім'я сервера",
+  "server_placeholder": "Введіть назву сервера"
 }

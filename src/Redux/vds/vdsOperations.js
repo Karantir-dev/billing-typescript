@@ -332,6 +332,7 @@ const setOrderData =
           [register.Memory]: values.Memory,
           [register.Port_speed]: values.Port_speed.slice(0, 3),
           licence_agreement: values.agreement,
+          server_name: values?.server_name,
           order_count: String(count),
           lang: 'en',
         }),

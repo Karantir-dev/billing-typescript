@@ -343,6 +343,7 @@ const orderServer =
     ipTotal,
     ipName,
     managePanel,
+    server_name,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -372,6 +373,7 @@ const orderServer =
           lang: 'en',
           [ipName]: ipTotal,
           [portSpeedName]: portSpeed,
+          server_name: server_name,
         }),
       )
       .then(({ data }) => {

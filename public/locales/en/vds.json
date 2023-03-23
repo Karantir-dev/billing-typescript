@@ -97,5 +97,8 @@
   "pcs.": "pcs.",
   "Suspended due to abuse": "Suspended due to abuse",
 
-  "daily charges": "daily\ncharges"
+  "daily charges": "daily\ncharges",
+
+  "server_name": "Server name",
+  "server_placeholder": "Enter server name"
 }

@@ -96,5 +96,8 @@
 
   "pcs.": "რამ.",
   "Suspended due to abuse": "შეჩერდა დარღვევის გამო",
-  "daily charges": "ყოველდღიური\nგადასახადი"
+  "daily charges": "ყოველდღიური\nგადასახადი",
+
+  "server_name": "სერვერის სახელი",
+  "server_placeholder": "შეიყვანეთ სერვერის სახელი"
 }
