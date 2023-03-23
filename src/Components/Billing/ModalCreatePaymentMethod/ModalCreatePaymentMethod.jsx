@@ -302,12 +302,10 @@ export default function Component(props) {
                                   id: { $: 'new' },
                                 },
                                 ...payersList,
-                              ]
-                                ?.filter(({ name, id }) => name?.$ && id?.$)
-                                ?.map(({ name, id }) => ({
-                                  label: t(`${name?.$?.trim()}`),
-                                  value: id?.$,
-                                }))}
+                              ]?.map(({ name, id }) => ({
+                                label: t(`${name?.$?.trim()}`),
+                                value: id?.$,
+                              }))}
                             />
                           )}
 

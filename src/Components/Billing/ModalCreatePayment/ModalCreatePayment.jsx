@@ -45,6 +45,7 @@ export default function Component(props) {
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
   const [showMore, setShowMore] = useState(false)
+  const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
 
   const dropdownDescription = useRef(null)
 
@@ -158,7 +159,7 @@ export default function Component(props) {
               profile:
                 selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
               amount: '',
-              slecetedPayMethod: undefined,
+              slecetedPayMethod: slecetedPayMethod || undefined,
               name: selectedPayerFields?.name || '',
               address_physical: selectedPayerFields?.address_physical || '',
               city_physical:
@@ -310,6 +311,7 @@ export default function Component(props) {
                             <button
                               onClick={() => {
                                 setFieldValue('slecetedPayMethod', method)
+                                setSlecetedPayMethod(method)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
                               }}
