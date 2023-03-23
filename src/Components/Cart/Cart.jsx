@@ -661,7 +661,6 @@ export default function Component() {
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
-                console.log(el)
                 const {
                   id,
                   desc,
