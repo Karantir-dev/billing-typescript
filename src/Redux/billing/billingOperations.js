@@ -426,7 +426,9 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(payersActions.setPayersList(elem))
+        dispatch(
+          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
+        )
         dispatch(payersActions.setPayersCount(count))
         dispatch(getPayerCountryType(cart))
       })
