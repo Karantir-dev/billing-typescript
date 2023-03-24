@@ -70,15 +70,11 @@ jobs:
         - name: Checkout Code
           uses: actions/checkout@v1
 
-        - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
         - name: Test with environment variables
           run: |
             echo $TAG_NAME - $RELEASE_NAME
           env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+            RELEASE_NAME: release-${{ env.PREFIX }}
 
         - name: Login to docker hub
           run:
@@ -86,14 +82,14 @@ jobs:
 
         - name: Build image
           env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+            RELEASE_NAME: release-${{ env.PREFIX }}
           run: |
             docker build -f Dockerfile -t $IMAGE_NAME .
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$RELEASE_NAME
         - name: Push in dockerhub
           env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+            RELEASE_NAME: release-${{ env.PREFIX }}
           run: |
             docker push $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$RELEASE_NAME
@@ -119,19 +115,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v1
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
       - name: Test with environment variables
         run: |
           echo $TAG_NAME - $RELEASE_NAME
         env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          RELEASE_NAME: release-${{ env.PREFIX }}
 
       - name: Update Version
         env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          RELEASE_NAME: release-${{ env.PREFIX }}
         run: |
           sed -i "s|$IMAGE_NAME|$IMAGE_NAME:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
       - name: Install doctl
