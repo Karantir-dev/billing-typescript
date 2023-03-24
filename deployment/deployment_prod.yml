@@ -29,7 +29,7 @@ spec:
               memory: '10Mi'
               cpu: '10m'
             limits:
-              memory: '50Mi'
+              memory: '100Mi'
               cpu: '100m'
           ports:
             - name: http
