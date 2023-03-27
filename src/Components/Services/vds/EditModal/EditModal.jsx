@@ -176,6 +176,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
               : '',
           memory: initialState?.Memory,
           IPcount: initialState?.IP_addresses_count,
+          server_name: initialState?.server_name?.$ || '',
         }}
         onSubmit={handleFormSubmit}
       >
@@ -219,6 +220,17 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     isShadow
                     disabled
                   />
+
+                  <InputField
+                    className={s.mb}
+                    inputClassName={s.bgc}
+                    name="server_name"
+                    value={values?.server_name}
+                    label={`${t('server_name')}:`}
+                    placeholder={`${t('server_placeholder')}`}
+                    isShadow
+                  />
+
                   <InputField
                     className={s.mb}
                     inputClassName={s.bgc}

@@ -480,6 +480,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         username,
         userpassword,
         password,
+        server_name,
       } = data.doc
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
@@ -516,6 +517,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         username,
         userpassword,
         password,
+        server_name,
       }
 
       setInitialParams(editModalData)
@@ -542,6 +544,7 @@ const editDedicServer =
     username,
     userpassword,
     password,
+    server_name,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -569,6 +572,7 @@ const editDedicServer =
           ip,
           username,
           userpassword,
+          server_name,
           password,
           clicked_button: 'basket',
           sok: 'ok',
@@ -624,6 +628,7 @@ const editDedicServerNoExtraPay =
     username,
     userpassword,
     password,
+    server_name,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -653,6 +658,7 @@ const editDedicServerNoExtraPay =
           userpassword,
           password,
           clicked_button: 'ok',
+          server_name,
           sok: 'ok',
         }),
       )
