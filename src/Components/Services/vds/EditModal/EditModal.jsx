@@ -28,7 +28,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
     return (
       labelArr[0] +
-      'EUR ' +
+      'EUR ' + 
       t(labelArr[1].replace(')', '')) +
       (sentence.includes(')') ? ')' : '')
     )

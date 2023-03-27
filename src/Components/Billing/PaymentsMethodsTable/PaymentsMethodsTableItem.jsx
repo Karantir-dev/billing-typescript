@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { MoreDots, Delete, Reload, Edit, CheckEdit } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { useOutsideAlerter } from '../../../utils'
+import { shortTitle, useOutsideAlerter } from '../../../utils'
 import { HintWrapper } from '../../../Components'
 
 export default function Component(props) {
@@ -104,15 +104,6 @@ export default function Component(props) {
         </div>
       </div>
     )
-  }
-
-  function shortTitle(n, numberSymb = 25) {
-    if (n) {
-      if (n.length > numberSymb) {
-        return n.substring(0, numberSymb) + '...'
-      }
-    }
-    return n
   }
 
   return (

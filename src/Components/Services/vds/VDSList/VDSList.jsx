@@ -36,6 +36,7 @@ export default function VDSList({
           />
 
           <ul className={s.head_row}>
+            <li className={s.table_head}>{t('server_name')}:</li>
             <li className={s.table_head}>Id:</li>
             <li className={s.table_head}>{t('domain_name')}:</li>
             <li className={s.table_head}>{t('ip_address')}:</li>
