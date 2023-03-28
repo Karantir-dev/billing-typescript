@@ -215,7 +215,7 @@ export default function VDS() {
             isShadow
             type="button"
             label={t('to_order', { ns: 'other' })}
-            onClick={() => navigate(route.VDS_ORDER)}
+            onClick={() => navigate(route.VPS_ORDER)}
           />
 
           <div className={s.filter_wrapper}>

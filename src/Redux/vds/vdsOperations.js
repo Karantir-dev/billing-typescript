@@ -131,7 +131,7 @@ const editVDS =
               dispatch(
                 cartActions.setCartIsOpenedState({
                   isOpened: true,
-                  redirectPath: routes.VDS,
+                  redirectPath: routes.VPS,
                 }),
               )
             })
@@ -342,7 +342,7 @@ const setOrderData =
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
-            redirectPath: routes.VDS,
+            redirectPath: routes.VPS,
             salePromocode: sale,
           }),
         )

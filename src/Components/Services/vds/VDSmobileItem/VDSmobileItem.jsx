@@ -129,7 +129,7 @@ export default function VDSmobileItem({
                       className={s.tool_btn}
                       type="button"
                       onClick={() =>
-                        navigate(route.VDS_IP, { state: { id: server?.id?.$ } })
+                        navigate(route.VPS_IP, { state: { id: server?.id?.$ } })
                       }
                       disabled={
                         server?.status?.$ === '5' ||
