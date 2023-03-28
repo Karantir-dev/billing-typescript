@@ -1140,7 +1140,7 @@ const payProlongPeriod =
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
         } else if (routeAfterBuying === 'vds') {
-          routeAfterBuying = route.VDS
+          routeAfterBuying = route.VPS
         } else if (routeAfterBuying === 'ftp') {
           routeAfterBuying = route.FTP
         } else if (routeAfterBuying === 'dns') {
@@ -1197,7 +1197,7 @@ const payProlongPeriodFewElems =
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
         } else if (routeAfterBuying === 'vds') {
-          routeAfterBuying = route.VDS
+          routeAfterBuying = route.VPS
         } else if (routeAfterBuying === 'ftp') {
           routeAfterBuying = route.FTP
         } else if (routeAfterBuying === 'dns') {
