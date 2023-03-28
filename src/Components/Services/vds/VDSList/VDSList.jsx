@@ -28,7 +28,6 @@ export default function VDSList({
 
   const handleEditSubmit = (elid, values) => {
     const mutatedValues = { ...values, clicked_button: 'ok' }
-    console.log(elid, mutatedValues)
     dispatch(vdsOperations.editVDS(elid, mutatedValues))
   }
 
