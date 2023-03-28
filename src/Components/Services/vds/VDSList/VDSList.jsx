@@ -5,6 +5,8 @@ import { VDSmobileItem, VDSItem, CheckBox } from '../../..'
 import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
+import { useDispatch } from 'react-redux'
+import { vdsOperations } from '../../../../Redux'
 
 export default function VDSList({
   servers,
@@ -22,6 +24,13 @@ export default function VDSList({
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const dispatch = useDispatch()
+
+  const handleEditSubmit = (elid, values) => {
+    const mutatedValues = { ...values, clicked_button: 'ok' }
+    console.log(elid, mutatedValues)
+    dispatch(vdsOperations.editVDS(elid, mutatedValues))
+  }
 
   return (
     <>
@@ -79,6 +88,7 @@ export default function VDSList({
               setIdForInstruction={() => setIdForInstruction(el.id.$)}
               setIdForHistory={() => setIdForHistory(el.id.$)}
               goToPanelFn={() => goToPanelFn(el.id.$)}
+              handleEditSubmit={handleEditSubmit}
             />
           ) : (
             <VDSmobileItem
@@ -95,6 +105,7 @@ export default function VDSList({
               setIdForInstruction={() => setIdForInstruction(el.id.$)}
               setIdForHistory={() => setIdForHistory(el.id.$)}
               goToPanelFn={() => goToPanelFn(el.id.$)}
+              handleEditSubmit={handleEditSubmit}
             />
           )
         })}

@@ -35,6 +35,7 @@ export default function VDSItem({
   setIdForHistory,
   setIdForInstruction,
   goToPanelFn,
+  handleEditSubmit,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -52,6 +53,13 @@ export default function VDSItem({
     setToolsOpened(false)
   }
 
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
+
   const isToolsBtnVisible =
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
@@ -59,8 +67,7 @@ export default function VDSItem({
   const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
 
   const editNameHandler = () => {
-    console.log(editName)
-
+    handleEditSubmit(server?.id?.$, { server_name: editName })
     setIsEdit(false)
   }
 

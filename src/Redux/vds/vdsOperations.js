@@ -100,7 +100,7 @@ const editVDS =
           auth: sessionId,
           elid,
           autoprolong: values.autoprolong,
-          [register.Control_panel]: values.Control_panel,
+          [register?.Control_panel]: values?.Control_panel,
           stored_method: values.stored_method,
           [selectedField ? 'sv_field' : '']: selectedField,
           server_name: values?.server_name,
