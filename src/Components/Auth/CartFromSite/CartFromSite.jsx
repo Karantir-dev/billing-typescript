@@ -32,7 +32,7 @@ export default function Component(props) {
       if (data) {
         const funcName = JSON.parse(data)?.func
         if (funcName === 'vds.order.param') {
-          return navigate(route.VDS_ORDER)
+          return navigate(route.VPS_ORDER)
         } else if (funcName === 'domain.order.name') {
           return navigate(route.DOMAINS_ORDERS)
         } else if (funcName === 'vhost.order.param') {

@@ -1,5 +1,5 @@
 {
-  "servers_title": "Servers VDS/VPS",
+  "servers_title": "Servers VPS",
   "domain_name": "Domain name",
   "ip_address": "IP address",
   "ip_addresses": "IP addresses",
@@ -80,7 +80,7 @@
   "scheduled_deletion": "Service will be deleted on: ",
   "instruction_title": "Virtual server activation",
   "no_servers_yet": "You don`t have a server yet.",
-  "no_servers_yet_desc": "VDS VPS is the best low-cost offer with powerful processors, premium internet, fast RAM, DDOs protection, which is suitable for any task. With all our VPS plans you get 24/7 live support, unlimited bandwidth & traffic.",
+  "no_servers_yet_desc": "VPS is the best low-cost offer with powerful processors, premium internet, fast RAM, DDOs protection, which is suitable for any task. With all our VPS plans you get 24/7 live support, unlimited bandwidth & traffic.",
   "The resource has been changed": "The resource '{{value}}' has been changed",
   "Memory": "Memory",
   "The tariff plan has been changed": "The tariff plan has been changed",

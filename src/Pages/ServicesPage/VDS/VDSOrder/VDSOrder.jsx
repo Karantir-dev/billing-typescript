@@ -365,7 +365,7 @@ export default function VDSOrder() {
     <div className={s.pb}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.page_title}>{t('vds_order', { ns: 'crumbs' })} </h2>
+      <h2 className={s.page_title}>{t('vps_order', { ns: 'crumbs' })} </h2>
 
       <ul className={s.categories_list}>
         {formInfo?.flist.val.map(({ $key, $ }) => {

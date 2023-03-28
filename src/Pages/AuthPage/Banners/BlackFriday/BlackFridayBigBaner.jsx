@@ -36,7 +36,7 @@ export default function Component() {
                   <StarSale />
                   <span>-60%</span>
                 </div>
-                <span className={s.saleDecrName}>VDS/VPS</span>
+                <span className={s.saleDecrName}>VPS</span>
               </div>
             </div>
             <div className={s.saleDescrRow}>
@@ -88,7 +88,7 @@ export default function Component() {
 
               <div className={s.ruleList}>
                 <span>{t('Hosting (promo code VR87FR)')}</span>
-                <span>{t('VDS/VPS (promo code OM34VS)')}</span>
+                <span>{t('VPS (promo code OM34VS)')}</span>
                 <span>{t('Dedicated server (promo code YT52BD)')}</span>
               </div>
 
