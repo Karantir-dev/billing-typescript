@@ -373,7 +373,7 @@ export default function VDS() {
 
           <div className={s.discount_wrapper}>
             <p className={s.discount_percent}>
-              {t('DISCOUNT -20% ON VDS/VPS', { ns: 'other' })}
+              {t('DISCOUNT -20% ON VPS', { ns: 'other' })}
             </p>
             <p className={s.discount_desc}>
               {t('You can get a discount using a promo code', { ns: 'other' })}:

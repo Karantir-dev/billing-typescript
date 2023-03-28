@@ -41,6 +41,10 @@ export const VDS = '/services/vds'
 export const VDS_ORDER = '/services/vds/vds_order'
 export const VDS_IP = '/services/vds/ip'
 
+export const VPS = '/services/vps'
+export const VPS_ORDER = '/services/vps/vps_order'
+export const VPS_IP = '/services/vps/ip'
+
 export const CONTRACTS = '/contracts'
 export const DEDICATED_SERVERS = '/services/dedicated_servers'
 export const DEDICATED_SERVERS_ORDER = '/services/dedicated_servers/order'
