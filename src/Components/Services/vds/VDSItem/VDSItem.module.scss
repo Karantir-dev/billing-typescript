@@ -57,17 +57,17 @@
   text-align: start;
 
   &:nth-child(1) {
-    flex-basis: 7%;
+    flex-basis: 10%;
   }
   &:nth-child(2) {
-    flex-basis: 12%;
+    flex-basis: 7%;
     word-break: break-all;
   }
   &:nth-child(3) {
-    flex-basis: 12%;
+    flex-basis: 10%;
   }
   &:nth-child(4) {
-    flex-basis: 12%;
+    flex-basis: 10%;
   }
   &:nth-child(5) {
     flex-basis: 10%;
@@ -76,13 +76,59 @@
     flex-basis: 8%;
   }
   &:nth-child(7) {
-    flex-basis: 14%;
+    flex-basis: 10%;
   }
   &:nth-child(8) {
     flex-basis: 8%;
   }
   &:nth-child(9) {
     flex-basis: 11%;
+  }
+
+  &:nth-child(10) {
+    flex-basis: 7%;
+  }
+}
+
+.item_text {
+  display: flex;
+  flex-direction: row;
+  max-width: 125px;
+  overflow-x: hidden;
+  button {
+    margin-right: 10px;
+  }
+}
+
+.HintWrapper {
+  max-width: 300px !important;
+  white-space: break-all;
+}
+
+.editBlock {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 1px;
+  border: 1px solid rgba(255, 66, 168, 1);
+  height: 39px;
+  max-height: 39px;
+  padding: 10px;
+  max-width: 125px;
+
+  input {
+    border: none;
+    outline: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+
+    background: transparent;
+
+    color: var(--main-text);
+    overflow-x: auto;
+    max-width: 125px;
   }
 }
 
