@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, ServerState } from '../../..'
+import { CheckBox, HintWrapper, ServerState } from '../../..'
 import PropTypes from 'prop-types'
 import * as route from '../../../../routes'
 import {
@@ -15,8 +15,9 @@ import {
   Info,
   Delete,
   ExitSign,
+  CheckEdit,
 } from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { shortTitle, useOutsideAlerter } from '../../../../utils'
 import { useNavigate } from 'react-router-dom'
 
 import s from './VDSItem.module.scss'
@@ -34,6 +35,7 @@ export default function VDSItem({
   setIdForHistory,
   setIdForInstruction,
   goToPanelFn,
+  handleEditSubmit,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -41,16 +43,33 @@ export default function VDSItem({
   const [toolsOpened, setToolsOpened] = useState(false)
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
+  const [isEdit, setIsEdit] = useState(false)
+  const [editName, setEditName] = useState('')
+
+  const editField = useRef()
+
   const handleToolBtnClick = fn => {
     fn()
     setToolsOpened(false)
   }
+
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
 
   const isToolsBtnVisible =
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
 
   const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+
+  const editNameHandler = () => {
+    handleEditSubmit(server?.id?.$, { server_name: editName })
+    setIsEdit(false)
+  }
 
   return (
     <div className={s.item_wrapper}>
@@ -71,6 +90,87 @@ export default function VDSItem({
           [s.active_server]: serverIsActive,
         })}
       >
+        <span className={s.value}>
+          {!isEdit ? (
+            <>
+              {server?.server_name?.$ && server?.server_name?.$?.length < 13 ? (
+                <div
+                  style={isEdit ? { overflow: 'inherit' } : {}}
+                  className={cn(s.item_text, s.first_item)}
+                  ref={editField}
+                >
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(server?.server_name?.$?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
+
+                    <span>
+                      {t(
+                        shortTitle(editName, 12) ||
+                          shortTitle(server?.server_name?.$?.trim(), 12),
+                        {
+                          ns: 'vds',
+                        },
+                      )}
+                    </span>
+                  </>
+                </div>
+              ) : (
+                <HintWrapper
+                  popupClassName={s.HintWrapper}
+                  label={t(editName || server?.server_name?.$?.trim(), {
+                    ns: 'vds',
+                  })}
+                >
+                  <div
+                    style={isEdit ? { overflow: 'inherit' } : {}}
+                    className={cn(s.item_text, s.first_item)}
+                    ref={editField}
+                  >
+                    <>
+                      <button
+                        onClick={() => {
+                          setIsEdit(!isEdit)
+                          setEditName(server?.server_name?.$?.trim())
+                        }}
+                      >
+                        <Edit />
+                      </button>
+
+                      <span>
+                        {t(
+                          shortTitle(editName, 12) ||
+                            shortTitle(server?.server_name?.$?.trim(), 12),
+                          {
+                            ns: 'vds',
+                          },
+                        )}
+                      </span>
+                    </>
+                  </div>
+                </HintWrapper>
+              )}
+            </>
+          ) : (
+            <div
+              style={isEdit ? { overflow: 'inherit' } : {}}
+              className={cn(s.item_text, s.first_item)}
+              ref={editField}
+            >
+              <div className={s.editBlock}>
+                <button className={s.editBtnOk} onClick={editNameHandler}>
+                  <CheckEdit />
+                </button>
+                <input value={editName} onChange={e => setEditName(e.target.value)} />
+              </div>
+            </div>
+          )}
+        </span>
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>{server?.domain?.$}</span>
         <span className={s.value}>{server?.ip?.$}</span>

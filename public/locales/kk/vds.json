@@ -98,5 +98,8 @@
   "pcs.": "pcs.",
   "Suspended due to abuse": "Бұзушылық үшін тоқтатылды",
 
-  "daily charges": "күнделікті\nтөлемдер"
+  "daily charges": "күнделікті\nтөлемдер",
+
+  "server_name": "Сервер аты",
+  "server_placeholder": "Менің серверім"
 }

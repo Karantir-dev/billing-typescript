@@ -61,6 +61,7 @@ export default function EditServerModal({ elid, closeFn }) {
       username,
       userpassword,
       password,
+      server_name,
     } = values
 
     if (
@@ -84,6 +85,7 @@ export default function EditServerModal({ elid, closeFn }) {
           username,
           userpassword,
           password,
+          server_name,
           handleEditionModal,
         ),
       )
@@ -103,6 +105,7 @@ export default function EditServerModal({ elid, closeFn }) {
           username,
           userpassword,
           password,
+          server_name,
           handleEditionModal,
         ),
       )
@@ -146,6 +149,7 @@ export default function EditServerModal({ elid, closeFn }) {
           password: initialState?.password?.$ || '',
           pricelist: initialState?.pricelist?.$,
           period: initialState?.period?.$,
+          server_name: initialState?.server_name?.$,
         }}
         onSubmit={handleSubmit}
       >
@@ -190,18 +194,31 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.domainname}
                           disabled
                         />
+
+                        <InputField
+                          label={t('server_name')}
+                          name="server_name"
+                          placeholder={`${t('server_placeholder')}`}
+                          isShadow
+                          className={s.input_field_wrapper}
+                          inputClassName={s.input}
+                          autoComplete="off"
+                          type="text"
+                          value={values?.server_name}
+                        />
+
                         <InputField
                           label={`${t('user_name', { ns: 'vds' })}:`}
                           name="username"
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.username}
                           disabled
@@ -239,7 +256,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.ip}
                           disabled
@@ -250,7 +267,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.password}
                           disabled
@@ -261,7 +278,7 @@ export default function EditServerModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.userpassword}
                           disabled
