@@ -12,6 +12,7 @@ export default function Component({
   error,
   touched,
   func,
+  name,
 }) {
   const [isChecked, setIsChecked] = useState(false)
 
@@ -39,6 +40,7 @@ export default function Component({
         [className]: className,
       })}
       type="button"
+      name={name || ''}
       onClick={() => toggleHandler(isChecked)}
     >
       <Check className={cn(s.check, { [s.active]: isChecked })} />
@@ -53,4 +55,5 @@ Component.propTypes = {
   setValue: PropTypes.func,
   className: PropTypes.string,
   func: PropTypes.func,
+  name: PropTypes.string,
 }

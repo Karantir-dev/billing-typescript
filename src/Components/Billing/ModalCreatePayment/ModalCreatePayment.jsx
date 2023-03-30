@@ -42,6 +42,7 @@ export default function Component(props) {
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
 
+  const [amount, setAmount] = useState('')
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
   const [showMore, setShowMore] = useState(false)
@@ -77,6 +78,14 @@ export default function Component(props) {
   // const offerTextHandler = () => {
   //   dispatch(payersOperations.getPayerOfferText(selectedPayerFields?.offer_link))
   // }
+
+  useEffect(() => {
+    if (selectedPayerFields && !selectedPayerFields?.offer_field) {
+      setSelectedPayerFields(d => {
+        return { ...d, offer_field: 'offer_3' }
+      })
+    }
+  }, [selectedPayerFields])
 
   const createPaymentMethodHandler = values => {
     const data = {
@@ -139,9 +148,7 @@ export default function Component(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
-      ? Yup.bool().oneOf([true])
-      : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   return (
@@ -154,11 +161,14 @@ export default function Component(props) {
           </div>
           <Formik
             enableReinitialize
+            validateOnBlur={false}
+            validateOnMount={false}
+            validateOnChange={false}
             validationSchema={validationSchema}
             initialValues={{
               profile:
                 selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
-              amount: '',
+              amount: amount || '',
               slecetedPayMethod: slecetedPayMethod || undefined,
               name: selectedPayerFields?.name || '',
               address_physical: selectedPayerFields?.address_physical || '',
@@ -234,9 +244,9 @@ export default function Component(props) {
                   const fieldErrorNames = getFieldErrorNames(errors)
                   if (fieldErrorNames.length <= 0) return
 
-                  const element = document.querySelector(
-                    `input[name='${fieldErrorNames[0]}']`,
-                  )
+                  const element =
+                    document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
+                    document.querySelector(`button[name='${fieldErrorNames[0]}']`)
                   if (!element) return
 
                   // Scroll to first known error into view
@@ -488,46 +498,6 @@ export default function Component(props) {
                               touched={!!touched.eu_vat}
                             />
                           ) : null}
-                          {selectedPayerFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                initialState={
-                                  values[selectedPayerFields?.offer_field] || false
-                                }
-                                setValue={item =>
-                                  setFieldValue(
-                                    `${selectedPayerFields?.offer_field}`,
-                                    item,
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[selectedPayerFields?.offer_field]}
-                                touched={!!touched[selectedPayerFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with', {
-                                  ns: 'payers',
-                                })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={OFERTA_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of Service', { ns: 'domains' })}
-                                </a>{' '}
-                                {t('and', { ns: 'domains' })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={PRIVACY_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of the offer', { ns: 'domains' })}
-                                </a>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -548,12 +518,13 @@ export default function Component(props) {
                             placeholder={'0.00'}
                             isShadow
                             value={values.amount}
-                            onChange={e =>
+                            onChange={e => {
                               setFieldValue(
                                 'amount',
                                 e?.target?.value.replace(/[^0-9.]/g, ''),
                               )
-                            }
+                              setAmount(e?.target?.value.replace(/[^0-9.]/g, ''))
+                            }}
                             className={s.input}
                             error={!!errors.amount}
                             touched={!!touched.amount}
@@ -573,6 +544,40 @@ export default function Component(props) {
                               }}
                             />
                           )}
+                        </div>
+                      </div>
+                      <div className={s.offerBlock}>
+                        <CheckBox
+                          name={selectedPayerFields?.offer_field}
+                          initialState={values[selectedPayerFields?.offer_field] || false}
+                          setValue={item =>
+                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
+                          }
+                          className={s.checkbox}
+                          error={!!errors[selectedPayerFields?.offer_field]}
+                          touched={!!touched[selectedPayerFields?.offer_field]}
+                        />
+                        <div className={s.offerBlockText}>
+                          {t('I agree with', {
+                            ns: 'payers',
+                          })}{' '}
+                          <a
+                            target="_blank"
+                            href={OFERTA_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of Service', { ns: 'domains' })}
+                          </a>{' '}
+                          {t('and', { ns: 'domains' })}{' '}
+                          <a
+                            target="_blank"
+                            href={PRIVACY_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of the offer', { ns: 'domains' })}
+                          </a>
                         </div>
                       </div>
                     </div>
