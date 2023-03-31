@@ -1093,7 +1093,7 @@ export default function Component() {
                               )}
                               isRequired
                               disabled={payersSelectLists?.country?.length <= 1}
-                              withoutArow={payersSelectLists?.country?.length <= 1}
+                              withoutArrow={payersSelectLists?.country?.length <= 1}
                             />
                             <InputField
                               inputWrapperClass={s.inputHeight}
