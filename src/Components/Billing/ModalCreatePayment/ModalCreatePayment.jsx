@@ -437,6 +437,8 @@ export default function Component(props) {
                               }),
                             )}
                             isRequired
+                            disabled={payersSelectLists?.country?.length <= 1}
+                            withoutArrow={payersSelectLists?.country?.length <= 1}
                           />
 
                           <InputField

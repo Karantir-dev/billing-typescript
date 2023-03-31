@@ -25,6 +25,7 @@ export default function Select(props) {
     error,
     hasNotSelectedOption,
     saleIcon,
+    withoutArrow,
   } = props
   const { t } = useTranslation('other')
 
@@ -112,13 +113,15 @@ export default function Select(props) {
           {additionalPlaceHolder && (
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
           )}
-          <Shevron
-            className={cn({
-              [s.right_icon]: true,
-              [s.opened]: isOpened,
-              [s.disabled]: disabled,
-            })}
-          />
+          {!withoutArrow && (
+            <Shevron
+              className={cn({
+                [s.right_icon]: true,
+                [s.opened]: isOpened,
+                [s.disabled]: disabled,
+              })}
+            />
+          )}
         </div>
       </button>
 
@@ -185,6 +188,7 @@ Select.propTypes = {
   disabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   error: PropTypes.string,
+  withoutArrow: PropTypes.bool,
 }
 
 Select.defaultProps = {
