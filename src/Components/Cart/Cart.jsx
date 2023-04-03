@@ -418,10 +418,10 @@ export default function Component() {
         break
     }
 
-    const shouldRenderButton =
-      screenWidth < 768 ? displayedItems?.length > 0 : displayedItems?.length > 2
+    const shouldRenderButton = listLength =>
+      screenWidth < 768 ? listLength > 0 : listLength > 3
 
-    const showMoreButton = ({ listLength }) => {
+    const showMoreButton = listLength => {
       const toggleShowAllItems = () => setShowAllItems(!showAllItems)
 
       return (
@@ -459,7 +459,7 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton && showMoreButton({ listLength: vpnList?.length })}
+            {shouldRenderButton(vpnList.length) && showMoreButton(vpnList.length)}
           </div>
         )}
         {siteCareList?.length > 0 && (
@@ -486,7 +486,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton && showMoreButton({ listLength: siteCareList?.length })}
+            {shouldRenderButton(siteCareList.length) &&
+              showMoreButton(siteCareList.length)}
           </div>
         )}
         {filteredVhostList?.length > 0 && (
@@ -522,8 +523,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton &&
-              showMoreButton({ listLength: filteredVhostList?.length })}
+            {shouldRenderButton(filteredVhostList.length) &&
+              showMoreButton(filteredVhostList.length)}
           </div>
         )}
         {domainsList?.length > 0 && (
@@ -550,7 +551,7 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton && showMoreButton({ listLength: domainsList?.length })}
+            {shouldRenderButton(domainsList.length) && showMoreButton(domainsList.length)}
           </>
         )}
         {filteredDedicList?.length > 0 && (
@@ -587,8 +588,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton &&
-              showMoreButton({ listLength: filteredDedicList?.length })}
+            {shouldRenderButton(filteredVhostList.length) &&
+              showMoreButton(filteredDedicList?.length)}
           </div>
         )}
         {filteredVdsList?.length > 0 && (
@@ -613,8 +614,8 @@ export default function Component() {
                   )
                 })}
               </div>
-              {shouldRenderButton &&
-                showMoreButton({ listLength: filteredVdsList?.length })}
+              {shouldRenderButton(filteredVdsList.length) &&
+                showMoreButton(filteredVdsList?.length)}
             </div>
           </div>
         )}
@@ -652,8 +653,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton &&
-              showMoreButton({ listLength: filteredFtpList?.length })}
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredFtpList.length)}
           </div>
         )}
         {filteredDnsList?.length > 0 && (
@@ -688,8 +689,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton &&
-              showMoreButton({ listLength: filteredDnsList?.length })}
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredDnsList?.length)}
           </div>
         )}
         {filteredForexList?.length > 0 && (
@@ -724,8 +725,8 @@ export default function Component() {
                 )
               })}
             </div>
-            {shouldRenderButton &&
-              showMoreButton({ listLength: filteredForexList?.length })}
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredForexList?.length)}
           </div>
         )}
       </>
@@ -1156,11 +1157,13 @@ export default function Component() {
                           </div>
                         </div>
                       )}
-                      <div
-                        className={cn(s.infotext, s.padding, { [s.showMore]: showMore })}
-                      >
-                        {values?.slecetedPayMethod &&
-                          values?.slecetedPayMethod?.payment_minamount && (
+                      {values?.slecetedPayMethod &&
+                        values?.slecetedPayMethod?.payment_minamount && (
+                          <div
+                            className={cn(s.infotext, s.padding, {
+                              [s.showMore]: showMore,
+                            })}
+                          >
                             <div>
                               <span>
                                 {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
@@ -1171,8 +1174,8 @@ export default function Component() {
                                 </p>
                               )}
                             </div>
-                          )}
-                      </div>
+                          </div>
+                        )}
                       {values?.slecetedPayMethod && readMore && (
                         <button
                           type="button"
