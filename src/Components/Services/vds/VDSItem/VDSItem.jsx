@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CheckBox, HintWrapper, ServerState } from '../../..'
 import PropTypes from 'prop-types'
@@ -44,9 +44,16 @@ export default function VDSItem({
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const [isEdit, setIsEdit] = useState(false)
+  const [originName, setOriginName] = useState('')
   const [editName, setEditName] = useState('')
 
   const editField = useRef()
+
+  useEffect(() => {
+    if (server?.server_name?.$) {
+      setOriginName(server?.server_name?.$)
+    }
+  }, [server])
 
   const handleToolBtnClick = fn => {
     fn()
@@ -67,7 +74,8 @@ export default function VDSItem({
   const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
 
   const editNameHandler = () => {
-    handleEditSubmit(server?.id?.$, { server_name: editName })
+    handleEditSubmit(server?.id?.$, { server_name: editName }, setOriginName)
+    setOriginName(editName)
     setIsEdit(false)
   }
 
@@ -93,7 +101,7 @@ export default function VDSItem({
         <span className={s.value}>
           {!isEdit ? (
             <>
-              {server?.server_name?.$ && server?.server_name?.$?.length < 13 ? (
+              {!originName || (originName && originName?.length < 13) ? (
                 <div
                   style={isEdit ? { overflow: 'inherit' } : {}}
                   className={cn(s.item_text, s.first_item)}
@@ -103,7 +111,7 @@ export default function VDSItem({
                     <button
                       onClick={() => {
                         setIsEdit(!isEdit)
-                        setEditName(server?.server_name?.$?.trim())
+                        setEditName(originName?.trim())
                       }}
                     >
                       <Edit />
@@ -112,7 +120,8 @@ export default function VDSItem({
                     <span>
                       {t(
                         shortTitle(editName, 12) ||
-                          shortTitle(server?.server_name?.$?.trim(), 12),
+                          shortTitle(originName?.trim(), 12) ||
+                          t('server_placeholder', { ns: 'vds' }),
                         {
                           ns: 'vds',
                         },
@@ -123,7 +132,7 @@ export default function VDSItem({
               ) : (
                 <HintWrapper
                   popupClassName={s.HintWrapper}
-                  label={t(editName || server?.server_name?.$?.trim(), {
+                  label={t(editName || originName?.trim(), {
                     ns: 'vds',
                   })}
                 >
@@ -136,7 +145,7 @@ export default function VDSItem({
                       <button
                         onClick={() => {
                           setIsEdit(!isEdit)
-                          setEditName(server?.server_name?.$?.trim())
+                          setEditName(originName?.trim())
                         }}
                       >
                         <Edit />
@@ -145,7 +154,8 @@ export default function VDSItem({
                       <span>
                         {t(
                           shortTitle(editName, 12) ||
-                            shortTitle(server?.server_name?.$?.trim(), 12),
+                            shortTitle(originName?.trim(), 12) ||
+                            t('server_placeholder', { ns: 'vds' }),
                           {
                             ns: 'vds',
                           },
@@ -166,13 +176,19 @@ export default function VDSItem({
                 <button className={s.editBtnOk} onClick={editNameHandler}>
                   <CheckEdit />
                 </button>
-                <input value={editName} onChange={e => setEditName(e.target.value)} />
+                <input
+                  placeholder={editName ? '' : t('server_placeholder', { ns: 'vds' })}
+                  value={editName}
+                  onChange={e => setEditName(e.target.value)}
+                />
               </div>
             </div>
           )}
         </span>
         <span className={s.value}>{server?.id?.$}</span>
-        <span className={s.value}>{server?.domain?.$}</span>
+        <span title={server?.domain?.$} className={s.value}>
+          {server?.domain?.$}
+        </span>
         <span className={s.value}>{server?.ip?.$}</span>
         <span className={s.value}>{server?.ostempl?.$}</span>
         <span className={s.value}>{server?.datacentername?.$}</span>

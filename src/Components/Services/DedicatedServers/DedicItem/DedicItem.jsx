@@ -1,13 +1,14 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DedicItem.module.scss'
-import { CheckBox, ServerState } from '../../../'
+import { CheckBox, HintWrapper, ServerState } from '../../../'
 import { useDispatch } from 'react-redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { shortTitle, useOutsideAlerter } from '../../../../utils'
 import {
+  CheckEdit,
   Clock,
   Edit,
   ExitSign,
@@ -31,6 +32,7 @@ export default function DedicItem({
   activeServices,
   setActiveServices,
   rights,
+  handleEditSubmit,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -41,6 +43,25 @@ export default function DedicItem({
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
+  const [isEdit, setIsEdit] = useState(false)
+  const [originName, setOriginName] = useState('')
+  const [editName, setEditName] = useState('')
+
+  const editField = useRef()
+
+  useEffect(() => {
+    if (server?.server_name?.$) {
+      setOriginName(server?.server_name?.$)
+    }
+  }, [server])
+
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
+
   const isToolsBtnVisible =
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
@@ -50,6 +71,12 @@ export default function DedicItem({
   const handleToolBtnClick = fn => {
     fn()
     setToolsOpened(false)
+  }
+
+  const editNameHandler = () => {
+    handleEditSubmit(server?.id?.$, editName)
+    setOriginName(editName)
+    setIsEdit(false)
   }
 
   return (
@@ -73,6 +100,93 @@ export default function DedicItem({
         // type="button"
         // onClick={() => setActiveServer(server)}
       >
+        <span className={s.value}>
+          {!isEdit ? (
+            <>
+              {!originName || (originName && originName?.length < 13) ? (
+                <div
+                  style={isEdit ? { overflow: 'inherit' } : {}}
+                  className={cn(s.item_text, s.first_item)}
+                  ref={editField}
+                >
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(originName?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
+
+                    <span>
+                      {t(
+                        shortTitle(editName, 12) ||
+                          shortTitle(originName?.trim(), 12) ||
+                          t('server_placeholder', { ns: 'vds' }),
+                        {
+                          ns: 'vds',
+                        },
+                      )}
+                    </span>
+                  </>
+                </div>
+              ) : (
+                <HintWrapper
+                  popupClassName={s.HintWrapper}
+                  label={t(editName || originName?.trim(), {
+                    ns: 'vds',
+                  })}
+                >
+                  <div
+                    style={isEdit ? { overflow: 'inherit' } : {}}
+                    className={cn(s.item_text, s.first_item)}
+                    ref={editField}
+                  >
+                    <>
+                      <button
+                        onClick={() => {
+                          setIsEdit(!isEdit)
+                          setEditName(originName?.trim())
+                        }}
+                      >
+                        <Edit />
+                      </button>
+
+                      <span>
+                        {t(
+                          shortTitle(editName, 12) ||
+                            shortTitle(originName?.trim(), 12) ||
+                            t('server_placeholder', { ns: 'vds' }),
+                          {
+                            ns: 'vds',
+                          },
+                        )}
+                      </span>
+                    </>
+                  </div>
+                </HintWrapper>
+              )}
+            </>
+          ) : (
+            <div
+              style={isEdit ? { overflow: 'inherit' } : {}}
+              className={cn(s.item_text, s.first_item)}
+              ref={editField}
+            >
+              <div className={s.editBlock}>
+                <button className={s.editBtnOk} onClick={editNameHandler}>
+                  <CheckEdit />
+                </button>
+                <input
+                  placeholder={editName ? '' : t('server_placeholder', { ns: 'vds' })}
+                  value={editName}
+                  onChange={e => setEditName(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+        </span>
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>{server?.domain?.$}</span>
         <span className={s.value}>{server?.ip?.$}</span>
@@ -229,4 +343,5 @@ DedicItem.propTypes = {
   setActiveServices: PropTypes.func,
   activeServices: PropTypes.arrayOf(PropTypes.object),
   rights: PropTypes.object,
+  handleEditSubmit: PropTypes.func,
 }

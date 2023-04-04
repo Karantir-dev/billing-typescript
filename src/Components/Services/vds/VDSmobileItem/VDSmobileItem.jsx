@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -44,9 +44,16 @@ export default function VDSmobileItem({
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const [isEdit, setIsEdit] = useState(false)
+  const [originName, setOriginName] = useState('')
   const [editName, setEditName] = useState('')
 
   const editField = useRef()
+
+  useEffect(() => {
+    if (server?.server_name?.$) {
+      setOriginName(server?.server_name?.$)
+    }
+  }, [server])
 
   const handleToolBtnClick = fn => {
     fn()
@@ -62,7 +69,7 @@ export default function VDSmobileItem({
 
   const editNameHandler = () => {
     handleEditSubmit(server?.id?.$, { server_name: editName })
-
+    setOriginName(editName)
     setIsEdit(false)
   }
 
@@ -249,7 +256,7 @@ export default function VDSmobileItem({
       <span className={cn(s.value, { [s.active]: serverIsActive })}>
         {!isEdit ? (
           <>
-            {server?.server_name?.$ && server?.server_name?.$?.length < 13 ? (
+            {originName && originName?.length < 13 ? (
               <div
                 style={isEdit ? { overflow: 'inherit' } : {}}
                 className={cn(s.item_text, s.first_item)}
@@ -259,7 +266,7 @@ export default function VDSmobileItem({
                   <button
                     onClick={() => {
                       setIsEdit(!isEdit)
-                      setEditName(server?.server_name?.$?.trim())
+                      setEditName(originName?.trim())
                     }}
                   >
                     <Edit />
@@ -268,7 +275,8 @@ export default function VDSmobileItem({
                   <span>
                     {t(
                       shortTitle(editName, 12) ||
-                        shortTitle(server?.server_name?.$?.trim(), 12),
+                        shortTitle(originName?.trim(), 12) ||
+                        t('server_placeholder', { ns: 'vds' }),
                       {
                         ns: 'vds',
                       },
@@ -279,9 +287,14 @@ export default function VDSmobileItem({
             ) : (
               <HintWrapper
                 popupClassName={s.HintWrapper}
-                label={t(editName || server?.server_name?.$?.trim(), {
-                  ns: 'vds',
-                })}
+                label={t(
+                  editName ||
+                    originName?.trim() ||
+                    t('server_placeholder', { ns: 'vds' }),
+                  {
+                    ns: 'vds',
+                  },
+                )}
               >
                 <div
                   style={isEdit ? { overflow: 'inherit' } : {}}
@@ -292,7 +305,7 @@ export default function VDSmobileItem({
                     <button
                       onClick={() => {
                         setIsEdit(!isEdit)
-                        setEditName(server?.server_name?.$?.trim())
+                        setEditName(originName?.trim())
                       }}
                     >
                       <Edit />
@@ -301,7 +314,8 @@ export default function VDSmobileItem({
                     <span>
                       {t(
                         shortTitle(editName, 12) ||
-                          shortTitle(server?.server_name?.$?.trim(), 12),
+                          shortTitle(originName?.trim(), 12) ||
+                          t('server_placeholder', { ns: 'vds' }),
                         {
                           ns: 'vds',
                         },
