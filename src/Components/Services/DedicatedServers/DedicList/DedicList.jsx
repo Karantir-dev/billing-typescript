@@ -7,6 +7,8 @@ import s from './DedicList.module.scss'
 import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
 import { CheckBox } from '../../..'
+import { useDispatch } from 'react-redux'
+import { dedicOperations } from '../../../../Redux'
 
 export default function DedicList({
   emptyFilter,
@@ -22,6 +24,29 @@ export default function DedicList({
 }) {
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
+  const dispatch = useDispatch()
+
+  const handleEditSubmit = (elid, server_name) => {
+    dispatch(
+      dedicOperations.editDedicServerNoExtraPay(
+        elid,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        server_name,
+        null,
+      ),
+    )
+  }
 
   if (servers) {
     if (servers.length === 0 && emptyFilter) {
@@ -75,6 +100,7 @@ export default function DedicList({
           />
 
           <ul className={s.head_row}>
+            <li className={s.table_head}>{t('server_name')}:</li>
             <li className={s.table_head}>Id:</li>
             <li className={s.table_head}>{t('domain_name')}:</li>
             <li className={s.table_head}>{t('ip_address')}:</li>
@@ -102,6 +128,7 @@ export default function DedicList({
               activeServices={activeServices}
               setActiveServices={setActiveServices}
               rights={rights}
+              handleEditSubmit={handleEditSubmit}
             />
           ) : (
             <DedicMobileItem
@@ -115,6 +142,7 @@ export default function DedicList({
               setActiveServices={setActiveServices}
               activeServices={activeServices}
               rights={rights}
+              handleEditSubmit={handleEditSubmit}
             />
           )
         })}

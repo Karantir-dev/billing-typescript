@@ -67,14 +67,14 @@
   color: var(--main-text);
 
   &:nth-child(1) {
-    flex-basis: 9%;
+    flex-basis: 10%;
   }
   &:nth-child(2) {
-    flex-basis: 12%;
-    word-break: break-all;
+    flex-basis: 7%;
   }
   &:nth-child(3) {
     flex-basis: 10%;
+    word-break: break-all;
   }
   &:nth-child(4) {
     flex-basis: 8%;
@@ -92,6 +92,9 @@
     flex-basis: 10%;
   }
   &:nth-child(9) {
+    flex-basis: 10%;
+  }
+  &:nth-child(10) {
     flex-basis: 22px;
   }
 }
@@ -123,8 +126,6 @@
   font-weight: 600;
   color: var(--main-text);
 }
-
-
 
 @media screen and (min-width: 768px) {
   .no_service_wrapper {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -9,16 +9,18 @@ import {
   IP,
   Info,
   ExitSign,
+  CheckEdit,
 } from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { shortTitle, useOutsideAlerter } from '../../../../utils'
 import PropTypes from 'prop-types'
 
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, ServerState } from '../../../'
+import { CheckBox, HintWrapper, ServerState } from '../../../'
 import { useNavigate } from 'react-router-dom'
 import * as route from '../../../../routes'
 import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'
+import cn from 'classnames'
 
 export default function DedicMobileItem({
   server,
@@ -30,6 +32,7 @@ export default function DedicMobileItem({
   rights,
   setActiveServices,
   activeServices,
+  handleEditSubmit,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -38,11 +41,36 @@ export default function DedicMobileItem({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [isEdit, setIsEdit] = useState(false)
+  const [originName, setOriginName] = useState('')
+  const [editName, setEditName] = useState('')
+
+  const editField = useRef()
+
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const handleToolBtnClick = fn => {
     fn()
     setToolsOpened(false)
+  }
+
+  useEffect(() => {
+    if (server?.server_name?.$) {
+      setOriginName(server?.server_name?.$)
+    }
+  }, [server])
+
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
+
+  const editNameHandler = () => {
+    handleEditSubmit(server?.id?.$, editName)
+    setOriginName(editName)
+    setIsEdit(false)
   }
 
   const isToolsBtnVisible =
@@ -181,6 +209,96 @@ export default function DedicMobileItem({
         </div>
       )}
 
+      <span className={s.label}>{t('server_name')}:</span>
+      <span className={cn(s.value, { [s.active]: serverIsActive })}>
+        {!isEdit ? (
+          <>
+            {originName && originName?.length < 13 ? (
+              <div
+                style={isEdit ? { overflow: 'inherit' } : {}}
+                className={cn(s.item_text, s.first_item)}
+                ref={editField}
+              >
+                <>
+                  <button
+                    onClick={() => {
+                      setIsEdit(!isEdit)
+                      setEditName(originName?.trim())
+                    }}
+                  >
+                    <Edit />
+                  </button>
+
+                  <span>
+                    {t(
+                      shortTitle(editName, 12) ||
+                        shortTitle(originName?.trim(), 12) ||
+                        t('server_placeholder', { ns: 'vds' }),
+                      {
+                        ns: 'vds',
+                      },
+                    )}
+                  </span>
+                </>
+              </div>
+            ) : (
+              <HintWrapper
+                popupClassName={s.HintWrapper}
+                label={t(
+                  editName ||
+                    originName?.trim() ||
+                    t('server_placeholder', { ns: 'vds' }),
+                  {
+                    ns: 'vds',
+                  },
+                )}
+              >
+                <div
+                  style={isEdit ? { overflow: 'inherit' } : {}}
+                  className={cn(s.item_text, s.first_item)}
+                  ref={editField}
+                >
+                  <>
+                    <button
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(originName?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
+
+                    <span>
+                      {t(
+                        shortTitle(editName, 12) ||
+                          shortTitle(originName?.trim(), 12) ||
+                          t('server_placeholder', { ns: 'vds' }),
+                        {
+                          ns: 'vds',
+                        },
+                      )}
+                    </span>
+                  </>
+                </div>
+              </HintWrapper>
+            )}
+          </>
+        ) : (
+          <div
+            style={isEdit ? { overflow: 'inherit' } : {}}
+            className={cn(s.item_text, s.first_item)}
+            ref={editField}
+          >
+            <div className={s.editBlock}>
+              <button className={s.editBtnOk} onClick={editNameHandler}>
+                <CheckEdit />
+              </button>
+              <input value={editName} onChange={e => setEditName(e.target.value)} />
+            </div>
+          </div>
+        )}
+      </span>
+
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
@@ -217,4 +335,5 @@ DedicMobileItem.propTypes = {
   setActiveServices: PropTypes.func,
   activeServices: PropTypes.arrayOf(PropTypes.object),
   rights: PropTypes.object,
+  handleEditSubmit: PropTypes.func,
 }

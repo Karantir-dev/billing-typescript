@@ -21,6 +21,7 @@ export default function VDSList({
   goToPanelFn,
   activeServices,
   setActiveServices,
+  getVDSHandler,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -28,7 +29,9 @@ export default function VDSList({
 
   const handleEditSubmit = (elid, values) => {
     const mutatedValues = { ...values, clicked_button: 'ok' }
-    dispatch(vdsOperations.editVDS(elid, mutatedValues))
+    dispatch(
+      vdsOperations.editVDS(elid, mutatedValues, null, null, null, null, getVDSHandler),
+    )
   }
 
   return (
@@ -126,4 +129,5 @@ VDSList.propTypes = {
   goToPanelFn: PropTypes.func.isRequired,
   activeServices: PropTypes.arrayOf(PropTypes.object).isRequired,
   setActiveServices: PropTypes.func.isRequired,
+  getVDSHandler: PropTypes.func.isRequired,
 }

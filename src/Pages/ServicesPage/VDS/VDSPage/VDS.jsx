@@ -269,6 +269,7 @@ export default function VDS() {
         goToPanelFn={goToPanelFn}
         activeServices={activeServices}
         setActiveServices={setActiveServices}
+        getVDSHandler={getVDSHandler}
       />
 
       {elemsTotal > 5 && (

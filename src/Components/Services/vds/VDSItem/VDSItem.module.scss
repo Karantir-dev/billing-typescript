@@ -65,6 +65,9 @@
   }
   &:nth-child(3) {
     flex-basis: 10%;
+    max-width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
   }
   &:nth-child(4) {
     flex-basis: 10%;
@@ -97,12 +100,13 @@
   overflow-x: hidden;
   button {
     margin-right: 10px;
+    cursor: pointer;
   }
 }
 
 .HintWrapper {
   max-width: 300px !important;
-  white-space: break-all;
+  word-break: break-all;
 }
 
 .editBlock {

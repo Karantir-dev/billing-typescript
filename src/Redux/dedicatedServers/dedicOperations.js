@@ -647,18 +647,18 @@ const editDedicServerNoExtraPay =
           auth: sessionId,
           lang: 'en',
           elid,
-          autoprolong,
-          domain,
-          ostempl,
-          recipe,
+          autoprolong: autoprolong || undefined,
+          domain: domain || undefined,
+          ostempl: ostempl || undefined,
+          recipe: recipe || undefined,
           [managePanelName]: managePanel,
           [ipName]: ipTotal,
-          ip,
-          username,
-          userpassword,
-          password,
+          ip: ip || undefined,
+          username: username || undefined,
+          userpassword: userpassword || undefined,
+          password: password || undefined,
           clicked_button: 'ok',
-          server_name,
+          server_name: server_name || undefined,
           sok: 'ok',
         }),
       )
@@ -672,7 +672,7 @@ const editDedicServerNoExtraPay =
         dispatch(getServersList({ p_num: 1 }))
         dispatch(actions.hideLoader())
 
-        handleModal()
+        handleModal && handleModal()
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
