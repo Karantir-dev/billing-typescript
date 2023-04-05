@@ -1220,7 +1220,7 @@ export default function Component() {
                         </div>
                       </div>
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
-                        <div className={s.penalty_sum}>
+                        <div className={cn(s.padding, s.penalty_sum)}>
                           {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
                         </div>
                       ) : (
