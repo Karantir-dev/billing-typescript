@@ -18,6 +18,10 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
       }.png`)
     }
 
+    if (iconName === 'Rocky') {
+      return require('../../../../images/soft_os/Rocky_Linux.png')
+    }
+
     return require(`../../../../images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
