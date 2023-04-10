@@ -7,10 +7,7 @@
     pointer-events: auto;
 
     @media (max-width: 1023px) {
-      opacity: 1;
-      transition: none;
-      pointer-events: auto;
-      animation: unset;
+      animation: popup forwards;
     }
   }
 }
