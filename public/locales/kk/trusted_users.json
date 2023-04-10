@@ -115,6 +115,10 @@
       "rights2_user_hardfilter": "$t(Сүзгі)",
       "rights2_user_filter#create": "$t(Сүзгі)",
 
+      "coupon_use": "Сертификатты пайдалану",
+      "coupon_use#read": "Пішін деректерін оқуға болады",
+      "coupon_use#write": "Деректерді сақтау қолжетімді",
+
       "profile": "Төлеушілер",
       "profile_add#create": "$t(Қосу)",
       "profile_edit": "$t(Өңдеу)",
@@ -241,6 +245,8 @@
       "domain_doc_download": "$t(Жүктеп салу)",
       "domain_doc_edit#read": "Құжат түрі (пішін деректерін оқуға қолжетімді)",
       "domain_doc_edit#write": "Құжат түрі (деректерді сақтауға қолжетімді)",
+      "domain_order_register_new#create": "Тіркеу",
+      "domain_order_transfer_new#create": "Трансфер",
 
       "vhost_order#create": "$t(Тапсырыс беру)",
       "vhost_edit": "$t(Өңдеу)",

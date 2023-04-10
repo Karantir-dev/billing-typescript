@@ -1,10 +1,12 @@
+@import '../../../scss/placeholders.scss';
+
 .server_item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  @extend %server_items;
+
   margin: 10px 0;
-  background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
+
+
+  padding: 15px;
 
   &:last-child {
     margin-bottom: 0px;
@@ -17,7 +19,6 @@
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  background: var(--forms_bgc_3);
 
   img {
     width: 31px;
@@ -61,9 +62,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 15px;
 }
 
 .control_bts_wrapper {

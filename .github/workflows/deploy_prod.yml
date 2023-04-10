@@ -6,7 +6,7 @@ on:
       
 env:
   IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-prod
-  PREFIX: _${{ github.run_number }}
+  PREFIX: release-${{ github.run_number }}
 
 jobs:
   jest:
@@ -69,35 +69,25 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       
       - name: Test with environment variables
         run: |
-          echo $TAG_NAME - $RELEASE_NAME
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          echo $TAG_NAME - ${{ env.PREFIX }}
           
       - name: Login to docker hub
         run: 
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           
       - name: Build image 
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
         run: |
           docker build -f Dockerfile.prod -t $IMAGE_NAME .
           docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$RELEASE_NAME
+          docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
       
       - name: Push in dockerhub 
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
         run: |
           docker push $IMAGE_NAME:latest
-          docker push $IMAGE_NAME:$RELEASE_NAME
+          docker push $IMAGE_NAME:${{ env.PREFIX }}
           
       - name: Push status
         uses: 8398a7/action-slack@v3
@@ -120,22 +110,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-        
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       
       - name: Test with environment variables
         run: |
-          echo $TAG_NAME - $RELEASE_NAME
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+          echo $TAG_NAME - ${{ env.PREFIX }}
         
       - name: Update Version
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
         run: |
-          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment_prod.yml
+          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment_prod.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -150,7 +132,15 @@ jobs:
 
       - name: Verify deployment
         run: kubectl rollout status deployment/zomro-bill-prod-deployment -n prod
-      
+
+      - name: Clean CloudFlare cache
+        run: |
+          sleep 5;
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/6562ccdfeb6b2a7793f4867f8bf6f955/purge_cache" \
+          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
+          -H "Content-Type:application/json" \
+          --data "{\"purge_everything\":true}"  
+
       - name: Deploy status
         uses: 8398a7/action-slack@v3
         with:

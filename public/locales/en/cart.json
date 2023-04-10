@@ -31,6 +31,7 @@
   "can be used only once": "can be used only once",
   "Is free": "Free",
   "Payment amount from 10.00 EUR. Commission 3%.": "Payment amount from 10.00 EUR. Commission 3%.",
+  "Payment amount from 10.00 EUR.": "Payment amount from 10.00 EUR.",
   "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.": "Cryptocurrency payment.Refunds are not available for this payment method. Payment processing can take up to several hours.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment.",
   "Payment amount from 1.00 EUR till  200.00 EUR . Commission 0.40 EUR + 7%.": "Payment amount from 1.00 EUR till 200.00 EUR . Commission 0.40 EUR + 7%.",
   "For payment you need to have status of QIWI Wallet «Basic» or «Professional».": "For payment you need to have status of QIWI Wallet «Basic» or «Professional»",
@@ -40,5 +41,16 @@
   "Excluding VAT": "Excluding VAT",
   "Saving": "Saving",
 
-  "sale_55_text": "Promo codes cannot be used in conjunction with the RAM discount"
+  "Show": "Show",
+  "more items": "more item(s)",
+  "Hide": "Hide",
+
+  "sale_55_text": "Promo codes cannot be used in conjunction with the RAM discount",
+
+  "Active discounts": "Active discounts",
+  "Total discounts": "Total discounts",
+
+  "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.": "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.",
+
+  "Payment amount from 1.00 EUR to 1000.00 EUR": "Payment amount from 1.00 EUR to 1000.00 EUR"
 }

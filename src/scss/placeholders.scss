@@ -60,7 +60,7 @@
   border: 1px solid var(--input-border-icon);
   z-index: 1;
   font-size: 16px;
-  background-color: var(--elements-bgc);
+  background-color: var(--forms_bgc_2);
   color: inherit;
 
   &.error {
@@ -120,5 +120,19 @@
 
   &::-webkit-scrollbar-thumb {
     background: #e72690;
+  }
+}
+
+%server_items {
+  display: flex;
+  flex-direction: column;
+  
+  width: 100%;
+
+  background: var(--gradient_cards_static);
+  box-shadow: var(--shadow_cards_static);
+
+  &:not(:first-child) {
+    margin-top: 10px;
   }
 }

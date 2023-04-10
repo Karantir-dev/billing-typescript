@@ -215,7 +215,7 @@ export default function VDS() {
             isShadow
             type="button"
             label={t('to_order', { ns: 'other' })}
-            onClick={() => navigate(route.VDS_ORDER)}
+            onClick={() => navigate(route.VPS_ORDER)}
           />
 
           <div className={s.filter_wrapper}>
@@ -269,6 +269,7 @@ export default function VDS() {
         goToPanelFn={goToPanelFn}
         activeServices={activeServices}
         setActiveServices={setActiveServices}
+        getVDSHandler={getVDSHandler}
       />
 
       {elemsTotal > 5 && (
@@ -373,7 +374,7 @@ export default function VDS() {
 
           <div className={s.discount_wrapper}>
             <p className={s.discount_percent}>
-              {t('DISCOUNT -20% ON VDS/VPS', { ns: 'other' })}
+              {t('DISCOUNT -20% ON VPS', { ns: 'other' })}
             </p>
             <p className={s.discount_desc}>
               {t('You can get a discount using a promo code', { ns: 'other' })}:

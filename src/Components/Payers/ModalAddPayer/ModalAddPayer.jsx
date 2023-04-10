@@ -250,17 +250,21 @@ export default function Component(props) {
                         isShadow
                         className={s.select}
                         itemsList={payersSelectLists?.country?.map(
-                          ({ $key, $, $image }) => ({
-                            label: (
-                              <div className={s.countrySelectItem}>
-                                <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                {t(`${$.trim()}`)}
-                              </div>
-                            ),
-                            value: $key,
-                          }),
+                          ({ $key, $, $image }) => {
+                            return {
+                              label: (
+                                <div className={s.countrySelectItem}>
+                                  <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                  {t(`${$.trim()}`)}
+                                </div>
+                              ),
+                              value: $key,
+                            }
+                          },
                         )}
                         isRequired
+                        disabled={payersSelectLists?.country?.length <= 1}
+                        withoutArrow={payersSelectLists?.country?.length <= 1}
                       />
                       {/* <InputField
                         inputWrapperClass={s.inputHeight}
@@ -354,8 +358,7 @@ export default function Component(props) {
                               <div className={s.offerBlockText}>
                                 {t('I agree with', {
                                   ns: 'payers',
-                                })}
-                                {' '}
+                                })}{' '}
                                 <a
                                   target="_blank"
                                   href={OFERTA_URL}

@@ -25,7 +25,7 @@ export default function VDSip() {
   const ServerID = location?.state?.id
   useEffect(() => {
     if (!ServerID) {
-      navigate(route.VDS, { replace: true })
+      navigate(route.VPS, { replace: true })
     } else {
       dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName))
     }

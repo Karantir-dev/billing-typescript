@@ -79,7 +79,7 @@ const Component = () => {
     if (cartFromSite) {
       const funcName = JSON.parse(cartFromSite)?.func
       if (funcName === 'vds.order.param') {
-        return navigate(route.VDS_ORDER)
+        return navigate(route.VPS_ORDER)
       } else if (funcName === 'domain.order.name') {
         return navigate(route.DOMAINS_ORDERS)
       } else if (funcName === 'vhost.order.param') {
@@ -94,6 +94,18 @@ const Component = () => {
     }
   }, [])
 
+  if (location.pathname === route.VDS) {
+    return <Navigate to={route.VPS} />
+  } 
+
+  if (location.pathname === route.VDS_ORDER) {
+    return <Navigate to={route.VPS_ORDER} />
+  }
+
+  if (location.pathname === route.VDS_IP) {
+    return <Navigate to={route.VPS_IP} />
+  }
+
   return (
     <Container>
       <EmailTrigger />
@@ -107,7 +119,7 @@ const Component = () => {
           }
         />
         <Route
-          path={route.VDS}
+          path={route.VPS}
           element={
             <PageTitleRender title={`${t('aside_menu.services')}/VDS `}>
               <VDS />
@@ -115,7 +127,7 @@ const Component = () => {
           }
         />
         <Route
-          path={route.VDS_ORDER}
+          path={route.VPS_ORDER}
           element={
             <PageTitleRender
               title={`${t('aside_menu.services')}/${t('vds_order', { ns: 'crumbs' })} `}
@@ -125,7 +137,7 @@ const Component = () => {
           }
         />
         <Route
-          path={route.VDS_IP}
+          path={route.VPS_IP}
           element={
             <PageTitleRender
               title={`${t('aside_menu.services')}/VDS ${t('ip_address', { ns: 'vds' })}`}

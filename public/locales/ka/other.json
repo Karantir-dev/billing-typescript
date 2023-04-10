@@ -172,7 +172,7 @@
   "Attention, edit few services": "ყურადღება! შემდეგი ცვლილებები გამოყენებული იქნება ყველა არჩეულ სერვისზე",
   "The Period field has invalid value.": "'პერიოდის' ველს აქვს არასწორი მნიშვნელობა. გთხოვთ, აირჩიოთ სხვა პერიოდი",
   "DISCOUNT -10% ON DEDICATED SERVERS": "ფასდაკლება -10% გამოყოფილ სერვერებზე",
-  "DISCOUNT -20% ON VDS/VPS": "ფასდაკლება -20% VDS/VPS-ზე",
+  "DISCOUNT -20% ON VPS": "ფასდაკლება -20% VPS-ზე",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "ფასდაკლება -20% პირველ თვეზე 'საიტის მოვლა' სერვისზე",
   "You can get a discount using a promo code": "შეგიძლიათ მიიღოთ ფასდაკლება პრომო კოდის გამოყენებით",
   "VPN deleted successfully": "VPN წარმატებით წაიშალა",
@@ -197,13 +197,13 @@
   "symbols_restricted": "სპეციალური სიმბოლოები დაუშვებელია",
 
   "discounts_up_to": "ფასდაკლება {{amount}}-მდე",
-  "halloween_discount": "ჰოსტინგისთვის, VDS/VPS, გამოყოფილი სერვერები და Forex",
+  "halloween_discount": "ჰოსტინგისთვის, VPS, გამოყოფილი სერვერები და Forex",
   "discounts": "ფასდაკლებები",
   "on_halloween": "ჰელოუინზე",
   "promotion_period": "აქცია მოქმედებს 31 ოქტომბრიდან 2 ნოემბრის ჩათვლით",
 
   "for virtual hosting": "ვირტუალური ჰოსტინგისთვის",
-  "for VDS/VPS": "VDS/VPS-სთვის",
+  "for VPS": "VPS-სთვის",
   "for dedicated servers": "გამოყოფილი სერვერებისთვის",
   "for VPN": "VPN-სთვის",
   "BLACK FRIDAY": "ᲨᲐᲕᲘ ᲞᲐᲠᲐᲡᲙᲔᲕᲘ",
@@ -220,7 +220,7 @@
   "1 Site care - free for 3 months": "1 საიტის მოვლა - უფასო 3 თვე",
   "Subject to purchase (second order, separate check)": "სყიდვის ექვემდებარება (მეორე შეკვეთა, ცალკე ჩეკი)",
   "Hosting (promo code VR87FR)": "ჰოსტინგი (პრომო კოდი VR87FR)",
-  "VDS/VPS (promo code OM34VS)": "VDS/VPS (პრომო კოდი OM34VS)",
+  "VPS (promo code OM34VS)": "VPS (პრომო კოდი OM34VS)",
   "Dedicated server (promo code YT52BD)": "გამოყოფილი სერვერი (პრომო კოდი YT52BD)",
   "The above promo codes can only be used once.": "ზემოხსენებული პრომო კოდების გამოყენება შესაძლებელია მხოლოდ ერთხელ.",
 

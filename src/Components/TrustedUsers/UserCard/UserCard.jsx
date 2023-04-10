@@ -160,9 +160,9 @@ export default function UserCard({
   }
 
   const alertStatusText =
-    !status === 'on'
-      ? `${t('trusted_users.alerts.status.text')} ${email}?`
-      : `${t('trusted_users.alerts.status.text2')} ${email}?`
+    status === 'on'
+      ? `${t('trusted_users.alerts.status.text2')} ${email}?`
+      : `${t('trusted_users.alerts.status.text')} ${email}?`
 
   return (
     <>
@@ -415,16 +415,8 @@ export default function UserCard({
               hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
               hasAccessToSuspendRights={hasAccessToSuspendRights}
               hasAccessToResumeRights={hasAccessToResumeRights}
-              items={listWithoutProfile.slice(0, 20)}
-              userId={userId}
-            />
-          }
-          list2={
-            <AccessRights
-              hasAccessToSuspendRightsOnly={hasAccessToSuspendRightsOnly}
-              hasAccessToSuspendRights={hasAccessToSuspendRights}
-              hasAccessToResumeRights={hasAccessToResumeRights}
-              items={listWithoutProfile.slice(20, 38)}
+              setRightsToRender={setRightsToRender}
+              items={listWithoutProfile}
               userId={userId}
             />
           }

@@ -23,7 +23,7 @@ export default function InputWithAutocomplete({
   const { t, i18n } = useTranslation(['other'])
   const [isFocused, setIsFocused] = useState(false)
   const [currIndex, setCurrIndex] = useState()
-  const { clients_country_code } = useSelector(authSelectors.getGeoData)
+  const geoData = useSelector(authSelectors.getGeoData)
 
   const {
     ready,
@@ -33,7 +33,9 @@ export default function InputWithAutocomplete({
     clearSuggestions,
   } = usePlacesAutocomplete({
     requestOptions: {
-      componentRestrictions: { country: clients_country_code },
+      componentRestrictions: {
+        country: geoData?.clients_country_code || '',
+      },
       types: ['route', 'premise', 'street_address', 'street_number'],
     },
     callbackName: 'initMap',

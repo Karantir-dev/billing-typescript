@@ -47,6 +47,7 @@
   "Getting information about a domain using the whois protocol": "Getting information about a domain using the whois protocol",
   "View/change the list of nameservers": "View/change the list of nameservers",
   "Domain name transfer": "Domain name transfer",
+  "Domain name only Latin": "Domain name can only contain Latin characters",
   "Check": "Check",
   "Registered": "Registered",
   "Not registered": "Not registered",
