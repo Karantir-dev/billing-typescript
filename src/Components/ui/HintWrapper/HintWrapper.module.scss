@@ -5,6 +5,10 @@
   &:hover .hint_popup {
     animation: popup 0.5s forwards;
     pointer-events: auto;
+
+    @media (max-width: 1023px) {
+      animation: popup forwards;
+    }
   }
 }
 
