@@ -51,6 +51,7 @@ export default function Component(props) {
   const dropdownDescription = useRef(null)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
+  const [payerFieldList, setPayerFieldList] = useState(null)
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
@@ -65,7 +66,14 @@ export default function Component(props) {
       if (payersList?.length !== 0) {
         data = { elid: payersList[payersList?.length - 1]?.id?.$ }
         dispatch(
-          payersOperations.getPayerEditInfo(data, false, null, setSelectedPayerFields),
+          payersOperations.getPayerEditInfo(
+            data,
+            false,
+            null,
+            setSelectedPayerFields,
+            false,
+            setPayerFieldList,
+          ),
         )
         return
       }
@@ -179,7 +187,8 @@ export default function Component(props) {
                 payersSelectedFields?.country ||
                 payersSelectedFields?.country_physical ||
                 '',
-              profiletype: payersSelectedFields?.profiletype,
+              profiletype:
+                selectedPayerFields?.profiletype || payersSelectedFields?.profiletype,
               eu_vat: selectedPayerFields?.eu_vat || '',
               [selectedPayerFields?.offer_field]: false,
               payment_currency: {
@@ -293,6 +302,8 @@ export default function Component(props) {
                       false,
                       null,
                       setSelectedPayerFields,
+                      false,
+                      setPayerFieldList,
                     ),
                   )
                 }
@@ -359,7 +370,7 @@ export default function Component(props) {
                             isShadow
                             className={s.select}
                             dropdownClass={s.selectDropdownClass}
-                            itemsList={payersSelectLists?.profiletype?.map(
+                            itemsList={payerFieldList?.profiletype?.map(
                               ({ $key, $ }) => ({
                                 label: t(`${$.trim()}`, { ns: 'payers' }),
                                 value: $key,
