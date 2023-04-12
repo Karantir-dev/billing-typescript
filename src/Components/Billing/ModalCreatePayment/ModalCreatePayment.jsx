@@ -428,29 +428,62 @@ export default function Component(props) {
                             touched={!!touched.person}
                             isRequired
                           />
-
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('The country', { ns: 'other' })}:`}
-                            value={values.country}
-                            getElement={item => setFieldValue('country', item)}
-                            isShadow
-                            className={s.select}
-                            itemsList={payersSelectLists?.country?.map(
-                              ({ $key, $, $image }) => ({
+                          {payersSelectLists?.country?.length ? (
+                            <Select
+                              placeholder={t('Not chosen', { ns: 'other' })}
+                              label={`${t('The country', { ns: 'other' })}:`}
+                              value={values.country}
+                              getElement={item => setFieldValue('country', item)}
+                              isShadow
+                              className={s.select}
+                              itemsList={payersSelectLists?.country?.map(
+                                ({ $key, $, $image }) => {
+                                  return {
+                                    label: (
+                                      <div className={s.countrySelectItem}>
+                                        <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                        {t(`${$.trim()}`)}
+                                      </div>
+                                    ),
+                                    value: $key,
+                                  }
+                                },
+                              )}
+                              isRequired
+                              disabled
+                              withoutArrow={true}
+                            />
+                          ) : (
+                            <Select
+                              placeholder={t('Not chosen', { ns: 'other' })}
+                              label={`${t('The country', { ns: 'other' })}:`}
+                              value={geoData?.clients_country_id}
+                              setFieldValue={geoData?.clients_country_id}
+                              setElement={() => {
+                                return setFieldValue(
+                                  'country',
+                                  geoData?.clients_country_id,
+                                )
+                              }}
+                              isShadow
+                              className={s.select}
+                              itemsList={payersSelectLists?.country?.map(() => ({
                                 label: (
                                   <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
+                                    <img
+                                      src={`${BASE_URL}/manimg/common/flag/${geoData?.clients_country_code}.png`}
+                                      alt="flag"
+                                    />
+                                    {t(`${geoData?.clients_country_name.trim()}`)}
                                   </div>
                                 ),
-                                value: $key,
-                              }),
-                            )}
-                            isRequired
-                            disabled={payersSelectLists?.country?.length <= 1}
-                            withoutArrow={payersSelectLists?.country?.length <= 1}
-                          />
+                                value: geoData?.clients_country_id,
+                              }))}
+                              isRequired
+                              disabled
+                              withoutArrow={true}
+                            />
+                          )}
 
                           <InputField
                             inputWrapperClass={s.inputHeight}
