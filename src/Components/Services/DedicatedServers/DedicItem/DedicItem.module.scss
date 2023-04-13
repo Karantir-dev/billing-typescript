@@ -39,10 +39,10 @@
     flex-basis: 8%;
   }
   &:nth-child(5) {
-    flex-basis: 26%;
+    flex-basis: 10%;
   }
   &:nth-child(6) {
-    flex-basis: 10%;
+    flex-basis: 26%;
   }
   &:nth-child(7) {
     flex-basis: 9%;
@@ -169,16 +169,31 @@
 .item_text {
   display: flex;
   flex-direction: row;
-  max-width: 125px;
   overflow-x: hidden;
-  button {
-    margin-right: 10px;
-    cursor: pointer;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.edit_btn {
+  margin-left: 10px;
+  cursor: pointer;
+  &:hover {
+    svg {
+      fill:rgba(255, 66, 168, 1);
+    }
   }
 }
 
+.placeholder_text {
+  color: var(--transparent-color);
+}
+
+.editBtnOk {
+  cursor: pointer;
+}
+
 .HintWrapper {
-  max-width: 300px !important;
+  width: 130%;
   word-break: break-all;
 }
 
@@ -188,9 +203,10 @@
   flex-direction: row;
   border-radius: 1px;
   border: 1px solid rgba(255, 66, 168, 1);
+  border-radius: 5px;
   height: 39px;
   max-height: 39px;
-  padding: 10px;
+  padding: 10px 2px 10px 10px;
   max-width: 125px;
 
   input {
