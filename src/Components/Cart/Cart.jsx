@@ -83,6 +83,9 @@ export default function Component() {
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
+  const [payerFieldList, setPayerFieldList] = useState(null)
+
+
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
     dispatch(cartOperations.getSalesList(setSalesList))
@@ -115,6 +118,7 @@ export default function Component() {
             null,
             setSelectedPayerFields,
             true,
+            setPayerFieldList,
           ),
         )
         return
@@ -920,6 +924,8 @@ export default function Component() {
                           false,
                           null,
                           setSelectedPayerFields,
+                          false,
+                          setPayerFieldList,
                         ),
                       )
                     }
@@ -1018,7 +1024,7 @@ export default function Component() {
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
-                              itemsList={payersSelectLists?.profiletype?.map(
+                              itemsList={payerFieldList?.profiletype?.map(
                                 ({ $key, $ }) => ({
                                   label: t(`${$.trim()}`, { ns: 'payers' }),
                                   value: $key,

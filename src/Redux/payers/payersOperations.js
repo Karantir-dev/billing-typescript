@@ -258,7 +258,14 @@ const getPayerModalInfo =
   }
 
 const getPayerEditInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, cart = false) =>
+  (
+    body = {},
+    isCreate = false,
+    closeModal,
+    setSelectedPayerFields,
+    cart = false,
+    setPayerFieldList,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -376,17 +383,18 @@ const getPayerEditInfo =
 
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
+          if (el?.$name === 'profiletype') filters[el.$name] = el?.val
         })
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
+          setPayerFieldList && setPayerFieldList(filters)
           return cart
             ? setTimeout(() => dispatch(actions.hideLoader()), 1000)
             : dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
-
         dispatch(payersActions.updatePayersSelectLists(filters))
 
         dispatch(actions.hideLoader())

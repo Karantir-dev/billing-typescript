@@ -26,7 +26,7 @@ export default function HintWrapper({
         className={cn(
           s.hint_popup,
           popupClassName,
-          elemWidth > 100 && pageWidth >= 1024 ? s.hint_full : s.shint_fit,
+          elemWidth > 100 && pageWidth >= 1024 ? s.hint_full : s.hint_fit,
         )}
       >
         <div className={s.hint_pointer_wrapper}>
