@@ -1,16 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-// import cn from 'classnames'
 import { Formik, Form } from 'formik'
 import { Cross, Info } from '../../../images'
 import {
   Select,
   InputField,
-  // CustomPhoneInput,
   Button,
   CheckBox,
   InputWithAutocomplete,
+  // SelectGeo,
 } from '../..'
 import { payersOperations, payersSelectors, authSelectors } from '../../../Redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
@@ -30,10 +29,6 @@ export default function Component(props) {
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
   const geoData = useSelector(authSelectors.getGeoData)
-
-  // const offerTextHandler = () => {
-  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  // }
 
   useEffect(() => {
     let data = {
@@ -191,42 +186,6 @@ export default function Component(props) {
                         isRequired
                       />
 
-                      {/* <CustomPhoneInput
-                        containerClass={s.phoneInputContainer}
-                        inputClass={s.phoneInputClass}
-                        value={values.phone}
-                        wrapperClass={s.phoneInput}
-                        labelClass={s.phoneInputLabel}
-                        label={`${t('Phone', { ns: 'other' })}:`}
-                        dataTestid="input_phone"
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        name="phone"
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        type="email"
-                        name="email"
-                        label={`${t('Email')}:`}
-                        placeholder={t('Enter email', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.email}
-                        touched={!!touched.email}
-                      />
-                      <SelectMultiple
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        label={`${t('Receive documents')}:`}
-                        value={values.maildocs}
-                        getElement={item => setFieldValue('maildocs', item)}
-                        isShadow
-                        className={s.select}
-                        itemsList={payersSelectLists?.maildocs?.map(({ $key, $ }) => ({
-                          label: t(`${$.trim()}`),
-                          value: $key,
-                        }))}
-                      /> */}
-
                       {payersSelectedFields?.eu_vat_field ? (
                         <InputField
                           inputWrapperClass={s.inputHeight}
@@ -297,17 +256,7 @@ export default function Component(props) {
                           withoutArrow={true}
                         />
                       )}
-                      {/* <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name="postcode_physical"
-                        label={`${t('Index', { ns: 'other' })}:`}
-                        placeholder={t('Enter index', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.postcode_physical}
-                        touched={!!touched.postcode_physical}
-                        isRequired
-                      /> */}
+
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="city_physical"
@@ -321,19 +270,6 @@ export default function Component(props) {
                       />
 
                       <div className={s.nsInputBlock}>
-                        {/* <InputField
-                          inputWrapperClass={s.inputHeight}
-                          inputClassName={s.inputAddressWrapp}
-                          name="address_physical"
-                          label={`${t('The address', { ns: 'other' })}:`}
-                          placeholder={t('Enter address', { ns: 'other' })}
-                          isShadow
-                          className={cn(s.input, s.inputAddress)}
-                          error={!!errors.address_physical}
-                          touched={!!touched.address_physical}
-                          isRequired
-                        /> */}
-
                         <InputWithAutocomplete
                           fieldName="address_physical"
                           error={!!errors.address_physical}
@@ -356,22 +292,7 @@ export default function Component(props) {
                   {payersSelectedFields?.offer_link &&
                     (payersSelectedFields?.passport_field || !elid) && (
                       <div className={s.formBlock}>
-                        {/* <div className={s.formBlockTitle}>
-                          3. {t('Data for the contract')}
-                        </div> */}
                         <div>
-                          {/* {payersSelectedFields?.passport_field && (
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="passport"
-                            label={`${t('Passport', { ns: 'other' })}:`}
-                            placeholder={t('Series and passport number', { ns: 'other' })}
-                            isShadow
-                            className={s.input}
-                            error={!!errors.passport}
-                            touched={!!touched.passport}
-                          />
-                        )} */}
                           {payersSelectedFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox

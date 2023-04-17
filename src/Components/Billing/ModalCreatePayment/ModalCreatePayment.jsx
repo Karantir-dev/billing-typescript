@@ -11,6 +11,7 @@ import {
   PaymentCurrencyBtn,
   CheckBox,
   InputWithAutocomplete,
+  SelectGeo,
 } from '../..'
 import {
   billingOperations,
@@ -428,7 +429,13 @@ export default function Component(props) {
                             touched={!!touched.person}
                             isRequired
                           />
-                          {payersSelectLists?.country?.length ? (
+                          <SelectGeo
+                            setSelectFieldValue={item => setFieldValue('country', item)}
+                            selectValue={values.country}
+                            selectClassName={s.select}
+                            countrySelectClassName={s.countrySelectItem}
+                          />
+                          {/* {payersSelectLists?.country?.length ? (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}
                               label={`${t('The country', { ns: 'other' })}:`}
@@ -483,7 +490,7 @@ export default function Component(props) {
                               disabled
                               withoutArrow={true}
                             />
-                          )}
+                          )} */}
 
                           <InputField
                             inputWrapperClass={s.inputHeight}

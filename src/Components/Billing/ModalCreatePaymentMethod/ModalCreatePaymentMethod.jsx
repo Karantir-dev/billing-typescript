@@ -4,7 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
 import { Cross, Info } from '../../../images'
-import { Button, Select, InputField, CheckBox, InputWithAutocomplete } from '../..'
+import {
+  Button,
+  Select,
+  InputField,
+  CheckBox,
+  InputWithAutocomplete,
+  SelectGeo,
+} from '../..'
 import {
   billingOperations,
   billingSelectors,
@@ -325,62 +332,12 @@ export default function Component(props) {
                             isRequired
                           />
 
-                          {payersSelectLists?.country?.length ? (
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('The country', { ns: 'other' })}:`}
-                              value={values.country}
-                              getElement={item => setFieldValue('country', item)}
-                              isShadow
-                              className={s.select}
-                              itemsList={payersSelectLists?.country?.map(
-                                ({ $key, $, $image }) => {
-                                  return {
-                                    label: (
-                                      <div className={s.countrySelectItem}>
-                                        <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                        {t(`${$.trim()}`)}
-                                      </div>
-                                    ),
-                                    value: $key,
-                                  }
-                                },
-                              )}
-                              isRequired
-                              disabled
-                              withoutArrow={true}
-                            />
-                          ) : (
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('The country', { ns: 'other' })}:`}
-                              value={geoData?.clients_country_id}
-                              setFieldValue={geoData?.clients_country_id}
-                              setElement={() => {
-                                return setFieldValue(
-                                  'country',
-                                  geoData?.clients_country_id,
-                                )
-                              }}
-                              isShadow
-                              className={s.select}
-                              itemsList={payersSelectLists?.country?.map(() => ({
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img
-                                      src={`${BASE_URL}/manimg/common/flag/${geoData?.clients_country_code}.png`}
-                                      alt="flag"
-                                    />
-                                    {t(`${geoData?.clients_country_name.trim()}`)}
-                                  </div>
-                                ),
-                                value: geoData?.clients_country_id,
-                              }))}
-                              isRequired
-                              disabled
-                              withoutArrow={true}
-                            />
-                          )}
+                          <SelectGeo
+                            setSelectFieldValue={item => setFieldValue('country', item)}
+                            selectValue={values.country}
+                            selectClassName={s.select}
+                            countrySelectClassName={s.countrySelectItem}
+                          />
 
                           <InputField
                             inputWrapperClass={s.inputHeight}
