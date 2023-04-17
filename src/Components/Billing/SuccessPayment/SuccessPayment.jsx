@@ -37,21 +37,18 @@ export default function Component() {
       })
 
       if (item) {
-        console.log(item)
         setPaymentId(item?.id?.$)
       }
     }
   }, [paymentsList])
 
   useEffect(() => {
-    console.log(expensesList, 'expensesList')
     if (expensesList && expensesList?.length > 0) {
       const item = expensesList?.find(e => {
         e?.billorder?.$ === cartData?.billorder
       })
 
       if (item) {
-        console.log(item)
         setPaymentId(item?.id?.$)
       }
     }
@@ -60,16 +57,6 @@ export default function Component() {
   useEffect(() => {
     if (paymentId) {
       if (cartData) {
-        console.log({
-          transaction_id: paymentId || cartData?.billorder,
-          affiliation: 'cp.zomro.com',
-          value: Number(cartData?.total_sum) || 0,
-          tax: Number(cartData?.tax) || 0,
-          shipping: '0',
-          currency: 'EUR',
-          coupon: cartData?.promocode,
-          items: cartData?.items,
-        })
         window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
