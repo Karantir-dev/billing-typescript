@@ -85,7 +85,6 @@ export default function Component() {
 
   const [payerFieldList, setPayerFieldList] = useState(null)
 
-
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
     dispatch(cartOperations.getSalesList(setSalesList))
@@ -836,6 +835,17 @@ export default function Component() {
     }
   }, [salesList])
 
+  const payerTypeArrayHandler = () => {
+    const arr = payerFieldList?.profiletype
+      ? payerFieldList?.profiletype
+      : payersSelectLists?.profiletype
+
+    return arr?.map(({ $key, $ }) => ({
+      label: t(`${$.trim()}`, { ns: 'payers' }),
+      value: $key,
+    }))
+  }
+
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
       {payersSelectedFields && selectedPayerFields && payersSelectLists ? (
@@ -1024,12 +1034,7 @@ export default function Component() {
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
-                              itemsList={payerFieldList?.profiletype?.map(
-                                ({ $key, $ }) => ({
-                                  label: t(`${$.trim()}`, { ns: 'payers' }),
-                                  value: $key,
-                                }),
-                              )}
+                              itemsList={payerTypeArrayHandler()}
                             />
                             {values?.profiletype === '3' ||
                             values?.profiletype === '2' ? (
@@ -1291,7 +1296,7 @@ export default function Component() {
                         </div>
                       </div>
                       {Number(cartData?.tax) > 0 ? (
-                        <div className={s.totalSum}>
+                        <div className={cn(s.totalSum, s.padding)}>
                           {t('Tax included')}: <b>{cartData?.tax} EUR</b>
                         </div>
                       ) : null}

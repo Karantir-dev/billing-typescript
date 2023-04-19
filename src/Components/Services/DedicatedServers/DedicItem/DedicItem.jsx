@@ -109,17 +109,8 @@ export default function DedicItem({
                   className={cn(s.item_text, s.first_item)}
                   ref={editField}
                 >
-                  <>
-                    <button
-                      onClick={() => {
-                        setIsEdit(!isEdit)
-                        setEditName(originName?.trim())
-                      }}
-                    >
-                      <Edit />
-                    </button>
-
-                    <span>
+                                    <>
+                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
                       {t(
                         shortTitle(editName, 12) ||
                           shortTitle(originName?.trim(), 12) ||
@@ -129,6 +120,15 @@ export default function DedicItem({
                         },
                       )}
                     </span>
+                    <button
+                      className={s.edit_btn}
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(originName?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
                   </>
                 </div>
               ) : (
@@ -144,16 +144,7 @@ export default function DedicItem({
                     ref={editField}
                   >
                     <>
-                      <button
-                        onClick={() => {
-                          setIsEdit(!isEdit)
-                          setEditName(originName?.trim())
-                        }}
-                      >
-                        <Edit />
-                      </button>
-
-                      <span>
+                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
                         {t(
                           shortTitle(editName, 12) ||
                             shortTitle(originName?.trim(), 12) ||
@@ -163,6 +154,15 @@ export default function DedicItem({
                           },
                         )}
                       </span>
+                      <button
+                        className={s.edit_btn}
+                        onClick={() => {
+                          setIsEdit(!isEdit)
+                          setEditName(originName?.trim())
+                        }}
+                      >
+                        <Edit />
+                      </button>
                     </>
                   </div>
                 </HintWrapper>
@@ -175,14 +175,14 @@ export default function DedicItem({
               ref={editField}
             >
               <div className={s.editBlock}>
-                <button className={s.editBtnOk} onClick={editNameHandler}>
-                  <CheckEdit />
-                </button>
                 <input
                   placeholder={editName ? '' : t('server_placeholder', { ns: 'vds' })}
                   value={editName}
                   onChange={e => setEditName(e.target.value)}
                 />
+                <button className={s.editBtnOk} onClick={editNameHandler}>
+                  <CheckEdit />
+                </button>
               </div>
             </div>
           )}

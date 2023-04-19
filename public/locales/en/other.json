@@ -192,7 +192,7 @@
   "Something went wrong. Try again.": "Something went wrong. Try again.",
   "address_format": "Enter the address in the format street, building, apartment",
   "email_trigger": "Confirm the email to be able to receive notifications",
-  "email_sended": "Verification email has been sent to {{email}}",
+  "email_sended": "You will receive an verification email notification shortly on {{email}}",
   "email_verification": "Email verification",
   "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
   "email_confirmed": "Email address {{email}} confirmed",
