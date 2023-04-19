@@ -82,476 +82,475 @@
 
   .blockWithBaner {
     position: relative;
-    margin-top: 165px;
+    // margin-top: 165px;
   }
 }
 
-.bannerBlock {
-  display: none;
-  max-height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0; // top: -70px;
-  bottom: 0px;
-  img {
-    height: calc(100%);
-    width: auto;
-    // margin-right: 330px;
-  }
-}
-
-.bannerSmallBlock {
-  display: block;
-  position: absolute;
-  top: 10px;
-  left: -20px;
-
-  img:first-child {
-    width: 50px;
-  }
-
-  .pumpkinsTextIcon {
-    position: absolute;
-    top: -100px;
-    left: 20px;
-  }
-
-  .pumpkinsText {
-    position: absolute;
-    top: -80px;
-    width: 195px;
-    left: 35px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 19px;
-    text-align: center;
-
-    color: #392955;
-
-    div:first-child {
-      font-weight: 800;
-      font-size: 16px;
-      line-height: 22px;
-      background: linear-gradient(90.13deg, #ff42a8 0.11%, #e030bd 98.12%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-fill-color: transparent;
-    }
-  }
-
-  .valentinesText {
-    position: absolute;
-    top: -80px;
-    width: 205px;
-    left: 35px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 19px;
-    text-align: center;
-
-    color: #392955;
-
-    div:first-child {
-      font-weight: 800;
-      font-size: 16px;
-      line-height: 22px;
-      background: rgba(220, 55, 55, 1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-fill-color: transparent;
-    }
-
-    a {
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 19px;
-      text-align: center;
-      text-decoration-line: underline;
-      color: var(--link-text);
-    }
-  }
-
-  .valentinesImg {
-    max-width: 41px;
-    max-height: 51px;
-  }
-}
-
-.saleDescrBlock {
-  display: flex;
-  flex-direction: column;
-  margin: 30px 0;
-
-  .saleDescrRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    &:last-child {
-      margin-top: 15px;
-    }
-
-    .saleDescrItem {
-      flex-basis: 49%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-}
-
-.saleDecrName {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
-
-  color: #ffffff;
-  max-width: 110px;
-  margin-left: 14px;
-}
-
-.starBlock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  span {
-    position: absolute;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 22px;
-    color: #ffffff;
-  }
-}
-
-.mainPromoBlock {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
-  span {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-
-    color: #ffffff;
-
-    &:first-child {
-      font-size: 20px;
-      line-height: 24px;
-
-      b {
-        font-weight: 800;
-        color: rgba(251, 99, 168, 1);
-      }
-    }
-  }
-}
-
-.addGiftBlock {
-  margin-top: 25px;
-  display: flex;
-  flex-direction: column;
-
-  .addGift {
-    font-style: normal;
-    font-weight: 800;
-    font-size: 20px;
-    line-height: 24px;
-    color: #ffffff;
-  }
-
-  .giftList {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-
-    span {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin-bottom: 10px;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 24px;
-      color: #ffffff;
-
-      svg {
-        margin-right: 14px;
-      }
-    }
-  }
-}
-
-.ruleGift {
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-
-  .ruleTitle {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-
-    color: #ffffff;
-  }
-
-  .ruleList {
-    display: flex;
-    flex-direction: column;
-    margin-top: 15px;
-
-    span {
-      font-style: normal;
-      font-weight: 400;
-      font-size: 18px;
-      line-height: 22px;
-
-      color: #ffffff;
-    }
-  }
-
-  .ruleDescr {
-    margin-top: 20px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-
-    color: #ffffff;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .bannerSmallBlock {
-    top: 10px;
-    left: -10px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .bannerSmallBlock {
-    top: 10px;
-    left: -10px;
-    .pumpkinsTextIcon {
-      position: absolute;
-      top: -130px;
-      left: 10px;
-    }
-    .pumpkinsText {
-      width: 170px;
-      font-size: 14px;
-      top: -120px;
-      left: 30px;
-
-      div:first-child {
-        font-size: 16px;
-      }
-    }
-
-    .valentinesText {
-      width: 170px;
-      font-size: 14px;
-      top: -110px;
-      left: 25px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      div:first-child {
-        font-size: 16px;
-      }
-
-      div:nth-child(2) {
-        font-size: 16px;
-        max-width: 135px;
-        text-align: center;
-      }
-
-      a {
-        font-size: 16px;
-      }
-    }
-    .valentinesImg {
-      max-width: 52px;
-      max-height: 65px;
-    }
-
-    svg:first-child {
-      width: 72px;
-    }
-  }
-}
-
-@media screen and (min-width: 1280px) {
-  .bannerSmallBlock {
-    top: 10px;
-    left: 7px;
-  }
-}
-
-@media screen and (min-width: 1550px) {
-  .bannerSmallBlock {
-    display: none;
-  }
-  .bannerBlock {
-    display: block;
-
-    .saleHalloween {
-      margin-top: 60px;
-      display: flex;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      position: absolute;
-      top: 0;
-
-      .saleText {
-        font-style: normal;
-        font-weight: 900;
-        font-size: 55px;
-        text-transform: uppercase;
-
-        -webkit-text-stroke: 1.2px #ffffff;
-        -webkit-text-fill-color: transparent;
-        max-width: 450px;
-      }
-
-      .saleDescr {
-        max-width: 527px;
-        margin: 45px 0 330px;
-
-        p {
-          font-style: normal;
-          font-weight: 400;
-          font-size: 18px;
-          line-height: 22px;
-          color: white;
-
-          &:first-child {
-            margin-bottom: 45px;
-          }
-
-          &:last-child {
-            margin-top: 25px;
-          }
-        }
-      }
-
-      .halloweenText {
-        display: flex;
-        font-style: normal;
-        font-weight: 900;
-        font-size: 55px;
-        line-height: 55px;
-        color: #ffffff;
-        text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
-
-        .percent {
-          margin-left: 10px;
-          position: relative;
-
-          &::after {
-            content: url('../../images/banners/Heart.png');
-            position: absolute;
-            bottom: 3px;
-            right: -15px;
-          }
-
-          &::before {
-            content: url('../../images/banners/Heart.png');
-            position: absolute;
-            bottom: 23px;
-            right: 13px;
-          }
-        }
-      }
-
-      .halloweenPeriod {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 22px;
-
-        color: #ffa514;
-        margin-top: 30px;
-      }
-    }
-
-    .saleHalloween {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  .authScreens {
-    .bannerBlock {
-      img {
-        max-width: 711px;
-      }
-    }
-    .blockWithBaner {
-      margin-top: 0px;
-      margin-left: calc(50% + 100px);
-    }
-  }
-
-  .listOfSale {
-    margin-top: 30px;
-
-    li {
-      font-style: normal;
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 24px;
-      color: rgba(255, 255, 255, 1);
-      margin-bottom: 15px;
-
-      b {
-        font-weight: 800;
-
-        background: linear-gradient(90.1deg, #ffa514 1.52%, #f8690c 19.44%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-fill-color: transparent;
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .bannerBlock {
-    display: block;
-  }
-
-  .authScreens {
-    .bannerBlock {
-      img {
-        max-width: 783px;
-      }
-    }
-    .blockWithBaner {
-      margin-left: calc(50% + 150px);
-    }
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .authScreens {
-    .bannerBlock {
-      img {
-        max-width: auto;
-      }
-    }
-  }
-}
+// .bannerBlock {
+//   display: none;
+//   max-height: 100%;
+//   position: fixed;
+//   left: 0;
+//   top: 0; // top: -70px;
+//   bottom: 0px;
+//   img {
+//     height: calc(100%);
+//     width: auto;
+//     // margin-right: 330px;
+//   }
+// }
+
+// .bannerSmallBlock {
+//   display: block;
+//   position: absolute;
+//   top: 10px;
+//   left: -20px;
+
+//   img:first-child {
+//     width: 50px;
+//   }
+
+//   .pumpkinsTextIcon {
+//     position: absolute;
+//     top: -100px;
+//     left: 20px;
+//   }
+
+//   .pumpkinsText {
+//     position: absolute;
+//     top: -80px;
+//     width: 195px;
+//     left: 35px;
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 12px;
+//     line-height: 19px;
+//     text-align: center;
+
+//     color: #392955;
+
+//     div:first-child {
+//       font-weight: 800;
+//       font-size: 16px;
+//       line-height: 22px;
+//       background: linear-gradient(90.13deg, #ff42a8 0.11%, #e030bd 98.12%);
+//       -webkit-background-clip: text;
+//       -webkit-text-fill-color: transparent;
+//       background-clip: text;
+//       text-fill-color: transparent;
+//     }
+//   }
+
+//   .valentinesText {
+//     position: absolute;
+//     top: -80px;
+//     width: 205px;
+//     left: 35px;
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 12px;
+//     line-height: 19px;
+//     text-align: center;
+
+//     color: #392955;
+
+//     div:first-child {
+//       font-weight: 800;
+//       font-size: 16px;
+//       line-height: 22px;
+//       background: rgba(220, 55, 55, 1);
+//       -webkit-background-clip: text;
+//       -webkit-text-fill-color: transparent;
+//       background-clip: text;
+//       text-fill-color: transparent;
+//     }
+
+//     a {
+//       font-weight: 400;
+//       font-size: 12px;
+//       line-height: 19px;
+//       text-align: center;
+//       text-decoration-line: underline;
+//       color: var(--link-text);
+//     }
+//   }
+
+//   .valentinesImg {
+//     max-width: 41px;
+//     max-height: 51px;
+//   }
+// }
+
+// .saleDescrBlock {
+//   display: flex;
+//   flex-direction: column;
+//   margin: 30px 0;
+
+//   .saleDescrRow {
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     justify-content: space-between;
+//     &:last-child {
+//       margin-top: 15px;
+//     }
+
+//     .saleDescrItem {
+//       flex-basis: 49%;
+//       display: flex;
+//       flex-direction: row;
+//       align-items: center;
+//     }
+//   }
+// }
+
+// .saleDecrName {
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 18px;
+//   line-height: 22px;
+
+//   color: #ffffff;
+//   max-width: 110px;
+//   margin-left: 14px;
+// }
+
+// .starBlock {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   span {
+//     position: absolute;
+//     font-style: normal;
+//     font-weight: 700;
+//     font-size: 18px;
+//     line-height: 22px;
+//     color: #ffffff;
+//   }
+// }
+
+// .mainPromoBlock {
+//   display: flex;
+//   flex-direction: column;
+//   margin-bottom: 30px;
+//   span {
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 16px;
+//     line-height: 19px;
+
+//     color: #ffffff;
+
+//     &:first-child {
+//       font-size: 20px;
+//       line-height: 24px;
+
+//       b {
+//         font-weight: 800;
+//         color: rgba(251, 99, 168, 1);
+//       }
+//     }
+//   }
+// }
+
+// .addGiftBlock {
+//   margin-top: 25px;
+//   display: flex;
+//   flex-direction: column;
+
+//   .addGift {
+//     font-style: normal;
+//     font-weight: 800;
+//     font-size: 20px;
+//     line-height: 24px;
+//     color: #ffffff;
+//   }
+
+//   .giftList {
+//     display: flex;
+//     flex-direction: column;
+//     margin-top: 20px;
+
+//     span {
+//       display: flex;
+//       flex-direction: row;
+//       align-items: center;
+//       margin-bottom: 10px;
+//       font-style: normal;
+//       font-weight: 400;
+//       font-size: 20px;
+//       line-height: 24px;
+//       color: #ffffff;
+
+//       svg {
+//         margin-right: 14px;
+//       }
+//     }
+//   }
+// }
+
+// .ruleGift {
+//   display: flex;
+//   flex-direction: column;
+//   margin-top: 15px;
+
+//   .ruleTitle {
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 20px;
+//     line-height: 24px;
+
+//     color: #ffffff;
+//   }
+
+//   .ruleList {
+//     display: flex;
+//     flex-direction: column;
+//     margin-top: 15px;
+
+//     span {
+//       font-style: normal;
+//       font-weight: 400;
+//       font-size: 18px;
+//       line-height: 22px;
+
+//       color: #ffffff;
+//     }
+//   }
+
+//   .ruleDescr {
+//     margin-top: 20px;
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 16px;
+//     line-height: 19px;
+
+//     color: #ffffff;
+//   }
+// }
+
+// @media screen and (min-width: 768px) {
+//   .bannerSmallBlock {
+//     top: 10px;
+//     left: -10px;
+//   }
+// }
+
+// @media screen and (min-width: 1024px) {
+//   .bannerSmallBlock {
+//     top: 10px;
+//     left: -10px;
+//     .pumpkinsTextIcon {
+//       position: absolute;
+//       top: -130px;
+//       left: 10px;
+//     }
+//     .pumpkinsText {
+//       width: 170px;
+//       font-size: 14px;
+//       top: -120px;
+//       left: 30px;
+
+//       div:first-child {
+//         font-size: 16px;
+//       }
+//     }
+
+//     .valentinesText {
+//       width: 170px;
+//       font-size: 14px;
+//       top: -110px;
+//       left: 25px;
+//       display: flex;
+//       flex-direction: column;
+//       align-items: center;
+
+//       div:first-child {
+//         font-size: 16px;
+//       }
+
+//       div:nth-child(2) {
+//         font-size: 16px;
+//         max-width: 135px;
+//         text-align: center;
+//       }
+
+//       a {
+//         font-size: 16px;
+//       }
+//     }
+//     .valentinesImg {
+//       max-width: 52px;
+//       max-height: 65px;
+//     }
+
+//     svg:first-child {
+//       width: 72px;
+//     }
+//   }
+// }
+
+// @media screen and (min-width: 1280px) {
+//   .bannerSmallBlock {
+//     top: 10px;
+//     left: 7px;
+//   }
+// }
+
+// @media screen and (min-width: 1550px) {
+  // .authScreens {
+  //   .bannerBlock {
+  //     img {
+  //       max-width: 711px;
+  //     }
+  //   }
+  //   .blockWithBaner {
+  //     margin-top: 0px;
+  //     margin-left: calc(50% + 100px);
+  //   }
+  // }
+//   .bannerSmallBlock {
+//     display: none;
+//   }
+//   .bannerBlock {
+//     display: block;
+
+//     .saleHalloween {
+//       margin-top: 60px;
+//       display: flex;
+//       height: 100%;
+//       justify-content: center;
+//       align-items: center;
+//       width: 100%;
+//       position: absolute;
+//       top: 0;
+
+//       .saleText {
+//         font-style: normal;
+//         font-weight: 900;
+//         font-size: 55px;
+//         text-transform: uppercase;
+
+//         -webkit-text-stroke: 1.2px #ffffff;
+//         -webkit-text-fill-color: transparent;
+//         max-width: 450px;
+//       }
+
+//       .saleDescr {
+//         max-width: 527px;
+//         margin: 45px 0 330px;
+
+//         p {
+//           font-style: normal;
+//           font-weight: 400;
+//           font-size: 18px;
+//           line-height: 22px;
+//           color: white;
+
+//           &:first-child {
+//             margin-bottom: 45px;
+//           }
+
+//           &:last-child {
+//             margin-top: 25px;
+//           }
+//         }
+//       }
+
+//       .halloweenText {
+//         display: flex;
+//         font-style: normal;
+//         font-weight: 900;
+//         font-size: 55px;
+//         line-height: 55px;
+//         color: #ffffff;
+//         text-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
+
+//         .percent {
+//           margin-left: 10px;
+//           position: relative;
+
+//           &::after {
+//             content: url('../../images/banners/Heart.png');
+//             position: absolute;
+//             bottom: 3px;
+//             right: -15px;
+//           }
+
+//           &::before {
+//             content: url('../../images/banners/Heart.png');
+//             position: absolute;
+//             bottom: 23px;
+//             right: 13px;
+//           }
+//         }
+//       }
+
+//       .halloweenPeriod {
+//         font-style: normal;
+//         font-weight: 400;
+//         font-size: 18px;
+//         line-height: 22px;
+
+//         color: #ffa514;
+//         margin-top: 30px;
+//       }
+//     }
+
+//     .saleHalloween {
+//       display: flex;
+//       flex-direction: column;
+//     }
+//   }
+
+  // .listOfSale {
+  //   margin-top: 30px;
+
+  //   li {
+  //     font-style: normal;
+  //     font-weight: 400;
+  //     font-size: 20px;
+  //     line-height: 24px;
+  //     color: rgba(255, 255, 255, 1);
+  //     margin-bottom: 15px;
+
+  //     b {
+  //       font-weight: 800;
+
+  //       background: linear-gradient(90.1deg, #ffa514 1.52%, #f8690c 19.44%);
+  //       -webkit-background-clip: text;
+  //       -webkit-text-fill-color: transparent;
+  //       background-clip: text;
+  //       text-fill-color: transparent;
+  //     }
+  //   }
+  // }
+// }
+
+// @media screen and (min-width: 1920px) {
+  // .bannerBlock {
+  //   display: block;
+  // }
+
+//   .authScreens {
+//     .bannerBlock {
+//       img {
+//         max-width: 783px;
+//       }
+//     }
+//     .blockWithBaner {
+//       margin-left: calc(50% + 150px);
+//     }
+//   }
+// }
+
+// @media screen and (min-width: 1920px) {
+//   .authScreens {
+//     .bannerBlock {
+//       img {
+//         max-width: auto;
+//       }
+//     }
+//   }
+// }
