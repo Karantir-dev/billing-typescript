@@ -201,6 +201,7 @@ export default function Component(props) {
             onSubmit={createPaymentMethodHandler}
           >
             {({ values, setFieldValue, touched, errors }) => {
+              console.log(values)
               const parsePaymentInfo = text => {
                 const splittedText = text?.split('<p>')
                 if (splittedText?.length > 0) {
@@ -313,6 +314,17 @@ export default function Component(props) {
                 ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
                 : parsedText?.minAmount?.length > 150
 
+              const payerTypeArrayHandler = () => {
+                const arr = payerFieldList?.profiletype
+                  ? payerFieldList?.profiletype
+                  : payersSelectLists?.profiletype
+
+                return arr?.map(({ $key, $ }) => ({
+                  label: t(`${$.trim()}`, { ns: 'payers' }),
+                  value: $key,
+                }))
+              }
+
               return (
                 <Form>
                   <ScrollToFieldError />
@@ -370,12 +382,7 @@ export default function Component(props) {
                             isShadow
                             className={s.select}
                             dropdownClass={s.selectDropdownClass}
-                            itemsList={payerFieldList?.profiletype?.map(
-                              ({ $key, $ }) => ({
-                                label: t(`${$.trim()}`, { ns: 'payers' }),
-                                value: $key,
-                              }),
-                            )}
+                            itemsList={payerTypeArrayHandler()}
                           />
 
                           {values?.profiletype === '3' || values?.profiletype === '2' ? (
