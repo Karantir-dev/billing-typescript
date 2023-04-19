@@ -4,7 +4,7 @@ import { actions, cartActions, billingOperations, userOperations } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive, coockies } from '../../utils'
 import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -250,8 +250,6 @@ const setPaymentMethods =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
-    window.dataLayer.push({ ecommerce: null })
-
     const {
       auth: { sessionId },
       cart: { cartState },
@@ -362,31 +360,31 @@ const setPaymentMethods =
                 }
               })
 
-              window.dataLayer.push({
-                event: 'purchase',
-                ecommerce: {
-                  transaction_id: cartData?.billorder,
-                  affiliation: 'cp.zomro.com',
-                  value: Number(cartData?.total_sum) || 0,
-                  currency: 'EUR',
-                  coupon: body?.promocode,
+              coockies?.setCookie(
+                'cartData',
+                JSON.stringify({
+                  billorder: cartData?.billorder,
+                  total_sum: cartData?.total_sum,
+                  tax: cartData?.tax,
+                  promocode: body?.promocode,
                   items: items,
-                },
-              })
-            }
+                }),
+                30,
+              )
 
-            if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
-              dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
-            }
+              if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+                dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
+              }
 
-            navigate && navigate(cartState?.redirectPath)
-            dispatch(
-              cartActions.setCartIsOpenedState({
-                isOpened: false,
-                redirectPath: '',
-              }),
-            )
-            // dispatch(actions.hideLoader())
+              navigate && navigate(cartState?.redirectPath)
+              dispatch(
+                cartActions.setCartIsOpenedState({
+                  isOpened: false,
+                  redirectPath: '',
+                }),
+              )
+              // dispatch(actions.hideLoader())
+            }
           })
           .then(() => dispatch(userOperations.getNotify()))
           .catch(error => {
@@ -400,10 +398,47 @@ const setPaymentMethods =
       })
   }
 
+const getSalesList = setSalesList => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'account.discountinfo',
+        auth: sessionId,
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const { elem: promoList } = data.doc
+
+      const promoListData = {
+        promoList,
+      }
+
+      setSalesList(promoListData.promoList)
+
+      dispatch(actions.hideLoader())
+      return promoListData
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getBasket,
   setBasketPromocode,
   deleteBasketItem,
   clearBasket,
   setPaymentMethods,
+  getSalesList,
 }

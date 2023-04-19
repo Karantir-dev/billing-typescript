@@ -100,9 +100,10 @@ const editVDS =
           auth: sessionId,
           elid,
           autoprolong: values.autoprolong,
-          [register.Control_panel]: values.Control_panel,
+          [register?.Control_panel]: values?.Control_panel,
           stored_method: values.stored_method,
           [selectedField ? 'sv_field' : '']: selectedField,
+          server_name: values?.server_name,
           sok: 'ok',
           out: 'json',
           lang: 'en',
@@ -131,7 +132,7 @@ const editVDS =
               dispatch(
                 cartActions.setCartIsOpenedState({
                   isOpened: true,
-                  redirectPath: routes.VDS,
+                  redirectPath: routes.VPS,
                 }),
               )
             })
@@ -332,6 +333,7 @@ const setOrderData =
           [register.Memory]: values.Memory,
           [register.Port_speed]: values.Port_speed.slice(0, 3),
           licence_agreement: values.agreement,
+          server_name: values?.server_name,
           order_count: String(count),
           lang: 'en',
         }),
@@ -342,7 +344,7 @@ const setOrderData =
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
-            redirectPath: routes.VDS,
+            redirectPath: routes.VPS,
             salePromocode: sale,
           }),
         )

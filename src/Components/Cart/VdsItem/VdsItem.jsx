@@ -64,7 +64,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   )
 
   return (
-    <>
+    <div className={s.items_wrapper}>
       <div className={s.server_item}>
         <button
           className={cn(s.shevron_btn, { [s.opened]: dropOpened })}
@@ -78,20 +78,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
         </button>
 
         <div className={s.main_info_wrapper} ref={infoEl}>
-          {!tabletOrHigher && (
-            <div className={s.control_bts_wrapper}>
-              {typeof deleteItemHandler === 'function' && (
-                <button
-                  className={s.btn_delete}
-                  type="button"
-                  onClick={deleteItemHandler}
-                >
-                  <Delete />
-                </button>
-              )}
-            </div>
-          )}
-
           <div>
             <p className={s.tariff_name}>{tariffName} </p>
             <div className={s.periodInfo}>
@@ -106,10 +92,18 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </div>
           </div>
 
-          {typeof deleteItemHandler === 'function' && tabletOrHigher && (
-            <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-              <Delete />
-            </button>
+          {!tabletOrHigher && (
+            <div className={s.control_bts_wrapper}>
+              {typeof deleteItemHandler === 'function' && (
+                <button
+                  className={s.btn_delete}
+                  type="button"
+                  onClick={deleteItemHandler}
+                >
+                  <Delete />
+                </button>
+              )}
+            </div>
           )}
         </div>
 
@@ -169,6 +163,12 @@ export default function VdsItem({ el, deleteItemHandler }) {
           )}
         </div>
       </div>
-    </>
+
+      {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+            <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+              <Delete />
+            </button>
+      )}
+    </div>
   )
 }

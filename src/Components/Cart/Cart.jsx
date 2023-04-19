@@ -61,6 +61,8 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [salesList, setSalesList] = useState([])
+  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -70,6 +72,9 @@ export default function Component() {
 
   const [blackFridayData, setBlackFridayData] = useState(null)
   const [showMore, setShowMore] = useState(false)
+  const [showAllItems, setShowAllItems] = useState(false)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -78,8 +83,12 @@ export default function Component() {
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
+  const [payerFieldList, setPayerFieldList] = useState(null)
+
+
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
 
   useEffect(() => {
@@ -109,6 +118,7 @@ export default function Component() {
             null,
             setSelectedPayerFields,
             true,
+            setPayerFieldList,
           ),
         )
         return
@@ -118,6 +128,16 @@ export default function Component() {
       )
     }
   }, [payersList, payersSelectLists])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   //isPersonalBalance
 
@@ -134,7 +154,6 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
@@ -353,83 +372,163 @@ export default function Component() {
       }
     })
 
+    const maxItemsToShow = screenWidth < 768 ? 1 : 3
+    let displayedItems = []
+
+    switch (true) {
+      case vpnList?.length > 0:
+        displayedItems = showAllItems ? vpnList : vpnList.slice(0, maxItemsToShow)
+        break
+      case siteCareList?.length > 0:
+        displayedItems = showAllItems
+          ? siteCareList
+          : siteCareList.slice(0, maxItemsToShow)
+        break
+      case filteredVhostList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredVhostList
+          : filteredVhostList.slice(0, maxItemsToShow)
+        break
+      case domainsList?.length > 0:
+        displayedItems = showAllItems ? domainsList : domainsList.slice(0, maxItemsToShow)
+        break
+      case filteredDedicList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredDedicList
+          : filteredDedicList.slice(0, maxItemsToShow)
+        break
+      case filteredVdsList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredVdsList
+          : filteredVdsList.slice(0, maxItemsToShow)
+        break
+      case filteredFtpList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredFtpList
+          : filteredFtpList.slice(0, maxItemsToShow)
+        break
+      case filteredDnsList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredDnsList
+          : filteredDnsList.slice(0, maxItemsToShow)
+        break
+      case filteredForexList?.length > 0:
+        displayedItems = showAllItems
+          ? filteredForexList
+          : filteredForexList.slice(0, maxItemsToShow)
+        break
+      default:
+        console.error('Error: Product was not selected')
+        break
+    }
+
+    const shouldRenderButton = listLength =>
+      screenWidth < 768 ? listLength > 0 : listLength > 3
+
+    const showMoreButton = listLength => {
+      const toggleShowAllItems = () => setShowAllItems(!showAllItems)
+
+      return (
+        <button className={s.showMoreItemsBtn} onClick={toggleShowAllItems}>
+          {!showAllItems
+            ? `${t('Show')} ${listLength - displayedItems.length} ${t('more items')}`
+            : t('Hide')}
+        </button>
+      )
+    }
+
     return (
       <>
         {vpnList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
-            {vpnList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
-              return (
-                <VpnItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                return (
+                  <VpnItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(vpnList.length) && showMoreButton(vpnList.length)}
           </div>
         )}
         {siteCareList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
-            {siteCareList?.map(el => {
-              const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
-              return (
-                <SiteCareItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    domainsList?.length > 1 ? () => deleteBasketItemHandler(id?.$) : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                return (
+                  <SiteCareItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      domainsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(siteCareList.length) &&
+              showMoreButton(siteCareList.length)}
           </div>
         )}
         {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
-            {filteredVhostList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                pricelist_name,
-                discount_percent,
-                fullcost,
-                count,
-              } = el
-              return (
-                <VhostItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  discount_percent={discount_percent?.$}
-                  fullcost={fullcost?.$}
-                  itemId={el['item.id']?.$}
-                  pricelist_name={pricelist_name?.$}
-                  deleteItemHandler={
-                    filteredVhostList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                  count={count}
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  pricelist_name,
+                  discount_percent,
+                  fullcost,
+                  count,
+                } = el
+                return (
+                  <VhostItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    discount_percent={discount_percent?.$}
+                    fullcost={fullcost?.$}
+                    itemId={el['item.id']?.$}
+                    pricelist_name={pricelist_name?.$}
+                    deleteItemHandler={
+                      filteredVhostList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                    count={count}
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(filteredVhostList.length) &&
+              showMoreButton(filteredVhostList.length)}
           </div>
         )}
         {domainsList?.length > 0 && (
@@ -437,8 +536,8 @@ export default function Component() {
             <div className={cn(s.formBlockTitle, s.padding)}>
               {t('Domain registration')}:
             </div>
-            <div className={s.scroll}>
-              {domainsList?.map(el => {
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
                 const { id, desc, cost, fullcost, discount_percent } = el
                 return (
                   <DomainItem
@@ -456,6 +555,7 @@ export default function Component() {
                 )
               })}
             </div>
+            {shouldRenderButton(domainsList.length) && showMoreButton(domainsList.length)}
           </>
         )}
         {filteredDedicList?.length > 0 && (
@@ -463,33 +563,37 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
-            {filteredDedicList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <DedicItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredDedicList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <DedicItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredDedicList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(filteredVhostList.length) &&
+              showMoreButton(filteredDedicList?.length)}
           </div>
         )}
         {filteredVdsList?.length > 0 && (
@@ -499,19 +603,23 @@ export default function Component() {
             </div>
 
             <div className={s.padding}>
-              {filteredVdsList?.map(el => {
-                return (
-                  <VdsItem
-                    key={el?.id?.$}
-                    el={el}
-                    deleteItemHandler={
-                      filteredVdsList?.length > 1
-                        ? () => deleteBasketItemHandler(el?.id?.$)
-                        : null
-                    }
-                  />
-                )
-              })}
+              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+                {displayedItems?.map(el => {
+                  return (
+                    <VdsItem
+                      key={el?.id?.$}
+                      el={el}
+                      deleteItemHandler={
+                        filteredVdsList?.length > 1
+                          ? () => deleteBasketItemHandler(el?.id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
+              {shouldRenderButton(filteredVdsList.length) &&
+                showMoreButton(filteredVdsList?.length)}
             </div>
           </div>
         )}
@@ -520,97 +628,109 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
-            {filteredFtpList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <FtpItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredFtpList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <FtpItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredFtpList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredFtpList.length)}
           </div>
         )}
         {filteredDnsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
-            {filteredDnsList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <DnsItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredDnsList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <DnsItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredDnsList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredDnsList?.length)}
           </div>
         )}
         {filteredForexList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>
-            {filteredForexList?.map(el => {
-              const {
-                id,
-                desc,
-                cost,
-                fullcost,
-                discount_percent,
-                pricelist_name,
-                count,
-              } = el
-              return (
-                <ForexItem
-                  key={id?.$}
-                  desc={desc?.$}
-                  cost={cost?.$}
-                  fullcost={fullcost?.$}
-                  discount_percent={discount_percent?.$}
-                  pricelist_name={pricelist_name?.$}
-                  count={count}
-                  deleteItemHandler={
-                    filteredForexList?.length > 1
-                      ? () => deleteBasketItemHandler(id?.$)
-                      : null
-                  }
-                />
-              )
-            })}
+            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              {displayedItems?.map(el => {
+                const {
+                  id,
+                  desc,
+                  cost,
+                  fullcost,
+                  discount_percent,
+                  pricelist_name,
+                  count,
+                } = el
+                return (
+                  <ForexItem
+                    key={id?.$}
+                    desc={desc?.$}
+                    cost={cost?.$}
+                    fullcost={fullcost?.$}
+                    discount_percent={discount_percent?.$}
+                    pricelist_name={pricelist_name?.$}
+                    count={count}
+                    deleteItemHandler={
+                      filteredForexList?.length > 1
+                        ? () => deleteBasketItemHandler(id?.$)
+                        : null
+                    }
+                  />
+                )
+              })}
+            </div>
+            {shouldRenderButton(filteredFtpList.length) &&
+              showMoreButton(filteredForexList?.length)}
           </div>
         )}
       </>
@@ -639,7 +759,7 @@ export default function Component() {
         {services?.map(e => {
           function getString(str) {
             let result = str?.match(/(-?\d+(\.\d+)?%)/g)
-            return result
+            return result.at(0) === '0%' ? [] : result
           }
           if (getString(e)?.length !== 0) {
             return (
@@ -685,6 +805,36 @@ export default function Component() {
 
     return withSale
   }
+  useEffect(() => {
+    const cartConfigName = cartData?.elemList[0]?.pricelist_name.$?.slice(
+      0,
+      cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+    )
+
+    const foundSale = salesList.find(
+      sale =>
+        sale.promotion.$ === 'Большие скидки на выделенные серверы' &&
+        sale.idname.$.includes(cartConfigName),
+    )
+
+    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace(
+      '%',
+      '',
+    )
+    const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
+
+    if (foundSale) {
+      if (
+        (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
+        (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
+        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12)
+      ) {
+        setIsPromocodeAllowed(false)
+      } else {
+        setIsPromocodeAllowed(true)
+      }
+    }
+  }, [salesList])
 
   return (
     <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
@@ -695,10 +845,9 @@ export default function Component() {
               <span className={s.headerText}>{t('Payment')}</span>
               <Cross onClick={() => setIsClosing(true)} className={s.crossIcon} />
             </div>
+            <div className={s.scroll}>
+              <div className={s.itemsBlock}>{renderItems()}</div>
 
-            <div className={s.itemsBlock}>{renderItems()}</div>
-
-            <div className={s.padding}>
               <Formik
                 enableReinitialize
                 validationSchema={validationSchema}
@@ -719,7 +868,7 @@ export default function Component() {
                   eu_vat: selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: false,
 
-                  slecetedPayMethod: undefined,
+                  slecetedPayMethod: slecetedPayMethod || undefined,
                   promocode: '',
                   isPersonalBalance: 'off',
                 }}
@@ -775,6 +924,8 @@ export default function Component() {
                           false,
                           null,
                           setSelectedPayerFields,
+                          false,
+                          setPayerFieldList,
                         ),
                       )
                     }
@@ -787,7 +938,7 @@ export default function Component() {
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
-                      <div className={s.formBlock}>
+                      <div className={cn(s.formBlock, s.padding)}>
                         {!isLoading && paymentsMethodList?.length === 0 && (
                           <div className={s.notAllowPayMethod}>
                             {t('order_amount_is_less')}
@@ -812,6 +963,7 @@ export default function Component() {
                                   <button
                                     onClick={() => {
                                       setFieldValue('slecetedPayMethod', method)
+                                      setSlecetedPayMethod(method)
 
                                       if (
                                         method?.name?.$?.includes('balance') &&
@@ -861,7 +1013,7 @@ export default function Component() {
                       {(values?.slecetedPayMethod?.name?.$?.includes('balance') &&
                         values?.slecetedPayMethod?.paymethod_type?.$ === '0') ||
                       !values?.slecetedPayMethod ? null : (
-                        <div className={s.formBlock}>
+                        <div className={(s.formBlock, s.padding)}>
                           <div className={s.formBlockTitle}>{t('Payer')}:</div>
                           <div className={s.fieldsGrid}>
                             <Select
@@ -872,7 +1024,7 @@ export default function Component() {
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
-                              itemsList={payersSelectLists?.profiletype?.map(
+                              itemsList={payerFieldList?.profiletype?.map(
                                 ({ $key, $ }) => ({
                                   label: t(`${$.trim()}`, { ns: 'payers' }),
                                   value: $key,
@@ -947,6 +1099,8 @@ export default function Component() {
                                 }),
                               )}
                               isRequired
+                              disabled={payersSelectLists?.country?.length <= 1}
+                              withoutArrow={payersSelectLists?.country?.length <= 1}
                             />
                             <InputField
                               inputWrapperClass={s.inputHeight}
@@ -961,17 +1115,17 @@ export default function Component() {
                             />
                             <div className={cn(s.nsInputBlock, s.inputBig)}>
                               {/* <InputField
-                              inputWrapperClass={s.inputHeight}
-                              inputClassName={s.inputAddressWrapp}
-                              name="address_physical"
-                              label={`${t('The address', { ns: 'other' })}:`}
-                              placeholder={t('Enter address', { ns: 'other' })}
-                              isShadow
-                              className={cn(s.inputBig, s.inputAddress)}
-                              error={!!errors.address_physical}
-                              touched={!!touched.address_physical}
-                              isRequired
-                            /> */}
+                                inputWrapperClass={s.inputHeight}
+                                inputClassName={s.inputAddressWrapp}
+                                name="address_physical"
+                                label={`${t('The address', { ns: 'other' })}:`}
+                                placeholder={t('Enter address', { ns: 'other' })}
+                                isShadow
+                                className={cn(s.inputBig, s.inputAddress)}
+                                error={!!errors.address_physical}
+                                touched={!!touched.address_physical}
+                                isRequired
+                              /> */}
 
                               <InputWithAutocomplete
                                 fieldName="address_physical"
@@ -1009,9 +1163,13 @@ export default function Component() {
                           </div>
                         </div>
                       )}
-                      <div className={cn(s.infotext, { [s.showMore]: showMore })}>
-                        {values?.slecetedPayMethod &&
-                          values?.slecetedPayMethod?.payment_minamount && (
+                      {values?.slecetedPayMethod &&
+                        values?.slecetedPayMethod?.payment_minamount && (
+                          <div
+                            className={cn(s.infotext, s.padding, {
+                              [s.showMore]: showMore,
+                            })}
+                          >
                             <div>
                               <span>
                                 {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
@@ -1022,24 +1180,24 @@ export default function Component() {
                                 </p>
                               )}
                             </div>
-                          )}
-                      </div>
+                          </div>
+                        )}
                       {values?.slecetedPayMethod && readMore && (
                         <button
                           type="button"
                           onClick={() => setShowMore(!showMore)}
-                          className={s.readMore}
+                          className={cn(s.readMore, s.padding)}
                         >
                           {t(showMore ? 'Collapse' : 'Read more')}
                         </button>
                       )}
 
-                      <div className={cn(s.formBlock, s.promocodeBlock)}>
+                      <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
                         <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode()}
+                            disabled={withSale55Promocode() || isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1068,69 +1226,72 @@ export default function Component() {
                         </div>
                       </div>
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
-                        <div className={s.penalty_sum}>
+                        <div className={cn(s.padding, s.penalty_sum)}>
                           {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
                         </div>
                       ) : (
                         ''
                       )}
-                      <div className={s.totalSum}>
-                        <b>{t('Total')}:</b>
-                        <span>
-                          {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
-                        </span>
-                        <span>
-                          {cartData?.full_discount &&
-                          Number(cartData?.full_discount) !== 0 ? (
-                            <>
-                              {t('Saving')}: {cartData?.full_discount} EUR{' '}
-                              <button type="button" className={s.infoBtn}>
-                                <Info />
-                                <div ref={dropdownSale} className={s.descriptionBlock}>
-                                  {renderActiveDiscounts()}
-                                </div>
-                              </button>
-                            </>
-                          ) : null}
-                        </span>
-                      </div>
+                      <div className={s.padding}>
+                        <div className={s.totalSum}>
+                          <b>{t('Total')}:</b>
+                          <span>
+                            {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
+                          </span>
+                          <span>
+                            {cartData?.full_discount &&
+                            Number(cartData?.full_discount) !== 0 ? (
+                              <>
+                                {t('Saving')}: {cartData?.full_discount} EUR{' '}
+                                <button type="button" className={s.infoBtn}>
+                                  <Info />
+                                  <div ref={dropdownSale} className={s.descriptionBlock}>
+                                    {renderActiveDiscounts()}
+                                  </div>
+                                </button>
+                              </>
+                            ) : null}
+                          </span>
+                        </div>
 
-                      <div className={s.offerBlock}>
-                        <CheckBox
-                          initialState={values[selectedPayerFields?.offer_field] || false}
-                          setValue={item =>
-                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
-                          }
-                          className={s.checkbox}
-                          error={!!errors[selectedPayerFields?.offer_field]}
-                          touched={!!touched[selectedPayerFields?.offer_field]}
-                        />
-                        <div className={s.offerBlockText}>
-                          {t('I agree with', {
-                            ns: 'payers',
-                          })}{' '}
-                          <a
-                            target="_blank"
-                            href={OFERTA_URL}
-                            rel="noreferrer"
-                            className={s.offerBlockLink}
-                          >
-                            {t('Terms of Service', { ns: 'domains' })}
-                          </a>{' '}
-                          {t('and', { ns: 'domains' })}{' '}
-                          <a
-                            target="_blank"
-                            href={PRIVACY_URL}
-                            rel="noreferrer"
-                            className={s.offerBlockLink}
-                          >
-                            {t('Terms of the offer', { ns: 'domains' })}
-                          </a>
+                        <div className={s.offerBlock}>
+                          <CheckBox
+                            initialState={
+                              values[selectedPayerFields?.offer_field] || false
+                            }
+                            setValue={item =>
+                              setFieldValue(`${selectedPayerFields?.offer_field}`, item)
+                            }
+                            className={s.checkbox}
+                            error={!!errors[selectedPayerFields?.offer_field]}
+                            touched={!!touched[selectedPayerFields?.offer_field]}
+                          />
+                          <div className={s.offerBlockText}>
+                            {t('I agree with', {
+                              ns: 'payers',
+                            })}{' '}
+                            <a
+                              target="_blank"
+                              href={OFERTA_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of Service', { ns: 'domains' })}
+                            </a>{' '}
+                            {t('and', { ns: 'domains' })}{' '}
+                            <a
+                              target="_blank"
+                              href={PRIVACY_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of the offer', { ns: 'domains' })}
+                            </a>
+                          </div>
                         </div>
                       </div>
-
                       {Number(cartData?.tax) > 0 ? (
-                        <div className={s.totalSum}>
+                        <div className={cn(s.totalSum, s.padding)}>
                           {t('Tax included')}: <b>{cartData?.tax} EUR</b>
                         </div>
                       ) : null}

@@ -9,7 +9,7 @@ import s from './Payments.module.scss'
 export default function Component() {
   const dispatch = useDispatch()
 
-  let paymentsList = useSelector(billingSelectors.getPaymentsList)
+  const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
 
   const [p_cnt, setP_cnt] = useState(10)
