@@ -16,18 +16,12 @@ export default function Component() {
   const cartData = JSON.parse(data)
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
-  const expensesList = useSelector(billingSelectors.getExpensesList)
 
   const [paymentId, setPaymentId] = useState(null)
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 1 }
     dispatch(billingOperations.getPayments(data))
-  }, [])
-
-  useEffect(() => {
-    const data = { p_num: 1, p_cnt: 1 }
-    dispatch(billingOperations.getExpenses(data))
   }, [])
 
   useEffect(() => {
@@ -41,18 +35,6 @@ export default function Component() {
       }
     }
   }, [paymentsList])
-
-  useEffect(() => {
-    if (expensesList && expensesList?.length > 0) {
-      const item = expensesList?.find(e => {
-        e?.billorder?.$ === cartData?.billorder
-      })
-
-      if (item) {
-        setPaymentId(item?.id?.$)
-      }
-    }
-  }, [expensesList])
 
   useEffect(() => {
     if (paymentId) {

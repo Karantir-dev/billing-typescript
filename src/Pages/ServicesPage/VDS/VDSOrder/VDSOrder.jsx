@@ -638,6 +638,12 @@ export default function VDSOrder() {
                           itemsList={getOptionsListExtended('autoprolong')}
                           getElement={value => {
                             setFieldValue('autoprolong', value)
+
+                            onChangeField(
+                              period,
+                              { ...values, autoprolong: value },
+                              'autoprolong',
+                            )
                           }}
                           label={`${t('autoprolong')}:`}
                           isShadow
