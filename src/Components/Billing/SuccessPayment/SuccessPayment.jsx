@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
+import { SITE_URL } from '../../../config/config'
 import { coockies } from '../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '../../../Redux'
@@ -69,12 +70,20 @@ export default function Component() {
     <div className={s.modalBg}>
       <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
-        <SuccessPay />
-        <div className={s.approved}>{t('Payment approved')}</div>
-        <div className={s.completed}>{t('Payment was completed successfully')}</div>
-        <Link className={s.link} to={routes.BILLING}>
-          {t('Back to billing')}
-        </Link>
+        <div className={s.modalTopBlock}>
+          <SuccessPay />
+          <div className={s.approved}>{t('Payment approved')}</div>
+          <div className={s.completed}>{t('Payment was completed successfully')}</div>
+        </div>
+
+        <div className={s.linksBlock}>
+          <a className={s.link} href={SITE_URL}>
+            {t('Back to site')}
+          </a>
+          <Link className={s.link} to={routes.BILLING}>
+            {t('Back to billing')}
+          </Link>
+        </div>
       </div>
     </div>
   )
