@@ -21,37 +21,10 @@
   }
 }
 
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  z-index: 50;
-
-  background-color: var(--elements-bgc);
-  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.07);
-}
-
-.flex {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .logo {
   width: 90px;
   height: 40px;
   margin-top: -8px;
-}
-
-.btns_wrapper {
-  width: fit-content;
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  margin-top: 14px;
 }
 
 // ADAPTIVE
@@ -63,17 +36,9 @@
     background-position: 50% 60%;
   }
 
-  .header {
-    height: 74px;
-  }
-
   .logo {
     width: 102px;
     height: 45px;
-  }
-
-  .btns_wrapper {
-    margin-top: 0;
   }
 }
 
@@ -399,17 +364,17 @@
 // }
 
 // @media screen and (min-width: 1550px) {
-  // .authScreens {
-  //   .bannerBlock {
-  //     img {
-  //       max-width: 711px;
-  //     }
-  //   }
-  //   .blockWithBaner {
-  //     margin-top: 0px;
-  //     margin-left: calc(50% + 100px);
-  //   }
-  // }
+// .authScreens {
+//   .bannerBlock {
+//     img {
+//       max-width: 711px;
+//     }
+//   }
+//   .blockWithBaner {
+//     margin-top: 0px;
+//     margin-left: calc(50% + 100px);
+//   }
+// }
 //   .bannerSmallBlock {
 //     display: none;
 //   }
@@ -504,34 +469,34 @@
 //     }
 //   }
 
-  // .listOfSale {
-  //   margin-top: 30px;
+// .listOfSale {
+//   margin-top: 30px;
 
-  //   li {
-  //     font-style: normal;
-  //     font-weight: 400;
-  //     font-size: 20px;
-  //     line-height: 24px;
-  //     color: rgba(255, 255, 255, 1);
-  //     margin-bottom: 15px;
+//   li {
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: 20px;
+//     line-height: 24px;
+//     color: rgba(255, 255, 255, 1);
+//     margin-bottom: 15px;
 
-  //     b {
-  //       font-weight: 800;
+//     b {
+//       font-weight: 800;
 
-  //       background: linear-gradient(90.1deg, #ffa514 1.52%, #f8690c 19.44%);
-  //       -webkit-background-clip: text;
-  //       -webkit-text-fill-color: transparent;
-  //       background-clip: text;
-  //       text-fill-color: transparent;
-  //     }
-  //   }
-  // }
+//       background: linear-gradient(90.1deg, #ffa514 1.52%, #f8690c 19.44%);
+//       -webkit-background-clip: text;
+//       -webkit-text-fill-color: transparent;
+//       background-clip: text;
+//       text-fill-color: transparent;
+//     }
+//   }
+// }
 // }
 
 // @media screen and (min-width: 1920px) {
-  // .bannerBlock {
-  //   display: block;
-  // }
+// .bannerBlock {
+//   display: block;
+// }
 
 //   .authScreens {
 //     .bannerBlock {

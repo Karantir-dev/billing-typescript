@@ -1,4 +1,5 @@
 export { default as AuthPage } from './AuthPage/AuthPage'
+export { default as AuthPageHeader } from './AuthPage/AuthPageHeader/AuthPageHeader'
 export { default as AccessLogPage } from './AccessLogPage/AccessLogPage'
 export { default as SupportPage } from './SupportPage/SupportPage'
 export { default as OpenedTicker } from './SupportPage/OpenedTicket/OpenedTicket'

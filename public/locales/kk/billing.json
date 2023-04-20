@@ -61,7 +61,7 @@
   "Payment approved": "Төлем мақұлданды",
   "Payment was completed successfully": "Төлем сәтті түрде жасалды",
   "Back to billing": "Шот жіберуге оралу",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "Төлем жасауда қате орын алды. Сұрақтарыңыз болса, қолдау қызметіне хабарласыңыз. ",
+  "payment_error_text": "Қайталап көріңіз немесе басқа төлем жүйесін пайдаланыңыз. Сұрақтарыңыз болса, қолдау қызметіне хабарласыңыз.",
   "Support service": "Қолдау қызметі",
   "Payment error": "Төлем қатесі",
 

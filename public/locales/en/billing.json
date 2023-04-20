@@ -61,7 +61,7 @@
   "Payment approved": "Payment approved",
   "Payment was completed successfully": "Payment was completed successfully",
   "Back to billing": "Back to billing",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "An error occurred while processing the payment. If you have any questions, please contact support.",
+  "payment_error_text": "Please try again or use another payment system. If you have any questions, please contact support.",
   "Support service": "Support service",
   "Payment error": "Payment error",
   "Telematic services": "Telematic services",
