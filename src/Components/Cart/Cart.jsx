@@ -139,6 +139,14 @@ export default function Component() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  useEffect(() => {
+    if (selectedPayerFields && !selectedPayerFields?.offer_field) {
+      setSelectedPayerFields(d => {
+        return { ...d, offer_field: 'offer_3' }
+      })
+    }
+  }, [selectedPayerFields])
+
   //isPersonalBalance
 
   const validationSchema = Yup.object().shape({
@@ -149,7 +157,6 @@ export default function Component() {
             then: Yup.string().required(t('Choose payer')),
           })
         : null,
-    slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
     person: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -1266,6 +1273,7 @@ export default function Component() {
 
                         <div className={s.offerBlock}>
                           <CheckBox
+                            name={selectedPayerFields?.offer_field}
                             initialState={
                               values[selectedPayerFields?.offer_field] || false
                             }
