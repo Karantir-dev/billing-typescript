@@ -1,0 +1,29 @@
+name: Add Reviewers
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  add_reviewers:
+    name: Add Reviewers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find reviewers
+        uses: madrapps/add-reviewers@v1
+        with:
+          token: ${{ github.token }}
+          reviewers: ${{ vars.REVIEWERS  }}
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: general
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: |
+            Please check <${{ github.event.pull_request.html_url }}|pull request>
+            ${{ vars.REVIEWERS_SLACK }}
+          SLACK_TITLE: Please check pull request
+          SLACK_USERNAME: Trigger
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
