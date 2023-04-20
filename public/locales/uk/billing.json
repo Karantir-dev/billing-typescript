@@ -61,7 +61,7 @@
   "Payment approved": "Платіж схвалений",
   "Payment was completed successfully": "Оплата була успішно завершена",
   "Back to billing": "Повернутись у білінг",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "Під час опрацювання платежу, якщо у вас виникли запитання, зверніться в підтримку. ",
+  "payment_error_text": "Будь ласка, спробуйте ще раз або скористайтеся іншою платіжною системою. Якщо у вас виникли питання, зверніться до технічної підтримки.",
   "Support service": "Служба підтримки",
   "Payment error": "Помилка оплати",
 

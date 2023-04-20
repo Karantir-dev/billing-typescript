@@ -60,7 +60,7 @@
   "Payment amount from": "გადახდა დამტკიცებულია",
   "Payment was completed successfully": "გადახდა წარმატებით შესრულდა",
   "Back to billing": "ბილინგში დაბრუნება",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "შეცდომა გადახდის დამუშავებისას. თუ რაიმე კითხვა გაგიჩნდათ, გთხოვთ დაუკავშირდეთ მხარდაჭერის სამსახურს. ",
+  "payment_error_text": "გთხოვთ, სცადოთ ხელახლა ან გამოიყენოთ სხვა გადახდის სისტემა. თუ თქვენ გაქვთ რაიმე შეკითხვები, გთხოვთ, დაუკავშირდეთ მხარდაჭერას.",
   "Support service": "მხარდაჭერის სამსახური",
   "Payment error": "შეცდომა გადახდის პროცესში",
 
