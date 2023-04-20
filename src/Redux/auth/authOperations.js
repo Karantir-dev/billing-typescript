@@ -4,7 +4,7 @@ import axios from 'axios'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
 import userOperations from '../userInfo/userOperations'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive, coockies } from '../../utils'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -95,6 +95,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
           dispatch(authActions.logoutSuccess())
+          coockies.eraseCookie('sessionId')
         }
       } else {
         if (data.doc.error.msg.$) throw new Error(data.doc.error.msg.$)
@@ -235,6 +236,7 @@ const logout = () => (dispatch, getState) => {
     .then(data => {
       if (data.status === 200) {
         dispatch(authActions.logoutSuccess())
+        coockies.eraseCookie('sessionId')
         dispatch(actions.hideLoader())
       } else {
         throw new Error(data.doc.error.msg.$)

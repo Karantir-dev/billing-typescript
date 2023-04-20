@@ -201,7 +201,6 @@ export default function Component(props) {
             onSubmit={createPaymentMethodHandler}
           >
             {({ values, setFieldValue, touched, errors }) => {
-              console.log(values)
               const parsePaymentInfo = text => {
                 const splittedText = text?.split('<p>')
                 if (splittedText?.length > 0) {
