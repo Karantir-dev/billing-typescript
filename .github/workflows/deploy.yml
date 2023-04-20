@@ -32,7 +32,8 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+        if: failure()
+
   eslint:
     runs-on: ubuntu-latest
     strategy:
@@ -57,7 +58,7 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+        if: failure()
 
   build_and_push:
       needs: [jest, eslint]
@@ -97,7 +98,7 @@ jobs:
             if_mention: always
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: always()
+          if: failure()
 
 
   deploy_on_server:
@@ -148,4 +149,4 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+        if: failure()
