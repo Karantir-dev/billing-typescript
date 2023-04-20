@@ -108,7 +108,11 @@ export default function VDSItem({
                   ref={editField}
                 >
                   <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                    <span
+                      className={cn({
+                        [s.placeholder_text]: editName === '' && originName === '',
+                      })}
+                    >
                       {t(
                         shortTitle(editName, 12) ||
                           shortTitle(originName?.trim(), 12) ||
@@ -142,7 +146,11 @@ export default function VDSItem({
                     ref={editField}
                   >
                     <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                      <span
+                        className={cn({
+                          [s.placeholder_text]: editName === '' && originName === '',
+                        })}
+                      >
                         {t(
                           shortTitle(editName, 12) ||
                             shortTitle(originName?.trim(), 12) ||
@@ -297,7 +305,8 @@ export default function VDSItem({
                       disabled={
                         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong
+                        !rights?.prolong ||
+                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
                       }
                     >
                       <Clock className={s.tool_icon} />
