@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
-import * as routes from '../../../routes'
-import s from './SuccessPayment.module.scss'
 import { coockies } from '../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '../../../Redux'
+import { AuthPageHeader } from '../../../Pages'
+import * as routes from '../../../routes'
+import s from './SuccessPayment.module.scss'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const data = coockies.getCookie('cartData')
   const cartData = JSON.parse(data)
@@ -18,6 +20,10 @@ export default function Component() {
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
   const [paymentId, setPaymentId] = useState(null)
+
+  const backHandler = () => {
+    navigate(routes.BILLING)
+  }
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 1 }
@@ -61,6 +67,7 @@ export default function Component() {
 
   return (
     <div className={s.modalBg}>
+      <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
         <SuccessPay />
         <div className={s.approved}>{t('Payment approved')}</div>

@@ -10,6 +10,7 @@ const SERVER_ERR_MSG = 'auth_error'
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
+  coockies.eraseCookie('sessionId')
 
   const redirectID = localStorage.getItem('redirectID')
 
@@ -290,6 +291,7 @@ const register =
   (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
   dispatch => {
     dispatch(actions.showLoader())
+    coockies.eraseCookie('sessionId')
 
     axiosInstance
       .post(
