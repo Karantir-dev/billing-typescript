@@ -1,0 +1,16 @@
+name: Add Reviewers
+
+on:
+  pull_request:
+    types: [ opened, reopened ]
+
+jobs:
+  add_reviewers:
+    name: Add Reviewers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find reviewers
+        uses: madrapps/add-reviewers@v1
+        with:
+          token: ${{ github.token }}
+          reviewers: ${{ vars.REVIEWERS  }}
