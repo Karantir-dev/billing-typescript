@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
 import { SITE_URL } from '../../../config/config'
-import { coockies } from '../../../utils'
+import { coockies, parseLang } from '../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '../../../Redux'
 import { AuthPageHeader } from '../../../Pages'
@@ -11,7 +11,7 @@ import * as routes from '../../../routes'
 import s from './SuccessPayment.module.scss'
 
 export default function Component() {
-  const { t } = useTranslation(['billing', 'other'])
+  const { t, i18n } = useTranslation(['billing', 'other'])
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -77,7 +77,12 @@ export default function Component() {
         </div>
 
         <div className={s.linksBlock}>
-          <a className={s.link} href={SITE_URL}>
+          <a
+            className={s.link}
+            href={`${SITE_URL}/${parseLang(i18n?.language)}${
+              i18n?.language !== 'en' ? '/' : ''
+            }`}
+          >
             {t('Back to site')}
           </a>
           <Link className={s.link} to={routes.BILLING}>

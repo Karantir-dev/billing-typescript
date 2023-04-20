@@ -16,3 +16,4 @@ export { default as systemNotificationsTranslate } from './systemNotificationsTr
 export { default as translateSupportPaymentError } from './translateSupportPaymentError'
 export { default as shortTitle } from './shortTitle'
 export { default as coockies } from './coockies'
+export { default as parseLang } from './parseLangToSite'
