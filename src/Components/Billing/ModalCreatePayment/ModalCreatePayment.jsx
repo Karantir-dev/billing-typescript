@@ -42,7 +42,6 @@ export default function Component(props) {
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
 
-  const [amount, setAmount] = useState('')
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
   const [showMore, setShowMore] = useState(false)
@@ -176,7 +175,7 @@ export default function Component(props) {
             initialValues={{
               profile:
                 selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
-              amount: amount || '',
+              amount: '',
               slecetedPayMethod: slecetedPayMethod || undefined,
               name: selectedPayerFields?.name || '',
               address_physical: selectedPayerFields?.address_physical || '',
@@ -542,27 +541,27 @@ export default function Component(props) {
                                 'amount',
                                 e?.target?.value.replace(/[^0-9.]/g, ''),
                               )
-                              setAmount(e?.target?.value.replace(/[^0-9.]/g, ''))
                             }}
                             className={s.input}
                             error={!!errors.amount}
                             touched={!!touched.amount}
                             isRequired
                           />
-                          {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
-                            <PaymentCurrencyBtn
-                              list={paymentsCurrency?.payment_currency_list}
-                              currentValue={values?.payment_currency?.title}
-                              setValue={item => {
-                                setFieldValue('payment_currency', item)
-                                dispatch(
-                                  billingOperations.getPaymentMethod({
-                                    payment_currency: item?.value,
-                                  }),
-                                )
-                              }}
-                            />
-                          )}
+                          {paymentsCurrency &&
+                            paymentsCurrency?.payment_currency_list && (
+                              <PaymentCurrencyBtn
+                                list={paymentsCurrency?.payment_currency_list}
+                                currentValue={values?.payment_currency?.title}
+                                setValue={item => {
+                                  setFieldValue('payment_currency', item)
+                                  dispatch(
+                                    billingOperations.getPaymentMethod({
+                                      payment_currency: item?.value,
+                                    }),
+                                  )
+                                }}
+                              />
+                            )}
                         </div>
                       </div>
                       <div className={s.offerBlock}>
