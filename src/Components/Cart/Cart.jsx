@@ -74,7 +74,7 @@ export default function Component() {
   const [showMore, setShowMore] = useState(false)
   const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
-  const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
+  const [selectedPayMethod, setSelectedPayMethod] = useState(undefined)
   const [isOffer, setIsOffer] = useState(false)
 
   const geoData = useSelector(authSelectors.getGeoData)
@@ -222,7 +222,7 @@ export default function Component() {
       billorder: cartData?.billorder,
       amount: cartData?.total_sum,
       profile: values?.profile === 'new' ? '' : values?.profile,
-      paymethod: values?.slecetedPayMethod?.paymethod?.$,
+      paymethod: values?.selectedPayMethod?.paymethod?.$,
       country:
         selectedPayerFields?.country || selectedPayerFields?.country_physical || '',
       profiletype: values?.profiletype || '',
@@ -241,7 +241,7 @@ export default function Component() {
         : 'off',
     }
 
-    if (values?.slecetedPayMethod?.action?.button?.$name === 'fromsubaccount') {
+    if (values?.selectedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
     }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
@@ -886,11 +886,11 @@ export default function Component() {
                   eu_vat: selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: isOffer,
 
-                  slecetedPayMethod: slecetedPayMethod || undefined,
+                  selectedPayMethod: selectedPayMethod || undefined,
                   promocode: '',
                   isPersonalBalance:
-                    slecetedPayMethod?.name?.$?.includes('balance') &&
-                    slecetedPayMethod?.paymethod_type?.$ === '0'
+                    selectedPayMethod?.name?.$?.includes('balance') &&
+                    selectedPayMethod?.paymethod_type?.$ === '0'
                       ? 'on'
                       : 'off',
                 }}
@@ -918,8 +918,8 @@ export default function Component() {
                   }
 
                   const parsedText =
-                    values?.slecetedPayMethod &&
-                    parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+                    values?.selectedPayMethod &&
+                    parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
 
                   const setPayerHandler = val => {
                     setFieldValue('profile', val)
@@ -984,8 +984,8 @@ export default function Component() {
                                 return (
                                   <button
                                     onClick={() => {
-                                      setFieldValue('slecetedPayMethod', method)
-                                      setSlecetedPayMethod(method)
+                                      setFieldValue('selectedPayMethod', method)
+                                      setSelectedPayMethod(method)
 
                                       if (
                                         method?.name?.$?.includes('balance') &&
@@ -1000,9 +1000,9 @@ export default function Component() {
                                     className={cn(s.paymentMethodBtn, {
                                       [s.selected]:
                                         paymethod_type?.$ ===
-                                          values?.slecetedPayMethod?.paymethod_type?.$ &&
+                                          values?.selectedPayMethod?.paymethod_type?.$ &&
                                         paymethod?.$ ===
-                                          values?.slecetedPayMethod?.paymethod?.$,
+                                          values?.selectedPayMethod?.paymethod?.$,
                                     })}
                                     key={name?.$}
                                   >
@@ -1028,13 +1028,13 @@ export default function Component() {
 
                         <ErrorMessage
                           className={s.error_message}
-                          name={'slecetedPayMethod'}
+                          name={'selectedPayMethod'}
                           component="span"
                         />
                       </div>
-                      {(values?.slecetedPayMethod?.name?.$?.includes('balance') &&
-                        values?.slecetedPayMethod?.paymethod_type?.$ === '0') ||
-                      !values?.slecetedPayMethod ? null : (
+                      {(values?.selectedPayMethod?.name?.$?.includes('balance') &&
+                        values?.selectedPayMethod?.paymethod_type?.$ === '0') ||
+                      !values?.selectedPayMethod ? null : (
                         <div className={(s.formBlock, s.padding)}>
                           <div className={s.formBlockTitle}>{t('Payer')}:</div>
                           <div className={s.fieldsGrid}>
@@ -1180,8 +1180,8 @@ export default function Component() {
                           </div>
                         </div>
                       )}
-                      {values?.slecetedPayMethod &&
-                        values?.slecetedPayMethod?.payment_minamount && (
+                      {values?.selectedPayMethod &&
+                        values?.selectedPayMethod?.payment_minamount && (
                           <div
                             className={cn(s.infotext, s.padding, {
                               [s.showMore]: showMore,
@@ -1199,7 +1199,7 @@ export default function Component() {
                             </div>
                           </div>
                         )}
-                      {values?.slecetedPayMethod && readMore && (
+                      {values?.selectedPayMethod && readMore && (
                         <button
                           type="button"
                           onClick={() => setShowMore(!showMore)}
@@ -1331,8 +1331,8 @@ export default function Component() {
                           <Button
                             disabled={
                               Number(values.amount) <
-                                values?.slecetedPayMethod?.payment_minamount?.$ ||
-                              !values?.slecetedPayMethod
+                                values?.selectedPayMethod?.payment_minamount?.$ ||
+                              !values?.selectedPayMethod
                             }
                             className={s.saveBtn}
                             isShadow
