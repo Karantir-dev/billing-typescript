@@ -1086,6 +1086,8 @@ export default function Component() {
                               selectValue={values.country}
                               selectClassName={s.select}
                               countrySelectClassName={s.countrySelectItem}
+                              geoData={geoData}
+                              payersSelectLists={payersSelectLists}
                             />
 
                             <InputField

@@ -1,40 +1,23 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-
-import { payersSelectors, authSelectors, payersOperations } from '../../../Redux'
 import { BASE_URL } from '../../../config/config'
-
 import { Select } from '../..'
 
 const geoImgURL = `${BASE_URL}/manimg/common/flag/`
 
 export default function SelectGeo(props) {
-  let { setSelectFieldValue, selectValue, selectClassName, countrySelectClassName } =
-    props
-
-  const dispatch = useDispatch()
-  const geoData = useSelector(authSelectors.getGeoData)
-  const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
-
+  let {
+    setSelectFieldValue,
+    selectValue,
+    selectClassName,
+    countrySelectClassName,
+    geoData,
+    payersSelectLists,
+  } = props
   const { t } = useTranslation(['countries', 'other'])
 
-  const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
-
-  useEffect(() => {
-    if (payersSelectLists) {
-      if (!payersSelectedFields?.country || !payersSelectedFields?.country_physical) {
-        const data = {
-          country: payersSelectLists?.country[0]?.$key,
-          profiletype: payersSelectLists?.profiletype[0]?.$key,
-        }
-        dispatch(payersOperations.getPayerModalInfo(data))
-      }
-    }
-  }, [payersSelectLists])
-
-  return payersSelectLists?.country?.length ? (
+  return payersSelectLists?.country?.[0] ? (
     <Select
       placeholder={t('Not chosen', { ns: 'other' })}
       label={`${t('The country', { ns: 'other' })}:`}
@@ -42,17 +25,17 @@ export default function SelectGeo(props) {
       getElement={item => setSelectFieldValue('country', item)}
       isShadow
       className={selectClassName}
-      itemsList={payersSelectLists?.country?.map(({ $key, $, $image }) => {
-        return {
+      itemsList={[
+        {
           label: (
             <div className={countrySelectClassName}>
-              <img src={`${BASE_URL}${$image}`} alt="flag" />
-              {t(`${$.trim()}`)}
+              <img src={`${BASE_URL}${payersSelectLists.country[0].$image}`} alt="flag" />
+              {t(`${payersSelectLists.country[0].$.trim()}`)}
             </div>
           ),
-          value: $key,
-        }
-      })}
+          value: payersSelectLists.country[0].$key,
+        },
+      ]}
       isRequired
       disabled
       withoutArrow={true}
@@ -68,15 +51,17 @@ export default function SelectGeo(props) {
       }}
       isShadow
       className={selectClassName}
-      itemsList={payersSelectLists?.country?.map(() => ({
-        label: (
-          <div className={countrySelectClassName}>
-            <img src={`${geoImgURL}${geoData?.clients_country_code}.png`} alt="flag" />
-            {t(`${geoData?.clients_country_name.trim()}`)}
-          </div>
-        ),
-        value: geoData?.clients_country_id,
-      }))}
+      itemsList={[
+        {
+          label: (
+            <div className={countrySelectClassName}>
+              <img src={`${geoImgURL}${geoData?.clients_country_code}.png`} alt="flag" />
+              {t(`${geoData?.clients_country_name.trim()}`)}
+            </div>
+          ),
+          value: geoData?.clients_country_id,
+        },
+      ]}
       isRequired
       disabled
       withoutArrow={true}
@@ -89,4 +74,6 @@ SelectGeo.propTypes = {
   selectValue: PropTypes.string,
   selectClassName: PropTypes.string,
   countrySelectClassName: PropTypes.string,
+  geoData: PropTypes.object,
+  payersSelectLists: PropTypes.object,
 }

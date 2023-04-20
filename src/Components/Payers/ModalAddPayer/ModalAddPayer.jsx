@@ -9,10 +9,10 @@ import {
   Button,
   CheckBox,
   InputWithAutocomplete,
-  // SelectGeo,
+  SelectGeo,
 } from '../..'
 import { payersOperations, payersSelectors, authSelectors } from '../../../Redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
+import { OFERTA_URL, PRIVACY_URL } from '../../../config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
@@ -203,59 +203,14 @@ export default function Component(props) {
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>2. {t('Actual address')}</div>
                     <div className={s.formFieldsBlock}>
-                      {payersSelectLists?.country?.length ? (
-                        <Select
-                          placeholder={t('Not chosen', { ns: 'other' })}
-                          label={`${t('The country', { ns: 'other' })}:`}
-                          value={values.country}
-                          getElement={item => setFieldValue('country', item)}
-                          isShadow
-                          className={s.select}
-                          itemsList={payersSelectLists?.country?.map(
-                            ({ $key, $, $image }) => {
-                              return {
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
-                                  </div>
-                                ),
-                                value: $key,
-                              }
-                            },
-                          )}
-                          isRequired
-                          disabled
-                          withoutArrow={true}
-                        />
-                      ) : (
-                        <Select
-                          placeholder={t('Not chosen', { ns: 'other' })}
-                          label={`${t('The country', { ns: 'other' })}:`}
-                          value={geoData?.clients_country_id}
-                          setFieldValue={geoData?.clients_country_id}
-                          setElement={() => {
-                            return setFieldValue('country', geoData?.clients_country_id)
-                          }}
-                          isShadow
-                          className={s.select}
-                          itemsList={payersSelectLists?.country?.map(() => ({
-                            label: (
-                              <div className={s.countrySelectItem}>
-                                <img
-                                  src={`${BASE_URL}/manimg/common/flag/${geoData?.clients_country_code}.png`}
-                                  alt="flag"
-                                />
-                                {t(`${geoData?.clients_country_name.trim()}`)}
-                              </div>
-                            ),
-                            value: geoData?.clients_country_id,
-                          }))}
-                          isRequired
-                          disabled
-                          withoutArrow={true}
-                        />
-                      )}
+                      <SelectGeo
+                        setSelectFieldValue={item => setFieldValue('country', item)}
+                        selectValue={values.country}
+                        selectClassName={s.select}
+                        countrySelectClassName={s.countrySelectItem}
+                        geoData={geoData}
+                        payersSelectLists={payersSelectLists}
+                      />
 
                       <InputField
                         inputWrapperClass={s.inputHeight}
