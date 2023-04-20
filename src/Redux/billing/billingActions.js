@@ -34,6 +34,8 @@ const clearPaymentMethodList = createAction('CLEAR_PAYMENT_METHOD_LIST')
 const setPaymentMethodCount = createAction('SET_PAYMENT_METHOD_COUNT')
 const clearPaymentMethodCount = createAction('CLEAR_PAYMENT_METHOD_COUNT')
 
+const setPeriodValue = createAction('SET_PERIOD_VALUE')
+
 export default {
   setPaymentMethodList,
   deletePaymentMethod,
@@ -64,4 +66,6 @@ export default {
   setAutoPaymentsList,
   deleteAutoPayment,
   setAutoPaymentConfig,
+
+  setPeriodValue,
 }

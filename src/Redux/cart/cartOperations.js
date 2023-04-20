@@ -13,6 +13,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
   const {
     auth: { sessionId },
     cart: { cartState },
+    billing: { periodValue },
   } = getState()
 
   axiosInstance
@@ -38,6 +39,13 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       data.doc?.list?.forEach(el => {
         if (el.$name === 'itemlist') {
           cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
+
+          cartData.elemList.forEach(el => {
+            if (el['item.type']?.$ === 'vds') {
+              el['item.period'].$ = periodValue
+              el['item.autoprolong'].$ = periodValue
+            }
+          })
         }
       })
 
