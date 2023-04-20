@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Logo } from '../../../images'
 import { ThemeBtn, LangBtn } from '../../../Components'
+import { SITE_URL } from '../../../config/config'
 import s from './AuthPageHeader.module.scss'
 
 export default function AuthPageHeader(props) {
@@ -24,7 +25,7 @@ export default function AuthPageHeader(props) {
 }
 
 AuthPageHeader.defaultProps = {
-  onLogoClick: () => window.open('https://zomro.com/'),
+  onLogoClick: () => window.open(SITE_URL),
 }
 
 AuthPageHeader.propTypes = {
