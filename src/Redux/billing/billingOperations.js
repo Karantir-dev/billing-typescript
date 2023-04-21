@@ -3,7 +3,7 @@ import { actions, billingActions, payersOperations, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
-import { checkIfTokenAlive, coockies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 
 const getPayments =
   (body = {}) =>
@@ -624,7 +624,7 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data.doc?.payment_id) {
-              coockies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
+              cookies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
             }
 
             if (data.doc.ok) {

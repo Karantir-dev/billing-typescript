@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
 import { SITE_URL } from '../../../config/config'
-import { coockies, parseLang } from '../../../utils'
+import { cookies, parseLang } from '../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '../../../Redux'
 import { AuthPageHeader } from '../../../Pages'
@@ -15,10 +15,10 @@ export default function Component() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const data = coockies.getCookie('cartData')
+  const data = cookies.getCookie('cartData')
   const cartData = JSON.parse(data)
 
-  const refillId = coockies.getCookie('refill_id')
+  const refillId = cookies.getCookie('refill_id')
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
@@ -63,7 +63,7 @@ export default function Component() {
           },
         })
 
-        coockies.eraseCookie('cartData')
+        cookies.eraseCookie('cartData')
       }
       if (refillId) {
         window.dataLayer.push({ ecommerce: null })
@@ -87,7 +87,7 @@ export default function Component() {
           },
         })
 
-        coockies.eraseCookie('refill_id')
+        cookies.eraseCookie('refill_id')
       }
     }
   }, [paymentId])

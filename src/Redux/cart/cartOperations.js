@@ -4,7 +4,7 @@ import { actions, cartActions, billingOperations, userOperations } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, coockies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -360,7 +360,7 @@ const setPaymentMethods =
                 }
               })
 
-              coockies?.setCookie(
+              cookies?.setCookie(
                 'cartData',
                 JSON.stringify({
                   billorder: cartData?.billorder,
