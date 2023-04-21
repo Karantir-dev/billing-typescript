@@ -624,7 +624,7 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data.doc?.payment_id) {
-              coockies.setCookie('reffil_id', data.doc?.payment_id?.$, 30)
+              coockies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
             }
 
             if (data.doc.ok) {

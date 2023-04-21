@@ -18,7 +18,7 @@ export default function Component() {
   const data = coockies.getCookie('cartData')
   const cartData = JSON.parse(data)
 
-  const reffilId = coockies.getCookie('reffil_id')
+  const refillId = coockies.getCookie('refill_id')
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
@@ -36,7 +36,7 @@ export default function Component() {
   useEffect(() => {
     if (paymentsList && paymentsList?.length > 0) {
       const item = paymentsList?.find(
-        e => e?.billorder?.$ === cartData?.billorder || e?.id?.$ === reffilId,
+        e => e?.billorder?.$ === cartData?.billorder || e?.id?.$ === refillId,
       )
 
       if (item) {
@@ -65,29 +65,29 @@ export default function Component() {
 
         coockies.eraseCookie('cartData')
       }
-      if (reffilId) {
+      if (refillId) {
         window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
-            transaction_id: paymentId?.id?.$ || reffilId,
+            transaction_id: paymentId?.id?.$ || refillId,
             affiliation: 'cp.zomro.com',
             value: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
             tax: Number(paymentId?.tax?.$?.replace('EUR', '')) || 0,
             currency: 'EUR',
             items: [
               {
-                item_name: 'Reffil',
+                item_name: 'Refill',
                 item_id: paymentId?.id?.$ || '',
                 price: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
-                item_category: 'Reffil account',
+                item_category: 'Refill account',
                 quantity: 1,
               },
             ],
           },
         })
 
-        coockies.eraseCookie('reffil_id')
+        coockies.eraseCookie('refill_id')
       }
     }
   }, [paymentId])
