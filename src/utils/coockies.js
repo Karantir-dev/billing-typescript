@@ -10,7 +10,7 @@ function setCookie(name, value, days) {
     expires = '; expires=' + date.toUTCString()
   }
 
-  document.cookie = name + '=' + (value || '') + expires + `; path=/; domain=.${hostName}`
+  document.cookie = name + '=' + (value || '') + expires + `; path=/; domain=.${hostName}` //
 }
 
 function getCookie(name) {
@@ -26,7 +26,7 @@ function getCookie(name) {
 
 function eraseCookie(name) {
   document.cookie =
-    name + `=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; domain=.${hostName}`
+    name + `=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; domain=.${hostName}` //
 }
 
 export default {

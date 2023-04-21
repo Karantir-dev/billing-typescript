@@ -353,7 +353,7 @@ const setPaymentMethods =
               const items = cartData?.elemList?.map(e => {
                 return {
                   item_name: e.pricelist_name?.$ || '',
-                  item_id: e.id?.$ || '',
+                  item_id: e['item.id']?.$ || '',
                   price: Number(e.cost?.$) || 0,
                   item_category: e['item.type']?.$ || '',
                   quantity: 1,

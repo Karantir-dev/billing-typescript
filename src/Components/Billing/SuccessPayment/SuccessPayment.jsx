@@ -18,6 +18,8 @@ export default function Component() {
   const data = coockies.getCookie('cartData')
   const cartData = JSON.parse(data)
 
+  const reffilId = coockies.getCookie('reffil_id')
+
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
   const [paymentId, setPaymentId] = useState(null)
@@ -33,12 +35,12 @@ export default function Component() {
 
   useEffect(() => {
     if (paymentsList && paymentsList?.length > 0) {
-      const item = paymentsList?.find(e => {
-        return e?.billorder?.$ === cartData?.billorder
-      })
+      const item = paymentsList?.find(
+        e => e?.billorder?.$ === cartData?.billorder || e?.id?.$ === reffilId,
+      )
 
       if (item) {
-        setPaymentId(item?.id?.$)
+        setPaymentId(item)
       }
     }
   }, [paymentsList])
@@ -50,7 +52,7 @@ export default function Component() {
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
-            transaction_id: paymentId || cartData?.billorder,
+            transaction_id: paymentId?.id?.$ || cartData?.billorder,
             affiliation: 'cp.zomro.com',
             value: Number(cartData?.total_sum) || 0,
             tax: Number(cartData?.tax) || 0,
@@ -62,6 +64,32 @@ export default function Component() {
         })
 
         coockies.eraseCookie('cartData')
+      }
+      if (reffilId) {
+        window.dataLayer.push({ ecommerce: null })
+        window.dataLayer.push({
+          event: 'purchase',
+          ecommerce: {
+            transaction_id: paymentId?.id?.$ || reffilId,
+            affiliation: 'cp.zomro.com',
+            value: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
+            tax: Number(cartData?.tax) || 0,
+            shipping: '0',
+            currency: 'EUR',
+            coupon: cartData?.promocode,
+            items: [
+              {
+                item_name: 'Reffil',
+                item_id: paymentId?.id?.$ || '',
+                price: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
+                item_category: 'Reffil account',
+                quantity: 1,
+              },
+            ],
+          },
+        })
+
+        coockies.eraseCookie('reffil_id')
       }
     }
   }, [paymentId])
