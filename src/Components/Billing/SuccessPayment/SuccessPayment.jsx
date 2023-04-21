@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { SuccessPay } from '../../../images'
 import { SITE_URL } from '../../../config/config'
-import { coockies, parseLang } from '../../../utils'
+import { cookies, parseLang } from '../../../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '../../../Redux'
 import { AuthPageHeader } from '../../../Pages'
@@ -15,8 +15,10 @@ export default function Component() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const data = coockies.getCookie('cartData')
+  const data = cookies.getCookie('cartData')
   const cartData = JSON.parse(data)
+
+  const refillId = cookies.getCookie('refill_id')
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
@@ -33,12 +35,12 @@ export default function Component() {
 
   useEffect(() => {
     if (paymentsList && paymentsList?.length > 0) {
-      const item = paymentsList?.find(e => {
-        return e?.billorder?.$ === cartData?.billorder
-      })
+      const item = paymentsList?.find(
+        e => e?.billorder?.$ === cartData?.billorder || e?.id?.$ === refillId,
+      )
 
       if (item) {
-        setPaymentId(item?.id?.$)
+        setPaymentId(item)
       }
     }
   }, [paymentsList])
@@ -50,7 +52,7 @@ export default function Component() {
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
-            transaction_id: paymentId || cartData?.billorder,
+            transaction_id: paymentId?.id?.$ || cartData?.billorder,
             affiliation: 'cp.zomro.com',
             value: Number(cartData?.total_sum) || 0,
             tax: Number(cartData?.tax) || 0,
@@ -61,7 +63,31 @@ export default function Component() {
           },
         })
 
-        coockies.eraseCookie('cartData')
+        cookies.eraseCookie('cartData')
+      }
+      if (refillId) {
+        window.dataLayer.push({ ecommerce: null })
+        window.dataLayer.push({
+          event: 'purchase',
+          ecommerce: {
+            transaction_id: paymentId?.id?.$ || refillId,
+            affiliation: 'cp.zomro.com',
+            value: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
+            tax: Number(paymentId?.tax?.$?.replace('EUR', '')) || 0,
+            currency: 'EUR',
+            items: [
+              {
+                item_name: 'Refill',
+                item_id: paymentId?.id?.$ || '',
+                price: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
+                item_category: 'Refill account',
+                quantity: 1,
+              },
+            ],
+          },
+        })
+
+        cookies.eraseCookie('refill_id')
       }
     }
   }, [paymentId])

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions, authActions, authSelectors, selectors } from '../Redux'
 import i18n from 'i18next'
 import { toast } from 'react-toastify'
-import { coockies } from '../utils'
+import { cookies } from '../utils'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -74,7 +74,7 @@ const Component = () => {
   }, [onlineStatus])
 
   useEffect(() => {
-    const sessionId = coockies.getCookie('sessionId')
+    const sessionId = cookies.getCookie('sessionId')
     if(sessionId) {
       dispatch(authActions.loginSuccess(sessionId))
     }

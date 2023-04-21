@@ -3,7 +3,7 @@ import { actions, billingActions, payersOperations, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 
 const getPayments =
   (body = {}) =>
@@ -623,6 +623,10 @@ const createPaymentMethod =
           .then(({ data }) => {
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+            if (data.doc?.payment_id) {
+              cookies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
+            }
+
             if (data.doc.ok) {
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
@@ -659,6 +663,7 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
+
       const link = document.createElement('a')
       link.href = url
       document.body.appendChild(link)
