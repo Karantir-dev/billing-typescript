@@ -6,9 +6,10 @@ import { SITE_URL } from '../../../config/config'
 import { AuthPageHeader } from '../../../Pages'
 import s from './ErrorPayment.module.scss'
 import * as routes from '../../../routes'
+import { parseLang } from '../../../utils'
 
 export default function Component() {
-  const { t } = useTranslation(['billing', 'other', 'payers'])
+  const { t, i18n } = useTranslation(['billing', 'other', 'payers'])
   const navigate = useNavigate()
 
   const backHandler = () => {
@@ -30,7 +31,12 @@ export default function Component() {
         </div>
 
         <div className={s.linksBlock}>
-          <a className={s.link} href={SITE_URL}>
+          <a
+            className={s.link}
+            href={`${SITE_URL}/${parseLang(i18n?.language)}${
+              i18n?.language !== 'en' ? '/' : ''
+            }`}
+          >
             {t('Back to site')}
           </a>
           <Link className={s.link} to={routes.BILLING}>
