@@ -1,6 +1,6 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, cartActions, billingOperations, userOperations } from '..'
+import { actions, cartActions, billingOperations, userOperations, billingActions } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -42,10 +42,12 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 
           cartData.elemList.forEach(el => {
             if (el['item.type']?.$ === 'vds') {
-              el['item.period'].$ = periodValue
-              el['item.autoprolong'].$ = periodValue
+              el['item.period'].$ = periodValue ?? el['item.period']?.$
+              el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
             }
           })
+
+          dispatch(billingActions.setPeriodValue(null))
         }
       })
 

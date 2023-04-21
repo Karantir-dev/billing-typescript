@@ -23,7 +23,7 @@ const initialState = {
   autoPaymentsList: [],
   autoPaymentConfig: null,
 
-  periodValue: 1,
+  periodValue: null,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
