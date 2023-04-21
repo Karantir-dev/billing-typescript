@@ -73,10 +73,8 @@ export default function Component() {
             transaction_id: paymentId?.id?.$ || reffilId,
             affiliation: 'cp.zomro.com',
             value: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
-            tax: Number(cartData?.tax) || 0,
-            shipping: '0',
+            tax: Number(paymentId?.tax?.$?.replace('EUR', '')) || 0,
             currency: 'EUR',
-            coupon: cartData?.promocode,
             items: [
               {
                 item_name: 'Reffil',
