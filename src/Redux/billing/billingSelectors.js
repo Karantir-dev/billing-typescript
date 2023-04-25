@@ -19,6 +19,8 @@ const getAutoPaymentConfig = state => state.billing.autoPaymentConfig
 const getPaymentMethodList = state => state.billing.paymentMethodList
 const getPaymentMethodCount = state => state.billing.paymentMethodCount
 
+const getPeriodValue = state => state.billing.periodValue
+
 export default {
   getPaymentsList,
   getPaymentsCount,
@@ -40,4 +42,6 @@ export default {
 
   getPaymentMethodList,
   getPaymentMethodCount,
+
+  getPeriodValue,
 }

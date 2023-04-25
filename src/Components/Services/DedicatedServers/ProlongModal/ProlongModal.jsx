@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
+import { billingActions, dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 import { Button, Select } from '../../..'
 
@@ -67,6 +67,8 @@ export default function ProlongModal({
 
         withSale = is2xRam
       }
+
+      dispatch(billingActions.setPeriodValue(period))
     }
 
     if (elidList?.length > 1) {
