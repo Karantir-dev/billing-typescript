@@ -431,7 +431,7 @@ export default function Component() {
     }
 
     const shouldRenderButton = listLength =>
-      screenWidth < 768 ? listLength > 0 : listLength > 3
+      screenWidth < 768 ? listLength > 1 : listLength > 3
 
     const showMoreButton = listLength => {
       const toggleShowAllItems = () => setShowAllItems(!showAllItems)
