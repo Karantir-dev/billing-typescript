@@ -623,11 +623,10 @@ const createPaymentMethod =
           .then(({ data }) => {
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-            if (data.doc?.payment_id) {
-              cookies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
-            }
-
             if (data.doc.ok) {
+              data.doc?.payment_id &&
+                cookies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
+
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
             }
