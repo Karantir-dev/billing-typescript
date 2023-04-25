@@ -237,5 +237,10 @@
   "for all services from 14.02 to 16.02": "for all services from 14.02 to 16.02",
   "CASHBACK 14%": "CASHBACK 14%",
 
-  "more": "more"
+  "more": "more",
+
+  "month count 1": "month",
+  "month count 3/24": "months",
+  "month count 6/12/36": "months"
+
 }

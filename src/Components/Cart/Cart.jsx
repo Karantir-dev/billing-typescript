@@ -75,6 +75,7 @@ export default function Component() {
   const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
   const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
+  const [isOffer, setIsOffer] = useState(false)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -876,11 +877,15 @@ export default function Component() {
                     '',
                   profiletype: selectedPayerFields?.profiletype,
                   eu_vat: selectedPayerFields?.eu_vat || '',
-                  [selectedPayerFields?.offer_field]: false,
+                  [selectedPayerFields?.offer_field]: isOffer,
 
                   slecetedPayMethod: slecetedPayMethod || undefined,
                   promocode: '',
-                  isPersonalBalance: 'off',
+                  isPersonalBalance:
+                    slecetedPayMethod?.name?.$?.includes('balance') &&
+                    slecetedPayMethod?.paymethod_type?.$ === '0'
+                      ? 'on'
+                      : 'off',
                 }}
                 onSubmit={payBasketHandler}
               >
@@ -1264,9 +1269,10 @@ export default function Component() {
                             initialState={
                               values[selectedPayerFields?.offer_field] || false
                             }
-                            setValue={item =>
+                            setValue={item => {
                               setFieldValue(`${selectedPayerFields?.offer_field}`, item)
-                            }
+                              setIsOffer(item)
+                            }}
                             className={s.checkbox}
                             error={!!errors[selectedPayerFields?.offer_field]}
                             touched={!!touched[selectedPayerFields?.offer_field]}

@@ -4,7 +4,7 @@ import { actions, cartActions, billingOperations, userOperations } from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, coockies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -353,14 +353,14 @@ const setPaymentMethods =
               const items = cartData?.elemList?.map(e => {
                 return {
                   item_name: e.pricelist_name?.$ || '',
-                  item_id: e.id?.$ || '',
+                  item_id: e['item.id']?.$ || '',
                   price: Number(e.cost?.$) || 0,
                   item_category: e['item.type']?.$ || '',
                   quantity: 1,
                 }
               })
 
-              coockies?.setCookie(
+              cookies?.setCookie(
                 'cartData',
                 JSON.stringify({
                   billorder: cartData?.billorder,

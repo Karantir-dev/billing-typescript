@@ -14,6 +14,7 @@ import {
   CheckEdit,
 } from '../../../../images'
 import * as route from '../../../../routes'
+import { SITE_URL } from '../../../../config/config'
 import { useNavigate } from 'react-router-dom'
 import { shortTitle, useOutsideAlerter } from '../../../../utils'
 import { CheckBox, HintWrapper, ServerState } from '../../..'
@@ -263,7 +264,11 @@ export default function VDSmobileItem({
                 ref={editField}
               >
                 <>
-                <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                  <span
+                    className={cn({
+                      [s.placeholder_text]: editName === '' && originName === '',
+                    })}
+                  >
                     {t(
                       shortTitle(editName, 12) ||
                         shortTitle(originName?.trim(), 12) ||
@@ -302,7 +307,11 @@ export default function VDSmobileItem({
                   ref={editField}
                 >
                   <>
-                  <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                    <span
+                      className={cn({
+                        [s.placeholder_text]: editName === '' && originName === '',
+                      })}
+                    >
                       {t(
                         shortTitle(editName, 12) ||
                           shortTitle(originName?.trim(), 12) ||
@@ -367,7 +376,7 @@ export default function VDSmobileItem({
         {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
           <div className={s.dailyCharge}>
             <span>{t('daily charges')}</span>
-            <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
+            <a target="_blank" href={`${SITE_URL}/anti-ddos`} rel="noreferrer">
               <div />
             </a>
           </div>
