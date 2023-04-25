@@ -209,9 +209,17 @@ export default function Component() {
       city: values?.city_physical,
       address: values?.address_physical,
       country_physical:
-        selectedPayerFields?.country || selectedPayerFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        '',
       country_legal:
-        selectedPayerFields?.country || selectedPayerFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        '',
       billorder: cartData?.billorder,
       amount: cartData?.total_sum,
       profile: values?.profile === 'new' ? '' : values?.profile,

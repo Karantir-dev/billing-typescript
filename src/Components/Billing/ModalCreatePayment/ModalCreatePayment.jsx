@@ -107,9 +107,17 @@ export default function Component(props) {
       city: values?.city_physical,
       address: values?.address_physical,
       country_physical:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       country_legal:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       profile: values?.profile === 'new' ? '' : values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
