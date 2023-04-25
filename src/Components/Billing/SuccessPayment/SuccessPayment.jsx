@@ -47,12 +47,12 @@ export default function Component() {
 
   useEffect(() => {
     if (paymentId) {
+      window.dataLayer.push({ ecommerce: null })
       if (cartData) {
-        window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
-            transaction_id: paymentId?.id?.$ || cartData?.billorder,
+            transaction_id: paymentId?.id?.$ || `No payment id (billorder: ${cartData?.billorder})` ,
             affiliation: 'cp.zomro.com',
             value: Number(cartData?.total_sum) || 0,
             tax: Number(cartData?.tax) || 0,
@@ -66,7 +66,6 @@ export default function Component() {
         cookies.eraseCookie('cartData')
       }
       if (refillId) {
-        window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
