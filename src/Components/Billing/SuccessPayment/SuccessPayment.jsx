@@ -47,6 +47,10 @@ export default function Component() {
 
   useEffect(() => {
     if (paymentId) {
+      const currency = paymentId?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR'
+      const value = paymentId?.paymethodamount_iso?.$?.replace(currency, '')
+      const tax = paymentId?.tax?.$?.replace(currency, '')
+
       window.dataLayer.push({ ecommerce: null })
       if (cartData) {
         window.dataLayer.push({
@@ -55,10 +59,10 @@ export default function Component() {
             transaction_id:
               paymentId?.id?.$ || `No payment id (billorder: ${cartData?.billorder})`,
             affiliation: 'cp.zomro.com',
-            value: Number(cartData?.total_sum) || 0,
-            tax: Number(cartData?.tax) || 0,
+            value: Number(value) || 0,
+            tax: Number(tax) || 0,
+            currency: currency,
             shipping: '0',
-            currency: 'EUR',
             coupon: cartData?.promocode,
             items: cartData?.items,
           },
@@ -67,12 +71,6 @@ export default function Component() {
         cookies.eraseCookie('cartData')
       }
       if (refillId) {
-        const currency = paymentId?.paymethodamount_iso?.$?.includes('RUB')
-          ? 'RUB'
-          : 'EUR'
-        const value = paymentId?.paymethodamount_iso?.$?.replace(currency, '')
-        const tax = paymentId?.tax?.$?.replace(currency, '')
-
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
