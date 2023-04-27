@@ -27,6 +27,7 @@ export default function VDSOrder() {
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
+  const characteristics = useRef()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -361,6 +362,12 @@ export default function VDSOrder() {
 
   const handleDomainChange = e => setDomainName(e.target.value)
 
+  useEffect(() => {
+    if (parametersInfo) {
+      characteristics.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [parametersInfo])
+
   return (
     <div className={s.pb}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -536,7 +543,7 @@ export default function VDSOrder() {
 
                 {parametersInfo && (
                   <>
-                    <p className={s.section_title}>
+                    <p ref={characteristics} className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>
