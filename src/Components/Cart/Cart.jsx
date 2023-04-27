@@ -23,6 +23,7 @@ import {
   InputWithAutocomplete,
   ScrollToFieldError,
   BlackFridayGift,
+  SelectGeo,
 } from '..'
 import {
   cartOperations,
@@ -1105,28 +1106,16 @@ export default function Component() {
                               touched={!!touched.person}
                               isRequired
                             />
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('The country', { ns: 'other' })}:`}
-                              value={values.country}
-                              getElement={item => setFieldValue('country', item)}
-                              isShadow
-                              className={s.select}
-                              itemsList={payersSelectLists?.country?.map(
-                                ({ $key, $, $image }) => ({
-                                  label: (
-                                    <div className={s.countrySelectItem}>
-                                      <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                      {t(`${$.trim()}`)}
-                                    </div>
-                                  ),
-                                  value: $key,
-                                }),
-                              )}
-                              isRequired
-                              disabled={payersSelectLists?.country?.length <= 1}
-                              withoutArrow={payersSelectLists?.country?.length <= 1}
+
+                            <SelectGeo
+                              setSelectFieldValue={item => setFieldValue('country', item)}
+                              selectValue={values.country}
+                              selectClassName={s.select}
+                              countrySelectClassName={s.countrySelectItem}
+                              geoData={geoData}
+                              payersSelectLists={payersSelectLists}
                             />
+
                             <InputField
                               inputWrapperClass={s.inputHeight}
                               name="city_physical"
