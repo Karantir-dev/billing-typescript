@@ -389,6 +389,8 @@ const setPaymentMethods =
               )
 
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+                data.doc?.payment_id &&
+                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 
