@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
+import { billingActions, dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 import { Button, Select } from '../../..'
 
@@ -52,6 +52,10 @@ export default function ProlongModal({
     const { period } = values
 
     let withSale = false
+
+    if (pageName === 'vds') {
+      dispatch(billingActions.setPeriodValue(period))
+    }
 
     if (
       pageName === 'vds' &&

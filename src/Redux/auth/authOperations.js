@@ -574,6 +574,7 @@ const getLocation = () => dispatch => {
         has_country_state: data?.clients_state?.has_country_state,
         state_id: data?.clients_state?.state_id,
         clients_city: data?.clients_city,
+        clients_country_name: data?.clients_country_name,
       }),
     )
   })

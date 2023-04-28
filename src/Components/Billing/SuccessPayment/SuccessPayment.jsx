@@ -47,17 +47,22 @@ export default function Component() {
 
   useEffect(() => {
     if (paymentId) {
+      const currency = paymentId?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR'
+      const value = paymentId?.paymethodamount_iso?.$?.replace(currency, '')
+      const tax = paymentId?.tax?.$?.replace(currency, '')
+
+      window.dataLayer.push({ ecommerce: null })
       if (cartData) {
-        window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
-            transaction_id: paymentId?.id?.$ || cartData?.billorder,
+            transaction_id:
+              paymentId?.id?.$ || `No payment id (billorder: ${cartData?.billorder})`,
             affiliation: 'cp.zomro.com',
-            value: Number(cartData?.total_sum) || 0,
-            tax: Number(cartData?.tax) || 0,
+            value: Number(value) || 0,
+            tax: Number(tax) || 0,
+            currency: currency,
             shipping: '0',
-            currency: 'EUR',
             coupon: cartData?.promocode,
             items: cartData?.items,
           },
@@ -66,20 +71,19 @@ export default function Component() {
         cookies.eraseCookie('cartData')
       }
       if (refillId) {
-        window.dataLayer.push({ ecommerce: null })
         window.dataLayer.push({
           event: 'purchase',
           ecommerce: {
             transaction_id: paymentId?.id?.$ || refillId,
             affiliation: 'cp.zomro.com',
-            value: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
-            tax: Number(paymentId?.tax?.$?.replace('EUR', '')) || 0,
-            currency: 'EUR',
+            value: Number(value) || 0,
+            tax: Number(tax) || 0,
+            currency: currency,
             items: [
               {
                 item_name: 'Refill',
                 item_id: paymentId?.id?.$ || '',
-                price: Number(paymentId?.paymethodamount_iso?.$?.replace('EUR', '')) || 0,
+                price: Number(value) || 0,
                 item_category: 'Refill account',
                 quantity: 1,
               },

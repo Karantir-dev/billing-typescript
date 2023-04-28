@@ -4,7 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
 import { Cross, Info } from '../../../images'
-import { Button, Select, InputField, CheckBox, InputWithAutocomplete } from '../..'
+import {
+  Button,
+  Select,
+  InputField,
+  CheckBox,
+  InputWithAutocomplete,
+  SelectGeo,
+} from '../..'
 import {
   billingOperations,
   billingSelectors,
@@ -325,27 +332,13 @@ export default function Component(props) {
                             isRequired
                           />
 
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('The country', { ns: 'other' })}:`}
-                            value={values.country}
-                            getElement={item => setFieldValue('country', item)}
-                            isShadow
-                            className={s.select}
-                            itemsList={payersSelectLists?.country?.map(
-                              ({ $key, $, $image }) => ({
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
-                                  </div>
-                                ),
-                                value: $key,
-                              }),
-                            )}
-                            isRequired
-                            disabled={payersSelectLists?.country?.length <= 1}
-                            withoutArrow={payersSelectLists?.country?.length <= 1}
+                          <SelectGeo
+                            setSelectFieldValue={item => setFieldValue('country', item)}
+                            selectValue={values.country}
+                            selectClassName={s.select}
+                            countrySelectClassName={s.countrySelectItem}
+                            geoData={geoData}
+                            payersSelectLists={payersSelectLists}
                           />
 
                           <InputField
