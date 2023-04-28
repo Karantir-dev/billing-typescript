@@ -31,9 +31,12 @@ export default function PasswordChange() {
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required(t('warnings.password_required'))
-      .min(12, t('warnings.invalid_pass'))
-      .max(48, t('warnings.invalid_pass'))
-      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass')),
+      .min(12, t('warnings.invalid_pass'), { min: 12, max: 48 })
+      .max(48, t('warnings.invalid_pass'), { min: 12, max: 48 })
+      .matches(
+        /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/,
+        t('warnings.invalid_pass', { min: 12, max: 48 }),
+      ),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),
@@ -83,7 +86,7 @@ export default function PasswordChange() {
                 className={s.field_wrapper}
                 error={!!errors.password}
                 inputAuth
-                autoComplete='new-password'
+                autoComplete="new-password"
                 touched={!!touched.password}
               />
 
@@ -97,7 +100,7 @@ export default function PasswordChange() {
                 className={s.field_wrapper}
                 error={!!errors.password}
                 inputAuth
-                autoComplete='new-password'
+                autoComplete="new-password"
                 touched={!!touched.password}
               />
 
