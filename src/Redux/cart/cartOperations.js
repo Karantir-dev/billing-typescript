@@ -1,6 +1,12 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, cartActions, billingOperations, userOperations, billingActions } from '..'
+import {
+  actions,
+  cartActions,
+  billingOperations,
+  userOperations,
+  billingActions,
+} from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -383,6 +389,8 @@ const setPaymentMethods =
               )
 
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+                data.doc?.payment_id &&
+                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 
