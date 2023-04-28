@@ -49,7 +49,7 @@ export default function PasswordChange({ id, names, closeFn }) {
       .min(6, t('warnings.invalid_pass', { ns: 'auth' }))
       .max(48, t('warnings.invalid_pass', { ns: 'auth' }))
       .matches(
-        /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/,
+        /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
         t('warnings.invalid_pass', { ns: 'auth' }),
       )
       .required(t('warnings.password_required', { ns: 'auth' })),
