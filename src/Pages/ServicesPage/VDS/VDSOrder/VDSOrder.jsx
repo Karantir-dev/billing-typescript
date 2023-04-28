@@ -20,6 +20,7 @@ import * as Yup from 'yup'
 import s from './VDSOrder.module.scss'
 import { SALE_55_PROMOCODE } from '../../../../config/config'
 import { SaleFiftyFive } from '../../../../images'
+import { useScrollToElement } from '../../../../hooks'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -27,7 +28,6 @@ export default function VDSOrder() {
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
-  const characteristics = useRef()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -45,6 +45,7 @@ export default function VDSOrder() {
   const filteredList = tariffsList.filter(el =>
     tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {
     const isInList = filteredList.some(el => el.pricelist.$ === selectedTariffId)
@@ -362,12 +363,6 @@ export default function VDSOrder() {
 
   const handleDomainChange = e => setDomainName(e.target.value)
 
-  useEffect(() => {
-    if (parametersInfo) {
-      characteristics.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }, [parametersInfo])
-
   return (
     <div className={s.pb}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -473,7 +468,10 @@ export default function VDSOrder() {
                           tabIndex={0}
                           onKeyUp={null}
                           role="button"
-                          onClick={() => handleTariffClick(period, pricelist.$)}
+                          onClick={() => {
+                            handleTariffClick(period, pricelist.$)
+                            runScroll()
+                          }}
                         >
                           <span className={s.tariff_name}>{desc.$}</span>
                           {parsedPrice ? (
@@ -543,7 +541,7 @@ export default function VDSOrder() {
 
                 {parametersInfo && (
                   <>
-                    <p ref={characteristics} className={s.section_title}>
+                    <p ref={scrollElem} className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>

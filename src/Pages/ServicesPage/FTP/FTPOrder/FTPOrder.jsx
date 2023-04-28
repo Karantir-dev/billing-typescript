@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod } from '../../../../utils'
 import { ftpOperations, userOperations } from '../../../../Redux'
+import { useScrollToElement } from '../../../../hooks'
 import * as route from '../../../../routes'
 
 import s from './FTPOrder.module.scss'
@@ -32,6 +33,7 @@ export default function FTPOrder() {
   const [price, setPrice] = useState('')
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -217,7 +219,7 @@ export default function FTPOrder() {
                             setFieldValue('tarif', item?.pricelist?.$)
                             setPrice(priceAmount)
                             setTarifChosen(true)
-
+                            runScroll()
                             dispatch(
                               ftpOperations.getParameters(
                                 values.period,
@@ -263,7 +265,9 @@ export default function FTPOrder() {
 
               {parameters && (
                 <div className={s.parameters_block}>
-                  <p className={s.params}>{t('parameters')}</p>
+                  <p ref={scrollElem} className={s.params}>
+                    {t('parameters')}
+                  </p>
 
                   <div className={s.parameters_wrapper}>
                     <Select
