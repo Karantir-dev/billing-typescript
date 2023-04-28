@@ -112,7 +112,7 @@ export default function PasswordChange({ id, names, closeFn }) {
                   error={!!errors.passwd}
                   touched={!!touched.passwd}
                   isRequired
-                  autoComplete={false}
+                  autoComplete="off"
                 />
 
                 <InputField
@@ -125,7 +125,7 @@ export default function PasswordChange({ id, names, closeFn }) {
                   error={!!errors.confirm}
                   touched={!!touched.confirm}
                   isRequired
-                  autoComplete={false}
+                  autoComplete="off"
                 />
               </div>
 
