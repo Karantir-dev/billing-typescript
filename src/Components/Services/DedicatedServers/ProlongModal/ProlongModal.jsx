@@ -53,6 +53,10 @@ export default function ProlongModal({
 
     let withSale = false
 
+    if (pageName === 'vds') {
+      dispatch(billingActions.setPeriodValue(period))
+    }
+
     if (
       pageName === 'vds' &&
       SALE_55_PROMOCODE &&
@@ -67,8 +71,6 @@ export default function ProlongModal({
 
         withSale = is2xRam
       }
-
-      dispatch(billingActions.setPeriodValue(period))
     }
 
     if (elidList?.length > 1) {
