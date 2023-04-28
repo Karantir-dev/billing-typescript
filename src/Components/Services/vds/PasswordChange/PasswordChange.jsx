@@ -39,7 +39,7 @@ export default function PasswordChange({ id, names, closeFn }) {
     if (id.length > 1) {
       dispatch(vdsOperations.groupChangePassword(id, values.passwd, values.confirm))
     } else {
-      dispatch(vdsOperations.changePassword(id, values.passwd, values.confirm))
+      dispatch(vdsOperations.changePassword(id[0], values.passwd, values.confirm))
     }
     closeFn()
   }
