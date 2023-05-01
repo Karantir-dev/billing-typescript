@@ -71,8 +71,12 @@ export default function VDSItem({
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
 
-  const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
-
+  const isActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== server?.id?.$))
+      : setActiveServices([...activeServices, server])
+  }
   const editNameHandler = () => {
     handleEditSubmit(server?.id?.$, { server_name: editName }, setOriginName)
     setOriginName(editName)
@@ -83,19 +87,13 @@ export default function VDSItem({
     <div className={s.item_wrapper}>
       <CheckBox
         className={s.check_box}
-        initialState={serverIsActive}
-        func={isChecked => {
-          isChecked
-            ? setActiveServices(
-                activeServices?.filter(item => item?.id?.$ !== server?.id?.$),
-              )
-            : setActiveServices([...activeServices, server])
-        }}
+        value={isActive}
+        onClick={toggleIsActiveHandler}
       />
 
       <li
         className={cn(s.item, {
-          [s.active_server]: serverIsActive,
+          [s.active_server]: isActive,
         })}
       >
         <span className={s.value}>

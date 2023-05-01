@@ -87,16 +87,19 @@ export default function DedicList({
     }
   }
 
+  const isAllActive = activeServices?.length === servers?.length
+  const toggleIsActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(servers)
+  }
+  
   return (
     <>
       {widerThan1550 && servers?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices?.length === servers?.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(servers)
-            }}
+            value={isAllActive}
+            onClick={toggleIsActiveHandler}
           />
 
           <ul className={s.head_row}>

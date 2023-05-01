@@ -37,13 +37,16 @@ export default function Component(props) {
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
+  const isActive = selected?.includes(el)
+  const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
+
   return (
     <div className={s.item}>
       <div className={s.checkBoxColumn}>
         <CheckBox
           className={s.check_box}
-          initialState={selected?.includes(el)}
-          func={isChecked => setSelctedItem(!isChecked, el)}
+          value={isActive}
+          onClick={toggleIsActiveHandler}
         />
       </div>
       <div className={s.columnsWithoutCheckBox}>

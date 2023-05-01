@@ -31,7 +31,12 @@ export default function ForexItem({
       key => key !== 'ask' && key !== 'filter' && key !== 'new',
     ).length > 0
 
-  const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const isActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== server?.id?.$))
+      : setActiveServices([...activeServices, server])
+  }
 
   const handleToolBtnClick = fn => {
     fn()
@@ -42,19 +47,13 @@ export default function ForexItem({
     <div className={s.item_wrapper}>
       <CheckBox
         className={s.check_box}
-        initialState={serverIsActive}
-        func={isChecked => {
-          isChecked
-            ? setActiveServices(
-                activeServices?.filter(item => item?.id?.$ !== server?.id?.$),
-              )
-            : setActiveServices([...activeServices, server])
-        }}
+        value={isActive}
+        onClick={toggleIsActiveHandler}
       />
 
       <div
         className={cn(s.item, {
-          [s.active_server]: serverIsActive,
+          [s.active_server]: isActive,
         })}
       >
         <span className={s.value}>{server?.id?.$}</span>

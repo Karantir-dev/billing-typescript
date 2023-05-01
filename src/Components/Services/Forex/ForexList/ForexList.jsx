@@ -57,16 +57,19 @@ export default function ForexList({
     }
   }
 
+  const isAllActive = activeServices?.length === forexList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(forexList)
+  }
+
   return (
     <>
       {widerThan1600 && forexList?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices?.length === forexList?.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(forexList)
-            }}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <ul className={s.head_row}>
             <li className={s.table_head}>Id:</li>

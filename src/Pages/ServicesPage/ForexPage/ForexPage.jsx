@@ -195,6 +195,13 @@ export default function ForexPage() {
     setActiveServices([])
   }
 
+  const isAllActive = activeServices.length === forexRenderData?.forexList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive
+      ? setActiveServices([])
+      : setActiveServices(forexRenderData?.forexList)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -211,14 +218,8 @@ export default function ForexPage() {
             <div className={s.main_checkbox}>
               <CheckBox
                 className={s.check_box}
-                initialState={
-                  activeServices.length === forexRenderData?.forexList?.length
-                }
-                func={isChecked => {
-                  isChecked
-                    ? setActiveServices([])
-                    : setActiveServices(forexRenderData?.forexList)
-                }}
+                value={isAllActive}
+                onClick={toggleIsAllActiveHandler}
               />
               <span>{t('Choose all', { ns: 'other' })}</span>
             </div>

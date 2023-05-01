@@ -92,14 +92,17 @@ export default function Component(props) {
     dispatch(siteCareOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true))
   }
 
+  const isAllActive = list?.length === selctedItem?.length
+  const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
+
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            initialState={list?.length === selctedItem?.length}
-            func={isChecked => setSelectedAll(!isChecked)}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <span>{t('Choose all', { ns: 'other' })}</span>
         </div>

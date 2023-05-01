@@ -1,33 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Check } from '../../../images'
 import s from './CheckBox.module.scss'
 
 export default function Component({
-  initialState,
-  setValue,
+  // initialState,
+  // setValue,
+  // func,
+  value,
+  onClick,
   disabled,
   className,
   error,
   touched,
-  func,
   name,
 }) {
-  const [isChecked, setIsChecked] = useState(false)
+  // const [isChecked, setIsChecked] = useState(false)
 
-  useEffect(() => {
-    setIsChecked(initialState)
-  }, [initialState])
+  // useEffect(() => {
+  //   setIsChecked(initialState)
+  // }, [initialState])
 
-  useEffect(() => {
-    setValue && setValue(isChecked)
-  }, [isChecked])
+  // useEffect(() => {
+  //   setValue && setValue(isChecked)
+  // }, [isChecked])
 
-  const toggleHandler = val => {
-    setIsChecked(!val)
-    func && func(isChecked)
-  }
+  // const toggleHandler = val => {
+  //   setIsChecked(!val)
+  //   func && func(!val)
+  // }
 
   return (
     <button
@@ -35,15 +37,15 @@ export default function Component({
       className={cn({
         [s.btn]: true,
         [s.error]: touched && error,
-        [s.active]: isChecked,
+        [s.active]: value,
         [s.disabled]: disabled,
         [className]: className,
       })}
       type="button"
       name={name || ''}
-      onClick={() => toggleHandler(isChecked)}
+      onClick={onClick}
     >
-      <Check className={cn(s.check, { [s.active]: isChecked })} />
+      <Check className={cn(s.check, { [s.active]: value })} />
     </button>
   )
 }
