@@ -625,7 +625,7 @@ const createPaymentMethod =
 
             if (data.doc.ok) {
               data.doc?.payment_id &&
-                cookies.setCookie('refill_id', data.doc?.payment_id?.$, 30)
+                cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
@@ -702,6 +702,8 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       if (data.doc.ok) {
+        data.doc?.payment_id &&
+          cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
