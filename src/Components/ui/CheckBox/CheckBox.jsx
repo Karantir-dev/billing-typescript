@@ -34,10 +34,9 @@ export default function Component({
 
 Component.propTypes = {
   disabled: PropTypes.bool,
-  initialState: PropTypes.bool,
+  value: PropTypes.bool,
   error: PropTypes.bool,
-  setValue: PropTypes.func,
   className: PropTypes.string,
-  func: PropTypes.func,
+  onClick: PropTypes.func,
   name: PropTypes.string,
 }
