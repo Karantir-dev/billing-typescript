@@ -5,9 +5,6 @@ import { Check } from '../../../images'
 import s from './CheckBox.module.scss'
 
 export default function Component({
-  // initialState,
-  // setValue,
-  // func,
   value,
   onClick,
   disabled,
@@ -16,21 +13,6 @@ export default function Component({
   touched,
   name,
 }) {
-  // const [isChecked, setIsChecked] = useState(false)
-
-  // useEffect(() => {
-  //   setIsChecked(initialState)
-  // }, [initialState])
-
-  // useEffect(() => {
-  //   setValue && setValue(isChecked)
-  // }, [isChecked])
-
-  // const toggleHandler = val => {
-  //   setIsChecked(!val)
-  //   func && func(!val)
-  // }
-
   return (
     <button
       disabled={disabled}
