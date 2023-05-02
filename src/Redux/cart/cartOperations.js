@@ -376,21 +376,20 @@ const setPaymentMethods =
                 }
               })
 
-              cookies?.setCookie(
-                'cartData',
-                JSON.stringify({
-                  billorder: cartData?.billorder,
-                  total_sum: cartData?.total_sum,
-                  tax: cartData?.tax,
-                  promocode: body?.promocode,
-                  items: items,
-                }),
-                30,
-              )
-
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
                 data.doc?.payment_id &&
-                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
+                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+                cookies?.setCookie(
+                  `cartData_${data.doc?.payment_id?.$}`,
+                  JSON.stringify({
+                    billorder: cartData?.billorder,
+                    total_sum: cartData?.total_sum,
+                    tax: cartData?.tax,
+                    promocode: body?.promocode,
+                    items: items,
+                  }),
+                  5,
+                )
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 

@@ -15,14 +15,12 @@ export default function Component() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const data = cookies.getCookie('cartData')
-  const cartData = JSON.parse(data)
-
   const refillId = cookies.getCookie('payment_id')
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
   const [paymentId, setPaymentId] = useState(null)
+  const [cartData, setCartData] = useState(null)
 
   const backHandler = () => {
     navigate(routes.BILLING)
@@ -38,6 +36,13 @@ export default function Component() {
       const item = paymentsList?.find(e => e?.id?.$ === refillId)
 
       if (item) {
+        if (item?.billorder) {
+          const data = cookies.getCookie(`cartData_${refillId}`)
+          if (data) {
+            const dataJson = JSON.parse(data)
+            setCartData(dataJson)
+          }
+        }
         setPaymentId(item)
       }
     }
@@ -67,7 +72,7 @@ export default function Component() {
             },
           })
 
-          cookies.eraseCookie('cartData')
+          cookies.eraseCookie(`cartData_${refillId}`)
         } else {
           window.dataLayer.push({
             event: 'purchase',
@@ -90,8 +95,6 @@ export default function Component() {
               ],
             },
           })
-
-          cookies.eraseCookie('cartData')
         }
       } else {
         if (refillId && !cartData) {
@@ -115,9 +118,8 @@ export default function Component() {
             },
           })
         }
-
-        cookies.eraseCookie('payment_id')
       }
+      cookies.eraseCookie('payment_id')
     }
   }, [paymentId])
 
