@@ -11,6 +11,7 @@ import {
   PaymentCurrencyBtn,
   CheckBox,
   InputWithAutocomplete,
+  SelectGeo,
 } from '../..'
 import {
   billingOperations,
@@ -114,9 +115,17 @@ export default function Component(props) {
       city: values?.city_physical,
       address: values?.address_physical,
       country_physical:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       country_legal:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       profile: values?.profile === 'new' ? '' : values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
@@ -457,28 +466,13 @@ export default function Component(props) {
                             value={values.person}
                             onChange={e => setPerson(e.target.value)}
                           />
-
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('The country', { ns: 'other' })}:`}
-                            value={values.country}
-                            getElement={item => setFieldValue('country', item)}
-                            isShadow
-                            className={s.select}
-                            itemsList={payersSelectLists?.country?.map(
-                              ({ $key, $, $image }) => ({
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
-                                  </div>
-                                ),
-                                value: $key,
-                              }),
-                            )}
-                            isRequired
-                            disabled={payersSelectLists?.country?.length <= 1}
-                            withoutArrow={payersSelectLists?.country?.length <= 1}
+                          <SelectGeo
+                            setSelectFieldValue={item => setFieldValue('country', item)}
+                            selectValue={values.country}
+                            selectClassName={s.select}
+                            countrySelectClassName={s.countrySelectItem}
+                            geoData={geoData}
+                            payersSelectLists={payersSelectLists}
                           />
 
                           <InputField

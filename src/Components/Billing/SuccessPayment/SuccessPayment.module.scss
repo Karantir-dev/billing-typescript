@@ -12,16 +12,35 @@
 }
 
 .modalBlock {
+  margin: auto 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 424px;
+}
+
+.linksBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 22px;
+  margin-top: 20px;
+}
+
+.modalTopBlock {
   background: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow);
   border-radius: 3px;
   padding: 63px 22px;
-  margin: auto 30px;
+  width: 100%;
   max-width: 424px;
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 100%;
 }
 
 .approved {
@@ -40,6 +59,7 @@
   line-height: 130.5%;
   color: var(--main-text);
   margin-top: 25px;
+  text-align: center;
 }
 
 .link {
@@ -48,8 +68,8 @@
   font-size: 18px;
   line-height: 130.5%;
   text-decoration-line: underline;
-  margin-top: 35px;
   color: var(--link-color);
+  text-align: center;
 }
 
 @media screen and (min-width: 768px) {
@@ -60,7 +80,15 @@
     background-position: 50% 60%;
   }
 
-  .modalBlock {
+  .linksBlock {
+    padding: 0 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modalTopBlock {
     padding: 38px 50px;
     margin: 0 30px;
   }

@@ -1,3 +1,9 @@
+const hostNameArr = window?.location?.hostname?.split('.')?.slice(1)
+const hostName =
+  hostNameArr?.length > 2 ? hostNameArr?.slice(1)?.join('.') : hostNameArr?.join('.')
+
+const domain = `domain=.${hostName}`
+
 function setCookie(name, value, days) {
   var expires = ''
   if (days) {
@@ -5,7 +11,8 @@ function setCookie(name, value, days) {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
     expires = '; expires=' + date.toUTCString()
   }
-  document.cookie = name + '=' + (value || '') + expires + '; path=/'
+
+  document.cookie = name + '=' + (value || '') + expires + `; path=/; ${domain}`
 }
 
 function getCookie(name) {
@@ -20,7 +27,7 @@ function getCookie(name) {
 }
 
 function eraseCookie(name) {
-  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+  document.cookie = name + `=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; ${domain}`
 }
 
 export default {

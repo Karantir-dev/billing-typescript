@@ -1,10 +1,16 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, cartActions, billingOperations, userOperations } from '..'
+import {
+  actions,
+  cartActions,
+  billingOperations,
+  userOperations,
+  billingActions,
+} from '..'
 import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, coockies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -13,6 +19,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
   const {
     auth: { sessionId },
     cart: { cartState },
+    billing: { periodValue },
   } = getState()
 
   axiosInstance
@@ -38,6 +45,15 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       data.doc?.list?.forEach(el => {
         if (el.$name === 'itemlist') {
           cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
+
+          cartData.elemList.forEach(el => {
+            if (el['item.type']?.$ === 'vds') {
+              el['item.period'].$ = periodValue ?? el['item.period']?.$
+              el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
+            }
+          })
+
+          dispatch(billingActions.setPeriodValue(null))
         }
       })
 
@@ -353,26 +369,27 @@ const setPaymentMethods =
               const items = cartData?.elemList?.map(e => {
                 return {
                   item_name: e.pricelist_name?.$ || '',
-                  item_id: e.id?.$ || '',
+                  item_id: e['item.id']?.$ || '',
                   price: Number(e.cost?.$) || 0,
                   item_category: e['item.type']?.$ || '',
                   quantity: 1,
                 }
               })
 
-              coockies?.setCookie(
-                'cartData',
-                JSON.stringify({
-                  billorder: cartData?.billorder,
-                  total_sum: cartData?.total_sum,
-                  tax: cartData?.tax,
-                  promocode: body?.promocode,
-                  items: items,
-                }),
-                30,
-              )
-
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+                data.doc?.payment_id &&
+                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+                cookies?.setCookie(
+                  `cartData_${data.doc?.payment_id?.$}`,
+                  JSON.stringify({
+                    billorder: cartData?.billorder,
+                    total_sum: cartData?.total_sum,
+                    tax: cartData?.tax,
+                    promocode: body?.promocode,
+                    items: items,
+                  }),
+                  5,
+                )
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 

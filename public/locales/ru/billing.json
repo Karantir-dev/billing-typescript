@@ -60,8 +60,8 @@
   "Payment amount from": "Сумма платежа от",
   "Payment approved": "Платеж одобрен",
   "Payment was completed successfully": "Оплата была успешно завершена",
-  "Back to billing": "Вернуться в билинг",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "При обработке платежа произошла ошибка. Если у вас возникли вопросы, обратитесь в поддержку. ",
+  "Back to billing": "Перейти в билинг",
+  "payment_error_text": "Пожалуйста, повторите попытку или воспользуйтесь другой платежной системой. Если у вас возникли вопросы, обратитесь в тех. поддержку.",
   "Support service": "Служба поддержки",
   "Payment error": "Ошибка оплаты",
   "Telematic services": "Телематические услуги",
@@ -88,5 +88,7 @@
   "New payment method": "Новый способ оплаты",
   "FINISH": "ЗАВЕРШИТЬ",
   "click_finish_btn": "Нажав на кнопку «Завершить», вы будете перенаправлены на страницу платежной системы для дальнейшей настройки сохраненного способа оплаты",
-  "Re-configure": "Переконфигурировать"
+  "Re-configure": "Переконфигурировать",
+
+  "Back to site": "Перейти на сайт"
 }

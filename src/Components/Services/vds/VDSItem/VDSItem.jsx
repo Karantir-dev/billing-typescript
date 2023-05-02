@@ -19,7 +19,7 @@ import {
 } from '../../../../images'
 import { shortTitle, useOutsideAlerter } from '../../../../utils'
 import { useNavigate } from 'react-router-dom'
-
+import { SITE_URL } from '../../../../config/config'
 import s from './VDSItem.module.scss'
 
 export default function VDSItem({
@@ -203,7 +203,7 @@ export default function VDSItem({
           {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
             <div className={s.dailyCharge}>
               <span>{t('daily charges')}</span>
-              <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
+              <a target="_blank" href={`${SITE_URL}/anti-ddos`} rel="noreferrer">
                 <div></div>
               </a>
             </div>

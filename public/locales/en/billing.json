@@ -60,8 +60,8 @@
   "Payment amount from": "Payment amount from",
   "Payment approved": "Payment approved",
   "Payment was completed successfully": "Payment was completed successfully",
-  "Back to billing": "Back to billing",
-  "An error occurred while processing the payment. If you have any questions, please contact support.": "An error occurred while processing the payment. If you have any questions, please contact support.",
+  "Back to billing": "Go to billing",
+  "payment_error_text": "Please try again or use another payment system. If you have any questions, please contact support.",
   "Support service": "Support service",
   "Payment error": "Payment error",
   "Telematic services": "Telematic services",
@@ -88,5 +88,7 @@
   "New payment method": "New payment method",
   "FINISH": "FINISH",
   "click_finish_btn": "By clicking on the “Finish” button, you will be redirected to the payment system page for further setting up the saved payment method",
-  "Re-configure": "Re-configure"
+  "Re-configure": "Re-configure",
+
+  "Back to site": "Go to website"
 }

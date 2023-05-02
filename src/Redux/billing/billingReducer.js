@@ -22,6 +22,8 @@ const initialState = {
 
   autoPaymentsList: [],
   autoPaymentConfig: null,
+
+  periodValue: null,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -92,6 +94,10 @@ const autoPaymentConfig = createReducer(initialState.autoPaymentConfig, {
   [billingActions.setAutoPaymentConfig]: (_, { payload }) => payload,
 })
 
+const periodValue = createReducer(initialState.periodValue, {
+  [billingActions.setPeriodValue]: (_, { payload }) => payload,
+})
+
 const billingReducer = combineReducers({
   paymentsList,
   paymentsCount,
@@ -112,6 +118,8 @@ const billingReducer = combineReducers({
 
   paymentsMethodCount,
   paymentMethodList,
+
+  periodValue,
 })
 
 export default billingReducer
