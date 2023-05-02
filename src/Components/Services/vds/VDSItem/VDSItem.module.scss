@@ -128,7 +128,7 @@
   width: 100%;
 
   span {
-    max-width: calc(100% - 25px);
+    width: calc(100% - 20px);
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -171,7 +171,6 @@
   height: 39px;
   max-height: 39px;
   padding: 10px;
-  max-width: 125px;
   padding: 10px 5px 10px 10px;
   width: 100%;
 
@@ -187,7 +186,7 @@
 
     color: var(--main-text);
     overflow-x: auto;
-    max-width: 125px;
+    width: calc(100% - 20px);
     padding-right: 5px;
   }
 }
@@ -205,6 +204,7 @@
 
 .dots_wrapper {
   position: relative;
+  flex-grow: 1;
 
   &.disabled {
     opacity: 0.5;

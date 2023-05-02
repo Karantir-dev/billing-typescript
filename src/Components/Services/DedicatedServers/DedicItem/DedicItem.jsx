@@ -198,13 +198,15 @@ export default function DedicItem({
         </span>
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>
-          <HintWrapper
-            popupClassName={s.HintWrapper}
-            label={server?.domain?.$}
-            wrapperClassName={cn(s.hint)}
-          >
-            <span>{server?.domain?.$}</span>
-          </HintWrapper>
+          {server?.domain?.$ ? (
+            <HintWrapper
+              popupClassName={s.HintWrapper}
+              label={server?.domain?.$}
+              wrapperClassName={cn(s.hint)}
+            >
+              <span>{server?.domain?.$}</span>
+            </HintWrapper>
+          ) : null}
         </span>
         <span className={s.value}>{server?.ip?.$}</span>
         <span className={s.value}>{server?.ostempl?.$}</span>
