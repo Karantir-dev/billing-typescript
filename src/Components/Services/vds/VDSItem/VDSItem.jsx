@@ -139,6 +139,7 @@ export default function VDSItem({
                   label={t(editName || originName?.trim(), {
                     ns: 'vds',
                   })}
+                  wrapperClassName={cn(s.hint)}
                 >
                   <div
                     style={isEdit ? { overflow: 'inherit' } : {}}
@@ -194,8 +195,14 @@ export default function VDSItem({
           )}
         </span>
         <span className={s.value}>{server?.id?.$}</span>
-        <span title={server?.domain?.$} className={s.value}>
-          {server?.domain?.$}
+        <span className={s.value}>
+          <HintWrapper
+            popupClassName={s.HintWrapper}
+            label={server?.domain?.$}
+            wrapperClassName={cn(s.hint)}
+          >
+            <span>{server?.domain?.$}</span>
+          </HintWrapper>
         </span>
         <span className={s.value}>{server?.ip?.$}</span>
         <span className={s.value}>{server?.ostempl?.$}</span>

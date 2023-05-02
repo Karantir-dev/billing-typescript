@@ -109,8 +109,12 @@ export default function DedicItem({
                   className={cn(s.item_text, s.first_item)}
                   ref={editField}
                 >
-                                    <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                  <>
+                    <span
+                      className={cn({
+                        [s.placeholder_text]: editName === '' && originName === '',
+                      })}
+                    >
                       {t(
                         shortTitle(editName, 12) ||
                           shortTitle(originName?.trim(), 12) ||
@@ -137,6 +141,7 @@ export default function DedicItem({
                   label={t(editName || originName?.trim(), {
                     ns: 'vds',
                   })}
+                  wrapperClassName={cn(s.hint)}
                 >
                   <div
                     style={isEdit ? { overflow: 'inherit' } : {}}
@@ -144,7 +149,11 @@ export default function DedicItem({
                     ref={editField}
                   >
                     <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                      <span
+                        className={cn({
+                          [s.placeholder_text]: editName === '' && originName === '',
+                        })}
+                      >
                         {t(
                           shortTitle(editName, 12) ||
                             shortTitle(originName?.trim(), 12) ||
@@ -188,7 +197,15 @@ export default function DedicItem({
           )}
         </span>
         <span className={s.value}>{server?.id?.$}</span>
-        <span className={s.value}>{server?.domain?.$}</span>
+        <span className={s.value}>
+          <HintWrapper
+            popupClassName={s.HintWrapper}
+            label={server?.domain?.$}
+            wrapperClassName={cn(s.hint)}
+          >
+            <span>{server?.domain?.$}</span>
+          </HintWrapper>
+        </span>
         <span className={s.value}>{server?.ip?.$}</span>
         <span className={s.value}>{server?.ostempl?.$}</span>
         <span className={s.value}>
