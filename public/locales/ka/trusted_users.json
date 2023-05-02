@@ -115,6 +115,10 @@
       "rights2_user_hardfilter": "$t(ფილტრი)",
       "rights2_user_filter#create": "$t(ფილტრი)",
 
+      "coupon_use": "გამოიყენე სერტიფიკატი",
+      "coupon_use#read": "ფორმის მონაცემების წაკითხვა ხელმისაწვდომია",
+      "coupon_use#write": "მონაცემთა შენახვა ხელმისაწვდომია",
+
       "profile": "გადამხდელები",
       "profile_add#create": "$t(დამატება)",
       "profile_edit": "$t(რედაქტირება)",
@@ -241,6 +245,8 @@
       "domain_doc_download": "$t(ჩამოტვირთვა)",
       "domain_doc_edit#read": "დოკუმენტის ტიპი (წვდომა ფორმის მონაცემების წაკითხვაზე)",
       "domain_doc_edit#write": "დოკუმენტის ტიპი (წვდომა მონაცემთა შენახვაზე)",
+      "domain_order_register_new#create": "რეგისტრაცია",
+      "domain_order_transfer_new#create": "Transfer",
 
       "vhost_order#create": "$t(შეკვეთა)",
       "vhost_edit": "$t(რედაქტირება)",

@@ -30,6 +30,7 @@ export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
 
 export { default as Select } from './ui/Select/Select'
 export { default as SelectMultiple } from './ui/SelectMultiple/SelectMultiple'
+export { default as SelectGeo } from './ui/SelectGeo/SelectGeo'
 
 export { default as IconButton } from './ui/IconButton/IconButton'
 export { default as CalendarModal } from './ui/CalendarModal/CalendarModal'

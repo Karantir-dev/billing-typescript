@@ -116,6 +116,10 @@
       "rights2_user_hardfilter": "$t(Filter)",
       "rights2_user_filter#create": "$t(Filter)",
 
+      "coupon_use": "Use certificate",
+      "coupon_use#read": "Form data reading is avalilable",
+      "coupon_use#write": "Data saving is available",
+
       "profile": "Payers",
       "profile_add#create": "$t(Add)",
       "profile_edit": "$t(Edit)",
@@ -242,6 +246,8 @@
       "domain_doc_download": "$t(Download)",
       "domain_doc_edit#read": "Document type (data reading is available)",
       "domain_doc_edit#write": "Document type (data saving is available)",
+      "domain_order_register_new#create": "Registration",
+      "domain_order_transfer_new#create": "Transfer",
 
       "vhost_order#create": "$t(Order)",
       "vhost_edit": "$t(Edit)",

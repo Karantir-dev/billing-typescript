@@ -1,17 +1,31 @@
+.items_wrapper {
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+
 .server_item {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
 
   padding: 15px 15px 65px;
   border-radius: 3px;
-  background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
+  background: var(--gradient_cards_static);
+  box-shadow: var(--forms_shadow_site);
 
-  &:last-child {
-    margin-bottom: 5px;
-  }
+  // &:last-child {
+  //   margin-bottom: 5px;
+  // }
+}
+
+.main_info_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .control_bts_wrapper {
@@ -23,12 +37,17 @@
 
 .shevron_btn {
   position: absolute;
-  bottom: 0;
+
+  bottom: 0px;
   right: 0;
   left: 0;
-  height: 50px;
-  border-top: 1px solid var(--inactive_icon_color);
   cursor: pointer;
+  border-top: 1px solid var(--inactive_icon_color);
+
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .shevron {
@@ -42,24 +61,15 @@
 }
 
 .tariff_name {
-  font-size: 16px;
+  font-size: 18px;
   padding-right: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 .countItem {
-  // position: absolute;
-  // right: 10px;
-  // padding: 5px 5px;
-  // background-color: rgba(174, 156, 205, 0.15);
-  // border-radius: 3px;
-  // min-width: 65px;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
 
   font-weight: 400;
   font-size: 18px;
@@ -69,10 +79,11 @@
 }
 
 .btn_delete {
-  // position: absolute;
-  // top: 15px;
-  // right: 15px;
   cursor: pointer;
+
+  &:hover > svg {
+    fill: #f948b6;
+  }
 }
 
 .percent {
@@ -100,10 +111,12 @@
   font-size: 14px;
   transition: height 150ms;
   overflow: hidden;
+
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
+  flex-direction: column;
+  // flex-wrap: wrap;
+  // justify-content: flex-start;
+  // align-items: flex-start;
 }
 
 .value {
@@ -120,8 +133,6 @@
   justify-content: flex-start;
   align-items: flex-start;
 
-  margin-bottom: 7px;
-
   span {
     font-style: normal;
     font-weight: 400;
@@ -137,6 +148,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .shevron {
+    margin-top: 25px;
+  }
+
   .periodInfo {
     flex-direction: row;
   }
@@ -145,28 +160,36 @@
     justify-content: center;
     min-height: 60px;
     padding: 10px 60px 10px 15px;
+    box-shadow: var(--forms_shadow_site);
   }
 
   .main_info_wrapper {
+    align-items: center;
+  }
+
+  .btn_delete {
+    background: var(--gradient_cards_static);
+    box-shadow: var(--forms_shadow_site);
+    padding: 19px 16px 18px;
+    margin-left: 15px;
+    border-radius: 3px;
+  }
+
+  .items_wrapper {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
   }
 
   .shevron_btn {
     display: flex;
-    align-items: center;
     justify-content: center;
     right: 0;
     top: 0;
+    bottom: unset;
     width: 50px;
-    height: 70px;
+    height: 45px;
     border: none;
-    border-left: 1px solid var(--transparent-color);
-    &.opened {
-      height: 190px;
-    }
     left: auto;
   }
 

@@ -6,42 +6,22 @@
   left: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 149;
-  overflow-y: auto;
+  overflow-y: hidden;
 
   &.closing {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
-  scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: #e72690;
-  }
 }
 
 .modalBlock {
-  background: var(--main-bgc);
+  position: relative;
+  background: var(--elements-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  padding: 25px 0;
+  // padding: 25px 0;
+  // padding: 0 17px 0 15px;
   margin: 20px auto;
   max-width: 690px;
   width: 90vw;
@@ -62,6 +42,9 @@
   align-items: center;
   justify-content: space-between;
   display: flex;
+  background: var(--forms_bgc_3);
+  box-shadow: var(--menu_shadow);
+  // box-shadow: 4px 4px 10px 0px #0000004D;
 }
 
 .crossIcon {
@@ -73,12 +56,17 @@
   }
 }
 
+.form {
+  margin-bottom: 113px;
+}
+
 .headerText {
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
   line-height: 113%;
   color: var(--main-text);
+  padding: 17px 0 20px 0;
 }
 
 .formBlock {
@@ -87,12 +75,22 @@
 
   &.promocodeBlock {
     padding-bottom: 25px;
-    border-bottom: 1px solid #e1daea;
+
+    &::after {
+      margin-top: 20px;
+      position: relative;
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: var(--card-line);
+    }
+
+    margin-top: 15px;
   }
 
   &.last {
     padding-bottom: 25px;
-    border-bottom: 1px solid #e1daea;
+    border-bottom: 1px solid var(--card-line);
   }
 }
 
@@ -103,7 +101,7 @@
   line-height: 120%;
   color: var(--main-text);
   // margin-left: 10px;
-  margin: 20px 0;
+  margin: 20px 0 15px;
 }
 
 .actLine {
@@ -130,12 +128,24 @@
   &.promocode {
     margin-top: 20px;
   }
+
+  .InputField.input {
+    background-color: var(--forms_bgc_3);
+  }
 }
 
 .btnBlock {
   margin-top: 17px;
   display: flex;
   flex-direction: column;
+  padding: 18px 20px 23px;
+  background: var(--forms_bgc_3);
+  box-shadow: var(--menu_shadow);
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: auto;
+  z-index: 2;
 }
 
 .btnCloseBlock {
@@ -148,6 +158,7 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
+  // 
 }
 
 .cancel {
@@ -187,11 +198,10 @@
 
 .inputBig {
   max-width: 100%;
-  // margin-top: 10px;
 }
 
 .error_message {
-  margin-left: 2px;
+  position: relative;
   color: var(--error-color);
   font-size: 13px;
   line-height: 1.2;
@@ -232,17 +242,23 @@
   display: flex;
   align-items: center;
   flex-basis: 100%;
-  margin: 10px 0px 0 0;
+  margin: 0 0 10px 0;
   padding: 14px;
-  box-shadow: var(--forms2_shadow);
+  box-shadow: var(--forms_shadow_site);
   background-color: var(--forms_bgc_3);
   position: relative;
   max-height: 50px;
   height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+  border-radius: 3px;
 
   img {
     width: 20px;
     height: 20px;
+    object-fit: contain;
   }
 
   &.selected {
@@ -299,12 +315,30 @@
   color: var(--main-text);
   margin-top: 20px;
 
-  padding-bottom: 15px;
-  border-bottom: 1px solid #e1daea;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   span {
     color: var(--error-color);
   }
+
+  &.showMore {
+    -webkit-line-clamp: 50;
+  }
+}
+
+.readMore {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration-line: underline;
+  color: var(--main-text);
+  text-align: start;
+  cursor: pointer;
+
+  margin-top: 5px;
 }
 
 .addNewPayerBtn {
@@ -440,26 +474,59 @@
   }
 }
 
+// .scroll {
+//   // padding: 10px 22px;
+//   overflow-y: auto;
+//   max-height: 277px;
+
+//   &::-webkit-scrollbar {
+//     width: 5px;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: rgba(161, 161, 161, 23%);
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background: #e72690;
+//   }
+// }
+
+// don't forget to rename this block
 .scroll {
-  padding: 10px 22px;
+  z-index: 1;
   overflow-y: auto;
-  max-height: 277px;
+  max-height: calc(80vh);
 
   &::-webkit-scrollbar {
     width: 5px;
   }
 
+  /* Track */
   &::-webkit-scrollbar-track {
     background: rgba(161, 161, 161, 23%);
   }
-
+  /* Handle */
   &::-webkit-scrollbar-thumb {
     background: #e72690;
   }
+
+  scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
+  scrollbar-width: thin;
 }
 
 .itemsBlock {
   margin-top: 20px;
+}
+
+.showMoreItemsBtn {
+  margin: 20px 0 0 15px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 11px;
+  text-decoration-line: underline;
+  color: var(--link-color);
+  cursor: pointer;
 }
 
 .closeText {
@@ -493,6 +560,18 @@
 
 .padding {
   padding: 0 22px;
+}
+
+.elements_wrapper {
+  // max-height: 300px;
+  // overflow: hidden;
+
+  transition: max-height 0.3s ease-in-out;
+
+  &.opened {
+    max-height: none;
+    transition: max-height 0.3s ease-in-out;
+  }
 }
 
 .mb {
@@ -605,13 +684,19 @@
   }
 
   .modalBlock {
-    padding: 24px 0;
+    // padding: 0 30px;
     margin: 0.5% auto;
   }
-
-  .scroll {
-    padding: 10px 35px;
+  .headerText {
+    padding: 19px 0 22px 0;
   }
+
+  // .formFieldsBlock {
+  //   .InputField_input {
+  //     background-color: var(--forms_bgc_3);
+  //   }
+  // }
+
 
   .padding {
     padding: 0 35px;
@@ -620,7 +705,7 @@
   .paymentMethodBtn {
     max-width: 30%;
     flex-basis: 30%;
-    margin: 10px 15px 0 0;
+    margin: 0 15px 10px 0;
   }
 
   .inputAmountBlock {
@@ -637,12 +722,9 @@
     margin: 13px 0 0 0;
   }
 
-  .offerBlock {
-    // margin-top: 33px;
-  }
 
   .inputPerson {
-    max-width: 311px;
+    max-width: 30%;
     margin-right: 20px;
   }
 
@@ -691,7 +773,16 @@
 
 @media screen and (min-width: 1550px) {
   .modalBlock {
-    padding: 24px 0;
     margin: 3% auto;
   }
+}
+
+@media screen and (max-width: 767px) {
+  .form {
+    margin-bottom: 158px;
+  }
+  // .elements_wrapper {
+  //   max-height: 300px;
+  //   overflow: hidden;
+  // }
 }

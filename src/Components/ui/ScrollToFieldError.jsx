@@ -32,7 +32,9 @@ export default function ScrollToFieldError({
     const fieldErrorNames = getFieldErrorNames(errors)
     if (fieldErrorNames.length <= 0) return
 
-    const element = document.querySelector(`input[name='${fieldErrorNames[0]}']`)
+    const element =
+      document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
+      document.querySelector(`button[name='${fieldErrorNames[0]}']`)
     if (!element) return
 
     // Scroll to first known error into view

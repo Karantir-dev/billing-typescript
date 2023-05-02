@@ -46,6 +46,7 @@
   "Getting information about a domain using the whois protocol": "Отримання інформації про домен за протоколом whois",
   "View/change the list of nameservers": "Переглянути/змінити список серверів імен",
   "Domain name transfer": "Трансфер доменного імені",
+  "Domain name only Latin": "Доменне ім'я може містити лише латинські літери",
   "Check": "Перевірити",
   "Registered": "Зареєстровано",
   "Not registered": "Не зареєстровано",

@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, authSelectors, selectors } from '../Redux'
+import { actions, authActions, authSelectors, selectors } from '../Redux'
 import i18n from 'i18next'
 import { toast } from 'react-toastify'
+import { cookies } from '../utils'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -71,6 +72,13 @@ const Component = () => {
       clearInterval(intervalId)
     }
   }, [onlineStatus])
+
+  useEffect(() => {
+    const sessionId = cookies.getCookie('sessionId')
+    if(sessionId) {
+      dispatch(authActions.loginSuccess(sessionId))
+    }
+  }, [])
 
   i18n.on('languageChanged', l => {
     const favicon = getFaviconEl()

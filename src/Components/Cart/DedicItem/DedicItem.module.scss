@@ -1,66 +1,19 @@
+@import '../../../scss/placeholders.scss';
+
 .server_item {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 20px 0;
-  background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
-
-  &:last-child {
-    margin-bottom: 0px;
-  }
-}
-
-.tarif_info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-  background: var(--forms_bgc_3);
-
-  img {
-    width: 31px;
-    height: 37px;
-  }
+  @extend %server_items;
 
   position: relative;
-}
 
-.server_info {
-  margin: 19px 0px 0px 0px;
-}
+  justify-content: center;
 
-.additional_info_item {
-  display: none;
-  flex-direction: column;
-  width: 100%;
-  margin: 10px 0;
-  background: var(--forms_bgc_3);
 
-  &.opened {
-    display: flex;
+  padding: 15px 15px 65px;
+  border-radius: 3px;
+
+  &:last-child {
+    margin-bottom: 5px;
   }
-}
-
-.service_name {
-  font-size: 14px;
-  line-height: 120%;
-  color: var(--main-text);
-  margin: 0px 25px 0px 25px;
-
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-}
-
-.priceList {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 15px;
 }
 
 .control_bts_wrapper {
@@ -70,181 +23,203 @@
   margin-bottom: 10px;
 }
 
-.domainName {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 101%;
-  color: var(--main-text);
-  margin-bottom: 4px;
-  display: flex;
-  flex-direction: row; 
-  align-items: center;
-
-  span {
-    max-width: 190px;
-  }
-}
-
-.domainProtect {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 130%;
-  color: var(--transparent-color);
-}
-
-.costBlock {
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-  margin: 19px 0px 15px;
-}
-
-.cost {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  width: 150px;
-  color: var(--main-text);
-  margin-bottom: 4px;
-}
-
-.discountBlock {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 130%;
-  align-self: start;
-
-  .discountPerCent {
-    color: var(--error-color);
-    margin-right: 5px;
-  }
-
-  .fullcost {
-    text-decoration: line-through;
-    color: var(--transparent-color);
-  }
-}
-
-.deleteIcon {
+.shevron_btn {
   position: absolute;
-  top: 17px;
-  right: 17px;
-  margin-left: 40px;
-  cursor: pointer;
 
-  &:active {
-    transform: scale(0.95);
-  }
+  bottom: 0px;
+  right: 0;
+  left: 0;
+  cursor: pointer;
+  border-top: 1px solid var(--inactive_icon_color);
+
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .shevron {
-  stroke: var(--icon-color);
-  margin-right: 15px;
-  transition: transform 0.2s ease;
-  align-self: center;
-  transform: rotateX(180deg);
-
-  &:hover {
-    stroke: var(--transparent-color);
-  }
+  stroke: var(--main-text);
+  transition: transform 150ms;
+  transform: rotateZ(180deg);
 
   &.opened {
-    transform: rotateX(360deg);
+    transform: rotateZ(360deg);
   }
 }
 
-.shevron_container {
-  border-top: 1px solid var(--inactive_icon_color);
-  align-self: stretch;
-  cursor: pointer;
-  height: 50px;
-  order: 3;
+.tariff_name {
+  font-size: 18px;
+  padding-right: 20px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .countItem {
-  margin-left: 10px;
+  // position: absolute;
+  // right: 10px;
+  // padding: 5px 5px;
+  // background-color: rgba(174, 156, 205, 0.15);
+  // border-radius: 3px;
+  // min-width: 65px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 
   font-weight: 400;
   font-size: 18px;
   color: var(--main-text);
+  margin-left: 10px;
+  // margin-left: 20px;
 }
+
 .btn_delete {
+  // position: absolute;
+  // top: 15px;
+  // right: 15px;
   cursor: pointer;
 }
 
+.percent {
+  font-size: 16px;
+  color: var(--red-text);
+}
+
+.discount_wrapper {
+  margin-bottom: 10px;
+}
+
+.old_price {
+  font-size: 16px;
+  color: var(--transparent-color);
+  text-decoration: line-through;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.dropdown {
+  height: 0;
+  font-size: 14px;
+  transition: height 150ms;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  // flex-wrap: wrap;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+}
+
+.value {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: var(--main-text);
+}
+
+.periodInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--transparent-color);
+    text-align: start;
+
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
 @media screen and (min-width: 768px) {
-  .countItem {
-    position: relative;
-    right: 0px;
+  .shevron {
+    margin-top: 25px;
   }
 
-  .btn_delete {
-    position: static;
-    margin-left: 40px;
-  }
-
-  .tarif_info {
-    display: flex;
+  .periodInfo {
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .additional_info_item {
-    padding-left: 30px;
-  }
-
-  .service_name {
-    margin: unset;
-  }
-
-  .shevron_container {
-    order: unset;
-    border-top: unset;
-    align-self: center;
   }
 
   .server_item {
-    padding: 19px 25px 19px 25px;
+    justify-content: center;
+    min-height: 60px;
+    padding: 10px 60px 10px 15px;
   }
 
-  .priceList {
+  .main_info_wrapper {
     display: flex;
-    margin-left: 20px;
-    padding: 0;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row;
-    width: 100%;
-    margin-top: 0;
-
-    // & :not(:last-child) {
-    //   margin-right: 10px;
-    // }
-    // & :nth-child(1) {
-    //   flex-basis: 50%;
-    // }
-    // & :nth-child(2) {
-    //   flex-basis: 40%;
-    // }
-    // & :nth-child(3) {
-    //   flex-basis: 25%;
-    // }
   }
 
-  .costBlock {
+  .shevron_btn {
     display: flex;
-    // align-items: flex-end;
-    margin-top: 0;
-    margin-left: 15px;
+    // align-items: center;
+    justify-content: center;
+    right: 0;
+    top: 0;
+    bottom: unset;
+    width: 50px;
+    height: 45px;
+    border: none;
+    left: auto;
   }
 
-  .deleteIcon {
-    position: relative;
-    top: 0;
-    right: 0;
+  .tariff_name {
+    padding-right: 0;
+    // margin: 0 10px 0 20px;
+    margin: 0;
   }
+
+  .discount_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    white-space: nowrap;
+    gap: 5px;
+    order: 2;
+  }
+
+  .price {
+    order: 1;
+    // text-align: end;
+    // white-space: nowrap;
+  }
+
+  .price_wrapper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  .period {
+    font-weight: 400;
+  }
+  .value_item {
+    width: fit-content;
+  }
+
+  .discount_wrapper {
+    margin-bottom: 0;
+  }
+
+  // .countItem {
+  //   margin-left: 20px;
+  // }
 }

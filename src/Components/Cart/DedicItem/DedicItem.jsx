@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Delete, Shevron } from '../../../images'
 import classNames from 'classnames'
@@ -9,17 +9,12 @@ import s from './DedicItem.module.scss'
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
-  const {
-    desc,
-    cost,
-    discount_percent,
-    fullcost,
-    pricelist_name,
-    count,
-    deleteItemHandler,
-  } = props
+  const { desc, pricelist_name, deleteItemHandler } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+
+  const dropdownEl = useRef()
+  const infoEl = useRef()
 
   const [dropOpened, setDropOpened] = useState(false)
 
@@ -76,127 +71,82 @@ export default function DedicItem(props) {
     }
   }
 
+  const onShevronClick = () => {
+    if (!dropOpened) {
+      dropdownEl.current.style.height = dropdownEl.current.scrollHeight + 'px'
+      if (!tabletOrHigher) {
+        //
+      } else {
+        infoEl.current.style.marginBottom = '5px'
+      }
+    } else {
+      dropdownEl.current.style.height = '0'
+      infoEl.current.style.marginBottom = '0'
+    }
+    setDropOpened(!dropOpened)
+  }
+
   return (
     <>
       <div className={s.server_item}>
-        <div className={s.tarif_info}>
-          <button
-            onClick={() => setDropOpened(!dropOpened)}
-            className={s.shevron_container}
-          >
-            <Shevron
-              className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })}
-            />
-          </button>
+        <button
+          className={classNames(s.shevron_btn, { [s.opened]: dropOpened })}
+          onClick={onShevronClick}
+        >
+          <Shevron
+            className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })}
+          />
+        </button>
 
-          {/* {tabletOrHigher && (
-            <img
-              src={require('./../../../images/services/dedicated.webp')}
-              alt="dedicated_servers"
-            />
-          )} */}
-
-          <div className={s.priceList}>
-            {!tabletOrHigher && (
-              <div className={s.control_bts_wrapper}>
-                {typeof deleteItemHandler === 'function' && (
-                  <button
-                    className={s.btn_delete}
-                    type="button"
-                    onClick={deleteItemHandler}
-                  >
-                    <Delete />
-                  </button>
-                )}
-              </div>
-            )}
-            {/* 
-            {tabletOrHigher && (
-              <p className={s.countItem}>
-                {count} {t('pcs.', { ns: 'vds' })}
-              </p>
-            )} */}
-
-            <div className={s.server_info}>
-              <span className={s.domainName}>
-                <span>{pricelist_name}</span>
-                <p className={s.countItem}>
-                  {count} {t('pcs.', { ns: 'vds' })}
-                </p>
-              </span>
-            </div>
-            <div className={s.costBlock}>
-              <div className={s.cost}>
-                {cost} {`EUR/${renderDesc()?.period}`}
-              </div>
-              {discount_percent && (
-                <div className={s.discountBlock}>
-                  <span className={s.discountPerCent}>-{discount_percent}</span>
-                  <span className={s.fullcost}>{fullcost} EUR</span>
-                </div>
-              )}
-            </div>
-            {typeof deleteItemHandler === 'function' && tabletOrHigher && (
-              <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-                <Delete />
-              </button>
-            )}
-          </div>
+        <div className={s.main_info_wrapper} ref={infoEl}>
           {!tabletOrHigher && (
-            <div
-              className={classNames({
-                [s.additional_info_item]: true,
-                [s.opened]: dropOpened,
-              })}
-            >
-              {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
-                <p className={s.service_name}>
-                  {t('count_ip', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.ipAmount?.split('-')[0]}
-                </p>
-              )}
-              {renderDesc()?.managePanel && desc.includes('Control panel') && (
-                <p className={s.service_name}>
-                  {t('manage_panel', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.managePanel?.split('-')[0]}
-                </p>
-              )}
-              {renderDesc()?.postSpeed && desc.includes('Port speed') && (
-                <p className={s.service_name}>
-                  {t('port_speed', { ns: 'dedicated_servers' })}:
-                  {renderDesc()?.postSpeed?.split('-')[0]}
-                </p>
+            <div className={s.control_bts_wrapper}>
+              {typeof deleteItemHandler === 'function' && (
+                <button
+                  className={s.btn_delete}
+                  type="button"
+                  onClick={deleteItemHandler}
+                >
+                  <Delete />
+                </button>
               )}
             </div>
           )}
-        </div>
-        {tabletOrHigher && (
-          <div
-            className={classNames({
-              [s.additional_info_item]: true,
-              [s.opened]: dropOpened,
-            })}
-          >
-            {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
-              <p className={s.service_name}>
-                {t('count_ip', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.ipAmount?.split('-')[0]}
-              </p>
-            )}
-            {renderDesc()?.managePanel && desc.includes('Control panel') && (
-              <p className={s.service_name}>
-                {t('manage_panel', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.managePanel?.split('-')[0]}
-              </p>
-            )}
-            {renderDesc()?.postSpeed && desc.includes('Port speed') && (
-              <p className={s.service_name}>
-                {t('port_speed', { ns: 'dedicated_servers' })}:
-                {renderDesc()?.postSpeed?.split('-')[0]}
-              </p>
-            )}
+
+          <div>
+            <p className={s.tariff_name}>{pricelist_name} </p>
+            <div className={s.periodInfo}></div>
           </div>
-        )}
+
+          {typeof deleteItemHandler === 'function' && tabletOrHigher && (
+            <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
+              <Delete />
+            </button>
+          )}
+        </div>
+
+        <div className={s.dropdown} ref={dropdownEl}>
+          {renderDesc()?.ipAmount && desc.includes('IP-addresses count') && (
+            <span className={s.value}>
+              <b>{t('count_ip', { ns: 'dedicated_servers' })}:</b>{' '}
+              {renderDesc()?.ipAmount?.split('-')[0]}, &nbsp;
+            </span>
+          )}
+
+          {renderDesc()?.managePanel && desc.includes('Control panel') && (
+            <span className={s.value}>
+              <b>{t('manage_panel', { ns: 'dedicated_servers' })}:</b>{' '}
+              {renderDesc()?.managePanel?.split('-')[0]}, &nbsp;
+            </span>
+          )}
+
+          {renderDesc()?.postSpeed && desc.includes('Port speed') && (
+            <span className={s.value}>
+              <b>{t('port_speed', { ns: 'dedicated_servers' })}:</b>{' '}
+              {renderDesc()?.postSpeed?.split('-')[0]}, &nbsp;
+            </span>
+          )}
+        </div>
       </div>
     </>
   )

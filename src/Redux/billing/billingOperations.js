@@ -3,7 +3,7 @@ import { actions, billingActions, payersOperations, payersActions } from '..'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import i18n from './../../i18n'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 
 const getPayments =
   (body = {}) =>
@@ -426,7 +426,9 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(payersActions.setPayersList(elem))
+        dispatch(
+          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
+        )
         dispatch(payersActions.setPayersCount(count))
         dispatch(getPayerCountryType(cart))
       })
@@ -622,6 +624,9 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data.doc.ok) {
+              data.doc?.payment_id &&
+                cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
+
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
             }
@@ -657,6 +662,7 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
       const url = window.URL.createObjectURL(
         new Blob([response.data], { type: 'text/html' }),
       )
+
       const link = document.createElement('a')
       link.href = url
       document.body.appendChild(link)
@@ -696,6 +702,8 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       if (data.doc.ok) {
+        data.doc?.payment_id &&
+          cookies.setCookie('payment_id', data.doc?.payment_id?.$, 30)
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })

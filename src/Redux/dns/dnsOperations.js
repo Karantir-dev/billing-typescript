@@ -122,10 +122,21 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
+        let domainsLimitAddon = ''
+
+        for (let key in data?.doc?.messages?.msg) {
+          if (
+            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('domain') &&
+            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('limit')
+          ) {
+            domainsLimitAddon = key
+          }
+        }
+
         const { slist: paramsList } = data.doc
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
-        const domainsLimit = data.doc.metadata.form.field.filter(item =>
-          item.$name.includes('addon'),
+        const domainsLimit = data.doc.metadata.form.field.filter(
+          item => item.$name === domainsLimitAddon,
         )
 
         const maxLimit = domainsLimit[0]?.slider[0]?.$max
@@ -150,7 +161,7 @@ const getParameters =
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
         setFieldValue('addon_961', limitsList[0])
         setFieldValue('limitsList', limitsList)
-        setParameters({ paramsList })
+        setParameters({ ...paramsList, domainsLimitAddon })
         dispatch(actions.hideLoader())
       })
 

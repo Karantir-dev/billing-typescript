@@ -1,4 +1,5 @@
 import { authOperations, authActions } from '../Redux'
+import cookies from './cookies'
 
 export default function checkIfTokenAlive(errMessage, dispatch) {
   if (
@@ -7,6 +8,7 @@ export default function checkIfTokenAlive(errMessage, dispatch) {
   ) {
     dispatch(authOperations.getCurrentSessionStatus())
   } else if (errMessage.includes('Access from this IP denied')) {
+    cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
   } else {
     console.error(errMessage)

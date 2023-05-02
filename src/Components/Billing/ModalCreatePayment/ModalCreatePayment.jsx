@@ -11,6 +11,7 @@ import {
   PaymentCurrencyBtn,
   CheckBox,
   InputWithAutocomplete,
+  SelectGeo,
 } from '../..'
 import {
   billingOperations,
@@ -42,12 +43,16 @@ export default function Component(props) {
   const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const paymentsCurrency = useSelector(billingSelectors.getPaymentsCurrencyList)
 
+  const [amount, setAmount] = useState('')
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
+  const [showMore, setShowMore] = useState(false)
+  const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
 
   const dropdownDescription = useRef(null)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
+  const [payerFieldList, setPayerFieldList] = useState(null)
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
@@ -62,7 +67,14 @@ export default function Component(props) {
       if (payersList?.length !== 0) {
         data = { elid: payersList[payersList?.length - 1]?.id?.$ }
         dispatch(
-          payersOperations.getPayerEditInfo(data, false, null, setSelectedPayerFields),
+          payersOperations.getPayerEditInfo(
+            data,
+            false,
+            null,
+            setSelectedPayerFields,
+            false,
+            setPayerFieldList,
+          ),
         )
         return
       }
@@ -76,6 +88,14 @@ export default function Component(props) {
   //   dispatch(payersOperations.getPayerOfferText(selectedPayerFields?.offer_link))
   // }
 
+  useEffect(() => {
+    if (selectedPayerFields && !selectedPayerFields?.offer_field) {
+      setSelectedPayerFields(d => {
+        return { ...d, offer_field: 'offer_3' }
+      })
+    }
+  }, [selectedPayerFields])
+
   const createPaymentMethodHandler = values => {
     const data = {
       postcode_physical: values?.postcode_physical,
@@ -88,9 +108,17 @@ export default function Component(props) {
       city: values?.city_physical,
       address: values?.address_physical,
       country_physical:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       country_legal:
-        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+        selectedPayerFields?.country ||
+        selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
       profile: values?.profile === 'new' ? '' : values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
@@ -137,9 +165,7 @@ export default function Component(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: selectedPayerFields?.offer_field
-      ? Yup.bool().oneOf([true])
-      : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   return (
@@ -152,12 +178,15 @@ export default function Component(props) {
           </div>
           <Formik
             enableReinitialize
+            validateOnBlur={false}
+            validateOnMount={false}
+            validateOnChange={false}
             validationSchema={validationSchema}
             initialValues={{
               profile:
                 selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
-              amount: '',
-              slecetedPayMethod: undefined,
+              amount: amount || '',
+              slecetedPayMethod: slecetedPayMethod || undefined,
               name: selectedPayerFields?.name || '',
               address_physical: selectedPayerFields?.address_physical || '',
               city_physical:
@@ -167,7 +196,8 @@ export default function Component(props) {
                 payersSelectedFields?.country ||
                 payersSelectedFields?.country_physical ||
                 '',
-              profiletype: payersSelectedFields?.profiletype,
+              profiletype:
+                selectedPayerFields?.profiletype || payersSelectedFields?.profiletype,
               eu_vat: selectedPayerFields?.eu_vat || '',
               [selectedPayerFields?.offer_field]: false,
               payment_currency: {
@@ -232,9 +262,9 @@ export default function Component(props) {
                   const fieldErrorNames = getFieldErrorNames(errors)
                   if (fieldErrorNames.length <= 0) return
 
-                  const element = document.querySelector(
-                    `input[name='${fieldErrorNames[0]}']`,
-                  )
+                  const element =
+                    document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
+                    document.querySelector(`button[name='${fieldErrorNames[0]}']`)
                   if (!element) return
 
                   // Scroll to first known error into view
@@ -281,9 +311,26 @@ export default function Component(props) {
                       false,
                       null,
                       setSelectedPayerFields,
+                      false,
+                      setPayerFieldList,
                     ),
                   )
                 }
+              }
+
+              const readMore = parsedText?.infoText
+                ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                : parsedText?.minAmount?.length > 150
+
+              const payerTypeArrayHandler = () => {
+                const arr = payerFieldList?.profiletype
+                  ? payerFieldList?.profiletype
+                  : payersSelectLists?.profiletype
+
+                return arr?.map(({ $key, $ }) => ({
+                  label: t(`${$.trim()}`, { ns: 'payers' }),
+                  value: $key,
+                }))
               }
 
               return (
@@ -305,6 +352,7 @@ export default function Component(props) {
                             <button
                               onClick={() => {
                                 setFieldValue('slecetedPayMethod', method)
+                                setSlecetedPayMethod(method)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
                               }}
@@ -342,12 +390,7 @@ export default function Component(props) {
                             isShadow
                             className={s.select}
                             dropdownClass={s.selectDropdownClass}
-                            itemsList={payersSelectLists?.profiletype?.map(
-                              ({ $key, $ }) => ({
-                                label: t(`${$.trim()}`, { ns: 'payers' }),
-                                value: $key,
-                              }),
-                            )}
+                            itemsList={payerTypeArrayHandler()}
                           />
 
                           {values?.profiletype === '3' || values?.profiletype === '2' ? (
@@ -400,26 +443,13 @@ export default function Component(props) {
                             touched={!!touched.person}
                             isRequired
                           />
-
-                          <Select
-                            placeholder={t('Not chosen', { ns: 'other' })}
-                            label={`${t('The country', { ns: 'other' })}:`}
-                            value={values.country}
-                            getElement={item => setFieldValue('country', item)}
-                            isShadow
-                            className={s.select}
-                            itemsList={payersSelectLists?.country?.map(
-                              ({ $key, $, $image }) => ({
-                                label: (
-                                  <div className={s.countrySelectItem}>
-                                    <img src={`${BASE_URL}${$image}`} alt="flag" />
-                                    {t(`${$.trim()}`)}
-                                  </div>
-                                ),
-                                value: $key,
-                              }),
-                            )}
-                            isRequired
+                          <SelectGeo
+                            setSelectFieldValue={item => setFieldValue('country', item)}
+                            selectValue={values.country}
+                            selectClassName={s.select}
+                            countrySelectClassName={s.countrySelectItem}
+                            geoData={geoData}
+                            payersSelectLists={payersSelectLists}
                           />
 
                           <InputField
@@ -481,46 +511,6 @@ export default function Component(props) {
                               touched={!!touched.eu_vat}
                             />
                           ) : null}
-                          {selectedPayerFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                initialState={
-                                  values[selectedPayerFields?.offer_field] || false
-                                }
-                                setValue={item =>
-                                  setFieldValue(
-                                    `${selectedPayerFields?.offer_field}`,
-                                    item,
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[selectedPayerFields?.offer_field]}
-                                touched={!!touched[selectedPayerFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with', {
-                                  ns: 'payers',
-                                })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={OFERTA_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of Service', { ns: 'domains' })}
-                                </a>{' '}
-                                {t('and', { ns: 'domains' })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={PRIVACY_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of the offer', { ns: 'domains' })}
-                                </a>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -541,12 +531,13 @@ export default function Component(props) {
                             placeholder={'0.00'}
                             isShadow
                             value={values.amount}
-                            onChange={e =>
+                            onChange={e => {
                               setFieldValue(
                                 'amount',
                                 e?.target?.value.replace(/[^0-9.]/g, ''),
                               )
-                            }
+                              setAmount(e?.target?.value.replace(/[^0-9.]/g, ''))
+                            }}
                             className={s.input}
                             error={!!errors.amount}
                             touched={!!touched.amount}
@@ -568,9 +559,43 @@ export default function Component(props) {
                           )}
                         </div>
                       </div>
+                      <div className={s.offerBlock}>
+                        <CheckBox
+                          name={selectedPayerFields?.offer_field}
+                          initialState={values[selectedPayerFields?.offer_field] || false}
+                          setValue={item =>
+                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
+                          }
+                          className={s.checkbox}
+                          error={!!errors[selectedPayerFields?.offer_field]}
+                          touched={!!touched[selectedPayerFields?.offer_field]}
+                        />
+                        <div className={s.offerBlockText}>
+                          {t('I agree with', {
+                            ns: 'payers',
+                          })}{' '}
+                          <a
+                            target="_blank"
+                            href={OFERTA_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of Service', { ns: 'domains' })}
+                          </a>{' '}
+                          {t('and', { ns: 'domains' })}{' '}
+                          <a
+                            target="_blank"
+                            href={PRIVACY_URL}
+                            rel="noreferrer"
+                            className={s.offerBlockLink}
+                          >
+                            {t('Terms of the offer', { ns: 'domains' })}
+                          </a>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className={s.infotext}>
+                    <div className={cn(s.infotext, { [s.showMore]: showMore })}>
                       {values?.slecetedPayMethod && (
                         <div>
                           <span>
@@ -582,6 +607,15 @@ export default function Component(props) {
                         </div>
                       )}
                     </div>
+                    {values?.slecetedPayMethod && readMore && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore(!showMore)}
+                        className={s.readMore}
+                      >
+                        {t(showMore ? 'Collapse' : 'Read more')}
+                      </button>
+                    )}
                   </div>
                   <div className={s.btnBlock}>
                     <Button

@@ -6,7 +6,7 @@ on:
 
 env:
   IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-dev
-  PREFIX: _${{ github.run_number }}
+  PREFIX: release-${{ github.run_number }}
 
 jobs:
   jest:
@@ -32,7 +32,8 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+        if: failure()
+
   eslint:
     runs-on: ubuntu-latest
     strategy:
@@ -57,7 +58,7 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always()
+        if: failure()
 
   build_and_push:
       needs: [jest, eslint]
@@ -70,33 +71,23 @@ jobs:
         - name: Checkout Code
           uses: actions/checkout@v1
 
-        - name: Get current date
-          id: date
-          run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
         - name: Test with environment variables
           run: |
-            echo $TAG_NAME - $RELEASE_NAME
-          env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
+            echo $TAG_NAME - ${{ env.PREFIX }}
 
         - name: Login to docker hub
           run:
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
         - name: Build image
-          env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
           run: |
             docker build -f Dockerfile -t $IMAGE_NAME .
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
-            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$RELEASE_NAME
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
         - name: Push in dockerhub
-          env:
-            RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
           run: |
             docker push $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:$RELEASE_NAME
+            docker push $IMAGE_NAME:${{ env.PREFIX }}
         - name: Push status
           uses: 8398a7/action-slack@v3
           with:
@@ -107,7 +98,7 @@ jobs:
             if_mention: always
           env:
             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: always()
+          if: failure()
 
 
   deploy_on_server:
@@ -119,21 +110,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v1
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
       - name: Test with environment variables
         run: |
-          echo $TAG_NAME - $RELEASE_NAME
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
-
+          echo $TAG_NAME - ${{ env.PREFIX }}
       - name: Update Version
-        env:
-          RELEASE_NAME: release-${{ steps.date.outputs.date }}${{ env.PREFIX }}
         run: |
-          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:$RELEASE_NAME|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -167,5 +149,4 @@ jobs:
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
+        if: failure()

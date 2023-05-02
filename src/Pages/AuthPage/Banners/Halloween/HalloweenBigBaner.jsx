@@ -23,7 +23,7 @@ export default function Component() {
               <b>– 70%</b> {t('for virtual hosting')}
             </li>
             <li>
-              <b>– 40%</b> {'for VDS/VPS'}
+              <b>– 40%</b> {'for VPS'}
             </li>
             <li>
               <b>– 15%</b> {t('for dedicated servers')}

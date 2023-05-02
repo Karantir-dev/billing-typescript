@@ -172,7 +172,7 @@
   "Attention, edit few services": "Внимание! Следующие изменения будут применены ко всем выбранным услугам",
   "The Period field has invalid value.": "Поле 'Период' имеет недопустимое значение. Пожалуйста, выберите другой период",
   "DISCOUNT -10% ON DEDICATED SERVERS": "СКИДКА -10% НА ВЫДЕЛЕННЫЕ СЕРВЕРА",
-  "DISCOUNT -20% ON VDS/VPS": "СКИДКА -20% НА VDS/VPS",
+  "DISCOUNT -20% ON VPS": "СКИДКА -20% НА VPS",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "СКИДКА -20% НА ПЕРВЫЙ МЕСЯЦ НА УСЛУГУ 'УХОД ЗА САЙТОМ'",
   "You can get a discount using a promo code": "Вы можете получить скидку по промокоду",
   "VPN deleted successfully": "VPN успешно удален",
@@ -189,7 +189,7 @@
   "Something went wrong. Try again.": "Что-то пошло не так. Попробуйте еще раз.",
   "address_format": "Введите адрес в формате улица, дом, квартира",
   "email_trigger": "Подтвердите адрес электронной почты, чтобы иметь возможность получать уведомления",
-  "email_sended": "Письмо с подтверждением отправлено на {{email}}",
+  "email_sended": "Вскоре вы получите уведомление о проверке по электронной почте на {{email}}",
   "email_verification": "Подтверждение email",
   "email_verification_text": "При нажатии кнопки “ОТПРАВИТЬ” электронное письмо с подтверждением будет отправлено на адрес “{{email}}”.",
   "email_confirmed": "Почтовый адрес {{email}} подтвержден",
@@ -197,13 +197,13 @@
   "symbols_restricted": "Спецсимволы не допустимы",
 
   "discounts_up_to": "СКИДКИ ДО {{amount}}",
-  "halloween_discount": "на Хостинг, VDS/VPS, Выделенные серверы и Сервер для Forex",
+  "halloween_discount": "на Хостинг, VPS, Выделенные серверы и Сервер для Forex",
   "discounts": "СКИДКИ",
   "on_halloween": "НА ХЭЛЛОУИН",
   "promotion_period": "Акция действует с 31 октября до 2 ноября",
 
   "for virtual hosting": "на виртуальный хостинг",
-  "for VDS/VPS": "на VDS/VPS",
+  "for VPS": "на VPS",
   "for dedicated servers": "на выделенные серверы",
   "for VPN": "на VPN",
   "BLACK FRIDAY": "ЧЕРНАЯ ПЯТНИЦА",
@@ -220,7 +220,7 @@
   "1 Site care - free for 3 months": "1 Забота о сайте – бесплатно на 3 месяца",
   "Subject to purchase (second order, separate check)": "При условии покупки (вторым заказом, отдельным чеком)",
   "Hosting (promo code VR87FR)": "Хостинга (промокод VR87FR)",
-  "VDS/VPS (promo code OM34VS)": "VDS/VPS (промокод OM34VS)",
+  "VPS (promo code OM34VS)": "VPS (промокод OM34VS)",
   "Dedicated server (promo code YT52BD)": "Выделенного сервера (промокод YT52BD)",
   "The above promo codes can only be used once.": "Вышеприведенные промокоды можно использовать только 1 раз",
   "Number of auto-renewable services": "К-тво автоматически возобновляемых сервисов",
@@ -235,5 +235,9 @@
   "for all services from 14.02 to 16.02": "на все услуги с 14.02 по 16.02",
   "CASHBACK 14%": "КЕШБЭК 14%",
 
-  "more": "подробнее"
+  "more": "подробнее",
+
+  "month count 1": "месяц",
+  "month count 3/24": "месяца",
+  "month count 6/12/36": "месяцев"
 }

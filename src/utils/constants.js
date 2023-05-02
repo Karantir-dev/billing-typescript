@@ -24,4 +24,5 @@ export const SOFTWARE_ICONS_LIST = [
   'VestaCP',
   'VMmanager',
   'Windows',
+  'Rocky',
 ]

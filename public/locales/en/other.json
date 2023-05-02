@@ -175,7 +175,7 @@
   "Attention, edit few services": "Attention! The following changes will be applied to all selected services",
   "The Period field has invalid value.": "The 'Period' field has invalid value. Please choose another period",
   "DISCOUNT -10% ON DEDICATED SERVERS": "DISCOUNT -10% ON DEDICATED SERVERS",
-  "DISCOUNT -20% ON VDS/VPS": "DISCOUNT -20% ON VDS/VPS",
+  "DISCOUNT -20% ON VPS": "DISCOUNT -20% ON VPS",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE 'CARE OF THE SITE'",
   "You can get a discount using a promo code": "You can get a discount using a promo code",
   "VPN deleted successfully": "VPN deleted successfully",
@@ -192,7 +192,7 @@
   "Something went wrong. Try again.": "Something went wrong. Try again.",
   "address_format": "Enter the address in the format street, building, apartment",
   "email_trigger": "Confirm the email to be able to receive notifications",
-  "email_sended": "Verification email has been sent to {{email}}",
+  "email_sended": "You will receive an verification email notification shortly on {{email}}",
   "email_verification": "Email verification",
   "email_verification_text": "Clicking “SEND” will send the confirmation email to “{{email}}”",
   "email_confirmed": "Email address {{email}} confirmed",
@@ -200,12 +200,12 @@
   "symbols_restricted": "Special characters are not allowed",
 
   "discounts_up_to": "DISCOUNTS UP TO {{amount}}",
-  "halloween_discount": "for Hosting, VDS/VPS, Dedicated Servers and Forex",
+  "halloween_discount": "for Hosting, VPS, Dedicated Servers and Forex",
   "discounts": "DISCOUNTS",
   "on_halloween": "ON HALLOWEEN",
   "promotion_period": "The promotion is valid from October 31 to November 2",
   "for virtual hosting": "for virtual hosting",
-  "for VDS/VPS": "for VDS/VPS",
+  "for VPS": "for VPS",
   "for dedicated servers": "for dedicated servers",
   "for VPN": "for VPN",
   "BLACK FRIDAY": "BLACK FRIDAY",
@@ -222,7 +222,7 @@
   "1 Site care - free for 3 months": "1 Site care - free for 3 months",
   "Subject to purchase (second order, separate check)": "Subject to purchase (second order, separate check)",
   "Hosting (promo code VR87FR)": "Hosting (promo code VR87FR)",
-  "VDS/VPS (promo code OM34VS)": "VDS/VPS (promo code OM34VS)",
+  "VPS (promo code OM34VS)": "VPS (promo code OM34VS)",
   "Dedicated server (promo code YT52BD)": "Dedicated server (promo code YT52BD)",
   "The above promo codes can only be used once.": "The above promo codes can only be used once.",
 
@@ -237,5 +237,10 @@
   "for all services from 14.02 to 16.02": "for all services from 14.02 to 16.02",
   "CASHBACK 14%": "CASHBACK 14%",
 
-  "more": "more"
+  "more": "more",
+
+  "month count 1": "month",
+  "month count 3/24": "months",
+  "month count 6/12/36": "months"
+
 }

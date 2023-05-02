@@ -210,10 +210,16 @@ const getParameters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const IP = Object.keys(data.doc)
-        const currentSumIp = IP.filter(
-          item => item.includes('addon') && item.includes('current_value'),
-        )
+        let ipAddon = ''
+
+        for (let key in data?.doc?.messages?.msg) {
+          if (
+            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('ip') &&
+            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('count')
+          ) {
+            ipAddon = key
+          }
+        }
 
         const { slist: paramsList } = data.doc
 
@@ -222,9 +228,8 @@ const getParameters =
         const managePanel = paramsList?.filter(item => item.$name.includes('addon'))
         const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
-        const ipName = currentSumIp.join('').slice(0, 10)
         const ipSliderData = data.doc?.metadata?.form?.field?.find(
-          item => item?.$name === ipName,
+          item => item?.$name === ipAddon,
         )?.slider[0]
 
         const ipListData = []
@@ -248,7 +253,7 @@ const getParameters =
         setFieldValue('managePanellList', managePanel[0].val)
         setFieldValue('portSpeedlList', portSpeed.length > 1 ? portSpeed[1].val : [])
         setFieldValue('autoprolonglList', autoprolong[0].val)
-        setFieldValue('ipName', ipName)
+        setFieldValue('ipName', ipAddon)
 
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
         setFieldValue('ostempl', ostempl[0]?.val[0]?.$key)
@@ -338,6 +343,7 @@ const orderServer =
     ipTotal,
     ipName,
     managePanel,
+    server_name,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -367,6 +373,7 @@ const orderServer =
           lang: 'en',
           [ipName]: ipTotal,
           [portSpeedName]: portSpeed,
+          server_name: server_name,
         }),
       )
       .then(({ data }) => {
@@ -473,6 +480,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         username,
         userpassword,
         password,
+        server_name,
       } = data.doc
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
@@ -509,6 +517,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         username,
         userpassword,
         password,
+        server_name,
       }
 
       setInitialParams(editModalData)
@@ -535,6 +544,7 @@ const editDedicServer =
     username,
     userpassword,
     password,
+    server_name,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -562,6 +572,7 @@ const editDedicServer =
           ip,
           username,
           userpassword,
+          server_name,
           password,
           clicked_button: 'basket',
           sok: 'ok',
@@ -617,6 +628,7 @@ const editDedicServerNoExtraPay =
     username,
     userpassword,
     password,
+    server_name,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -635,17 +647,18 @@ const editDedicServerNoExtraPay =
           auth: sessionId,
           lang: 'en',
           elid,
-          autoprolong,
-          domain,
-          ostempl,
-          recipe,
+          autoprolong: autoprolong || undefined,
+          domain: domain || undefined,
+          ostempl: ostempl || undefined,
+          recipe: recipe || undefined,
           [managePanelName]: managePanel,
           [ipName]: ipTotal,
-          ip,
-          username,
-          userpassword,
-          password,
+          ip: ip || undefined,
+          username: username || undefined,
+          userpassword: userpassword || undefined,
+          password: password || undefined,
           clicked_button: 'ok',
+          server_name: server_name || undefined,
           sok: 'ok',
         }),
       )
@@ -659,7 +672,7 @@ const editDedicServerNoExtraPay =
         dispatch(getServersList({ p_num: 1 }))
         dispatch(actions.hideLoader())
 
-        handleModal()
+        handleModal && handleModal()
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
@@ -1135,7 +1148,7 @@ const payProlongPeriod =
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
         } else if (routeAfterBuying === 'vds') {
-          routeAfterBuying = route.VDS
+          routeAfterBuying = route.VPS
         } else if (routeAfterBuying === 'ftp') {
           routeAfterBuying = route.FTP
         } else if (routeAfterBuying === 'dns') {
@@ -1192,7 +1205,7 @@ const payProlongPeriodFewElems =
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
         } else if (routeAfterBuying === 'vds') {
-          routeAfterBuying = route.VDS
+          routeAfterBuying = route.VPS
         } else if (routeAfterBuying === 'ftp') {
           routeAfterBuying = route.FTP
         } else if (routeAfterBuying === 'dns') {

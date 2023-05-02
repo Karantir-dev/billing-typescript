@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -11,11 +11,13 @@ import {
   Info,
   Delete,
   ExitSign,
+  CheckEdit,
 } from '../../../../images'
 import * as route from '../../../../routes'
+import { SITE_URL } from '../../../../config/config'
 import { useNavigate } from 'react-router-dom'
-import { useOutsideAlerter } from '../../../../utils'
-import { CheckBox, ServerState } from '../../..'
+import { shortTitle, useOutsideAlerter } from '../../../../utils'
+import { CheckBox, HintWrapper, ServerState } from '../../..'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
@@ -34,6 +36,7 @@ export default function VDSmobileItem({
   setIdForHistory,
   setIdForInstruction,
   goToPanelFn,
+  handleEditSubmit,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -41,9 +44,34 @@ export default function VDSmobileItem({
   const [toolsOpened, setToolsOpened] = useState(false)
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
+  const [isEdit, setIsEdit] = useState(false)
+  const [originName, setOriginName] = useState('')
+  const [editName, setEditName] = useState('')
+
+  const editField = useRef()
+
+  useEffect(() => {
+    if (server?.server_name?.$) {
+      setOriginName(server?.server_name?.$)
+    }
+  }, [server])
+
   const handleToolBtnClick = fn => {
     fn()
     setToolsOpened(false)
+  }
+
+  const closeEditHandler = () => {
+    setIsEdit(!isEdit)
+    setEditName('')
+  }
+
+  useOutsideAlerter(editField, isEdit, closeEditHandler)
+
+  const editNameHandler = () => {
+    handleEditSubmit(server?.id?.$, { server_name: editName })
+    setOriginName(editName)
+    setIsEdit(false)
   }
 
   const isToolsBtnVisible =
@@ -129,7 +157,7 @@ export default function VDSmobileItem({
                       className={s.tool_btn}
                       type="button"
                       onClick={() =>
-                        navigate(route.VDS_IP, { state: { id: server?.id?.$ } })
+                        navigate(route.VPS_IP, { state: { id: server?.id?.$ } })
                       }
                       disabled={
                         server?.status?.$ === '5' ||
@@ -225,6 +253,103 @@ export default function VDSmobileItem({
           </div>
         </div>
       )}
+      <span className={s.label}>{t('server_name')}:</span>
+      <span className={cn(s.value, { [s.active]: serverIsActive })}>
+        {!isEdit ? (
+          <>
+            {originName && originName?.length < 13 ? (
+              <div
+                style={isEdit ? { overflow: 'inherit' } : {}}
+                className={cn(s.item_text, s.first_item)}
+                ref={editField}
+              >
+                <>
+                  <span
+                    className={cn({
+                      [s.placeholder_text]: editName === '' && originName === '',
+                    })}
+                  >
+                    {t(
+                      shortTitle(editName, 12) ||
+                        shortTitle(originName?.trim(), 12) ||
+                        t('server_placeholder', { ns: 'vds' }),
+                      {
+                        ns: 'vds',
+                      },
+                    )}
+                  </span>
+                  <button
+                    className={s.edit_btn}
+                    onClick={() => {
+                      setIsEdit(!isEdit)
+                      setEditName(originName?.trim())
+                    }}
+                  >
+                    <Edit />
+                  </button>
+                </>
+              </div>
+            ) : (
+              <HintWrapper
+                popupClassName={s.HintWrapper}
+                label={t(
+                  editName ||
+                    originName?.trim() ||
+                    t('server_placeholder', { ns: 'vds' }),
+                  {
+                    ns: 'vds',
+                  },
+                )}
+              >
+                <div
+                  style={isEdit ? { overflow: 'inherit' } : {}}
+                  className={cn(s.item_text, s.first_item)}
+                  ref={editField}
+                >
+                  <>
+                    <span
+                      className={cn({
+                        [s.placeholder_text]: editName === '' && originName === '',
+                      })}
+                    >
+                      {t(
+                        shortTitle(editName, 12) ||
+                          shortTitle(originName?.trim(), 12) ||
+                          t('server_placeholder', { ns: 'vds' }),
+                        {
+                          ns: 'vds',
+                        },
+                      )}
+                    </span>
+                    <button
+                      className={s.edit_btn}
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(originName?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
+                  </>
+                </div>
+              </HintWrapper>
+            )}
+          </>
+        ) : (
+          <div
+            style={isEdit ? { overflow: 'inherit' } : {}}
+            className={cn(s.item_text, s.first_item)}
+            ref={editField}
+          >
+            <div className={s.editBlock}>
+              <input value={editName} onChange={e => setEditName(e.target.value)} />
+              <button className={s.editBtnOk} onClick={editNameHandler}>
+                <CheckEdit />
+              </button>
+            </div>
+          </div>
+        )}
+      </span>
       <span className={s.label}>Id:</span>
       <span className={cn(s.value, { [s.active]: serverIsActive })}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
@@ -251,7 +376,7 @@ export default function VDSmobileItem({
         {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
           <div className={s.dailyCharge}>
             <span>{t('daily charges')}</span>
-            <a target="_blank" href="https://zomro.com/ua/anti-ddos" rel="noreferrer">
+            <a target="_blank" href={`${SITE_URL}/anti-ddos`} rel="noreferrer">
               <div />
             </a>
           </div>

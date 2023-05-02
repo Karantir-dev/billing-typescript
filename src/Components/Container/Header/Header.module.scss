@@ -192,6 +192,13 @@
   color: var(--main-text);
 }
 
+.user_name,
+.user_email {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .exit_name {
   padding-top: 20px;
   font-size: 16px;

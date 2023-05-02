@@ -173,7 +173,7 @@
   "Attention, edit few services": "Назар аударыңыз! Келесі өзгертулер барлық таңдалған қызметтерге қолданылады",
   "The Period field has invalid value.": "'Кезең' өрісінде жарамсыз мән бар. Басқа кезеңді таңдаңыз",
   "DISCOUNT -10% ON DEDICATED SERVERS": "АРНАЛҒАН СЕРВЕРЛЕРГЕ -10% ЖЕҢІЛДІК",
-  "DISCOUNT -20% ON VDS/VPS": "VDS/VPS бойынша -20% ЖЕҢІЛДІК",
+  "DISCOUNT -20% ON VPS": "VPS бойынша -20% ЖЕҢІЛДІК",
   "DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE": "БІРІНШІ АЙ ҮШІН -20% ЖЕҢІЛДІК 'Сайтқа күтім жасау' ҚЫЗМЕТІ ҮШІН",
   "You can get a discount using a promo code": "Сіз промокодты пайдаланып жеңілдік ала аласыз",
   "VPN deleted successfully": "VPN сәтті жойылды",
@@ -190,7 +190,7 @@
   "Something went wrong. Try again.": "Бірдеңе дұрыс болмады. Қайтадан көріңіз.",
   "address_format": "Kөше, ғимарат, пәтер форматында мекенжайды енгізіңіз",
   "email_trigger": "Хабарландыруларды алу үшін электрондық поштаны растаңыз",
-  "email_sended": "Растау электрондық поштасы {{email}} мекенжайына жіберілді",
+  "email_sended": "Жақында {{email}} мекенжайына растау электрондық пошта хабарландыруын аласыз",
   "email_verification": "Электрондық поштаны тексеру",
   "email_verification_text": "“ЖІБЕРУ” түймесін басу “{{email}}” мекенжайына растау электрондық хабарын жібереді.",
   "email_confirmed": "{{email}} электрондық пошта мекенжайы расталды",
@@ -198,13 +198,13 @@
   "symbols_restricted": "Арнайы таңбаларға рұқсат етілмейді",
 
   "discounts_up_to": "{{amount}} ДЕЙІН ЖЕҢІЛДІКТЕР",
-  "halloween_discount": "хостинг, VDS/VPS, арнайы серверлер және Forex үшін",
+  "halloween_discount": "хостинг, VPS, арнайы серверлер және Forex үшін",
   "discounts": "ЖЕҢІЛДІКТЕР",
   "on_halloween": "ХЭЛЛОУИНДЕ",
   "promotion_period": "Науқан 31 қазан мен 2 қараша аралығында жарамды",
 
   "for virtual hosting": "виртуалды хостинг үшін",
-  "for VDS/VPS": "VDS/VPS үшін",
+  "for VPS": "VPS үшін",
   "for dedicated servers": "арнайы серверлер үшін",
   "for VPN": "VPN үшін",
   "BLACK FRIDAY": "ҚАРА ЖҰМА",
@@ -221,7 +221,7 @@
   "1 Site care - free for 3 months": "1 сайтқа күтім жасау – 3 ай тегін",
   "Subject to purchase (second order, separate check)": "Сатып алуға жатады (екінші тапсырыс, бөлек чек)",
   "Hosting (promo code VR87FR)": "Хостинг (промокод VR87FR)",
-  "VDS/VPS (promo code OM34VS)": "VDS/VPS (промокод OM34VS)",
+  "VPS (promo code OM34VS)": "VPS (промокод OM34VS)",
   "Dedicated server (promo code YT52BD)": "Арнайы сервер (промокод YT52BD)",
   "The above promo codes can only be used once.": "Жоғарыдағы промокодтарды тек бір рет пайдалануға болады.",
   "Number of auto-renewable services": "Автоматты түрде жаңартылатын қызметтердің саны",
@@ -236,5 +236,10 @@
   "for all services from 14.02 to 16.02": "барлық қызметтер бойынша 14.02-16.02",
   "CASHBACK 14%": "КЭШБЕК 14%",
 
-  "more": "Көбірек"
+  "more": "Көбірек",
+
+  "month count 1": "айда",
+  "month count 3/24": "айда",
+  "month count 6/12/36": "айда"
+
 }

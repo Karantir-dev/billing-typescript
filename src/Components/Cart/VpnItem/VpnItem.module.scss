@@ -3,14 +3,9 @@
   flex-direction: column;
   width: 100%;
   margin-top: 10px;
-  background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
-  padding: 19px 25px;
-
-  img {
-    width: 31px;
-    height: 37px;
-  }
+  background: var(--gradient_cards_static);
+  box-shadow: var(--shadow_cards_static);
+  padding: 15px;
 
   position: relative;
 }
@@ -19,7 +14,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 15px;
 }
 
 .domainInfo {
@@ -32,9 +26,8 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 70.9%;
+  line-height: 100%;
   color: var(--main-text);
-  margin-bottom: 4px;
 }
 
 .domainProtect {

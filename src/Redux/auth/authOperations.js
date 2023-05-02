@@ -4,12 +4,13 @@ import axios from 'axios'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
 import userOperations from '../userInfo/userOperations'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive, cookies } from '../../utils'
 
 const SERVER_ERR_MSG = 'auth_error'
 
 const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
   dispatch(actions.showLoader())
+  cookies.eraseCookie('sessionId')
 
   const redirectID = localStorage.getItem('redirectID')
 
@@ -95,6 +96,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
           dispatch(authActions.logoutSuccess())
+          cookies.eraseCookie('sessionId')
         }
       } else {
         if (data.doc.error.msg.$) throw new Error(data.doc.error.msg.$)
@@ -235,6 +237,7 @@ const logout = () => (dispatch, getState) => {
     .then(data => {
       if (data.status === 200) {
         dispatch(authActions.logoutSuccess())
+        cookies.eraseCookie('sessionId')
         dispatch(actions.hideLoader())
       } else {
         throw new Error(data.doc.error.msg.$)
@@ -288,6 +291,7 @@ const register =
   (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
   dispatch => {
     dispatch(actions.showLoader())
+    cookies.eraseCookie('sessionId')
 
     axiosInstance
       .post(
@@ -570,6 +574,7 @@ const getLocation = () => dispatch => {
         has_country_state: data?.clients_state?.has_country_state,
         state_id: data?.clients_state?.state_id,
         clients_city: data?.clients_city,
+        clients_country_name: data?.clients_country_name,
       }),
     )
   })

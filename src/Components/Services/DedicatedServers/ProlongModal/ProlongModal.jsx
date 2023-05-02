@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
+import { billingActions, dedicOperations } from '../../../../Redux'
 import { Formik, Form } from 'formik'
 import { Button, Select } from '../../..'
 
@@ -53,12 +53,24 @@ export default function ProlongModal({
 
     let withSale = false
 
-    if (pageName === 'vds' && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
-      const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
-      const is2xRam =
-        initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
+    if (pageName === 'vds') {
+      dispatch(billingActions.setPeriodValue(period))
+    }
 
-      withSale = is2xRam
+    if (
+      pageName === 'vds' &&
+      SALE_55_PROMOCODE &&
+      SALE_55_PROMOCODE?.length > 0 &&
+      !(elidList?.length > 1)
+    ) {
+      const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
+
+      if (memoryList) {
+        const is2xRam =
+          initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
+
+        withSale = is2xRam
+      }
     }
 
     if (elidList?.length > 1) {

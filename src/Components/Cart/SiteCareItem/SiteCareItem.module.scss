@@ -3,9 +3,9 @@
   flex-direction: column;
   width: 100%;
   margin-top: 10px;
-  background: var(--forms_bgc_3);
-  box-shadow: var(--forms_shadow);
-  padding: 19px 25px;
+  background: var(--gradient_cards_static);
+  box-shadow: var(--shadow_cards_static);
+  padding: 15px;
 
   img {
     width: 31px;
@@ -19,13 +19,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 15px;
-}
-
-.domainInfo {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
 }
 
 .domainName {
@@ -34,7 +27,6 @@
   font-size: 18px;
   line-height: 100.9%;
   color: var(--main-text);
-  margin-bottom: 4px;
 }
 
 .domainProtect {

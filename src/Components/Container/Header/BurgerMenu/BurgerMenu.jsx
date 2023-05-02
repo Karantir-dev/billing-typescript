@@ -89,7 +89,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
     },
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
-      routeName: routes.VDS,
+      routeName: routes.VPS,
       allowedToRender: isVdsAllowedToRender,
     },
     {

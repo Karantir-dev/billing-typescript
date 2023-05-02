@@ -365,7 +365,7 @@ export default function VDSOrder() {
     <div className={s.pb}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.page_title}>{t('vds_order', { ns: 'crumbs' })} </h2>
+      <h2 className={s.page_title}>{t('vps_order', { ns: 'crumbs' })} </h2>
 
       <ul className={s.categories_list}>
         {formInfo?.flist.val.map(({ $key, $ }) => {
@@ -394,7 +394,7 @@ export default function VDSOrder() {
             ostempl: dataFromSite?.ostempl || parametersInfo?.ostempl?.$ || '',
             autoprolong:
               dataFromSite?.autoprolong || parametersInfo?.autoprolong?.$ || '',
-            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || domainName,
+            domain: dataFromSite?.domain || parametersInfo?.domain?.$ || '',
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
@@ -405,6 +405,8 @@ export default function VDSOrder() {
             agreement: 'on', //checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: totalPrice,
             finalTotalPrice: +(totalPrice * count).toFixed(4),
+            server_name:
+              dataFromSite?.server_name || parametersInfo?.server_name?.$ || '',
           }}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
@@ -636,6 +638,12 @@ export default function VDSOrder() {
                           itemsList={getOptionsListExtended('autoprolong')}
                           getElement={value => {
                             setFieldValue('autoprolong', value)
+
+                            onChangeField(
+                              period,
+                              { ...values, autoprolong: value },
+                              'autoprolong',
+                            )
                           }}
                           label={`${t('autoprolong')}:`}
                           isShadow
@@ -651,6 +659,21 @@ export default function VDSOrder() {
                         value={domainName}
                         onChange={handleDomainChange}
                       />
+
+                      <InputField
+                        label={`${t('server_name')}:`}
+                        placeholder={`${t('server_placeholder')}`}
+                        name="server_name"
+                        isShadow
+                        error={!!errors.server_name}
+                        touched={!!touched.server_name}
+                        className={s.input_field_wrapper}
+                        inputClassName={s.text_area}
+                        autoComplete="off"
+                        type="text"
+                        value={values?.server_name}
+                      />
+
                       <InputField
                         name="IP_addresses_count"
                         label={`${t('count_ip', { ns: 'dedicated_servers' })}:`}
