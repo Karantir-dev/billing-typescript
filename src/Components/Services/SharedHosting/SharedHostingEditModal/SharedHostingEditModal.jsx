@@ -8,7 +8,13 @@ import s from './SharedHostingEditModal.module.scss'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains'])
 
-  const { name, closeEditModalHandler, editData, sendEditVhostHandler } = props
+  const {
+    name,
+    closeEditModalHandler,
+    editData,
+    sendEditVhostHandler,
+    editVhostHandler,
+  } = props
 
   const editHandler = values => {
     const data = { ...values, sok: 'ok' }
@@ -62,12 +68,14 @@ export default function Component(props) {
                     value={values.autoprolong}
                     getElement={item => {
                       setFieldValue('autoprolong', item)
-                      if (item && item !== 'null') {
-                        setFieldValue(
-                          'stored_method',
-                          editData?.stored_method_list[0]?.$key,
-                        )
-                      }
+                      editVhostHandler({ autoprolong: item })
+
+                      setFieldValue(
+                        'stored_method',
+                        item && item !== 'null'
+                          ? editData?.stored_method_list[0]?.$key
+                          : null,
+                      )
                     }}
                     isShadow
                     itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({

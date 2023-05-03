@@ -148,7 +148,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.edit}
               className={s.settings_btn}
-              onClick={editVhostHandler}
+              onClick={() => editVhostHandler()}
             >
               <Edit />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>

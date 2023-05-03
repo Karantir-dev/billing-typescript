@@ -187,10 +187,14 @@ export default function Component() {
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 
-  const editDomainHandler = (elid = null) => {
-    const data = {
+  const editDomainHandler = (elid = null, d = null) => {
+    let data = {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
+    }
+
+    if (d) {
+      data = { ...data, ...d }
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -386,6 +390,7 @@ export default function Component() {
           closeEditModalHandler={closeEditModalHandler}
           editSaveDomainHandler={editSaveDomainHandler}
           editData={editData}
+          editDomainHandler={editDomainHandler}
         />
       </Backdrop>
     </>
