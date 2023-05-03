@@ -33,9 +33,15 @@ export default function DNSItem({
       key => key !== 'ask' && key !== 'filter' && key !== 'new',
     ).length > 0
 
-  const serverIsActive = activeServices?.some(
+  const isActive = activeServices?.some(
     service => service?.id?.$ === storage?.id?.$,
   )
+
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== storage?.id?.$))
+      : setActiveServices([...activeServices, storage])
+  }
 
   const handleToolBtnClick = fn => {
     fn()
@@ -46,19 +52,13 @@ export default function DNSItem({
     <div className={s.item_wrapper}>
       <CheckBox
         className={s.check_box}
-        initialState={serverIsActive}
-        func={isChecked => {
-          isChecked
-            ? setActiveServices(
-                activeServices?.filter(item => item?.id?.$ !== storage?.id?.$),
-              )
-            : setActiveServices([...activeServices, storage])
-        }}
+        value={isActive}
+        onClick={toggleIsActiveHandler}
       />
 
       <div
         className={cn(s.item, {
-          [s.active_server]: serverIsActive,
+          [s.active_server]: isActive,
         })}
       >
         <span className={s.value}>{storage?.id?.$}</span>

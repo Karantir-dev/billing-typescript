@@ -184,6 +184,11 @@ export default function FTP() {
     }
   }
 
+  const isAllActive = activeServices.length === ftpRenderData?.ftpList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(ftpRenderData?.ftpList)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -199,12 +204,8 @@ export default function FTP() {
             <div className={s.main_checkbox}>
               <CheckBox
                 className={s.check_box}
-                initialState={activeServices.length === ftpRenderData?.ftpList?.length}
-                func={isChecked => {
-                  isChecked
-                    ? setActiveServices([])
-                    : setActiveServices(ftpRenderData?.ftpList)
-                }}
+                value={isAllActive}
+                onClick={toggleIsAllActiveHandler}
               />
               <span>{t('Choose all', { ns: 'other' })}</span>
             </div>

@@ -390,8 +390,8 @@ export default function Component(props) {
                           {selectedPayerFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox
-                                initialState={values['offer_3'] || false}
-                                setValue={item => setFieldValue('offer_3', item)}
+                                value={values['offer_3'] || false}
+                                onClick={() => setFieldValue('offer_3', !values['offer_3'])}
                                 className={s.checkbox}
                                 error={!!errors['offer_3']}
                                 touched={!!touched['offer_3']}

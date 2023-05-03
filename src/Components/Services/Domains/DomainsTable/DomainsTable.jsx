@@ -29,14 +29,16 @@ export default function Component(props) {
     setSelctedItem([])
   }
 
+  const isAllActive = list?.length === selctedItem?.length
+
   return (
     <div className={s.table}>
       <div className={s.tableHeader}>
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            initialState={list?.length === selctedItem?.length}
-            func={isChecked => setSelectedAll(!isChecked)}
+            value={isAllActive}
+            onClick={() => setSelectedAll(!isAllActive)}
           />
         </div>
         <div className={s.headerColumnsWithoutCheckBox}>
