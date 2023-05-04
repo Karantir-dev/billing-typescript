@@ -11,7 +11,13 @@ import { translatePeriod } from '../../../../utils'
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds', 'payers'])
 
-  const { names, closeEditModalHandler, editData, editSaveDomainHandler } = props
+  const {
+    names,
+    closeEditModalHandler,
+    editData,
+    editSaveDomainHandler,
+    editDomainHandler,
+  } = props
 
   const [isOpenProfile, setIsOpenProfile] = useState(false)
 
@@ -119,7 +125,13 @@ export default function Component(props) {
                         label={`${t('Auto renewal')}:`}
                         placeholder={t('Not selected')}
                         value={values.autoprolong}
-                        getElement={item => setFieldValue('autoprolong', item)}
+                        getElement={item => {
+                          setFieldValue('autoprolong', item)
+                          editDomainHandler(editData?.domain_id, { autoprolong: item })
+                          if (item === 'null') {
+                            setFieldValue('stored_method', null)
+                          }
+                        }}
                         isShadow
                         itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => {
                           return {

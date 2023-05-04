@@ -8,7 +8,12 @@ import s from './VpnEditModal.module.scss'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains'])
 
-  const { closeEditModalHandler, editData, sendEditSiteCareHandler } = props
+  const {
+    closeEditModalHandler,
+    editData,
+    sendEditSiteCareHandler,
+    editSiteCareHandler,
+  } = props
 
   const editHandler = values => {
     const data = { ...values, sok: 'ok' }
@@ -52,7 +57,17 @@ export default function Component(props) {
                   label={`${t('Auto renewal', { ns: 'domains' })}:`}
                   placeholder={t('Not selected')}
                   value={values.autoprolong}
-                  getElement={item => setFieldValue('autoprolong', item)}
+                  getElement={item => {
+                    setFieldValue('autoprolong', item)
+                    editSiteCareHandler(editData?.sitecare_id, { autoprolong: item })
+
+                    setFieldValue(
+                      'stored_method',
+                      item && item !== 'null'
+                        ? editData?.stored_method_list[0]?.$key
+                        : null,
+                    )
+                  }}
                   isShadow
                   itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
                     label: $.trim(),

@@ -50,7 +50,7 @@ const getVDS =
       })
   }
 
-const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
+const getEditFieldsVDS = (elid, setInitialState, autoprolong) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
 
@@ -63,6 +63,7 @@ const getEditFieldsVDS = (elid, setInitialState) => (dispatch, getState) => {
         elid,
         out: 'json',
         lang: 'en',
+        autoprolong,
       }),
     )
     .then(({ data }) => {

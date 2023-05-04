@@ -149,11 +149,16 @@ export default function Component() {
     dispatch(vpnOperations.prolongSiteCare(data, setProlongModal, setProlongData))
   }
 
-  const editSiteCareHandler = (elid = null) => {
-    const data = {
+  const editSiteCareHandler = (elid = null, d = null) => {
+    let data = {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
     }
+
+    if (d) {
+      data = { ...data, ...d }
+    }
+
     dispatch(vpnOperations.editSiteCare(data, setEditModal, setEditData))
   }
 
@@ -352,6 +357,7 @@ export default function Component() {
           name={parseSelectedItemNameArr()}
           closeEditModalHandler={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
+          editSiteCareHandler={editSiteCareHandler}
         />
       </Backdrop>
 
