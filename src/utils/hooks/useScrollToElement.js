@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const useScrollToElement = ({
+export default function useScrollToElement ({
   condition,
   behavior = 'smooth',
   block = 'center',
-}) => {
+}) {
   const [isScroll, setIsScroll] = useState(false)
   const elem = useRef()
 

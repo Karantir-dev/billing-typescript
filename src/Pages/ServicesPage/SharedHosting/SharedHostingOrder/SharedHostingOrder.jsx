@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { userOperations, vhostOperations } from '../../../../Redux'
-import { useScrollToElement } from '../../../../hooks'
+import { useScrollToElement } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'

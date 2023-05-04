@@ -28,8 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive } from '../../../../utils'
-import { useScrollToElement } from '../../../../hooks'
+import { checkIfTokenAlive, useScrollToElement } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 

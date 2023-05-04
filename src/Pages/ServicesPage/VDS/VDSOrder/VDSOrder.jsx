@@ -13,14 +13,13 @@ import {
   Button,
 } from '../../../../Components'
 import { userOperations, vdsOperations } from '../../../../Redux'
-import { DOMAIN_REGEX } from '../../../../utils'
+import { DOMAIN_REGEX, useScrollToElement } from '../../../../utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
 import { SALE_55_PROMOCODE } from '../../../../config/config'
 import { SaleFiftyFive } from '../../../../images'
-import { useScrollToElement } from '../../../../hooks'
 
 export default function VDSOrder() {
   const location = useLocation()

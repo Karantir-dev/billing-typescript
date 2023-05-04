@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { userOperations, vpnOperations } from '../../../../Redux'
-import { useScrollToElement } from '../../../../hooks'
+import { useScrollToElement } from '../../../../utils'
 
 import s from './VpnOrder.module.scss'
 import * as routes from '../../../../routes'
