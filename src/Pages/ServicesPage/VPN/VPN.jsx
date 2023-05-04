@@ -215,6 +215,9 @@ export default function Component() {
     }
   }, [])
 
+  const isAllActive = vpnRenderData?.vpnList?.length === selctedItem?.length
+  const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -241,8 +244,8 @@ export default function Component() {
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            initialState={vpnRenderData?.vpnList?.length === selctedItem?.length}
-            func={isChecked => setSelectedAll(!isChecked)}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <span>{t('Choose all', { ns: 'other' })}</span>
         </div>

@@ -4,6 +4,10 @@ on:
     branches:
       - 'dev'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-dev
   PREFIX: release-${{ github.run_number }}

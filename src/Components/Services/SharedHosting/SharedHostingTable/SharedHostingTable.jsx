@@ -27,18 +27,20 @@ export default function Component(props) {
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
+  const isAllActive = activeServices?.length === list?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(list)
+  }
+
   return (
     <div className={s.table}>
       {widerThan1600 && (
         <div className={s.header_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices?.length === list?.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(list)
-            }}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
-
           <div className={s.tableHeader}>
             <span className={cn(s.title_text, s.first_item)}>{t('Id')}:</span>
             <span className={cn(s.title_text, s.second_item)}>{t('Domain name')}:</span>

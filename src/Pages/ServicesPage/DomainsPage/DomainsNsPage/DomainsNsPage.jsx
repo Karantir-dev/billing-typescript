@@ -117,8 +117,8 @@ export default function Component({ transfer = false }) {
       {selectedDomain?.length > 1 && (
         <div className={s.useFirstCheck}>
           <CheckBox
-            initialState={differentNS}
-            setValue={setDifferentNS}
+            value={differentNS}
+            onClick={() => setDifferentNS(prev => !prev)}
             className={s.checkbox}
           />
           <span>{t('Private name servers for each domain')}</span>
@@ -334,9 +334,12 @@ export default function Component({ transfer = false }) {
                               {checkBoxName && (
                                 <div className={s.useFirstCheck}>
                                   <CheckBox
-                                    initialState={values[checkBoxName] === 'on'}
-                                    setValue={item => {
-                                      setFieldValue(checkBoxName, item ? 'on' : 'off')
+                                    value={values[checkBoxName] === 'on'}
+                                    onClick={() => {
+                                      setFieldValue(
+                                        checkBoxName,
+                                        values[checkBoxName] === 'on' ? 'off' : 'on',
+                                      )
                                     }}
                                     className={s.checkbox}
                                   />

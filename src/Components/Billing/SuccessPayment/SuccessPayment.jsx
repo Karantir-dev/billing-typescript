@@ -15,31 +15,34 @@ export default function Component() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const data = cookies.getCookie('cartData')
-  const cartData = JSON.parse(data)
-
-  const refillId = cookies.getCookie('refill_id')
+  const refillId = cookies.getCookie('payment_id')
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
 
   const [paymentId, setPaymentId] = useState(null)
+  const [cartData, setCartData] = useState(null)
 
   const backHandler = () => {
     navigate(routes.BILLING)
   }
 
   useEffect(() => {
-    const data = { p_num: 1, p_cnt: 1 }
+    const data = { p_num: 1, p_cnt: 15 }
     dispatch(billingOperations.getPayments(data))
   }, [])
 
   useEffect(() => {
     if (paymentsList && paymentsList?.length > 0) {
-      const item = paymentsList?.find(
-        e => e?.billorder?.$ === cartData?.billorder || e?.id?.$ === refillId,
-      )
+      const item = paymentsList?.find(e => e?.id?.$ === refillId)
 
       if (item) {
+        if (item?.billorder) {
+          const data = cookies.getCookie(`cartData_${refillId}`)
+          if (data) {
+            const dataJson = JSON.parse(data)
+            setCartData(dataJson)
+          }
+        }
         setPaymentId(item)
       }
     }
@@ -50,49 +53,73 @@ export default function Component() {
       const currency = paymentId?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR'
       const value = paymentId?.paymethodamount_iso?.$?.replace(currency, '')
       const tax = paymentId?.tax?.$?.replace(currency, '')
-
       window.dataLayer.push({ ecommerce: null })
-      if (cartData) {
-        window.dataLayer.push({
-          event: 'purchase',
-          ecommerce: {
-            transaction_id:
-              paymentId?.id?.$ || `No payment id (billorder: ${cartData?.billorder})`,
-            affiliation: 'cp.zomro.com',
-            value: Number(value) || 0,
-            tax: Number(tax) || 0,
-            currency: currency,
-            shipping: '0',
-            coupon: cartData?.promocode,
-            items: cartData?.items,
-          },
-        })
 
-        cookies.eraseCookie('cartData')
-      }
-      if (refillId) {
-        window.dataLayer.push({
-          event: 'purchase',
-          ecommerce: {
-            transaction_id: paymentId?.id?.$ || refillId,
-            affiliation: 'cp.zomro.com',
-            value: Number(value) || 0,
-            tax: Number(tax) || 0,
-            currency: currency,
-            items: [
-              {
-                item_name: 'Refill',
-                item_id: paymentId?.id?.$ || '',
-                price: Number(value) || 0,
-                item_category: 'Refill account',
-                quantity: 1,
-              },
-            ],
-          },
-        })
+      if (paymentId?.billorder) {
+        if (cartData?.billorder === paymentId?.billorder?.$) {
+          window.dataLayer.push({
+            event: 'purchase',
+            ecommerce: {
+              transaction_id:
+                refillId || `No payment id (billorder: ${cartData?.billorder})`,
+              affiliation: 'cp.zomro.com',
+              value: Number(value) || 0,
+              tax: Number(tax) || 0,
+              currency: currency,
+              shipping: '0',
+              coupon: cartData?.promocode,
+              items: cartData?.items,
+            },
+          })
 
-        cookies.eraseCookie('refill_id')
+          cookies.eraseCookie(`cartData_${refillId}`)
+        } else {
+          window.dataLayer.push({
+            event: 'purchase',
+            ecommerce: {
+              transaction_id: refillId,
+              affiliation: 'cp.zomro.com',
+              value: Number(value) || 0,
+              tax: Number(tax) || 0,
+              currency: currency,
+              shipping: '0',
+              coupon: '',
+              items: [
+                {
+                  item_name: 'Cart buy',
+                  item_id: paymentId?.billorder?.$ || '',
+                  price: Number(value) || 0,
+                  item_category: 'Lost data' || '',
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+        }
+      } else {
+        if (refillId && !cartData) {
+          window.dataLayer.push({
+            event: 'purchase',
+            ecommerce: {
+              transaction_id: paymentId?.id?.$ || refillId,
+              affiliation: 'cp.zomro.com',
+              value: Number(value) || 0,
+              tax: Number(tax) || 0,
+              currency: currency,
+              items: [
+                {
+                  item_name: 'Refill',
+                  item_id: paymentId?.id?.$ || '',
+                  price: Number(value) || 0,
+                  item_category: 'Refill account',
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+        }
       }
+      cookies.eraseCookie('payment_id')
     }
   }, [paymentId])
 

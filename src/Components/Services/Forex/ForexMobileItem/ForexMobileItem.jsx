@@ -35,7 +35,12 @@ export default function ForexMobileItem({
       key => key !== 'ask' && key !== 'filter' && key !== 'new',
     ).length > 0
 
-  const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const isActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== server?.id?.$))
+      : setActiveServices([...activeServices, server])
+  }
 
   return (
     <li className={s.item}>
@@ -43,14 +48,8 @@ export default function ForexMobileItem({
         <div className={s.tools_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={serverIsActive}
-            func={isChecked => {
-              isChecked
-                ? setActiveServices(
-                    activeServices?.filter(item => item?.id?.$ !== server?.id?.$),
-                  )
-                : setActiveServices([...activeServices, server])
-            }}
+            value={isActive}
+            onClick={toggleIsActiveHandler}
           />
 
           <div className={s.dots_wrapper}>

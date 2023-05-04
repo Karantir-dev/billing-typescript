@@ -226,6 +226,9 @@ export default function Component() {
     setSelctedItem([])
   }
 
+  const isAllActive = domainsRenderData?.domainsList?.length === selctedItem?.length
+  const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -253,8 +256,8 @@ export default function Component() {
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            initialState={domainsRenderData?.domainsList?.length === selctedItem?.length}
-            func={isChecked => setSelectedAll(!isChecked)}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <span>{t('Choose all', { ns: 'other' })}</span>
         </div>
