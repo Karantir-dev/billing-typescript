@@ -248,6 +248,7 @@ const getParameters =
         // fields
 
         setFieldValue('ipList', ipListData)
+        setFieldValue('ipTotal', ipListData[0].value)
         setFieldValue('ostemplList', ostempl[0].val)
         setFieldValue('recipelList', recipe[0].val)
         setFieldValue('managePanellList', managePanel[0].val)
