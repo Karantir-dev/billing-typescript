@@ -13,7 +13,7 @@ import {
   Button,
 } from '../../../../Components'
 import { userOperations, vdsOperations } from '../../../../Redux'
-import { DOMAIN_REGEX } from '../../../../utils'
+import { DOMAIN_REGEX, useScrollToElement } from '../../../../utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -44,6 +44,7 @@ export default function VDSOrder() {
   const filteredList = tariffsList.filter(el =>
     tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {
     const isInList = filteredList.some(el => el.pricelist.$ === selectedTariffId)
@@ -466,7 +467,10 @@ export default function VDSOrder() {
                           tabIndex={0}
                           onKeyUp={null}
                           role="button"
-                          onClick={() => handleTariffClick(period, pricelist.$)}
+                          onClick={() => {
+                            handleTariffClick(period, pricelist.$)
+                            runScroll()
+                          }}
                         >
                           <span className={s.tariff_name}>{desc.$}</span>
                           {parsedPrice ? (
@@ -536,7 +540,7 @@ export default function VDSOrder() {
 
                 {parametersInfo && (
                   <>
-                    <p className={s.section_title}>
+                    <p ref={scrollElem} className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>

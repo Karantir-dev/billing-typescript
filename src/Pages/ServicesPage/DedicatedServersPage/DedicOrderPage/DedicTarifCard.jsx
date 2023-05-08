@@ -38,7 +38,7 @@ export default function DedicTarifCard({
           setParameters(null)
           setFieldValue('tarif', item?.pricelist?.$)
           setPrice(priceAmount)
-          setTarifChosen(true)
+          setTarifChosen()
 
           dispatch(
             dedicOperations.getParameters(
