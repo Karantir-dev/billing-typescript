@@ -187,10 +187,14 @@ export default function Component() {
     dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
   }
 
-  const editDomainHandler = (elid = null) => {
-    const data = {
+  const editDomainHandler = (elid = null, d = null) => {
+    let data = {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
+    }
+
+    if (d) {
+      data = { ...data, ...d }
     }
     dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
   }
@@ -226,6 +230,9 @@ export default function Component() {
     setSelctedItem([])
   }
 
+  const isAllActive = domainsRenderData?.domainsList?.length === selctedItem?.length
+  const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -253,8 +260,8 @@ export default function Component() {
         <div className={s.checkBoxColumn}>
           <CheckBox
             className={s.check_box}
-            initialState={domainsRenderData?.domainsList?.length === selctedItem?.length}
-            func={isChecked => setSelectedAll(!isChecked)}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <span>{t('Choose all', { ns: 'other' })}</span>
         </div>
@@ -386,6 +393,7 @@ export default function Component() {
           closeEditModalHandler={closeEditModalHandler}
           editSaveDomainHandler={editSaveDomainHandler}
           editData={editData}
+          editDomainHandler={editDomainHandler}
         />
       </Backdrop>
     </>

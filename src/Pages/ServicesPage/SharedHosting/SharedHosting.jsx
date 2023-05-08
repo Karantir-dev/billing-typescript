@@ -158,11 +158,15 @@ export default function Component() {
   //   dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
   // }
 
-  const editVhostHandler = () => {
-    const data = {
+  const editVhostHandler = (d = null) => {
+    let data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
+    }
+
+    if (d) {
+      data = { ...data, ...d }
     }
     dispatch(vhostOperations.editVhost(data, setEditModal, setEditData))
   }
@@ -440,6 +444,7 @@ export default function Component() {
           name={selctedItem?.name?.$}
           closeEditModalHandler={closeEditModalHandler}
           sendEditVhostHandler={sendEditVhostHandler}
+          editVhostHandler={editVhostHandler}
         />
       </Backdrop>
 

@@ -34,16 +34,19 @@ export default function VDSList({
     )
   }
 
+  const isAllActive = activeServices.length === servers.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(servers)
+  }
+
   return (
     <>
       {widerThan1600 && servers?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices.length === servers.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(servers)
-            }}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
 
           <ul className={s.head_row}>

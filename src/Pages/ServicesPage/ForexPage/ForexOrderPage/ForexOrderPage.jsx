@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod } from '../../../../utils'
+import { translatePeriod, useScrollToElement } from '../../../../utils'
 import Select from '../../../../Components/ui/Select/Select'
 import { forexOperations, selectors, userOperations } from '../../../../Redux'
 import * as route from '../../../../routes'
@@ -40,6 +40,7 @@ export default function ForexOrderPage() {
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
 
   const isForexOrderAllowed = location?.state?.isForexOrderAllowed
 
@@ -292,7 +293,8 @@ export default function ForexOrderPage() {
                             if (!cartFromSiteJson) {
                               setDataFromSite(null)
                             }
-
+                            runScroll()
+                            
                             dispatch(
                               forexOperations.getParameters(
                                 values.period,
@@ -364,7 +366,9 @@ export default function ForexOrderPage() {
 
               {parameters && (
                 <div className={s.parameters_block}>
-                  <p className={s.params}>{t('parameters')}</p>
+                  <p ref={scrollElem} className={s.params}>
+                    {t('parameters')}
+                  </p>
 
                   <div className={s.parameters_wrapper}>
                     <Select

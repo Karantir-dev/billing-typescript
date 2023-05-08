@@ -108,7 +108,19 @@ export default function ForexEditModal({ elid, closeFn }) {
                           height={50}
                           value={values.autoprolong}
                           label={t('autoprolong')}
-                          getElement={item => setFieldValue('autoprolong', item)}
+                          getElement={item => {
+                            setFieldValue('autoprolong', item)
+                            dispatch(
+                              forexOperations.getCurrentForexInfo(
+                                elid,
+                                setInitialState,
+                                item,
+                              ),
+                            )
+                            if (item === 'null') {
+                              setFieldValue('stored_method', null)
+                            }
+                          }}
                           isShadow
                           itemsList={initialState?.autoprolongList?.map(el => {
                             const labelText = translatePeriod(el?.$, t)
@@ -142,7 +154,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.server_ip}
                           disabled
@@ -153,7 +165,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.server_hostname}
                           disabled
@@ -166,7 +178,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.server_user}
                           disabled
@@ -177,7 +189,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.server_password}
                           disabled
@@ -188,7 +200,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                           isShadow
                           className={s.input_field_wrapper}
                           inputClassName={s.input}
-                          autoComplete='off'
+                          autoComplete="off"
                           type="text"
                           value={values?.server_package}
                           disabled
