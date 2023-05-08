@@ -48,6 +48,13 @@ export default function Component(props) {
   const [maxAmount, setMaxAmount] = useState(0)
   const [showMore, setShowMore] = useState(false)
   const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false)
+  const [person, setPerson] = useState(null)
+  const [cityPhysical, setCityPhysical] = useState(null)
+  const [addressPhysical, setAddressPhysical] = useState(null)
+  const [profileType, setProfileType] = useState('')
+  const [company, setCompany] = useState('')
+  const [euVat, setEUVat] = useState('')
 
   const dropdownDescription = useRef(null)
 
@@ -187,19 +194,22 @@ export default function Component(props) {
                 selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
               amount: amount || '',
               slecetedPayMethod: slecetedPayMethod || undefined,
-              name: selectedPayerFields?.name || '',
-              address_physical: selectedPayerFields?.address_physical || '',
+              name: company || selectedPayerFields?.name || '',
+              address_physical: addressPhysical ?? selectedPayerFields?.address_physical,
               city_physical:
-                selectedPayerFields?.city_physical || geoData?.clients_city || '',
-              person: selectedPayerFields?.person || '',
+                cityPhysical ??
+                (selectedPayerFields?.city_physical || geoData?.clients_city),
+              person: person ?? selectedPayerFields?.person,
               country:
                 payersSelectedFields?.country ||
                 payersSelectedFields?.country_physical ||
                 '',
               profiletype:
-                selectedPayerFields?.profiletype || payersSelectedFields?.profiletype,
-              eu_vat: selectedPayerFields?.eu_vat || '',
-              [selectedPayerFields?.offer_field]: false,
+                profileType ||
+                selectedPayerFields?.profiletype ||
+                payersSelectedFields?.profiletype,
+              eu_vat: euVat || selectedPayerFields?.eu_vat || '',
+              [selectedPayerFields?.offer_field]: isPolicyChecked || false,
               payment_currency: {
                 title: paymentsCurrency?.payment_currency_list?.filter(
                   e => e?.$key === paymentsCurrency?.payment_currency,
@@ -287,6 +297,8 @@ export default function Component(props) {
                 parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
 
               const setPayerHandler = val => {
+                if (val === values.profile) return
+
                 setFieldValue('profile', val)
                 let data = null
                 if (val === 'new') {
@@ -316,6 +328,10 @@ export default function Component(props) {
                     ),
                   )
                 }
+
+                setPerson(null)
+                setCityPhysical(null)
+                setAddressPhysical(null)
               }
 
               const readMore = parsedText?.infoText
@@ -386,7 +402,10 @@ export default function Component(props) {
                             placeholder={t('Not chosen', { ns: 'other' })}
                             label={`${t('Payer status', { ns: 'payers' })}:`}
                             value={values.profiletype}
-                            getElement={item => setFieldValue('profiletype', item)}
+                            getElement={item => {
+                              setFieldValue('profiletype', item)
+                              setProfileType(item)
+                            }}
                             isShadow
                             className={s.select}
                             dropdownClass={s.selectDropdownClass}
@@ -404,6 +423,8 @@ export default function Component(props) {
                               error={!!errors.name}
                               touched={!!touched.name}
                               isRequired
+                              value={values.name}
+                              onChange={e => setCompany(e.target.value)}
                             />
                           ) : null}
 
@@ -442,6 +463,8 @@ export default function Component(props) {
                             error={!!errors.person}
                             touched={!!touched.person}
                             isRequired
+                            value={values.person}
+                            onChange={e => setPerson(e.target.value)}
                           />
                           <SelectGeo
                             setSelectFieldValue={item => setFieldValue('country', item)}
@@ -461,6 +484,8 @@ export default function Component(props) {
                             className={s.inputBig}
                             error={!!errors.city_physical}
                             touched={!!touched.city_physical}
+                            value={values.city_physical}
+                            onChange={e => setCityPhysical(e.target.value)}
                             // isRequired
                           />
 
@@ -485,6 +510,7 @@ export default function Component(props) {
                               externalValue={values.address_physical}
                               setFieldValue={val => {
                                 setFieldValue('address_physical', val)
+                                setAddressPhysical(val)
                               }}
                             />
 
@@ -509,6 +535,8 @@ export default function Component(props) {
                               className={s.inputBig}
                               error={!!errors.eu_vat}
                               touched={!!touched.eu_vat}
+                              value={values.eu_vat}
+                              onChange={e => setEUVat(e.target.value)}
                             />
                           ) : null}
                         </div>
@@ -543,32 +571,31 @@ export default function Component(props) {
                             touched={!!touched.amount}
                             isRequired
                           />
-                          {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
-                            <PaymentCurrencyBtn
-                              list={paymentsCurrency?.payment_currency_list}
-                              currentValue={values?.payment_currency?.title}
-                              setValue={item => {
-                                setFieldValue('payment_currency', item)
-                                dispatch(
-                                  billingOperations.getPaymentMethod({
-                                    payment_currency: item?.value,
-                                  }),
-                                )
-                              }}
-                            />
-                          )}
+                          {paymentsCurrency &&
+                            paymentsCurrency?.payment_currency_list && (
+                              <PaymentCurrencyBtn
+                                list={paymentsCurrency?.payment_currency_list}
+                                currentValue={values?.payment_currency?.title}
+                                setValue={item => {
+                                  setFieldValue('payment_currency', item)
+                                  dispatch(
+                                    billingOperations.getPaymentMethod({
+                                      payment_currency: item?.value,
+                                    }),
+                                  )
+                                }}
+                              />
+                            )}
                         </div>
                       </div>
                       <div className={s.offerBlock}>
                         <CheckBox
                           name={selectedPayerFields?.offer_field}
-                          initialState={values[selectedPayerFields?.offer_field] || false}
-                          setValue={item =>
-                            setFieldValue(`${selectedPayerFields?.offer_field}`, item)
-                          }
+                          value={values[selectedPayerFields?.offer_field]}
                           className={s.checkbox}
                           error={!!errors[selectedPayerFields?.offer_field]}
                           touched={!!touched[selectedPayerFields?.offer_field]}
+                          onClick={() => setIsPolicyChecked(prev => !prev)}
                         />
                         <div className={s.offerBlockText}>
                           {t('I agree with', {

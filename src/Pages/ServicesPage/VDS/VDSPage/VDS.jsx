@@ -197,6 +197,11 @@ export default function VDS() {
 
   const isLoading = useSelector(selectors.getIsLoadding)
 
+  const isAllActive = activeServices.length === servers.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(servers)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -246,10 +251,8 @@ export default function VDS() {
           <div className={s.main_checkbox}>
             <CheckBox
               className={s.check_box}
-              initialState={activeServices.length === servers.length}
-              func={isChecked => {
-                isChecked ? setActiveServices([]) : setActiveServices(servers)
-              }}
+              value={isAllActive}
+              onClick={toggleIsAllActiveHandler}
             />
             <span>{t('Choose all', { ns: 'other' })}</span>
           </div>

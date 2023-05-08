@@ -66,7 +66,13 @@ export default function DedicItem({
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
 
-  const serverIsActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+  const isActive = activeServices?.some(service => service?.id?.$ === server?.id?.$)
+
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== server?.id?.$))
+      : setActiveServices([...activeServices, server])
+  }
 
   const handleToolBtnClick = fn => {
     fn()
@@ -83,19 +89,13 @@ export default function DedicItem({
     <div className={s.item_wrapper}>
       <CheckBox
         className={s.check_box}
-        initialState={serverIsActive}
-        func={isChecked => {
-          isChecked
-            ? setActiveServices(
-                activeServices?.filter(item => item?.id?.$ !== server?.id?.$),
-              )
-            : setActiveServices([...activeServices, server])
-        }}
+        value={isActive}
+        onClick={toggleIsActiveHandler}
       />
 
       <div
         className={cn(s.item, {
-          [s.active_server]: serverIsActive,
+          [s.active_server]: isActive,
         })}
         // type="button"
         // onClick={() => setActiveServer(server)}
@@ -109,8 +109,12 @@ export default function DedicItem({
                   className={cn(s.item_text, s.first_item)}
                   ref={editField}
                 >
-                                    <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                  <>
+                    <span
+                      className={cn({
+                        [s.placeholder_text]: editName === '' && originName === '',
+                      })}
+                    >
                       {t(
                         shortTitle(editName, 12) ||
                           shortTitle(originName?.trim(), 12) ||
@@ -137,6 +141,7 @@ export default function DedicItem({
                   label={t(editName || originName?.trim(), {
                     ns: 'vds',
                   })}
+                  wrapperClassName={cn(s.hint)}
                 >
                   <div
                     style={isEdit ? { overflow: 'inherit' } : {}}
@@ -144,7 +149,11 @@ export default function DedicItem({
                     ref={editField}
                   >
                     <>
-                    <span className={cn({[s.placeholder_text]: editName === '' && originName === ''})}>
+                      <span
+                        className={cn({
+                          [s.placeholder_text]: editName === '' && originName === '',
+                        })}
+                      >
                         {t(
                           shortTitle(editName, 12) ||
                             shortTitle(originName?.trim(), 12) ||
@@ -188,7 +197,17 @@ export default function DedicItem({
           )}
         </span>
         <span className={s.value}>{server?.id?.$}</span>
-        <span className={s.value}>{server?.domain?.$}</span>
+        <span className={s.value}>
+          {server?.domain?.$ ? (
+            <HintWrapper
+              popupClassName={s.HintWrapper}
+              label={server?.domain?.$}
+              wrapperClassName={cn(s.hint)}
+            >
+              <span>{server?.domain?.$}</span>
+            </HintWrapper>
+          ) : null}
+        </span>
         <span className={s.value}>{server?.ip?.$}</span>
         <span className={s.value}>{server?.ostempl?.$}</span>
         <span className={s.value}>

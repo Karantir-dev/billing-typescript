@@ -205,6 +205,11 @@ export default function DNS() {
     }
   }
 
+  const isAllActive = activeServices.length === dnsRenderData?.dnsList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(dnsRenderData?.dnsList)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -221,12 +226,8 @@ export default function DNS() {
             <div className={s.main_checkbox}>
               <CheckBox
                 className={s.check_box}
-                initialState={activeServices.length === dnsRenderData?.dnsList?.length}
-                func={isChecked => {
-                  isChecked
-                    ? setActiveServices([])
-                    : setActiveServices(dnsRenderData?.dnsList)
-                }}
+                value={isAllActive}
+                onClick={toggleIsAllActiveHandler}
               />
               <span>{t('Choose all', { ns: 'other' })}</span>
             </div>

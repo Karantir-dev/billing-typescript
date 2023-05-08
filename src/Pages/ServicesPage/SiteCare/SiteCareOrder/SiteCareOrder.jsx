@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { siteCareOperations, userOperations } from '../../../../Redux'
+import { useScrollToElement } from '../../../../utils'
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
 import * as routes from '../../../../routes'
@@ -32,6 +33,7 @@ export default function Component() {
   const [paramsData, setParamsData] = useState(null)
 
   const isSiteCareOrderAllowed = location?.state?.isSiteCareOrderAllowed
+  const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData })
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
@@ -177,6 +179,7 @@ export default function Component() {
                           setParamsData,
                         ),
                       )
+                      runScroll()
                     }
                     return (
                       <SiteCareTarifCard
@@ -194,7 +197,7 @@ export default function Component() {
                 </div>
                 {paramsData && (
                   <div className={s.parametrsContainer}>
-                    <div className={s.parametrsTitle}>{t('Options')}</div>
+                    <div ref={scrollElem} className={s.parametrsTitle}>{t('Options')}</div>
                     <div className={s.inputsBlock}>
                       <Select
                         getElement={item => {

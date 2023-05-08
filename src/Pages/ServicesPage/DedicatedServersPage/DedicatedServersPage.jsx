@@ -209,6 +209,14 @@ export default function DedicatedServersPage() {
     }
   }, [rights])
 
+  const isAllActive =
+    activeServices.length === dedicRenderData?.serversList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive
+      ? setActiveServices([])
+      : setActiveServices(dedicRenderData?.serversList)
+  }
+
   return (
     <>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -225,14 +233,8 @@ export default function DedicatedServersPage() {
             <div className={s.main_checkbox}>
               <CheckBox
                 className={s.check_box}
-                initialState={
-                  activeServices.length === dedicRenderData?.serversList?.length
-                }
-                func={isChecked => {
-                  isChecked
-                    ? setActiveServices([])
-                    : setActiveServices(dedicRenderData?.serversList)
-                }}
+                value={isAllActive}
+                onClick={toggleIsAllActiveHandler}
               />
               <span>{t('Choose all', { ns: 'other' })}</span>
             </div>

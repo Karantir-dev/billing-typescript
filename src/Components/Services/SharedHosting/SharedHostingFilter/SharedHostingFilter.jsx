@@ -96,6 +96,11 @@ export default function Component(props) {
     dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true))
   }
 
+  const isAllActive = activeServices?.length === hostingList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(hostingList)
+  }
+
   return (
     <div className={s.filterBlock}>
       <div className={s.formBlock}>
@@ -104,10 +109,8 @@ export default function Component(props) {
             <div className={s.main_checkbox}>
               <CheckBox
                 className={s.check_box}
-                initialState={activeServices?.length === hostingList?.length}
-                func={isChecked => {
-                  isChecked ? setActiveServices([]) : setActiveServices(hostingList)
-                }}
+                value={isAllActive}
+                onClick={toggleIsAllActiveHandler}
               />
               <span>{t('Choose all', { ns: 'other' })}</span>
             </div>

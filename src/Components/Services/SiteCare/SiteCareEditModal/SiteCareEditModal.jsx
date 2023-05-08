@@ -146,9 +146,9 @@ export default function Component(props) {
 
                 <div className={s.useFirstCheck}>
                   <CheckBox
-                    initialState={editData?.pause === 'on'}
-                    setValue={item => {
-                      setFieldValue('pause', item ? 'on' : 'off')
+                    value={values.pause === 'on'}
+                    onClick={() => {
+                      setFieldValue('pause', values.pause === 'on' ? 'off' : 'on')
                     }}
                     className={s.checkbox}
                   />

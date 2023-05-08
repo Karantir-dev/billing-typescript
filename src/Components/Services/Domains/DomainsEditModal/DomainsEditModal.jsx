@@ -225,9 +225,9 @@ export default function Component(props) {
                         />
                         <div className={s.useFirstCheck}>
                           <CheckBox
-                            initialState={editData?.private === 'on'}
-                            setValue={item => {
-                              setFieldValue('private', item ? 'on' : 'off')
+                            value={values.private === 'on'}
+                            onClick={() => {
+                              setFieldValue('private', values.private === 'on' ? 'off' : 'on')
                             }}
                             className={s.checkbox}
                           />
@@ -412,9 +412,9 @@ export default function Component(props) {
                       <div className={s.formFieldsBlock}>
                         <div className={s.useFirstCheck}>
                           <CheckBox
-                            initialState={editData[editData?.addon]?.$ === 'on'}
-                            setValue={item => {
-                              setFieldValue(editData?.addon, item ? 'on' : 'off')
+                            value={values[editData?.addon] === 'on'}
+                            onClick={() => {
+                              setFieldValue(editData?.addon, values[editData?.addon] === 'on' ? 'off' : 'on')
                             }}
                             className={s.checkbox}
                           />

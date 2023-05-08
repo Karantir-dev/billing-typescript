@@ -58,16 +58,19 @@ export default function DNSList({
     }
   }
 
+  const isAllActive = activeServices?.length === dnsList?.length
+  const toggleIsActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(dnsList)
+  }
+
   return (
     <>
       {widerThan1600 && dnsList?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices?.length === dnsList?.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(dnsList)
-            }}
+            value={isAllActive}
+            onClick={toggleIsActiveHandler}
           />
 
           <ul className={s.head_row}>
