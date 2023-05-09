@@ -15,11 +15,11 @@ export default function Component() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const refillId = cookies.getCookie('payment_id') // payment ID, obtained during the transition to the payment system
+  const paymentId = cookies.getCookie('payment_id') // payment ID, obtained during the transition to the payment system
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList) // list of all user payments
 
-  const [paymentId, setPaymentId] = useState(null)
+  const [paymentItem, setPaymentItem] = useState(null)
   const [cartData, setCartData] = useState(null)
 
   const backHandler = () => {
@@ -34,12 +34,16 @@ export default function Component() {
   useEffect(() => {
     // in the list of payments we look for the necessary payment
     if (paymentsList && paymentsList?.length > 0) {
-      const item = paymentsList?.find(e => e?.id?.$ === refillId)
+      const existingPaymentItem = paymentsList?.find(
+        payment => payment?.id?.$ === paymentId,
+      )
 
-      if (item) {
-        if (item?.billorder) {
+      if (existingPaymentItem) {
+        setPaymentItem(existingPaymentItem) // write down the payment data
+
+        if (existingPaymentItem?.billorder) {
           //if the billorder field is present in the payment, then this is a purchase through the basket
-          const data = cookies.getCookie(`cartData_${refillId}`)
+          const data = cookies.getCookie(`cartData_${paymentId}`)
           // check whether we have such a basket saved (baskets are stored for 5 days from the moment of its creation)
           if (data) {
             //if we find such a basket, then we save
@@ -47,29 +51,28 @@ export default function Component() {
             setCartData(dataJson)
           }
         }
-        setPaymentId(item) // write down the rest of the payment data
       }
     }
   }, [paymentsList])
 
   useEffect(() => {
-    if (paymentId) {
+    if (paymentItem) {
       //if we have payment
-      const currency = paymentId?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
-      const value = paymentId?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
-      const tax = paymentId?.tax?.$?.replace(currency, '') //get the payment tax
+      const currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB')
+        ? 'RUB'
+        : 'EUR' //check what currency used
+      const value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
+      const tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
       window.dataLayer.push({ ecommerce: null }) //clean data layer ecommerce
 
-      if (paymentId?.billorder) {
-        // we check that the payment comes from the cart
-        if (cartData?.billorder === paymentId?.billorder?.$) {
-          // we check if we have such a basket and send it to analytics along with the items
+      // If it is a purchase of services
+      if (paymentItem?.billorder) {
+        // If there is saved product data
+        if (cartData?.billorder === paymentItem?.billorder?.$) {
           window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
-              transaction_id:
-                refillId || `No payment id (billorder: ${cartData?.billorder})`,
-              //if suddenly there is no payment ID, we will send the basket ID (probability is very small)
+              transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
@@ -80,13 +83,14 @@ export default function Component() {
             },
           })
 
-          cookies.eraseCookie(`cartData_${refillId}`) // if the cart was used, then clear it
+          cookies.eraseCookie(`cartData_${paymentId}`)
+
+          // If there is NO saved product data
         } else {
-          // if there is no such basket, we record the payment data but without the items that were in the basket, and without promocode
           window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
-              transaction_id: refillId,
+              transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
@@ -95,23 +99,24 @@ export default function Component() {
               coupon: '',
               items: [
                 {
-                  item_name: 'Cart buy',
-                  item_id: paymentId?.billorder?.$ || '',
-                  price: Number(value) || 0,
-                  item_category: 'Lost data' || '',
+                  item_name: 'Service',
+                  item_id: 'lost_data',
+                  price: 0,
+                  item_category: 'lost_data',
                   quantity: 1,
                 },
-              ], // items if we did not find the basket
+              ],
             },
           })
         }
+
+        // If it is a balance replenishment (we don`t have saved product data)
       } else {
-        if (refillId && !cartData) {
-          // if this payment is not from the cart we send the payment ID and record the refill of the account in the items
+        if (!cartData) {
           window.dataLayer.push({
             event: 'purchase',
             ecommerce: {
-              transaction_id: paymentId?.id?.$ || refillId,
+              transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
@@ -119,9 +124,9 @@ export default function Component() {
               items: [
                 {
                   item_name: 'Refill',
-                  item_id: paymentId?.id?.$ || '',
-                  price: Number(value) || 0,
-                  item_category: 'Refill account',
+                  item_id: paymentId,
+                  price: 0,
+                  item_category: 'Refill',
                   quantity: 1,
                 },
               ],
@@ -131,7 +136,7 @@ export default function Component() {
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
-  }, [paymentId])
+  }, [paymentItem])
 
   return (
     <div className={s.modalBg}>
