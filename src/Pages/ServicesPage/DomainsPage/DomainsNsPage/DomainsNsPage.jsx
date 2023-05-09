@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations, userOperations } from '../../../../Redux'
+import { HintHelp } from '../../../../images'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
-import { HintHelp } from '../../../../images'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users'])
