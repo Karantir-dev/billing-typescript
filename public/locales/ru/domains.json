@@ -105,5 +105,16 @@
   "and": "и",
 
   "Name can only contain Latin letters": "Имя может содержать только латинские буквы",
-  "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы"
+  "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы",
+
+  "Apply to all": "Применить ко всему",
+  "Provide for each domain name": "Укажите для каждого доменного имени",
+
+  "ns0": "NS 1",
+  "ns1": "NS 2",
+  "ns2": "NS 3",
+  "ns3": "NS 4",
+  "ns_additional": "Дополнительный NS",
+
+  "Use the name servers": "Используйте серверы имен"
 }

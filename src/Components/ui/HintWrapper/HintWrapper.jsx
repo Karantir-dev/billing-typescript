@@ -9,6 +9,7 @@ export default function HintWrapper({
   children,
   popupClassName,
   wrapperClassName,
+  bottom,
 }) {
   const ref = useRef(null)
   const [elemWidth, setElemWidth] = useState(0)
@@ -26,12 +27,14 @@ export default function HintWrapper({
         className={cn(
           s.hint_popup,
           popupClassName,
+          { [s.bottom]: bottom },
           elemWidth > 100 && pageWidth >= 1024 ? s.hint_full : s.hint_fit,
         )}
       >
-        <div className={s.hint_pointer_wrapper}>
-          <div className={s.pointer}></div>
+        <div className={cn(s.hint_pointer_wrapper, { [s.bottom]: bottom })}>
+          <div className={cn(s.pointer, { [s.bottom]: bottom })}></div>
         </div>
+
         {label}
       </div>
     </div>
@@ -43,4 +46,5 @@ HintWrapper.propTypes = {
   children: PropTypes.element.isRequired,
   popupClassName: PropTypes.string,
   wrapperClassName: PropTypes.string,
+  bottom: PropTypes.bool,
 }

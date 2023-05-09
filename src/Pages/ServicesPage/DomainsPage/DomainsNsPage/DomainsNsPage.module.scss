@@ -5,6 +5,26 @@
   line-height: 113%;
   color: var(--main-text);
   margin-top: 30px;
+
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: 5px;
+    cursor: pointer;
+    path {
+      fill: var(--transparent-color);
+    }
+  }
+}
+
+.hintWrapper {
+  min-width: 300px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
 }
 
 .pagination {
@@ -33,6 +53,7 @@
 
 .formFieldsBlock {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 
   &.flexStart {
@@ -166,6 +187,35 @@
   color: var(--main-text);
 
   margin-top: 30px;
+}
+
+.btnNsDiff {
+  max-width: 185px;
+  width: 100%;
+  min-height: 55px;
+
+  padding: 5px 10px;
+
+  background: var(--forms_bgc_1);
+  /* Shadow (light)/forms_shadow */
+
+  box-shadow: var(--forms_shadow);
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: var(--main-text);
+
+  margin-right: 7px;
+
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &.selected {
+    border-color: var(--accent-color-light);
+  }
 }
 
 @media screen and (min-width: 768px) {

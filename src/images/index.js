@@ -13,6 +13,9 @@ export { default as Social } from './svg/Social.jsx'
 export { default as Support } from './svg/Support.jsx'
 export { default as WalletBalance } from './svg/WalletBalance.jsx'
 
+export { default as HintHelp } from './svg/HintHelp.jsx'
+export { default as Trash } from './svg/Trash.jsx'
+
 export { default as EditPencil } from './svg/EditPencil.jsx'
 
 export { default as Facebook } from './svg/Facebook.jsx'
