@@ -65,9 +65,8 @@ export default function Component(props) {
         }
         if (select) {
           return (
-            <div className={s.inputBlock}>
+            <div key={`domainparam_${select}_${el}`} className={s.inputBlock}>
               <InputField
-                key={`domainparam_${select}_${el}`}
                 inputWrapperClass={s.inputHeight}
                 name={`domainparam_${select}_${el}`}
                 label={`${t(el)}:`}
@@ -90,9 +89,8 @@ export default function Component(props) {
           )
         } else {
           return (
-            <div className={s.inputBlock}>
+            <div key={el} className={s.inputBlock}>
               <InputField
-                key={el}
                 inputWrapperClass={s.inputHeight}
                 name={`${el}`}
                 label={`${t(el)}:`}
