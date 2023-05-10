@@ -76,6 +76,7 @@
 }
 .dedic_swiper_pagination {
   .swiper-pagination-bullets {
+    display: flex;
     min-width: fit-content;
     margin-bottom: 5px;
   }
