@@ -533,7 +533,24 @@ export default function DedicOrderPage() {
                         clickable: true,
                         el: '[data-dedic-swiper-pagination]',
                         dynamicBullets: true,
-                        dynamicMainBullets: 3,
+                        dynamicMainBullets: 1,
+                      }}
+                      breakpoints={{
+                        650: {
+                          pagination: {
+                            dynamicMainBullets: 2,
+                          },
+                        },
+                        865: {
+                          pagination: {
+                            dynamicMainBullets: 3,
+                          },
+                        },
+                        1400: {
+                          pagination: {
+                            dynamicMainBullets: 4,
+                          },
+                        },
                       }}
                       onSwiper={setSwiperRef}
                     >

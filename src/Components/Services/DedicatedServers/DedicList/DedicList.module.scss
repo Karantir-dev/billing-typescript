@@ -68,6 +68,7 @@
 
   &:nth-child(1) {
     flex-basis: 10%;
+    flex-shrink: 0;
   }
   &:nth-child(2) {
     flex-basis: 7%;
@@ -75,6 +76,7 @@
   &:nth-child(3) {
     flex-basis: 10%;
     word-break: break-all;
+    flex-shrink: 0;
   }
   &:nth-child(4) {
     flex-basis: 8%;

@@ -70,6 +70,7 @@
   &:nth-child(3) {
     flex-basis: 10%;
     width: 10%;
+    flex-shrink: 0;
     
     span {
       display: inline-block;
