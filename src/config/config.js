@@ -9,7 +9,7 @@ export const PRIVACY_URL = `${SITE_URL}/privacy-policy`
 export const OFERTA_URL = `${SITE_URL}/oferta`
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
 
-export const SALE_55_PROMOCODE = 'RAMx2ZM' //'hdffhkjlhgk457585678'
+export const SALE_55_PROMOCODE = '' //'RAMx2ZM'
 export const SALE_55_PROMOCODES_LIST = [
   'RAMvffU',
   'RAMmrww',
