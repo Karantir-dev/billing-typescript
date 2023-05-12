@@ -635,7 +635,7 @@ const createPaymentMethod =
                     transaction_id: data.doc?.payment_id?.$,
                     affiliation: 'cp.zomro.com',
                     value: Number(body?.amount) || 0,
-                    tax: 0,
+                    tax: Number(body?.tax) || 0,
                     currency: 'EUR',
                     shipping: '0',
                     items: [
