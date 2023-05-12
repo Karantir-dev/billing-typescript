@@ -38,8 +38,8 @@ import {
   BASE_URL,
   PRIVACY_URL,
   OFERTA_URL,
-  SALE_55_PROMOCODE,
-  SALE_55_PROMOCODES_LIST,
+  // SALE_55_PROMOCODE,
+  // SALE_55_PROMOCODES_LIST,
 } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
@@ -809,25 +809,25 @@ export default function Component() {
     )
   }
 
-  const withSale55Promocode = () => {
-    let withSale = false
+  // const withSale55Promocode = () => {
+  //   let withSale = false
 
-    if (cartData) {
-      withSale =
-        SALE_55_PROMOCODE?.length > 0 &&
-        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
+  //   if (cartData) {
+  //     withSale =
+  //       SALE_55_PROMOCODE?.length > 0 &&
+  //       cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
 
-      if (SALE_55_PROMOCODES_LIST) {
-        SALE_55_PROMOCODES_LIST?.forEach(e => {
-          if (cartData?.elemList[0]?.price?.$?.includes(e)) {
-            withSale = true
-          }
-        })
-      }
-    }
+  //     if (SALE_55_PROMOCODES_LIST) {
+  //       SALE_55_PROMOCODES_LIST?.forEach(e => {
+  //         if (cartData?.elemList[0]?.price?.$?.includes(e)) {
+  //           withSale = true
+  //         }
+  //       })
+  //     }
+  //   }
 
-    return withSale
-  }
+  //   return withSale
+  // }
   useEffect(() => {
     const cartConfigName = cartData?.elemList[0]?.pricelist_name.$?.slice(
       0,
@@ -903,7 +903,6 @@ export default function Component() {
                   profiletype: profileType || selectedPayerFields?.profiletype,
                   eu_vat: euVat || selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: isOffer,
-
 
                   selectedPayMethod: selectedPayMethod || undefined,
                   promocode: promocode,
@@ -1239,7 +1238,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode() || isPromocodeAllowed}
+                            disabled={isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1259,9 +1258,9 @@ export default function Component() {
                           </button>
                         </div>
 
-                        {withSale55Promocode() ? (
+                        {/* {withSale55Promocode() ? (
                           <div className={s.sale55Promo}>{t('sale_55_text')}</div>
-                        ) : null}
+                        ) : null} */}
 
                         <div className={cn(s.formFieldsBlock)}>
                           {blackFridayData && blackFridayData?.success && (
