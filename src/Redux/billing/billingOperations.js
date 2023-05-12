@@ -624,8 +624,36 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data.doc.ok) {
-              data.doc?.payment_id &&
-                cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+              if (
+                body?.paymethod_name?.includes('Coinify') ||
+                body?.paymethod_name?.includes('Bitcoin')
+              ) {
+                cookies.eraseCookie('payment_id')
+                window.dataLayer.push({ ecommerce: null })
+                window.dataLayer.push({
+                  event: 'purchase',
+                  ecommerce: {
+                    transaction_id: data.doc?.payment_id?.$,
+                    affiliation: 'cp.zomro.com',
+                    value: Number(body?.amount) || 0,
+                    tax: Number(body?.tax) || 0,
+                    currency: 'EUR',
+                    shipping: '0',
+                    items: [
+                      {
+                        item_name: 'Refill',
+                        item_id: data.doc?.payment_id?.$,
+                        price: 0,
+                        item_category: 'Refill',
+                        quantity: 1,
+                      },
+                    ],
+                  },
+                })
+              } else {
+                data.doc?.payment_id &&
+                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+              }
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
@@ -678,7 +706,7 @@ const getPaymentMethodPage = link => (dispatch, getState) => {
     })
 }
 
-const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
+const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -702,8 +730,12 @@ const getPaymentRedirect = (elid, elname) => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       if (data.doc.ok) {
-        data.doc?.payment_id &&
-          cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+        cookies.eraseCookie('payment_id')
+        if (!(paymethod?.includes('Coinify') || paymethod?.includes('Bitcoin'))) {
+          data.doc?.payment_id &&
+            cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+        }
+
         dispatch(getPaymentMethodPage(data.doc.ok.$))
       }
     })
