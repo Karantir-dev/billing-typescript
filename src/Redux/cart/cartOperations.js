@@ -336,8 +336,8 @@ const setPaymentMethods =
                   cartData?.payment_name?.includes('Coinify') ||
                   cartData?.payment_name?.includes('Bitcoin')
                 ) {
+                  cookies.eraseCookie('payment_id')
                   window.dataLayer.push({ ecommerce: null })
-
                   window.dataLayer.push({
                     event: 'purchase',
                     ecommerce: {

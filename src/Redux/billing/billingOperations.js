@@ -628,6 +628,7 @@ const createPaymentMethod =
                 body?.paymethod_name?.includes('Coinify') ||
                 body?.paymethod_name?.includes('Bitcoin')
               ) {
+                cookies.eraseCookie('payment_id')
                 window.dataLayer.push({ ecommerce: null })
                 window.dataLayer.push({
                   event: 'purchase',
@@ -729,6 +730,7 @@ const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => 
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       if (data.doc.ok) {
+        cookies.eraseCookie('payment_id')
         if (!(paymethod?.includes('Coinify') || paymethod?.includes('Bitcoin'))) {
           data.doc?.payment_id &&
             cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
