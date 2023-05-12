@@ -5,7 +5,6 @@ import { axiosInstance } from '../../config/axiosInstance'
 import { checkIfTokenAlive, replaceAllFn } from '../../utils'
 import i18n from './../../i18n'
 import * as route from '../../routes'
-import { SALE_55_PROMOCODE } from '../../config/config'
 
 // GET SERVERS OPERATIONS
 
@@ -1027,7 +1026,8 @@ const getProlongInfo = (elid, setInitialState, isVds) => (dispatch, getState) =>
         })
       }
 
-      if (isVds && SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0) {
+      if (isVds) {
+        //SALE_55_PROMOCODE && SALE_55_PROMOCODE?.length > 0
         return dispatch(vdsOperations.getEditFieldsVDS(elid, setState))
       }
       dispatch(actions.hideLoader())
