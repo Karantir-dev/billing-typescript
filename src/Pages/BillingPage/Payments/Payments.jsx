@@ -32,8 +32,8 @@ export default function Component() {
     setFirstOpen(false)
   }, [p_num, p_cnt])
 
-  const payHandler = (id, name) => {
-    dispatch(billingOperations.getPaymentRedirect(id, name))
+  const payHandler = (id, name, paymethod) => {
+    dispatch(billingOperations.getPaymentRedirect(id, name, paymethod))
   }
 
   const downloadPdfHandler = (id, name) => {

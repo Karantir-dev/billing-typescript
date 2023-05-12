@@ -332,19 +332,41 @@ const setPaymentMethods =
               })
 
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
-                data.doc?.payment_id &&
-                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
-                cookies?.setCookie(
-                  `cartData_${data.doc?.payment_id?.$}`,
-                  JSON.stringify({
-                    billorder: cartData?.billorder,
-                    total_sum: cartData?.total_sum,
-                    tax: cartData?.tax,
-                    promocode: body?.promocode,
-                    items: items,
-                  }),
-                  5,
-                )
+                if (
+                  cartData?.payment_name?.includes('Coinify') ||
+                  cartData?.payment_name?.includes('Bitcoin')
+                ) {
+                  window.dataLayer.push({ ecommerce: null })
+
+                  window.dataLayer.push({
+                    event: 'purchase',
+                    ecommerce: {
+                      transaction_id: data.doc?.payment_id?.$,
+                      affiliation: 'cp.zomro.com',
+                      value: Number(cartData?.total_sum) || 0,
+                      tax: Number(cartData?.tax) || 0,
+                      currency: 'EUR',
+                      shipping: '0',
+                      coupon: body?.promocode,
+                      items: items,
+                    },
+                  })
+                } else {
+                  data.doc?.payment_id &&
+                    cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+                  cookies?.setCookie(
+                    `cartData_${data.doc?.payment_id?.$}`,
+                    JSON.stringify({
+                      billorder: cartData?.billorder,
+                      total_sum: cartData?.total_sum,
+                      tax: cartData?.tax,
+                      promocode: body?.promocode,
+                      items: items,
+                    }),
+                    5,
+                  )
+                }
+
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 

@@ -68,7 +68,7 @@ export default function Component(props) {
   }
 
   const payRedirectHandler = () => {
-    payHandler(id, number)
+    payHandler(id, number, paymethod)
     setIsOpened(false)
   }
 
