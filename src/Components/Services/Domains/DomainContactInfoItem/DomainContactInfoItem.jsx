@@ -12,78 +12,146 @@ import { Shevron } from '../../../../images'
 
 export default function Component(props) {
   const { onChange, refId, formType, domainsContacts } = props
-  const { t } = useTranslation(['domains', 'other', 'trusted_users'])
+  const { t } = useTranslation(['domains', 'other', 'trusted_users', 'payers'])
 
-  //admin_contact_use_first
+  const owner = formType === 'owner'
+
+  // fields //
+  const contact_use_first = `${formType}_contact_use_first`
+  const name = `${formType}_name`
+  const contact_select = `${formType}_contact_select`
+  const profiletype = `${formType}_profiletype`
+  const email = `${formType}_email`
+  const phone = `${formType}_phone`
+  const privateForm = `${formType}_private`
+  const firstname = `${formType}_firstname`
+  const firstname_locale = `${formType}_firstname_locale`
+  const lastname = `${formType}_lastname`
+  const lastname_locale = `${formType}_lastname_locale`
+  const middlename = `${formType}_middlename`
+  const middlename_locale = `${formType}_middlename_locale`
+  const location_country = `${formType}_location_country`
+  const location_postcode = `${formType}_location_postcode`
+  const location_state = `${formType}_location_state`
+  const location_city = `${formType}_location_city`
+  const location_address = `${formType}_location_address`
+
+  const [isOpen, setIsOpen] = useState(owner)
+
+  const openHandler = () => {
+    setIsOpen(!isOpen)
+  }
+
   const formik = useFormik({
     initialValues: {
-      [`${formType}_contact_select`]: domainsContacts[`${formType}_contact_select`] || '',
-      [`${formType}_name`]: domainsContacts[`${formType}_name`]?.$ || '',
-      [`${formType}_profiletype`]: domainsContacts[`${formType}_profiletype`] || '',
-      [`${formType}_email`]: domainsContacts[`${formType}_email`]?.$ || '',
-      [`${formType}_phone`]: domainsContacts[`${formType}_phone`] || '',
-
-      [`${formType}_private`]: domainsContacts[`${formType}_private`] || 'off',
-
-      [`${formType}_firstname`]: domainsContacts[`${formType}_firstname`]?.$ || '',
-      [`${formType}_firstname_locale`]:
-        domainsContacts[`${formType}_firstname_locale`]?.$ || '',
-      [`${formType}_lastname`]: domainsContacts[`${formType}_lastname`]?.$ || '',
-      [`${formType}_lastname_locale`]:
-        domainsContacts[`${formType}_lastname_locale`]?.$ || '',
-      [`${formType}_middlename`]: domainsContacts[`${formType}_middlename`]?.$ || '',
-      [`${formType}_middlename_locale`]:
-        domainsContacts[`${formType}_middlename_locale`]?.$ || '',
-
-      [`${formType}_location_country`]:
-        domainsContacts[`${formType}_location_country`] || '',
-      [`${formType}_location_postcode`]:
-        domainsContacts[`${formType}_location_postcode`]?.$ || '',
-      [`${formType}_location_state`]:
-        domainsContacts[`${formType}_location_state`]?.$ || '',
-      [`${formType}_location_city`]:
-        domainsContacts[`${formType}_location_city`]?.$ || '',
-      [`${formType}_location_address`]:
-        domainsContacts[`${formType}_location_address`]?.$ || '',
+      [contact_use_first]: owner ? undefined : domainsContacts[contact_use_first],
+      [contact_select]: domainsContacts[contact_select] || '',
+      [name]: domainsContacts[name]?.$ || '',
+      [profiletype]: domainsContacts[profiletype] || '',
+      [email]: domainsContacts[email]?.$ || '',
+      [phone]: domainsContacts[phone] || '',
+      [privateForm]: domainsContacts[privateForm] || 'off',
+      [firstname]: domainsContacts[firstname]?.$ || '',
+      [firstname_locale]: domainsContacts[firstname_locale]?.$ || '',
+      [lastname]: domainsContacts[lastname]?.$ || '',
+      [lastname_locale]: domainsContacts[lastname_locale]?.$ || '',
+      [middlename]: domainsContacts[middlename]?.$ || '',
+      [middlename_locale]: domainsContacts[middlename_locale]?.$ || '',
+      [location_country]: domainsContacts[location_country] || '',
+      [location_postcode]: domainsContacts[location_postcode]?.$ || '',
+      [location_state]: domainsContacts[location_state]?.$ || '',
+      [location_city]: domainsContacts[location_city]?.$ || '',
+      [location_address]: domainsContacts[location_address]?.$ || '',
     },
     validationSchema: Yup.object().shape({
-      [`${formType}_name`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_firstname`]: Yup.string()
-        .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
-        .required(t('Is a required field', { ns: 'other' })),
-      [`${formType}_firstname_locale`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_lastname`]: Yup.string()
-        .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
-        .required(t('Is a required field', { ns: 'other' })),
-      [`${formType}_lastname_locale`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_email`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_phone`]: Yup.string()
-        .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
-        .required(t('Is a required field', { ns: 'other' })),
-
-      [`${formType}_location_country`]: Yup.string()
-        .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
-        .required(t('Is a required field', { ns: 'other' })),
-      [`${formType}_location_postcode`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_location_state`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_location_city`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
-      [`${formType}_location_address`]: Yup.string().required(
-        t('Is a required field', { ns: 'other' }),
-      ),
+      [name]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [firstname]: owner
+        ? Yup.string()
+            .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
+            .required(t('Is a required field', { ns: 'other' }))
+        : Yup.string()
+            .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
+            .when(contact_use_first, {
+              is: 'off',
+              then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            }),
+      [firstname_locale]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [lastname]: owner
+        ? Yup.string()
+            .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
+            .required(t('Is a required field', { ns: 'other' }))
+        : Yup.string()
+            .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
+            .when(contact_use_first, {
+              is: 'off',
+              then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            }),
+      [lastname_locale]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [email]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [phone]: owner
+        ? Yup.string()
+            .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+            .required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string()
+              .min(7, t('trusted_users.form_errors.phone', { ns: 'trusted_users' }))
+              .required(t('Is a required field', { ns: 'other' })),
+          }),
+      [location_country]: owner
+        ? Yup.string()
+            .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+            .required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string()
+              .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+              .required(t('Is a required field', { ns: 'other' })),
+          }),
+      [location_postcode]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [location_state]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [location_city]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
+      [location_address]: owner
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : Yup.string().when(contact_use_first, {
+            is: 'off',
+            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+          }),
     }),
     onSubmit: () => {
       watchForm()
@@ -107,40 +175,43 @@ export default function Component(props) {
     }
   }
 
-  const [isOpenOwner] = useState(true)
-  const [isOpenAdmin, setIsOpenAdmin] = useState(true)
-
   return (
     <FormikProvider value={formik}>
       <form ref={refId}>
         <button
-          onClick={() => setIsOpenAdmin(!isOpenAdmin)}
+          disabled={!owner && values[contact_use_first] === 'on'}
+          onClick={openHandler}
           type="button"
           className={s.titleBlock}
         >
-          <h2 className={s.category_title}>{t('Administrative contact')}</h2>
-          {values.admin_contact_use_first === 'off' && (
-            <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpenAdmin })} />
+          <h2 className={s.category_title}>{t(`${formType}_contact`)}</h2>
+          {(owner || values[contact_use_first] === 'off') && (
+            <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpen })} />
           )}
         </button>
-        <div className={s.useFirstCheck}>
-          <CheckBox
-            value={values.admin_contact_use_first === 'on'}
-            onClick={() => {
-              setFieldValue(
-                `${formType}_contact_use_first`,
-                values.admin_contact_use_first === 'on' ? 'off' : 'on',
-              )
-              if (!values.admin_contact_use_first === 'on') {
-                setIsOpenAdmin(true)
-              }
-            }}
-            className={s.checkbox}
-            error={!!errors.admin_contact_use_first}
-          />
-          <span>{t('Use "Contact Owner"')}</span>
-        </div>
-        <div className={cn(s.ownerForm, { [s.isOpen]: isOpenOwner })}>
+        {!owner && (
+          <div className={s.useFirstCheck}>
+            <CheckBox
+              value={values[contact_use_first] === 'on'}
+              onClick={() => {
+                console.log(values[contact_use_first])
+                setFieldValue(
+                  contact_use_first,
+                  values[contact_use_first] === 'on' ? 'off' : 'on',
+                )
+                if (values[contact_use_first] !== 'on') {
+                  setIsOpen(false)
+                } else {
+                  setIsOpen(true)
+                }
+              }}
+              className={s.checkbox}
+              error={!!errors[contact_use_first]}
+            />
+            <span>{t('Use "Contact Owner"')}</span>
+          </div>
+        )}
+        <div className={cn(s.ownerForm, { [s.isOpen]: isOpen })}>
           <div className={s.formBlock}>
             <div className={s.formFieldsBlock}>
               <Select
@@ -152,7 +223,7 @@ export default function Component(props) {
                 className={s.select}
                 itemsList={domainsContacts[`${formType}_contact_select_list`]?.map(
                   ({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
+                    label: t(`${$.trim()}`, { ns: 'payers' }),
                     value: $key,
                   }),
                 )}
@@ -178,21 +249,11 @@ export default function Component(props) {
                 className={s.select}
                 itemsList={domainsContacts?.owner_profiletype_list?.map(
                   ({ $key, $ }) => ({
-                    label: t(`${$.trim()}`),
+                    label: t(`${$.trim()}`, { ns: 'payers' }),
                     value: $key,
                   }),
                 )}
               />
-              {/* <div className={s.useFirstCheck}>
-                      <CheckBox
-                        initialState={values?.owner_private === 'on'}
-                        setValue={item => {
-                          setFieldValue('owner_private', item ? 'on' : 'off')
-                        }}
-                        className={s.checkbox}
-                      />
-                      <span>{t('Hide data in WHOIS')}</span>
-                    </div> */}
             </div>
           </div>
 
