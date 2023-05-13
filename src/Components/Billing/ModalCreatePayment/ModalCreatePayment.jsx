@@ -130,6 +130,7 @@ export default function Component(props) {
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
       paymethod: values?.slecetedPayMethod?.paymethod?.$,
+      paymethod_name: values?.slecetedPayMethod?.name?.$,
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
