@@ -124,37 +124,25 @@ export default function Component({ transfer = false }) {
           )
         })}
 
-      <div className={s.btnBlock}>
-        <Button
-          className={s.saveBtn}
-          // disabled={
-          //   !values.owner_name ||
-          //   !values.owner_firstname ||
-          //   !values.owner_firstname_locale ||
-          //   !values.owner_lastname ||
-          //   !values.owner_lastname_locale ||
-          //   !values.owner_email ||
-          //   !values.owner_phone ||
-          //   !values.owner_location_country ||
-          //   !values.owner_location_postcode ||
-          //   !values.owner_location_state ||
-          //   !values.owner_location_city ||
-          //   !values.owner_location_address
-          // }
-          isShadow
-          size="medium"
-          label={t('Proceed', { ns: 'other' })}
-          type="button"
-          onClick={handleSubmit}
-        />
-        <button
-          onClick={() => navigate(route.DOMAINS)}
-          type="button"
-          className={s.cancel}
-        >
-          {t('Cancel', { ns: 'other' })}
-        </button>
-      </div>
+      {domainsContacts && (
+        <div className={s.btnBlock}>
+          <Button
+            className={s.saveBtn}
+            isShadow
+            size="medium"
+            label={t('Proceed', { ns: 'other' })}
+            type="button"
+            onClick={handleSubmit}
+          />
+          <button
+            onClick={() => navigate(route.DOMAINS)}
+            type="button"
+            className={s.cancel}
+          >
+            {t('Cancel', { ns: 'other' })}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
