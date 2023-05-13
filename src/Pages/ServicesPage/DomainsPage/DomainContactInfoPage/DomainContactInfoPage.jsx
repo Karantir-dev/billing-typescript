@@ -4,9 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { domainsOperations } from '../../../../Redux'
-
 import * as route from '../../../../routes'
-
 import s from './DomainContactInfoPage.module.scss'
 
 const formTypes = ['owner', 'admin', 'tech', 'bill']
@@ -20,13 +18,9 @@ export default function Component({ transfer = false }) {
   const location = useLocation()
 
   const [formData, setFormData] = useState({})
-
-  // const [isOpenOwner, setIsOpenOwner] = useState(true)
-  // const [isOpenAdmin, setIsOpenAdmin] = useState(true)
-  // const [isOpenTech, setIsOpenTech] = useState(true)
-  // const [isOpenBill, setIsOpenBill] = useState(true)
-
   const [domainsContacts, setDomainsContacts] = useState(null)
+  const [payersInfo, setPayersInfo] = useState({})
+  const [values, setValues] = useState(null)
 
   const { state } = location
 
@@ -39,8 +33,28 @@ export default function Component({ transfer = false }) {
   }, [])
 
   useEffect(() => {
-    console.log(formData)
+    if (
+      formData?.ownerForm?.validated &&
+      formData?.adminForm?.validated &&
+      formData?.billForm?.validated &&
+      formData?.techForm?.validated
+    ) {
+      setValues({
+        ...formData?.ownerForm?.values,
+        ...formData?.adminForm?.values,
+        ...formData?.billForm?.values,
+        ...formData?.techForm?.values,
+      })
+      setFormData({})
+    }
   }, [formData])
+
+  useEffect(() => {
+    if (values) {
+      setContactsHandler(values)
+      setValues(null)
+    }
+  }, [values])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -50,14 +64,12 @@ export default function Component({ transfer = false }) {
     return pathnames
   }
 
-  // const setContactsHandler = values => {
-  //   const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
-  //   dispatch(
-  //     domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate, transfer),
-  //   )
-  // }
-
-  console.log(transfer)
+  const setContactsHandler = values => {
+    const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
+    dispatch(
+      domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate, transfer),
+    )
+  }
 
   const ownerFormRef = useRef()
   const adminFormRef = useRef()
@@ -91,6 +103,7 @@ export default function Component({ transfer = false }) {
         return billFormRef
     }
   }
+
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -105,6 +118,8 @@ export default function Component({ transfer = false }) {
               refId={refHandler(type)}
               domainsContacts={domainsContacts}
               setDomainsContacts={setDomainsContacts}
+              setPayersInfo={setPayersInfo}
+              payersInfo={payersInfo}
             />
           )
         })}

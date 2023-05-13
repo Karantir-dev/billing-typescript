@@ -7,13 +7,16 @@
 }
 
 .ownerForm {
-  height: 0px;
-  overflow-y: hidden;
+  max-height: 0;
+  height: auto;
+  overflow: hidden;
   padding-bottom: 21px;
-  transition: linear 0.2s;
+  transition: max-height 0.15s ease-out;
 
   &.isOpen {
-    height: 1625px;
+    max-height: 1925px;
+    height: auto;
+    transition: max-height 0.25s ease-in;
   }
 }
 
@@ -166,13 +169,16 @@
   }
 
   .ownerForm {
-    height: 0px;
-    overflow-y: hidden;
+    max-height: 0;
+    height: auto;
+    overflow: hidden;
     padding-bottom: 21px;
-    transition: linear 0.2s;
+    transition: max-height 0.15s ease-out;
 
     &.isOpen {
-      height: 1150px;
+      max-height: 1150px;
+      height: auto;
+      transition: max-height 0.25s ease-in;
     }
   }
 }

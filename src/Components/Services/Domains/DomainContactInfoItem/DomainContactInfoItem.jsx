@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
 import { InputField, CustomPhoneInput, Select, CheckBox } from '../../../../Components'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -9,18 +9,33 @@ import * as Yup from 'yup'
 import s from './DomainContactInfoItem.module.scss'
 import { LATIN_REGEX } from '../../../../utils/constants'
 import { Shevron } from '../../../../images'
+import { useDispatch } from 'react-redux'
+import { domainsOperations } from '../../../../Redux'
 
 export default function Component(props) {
-  const { onChange, refId, formType, domainsContacts } = props
+  const {
+    onChange,
+    refId,
+    formType,
+    domainsContacts,
+    setDomainsContacts,
+    domainInfo,
+    setPayersInfo,
+    payersInfo,
+  } = props
+
+  const dispatch = useDispatch()
   const { t } = useTranslation(['domains', 'other', 'trusted_users', 'payers'])
 
   const owner = formType === 'owner'
 
-  // fields //
+  // fields variables //
   const contact_use_first = `${formType}_contact_use_first`
   const name = `${formType}_name`
   const contact_select = `${formType}_contact_select`
+  const contact_select_list = `${formType}_contact_select_list`
   const profiletype = `${formType}_profiletype`
+  const profiletype_list = `${formType}_profiletype_list`
   const email = `${formType}_email`
   const phone = `${formType}_phone`
   const privateForm = `${formType}_private`
@@ -31,20 +46,36 @@ export default function Component(props) {
   const middlename = `${formType}_middlename`
   const middlename_locale = `${formType}_middlename_locale`
   const location_country = `${formType}_location_country`
+  const location_country_list = `${formType}_location_country_list`
   const location_postcode = `${formType}_location_postcode`
   const location_state = `${formType}_location_state`
   const location_city = `${formType}_location_city`
   const location_address = `${formType}_location_address`
+  const company = `${formType}_company`
+  const company_locale = `${formType}_company_locale`
+
+  useEffect(() => {
+    if (domainsContacts) {
+      setPayersInfo(p => {
+        return {
+          ...p,
+          [contact_use_first]: domainsContacts[contact_use_first],
+          [contact_select]: domainsContacts[contact_select],
+          [profiletype]: domainsContacts[profiletype],
+        }
+      })
+    }
+  }, [domainsContacts])
 
   const [isOpen, setIsOpen] = useState(owner)
-
-  const openHandler = () => {
-    setIsOpen(!isOpen)
-  }
+  const [profileTypeState, setProfiletypeState] = useState(domainsContacts[profiletype])
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       [contact_use_first]: owner ? undefined : domainsContacts[contact_use_first],
+      [company]: domainsContacts[company] || '',
+      [company_locale]: domainsContacts[company_locale] || '',
       [contact_select]: domainsContacts[contact_select] || '',
       [name]: domainsContacts[name]?.$ || '',
       [profiletype]: domainsContacts[profiletype] || '',
@@ -70,6 +101,24 @@ export default function Component(props) {
             is: 'off',
             then: Yup.string().required(t('Is a required field', { ns: 'other' })),
           }),
+      [company]:
+        profileTypeState === '2' || profileTypeState === '3'
+          ? owner
+            ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+            : Yup.string().when(contact_use_first, {
+                is: 'off',
+                then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+              })
+          : null,
+      [company_locale]:
+        profileTypeState === '2' || profileTypeState === '3'
+          ? owner
+            ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+            : Yup.string().when(contact_use_first, {
+                is: 'off',
+                then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+              })
+          : null,
       [firstname]: owner
         ? Yup.string()
             .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
@@ -175,6 +224,44 @@ export default function Component(props) {
     }
   }
 
+  const onContactChange = item => {
+    const body = {
+      ...domainInfo,
+      [contact_select]: item,
+      [contact_use_first]: values[contact_use_first],
+    }
+
+    if (payersInfo) {
+      for (const [key, value] of Object.entries(payersInfo)) {
+        if (key !== contact_select && contact_select !== contact_use_first) {
+          body[key] = value
+        }
+      }
+    }
+
+    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, body))
+    setFieldValue(contact_select, item)
+  }
+
+  const openHandler = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const useOwnerDataHandler = () => {
+    setFieldValue(contact_use_first, values[contact_use_first] === 'on' ? 'off' : 'on')
+    setPayersInfo(p => {
+      return {
+        ...p,
+        [contact_use_first]: values[contact_use_first] === 'on' ? 'off' : 'on',
+      }
+    })
+    if (values[contact_use_first] !== 'on') {
+      setIsOpen(false)
+    } else {
+      setIsOpen(true)
+    }
+  }
+
   return (
     <FormikProvider value={formik}>
       <form ref={refId}>
@@ -193,18 +280,7 @@ export default function Component(props) {
           <div className={s.useFirstCheck}>
             <CheckBox
               value={values[contact_use_first] === 'on'}
-              onClick={() => {
-                console.log(values[contact_use_first])
-                setFieldValue(
-                  contact_use_first,
-                  values[contact_use_first] === 'on' ? 'off' : 'on',
-                )
-                if (values[contact_use_first] !== 'on') {
-                  setIsOpen(false)
-                } else {
-                  setIsOpen(true)
-                }
-              }}
+              onClick={useOwnerDataHandler}
               className={s.checkbox}
               error={!!errors[contact_use_first]}
             />
@@ -217,43 +293,71 @@ export default function Component(props) {
               <Select
                 placeholder={t('Not chosen', { ns: 'other' })}
                 label={`${t('Use contact')}:`}
-                value={values[`${formType}_contact_select`]}
-                getElement={item => console.log(item)}
+                value={values[contact_select]}
+                getElement={onContactChange}
                 isShadow
                 className={s.select}
-                itemsList={domainsContacts[`${formType}_contact_select_list`]?.map(
-                  ({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'payers' }),
-                    value: $key,
-                  }),
-                )}
+                itemsList={domainsContacts[contact_select_list]?.map(({ $key, $ }) => ({
+                  label: t(`${$.trim()}`, { ns: 'payers' }),
+                  value: $key,
+                }))}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name={`${formType}_name`}
+                name={name}
                 label={`${t('Profile name')}:`}
                 placeholder={t('Enter data', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors[`${formType}_name`]}
-                touched={!!touched[`${formType}_name`]}
+                error={!!errors[name]}
+                touched={!!touched[name]}
                 isRequired
-                disabled={domainsContacts[`${formType}_name`]?.$readonly === 'yes'}
+                disabled={domainsContacts[name]?.$readonly === 'yes'}
               />
               <Select
                 placeholder={t('Not chosen', { ns: 'other' })}
                 label={`${t('Contact type')}:`}
-                value={values.owner_profiletype}
-                getElement={item => setFieldValue('owner_profiletype', item)}
+                value={values[profiletype]}
+                getElement={item => {
+                  setFieldValue(profiletype, item)
+                  setProfiletypeState(item)
+                }}
                 isShadow
                 className={s.select}
-                itemsList={domainsContacts?.owner_profiletype_list?.map(
-                  ({ $key, $ }) => ({
-                    label: t(`${$.trim()}`, { ns: 'payers' }),
-                    value: $key,
-                  }),
-                )}
+                itemsList={domainsContacts[profiletype_list]?.map(({ $key, $ }) => ({
+                  label: t(`${$.trim()}`, { ns: 'payers' }),
+                  value: $key,
+                }))}
               />
+
+              {values[profiletype] === '3' || values[profiletype] === '2' ? (
+                <>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name={company}
+                    label={`${t('Company name', { ns: 'payers' })} (EN):`}
+                    placeholder={t('Enter data', { ns: 'other' })}
+                    isShadow
+                    className={s.input}
+                    error={!!errors[company]}
+                    touched={!!touched[company]}
+                    isRequired
+                    disabled={domainsContacts[company]?.$readonly === 'yes'}
+                  />
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name={company_locale}
+                    label={`${t('Company name', { ns: 'payers' })}:`}
+                    placeholder={t('Enter data', { ns: 'other' })}
+                    isShadow
+                    className={s.input}
+                    error={!!errors[company_locale]}
+                    touched={!!touched[company_locale]}
+                    isRequired
+                    disabled={domainsContacts[company_locale]?.$readonly === 'yes'}
+                  />
+                </>
+              ) : null}
             </div>
           </div>
 
@@ -262,99 +366,99 @@ export default function Component(props) {
             <div className={s.formFieldsBlock}>
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_firstname_locale"
+                name={firstname_locale}
                 label={`${t('Name', { ns: 'other' })}:`}
                 placeholder={t('Enter name', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_firstname_locale}
-                touched={!!touched.owner_firstname_locale}
+                error={!!errors[firstname_locale]}
+                touched={!!touched[firstname_locale]}
                 isRequired
-                disabled={domainsContacts?.owner_firstname_locale?.$readonly === 'yes'}
+                disabled={domainsContacts[firstname_locale]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_firstname"
+                name={firstname}
                 label={`${t('Name', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter name', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_firstname}
-                touched={!!touched.owner_firstname}
+                error={!!errors[firstname]}
+                touched={!!touched[firstname]}
                 isRequired
-                disabled={domainsContacts?.owner_firstname?.$readonly === 'yes'}
+                disabled={domainsContacts[firstname]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_lastname_locale"
+                name={lastname_locale}
                 label={`${t('Surname', { ns: 'other' })}:`}
                 placeholder={t('Enter surname', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_lastname_locale}
-                touched={!!touched.owner_lastname_locale}
+                error={!!errors[lastname_locale]}
+                touched={!!touched[lastname_locale]}
                 isRequired
-                disabled={domainsContacts?.owner_lastname_locale?.$readonly === 'yes'}
+                disabled={domainsContacts[lastname_locale]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_lastname"
+                name={lastname}
                 label={`${t('Surname', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter surname', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_lastname}
-                touched={!!touched.owner_lastname}
+                error={!!errors[lastname]}
+                touched={!!touched[lastname]}
                 isRequired
-                disabled={domainsContacts?.owner_lastname?.$readonly === 'yes'}
+                disabled={domainsContacts[lastname]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_middlename_locale"
+                name={middlename_locale}
                 label={`${t('Middle name', { ns: 'other' })}:`}
                 placeholder={t('Enter middle name', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_middlename_locale}
-                touched={!!touched.owner_middlename_locale}
-                disabled={domainsContacts?.owner_middlename_locale?.$readonly === 'yes'}
+                error={!!errors[middlename_locale]}
+                touched={!!touched[middlename_locale]}
+                disabled={domainsContacts[middlename_locale]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_middlename"
+                name={middlename}
                 label={`${t('Middle name', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter middle name', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_middlename}
-                touched={!!touched.owner_middlename}
-                disabled={domainsContacts?.owner_middlename?.$readonly === 'yes'}
+                error={!!errors[middlename]}
+                touched={!!touched[middlename]}
+                disabled={domainsContacts[middlename]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
                 type="email"
-                name="owner_email"
+                name={email}
                 label={`${t('Email')}:`}
                 placeholder={t('Enter email', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_email}
-                touched={!!touched.owner_email}
+                error={!!errors[email]}
+                touched={!!touched[email]}
                 isRequired
-                disabled={domainsContacts?.owner_email?.$readonly === 'yes'}
+                disabled={domainsContacts[email]?.$readonly === 'yes'}
               />
               <CustomPhoneInput
                 containerClass={s.phoneInputContainer}
                 inputClass={s.phoneInputClass}
-                value={values.owner_phone}
+                value={values[phone]}
                 wrapperClass={s.phoneInput}
                 labelClass={s.phoneInputLabel}
                 label={`${t('Phone', { ns: 'other' })}:`}
                 handleBlur={handleBlur}
                 setFieldValue={setFieldValue}
-                name="owner_phone"
+                name={phone}
                 isRequired
-                disabled={domainsContacts?.owner_email?.$readonly === 'yes'}
+                disabled={domainsContacts[phone]?.$readonly === 'yes'}
               />
             </div>
           </div>
@@ -365,11 +469,11 @@ export default function Component(props) {
               <Select
                 placeholder={t('Not chosen', { ns: 'other' })}
                 label={`${t('The country', { ns: 'other' })}:`}
-                value={values.owner_location_country}
-                getElement={item => setFieldValue('owner_location_country', item)}
+                value={values[location_country]}
+                getElement={item => setFieldValue(location_country, item)}
                 isShadow
                 className={s.select}
-                itemsList={domainsContacts?.owner_location_country_list?.map(
+                itemsList={domainsContacts[location_country_list]?.map(
                   ({ $key, $, $image }) => ({
                     label: (
                       <div className={s.countrySelectItem}>
@@ -383,55 +487,55 @@ export default function Component(props) {
                   }),
                 )}
                 isRequired
-                error={errors?.owner_location_country}
+                error={errors[location_country]}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_location_postcode"
+                name={location_postcode}
                 label={`${t('Index', { ns: 'other' })}:`}
                 placeholder={t('Enter index', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_location_postcode}
-                touched={!!touched.owner_location_postcode}
+                error={!!errors[location_postcode]}
+                touched={!!touched[location_postcode]}
                 isRequired
-                disabled={domainsContacts?.owner_location_postcode?.$readonly === 'yes'}
+                disabled={domainsContacts[location_postcode]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_location_state"
+                name={location_state}
                 label={`${t('Region', { ns: 'other' })}:`}
                 placeholder={t('Enter region', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_location_state}
-                touched={!!touched.owner_location_state}
+                error={!!errors[location_state]}
+                touched={!!touched[location_state]}
                 isRequired
-                disabled={domainsContacts?.owner_location_state?.$readonly === 'yes'}
+                disabled={domainsContacts[location_state]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_location_city"
+                name={location_city}
                 label={`${t('City', { ns: 'other' })}:`}
                 placeholder={t('Enter city', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_location_city}
-                touched={!!touched.owner_location_city}
+                error={!!errors[location_city]}
+                touched={!!touched[location_city]}
                 isRequired
-                disabled={domainsContacts?.owner_location_city?.$readonly === 'yes'}
+                disabled={domainsContacts[location_city]?.$readonly === 'yes'}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
-                name="owner_location_address"
+                name={location_address}
                 label={`${t('The address', { ns: 'other' })}:`}
                 placeholder={t('Enter address', { ns: 'other' })}
                 isShadow
                 className={s.input}
-                error={!!errors.owner_location_address}
-                touched={!!touched.owner_location_address}
+                error={!!errors[location_address]}
+                touched={!!touched[location_address]}
                 isRequired
-                disabled={domainsContacts?.owner_location_address?.$readonly === 'yes'}
+                disabled={domainsContacts[location_address]?.$readonly === 'yes'}
               />
             </div>
           </div>
