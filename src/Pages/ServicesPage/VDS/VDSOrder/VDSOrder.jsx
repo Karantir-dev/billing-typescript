@@ -142,7 +142,7 @@ export default function VDSOrder() {
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
                   <span className={s.memorySale}>
-                    {(Number(words[1]) + words[1] * 0.55).toFixed(2)}
+                    {Number(words[1] / 0.45).toFixed(2)}
                   </span>
                   {` ${Number(words[1]).toFixed(2)} EUR/${t('short_month', {
                     ns: 'other',
