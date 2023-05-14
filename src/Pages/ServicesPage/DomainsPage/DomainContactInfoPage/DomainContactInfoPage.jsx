@@ -20,7 +20,6 @@ export default function Component({ transfer = false }) {
   const [formData, setFormData] = useState({})
   const [domainsContacts, setDomainsContacts] = useState(null)
   const [payersInfo, setPayersInfo] = useState({})
-  const [values, setValues] = useState(null)
 
   const { state } = location
 
@@ -39,22 +38,16 @@ export default function Component({ transfer = false }) {
       formData?.billForm?.validated &&
       formData?.techForm?.validated
     ) {
-      setValues({
+      const values = {
         ...formData?.ownerForm?.values,
         ...formData?.adminForm?.values,
         ...formData?.billForm?.values,
         ...formData?.techForm?.values,
-      })
+      }
+      setContactsHandler(values)
       setFormData({})
     }
   }, [formData])
-
-  useEffect(() => {
-    if (values) {
-      setContactsHandler(values)
-      setValues(null)
-    }
-  }, [values])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
