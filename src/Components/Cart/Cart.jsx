@@ -59,7 +59,6 @@ export default function Component() {
 
   const [salesList, setSalesList] = useState([])
   const [isDedicWithSale, setIsDedicWithSale] = useState(false)
-  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -830,10 +829,8 @@ export default function Component() {
         (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
         cartDiscountPercent === 0
       ) {
-        setIsPromocodeAllowed(false)
         setIsDedicWithSale(false)
       } else {
-        setIsPromocodeAllowed(true)
         setIsDedicWithSale(true)
       }
     }
@@ -1218,7 +1215,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={isPromocodeAllowed}
+                            disabled={isDedicWithSale}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
