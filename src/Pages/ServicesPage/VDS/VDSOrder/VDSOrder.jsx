@@ -12,14 +12,13 @@ import {
   SoftwareOSSelect,
   Button,
 } from '../../../../Components'
+import { SaleFiftyFive } from '../../../../images'
 import { userOperations, vdsOperations } from '../../../../Redux'
-import { DOMAIN_REGEX } from '../../../../utils'
+import { DOMAIN_REGEX, useScrollToElement } from '../../../../utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
-import { SALE_55_PROMOCODE } from '../../../../config/config'
-import { SaleFiftyFive } from '../../../../images'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -44,6 +43,7 @@ export default function VDSOrder() {
   const filteredList = tariffsList.filter(el =>
     tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
   )
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {
     const isInList = filteredList.some(el => el.pricelist.$ === selectedTariffId)
@@ -135,19 +135,18 @@ export default function VDSOrder() {
             }
           }
 
-          if (withSale && words?.length > 0 && SALE_55_PROMOCODE) {
+          if (withSale && words?.length > 0) {
             label = (
               <span className={s.selectWithSale}>
                 <div className={s.sale55Icon}>-55%</div>
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
-                  <span className={s.memorySale}>{words[1]}</span>
-                  {` ${(Number(words[1]) - words[1] * 0.55).toFixed(2)} EUR/${t(
-                    'short_month',
-                    {
-                      ns: 'other',
-                    },
-                  )})`}
+                  <span className={s.memorySale}>
+                    {Number(words[1] / 0.45).toFixed(2)}
+                  </span>
+                  {` ${Number(words[1]).toFixed(2)} EUR/${t('short_month', {
+                    ns: 'other',
+                  })})`}
                 </span>
               </span>
             )
@@ -164,8 +163,8 @@ export default function VDSOrder() {
             value: $key,
             label: label,
             sale: withSale,
-            newPrice: (Number(words[1]) - words[1] * 0.55).toFixed(2),
-            oldPrice: Number(words[1]),
+            newPrice: Number(words[1]).toFixed(2),
+            oldPrice: (Number(words[1]) + words[1] * 0.55).toFixed(2),
           }
         })
     }
@@ -413,13 +412,13 @@ export default function VDSOrder() {
         >
           {({ values, setFieldValue, errors, touched }) => {
             const checkSaleMemory = () => {
-              const item = getOptionsListExtended('Memory')?.find(
-                e => e.value === values.Memory,
-              )
+              // const item = getOptionsListExtended('Memory')?.find(
+              //   e => e.value === values.Memory,
+              // )
 
-              if (item?.sale) {
-                return item?.oldPrice - item?.newPrice
-              }
+              // if (item?.sale) {
+              //   return item?.oldPrice - item?.newPrice
+              // }
 
               return 0
             }
@@ -466,7 +465,10 @@ export default function VDSOrder() {
                           tabIndex={0}
                           onKeyUp={null}
                           role="button"
-                          onClick={() => handleTariffClick(period, pricelist.$)}
+                          onClick={() => {
+                            handleTariffClick(period, pricelist.$)
+                            runScroll()
+                          }}
                         >
                           <span className={s.tariff_name}>{desc.$}</span>
                           {parsedPrice ? (
@@ -536,7 +538,7 @@ export default function VDSOrder() {
 
                 {parametersInfo && (
                   <>
-                    <p className={s.section_title}>
+                    <p ref={scrollElem} className={s.section_title}>
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>
@@ -567,11 +569,9 @@ export default function VDSOrder() {
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
                         saleIcon={
-                          SALE_55_PROMOCODE ? (
-                            <SaleFiftyFive
-                              style={{ marginLeft: 7, position: 'absolute', top: -10 }}
-                            />
-                          ) : null
+                          <SaleFiftyFive
+                            style={{ marginLeft: 7, position: 'absolute', top: -10 }}
+                          />
                         }
                         label={`${t('memory')}:`}
                         getElement={value => {

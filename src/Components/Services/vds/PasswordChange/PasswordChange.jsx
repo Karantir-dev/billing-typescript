@@ -46,11 +46,11 @@ export default function PasswordChange({ id, names, closeFn }) {
 
   const validationSchema = Yup.object().shape({
     passwd: Yup.string()
-      .min(6, t('warnings.invalid_pass', { ns: 'auth' }))
-      .max(48, t('warnings.invalid_pass', { ns: 'auth' }))
+      .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }))
+      .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }))
       .matches(
         /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-        t('warnings.invalid_pass', { ns: 'auth' }),
+        t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }),
       )
       .required(t('warnings.password_required', { ns: 'auth' })),
     confirm: Yup.string()
@@ -112,6 +112,7 @@ export default function PasswordChange({ id, names, closeFn }) {
                   error={!!errors.passwd}
                   touched={!!touched.passwd}
                   isRequired
+                  autoComplete="off"
                 />
 
                 <InputField
@@ -124,6 +125,7 @@ export default function PasswordChange({ id, names, closeFn }) {
                   error={!!errors.confirm}
                   touched={!!touched.confirm}
                   isRequired
+                  autoComplete="off"
                 />
               </div>
 

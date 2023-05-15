@@ -252,13 +252,8 @@ export default function ServicesPage(props) {
                 )}
                 {available && (
                   <CheckBox
-                    setValue={isChecked => {
-                      if (isChecked) {
-                        setIsSelectedHandler(d)
-                      } else if (itemIsSelected(d)) {
-                        setIsSelectedHandler(d)
-                      }
-                    }}
+                    value={itemIsSelected(d)}
+                    onClick={() => setIsSelectedHandler(d)}
                     className={s.checkbox}
                   />
                 )}

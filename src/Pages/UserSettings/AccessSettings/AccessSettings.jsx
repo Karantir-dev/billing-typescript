@@ -48,8 +48,8 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   const validationSchema = Yup.object().shape({
     passwd: Yup.string()
-      .min(12, t('warnings.invalid_pass', { ns: 'auth' }))
-      .max(48, t('warnings.invalid_pass', { ns: 'auth' }))
+      .min(12, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 }))
+      .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 }))
       .matches(
         /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
         t('Password must contain at least one uppercase and lowercase letter', {

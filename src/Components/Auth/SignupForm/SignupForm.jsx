@@ -56,9 +56,9 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
-      .min(12, t('warnings.invalid_pass'))
-      .max(48, t('warnings.invalid_pass'))
-      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass'))
+      .min(12, t('warnings.invalid_pass', { min: 12, max: 48 }))
+      .max(48, t('warnings.invalid_pass', { min: 12, max: 48 }))
+      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))

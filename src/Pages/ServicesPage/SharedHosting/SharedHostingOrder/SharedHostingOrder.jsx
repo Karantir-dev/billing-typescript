@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { userOperations, vhostOperations } from '../../../../Redux'
+import { useScrollToElement } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -35,6 +36,8 @@ export default function Component() {
   const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
+  
+  const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData })
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
@@ -195,7 +198,10 @@ export default function Component() {
             ?.filter(plan => plan?.order_available?.$ === 'on')
             ?.map(tariff => {
               const { pricelist } = tariff
-              const setPriceHandler = () => setPrice(pricelist?.$)
+              const setPriceHandler = () => {
+                setPrice(pricelist?.$)
+                runScroll()
+              }
 
               return (
                 <TarifCard
@@ -210,7 +216,9 @@ export default function Component() {
         </div>
         {paramsData && (
           <div className={s.parametrsContainer}>
-            <div className={s.parametrsTitle}>{t('Options')}</div>
+            <div ref={scrollElem} className={s.parametrsTitle}>
+              {t('Options')}
+            </div>
             {period !== '-100' ? (
               <Select
                 getElement={item => {

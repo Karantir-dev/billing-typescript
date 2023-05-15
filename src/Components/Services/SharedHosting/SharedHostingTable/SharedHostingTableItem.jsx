@@ -49,22 +49,25 @@ export default function Component(props) {
     setIsOpened(!isOpened)
   }
 
-  const serverIsActive = activeServices?.some(service => service?.id?.$ === id)
+  const isActive = activeServices?.some(service => service?.id?.$ === id)
+  const toggleIsActiveHandler = () => {
+    isActive
+      ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== id))
+      : setActiveServices([...activeServices, el])
+  }
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
 
   return (
     <div className={s.item_container}>
       {!mobile && (
-        <CheckBox
-          className={s.check_box}
-          initialState={serverIsActive}
-          func={isChecked => {
-            isChecked
-              ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== id))
-              : setActiveServices([...activeServices, el])
-          }}
-        />
+        <>
+          <CheckBox
+            className={s.check_box}
+            value={isActive}
+            onClick={toggleIsActiveHandler}
+          />
+        </>
       )}
 
       <div
@@ -78,12 +81,8 @@ export default function Component(props) {
         {mobile && (
           <CheckBox
             className={s.check_box}
-            initialState={serverIsActive}
-            func={isChecked => {
-              isChecked
-                ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== id))
-                : setActiveServices([...activeServices, el])
-            }}
+            value={isActive}
+            onClick={toggleIsActiveHandler}
           />
         )}
 
@@ -148,7 +147,7 @@ export default function Component(props) {
             <button
               disabled={!rights?.edit}
               className={s.settings_btn}
-              onClick={editVhostHandler}
+              onClick={() => editVhostHandler()}
             >
               <Edit />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>

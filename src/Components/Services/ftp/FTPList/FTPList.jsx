@@ -57,16 +57,19 @@ export default function FTPList({
     }
   }
 
+  const isAllActive = activeServices?.length === storageList?.length
+  const toggleIsAllActiveHandler = () => {
+    isAllActive ? setActiveServices([]) : setActiveServices(storageList)
+  }
+
   return (
     <>
       {widerThan1600 && storageList?.length > 0 && (
         <div className={s.head_row_wrapper}>
           <CheckBox
             className={s.check_box}
-            initialState={activeServices?.length === storageList?.length}
-            func={isChecked => {
-              isChecked ? setActiveServices([]) : setActiveServices(storageList)
-            }}
+            value={isAllActive}
+            onClick={toggleIsAllActiveHandler}
           />
           <ul className={s.head_row}>
             <li className={s.table_head}>Id:</li>

@@ -34,13 +34,7 @@ import {
 } from '../../Redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import {
-  BASE_URL,
-  PRIVACY_URL,
-  OFERTA_URL,
-  SALE_55_PROMOCODE,
-  SALE_55_PROMOCODES_LIST,
-} from '../../config/config'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
 import { replaceAllFn } from '../../utils'
 
 export default function Component() {
@@ -86,6 +80,13 @@ export default function Component() {
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
   const [payerFieldList, setPayerFieldList] = useState(null)
+  const [profileType, setProfileType] = useState('')
+  const [company, setCompany] = useState('')
+  const [person, setPerson] = useState(null)
+  const [cityPhysical, setCityPhysical] = useState(null)
+  const [addressPhysical, setAddressPhysical] = useState(null)
+  const [euVat, setEUVat] = useState('')
+  const [promocode, setPromocode] = useState('')
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
@@ -253,7 +254,9 @@ export default function Component() {
     if (values?.selectedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
     }
-    dispatch(cartOperations.setPaymentMethods(data, navigate, cartData))
+
+    const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
+    dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
   }
 
   let VDS_FEE_AMOUNT = ''
@@ -802,25 +805,6 @@ export default function Component() {
     )
   }
 
-  const withSale55Promocode = () => {
-    let withSale = false
-
-    if (cartData) {
-      withSale =
-        SALE_55_PROMOCODE?.length > 0 &&
-        cartData?.elemList[0]?.price?.$?.includes(SALE_55_PROMOCODE)
-
-      if (SALE_55_PROMOCODES_LIST) {
-        SALE_55_PROMOCODES_LIST?.forEach(e => {
-          if (cartData?.elemList[0]?.price?.$?.includes(e)) {
-            withSale = true
-          }
-        })
-      }
-    }
-
-    return withSale
-  }
   useEffect(() => {
     const cartConfigName = cartData?.elemList[0]?.pricelist_name.$?.slice(
       0,
@@ -882,21 +866,23 @@ export default function Component() {
                   profile:
                     selectedPayerFields?.profile ||
                     payersList[payersList?.length - 1]?.id?.$,
-                  name: selectedPayerFields?.name || '',
-                  address_physical: selectedPayerFields?.address_physical || '',
+                  name: company || selectedPayerFields?.name || '',
+                  address_physical:
+                    addressPhysical ?? selectedPayerFields?.address_physical,
                   city_physical:
-                    selectedPayerFields?.city_physical || geoData?.clients_city || '',
-                  person: selectedPayerFields?.person || '',
+                    cityPhysical ??
+                    (selectedPayerFields?.city_physical || geoData?.clients_city),
+                  person: person ?? selectedPayerFields?.person,
                   country:
                     selectedPayerFields?.country ||
                     selectedPayerFields?.country_physical ||
                     '',
-                  profiletype: selectedPayerFields?.profiletype,
-                  eu_vat: selectedPayerFields?.eu_vat || '',
+                  profiletype: profileType || selectedPayerFields?.profiletype,
+                  eu_vat: euVat || selectedPayerFields?.eu_vat || '',
                   [selectedPayerFields?.offer_field]: isOffer,
 
                   selectedPayMethod: selectedPayMethod || undefined,
-                  promocode: '',
+                  promocode: promocode,
                   isPersonalBalance:
                     selectedPayMethod?.name?.$?.includes('balance') &&
                     selectedPayMethod?.paymethod_type?.$ === '0'
@@ -931,6 +917,8 @@ export default function Component() {
                     parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
 
                   const setPayerHandler = val => {
+                    if (val === values.profile) return
+
                     setFieldValue('profile', val)
                     let data = null
                     if (val === 'new') {
@@ -960,6 +948,10 @@ export default function Component() {
                         ),
                       )
                     }
+
+                    setPerson(null)
+                    setCityPhysical(null)
+                    setAddressPhysical(null)
                   }
 
                   const readMore = parsedText?.infoText
@@ -1051,7 +1043,10 @@ export default function Component() {
                               placeholder={t('Not chosen', { ns: 'other' })}
                               label={`${t('Payer status', { ns: 'payers' })}:`}
                               value={values.profiletype}
-                              getElement={item => setFieldValue('profiletype', item)}
+                              getElement={item => {
+                                setFieldValue('profiletype', item)
+                                setProfileType(item)
+                              }}
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
@@ -1069,6 +1064,8 @@ export default function Component() {
                                 error={!!errors.name}
                                 touched={!!touched.name}
                                 isRequired
+                                value={values.name}
+                                onChange={e => setCompany(e.target.value)}
                               />
                             ) : null}
                             {values?.profiletype === '1' && payersList?.length !== 0 && (
@@ -1105,6 +1102,8 @@ export default function Component() {
                               error={!!errors.person}
                               touched={!!touched.person}
                               isRequired
+                              value={values.person}
+                              onChange={e => setPerson(e.target.value)}
                             />
 
                             <SelectGeo
@@ -1125,6 +1124,8 @@ export default function Component() {
                               className={s.inputBig}
                               error={!!errors.city_physical}
                               touched={!!touched.city_physical}
+                              value={values.city_physical}
+                              onChange={e => setCityPhysical(e.target.value)}
                               // isRequired
                             />
                             <div className={cn(s.nsInputBlock, s.inputBig)}>
@@ -1148,6 +1149,7 @@ export default function Component() {
                                 externalValue={values.address_physical}
                                 setFieldValue={val => {
                                   setFieldValue('address_physical', val)
+                                  setAddressPhysical(val)
                                 }}
                               />
 
@@ -1172,6 +1174,8 @@ export default function Component() {
                                 className={s.inputBig}
                                 error={!!errors.eu_vat}
                                 touched={!!touched.eu_vat}
+                                value={values.eu_vat}
+                                onChange={e => setEUVat(e.target.value)}
                               />
                             ) : null}
                           </div>
@@ -1211,13 +1215,15 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={withSale55Promocode() || isPromocodeAllowed}
+                            disabled={isPromocodeAllowed}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
                             className={s.inputPerson}
                             error={!!errors.promocode}
                             touched={!!touched.promocode}
+                            value={values.promocode}
+                            onChange={e => setPromocode(e.target.value)}
                           />
                           <button
                             onClick={() => setPromocodeToCart(values?.promocode)}
@@ -1228,10 +1234,6 @@ export default function Component() {
                             {t('Apply', { ns: 'other' })}
                           </button>
                         </div>
-
-                        {withSale55Promocode() ? (
-                          <div className={s.sale55Promo}>{t('sale_55_text')}</div>
-                        ) : null}
 
                         <div className={cn(s.formFieldsBlock)}>
                           {blackFridayData && blackFridayData?.success && (
@@ -1270,14 +1272,9 @@ export default function Component() {
 
                         <div className={s.offerBlock}>
                           <CheckBox
+                            value={values[selectedPayerFields?.offer_field] || false}
+                            onClick={() => setIsOffer(prev => !prev)}
                             name={selectedPayerFields?.offer_field}
-                            initialState={
-                              values[selectedPayerFields?.offer_field] || false
-                            }
-                            setValue={item => {
-                              setFieldValue(`${selectedPayerFields?.offer_field}`, item)
-                              setIsOffer(item)
-                            }}
                             className={s.checkbox}
                             error={!!errors[selectedPayerFields?.offer_field]}
                             touched={!!touched[selectedPayerFields?.offer_field]}

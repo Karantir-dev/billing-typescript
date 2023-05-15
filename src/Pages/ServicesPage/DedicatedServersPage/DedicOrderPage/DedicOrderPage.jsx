@@ -28,7 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive } from '../../../../utils'
+import { checkIfTokenAlive, useScrollToElement } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -54,6 +54,8 @@ export default function DedicOrderPage() {
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
+
+  const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -510,7 +512,10 @@ export default function DedicOrderPage() {
                           setParameters={setParameters}
                           setFieldValue={setFieldValue}
                           setPrice={setPrice}
-                          setTarifChosen={setTarifChosen}
+                          setTarifChosen={() => {
+                            setTarifChosen(true)
+                            runScroll()
+                          }}
                           periodName={periodName}
                         />
                       )
@@ -528,7 +533,24 @@ export default function DedicOrderPage() {
                         clickable: true,
                         el: '[data-dedic-swiper-pagination]',
                         dynamicBullets: true,
-                        dynamicMainBullets: 3,
+                        dynamicMainBullets: 1,
+                      }}
+                      breakpoints={{
+                        650: {
+                          pagination: {
+                            dynamicMainBullets: 2,
+                          },
+                        },
+                        865: {
+                          pagination: {
+                            dynamicMainBullets: 3,
+                          },
+                        },
+                        1400: {
+                          pagination: {
+                            dynamicMainBullets: 4,
+                          },
+                        },
                       }}
                       onSwiper={setSwiperRef}
                     >
@@ -548,7 +570,10 @@ export default function DedicOrderPage() {
                                 setParameters={setParameters}
                                 setFieldValue={setFieldValue}
                                 setPrice={setPrice}
-                                setTarifChosen={setTarifChosen}
+                                setTarifChosen={() => {
+                                  setTarifChosen(true)
+                                  runScroll()
+                                }}
                                 periodName={periodName}
                               />
                             </SwiperSlide>
@@ -579,7 +604,9 @@ export default function DedicOrderPage() {
 
               {parameters && (
                 <div className={s.parameters_block}>
-                  <p className={s.params}>{t('os')}</p>
+                  <p ref={scrollElem} className={s.params}>
+                    {t('os')}
+                  </p>
                   <div className={s.software_OS_List}>
                     {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
                   </div>

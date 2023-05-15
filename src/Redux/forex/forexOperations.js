@@ -235,81 +235,83 @@ const getPrintLicense = priceId => (dispatch, getState) => {
     })
 }
 
-const getCurrentForexInfo = (elid, setInitialParams) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getCurrentForexInfo =
+  (elid, setInitialParams, autoprolong) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'forexbox.edit',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        elid,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'forexbox.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          autoprolong,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const autoprolongList = data?.doc?.slist?.filter(
-        item => item.$name === 'autoprolong',
-      )[0].val
-      const paymentMethodList = data?.doc?.slist?.filter(
-        item => item.$name === 'stored_method',
-      )[0].val
+        const autoprolongList = data?.doc?.slist?.filter(
+          item => item.$name === 'autoprolong',
+        )[0].val
+        const paymentMethodList = data?.doc?.slist?.filter(
+          item => item.$name === 'stored_method',
+        )[0].val
 
-      const serverPackageList = data?.doc?.slist?.filter(
-        item => item.$name === 'server_package',
-      )[0].val
+        const serverPackageList = data?.doc?.slist?.filter(
+          item => item.$name === 'server_package',
+        )[0].val
 
-      const {
-        autoprolong,
-        opendate,
-        period,
-        name,
-        id,
-        expiredate,
-        createdate,
-        server_ip,
-        server_hostname,
-        server_package,
-        server_password,
-        server_user,
-        url_rdp,
-        stored_method,
-      } = data.doc
+        const {
+          autoprolong,
+          opendate,
+          period,
+          name,
+          id,
+          expiredate,
+          createdate,
+          server_ip,
+          server_hostname,
+          server_package,
+          server_password,
+          server_user,
+          url_rdp,
+          stored_method,
+        } = data.doc
 
-      setInitialParams({
-        autoprolong,
-        opendate,
-        period,
-        id,
-        expiredate,
-        createdate,
-        name,
-        server_ip,
-        server_hostname,
-        server_package,
-        server_password,
-        server_user,
-        paymentMethodList,
-        serverPackageList,
-        autoprolongList,
-        url_rdp,
-        stored_method,
+        setInitialParams({
+          autoprolong,
+          opendate,
+          period,
+          id,
+          expiredate,
+          createdate,
+          name,
+          server_ip,
+          server_hostname,
+          server_package,
+          server_password,
+          server_user,
+          paymentMethodList,
+          serverPackageList,
+          autoprolongList,
+          url_rdp,
+          stored_method,
+        })
+        dispatch(actions.hideLoader())
       })
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const editForex =
   (elid, autoprolong, stored_method, handleModal) => (dispatch, getState) => {

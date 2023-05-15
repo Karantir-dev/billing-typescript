@@ -11,14 +11,12 @@ import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '../../utils'
-import { SALE_55_PROMOCODE, SALE_55_PROMOCODES_LIST } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
-    cart: { cartState },
     billing: { periodValue },
   } = getState()
 
@@ -60,22 +58,6 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
       setCartData && setCartData(cartData)
       setPaymentsMethodList &&
         dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
-
-      if (cartState?.salePromocode && SALE_55_PROMOCODE) {
-        setCartData &&
-          setPaymentsMethodList &&
-          dispatch(
-            setBasketPromocode(
-              SALE_55_PROMOCODE,
-              setCartData,
-              setPaymentsMethodList,
-              null,
-              null,
-              0,
-            ),
-          )
-        dispatch(cartActions.setCartIsOpenedState({ ...cartState, salePromocode: false }))
-      }
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
@@ -84,14 +66,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 }
 
 const setBasketPromocode =
-  (
-    promocode,
-    setCartData,
-    setPaymentsMethodList,
-    setBlackFridayData,
-    service,
-    promoIndex,
-  ) =>
+  (promocode, setCartData, setPaymentsMethodList, setBlackFridayData, service) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -126,29 +101,9 @@ const setBasketPromocode =
         }
 
         if (data.doc.error) {
-          if (
-            data.doc.error.msg.$?.trim()?.includes(SALE_55_PROMOCODE) ||
-            data.doc.error.msg.$?.trim()?.includes(
-              SALE_55_PROMOCODES_LIST[promoIndex - 1],
-            )
-          ) {
-            if (promoIndex + 1 <= SALE_55_PROMOCODES_LIST?.length) {
-              return dispatch(
-                setBasketPromocode(
-                  SALE_55_PROMOCODES_LIST[promoIndex],
-                  setCartData,
-                  setPaymentsMethodList,
-                  null,
-                  null,
-                  promoIndex + 1,
-                ),
-              )
-            }
-          } else {
-            toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
-              position: 'bottom-right',
-            })
-          }
+          toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
+            position: 'bottom-right',
+          })
 
           throw new Error(data.doc.error.msg.$)
         }
@@ -376,19 +331,42 @@ const setPaymentMethods =
                 }
               })
 
-              cookies?.setCookie(
-                'cartData',
-                JSON.stringify({
-                  billorder: cartData?.billorder,
-                  total_sum: cartData?.total_sum,
-                  tax: cartData?.tax,
-                  promocode: body?.promocode,
-                  items: items,
-                }),
-                30,
-              )
-
               if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
+                if (
+                  cartData?.payment_name?.includes('Coinify') ||
+                  cartData?.payment_name?.includes('Bitcoin')
+                ) {
+                  cookies.eraseCookie('payment_id')
+                  window.dataLayer.push({ ecommerce: null })
+                  window.dataLayer.push({
+                    event: 'purchase',
+                    ecommerce: {
+                      transaction_id: data.doc?.payment_id?.$,
+                      affiliation: 'cp.zomro.com',
+                      value: Number(cartData?.total_sum) || 0,
+                      tax: Number(cartData?.tax) || 0,
+                      currency: 'EUR',
+                      shipping: '0',
+                      coupon: body?.promocode,
+                      items: items,
+                    },
+                  })
+                } else {
+                  data.doc?.payment_id &&
+                    cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+                  cookies?.setCookie(
+                    `cartData_${data.doc?.payment_id?.$}`,
+                    JSON.stringify({
+                      billorder: cartData?.billorder,
+                      total_sum: cartData?.total_sum,
+                      tax: cartData?.tax,
+                      promocode: body?.promocode,
+                      items: items,
+                    }),
+                    5,
+                  )
+                }
+
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 

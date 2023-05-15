@@ -28,7 +28,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
 
     return (
       labelArr[0] +
-      'EUR ' + 
+      'EUR ' +
       t(labelArr[1].replace(')', '')) +
       (sentence.includes(')') ? ')' : '')
     )
@@ -191,8 +191,12 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     value={values.autoprolong}
                     getElement={value => {
                       setFieldValue('autoprolong', value)
+                      dispatch(
+                        vdsOperations.getEditFieldsVDS(elid, setInitialState, value),
+                      )
+
                       if (value === 'null') {
-                        setFieldValue('stored_method', '')
+                        setFieldValue('stored_method', null)
                       }
                     }}
                     itemsList={getOptionsListExtended('autoprolong')}

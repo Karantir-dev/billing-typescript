@@ -2,11 +2,12 @@ name: Add Reviewers
 
 on:
   pull_request:
-    types: [ opened, reopened, synchronize ]
+    types: [ labeled ]
 
 jobs:
   add_reviewers:
     name: Add Reviewers
+    if: github.event.label.name == 'reviewers'
     runs-on: ubuntu-latest
     steps:
       - name: Find reviewers

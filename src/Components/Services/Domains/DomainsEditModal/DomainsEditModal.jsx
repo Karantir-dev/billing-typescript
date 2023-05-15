@@ -11,7 +11,13 @@ import { translatePeriod } from '../../../../utils'
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds', 'payers'])
 
-  const { names, closeEditModalHandler, editData, editSaveDomainHandler } = props
+  const {
+    names,
+    closeEditModalHandler,
+    editData,
+    editSaveDomainHandler,
+    editDomainHandler,
+  } = props
 
   const [isOpenProfile, setIsOpenProfile] = useState(false)
 
@@ -119,7 +125,13 @@ export default function Component(props) {
                         label={`${t('Auto renewal')}:`}
                         placeholder={t('Not selected')}
                         value={values.autoprolong}
-                        getElement={item => setFieldValue('autoprolong', item)}
+                        getElement={item => {
+                          setFieldValue('autoprolong', item)
+                          editDomainHandler(editData?.domain_id, { autoprolong: item })
+                          if (item === 'null') {
+                            setFieldValue('stored_method', null)
+                          }
+                        }}
                         isShadow
                         itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => {
                           return {
@@ -213,9 +225,9 @@ export default function Component(props) {
                         />
                         <div className={s.useFirstCheck}>
                           <CheckBox
-                            initialState={editData?.private === 'on'}
-                            setValue={item => {
-                              setFieldValue('private', item ? 'on' : 'off')
+                            value={values.private === 'on'}
+                            onClick={() => {
+                              setFieldValue('private', values.private === 'on' ? 'off' : 'on')
                             }}
                             className={s.checkbox}
                           />
@@ -400,9 +412,9 @@ export default function Component(props) {
                       <div className={s.formFieldsBlock}>
                         <div className={s.useFirstCheck}>
                           <CheckBox
-                            initialState={editData[editData?.addon]?.$ === 'on'}
-                            setValue={item => {
-                              setFieldValue(editData?.addon, item ? 'on' : 'off')
+                            value={values[editData?.addon] === 'on'}
+                            onClick={() => {
+                              setFieldValue(editData?.addon, values[editData?.addon] === 'on' ? 'off' : 'on')
                             }}
                             className={s.checkbox}
                           />

@@ -716,10 +716,13 @@ export default function Component({ transfer = false }) {
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox
-                    initialState={values.admin_contact_use_first === 'on'}
-                    setValue={item => {
-                      setFieldValue('admin_contact_use_first', item ? 'on' : 'off')
-                      if (!item) {
+                    value={values.admin_contact_use_first === 'on'}
+                    onClick={() => {
+                      setFieldValue(
+                        'admin_contact_use_first',
+                        values.admin_contact_use_first === 'on' ? 'off' : 'on',
+                      )
+                      if (!values.admin_contact_use_first === 'on') {
                         setIsOpenAdmin(true)
                       }
                     }}
@@ -997,10 +1000,13 @@ export default function Component({ transfer = false }) {
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox
-                    initialState={values.tech_contact_use_first === 'on'}
-                    setValue={item => {
-                      setFieldValue('tech_contact_use_first', item ? 'on' : 'off')
-                      if (!item) {
+                    value={values.tech_contact_use_first === 'on'}
+                    onClick={() => {
+                      setFieldValue(
+                        'tech_contact_use_first',
+                        values.tech_contact_use_first === 'on' ? 'off' : 'on',
+                      )
+                      if (!values.tech_contact_use_first === 'on') {
                         setIsOpenTech(true)
                       }
                     }}
@@ -1278,10 +1284,13 @@ export default function Component({ transfer = false }) {
                 </button>
                 <div className={s.useFirstCheck}>
                   <CheckBox
-                    initialState={values.bill_contact_use_first === 'on'}
-                    setValue={item => {
-                      setFieldValue('bill_contact_use_first', item ? 'on' : 'off')
-                      if (!item) {
+                    value={values.bill_contact_use_first === 'on'}
+                    onClick={() => {
+                      setFieldValue(
+                        'bill_contact_use_first',
+                        values.bill_contact_use_first === 'on' ? 'off' : 'on',
+                      )
+                      if (!values.bill_contact_use_first === 'on') {
                         setIsOpenBill(true)
                       }
                     }}
