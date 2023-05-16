@@ -56,8 +56,9 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+
   const [salesList, setSalesList] = useState([])
-  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
+  const [isDedicWithSale, setIsDedicWithSale] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -817,21 +818,20 @@ export default function Component() {
         sale.idname.$.includes(cartConfigName),
     )
 
-    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace(
-      '%',
-      '',
-    )
+    const cartDiscountPercent =
+      cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
     const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
 
     if (foundSale) {
       if (
         (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
         (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
-        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12)
+        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
+        cartDiscountPercent === 0
       ) {
-        setIsPromocodeAllowed(false)
+        setIsDedicWithSale(false)
       } else {
-        setIsPromocodeAllowed(true)
+        setIsDedicWithSale(true)
       }
     }
   }, [salesList])
@@ -1215,7 +1215,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={isPromocodeAllowed}
+                            disabled={isDedicWithSale}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1234,6 +1234,10 @@ export default function Component() {
                             {t('Apply', { ns: 'other' })}
                           </button>
                         </div>
+
+                        {isDedicWithSale ? (
+                          <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
+                        ) : null}
 
                         <div className={cn(s.formFieldsBlock)}>
                           {blackFridayData && blackFridayData?.success && (
