@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
-import { BreadCrumbs, InputField, Button, CheckBox, Select } from '../../../../Components'
+import {
+  BreadCrumbs,
+  InputField,
+  Button,
+  CheckBox,
+  Select,
+  HintWrapper,
+  NsItem,
+} from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations, userOperations } from '../../../../Redux'
+import { HintHelp } from '../../../../images'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
@@ -105,23 +114,33 @@ export default function Component({ transfer = false }) {
     )
   }
 
-  // const openTermsHandler = link => {
-  //   dispatch(domainsOperations?.getTermsOfConditionalText(link))
-  // }
-
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('Name servers')}</h1>
-      <div className={s.instructionNS}>{t('Instruction NS')}</div>
+      <h1 className={s.page_title}>
+        {t('Name servers')}{' '}
+        <HintWrapper
+          bottom={true}
+          popupClassName={s.hintWrapper}
+          label={t('Instruction NS')}
+        >
+          <HintHelp />
+        </HintWrapper>
+      </h1>
       {selectedDomain?.length > 1 && (
         <div className={s.useFirstCheck}>
-          <CheckBox
-            value={differentNS}
-            onClick={() => setDifferentNS(prev => !prev)}
-            className={s.checkbox}
-          />
-          <span>{t('Private name servers for each domain')}</span>
+          <button
+            className={cn(s.btnNsDiff, { [s.selected]: !differentNS })}
+            onClick={() => setDifferentNS(false)}
+          >
+            {t('Apply to all')}
+          </button>
+          <button
+            className={cn(s.btnNsDiff, { [s.selected]: differentNS })}
+            onClick={() => setDifferentNS(true)}
+          >
+            {t('Provide for each domain name')}
+          </button>
         </div>
       )}
       {selectedDomain?.length > 0 && (
@@ -145,115 +164,24 @@ export default function Component({ transfer = false }) {
                               ]
                             }
                           </div>
-                          <div className={s.formFieldsBlock}>
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name={`domainparam_${select}_ns0`}
-                              label={`${t('NS')}:`}
-                              placeholder={t('Enter text', { ns: 'other' })}
-                              isShadow
-                              className={s.input}
-                              error={!!errors[`domainparam_${select}_ns0`]}
-                              touched={!!touched[`domainparam_${select}_ns0`]}
-                            />
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name={`domainparam_${select}_ns1`}
-                              label={`${t('NS')}:`}
-                              placeholder={t('Enter text', { ns: 'other' })}
-                              isShadow
-                              className={s.input}
-                              error={!!errors[`domainparam_${select}_ns1`]}
-                              touched={!!touched[`domainparam_${select}_ns1`]}
-                            />
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name={`domainparam_${select}_ns2`}
-                              label={`${t('NS')}:`}
-                              placeholder={t('Enter text', { ns: 'other' })}
-                              isShadow
-                              className={s.input}
-                              error={!!errors[`domainparam_${select}_ns2`]}
-                              touched={!!touched[`domainparam_${select}_ns2`]}
-                            />
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name={`domainparam_${select}_ns3`}
-                              label={`${t('NS')}:`}
-                              placeholder={t('Enter text', { ns: 'other' })}
-                              isShadow
-                              className={s.input}
-                              error={!!errors[`domainparam_${select}_ns3`]}
-                              touched={!!touched[`domainparam_${select}_ns3`]}
-                            />
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name={`domainparam_${select}_ns_additional`}
-                              label={`${t('NS')}:`}
-                              placeholder={t('Enter text', { ns: 'other' })}
-                              isShadow
-                              className={s.input}
-                              error={!!errors[`domainparam_${select}_ns_additional`]}
-                              touched={!!touched[`domainparam_${select}_ns_additional`]}
-                            />
-                          </div>
+                          <NsItem
+                            setFieldValue={setFieldValue}
+                            values={values}
+                            select={select}
+                            errors={errors}
+                            touched={touched}
+                          />
                         </div>
                       )
                     })
                   ) : (
                     <div className={s.formBlock}>
-                      <div className={s.formFieldsBlock}>
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ns0'}
-                          label={`${t('NS')}:`}
-                          placeholder={t('Enter text', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors['s0']}
-                          touched={!!touched['ns0']}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ns1'}
-                          label={`${t('NS')}:`}
-                          placeholder={t('Enter text', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors['ns1']}
-                          touched={!!touched['ns1']}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ns2'}
-                          label={`${t('NS')}:`}
-                          placeholder={t('Enter text', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors['ns2']}
-                          touched={!!touched['ns2']}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ns3'}
-                          label={`${t('NS')}:`}
-                          placeholder={t('Enter text', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors['ns3']}
-                          touched={!!touched['ns3']}
-                        />
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name={'ns_additional'}
-                          label={`${t('Additional NS')}:`}
-                          placeholder={t('Enter text', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors['ns_additional']}
-                          touched={!!touched['ns_additional']}
-                        />
-                      </div>
+                      <NsItem
+                        setFieldValue={setFieldValue}
+                        values={values}
+                        errors={errors}
+                        touched={touched}
+                      />
                     </div>
                   )}
                   <div className={s.formBlock}>

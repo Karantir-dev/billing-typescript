@@ -107,5 +107,16 @@
   "and": "і",
 
   "Name can only contain Latin letters": "Імʼя може містити лише латинські літери",
-  "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери"
+  "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери",
+
+  "Apply to all": "Застосувати до всіх",
+  "Provide for each domain name": "Вкажіть для кожного доменного імені",
+
+  "ns0": "NS 1",
+  "ns1": "NS 2",
+  "ns2": "NS 3",
+  "ns3": "NS 4",
+  "ns_additional": "Додатковий NS",
+
+  "Use the name servers": "Використовуйте сервери імен"
 }
