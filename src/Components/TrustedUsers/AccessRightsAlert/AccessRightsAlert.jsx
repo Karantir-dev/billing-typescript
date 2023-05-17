@@ -4,10 +4,18 @@ import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
 import { Button } from '../..'
+import { useDispatch } from 'react-redux'
+import { usersActions } from '../../../Redux'
 
 export default function AccessRightsAlert({ isOpened, title, list1, controlAlert }) {
   const getAlerEl = useRef(null)
   const [scrolledDown, setScrolledDown] = useState(false)
+  const dispatch = useDispatch()
+
+  const closeAlert = () => {
+    controlAlert()
+    dispatch(usersActions.setRights([]))
+  }
 
   const handleScroll = e => {
     const alertScrollTop = e.target.scrollTop
@@ -43,7 +51,7 @@ export default function AccessRightsAlert({ isOpened, title, list1, controlAlert
             <button
               className={s.close_btn}
               data-testid="trusted_users_rights_btn"
-              onClick={controlAlert}
+              onClick={closeAlert}
             ></button>
           </div>
         </div>

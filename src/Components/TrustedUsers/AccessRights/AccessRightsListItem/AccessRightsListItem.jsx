@@ -40,7 +40,6 @@ export default function AccessRightsListItem({
   openedCategory,
   isOpenCategory,
   inserted,
-  // categoryIsActive,
 }) {
   const { t } = useTranslation('trusted_users')
   const sessionId = useSelector(authSelectors.getSessionId)
@@ -315,7 +314,7 @@ export default function AccessRightsListItem({
                   >
                     <Toggle
                       func={handleToggleBtns}
-                      initialState={allRightsState || isAllTurnedOn}
+                      initialState={item.active.$ === 'on' || allRightsState}
                       disabled={
                         (!hasAccessToResumeRights && !currentRightState) ||
                         (!hasAccessToSuspendRights &&
@@ -406,38 +405,6 @@ export default function AccessRightsListItem({
         </div>
 
         <div className={cn(s.selectedAllBlock)}>
-          {/* <div className={cn(s.isToggleBlockSelectAll, { [s.selected]: selected })}>
-            <Toggle
-              func={() => {
-                if (categoryIsActive) {
-                  dispatch(
-                    usersOperations.manageUserRight(
-                      userId,
-                      item?.subCateg?.join(', '),
-                      sessionId,
-                      'suspend',
-                    ),
-                  )
-                } else {
-                  dispatch(
-                    usersOperations.manageUserRight(
-                      userId,
-                      item?.subCateg?.join(', '),
-                      sessionId,
-                      'resume',
-                    ),
-                  )
-                }
-              }}
-              initialState={categoryIsActive}
-              disabled={
-                (!hasAccessToResumeRights && !currentRightState) ||
-                (!hasAccessToSuspendRights &&
-                  currentRightState &&
-                  !hasAccessToSuspendRightsOnly)
-              }
-            />
-          </div> */}
           <div
             role="button"
             tabIndex={0}

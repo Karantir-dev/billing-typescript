@@ -28,10 +28,12 @@
   z-index: 100;
   background-color: var(--elements-bgc);
   border-radius: 3px;
-  margin: 50px 0;
+  margin: 50px 10px;
   max-width: 647px;
   overflow: hidden;
   height: 90vh;
+
+  width: 100%;
 
   // &::after {
   //   content: '';
