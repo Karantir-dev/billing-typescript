@@ -9,6 +9,7 @@ export default function Component({
   func,
   hasConfirmation,
   disabled,
+  view = 'switcher',
 }) {
   const [isToggled, setIsToggled] = useState(false)
 
@@ -32,7 +33,7 @@ export default function Component({
   return (
     <button
       disabled={disabled}
-      className={cn({
+      className={cn(s[view], {
         [s.btn]: true,
         [s.active]: isToggled,
         [s.disabled]: disabled,
