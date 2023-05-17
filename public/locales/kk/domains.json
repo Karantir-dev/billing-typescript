@@ -116,5 +116,7 @@
   "ns3": "NS 4",
   "ns_additional": "Қосымша NS",
 
-  "Use the name servers": "Атау серверлерін пайдаланыңыз"
+  "Use the name servers": "Атау серверлерін пайдаланыңыз",
+
+  "ns_format": "Жазба пішімі \"ns.example.com\""
 }
