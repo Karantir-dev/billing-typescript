@@ -11,9 +11,7 @@
 }
 
 .priceList {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .domainInfo {
@@ -91,11 +89,9 @@
 
   .priceList {
     display: flex;
-    margin-left: 20px;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    width: 100%;
     margin-top: 0;
   }
 

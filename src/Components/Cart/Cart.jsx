@@ -555,25 +555,25 @@ export default function Component() {
           <>
             <div className={cn(s.formBlockTitle, s.padding)}>
               {t('Domain registration')}:
-            </div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
-              {displayedItems?.map(el => {
-                const { id, desc, cost, fullcost, discount_percent } = el
-                return (
-                  <DomainItem
-                    key={id?.$}
-                    desc={desc?.$}
-                    cost={cost?.$}
-                    fullcost={fullcost?.$}
-                    discount_percent={discount_percent?.$}
-                    deleteItemHandler={
-                      domainsList?.length > 1
-                        ? () => deleteBasketItemHandler(id?.$)
-                        : null
-                    }
-                  />
-                )
-              })}
+              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+                {displayedItems?.map(el => {
+                  const { id, desc, cost, fullcost, discount_percent } = el
+                  return (
+                    <DomainItem
+                      key={id?.$}
+                      desc={desc?.$}
+                      cost={cost?.$}
+                      fullcost={fullcost?.$}
+                      discount_percent={discount_percent?.$}
+                      deleteItemHandler={
+                        domainsList?.length > 1
+                          ? () => deleteBasketItemHandler(id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
             </div>
             {shouldRenderButton(domainsList.length) && showMoreButton(domainsList.length)}
           </>
