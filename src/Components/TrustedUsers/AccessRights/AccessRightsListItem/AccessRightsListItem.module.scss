@@ -209,54 +209,14 @@ button {
   }
 
   .sub_list {
-    position: relative;
-    display: none;
-
     padding-left: 8px;
-
-    & .list_item_wrapper {
-      &:nth-child(1) {
-        padding-left: 0;
-        padding-right: 0;
-      }
-    }
-
-    & .list_item {
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    &.selected {
-      display: block;
-    }
 
     & .list_item_wrapper {
       margin-left: 30px;
     }
 
-    & .allow_all_item {
-      display: flex;
-      justify-content: space-between;
-      margin-left: 16px;
-      margin-bottom: 22px;
-    }
-
-    &::before {
-      position: absolute;
-      content: '';
-      width: 3px;
-      height: 100%;
-      background-color: var(--center-border-color-pink);
-      border-radius: 5px;
-    }
-
     &.inserted_sub_list {
-      padding-left: 0;
-      margin-bottom: 13px;
       margin-left: 0px;
-      &::before {
-        background-color: var(--center-border-color);
-      }
     }
   }
 }
