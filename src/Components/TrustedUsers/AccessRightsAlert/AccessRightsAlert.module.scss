@@ -28,7 +28,7 @@
   z-index: 100;
   background-color: var(--elements-bgc);
   border-radius: 3px;
-  margin: 50px 10px;
+  margin: 50px 15px;
   max-width: 647px;
   overflow: hidden;
   height: 90vh;
@@ -118,8 +118,8 @@
 .list_one,
 .list_two {
   height: fit-content;
-  margin: 0 14px;
-  width: 100%;
+  margin: 0 15px;
+  width: -webkit-fill-available;
   padding-bottom: 50px;
 }
 
