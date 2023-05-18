@@ -553,8 +553,8 @@ export default function Component() {
         )}
         {domainsList?.length > 0 && (
           <>
-            <div className={cn(s.formBlockTitle, s.padding)}>
-              {t('Domain registration')}:
+            <div className={s.padding}>
+              <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
               <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
                 {displayedItems?.map(el => {
                   const { id, desc, cost, fullcost, discount_percent } = el
