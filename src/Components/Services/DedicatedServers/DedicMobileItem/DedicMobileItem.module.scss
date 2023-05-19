@@ -130,11 +130,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  max-width: 125px;
   overflow-x: hidden;
   height: 30px;
-  button {
-    margin-right: 10px;
+}
+
+.edit_btn {
+  margin-left: 10px;
+  &:hover {
+    svg {
+      fill:rgba(255, 66, 168, 1);
+    }
   }
 }
 
@@ -147,13 +152,12 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  border-radius: 1px;
+  border-radius: 5px;
   border: 1px solid rgba(255, 66, 168, 1);
   height: 30px;
   max-height: 39px;
-  padding: 10px;
-  max-width: 125px;
-
+  padding: 10px 5px 10px 10px;
+  width: 100%;
   input {
     border: none;
     outline: none;
@@ -167,5 +171,7 @@
     color: var(--main-text);
     overflow-x: auto;
     max-width: 125px;
+    width: calc(100% - 20px);
+    padding-right: 5px;
   }
 }

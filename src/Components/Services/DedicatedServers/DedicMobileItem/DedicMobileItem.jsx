@@ -219,15 +219,6 @@ export default function DedicMobileItem({
                 ref={editField}
               >
                 <>
-                  <button
-                    onClick={() => {
-                      setIsEdit(!isEdit)
-                      setEditName(originName?.trim())
-                    }}
-                  >
-                    <Edit />
-                  </button>
-
                   <span>
                     {t(
                       shortTitle(editName, 12) ||
@@ -238,6 +229,15 @@ export default function DedicMobileItem({
                       },
                     )}
                   </span>
+                  <button
+                    className={s.edit_btn}
+                    onClick={() => {
+                      setIsEdit(!isEdit)
+                      setEditName(originName?.trim())
+                    }}
+                  >
+                    <Edit />
+                  </button>
                 </>
               </div>
             ) : (
@@ -258,15 +258,6 @@ export default function DedicMobileItem({
                   ref={editField}
                 >
                   <>
-                    <button
-                      onClick={() => {
-                        setIsEdit(!isEdit)
-                        setEditName(originName?.trim())
-                      }}
-                    >
-                      <Edit />
-                    </button>
-
                     <span>
                       {t(
                         shortTitle(editName, 12) ||
@@ -277,6 +268,15 @@ export default function DedicMobileItem({
                         },
                       )}
                     </span>
+                    <button
+                      className={s.edit_btn}
+                      onClick={() => {
+                        setIsEdit(!isEdit)
+                        setEditName(originName?.trim())
+                      }}
+                    >
+                      <Edit />
+                    </button>
                   </>
                 </div>
               </HintWrapper>
@@ -289,10 +289,10 @@ export default function DedicMobileItem({
             ref={editField}
           >
             <div className={s.editBlock}>
+              <input value={editName} onChange={e => setEditName(e.target.value)} />
               <button className={s.editBtnOk} onClick={editNameHandler}>
                 <CheckEdit />
               </button>
-              <input value={editName} onChange={e => setEditName(e.target.value)} />
             </div>
           </div>
         )}

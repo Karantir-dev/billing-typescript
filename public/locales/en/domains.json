@@ -103,5 +103,17 @@
   "and": "and",
 
   "Name can only contain Latin letters": "Name can only contain Latin letters",
-  "Lastname can only contain Latin letters": "Lastname can only contain Latin letters"
+  "Lastname can only contain Latin letters": "Lastname can only contain Latin letters",
+
+  "Apply to all": "Apply to all",
+  "Provide for each domain name": "Provide for each domain name",
+
+  "ns0": "NS 1",
+  "ns1": "NS 2",
+  "ns2": "NS 3",
+  "ns3": "NS 4",
+  "ns_additional": "Additional NS",
+  "Use the name servers": "Use the name servers",
+
+  "ns_format": "Record format \"ns.example.com\""
 }

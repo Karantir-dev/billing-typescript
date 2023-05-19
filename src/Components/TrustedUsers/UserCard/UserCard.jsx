@@ -11,7 +11,7 @@ import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
 import { Info } from '../../../images'
 import Alert from '../../ui/Alert/Alert'
 import { Button, Toggle } from '../..'
-import { selectors, usersOperations, usersSelectors } from '../../../Redux'
+import { selectors, usersActions, usersOperations, usersSelectors } from '../../../Redux'
 
 import s from './UserCard.module.scss'
 
@@ -124,6 +124,7 @@ export default function UserCard({
   }
 
   useEffect(() => {
+    dispatch(usersActions.setRights([]))
     if (!isOwner && !hasAccess) {
       dispatch(usersOperations.getRights(userId, isOwner))
     }

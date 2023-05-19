@@ -24,8 +24,13 @@
   background-color: var(--forms_bgc_4);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  z-index: 1;
+  z-index: 9;
   width: fit-content;
+
+  &.bottom {
+    top: calc(100% + 15px);
+    bottom: inherit;
+  }
 }
 
 .hint_pointer_wrapper {
@@ -36,6 +41,11 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%) rotateZ(180deg);
+
+  &.bottom {
+    top: -20px;
+    transform: translateX(-50%) rotateZ(360deg);
+  }
 }
 
 .pointer {

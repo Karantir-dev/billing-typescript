@@ -21,9 +21,8 @@ import {
   SiteCareItem,
   VpnItem,
   InputWithAutocomplete,
-  ScrollToFieldError,
-  BlackFridayGift,
   SelectGeo,
+  ScrollToFieldError,
 } from '..'
 import {
   cartOperations,
@@ -56,8 +55,9 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+
   const [salesList, setSalesList] = useState([])
-  const [isPromocodeAllowed, setIsPromocodeAllowed] = useState(false)
+  const [isDedicWithSale, setIsDedicWithSale] = useState(false)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
 
@@ -65,7 +65,6 @@ export default function Component() {
 
   const [isClosing, setIsClosing] = useState(false)
 
-  const [blackFridayData, setBlackFridayData] = useState(null)
   const [showMore, setShowMore] = useState(false)
   const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
@@ -182,19 +181,9 @@ export default function Component() {
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
-  // const offerTextHandler = () => {
-  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  // }
-
   const setPromocodeToCart = promocode => {
     dispatch(
-      cartOperations.setBasketPromocode(
-        promocode,
-        setCartData,
-        setPaymentsMethodList,
-        setBlackFridayData,
-        cartData?.elemList[0]['item.type']?.$,
-      ),
+      cartOperations.setBasketPromocode(promocode, setCartData, setPaymentsMethodList),
     )
   }
 
@@ -552,27 +541,27 @@ export default function Component() {
         )}
         {domainsList?.length > 0 && (
           <>
-            <div className={cn(s.formBlockTitle, s.padding)}>
-              {t('Domain registration')}:
-            </div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
-              {displayedItems?.map(el => {
-                const { id, desc, cost, fullcost, discount_percent } = el
-                return (
-                  <DomainItem
-                    key={id?.$}
-                    desc={desc?.$}
-                    cost={cost?.$}
-                    fullcost={fullcost?.$}
-                    discount_percent={discount_percent?.$}
-                    deleteItemHandler={
-                      domainsList?.length > 1
-                        ? () => deleteBasketItemHandler(id?.$)
-                        : null
-                    }
-                  />
-                )
-              })}
+            <div className={s.padding}>
+              <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+                {displayedItems?.map(el => {
+                  const { id, desc, cost, fullcost, discount_percent } = el
+                  return (
+                    <DomainItem
+                      key={id?.$}
+                      desc={desc?.$}
+                      cost={cost?.$}
+                      fullcost={fullcost?.$}
+                      discount_percent={discount_percent?.$}
+                      deleteItemHandler={
+                        domainsList?.length > 1
+                          ? () => deleteBasketItemHandler(id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
             </div>
             {shouldRenderButton(domainsList.length) && showMoreButton(domainsList.length)}
           </>
@@ -817,21 +806,20 @@ export default function Component() {
         sale.idname.$.includes(cartConfigName),
     )
 
-    const cartDiscountPercent = cartData?.elemList[0]?.discount_percent?.$.replace(
-      '%',
-      '',
-    )
+    const cartDiscountPercent =
+      cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
     const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
 
     if (foundSale) {
       if (
         (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
         (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
-        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12)
+        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
+        cartDiscountPercent === 0
       ) {
-        setIsPromocodeAllowed(false)
+        setIsDedicWithSale(false)
       } else {
-        setIsPromocodeAllowed(true)
+        setIsDedicWithSale(true)
       }
     }
   }, [salesList])
@@ -1215,7 +1203,7 @@ export default function Component() {
                           <InputField
                             inputWrapperClass={s.inputHeight}
                             name="promocode"
-                            disabled={isPromocodeAllowed}
+                            disabled={isDedicWithSale}
                             label={`${t('Promo code')}:`}
                             placeholder={t('Enter promo code', { ns: 'other' })}
                             isShadow
@@ -1235,11 +1223,9 @@ export default function Component() {
                           </button>
                         </div>
 
-                        <div className={cn(s.formFieldsBlock)}>
-                          {blackFridayData && blackFridayData?.success && (
-                            <BlackFridayGift code={blackFridayData?.promo_of_service} />
-                          )}
-                        </div>
+                        {isDedicWithSale ? (
+                          <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
+                        ) : null}
                       </div>
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                         <div className={cn(s.padding, s.penalty_sum)}>

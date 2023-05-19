@@ -1,0 +1,83 @@
+.formFieldsBlock {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  align-items: flex-start;
+}
+
+.inputHeight {
+  height: 55px;
+}
+
+.input {
+  max-width: 100%;
+  margin-top: 13px;
+}
+
+.addNs {
+  margin-top: 20px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100.5%;
+  color: var(--link-color);
+  border-bottom: 0.5px solid var(--link-color);
+  cursor: pointer;
+}
+
+.useZomroNS {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100.9%;
+  color: var(--main-text);
+
+  button {
+    color: var(--link-color);
+    border-bottom: 0.5px solid var(--link-color);
+    line-height: 70.9%;
+    cursor: pointer;
+  }
+}
+
+.inputBlock {
+  width: 100%;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .deleteNs {
+    position: absolute;
+    right: -25px;
+    bottom: 30px;
+    cursor: pointer;
+
+    svg {
+      path {
+        fill: var(--transparent-color);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .formFieldsBlock > div:nth-child(2n) {
+    margin-right: 0px;
+  }
+
+  .input {
+    max-width: 100%;
+  }
+
+  .inputBlock {
+    max-width: 48%;
+
+    .deleteNs {
+      bottom: 10px;
+    }
+  }
+}

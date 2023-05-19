@@ -105,5 +105,18 @@
 
   "and": "და",
   "Name can only contain Latin letters": "სახელი შეიძლება შეიცავდეს მხოლოდ ლათინურ ასოებს",
-  "Lastname can only contain Latin letters": "გვარი შეიძლება შეიცავდეს მხოლოდ ლათინურ ასოებს"
+  "Lastname can only contain Latin letters": "გვარი შეიძლება შეიცავდეს მხოლოდ ლათინურ ასოებს",
+
+  "Apply to all": "მიმართეთ ყველას",
+  "Provide for each domain name": "მიუთითეთ თითოეული დომენის სახელი",
+
+  "ns0": "NS 1",
+  "ns1": "NS 2",
+  "ns2": "NS 3",
+  "ns3": "NS 4",
+  "ns_additional": "დამატებითი NS",
+
+  "Use the name servers": "გამოიყენეთ სახელების სერვერები",
+
+  "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\""
 }
