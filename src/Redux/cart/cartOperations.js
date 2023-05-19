@@ -1,5 +1,6 @@
 import qs from 'qs'
 import i18n from './../../i18n'
+import axios from 'axios'
 import {
   actions,
   cartActions,
@@ -7,10 +8,10 @@ import {
   userOperations,
   billingActions,
 } from '..'
-import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '../../utils'
+import { API_URL } from '../../config/config'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -93,11 +94,9 @@ const setBasketPromocode =
             service: service,
           }
 
-          axios
-            .post('https://api.server-panel.net/api/service/promo/', dataCheckPromo)
-            .then(({ data }) => {
-              setBlackFridayData(data)
-            })
+          axios.post(`${API_URL}/api/service/promo/`, dataCheckPromo).then(({ data }) => {
+            setBlackFridayData(data)
+          })
         }
 
         if (data.doc.error) {
@@ -336,9 +335,7 @@ const setPaymentMethods =
                   cartData?.payment_name?.includes('Coinify') ||
                   cartData?.payment_name?.includes('Bitcoin')
                 ) {
-                  cookies.eraseCookie('payment_id')
-                  window.dataLayer.push({ ecommerce: null })
-                  window.dataLayer.push({
+                  const ecommerceData = {
                     event: 'purchase',
                     ecommerce: {
                       transaction_id: data.doc?.payment_id?.$,
@@ -350,7 +347,12 @@ const setPaymentMethods =
                       coupon: body?.promocode,
                       items: items,
                     },
-                  })
+                  }
+                  cookies.eraseCookie('payment_id')
+                  window.dataLayer.push({ ecommerce: null })
+                  window.dataLayer.push(ecommerceData)
+
+                  dispatch(billingOperations.analyticSendHandler(ecommerceData))
                 } else {
                   data.doc?.payment_id &&
                     cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)

@@ -65,11 +65,13 @@ export default function Component() {
       const tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
       window.dataLayer.push({ ecommerce: null }) //clean data layer ecommerce
 
+      let ecommerce = null
+
       // If it is a purchase of services
       if (paymentItem?.billorder) {
         // If there is saved product data
         if (cartData?.billorder === paymentItem?.billorder?.$) {
-          window.dataLayer.push({
+          ecommerce = {
             event: 'purchase',
             ecommerce: {
               transaction_id: paymentId,
@@ -81,13 +83,16 @@ export default function Component() {
               coupon: cartData?.promocode,
               items: cartData?.items,
             },
-          })
+          }
+
+          window.dataLayer.push(ecommerce)
+          dispatch(billingOperations.analyticSendHandler(ecommerce))
 
           cookies.eraseCookie(`cartData_${paymentId}`)
 
           // If there is NO saved product data
         } else {
-          window.dataLayer.push({
+          ecommerce = {
             event: 'purchase',
             ecommerce: {
               transaction_id: paymentId,
@@ -107,13 +112,16 @@ export default function Component() {
                 },
               ],
             },
-          })
+          }
+
+          window.dataLayer.push(ecommerce)
+          dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
 
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
         if (!cartData) {
-          window.dataLayer.push({
+          ecommerce = {
             event: 'purchase',
             ecommerce: {
               transaction_id: paymentId,
@@ -131,7 +139,10 @@ export default function Component() {
                 },
               ],
             },
-          })
+          }
+
+          window.dataLayer.push(ecommerce)
+          dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
