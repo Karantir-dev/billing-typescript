@@ -118,5 +118,9 @@
   "ns3": "NS 4",
   "ns_additional": "Додатковий NS",
 
-  "Use the name servers": "Використовуйте сервери імен"
+  "Use the name servers": "Використовуйте сервери імен",
+  "The tariff plan has been changed": "Змінено тариф",
+  "The old plan": "Старий тариф",
+  "The new plan": "Новий тариф",
+  "Provider's employee or system": "Співробітник або система постачальника"
 }

@@ -116,5 +116,9 @@
   "ns3": "NS 4",
   "ns_additional": "დამატებითი NS",
 
-  "Use the name servers": "გამოიყენეთ სახელების სერვერები"
+  "Use the name servers": "გამოიყენეთ სახელების სერვერები",
+  "The tariff plan has been changed": "ტარიფის შეიცვალა",
+  "The old plan": "ძველი ტარიფი",
+  "The new plan": "ახალი ტარიფი",
+  "Provider's employee or system": "მსესხებლის თანამშრომელი ან სისტემა"
 }

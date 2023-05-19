@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { userOperations, vpnOperations } from '../../../../Redux'
-import { useScrollToElement } from '../../../../utils'
+import { useScrollToElement, translatePeriod } from '../../../../utils'
 
 import s from './VpnOrder.module.scss'
 import * as routes from '../../../../routes'
@@ -17,6 +17,7 @@ export default function Component() {
     'dedicated_servers',
     'domains',
     'crumbs',
+    'autoprolong',
   ])
   const dispatch = useDispatch()
 
@@ -67,28 +68,6 @@ export default function Component() {
     return {
       amount: amounts[0],
     }
-  }
-
-  const translateAutorenewSelect = elem => {
-    const price = parsePrice(elem)?.amount || 0
-
-    let period = ''
-
-    if (elem?.includes('per month')) {
-      period = 'per month'
-    } else if (elem?.includes('for three months')) {
-      period = 'for three months'
-    } else if (elem?.includes('half a year')) {
-      period = 'half a year'
-    } else if (elem?.includes('per year')) {
-      period = 'per year'
-    } else if (elem?.includes('for two years')) {
-      period = 'for two years'
-    } else if (elem?.includes('for three years')) {
-      period = 'for three years'
-    }
-
-    return price + ' EUR ' + t(period)
   }
 
   const buyVhostHandler = values => {
@@ -180,7 +159,9 @@ export default function Component() {
                 </div>
                 {paramsData && (
                   <div className={s.parametrsContainer}>
-                    <div ref={scrollElem} className={s.parametrsTitle}>{t('Options')}</div>
+                    <div ref={scrollElem} className={s.parametrsTitle}>
+                      {t('Options')}
+                    </div>
                     <div className={s.inputsBlock}>
                       <Select
                         getElement={item => {
@@ -189,15 +170,10 @@ export default function Component() {
                         value={values?.autoprolong}
                         label={`${t('Auto renewal', { ns: 'domains' })}:`}
                         className={s.select}
-                        itemsList={paramsData?.autoprolong_list.map(el => {
-                          return {
-                            label:
-                              el.$ === 'Disabled'
-                                ? t(el.$.trim())
-                                : translateAutorenewSelect(el.$.trim()),
-                            value: el.$key,
-                          }
-                        })}
+                        itemsList={paramsData?.autoprolong_list.map(el => ({
+                          label: translatePeriod(el.$, t),
+                          value: el.$key,
+                        }))}
                         isShadow
                       />
 

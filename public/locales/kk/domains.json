@@ -116,5 +116,11 @@
   "ns3": "NS 4",
   "ns_additional": "Қосымша NS",
 
-  "Use the name servers": "Атау серверлерін пайдаланыңыз"
+  "Use the name servers": "Атау серверлерін пайдаланыңыз",
+
+  "The tariff plan has been changed": "Тариф өзгертілген",
+  "The old plan": "Ескі тариф",
+  "The new plan": "Жаңа тариф",
+  "Provider's employee or system": "Тапсырыс берушінің қызметкері немесе жүйесі"
+
 }

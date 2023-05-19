@@ -28,7 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive, useScrollToElement } from '../../../../utils'
+import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -41,7 +41,7 @@ export default function DedicOrderPage() {
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
-  const { t } = useTranslation(['dedicated_servers', 'other', 'vds'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const deskOrHigher = useMediaQuery({ query: '(min-width: 1549px)' })
 
@@ -631,19 +631,10 @@ export default function DedicOrderPage() {
                       label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = ''
-                        if (el.$.includes('per month')) {
-                          labeltext = el.$.replace('per month', t('per month'))
-                        } else {
-                          labeltext = t(el.$)
-                        }
-
-                        return {
-                          label: labeltext,
-                          value: el.$key,
-                        }
-                      })}
+                      itemsList={values?.autoprolonglList?.map(el => ({
+                        label: translatePeriod(el?.$, t),
+                        value: el.$key,
+                      }))}
                       className={s.select}
                     />
                     <InputField

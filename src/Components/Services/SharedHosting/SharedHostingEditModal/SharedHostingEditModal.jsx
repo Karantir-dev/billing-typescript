@@ -4,9 +4,10 @@ import { Cross } from '../../../../images'
 import { Select, Button, InputField } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
+import { translatePeriod } from '../../../../utils'
 
 export default function Component(props) {
-  const { t } = useTranslation(['virtual_hosting', 'other', 'domains'])
+  const { t } = useTranslation(['virtual_hosting', 'other', 'domains', 'autoprolong'])
 
   const {
     name,
@@ -79,7 +80,7 @@ export default function Component(props) {
                     }}
                     isShadow
                     itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
-                      label: $.trim(),
+                      label: translatePeriod($, t),
                       value: $key,
                     }))}
                     className={s.select}
