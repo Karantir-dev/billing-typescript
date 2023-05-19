@@ -1133,10 +1133,8 @@ const editNamePaymentMethod =
       })
   }
 
-const analyticSendHandler = (data, func) => () => {
-  axios.post(`${API_URL}/api/analytic/add/`, data).then(() => {
-    func && func()
-  })
+const analyticSendHandler = data => () => {
+  axios.post(`${API_URL}/api/analytic/add/`, data)
 }
 
 export default {

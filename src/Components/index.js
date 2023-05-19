@@ -190,7 +190,6 @@ export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
 export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
-export { default as BlackFridayGift } from './Cart/BlackFridayGift/BlackFridayGift'
 
 export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
 export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'

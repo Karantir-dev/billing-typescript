@@ -21,9 +21,8 @@ import {
   SiteCareItem,
   VpnItem,
   InputWithAutocomplete,
-  ScrollToFieldError,
-  BlackFridayGift,
   SelectGeo,
+  ScrollToFieldError,
 } from '..'
 import {
   cartOperations,
@@ -66,7 +65,6 @@ export default function Component() {
 
   const [isClosing, setIsClosing] = useState(false)
 
-  const [blackFridayData, setBlackFridayData] = useState(null)
   const [showMore, setShowMore] = useState(false)
   const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
@@ -183,19 +181,9 @@ export default function Component() {
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
-  // const offerTextHandler = () => {
-  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  // }
-
   const setPromocodeToCart = promocode => {
     dispatch(
-      cartOperations.setBasketPromocode(
-        promocode,
-        setCartData,
-        setPaymentsMethodList,
-        setBlackFridayData,
-        cartData?.elemList[0]['item.type']?.$,
-      ),
+      cartOperations.setBasketPromocode(promocode, setCartData, setPaymentsMethodList),
     )
   }
 
@@ -1238,12 +1226,6 @@ export default function Component() {
                         {isDedicWithSale ? (
                           <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
                         ) : null}
-
-                        <div className={cn(s.formFieldsBlock)}>
-                          {blackFridayData && blackFridayData?.success && (
-                            <BlackFridayGift code={blackFridayData?.promo_of_service} />
-                          )}
-                        </div>
                       </div>
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                         <div className={cn(s.padding, s.penalty_sum)}>
