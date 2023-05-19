@@ -1,10 +1,11 @@
 import qs from 'qs'
-import authActions from './authActions'
 import axios from 'axios'
+import authActions from './authActions'
+import userOperations from '../userInfo/userOperations'
 import { actions } from '../'
 import { axiosInstance } from './../../config/axiosInstance'
-import userOperations from '../userInfo/userOperations'
 import { checkIfTokenAlive, cookies } from '../../utils'
+import { API_URL } from '../../config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -566,7 +567,7 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
 }
 
 const getLocation = () => dispatch => {
-  axios.get('https://api.server-panel.net/api/service/geo/').then(({ data }) => {
+  axios.get(`${API_URL}/api/service/geo/`).then(({ data }) => {
     dispatch(
       authActions.geoData({
         clients_country_code: data?.clients_country_code,
