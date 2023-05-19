@@ -116,5 +116,7 @@
   "ns3": "NS 4",
   "ns_additional": "დამატებითი NS",
 
-  "Use the name servers": "გამოიყენეთ სახელების სერვერები"
+  "Use the name servers": "გამოიყენეთ სახელების სერვერები",
+
+  "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\""
 }

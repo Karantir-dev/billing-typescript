@@ -113,5 +113,7 @@
   "ns2": "NS 3",
   "ns3": "NS 4",
   "ns_additional": "Additional NS",
-  "Use the name servers": "Use the name servers"
+  "Use the name servers": "Use the name servers",
+
+  "ns_format": "Record format \"ns.example.com\""
 }

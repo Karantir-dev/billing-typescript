@@ -15,11 +15,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations, userOperations } from '../../../../Redux'
 import { HintHelp } from '../../../../images'
+import { DOMAIN_REGEX } from '../../../../utils/constants'
+import * as Yup from 'yup'
 import * as route from '../../../../routes'
 import s from './DomainsNsPage.module.scss'
 
 export default function Component({ transfer = false }) {
-  const { t } = useTranslation(['domains', 'trusted_users'])
+  const { t } = useTranslation(['domains', 'trusted_users', 'auth'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -27,12 +29,15 @@ export default function Component({ transfer = false }) {
 
   const [selectedDomain, setSelectedDomain] = useState([])
   const [initialValues, setInitialValues] = useState({})
+  const [validationSchema, setValidationSchema] = useState(Yup.object().shape({}))
 
   const [differentNS, setDifferentNS] = useState(false)
 
   const [paymentData, setPaymentData] = useState(null)
 
   const { state } = location
+
+  const nsYup = Yup.string().matches(DOMAIN_REGEX, t('ns_format'))
 
   useEffect(() => {
     const data = { ...state?.contacts }
@@ -47,6 +52,7 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     const data = {}
+    let shema = {}
     if (selectedDomain?.length > 1 && differentNS) {
       selectedDomain.forEach(el => {
         data[`domainparam_${el}_ns0`] = ''
@@ -54,6 +60,15 @@ export default function Component({ transfer = false }) {
         data[`domainparam_${el}_ns2`] = ''
         data[`domainparam_${el}_ns3`] = ''
         data[`domainparam_${el}_ns_additional`] = ''
+
+        shema = {
+          ...shema,
+          [`domainparam_${el}_ns0`]: nsYup,
+          [`domainparam_${el}_ns1`]: nsYup,
+          [`domainparam_${el}_ns2`]: nsYup,
+          [`domainparam_${el}_ns3`]: nsYup,
+          [`domainparam_${el}_ns_additional`]: nsYup,
+        }
       })
     } else {
       data['ns0'] = ''
@@ -61,7 +76,17 @@ export default function Component({ transfer = false }) {
       data['ns2'] = ''
       data['ns3'] = ''
       data['ns_additional'] = ''
+
+      shema = {
+        ['ns0']: nsYup,
+        ['ns1']: nsYup,
+        ['ns2']: nsYup,
+        ['ns3']: nsYup,
+        ['ns_additional']: nsYup,
+      }
     }
+
+    setValidationSchema(Yup.object().shape(shema))
 
     if (paymentData) {
       selectedDomain?.forEach(select => {
@@ -148,6 +173,7 @@ export default function Component({ transfer = false }) {
           enableReinitialize
           initialValues={initialValues}
           onSubmit={sendPaymentDataHandler}
+          validationSchema={validationSchema}
         >
           {({ errors, touched, values, setFieldValue }) => {
             return (

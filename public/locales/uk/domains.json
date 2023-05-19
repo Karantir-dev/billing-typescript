@@ -118,5 +118,7 @@
   "ns3": "NS 4",
   "ns_additional": "Додатковий NS",
 
-  "Use the name servers": "Використовуйте сервери імен"
+  "Use the name servers": "Використовуйте сервери імен",
+
+  "ns_format": "Формат запису \"ns.example.com\""
 }
