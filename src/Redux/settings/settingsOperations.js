@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, authOperations, usersOperations } from '../'
+import { actions, authOperations, userOperations, usersOperations } from '../'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '../../config/axiosInstance'
 import settingsActions from './settingsActions'
@@ -33,6 +33,7 @@ const getUserEdit =
         const elem = {
           email: { email: data?.doc?.email?.$, readonly: false },
           phone: { phone: data?.doc?.phone?.$, readonly: false },
+          phone_country: data?.doc?.phone_country?.$,
           realname: { realname: data?.doc?.realname?.$, readonly: false },
         }
 
@@ -61,6 +62,12 @@ const getUserEdit =
                 })
               }
             })
+          }
+        })
+
+        data?.doc?.slist?.forEach(el => {
+          if (el.$name === 'phone_country') {
+            elem['phone_countries'] = el?.val
           }
         })
 
@@ -772,6 +779,217 @@ const changeLang = (elid, lang) => (dispatch, getState) => {
     })
 }
 
+const fetchValidatePhone = setValidatePhoneData => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'validatephone',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) {
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      const d = {
+        phone: data?.doc?.phone?.$,
+        phone_country: data?.doc?.phone_country?.$,
+        type: data?.doc?.type?.$,
+        action_type: data?.doc?.action_type?.$,
+        code_count: data?.doc?.code_count?.$?.replace('You have', '')
+          ?.replace('attempts to send the code', '')
+          ?.trim(),
+      }
+
+      data?.doc?.slist?.forEach(el => {
+        if (el.$name === 'phone_country') {
+          d['phone_countries'] = el?.val
+        }
+        if (el.$name === 'type') {
+          d['types'] = el?.val
+        }
+
+        if (el.$name === 'action_type') {
+          d['action_types'] = el?.val
+        }
+      })
+
+      setValidatePhoneData &&
+        setValidatePhoneData(phoneData => {
+          return { action_type: phoneData?.action_type, ...d }
+        })
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
+const fetchValidatePhoneStart =
+  (data, setIsCodeStep, setIsTryLimit) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'validatephone.start',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          sok: 'ok',
+          snext: 'ok',
+          clicked_button: 'next',
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data?.doc?.error) {
+          if (data?.doc?.error?.$type === 'fraud_phone_try_limit') {
+            setIsTryLimit && setIsTryLimit(true)
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        setIsCodeStep(true)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const fetchValidatePhoneFirst =
+  (body, setValidatePhoneData, setIsCodeStep) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'validatephone.first',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          sok: 'ok',
+          snext: 'ok',
+          clicked_button: 'next',
+          ...body,
+        }),
+      )
+      .then(({ data }) => {
+        if (data?.doc?.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        if (body?.action_type === '2') {
+          setIsCodeStep(true)
+        }
+
+        const d = {
+          phone: data?.doc?.phone?.$,
+          phone_country: data?.doc?.phone_country?.$,
+          type: data?.doc?.type?.$,
+          action_type: data?.doc?.action_type?.$,
+          code_count: data?.doc?.code_count?.$?.replace('You have', '')
+            ?.replace('attempts to send the code', '')
+            ?.trim(),
+        }
+
+        data?.doc?.slist?.forEach(el => {
+          if (el.$name === 'phone_country') {
+            d['phone_countries'] = el?.val
+          }
+          if (el.$name === 'type') {
+            d['types'] = el?.val
+          }
+
+          if (el.$name === 'action_type') {
+            d['action_types'] = el?.val
+          }
+        })
+
+        setValidatePhoneData &&
+          setValidatePhoneData(phoneData => {
+            return { action_type: phoneData?.action_type, ...d }
+          })
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const fetchValidatePhoneFinish =
+  (data, navigateToServicePage) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'validatephone.finish',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          sok: 'ok',
+          snext: 'ok',
+          clicked_button: 'next',
+          ...data,
+        }),
+      )
+      .then(({ data }) => {
+        if (data?.doc?.error) {
+          if (data?.doc?.error?.$type === 'fraud_invalid_code') {
+            toast.error(i18n.t('fraud_invalid_code', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
+          }
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        toast.success(
+          i18n.t('The phone has been successfully verified', { ns: 'other' }),
+          {
+            position: 'bottom-right',
+          },
+        )
+
+        navigateToServicePage && navigateToServicePage()
+        dispatch(userOperations.getUserInfo(sessionId))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getUserEdit,
   getUserParams,
@@ -787,4 +1005,8 @@ export default {
   confirmEmail,
   changeSocialLinkStatus,
   changeLang,
+  fetchValidatePhone,
+  fetchValidatePhoneStart,
+  fetchValidatePhoneFirst,
+  fetchValidatePhoneFinish,
 }

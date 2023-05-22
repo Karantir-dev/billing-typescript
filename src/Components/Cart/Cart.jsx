@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '../../routes'
-import { Cross, Check, Info } from '../../images'
+import { Cross, Check, Info, Attention } from '../../images'
 import {
   Select,
   InputField,
@@ -86,11 +86,22 @@ export default function Component() {
   const [addressPhysical, setAddressPhysical] = useState(null)
   const [euVat, setEUVat] = useState('')
   const [promocode, setPromocode] = useState('')
+  const [isPhoneVerification, setIsPhoneVerification] = useState(false)
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
     dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
+
+  useEffect(() => {
+    if (cartData && !isPhoneVerification) {
+      cartData?.elemList?.forEach(e => {
+        if (e?.needphoneverify?.$ === 'on') {
+          setIsPhoneVerification(true)
+        }
+      })
+    }
+  }, [cartData])
 
   useEffect(() => {
     if (payersSelectLists) {
@@ -955,7 +966,7 @@ export default function Component() {
                             {t('order_amount_is_less')}
                           </div>
                         )}
-                        {paymentsMethodList?.length > 0 && (
+                        {paymentsMethodList?.length > 0 && !isPhoneVerification && (
                           <>
                             <div className={s.formBlockTitle}>{t('Payment method')}:</div>
                             <div className={s.formFieldsBlock}>
@@ -1198,35 +1209,37 @@ export default function Component() {
                         </button>
                       )}
 
-                      <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
-                        <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
-                          <InputField
-                            inputWrapperClass={s.inputHeight}
-                            name="promocode"
-                            disabled={isDedicWithSale}
-                            label={`${t('Promo code')}:`}
-                            placeholder={t('Enter promo code', { ns: 'other' })}
-                            isShadow
-                            className={s.inputPerson}
-                            error={!!errors.promocode}
-                            touched={!!touched.promocode}
-                            value={values.promocode}
-                            onChange={e => setPromocode(e.target.value)}
-                          />
-                          <button
-                            onClick={() => setPromocodeToCart(values?.promocode)}
-                            disabled={values?.promocode?.length === 0}
-                            type="button"
-                            className={s.promocodeBtn}
-                          >
-                            {t('Apply', { ns: 'other' })}
-                          </button>
-                        </div>
+                      {!isPhoneVerification && (
+                        <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
+                          <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="promocode"
+                              disabled={isDedicWithSale}
+                              label={`${t('Promo code')}:`}
+                              placeholder={t('Enter promo code', { ns: 'other' })}
+                              isShadow
+                              className={s.inputPerson}
+                              error={!!errors.promocode}
+                              touched={!!touched.promocode}
+                              value={values.promocode}
+                              onChange={e => setPromocode(e.target.value)}
+                            />
+                            <button
+                              onClick={() => setPromocodeToCart(values?.promocode)}
+                              disabled={values?.promocode?.length === 0}
+                              type="button"
+                              className={s.promocodeBtn}
+                            >
+                              {t('Apply', { ns: 'other' })}
+                            </button>
+                          </div>
 
-                        {isDedicWithSale ? (
-                          <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
-                        ) : null}
-                      </div>
+                          {isDedicWithSale ? (
+                            <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
+                          ) : null}
+                        </div>
+                      )}
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                         <div className={cn(s.padding, s.penalty_sum)}>
                           {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
@@ -1256,38 +1269,49 @@ export default function Component() {
                           </span>
                         </div>
 
-                        <div className={s.offerBlock}>
-                          <CheckBox
-                            value={values[selectedPayerFields?.offer_field] || false}
-                            onClick={() => setIsOffer(prev => !prev)}
-                            name={selectedPayerFields?.offer_field}
-                            className={s.checkbox}
-                            error={!!errors[selectedPayerFields?.offer_field]}
-                            touched={!!touched[selectedPayerFields?.offer_field]}
-                          />
-                          <div className={s.offerBlockText}>
-                            {t('I agree with', {
-                              ns: 'payers',
-                            })}{' '}
-                            <a
-                              target="_blank"
-                              href={OFERTA_URL}
-                              rel="noreferrer"
-                              className={s.offerBlockLink}
-                            >
-                              {t('Terms of Service', { ns: 'domains' })}
-                            </a>{' '}
-                            {t('and', { ns: 'domains' })}{' '}
-                            <a
-                              target="_blank"
-                              href={PRIVACY_URL}
-                              rel="noreferrer"
-                              className={s.offerBlockLink}
-                            >
-                              {t('Terms of the offer', { ns: 'domains' })}
-                            </a>
+                        {!isPhoneVerification && (
+                          <div className={s.offerBlock}>
+                            <CheckBox
+                              value={values[selectedPayerFields?.offer_field] || false}
+                              onClick={() => setIsOffer(prev => !prev)}
+                              name={selectedPayerFields?.offer_field}
+                              className={s.checkbox}
+                              error={!!errors[selectedPayerFields?.offer_field]}
+                              touched={!!touched[selectedPayerFields?.offer_field]}
+                            />
+                            <div className={s.offerBlockText}>
+                              {t('I agree with', {
+                                ns: 'payers',
+                              })}{' '}
+                              <a
+                                target="_blank"
+                                href={OFERTA_URL}
+                                rel="noreferrer"
+                                className={s.offerBlockLink}
+                              >
+                                {t('Terms of Service', { ns: 'domains' })}
+                              </a>{' '}
+                              {t('and', { ns: 'domains' })}{' '}
+                              <a
+                                target="_blank"
+                                href={PRIVACY_URL}
+                                rel="noreferrer"
+                                className={s.offerBlockLink}
+                              >
+                                {t('Terms of the offer', { ns: 'domains' })}
+                              </a>
+                            </div>
                           </div>
-                        </div>
+                        )}
+
+                        {isPhoneVerification && (
+                          <div className={s.phoneVerificationBlock}>
+                            <Attention />
+                            <span>
+                              {t('verification_required_purchase', { ns: 'billing' })}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       {Number(cartData?.tax) > 0 ? (
                         <div className={cn(s.totalSum, s.padding)}>
@@ -1295,31 +1319,47 @@ export default function Component() {
                         </div>
                       ) : null}
                       <div className={s.btnBlock}>
-                        {paymentsMethodList?.length === 0 ? (
+                        {isPhoneVerification ? (
                           <Button
                             className={s.saveBtn}
                             isShadow
-                            size="medium"
-                            label={t('OK', { ns: 'billing' })}
+                            size="large"
+                            label={t('VERIFY PHONE NUMBER', { ns: 'billing' })}
                             type="button"
                             onClick={() => {
-                              navigate(routes.BILLING)
+                              navigate(routes.PHONE_VERIFICATION)
                               closeBasketHamdler(cartData?.billorder)
                             }}
                           />
                         ) : (
-                          <Button
-                            disabled={
-                              Number(values.amount) <
-                                values?.selectedPayMethod?.payment_minamount?.$ ||
-                              !values?.selectedPayMethod
-                            }
-                            className={s.saveBtn}
-                            isShadow
-                            size="medium"
-                            label={t('Pay', { ns: 'billing' })}
-                            type="submit"
-                          />
+                          <>
+                            {paymentsMethodList?.length === 0 ? (
+                              <Button
+                                className={s.saveBtn}
+                                isShadow
+                                size="medium"
+                                label={t('OK', { ns: 'billing' })}
+                                type="button"
+                                onClick={() => {
+                                  navigate(routes.BILLING)
+                                  closeBasketHamdler(cartData?.billorder)
+                                }}
+                              />
+                            ) : (
+                              <Button
+                                disabled={
+                                  Number(values.amount) <
+                                    values?.selectedPayMethod?.payment_minamount?.$ ||
+                                  !values?.selectedPayMethod
+                                }
+                                className={s.saveBtn}
+                                isShadow
+                                size="medium"
+                                label={t('Pay', { ns: 'billing' })}
+                                type="submit"
+                              />
+                            )}
+                          </>
                         )}
 
                         <button

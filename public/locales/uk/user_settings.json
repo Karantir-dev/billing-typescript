@@ -63,5 +63,35 @@
   "Click \"send confirmation\" for resending": "Натисніть \"Вислати підтвердження\" для повторного надсилання",
   "Enter your login in the form below": "Введіть свій логін у форму нижче",
   "Write to our bot": "Напишіть нашому боту",
-  "Confirm your email to activate the functionality": "Підтвердьте свою електронну адресу,\nщоб активувати функцію"
+  "Confirm your email to activate the functionality": "Підтвердьте свою електронну адресу,\nщоб активувати функцію",
+
+  "Must be a valid phone number": "Має бути дійсний номер телефону",
+  "Phone Verification": "Перевірка телефону",
+  "Verification method": "Спосіб перевірки",
+  "SMS": "СМС повідомлення з кодом",
+  "Automated call": "Виклик автоінформатора",
+
+  "automated_call_text": "За вказаним вами номером буде зроблено дзвінок. Щоб отримати код підтвердження, дотримуйтеся вказівок автоінформатора",
+  "sms_text": "На вказаний вами номер буде надіслано SMS-повідомлення з кодом підтвердження",
+  "GET A CODE": "ОТРИМАТИ КОД",
+
+  "You have exceeded the number of allowed phone verification attempts.": "Ви перевищили дозволену кількість спроб телефонного підтвердження.",
+
+  "Contact": "Зверніться",
+  "the Technical support": "до відділу технічної підтримки",
+  "for verification": "для перевірки",
+  "Verification code": "Код підтвердження",
+  "VERIFY": "ПЕРЕВІРИТИ",
+  "CHOOSE": "ОБРАТИ",
+  "Choose an option": "Виберіть варіант",
+
+  "Get a new verification code": "Отримайте новий код підтвердження",
+  "Enter the verification code": "Введіть код підтвердження",
+
+  "code_length": "Невірний код",
+  "attempts_to_sent_code": "У вас є {{count}} спроб надіслати код",
+
+  "not_receive_confirmation_code_1": "Якщо ви не отримали код підтвердження, спробуйте",
+  "not_receive_confirmation_code_2": "або зв’яжіться з нашою технічною підтримкою для ручного підтвердження",
+  "Another way": "Інший спосіб"
 }

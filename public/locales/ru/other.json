@@ -239,5 +239,8 @@
 
   "month count 1": "месяц",
   "month count 3/24": "месяца",
-  "month count 6/12/36": "месяцев"
+  "month count 6/12/36": "месяцев",
+
+  "fraud_invalid_code": "Неверный код подтверждения",
+  "The phone has been successfully verified": "Телефон успешно подтвержден"
 }

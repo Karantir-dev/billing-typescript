@@ -240,6 +240,8 @@
 
   "month count 1": "айда",
   "month count 3/24": "айда",
-  "month count 6/12/36": "айда"
+  "month count 6/12/36": "айда",
 
+  "fraud_invalid_code": "Дұрыс емес растау коды",
+  "The phone has been successfully verified": "Телефон сәтті расталды"
 }
