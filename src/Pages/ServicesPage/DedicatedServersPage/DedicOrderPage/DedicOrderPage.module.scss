@@ -374,6 +374,7 @@
 .software_OS_List {
   display: grid;
   grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
   gap: 12px;
   margin-bottom: 40px;
 }
