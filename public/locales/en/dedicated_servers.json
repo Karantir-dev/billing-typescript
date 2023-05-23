@@ -132,6 +132,6 @@
 
   "server_name": "Server name",
   "server_placeholder": "My Server",
-  "port": "Порт",
-  "server_model": "Модель сервера"
+  "port": "Port",
+  "server_model": "Server Model"
 }
