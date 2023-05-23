@@ -10,7 +10,7 @@ import { VerificationModal, Button, InputField, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { RECAPTCHA_KEY } from '../../../config/config'
 import { Facebook, Google, Vk } from '../../../images'
-import { SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
+import { EMAIL_SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
 import s from './LoginForm.module.scss'
 
 const FACEBOOK_LINK =
@@ -54,7 +54,7 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
