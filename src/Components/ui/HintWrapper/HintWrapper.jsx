@@ -54,4 +54,5 @@ HintWrapper.propTypes = {
   popupClassName: PropTypes.string,
   wrapperClassName: PropTypes.string,
   bottom: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
