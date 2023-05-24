@@ -38,43 +38,26 @@ export default function EditCell({
       ref={editField}
     >
       {!isEdit ? (
-        <>
-          {!originName || (originName && originName?.length < lettersAmount) ? (
-            <button
-              className={cn(s.edit_btn, {
-                [s.placeholder]: editName === '' && originName === '',
-                [s.shadow]: isShadow,
-              })}
-              onClick={() => {
-                setIsEdit(!isEdit)
-                setEditName(originName?.trim())
-              }}
-            >
-              <span className={s.text}>{placeholder}</span>
-              <Edit />
-            </button>
-          ) : (
-            <HintWrapper
-              popupClassName={s.HintWrapper}
-              label={originName}
-              wrapperClassName={cn(s.hint)}
-            >
-              <button
-                className={cn(s.edit_btn, {
-                  [s.placeholder]: editName === '' && originName === '',
-                  [s.shadow]: isShadow,
-                })}
-                onClick={() => {
-                  setIsEdit(!isEdit)
-                  setEditName(originName?.trim())
-                }}
-              >
-                <span className={s.text}>{placeholder}</span>
-                <Edit />
-              </button>
-            </HintWrapper>
-          )}
-        </>
+        <HintWrapper
+          popupClassName={s.HintWrapper}
+          label={originName}
+          wrapperClassName={cn(s.hint)}
+          disabled={!originName || (originName && originName?.length < lettersAmount)}
+        >
+          <button
+            className={cn(s.edit_btn, {
+              [s.placeholder]: editName === '' && originName === '',
+              [s.shadow]: isShadow,
+            })}
+            onClick={() => {
+              setIsEdit(!isEdit)
+              setEditName(originName?.trim())
+            }}
+          >
+            <span className={s.text}>{placeholder}</span>
+            <Edit />
+          </button>
+        </HintWrapper>
       ) : (
         <form className={s.editBlock} onSubmit={onSubmitHandler}>
           <input
