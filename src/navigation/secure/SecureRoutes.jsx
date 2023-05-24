@@ -47,6 +47,7 @@ import {
   SiteCareOrder,
   VPN,
   VpnOrder,
+  PaymentSaved
 } from '../../Pages'
 import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
 import { cartSelectors } from '../../Redux'
@@ -454,6 +455,14 @@ const Component = () => {
         <Route path={route.SITE_CART} element={<CartFromSite isAuth />} />
 
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
+        <Route
+          path={route.PAYMENT_SAVED}
+          element={
+            <PageTitleRender title={'payment method saved'}>
+              <PaymentSaved />
+            </PageTitleRender>
+          }
+        />
 
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
