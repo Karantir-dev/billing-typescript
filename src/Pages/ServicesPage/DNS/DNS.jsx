@@ -238,10 +238,7 @@ export default function DNS() {
 
         <div className={s.btns_wrapper}>
           <HintWrapper
-            label={
-              isNoAvailableTariff &&
-              t('No tariff plans available for order', { ns: 'other' })
-            }
+            label={t('No tariff plans available for order', { ns: 'other' })}
             popupClassName={s.order_btn__error}
             disabled={!isNoAvailableTariff}
           >
