@@ -237,29 +237,14 @@ export default function DNS() {
         )}
 
         <div className={s.btns_wrapper}>
-          {isNoAvailableTariff ? (
-            <HintWrapper
-              label={
-                isNoAvailableTariff &&
-                t('No tariff plans available for order', { ns: 'other' })
-              }
-              popupClassName={s.order_btn__error}
-            >
-              <Button
-                className={s.order_btn}
-                isShadow
-                type="button"
-                label={t('to_order', { ns: 'other' }).toLocaleUpperCase()}
-                onClick={() => {
-                  navigate(route.DNS_ORDER, {
-                    state: { isDnsOrderAllowed: rights?.new },
-                    replace: true,
-                  })
-                }}
-                disabled={isNoAvailableTariff || !rights?.new}
-              />
-            </HintWrapper>
-          ) : (
+          <HintWrapper
+            label={
+              isNoAvailableTariff &&
+              t('No tariff plans available for order', { ns: 'other' })
+            }
+            popupClassName={s.order_btn__error}
+            disabled={!isNoAvailableTariff}
+          >
             <Button
               className={s.order_btn}
               isShadow
@@ -273,7 +258,7 @@ export default function DNS() {
               }}
               disabled={isNoAvailableTariff || !rights?.new}
             />
-          )}
+          </HintWrapper>
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>
               <IconButton
