@@ -6,12 +6,11 @@
 
 .datacenter_card_btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
-  padding-top: 7px;
-  padding-bottom: 11px;
+  padding: 12px 10px;
+  gap: 10px;
   background-color: var(--forms_bgc_2);
   cursor: pointer;
   border-radius: 3px;
@@ -22,7 +21,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 101px;
   width: 100%;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
@@ -45,6 +43,7 @@
 }
 
 .flag_icon {
+  width: 23px;
   border-radius: 5px;
   opacity: 0.15;
   z-index: 2;
@@ -54,17 +53,14 @@
   }
 }
 
-.country_name {
-  margin-top: 10px;
-  margin-bottom: 14px;
-  font-size: 18px;
-  line-height: 70.9%;
-  color: var(--main-text);
+.datacenter__info {
+  text-align: left;
 }
+
+.country_name,
 .datacenter {
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 70.9%;
+  margin-bottom: 10px;
+  font-size: 18px;
   color: var(--main-text);
 }
 
@@ -79,22 +75,25 @@
 .processors_block {
   display: flex;
   flex-direction: column;
-  // align-items: center;
-  // justify-content: space-between;
-  // flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
-.first_processors_block,.second_processors_block {
-  // width: 255px;
+.processors_block__label {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.processors_block__row {
+  display: flex;
+  flex-wrap: wrap;
   gap: 25px;
-  // justify-content: space-between;
 }
 
 .processor_card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 27px;
 }
 
 .processor,
@@ -109,22 +108,11 @@
 }
 
 .processor_name {
-  margin-right: 15px;
+  margin-left: 15px;
 }
 .select {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
-
-//tariffs
-
-//swiper
-// .dedic_swiper_rel_container {
-//   position: relative;
-// }
-// .doubled_dedic_swiper_rel_container {
-//   position: absolute;
-// }
-//swiper
 
 .dedic-swip .tarifs_block {
   display: grid;
@@ -459,7 +447,7 @@
     margin-bottom: 30px;
   }
   .period_select {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
   .params {
     margin-bottom: 30px;
@@ -492,26 +480,8 @@
   }
 
   .processors_block {
-    width: 397px;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    margin-bottom: 30px;
-    gap: 16px;
-  }
-
-  .first_processors_block {
-    // width: 156px;
-    display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
-  }
-
-  .second_processors_block {
-    width: fit-content;
-    display: flex;
-    // flex-direction: column;
-    // flex-wrap: wrap;
+    flex-direction: row;
+    gap: 50px;
   }
 
   .processor_name {
@@ -532,21 +502,15 @@
     width: 240px;
   }
 
-  // .tarifs_block {
-  //   grid-template-columns: repeat(3, 241px);
-  // }
+  .select {
+    margin-bottom: 40px;
+  }
 }
 
 @media screen and (min-width: 1000px) {
   .tarifs_block {
     grid-template-columns: repeat(3, 241px);
   }
-}
-
-@media screen and (min-width: 768px) {
-  // .second_processors_block {
-  //   margin-left: 15px;
-  // }
 }
 
 @media screen and (min-width: 1550px) {
