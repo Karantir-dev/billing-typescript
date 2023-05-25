@@ -56,6 +56,7 @@ export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputFi
 export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCurrencyBtn'
 
 export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
+export { default as EditCell } from './ui/EditCell/EditCell'
 
 //==========================================ACCESS LOGS==========================================//
 
