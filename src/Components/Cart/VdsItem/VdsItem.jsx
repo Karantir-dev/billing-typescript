@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Shevron, Delete } from '../../../images'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-
+import { translatePeriodToMonths } from '../../../utils'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {
@@ -63,15 +63,6 @@ export default function VdsItem({ el, deleteItemHandler }) {
     /(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/,
   )
 
-  const translatePeriod = count => {
-    if (count === '1') return t('month count 1', { ns: 'other' })
-    if (count === '3' || count === '24') return t('month count 3/24', { ns: 'other' })
-    if (count === '6' || count === '12' || count === '36')
-      return t('month count 6/12/36', { ns: 'other' })
-
-    return ''
-  }
-
   return (
     <div className={s.items_wrapper}>
       <div className={s.server_item}>
@@ -92,12 +83,11 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <div className={s.periodInfo}>
               <span>
                 {t('Period', { ns: 'other' })}: {el['item.period']?.$}{' '}
-                {translatePeriod(el['item.period']?.$)}
+                {translatePeriodToMonths(el['item.period']?.$)}
               </span>
               <span>
                 {t('amount', { ns: 'vds' })}: {el?.count} {t('pcs.', { ns: 'vds' })}
               </span>
-              <span></span>
             </div>
           </div>
 

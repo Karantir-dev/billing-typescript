@@ -18,3 +18,4 @@ export { default as translateSupportPaymentError } from './translateSupportPayme
 export { default as shortTitle } from './shortTitle'
 export { default as cookies } from './cookies'
 export { default as parseLang } from './parseLangToSite'
+export { default as translatePeriodToMonths } from './translatePeriodToMonths'
