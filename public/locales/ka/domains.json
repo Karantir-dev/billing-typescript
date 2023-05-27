@@ -120,5 +120,7 @@
   "The tariff plan has been changed": "ტარიფის შეიცვალა",
   "The old plan": "ძველი ტარიფი",
   "The new plan": "ახალი ტარიფი",
-  "Provider's employee or system": "მსესხებლის თანამშრომელი ან სისტემა"
+  "Provider's employee or system": "მსესხებლის თანამშრომელი ან სისტემა",
+  "base price": "საფარიფიფო ფასი",
+  "Total amount": "სულ თანხა"
 }
