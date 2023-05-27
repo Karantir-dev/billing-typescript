@@ -131,5 +131,7 @@
   "Windows": "ОС Windows",
 
   "server_name": "Ім'я сервера",
-  "server_placeholder": "Мій сервер"
+  "server_placeholder": "Мій сервер",
+  "port": "Порт",
+  "server_model": "Модель сервера"
 }
