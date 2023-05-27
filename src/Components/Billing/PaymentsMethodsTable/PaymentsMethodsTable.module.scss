@@ -43,8 +43,8 @@
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms_shadow_site);
   margin-bottom: 7px;
   position: relative;
 }
@@ -339,7 +339,7 @@
   .item {
     flex-direction: row;
     align-items: center;
-    padding: 20px 26px;
+    padding: 17px 26px;
 
     &.edited {
       padding: 11.5px 27px;
@@ -428,7 +428,7 @@
   }
 
   .item {
-    padding: 22px 27px;
+    padding: 17px 27px;
 
     &.edited {
       padding: 13.8px 27px;

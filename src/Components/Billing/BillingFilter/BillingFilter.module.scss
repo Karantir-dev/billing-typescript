@@ -4,7 +4,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 .newTicketBtn {
@@ -19,7 +19,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding-bottom: 10px;
 }
 
 .archiveBtn {
@@ -37,6 +36,13 @@
 .filterBtnBlock {
   position: relative;
 }
+
+.calendarBtn,
+.archiveBtn {
+  background-color: var(--btn2-bgc);
+  box-shadow: var(--buttons_shadow);
+}
+
 
 .bg {
   position: absolute;

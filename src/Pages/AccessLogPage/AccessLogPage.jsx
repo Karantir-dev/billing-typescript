@@ -48,6 +48,7 @@ export default function Component() {
               pageSize={p_cnt}
               onPageChange={page => setP_num(page)}
               onPageItemChange={items => setP_cnt(items)}
+              paginationItemClassName={s.pagination_item}
             />
           </div>
         )}

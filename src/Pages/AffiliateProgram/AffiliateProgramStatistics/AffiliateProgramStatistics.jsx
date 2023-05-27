@@ -112,7 +112,7 @@ export default function AffiliateProgramStatistics() {
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
           <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
           <span className={s.table_head}>{t('statistics_section.client')}:</span>
-          <span className={cn(s.table_head, s.centered)}>
+          <span className={s.table_head}>
             {t('statistics_section.payment')}:
           </span>
         </div>
@@ -148,7 +148,7 @@ export default function AffiliateProgramStatistics() {
                 {payed?.$ === 'on' ? (
                   <Check className={s.icon_check} />
                 ) : (
-                  <span className={cn(s.stub, s.centered)}>
+                  <span className={s.stub}>
                     {t('statistics_section.not_paid')}
                   </span>
                 )}

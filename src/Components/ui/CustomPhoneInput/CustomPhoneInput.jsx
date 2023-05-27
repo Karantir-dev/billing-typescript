@@ -19,10 +19,12 @@ export default function CustomPhoneInput(props) {
     label,
     name,
     labelClass,
+    containerClass,
     wrapperClass,
     inputClass,
     userId,
     isRequired,
+    buttonClass,
     ...restProps
   } = props
 
@@ -50,7 +52,7 @@ export default function CustomPhoneInput(props) {
         onBlur={handleBlur}
         name={name}
         className={s.field_input}
-        containerClass={s.lang_container}
+        containerClass={cn(s.lang_container, containerClass)}
         inputClass={cn({
           [s.react_phone_input]: true,
           [s.lang]: true,
@@ -62,6 +64,7 @@ export default function CustomPhoneInput(props) {
           [s.extra_style]: true,
           [s.opened]: true,
           [s.lightTheme]: !darkTheme,
+          [buttonClass]: buttonClass,
         })}
         dropdownClass={cn({
           [s.drop_down]: true,

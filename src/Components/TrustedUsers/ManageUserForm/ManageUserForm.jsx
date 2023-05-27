@@ -132,8 +132,9 @@ export default function ManageUserForm({
                       touched={!!touched['email' + userId]}
                       isShadow={true}
                       background={true}
-                      autoComplete='off'
+                      autoComplete="off"
                       disabled={formName === 'settings'}
+                      inputClassName={s.field_bg}
                     />
 
                     <InputField
@@ -154,6 +155,7 @@ export default function ManageUserForm({
                       isShadow={true}
                       background={true}
                       disabled={formName === 'settings'}
+                      inputClassName={s.field_bg}
                     />
 
                     <CustomPhoneInput
@@ -167,6 +169,8 @@ export default function ManageUserForm({
                       setFieldValue={setFieldValue}
                       name={'phone' + userId}
                       userId={userId}
+                      inputClass={s.field_bg}
+                      buttonClass={s.phoneInputButton}
                     />
 
                     <InputField
@@ -184,6 +188,7 @@ export default function ManageUserForm({
                       type="password"
                       isShadow={true}
                       background={true}
+                      inputClassName={s.field_bg}
                     />
 
                     <InputField
@@ -201,6 +206,7 @@ export default function ManageUserForm({
                       type="password"
                       isShadow={true}
                       background={true}
+                      inputClassName={s.field_bg}
                     />
                   </div>
 

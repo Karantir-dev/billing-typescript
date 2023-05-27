@@ -1,6 +1,5 @@
 .table {
   margin-top: 20px;
-  max-width: 1172px;
 }
 
 .tableHeader {
@@ -38,7 +37,6 @@
   line-height: 130%;
   color: var(--menu-text-3);
   align-items: center;
-  margin-right: 20px;
   &.first_item {
     flex-basis: 26.8%;
   }
@@ -61,8 +59,8 @@
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms_shadow_site);
   margin-bottom: 7px;
 }
 
@@ -216,7 +214,7 @@
   height: 100vh;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 149;
   overflow-y: auto;
 }
@@ -227,8 +225,7 @@
   justify-content: center;
   flex-direction: column;
   position: relative;
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
+  background: var(--main-bgc3);
   border-radius: 3px;
   padding: 45px 25px;
   margin: 20px;
@@ -249,6 +246,7 @@
   height: 55px;
   max-width: 240px;
   text-transform: uppercase;
+  background-color: var(--btn2-bgc);
 }
 
 .cancel {
@@ -283,12 +281,12 @@
   .item {
     flex-direction: row;
     align-items: center;
-    padding: 23px 35px;
+    padding: 17px 30px;
   }
 
   .tableHeader {
     display: flex;
-    padding: 10px 35px;
+    padding: 10px 30px;
   }
   .tableBlockFirst,
   .tableBlockSecond,
@@ -334,10 +332,10 @@
 
 @media screen and (min-width: 1024px) {
   .item {
-    padding: 20px 40px;
+    padding: 17px 30px 17px 40px;
   }
   .tableHeader {
-    padding: 11px 40px;
+    padding: 10px 30px 10px 40px;
   }
   .item_text {
     font-size: 16px;
@@ -355,23 +353,8 @@
   }
 }
 
-@media screen and (min-width: 1550px) {
-  .item {
-    padding: 22px 45px;
-  }
-  .tableHeader {
-    padding: 12px 45px;
-  }
-}
-
 @media screen and (min-width: 1918px) {
   .item_text {
     font-size: 17px;
-  }
-  .item {
-    padding: 25px 52px;
-  }
-  .tableHeader {
-    padding: 12px 52px;
   }
 }

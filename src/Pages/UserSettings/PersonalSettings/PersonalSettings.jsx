@@ -177,6 +177,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                     error={!!errors.email}
                     touched={!!touched.email}
                     isRequired
+                    inputWrapperClass={s.field}
+                    inputClassName={s.field_bg}
                   />
                   <InputField
                     background
@@ -188,21 +190,23 @@ export default function Component({ isComponentAllowedToEdit }) {
                     className={s.input}
                     error={!!errors.email}
                     touched={!!touched.email}
+                    inputWrapperClass={s.field}
+                    inputClassName={s.field_bg}
                   />
                 </div>
                 <div className={s.formRow}>
                   <CustomPhoneInput
-                    containerClass={s.phoneInputContainer}
-                    inputClass={s.phoneInputClass}
+                    containerClass={cn(s.phoneInputContainer, s.field)}
+                    inputClass={cn(s.phoneInputClass, s.field_bg)}
                     disabled={userEdit?.phone?.readonly}
                     value={values.phone}
                     wrapperClass={s.phoneInput}
-                    labelClass={s.phoneInputLabel}
                     label={`${t('Phone', { ns: 'other' })}:`}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
                     name="phone"
+                    buttonClass={s.phoneInputButton}
                   />
                   <Select
                     label={`${t('Timezone', { ns: 'other' })}:`}
@@ -223,6 +227,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                         : null
                     }
                     background
+                    inputClassName={s.field_bg}
                   />
                 </div>
               </div>
@@ -241,6 +246,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                       className={cn(s.emailInput, s.notifEmail)}
                       error={!!errors.email_notif}
                       touched={!!touched.email_notif}
+                      inputWrapperClass={s.field}
+                      inputClassName={s.field_bg}
                     />
 
                     {confirmEmailBtnRender(
@@ -339,6 +346,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                       className={cn(s.input, s.notifEmail)}
                       error={!!errors.email}
                       touched={!!touched.email}
+                      inputWrapperClass={s.field}
+                      inputClassName={s.field_bg}
                     />
                   </div>
                 </div>

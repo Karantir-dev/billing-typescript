@@ -19,6 +19,7 @@ export default function InputWithAutocomplete({
   error,
   touched,
   setFieldValue,
+  inputClassName,
 }) {
   const { t, i18n } = useTranslation(['other'])
   const [isFocused, setIsFocused] = useState(false)
@@ -169,13 +170,16 @@ export default function InputWithAutocomplete({
           })}
         >
           <input
-            className={cn({
-              [s.input]: true,
-              [s.shadow]: true,
-              [ss.pr35]: true,
-              [s.error]: error && touched,
-              [s.disabled]: !ready,
-            })}
+            className={cn(
+              {
+                [s.input]: true,
+                [s.shadow]: true,
+                [ss.pr35]: true,
+                [s.error]: error && touched,
+                [s.disabled]: !ready,
+              },
+              inputClassName,
+            )}
             id={fieldName}
             name={fieldName}
             value={externalValue}
