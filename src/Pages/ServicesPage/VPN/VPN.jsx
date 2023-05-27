@@ -99,7 +99,7 @@ export default function Component() {
     const data = {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
-      lang: i18n?.language,
+      lang: 'en',
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -170,7 +170,7 @@ export default function Component() {
   const sendEditSiteCareHandler = (values = {}, elid = null) => {
     let data = {
       elid: elid || parseSelectedItemId(),
-      lang: i18n?.language,
+      lang: 'en',
       p_num,
       ...values,
     }

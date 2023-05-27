@@ -23,7 +23,7 @@ export default function FTPOrder() {
 
   const isFtpOrderAllowed = location?.state?.isFtpOrderAllowed
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])
@@ -275,14 +275,10 @@ export default function FTPOrder() {
                       label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = translatePeriod(el.$, t)
-
-                        return {
-                          label: labeltext,
-                          value: el.$key,
-                        }
-                      })}
+                      itemsList={values?.autoprolonglList?.map(el => ({
+                        label: translatePeriod(el.$, t),
+                        value: el.$key,
+                      }))}
                       className={s.select}
                     />
                   </div>

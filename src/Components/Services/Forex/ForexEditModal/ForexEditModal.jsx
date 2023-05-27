@@ -20,6 +20,7 @@ export default function ForexEditModal({ elid, closeFn }) {
     'other',
     'crumbs',
     'affiliate_program',
+    'autoprolong'
   ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -123,9 +124,8 @@ export default function ForexEditModal({ elid, closeFn }) {
                           }}
                           isShadow
                           itemsList={initialState?.autoprolongList?.map(el => {
-                            const labelText = translatePeriod(el?.$, t)
                             return {
-                              label: labelText,
+                              label: translatePeriod(el?.$, t),
                               value: el.$key,
                             }
                           })}

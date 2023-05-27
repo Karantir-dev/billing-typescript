@@ -12,7 +12,14 @@ import { dnsOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../utils'
 
 export default function FTPEditModal({ elid, closeFn }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs', 'dns'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'vds',
+    'other',
+    'crumbs',
+    'dns',
+    'autoprolong',
+  ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   const [currentLimit, setCurrentLimit] = useState(null)
@@ -119,12 +126,10 @@ export default function FTPEditModal({ elid, closeFn }) {
                         label={t('autoprolong')}
                         getElement={item => setFieldValue('autoprolong', item)}
                         isShadow
-                        itemsList={initialState?.autoprolongList?.val?.map(el => {
-                          return {
-                            label: translatePeriod(el?.$, t),
-                            value: el.$key,
-                          }
-                        })}
+                        itemsList={initialState?.autoprolongList?.val?.map(el => ({
+                          label: translatePeriod(el?.$, t),
+                          value: el.$key,
+                        }))}
                         className={s.select}
                       />
                       <InputField
@@ -133,7 +138,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.payment_method}
                         disabled
@@ -145,7 +150,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.username}
                         disabled
@@ -156,7 +161,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.password}
                         disabled
@@ -167,7 +172,7 @@ export default function FTPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.ip}
                         disabled
