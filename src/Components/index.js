@@ -56,6 +56,7 @@ export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputFi
 export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCurrencyBtn'
 
 export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
+export { default as EditCell } from './ui/EditCell/EditCell'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -190,7 +191,6 @@ export { default as VhostItem } from './Cart/VhostItem/VhostItem'
 export { default as ForexItem } from './Cart/ForexItem/ForexItem'
 export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
-export { default as BlackFridayGift } from './Cart/BlackFridayGift/BlackFridayGift'
 
 export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
 export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'

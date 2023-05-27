@@ -21,9 +21,8 @@ import {
   SiteCareItem,
   VpnItem,
   InputWithAutocomplete,
-  ScrollToFieldError,
-  BlackFridayGift,
   SelectGeo,
+  ScrollToFieldError,
 } from '..'
 import {
   cartOperations,
@@ -66,7 +65,6 @@ export default function Component() {
 
   const [isClosing, setIsClosing] = useState(false)
 
-  const [blackFridayData, setBlackFridayData] = useState(null)
   const [showMore, setShowMore] = useState(false)
   const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
@@ -183,19 +181,9 @@ export default function Component() {
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
-  // const offerTextHandler = () => {
-  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  // }
-
   const setPromocodeToCart = promocode => {
     dispatch(
-      cartOperations.setBasketPromocode(
-        promocode,
-        setCartData,
-        setPaymentsMethodList,
-        setBlackFridayData,
-        cartData?.elemList[0]['item.type']?.$,
-      ),
+      cartOperations.setBasketPromocode(promocode, setCartData, setPaymentsMethodList),
     )
   }
 
@@ -479,6 +467,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -491,7 +480,15 @@ export default function Component() {
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
-                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                const {
+                  id,
+                  desc,
+                  cost,
+                  pricelist_name,
+                  discount_percent,
+                  fullcost,
+                  count,
+                } = el
                 return (
                   <SiteCareItem
                     key={id?.$}
@@ -506,6 +503,8 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    count={count}
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -543,6 +542,7 @@ export default function Component() {
                         : null
                     }
                     count={count}
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -553,27 +553,28 @@ export default function Component() {
         )}
         {domainsList?.length > 0 && (
           <>
-            <div className={cn(s.formBlockTitle, s.padding)}>
-              {t('Domain registration')}:
-            </div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
-              {displayedItems?.map(el => {
-                const { id, desc, cost, fullcost, discount_percent } = el
-                return (
-                  <DomainItem
-                    key={id?.$}
-                    desc={desc?.$}
-                    cost={cost?.$}
-                    fullcost={fullcost?.$}
-                    discount_percent={discount_percent?.$}
-                    deleteItemHandler={
-                      domainsList?.length > 1
-                        ? () => deleteBasketItemHandler(id?.$)
-                        : null
-                    }
-                  />
-                )
-              })}
+            <div className={s.padding}>
+              <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
+              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+                {displayedItems?.map(el => {
+                  const { id, desc, cost, fullcost, discount_percent } = el
+                  return (
+                    <DomainItem
+                      key={id?.$}
+                      desc={desc?.$}
+                      cost={cost?.$}
+                      fullcost={fullcost?.$}
+                      discount_percent={discount_percent?.$}
+                      deleteItemHandler={
+                        domainsList?.length > 1
+                          ? () => deleteBasketItemHandler(id?.$)
+                          : null
+                      }
+                      period={el['item.period']?.$}
+                    />
+                  )
+                })}
+              </div>
             </div>
             {shouldRenderButton(domainsList.length) && showMoreButton(domainsList.length)}
           </>
@@ -608,6 +609,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -673,6 +675,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -709,6 +712,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -745,6 +749,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -1238,12 +1243,6 @@ export default function Component() {
                         {isDedicWithSale ? (
                           <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
                         ) : null}
-
-                        <div className={cn(s.formFieldsBlock)}>
-                          {blackFridayData && blackFridayData?.success && (
-                            <BlackFridayGift code={blackFridayData?.promo_of_service} />
-                          )}
-                        </div>
                       </div>
                       {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                         <div className={cn(s.padding, s.penalty_sum)}>

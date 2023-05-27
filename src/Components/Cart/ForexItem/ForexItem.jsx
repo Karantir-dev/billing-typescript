@@ -4,9 +4,12 @@ import { useMediaQuery } from 'react-responsive'
 
 import s from './ForexItem.module.scss'
 import { Delete } from '../../../images'
+import { translatePeriodToMonths } from '../../../utils'
+import { useTranslation } from 'react-i18next'
 
 export default function ForexItem(props) {
-  const { pricelist_name, deleteItemHandler } = props
+  const { pricelist_name, deleteItemHandler, count, period } = props
+  const { t } = useTranslation(['other', 'vds'])
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -31,6 +34,16 @@ export default function ForexItem(props) {
 
             <div className={s.server_info}>
               <span className={s.domainName}>{pricelist_name}</span>
+              <div className={s.periodInfo}>
+                <span>
+                  {t('Period', { ns: 'other' })}: {period}{' '}
+                  {translatePeriodToMonths(period)}
+                </span>
+                <span>
+                  {t('amount', { ns: 'vds' })}: {count} {t('pcs.', { ns: 'vds' })}
+                </span>
+                <span></span>
+              </div>
             </div>
 
             {typeof deleteItemHandler === 'function' && tabletOrHigher && (

@@ -115,5 +115,7 @@
   "ns_additional": "Additional NS",
   "Use the name servers": "Use the name servers",
   "base price": "base price",
-  "Total amount": "Total amount:"
+  "Total amount": "Total amount",
+
+  "ns_format": "Record format \"ns.example.com\""
 }

@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { Delete, Shevron } from '../../../images'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
+import { translatePeriodToMonths } from '../../../utils'
 
 import s from './DedicItem.module.scss'
 
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
-  const { desc, pricelist_name, deleteItemHandler } = props
+  const { desc, pricelist_name, deleteItemHandler, period } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -146,6 +147,10 @@ export default function DedicItem(props) {
               {renderDesc()?.postSpeed?.split('-')[0]}, &nbsp;
             </span>
           )}
+
+          <span className={s.value}>
+            <b>{t('Period', { ns: 'other' })}:</b> {period} {translatePeriodToMonths(period)}
+          </span>
         </div>
       </div>
     </>

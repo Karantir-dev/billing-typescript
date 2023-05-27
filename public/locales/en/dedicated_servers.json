@@ -131,5 +131,7 @@
   "Windows": "OS Windows",
 
   "server_name": "Server name",
-  "server_placeholder": "My Server"
+  "server_placeholder": "My Server",
+  "port": "Port",
+  "server_model": "Server Model"
 }

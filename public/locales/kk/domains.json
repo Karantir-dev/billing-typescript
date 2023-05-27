@@ -123,5 +123,6 @@
   "The new plan": "Жаңа тариф",
   "Provider's employee or system": "Тапсырыс берушінің қызметкері немесе жүйесі",
   "base price": "базарча қиммат",
-  "Total amount": "Тоталга сомма"
+  "Total amount": "Тоталга сомма",
+  "ns_format": "Жазба пішімі \"ns.example.com\""
 }

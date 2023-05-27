@@ -4,11 +4,10 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DedicItem.module.scss'
-import { CheckBox, HintWrapper, ServerState } from '../../../'
+import { CheckBox, EditCell, HintWrapper, ServerState } from '../../../'
 import { useDispatch } from 'react-redux'
-import { shortTitle, useOutsideAlerter } from '../../../../utils'
+import { useOutsideAlerter } from '../../../../utils'
 import {
-  CheckEdit,
   Clock,
   Edit,
   ExitSign,
@@ -43,24 +42,13 @@ export default function DedicItem({
 
   useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
-  const [isEdit, setIsEdit] = useState(false)
   const [originName, setOriginName] = useState('')
-  const [editName, setEditName] = useState('')
-
-  const editField = useRef()
 
   useEffect(() => {
     if (server?.server_name?.$) {
       setOriginName(server?.server_name?.$)
     }
   }, [server])
-
-  const closeEditHandler = () => {
-    setIsEdit(!isEdit)
-    setEditName('')
-  }
-
-  useOutsideAlerter(editField, isEdit, closeEditHandler)
 
   const isToolsBtnVisible =
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
@@ -79,10 +67,9 @@ export default function DedicItem({
     setToolsOpened(false)
   }
 
-  const editNameHandler = () => {
-    handleEditSubmit(server?.id?.$, editName)
-    setOriginName(editName)
-    setIsEdit(false)
+  const editNameHandler = value => {
+    handleEditSubmit(server?.id?.$, value)
+    setOriginName(value)
   }
 
   return (
@@ -97,104 +84,16 @@ export default function DedicItem({
         className={cn(s.item, {
           [s.active_server]: isActive,
         })}
-        // type="button"
-        // onClick={() => setActiveServer(server)}
       >
         <span className={s.value}>
-          {!isEdit ? (
-            <>
-              {!originName || (originName && originName?.length < 13) ? (
-                <div
-                  style={isEdit ? { overflow: 'inherit' } : {}}
-                  className={cn(s.item_text, s.first_item)}
-                  ref={editField}
-                >
-                  <>
-                    <span
-                      className={cn({
-                        [s.placeholder_text]: editName === '' && originName === '',
-                      })}
-                    >
-                      {t(
-                        shortTitle(editName, 12) ||
-                          shortTitle(originName?.trim(), 12) ||
-                          t('server_placeholder', { ns: 'vds' }),
-                        {
-                          ns: 'vds',
-                        },
-                      )}
-                    </span>
-                    <button
-                      className={s.edit_btn}
-                      onClick={() => {
-                        setIsEdit(!isEdit)
-                        setEditName(originName?.trim())
-                      }}
-                    >
-                      <Edit />
-                    </button>
-                  </>
-                </div>
-              ) : (
-                <HintWrapper
-                  popupClassName={s.HintWrapper}
-                  label={t(editName || originName?.trim(), {
-                    ns: 'vds',
-                  })}
-                  wrapperClassName={cn(s.hint)}
-                >
-                  <div
-                    style={isEdit ? { overflow: 'inherit' } : {}}
-                    className={cn(s.item_text, s.first_item)}
-                    ref={editField}
-                  >
-                    <>
-                      <span
-                        className={cn({
-                          [s.placeholder_text]: editName === '' && originName === '',
-                        })}
-                      >
-                        {t(
-                          shortTitle(editName, 12) ||
-                            shortTitle(originName?.trim(), 12) ||
-                            t('server_placeholder', { ns: 'vds' }),
-                          {
-                            ns: 'vds',
-                          },
-                        )}
-                      </span>
-                      <button
-                        className={s.edit_btn}
-                        onClick={() => {
-                          setIsEdit(!isEdit)
-                          setEditName(originName?.trim())
-                        }}
-                      >
-                        <Edit />
-                      </button>
-                    </>
-                  </div>
-                </HintWrapper>
-              )}
-            </>
-          ) : (
-            <div
-              style={isEdit ? { overflow: 'inherit' } : {}}
-              className={cn(s.item_text, s.first_item)}
-              ref={editField}
-            >
-              <div className={s.editBlock}>
-                <input
-                  placeholder={editName ? '' : t('server_placeholder', { ns: 'vds' })}
-                  value={editName}
-                  onChange={e => setEditName(e.target.value)}
-                />
-                <button className={s.editBtnOk} onClick={editNameHandler}>
-                  <CheckEdit />
-                </button>
-              </div>
-            </div>
-          )}
+          <EditCell
+            originName={originName}
+            onSubmit={editNameHandler}
+            placeholder={t(originName || t('server_placeholder', { ns: 'vds' }), {
+              ns: 'vds',
+            })}
+            isShadow={true}
+          />
         </span>
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>

@@ -15,7 +15,7 @@ import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
-
+import { SPECIAL_CHARACTERS_REGEX, EMAIL_SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
 
@@ -49,16 +49,19 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .matches(/^[^!@#$_%^\\&*()\]~+/}[{=?|"<>:;]+$/g, t('warnings.special_characters'))
+      .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
-      .matches(/^[^!#$%^&*()\]~/}[{=?|"<>':;+]+$/g, t('warnings.special_characters'))
+      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
       .min(12, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .max(48, t('warnings.invalid_pass', { min: 12, max: 48 }))
-      .matches(/(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/, t('warnings.invalid_pass', { min: 12, max: 48 }))
+      .matches(
+        /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/,
+        t('warnings.invalid_pass', { min: 12, max: 48 }),
+      )
       .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))

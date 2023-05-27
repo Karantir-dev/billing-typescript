@@ -132,5 +132,7 @@
   "Windows": "OS Windows",
 
   "server_name": "Сервер аты",
-  "server_placeholder": "Менің серверім"
+  "server_placeholder": "Менің серверім",
+  "port": "Порт",
+  "server_model": "Сервер моделі"
 }

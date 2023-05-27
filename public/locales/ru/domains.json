@@ -123,5 +123,6 @@
   "The new plan": "Новый тариф",
   "Provider's employee or system": "Сотрудник или система поставщика",
   "base price": "базовая цена",
-  "Total amount": "Общая сумма"
+  "Total amount": "Общая сумма",
+  "ns_format": "Формат записи \"ns.example.com\""
 }

@@ -403,8 +403,10 @@ export default function DedicOrderPage() {
                           src={require('../../../../images/countryFlags/netherlands_flag.webp')}
                           alt="nth_flag"
                         />
-                        <p className={s.country_name}>{countryName}</p>
-                        <span className={s.datacenter}>{datacenterName}</span>
+                        <div className={s.datacenter__info}>
+                          <p className={s.country_name}>{countryName}</p>
+                          <span className={s.datacenter}>{datacenterName}</span>
+                        </div>
                       </button>
                     </div>
                   )
@@ -416,59 +418,69 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.map(item => {
-                    return (
-                      <div
-                        className={classNames(s.processor_card, {
-                          [s.selected]: true,
-                        })}
-                        key={item?.$key}
-                      >
-                        <span className={s.processor_name}>{item?.$}</span>
-                        <Toggle
-                          setValue={() => {
-                            setFieldValue('processor', item?.$key)
-                            if (filters.includes(item?.$key)) {
-                              setFilters([...filters.filter(el => el !== item?.$key)])
-                            } else {
-                              setFilters([...filters, item?.$key])
-                            }
-                            resetForm()
-                            setParameters(null)
-                            setTarifChosen(false)
-                          }}
-                        />
-                      </div>
-                    )
-                  })}
+                  <p className={s.processors_block__label}>{t('port')}:</p>
+                  <div className={s.processors_block__row}>
+                    {tarifList?.fpricelist
+                      ?.filter(el => el.$.toLowerCase().includes('port'))
+                      .map(item => {
+                        return (
+                          <div
+                            className={classNames(s.processor_card, {
+                              [s.selected]: true,
+                            })}
+                            key={item?.$key}
+                          >
+                            <Toggle
+                              setValue={() => {
+                                setFieldValue('processor', item?.$key)
+                                if (filters.includes(item?.$key)) {
+                                  setFilters([...filters.filter(el => el !== item?.$key)])
+                                } else {
+                                  setFilters([...filters, item?.$key])
+                                }
+                                resetForm()
+                                setParameters(null)
+                                setTarifChosen(false)
+                              }}
+                              view="radio"
+                            />
+                            <span className={s.processor_name}>{item?.$}</span>
+                          </div>
+                        )
+                      })}
+                  </div>
                 </div>
-                {/* <div className={s.second_processors_block}>
-                  {tarifList?.fpricelist?.slice(1).map(item => {
-                    return (
-                      <div
-                        className={classNames(s.processor_card, {
-                          [s.selected]: true,
-                        })}
-                        key={item?.$key}
-                      >
-                        <span className={s.processor_name}>{item?.$}</span>
-                        <Toggle
-                          setValue={() => {
-                            setFieldValue('processor', item?.$key)
-                            if (filters.includes(item?.$key)) {
-                              setFilters([...filters.filter(el => el !== item?.$key)])
-                            } else {
-                              setFilters([...filters, item?.$key])
-                            }
-                            resetForm()
-                            setParameters(null)
-                            setTarifChosen(false)
-                          }}
-                        />
-                      </div>
-                    )
-                  })}
-                </div> */}
+                <div className={s.second_processors_block}>
+                  <p className={s.processors_block__label}>{t('server_model')}:</p>
+                  <div className={s.processors_block__row}>
+                    {tarifList?.fpricelist?.filter(el => !el.$.toLowerCase().includes('port')).map(item => {
+                      return (
+                        <div
+                          className={classNames(s.processor_card, {
+                            [s.selected]: true,
+                          })}
+                          key={item?.$key}
+                        >
+                          <Toggle
+                            setValue={() => {
+                              setFieldValue('processor', item?.$key)
+                              if (filters.includes(item?.$key)) {
+                                setFilters([...filters.filter(el => el !== item?.$key)])
+                              } else {
+                                setFilters([...filters, item?.$key])
+                              }
+                              resetForm()
+                              setParameters(null)
+                              setTarifChosen(false)
+                            }}
+                            view="radio"
+                          />
+                          <span className={s.processor_name}>{item?.$}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
 
               <Select
@@ -541,7 +553,7 @@ export default function DedicOrderPage() {
                             dynamicMainBullets: 2,
                           },
                         },
-                        865: {
+                        768: {
                           pagination: {
                             dynamicMainBullets: 3,
                           },

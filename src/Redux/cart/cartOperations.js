@@ -7,7 +7,6 @@ import {
   userOperations,
   billingActions,
 } from '..'
-import axios from 'axios'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '../../utils'
@@ -66,8 +65,7 @@ const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) =
 }
 
 const setBasketPromocode =
-  (promocode, setCartData, setPaymentsMethodList, setBlackFridayData, service) =>
-  (dispatch, getState) => {
+  (promocode, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -87,19 +85,6 @@ const setBasketPromocode =
         }),
       )
       .then(({ data }) => {
-        if (service && setBlackFridayData) {
-          const dataCheckPromo = {
-            promocode: promocode,
-            service: service,
-          }
-
-          axios
-            .post('https://api.server-panel.net/api/service/promo/', dataCheckPromo)
-            .then(({ data }) => {
-              setBlackFridayData(data)
-            })
-        }
-
         if (data.doc.error) {
           toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
             position: 'bottom-right',
@@ -336,9 +321,7 @@ const setPaymentMethods =
                   cartData?.payment_name?.includes('Coinify') ||
                   cartData?.payment_name?.includes('Bitcoin')
                 ) {
-                  cookies.eraseCookie('payment_id')
-                  window.dataLayer.push({ ecommerce: null })
-                  window.dataLayer.push({
+                  const ecommerceData = {
                     event: 'purchase',
                     ecommerce: {
                       transaction_id: data.doc?.payment_id?.$,
@@ -350,7 +333,12 @@ const setPaymentMethods =
                       coupon: body?.promocode,
                       items: items,
                     },
-                  })
+                  }
+                  cookies.eraseCookie('payment_id')
+                  window.dataLayer.push({ ecommerce: null })
+                  window.dataLayer.push(ecommerceData)
+
+                  dispatch(billingOperations.analyticSendHandler(ecommerceData))
                 } else {
                   data.doc?.payment_id &&
                     cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)

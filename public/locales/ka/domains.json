@@ -122,5 +122,7 @@
   "The new plan": "ახალი ტარიფი",
   "Provider's employee or system": "მსესხებლის თანამშრომელი ან სისტემა",
   "base price": "საფარიფიფო ფასი",
-  "Total amount": "სულ თანხა"
+  "Total amount": "სულ თანხა",
+
+  "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\""
 }

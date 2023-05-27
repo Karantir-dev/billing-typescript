@@ -241,6 +241,7 @@
 
   "month count 1": "month",
   "month count 3/24": "months",
-  "month count 6/12/36": "months"
+  "month count 6/12/36": "months",
 
+  "payment_saved": "Payment method successfully saved"
 }
