@@ -1,7 +1,5 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Edit, CheckEdit } from '../../../images'
-import { HintWrapper } from '../../index'
-import { useOutsideAlerter } from '../../../utils'
 
 import s from './EditCell.module.scss'
 import cn from 'classnames'
@@ -10,7 +8,6 @@ export default function EditCell({
   originName,
   placeholder,
   onSubmit,
-  lettersAmount = 13,
   isShadow,
   className,
 }) {
@@ -18,18 +15,34 @@ export default function EditCell({
   const [editName, setEditName] = useState('')
 
   const editField = useRef()
+  const input = useRef()
 
   const closeEditHandler = () => {
-    setIsEdit(!isEdit)
+    setIsEdit(false)
     setEditName('')
   }
-
-  useOutsideAlerter(editField, isEdit, closeEditHandler)
 
   const onSubmitHandler = () => {
     onSubmit(editName)
     setIsEdit(!isEdit)
   }
+
+  const activateEditMode = () => {
+    setIsEdit(true)
+    setEditName(originName?.trim())
+  }
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (editField.current && !editField.current.contains(event.target) && isEdit) {
+        closeEditHandler()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isEdit])
 
   return (
     <div
@@ -38,35 +51,32 @@ export default function EditCell({
       ref={editField}
     >
       {!isEdit ? (
-        <HintWrapper
-          popupClassName={s.HintWrapper}
-          label={originName}
-          wrapperClassName={cn(s.hint)}
-          disabled={!originName || (originName && originName?.length < lettersAmount)}
+        <button
+          className={cn(s.edit_btn, {
+            [s.placeholder]: editName === '' && originName === '',
+            [s.shadow]: isShadow,
+          })}
+          onMouseDown={activateEditMode}
         >
-          <button
-            className={cn(s.edit_btn, {
-              [s.placeholder]: editName === '' && originName === '',
-              [s.shadow]: isShadow,
-            })}
-            onClick={() => {
-              setIsEdit(!isEdit)
-              setEditName(originName?.trim())
-            }}
-          >
-            <span className={s.text}>{placeholder}</span>
-            <Edit />
-          </button>
-        </HintWrapper>
+          <span className={s.text}>{placeholder}</span>
+          <Edit />
+        </button>
       ) : (
         <form className={s.editBlock} onSubmit={onSubmitHandler}>
           <input
             placeholder={placeholder}
             value={editName}
             onChange={e => setEditName(e.target.value)}
-            autoFocus={true}
+            onMouseUp={() => input.current.focus()}
+            ref={input}
           />
-          <button className={s.editBtnOk} type="submit">
+          <Edit
+            className={cn(s.btn, s.edit_icon, { [s.btn_show]: originName === editName })}
+          />
+          <button
+            className={cn(s.btn__check, s.btn, { [s.btn_show]: originName !== editName })}
+            type="submit"
+          >
             <CheckEdit />
           </button>
         </form>
