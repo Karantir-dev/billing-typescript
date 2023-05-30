@@ -14,6 +14,7 @@ export default function SelectGeo(props) {
     countrySelectClassName,
     geoData,
     payersSelectLists,
+    ...otherProps
   } = props
   const { t } = useTranslation(['countries', 'other'])
 
@@ -39,6 +40,7 @@ export default function SelectGeo(props) {
       isRequired
       disabled
       withoutArrow={true}
+      {...otherProps}
     />
   ) : (
     <Select
@@ -65,6 +67,7 @@ export default function SelectGeo(props) {
       isRequired
       disabled
       withoutArrow={true}
+      {...otherProps}
     />
   )
 }

@@ -135,7 +135,7 @@ export default function Component(props) {
                   <div className={s.field_wrapper}>
                     <label className={s.label}>{t('Key')}:</label>
                     <div
-                      className={s.copy_field}
+                      className={cn(s.copy_field, s.field_bg)}
                       onClick={() => handleCopyText(refLinkEl)}
                       role="button"
                       tabIndex={0}
@@ -172,6 +172,7 @@ export default function Component(props) {
                     name="qrcode"
                     error={!!errors.qrcode}
                     touched={!!touched.qrcode}
+                    inputClassName={s.field_bg}
                   />
                 </div>
                 <div className={s.timeRow}>

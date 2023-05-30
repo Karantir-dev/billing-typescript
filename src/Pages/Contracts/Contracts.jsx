@@ -146,7 +146,7 @@ export default function Contracts() {
           )
         })}
       </div>
-      {contractsCount > 5 && (
+      {contractsCount > 1 && (
         <div className={s.pagination}>
           <Pagination
             totalCount={Number(contractsCount)}
@@ -154,6 +154,7 @@ export default function Contracts() {
             pageSize={p_cnt}
             onPageChange={page => setP_num(page)}
             onPageItemChange={items => setP_cnt(items)}
+            paginationItemClassName={s.pagination_item}
           />
         </div>
       )}

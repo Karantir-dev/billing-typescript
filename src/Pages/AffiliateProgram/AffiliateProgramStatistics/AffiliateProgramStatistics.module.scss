@@ -20,9 +20,9 @@
   width: 100%;
   height: fit-content;
   padding: 15px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 5px;
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms3_shadow);
+  border-radius: 3px;
   white-space: nowrap;
 
   &:not(:last-child) {
@@ -42,11 +42,6 @@
 .stub {
   font-size: 14px;
   color: var(--transparent-color);
-
-  &.centered {
-    display: block;
-    text-align: center;
-  }
 }
 
 .full_text {
@@ -90,6 +85,7 @@
 }
 
 .icon_filter {
+  box-shadow: var(--buttons_shadow);
   &.filtered {
     svg {
       fill: url(#gradient);
@@ -119,10 +115,6 @@
     &:nth-child(4) {
       flex-basis: 15%;
     }
-
-    // &.centered {
-    //   text-align: center;
-    // }
   }
 
   .list_item {

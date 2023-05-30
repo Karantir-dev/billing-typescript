@@ -1,9 +1,10 @@
 .card {
   position: relative;
   padding: 14px 10px 20px;
-  box-shadow: var(--forms2_shadow);
-  background: var(--forms_bgc_2);
+  box-shadow: var(--forms3_shadow);
+  background: var(--forms_bgc_1);
   margin-bottom: 20px;
+  border-radius: 3px;
   cursor: pointer;
 }
 
@@ -151,9 +152,9 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
     margin-bottom: 9px;
-    padding: 20px 23px;
+    padding: 17px 35px;
   }
 
   .card_item_wrapper {
@@ -191,13 +192,5 @@
   .item_text {
     font-size: 16px;
     line-height: 130%;
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .card {
-    max-width: 1258px;
-    // display: grid;
-    // column-gap: 65px;
   }
 }

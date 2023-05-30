@@ -49,7 +49,7 @@ export default function Component(props) {
     } else if (string.trim() === 'Paid') {
       color = '#45A884'
     } else if (string.trim() === 'Canceled') {
-      color = '#D93F21'
+      color = '#FA6848'
     }
     return {
       status,
