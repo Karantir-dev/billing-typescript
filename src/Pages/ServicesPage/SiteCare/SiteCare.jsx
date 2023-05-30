@@ -23,7 +23,7 @@ import * as route from '../../../routes'
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'zabota-o-servere')
 
-  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
+  const { t } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -95,7 +95,7 @@ export default function Component() {
     const data = {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
-      lang: i18n?.language,
+      lang: 'en',
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -166,7 +166,7 @@ export default function Component() {
   const sendEditSiteCareHandler = (values = {}, elid = null) => {
     let data = {
       elid: elid || parseSelectedItemId(),
-      lang: i18n?.language,
+      lang: 'en',
       p_num,
       ...values,
     }

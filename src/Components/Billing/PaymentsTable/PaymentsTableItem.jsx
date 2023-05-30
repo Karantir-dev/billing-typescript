@@ -188,13 +188,13 @@ export default function Component(props) {
         {mobile && (
           <div className={s.item_title}>{t('Payment method', { ns: 'other' })}:</div>
         )}
-        {t(paymethod).length > 10 ? (
-          <HintWrapper popupClassName={s.HintWrapper} label={t(paymethod)}>
-            <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
-          </HintWrapper>
-        ) : (
+        <HintWrapper
+          disabled={t(paymethod).length < 10}
+          popupClassName={s.HintWrapper}
+          label={t(paymethod)}
+        >
           <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
-        )}
+        </HintWrapper>
       </div>
       <div className={s.tableBlockSeventh}>
         {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}

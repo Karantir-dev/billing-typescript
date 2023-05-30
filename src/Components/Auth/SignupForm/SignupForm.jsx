@@ -15,7 +15,7 @@ import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
-import { SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
+import { SPECIAL_CHARACTERS_REGEX, EMAIL_SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
 
@@ -52,7 +52,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
-      .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
