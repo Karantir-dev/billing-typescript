@@ -14,12 +14,13 @@ import {
   MainEmailConfirmation,
 } from '../../Components'
 import { useTranslation } from 'react-i18next'
-import { authSelectors } from '../../Redux'
-import { useSelector } from 'react-redux'
+import { authOperations, authSelectors } from '../../Redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as route from '../../routes'
 
 const Component = () => {
   const { i18n } = useTranslation()
+  const dispatch = useDispatch()
   const isLoginedBefore = useSelector(authSelectors.getIsLogined)
   const geoData = useSelector(authSelectors.getGeoData)
 
@@ -59,11 +60,15 @@ const Component = () => {
     if (geoData && geoData?.clients_country_code && !isLoginedBefore) {
       changeLang(geoData?.clients_country_code)
     } else {
-      setIsLangLoading(false)
+      if (geoData?.clients_country_code) {
+        setIsLangLoading(false)
+      }
     }
   }, [geoData])
 
   useEffect(() => {
+    dispatch(authOperations.getLocation())
+
     const clearRegisterCountries = () => localStorage.removeItem('countriesForRegister')
 
     window.addEventListener('beforeunload', clearRegisterCountries)

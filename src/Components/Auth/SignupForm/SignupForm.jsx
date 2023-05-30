@@ -40,10 +40,6 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
   const [seconds, setSeconds] = useState(20)
 
-  useEffect(() => {
-    !geoCountryId && dispatch(authOperations.getLocation())
-  }, [])
-
   // const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
