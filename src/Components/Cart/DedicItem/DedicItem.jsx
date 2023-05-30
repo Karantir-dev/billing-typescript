@@ -10,7 +10,7 @@ import s from './DedicItem.module.scss'
 export default function DedicItem(props) {
   const { t } = useTranslation(['cart', 'dedicated_servers', 'other', 'vds'])
 
-  const { desc, pricelist_name, deleteItemHandler, period } = props
+  const { desc, pricelist_name, deleteItemHandler, period, count } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -116,7 +116,14 @@ export default function DedicItem(props) {
 
           <div>
             <p className={s.tariff_name}>{pricelist_name} </p>
-            <div className={s.periodInfo}></div>
+            <div className={s.periodInfo}>
+              <span>
+                {t('Period', { ns: 'other' })}: {period} {translatePeriodToMonths(period)}
+              </span>
+              <span>
+                {t('amount', { ns: 'vds' })}: {count} {t('pcs.', { ns: 'vds' })}
+              </span>
+            </div>
           </div>
 
           {typeof deleteItemHandler === 'function' && tabletOrHigher && (
@@ -147,10 +154,6 @@ export default function DedicItem(props) {
               {renderDesc()?.postSpeed?.split('-')[0]}, &nbsp;
             </span>
           )}
-
-          <span className={s.value}>
-            <b>{t('Period', { ns: 'other' })}:</b> {period} {translatePeriodToMonths(period)}
-          </span>
         </div>
       </div>
     </>

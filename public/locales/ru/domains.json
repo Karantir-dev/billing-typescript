@@ -118,5 +118,11 @@
 
   "Use the name servers": "Используйте серверы имен",
 
+  "The tariff plan has been changed": "Изменен тариф",
+  "The old plan": "Старый тариф",
+  "The new plan": "Новый тариф",
+  "Provider's employee or system": "Сотрудник или система поставщика",
+  "base price": "базовая цена",
+  "Total amount": "Общая сумма",
   "ns_format": "Формат записи \"ns.example.com\""
 }

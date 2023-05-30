@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { userOperations, vhostOperations } from '../../../../Redux'
-import { useScrollToElement } from '../../../../utils'
+import { useScrollToElement, translatePeriod } from '../../../../utils'
 import * as routes from '../../../../routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -15,6 +15,7 @@ export default function Component() {
     'other',
     'dedicated_servers',
     'domains',
+    'autoprolong'
   ])
   const dispatch = useDispatch()
 
@@ -147,28 +148,6 @@ export default function Component() {
     }
   }
 
-  const translateAutorenewSelect = elem => {
-    const price = parsePrice(elem)?.amount || 0
-
-    let period = ''
-
-    if (elem?.includes('per month')) {
-      period = 'per month'
-    } else if (elem?.includes('for three months')) {
-      period = 'for three months'
-    } else if (elem?.includes('half a year')) {
-      period = 'half a year'
-    } else if (elem?.includes('per year')) {
-      period = 'per year'
-    } else if (elem?.includes('for two years')) {
-      period = 'for two years'
-    } else if (elem?.includes('for three years')) {
-      period = 'for three years'
-    }
-
-    return price + ' EUR ' + t(period)
-  }
-
   return (
     <div className={s.page_wrapper}>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -227,15 +206,10 @@ export default function Component() {
                 value={autoprolong}
                 label={`${t('Auto renewal', { ns: 'domains' })}:`}
                 className={s.select}
-                itemsList={paramsData?.autoprolong_list?.map(el => {
-                  return {
-                    label:
-                      el.$ === 'Disabled'
-                        ? t(el.$.trim())
-                        : translateAutorenewSelect(el.$.trim()),
+                itemsList={paramsData?.autoprolong_list?.map(el => ({
+                    label: translatePeriod(el.$, t),
                     value: el.$key,
-                  }
-                })}
+                }))}
                 isShadow
               />
             ) : null}

@@ -8,7 +8,15 @@ import cartOperations from '../cart/cartOperations'
 import actions from '../actions'
 
 const userInfo = (data, dispatch) => {
-  const { $realname, $balance, $email, $phone, $id, $email_verified } = data.doc.user
+  const {
+    $realname,
+    $balance,
+    $email,
+    $phone,
+    $id,
+    $email_verified,
+    $need_phone_validate,
+  } = data.doc.user
   dispatch(
     userActions.setUserInfo({
       $realname,
@@ -17,6 +25,7 @@ const userInfo = (data, dispatch) => {
       $phone,
       $id,
       $email_verified,
+      $need_phone_validate,
     }),
   )
 }

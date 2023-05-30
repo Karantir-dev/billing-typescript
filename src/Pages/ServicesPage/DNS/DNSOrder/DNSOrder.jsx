@@ -23,7 +23,7 @@ export default function FTPOrder() {
 
   const isSiteCareOrderAllowed = location?.state?.isDnsOrderAllowed
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])

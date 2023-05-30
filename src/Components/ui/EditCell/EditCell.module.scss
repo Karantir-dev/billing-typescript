@@ -42,17 +42,8 @@
   }
 }
 
-.HintWrapper {
-  width: 130%;
-  word-break: break-all;
-  white-space: normal;
-}
-
-.hint {
-  width: 100%;
-}
-
 .editBlock {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -61,12 +52,13 @@
   border-radius: 5px;
   height: 39px;
   max-height: 39px;
-  padding: 10px;
   width: 100%;
   gap: 5px;
 
   input {
+    position: relative;
     flex-grow: 1;
+    padding: 10px 30px 10px 10px;
     border: none;
     outline: none;
     font-style: normal;
@@ -76,9 +68,25 @@
     background: transparent;
     color: var(--main-text);
     overflow-x: auto;
+    z-index: 1;
   }
 }
 
-.editBtnOk {
-  cursor: pointer;
+.btn {
+  display: none;
+  position: absolute;
+  right: 10px;
+
+  &_show {
+    display: block;
+  }
+
+  &__check {
+    cursor: pointer;
+    z-index: 2;
+  }
+}
+
+.edit_icon {
+  fill: var(--accent-color-light);
 }

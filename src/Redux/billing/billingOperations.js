@@ -633,6 +633,7 @@ const createPaymentMethod =
                 const ecommerceData = {
                   event: 'purchase',
                   ecommerce: {
+                    payment_type: body?.paymethod_name,
                     transaction_id: data.doc?.payment_id?.$,
                     affiliation: 'cp.zomro.com',
                     value: Number(body?.amount) || 0,

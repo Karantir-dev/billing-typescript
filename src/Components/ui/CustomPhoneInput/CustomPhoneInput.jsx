@@ -25,6 +25,7 @@ export default function CustomPhoneInput(props) {
     userId,
     isRequired,
     buttonClass,
+    setCountryCode,
     ...restProps
   } = props
 
@@ -32,7 +33,8 @@ export default function CustomPhoneInput(props) {
 
   const lang = returnLanguage(i18n.language === 'en' ? 'es' : i18n.language)
 
-  const onValueChange = value => {
+  const onValueChange = (value, data) => {
+    setCountryCode && setCountryCode(data?.countryCode)
     setFieldValue(userId ? 'phone' + userId : name, value)
   }
 
@@ -46,7 +48,7 @@ export default function CustomPhoneInput(props) {
         {isRequired ? requiredLabel(label) : label}
       </p>
       <PhoneInput
-        country={'ua'}
+        country={'us'}
         localization={lang}
         onChange={onValueChange}
         onBlur={handleBlur}

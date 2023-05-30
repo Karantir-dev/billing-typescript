@@ -9,7 +9,7 @@ import { BASE_URL } from '../../../../config/config'
 import { translatePeriod } from '../../../../utils'
 
 export default function Component(props) {
-  const { t } = useTranslation(['domains', 'other', 'vds', 'payers'])
+  const { t } = useTranslation(['domains', 'other', 'vds', 'payers', 'autoprolong'])
 
   const {
     names,

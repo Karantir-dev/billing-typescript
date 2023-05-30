@@ -242,5 +242,7 @@
   "month count 3/24": "თვეები",
   "month count 6/12/36": "თვეები",
 
+  "fraud_invalid_code": "არასწორი დამადასტურებელი კოდი",
+  "The phone has been successfully verified": "ტელეფონი წარმატებით დადასტურდა",
   "payment_saved": "გადახდის მეთოდი წარმატებულად შენახულია"
 }

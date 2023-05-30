@@ -109,3 +109,5 @@ export { default as Statistic } from './svg/Statistic.jsx'
 export { default as Reference } from './svg/Reference.jsx'
 export { default as Home } from './svg/Home.jsx'
 export { default as Money } from './svg/Money.jsx'
+
+export { default as PhoneVerificationIcon } from './svg/PhoneVerificationIcon.jsx'

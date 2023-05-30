@@ -117,6 +117,12 @@
   "ns_additional": "დამატებითი NS",
 
   "Use the name servers": "გამოიყენეთ სახელების სერვერები",
+  "The tariff plan has been changed": "ტარიფის შეიცვალა",
+  "The old plan": "ძველი ტარიფი",
+  "The new plan": "ახალი ტარიფი",
+  "Provider's employee or system": "მსესხებლის თანამშრომელი ან სისტემა",
+  "base price": "საფარიფიფო ფასი",
+  "Total amount": "სულ თანხა",
 
   "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\""
 }

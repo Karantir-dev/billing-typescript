@@ -12,7 +12,13 @@ import { dedicOperations } from '../../../../Redux'
 import { translatePeriod } from '../../../../utils'
 
 export default function EditServerModal({ elid, closeFn }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'crumbs'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'vds',
+    'other',
+    'crumbs',
+    'autoprolong',
+  ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   const [currentIP, setCurrentIP] = useState()
@@ -179,13 +185,10 @@ export default function EditServerModal({ elid, closeFn }) {
                           label={t('autoprolong')}
                           getElement={item => setFieldValue('autoprolong', item)}
                           isShadow
-                          itemsList={initialState?.autoprolonglList?.map(el => {
-                            const labelText = translatePeriod(el?.$, t)
-                            return {
-                              label: labelText,
-                              value: el.$key,
-                            }
-                          })}
+                          itemsList={initialState?.autoprolonglList?.map(el => ({
+                            label: translatePeriod(el?.$, t),
+                            value: el.$key,
+                          }))}
                           className={s.select}
                         />
                         <InputField
