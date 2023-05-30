@@ -324,6 +324,7 @@ const setPaymentMethods =
                   const ecommerceData = {
                     event: 'purchase',
                     ecommerce: {
+                      payment_type: cartData?.payment_name,
                       transaction_id: data.doc?.payment_id?.$,
                       affiliation: 'cp.zomro.com',
                       value: Number(cartData?.total_sum) || 0,

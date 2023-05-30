@@ -74,6 +74,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
@@ -95,6 +96,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
@@ -124,6 +126,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
