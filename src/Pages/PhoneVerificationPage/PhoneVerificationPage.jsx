@@ -29,6 +29,8 @@ export default function Component() {
   const [isTryLimit, setIsTryLimit] = useState(false)
   const [isCodeStep, setIsCodeStep] = useState(false)
 
+  const phoneFormSettings = state?.phone ? state?.phone : null
+
   useEffect(() => {
     if (!isCodeStep) {
       dispatch(settingsOperations.fetchValidatePhone(setValidatePhoneData))
@@ -138,7 +140,7 @@ export default function Component() {
       validateOnChange={false}
       validationSchema={validationSchema}
       initialValues={{
-        phone: validatePhoneData?.phone || userInfo?.$phone || '',
+        phone: phoneFormSettings || userInfo?.$phone || '',
         type: validatePhoneData?.type || '',
         action_type: validatePhoneData?.action_type || undefined,
         code: '',
