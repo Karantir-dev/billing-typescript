@@ -52,6 +52,7 @@ export default function Component() {
     'dedicated_servers',
     'crumbs',
     'domains',
+    'user_settings'
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -1222,7 +1223,7 @@ export default function Component() {
                           onClick={() => setShowMore(!showMore)}
                           className={cn(s.readMore, s.padding)}
                         >
-                          {t(showMore ? 'Collapse' : 'Read more')}
+                          {t(showMore ? 'Collapse' : 'Read more', {ns: 'user_settings'})}
                         </button>
                       )}
 

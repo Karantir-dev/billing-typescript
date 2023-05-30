@@ -70,7 +70,8 @@ p {
   outline-offset: 0;
 }
 
-.notInViewport {
+.notInViewport,
+.swiper-slide-prev {
   opacity: 0.45;
 }
 
