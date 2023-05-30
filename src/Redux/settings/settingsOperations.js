@@ -863,6 +863,12 @@ const fetchValidatePhoneStart =
           if (data?.doc?.error?.$type === 'fraud_phone_try_limit') {
             setIsTryLimit && setIsTryLimit(true)
           }
+
+          if (data?.doc?.error?.$type === 'exists') {
+            toast.error(i18n.t('this_phone_exists', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
+          }
           throw new Error(data.doc.error.msg.$)
         }
 

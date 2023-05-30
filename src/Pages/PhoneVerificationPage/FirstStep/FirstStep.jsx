@@ -35,6 +35,7 @@ export default function Component(props) {
           handleBlur={handleBlur}
           setFieldValue={setFieldValue}
           name="phone"
+          disabled
         />
       )}
 
