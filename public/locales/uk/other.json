@@ -245,5 +245,7 @@
   "month count 3/24": "місяці",
   "month count 6/12/36": "місяців",
 
+  "fraud_invalid_code": "Неправильний код підтвердження",
+  "The phone has been successfully verified": "Телефон успішно перевірено",
   "payment_saved": "Спосіб оплати успішно збережено"
 }

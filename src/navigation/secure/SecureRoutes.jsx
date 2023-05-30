@@ -47,6 +47,7 @@ import {
   SiteCareOrder,
   VPN,
   VpnOrder,
+  PhoneVerificationPage,
   PaymentSaved
 } from '../../Pages'
 import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
@@ -97,7 +98,7 @@ const Component = () => {
 
   if (location.pathname === route.VDS) {
     return <Navigate to={route.VPS} />
-  } 
+  }
 
   if (location.pathname === route.VDS_ORDER) {
     return <Navigate to={route.VPS_ORDER} />
@@ -436,9 +437,12 @@ const Component = () => {
             </PageTitleRender>
           }
         />
-        <Route path={`${route.USER_SETTINGS}`} element={<UserSettings />}>
+        <Route path={route.USER_SETTINGS} element={<UserSettings />}>
           <Route path=":path/" element={<UserSettings />} />
         </Route>
+
+        <Route path={route.PHONE_VERIFICATION} element={<PhoneVerificationPage />} />
+
         <Route path={route.SOC_NET_AUTH} element={<SocialNetAdd />} />
         <Route path={`${route.AFFILIATE_PROGRAM}/*`} element={<AffiliateProgram />} />
         <Route

@@ -1,0 +1,66 @@
+.phone_verification_page {
+  display: flex;
+  padding-top: 44px;
+  flex-direction: column;
+}
+
+.title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  leading-trim: both;
+  text-edge: cap;
+  color: var(--main-text);
+
+  margin-bottom: 30px;
+}
+
+.backBtn {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 130%;
+  leading-trim: both;
+  text-edge: cap;
+
+  color: var(--transparent-color);
+  border-bottom: 1px solid var(--transparent-color);
+
+  width: min-content;
+  margin-bottom: 35px;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.attempts {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 120%;
+  leading-trim: both;
+  text-edge: cap;
+
+  color: var(--main-text);
+  margin-bottom: 24px;
+}
+
+//ADAPTIVE
+
+@media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1280px) {
+}
+
+@media screen and (min-width: 1550px) {
+  .title {
+    font-size: 22px;
+  }
+}

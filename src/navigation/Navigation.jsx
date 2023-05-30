@@ -40,33 +40,17 @@ const Component = () => {
   }, [onlineStatus])
 
   useEffect(() => {
-    // const checkOnlineStatus = online => {
-    //   fetch('https://www.google.com', { mode: 'no-cors' })
-    //     .then(() => {
-    //       !online && dispatch(actions.setOnline())
-    //     })
-    //     .catch(() => {
-    //       dispatch(actions.setOffline())
-    //     })
-    //     .finally(() => {
-
-    //       setTimeout(() => {
-    //         checkOnlineStatus(online)
-    //       }, 3000)
-    //     })
-    // }
-
-    // checkOnlineStatus(onlineStatus)
-
-    const intervalId = setInterval(() => {
-      fetch('https://www.google.com', { mode: 'no-cors' })
-        .then(() => {
-          !onlineStatus && dispatch(actions.setOnline())
-        })
-        .catch(() => {
-          onlineStatus && dispatch(actions.setOffline())
-        })
-    }, 3000)
+    const intervalId =
+      process.env.NODE_ENV !== 'development' &&
+      setInterval(() => {
+        fetch('https://www.google.com', { mode: 'no-cors' })
+          .then(() => {
+            !onlineStatus && dispatch(actions.setOnline())
+          })
+          .catch(() => {
+            onlineStatus && dispatch(actions.setOffline())
+          })
+      }, 3000)
 
     return () => {
       clearInterval(intervalId)
@@ -75,7 +59,7 @@ const Component = () => {
 
   useEffect(() => {
     const sessionId = cookies.getCookie('sessionId')
-    if(sessionId) {
+    if (sessionId) {
       dispatch(authActions.loginSuccess(sessionId))
     }
   }, [])

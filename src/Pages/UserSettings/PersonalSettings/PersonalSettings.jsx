@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import * as routes from '../../../routes'
-import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom'
-import { Profile } from '../../../images'
+import { Link, useNavigate } from 'react-router-dom'
+import { PhoneVerificationIcon, Profile } from '../../../images'
 import {
   InputField,
   CustomPhoneInput,
@@ -24,6 +22,9 @@ import { useTranslation } from 'react-i18next'
 import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
 import { isBase64 } from '../../../utils'
 import s from './PersonalSettings.module.scss'
+import * as routes from '../../../routes'
+import * as Yup from 'yup'
+import 'yup-phone'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
@@ -31,6 +32,7 @@ export default function Component({ isComponentAllowedToEdit }) {
   const { t } = useTranslation(['user_settings', 'other'])
 
   const [avatarFile, setAvatarFile] = useState()
+  const [countryCode, setCountryCode] = useState(null)
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
   const userParams = useSelector(settingsSelectors.getUserParams)
@@ -44,9 +46,20 @@ export default function Component({ isComponentAllowedToEdit }) {
     dispatch(settingsOperations?.setupEmailConfirm(userInfo?.$id, values))
   }
 
+  useEffect(() => {
+    if (userEdit) {
+      const findCountry = userEdit?.phone_countries?.find(
+        e => e?.$key === userEdit?.phone_country,
+      )
+      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
+      setCountryCode(code)
+    }
+  }, [userEdit])
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
     email_notif: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
+    phone: Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
   })
 
   const emailStatusRender = statusText => {
@@ -198,12 +211,14 @@ export default function Component({ isComponentAllowedToEdit }) {
                     value={values.phone}
                     wrapperClass={s.phoneInput}
                     labelClass={s.phoneInputLabel}
+                    setCountryCode={setCountryCode}
                     label={`${t('Phone', { ns: 'other' })}:`}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
                     name="phone"
                   />
+
                   <Select
                     label={`${t('Timezone', { ns: 'other' })}:`}
                     value={values.timezone}
@@ -225,6 +240,19 @@ export default function Component({ isComponentAllowedToEdit }) {
                     background
                   />
                 </div>
+
+                {userInfo?.$need_phone_validate === 'true' &&
+                  userEdit?.phone?.phone?.length > 4 && (
+                    <div className={s.formRow}>
+                      <Link
+                        className={s.phoneVerificationLink}
+                        to={routes.PHONE_VERIFICATION}
+                        state={{ prevPath: location.pathname }}
+                      >
+                        <PhoneVerificationIcon /> <span>{t('Phone Verification')}</span>
+                      </Link>
+                    </div>
+                  )}
               </div>
               <div className={s.bottomBlock}>
                 <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>

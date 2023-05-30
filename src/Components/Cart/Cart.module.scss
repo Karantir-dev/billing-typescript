@@ -158,7 +158,7 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
-  // 
+  //
 }
 
 .cancel {
@@ -661,6 +661,37 @@
   padding-right: 35px;
 }
 
+.phoneVerificationBlock {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms_shadow);
+
+  margin: 22px 0;
+
+  span {
+    margin-left: 11px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    leading-trim: both;
+    text-edge: cap;
+
+    background: linear-gradient(180.08deg, #ff6f66 12.11%, #fa487d 98.37%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    max-width: 440px;
+  }
+
+  svg {
+    min-width: 17px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   // .formBlock {
   //   &:not(:first-child) {
@@ -697,7 +728,6 @@
   //   }
   // }
 
-
   .padding {
     padding: 0 35px;
   }
@@ -721,7 +751,6 @@
     width: auto;
     margin: 13px 0 0 0;
   }
-
 
   .inputPerson {
     max-width: 30%;
