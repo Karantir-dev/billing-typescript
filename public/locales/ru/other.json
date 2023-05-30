@@ -242,5 +242,6 @@
   "month count 6/12/36": "месяцев",
 
   "fraud_invalid_code": "Неверный код подтверждения",
-  "The phone has been successfully verified": "Телефон успешно подтвержден"
+  "The phone has been successfully verified": "Телефон успешно подтвержден",
+  "payment_saved": "Способ оплаты успешно сохранен"
 }

@@ -83,7 +83,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      lang: 'en',
       p_num: historyCurrentPage,
     }
     dispatch(
@@ -128,7 +128,7 @@ export default function Component() {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      lang: 'en',
     }
     dispatch(vhostOperations.openPlatformVhost(data))
   }
@@ -162,7 +162,7 @@ export default function Component() {
     let data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
-      lang: i18n?.language,
+      lang: 'en',
     }
 
     if (d) {
@@ -179,7 +179,7 @@ export default function Component() {
   const sendEditVhostHandler = (values = {}) => {
     let data = {
       elid: selctedItem?.id?.$,
-      lang: i18n?.language,
+      lang: 'en',
       ...values,
     }
 

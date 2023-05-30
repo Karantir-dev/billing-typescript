@@ -478,6 +478,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -490,7 +491,15 @@ export default function Component() {
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
-                const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
+                const {
+                  id,
+                  desc,
+                  cost,
+                  pricelist_name,
+                  discount_percent,
+                  fullcost,
+                  count,
+                } = el
                 return (
                   <SiteCareItem
                     key={id?.$}
@@ -505,6 +514,8 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    count={count}
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -542,6 +553,7 @@ export default function Component() {
                         : null
                     }
                     count={count}
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -569,6 +581,7 @@ export default function Component() {
                           ? () => deleteBasketItemHandler(id?.$)
                           : null
                       }
+                      period={el['item.period']?.$}
                     />
                   )
                 })}
@@ -607,6 +620,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -672,6 +686,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -708,6 +723,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}
@@ -744,6 +760,7 @@ export default function Component() {
                         ? () => deleteBasketItemHandler(id?.$)
                         : null
                     }
+                    period={el['item.period']?.$}
                   />
                 )
               })}

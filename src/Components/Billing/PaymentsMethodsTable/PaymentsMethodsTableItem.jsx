@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react'
 import s from './PaymentsMethodsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Reload, Edit, CheckEdit } from '../../../images'
+import { MoreDots, Delete, Reload } from '../../../images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { shortTitle, useOutsideAlerter } from '../../../utils'
-import { HintWrapper } from '../../../Components'
+import { useOutsideAlerter } from '../../../utils'
+import { EditCell } from '../../../Components'
 
 export default function Component(props) {
   const {
@@ -27,23 +27,11 @@ export default function Component(props) {
   const dropDownEl = useRef()
   const [isOpened, setIsOpened] = useState(false)
 
-  const [isEdit, setIsEdit] = useState(false)
-  const [editName, setEditName] = useState('')
-
   const closeMenuHandler = () => {
     setIsOpened(!isOpened)
   }
 
   useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
-
-  const editField = useRef()
-
-  const closeEditHandler = () => {
-    setIsEdit(!isEdit)
-    setEditName('')
-  }
-
-  useOutsideAlerter(editField, isEdit, closeEditHandler)
 
   const renderStatus = string => {
     const status = string?.trim()
@@ -70,10 +58,8 @@ export default function Component(props) {
     setIsOpened(false)
   }
 
-  const editNameHandler = () => {
-    editItemNameHandler(id, editName)
-
-    setIsEdit(false)
+  const editNameHandler = value => {
+    editItemNameHandler(id, value)
   }
 
   const renderDesktopLastColumn = () => {
@@ -106,107 +92,25 @@ export default function Component(props) {
     )
   }
 
+  const paymentName = t(customname?.trim() || name?.trim() || fullname?.trim(), {
+    ns: 'vds',
+  })
+
   return (
-    <div className={cn(s.item, { [s.edited]: isEdit })}>
+    <div className={cn(s.item)}>
       <div className={s.tableBlockFirst}>
         {mobile && <div className={s.item_title}>{t('Name')}:</div>}
-        {!isEdit ? (
-          <>
-            {fullname?.trim() === 'Personal account' || customname?.length < 25 ? (
-              <div
-                style={isEdit ? { overflow: 'inherit' } : {}}
-                className={cn(s.item_text, s.first_item)}
-                ref={editField}
-              >
-                <>
-                  {fullname?.trim() === 'Personal account' ? (
-                    <button disabled></button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setIsEdit(!isEdit)
-                        setEditName(
-                          customname?.trim() || name?.trim() || fullname?.trim(),
-                        )
-                      }}
-                    >
-                      <Edit />
-                    </button>
-                  )}
-
-                  <span>
-                    {t(
-                      shortTitle(editName) ||
-                        shortTitle(customname?.trim()) ||
-                        shortTitle(name?.trim()) ||
-                        shortTitle(fullname?.trim()),
-                      {
-                        ns: 'vds',
-                      },
-                    )}
-                  </span>
-                </>
-              </div>
-            ) : (
-              <HintWrapper
-                popupClassName={s.HintWrapper}
-                label={t(
-                  editName || customname?.trim() || name?.trim() || fullname?.trim(),
-                  {
-                    ns: 'vds',
-                  },
-                )}
-              >
-                <div
-                  style={isEdit ? { overflow: 'inherit' } : {}}
-                  className={cn(s.item_text, s.first_item)}
-                  ref={editField}
-                >
-                  <>
-                    {fullname?.trim() === 'Personal account' ? (
-                      <button disabled></button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          setIsEdit(!isEdit)
-                          setEditName(
-                            customname?.trim() || name?.trim() || fullname?.trim(),
-                          )
-                        }}
-                      >
-                        <Edit />
-                      </button>
-                    )}
-
-                    <span>
-                      {t(
-                        shortTitle(editName) ||
-                          shortTitle(customname?.trim()) ||
-                          shortTitle(name?.trim()) ||
-                          shortTitle(fullname?.trim()),
-                        {
-                          ns: 'vds',
-                        },
-                      )}
-                    </span>
-                  </>
-                </div>
-              </HintWrapper>
-            )}
-          </>
+        {fullname?.trim() === 'Personal account' ? (
+          <span className={s.personal_account}>{paymentName}</span>
         ) : (
-          <div
-            style={isEdit ? { overflow: 'inherit' } : {}}
-            className={cn(s.item_text, s.first_item)}
-            ref={editField}
-          >
-            <div className={s.editBlock}>
-              <button className={s.editBtnOk} onClick={editNameHandler}>
-                <CheckEdit />
-              </button>
-              <input value={editName} onChange={e => setEditName(e.target.value)} />
-            </div>
-          </div>
+          <EditCell
+            originName={fullname}
+            onSubmit={editNameHandler}
+            placeholder={paymentName}
+            isShadow={!mobile}
+            lettersAmount={25}
+            className={s.edit_cell}
+          />
         )}
       </div>
       <div className={s.tableBlockSecond}>

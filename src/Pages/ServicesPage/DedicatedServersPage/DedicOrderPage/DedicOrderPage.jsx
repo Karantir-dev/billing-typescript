@@ -28,7 +28,7 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive, useScrollToElement } from '../../../../utils'
+import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -41,7 +41,7 @@ export default function DedicOrderPage() {
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
-  const { t } = useTranslation(['dedicated_servers', 'other', 'vds'])
+  const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const deskOrHigher = useMediaQuery({ query: '(min-width: 1549px)' })
 
@@ -403,8 +403,10 @@ export default function DedicOrderPage() {
                           src={require('../../../../images/countryFlags/netherlands_flag.webp')}
                           alt="nth_flag"
                         />
-                        <p className={s.country_name}>{countryName}</p>
-                        <span className={s.datacenter}>{datacenterName}</span>
+                        <div className={s.datacenter__info}>
+                          <p className={s.country_name}>{countryName}</p>
+                          <span className={s.datacenter}>{datacenterName}</span>
+                        </div>
                       </button>
                     </div>
                   )
@@ -416,59 +418,69 @@ export default function DedicOrderPage() {
                 })}
               >
                 <div className={s.first_processors_block}>
-                  {tarifList?.fpricelist?.map(item => {
-                    return (
-                      <div
-                        className={classNames(s.processor_card, {
-                          [s.selected]: true,
-                        })}
-                        key={item?.$key}
-                      >
-                        <span className={s.processor_name}>{item?.$}</span>
-                        <Toggle
-                          setValue={() => {
-                            setFieldValue('processor', item?.$key)
-                            if (filters.includes(item?.$key)) {
-                              setFilters([...filters.filter(el => el !== item?.$key)])
-                            } else {
-                              setFilters([...filters, item?.$key])
-                            }
-                            resetForm()
-                            setParameters(null)
-                            setTarifChosen(false)
-                          }}
-                        />
-                      </div>
-                    )
-                  })}
+                  <p className={s.processors_block__label}>{t('port')}:</p>
+                  <div className={s.processors_block__row}>
+                    {tarifList?.fpricelist
+                      ?.filter(el => el.$.toLowerCase().includes('port'))
+                      .map(item => {
+                        return (
+                          <div
+                            className={classNames(s.processor_card, {
+                              [s.selected]: true,
+                            })}
+                            key={item?.$key}
+                          >
+                            <Toggle
+                              setValue={() => {
+                                setFieldValue('processor', item?.$key)
+                                if (filters.includes(item?.$key)) {
+                                  setFilters([...filters.filter(el => el !== item?.$key)])
+                                } else {
+                                  setFilters([...filters, item?.$key])
+                                }
+                                resetForm()
+                                setParameters(null)
+                                setTarifChosen(false)
+                              }}
+                              view="radio"
+                            />
+                            <span className={s.processor_name}>{item?.$}</span>
+                          </div>
+                        )
+                      })}
+                  </div>
                 </div>
-                {/* <div className={s.second_processors_block}>
-                  {tarifList?.fpricelist?.slice(1).map(item => {
-                    return (
-                      <div
-                        className={classNames(s.processor_card, {
-                          [s.selected]: true,
-                        })}
-                        key={item?.$key}
-                      >
-                        <span className={s.processor_name}>{item?.$}</span>
-                        <Toggle
-                          setValue={() => {
-                            setFieldValue('processor', item?.$key)
-                            if (filters.includes(item?.$key)) {
-                              setFilters([...filters.filter(el => el !== item?.$key)])
-                            } else {
-                              setFilters([...filters, item?.$key])
-                            }
-                            resetForm()
-                            setParameters(null)
-                            setTarifChosen(false)
-                          }}
-                        />
-                      </div>
-                    )
-                  })}
-                </div> */}
+                <div className={s.second_processors_block}>
+                  <p className={s.processors_block__label}>{t('server_model')}:</p>
+                  <div className={s.processors_block__row}>
+                    {tarifList?.fpricelist?.filter(el => !el.$.toLowerCase().includes('port')).map(item => {
+                      return (
+                        <div
+                          className={classNames(s.processor_card, {
+                            [s.selected]: true,
+                          })}
+                          key={item?.$key}
+                        >
+                          <Toggle
+                            setValue={() => {
+                              setFieldValue('processor', item?.$key)
+                              if (filters.includes(item?.$key)) {
+                                setFilters([...filters.filter(el => el !== item?.$key)])
+                              } else {
+                                setFilters([...filters, item?.$key])
+                              }
+                              resetForm()
+                              setParameters(null)
+                              setTarifChosen(false)
+                            }}
+                            view="radio"
+                          />
+                          <span className={s.processor_name}>{item?.$}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
 
               <Select
@@ -541,7 +553,7 @@ export default function DedicOrderPage() {
                             dynamicMainBullets: 2,
                           },
                         },
-                        865: {
+                        768: {
                           pagination: {
                             dynamicMainBullets: 3,
                           },
@@ -631,19 +643,10 @@ export default function DedicOrderPage() {
                       label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={values?.autoprolonglList?.map(el => {
-                        let labeltext = ''
-                        if (el.$.includes('per month')) {
-                          labeltext = el.$.replace('per month', t('per month'))
-                        } else {
-                          labeltext = t(el.$)
-                        }
-
-                        return {
-                          label: labeltext,
-                          value: el.$key,
-                        }
-                      })}
+                      itemsList={values?.autoprolonglList?.map(el => ({
+                        label: translatePeriod(el?.$, t),
+                        value: el.$key,
+                      }))}
                       className={s.select}
                     />
                     <InputField

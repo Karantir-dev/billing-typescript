@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { translatePeriodToMonths } from '../../../utils'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './DnsItem.module.scss'
@@ -16,7 +16,7 @@ export default function DnsItem(props) {
     'vds',
   ])
 
-  const { pricelist_name, deleteItemHandler } = props
+  const { pricelist_name, deleteItemHandler, count, period } = props
 
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
@@ -46,6 +46,16 @@ export default function DnsItem(props) {
                   ?.replace('domains', t('domains', { ns: 'dns' }))
                   ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}{' '}
               </span>
+              <div className={s.periodInfo}>
+                <span>
+                  {t('Period', { ns: 'other' })}: {period}{' '}
+                  {translatePeriodToMonths(period)}
+                </span>
+                <span>
+                  {t('amount', { ns: 'vds' })}: {count} {t('pcs.', { ns: 'vds' })}
+                </span>
+                <span></span>
+              </div>
             </div>
 
             {typeof deleteItemHandler === 'function' && tabletOrHigher && (

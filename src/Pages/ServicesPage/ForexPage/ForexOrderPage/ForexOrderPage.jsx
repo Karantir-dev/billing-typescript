@@ -29,6 +29,7 @@ export default function ForexOrderPage() {
     'dns',
     'virtual_hosting',
     'countries',
+    'autoprolong'
   ])
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })

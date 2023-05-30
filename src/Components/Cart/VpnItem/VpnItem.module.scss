@@ -82,7 +82,31 @@
   }
 }
 
+.periodInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--transparent-color);
+    text-align: start;
+
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .periodInfo {
+    flex-direction: row;
+  }
+  
   .domainItem {
     flex-direction: row;
     align-items: center;

@@ -37,6 +37,7 @@
   "unlimited traffic": "безлімітний трафік",
   "topay": "До оплати",
   "for three months": "три місяці",
+  "for two years": "два роки",
   "for 2 years": "два роки",
   "for three years": "три роки",
   "for": "за",
@@ -131,5 +132,7 @@
   "Windows": "ОС Windows",
 
   "server_name": "Ім'я сервера",
-  "server_placeholder": "Мій сервер"
+  "server_placeholder": "Мій сервер",
+  "port": "Порт",
+  "server_model": "Модель сервера"
 }

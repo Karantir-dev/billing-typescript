@@ -18,7 +18,13 @@ export default function ProlongModal({
   names,
   // itemsList
 }) {
-  const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'trusted_users'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'vds',
+    'other',
+    'trusted_users',
+    'autoprolong',
+  ])
 
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
@@ -231,9 +237,8 @@ export default function ProlongModal({
                         }}
                         isShadow
                         itemsList={initialState?.slist[0]?.val?.map(el => {
-                          const labelText = translatePeriod(el?.$, t)
                           return {
-                            label: labelText,
+                            label: translatePeriod(el?.$, t),
                             value: el.$key,
                           }
                         })}

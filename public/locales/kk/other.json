@@ -243,5 +243,6 @@
   "month count 6/12/36": "айда",
 
   "fraud_invalid_code": "Дұрыс емес растау коды",
-  "The phone has been successfully verified": "Телефон сәтті расталды"
+  "The phone has been successfully verified": "Телефон сәтті расталды",
+  "payment_saved": "Төлемді адамдар сәтті сақталды"
 }

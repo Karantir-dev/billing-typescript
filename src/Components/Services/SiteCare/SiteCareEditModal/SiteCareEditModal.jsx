@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
 import { Select, Button, InputField, CheckBox } from '../../..'
 import { Formik, Form } from 'formik'
+import { translatePeriod } from '../../../../utils'
 import s from './SiteCareEditModal.module.scss'
 
 export default function Component(props) {
-  const { t } = useTranslation(['virtual_hosting', 'other', 'domains'])
+  const { t } = useTranslation(['virtual_hosting', 'other', 'domains', 'autoprolong'])
 
   const {
     closeEditModalHandler,
@@ -74,7 +75,7 @@ export default function Component(props) {
                   }}
                   isShadow
                   itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
-                    label: $.trim(),
+                    label: translatePeriod($, t),
                     value: $key,
                   }))}
                   className={s.select}

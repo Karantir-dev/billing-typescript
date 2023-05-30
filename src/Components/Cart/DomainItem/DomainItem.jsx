@@ -2,11 +2,12 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Delete } from '../../../images'
 import s from './DomainItem.module.scss'
+import { translatePeriodToMonths } from '../../../utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['cart', 'other'])
 
-  const { desc, deleteItemHandler } = props
+  const { desc, deleteItemHandler, period } = props
 
   const renderDesc = () => {
     const beforeWord = 'Domain registration'
@@ -39,6 +40,11 @@ export default function Component(props) {
               {t('Data protection')}: {t(renderDesc()?.dataProtect?.trim())}
             </span>
           )}
+          <div className={s.periodInfo}>
+            <span>
+              {t('Period', { ns: 'other' })}: {period} {translatePeriodToMonths(period)}
+            </span>
+          </div>
         </div>
       </div>
       {deleteItemHandler && (
