@@ -20,7 +20,9 @@
 }
 
 .value {
+  padding: 0 10px;
   font-size: 15px;
+  overflow: hidden;
 }
 
 .price {
@@ -126,46 +128,11 @@
   background-color: var(--forms_bgc_4);
 }
 
-.item_text {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  max-width: 125px;
-  overflow-x: hidden;
-  height: 30px;
-  button {
-    margin-right: 10px;
-  }
-}
-
 .HintWrapper {
   max-width: 300px !important;
   white-space: break-all;
 }
 
-.editBlock {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  border-radius: 1px;
-  border: 1px solid rgba(255, 66, 168, 1);
-  height: 30px;
-  max-height: 39px;
-  padding: 10px;
-  max-width: 125px;
-
-  input {
-    border: none;
-    outline: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-
-    background: transparent;
-
-    color: var(--main-text);
-    overflow-x: auto;
-    max-width: 125px;
-  }
+.edit_cell {
+  margin: 0 -10px;
 }

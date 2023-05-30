@@ -1,8 +1,10 @@
 import qs from 'qs'
+import axios from 'axios'
+import i18n from './../../i18n'
 import { actions, billingActions, payersOperations, payersActions } from '..'
+import { API_URL } from '../../config/config'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
-import i18n from './../../i18n'
 import { checkIfTokenAlive, cookies } from '../../utils'
 
 const getPayments =
@@ -628,11 +630,10 @@ const createPaymentMethod =
                 body?.paymethod_name?.includes('Coinify') ||
                 body?.paymethod_name?.includes('Bitcoin')
               ) {
-                cookies.eraseCookie('payment_id')
-                window.dataLayer.push({ ecommerce: null })
-                window.dataLayer.push({
+                const ecommerceData = {
                   event: 'purchase',
                   ecommerce: {
+                    payment_type: body?.paymethod_name,
                     transaction_id: data.doc?.payment_id?.$,
                     affiliation: 'cp.zomro.com',
                     value: Number(body?.amount) || 0,
@@ -649,7 +650,12 @@ const createPaymentMethod =
                       },
                     ],
                   },
-                })
+                }
+                cookies.eraseCookie('payment_id')
+                window.dataLayer.push({ ecommerce: null })
+                window.dataLayer.push(ecommerceData)
+
+                dispatch(analyticSendHandler(ecommerceData))
               } else {
                 data.doc?.payment_id &&
                   cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
@@ -1128,6 +1134,10 @@ const editNamePaymentMethod =
       })
   }
 
+const analyticSendHandler = data => () => {
+  axios.post(`${API_URL}/api/analytic/add/`, data)
+}
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1153,4 +1163,5 @@ export default {
   addPaymentMethod,
   finishAddPaymentMethod,
   editNamePaymentMethod,
+  analyticSendHandler,
 }

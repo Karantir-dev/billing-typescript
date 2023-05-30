@@ -5,7 +5,7 @@ import s from './Pagination.module.scss'
 import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
-  const { onPageChange, totalCount, currentPage, pageSize, className, onPageItemChange } =
+  const { onPageChange, totalCount, currentPage, pageSize, className, onPageItemChange, paginationItemClassName } =
     props
 
   const { t } = useTranslation('other')
@@ -79,7 +79,7 @@ export default function Component(props) {
         {onPageItemChange && (
           <div className={s.pageItemContainer}>
             <div className={s.servperpage}>{t('Services per page')}:</div>
-            <div className={cn(s.paginationItem, s.inputItem)}>
+            <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
               <input
                 className={s.input}
                 onKeyDown={onPressEnter}
@@ -105,7 +105,7 @@ export default function Component(props) {
           >
             <div className={cn(s.arrow, s.left)} />
           </div>
-          <div className={cn(s.paginationItem, s.inputItem)}>
+          <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
             <input
               className={s.input}
               onKeyDown={onPressEnter}

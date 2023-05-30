@@ -43,8 +43,8 @@
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms_shadow_site);
   margin-bottom: 7px;
   position: relative;
 }
@@ -104,12 +104,6 @@
       position: relative;
       cursor: pointer;
       top: 2px;
-    }
-
-    .editBtnOk {
-      margin-left: 0px;
-      margin-right: 10px;
-      cursor: pointer;
     }
   }
 }
@@ -199,80 +193,17 @@
   margin-bottom: 15px;
 }
 
-.mobileBlock {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.btnsBlock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mobileBtn {
-  flex-basis: 32%;
-  padding: 10px 0;
-  background: var(--forms_bgc_4);
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 120%;
-
-  color: var(--main-text);
-  box-shadow: var(--forms2_shadow);
-
-  svg {
-    width: 16px;
-    margin-bottom: 5px;
-  }
-
-  svg,
-  path {
-    fill: var(--transparent-color);
-  }
-
-  &:hover {
-    svg,
-    path {
-      fill: url(#gradient);
-    }
-  }
-
-  &:not(:last-child) {
-    margin-right: 6px;
-  }
-}
-
-.editBlock {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  border-radius: 1px;
-  border: 1px solid rgba(255, 66, 168, 1);
-  height: 39px;
-  max-height: 39px;
-  padding: 10px;
-
-  input {
-    border: none;
-    outline: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-
-    background: transparent;
-
-    color: var(--main-text);
+.edit_cell {
+  @media screen and (max-width: 1024px) {
+    width: calc(100% + 20px);
+    align-self: flex-start;
+    margin: 0 -10px;
   }
 }
 
 @media screen and (min-width: 540px) {
   .item {
-    flex-basis: 48%;
+    width: 48%;
     margin-right: 0;
     margin-bottom: 10px;
 
@@ -296,7 +227,7 @@
 
 @media screen and (min-width: 768px) {
   .item {
-    flex-basis: 48.7%;
+    width: 48.7%;
     margin-right: 0;
     margin-bottom: 10px;
 
@@ -337,9 +268,10 @@
   }
 
   .item {
+    width: 100%;
     flex-direction: row;
     align-items: center;
-    padding: 20px 26px;
+    padding: 17px 26px;
 
     &.edited {
       padding: 11.5px 27px;
@@ -357,6 +289,7 @@
 
   .tableBlockFirst {
     flex-basis: 23%;
+    width: 23%;
   }
 
   .tableBlockSecond {
@@ -376,6 +309,10 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 0px;
+  }
+
+  .personal_account {
+    padding: 10px;
   }
 
   .item_text {
@@ -428,7 +365,7 @@
   }
 
   .item {
-    padding: 22px 27px;
+    padding: 17px 27px;
 
     &.edited {
       padding: 13.8px 27px;

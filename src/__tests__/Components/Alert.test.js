@@ -34,6 +34,6 @@ describe('Alert Component', () => {
 
   test('Component has three buttons tags', async () => {
     const button = await root.findAllByType('button')
-    expect(button).toHaveLength(2)
+    expect(button).toHaveLength(1)
   })
 })

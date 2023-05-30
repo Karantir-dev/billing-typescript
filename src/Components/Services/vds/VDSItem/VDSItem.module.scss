@@ -120,76 +120,13 @@
   }
 }
 
-.item_text {
-  display: flex;
-  flex-direction: row;
-  overflow-x: hidden;
-  justify-content: space-between;
-  white-space: nowrap;
-  width: 100%;
-
-  span {
-    width: calc(100% - 20px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
 .hint {
   width: 100%;
-}
-
-.edit_btn {
-  margin-left: 10px;
-  cursor: pointer;
-  &:hover {
-    svg {
-      fill:rgba(255, 66, 168, 1);
-    }
-  }
-}
-
-.placeholder_text {
-  color: var(--transparent-color);
-}
-
-.editBtnOk {
-  cursor: pointer;
 }
 
 .HintWrapper {
   width: 130%;
   word-break: break-all;
-}
-
-.editBlock {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  border-radius: 1px;
-  border: 1px solid rgba(255, 66, 168, 1);
-  border-radius: 5px;
-  height: 39px;
-  max-height: 39px;
-  padding: 10px;
-  padding: 10px 5px 10px 10px;
-  width: 100%;
-
-  input {
-    border: none;
-    outline: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-
-    background: transparent;
-
-    color: var(--main-text);
-    overflow-x: auto;
-    width: calc(100% - 20px);
-    padding-right: 5px;
-  }
 }
 
 .price {

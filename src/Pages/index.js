@@ -11,6 +11,8 @@ export { default as UserSettings } from './UserSettings/UserSettings'
 export { default as BillingPage } from './BillingPage/BillingPage'
 export { default as ErrorPage } from './ErrorPage/ErrorPage'
 
+export { default as PhoneVerificationPage } from './PhoneVerificationPage/PhoneVerificationPage'
+
 export { default as ServicesPage } from './ServicesPage/ServicesPage'
 
 export { default as DomainsPage } from './ServicesPage/DomainsPage/DomainsPage'
@@ -46,3 +48,4 @@ export { default as ForexOrderPage } from './ServicesPage/ForexPage/ForexOrderPa
 
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'
+export { default as PaymentSaved } from './PaymentSaved/PaymentSaved'

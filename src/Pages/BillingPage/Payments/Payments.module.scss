@@ -5,6 +5,11 @@
   margin-top: 30px;
 }
 
+.pagination__item {
+  background-color: var(--forms_bgc_1)!important;
+  box-shadow: var(--forms3_shadow)!important;
+}
+
 .no_service_wrapper {
   max-width: 531px;
   margin: 60px auto 0px;

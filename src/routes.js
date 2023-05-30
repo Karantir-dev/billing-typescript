@@ -11,7 +11,10 @@ export const HOME = '/'
 export const ACCESS_LOG = '/access_log'
 export const TRUSTED_USERS = '/trusted_users'
 export const SUPPORT = '/support'
+
 export const USER_SETTINGS = '/usrparam'
+export const PHONE_VERIFICATION = '/phone_verification'
+
 export const AFFILIATE_PROGRAM = '/affiliate'
 export const AFFILIATE_PROGRAM_ABOUT = 'about'
 export const AFFILIATE_PROGRAM_INCOME = 'income'
@@ -67,3 +70,5 @@ export const SITE_CARE_ORDER = '/services/site_care/site_care_order'
 
 export const VPN = '/services/vpn'
 export const VPN_ORDER = '/services/vpn/vpn_order'
+
+export const PAYMENT_SAVED = '/payment_method_saved'

@@ -47,9 +47,10 @@
 }
 
 .value {
+  padding: 0 10px;
   font-size: 15px;
   word-break: break-all;
-
+  overflow: hidden;
   &.active {
     color: var(--accent-color-light);
   }
@@ -170,61 +171,6 @@
   background-color: var(--forms_bgc_4);
 }
 
-.item_text {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  overflow-x: hidden;
-  height: 30px;
-  white-space: nowrap;
-}
-
-.edit_btn {
-  margin-left: 10px;
-  &:hover {
-    svg {
-      fill:rgba(255, 66, 168, 1);
-    }
-  }
-}
-
-.placeholder_text {
-  color: var(--transparent-color);
-}
-
-.editBtnOk {
-  cursor: pointer;
-}
-
-.HintWrapper {
-  width: 130%;
-  white-space: break-all;
-}
-
-.editBlock {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  border-radius: 1px;
-  border: 1px solid rgba(255, 66, 168, 1);
-  border-radius: 5px;
-  height: 30px;
-  max-height: 39px;
-  padding: 10px 2px 10px 10px;
-  max-width: 125px;
-
-  input {
-    border: none;
-    outline: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-
-    background: transparent;
-
-    color: var(--main-text);
-    overflow-x: auto;
-    max-width: 125px;
-  }
+.edit_cell {
+  margin: 0 -10px;
 }

@@ -13,6 +13,9 @@ export { default as Social } from './svg/Social.jsx'
 export { default as Support } from './svg/Support.jsx'
 export { default as WalletBalance } from './svg/WalletBalance.jsx'
 
+export { default as HintHelp } from './svg/HintHelp.jsx'
+export { default as Trash } from './svg/Trash.jsx'
+
 export { default as EditPencil } from './svg/EditPencil.jsx'
 
 export { default as Facebook } from './svg/Facebook.jsx'
@@ -106,3 +109,5 @@ export { default as Statistic } from './svg/Statistic.jsx'
 export { default as Reference } from './svg/Reference.jsx'
 export { default as Home } from './svg/Home.jsx'
 export { default as Money } from './svg/Money.jsx'
+
+export { default as PhoneVerificationIcon } from './svg/PhoneVerificationIcon.jsx'

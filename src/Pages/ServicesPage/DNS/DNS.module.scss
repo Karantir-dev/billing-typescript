@@ -48,6 +48,10 @@
   width: 204px;
   height: 53px;
   margin-right: 10px;
+
+  &__error {
+    color: var(--red-text);
+  }
 }
 
 .calendarBtn {

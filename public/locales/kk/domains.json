@@ -105,5 +105,24 @@
   "and": "және",
 
   "Name can only contain Latin letters": "Атау тек латын әріптерін қамтуы мүмкін",
-  "Lastname can only contain Latin letters": "Тегі тек латын әріптерін қамтуы мүмкін"
+  "Lastname can only contain Latin letters": "Тегі тек латын әріптерін қамтуы мүмкін",
+
+  "Apply to all": "Барлығына қолдану",
+  "Provide for each domain name": "Әрбір домен атауын қамтамасыз етіңіз",
+
+  "ns0": "NS 1",
+  "ns1": "NS 2",
+  "ns2": "NS 3",
+  "ns3": "NS 4",
+  "ns_additional": "Қосымша NS",
+
+  "Use the name servers": "Атау серверлерін пайдаланыңыз",
+
+  "The tariff plan has been changed": "Тариф өзгертілген",
+  "The old plan": "Ескі тариф",
+  "The new plan": "Жаңа тариф",
+  "Provider's employee or system": "Тапсырыс берушінің қызметкері немесе жүйесі",
+  "base price": "базарча қиммат",
+  "Total amount": "Тоталга сомма",
+  "ns_format": "Жазба пішімі \"ns.example.com\""
 }

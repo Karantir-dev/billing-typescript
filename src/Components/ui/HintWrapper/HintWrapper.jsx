@@ -9,32 +9,42 @@ export default function HintWrapper({
   children,
   popupClassName,
   wrapperClassName,
+  bottom,
+  disabled,
 }) {
   const ref = useRef(null)
   const [elemWidth, setElemWidth] = useState(0)
   const [pageWidth, setPageWidth] = useState(0)
 
   useEffect(() => {
-    setElemWidth(ref.current.offsetWidth)
+    setElemWidth(ref.current?.offsetWidth)
     setPageWidth(window.screen.width)
   }, [children, pageWidth, setElemWidth])
 
   return (
-    <div ref={ref} className={cn(s.hint_wrapper, wrapperClassName)}>
-      {children}
-      <div
-        className={cn(
-          s.hint_popup,
-          popupClassName,
-          elemWidth > 100 && pageWidth >= 1024 ? s.hint_full : s.hint_fit,
-        )}
-      >
-        <div className={s.hint_pointer_wrapper}>
-          <div className={s.pointer}></div>
+    <>
+      {disabled ? (
+        children
+      ) : (
+        <div ref={ref} className={cn(s.hint_wrapper, wrapperClassName)}>
+          {children}
+          <div
+            className={cn(
+              s.hint_popup,
+              popupClassName,
+              { [s.bottom]: bottom },
+              elemWidth > 100 && pageWidth >= 1024 ? s.hint_full : s.hint_fit,
+            )}
+          >
+            <div className={cn(s.hint_pointer_wrapper, { [s.bottom]: bottom })}>
+              <div className={cn(s.pointer, { [s.bottom]: bottom })}></div>
+            </div>
+
+            {label}
+          </div>
         </div>
-        {label}
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 
@@ -43,4 +53,6 @@ HintWrapper.propTypes = {
   children: PropTypes.element.isRequired,
   popupClassName: PropTypes.string,
   wrapperClassName: PropTypes.string,
+  bottom: PropTypes.bool,
+  disabled: PropTypes.bool,
 }

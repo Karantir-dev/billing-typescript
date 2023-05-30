@@ -249,7 +249,8 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
       const { metadata } = data.doc
 
       setRightsForRender && setRightsForRender(metadata)
-      dispatch(usersActions.setRights(elem))
+
+      !setRightsForRender && dispatch(usersActions.setRights(elem))
       dispatch(actions.hideLoader())
     })
     .catch(error => {

@@ -11,9 +11,7 @@
 }
 
 .priceList {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .domainInfo {
@@ -83,6 +81,22 @@
   }
 }
 
+.periodInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    color: var(--transparent-color);
+    text-align: start;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .domainItem {
     flex-direction: row;
@@ -91,11 +105,9 @@
 
   .priceList {
     display: flex;
-    margin-left: 20px;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    width: 100%;
     margin-top: 0;
   }
 

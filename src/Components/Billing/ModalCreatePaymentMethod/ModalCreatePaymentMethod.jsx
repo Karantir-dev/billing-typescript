@@ -279,6 +279,7 @@ export default function Component(props) {
                                 value: $key,
                               }),
                             )}
+                            inputClassName={s.field_bg}
                           />
 
                           {values?.profiletype === '3' || values?.profiletype === '2' ? (
@@ -292,6 +293,7 @@ export default function Component(props) {
                               error={!!errors.name}
                               touched={!!touched.name}
                               isRequired
+                              inputClassName={s.field_bg}
                             />
                           ) : null}
 
@@ -313,6 +315,7 @@ export default function Component(props) {
                                 label: t(`${name?.$?.trim()}`),
                                 value: id?.$,
                               }))}
+                              inputClassName={s.field_bg}
                             />
                           )}
 
@@ -330,6 +333,7 @@ export default function Component(props) {
                             error={!!errors.person}
                             touched={!!touched.person}
                             isRequired
+                            inputClassName={s.field_bg}
                           />
 
                           <SelectGeo
@@ -339,6 +343,7 @@ export default function Component(props) {
                             countrySelectClassName={s.countrySelectItem}
                             geoData={geoData}
                             payersSelectLists={payersSelectLists}
+                            inputClassName={s.field_bg}
                           />
 
                           <InputField
@@ -350,7 +355,7 @@ export default function Component(props) {
                             className={s.inputBig}
                             error={!!errors.city_physical}
                             touched={!!touched.city_physical}
-                            // isRequired
+                            inputClassName={s.field_bg}
                           />
 
                           <div className={cn(s.inputBig, s.nsInputBlock)}>
@@ -362,6 +367,7 @@ export default function Component(props) {
                               setFieldValue={val => {
                                 setFieldValue('address_physical', val)
                               }}
+                              inputClassName={s.field_bg}
                             />
 
                             <button type="button" className={s.infoBtn}>
@@ -385,6 +391,7 @@ export default function Component(props) {
                               className={s.inputBig}
                               error={!!errors.eu_vat}
                               touched={!!touched.eu_vat}
+                              inputClassName={s.field_bg}
                             />
                           ) : null}
                           {selectedPayerFields?.offer_link && (

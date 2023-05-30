@@ -18,7 +18,7 @@
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
   margin: 20px 30px;
-  max-width: 640px;
+  max-width: 610px;
 }
 
 .modalHeader {
@@ -26,20 +26,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px;
+  padding: 14px 20px;
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--header_shadow);
 }
 
 .form {
-  padding: 0 14px;
+  padding: 0 20px 10px;
   max-height: 60vh;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-bottom: 20px;
+  background-color: var(--main-bgc2);
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -81,7 +81,7 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   color: var(--main-text);
 }
 
@@ -95,6 +95,11 @@
 .input {
   max-width: 100%;
   // margin-top: 13px;
+}
+
+.field {
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow_site);
 }
 
 .phoneInputLabel {
@@ -134,12 +139,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px;
+  padding: 12px 20px;
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--footer_shadow);
 }
 
 .saveBtn {
@@ -286,12 +291,11 @@
   }
 
   .modalHeader {
-    padding: 14px 50px;
+    padding: 20px 35px;
   }
 
   .form {
-    padding: 0 50px;
-    padding-bottom: 20px;
+    padding: 0 35px 30px;
     max-height: 75vh;
     overflow-x: hidden;
     overflow-y: auto;
@@ -322,6 +326,7 @@
 
   .btnBlock {
     flex-direction: row;
+    padding: 15px 35px;
   }
 
   .saveBtn {

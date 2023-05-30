@@ -19,7 +19,6 @@
   max-height: 90vh;
   padding: 20px 20px 40px;
   border-radius: 3px;
-  box-shadow: var(--forms2_shadow);
   background-color: var(--forms_bgc_1);
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
@@ -56,12 +55,14 @@
 
 .select_bgc {
   background-color: var(--forms_bgc_3) !important;
+  box-shadow: var(--forms3_shadow)!important;
 }
 
 .icon_calendar {
   background-color: var(--forms_bgc_3) !important;
   width: 45px;
   height: 45px;
+  box-shadow: var(--forms3_shadow)!important;
 }
 
 .calendarBlock {
@@ -77,6 +78,13 @@
 
 .calendar_pointer {
   right: 24px !important;
+  top: auto!important;
+  bottom: 100%!important;
+  transform: translateX(50%) rotate(180deg)!important;
+
+  div {
+    box-shadow: var(--forms3_shadow) !important;
+  }
 }
 
 .form_field {
@@ -85,6 +93,7 @@
 
 .input_bgc {
   background-color: var(--forms_bgc_3) !important;
+  box-shadow: var(--forms3_shadow) !important;
 }
 
 .submit_btn {
@@ -135,11 +144,12 @@
   .submit_btn {
     font-size: 18px;
     max-width: 280px;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .clear_btn {
-    margin: auto;
+    margin: auto 0;
+    width: fit-content;
   }
 
   .pointer_wrapper {

@@ -1,5 +1,5 @@
 .table {
-  margin-top: 30px;
+  margin-top: 35px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -7,6 +7,7 @@
 .tableHeader {
   display: none;
   padding: 20px 23px;
+  margin-bottom: 10px;
   width: 100%;
 }
 
@@ -51,8 +52,8 @@
   display: flex;
   align-items: flex-start;
   border-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--forms_shadow_site);
   margin-bottom: 15px;
   position: relative;
 }
@@ -250,7 +251,8 @@
     flex-basis: 48%;
     margin-right: 0;
     margin-bottom: 20px;
-
+    padding: 17px 13px 17px 22px;
+    
     &:nth-child(2n) {
       margin-right: 20px;
     }
@@ -275,7 +277,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px;
+    padding: 0 17px 0 22px;
   }
 
   .item {
@@ -375,11 +377,11 @@
 
 @media screen and (min-width: 1550px) {
   .tableHeader {
-    padding: 22px 27px;
+    padding: 0 42px 0 33px;
   }
 
   .item {
-    padding: 21px 42px 24px 33px;
+    padding: 17px 42px 17px 33px;
     margin-bottom: 8px;
   }
 
@@ -419,10 +421,6 @@
 }
 
 @media screen and (min-width: 1918px) {
-  .tableHeader {
-    padding: 22px 27px;
-  }
-
   .item_text {
     font-size: 17px;
   }

@@ -1,7 +1,8 @@
 import qs from 'qs'
 import i18n from './../../i18n'
-import { actions, domainsActions, cartActions } from '..'
 import axios from 'axios'
+import { actions, domainsActions, cartActions } from '..'
+import { API_URL } from '../../config/config'
 import { axiosInstance } from '../../config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '../../utils'
@@ -185,7 +186,7 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post('https://api.server-panel.net/api/domain/check/premium/', {
+          .post(`${API_URL}/api/domain/check/premium/`, {
             host: domains?.map(e => e?.domain?.$)?.join(','),
           })
           .then(({ data }) => {

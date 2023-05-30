@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
+import { historyTranslateFn } from '../../../../utils'
 
 export default function Component(props) {
   const { changedate, desc, ip, user } = props
@@ -18,7 +19,7 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Change')}:</div>}
-        <div className={cn(s.item_text, s.second_item)}>{desc}</div>
+        <div className={cn(s.item_text, s.second_item)}>{historyTranslateFn(desc, t)}</div>
       </div>
       <div className={s.tableBlockThird}>
         {mobile && <div className={s.item_title}>{t('Username')}:</div>}

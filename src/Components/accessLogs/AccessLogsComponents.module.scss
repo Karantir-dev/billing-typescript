@@ -12,8 +12,6 @@
   display: flex;
   align-items: center;
   border-radius: 3px;
-  background: var(--forms_bgc_2);
-  box-shadow: var(--forms_shadow);
   margin-bottom: 7px;
 }
 
@@ -104,6 +102,13 @@
 
 .inputClassName {
   font-size: 18px;
+}
+
+.field_bg, 
+.item,
+.csvBtn {
+  background: var(--forms_bgc_1);
+  box-shadow: var(--forms3_shadow);
 }
 
 .dropdownClass {
