@@ -106,6 +106,7 @@ export { default as DomainsWhoisModal } from './Services/Domains/DomainsWhoisMod
 export { default as DomainsNSModal } from './Services/Domains/DomainsNSModal/DomainsNSModal'
 export { default as DomainsEditModal } from './Services/Domains/DomainsEditModal/DomainsEditModal'
 export { default as DomainsProlongModal } from './Services/Domains/DomainsProlongModal/DomainsProlongModal'
+export { default as DomainContactInfoItem } from './Services/Domains/DomainContactInfoItem/DomainContactInfoItem'
 export { default as NsItem } from './Services/Domains/NsItem/NsItem'
 
 export { default as DomainsTable } from './Services/Domains/DomainsTable/DomainsTable'

@@ -250,7 +250,6 @@ const getDomainsContacts =
           toast.error(`${i18n.t(data.doc.error.msg.$, { ns: 'other' })}`, {
             position: 'bottom-right',
           })
-
           throw new Error(data.doc.error.msg.$)
         }
 
@@ -268,6 +267,8 @@ const getDomainsContacts =
           owner_middlename_locale: domainData?.owner_middlename_locale,
 
           owner_name: domainData?.owner_name,
+          owner_company: domainData?.owner_company?.$,
+          owner_company_locale: domainData?.owner_company_locale?.$,
 
           owner_location_country: domainData?.owner_location_country?.$,
           owner_location_address: domainData?.owner_location_address,
@@ -291,6 +292,9 @@ const getDomainsContacts =
 
           admin_name: domainData?.admin_name,
 
+          admin_company: domainData?.admin_company?.$,
+          admin_company_locale: domainData?.admin_company_locale?.$,
+
           admin_location_country: domainData?.admin_location_country?.$,
           admin_location_address: domainData?.admin_location_address,
           admin_location_city: domainData?.admin_location_city,
@@ -312,6 +316,8 @@ const getDomainsContacts =
           tech_middlename_locale: domainData?.tech_middlename_locale,
 
           tech_name: domainData?.tech_name,
+          tech_company: domainData?.tech_company?.$,
+          tech_company_locale: domainData?.tech_company_locale?.$,
 
           tech_location_country: domainData?.tech_location_country?.$,
           tech_location_address: domainData?.tech_location_address,
@@ -334,6 +340,8 @@ const getDomainsContacts =
           bill_middlename_locale: domainData?.bill_middlename_locale,
 
           bill_name: domainData?.bill_name,
+          bill_company: domainData?.bill_company?.$,
+          bill_company_locale: domainData?.bill_company_locale?.$,
 
           bill_location_country: domainData?.bill_location_country?.$,
           bill_location_address: domainData?.bill_location_address,
