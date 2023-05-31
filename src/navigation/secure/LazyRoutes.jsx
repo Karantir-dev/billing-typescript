@@ -2,7 +2,9 @@ import { Suspense, lazy } from 'react'
 import { PageTitleRender, ServicesList, Loader } from '@components'
 import { useTranslation } from 'react-i18next'
 
-const ServicesPage = lazy(() => import(/* webpackChunkName: "ServicesPage" */ '@pages/ServicesPage/ServicesPage'))
+const ServicesPage = lazy(() =>
+  import(/* webpackChunkName: "ServicesPage" */ '@pages/ServicesPage/ServicesPage'),
+)
 
 const VDS = lazy(() => import('@pages/ServicesPage/VDS/VDSPage/VDS'))
 const VDSOrder = lazy(() => import('@pages/ServicesPage/VDS/VDSOrder/VDSOrder'))
