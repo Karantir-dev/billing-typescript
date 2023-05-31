@@ -269,7 +269,7 @@ export default function ForexOrderPage() {
 
                     const priceAmount = parsedPrice.amoumt
 
-                    var numEl = parseInt(cardTitle.match(/\d+/))
+                    const numEl = parseInt(cardTitle?.match(/\d+/))
 
                     return (
                       <div
