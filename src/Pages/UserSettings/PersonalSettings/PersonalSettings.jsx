@@ -253,7 +253,10 @@ export default function Component({ isComponentAllowedToEdit }) {
                       <Link
                         className={s.phoneVerificationLink}
                         to={routes.PHONE_VERIFICATION}
-                        state={{ prevPath: location.pathname }}
+                        state={{
+                          prevPath: location.pathname,
+                          phone: userEdit?.phone?.phone,
+                        }}
                       >
                         <PhoneVerificationIcon /> <span>{t('Phone Verification')}</span>
                       </Link>

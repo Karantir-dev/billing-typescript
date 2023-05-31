@@ -245,5 +245,7 @@
 
   "fraud_invalid_code": "Incorrect verification code",
   "The phone has been successfully verified": "The phone has been successfully verified",
-  "payment_saved": "Payment method successfully saved"
+  "payment_saved": "Payment method successfully saved",
+
+  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation"
 }
