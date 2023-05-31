@@ -5,6 +5,7 @@ export const SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',+:;]+$/g
 export const EMAIL_SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',:;]+$/g
 
 export const LATIN_REGEX = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi
+export const LATIN_NUMBER_REGEX = /^([A-Za-z0-9\s]*)$/g
 
 export const SOFTWARE_ICONS_LIST = [
   'AlmaLinux',

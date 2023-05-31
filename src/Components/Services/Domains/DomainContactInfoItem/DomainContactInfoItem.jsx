@@ -4,7 +4,11 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { FormikProvider, useFormik } from 'formik'
 import { BASE_URL } from '../../../../config/config'
-import { EMAIL_SPECIAL_CHARACTERS_REGEX, LATIN_REGEX } from '../../../../utils/constants'
+import {
+  EMAIL_SPECIAL_CHARACTERS_REGEX,
+  LATIN_NUMBER_REGEX,
+  LATIN_REGEX,
+} from '../../../../utils/constants'
 import { Shevron } from '../../../../images'
 import { useDispatch } from 'react-redux'
 import { domainsOperations } from '../../../../Redux'
@@ -25,7 +29,14 @@ export default function Component(props) {
   } = props
 
   const dispatch = useDispatch()
-  const { t } = useTranslation(['domains', 'other', 'trusted_users', 'payers', 'auth'])
+  const { t } = useTranslation([
+    'domains',
+    'other',
+    'trusted_users',
+    'payers',
+    'auth',
+    'user_settings',
+  ])
 
   const owner = formType === 'owner'
 
@@ -38,6 +49,7 @@ export default function Component(props) {
   const profiletype_list = `${formType}_profiletype_list`
   const email = `${formType}_email`
   const phone = `${formType}_phone`
+  const phone_country = `${formType}_phone_country`
   const privateForm = `${formType}_private`
   const firstname = `${formType}_firstname`
   const firstname_locale = `${formType}_firstname_locale`
@@ -71,6 +83,20 @@ export default function Component(props) {
   const [profileTypeState, setProfiletypeState] = useState(domainsContacts[profiletype])
   const [countryCode, setCountryCode] = useState(null)
 
+  useEffect(() => {
+    if (
+      domainsContacts &&
+      domainsContacts[location_country_list] &&
+      domainsContacts[phone_country]
+    ) {
+      const findCountry = domainsContacts[location_country_list]?.find(
+        e => e?.$key === domainsContacts[phone_country],
+      )
+      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
+      setCountryCode(code)
+    }
+  }, [domainsContacts])
+
   const yupValidation = {
     name: Yup.string().required(t('Is a required field', { ns: 'other' })),
     email: Yup.string()
@@ -90,7 +116,20 @@ export default function Component(props) {
       .required(t('Is a required field', { ns: 'other' })),
 
     lastname_locale: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    phone: Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
+    phone: Yup.string().phone(
+      countryCode,
+      false,
+      t('Must be a valid phone number', { ns: 'user_settings' }),
+    ),
+    location_country: Yup.string()
+      .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
+    location_postcode: Yup.string()
+      .matches(LATIN_NUMBER_REGEX, t('Lastname can only contain Latin letters'))
+      .required(t('Is a required field', { ns: 'other' })),
+    location_state: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    location_city: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    location_address: Yup.string().required(t('Is a required field', { ns: 'other' })),
   }
 
   const formik = useFormik({
@@ -181,39 +220,37 @@ export default function Component(props) {
             is: 'off',
             then: yupValidation.phone,
           }),
+
       [location_country]: owner
-        ? Yup.string()
-            .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
-            .required(t('Is a required field', { ns: 'other' }))
+        ? yupValidation.location_country
         : Yup.string().when(contact_use_first, {
             is: 'off',
-            then: Yup.string()
-              .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
-              .required(t('Is a required field', { ns: 'other' })),
+            then: yupValidation.location_country,
           }),
       [location_postcode]: owner
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? yupValidation.location_postcode
         : Yup.string().when(contact_use_first, {
             is: 'off',
-            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            then: yupValidation.location_postcode,
           }),
+
       [location_state]: owner
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? yupValidation.location_state
         : Yup.string().when(contact_use_first, {
             is: 'off',
-            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            then: yupValidation.location_state,
           }),
       [location_city]: owner
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? yupValidation.location_city
         : Yup.string().when(contact_use_first, {
             is: 'off',
-            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            then: yupValidation.location_city,
           }),
       [location_address]: owner
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        ? yupValidation.location_address
         : Yup.string().when(contact_use_first, {
             is: 'off',
-            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
+            then: yupValidation.location_address,
           }),
     }),
     onSubmit: () => {
