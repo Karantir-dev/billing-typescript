@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
 import { Select, Button, InputField } from '../../..'
@@ -189,7 +188,9 @@ export default function Component(props) {
                   {editData?.status === '1' && (
                     <div
                       className={s.orderDetail}
-                      dangerouslySetInnerHTML={{ __html: orderDetailTranslate(editData?.orderinfo, t) }}
+                      dangerouslySetInnerHTML={{
+                        __html: orderDetailTranslate(editData?.orderinfo, t),
+                      }}
                     />
                   )}
                 </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   BreadCrumbs,
   Button,
@@ -67,8 +67,7 @@ export default function Component({ transfer = false }) {
   }
 
   const validationSchema = Yup.object().shape({
-    domain_name: Yup.string()
-      .required(t('Is a required field', { ns: 'other' }))
+    domain_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
   })
 
   const setDomainsNameHandler = values => {
@@ -144,19 +143,18 @@ export default function Component({ transfer = false }) {
         validateOnChange={true}
       >
         {({ errors, touched, setFieldValue, setFieldError }) => {
-          
-            function validateInput(event) {
-              const value = event.target.value;
-              const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
-              if (!domainnameRegex.test(value)) {
-                setFieldError('domain_name', t('Domain name only Latin'))
-                touched.domain_name = true;
-              } else {
-                setFieldError('domain_name', '')
-                setFieldValue('domain_name', value)
-                setInputValue(value)
-              }
+          function validateInput(event) {
+            const value = event.target.value
+            const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
+            if (!domainnameRegex.test(value)) {
+              setFieldError('domain_name', t('Domain name only Latin'))
+              touched.domain_name = true
+            } else {
+              setFieldError('domain_name', '')
+              setFieldValue('domain_name', value)
+              setInputValue(value)
             }
+          }
           return (
             <Form className={s.form}>
               <InputField

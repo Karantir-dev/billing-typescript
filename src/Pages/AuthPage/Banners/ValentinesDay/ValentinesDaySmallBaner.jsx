@@ -1,4 +1,3 @@
-import React from 'react'
 import { SITE_URL } from '../../../../config/config'
 import { useTranslation } from 'react-i18next'
 import ValentinesDayText from './ValentinesDayText'

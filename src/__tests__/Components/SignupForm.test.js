@@ -1,4 +1,3 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'

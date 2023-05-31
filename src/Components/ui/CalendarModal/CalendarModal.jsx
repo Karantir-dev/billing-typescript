@@ -1,4 +1,3 @@
-import React from 'react'
 import './Calendar.scss'
 import Calendar from 'react-calendar'
 import cn from 'classnames'

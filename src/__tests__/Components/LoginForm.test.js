@@ -1,4 +1,3 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import { LoginForm } from '../../Components'

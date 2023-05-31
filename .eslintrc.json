@@ -21,7 +21,9 @@
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
     "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error"
+    "jest/valid-expect": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "parserOptions": {
     "ecmaVersion": 2021,
@@ -43,6 +45,16 @@
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": {
+        "map": [
+          ["@components", "./src/Components"],
+          ["@images", "./src/images"],
+          ["@redux", "./src/Redux"],
+          ["@pages", "./src/Pages"],
+          ["@utils", "./src/utils"]
+        ],
+        "extensions": [".ts", ".js", ".jsx", ".json"]
       }
     }
   },

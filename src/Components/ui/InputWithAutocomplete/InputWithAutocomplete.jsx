@@ -1,6 +1,6 @@
 import usePlacesAutocomplete from 'use-places-autocomplete'
 import { useOutsideAlerter } from '../../../utils'
-import React, { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 

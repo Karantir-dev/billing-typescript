@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
   Button,
@@ -209,12 +209,9 @@ export default function DedicatedServersPage() {
     }
   }, [rights])
 
-  const isAllActive =
-    activeServices.length === dedicRenderData?.serversList?.length
+  const isAllActive = activeServices.length === dedicRenderData?.serversList?.length
   const toggleIsAllActiveHandler = () => {
-    isAllActive
-      ? setActiveServices([])
-      : setActiveServices(dedicRenderData?.serversList)
+    isAllActive ? setActiveServices([]) : setActiveServices(dedicRenderData?.serversList)
   }
 
   return (

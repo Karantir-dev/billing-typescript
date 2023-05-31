@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, Button } from '../../../../Components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,7 @@ export default function Component() {
     'other',
     'dedicated_servers',
     'domains',
-    'autoprolong'
+    'autoprolong',
   ])
   const dispatch = useDispatch()
 
@@ -37,7 +37,7 @@ export default function Component() {
   const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
-  
+
   const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData })
 
   useEffect(() => {
@@ -207,8 +207,8 @@ export default function Component() {
                 label={`${t('Auto renewal', { ns: 'domains' })}:`}
                 className={s.select}
                 itemsList={paramsData?.autoprolong_list?.map(el => ({
-                    label: translatePeriod(el.$, t),
-                    value: el.$key,
+                  label: translatePeriod(el.$, t),
+                  value: el.$key,
                 }))}
                 isShadow
               />

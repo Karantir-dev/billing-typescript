@@ -1,4 +1,3 @@
-import React from 'react'
 import Requests from './Requests/RequestsPage'
 import RequestsArchive from './RequestsArchive/RequestsArchivePage'
 import { useTranslation } from 'react-i18next'

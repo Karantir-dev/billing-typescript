@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CheckBox, HintWrapper, ServerState, EditCell } from '../../..'
 import PropTypes from 'prop-types'

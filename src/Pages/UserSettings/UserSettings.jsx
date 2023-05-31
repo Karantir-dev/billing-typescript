@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PersonalSettings from './PersonalSettings/PersonalSettings'
 import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'

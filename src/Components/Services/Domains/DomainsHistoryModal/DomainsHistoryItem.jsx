@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './DomainsHistoryModal.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

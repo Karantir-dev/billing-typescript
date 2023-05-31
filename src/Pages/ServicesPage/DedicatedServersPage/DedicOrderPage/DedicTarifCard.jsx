@@ -1,6 +1,5 @@
 import s from './DedicOrderPage.module.scss'
 
-import React from 'react'
 import classNames from 'classnames'
 import { dedicOperations } from '../../../../Redux'
 import { useDispatch } from 'react-redux'

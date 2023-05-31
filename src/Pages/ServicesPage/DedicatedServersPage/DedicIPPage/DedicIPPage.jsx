@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import DedicIPEditModal from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPEditModal'
 import DedicIPList from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPList/DedicIPList'

@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React from 'react'
+
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../Redux'
 

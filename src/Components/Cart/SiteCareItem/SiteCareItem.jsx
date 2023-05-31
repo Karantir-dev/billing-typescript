@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './SiteCareItem.module.scss'
 import { translatePeriodToMonths } from '../../../utils'
 import { useTranslation } from 'react-i18next'

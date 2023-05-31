@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Cross } from '../../../../../images'
@@ -101,7 +101,7 @@ export default function DedicIPOrder({ closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={t(values?.ipType)}
                         disabled

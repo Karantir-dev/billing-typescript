@@ -1,4 +1,3 @@
-import React from 'react'
 import MessageItem from '../MessageItem/MessageItem'
 import PropTypes from 'prop-types'
 import s from './OpenedTicketMessages.module.scss'

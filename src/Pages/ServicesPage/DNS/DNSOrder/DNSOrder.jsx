@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -23,7 +23,13 @@ export default function FTPOrder() {
 
   const isSiteCareOrderAllowed = location?.state?.isDnsOrderAllowed
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns', 'autoprolong'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'other',
+    'crumbs',
+    'dns',
+    'autoprolong',
+  ])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])
@@ -255,7 +261,9 @@ export default function FTPOrder() {
 
               {parameters && (
                 <div className={s.parameters_block}>
-                  <p ref={scrollElem} className={s.params}>{t('parameters')}</p>
+                  <p ref={scrollElem} className={s.params}>
+                    {t('parameters')}
+                  </p>
 
                   <div className={s.parameters_wrapper}>
                     <Select

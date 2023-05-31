@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import s from './PayersTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

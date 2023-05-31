@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePageRender } from '../../utils'
 import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
 import { useTranslation } from 'react-i18next'

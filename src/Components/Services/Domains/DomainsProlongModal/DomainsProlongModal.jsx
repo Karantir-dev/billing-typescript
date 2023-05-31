@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'

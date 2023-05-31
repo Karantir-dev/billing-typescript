@@ -13,29 +13,11 @@ export { default as ErrorPage } from './ErrorPage/ErrorPage'
 
 export { default as PhoneVerificationPage } from './PhoneVerificationPage/PhoneVerificationPage'
 
-export { default as ServicesPage } from './ServicesPage/ServicesPage'
-
-export { default as DomainsPage } from './ServicesPage/DomainsPage/DomainsPage'
-export { default as DomainOrderPage } from './ServicesPage/DomainsPage/DomainOrderPage/DomainOrderPage'
-export { default as DomainContactInfoPage } from './ServicesPage/DomainsPage/DomainContactInfoPage/DomainContactInfoPage'
-export { default as DomainsNsPage } from './ServicesPage/DomainsPage/DomainsNsPage/DomainsNsPage'
-
-export { default as SharedHosting } from './ServicesPage/SharedHosting/SharedHosting'
-export { default as SharedHostingOrder } from './ServicesPage/SharedHosting/SharedHostingOrder/SharedHostingOrder'
-
-export { default as VPN } from './ServicesPage/VPN/VPN'
-export { default as VpnOrder } from './ServicesPage/VPN/VpnOrder/VpnOrder'
-
-export { default as SiteCare } from './ServicesPage/SiteCare/SiteCare'
-export { default as SiteCareOrder } from './ServicesPage/SiteCare/SiteCareOrder/SiteCareOrder'
+export { default as SocialNetAdd } from './UserSettings/SocialNetAdd/SocialNetAdd'
 
 export { default as DedicatedServersPage } from './ServicesPage/DedicatedServersPage/DedicatedServersPage'
 export { default as DedicOrderPage } from './ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
 export { default as DedicIPpage } from './ServicesPage/DedicatedServersPage/DedicIPPage/DedicIPPage'
-
-export { default as VDS } from './ServicesPage/VDS/VDSPage/VDS'
-export { default as VDSOrder } from './ServicesPage/VDS/VDSOrder/VDSOrder'
-export { default as VDSip } from './ServicesPage/VDS/VDSip/VDSip'
 
 export { default as FTP } from './ServicesPage/FTP/FTP'
 export { default as FTPOrder } from './ServicesPage/FTP/FTPOrder/FTPOrder'

@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './SharedHostingHistoryModal.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
@@ -19,7 +18,9 @@ export default function Component(props) {
       </div>
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Change')}:</div>}
-        <div className={cn(s.item_text, s.second_item)}>{historyTranslateFn(desc, t)}</div>
+        <div className={cn(s.item_text, s.second_item)}>
+          {historyTranslateFn(desc, t)}
+        </div>
       </div>
       <div className={s.tableBlockThird}>
         {mobile && <div className={s.item_title}>{t('Username')}:</div>}

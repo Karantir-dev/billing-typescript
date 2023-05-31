@@ -123,11 +123,14 @@ const createNewUser =
         if (data.doc.error) {
           const wrongEmail = data.doc.error.msg.$.split('\'').at(1)
           toast.error(
-            ` ${wrongEmail} ${i18n.t('warnings.email_exist', {ns: 'auth'}).toLowerCase()}`,
+            ` ${wrongEmail} ${i18n
+              .t('warnings.email_exist', { ns: 'auth' })
+              .toLowerCase()}`,
             {
               position: 'bottom-right',
               toastId: 'customId',
-            },)
+            },
+          )
           throw new Error(data.doc.error.msg.$)
         }
         updateListFunc()
@@ -300,7 +303,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
         out: 'json',
         auth: sessionId,
         elid: funcName,
-        plid: `${userId}${type ? `/${type}`: ''}`,
+        plid: `${userId}${type ? `/${type}` : ''}`,
         lang: 'en',
       }),
     )

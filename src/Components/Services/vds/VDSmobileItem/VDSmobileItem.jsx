@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -56,7 +56,7 @@ export default function VDSmobileItem({
     setToolsOpened(false)
   }
 
-  const editNameHandler = (value) => {
+  const editNameHandler = value => {
     handleEditSubmit(server?.id?.$, { server_name: value })
     setOriginName(value)
   }

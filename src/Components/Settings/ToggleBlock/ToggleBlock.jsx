@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import { Toggle } from '../../../Components'

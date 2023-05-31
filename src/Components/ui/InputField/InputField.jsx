@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'

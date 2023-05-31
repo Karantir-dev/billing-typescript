@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'
 import { Button, InputField } from '../../..'

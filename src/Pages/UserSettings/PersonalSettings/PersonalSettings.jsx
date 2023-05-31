@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'

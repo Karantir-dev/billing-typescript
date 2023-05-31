@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
@@ -32,9 +32,7 @@ export default function FTPItem({
     Object.keys(rights)?.filter(key => key !== 'ask' && key !== 'filter' && key !== 'new')
       .length > 0
 
-  const isActive = activeServices?.some(
-    service => service?.id?.$ === storage?.id?.$,
-  )
+  const isActive = activeServices?.some(service => service?.id?.$ === storage?.id?.$)
   const toggleIsActiveHandler = () => {
     isActive
       ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== storage?.id?.$))

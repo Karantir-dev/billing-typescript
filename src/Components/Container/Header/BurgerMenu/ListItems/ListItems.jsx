@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React from 'react' // { useState }
+// { useState }
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Cross, Shevron } from '../../../../images'
@@ -227,7 +227,10 @@ export default function Component(props) {
                           <CheckBox
                             value={values.private === 'on'}
                             onClick={() => {
-                              setFieldValue('private', values.private === 'on' ? 'off' : 'on')
+                              setFieldValue(
+                                'private',
+                                values.private === 'on' ? 'off' : 'on',
+                              )
                             }}
                             className={s.checkbox}
                           />
@@ -414,7 +417,10 @@ export default function Component(props) {
                           <CheckBox
                             value={values[editData?.addon] === 'on'}
                             onClick={() => {
-                              setFieldValue(editData?.addon, values[editData?.addon] === 'on' ? 'off' : 'on')
+                              setFieldValue(
+                                editData?.addon,
+                                values[editData?.addon] === 'on' ? 'off' : 'on',
+                              )
                             }}
                             className={s.checkbox}
                           />

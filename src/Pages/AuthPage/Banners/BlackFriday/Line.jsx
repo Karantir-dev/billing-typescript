@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 const SvgComponent = props => (
   <svg width={471} height={1} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path stroke="url(#a)" strokeDasharray="6 6" d="M0 .5h471" />

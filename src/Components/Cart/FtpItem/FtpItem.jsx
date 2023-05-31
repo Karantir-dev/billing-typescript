@@ -1,4 +1,3 @@
-import React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Delete } from '../../../images'
 import s from './FtpItem.module.scss'

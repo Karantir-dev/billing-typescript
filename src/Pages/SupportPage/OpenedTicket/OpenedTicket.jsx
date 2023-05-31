@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'

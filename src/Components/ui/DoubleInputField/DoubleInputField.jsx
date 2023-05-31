@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { CalendarModal } from '../..'

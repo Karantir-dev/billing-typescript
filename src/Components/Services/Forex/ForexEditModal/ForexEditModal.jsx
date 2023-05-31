@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
@@ -20,7 +20,7 @@ export default function ForexEditModal({ elid, closeFn }) {
     'other',
     'crumbs',
     'affiliate_program',
-    'autoprolong'
+    'autoprolong',
   ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()

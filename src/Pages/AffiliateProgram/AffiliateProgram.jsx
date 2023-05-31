@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { usersOperations } from '../../Redux'
@@ -92,7 +92,9 @@ export default function AffiliateProgram() {
           <Route
             path={route.AFFILIATE_PROGRAM_STATISTICS}
             element={
-              <PageTitleRender title={t('page_title') + '/' + t('statistics_section_title')}>
+              <PageTitleRender
+                title={t('page_title') + '/' + t('statistics_section_title')}
+              >
                 <AffiliateProgramStatistics />
               </PageTitleRender>
             }

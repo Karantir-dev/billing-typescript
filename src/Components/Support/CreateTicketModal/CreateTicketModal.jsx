@@ -1,4 +1,3 @@
-import React from 'react'
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
 import MessageInput from '../MessageInput/MessageInput'
 import { Cross } from '../../../images'
@@ -92,7 +91,7 @@ export default function Component(props) {
                     error={!!errors.subject}
                     touched={!!touched.subject}
                     className={s.input_field_wrapper}
-                    autoComplete='off'
+                    autoComplete="off"
                   />
                   <label htmlFor={'message'} className={s.label}>
                     {t('Message')}:

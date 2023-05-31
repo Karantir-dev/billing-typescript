@@ -1,4 +1,3 @@
-import React from 'react'
 import SharedHostingHistoryItem from './SharedHostingHistoryItem'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'

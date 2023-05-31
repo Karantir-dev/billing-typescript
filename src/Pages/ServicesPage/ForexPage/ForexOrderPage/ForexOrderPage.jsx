@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button } from '../../../../Components'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -29,7 +29,7 @@ export default function ForexOrderPage() {
     'dns',
     'virtual_hosting',
     'countries',
-    'autoprolong'
+    'autoprolong',
   ])
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -295,7 +295,7 @@ export default function ForexOrderPage() {
                               setDataFromSite(null)
                             }
                             runScroll()
-                            
+
                             dispatch(
                               forexOperations.getParameters(
                                 values.period,

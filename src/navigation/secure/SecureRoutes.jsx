@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -6,13 +6,12 @@ import {
   Container,
   EmailConfirmation,
   Portal,
-  ServicesList,
   TrustedUsers,
   CartFromSite,
   PageTitleRender,
   EmailTrigger,
   MainEmailConfirmation,
-} from '../../Components'
+} from '@components'
 import { useTranslation } from 'react-i18next'
 import {
   AccessLogPage,
@@ -23,42 +22,38 @@ import {
   PayersPage,
   SupportPage,
   UserSettings,
-  DomainsPage,
-  DomainOrderPage,
-  ServicesPage,
   Contracts,
-  DomainContactInfoPage,
-  DomainsNsPage,
   DedicIPpage,
-  VDSip,
   DedicatedServersPage,
   DedicOrderPage,
   FTP,
   FTPOrder,
   DNS,
   DNSOrder,
-  VDS,
-  VDSOrder,
-  SharedHosting,
-  SharedHostingOrder,
   ForexPage,
   ForexOrderPage,
-  SiteCare,
-  SiteCareOrder,
-  VPN,
-  VpnOrder,
   PhoneVerificationPage,
-  PaymentSaved
-} from '../../Pages'
-import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
-import { cartSelectors } from '../../Redux'
+  PaymentSaved,
+  SocialNetAdd,
+} from '@pages'
+import { cartSelectors } from '@redux'
 import * as route from '../../routes'
-
-// const AffiliateProgram = React.lazy(() =>
-//   import(
-//     '../../Pages/AffiliateProgram/AffiliateProgram' /* webpakChankName: "AffiliateProgram" */
-//   ),
-// )
+import {
+  ServicesPageLazy,
+  VDSPageLazy,
+  VDSOrderLazy,
+  VDSipLazy,
+  SharedHostingLazy,
+  SharedHostingOrderLazy,
+  SiteCareLazy,
+  SiteCareOrderLazy,
+  VPNLazy,
+  VPNOrderLazy,
+  DomainsPageLazy,
+  DomainOrderPageLazy,
+  DomainContactInfoPageLazy,
+  DomainsNsPageLazy,
+} from './LazyRoutes'
 
 const Component = () => {
   const navigate = useNavigate()
@@ -112,206 +107,34 @@ const Component = () => {
     <Container>
       <EmailTrigger />
       <Routes>
-        <Route
-          path={route.SERVICES}
-          element={
-            <PageTitleRender title={t('aside_menu.services')}>
-              <ServicesPage children={<ServicesList />} />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.VPS}
-          element={
-            <PageTitleRender title={`${t('aside_menu.services')}/VDS `}>
-              <VDS />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.VPS_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('vds_order', { ns: 'crumbs' })} `}
-            >
-              <VDSOrder />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.VPS_IP}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/VDS ${t('ip_address', { ns: 'vds' })}`}
-            >
-              <VDSip />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.SHARED_HOSTING}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.virtual_hosting',
-              )}`}
-            >
-              <SharedHosting />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.SHARED_HOSTING_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Virtual hosting order', {
-                ns: 'virtual_hosting',
-              })}`}
-            >
-              <SharedHostingOrder />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.SITE_CARE}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.wetsite_care',
-              )}`}
-            >
-              <SiteCare />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.SITE_CARE_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Website care order', {
-                ns: 'virtual_hosting',
-              })}`}
-            >
-              <SiteCareOrder />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.VPN}
-          element={
-            <PageTitleRender title={`${t('aside_menu.services')}/${t('VPN')}`}>
-              <VPN />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.VPN_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('vpn_order', {
-                ns: 'crumbs',
-              })}`}
-            >
-              <VpnOrder />
-            </PageTitleRender>
-          }
-        />
-
-        <Route
-          path={route.DOMAINS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.domains',
-              )}`}
-            >
-              <DomainsPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.DOMAINS_ORDERS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name order', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainOrderPage />
-            </PageTitleRender>
-          }
-        />
+        <Route path={route.SERVICES} element={<ServicesPageLazy />} />
+        <Route path={route.VPS} element={<VDSPageLazy />} />
+        <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />
+        <Route path={route.VPS_IP} element={<VDSipLazy />} />
+        <Route path={route.SHARED_HOSTING} element={<SharedHostingLazy />} />
+        <Route path={route.SHARED_HOSTING_ORDER} element={<SharedHostingOrderLazy />} />
+        <Route path={route.SITE_CARE} element={<SiteCareLazy />} />
+        <Route path={route.SITE_CARE_ORDER} element={<SiteCareOrderLazy />} />
+        <Route path={route.VPN} element={<VPNLazy />} />
+        <Route path={route.VPN_ORDER} element={<VPNOrderLazy />} />
+        <Route path={route.DOMAINS} element={<DomainsPageLazy />} />
+        <Route path={route.DOMAINS_ORDERS} element={<DomainOrderPageLazy />} />
         <Route
           path={route.DOMAINS_CONTACT_INFO}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name order', {
-                ns: 'domains',
-              })}/${t('Owner contacts', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainContactInfoPage />
-            </PageTitleRender>
-          }
+          element={<DomainContactInfoPageLazy />}
         />
-        <Route
-          path={route.DOMAINS_NS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name order', {
-                ns: 'domains',
-              })}/${t('Owner contacts', {
-                ns: 'domains',
-              })}/${t('Service parameters', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainsNsPage />
-            </PageTitleRender>
-          }
-        />
+        <Route path={route.DOMAINS_NS} element={<DomainsNsPageLazy />} />
         <Route
           path={route.DOMAINS_TRANSFER_ORDERS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainOrderPage transfer />
-            </PageTitleRender>
-          }
+          element={<DomainOrderPageLazy transfer={true} />}
         />
         <Route
           path={route.DOMAINS_TRANSFER_CONTACT_INFO}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
-                ns: 'domains',
-              })}/${t('Owner contacts', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainContactInfoPage transfer />
-            </PageTitleRender>
-          }
+          element={<DomainContactInfoPageLazy transfer={true} />}
         />
         <Route
           path={route.DOMAINS_TRANSFER_NS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('Domain name transfer', {
-                ns: 'domains',
-              })}/${t('Owner contacts', {
-                ns: 'domains',
-              })}/${t('Service parameters', {
-                ns: 'domains',
-              })}`}
-            >
-              <DomainsNsPage transfer />
-            </PageTitleRender>
-          }
+          element={<DomainsNsPageLazy transfer={true} />}
         />
         <Route
           path={route.DEDICATED_SERVERS}

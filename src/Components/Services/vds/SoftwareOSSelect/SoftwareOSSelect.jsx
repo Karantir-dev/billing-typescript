@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Shevron } from '../../../../images'
 import { selectors } from '../../../../Redux'

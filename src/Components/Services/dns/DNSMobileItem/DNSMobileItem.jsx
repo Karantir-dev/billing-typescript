@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Clock, MoreDots, Edit, Refund, Info, ExitSign } from '../../../../images'
 import { useOutsideAlerter } from '../../../../utils'
@@ -38,9 +38,7 @@ export default function DNSMobileItem({
       key => key !== 'ask' && key !== 'filter' && key !== 'new',
     ).length > 0
 
-  const isActive = activeServices?.some(
-    service => service?.id?.$ === storage?.id?.$,
-  )
+  const isActive = activeServices?.some(service => service?.id?.$ === storage?.id?.$)
 
   const toggleIsActiveHandler = () => {
     isActive

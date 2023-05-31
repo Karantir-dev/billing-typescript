@@ -1,4 +1,3 @@
-import * as React from 'react'
 const SvgComponent = props => (
   <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} fill="none" {...props}>
     <circle cx={18} cy={18} r={18} fill="#FA6848" fillOpacity={0.07} />

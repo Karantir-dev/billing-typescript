@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconGallery, IconItem } from '@storybook/addon-docs/'
 import cn from 'classnames'
 import s from './Icons.module.scss'

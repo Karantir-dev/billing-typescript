@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import s from './TipsModal.module.scss'
 import { Cross } from '../../../images'
@@ -60,7 +59,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   touched={!!touched.summ}
                   className={s.input_field_wrapper}
                   inputClassName={s.text_area}
-                  autoComplete='off'
+                  autoComplete="off"
                   type="text"
                   value={values?.summ}
                   onKeyDown={e => {

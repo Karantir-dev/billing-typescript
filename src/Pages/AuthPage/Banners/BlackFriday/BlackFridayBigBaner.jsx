@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import StarSale from './StarSale'
 import Line from './Line'

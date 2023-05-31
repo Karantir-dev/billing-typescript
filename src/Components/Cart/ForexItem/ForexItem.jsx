@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useMediaQuery } from 'react-responsive'
 
 import s from './ForexItem.module.scss'

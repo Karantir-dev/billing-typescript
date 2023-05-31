@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
 import { useOutsideAlerter } from '../../../utils'
@@ -33,9 +33,7 @@ export default function Alert({
             <p className={s.alert_text}>{text}</p>
           </div>
 
-          <div className={s.control_btns_container}>
-            {mainBtn}
-          </div>
+          <div className={s.control_btns_container}>{mainBtn}</div>
         </div>
       </div>
     </>

@@ -1,4 +1,3 @@
-import React from 'react'
 import DomainsHistoryItem from './DomainsHistoryItem'
 import { useTranslation } from 'react-i18next'
 import { Cross } from '../../../../images'

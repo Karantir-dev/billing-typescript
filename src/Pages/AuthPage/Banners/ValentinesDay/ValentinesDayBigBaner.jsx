@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Percent14 from './Percent14'
 import s from '../../AuthPage.module.scss'

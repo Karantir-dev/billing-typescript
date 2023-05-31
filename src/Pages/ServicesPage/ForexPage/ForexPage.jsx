@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -197,9 +197,7 @@ export default function ForexPage() {
 
   const isAllActive = activeServices.length === forexRenderData?.forexList?.length
   const toggleIsAllActiveHandler = () => {
-    isAllActive
-      ? setActiveServices([])
-      : setActiveServices(forexRenderData?.forexList)
+    isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
   return (

@@ -41,7 +41,15 @@
     border: 1px solid var(--transparent-color);
     &.swiper-pagination-bullet-active {
       border: none;
-      background-image:radial-gradient(circle at center, transparent 0%, transparent 35%, var(--main-bgc) 36%, var(--main-bgc) 59%, transparent 60%), var(--accent-gradient);
+      background-image: radial-gradient(
+          circle at center,
+          transparent 0%,
+          transparent 35%,
+          var(--main-bgc) 36%,
+          var(--main-bgc) 59%,
+          transparent 60%
+        ),
+        var(--accent-gradient);
     }
     &:not(:last-child) {
       margin-right: 8px;

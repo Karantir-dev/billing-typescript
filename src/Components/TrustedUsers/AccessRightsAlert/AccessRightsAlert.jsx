@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'

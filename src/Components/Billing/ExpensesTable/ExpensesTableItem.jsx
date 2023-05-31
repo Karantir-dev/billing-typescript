@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './ExpensesTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

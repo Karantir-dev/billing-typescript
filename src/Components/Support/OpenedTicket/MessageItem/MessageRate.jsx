@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'

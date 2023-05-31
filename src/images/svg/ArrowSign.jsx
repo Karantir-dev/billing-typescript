@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Gradient from './Gradient'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../Redux'

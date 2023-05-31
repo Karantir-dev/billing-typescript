@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - 'main'
-      
+
 env:
   IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-prod
   PREFIX: release-${{ github.run_number }}
@@ -70,26 +70,25 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-      
+
       - name: Test with environment variables
         run: |
           echo $TAG_NAME - ${{ env.PREFIX }}
-          
+
       - name: Login to docker hub
-        run: 
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          
-      - name: Build image 
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build image
         run: |
           docker build -f Dockerfile.prod -t $IMAGE_NAME .
           docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
           docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
-      
-      - name: Push in dockerhub 
+
+      - name: Push in dockerhub
         run: |
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:${{ env.PREFIX }}
-          
+
       - name: Push status
         uses: 8398a7/action-slack@v3
         with:
@@ -110,11 +109,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
-      
+
       - name: Test with environment variables
         run: |
           echo $TAG_NAME - ${{ env.PREFIX }}
-        
+
       - name: Update Version
         run: |
           sed -i "s|$IMAGE_NAME|$IMAGE_NAME:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment_prod.yml
@@ -125,7 +124,8 @@ jobs:
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run:
-          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{
+          secrets.K8S_CL_NAME }}
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment_prod.yml
@@ -139,7 +139,7 @@ jobs:
           curl -X POST "https://api.cloudflare.com/client/v4/zones/6562ccdfeb6b2a7793f4867f8bf6f955/purge_cache" \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
           -H "Content-Type:application/json" \
-          --data "{\"purge_everything\":true}"  
+          --data "{\"purge_everything\":true}"
 
       - name: Deploy status
         uses: 8398a7/action-slack@v3

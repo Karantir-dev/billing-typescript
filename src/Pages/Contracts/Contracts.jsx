@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ContractItem from '../../Components/Contracts/ContractItem/ContractItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { IconButton, Pagination } from '../../Components'

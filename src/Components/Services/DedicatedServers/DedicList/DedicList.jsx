@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
@@ -91,7 +90,7 @@ export default function DedicList({
   const toggleIsActiveHandler = () => {
     isAllActive ? setActiveServices([]) : setActiveServices(servers)
   }
-  
+
   return (
     <>
       {widerThan1550 && servers?.length > 0 && (

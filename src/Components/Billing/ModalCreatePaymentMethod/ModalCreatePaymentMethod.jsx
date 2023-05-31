@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -398,7 +398,9 @@ export default function Component(props) {
                             <div className={s.offerBlock}>
                               <CheckBox
                                 value={values['offer_3'] || false}
-                                onClick={() => setFieldValue('offer_3', !values['offer_3'])}
+                                onClick={() =>
+                                  setFieldValue('offer_3', !values['offer_3'])
+                                }
                                 className={s.checkbox}
                                 error={!!errors['offer_3']}
                                 touched={!!touched['offer_3']}

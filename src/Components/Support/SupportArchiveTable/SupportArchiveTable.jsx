@@ -1,4 +1,3 @@
-import React from 'react'
 import SupportArchiveTableItem from './SupportArchiveTableItem'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
@@ -19,7 +18,7 @@ export default function Component(props) {
           {t('date', { ns: 'other' })}:
         </span>
       </div>
-      
+
       {list?.map(el => {
         const { tstatus, last_message, name, id, unread } = el
         let onItemClick = () => setSelctedTicket(el)

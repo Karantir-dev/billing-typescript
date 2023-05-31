@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
@@ -112,9 +112,7 @@ export default function AffiliateProgramStatistics() {
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
           <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
           <span className={s.table_head}>{t('statistics_section.client')}:</span>
-          <span className={s.table_head}>
-            {t('statistics_section.payment')}:
-          </span>
+          <span className={s.table_head}>{t('statistics_section.payment')}:</span>
         </div>
       )}
       {items.length === 0 && (
@@ -148,9 +146,7 @@ export default function AffiliateProgramStatistics() {
                 {payed?.$ === 'on' ? (
                   <Check className={s.icon_check} />
                 ) : (
-                  <span className={s.stub}>
-                    {t('statistics_section.not_paid')}
-                  </span>
+                  <span className={s.stub}>{t('statistics_section.not_paid')}</span>
                 )}
               </span>
             </li>

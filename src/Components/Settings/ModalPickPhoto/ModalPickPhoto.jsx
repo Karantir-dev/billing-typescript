@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Avatar from 'react-avatar-edit'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'

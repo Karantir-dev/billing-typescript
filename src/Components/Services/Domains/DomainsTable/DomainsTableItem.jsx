@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import s from './DomainsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

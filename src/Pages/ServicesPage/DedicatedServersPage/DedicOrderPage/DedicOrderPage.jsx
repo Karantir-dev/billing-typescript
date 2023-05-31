@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
@@ -453,32 +453,34 @@ export default function DedicOrderPage() {
                 <div className={s.second_processors_block}>
                   <p className={s.processors_block__label}>{t('server_model')}:</p>
                   <div className={s.processors_block__row}>
-                    {tarifList?.fpricelist?.filter(el => !el.$.toLowerCase().includes('port')).map(item => {
-                      return (
-                        <div
-                          className={classNames(s.processor_card, {
-                            [s.selected]: true,
-                          })}
-                          key={item?.$key}
-                        >
-                          <Toggle
-                            setValue={() => {
-                              setFieldValue('processor', item?.$key)
-                              if (filters.includes(item?.$key)) {
-                                setFilters([...filters.filter(el => el !== item?.$key)])
-                              } else {
-                                setFilters([...filters, item?.$key])
-                              }
-                              resetForm()
-                              setParameters(null)
-                              setTarifChosen(false)
-                            }}
-                            view="radio"
-                          />
-                          <span className={s.processor_name}>{item?.$}</span>
-                        </div>
-                      )
-                    })}
+                    {tarifList?.fpricelist
+                      ?.filter(el => !el.$.toLowerCase().includes('port'))
+                      .map(item => {
+                        return (
+                          <div
+                            className={classNames(s.processor_card, {
+                              [s.selected]: true,
+                            })}
+                            key={item?.$key}
+                          >
+                            <Toggle
+                              setValue={() => {
+                                setFieldValue('processor', item?.$key)
+                                if (filters.includes(item?.$key)) {
+                                  setFilters([...filters.filter(el => el !== item?.$key)])
+                                } else {
+                                  setFilters([...filters, item?.$key])
+                                }
+                                resetForm()
+                                setParameters(null)
+                                setTarifChosen(false)
+                              }}
+                              view="radio"
+                            />
+                            <span className={s.processor_name}>{item?.$}</span>
+                          </div>
+                        )
+                      })}
                   </div>
                 </div>
               </div>
