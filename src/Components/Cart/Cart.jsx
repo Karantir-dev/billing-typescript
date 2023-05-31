@@ -55,6 +55,7 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [paymentListLoaded, setPaymentsListLoaded] = useState(false)
 
   const [salesList, setSalesList] = useState([])
   const [isDedicWithSale, setIsDedicWithSale] = useState(false)
@@ -88,8 +89,13 @@ export default function Component() {
   const [promocode, setPromocode] = useState('')
   const [isPhoneVerification, setIsPhoneVerification] = useState(false)
 
+  const paymentListhandler = data => {
+    setPaymentsMethodList(data)
+    setPaymentsListLoaded(true)
+  }
+
   useEffect(() => {
-    dispatch(cartOperations.getBasket(setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
     dispatch(cartOperations.getSalesList(setSalesList))
   }, [])
 
@@ -194,12 +200,12 @@ export default function Component() {
 
   const setPromocodeToCart = promocode => {
     dispatch(
-      cartOperations.setBasketPromocode(promocode, setCartData, setPaymentsMethodList),
+      cartOperations.setBasketPromocode(promocode, setCartData, paymentListhandler),
     )
   }
 
   const deleteBasketItemHandler = item_id => {
-    dispatch(cartOperations.deleteBasketItem(item_id, setCartData, setPaymentsMethodList))
+    dispatch(cartOperations.deleteBasketItem(item_id, setCartData, paymentListhandler))
   }
 
   const closeBasketHamdler = basket_id => {
@@ -978,11 +984,13 @@ export default function Component() {
                     <Form className={s.form}>
                       <ScrollToFieldError />
                       <div className={cn(s.formBlock, s.padding)}>
-                        {!isLoading && paymentsMethodList?.length === 0 && (
-                          <div className={s.notAllowPayMethod}>
-                            {t('order_amount_is_less')}
-                          </div>
-                        )}
+                        {!isLoading &&
+                          paymentListLoaded &&
+                          paymentsMethodList?.length === 0 && (
+                            <div className={s.notAllowPayMethod}>
+                              {t('order_amount_is_less')}
+                            </div>
+                          )}
                         {paymentsMethodList?.length > 0 && !isPhoneVerification && (
                           <>
                             <div className={s.formBlockTitle}>{t('Payment method')}:</div>
