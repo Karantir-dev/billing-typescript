@@ -216,7 +216,7 @@ export default function DedicOrderPage() {
       const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.boundingClientRect.left >= 0 && entry.boundingClientRect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
               entry.target.classList.remove('notInViewport')
             } else {
               entry.target.classList.add('notInViewport')

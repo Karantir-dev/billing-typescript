@@ -39,7 +39,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
         <img
-          className={cn(s.img, { [s.notInList]: !inList })}
+          className={cn(s.img)}
           src={renderImg()}
           alt="icon"
         />
@@ -62,7 +62,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
                   role="button"
                 >
                   <img
-                    className={cn(s.img, s.left, s.grey, { [s.notInList]: !inList })}
+                    className={cn(s.img, s.left, s.grey)}
                     src={renderImg()}
                     alt="icon"
                   />

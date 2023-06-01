@@ -1,6 +1,6 @@
 .card {
   position: relative;
-  padding: 14px 10px 20px;
+  padding: 20px 10px;
   box-shadow: var(--forms3_shadow);
   background: var(--forms_bgc_1);
   margin-bottom: 20px;
@@ -121,13 +121,23 @@
   color: var(--main-text);
 }
 
+.item_title,
+.item_text {
+  word-break: break-all;
+}
+
 .status {
   color: var(--success-color);
 }
 
+@media screen and (min-width: 768px) {
+  .card {
+    padding: 20px 15px
+  }
+}
+
 @media screen and (min-width: 1024px) {
   .card {
-    max-width: 292px;
     padding: 19px 27px 20px 23px;
 
     &:hover::before,
@@ -148,7 +158,6 @@
 
 @media screen and (min-width: 1550px) {
   .card {
-    max-width: unset;
     width: 100%;
     display: flex;
     align-items: center;
