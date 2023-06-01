@@ -258,6 +258,7 @@ const getDomainsContacts =
         const d = {
           owner_email: domainData?.owner_email,
           owner_phone: domainData?.owner_phone?.$,
+          owner_phone_country: domainData?.owner_phone_country?.$,
 
           owner_firstname: domainData?.owner_firstname,
           owner_firstname_locale: domainData?.owner_firstname_locale,
@@ -282,6 +283,7 @@ const getDomainsContacts =
           admin_contact_use_first: domainData?.admin_contact_use_first?.$,
           admin_email: domainData?.admin_email,
           admin_phone: domainData?.admin_phone?.$,
+          admin_phone_country: domainData?.admin_phone_country?.$,
 
           admin_firstname: domainData?.admin_firstname,
           admin_firstname_locale: domainData?.admin_firstname_locale,
@@ -307,6 +309,7 @@ const getDomainsContacts =
           tech_contact_use_first: domainData?.tech_contact_use_first?.$,
           tech_email: domainData?.tech_email,
           tech_phone: domainData?.tech_phone?.$,
+          tech_phone_country: domainData?.tech_phone_country?.$,
 
           tech_firstname: domainData?.tech_firstname,
           tech_firstname_locale: domainData?.tech_firstname_locale,
@@ -331,6 +334,7 @@ const getDomainsContacts =
           bill_contact_use_first: domainData?.bill_contact_use_first?.$,
           bill_email: domainData?.bill_email,
           bill_phone: domainData?.bill_phone?.$,
+          bill_phone_country: domainData?.bill_phone_country?.$,
 
           bill_firstname: domainData?.bill_firstname,
           bill_firstname_locale: domainData?.bill_firstname_locale,

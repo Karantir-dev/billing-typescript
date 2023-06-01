@@ -28,6 +28,10 @@
   margin-left: 5px;
 }
 
+.phoneInputContainer {
+  height: 55px;
+}
+
 .formBlockTitle {
   font-style: normal;
   font-weight: 600;
@@ -64,17 +68,18 @@
 }
 
 .input {
-  max-width: 100%;
+  max-width: 99%;
   margin-top: 13px;
+  padding-bottom: 0;
 }
 
 .phoneInputLabel {
-  margin: 0 0 5px 10px !important;
+  margin: 0 0 10px 10px !important;
 }
 
 .phoneInput {
-  width: 100%;
-  max-width: 100%;
+  width: 99%;
+  max-width: 99%;
   margin: 13px 0 0 0;
 
   input {
@@ -88,7 +93,7 @@
 }
 
 .select {
-  max-width: 100%;
+  max-width: 99%;
   margin-top: 13px;
 
   button {
@@ -130,7 +135,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 70.9%;
+    line-height: 130%;
     color: var(--main-text);
     margin-left: 18px;
   }
@@ -165,7 +170,7 @@
   }
 
   .phoneInputLabel {
-    margin: 0 0 5px 10px !important;
+    margin: 0 0 10px 10px !important;
   }
 
   .ownerForm {
