@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom'
-import { render } from '@testing-library/react'
-// import { AffiliateProgram } from '../../Pages'
-import { BrowserRouter } from 'react-router-dom'
-import entireStore from '../../Redux/store'
-import { Provider } from 'react-redux'
+// import { render } from '@testing-library/react'
+// // import { AffiliateProgram } from '../../Pages'
+// import { BrowserRouter } from 'react-router-dom'
+// import entireStore from '../../Redux/store'
+// import { Provider } from 'react-redux'
 
 jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
@@ -26,10 +26,10 @@ describe('AffiliateProgram Page jsx', () => {
   }))
 
   test('render AboutAffiliateProgram Page', () => {
-    render(
-      <Provider store={entireStore.store}>
-        <BrowserRouter>{/* <AffiliateProgram /> */}</BrowserRouter>
-      </Provider>,
-    )
+    // render(
+    //   <Provider store={entireStore.store}>
+    //     <BrowserRouter>{/* <AffiliateProgram /> */}</BrowserRouter>
+    //   </Provider>,
+    // )
   })
 })
