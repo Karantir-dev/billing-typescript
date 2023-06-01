@@ -14,7 +14,7 @@
   transition: max-height 0.15s ease-out;
 
   &.isOpen {
-    max-height: 1925px;
+    max-height: 2025px;
     height: auto;
     transition: max-height 0.25s ease-in;
   }
@@ -181,7 +181,7 @@
     transition: max-height 0.15s ease-out;
 
     &.isOpen {
-      max-height: 1150px;
+      max-height: 1250px;
       height: auto;
       transition: max-height 0.25s ease-in;
     }
