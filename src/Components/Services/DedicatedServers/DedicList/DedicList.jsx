@@ -7,7 +7,7 @@ import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
 import { CheckBox } from '../../..'
 import { useDispatch } from 'react-redux'
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 
 export default function DedicList({
   emptyFilter,
@@ -60,7 +60,7 @@ export default function DedicList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/no_dedic_server.png')}
+            src={require('@images/services/no_dedic_server.png')}
             alt="dedic"
             className={s.dedic_img}
           />

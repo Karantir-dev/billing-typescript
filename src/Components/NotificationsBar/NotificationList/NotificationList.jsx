@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { userOperations, authSelectors, userActions } from '../../../Redux'
+import { userOperations, authSelectors, userActions } from '@redux'
 import NotificationListItem from '../NotificationListItem/NotificationListItem'
 
 import s from './NotificationList.module.scss'

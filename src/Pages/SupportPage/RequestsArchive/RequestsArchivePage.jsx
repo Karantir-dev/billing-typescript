@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, Pagination, SupportArchiveTable } from '../../../Components/'
-import { supportSelectors, supportOperations } from '../../../Redux'
+import { SupportFilter, Pagination, SupportArchiveTable } from '@components'
+import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsArchivePage.module.scss'
 
 export default function Component() {

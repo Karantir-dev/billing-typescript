@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import DomainFiltertsModal from '../DomainFiltertsModal/DomainFiltertsModal'
-import { actions, domainsOperations, domainsSelectors } from '../../../../Redux'
+import { actions, domainsOperations, domainsSelectors } from '@redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, IconButton, HintWrapper, Portal, CheckBox } from '../../..'
-import * as routes from '../../../../routes'
+import {
+  Button,
+  IconButton,
+  HintWrapper,
+  Portal,
+  CheckBox,
+  DomainFiltertsModal,
+} from '@components'
+import * as routes from '@src/routes'
 import s from './DomainFilters.module.scss'
 
 export default function Component(props) {

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import * as routes from '../../../routes'
+import * as routes from '@src/routes'
 import s from './LoginBtnBlock.module.scss'
 
 export default function Loader({ login = false }) {

@@ -42,7 +42,7 @@ export default function DNSList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/no_dns.png')}
+            src={require('@images/services/no_dns.png')}
             alt="dns"
             className={s.dns_img}
           />

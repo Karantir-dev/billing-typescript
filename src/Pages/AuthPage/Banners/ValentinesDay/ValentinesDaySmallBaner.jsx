@@ -1,4 +1,4 @@
-import { SITE_URL } from '../../../../config/config'
+import { SITE_URL } from '@config/config'
 import { useTranslation } from 'react-i18next'
 import ValentinesDayText from './ValentinesDayText'
 import s from '../../AuthPage.module.scss'
@@ -10,7 +10,7 @@ export default function Component() {
     <>
       <img
         className={s.valentinesImg}
-        src={require('../../../../images/banners/ValentainsMessage.png')}
+        src={require('@images/banners/ValentainsMessage.png')}
         alt="gift"
       />
       <ValentinesDayText className={s.pumpkinsTextIcon} />

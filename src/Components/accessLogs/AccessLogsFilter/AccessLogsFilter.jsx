@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
-import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
+import { accessLogsOperations, accessLogsSelectors } from '@redux'
 import PropTypes from 'prop-types'
 // import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import {

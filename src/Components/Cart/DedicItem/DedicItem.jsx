@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Delete, Shevron } from '../../../images'
+import { Delete, Shevron } from '@images'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { translatePeriodToMonths } from '../../../utils'
+import { translatePeriodToMonths } from '@utils'
 
 import s from './DedicItem.module.scss'
 

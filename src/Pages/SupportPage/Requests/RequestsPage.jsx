@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, SupportTable, Pagination } from '../../../Components/'
-import { supportSelectors, supportOperations } from '../../../Redux'
+import { SupportFilter, SupportTable, Pagination } from '@components'
+import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 
 export default function Component() {

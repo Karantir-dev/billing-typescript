@@ -9,13 +9,12 @@ import {
   Button,
   CheckBox,
   IconButton,
-  //  HintWrapper,
   Portal,
-} from '../../..'
-import SharedHostingFilterModal from '../SharedHostingFilterModal/SharedHostingFilterModal'
-import * as routes from '../../../../routes'
+  SharedHostingFilterModal,
+} from '@components'
+import * as routes from '@src/routes'
 import s from './SharedHostingFilter.module.scss'
-import { actions, vhostOperations, vhostSelectors } from '../../../../Redux'
+import { actions, vhostOperations, vhostSelectors } from '@redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -24,14 +23,7 @@ export default function Component(props) {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   const {
-    // selctedItem,
     setCurrentPage,
-    // historyVhostHandler,
-    // instructionVhostHandler,
-    // platformVhostHandler,
-    // prolongVhostHandler,
-    // editVhostHandler,
-    // changeTariffVhostHandler,
     hostingList,
     activeServices,
     setActiveServices,

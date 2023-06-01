@@ -9,7 +9,7 @@ export default function Component() {
       <img
         id="banner-img"
         className={s.bannerImg}
-        src={require('../../../../images/banners/HalloweenBig.png')}
+        src={require('@images/banners/HalloweenBig.png')}
         alt="banner"
       />
       <div className={s.saleHalloween}>

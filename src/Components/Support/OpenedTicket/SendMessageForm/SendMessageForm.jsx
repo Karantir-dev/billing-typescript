@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
-import { supportOperations } from '../../../../Redux'
-import MessageInput from '../../MessageInput/MessageInput'
+import { supportOperations } from '@redux'
 import * as Yup from 'yup'
-import { Button } from '../../../'
+import { Button, MessageInput } from '@components'
 import { Form, Formik } from 'formik'
-import * as route from '../../../../routes'
+import * as route from '@src/routes'
 import s from './SendMessageForm.module.scss'
 
 export default function Component() {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
-import { PhoneVerificationIcon, Profile } from '../../../images'
+import { PhoneVerificationIcon, Profile } from '@images'
 import {
   InputField,
   CustomPhoneInput,
@@ -14,15 +14,15 @@ import {
   Toggle,
   HintWrapper,
   ScrollToFieldError,
-} from '../../../Components'
-import { BASE_URL } from '../../../config/config'
+} from '@components'
+import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
-import { isBase64 } from '../../../utils'
+import { settingsSelectors, settingsOperations, userSelectors } from '@redux'
+import { isBase64 } from '@utils'
 import s from './PersonalSettings.module.scss'
-import * as routes from '../../../routes'
+import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
 

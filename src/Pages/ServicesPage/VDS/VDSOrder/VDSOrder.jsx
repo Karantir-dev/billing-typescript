@@ -11,10 +11,10 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   Button,
-} from '../../../../Components'
-import { SaleFiftyFive } from '../../../../images'
-import { userOperations, vdsOperations } from '../../../../Redux'
-import { DOMAIN_REGEX, useScrollToElement } from '../../../../utils'
+} from '@components'
+import { SaleFiftyFive } from '@images'
+import { userOperations, vdsOperations } from '@redux'
+import { DOMAIN_REGEX, useScrollToElement } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 

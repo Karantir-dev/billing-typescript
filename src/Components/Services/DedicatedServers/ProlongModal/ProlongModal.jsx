@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
-import { billingActions, dedicOperations } from '../../../../Redux'
+import { Cross } from '@images'
+import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
 import { Button, Select } from '../../..'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
-import { translatePeriod } from '../../../../utils'
-// import { SALE_55_PROMOCODE } from '../../../../config/config'
+import { translatePeriod } from '@utils'
+// import { SALE_55_PROMOCODE } from '@config/config'
 
 export default function ProlongModal({
   elidList,

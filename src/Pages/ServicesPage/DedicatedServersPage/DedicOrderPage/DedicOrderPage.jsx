@@ -8,27 +8,25 @@ import {
   Toggle,
   Select,
   InputField,
-} from '../../../../Components'
+} from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-
-import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
-
+import { dedicOperations, dedicSelectors, userOperations } from '@redux'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { ArrowSign } from '@images'
+import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '@utils'
+import * as route from '@src/routes'
+import * as Yup from 'yup'
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
-import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -400,7 +398,7 @@ export default function DedicOrderPage() {
                             [s.flag_icon]: true,
                             [s.selected]: item?.$key === values?.datacenter,
                           })}
-                          src={require('../../../../images/countryFlags/netherlands_flag.webp')}
+                          src={require('@images/countryFlags/netherlands_flag.webp')}
                           alt="nth_flag"
                         />
                         <div className={s.datacenter__info}>

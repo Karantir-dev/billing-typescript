@@ -1,6 +1,6 @@
 import Gradient from './Gradient'
 import { useSelector } from 'react-redux'
-import { selectors } from '../../Redux'
+import { selectors } from '@redux'
 
 export default function SvgComponent(props) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'

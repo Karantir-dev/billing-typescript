@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, BillingFilter, PaymentsTable } from '../../../Components/'
-import { Wallet } from '../../../images'
-import { billingOperations, billingSelectors } from '../../../Redux'
+import { Pagination, BillingFilter, PaymentsTable } from '@components'
+import { Wallet } from '@images'
+import { billingOperations, billingSelectors } from '@redux'
 import s from './Payments.module.scss'
 
 export default function Component() {

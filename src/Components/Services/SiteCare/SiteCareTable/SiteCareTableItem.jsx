@@ -4,8 +4,8 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox } from '../../..'
-import { MoreDots, Edit, Clock, Refund, Delete } from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { MoreDots, Edit, Clock, Refund, Delete } from '@images'
+import { useOutsideAlerter } from '@utils'
 import s from './SiteCareTable.module.scss'
 
 export default function Component(props) {

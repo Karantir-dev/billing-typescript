@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import BurgerListItem from '../BurgerListItem/BurgerListItem'
-import { ArrowSign, Box, Profile, Social, Support, Wallet } from '../../../../../images'
+import { ArrowSign, Box, Profile, Social, Support, Wallet } from '@images'
 
 import s from './ListItems.module.scss'
 

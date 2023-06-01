@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import * as routes from '../../routes'
-import { Cross, Check, Info, Attention } from '../../images'
+import * as routes from '@src/routes'
+import { Cross, Check, Info, Attention } from '@images'
 import {
   Select,
   InputField,
@@ -23,18 +23,18 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   ScrollToFieldError,
-} from '..'
+} from '@components'
 import {
   cartOperations,
   payersOperations,
   payersSelectors,
   selectors,
   authSelectors,
-} from '../../Redux'
+} from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '../../config/config'
-import { replaceAllFn } from '../../utils'
+import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
+import { replaceAllFn } from '@utils'
 
 export default function Component() {
   const dispatch = useDispatch()

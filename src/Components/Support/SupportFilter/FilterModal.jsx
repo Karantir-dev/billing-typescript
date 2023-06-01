@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import {
   InputField,
@@ -13,8 +13,8 @@ import {
   Button,
   SelectMultiple,
 } from '../..'
-import { Cross } from '../../../images'
-import { supportSelectors } from '../../../Redux'
+import { Cross } from '@images'
+import { supportSelectors } from '@redux'
 import s from './SupportFilter.module.scss'
 
 export default function Component(props) {

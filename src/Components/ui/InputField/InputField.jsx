@@ -12,7 +12,7 @@ import {
   Person,
   Copy,
   Plus,
-} from '../../../images'
+} from '@images'
 import s from './InputField.module.scss'
 
 const InputField = function InputField(props) {

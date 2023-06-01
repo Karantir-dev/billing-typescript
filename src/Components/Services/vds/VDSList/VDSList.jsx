@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../../Redux'
+import { vdsOperations } from '@redux'
 
 export default function VDSList({
   servers,

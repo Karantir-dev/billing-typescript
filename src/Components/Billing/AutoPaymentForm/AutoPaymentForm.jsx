@@ -3,15 +3,15 @@ import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { Button, Select, InputField, CheckBox } from '../../../Components/'
+import { Button, Select, InputField, CheckBox } from '@components'
 import {
   billingSelectors,
   payersSelectors,
   payersOperations,
   billingOperations,
-} from '../../../Redux'
+} from '@redux'
 
-import { BASE_URL, PRIVACY_URL } from '../../../config/config'
+import { BASE_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'

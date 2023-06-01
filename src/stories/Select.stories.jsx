@@ -1,4 +1,4 @@
-import { Select } from '../Components'
+import { Select } from '@components'
 
 export default {
   title: 'Select',

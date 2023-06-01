@@ -12,14 +12,14 @@ import {
   CheckBox,
   SiteCareBottomBar,
   SharedHostingInstructionModal,
-} from '../../../Components'
+} from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './VPN.module.scss'
-import { selectors, vpnOperations, vpnSelectors } from '../../../Redux'
-import { checkServicesRights, usePageRender } from '../../../utils'
-import * as route from '../../../routes'
+import { selectors, vpnOperations, vpnSelectors } from '@redux'
+import { checkServicesRights, usePageRender } from '@utils'
+import * as route from '@src/routes'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vpn')
@@ -268,7 +268,7 @@ export default function Component() {
         !isLoading && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/vpn.webp')}
+              src={require('@images/services/vpn.webp')}
               alt="sitecare"
               className={s.sitecare_img}
             />

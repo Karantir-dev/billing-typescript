@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 
-import { selectors, actions } from '../../../Redux'
-import { Moon, Sun } from '../../../images'
+import { selectors, actions } from '@redux'
+import { Moon, Sun } from '@images'
 
 import s from './ThemeBtn.module.scss'
 

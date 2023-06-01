@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 import s from './FTPItem.module.scss'
 import { CheckBox, ServerState } from '../../..'
 import { useDispatch } from 'react-redux'
-import { useOutsideAlerter } from '../../../../utils'
-import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
+import { useOutsideAlerter } from '@utils'
+import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '@images'
+import { dedicOperations } from '@redux'
 
 export default function FTPItem({
   storage,

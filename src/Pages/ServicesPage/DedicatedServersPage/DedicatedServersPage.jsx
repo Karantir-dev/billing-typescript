@@ -16,16 +16,16 @@ import {
   Portal,
   Pagination,
   CheckBox,
-} from '../../../Components'
+} from '@components'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, dedicOperations, dedicSelectors } from '../../../Redux'
+import { actions, dedicOperations, dedicSelectors } from '@redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 import s from './DedicatedServersPage.module.scss'
-import { checkServicesRights, usePageRender } from '../../../utils'
+import { checkServicesRights, usePageRender } from '@utils'
 
 export default function DedicatedServersPage() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')

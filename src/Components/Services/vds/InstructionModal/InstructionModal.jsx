@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
+import { Cross } from '@images'
+import { dedicOperations } from '@redux'
 import { Loader } from '../../..'
 
 import s from './InstructionModal.module.scss'

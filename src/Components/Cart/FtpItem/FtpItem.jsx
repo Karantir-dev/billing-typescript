@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'react-responsive'
-import { Delete } from '../../../images'
+import { Delete } from '@images'
 import s from './FtpItem.module.scss'
-import { translatePeriodToMonths } from '../../../utils'
+import { translatePeriodToMonths } from '@utils'
 import { useTranslation } from 'react-i18next'
 
 export default function FtpItem(props) {

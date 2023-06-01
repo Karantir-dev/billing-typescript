@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { Clip, Cross } from '../../../images'
+import { Clip, Cross } from '@images'
 import { Field, ErrorMessage } from 'formik'
 import s from './MessageInput.module.scss'
 

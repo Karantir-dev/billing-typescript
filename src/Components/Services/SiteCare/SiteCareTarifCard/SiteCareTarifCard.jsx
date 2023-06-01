@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './SiteCareTarifCard.module.scss'
-import { SiteCareIcon } from '../../../../images'
+import { SiteCareIcon } from '@images'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
 

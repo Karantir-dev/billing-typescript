@@ -5,13 +5,13 @@ import {
   DomainsZone,
   InputField,
   DomainsPickUpZones,
-} from '../../../../Components'
+} from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { domainsOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
+import { domainsOperations } from '@redux'
+import * as route from '@src/routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
 

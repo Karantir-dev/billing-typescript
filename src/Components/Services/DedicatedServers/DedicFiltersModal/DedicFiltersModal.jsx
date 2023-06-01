@@ -2,10 +2,10 @@ import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 // import cn from 'classnames'
-import { useOutsideAlerter } from '../../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import s from './DedicFiltersModal.module.scss'
 
 export default function DedicFiltersModal(props) {

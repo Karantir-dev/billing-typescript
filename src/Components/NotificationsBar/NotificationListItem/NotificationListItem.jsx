@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { notificationsTranslateFn } from '../../../utils'
+import { notificationsTranslateFn } from '@utils'
 
 import s from './NotificationListItem.module.scss'
 

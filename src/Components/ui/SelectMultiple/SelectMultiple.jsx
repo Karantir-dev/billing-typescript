@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Check, Cross, Shevron } from '../../../images'
-import { useOutsideAlerter } from '../../../utils'
+import { Check, Cross, Shevron } from '@images'
+import { useOutsideAlerter } from '@utils'
 import s from './SelectMultiple.module.scss'
 
 export default function Component(props) {

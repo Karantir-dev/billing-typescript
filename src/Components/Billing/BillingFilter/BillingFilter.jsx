@@ -13,7 +13,7 @@ import {
   billingActions,
   billingOperations,
   billingSelectors,
-} from '../../../Redux'
+} from '@redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {

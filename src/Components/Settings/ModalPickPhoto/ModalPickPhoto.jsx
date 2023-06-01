@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import Avatar from 'react-avatar-edit'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../images'
+import { Cross } from '@images'
 import { Button } from '../..'
-import { settingsOperations, userSelectors, settingsActions } from '../../../Redux'
+import { settingsOperations, userSelectors, settingsActions } from '@redux'
 import s from './ModalPickPhoto.module.scss'
 
 export default function Component(props) {

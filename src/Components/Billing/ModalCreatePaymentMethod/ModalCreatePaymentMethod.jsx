@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
-import { Cross, Info } from '../../../images'
+import { Cross, Info } from '@images'
 import {
   Button,
   Select,
@@ -18,12 +18,12 @@ import {
   payersOperations,
   payersSelectors,
   authSelectors,
-} from '../../../Redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
+} from '@redux'
+import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
-import { checkIfTokenAlive } from '../../../utils'
+import { checkIfTokenAlive } from '@utils'
 
 export default function Component(props) {
   const dispatch = useDispatch()

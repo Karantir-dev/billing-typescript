@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { Toggle } from '../../../Components'
+import { Toggle } from '@components'
 import { useTranslation } from 'react-i18next'
-import { Shevron } from '../../../images'
+import { Shevron } from '@images'
 import s from './ToggleBlock.module.scss'
 
 export default function Component(props) {

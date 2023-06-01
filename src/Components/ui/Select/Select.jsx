@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '../../../images'
-import { useOutsideAlerter } from '../../../utils'
+import { Shevron } from '@images'
+import { useOutsideAlerter } from '@utils'
 import s from './Select.module.scss'
 import { useTranslation } from 'react-i18next'
 

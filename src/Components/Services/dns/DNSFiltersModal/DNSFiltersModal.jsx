@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '../../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
 import s from './DNSFiltersModal.module.scss'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 
 export default function DNSFiltersModal(props) {
   const {

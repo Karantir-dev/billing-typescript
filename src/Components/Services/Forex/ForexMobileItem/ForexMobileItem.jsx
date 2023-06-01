@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, MoreDots, Edit, Refund, Delete, Info } from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { Clock, MoreDots, Edit, Refund, Delete, Info } from '@images'
+import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'

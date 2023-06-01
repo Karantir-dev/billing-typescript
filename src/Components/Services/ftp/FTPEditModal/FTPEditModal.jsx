@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -9,8 +9,8 @@ import s from './FTPEditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
 import { Button } from '../../..'
-import { ftpOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../utils'
+import { ftpOperations } from '@redux'
+import { translatePeriod } from '@utils'
 
 export default function FTPEditModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'autoprolong'])

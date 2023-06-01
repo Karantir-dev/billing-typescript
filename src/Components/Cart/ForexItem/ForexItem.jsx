@@ -1,8 +1,8 @@
 import { useMediaQuery } from 'react-responsive'
 
 import s from './ForexItem.module.scss'
-import { Delete } from '../../../images'
-import { translatePeriodToMonths } from '../../../utils'
+import { Delete } from '@images'
+import { translatePeriodToMonths } from '@utils'
 import { useTranslation } from 'react-i18next'
 
 export default function ForexItem(props) {

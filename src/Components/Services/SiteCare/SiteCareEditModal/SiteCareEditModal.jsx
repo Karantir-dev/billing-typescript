@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Select, Button, InputField, CheckBox } from '../../..'
 import { Formik, Form } from 'formik'
-import { translatePeriod } from '../../../../utils'
+import { translatePeriod } from '@utils'
 import s from './SiteCareEditModal.module.scss'
 
 export default function Component(props) {

@@ -1,7 +1,7 @@
 import MessageItem from '../MessageItem/MessageItem'
 import PropTypes from 'prop-types'
 import s from './OpenedTicketMessages.module.scss'
-import { systemNotificationsTranslate } from '../../../../utils'
+import { systemNotificationsTranslate } from '@utils'
 import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {

@@ -41,7 +41,7 @@ export default function FTPList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/no_ftp.png')}
+            src={require('@images/services/no_ftp.png')}
             alt="ftp"
             className={s.ftp_img}
           />

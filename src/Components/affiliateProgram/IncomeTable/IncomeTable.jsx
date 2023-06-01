@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
 import { DetailsModal } from '../../'
-import { affiliateOperations } from '../../../Redux'
+import { affiliateOperations } from '@redux'
 
 import s from './IncomeTable.module.scss'
 import dayjs from 'dayjs'

@@ -11,14 +11,14 @@ import {
   Backdrop,
   CheckBox,
   SiteCareBottomBar,
-} from '../../../Components'
+} from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SiteCare.module.scss'
-import { selectors, siteCareOperations, siteCareSelectors } from '../../../Redux'
-import { checkServicesRights, usePageRender } from '../../../utils'
-import * as route from '../../../routes'
+import { selectors, siteCareOperations, siteCareSelectors } from '@redux'
+import { checkServicesRights, usePageRender } from '@utils'
+import * as route from '@src/routes'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'zabota-o-servere')
@@ -250,7 +250,7 @@ export default function Component() {
         !isLoading && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/no_site_care.png')}
+              src={require('@images/services/no_site_care.png')}
               alt="sitecare"
               className={s.sitecare_img}
             />

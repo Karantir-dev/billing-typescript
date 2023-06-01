@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { ErrorPay } from '../../../images'
-import { SITE_URL } from '../../../config/config'
-import { AuthPageHeader } from '../../../Pages'
+import { ErrorPay } from '@images'
+import { SITE_URL } from '@config/config'
+import { AuthPageHeader } from '@pages'
 import s from './ErrorPayment.module.scss'
-import * as routes from '../../../routes'
-import { parseLang } from '../../../utils'
+import * as routes from '@src/routes'
+import { parseLang } from '@utils'
 
 export default function Component() {
   const { t, i18n } = useTranslation(['billing', 'other', 'payers'])

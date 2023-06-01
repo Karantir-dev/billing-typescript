@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, CustomPhoneInput, InputField } from '../../../Components'
+import { Button, CustomPhoneInput, InputField } from '@components'
 
 import s from './SecondStep.module.scss'
 

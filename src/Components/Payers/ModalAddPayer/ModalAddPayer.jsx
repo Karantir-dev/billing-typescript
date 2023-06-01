@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
-import { Cross, Info } from '../../../images'
+import { Cross, Info } from '@images'
 import {
   Select,
   InputField,
@@ -11,8 +11,8 @@ import {
   InputWithAutocomplete,
   SelectGeo,
 } from '../..'
-import { payersOperations, payersSelectors, authSelectors } from '../../../Redux'
-import { OFERTA_URL, PRIVACY_URL } from '../../../config/config'
+import { payersOperations, payersSelectors, authSelectors } from '@redux'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 

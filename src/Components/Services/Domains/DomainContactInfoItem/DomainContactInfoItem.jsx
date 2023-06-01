@@ -1,17 +1,17 @@
 import { useEffect, useImperativeHandle, useState } from 'react'
-import { InputField, CustomPhoneInput, Select, CheckBox } from '../../../../Components'
+import { InputField, CustomPhoneInput, Select, CheckBox } from '@components'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { FormikProvider, useFormik } from 'formik'
-import { BASE_URL } from '../../../../config/config'
+import { BASE_URL } from '@config/config'
 import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   LATIN_NUMBER_REGEX,
   LATIN_REGEX,
-} from '../../../../utils/constants'
-import { Shevron } from '../../../../images'
+} from '@utils/constants'
+import { Shevron } from '@images'
 import { useDispatch } from 'react-redux'
-import { domainsOperations } from '../../../../Redux'
+import { domainsOperations } from '@redux'
 import s from './DomainContactInfoItem.module.scss'
 import * as Yup from 'yup'
 import 'yup-phone'

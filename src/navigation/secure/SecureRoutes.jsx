@@ -6,24 +6,12 @@ import {
   Container,
   EmailConfirmation,
   Portal,
-  TrustedUsers,
   CartFromSite,
-  PageTitleRender,
   EmailTrigger,
   MainEmailConfirmation,
 } from '@components'
-import { useTranslation } from 'react-i18next'
-import {
-  AffiliateProgram,
-  BillingPage,
-  ErrorPage,
-  OpenedTicker,
-  SupportPage,
-  PaymentSaved,
-  SocialNetAdd,
-} from '@pages'
 import { cartSelectors } from '@redux'
-import * as route from '../../routes'
+import * as route from '@src/routes'
 import {
   ServicesPageLazy,
   VDSPageLazy,
@@ -53,22 +41,19 @@ import {
   ContractsPageLazy,
   UserSettingsPageLazy,
   PhoneVerificationPageLazy,
+  SocialNetAddPageLazy,
+  AffiliateProgramPageLazy,
+  TrustedUsersPageLazy,
+  ErrorPageLazy,
+  PaymentSavedPageLazy,
+  SupportPageLazy,
+  OpenedTickerPageLazy,
+  BillingPageLazy,
 } from './LazyRoutes'
 
 const Component = () => {
   const navigate = useNavigate()
 
-  const { t } = useTranslation([
-    'container',
-    'vds',
-    'crumbs',
-    'virtual_hosting',
-    'domains',
-    'dedicated_servers',
-    'access_log',
-    'payers',
-    'trusted_users',
-  ])
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
 
   useEffect(() => {
@@ -157,30 +142,20 @@ const Component = () => {
 
         <Route path={route.PHONE_VERIFICATION} element={<PhoneVerificationPageLazy />} />
 
-        <Route path={route.SOC_NET_AUTH} element={<SocialNetAdd />} />
-        <Route path={`${route.AFFILIATE_PROGRAM}/*`} element={<AffiliateProgram />} />
+        <Route path={route.SOC_NET_AUTH} element={<SocialNetAddPageLazy />} />
         <Route
-          path={route.TRUSTED_USERS}
-          element={
-            <PageTitleRender title={t('trusted_users.title', { ns: 'trusted_users' })}>
-              <TrustedUsers />
-            </PageTitleRender>
-          }
+          path={`${route.AFFILIATE_PROGRAM}/*`}
+          element={<AffiliateProgramPageLazy />}
         />
+        <Route path={route.TRUSTED_USERS} element={<TrustedUsersPageLazy />} />
+
+        <Route path={`${route.ERROR_PAGE}/*`} element={<ErrorPageLazy />} />
+
         <Route path={route.CONFIRM_EMAIL} element={<EmailConfirmation />} />
-        <Route path={`${route.ERROR_PAGE}/*`} element={<ErrorPage />} />
-
         <Route path={route.SITE_CART} element={<CartFromSite isAuth />} />
-
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
-        <Route
-          path={route.PAYMENT_SAVED}
-          element={
-            <PageTitleRender title={'payment method saved'}>
-              <PaymentSaved />
-            </PageTitleRender>
-          }
-        />
+
+        <Route path={route.PAYMENT_SAVED} element={<PaymentSavedPageLazy />} />
 
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>
@@ -197,30 +172,14 @@ const Component = () => {
 const SupportScreen = () => {
   const location = useLocation()
 
-  const { t } = useTranslation(['support'])
-
   if (location.pathname === route.SUPPORT) {
     return <Navigate to={`${route.SUPPORT}/requests`} />
   }
 
   return (
     <Routes>
-      <Route
-        path=":path/*"
-        element={
-          <PageTitleRender title={t('support')}>
-            <SupportPage />
-          </PageTitleRender>
-        }
-      />
-      <Route
-        path=":path/:id"
-        element={
-          <PageTitleRender title={t('support') + '/' + t('Message')}>
-            <OpenedTicker />
-          </PageTitleRender>
-        }
-      />
+      <Route path=":path/*" element={<SupportPageLazy />} />
+      <Route path=":path/:id" element={<OpenedTickerPageLazy />} />
     </Routes>
   )
 }
@@ -228,30 +187,14 @@ const SupportScreen = () => {
 const BillingScreen = () => {
   const location = useLocation()
 
-  const { t } = useTranslation(['billing'])
-
   if (location.pathname === route.BILLING) {
     return <Navigate to={`${route.BILLING}/payments`} />
   }
 
   return (
     <Routes>
-      <Route
-        path=":path/*"
-        element={
-          <PageTitleRender title={t('Finance')}>
-            <BillingPage />
-          </PageTitleRender>
-        }
-      />
-      <Route
-        path=":path/:result"
-        element={
-          <PageTitleRender title={t('Finance')}>
-            <BillingPage />
-          </PageTitleRender>
-        }
-      />
+      <Route path=":path/*" element={<BillingPageLazy />} />
+      <Route path=":path/:result" element={<BillingPageLazy />} />
     </Routes>
   )
 }

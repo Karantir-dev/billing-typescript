@@ -3,11 +3,11 @@ import s from './PaymentsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import { MoreDots, Pay, Download, Delete } from '../../../images'
+import { MoreDots, Pay, Download, Delete } from '@images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { useOutsideAlerter } from '../../../utils'
-import { HintWrapper } from '../../../Components'
+import { useOutsideAlerter } from '@utils'
+import { HintWrapper } from '@components'
 
 export default function Component(props) {
   const {

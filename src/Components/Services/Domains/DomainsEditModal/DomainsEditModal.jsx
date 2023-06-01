@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross, Shevron } from '../../../../images'
+import { Cross, Shevron } from '@images'
 import { InputField, Button, Select, CustomPhoneInput, CheckBox } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
-import { BASE_URL } from '../../../../config/config'
-import { translatePeriod } from '../../../../utils'
+import { BASE_URL } from '@config/config'
+import { translatePeriod } from '@utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds', 'payers', 'autoprolong'])

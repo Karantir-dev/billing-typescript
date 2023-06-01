@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
-import { Loader } from '../../../Components'
+import * as route from '@src/routes'
+import { Loader } from '@components'
 
 export default function Component(props) {
   const location = useLocation()

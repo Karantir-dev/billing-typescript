@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 // import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './CurrentAutoPayments.module.scss'
-import { BASE_URL } from '../../../config/config'
+import { BASE_URL } from '@config/config'
 
 export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])

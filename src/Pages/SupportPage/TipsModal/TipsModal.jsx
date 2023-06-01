@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import s from './TipsModal.module.scss'
-import { Cross } from '../../../images'
-import { Button, InputField } from '../../../Components'
+import { Cross } from '@images'
+import { Button, InputField } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { supportOperations } from '../../../Redux'
+import { supportOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 
 export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {

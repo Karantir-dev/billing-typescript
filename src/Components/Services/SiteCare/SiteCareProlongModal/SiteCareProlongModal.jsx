@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Select, Button } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './SiteCareProlongModal.module.scss'

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-import { userSelectors } from '../../Redux'
+import { userSelectors } from '@redux'
 import NotificationList from './NotificationList/NotificationList'
 import s from './NotificationsBar.module.scss'
 

@@ -125,6 +125,43 @@ const PhoneVerificationPage = lazy(() =>
   ),
 )
 
+const SocialNetAddPage = lazy(() =>
+  import(
+    /* webpackChunkName: "SocialNetAdd" */ '@pages/UserSettings/SocialNetAdd/SocialNetAdd'
+  ),
+)
+
+const AffiliateProgramPage = lazy(() =>
+  import(
+    /* webpackChunkName: "AffiliateProgram" */ '@pages/AffiliateProgram/AffiliateProgram'
+  ),
+)
+
+const TrustedUsersPage = lazy(() =>
+  import(/* webpackChunkName: "TrustedUsers" */ '@pages/TrustedUsers/TrustedUsers'),
+)
+
+const ErrorPage = lazy(() =>
+  import(/* webpackChunkName: "ErrorPage" */ '@pages/ErrorPage/ErrorPage'),
+)
+
+const PaymentSavedPage = lazy(() =>
+  import(/* webpackChunkName: "PaymentSaved" */ '@pages/PaymentSaved/PaymentSaved'),
+)
+
+const SupportPage = lazy(() =>
+  import(/* webpackChunkName: "SupportPage" */ '@pages/SupportPage/SupportPage'),
+)
+const OpenedTickerPage = lazy(() =>
+  import(
+    /* webpackChunkName: "OpenedTickerPage" */ '@pages/SupportPage/OpenedTicket/OpenedTicket'
+  ),
+)
+
+const BillingPage = lazy(() =>
+  import(/* webpackChunkName: "BillingPage" */ '@pages/BillingPage/BillingPage'),
+)
+
 const ShellСomponent = props => {
   const { children, title } = props
 
@@ -139,6 +176,9 @@ const ShellСomponent = props => {
     'payers',
     'trusted_users',
     'user_settings',
+    'affiliate_program',
+    'support',
+    'billing',
   ])
 
   const titleString = title?.map(e => t(e.value, { ns: e.ns }))?.join('/')
@@ -496,6 +536,89 @@ export const PhoneVerificationPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <PhoneVerificationPage />
+    </ShellСomponent>
+  )
+}
+
+export const SocialNetAddPageLazy = () => {
+  const title = [{ value: 'User Settings', ns: 'user_settings' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <SocialNetAddPage />
+    </ShellСomponent>
+  )
+}
+
+export const AffiliateProgramPageLazy = () => {
+  const title = [{ value: 'page_title', ns: 'affiliate_program' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <AffiliateProgramPage />
+    </ShellСomponent>
+  )
+}
+
+export const TrustedUsersPageLazy = () => {
+  const title = [{ value: 'trusted_users.title', ns: 'trusted_users' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <TrustedUsersPage />
+    </ShellСomponent>
+  )
+}
+
+export const ErrorPageLazy = () => {
+  const title = [{ value: '404 not found', ns: '' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <ErrorPage />
+    </ShellСomponent>
+  )
+}
+
+export const PaymentSavedPageLazy = () => {
+  const title = [{ value: 'Payment method saved', ns: 'container' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <PaymentSavedPage />
+    </ShellСomponent>
+  )
+}
+
+export const SupportPageLazy = () => {
+  const title = [{ value: 'support', ns: 'support' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <SupportPage />
+    </ShellСomponent>
+  )
+}
+
+export const OpenedTickerPageLazy = () => {
+  const title = [
+    { value: 'support', ns: 'support' },
+    { value: 'Message', ns: 'support' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <OpenedTickerPage />
+    </ShellСomponent>
+  )
+}
+
+export const BillingPageLazy = () => {
+  const title = [{ value: 'Finance', ns: 'billing' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <BillingPage />
     </ShellСomponent>
   )
 }

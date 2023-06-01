@@ -4,16 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
+import { Button, UserCard, ManageUserForm } from '@components'
+import { userSelectors, usersOperations, usersSelectors } from '@redux'
 
-import { Button } from '../../Components'
-import UserCard from '../../Components/TrustedUsers/UserCard/UserCard'
-import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
-import { userSelectors, usersOperations, usersSelectors } from '../../Redux'
-
-import * as routes from '../../routes'
+import * as routes from '@src/routes'
 
 import s from './TrustedUsers.module.scss'
-import { usePageRender } from '../../utils'
+import { usePageRender } from '@utils'
 
 export default function TrustedUsers() {
   const isComponentAllowedToRender = usePageRender('customer', 'user')

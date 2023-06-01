@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { settingsOperations } from '../../../Redux'
+import { settingsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 
 export default function Component() {
   const location = useLocation()

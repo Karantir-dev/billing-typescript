@@ -1,19 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button } from '../../../../Components'
+import { BreadCrumbs, Button, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useScrollToElement } from '../../../../utils'
-import Select from '../../../../Components/ui/Select/Select'
-import { forexOperations, selectors, userOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
+import { translatePeriod, useScrollToElement } from '@utils'
+import { forexOperations, selectors, userOperations } from '@redux'
+import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
-import { Germany, Usa } from '../../../../images'
+import { Germany, Usa } from '@images'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
@@ -312,7 +311,7 @@ export default function ForexOrderPage() {
                           <div className={s.dns_img_container}>
                             <img
                               className={s.dns_img}
-                              src={require(`../../../../images/forex/${cardTitle
+                              src={require(`@images/forex/${cardTitle
                                 .toLocaleLowerCase()
                                 .replaceAll(' ', '_')}.webp`)}
                               alt="dns"

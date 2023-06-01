@@ -1,9 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, payersActions } from '..'
-import { axiosInstance } from '../../config/axiosInstance'
-import i18n from '../../i18n'
-import { checkIfTokenAlive } from '../../utils'
+import { actions, payersActions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
+import i18n from '@src/i18n'
+import { checkIfTokenAlive } from '@utils'
 
 const getPayers =
   (body = {}) =>

@@ -1,11 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '../'
-import i18n from '../../i18n'
-import { checkIfTokenAlive } from '../../utils'
-
-import { axiosInstance } from './../../config/axiosInstance'
-import usersActions from './usersActions'
+import { actions, usersActions } from '@redux'
+import i18n from '@src/i18n'
+import { checkIfTokenAlive } from '@utils'
+import { axiosInstance } from '@config/axiosInstance'
 
 const getUsers = () => (dispatch, getState) => {
   dispatch(actions.showLoader())

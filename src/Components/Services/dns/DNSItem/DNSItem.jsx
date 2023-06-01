@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 
 import s from './DNSItem.module.scss'
 import { CheckBox, ServerState } from '../../..'
-import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '../../../../images'
+import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '@images'
 import { useDispatch } from 'react-redux'
-import { dedicOperations } from '../../../../Redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { dedicOperations } from '@redux'
+import { useOutsideAlerter } from '@utils'
 
 export default function DNSItem({
   storage,

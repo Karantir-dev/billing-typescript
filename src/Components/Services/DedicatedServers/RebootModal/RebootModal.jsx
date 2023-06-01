@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next'
 
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 
 import { Button } from '../../..'
 
 import s from './RebootModal.module.scss'
 import { useDispatch } from 'react-redux'
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 import classNames from 'classnames'
 
 export default function RebootModal({ elid, closeFn, server }) {

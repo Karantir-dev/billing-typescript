@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
-import { Cross } from '../../../../../images'
-import { Button, CheckBox } from '../../../../'
+import { Cross } from '@images'
+import { Button, CheckBox } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../../routes'
+import * as route from '@src/routes'
 import s from './DomainsPickUpZones.module.scss'
 
 export default function ServicesPage(props) {

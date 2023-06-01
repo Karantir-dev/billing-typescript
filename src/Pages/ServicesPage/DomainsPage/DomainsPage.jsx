@@ -12,14 +12,14 @@ import {
   DomainsProlongModal,
   DomainBottomBar,
   CheckBox,
-} from '../../../Components'
+} from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
-import { domainsOperations, domainsSelectors } from '../../../Redux'
-import { checkServicesRights, usePageRender } from '../../../utils'
-import * as route from '../../../routes'
+import { domainsOperations, domainsSelectors } from '@redux'
+import { checkServicesRights, usePageRender } from '@utils'
+import * as route from '@src/routes'
 
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
@@ -278,7 +278,7 @@ export default function Component() {
         domainsRenderData?.domainsList && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/no_domain.png')}
+              src={require('@images/services/no_domain.png')}
               alt="domains"
               className={s.domains_img}
             />

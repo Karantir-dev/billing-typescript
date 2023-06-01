@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-
-import { Button, IconButton, Portal, CheckBox } from '../../..'
-import SiteCareFiltertsModal from '../SiteCareFiltertsModal/SiteCareFiltertsModal'
-import * as routes from '../../../../routes'
+import { Button, IconButton, Portal, CheckBox, SiteCareFiltertsModal } from '@components'
+import * as routes from '@src/routes'
 import s from './SiteCareFilter.module.scss'
-import { actions, siteCareOperations, siteCareSelectors } from '../../../../Redux'
+import { actions, siteCareOperations, siteCareSelectors } from '@redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])

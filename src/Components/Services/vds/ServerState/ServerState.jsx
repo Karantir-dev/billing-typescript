@@ -1,7 +1,7 @@
 import cn from 'classnames'
 
 import { useTranslation } from 'react-i18next'
-import { Clock, On_Off, CheckCircle, InProgress, Attention } from '../../../../images'
+import { Clock, On_Off, CheckCircle, InProgress, Attention } from '@images'
 import { HintWrapper } from '../../../'
 import PropTypes from 'prop-types'
 

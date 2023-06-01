@@ -1,11 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { t } from 'i18next'
-import userActions from './userActions'
-import { axiosInstance } from './../../config/axiosInstance'
-import { checkIfTokenAlive } from '../../utils'
-import cartOperations from '../cart/cartOperations'
-import actions from '../actions'
+import { userActions, cartOperations, actions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive } from '@utils'
 
 const userInfo = (data, dispatch) => {
   const {

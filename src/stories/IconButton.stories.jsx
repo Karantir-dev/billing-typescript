@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux'
-import entireStore from '../Redux/store'
-import { IconButton } from '../Components'
+import entireStore from '@redux/store'
+import { IconButton } from '@components'
 
 export default {
   title: 'Button With Icon',

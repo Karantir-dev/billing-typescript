@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner } from '../../../Components'
-import { Copy } from '../../../images'
-import { affiliateSelectors, affiliateOperations } from '../../../Redux'
+import { ServicesSelect, FilesBanner } from '@components'
+import { Copy } from '@images'
+import { affiliateSelectors, affiliateOperations } from '@redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'

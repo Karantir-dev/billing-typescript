@@ -1,9 +1,8 @@
 import qs from 'qs'
-import accessLogsActions from './accessLogsActions'
-import { axiosInstance } from './../../config/axiosInstance'
-import { actions } from '../'
+import { axiosInstance } from '@config/axiosInstance'
+import { actions, accessLogsActions } from '@redux'
 import i18n from 'i18next'
-import { checkIfTokenAlive } from '../../utils'
+import { checkIfTokenAlive } from '@utils'
 
 const getAccessLogsHandler =
   (body = {}) =>

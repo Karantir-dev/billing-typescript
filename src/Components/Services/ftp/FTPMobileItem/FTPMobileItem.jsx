@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, MoreDots, Edit, Refund, Info, ExitSign } from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { Clock, MoreDots, Edit, Refund, Info, ExitSign } from '@images'
+import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
 import s from './FTPMobileItem.module.scss'
 import { CheckBox, ServerState } from '../../..'
 
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 
 export default function FTPMobileItem({

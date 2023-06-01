@@ -41,7 +41,7 @@ export default function ForexList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/forexbox.webp')}
+            src={require('@images/services/forexbox.webp')}
             alt="forex"
             className={s.forex_img}
           />

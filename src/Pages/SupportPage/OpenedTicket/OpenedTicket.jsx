@@ -11,13 +11,13 @@ import {
   HintWrapper,
   IconButton,
   Backdrop,
-} from '../../../Components'
+} from '@components'
 import TipsModal from '../TipsModal/TipsModal'
-import { supportSelectors, supportOperations, supportActions } from '../../../Redux'
-import * as route from '../../../routes'
+import { supportSelectors, supportOperations, supportActions } from '@redux'
+import * as route from '@src/routes'
 import s from './OpenedTicket.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import { Cross, Smile } from '../../../images'
+import { Cross, Smile } from '@images'
 
 export default function Component() {
   const dispatch = useDispatch()

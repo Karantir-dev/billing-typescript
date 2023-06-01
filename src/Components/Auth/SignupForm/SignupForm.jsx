@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
-import { RECAPTCHA_KEY } from '../../../config/config'
+import { RECAPTCHA_KEY } from '@config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 // import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
@@ -11,14 +11,14 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
-import { authOperations } from '../../../Redux'
-import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '../..'
-import * as routes from '../../../routes'
-import { Facebook, Google, Vk } from './../../../images'
+import { authOperations } from '@redux'
+import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '@components'
+import * as routes from '@src/routes'
+import { Facebook, Google, Vk } from '@images'
 import {
   SPECIAL_CHARACTERS_REGEX,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
-} from '../../../utils/constants'
+} from '@utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
 

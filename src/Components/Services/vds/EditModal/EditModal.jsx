@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../../Redux'
-import { Cross, ArrowSign } from '../../../../images'
+import { vdsOperations } from '@redux'
+import { Cross, ArrowSign } from '@images'
 import { Formik, Form } from 'formik'
 import cn from 'classnames'
 

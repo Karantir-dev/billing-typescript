@@ -8,7 +8,7 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import { useSelector } from 'react-redux'
-import { selectors } from '../../../Redux'
+import { selectors } from '@redux'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip)
 

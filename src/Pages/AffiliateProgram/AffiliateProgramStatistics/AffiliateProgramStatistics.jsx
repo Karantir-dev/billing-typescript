@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
-import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
-import { actions, affiliateOperations, usersOperations } from '../../../Redux'
-import { Check } from '../../../images'
+import { IconButton, StatisticsFilterModal, Pagination } from '@components'
+import { actions, affiliateOperations, usersOperations } from '@redux'
+import { Check } from '@images'
 
 import s from './AffiliateProgramStatistics.module.scss'
 

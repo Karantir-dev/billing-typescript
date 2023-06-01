@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Button, InputField } from '../../../'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../../Redux'
+import { vdsOperations } from '@redux'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
-import { DOMAIN_REGEX } from '../../../../utils'
+import { DOMAIN_REGEX } from '@utils'
 
 import s from './IPeditModal.module.scss'
 

@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { nanoid } from 'nanoid'
 
-import { selectors } from '../../../../../Redux'
+import { selectors } from '@redux'
 
 import { CSSTransition } from 'react-transition-group'
 import animations from './animations.module.scss'

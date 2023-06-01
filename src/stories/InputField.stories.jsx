@@ -1,4 +1,4 @@
-import { InputField } from '../Components'
+import { InputField } from '@components'
 import { Formik, Form } from 'formik'
 
 export default {

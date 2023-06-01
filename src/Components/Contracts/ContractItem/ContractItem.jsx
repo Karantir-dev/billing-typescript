@@ -3,9 +3,9 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { DownloadWithFolder } from '../../../images'
-import { contractOperations } from '../../../Redux'
-import { useOutsideAlerter } from '../../../utils'
+import { DownloadWithFolder } from '@images'
+import { contractOperations } from '@redux'
+import { useOutsideAlerter } from '@utils'
 
 import s from './ContractItem.module.scss'
 

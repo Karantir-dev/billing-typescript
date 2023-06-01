@@ -25,7 +25,7 @@ import {
   ChangeTariff,
   DownloadWithFolder,
   Euro,
-} from '../../../images'
+} from '@images'
 
 export default function Component(props) {
   const { type, onClick, disabled, icon, className, dataTestid } = props

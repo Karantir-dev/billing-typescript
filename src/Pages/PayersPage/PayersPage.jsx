@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Pagination, PayersTable, Portal, ModalAddPayer } from '../../Components'
-import { payersActions, payersOperations, payersSelectors } from '../../Redux'
+import { Button, Pagination, PayersTable, Portal, ModalAddPayer } from '@components'
+import { payersActions, payersOperations, payersSelectors } from '@redux'
 import s from './PayersPage.module.scss'
 
 export default function Component() {

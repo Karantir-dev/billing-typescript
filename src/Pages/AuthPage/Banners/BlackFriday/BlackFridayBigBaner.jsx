@@ -3,7 +3,7 @@ import StarSale from './StarSale'
 import Line from './Line'
 
 import s from '../../AuthPage.module.scss'
-import { GiftDt } from '../../../../images'
+import { GiftDt } from '@images'
 
 export default function Component() {
   const { t } = useTranslation('other')
@@ -13,7 +13,7 @@ export default function Component() {
       <img
         id="banner-img"
         className={s.bannerImg}
-        src={require('../../../../images/banners/BlackFridayBig.png')}
+        src={require('@images/banners/BlackFridayBig.png')}
         alt="banner"
       />
       <div className={s.saleHalloween}>

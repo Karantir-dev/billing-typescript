@@ -5,24 +5,17 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import { userSelectors, authOperations, selectors } from '../../../Redux'
+import { userSelectors, authOperations, selectors } from '@redux'
 import {
   NotificationsBar,
   ThemeBtn,
   LangBtn,
   ModalCreatePayment,
   Portal,
-} from '../../../Components'
-import {
-  Logo,
-  FilledEnvelope,
-  Bell,
-  Profile,
-  Shevron,
-  WalletBalance,
-} from '../../../images'
-import * as routes from '../../../routes'
-import { useOutsideAlerter, usePageRender } from '../../../utils'
+} from '@components'
+import { Logo, FilledEnvelope, Bell, Profile, Shevron, WalletBalance } from '@images'
+import * as routes from '@src/routes'
+import { useOutsideAlerter, usePageRender } from '@utils'
 
 import { CSSTransition } from 'react-transition-group'
 import animations from './animations.module.scss'

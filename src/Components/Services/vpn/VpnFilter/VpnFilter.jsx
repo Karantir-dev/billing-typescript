@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-
-import { Button, IconButton, Portal, CheckBox } from '../../..'
-import VpnFiltertsModal from '../VpnFiltertsModal/VpnFiltertsModal'
-import * as routes from '../../../../routes'
+import { Button, IconButton, Portal, CheckBox, VpnFiltertsModal } from '@components'
+import { actions, vpnOperations, vpnSelectors } from '@redux'
 import s from './VpnFilter.module.scss'
-import { actions, vpnOperations, vpnSelectors } from '../../../../Redux'
+import * as routes from '@src/routes'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])

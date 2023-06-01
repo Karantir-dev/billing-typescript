@@ -5,9 +5,9 @@ import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Shevron, Search } from '../../../images'
+import { Shevron, Search } from '@images'
 import { SelectOfRegions } from '../../'
-import { authOperations } from '../../../Redux'
+import { authOperations } from '@redux'
 import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({
@@ -143,7 +143,7 @@ export default function SelectOfCountries({
           {currentFlag ? (
             <img
               className={s.field_icon}
-              src={require(`../../../images/countryFlags/${currentFlag}.png`)}
+              src={require(`@images/countryFlags/${currentFlag}.png`)}
               width={20}
               height={14}
               alt="flag"
@@ -191,7 +191,7 @@ export default function SelectOfCountries({
                       >
                         <img
                           className={s.country_img}
-                          src={require(`../../../images/countryFlags/${countryCode}.png`)}
+                          src={require(`@images/countryFlags/${countryCode}.png`)}
                           width={20}
                           height={14}
                           alt="flag"

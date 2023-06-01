@@ -8,7 +8,7 @@ export default function Component() {
 
   return (
     <>
-      <img src={require('../../../../images/banners/Gift.png')} alt="gift" />
+      <img src={require('@images/banners/Gift.png')} alt="gift" />
       <PumpkinsText className={s.pumpkinsTextIcon} />
       <div className={s.pumpkinsText}>
         <div>{t('discounts_up_to', { amount: '-90%' })}</div>

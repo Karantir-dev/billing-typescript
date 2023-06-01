@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Edit, CheckEdit } from '../../../images'
+import { Edit, CheckEdit } from '@images'
 
 import s from './EditCell.module.scss'
 import cn from 'classnames'

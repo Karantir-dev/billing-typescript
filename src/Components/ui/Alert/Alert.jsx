@@ -2,7 +2,7 @@ import cn from 'classnames'
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 
 import s from './Alert.module.scss'
 

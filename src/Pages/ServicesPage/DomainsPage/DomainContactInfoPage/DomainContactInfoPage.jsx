@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
-import { BreadCrumbs, Button, DomainContactInfoItem } from '../../../../Components'
+import { BreadCrumbs, Button, DomainContactInfoItem } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { domainsOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
+import { domainsOperations } from '@redux'
+import * as route from '@src/routes'
 import s from './DomainContactInfoPage.module.scss'
 
 const formTypes = ['owner', 'admin', 'tech', 'bill']

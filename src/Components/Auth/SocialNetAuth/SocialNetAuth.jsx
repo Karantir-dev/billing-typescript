@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
-import { authOperations, authSelectors } from '../../../Redux'
+import * as route from '@src/routes'
+import { authOperations, authSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
-import { Loader, VerificationModal } from '../..'
+import { Loader, VerificationModal } from '@components'
 
 export default function SocialNetAuth() {
   const location = useLocation()

@@ -1,7 +1,7 @@
 import s from './PaymentSaved.module.scss'
-import { SuccessPay } from '../../images'
+import { SuccessPay } from '@images'
 import { useTranslation } from 'react-i18next'
-import * as route from '../../routes'
+import * as route from '@src/routes'
 import { Link } from 'react-router-dom'
 export default function PaymentSaved() {
   const { t } = useTranslation()

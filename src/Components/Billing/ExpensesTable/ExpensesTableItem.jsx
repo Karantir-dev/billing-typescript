@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { HintWrapper } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { expensesTranslateFn } from '../../../utils'
+import { expensesTranslateFn } from '@utils'
 
 export default function Component(props) {
   const { id, number, date, sum, name, tax } = props

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import { Logo } from '../../../images'
-import { ThemeBtn, LangBtn } from '../../../Components'
-import { SITE_URL } from '../../../config/config'
+import { Logo } from '@images'
+import { ThemeBtn, LangBtn } from '@components'
+import { SITE_URL } from '@config/config'
 import s from './AuthPageHeader.module.scss'
 
 export default function AuthPageHeader(props) {

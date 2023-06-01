@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-// import { NavLink } from 'react-router-dom'
-
-import { Cross } from '../../../../images'
-import { dedicOperations } from '../../../../Redux'
-// import * as route from '../../../../routes'
-import { Loader } from '../../..'
-
+import { Cross } from '@images'
+import { dedicOperations } from '@redux'
+import { Loader } from '@components'
 import s from './InstructionModal.module.scss'
 
 export default function InstructionModal({ elid, closeFn }) {

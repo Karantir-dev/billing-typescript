@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next'
 import ControlBtn from '../ControlBtn/ControlBtn'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
-import { Info } from '../../../images'
+import { Info } from '@images'
 import Alert from '../../ui/Alert/Alert'
 import { Button, Toggle } from '../..'
-import { selectors, usersActions, usersOperations, usersSelectors } from '../../../Redux'
+import { selectors, usersActions, usersOperations, usersSelectors } from '@redux'
 
 import s from './UserCard.module.scss'
 

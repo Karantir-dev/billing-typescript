@@ -1,17 +1,17 @@
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '../../../images/'
-import { actions, settingsOperations, userSelectors } from '../../../Redux'
+import { Shevron } from '@images/'
+import { actions, settingsOperations, userSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import s from './LangBtn.module.scss'
 
-import ukraine_lang from '../../../images/lang/ukraine_lang.svg'
-import uk_lang from '../../../images/lang/uk_lang.svg'
-import kazakhstan_lang from '../../../images/lang/kazakhstan_lang.svg'
-import georgia_lang from '../../../images/lang/georgia_lang.svg'
-import goblin_lang from '../../../images/lang/russia_lang.svg'
+import ukraine_lang from '@images/lang/ukraine_lang.svg'
+import uk_lang from '@images/lang/uk_lang.svg'
+import kazakhstan_lang from '@images/lang/kazakhstan_lang.svg'
+import georgia_lang from '@images/lang/georgia_lang.svg'
+import goblin_lang from '@images/lang/russia_lang.svg'
 
 // const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
 const LANGUAGES = [

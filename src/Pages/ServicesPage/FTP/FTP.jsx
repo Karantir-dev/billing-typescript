@@ -18,13 +18,13 @@ import {
   Portal,
   Pagination,
   CheckBox,
-} from '../../../Components'
-import { ftpOperations, ftpSelectors, actions } from '../../../Redux'
+} from '@components'
+import { ftpOperations, ftpSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 import s from './FTP.module.scss'
-import { checkServicesRights, usePageRender } from '../../../utils'
+import { checkServicesRights, usePageRender } from '@utils'
 
 export default function FTP() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'storage')

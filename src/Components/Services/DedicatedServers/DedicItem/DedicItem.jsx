@@ -2,24 +2,14 @@ import cn from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-
 import s from './DedicItem.module.scss'
-import { CheckBox, EditCell, HintWrapper, ServerState } from '../../../'
+import { CheckBox, EditCell, HintWrapper, ServerState } from '@components'
 import { useDispatch } from 'react-redux'
-import { useOutsideAlerter } from '../../../../utils'
-import {
-  Clock,
-  Edit,
-  ExitSign,
-  Info,
-  IP,
-  MoreDots,
-  Refund,
-  Reload,
-} from '../../../../images'
+import { useOutsideAlerter } from '@utils'
+import { Clock, Edit, ExitSign, Info, IP, MoreDots, Refund, Reload } from '@images'
 import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
-import { dedicOperations } from '../../../../Redux'
+import * as route from '@src/routes'
+import { dedicOperations } from '@redux'
 
 export default function DedicItem({
   server,

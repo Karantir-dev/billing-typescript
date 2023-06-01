@@ -2,11 +2,11 @@ import { useRef, useState } from 'react'
 import s from './PaymentsMethodsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Reload } from '../../../images'
+import { MoreDots, Delete, Reload } from '@images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { useOutsideAlerter } from '../../../utils'
-import { EditCell } from '../../../Components'
+import { useOutsideAlerter } from '@utils'
+import { EditCell } from '@components'
 
 export default function Component(props) {
   const {

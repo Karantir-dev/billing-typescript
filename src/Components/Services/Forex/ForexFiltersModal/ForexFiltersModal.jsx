@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '../../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, Button, DoubleInputField } from '../../..'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import s from './ForexFiltersModal.module.scss'
 
 export default function ForexFiltersModal(props) {

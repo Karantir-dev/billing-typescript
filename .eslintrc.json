@@ -52,7 +52,9 @@
           ["@images", "./src/images"],
           ["@redux", "./src/Redux"],
           ["@pages", "./src/Pages"],
-          ["@utils", "./src/utils"]
+          ["@utils", "./src/utils"],
+          ["@config", "./src/config"],
+          ["@src", "./src"]
         ],
         "extensions": [".ts", ".js", ".jsx", ".json"]
       }

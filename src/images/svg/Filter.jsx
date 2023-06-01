@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { selectors } from '../../Redux'
+import { selectors } from '@redux'
 
 export default function SvgComponent() {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'

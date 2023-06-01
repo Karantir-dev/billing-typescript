@@ -1,6 +1,6 @@
 import DomainsHistoryItem from './DomainsHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Pagination } from '../../..'
 import cn from 'classnames'
 import s from './DomainsHistoryModal.module.scss'

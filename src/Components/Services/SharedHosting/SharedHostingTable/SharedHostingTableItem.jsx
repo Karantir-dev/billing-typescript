@@ -12,8 +12,8 @@ import {
   ExitSign,
   Info,
   ChangeTariff,
-} from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+} from '@images'
+import { useOutsideAlerter } from '@utils'
 import s from './SharedHostingTable.module.scss'
 
 export default function Component(props) {

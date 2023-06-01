@@ -7,9 +7,9 @@ import {
   PaymentsMethodsTable,
   Portal,
   ModalCreatePaymentMethod,
-} from '../../../Components'
-import { Wallet } from '../../../images'
-import { billingOperations, billingSelectors } from '../../../Redux'
+} from '@components'
+import { Wallet } from '@images'
+import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
 
 export default function Component() {
