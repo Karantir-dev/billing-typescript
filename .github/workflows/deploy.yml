@@ -65,43 +65,45 @@ jobs:
         if: failure()
 
   build_and_push:
-    needs: [jest, eslint]
-    name: Build and push bill docker
-    runs-on: ubuntu-latest
-    env:
-      DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
+      needs: [jest, eslint]
+      name: Build and push bill docker
+      runs-on: ubuntu-latest
+      env:
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v1
 
-      - name: Test with environment variables
-        run: |
-          echo $TAG_NAME - ${{ env.PREFIX }}
+        - name: Test with environment variables
+          run: |
+            echo $TAG_NAME - ${{ env.PREFIX }}
 
-      - name: Login to docker hub
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - name: Login to docker hub
+          run:
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Build image
-        run: |
-          docker build -f Dockerfile -t $IMAGE_NAME .
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
-      - name: Push in dockerhub
-        run: |
-          docker push $IMAGE_NAME:latest
-          docker push $IMAGE_NAME:${{ env.PREFIX }}
-      - name: Push status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: 'channel'
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
+        - name: Build image
+          run: |
+            docker build -f Dockerfile -t $IMAGE_NAME .
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
+        - name: Push in dockerhub
+          run: |
+            docker push $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:${{ env.PREFIX }}
+        - name: Push status
+          uses: 8398a7/action-slack@v3
+          with:
+            status: ${{ job.status }}
+            fields: all
+            mention: 'channel'
+            channel: 'github-actions'
+            if_mention: always
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          if: failure()
+
 
   deploy_on_server:
     needs: [build_and_push]
@@ -125,8 +127,7 @@ jobs:
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run:
-          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{
-          secrets.K8S_CL_NAME }}
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
@@ -135,7 +136,7 @@ jobs:
         run: kubectl rollout status deployment/zomro-bill-deployment -n dev
 
       - name: Clean CloudFlare cache
-        run: |
+        run: | 
           sleep 5;
           curl -X POST "https://api.cloudflare.com/client/v4/zones/6562ccdfeb6b2a7793f4867f8bf6f955/purge_cache" \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
