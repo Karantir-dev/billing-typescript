@@ -104,7 +104,7 @@ export default function Component(props) {
         EMAIL_SPECIAL_CHARACTERS_REGEX,
         t('warnings.special_characters', { ns: 'auth' }),
       )
-      .email(t('warnings.invalid_email'), { ns: 'auth' })
+      .email(t('warnings.invalid_email', { ns: 'auth' }))
       .required(t('warnings.email_required', { ns: 'auth' })),
     company: Yup.string().required(t('Is a required field', { ns: 'other' })),
     firstname: Yup.string()
