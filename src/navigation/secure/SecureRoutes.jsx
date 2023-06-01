@@ -14,25 +14,11 @@ import {
 } from '@components'
 import { useTranslation } from 'react-i18next'
 import {
-  AccessLogPage,
   AffiliateProgram,
   BillingPage,
   ErrorPage,
   OpenedTicker,
-  PayersPage,
   SupportPage,
-  UserSettings,
-  Contracts,
-  DedicIPpage,
-  DedicatedServersPage,
-  DedicOrderPage,
-  FTP,
-  FTPOrder,
-  DNS,
-  DNSOrder,
-  ForexPage,
-  ForexOrderPage,
-  PhoneVerificationPage,
   PaymentSaved,
   SocialNetAdd,
 } from '@pages'
@@ -53,6 +39,20 @@ import {
   DomainOrderPageLazy,
   DomainContactInfoPageLazy,
   DomainsNsPageLazy,
+  DedicatedServersPageLazy,
+  DedicOrderPageLazy,
+  DedicIPpageLazy,
+  FTPPageLazy,
+  FTPOrderPageLazy,
+  DNSPageLazy,
+  DNSOrderPageLazy,
+  ForexPageLazy,
+  ForexOrderPageLazy,
+  AccessLogPageLazy,
+  PayersPageLazy,
+  ContractsPageLazy,
+  UserSettingsPageLazy,
+  PhoneVerificationPageLazy,
 } from './LazyRoutes'
 
 const Component = () => {
@@ -136,135 +136,26 @@ const Component = () => {
           path={route.DOMAINS_TRANSFER_NS}
           element={<DomainsNsPageLazy transfer={true} />}
         />
-        <Route
-          path={route.DEDICATED_SERVERS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.dedicated_servers',
-              )}`}
-            >
-              <DedicatedServersPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.DEDICATED_SERVERS_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('page_title', {
-                ns: 'dedicated_servers',
-              })}`}
-            >
-              <DedicOrderPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.DEDICATED_SERVERS_IP}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('ip', { ns: 'crumbs' })}`}
-            >
-              <DedicIPpage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.FTP}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.external_ftp',
-              )}`}
-            >
-              <FTP />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.FTP_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('ftp_order', { ns: 'crumbs' })}`}
-            >
-              <FTPOrder />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.DNS}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t(
-                'burger_menu.services.services_list.dns_hosting',
-              )}`}
-            >
-              <DNS />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.DNS_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('dns_order', { ns: 'crumbs' })}`}
-            >
-              <DNSOrder />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.FOREX}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('forex', { ns: 'crumbs' })}`}
-            >
-              <ForexPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.FOREX_ORDER}
-          element={
-            <PageTitleRender
-              title={`${t('aside_menu.services')}/${t('forex_order', { ns: 'crumbs' })}`}
-            >
-              <ForexOrderPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.ACCESS_LOG}
-          element={
-            <PageTitleRender title={t('access_log', { ns: 'access_log' })}>
-              <AccessLogPage />
-            </PageTitleRender>
-          }
-        />
+        <Route path={route.DEDICATED_SERVERS} element={<DedicatedServersPageLazy />} />
+        <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
+        <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
+        <Route path={route.FTP} element={<FTPPageLazy />} />
+        <Route path={route.FTP_ORDER} element={<FTPOrderPageLazy />} />
+        <Route path={route.DNS} element={<DNSPageLazy />} />
+        <Route path={route.DNS_ORDER} element={<DNSOrderPageLazy />} />
+        <Route path={route.FOREX} element={<ForexPageLazy />} />
+        <Route path={route.FOREX_ORDER} element={<ForexOrderPageLazy />} />
+        <Route path={route.ACCESS_LOG} element={<AccessLogPageLazy />} />
         <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
         <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
-        <Route
-          path={route.PAYERS}
-          element={
-            <PageTitleRender title={t('Payers', { ns: 'payers' })}>
-              <PayersPage />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={route.CONTRACTS}
-          element={
-            <PageTitleRender title={t('profile.contracts')}>
-              <Contracts />
-            </PageTitleRender>
-          }
-        />
-        <Route path={route.USER_SETTINGS} element={<UserSettings />}>
-          <Route path=":path/" element={<UserSettings />} />
+
+        <Route path={route.PAYERS} element={<PayersPageLazy />} />
+        <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
+        <Route path={route.USER_SETTINGS} element={<UserSettingsPageLazy />}>
+          <Route path=":path/" element={<UserSettingsPageLazy />} />
         </Route>
 
-        <Route path={route.PHONE_VERIFICATION} element={<PhoneVerificationPage />} />
+        <Route path={route.PHONE_VERIFICATION} element={<PhoneVerificationPageLazy />} />
 
         <Route path={route.SOC_NET_AUTH} element={<SocialNetAdd />} />
         <Route path={`${route.AFFILIATE_PROGRAM}/*`} element={<AffiliateProgram />} />

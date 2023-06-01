@@ -1,33 +1,14 @@
 export { default as AuthPage } from './AuthPage/AuthPage'
 export { default as AuthPageHeader } from './AuthPage/AuthPageHeader/AuthPageHeader'
-export { default as AccessLogPage } from './AccessLogPage/AccessLogPage'
 export { default as SupportPage } from './SupportPage/SupportPage'
 export { default as OpenedTicker } from './SupportPage/OpenedTicket/OpenedTicket'
 export { default as AffiliateProgram } from './AffiliateProgram/AffiliateProgram'
 export { default as AboutAffiliateProgram } from './AffiliateProgram/AboutAffiliateProgram/AboutAffiliateProgram'
 export { default as AffiliateProgramIncome } from './AffiliateProgram/AffiliateProgramIncome/AffiliateProgramIncome'
 export { default as AffiliateProgramStatistics } from './AffiliateProgram/AffiliateProgramStatistics/AffiliateProgramStatistics'
-export { default as UserSettings } from './UserSettings/UserSettings'
 export { default as BillingPage } from './BillingPage/BillingPage'
 export { default as ErrorPage } from './ErrorPage/ErrorPage'
 
-export { default as PhoneVerificationPage } from './PhoneVerificationPage/PhoneVerificationPage'
-
 export { default as SocialNetAdd } from './UserSettings/SocialNetAdd/SocialNetAdd'
 
-export { default as DedicatedServersPage } from './ServicesPage/DedicatedServersPage/DedicatedServersPage'
-export { default as DedicOrderPage } from './ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
-export { default as DedicIPpage } from './ServicesPage/DedicatedServersPage/DedicIPPage/DedicIPPage'
-
-export { default as FTP } from './ServicesPage/FTP/FTP'
-export { default as FTPOrder } from './ServicesPage/FTP/FTPOrder/FTPOrder'
-
-export { default as DNS } from './ServicesPage/DNS/DNS'
-export { default as DNSOrder } from './ServicesPage/DNS/DNSOrder/DNSOrder'
-
-export { default as ForexPage } from './ServicesPage/ForexPage/ForexPage'
-export { default as ForexOrderPage } from './ServicesPage/ForexPage/ForexOrderPage/ForexOrderPage'
-
-export { default as PayersPage } from './PayersPage/PayersPage'
-export { default as Contracts } from './Contracts/Contracts'
 export { default as PaymentSaved } from './PaymentSaved/PaymentSaved'
