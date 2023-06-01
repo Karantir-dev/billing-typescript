@@ -14,7 +14,7 @@
   transition: max-height 0.15s ease-out;
 
   &.isOpen {
-    max-height: 2025px;
+    max-height: 2225px;
     height: auto;
     transition: max-height 0.25s ease-in;
   }
@@ -138,6 +138,13 @@
     line-height: 130%;
     color: var(--main-text);
     margin-left: 18px;
+  }
+}
+
+.selectDropDown {
+  top: inherit;
+  > div {
+    max-height: 200px;
   }
 }
 

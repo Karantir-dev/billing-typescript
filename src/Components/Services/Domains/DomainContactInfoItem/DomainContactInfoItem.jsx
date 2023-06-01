@@ -539,6 +539,9 @@ export default function Component(props) {
                   }),
                 )}
                 isRequired
+                dropdownClass={s.selectDropDown}
+                withoutArrow={domainsContacts[location_country_list]?.length < 2}
+                disabled={domainsContacts[location_country_list]?.length < 2}
                 error={errors[location_country]}
               />
               <InputField
