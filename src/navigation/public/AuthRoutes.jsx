@@ -68,6 +68,15 @@ const Component = () => {
 
   useEffect(() => {
     dispatch(authOperations.getLocation())
+
+    const clearRegisterCountries = () => localStorage.removeItem('countriesForRegister')
+
+    window.addEventListener('beforeunload', clearRegisterCountries)
+
+    return () => {
+      clearRegisterCountries()
+      window.removeEventListener('beforeunload', clearRegisterCountries)
+    }
   }, [])
 
   return (

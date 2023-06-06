@@ -15,7 +15,10 @@ import { authOperations } from '../../../Redux'
 import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '../..'
 import * as routes from '../../../routes'
 import { Facebook, Google, Vk } from './../../../images'
-import { SPECIAL_CHARACTERS_REGEX, EMAIL_SPECIAL_CHARACTERS_REGEX } from '../../../utils/constants'
+import {
+  SPECIAL_CHARACTERS_REGEX,
+  EMAIL_SPECIAL_CHARACTERS_REGEX,
+} from '../../../utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
 
