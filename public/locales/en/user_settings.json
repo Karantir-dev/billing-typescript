@@ -101,5 +101,6 @@
   "Verify number": "Verify number",
 
   "Main number": "Main number",
-  "verification_code_timeout": "The verification code can be sent again in {{time}} seconds"
+  "verification_code_timeout": "The verification code can be sent again in {{time}} seconds",
+  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt."
 }

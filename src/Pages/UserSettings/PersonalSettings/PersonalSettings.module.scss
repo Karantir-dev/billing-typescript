@@ -158,6 +158,10 @@
   width: 100%;
 }
 
+.phoneInputVerif {
+  width: 100%;
+}
+
 .phoneBlock {
   position: relative;
   width: 100%;
@@ -240,7 +244,7 @@
 }
 
 .column {
-  flex-basis: 33%;
+  flex-basis: 45%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,11 +308,6 @@
   cursor: pointer;
 }
 
-.confirmBtnBlock {
-  position: relative;
-  margin-bottom: 10px;
-}
-
 .img {
   width: 56px;
   height: 56px;
@@ -326,6 +325,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 35px;
+  max-width: 520px;
 
   .securNotifnEmailBlock {
     display: flex;
@@ -385,7 +385,26 @@
   }
 }
 
+.geoIpBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 30px;
+  svg {
+    &:hover {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .geoIpBlock {
+    margin-right: 0;
+  }
+
   .notifEmail {
     max-width: 322px;
   }
@@ -412,12 +431,17 @@
     margin-right: 25px;
   }
 
-  .phoneBlock {
+  .phoneInput {
     margin-right: 25px;
   }
 
+  .phoneBlock {
+    margin-right: 25px;
+    width: 48%;
+  }
+
   .checkBlock {
-    max-width: 500px;
+    max-width: 430px;
   }
 
   .formRow {
@@ -487,6 +511,18 @@
   width: 237px;
   word-wrap: break-word;
   white-space: pre-line;
+}
+
+.hintWrapperGeo {
+  height: 18px;
+}
+
+.hintPopUpWrapperGeoIp {
+  max-width: 300px;
+  width: 300px;
+  word-wrap: break-word;
+  white-space: pre-line;
+  text-align: start;
 }
 
 @media screen and (min-width: 1124px) {
