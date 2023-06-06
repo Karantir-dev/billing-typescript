@@ -31,7 +31,7 @@
 
     &_bg {
       background-color: var(--forms_bgc_1) !important;
-      box-shadow: var(--forms3_shadow)!important;
+      box-shadow: var(--forms3_shadow) !important;
     }
 
     @media (min-width: 1280px) {
@@ -52,6 +52,64 @@
   align-items: flex-start;
   flex-direction: row;
   margin-top: 25px;
+}
+
+.infoBtn {
+  position: absolute;
+  margin-left: auto;
+  top: 40%;
+  right: 0px;
+  z-index: 2;
+  padding: 12px 12px 12px 0px;
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+    .descriptionBlock {
+      opacity: 1;
+      height: auto;
+      overflow: auto;
+      padding: 15px;
+    }
+  }
+}
+
+.descriptionBlock {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--forms_bgc_4);
+  padding: 0;
+  top: 90%;
+  right: 0;
+  width: 300px;
+  z-index: 3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  text-align: start;
+  transition: 0.05s linear;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 89%;
+    bottom: 99%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--forms_bgc_4);
+    clear: both;
+  }
 }
 
 .downloadText {
@@ -97,6 +155,11 @@
 }
 
 .phoneInput {
+  width: 100%;
+}
+
+.phoneBlock {
+  position: relative;
   width: 100%;
   margin-bottom: 0;
   margin-right: 0px;
@@ -230,6 +293,7 @@
 }
 
 .confirmBtn {
+  position: absolute;
   margin: 13px 0 13px;
   font-style: normal;
   font-weight: 300;
@@ -238,6 +302,11 @@
   text-decoration-line: underline;
   color: var(--link-text);
   cursor: pointer;
+}
+
+.confirmBtnBlock {
+  position: relative;
+  margin-bottom: 10px;
 }
 
 .img {
@@ -343,7 +412,7 @@
     margin-right: 25px;
   }
 
-  .phoneInput {
+  .phoneBlock {
     margin-right: 25px;
   }
 
@@ -387,7 +456,7 @@
   }
 
   .confirmBtn {
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
   }
 }
 
