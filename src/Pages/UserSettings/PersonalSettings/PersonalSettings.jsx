@@ -218,7 +218,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     wrapperClass={s.phoneInput}
                     labelClass={s.phoneInputLabel}
                     setCountryCode={setCountryCode}
-                    label={`${t('Phone', { ns: 'other' })}:`}
+                    label={`${t('Phone for notifications', { ns: 'other' })}:`}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}

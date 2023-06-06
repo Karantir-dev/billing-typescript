@@ -45,6 +45,7 @@
   },
   "Timezone": "Часовой пояс",
   "Phone": "Телефон",
+  "Phone for notifications": "Телефон для уведомлений",
   "Enter your details": "Введите ваши данные",
   "Full name": "ФИО",
   "Save": "Сохранить",
