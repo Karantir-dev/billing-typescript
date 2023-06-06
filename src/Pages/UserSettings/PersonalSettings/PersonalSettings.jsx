@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
-import { PhoneVerificationIcon, Profile } from '../../../images'
+import { Info, PhoneVerificationIcon, Profile } from '../../../images'
 import {
   InputField,
   CustomPhoneInput,
@@ -30,6 +30,8 @@ export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
+
+  const dropdownDescription = useRef(null)
 
   const [avatarFile, setAvatarFile] = useState()
   const [countryCode, setCountryCode] = useState(null)
@@ -208,21 +210,33 @@ export default function Component({ isComponentAllowedToEdit }) {
                   />
                 </div>
                 <div className={s.formRow}>
-                  <CustomPhoneInput
-                    containerClass={cn(s.phoneInputContainer, s.field)}
-                    inputClass={cn(s.phoneInputClass, s.field_bg)}
-                    disabled={userEdit?.phone?.readonly}
-                    value={values.phone}
-                    wrapperClass={s.phoneInput}
-                    labelClass={s.phoneInputLabel}
-                    setCountryCode={setCountryCode}
-                    label={`${t('Phone', { ns: 'other' })}:`}
-                    dataTestid="input_phone"
-                    handleBlur={handleBlur}
-                    setFieldValue={setFieldValue}
-                    name="phone"
-                    buttonClass={s.phoneInputButton}
-                  />
+                  <div className={s.phoneBlock}>
+                    <CustomPhoneInput
+                      containerClass={cn(s.phoneInputContainer, s.field)}
+                      inputClass={cn(s.phoneInputClass, s.field_bg)}
+                      disabled={true}
+                      value={
+                        userInfo?.verefied_phone !== 'Verify'
+                          ? userInfo?.verefied_phone
+                          : values.phone
+                      }
+                      wrapperClass={s.phoneInput}
+                      labelClass={s.phoneInputLabel}
+                      label={`${t('Main number')}:`}
+                      buttonClass={s.phoneInputButton}
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                      name="verefied_phone"
+                    />
+                    <button type="button" className={s.infoBtn}>
+                      <Info />
+                      <div ref={dropdownDescription} className={s.descriptionBlock}>
+                        {userInfo?.verefied_phone !== 'Verify'
+                          ? t('after_verified_number')
+                          : t('before_verified_number', { btn: t('Verify number') })}
+                      </div>
+                    </button>
+                  </div>
 
                   <Select
                     label={`${t('Timezone', { ns: 'other' })}:`}
@@ -247,21 +261,20 @@ export default function Component({ isComponentAllowedToEdit }) {
                   />
                 </div>
 
-                {userInfo?.$need_phone_validate === 'true' &&
-                  userEdit?.phone?.phone?.length > 4 && (
-                    <div className={s.formRow}>
-                      <Link
-                        className={s.phoneVerificationLink}
-                        to={routes.PHONE_VERIFICATION}
-                        state={{
-                          prevPath: location.pathname,
-                          phone: userEdit?.phone?.phone,
-                        }}
-                      >
-                        <PhoneVerificationIcon /> <span>{t('Phone Verification')}</span>
-                      </Link>
-                    </div>
-                  )}
+                {userInfo?.$need_phone_validate === 'true' && (
+                  <div className={s.formRow}>
+                    <Link
+                      className={s.phoneVerificationLink}
+                      to={routes.PHONE_VERIFICATION}
+                      state={{
+                        prevPath: location.pathname,
+                        phone: userEdit?.phone?.phone,
+                      }}
+                    >
+                      <PhoneVerificationIcon /> <span>{t('Verify number')}</span>
+                    </Link>
+                  </div>
+                )}
               </div>
               <div className={s.bottomBlock}>
                 <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
@@ -282,6 +295,24 @@ export default function Component({ isComponentAllowedToEdit }) {
                       inputClassName={s.field_bg}
                     />
 
+                    <CustomPhoneInput
+                      containerClass={cn(s.phoneInputContainer, s.field)}
+                      inputClass={cn(s.phoneInputClass, s.field_bg)}
+                      disabled={userEdit?.phone?.readonly}
+                      value={values.phone}
+                      wrapperClass={s.phoneInput}
+                      labelClass={s.phoneInputLabel}
+                      setCountryCode={setCountryCode}
+                      label={`${t('Phone', { ns: 'other' })}:`}
+                      dataTestid="input_phone"
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                      name="phone"
+                      buttonClass={s.phoneInputButton}
+                    />
+                  </div>
+
+                  <div className={s.confirmBtnBlock}>
                     {confirmEmailBtnRender(
                       userParams?.email_confirmed_status,
                       values.email_notif,

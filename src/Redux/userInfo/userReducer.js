@@ -12,6 +12,9 @@ const initialState = {
 
 const userInfo = createReducer(initialState.userInfo, {
   [userActions.setUserInfo]: (_, { payload }) => payload,
+  [userActions.updateUserInfo]: (state, { payload }) => {
+    return { ...state, ...payload }
+  },
   [userActions.setEmailStatus]: (state, { payload }) => {
     state.$email_verified = payload
     return state
