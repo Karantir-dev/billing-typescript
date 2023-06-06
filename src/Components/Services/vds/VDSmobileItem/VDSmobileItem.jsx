@@ -165,7 +165,8 @@ export default function VDSmobileItem({
                       disabled={
                         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong
+                        !rights?.prolong ||
+                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
                       }
                     >
                       <Clock className={s.tool_icon} />
