@@ -15,7 +15,7 @@ export default function Component() {
     'other',
     'dedicated_servers',
     'domains',
-    'autoprolong'
+    'autoprolong',
   ])
   const dispatch = useDispatch()
 
@@ -37,8 +37,8 @@ export default function Component() {
   const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
-  
-  const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData })
+
+  const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData && period !== '-100' })
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
@@ -165,8 +165,12 @@ export default function Component() {
           label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
           className={s.select}
           itemsList={data?.period_list.map(el => {
+            const label =
+              el.$ === 'Trial period'
+                ? t(el.$.replace(' period', ''), { ns: 'other' })
+                : t(el.$, { ns: 'other' })
             return {
-              label: t(el.$, { ns: 'other' }),
+              label,
               value: el.$key,
             }
           })}
@@ -193,26 +197,24 @@ export default function Component() {
               )
             })}
         </div>
-        {paramsData && (
+        {paramsData && period !== '-100' && (
           <div className={s.parametrsContainer}>
             <div ref={scrollElem} className={s.parametrsTitle}>
               {t('Options')}
             </div>
-            {period !== '-100' ? (
-              <Select
-                getElement={item => {
-                  setAutoprolong(item)
-                }}
-                value={autoprolong}
-                label={`${t('Auto renewal', { ns: 'domains' })}:`}
-                className={s.select}
-                itemsList={paramsData?.autoprolong_list?.map(el => ({
-                    label: translatePeriod(el.$, t),
-                    value: el.$key,
-                }))}
-                isShadow
-              />
-            ) : null}
+            <Select
+              getElement={item => {
+                setAutoprolong(item)
+              }}
+              value={autoprolong}
+              label={`${t('Auto renewal', { ns: 'domains' })}:`}
+              className={s.select}
+              itemsList={paramsData?.autoprolong_list?.map(el => ({
+                label: translatePeriod(el.$, t),
+                value: el.$key,
+              }))}
+              isShadow
+            />
             {/* <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}
