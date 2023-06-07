@@ -70,9 +70,10 @@ export default function Component() {
   const isTimeOut = timeOut > 0
 
   const validationSchema = Yup.object().shape({
-    phone: !isCodeStep
-      ? Yup.string().phone(countryCode, false, t('Must be a valid phone number'))
-      : null,
+    phone:
+      !isCodeStep && countryCode
+        ? Yup.string().phone(countryCode, false, t('Must be a valid phone number'))
+        : null,
     code: isCodeStep
       ? Yup.string()
           .min(4, t('code_length'))
