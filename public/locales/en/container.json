@@ -76,5 +76,6 @@
   "Password for has been changed": "Password for '{{value}}' has been changed",
   "Name servers for have been successfully changed": "Name servers for '{{value}}' have been successfully changed",
   "Check parameters and repeat the operation": "Check parameters and repeat the operation",
-  "Error in domain contacts for the service": "Error in domain contacts for the service '{{value}}'."
+  "Error in domain contacts for the service": "Error in domain contacts for the service '{{value}}'.",
+  "Payment processing": "Payment processing"
 }

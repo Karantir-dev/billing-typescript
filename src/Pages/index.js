@@ -49,3 +49,4 @@ export { default as ForexOrderPage } from './ServicesPage/ForexPage/ForexOrderPa
 export { default as PayersPage } from './PayersPage/PayersPage'
 export { default as Contracts } from './Contracts/Contracts'
 export { default as PaymentSaved } from './PaymentSaved/PaymentSaved'
+export { default as PaymentProcessingPage } from './PaymentProcessingPage/PaymentProcessingPage'

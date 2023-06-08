@@ -48,7 +48,8 @@ import {
   VPN,
   VpnOrder,
   PhoneVerificationPage,
-  PaymentSaved
+  PaymentSaved,
+  PaymentProcessingPage,
 } from '../../Pages'
 import SocialNetAdd from '../../Pages/UserSettings/SocialNetAdd/SocialNetAdd'
 import { cartSelectors } from '../../Redux'
@@ -464,6 +465,15 @@ const Component = () => {
           element={
             <PageTitleRender title={'payment method saved'}>
               <PaymentSaved />
+            </PageTitleRender>
+          }
+        />
+
+        <Route
+          path={route.PAYMENT_PROCESSING}
+          element={
+            <PageTitleRender title={t('Payment processing')}>
+              <PaymentProcessingPage />
             </PageTitleRender>
           }
         />
