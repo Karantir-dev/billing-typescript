@@ -1,8 +1,7 @@
 import s from './DedicOrderPage.module.scss'
 
-import React from 'react'
 import classNames from 'classnames'
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 
 export default function DedicTarifCard({

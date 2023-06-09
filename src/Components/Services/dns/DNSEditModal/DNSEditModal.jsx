@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 
 import s from './DNSEditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
 import { Button } from '../../..'
-import { dnsOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../utils'
+import { dnsOperations } from '@redux'
+import { translatePeriod } from '@utils'
 
 export default function FTPEditModal({ elid, closeFn }) {
   const { t } = useTranslation([

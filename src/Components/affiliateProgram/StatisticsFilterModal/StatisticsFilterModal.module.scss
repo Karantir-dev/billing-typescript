@@ -55,14 +55,14 @@
 
 .select_bgc {
   background-color: var(--forms_bgc_3) !important;
-  box-shadow: var(--forms3_shadow)!important;
+  box-shadow: var(--forms3_shadow) !important;
 }
 
 .icon_calendar {
   background-color: var(--forms_bgc_3) !important;
   width: 45px;
   height: 45px;
-  box-shadow: var(--forms3_shadow)!important;
+  box-shadow: var(--forms3_shadow) !important;
 }
 
 .calendarBlock {
@@ -78,9 +78,9 @@
 
 .calendar_pointer {
   right: 24px !important;
-  top: auto!important;
-  bottom: 100%!important;
-  transform: translateX(50%) rotate(180deg)!important;
+  top: auto !important;
+  bottom: 100% !important;
+  transform: translateX(50%) rotate(180deg) !important;
 
   div {
     box-shadow: var(--forms3_shadow) !important;

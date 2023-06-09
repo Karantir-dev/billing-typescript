@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Percent14 from './Percent14'
 import s from '../../AuthPage.module.scss'
@@ -11,7 +10,7 @@ export default function Component() {
       <img
         id="banner-img"
         className={s.bannerImg}
-        src={require('../../../../images/banners/ValentinesDay.png')}
+        src={require('@images/banners/ValentinesDay.png')}
         alt="banner"
       />
       <div className={s.saleHalloween}>

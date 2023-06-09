@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { supportOperations } from '../../../../Redux'
-import { Like, DisLike } from '../../../../images'
+import { supportOperations } from '@redux'
+import { Like, DisLike } from '@images'
 import { useTranslation } from 'react-i18next'
 import s from './MessageItem.module.scss'
 

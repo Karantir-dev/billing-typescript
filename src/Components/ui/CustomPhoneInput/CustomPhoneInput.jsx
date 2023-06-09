@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
@@ -8,7 +8,7 @@ import { ErrorMessage } from 'formik'
 import i18n from 'i18next'
 
 import { returnLanguage } from './langimport'
-import { selectors } from '../../../Redux'
+import { selectors } from '@redux'
 
 import s from './CustomPhoneInput.module.scss'
 

@@ -1,6 +1,5 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import s from './DomainsWhoisModal.module.scss'
 
 export default function Component(props) {

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Button } from '../../'
-import { authSelectors, authActions, authOperations } from '../../../Redux'
-import { Cross } from '../../../images'
+import { authSelectors, authActions, authOperations } from '@redux'
+import { Cross } from '@images'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'

@@ -1,14 +1,14 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DNSItem.module.scss'
 import { CheckBox, ServerState } from '../../..'
-import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '../../../../images'
+import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '@images'
 import { useDispatch } from 'react-redux'
-import { dedicOperations } from '../../../../Redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { dedicOperations } from '@redux'
+import { useOutsideAlerter } from '@utils'
 
 export default function DNSItem({
   storage,
@@ -33,9 +33,7 @@ export default function DNSItem({
       key => key !== 'ask' && key !== 'filter' && key !== 'new',
     ).length > 0
 
-  const isActive = activeServices?.some(
-    service => service?.id?.$ === storage?.id?.$,
-  )
+  const isActive = activeServices?.some(service => service?.id?.$ === storage?.id?.$)
 
   const toggleIsActiveHandler = () => {
     isActive

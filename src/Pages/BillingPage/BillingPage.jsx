@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
 import {
@@ -7,15 +6,14 @@ import {
   SuccessPayment,
   ErrorPayment,
   PageTitleRender,
-} from '../../Components'
+} from '@components'
 import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
 import PaymentMethod from './PaymentMethod/PaymentMethod'
 import AutoPayment from './AutoPayment/AutoPayment'
 import s from './BillingPgae.module.scss'
-
-import * as route from '../../routes'
-import { usePageRender } from '../../utils'
+import * as route from '@src/routes'
+import { usePageRender } from '@utils'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])

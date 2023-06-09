@@ -1,8 +1,7 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Error404_dt, Error404_lt } from '../../images'
-import { selectors } from '../../Redux'
+import { Error404_dt, Error404_lt } from '@images'
+import { selectors } from '@redux'
 
 import s from './ErrorPage.module.scss'
 

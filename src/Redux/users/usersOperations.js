@@ -1,11 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '../'
-import i18n from '../../i18n'
-import { checkIfTokenAlive } from '../../utils'
-
-import { axiosInstance } from './../../config/axiosInstance'
-import usersActions from './usersActions'
+import { actions, usersActions } from '@redux'
+import i18n from '@src/i18n'
+import { checkIfTokenAlive } from '@utils'
+import { axiosInstance } from '@config/axiosInstance'
 
 const getUsers = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -123,11 +121,14 @@ const createNewUser =
         if (data.doc.error) {
           const wrongEmail = data.doc.error.msg.$.split('\'').at(1)
           toast.error(
-            ` ${wrongEmail} ${i18n.t('warnings.email_exist', {ns: 'auth'}).toLowerCase()}`,
+            ` ${wrongEmail} ${i18n
+              .t('warnings.email_exist', { ns: 'auth' })
+              .toLowerCase()}`,
             {
               position: 'bottom-right',
               toastId: 'customId',
-            },)
+            },
+          )
           throw new Error(data.doc.error.msg.$)
         }
         updateListFunc()
@@ -300,7 +301,7 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
         out: 'json',
         auth: sessionId,
         elid: funcName,
-        plid: `${userId}${type ? `/${type}`: ''}`,
+        plid: `${userId}${type ? `/${type}` : ''}`,
         lang: 'en',
       }),
     )

@@ -1,7 +1,7 @@
 import qs from 'qs'
-import { axiosInstance } from './../../config/axiosInstance'
-import { actions, affiliateActions, authSelectors } from '..'
-import { checkIfTokenAlive } from '../../utils'
+import { axiosInstance } from '@config/axiosInstance'
+import { actions, affiliateActions, authSelectors } from '@redux'
+import { checkIfTokenAlive } from '@utils'
 
 const getReferralLink = () => (dispatch, getState) => {
   dispatch(actions.showLoader())

@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import VpnTableItem from './VpnTableItem'
 import cn from 'classnames'
@@ -31,7 +30,6 @@ export default function Component(props) {
 
   const isAllActive = list?.length && list?.length === selctedItem?.length
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
-
 
   return (
     <div className={s.table}>

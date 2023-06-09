@@ -1,12 +1,12 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './ForexItem.module.scss'
 import { CheckBox, ServerState } from '../../..'
-import { useOutsideAlerter } from '../../../../utils'
-import { Clock, Delete, Edit, Info, MoreDots, Refund } from '../../../../images'
+import { useOutsideAlerter } from '@utils'
+import { Clock, Delete, Edit, Info, MoreDots, Refund } from '@images'
 
 export default function ForexItem({
   server,

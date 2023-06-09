@@ -102,7 +102,7 @@
   padding: 15px 35px 15px 30px;
   background-color: var(--elements-bgc);
   box-shadow: var(--menu_down_black_shadow);
-  transition: bottom .1s ease-in, opacity .1s ease-in;
+  transition: bottom 0.1s ease-in, opacity 0.1s ease-in;
 
   &.active_footer {
     opacity: 1;

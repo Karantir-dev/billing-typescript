@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
@@ -6,10 +6,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
-import { Envelope } from '../../../images'
-import { authOperations } from '../../../Redux'
-import * as routes from '../../../routes'
-import { Button } from '../../'
+import { Envelope } from '@images'
+import { authOperations } from '@redux'
+import * as routes from '@src/routes'
+import { Button } from '@components'
 import s from './PasswordReset.module.scss'
 
 export default function PasswordReset() {

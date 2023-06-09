@@ -1,11 +1,9 @@
 import qs from 'qs'
 import axios from 'axios'
-import authActions from './authActions'
-import userOperations from '../userInfo/userOperations'
-import { actions } from '../'
-import { axiosInstance } from './../../config/axiosInstance'
-import { checkIfTokenAlive, cookies } from '../../utils'
-import { API_URL } from '../../config/config'
+import { actions, userOperations, authActions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive, cookies } from '@utils'
+import { API_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 

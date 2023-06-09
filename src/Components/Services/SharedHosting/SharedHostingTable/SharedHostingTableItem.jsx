@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -12,8 +12,8 @@ import {
   ExitSign,
   Info,
   ChangeTariff,
-} from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+} from '@images'
+import { useOutsideAlerter } from '@utils'
 import s from './SharedHostingTable.module.scss'
 
 export default function Component(props) {

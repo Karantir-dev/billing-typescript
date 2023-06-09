@@ -1,11 +1,11 @@
 import qs from 'qs'
 import axios from 'axios'
-import i18n from './../../i18n'
-import { actions, billingActions, payersOperations, payersActions } from '..'
-import { API_URL } from '../../config/config'
-import { axiosInstance } from '../../config/axiosInstance'
+import i18n from '@src/i18n'
+import { actions, billingActions, payersOperations, payersActions } from '@redux'
+import { API_URL } from '@config/config'
+import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '@utils'
 
 const getPayments =
   (body = {}) =>

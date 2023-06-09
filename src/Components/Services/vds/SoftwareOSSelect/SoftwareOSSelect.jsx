@@ -1,13 +1,13 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Shevron } from '../../../../images'
-import { selectors } from '../../../../Redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { Shevron } from '@images'
+import { selectors } from '@redux'
+import { useOutsideAlerter } from '@utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
-import { SOFTWARE_ICONS_LIST } from '../../../../utils/constants'
+import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
 export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
@@ -27,12 +27,12 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
 
   const renderImg = () => {
     if (inList) {
-      return require(`../../../../images/soft_os/${
+      return require(`@images/soft_os/${
         darkTheme ? iconName + '_dt' : iconName
       }.png`)
     }
 
-    return require(`../../../../images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
   return (

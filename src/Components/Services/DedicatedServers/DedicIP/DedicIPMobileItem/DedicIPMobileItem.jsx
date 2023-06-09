@@ -1,9 +1,7 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-// import { useNavigate } from 'react-router-dom'
-// import * as route from '../../../../../routes'
-import { MoreDots, Delete, Settings } from '../../../../../images'
-import { useOutsideAlerter } from '../../../../../utils'
+import { MoreDots, Delete, Settings } from '@images'
+import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
 import s from './DedicIPMobileItem.module.scss'

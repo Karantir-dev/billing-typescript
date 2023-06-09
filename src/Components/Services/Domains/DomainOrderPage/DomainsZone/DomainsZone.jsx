@@ -1,4 +1,3 @@
-import React from 'react'
 import cn from 'classnames'
 import { CheckBox } from '../../../..'
 import { useTranslation } from 'react-i18next'
