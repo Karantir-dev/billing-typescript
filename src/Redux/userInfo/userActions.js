@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 
 const setUserInfo = createAction('SET_USER_INFO')
+const updateUserInfo = createAction('UPDATE_USER_INFO')
 const setTickets = createAction('SET_TICKETS')
 const setItems = createAction('SET_ITEMS')
 const removeItems = createAction('REMOVE_ITEMS')
@@ -21,4 +22,5 @@ export default {
   hideUserInfoLoading,
   removeItems,
   setEmailStatus,
+  updateUserInfo,
 }

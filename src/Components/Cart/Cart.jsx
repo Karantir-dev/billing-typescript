@@ -1350,7 +1350,7 @@ export default function Component() {
                             className={s.saveBtn}
                             isShadow
                             size="large"
-                            label={t('VERIFY PHONE NUMBER', { ns: 'billing' })}
+                            label={t('Verify number', { ns: 'user_settings' })}
                             type="button"
                             onClick={() => {
                               navigate(routes.PHONE_VERIFICATION)

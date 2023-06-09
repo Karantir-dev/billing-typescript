@@ -14,13 +14,25 @@ export default function Component(props) {
     validatePhoneData,
     backHandler,
     isFirst,
+    isTimeOut,
   } = props
 
+  const notHaveNumber = !validatePhoneData?.types && !validatePhoneData?.action_types
   const types = isFirst ? validatePhoneData?.types : validatePhoneData?.action_types
+
+  const renderBtnTitle = () => {
+    if (notHaveNumber) {
+      return t('SET A PHONE')
+    } else if (isFirst) {
+      return t('GET A CODE')
+    } else {
+      return t('CHOOSE')
+    }
+  }
 
   return (
     <>
-      {isFirst && (
+      {isFirst || notHaveNumber ? (
         <CustomPhoneInput
           containerClass={s.phoneInputContainer}
           inputClass={s.phoneInputClass}
@@ -33,24 +45,25 @@ export default function Component(props) {
           handleBlur={handleBlur}
           setFieldValue={setFieldValue}
           name="phone"
-          disabled
         />
-      )}
+      ) : null}
 
-      <Select
-        value={isFirst ? values.type : values.action_type}
-        label={`${isFirst ? t('Verification method') : t('Choose an option')}:`}
-        placeholder={''}
-        getElement={item => setFieldValue(isFirst ? 'type' : 'action_type', item)}
-        isShadow
-        itemsList={types?.map(el => {
-          return {
-            label: t(el?.$),
-            value: el.$key,
-          }
-        })}
-        className={s.select}
-      />
+      {validatePhoneData?.action_types || validatePhoneData?.types ? (
+        <Select
+          value={isFirst ? values.type : values.action_type}
+          label={`${isFirst ? t('Verification method') : t('Choose an option')}:`}
+          placeholder={''}
+          getElement={item => setFieldValue(isFirst ? 'type' : 'action_type', item)}
+          isShadow
+          itemsList={types?.map(el => {
+            return {
+              label: t(el?.$),
+              value: el.$key,
+            }
+          })}
+          className={s.select}
+        />
+      ) : null}
 
       {isFirst && (
         <span className={s.typeDescription}>
@@ -63,7 +76,8 @@ export default function Component(props) {
           className={s.saveBtn}
           isShadow
           size="medium"
-          label={isFirst ? t('GET A CODE') : t('CHOOSE')}
+          label={renderBtnTitle()}
+          disabled={isTimeOut}
           type="submit"
         />
         <button onClick={backHandler} type="button" className={s.cancel}>

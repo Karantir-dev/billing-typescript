@@ -273,6 +273,15 @@ const getCountriesForRegister =
         }, {})
         countries.shift()
 
+        localStorage.setItem(
+          'countriesForRegister',
+          JSON.stringify({
+            countries,
+            states,
+            socLinks,
+          }),
+        )
+
         setCountries(countries)
         setStates(states)
         setSocialLinks && setSocialLinks(socLinks)

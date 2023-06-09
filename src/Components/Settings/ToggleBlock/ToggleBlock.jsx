@@ -46,13 +46,13 @@ export default function Component(props) {
             initialState={item?.messengerValue === 'on'}
           />
         </div>
-        <div className={s.column}>
+        {/* <div className={s.column}>
           <div className={s.toggleName}>sms</div>
           <Toggle
             setValue={value => setFieldValue(`${item.fieldName}_notice_ntsms`, value)}
             initialState={item?.smsValue === 'on'}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )

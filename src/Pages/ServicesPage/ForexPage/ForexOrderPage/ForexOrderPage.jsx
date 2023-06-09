@@ -268,6 +268,8 @@ export default function ForexOrderPage() {
 
                     const priceAmount = parsedPrice.amoumt
 
+                    const numEl = parseInt(cardTitle?.match(/\d+/))
+
                     return (
                       <div
                         className={classNames(s.tarif_card, {
@@ -309,13 +311,13 @@ export default function ForexOrderPage() {
                           className={s.tarif_card_btn}
                         >
                           <div className={s.dns_img_container}>
-                            <img
-                              className={s.dns_img}
-                              src={require(`@images/forex/${cardTitle
-                                .toLocaleLowerCase()
-                                .replaceAll(' ', '_')}.webp`)}
-                              alt="dns"
-                            />
+                            {numEl && numEl < 5 && (
+                              <img
+                                className={s.dns_img}
+                                src={require(`@images/forex/vps_fx_${numEl}.webp`)}
+                                alt="dns"
+                              />
+                            )}
                           </div>
 
                           <div

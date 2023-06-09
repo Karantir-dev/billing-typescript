@@ -807,12 +807,13 @@ const fetchValidatePhone = setValidatePhoneData => (dispatch, getState) => {
       }
 
       const d = {
-        phone: data?.doc?.phone?.$,
+        phone: data?.doc?.tryphone?.$ || data?.doc?.phone?.$,
         phone_country: data?.doc?.phone_country?.$,
         type: data?.doc?.type?.$,
         action_type: data?.doc?.action_type?.$,
         code_count: data?.doc?.code_count?.$?.replace('You have', '')
           ?.replace('attempts to send the code', '')
+          ?.replace('attempt to send the code', '')
           ?.trim(),
       }
 
@@ -842,7 +843,8 @@ const fetchValidatePhone = setValidatePhoneData => (dispatch, getState) => {
 }
 
 const fetchValidatePhoneStart =
-  (data, setIsCodeStep, setIsTryLimit) => (dispatch, getState) => {
+  (data, setIsCodeStep, setIsTryLimit, setValidatePhoneData, setTimeOut) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
 
     const {
@@ -869,6 +871,10 @@ const fetchValidatePhoneStart =
             setIsTryLimit && setIsTryLimit(true)
           }
 
+          if (data?.doc?.error?.$type === 'fraud_phone_try_timeout') {
+            setIsTryLimit && setTimeOut(Number(data?.doc?.error?.param?.$))
+          }
+
           if (data?.doc?.error?.$type === 'exists') {
             toast.error(i18n.t('this_phone_exists', { ns: 'other' }), {
               position: 'bottom-right',
@@ -877,7 +883,35 @@ const fetchValidatePhoneStart =
           throw new Error(data.doc.error.msg.$)
         }
 
-        setIsCodeStep(true)
+        const d = {
+          phone: data?.doc?.tryphone?.$ || data?.doc?.phone?.$,
+          phone_country: data?.doc?.phone_country?.$,
+          type: data?.doc?.type?.$,
+          action_type: data?.doc?.action_type?.$,
+          code_count: data?.doc?.code_count?.$?.replace('You have', '')
+            ?.replace('attempts to send the code', '')
+            ?.trim(),
+        }
+
+        data?.doc?.slist?.forEach(el => {
+          if (el.$name === 'phone_country') {
+            d['phone_countries'] = el?.val
+          }
+          if (el.$name === 'type') {
+            d['types'] = el?.val
+          }
+
+          if (el.$name === 'action_type') {
+            d['action_types'] = el?.val
+          }
+        })
+
+        setValidatePhoneData &&
+          setValidatePhoneData(phoneData => {
+            return { action_type: phoneData?.action_type, ...d }
+          })
+
+        setIsCodeStep && setIsCodeStep(true)
         dispatch(actions.hideLoader())
       })
       .catch(error => {
@@ -918,7 +952,7 @@ const fetchValidatePhoneFirst =
         }
 
         const d = {
-          phone: data?.doc?.phone?.$,
+          phone: data?.doc?.tryphone?.$ || data?.doc?.phone?.$,
           phone_country: data?.doc?.phone_country?.$,
           type: data?.doc?.type?.$,
           action_type: data?.doc?.action_type?.$,

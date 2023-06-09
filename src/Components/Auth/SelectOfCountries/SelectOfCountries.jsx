@@ -20,7 +20,6 @@ export default function SelectOfCountries({
   geoCountryId,
   geoStateId,
   disabled,
-  // setSocialLinks,
 }) {
   const { t } = useTranslation(['auth', 'countries'])
   const dispatch = useDispatch()
@@ -40,14 +39,21 @@ export default function SelectOfCountries({
   const [currentRegions, setCurrentRegions] = useState([])
 
   useEffect(() => {
-    dispatch(
-      authOperations.getCountriesForRegister(
-        setCountries,
-        setRegions,
-        setErrMsg,
-        // setSocialLinks,
-      ),
-    )
+    const data = localStorage.getItem('countriesForRegister')
+
+    if (data) {
+      const { countries, states } = JSON.parse(data)
+      setCountries(countries)
+      setRegions(states)
+    } else {
+      dispatch(
+        authOperations.getCountriesForRegister(
+          setCountries,
+          setRegions,
+          setErrMsg,
+        ),
+      )
+    }
   }, [])
 
   useEffect(() => {

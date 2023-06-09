@@ -93,5 +93,14 @@
 
   "not_receive_confirmation_code_1": "If you do not receive the confirmation code, please try",
   "not_receive_confirmation_code_2": "or contact our Technical support for manual confirmation",
-  "Another way": "Another way"
+
+  "before_verified_number": "You can change and verify this number by clicking \"{{btn}}\"",
+  "after_verified_number": "To change your primary phone number, please contact our technical support",
+
+  "Another way": "Another way",
+  "Verify number": "Verify number",
+
+  "Main number": "Main number",
+  "verification_code_timeout": "The verification code can be sent again in {{time}} seconds",
+  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt."
 }
