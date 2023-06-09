@@ -1,4 +1,3 @@
-import React from 'react'
 import Pumpkins from './Pumpkins'
 import PumpkinsText from './PumpkinsText'
 import { useTranslation } from 'react-i18next'

@@ -1,14 +1,14 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
-import { usersOperations } from '../../../Redux'
-import { Delete, Key, Settings } from '../../../images'
+import { usersOperations } from '@redux'
+import { Delete, Key, Settings } from '@images'
 import ManageUserForm from '../ManageUserForm/ManageUserForm'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 import Alert from '../../ui/Alert/Alert'
 import { Button } from '../..'
 

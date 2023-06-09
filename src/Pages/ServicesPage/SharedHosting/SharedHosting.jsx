@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   BreadCrumbs,
   SharedHostingFilter,
   Pagination,
   SharedHostingTable,
   SharedHostingHistoryModal,
-  // SharedHostingProlongModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
   SharedHostingInstructionModal,
@@ -13,14 +12,14 @@ import {
   HintWrapper,
   IconButton,
   ProlongModal,
-} from '../../../Components'
+} from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
-import { vhostSelectors, vhostOperations } from '../../../Redux'
-import * as route from '../../../routes'
-import { checkServicesRights, usePageRender } from '../../../utils'
+import { vhostSelectors, vhostOperations } from '@redux'
+import * as route from '@src/routes'
+import { checkServicesRights, usePageRender } from '@utils'
 import cn from 'classnames'
 
 export default function Component() {
@@ -52,7 +51,6 @@ export default function Component() {
   const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
   const [prolongModal, setProlongModal] = useState(false)
-  // const [prolongData, setProlongData] = useState(null)
 
   const [editModal, setEditModal] = useState(false)
   const [editData, setEditData] = useState(null)
@@ -135,28 +133,11 @@ export default function Component() {
 
   const prolongVhostHandler = () => {
     setProlongModal(true)
-    // const data = {
-    //   elid: selctedItem?.id?.$,
-    //   elname: selctedItem?.name?.$,
-    //   lang: i18n?.language,
-    // }
-    // dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
   }
 
   const closeProlongModalHandler = () => {
-    // setProlongData(null)
     setProlongModal(false)
   }
-
-  // const prolongEditVhostHandler = (values = {}) => {
-  //   let data = {
-  //     elid: selctedItem?.id?.$,
-  //     lang: i18n?.language,
-  //     ...values,
-  //   }
-
-  //   dispatch(vhostOperations.prolongVhost(data, setProlongModal, setProlongData))
-  // }
 
   const editVhostHandler = (d = null) => {
     let data = {
@@ -304,7 +285,7 @@ export default function Component() {
         virtualHostingRenderData?.vhostList && (
           <div className={s.no_service_wrapper}>
             <img
-              src={require('../../../images/services/virtual_hosting.webp')}
+              src={require('@images/services/virtual_hosting.webp')}
               alt="virtual_hosting"
               className={s.virt_host_img}
             />
@@ -407,19 +388,6 @@ export default function Component() {
           historyItemCount={historyItemCount}
         />
       </Backdrop>
-
-      {/* <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(prolongModal && prolongData)}
-        onClick={closeProlongModalHandler}
-      >
-        <SharedHostingProlongModal
-          prolongData={prolongData}
-          name={selctedItem?.name?.$}
-          closeProlongModalHandler={closeProlongModalHandler}
-          prolongEditVhostHandler={prolongEditVhostHandler}
-        />
-      </Backdrop> */}
 
       <Backdrop
         className={s.backdrop}

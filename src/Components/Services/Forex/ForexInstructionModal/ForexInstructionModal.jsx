@@ -1,10 +1,10 @@
 // import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Cross } from '../../../../images'
-import { dnsOperations } from '../../../../Redux'
+import { Cross } from '@images'
+import { dnsOperations } from '@redux'
 
 import Loader from '../../../ui/Loader/Loader'
 

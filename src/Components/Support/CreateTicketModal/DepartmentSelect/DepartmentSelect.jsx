@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Check, Info } from '../../../../images'
+import { Check, Info } from '@images'
 
 import s from './DepartmentSelect.module.scss'
 

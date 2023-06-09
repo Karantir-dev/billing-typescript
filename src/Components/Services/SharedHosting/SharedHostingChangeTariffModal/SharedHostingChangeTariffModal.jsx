@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { RadioButton, Button } from '../../..'
 import s from './SharedHostingChangeTariffModal.module.scss'
 

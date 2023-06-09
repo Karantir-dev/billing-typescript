@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Attention, Cross } from '../../images'
-import { Backdrop, Button } from '../../Components'
-import { userSelectors, userOperations } from '../../Redux'
+import { Attention, Cross } from '@images'
+import { Backdrop, Button } from '@components'
+import { userSelectors, userOperations } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import s from './EmailTrigger.module.scss'

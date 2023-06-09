@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Backdrop, BreadCrumbs, IconButton, IPeditModal } from '../../../../Components'
-import { vdsOperations } from '../../../../Redux'
+import { Backdrop, BreadCrumbs, IconButton, IPeditModal } from '@components'
+import { vdsOperations } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
-import * as route from '../../../../routes'
+import * as route from '@src/routes'
 
 import s from './VDSip.module.scss'
-import { Edit } from '../../../../images'
+import { Edit } from '@images'
 
 export default function VDSip() {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])

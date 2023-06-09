@@ -1,7 +1,6 @@
-import React from 'react'
 import SharedHostingHistoryItem from './SharedHostingHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Pagination } from '../../..'
 import cn from 'classnames'
 import s from './SharedHostingHistoryModal.module.scss'

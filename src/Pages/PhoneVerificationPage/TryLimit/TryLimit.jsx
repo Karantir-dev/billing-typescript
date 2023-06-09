@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import s from './TryLimit.module.scss'
-import * as routes from '../../../routes'
+import * as routes from '@src/routes'
 
 export default function Component() {
   const { t } = useTranslation(['user_settings', 'other'])

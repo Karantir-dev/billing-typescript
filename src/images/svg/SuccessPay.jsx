@@ -1,6 +1,4 @@
-import * as React from 'react'
-
-export default function SvgComponent({color = '#45A884', ...props}) {
+export default function SvgComponent({ color = '#45A884', ...props }) {
   return (
     <svg width={88} height={88} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path

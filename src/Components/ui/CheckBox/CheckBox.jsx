@@ -1,7 +1,6 @@
-import React from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Check } from '../../../images'
+import { Check } from '@images'
 import s from './CheckBox.module.scss'
 
 export default function Component({

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function useScrollToElement ({
+export default function useScrollToElement({
   condition,
   behavior = 'smooth',
   block = 'center',

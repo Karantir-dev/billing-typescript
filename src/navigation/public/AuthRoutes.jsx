@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
-import { AuthPage } from '../../Pages'
+import { AuthPage } from '@pages'
 import {
   LoginForm,
   PasswordChange,
@@ -12,11 +12,11 @@ import {
   Loader,
   CartFromSite,
   MainEmailConfirmation,
-} from '../../Components'
+} from '@components'
 import { useTranslation } from 'react-i18next'
-import { authOperations, authSelectors } from '../../Redux'
+import { authOperations, authSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
-import * as route from '../../routes'
+import * as route from '@src/routes'
 
 const Component = () => {
   const { i18n } = useTranslation()
@@ -68,6 +68,15 @@ const Component = () => {
 
   useEffect(() => {
     dispatch(authOperations.getLocation())
+
+    const clearRegisterCountries = () => localStorage.removeItem('countriesForRegister')
+
+    window.addEventListener('beforeunload', clearRegisterCountries)
+
+    return () => {
+      clearRegisterCountries()
+      window.removeEventListener('beforeunload', clearRegisterCountries)
+    }
   }, [])
 
   return (

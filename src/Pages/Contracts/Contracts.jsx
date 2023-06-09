@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import ContractItem from '../../Components/Contracts/ContractItem/ContractItem'
+import { useEffect, useState } from 'react'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton, Pagination } from '../../Components'
-import { contractOperations, contractsSelectors } from '../../Redux'
+import { IconButton, Pagination, ContractItem } from '@components'
+import { contractOperations, contractsSelectors } from '@redux'
 import { useTranslation } from 'react-i18next'
 
 import s from './Contracts.module.scss'
-import { checkServicesRights, usePageRender } from '../../utils'
-import * as route from '../../routes'
+import { checkServicesRights, usePageRender } from '@utils'
+import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { SendArchive } from '../../images'
+import { SendArchive } from '@images'
 import { useMediaQuery } from 'react-responsive'
 
 export default function Contracts() {
@@ -100,7 +100,7 @@ export default function Contracts() {
       {contractsRenderData?.contracts?.length === 0 && (
         <div className={s.no_service_wrapper}>
           {/* <img
-            src={require('../../images/services/no_dns.png')}
+            src={require('@images/services/no_dns.png')}
             alt="dns"
             className={s.dns_img}
           /> */}

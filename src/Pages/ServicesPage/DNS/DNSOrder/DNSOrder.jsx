@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button } from '../../../../Components'
+import { BreadCrumbs, Button, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useScrollToElement } from '../../../../utils'
-import Select from '../../../../Components/ui/Select/Select'
-import { dnsOperations, userOperations } from '../../../../Redux'
-import * as routes from '../../../../routes'
+import { translatePeriod, useScrollToElement } from '@utils'
+import { dnsOperations, userOperations } from '@redux'
+import * as routes from '@src/routes'
 
 import s from './DNSOrder.module.scss'
 
@@ -23,7 +22,13 @@ export default function FTPOrder() {
 
   const isSiteCareOrderAllowed = location?.state?.isDnsOrderAllowed
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'dns', 'autoprolong'])
+  const { t } = useTranslation([
+    'dedicated_servers',
+    'other',
+    'crumbs',
+    'dns',
+    'autoprolong',
+  ])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [tarifList, setTarifList] = useState([])
@@ -210,7 +215,7 @@ export default function FTPOrder() {
                           <div className={s.img_wrapper}>
                             <img
                               className={s.dns_img}
-                              src={require(`../../../../images/services/${
+                              src={require(`@images/services/${
                                 item?.pricelist?.$ === '958'
                                   ? 'dns_hosting_small.webp'
                                   : 'dns_hosting_middle.webp'
@@ -255,7 +260,9 @@ export default function FTPOrder() {
 
               {parameters && (
                 <div className={s.parameters_block}>
-                  <p ref={scrollElem} className={s.params}>{t('parameters')}</p>
+                  <p ref={scrollElem} className={s.params}>
+                    {t('parameters')}
+                  </p>
 
                   <div className={s.parameters_wrapper}>
                     <Select

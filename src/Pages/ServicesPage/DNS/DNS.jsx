@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
@@ -20,11 +20,11 @@ import {
   Portal,
   Pagination,
   CheckBox,
-} from '../../../Components'
-import { dnsOperations, dnsSelectors, actions } from '../../../Redux'
+} from '@components'
+import { dnsOperations, dnsSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
-import { usePageRender } from '../../../utils'
+import { usePageRender } from '@utils'
 
 export default function DNS() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
