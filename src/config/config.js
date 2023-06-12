@@ -4,7 +4,7 @@
 
 // ---- production ------
 export const BASE_URL = 'https://api.zomro.com'
-export const SITE_URL = 'http://localhost:8000' //'https://zomro.com'
+export const SITE_URL = 'https://zomro.com'
 export const API_URL = 'https://api.server-panel.net'
 export const PRIVACY_URL = `${SITE_URL}/privacy-policy`
 export const OFERTA_URL = `${SITE_URL}/oferta`
