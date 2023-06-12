@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './VpnTarifCard.module.scss'
@@ -67,7 +67,7 @@ export default function Component(props) {
       <div className={s.cardBlock}>
         <div className={s.tariffName}>{data?.name}</div>
 
-        <img src={require('../../../../images/services/vpn.png')} alt={'vpn'} />
+        <img src={require('@images/services/vpn.png')} alt={'vpn'} />
         <div className={s.charBlock}>
           <div className={s.tariffPrice}>
             {parsePrice(tariff?.price?.$)?.amount} EUR/{t(period, { ns: 'other' })}

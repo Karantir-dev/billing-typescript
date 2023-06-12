@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -11,10 +11,10 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   Button,
-} from '../../../../Components'
-import { SaleFiftyFive } from '../../../../images'
-import { userOperations, vdsOperations } from '../../../../Redux'
-import { DOMAIN_REGEX, useScrollToElement } from '../../../../utils'
+} from '@components'
+import { SaleFiftyFive } from '@images'
+import { userOperations, vdsOperations } from '@redux'
+import { DOMAIN_REGEX, useScrollToElement } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 

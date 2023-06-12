@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './TarifCard.module.scss'
-import { Infinity } from '../../../../images'
+import { Infinity } from '@images'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
@@ -79,10 +79,10 @@ export default function Component(props) {
   }
 
   const renderImage = name => {
-    const vhostCloud = require('../../../../images/vhost/VhostCloud.png')
-    const corporate = require('../../../../images/vhost/corporate.png')
-    const favourable = require('../../../../images/vhost/favourable.png')
-    const optimal = require('../../../../images/vhost/optimal.png')
+    const vhostCloud = require('@images/vhost/VhostCloud.png')
+    const corporate = require('@images/vhost/corporate.png')
+    const favourable = require('@images/vhost/favourable.png')
+    const optimal = require('@images/vhost/optimal.png')
 
     if (name === 'AFFORDABLE') {
       return vhostCloud

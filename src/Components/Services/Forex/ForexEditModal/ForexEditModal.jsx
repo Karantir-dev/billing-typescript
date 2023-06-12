@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
-import { Copy, Cross } from '../../../../images'
+import { Copy, Cross } from '@images'
 import { Formik, Form } from 'formik'
-import { forexOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../utils'
+import { forexOperations } from '@redux'
+import { translatePeriod } from '@utils'
 import { CSSTransition } from 'react-transition-group'
 
 import animations from './animations.module.scss'
@@ -20,7 +20,7 @@ export default function ForexEditModal({ elid, closeFn }) {
     'other',
     'crumbs',
     'affiliate_program',
-    'autoprolong'
+    'autoprolong',
   ])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()

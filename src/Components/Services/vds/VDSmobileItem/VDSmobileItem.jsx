@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -11,12 +11,12 @@ import {
   Info,
   Delete,
   ExitSign,
-} from '../../../../images'
-import * as route from '../../../../routes'
-import { SITE_URL } from '../../../../config/config'
+} from '@images'
+import * as route from '@src/routes'
+import { SITE_URL } from '@config/config'
 import { useNavigate } from 'react-router-dom'
-import { useOutsideAlerter } from '../../../../utils'
-import { CheckBox, ServerState, EditCell } from '../../..'
+import { useOutsideAlerter } from '@utils'
+import { CheckBox, ServerState, EditCell } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import FilterPaymentsModal from './FilterPaymentsModal'
@@ -13,7 +13,7 @@ import {
   billingActions,
   billingOperations,
   billingSelectors,
-} from '../../../Redux'
+} from '@redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {

@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import {
-  BreadCrumbs,
-  Select,
-  SiteCareTarifCard,
-  Button,
-  InputField,
-} from '../../../../Components'
+import { useEffect, useState } from 'react'
+import { BreadCrumbs, Select, SiteCareTarifCard, Button, InputField } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { siteCareOperations, userOperations } from '../../../../Redux'
-import { useScrollToElement, translatePeriod } from '../../../../utils'
+import { siteCareOperations, userOperations } from '@redux'
+import { useScrollToElement, translatePeriod } from '@utils'
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
-import * as routes from '../../../../routes'
+import * as routes from '@src/routes'
 
 export default function Component() {
   const { t } = useTranslation([

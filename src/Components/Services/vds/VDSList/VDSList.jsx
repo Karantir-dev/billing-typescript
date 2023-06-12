@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { VDSmobileItem, VDSItem, CheckBox } from '../../..'
@@ -6,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../../Redux'
+import { vdsOperations } from '@redux'
 
 export default function VDSList({
   servers,

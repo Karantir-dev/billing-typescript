@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Shevron, Delete } from '../../../images'
+import { Shevron, Delete } from '@images'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { translatePeriodToMonths } from '../../../utils'
+import { translatePeriodToMonths } from '@utils'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {

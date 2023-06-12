@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { authSelectors, userOperations, userSelectors } from '../../Redux'
+import { authSelectors, userOperations, userSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
-import * as route from '../../routes'
+import * as route from '@src/routes'
 
 export default function MainEmailConfirmation() {
   const isAuthenticated = useSelector(authSelectors.getSessionId)

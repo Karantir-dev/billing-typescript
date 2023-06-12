@@ -1,5 +1,4 @@
-import React from 'react'
-import { Select } from '../Components'
+import { Select } from '@components'
 
 export default {
   title: 'Select',

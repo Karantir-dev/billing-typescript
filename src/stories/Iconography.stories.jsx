@@ -1,11 +1,10 @@
-import React from 'react'
 import { IconGallery, IconItem } from '@storybook/addon-docs/'
 import cn from 'classnames'
 import s from './Icons.module.scss'
 
-import * as Icons from '../images'
+import * as Icons from '@images'
 import { Provider } from 'react-redux'
-import entireStore from '../Redux/store'
+import entireStore from '@redux/store'
 
 export default {
   title: 'Docs/IconGallery',

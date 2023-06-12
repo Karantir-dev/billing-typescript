@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -10,7 +10,7 @@ import InputField from '../../../ui/InputField/InputField'
 
 import { Button } from '../../..'
 import { useLocation } from 'react-router-dom'
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 
 export default function DedicIPEditModal({ elid, closeFn }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other'])
@@ -89,7 +89,7 @@ export default function DedicIPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.mask}
                         disabled
@@ -101,7 +101,7 @@ export default function DedicIPEditModal({ elid, closeFn }) {
                         isShadow
                         className={s.input_field_wrapper}
                         inputClassName={s.input}
-                        autoComplete='off'
+                        autoComplete="off"
                         type="text"
                         value={values?.gateway}
                         disabled

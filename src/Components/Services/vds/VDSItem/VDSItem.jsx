@@ -1,9 +1,9 @@
 import cn from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, HintWrapper, ServerState, EditCell } from '../../..'
+import { CheckBox, HintWrapper, ServerState, EditCell } from '@components'
 import PropTypes from 'prop-types'
-import * as route from '../../../../routes'
+import * as route from '@src/routes'
 import {
   Clock,
   MoreDots,
@@ -15,10 +15,10 @@ import {
   Info,
   Delete,
   ExitSign,
-} from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+} from '@images'
+import { useOutsideAlerter } from '@utils'
 import { useNavigate } from 'react-router-dom'
-import { SITE_URL } from '../../../../config/config'
+import { SITE_URL } from '@config/config'
 import s from './VDSItem.module.scss'
 
 export default function VDSItem({

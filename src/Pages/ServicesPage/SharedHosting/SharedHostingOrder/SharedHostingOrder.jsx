@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { BreadCrumbs, Select, TarifCard, Button } from '../../../../Components'
+import { useEffect, useRef, useState } from 'react'
+import { BreadCrumbs, Select, TarifCard, Button } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { userOperations, vhostOperations } from '../../../../Redux'
-import { useScrollToElement, translatePeriod } from '../../../../utils'
-import * as routes from '../../../../routes'
+import { userOperations, vhostOperations } from '@redux'
+import { useScrollToElement, translatePeriod } from '@utils'
+import * as routes from '@src/routes'
 
 import s from './SharedHostingOrder.module.scss'
 
@@ -39,6 +39,7 @@ export default function Component() {
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 
   const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData && period !== '-100' })
+
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')

@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { useTranslation } from 'react-i18next'
-import { Button, CustomPhoneInput, Select } from '../../../Components'
+import { Button, CustomPhoneInput, Select } from '@components'
 
 import s from './FirstStep.module.scss'
 

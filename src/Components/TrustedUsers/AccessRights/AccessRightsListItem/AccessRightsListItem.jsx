@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
@@ -14,10 +14,10 @@ import {
   Services,
   Shevron,
   Statistic,
-} from '../../../../images'
-import { authSelectors, usersOperations } from '../../../../Redux'
+} from '@images'
+import { authSelectors, usersOperations } from '@redux'
 import { Toggle } from '../../..'
-import { checkIfTokenAlive } from '../../../../utils'
+import { checkIfTokenAlive } from '@utils'
 import s from './AccessRightsListItem.module.scss'
 
 export default function AccessRightsListItem({

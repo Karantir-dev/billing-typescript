@@ -1,12 +1,12 @@
 import qs from 'qs'
-import i18n from './../../i18n'
+import i18n from '@src/i18n'
 import axios from 'axios'
-import { actions, domainsActions, cartActions } from '..'
-import { API_URL } from '../../config/config'
-import { axiosInstance } from '../../config/axiosInstance'
+import { actions, domainsActions, cartActions } from '@redux'
+import { API_URL } from '@config/config'
+import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '../../utils'
-import * as route from '../../routes'
+import { checkIfTokenAlive } from '@utils'
+import * as route from '@src/routes'
 
 const getDomains =
   (body = {}) =>

@@ -1,10 +1,10 @@
 import qs from 'qs'
-import { axiosInstance } from '../../config/axiosInstance'
-import { actions, supportActions, userOperations } from '..'
-import { checkIfTokenAlive } from '../../utils'
+import { axiosInstance } from '@config/axiosInstance'
+import { actions, supportActions, userOperations } from '@redux'
+import { checkIfTokenAlive } from '@utils'
 import { toast } from 'react-toastify'
-import i18n from './../../i18n'
-import translateSupportPaymentError from '../../utils/translateSupportPaymentError'
+import i18n from '@src/i18n'
+import translateSupportPaymentError from '@utils/translateSupportPaymentError'
 
 const getTicketsHandler =
   (body = {}) =>

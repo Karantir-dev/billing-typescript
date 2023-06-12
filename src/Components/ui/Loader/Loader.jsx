@@ -1,9 +1,8 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
-import { selectors, userSelectors } from '../../../Redux'
-import { Logo } from './../../../images'
+import { selectors, userSelectors } from '@redux'
+import { Logo } from '@images'
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false, shown }) {

@@ -1,12 +1,11 @@
 import qs from 'qs'
-import { axiosInstance } from './../../config/axiosInstance'
-import { actions, cartActions } from '../'
-import authSelectors from '../auth/authSelectors'
-import * as routes from '../../routes'
+import { axiosInstance } from '@config/axiosInstance'
+import { actions, cartActions, authSelectors } from '@redux'
+import * as routes from '@src/routes'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, renameAddonFields } from '../../utils'
+import { checkIfTokenAlive, renameAddonFields } from '@utils'
 import { t } from 'i18next'
-import i18n from './../../i18n'
+import i18n from '@src/i18n'
 
 const getVDS =
   ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>

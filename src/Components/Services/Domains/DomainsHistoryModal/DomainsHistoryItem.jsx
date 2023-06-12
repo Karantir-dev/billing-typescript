@@ -1,10 +1,9 @@
-import React from 'react'
 import s from './DomainsHistoryModal.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { historyTranslateFn } from '../../../../utils'
+import { historyTranslateFn } from '@utils'
 
 export default function Component(props) {
   const { changedate, desc, ip, user } = props

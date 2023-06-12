@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
-import { authOperations } from '../../../Redux'
+import * as route from '@src/routes'
+import { authOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { Loader } from '../../../Components'
+import { Loader } from '@components'
 
 export default function SocialNetAdd() {
   const location = useLocation()
