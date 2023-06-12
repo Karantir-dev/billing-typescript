@@ -3,7 +3,7 @@ import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies } from '@utils'
-import { API_URL } from '@config/config'
+import { API_URL, SITE_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -342,6 +342,16 @@ const register =
 const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
   dispatch(actions.showLoader())
 
+  const fromsite = cookies.getCookie('loginFromSite')
+
+  const sendInfoToSite = data => {
+    if (fromsite === 'true') {
+      cookies.setCookie('socialLoginData', JSON.stringify(data), 1)
+      cookies.eraseCookie('loginFromSite')
+      location.href = SITE_URL
+    }
+  }
+
   axiosInstance
     .post(
       '/',
@@ -354,13 +364,18 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     )
     .then(({ data }) => {
       // LOGIN
-      if (data.doc?.error?.$object === 'nolink') {
+      if (
+        data.doc?.error?.$object === 'nolink' ||
+        data.doc?.error?.$object === 'socialrequest'
+      ) {
+        sendInfoToSite({ error: data.doc?.error?.$object })
         redirectToLogin(
           'soc_net_not_integrated',
           data.doc?.error?.param.find(el => el.$name === 'network')?.$,
         )
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
+        sendInfoToSite({ sessionId })
         axiosInstance
           .post(
             '/',
@@ -405,15 +420,18 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
           )
           .then(({ data }) => {
             if (data.doc?.error?.$object === 'account_exist') {
+              sendInfoToSite({ error: data.doc?.error?.$object })
               redirectToLogin(
                 'social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
               )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
+              sendInfoToSite({ error: data.doc?.error?.$type })
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
+              sendInfoToSite({ error: data.doc?.error?.$object })
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToRegistration('no_email_from_social', '', '')
@@ -431,6 +449,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                 )
                 .then(({ data }) => {
                   const sessionId = data?.doc?.auth?.$
+                  sendInfoToSite({ sessionId })
                   dispatch(authActions.loginSuccess(sessionId))
                 })
             }
