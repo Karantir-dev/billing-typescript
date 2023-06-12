@@ -1,12 +1,11 @@
-import React from 'react'
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
 import MessageInput from '../MessageInput/MessageInput'
-import { Cross } from '../../../images'
+import { Cross } from '@images'
 import { Button, Select, InputField } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Formik, ErrorMessage } from 'formik'
-import { supportSelectors, supportOperations } from '../../../Redux'
+import { supportSelectors, supportOperations } from '@redux'
 import * as Yup from 'yup'
 import s from './CreateTicketModal.module.scss'
 
@@ -92,7 +91,7 @@ export default function Component(props) {
                     error={!!errors.subject}
                     touched={!!touched.subject}
                     className={s.input_field_wrapper}
-                    autoComplete='off'
+                    autoComplete="off"
                   />
                   <label htmlFor={'message'} className={s.label}>
                     {t('Message')}:

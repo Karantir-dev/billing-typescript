@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
@@ -8,27 +8,25 @@ import {
   Toggle,
   Select,
   InputField,
-} from '../../../../Components'
+} from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-
-import { dedicOperations, dedicSelectors, userOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
-
+import { dedicOperations, dedicSelectors, userOperations } from '@redux'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { ArrowSign } from '@images'
+import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '@utils'
+import * as route from '@src/routes'
+import * as Yup from 'yup'
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
-import { ArrowSign } from '../../../../images'
-import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '../../../../utils'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -400,7 +398,7 @@ export default function DedicOrderPage() {
                             [s.flag_icon]: true,
                             [s.selected]: item?.$key === values?.datacenter,
                           })}
-                          src={require('../../../../images/countryFlags/netherlands_flag.webp')}
+                          src={require('@images/countryFlags/netherlands_flag.webp')}
                           alt="nth_flag"
                         />
                         <div className={s.datacenter__info}>
@@ -453,32 +451,34 @@ export default function DedicOrderPage() {
                 <div className={s.second_processors_block}>
                   <p className={s.processors_block__label}>{t('server_model')}:</p>
                   <div className={s.processors_block__row}>
-                    {tarifList?.fpricelist?.filter(el => !el.$.toLowerCase().includes('port')).map(item => {
-                      return (
-                        <div
-                          className={classNames(s.processor_card, {
-                            [s.selected]: true,
-                          })}
-                          key={item?.$key}
-                        >
-                          <Toggle
-                            setValue={() => {
-                              setFieldValue('processor', item?.$key)
-                              if (filters.includes(item?.$key)) {
-                                setFilters([...filters.filter(el => el !== item?.$key)])
-                              } else {
-                                setFilters([...filters, item?.$key])
-                              }
-                              resetForm()
-                              setParameters(null)
-                              setTarifChosen(false)
-                            }}
-                            view="radio"
-                          />
-                          <span className={s.processor_name}>{item?.$}</span>
-                        </div>
-                      )
-                    })}
+                    {tarifList?.fpricelist
+                      ?.filter(el => !el.$.toLowerCase().includes('port'))
+                      .map(item => {
+                        return (
+                          <div
+                            className={classNames(s.processor_card, {
+                              [s.selected]: true,
+                            })}
+                            key={item?.$key}
+                          >
+                            <Toggle
+                              setValue={() => {
+                                setFieldValue('processor', item?.$key)
+                                if (filters.includes(item?.$key)) {
+                                  setFilters([...filters.filter(el => el !== item?.$key)])
+                                } else {
+                                  setFilters([...filters, item?.$key])
+                                }
+                                resetForm()
+                                setParameters(null)
+                                setTarifChosen(false)
+                              }}
+                              view="radio"
+                            />
+                            <span className={s.processor_name}>{item?.$}</span>
+                          </div>
+                        )
+                      })}
                   </div>
                 </div>
               </div>

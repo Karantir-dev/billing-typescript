@@ -1,10 +1,9 @@
 import cn from 'classnames'
 import { nanoid } from 'nanoid'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
-import { Cross } from '../../../images'
+import { Cross } from '@images'
 
 import s from './DetailsModal.module.scss'
 

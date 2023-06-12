@@ -1,7 +1,6 @@
-import React from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '../../../images/'
+import { Shevron } from '@images/'
 import s from './PaymentCurrencyBtn.module.scss'
 
 export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {

@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './IconButton.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
@@ -26,7 +25,7 @@ import {
   ChangeTariff,
   DownloadWithFolder,
   Euro,
-} from '../../../images'
+} from '@images'
 
 export default function Component(props) {
   const { type, onClick, disabled, icon, className, dataTestid } = props

@@ -1,7 +1,7 @@
 import qs from 'qs'
-import { actions, contarctsActions } from '..'
-import { axiosInstance } from '../../config/axiosInstance'
-import { checkIfTokenAlive } from '../../utils'
+import { actions, contarctsActions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive } from '@utils'
 
 const getContracts = data => (dispatch, getState) => {
   dispatch(actions.showLoader())

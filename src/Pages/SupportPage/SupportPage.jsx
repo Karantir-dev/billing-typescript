@@ -1,12 +1,11 @@
-import React from 'react'
 import Requests from './Requests/RequestsPage'
 import RequestsArchive from './RequestsArchive/RequestsArchivePage'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
-import * as route from '../../routes'
+import * as route from '@src/routes'
 
-import { PageTabBar, PageTitleRender } from '../../Components/'
-import { usePageRender } from '../../utils'
+import { PageTabBar, PageTitleRender } from '@components'
+import { usePageRender } from '@utils'
 
 import s from './SupportPage.module.scss'
 

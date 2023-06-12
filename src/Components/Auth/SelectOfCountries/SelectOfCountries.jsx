@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Shevron, Search } from '../../../images'
+import { Shevron, Search } from '@images'
 import { SelectOfRegions } from '../../'
-import { authOperations } from '../../../Redux'
+import { authOperations } from '@redux'
 import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({
@@ -20,7 +20,6 @@ export default function SelectOfCountries({
   geoCountryId,
   geoStateId,
   disabled,
-  // setSocialLinks,
 }) {
   const { t } = useTranslation(['auth', 'countries'])
   const dispatch = useDispatch()
@@ -40,14 +39,21 @@ export default function SelectOfCountries({
   const [currentRegions, setCurrentRegions] = useState([])
 
   useEffect(() => {
-    dispatch(
-      authOperations.getCountriesForRegister(
-        setCountries,
-        setRegions,
-        setErrMsg,
-        // setSocialLinks,
-      ),
-    )
+    const data = localStorage.getItem('countriesForRegister')
+
+    if (data) {
+      const { countries, states } = JSON.parse(data)
+      setCountries(countries)
+      setRegions(states)
+    } else {
+      dispatch(
+        authOperations.getCountriesForRegister(
+          setCountries,
+          setRegions,
+          setErrMsg,
+        ),
+      )
+    }
   }, [])
 
   useEffect(() => {
@@ -143,7 +149,7 @@ export default function SelectOfCountries({
           {currentFlag ? (
             <img
               className={s.field_icon}
-              src={require(`../../../images/countryFlags/${currentFlag}.png`)}
+              src={require(`@images/countryFlags/${currentFlag}.png`)}
               width={20}
               height={14}
               alt="flag"
@@ -191,7 +197,7 @@ export default function SelectOfCountries({
                       >
                         <img
                           className={s.country_img}
-                          src={require(`../../../images/countryFlags/${countryCode}.png`)}
+                          src={require(`@images/countryFlags/${countryCode}.png`)}
                           width={20}
                           height={14}
                           alt="flag"

@@ -1,11 +1,9 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { t } from 'i18next'
-import userActions from './userActions'
-import { axiosInstance } from './../../config/axiosInstance'
-import { checkIfTokenAlive } from '../../utils'
-import cartOperations from '../cart/cartOperations'
-import actions from '../actions'
+import { userActions, cartOperations, actions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive } from '@utils'
 
 const userInfo = (data, dispatch) => {
   const {
@@ -68,12 +66,20 @@ const clearBasket = (data, dispatch) => {
   }
 }
 
+const dashBoardInfo = (data, dispatch) => {
+  const { elem } = data.doc
+  if (elem && elem?.length > 0) {
+    dispatch(userActions.updateUserInfo({ verefied_phone: elem[0]?.phone?.$ }))
+  }
+}
+
 const funcsArray = [
   userInfo,
   userNotifications,
   currentSessionRights,
   userTickets,
   clearBasket,
+  dashBoardInfo,
 ]
 
 const getUserInfo = (sessionId, setLoading) => dispatch => {
@@ -121,6 +127,15 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
       '/',
       qs.stringify({
         func: 'basket',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.info',
         out: 'json',
         lang: 'en',
         auth: sessionId,

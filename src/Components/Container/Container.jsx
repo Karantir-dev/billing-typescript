@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import AsideServicesMenu from './AsideServicesMenu/AsideServicesMenu'
 import Header from './Header/Header'
 import dayjs from 'dayjs'
-import { authSelectors, userOperations, userSelectors, selectors } from '../../Redux'
+import { authSelectors, userOperations, userSelectors, selectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Div100vh from 'react-div-100vh'
@@ -65,19 +65,19 @@ export default function Component({ children }) {
   const favicon_mob = getFaviconMobEl()
   if (i18n.language !== 'ru') {
     if (areNewTickets) {
-      favicon.href = require('../../images/favIcons/favicon_ua_active.png')
-      favicon_mob.href = require('../../images/favIcons/favicon_192_ua_active.png')
+      favicon.href = require('@images/favIcons/favicon_ua_active.png')
+      favicon_mob.href = require('@images/favIcons/favicon_192_ua_active.png')
     } else {
-      favicon.href = require('../../images/favIcons/favicon_ua.ico')
-      favicon_mob.href = require('../../images/favIcons/logo192_ua.png')
+      favicon.href = require('@images/favIcons/favicon_ua.ico')
+      favicon_mob.href = require('@images/favIcons/logo192_ua.png')
     }
   } else {
     if (areNewTickets) {
-      favicon.href = require('../../images/favIcons/favicon_active.png')
-      favicon_mob.href = require('../../images/favIcons/favicon_192_active.png')
+      favicon.href = require('@images/favIcons/favicon_active.png')
+      favicon_mob.href = require('@images/favIcons/favicon_192_active.png')
     } else {
-      favicon.href = require('../../images/favIcons/favicon.ico')
-      favicon_mob.href = require('../../images/favIcons/logo192.png')
+      favicon.href = require('@images/favIcons/favicon.ico')
+      favicon_mob.href = require('@images/favIcons/logo192.png')
     }
   }
 

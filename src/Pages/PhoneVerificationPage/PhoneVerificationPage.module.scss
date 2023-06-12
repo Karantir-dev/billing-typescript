@@ -36,6 +36,34 @@
   }
 }
 
+.timeOutBlock {
+  background: var(--forms_bgc_2);
+  box-shadow: var(--shadow_cards_static);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  max-width: fit-content;
+  padding: 14px;
+  margin-bottom: 20px;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 113%;
+  leading-trim: both;
+  text-edge: cap;
+
+  background: linear-gradient(180.08deg, #ff6f66 12.11%, #fa487d 98.37%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+
+  svg {
+    margin-right: 9px;
+  }
+}
+
 .attempts {
   font-style: normal;
   font-weight: 400;

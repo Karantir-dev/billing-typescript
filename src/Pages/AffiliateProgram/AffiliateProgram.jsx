@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { usersOperations } from '../../Redux'
+import { usersOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { PageTabBar, PageTitleRender } from '../../Components/'
-import * as route from '../../routes'
+import { PageTabBar, PageTitleRender } from '@components'
+import * as route from '@src/routes'
 import {
   AboutAffiliateProgram,
   AffiliateProgramIncome,
   AffiliateProgramStatistics,
-} from '../'
-import { usePageRender } from '../../utils'
+} from '@pages'
+import { usePageRender } from '@utils'
 
 import s from './AffiliateProgram.module.scss'
 
@@ -92,7 +92,9 @@ export default function AffiliateProgram() {
           <Route
             path={route.AFFILIATE_PROGRAM_STATISTICS}
             element={
-              <PageTitleRender title={t('page_title') + '/' + t('statistics_section_title')}>
+              <PageTitleRender
+                title={t('page_title') + '/' + t('statistics_section_title')}
+              >
                 <AffiliateProgramStatistics />
               </PageTitleRender>
             }

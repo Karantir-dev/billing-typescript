@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button } from '../../../../Components'
+import { BreadCrumbs, Button, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useScrollToElement } from '../../../../utils'
-import Select from '../../../../Components/ui/Select/Select'
-import { forexOperations, selectors, userOperations } from '../../../../Redux'
-import * as route from '../../../../routes'
+import { translatePeriod, useScrollToElement } from '@utils'
+import { forexOperations, selectors, userOperations } from '@redux'
+import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
-import { Germany, Usa } from '../../../../images'
+import { Germany, Usa } from '@images'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
@@ -29,7 +28,7 @@ export default function ForexOrderPage() {
     'dns',
     'virtual_hosting',
     'countries',
-    'autoprolong'
+    'autoprolong',
   ])
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -269,6 +268,8 @@ export default function ForexOrderPage() {
 
                     const priceAmount = parsedPrice.amoumt
 
+                    const numEl = parseInt(cardTitle?.match(/\d+/))
+
                     return (
                       <div
                         className={classNames(s.tarif_card, {
@@ -295,7 +296,7 @@ export default function ForexOrderPage() {
                               setDataFromSite(null)
                             }
                             runScroll()
-                            
+
                             dispatch(
                               forexOperations.getParameters(
                                 values.period,
@@ -310,13 +311,13 @@ export default function ForexOrderPage() {
                           className={s.tarif_card_btn}
                         >
                           <div className={s.dns_img_container}>
-                            <img
-                              className={s.dns_img}
-                              src={require(`../../../../images/forex/${cardTitle
-                                .toLocaleLowerCase()
-                                .replaceAll(' ', '_')}.webp`)}
-                              alt="dns"
-                            />
+                            {numEl && numEl < 5 && (
+                              <img
+                                className={s.dns_img}
+                                src={require(`@images/forex/vps_fx_${numEl}.webp`)}
+                                alt="dns"
+                              />
+                            )}
                           </div>
 
                           <div

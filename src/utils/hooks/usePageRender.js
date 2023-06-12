@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import checkIfComponentShouldRender from '../checkIfComponentShouldRender'
-import { userSelectors } from '../../Redux'
+import { userSelectors } from '@redux'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

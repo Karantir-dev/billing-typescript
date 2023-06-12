@@ -1,8 +1,8 @@
 import cn from 'classnames'
-import React from 'react'
+
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { historyTranslateFn } from '../../../../../utils'
+import { historyTranslateFn } from '@utils'
 
 import s from './HistoryListItem.module.scss'
 

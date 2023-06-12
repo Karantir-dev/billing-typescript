@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { CalendarModal } from '../..'
-import { Calendar } from '../../../images'
-import { useOutsideAlerter } from '../../../utils'
+import { Calendar } from '@images'
+import { useOutsideAlerter } from '@utils'
 import dayjs from 'dayjs'
 import s from './DoubleInputField.module.scss'
 

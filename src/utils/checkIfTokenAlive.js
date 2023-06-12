@@ -1,4 +1,4 @@
-import { authOperations, authActions } from '../Redux'
+import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
 
 export default function checkIfTokenAlive(errMessage, dispatch) {

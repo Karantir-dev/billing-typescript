@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
-import { PhoneVerificationIcon, Profile } from '../../../images'
+import { PhoneVerificationIcon, Profile, Info } from '@images'
 import {
   InputField,
   CustomPhoneInput,
@@ -14,15 +14,15 @@ import {
   Toggle,
   HintWrapper,
   ScrollToFieldError,
-} from '../../../Components'
-import { BASE_URL } from '../../../config/config'
+} from '@components'
+import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { settingsSelectors, settingsOperations, userSelectors } from '../../../Redux'
-import { isBase64 } from '../../../utils'
+import { settingsSelectors, settingsOperations, userSelectors } from '@redux'
+import { isBase64 } from '@utils'
 import s from './PersonalSettings.module.scss'
-import * as routes from '../../../routes'
+import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
 
@@ -30,6 +30,8 @@ export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
+
+  const dropdownDescription = useRef(null)
 
   const [avatarFile, setAvatarFile] = useState()
   const [countryCode, setCountryCode] = useState(null)
@@ -216,7 +218,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     wrapperClass={s.phoneInput}
                     labelClass={s.phoneInputLabel}
                     setCountryCode={setCountryCode}
-                    label={`${t('Phone', { ns: 'other' })}:`}
+                    label={`${t('Phone for notifications', { ns: 'other' })}:`}
                     dataTestid="input_phone"
                     handleBlur={handleBlur}
                     setFieldValue={setFieldValue}
@@ -247,21 +249,50 @@ export default function Component({ isComponentAllowedToEdit }) {
                   />
                 </div>
 
-                {userInfo?.$need_phone_validate === 'true' &&
-                  userEdit?.phone?.phone?.length > 4 && (
-                    <div className={s.formRow}>
-                      <Link
-                        className={s.phoneVerificationLink}
-                        to={routes.PHONE_VERIFICATION}
-                        state={{
-                          prevPath: location.pathname,
-                          phone: userEdit?.phone?.phone,
-                        }}
-                      >
-                        <PhoneVerificationIcon /> <span>{t('Phone Verification')}</span>
-                      </Link>
-                    </div>
-                  )}
+                <div className={s.formRow}>
+                  <div className={s.phoneBlock}>
+                    <CustomPhoneInput
+                      containerClass={cn(s.phoneInputContainer, s.field)}
+                      inputClass={cn(s.phoneInputClass, s.field_bg)}
+                      disabled={true}
+                      value={
+                        userInfo?.verefied_phone !== 'Verify'
+                          ? userInfo?.verefied_phone
+                          : values.phone
+                      }
+                      wrapperClass={s.phoneInputVerif}
+                      labelClass={s.phoneInputLabel}
+                      label={`${t('Main number')}:`}
+                      buttonClass={s.phoneInputButton}
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                      name="verefied_phone"
+                    />
+                    <button type="button" className={s.infoBtn}>
+                      <Info />
+                      <div ref={dropdownDescription} className={s.descriptionBlock}>
+                        {userInfo?.verefied_phone !== 'Verify'
+                          ? t('after_verified_number')
+                          : t('before_verified_number', { btn: t('Verify number') })}
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {userInfo?.$need_phone_validate === 'true' && (
+                  <div className={s.formRow}>
+                    <Link
+                      className={s.phoneVerificationLink}
+                      to={routes.PHONE_VERIFICATION}
+                      state={{
+                        prevPath: location.pathname,
+                        phone: userEdit?.phone?.phone,
+                      }}
+                    >
+                      <PhoneVerificationIcon /> <span>{t('Verify number')}</span>
+                    </Link>
+                  </div>
+                )}
               </div>
               <div className={s.bottomBlock}>
                 <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
@@ -323,9 +354,20 @@ export default function Component({ isComponentAllowedToEdit }) {
                       </HintWrapper>
                     </div>
                     <div className={s.securNotifnGeoBlock}>
-                      <div className={s.securNotifText}>
-                        {t('Use GeoIP (region tracking by IP)')}
+                      <div className={s.geoIpBlock}>
+                        <div className={s.securNotifText}>
+                          {t('Use GeoIP (region tracking by IP)')}
+                        </div>
+                        <HintWrapper
+                          bottom
+                          wrapperClassName={s.hintWrapperGeo}
+                          popupClassName={s.hintPopUpWrapperGeoIp}
+                          label={t('geo_ip_info')}
+                        >
+                          <Info />
+                        </HintWrapper>
                       </div>
+
                       <HintWrapper
                         popupClassName={s.hintWrapper}
                         label={t('Confirm your email to activate the functionality')}
@@ -390,7 +432,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                       <div className={s.columnBlock}>
                         <div className={s.column}>email</div>
                         <div className={s.column}>messenger</div>
-                        <div className={s.column}>sms</div>
+                        {/* <div className={s.column}>sms</div> */}
                       </div>
                     </div>
                     {userParams?.listCheckBox?.map(el => (

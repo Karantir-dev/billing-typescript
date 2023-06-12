@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-import { useOutsideAlerter } from '../../../utils'
-import { Shevron } from '../../../images'
+import { useOutsideAlerter } from '@utils'
+import { Shevron } from '@images'
 
 import s from './ServicesSelect.module.scss'
 

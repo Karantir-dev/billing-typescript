@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
-import DedicIPEditModal from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPEditModal'
-import DedicIPList from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPList/DedicIPList'
-import DedicIPOrder from '../../../../Components/Services/DedicatedServers/DedicIP/DedicIPOrder/DedicIPOrder'
 import {
   Backdrop,
   BreadCrumbs,
   Button,
   HintWrapper,
   IconButton,
-} from '../../../../Components'
+  DedicIPOrder,
+  DedicIPList,
+  DedicIPEditModal,
+} from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import { dedicOperations } from '../../../../Redux'
+import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-
-import * as route from '../../../../routes'
+import * as route from '@src/routes'
+import { Attention, Cross } from '@images'
+import { checkServicesRights } from '@utils'
 import s from './DedicIPPage.module.scss'
-import { Attention, Cross } from '../../../../images'
-import { checkServicesRights } from '../../../../utils'
 
 export default function DedicIPpage() {
   const location = useLocation()

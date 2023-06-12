@@ -1,8 +1,7 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Delete } from '../../../images'
+import { Delete } from '@images'
 import s from './DomainItem.module.scss'
-import { translatePeriodToMonths } from '../../../utils'
+import { translatePeriodToMonths } from '@utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['cart', 'other'])

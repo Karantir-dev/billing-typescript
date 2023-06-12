@@ -1,13 +1,12 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 
 import { Button } from '../../..'
 
 import s from './ForexDeletionModal.module.scss'
 import { useDispatch } from 'react-redux'
-import { forexOperations } from '../../../../Redux'
+import { forexOperations } from '@redux'
 import classNames from 'classnames'
 
 export default function ForexDeletionModal({ elid, closeFn, server }) {
