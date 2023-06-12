@@ -164,7 +164,7 @@ const BillingPage = lazy(() =>
 
 const PaymentProcessingPage = lazy(() =>
   import(
-    /* webpackChunkName: "BillingPage" */ '@pages/PaymentProcessingPage/PaymentProcessingPage'
+    /* webpackChunkName: "PaymentProcessingPage" */ '@pages/PaymentProcessingPage/PaymentProcessingPage'
   ),
 )
 
