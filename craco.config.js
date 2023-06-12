@@ -19,16 +19,4 @@ module.exports = {
 
     pluginOptions: {},
   },
-
-  jest: {
-    moduleNameMapper: {
-      '@src/(.+)': '<rootDir>/src/$1',
-      '@images/(.+)': '<rootDir>/src/images/$1',
-      '@components/(.+)': '<rootDir>/src/Components/$1',
-      '@redux/(.+)': '<rootDir>/src/Redux/$1',
-      '@pages/(.+)': '<rootDir>/src/Pages/$1',
-      '@config/(.+)': '<rootDir>/src/config/$1',
-      '@utils': '<rootDir>/src/utils/$1',
-    },
-  },
 }

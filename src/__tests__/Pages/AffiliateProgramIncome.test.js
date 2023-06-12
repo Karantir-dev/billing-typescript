@@ -4,7 +4,7 @@
 // import { BrowserRouter } from 'react-router-dom'
 // import { Provider } from 'react-redux'
 // import { AffiliateProgramIncome } from '../../Pages'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import { mockedAxiosInstance } from '@config/axiosInstance'
 // import userEvent from '@testing-library/user-event'
 import qs from 'qs'
 
