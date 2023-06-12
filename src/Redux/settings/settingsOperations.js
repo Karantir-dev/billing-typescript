@@ -1,10 +1,15 @@
 import qs from 'qs'
-import { actions, authOperations, userOperations, usersOperations } from '../'
+import {
+  actions,
+  authOperations,
+  userOperations,
+  usersOperations,
+  settingsActions,
+} from '@redux'
 import { toast } from 'react-toastify'
-import { axiosInstance } from '../../config/axiosInstance'
-import settingsActions from './settingsActions'
-import i18n from './../../i18n'
-import { checkIfTokenAlive } from '../../utils'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive } from '@utils'
+import i18n from '@src/i18n'
 
 const getUserEdit =
   (elid, checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Button, CurrentAutoPayments, AutoPaymentForm } from '../../../Components/'
+import { Button, CurrentAutoPayments, AutoPaymentForm } from '@components'
 import s from './AutoPayment.module.scss'
-import { billingOperations, billingSelectors, payersOperations } from '../../../Redux'
+import { billingOperations, billingSelectors, payersOperations } from '@redux'
 
 export default function Component() {
   const dispatch = useDispatch()

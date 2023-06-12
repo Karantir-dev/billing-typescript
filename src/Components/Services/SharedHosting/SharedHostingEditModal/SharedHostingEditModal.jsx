@@ -1,10 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Select, Button, InputField } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
-import { translatePeriod, orderDetailTranslate } from '../../../../utils'
+import { translatePeriod, orderDetailTranslate } from '@utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains', 'autoprolong'])
@@ -189,7 +188,9 @@ export default function Component(props) {
                   {editData?.status === '1' && (
                     <div
                       className={s.orderDetail}
-                      dangerouslySetInnerHTML={{ __html: orderDetailTranslate(editData?.orderinfo, t) }}
+                      dangerouslySetInnerHTML={{
+                        __html: orderDetailTranslate(editData?.orderinfo, t),
+                      }}
                     />
                   )}
                 </div>

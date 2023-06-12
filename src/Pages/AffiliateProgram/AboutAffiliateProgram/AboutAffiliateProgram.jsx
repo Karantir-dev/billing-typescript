@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner } from '../../../Components'
-import { Copy } from '../../../images'
-import { affiliateSelectors, affiliateOperations } from '../../../Redux'
+import { ServicesSelect, FilesBanner } from '@components'
+import { Copy } from '@images'
+import { affiliateSelectors, affiliateOperations } from '@redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'

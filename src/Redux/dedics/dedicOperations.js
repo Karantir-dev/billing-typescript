@@ -1,12 +1,10 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions } from '..'
-import { axiosInstance } from '../../config/axiosInstance'
-import { checkIfTokenAlive } from '../../utils'
-import dedicActions from './dedicActions'
-import i18n from './../../i18n'
-import cartActions from '../cart/cartActions'
-import * as route from '../../routes'
+import { axiosInstance } from '@config/axiosInstance'
+import { checkIfTokenAlive } from '@utils'
+import { cartActions, actions, dedicActions } from '@redux'
+import i18n from '@src/i18n'
+import * as route from '@src/routes'
 
 // //GET SERVERS OPERATIONS
 

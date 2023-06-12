@@ -1,4 +1,3 @@
-import React from 'react'
 import SupportTableItem from './SupportTableItem'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

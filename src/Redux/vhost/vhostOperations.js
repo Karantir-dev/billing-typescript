@@ -1,10 +1,10 @@
 import qs from 'qs'
-import i18n from './../../i18n'
-import { actions, cartActions, vhostActions } from '..'
-import { axiosInstance } from '../../config/axiosInstance'
+import i18n from '@src/i18n'
+import { actions, cartActions, vhostActions } from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '../../utils'
-import * as route from '../../routes'
+import { checkIfTokenAlive } from '@utils'
+import * as route from '@src/routes'
 
 const getVhosts =
   (body = {}) =>

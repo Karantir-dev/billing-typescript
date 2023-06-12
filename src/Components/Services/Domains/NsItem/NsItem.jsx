@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputField } from '../../..'
 import s from './NsItem.module.scss'
-import { Trash } from '../../../../images'
+import { Trash } from '@images'
 
 const nslists = ['ns0', 'ns1', 'ns2', 'ns3', 'ns_additional']
 const zomroNS = ['ns1.zomro.net', 'ns2.zomro.ru', 'ns3.zomro.com', 'ns4.zomro.su']

@@ -1,12 +1,12 @@
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CSSTransition } from 'react-transition-group'
-import { Cross } from '../../../images'
+import { Cross } from '@images'
 import { Button, Select, CalendarModal, IconButton, InputField } from '../..'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 
 import animations from './animations.module.scss'
 import s from './StatisticsFilterModal.module.scss'
@@ -143,7 +143,7 @@ export default function StatisticsFilterModal({
                     placeholder={t('statistics_section.website_url')}
                     touched={false}
                     error={false}
-                    autoComplete='off'
+                    autoComplete="off"
                     isShadow
                   />
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { useDispatch, useSelector } from 'react-redux'
-import * as route from '../../../../routes'
+import * as route from '@src/routes'
 import cn from 'classnames'
 import {
   Button,
@@ -23,10 +23,10 @@ import {
   Portal,
   HintWrapper,
   CheckBox,
-} from '../../../../Components'
-import { actions, dedicOperations, selectors, vdsOperations } from '../../../../Redux'
-import no_vds from '../../../../images/services/no_vds.png'
-import { usePageRender } from '../../../../utils'
+} from '@components'
+import { actions, dedicOperations, selectors, vdsOperations } from '@redux'
+import no_vds from '@images/services/no_vds.png'
+import { usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 

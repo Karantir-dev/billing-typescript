@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import s from './PaymentProcessingPage.module.scss'
 import { PaymentProcessing } from '../../images'
 import { useTranslation } from 'react-i18next'

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Button } from '../../..'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '../../../../Redux'
+import { vdsOperations } from '@redux'
 
 import s from './RebootModal.module.scss'
 

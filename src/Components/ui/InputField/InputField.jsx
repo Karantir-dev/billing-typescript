@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
@@ -12,7 +12,7 @@ import {
   Person,
   Copy,
   Plus,
-} from '../../../images'
+} from '@images'
 import s from './InputField.module.scss'
 
 const InputField = function InputField(props) {

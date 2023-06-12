@@ -32,8 +32,8 @@ import {
   forexReducer,
   siteCareReducer,
   vpnReducer,
-} from '.'
-import { theme, isLoading, pinned, scrollForbidden, online } from './reducer'
+} from '@redux'
+import { theme, isLoading, pinned, scrollForbidden, online } from '@redux/reducer'
 
 const rootPersistConfig = {
   key: 'theme',

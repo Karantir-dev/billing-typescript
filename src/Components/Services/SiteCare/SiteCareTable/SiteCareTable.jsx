@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import SiteCareTableItem from './SiteCareTableItem'
 import cn from 'classnames'
@@ -30,7 +29,6 @@ export default function Component(props) {
 
   const isAllActive = list?.length === selctedItem?.length
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
-
 
   return (
     <div className={s.table}>

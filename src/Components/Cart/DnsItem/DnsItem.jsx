@@ -1,10 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { translatePeriodToMonths } from '../../../utils'
+import { translatePeriodToMonths } from '@utils'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './DnsItem.module.scss'
-import { Delete } from '../../../images'
+import { Delete } from '@images'
 
 export default function DnsItem(props) {
   const { t } = useTranslation([

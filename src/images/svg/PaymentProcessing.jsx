@@ -1,4 +1,3 @@
-import * as React from 'react'
 const SvgComponent = ({ color = '#45A884', ...props }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={103} height={103} fill="none" {...props}>
     <path

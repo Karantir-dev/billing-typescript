@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './SupportArchiveTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
@@ -6,7 +5,7 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 
 export default function Component(props) {
   const { id, theme, date, setSelctedTicket, selected } = props

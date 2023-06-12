@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, InputField, Select } from '../../..'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './EditServerModal.module.scss'
 
-import { dedicOperations } from '../../../../Redux'
-import { translatePeriod } from '../../../../utils'
+import { dedicOperations } from '@redux'
+import { translatePeriod } from '@utils'
 
 export default function EditServerModal({ elid, closeFn }) {
   const { t } = useTranslation([

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
-import * as route from '../../../routes'
+import * as route from '@src/routes'
 import { useMediaQuery } from 'react-responsive'
 
 import {
@@ -21,11 +21,11 @@ import {
   Pagination,
   ForexInstructionModal,
   CheckBox,
-} from '../../../Components'
-import { actions, forexOperations, forexSelectors } from '../../../Redux'
+} from '@components'
+import { actions, forexOperations, forexSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
-import { checkServicesRights, usePageRender } from '../../../utils'
+import { checkServicesRights, usePageRender } from '@utils'
 
 export default function ForexPage() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -197,9 +197,7 @@ export default function ForexPage() {
 
   const isAllActive = activeServices.length === forexRenderData?.forexList?.length
   const toggleIsAllActiveHandler = () => {
-    isAllActive
-      ? setActiveServices([])
-      : setActiveServices(forexRenderData?.forexList)
+    isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
   return (

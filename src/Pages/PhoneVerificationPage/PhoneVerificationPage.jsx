@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { settingsOperations, userSelectors, usersOperations } from '../../Redux'
+import { settingsOperations, userSelectors, usersOperations } from '@redux'
 import { Form, Formik } from 'formik'
 
 import TryLimit from './TryLimit/TryLimit'
@@ -11,7 +11,7 @@ import FirstStep from './FirstStep/FirstStep'
 import SecondStep from './SecondStep/SecondStep'
 
 import s from './PhoneVerificationPage.module.scss'
-import * as routes from '../../routes'
+import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
 import { Attention } from '../../images'

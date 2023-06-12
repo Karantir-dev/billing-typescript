@@ -1,4 +1,3 @@
-import React from 'react'
 import s from '../AccessLogsComponents.module.scss'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'

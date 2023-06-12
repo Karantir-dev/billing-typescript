@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { BreadCrumbs, Select, TarifCard, Button } from '../../../../Components'
+import { useEffect, useRef, useState } from 'react'
+import { BreadCrumbs, Select, TarifCard, Button } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { userOperations, vhostOperations } from '../../../../Redux'
-import { useScrollToElement, translatePeriod } from '../../../../utils'
-import * as routes from '../../../../routes'
+import { userOperations, vhostOperations } from '@redux'
+import { useScrollToElement, translatePeriod } from '@utils'
+import * as routes from '@src/routes'
 
 import s from './SharedHostingOrder.module.scss'
 
@@ -15,7 +15,7 @@ export default function Component() {
     'other',
     'dedicated_servers',
     'domains',
-    'autoprolong'
+    'autoprolong',
   ])
   const dispatch = useDispatch()
 
@@ -37,7 +37,7 @@ export default function Component() {
   const [setLicence_agreement_error] = useState(false)
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
-  
+
   const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData })
 
   useEffect(() => {
@@ -207,8 +207,8 @@ export default function Component() {
                 label={`${t('Auto renewal', { ns: 'domains' })}:`}
                 className={s.select}
                 itemsList={paramsData?.autoprolong_list?.map(el => ({
-                    label: translatePeriod(el.$, t),
-                    value: el.$key,
+                  label: translatePeriod(el.$, t),
+                  value: el.$key,
                 }))}
                 isShadow
               />
