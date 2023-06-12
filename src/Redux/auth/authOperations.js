@@ -427,7 +427,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
               )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
-              sendInfoToSite({ error: data.doc?.error?.$type })
+              sendInfoToSite({ error: 'soc_email_exist' })
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
