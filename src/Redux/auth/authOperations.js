@@ -368,7 +368,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
         data.doc?.error?.$object === 'nolink' ||
         data.doc?.error?.$object === 'socialrequest'
       ) {
-        sendInfoToSite({ error: data.doc?.error?.$object })
+        sendInfoToSite({ error: 'soc_net_not_integrated' })
         redirectToLogin(
           'soc_net_not_integrated',
           data.doc?.error?.param.find(el => el.$name === 'network')?.$,
@@ -420,7 +420,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
           )
           .then(({ data }) => {
             if (data.doc?.error?.$object === 'account_exist') {
-              sendInfoToSite({ error: data.doc?.error?.$object })
+              sendInfoToSite({ error: 'social_akk_registered' })
               redirectToLogin(
                 'social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
@@ -431,7 +431,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
-              sendInfoToSite({ error: data.doc?.error?.$object })
+              sendInfoToSite({ error: 'no_email_from_social' })
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToRegistration('no_email_from_social', '', '')

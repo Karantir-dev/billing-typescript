@@ -1,6 +1,6 @@
-//const hostNameArr = window?.location?.hostname?.split('.')?.slice(1)
-const hostName = 'localhost'
-// hostNameArr?.length > 2 ? hostNameArr?.slice(1)?.join('.') : hostNameArr?.join('.')
+const hostNameArr = window?.location?.hostname?.split('.')?.slice(1)
+const hostName =
+  hostNameArr?.length > 2 ? hostNameArr?.slice(1)?.join('.') : hostNameArr?.join('.')
 
 const domain = `domain=.${hostName}`
 
