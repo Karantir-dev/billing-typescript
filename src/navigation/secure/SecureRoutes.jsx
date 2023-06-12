@@ -49,6 +49,7 @@ import {
   SupportPageLazy,
   OpenedTickerPageLazy,
   BillingPageLazy,
+  PaymentProcessingPageLazy,
 } from './LazyRoutes'
 
 const Component = () => {
@@ -156,6 +157,8 @@ const Component = () => {
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
         <Route path={route.PAYMENT_SAVED} element={<PaymentSavedPageLazy />} />
+
+        <Route path={route.PAYMENT_PROCESSING} element={<PaymentProcessingPageLazy />} />
 
         <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
       </Routes>

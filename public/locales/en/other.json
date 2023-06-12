@@ -248,5 +248,7 @@
   "The phone has been successfully verified": "The phone has been successfully verified",
   "payment_saved": "Payment method successfully saved",
 
-  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation"
+  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation",
+  "payment_processed": "Your payment is being processed, you can check the status in the section",
+  "Finance/Accounts": "Finance/Accounts"
 }
