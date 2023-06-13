@@ -73,29 +73,6 @@
       }
     ]
   },
-  "jest": {
-    "roots": [
-      "<rootDir>"
-    ],
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/src/__tests__"
-    ],
-    "moduleNameMapper": {
-      "@src/(.+)": "<rootDir>/src/$1",
-      "@images/(.+)": "<rootDir>/src/images/$1",
-      "@components/(.+)": "<rootDir>/src/Components/$1",
-      "@redux/(.+)": "<rootDir>/src/Redux/$1",
-      "@pages/(.+)": "<rootDir>/src/Pages/$1",
-      "@config/(.+)": "<rootDir>/src/config/$1",
-      "@utils": "<rootDir>/src/utils/$1"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -129,6 +106,7 @@
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
     "axios-mock-adapter": "^1.20.0",
     "babel-jest": "^27.5.1",
+    "babel-plugin-module-resolver": "^5.0.0",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
     "eslint": "^7.32.0",
