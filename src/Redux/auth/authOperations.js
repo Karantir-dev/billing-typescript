@@ -36,6 +36,8 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
 
       const sessionId = data?.doc?.auth?.$id
 
+      cookies.setCookie('sessionId', sessionId, 1)
+
       return axiosInstance
         .post(
           '/',
@@ -375,6 +377,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
         )
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
+        cookies.setCookie('sessionId', sessionId, 1)
         sendInfoToSite({ sessionId })
         axiosInstance
           .post(
@@ -449,6 +452,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                 )
                 .then(({ data }) => {
                   const sessionId = data?.doc?.auth?.$
+                  cookies.setCookie('sessionId', sessionId, 1)
                   sendInfoToSite({ sessionId })
                   dispatch(authActions.loginSuccess(sessionId))
                 })
