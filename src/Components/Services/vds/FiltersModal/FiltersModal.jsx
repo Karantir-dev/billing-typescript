@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
-import { InputField, Select, Button, DoubleInputField } from '../../..'
-import { Cross } from '@images'
+import { InputField, Select, Button, DoubleInputField, Icon } from '../../..'
 import cn from 'classnames'
 
 import s from '../../Domains/DomainFiltertsModal/DomainFiltertsModal.module.scss'
@@ -70,7 +69,7 @@ export default function FiltersModal({
             <Form>
               <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Cross onClick={() => closeFn()} className={s.crossIcon} />
+                <Icon name="Cross" onClick={() => closeFn()} className={s.crossIcon} />
               </div>
               <div className={cn(s.form)}>
                 <div className={s.fieldsBlock}>

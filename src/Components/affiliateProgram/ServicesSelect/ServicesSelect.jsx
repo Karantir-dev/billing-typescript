@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 import { useOutsideAlerter } from '@utils'
-import { Shevron } from '@images'
+import { Icon } from '@components'
 
 import s from './ServicesSelect.module.scss'
 
@@ -64,7 +64,7 @@ export default function ServicesSelect({ setServiseName }) {
         <span className={s.placeholder} ref={currentServiceEl}>
           {t('service_placeholder')}
         </span>
-        <Shevron className={s.icon} />
+        <Icon name="Shevron" className={s.icon} />
       </div>
 
       <div

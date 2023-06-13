@@ -1,7 +1,7 @@
 import './Calendar.scss'
 import Calendar from 'react-calendar'
 import cn from 'classnames'
-import { CalendarArrowDouble, CalendarArrow } from '@images'
+import { Icon } from '@components'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
@@ -28,10 +28,10 @@ export default function Component(props) {
         <div className="calendar_pointer"></div>
       </div>
       <Calendar
-        nextLabel={<CalendarArrow className="calendar__arrow" />}
-        next2Label={<CalendarArrowDouble className="calendar__arrow" />}
-        prevLabel={<CalendarArrow className="calendar__arrow left" />}
-        prev2Label={<CalendarArrowDouble className="calendar__arrow left" />}
+        nextLabel={<Icon name="CalendarArrow" className="calendar__arrow" />}
+        next2Label={<Icon name="CalendarArrowDouble" className="calendar__arrow" />}
+        prevLabel={<Icon name="CalendarArrow" className="calendar__arrow left" />}
+        prev2Label={<Icon name="CalendarArrowDouble" className="calendar__arrow left" />}
         view={'month'}
         formatShortWeekday={(locale, date) => {
           return dayjs(date).format('dd')

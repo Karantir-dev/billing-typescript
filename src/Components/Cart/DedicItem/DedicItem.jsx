@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Delete, Shevron } from '@images'
+import { Icon } from '@components'
 import classNames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import { translatePeriodToMonths } from '@utils'
@@ -94,7 +94,8 @@ export default function DedicItem(props) {
           className={classNames(s.shevron_btn, { [s.opened]: dropOpened })}
           onClick={onShevronClick}
         >
-          <Shevron
+          <Icon
+            name="Shevron"
             className={classNames({ [s.shevron]: true, [s.opened]: dropOpened })}
           />
         </button>
@@ -108,7 +109,7 @@ export default function DedicItem(props) {
                   type="button"
                   onClick={deleteItemHandler}
                 >
-                  <Delete />
+                  <Icon name="Delete" />
                 </button>
               )}
             </div>
@@ -128,7 +129,7 @@ export default function DedicItem(props) {
 
           {typeof deleteItemHandler === 'function' && tabletOrHigher && (
             <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-              <Delete />
+              <Icon name="Delete" />
             </button>
           )}
         </div>

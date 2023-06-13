@@ -5,10 +5,9 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
-import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
+import { InputField, Select, IconButton, CalendarModal, Button, Icon } from '../..'
 import { billingSelectors } from '@redux'
 import s from './BillingFilter.module.scss'
-import { Cross } from '@images'
 
 export default function Component(props) {
   const { setFilterModal, filterModal, filterHandler, resetFilterHandler } = props
@@ -66,7 +65,11 @@ export default function Component(props) {
             <Form className={s.form}>
               <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+                <Icon
+                  name="Cross"
+                  onClick={() => setFilterModal(false)}
+                  className={s.crossIcon}
+                />
               </div>
 
               <div className={s.formContainer}>

@@ -9,6 +9,7 @@ import {
   DedicIPOrder,
   DedicIPList,
   DedicIPEditModal,
+  Icon,
 } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { dedicOperations } from '@redux'
@@ -16,7 +17,6 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as route from '@src/routes'
-import { Attention, Cross } from '@images'
 import { checkServicesRights } from '@utils'
 import s from './DedicIPPage.module.scss'
 
@@ -83,7 +83,8 @@ export default function DedicIPpage() {
               popupClassName={s.popup_text}
               label={t('limit_ip', { ns: 'dedicated_servers' })}
             >
-              <Attention
+              <Icon
+                name="Attention"
                 isHovered={hovered}
                 className={cn({ [s.attention_icon]: true, [s.hovered]: hovered })}
               />
@@ -160,7 +161,8 @@ export default function DedicIPpage() {
                 {t('IP-address removing', { ns: 'other' })}
               </h2>
             </div>
-            <Cross
+            <Icon
+              name="Cross"
               className={s.icon_cross}
               onClick={() => setElidForDeleteModal(0)}
               width={17}

@@ -1,8 +1,7 @@
 import { Form, Formik } from 'formik'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button, InputField } from '../../..'
+import { Button, InputField, Icon } from '../../..'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
@@ -63,7 +62,7 @@ export default function PasswordChange({ id, names, closeFn }) {
       <div className={s.title_wrapper}>
         <p className={s.title}>{t('password_change')}</p>
         <button className={s.icon_cross} onClick={closeFn} type="button">
-          <Cross />
+          <Icon name="Cross" />
         </button>
       </div>
       <div className={s.padding}>

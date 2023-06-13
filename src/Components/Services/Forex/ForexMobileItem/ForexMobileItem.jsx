@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, MoreDots, Edit, Refund, Delete, Info } from '@images'
 import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
-import { CheckBox, ServerState } from '../../..'
+import { CheckBox, ServerState, Icon } from '../../..'
 
 export default function ForexMobileItem({
   server,
@@ -58,7 +57,7 @@ export default function ForexMobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <MoreDots />
+              <Icon name="MoreDots" />
             </button>
 
             {toolsOpened && (
@@ -74,7 +73,7 @@ export default function ForexMobileItem({
                       type="button"
                       onClick={() => handleToolBtnClick(setElidForEditModal)}
                     >
-                      <Edit className={s.tool_icon} />
+                      <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
@@ -86,7 +85,7 @@ export default function ForexMobileItem({
                       disabled={server?.status?.$ === '1' || !pageRights?.prolong}
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
-                      <Clock className={s.tool_icon} />
+                      <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
                     </button>
                   </li>
@@ -99,7 +98,7 @@ export default function ForexMobileItem({
                         handleToolBtnClick(setElidForHistoryModal)
                       }}
                     >
-                      <Refund className={s.tool_icon} />
+                      <Icon name="Refund" className={s.tool_icon} />
                       {t('history')}
                     </button>
                   </li>
@@ -110,7 +109,7 @@ export default function ForexMobileItem({
                       disabled={server?.status?.$ === '1' || !pageRights?.instruction}
                       onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
-                      <Info className={s.tool_icon} />
+                      <Icon name="Info" className={s.tool_icon} />
                       {t('instruction')}
                     </button>
                   </li>
@@ -125,7 +124,7 @@ export default function ForexMobileItem({
                         handleToolBtnClick(setElidForDeletionModal)
                       }}
                     >
-                      <Delete className={s.tool_icon} />
+                      <Icon name="Delete" className={s.tool_icon} />
                       {t('delete', { ns: 'other' })}
                     </button>
                   </li>

@@ -1,7 +1,6 @@
 import DomainsHistoryItem from './DomainsHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Pagination } from '../../..'
+import { Pagination, Icon } from '../../..'
 import cn from 'classnames'
 import s from './DomainsHistoryModal.module.scss'
 
@@ -20,7 +19,7 @@ export default function Component(props) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('Service change history')}</span>
-        <Cross onClick={closeHistoryModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeHistoryModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.table}>
         <div className={s.tableHeader}>

@@ -1,7 +1,6 @@
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
 import MessageInput from '../MessageInput/MessageInput'
-import { Cross } from '@images'
-import { Button, Select, InputField } from '../..'
+import { Button, Select, InputField, Icon } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Formik, ErrorMessage } from 'formik'
@@ -33,7 +32,7 @@ export default function Component(props) {
         <div className={s.modalHeader}>
           <h2>{t('New support request')}</h2>
           <button className={s.crossBtn} onClick={() => setCreateTicketModal(false)}>
-            <Cross />
+            <Icon name="Cross" />
           </button>
         </div>
         <Formik

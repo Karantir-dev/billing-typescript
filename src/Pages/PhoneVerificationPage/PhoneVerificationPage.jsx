@@ -14,7 +14,7 @@ import s from './PhoneVerificationPage.module.scss'
 import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
-import { Attention } from '../../images'
+import { Icon } from '@components'
 
 export default function Component() {
   const { t } = useTranslation(['user_settings', 'other'])
@@ -210,7 +210,7 @@ export default function Component() {
 
             {isTimeOut && (
               <div className={s.timeOutBlock}>
-                <Attention /> {t('verification_code_timeout', { time: timeOut })}
+                <Icon name="Attention" /> {t('verification_code_timeout', { time: timeOut })}
               </div>
             )}
 

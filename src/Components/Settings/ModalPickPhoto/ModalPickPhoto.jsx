@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import Avatar from 'react-avatar-edit'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button } from '../..'
+import { Button, Icon } from '../..'
 import { settingsOperations, userSelectors, settingsActions } from '@redux'
 import s from './ModalPickPhoto.module.scss'
 
@@ -92,7 +91,7 @@ export default function Component(props) {
       <div className={s.modalBlock}>
         <div className={s.modalHeader}>
           <h2>{t('Upload a photo')}</h2>
-          <Cross onClick={() => setAvatarFile()} className={s.cross} />
+          <Icon name="Cross" onClick={() => setAvatarFile()} className={s.cross} />
         </div>
         <div className={s.cropBlock}>
           {image && (

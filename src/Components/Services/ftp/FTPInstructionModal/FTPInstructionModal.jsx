@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Cross } from '@images'
+import { Icon } from '@components'
 import { ftpOperations } from '@redux'
 
 import Loader from '../../../ui/Loader/Loader'
@@ -28,7 +28,7 @@ export default function FTPInstructionModal({ elid, closeFn }) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('FTP storage activation')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeFn} className={s.crossIcon} />
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: instruction?.$ }}

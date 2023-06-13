@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross, Shevron } from '@images'
-import { InputField, Button, Select, CustomPhoneInput, CheckBox } from '../../..'
+import { InputField, Button, Select, CustomPhoneInput, CheckBox, Icon } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { BASE_URL } from '@config/config'
@@ -67,7 +66,7 @@ export default function Component(props) {
       <div className={s.modalBlock}>
         <div className={s.modalHeader}>
           <span className={s.headerText}>{t('Service editing')}</span>
-          <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
+          <Icon name="Cross" onClick={closeEditModalHandler} className={s.crossIcon} />
         </div>
         {editData?.domain_id?.split(',')?.length > 1 && (
           <div className={s.namesBlock}>
@@ -185,7 +184,7 @@ export default function Component(props) {
                     className={s.category_title}
                   >
                     {t('Service profiles')}
-                    <Shevron
+                    <Icon name="Shevron"
                       className={cn(s.shevronIcon, { [s.isOpen]: isOpenProfile })}
                     />
                   </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import s from './PaymentProcessingPage.module.scss'
-import { PaymentProcessing } from '../../images'
+import { Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import * as route from '../../routes'
 import { Link } from 'react-router-dom'
@@ -147,7 +147,7 @@ export default function PaymentSaved() {
 
   return (
     <div className={s.wrapper}>
-      <PaymentProcessing color={'var(--accent-color-light)'} />
+      <Icon name="PaymentProcessing" color={'var(--accent-color-light)'} />
       <p className={s.message}>{t('payment_processed')}</p>
       <Link className={s.link} to={route.BILLING}>
         {t('Finance/Accounts')}

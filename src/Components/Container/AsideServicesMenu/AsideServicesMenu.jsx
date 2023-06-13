@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { selectors, actions } from '@redux'
-import { Logo, Pin, Box, Wallet, Social, Support } from '@images'
+import { Icon } from '@components'
 import * as routes from '@src/routes'
 
 import s from './AsideServicesMenu.module.scss'
@@ -45,7 +45,8 @@ const AsideServicesMenu = () => {
       <ul className={s.list}>
         <div className={s.logo_container}>
           <Link to={routes.SERVICES}>
-            <Logo
+            <Icon
+              name="Logo"
               svgwidth={!pinnedStatus ? '74' : '91'}
               svgheight="40"
               className={cn({ [s.logo]: true, [s.pinned_logo]: !pinnedStatus })}
@@ -60,7 +61,7 @@ const AsideServicesMenu = () => {
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >
-              <Box className={s.img} />
+              <Icon name="Box" className={s.img} />
               {pinnedStatus && <p className={s.text}>{t('aside_menu.services')}</p>}
             </NavLink>
           </li>
@@ -73,7 +74,7 @@ const AsideServicesMenu = () => {
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >
-              <Wallet className={s.img} />
+              <Icon name="Wallet" className={s.img} />
               {pinnedStatus && (
                 <p className={s.text}>{t('aside_menu.finance_and_docs')}</p>
               )}
@@ -88,7 +89,7 @@ const AsideServicesMenu = () => {
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >
-              <Social className={s.img} />
+              <Icon name="Social" className={s.img} />
               {pinnedStatus && (
                 <p className={s.text}>{t('aside_menu.referral_program')}</p>
               )}
@@ -102,7 +103,7 @@ const AsideServicesMenu = () => {
               className={({ isActive }) => (isActive ? s.active : s.inactive)}
               style={pinnedStyle}
             >
-              <Support className={s.img} />
+              <Icon name="Support" className={s.img} />
               {pinnedStatus && <p className={s.text}>{t('aside_menu.support')}</p>}
             </NavLink>
           </li>
@@ -113,7 +114,7 @@ const AsideServicesMenu = () => {
         className={cn({ [s.pin_wrapper]: true, [s.transformed]: !pinnedStatus })}
         onClick={handleClick}
       >
-        <Pin className={s.pin_icon} />
+        <Icon name="Pin" className={s.pin_icon} />
       </button>
     </nav>
   )

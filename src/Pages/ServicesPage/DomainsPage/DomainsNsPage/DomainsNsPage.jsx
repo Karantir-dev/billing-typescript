@@ -8,13 +8,13 @@ import {
   Select,
   HintWrapper,
   NsItem,
+  Icon
 } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { domainsOperations, userOperations } from '@redux'
-import { HintHelp } from '@images'
 import { DOMAIN_REGEX } from '@utils/constants'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
@@ -149,7 +149,7 @@ export default function Component({ transfer = false }) {
           popupClassName={s.hintWrapper}
           label={t('Instruction NS')}
         >
-          <HintHelp />
+          <Icon name="HintHelp" />
         </HintWrapper>
       </h1>
       {selectedDomain?.length > 1 && (

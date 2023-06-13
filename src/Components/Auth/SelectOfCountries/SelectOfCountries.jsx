@@ -4,9 +4,7 @@ import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
-
-import { Shevron, Search } from '@images'
-import { SelectOfRegions } from '../../'
+import { SelectOfRegions, Icon } from '../../'
 import { authOperations } from '@redux'
 import s from './SignupSelects.module.scss'
 
@@ -47,11 +45,7 @@ export default function SelectOfCountries({
       setRegions(states)
     } else {
       dispatch(
-        authOperations.getCountriesForRegister(
-          setCountries,
-          setRegions,
-          setErrMsg,
-        ),
+        authOperations.getCountriesForRegister(setCountries, setRegions, setErrMsg),
       )
     }
   }, [])
@@ -155,12 +149,13 @@ export default function SelectOfCountries({
               alt="flag"
             />
           ) : (
-            <Search className={s.field_icon} />
+            <Icon name="Search" className={s.field_icon} />
           )}
 
           <div className={s.input_border}></div>
           {!disabled && (
-            <Shevron
+            <Icon
+              name="Shevron"
               className={cn({ [s.right_icon]: true, [s.opened]: countriesListOpened })}
             />
           )}

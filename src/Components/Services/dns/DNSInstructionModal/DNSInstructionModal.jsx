@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Cross } from '@images'
+import { Icon } from '@components'
 import { dnsOperations } from '@redux'
 
 import Loader from '../../../ui/Loader/Loader'
@@ -29,7 +29,7 @@ export default function DNSInstructionModal({ elid, closeFn }) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('DNS-hosting activation')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeFn} className={s.crossIcon} />
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: instruction?.$ }}

@@ -5,8 +5,7 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { supportOperations } from '@redux'
-import { Backdrop } from '../../..'
-import { Download } from '@images'
+import { Backdrop, Icon } from '../../..'
 import { BASE_URL } from '@config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
@@ -92,7 +91,7 @@ export default function Component(props) {
                 return (
                   <button onClick={isOpen} className={s.file} key={el?.param?.$}>
                     <span>{el?.name?.$}</span>
-                    <Download />
+                    <Icon name="Download" />
                   </button>
                 )
               })}

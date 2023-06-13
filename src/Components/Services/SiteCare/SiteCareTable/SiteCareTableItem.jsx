@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { ServerState, CheckBox } from '../../..'
-import { MoreDots, Edit, Clock, Refund, Delete } from '@images'
+import { ServerState, CheckBox, Icon } from '../../..'
 import { useOutsideAlerter } from '@utils'
 import s from './SiteCareTable.module.scss'
 
@@ -76,7 +75,7 @@ export default function Component(props) {
           <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
         </div>
         <div className={s.dots}>
-          <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon name="MoreDots" onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
 
           <div
             role="button"
@@ -94,7 +93,7 @@ export default function Component(props) {
               onClick={() => editSiteCareHandler(id)}
               disabled={!rights?.edit}
             >
-              <Edit />
+              <Icon name="Edit"/>
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
 
@@ -103,7 +102,7 @@ export default function Component(props) {
               onClick={() => prolongSiteCareHandler(id)}
               disabled={!rights?.prolong}
             >
-              <Clock />
+              <Icon name="Clock" />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
             </button>
             <button
@@ -111,7 +110,7 @@ export default function Component(props) {
               onClick={() => historySiteCareHandler(id)}
               disabled={!rights?.history}
             >
-              <Refund />
+              <Icon name="Refund" />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
 
@@ -124,7 +123,7 @@ export default function Component(props) {
                 }}
                 disabled={!rights?.delete}
               >
-                <Delete />
+                <Icon name="Delete" />
                 <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
               </button>
             )}

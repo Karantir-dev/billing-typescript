@@ -12,8 +12,8 @@ import {
   LangBtn,
   ModalCreatePayment,
   Portal,
+  Icon,
 } from '@components'
-import { Logo, FilledEnvelope, Bell, Profile, Shevron, WalletBalance } from '@images'
 import * as routes from '@src/routes'
 import { useOutsideAlerter, usePageRender } from '@utils'
 
@@ -120,7 +120,7 @@ export default function Header() {
         <div className={s.container}>
           <div className={s.header}>
             <Link to={routes.SERVICES} className={s.logo}>
-              <Logo svgwidth="93" svgheight="41" />
+              <Icon name="Logo" svgwidth="93" svgheight="41" />
             </Link>
 
             <nav className={s.main_nav}>
@@ -137,7 +137,7 @@ export default function Header() {
                   >
                     <div className={s.balance_text}>
                       {/* {t('balance')}{' '} */}
-                      <WalletBalance />
+                      <Icon name="WalletBalance" />
                       <span className={s.balance_sum}>
                         {userItems?.$balance
                           ? truncateToDecimals(userBalance, 2)?.toFixed(2)
@@ -182,7 +182,12 @@ export default function Header() {
                         })
                       }
                     >
-                      <FilledEnvelope svgwidth="21" svgheight="16" className={s.icon} />
+                      <Icon
+                        name="FilledEnvelope"
+                        svgwidth="21"
+                        svgheight="16"
+                        className={s.icon}
+                      />
                     </NavLink>
                   </li>
                 )}
@@ -196,7 +201,8 @@ export default function Header() {
                     })}
                   >
                     <button onClick={handleBellClick} className={s.btn}>
-                      <Bell
+                      <Icon
+                        name="Bell"
                         svgheight="22"
                         svgwidth="18"
                         className={cn({ [s.icon]: true, [s.bell]: true })}
@@ -220,8 +226,14 @@ export default function Header() {
                     className={s.profile_btn}
                     onClick={() => setIsProfileOpened(!isProfileOpened)}
                   >
-                    <Profile svgheight="23" svgwidth="23" className={s.icon} />
-                    <Shevron
+                    <Icon
+                      name="Profile"
+                      svgheight="23"
+                      svgwidth="23"
+                      className={s.icon}
+                    />
+                    <Icon
+                      name="Shevron"
                       className={cn({
                         [s.arrow_icon]: true,
                         [s.active]: isProfileOpened,

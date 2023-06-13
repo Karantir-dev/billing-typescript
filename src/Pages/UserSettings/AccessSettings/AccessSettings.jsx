@@ -8,6 +8,7 @@ import {
   SocialButton,
   Backdrop,
   ModalTwoStepVerification,
+  Icon
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
@@ -19,7 +20,6 @@ import {
   userSelectors,
   authOperations,
 } from '@redux'
-import { Cross, FacebookSmall, Google, VkSmall } from '@images'
 import { ipRegex } from '@utils'
 import * as Yup from 'yup'
 import * as routes from '@src/routes'
@@ -265,7 +265,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                       return (
                         <div className={s.selectedItem} key={index}>
                           <div>{el}</div>
-                          <Cross onClick={() => deleteIpHandler(index)} />
+                          <Icon name="Cross" onClick={() => deleteIpHandler(index)} />
                         </div>
                       )
                     })}
@@ -293,7 +293,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     isNotConnected={values?.google_status === 'off'}
                     platform="Google"
                   >
-                    <Google className={s.googleIcon} />
+                    <Icon name="Google" className={s.googleIcon} />
                   </SocialButton>
 
                   <SocialButton
@@ -314,7 +314,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     isNotConnected={values?.facebook_status === 'off'}
                     platform="Facebook"
                   >
-                    <FacebookSmall />
+                    <Icon name="FacebookSmall" />
                   </SocialButton>
 
                   <SocialButton
@@ -335,7 +335,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     isNotConnected={values?.vkontakte_status === 'off'}
                     platform="Вконтакте"
                   >
-                    <VkSmall />
+                    <Icon name="VkSmall" />
                   </SocialButton>
                 </div>
               </div>

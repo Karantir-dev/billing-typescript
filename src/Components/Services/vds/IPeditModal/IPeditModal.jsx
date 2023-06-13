@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button, InputField } from '../../../'
+import { Button, InputField, Icon } from '../../../'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
 import * as Yup from 'yup'
@@ -35,7 +34,7 @@ export default function IPeditModal({ serverID, id, closeFn, setElements }) {
   return (
     <div className={s.modal}>
       <button className={s.icon_cross} onClick={closeFn} type="button">
-        <Cross />
+        <Icon name="Cross" />
       </button>
 
       <p className={s.title}>

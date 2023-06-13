@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Select, Button, InputField } from '../../..'
+import { Select, Button, InputField, Icon } from '../../..'
 import { Formik, Form } from 'formik'
 import { translatePeriod } from '@utils'
 import s from './VpnEditModal.module.scss'
@@ -26,7 +25,7 @@ export default function Component(props) {
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
         </div>
-        <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeEditModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>

@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './FTPEditModal.module.scss'
 import InputField from '../../../ui/InputField/InputField'
 import Select from '../../../ui/Select/Select'
-import { Button } from '../../..'
+import { Button, Icon } from '../../..'
 import { ftpOperations } from '@redux'
 import { translatePeriod } from '@utils'
 
@@ -45,7 +44,13 @@ export default function FTPEditModal({ elid, closeFn }) {
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+        <Icon
+          name="Cross"
+          className={s.icon_cross}
+          onClick={closeFn}
+          width={17}
+          height={17}
+        />
       </div>
 
       <Formik

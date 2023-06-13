@@ -1,9 +1,5 @@
 import { useTranslation } from 'react-i18next'
-
-import { Cross } from '@images'
-
-import { Button } from '../../..'
-
+import { Button, Icon } from '../../..'
 import s from './ForexDeletionModal.module.scss'
 import { useDispatch } from 'react-redux'
 import { forexOperations } from '@redux'
@@ -21,7 +17,7 @@ export default function ForexDeletionModal({ elid, closeFn, server }) {
           <h2 className={s.page_title}>{t('Service deletion')}</h2>
         </div>
 
-        <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
+        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={15} height={15} />
       </div>
 
       <div className={s.modal_content}>

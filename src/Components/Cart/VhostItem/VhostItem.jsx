@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'react-responsive'
-import { Delete } from '@images'
+import { Icon } from '@components'
 import s from './VhostItem.module.scss'
 import { translatePeriodToMonths } from '@utils'
 import { useTranslation } from 'react-i18next'
@@ -17,7 +17,7 @@ export default function Component(props) {
           <div className={s.control_bts_wrapper}>
             {typeof deleteItemHandler === 'function' && (
               <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-                <Delete />
+                <Icon name="Delete" />
               </button>
             )}
           </div>
@@ -39,7 +39,7 @@ export default function Component(props) {
 
         {typeof deleteItemHandler === 'function' && tabletOrHigher && (
           <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-            <Delete />
+            <Icon name="Delete" />
           </button>
         )}
       </div>

@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './FTPItem.module.scss'
-import { CheckBox, ServerState } from '../../..'
+import { CheckBox, ServerState,Icon  } from '../../..'
 import { useDispatch } from 'react-redux'
 import { useOutsideAlerter } from '@utils'
-import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '@images'
 import { dedicOperations } from '@redux'
 
 export default function FTPItem({
@@ -79,7 +78,7 @@ export default function FTPItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <MoreDots />
+              <Icon name="MoreDots" />
             </button>
 
             {toolsOpened && (
@@ -95,7 +94,7 @@ export default function FTPItem({
                       type="button"
                       onClick={() => handleToolBtnClick(setElidForEditModal)}
                     >
-                      <Edit className={s.tool_icon} />
+                      <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
@@ -107,7 +106,7 @@ export default function FTPItem({
                       disabled={storage?.status?.$ === '1' || !rights?.prolong}
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
-                      <Clock className={s.tool_icon} />
+                      <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
                     </button>
                   </li>
@@ -120,7 +119,7 @@ export default function FTPItem({
                         handleToolBtnClick(setElidForHistoryModal)
                       }}
                     >
-                      <Refund className={s.tool_icon} />
+                      <Icon name="Refund" className={s.tool_icon} />
                       {t('history')}
                     </button>
                   </li>
@@ -131,7 +130,7 @@ export default function FTPItem({
                       disabled={storage?.status?.$ === '1' || !rights?.instruction}
                       onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
-                      <Info className={s.tool_icon} />
+                      <Icon name="Info" className={s.tool_icon} />
                       {t('instruction')}
                     </button>
                   </li>
@@ -148,7 +147,7 @@ export default function FTPItem({
                         dispatch(dedicOperations.goToPanel(storage.id.$))
                       }}
                     >
-                      <ExitSign className={s.tool_icon} />
+                      <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
                     </button>
                   </li>

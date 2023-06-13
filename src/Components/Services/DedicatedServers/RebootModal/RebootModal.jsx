@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import { Cross } from '@images'
-
-import { Button } from '../../..'
+import { Button, Icon } from '../../..'
 
 import s from './RebootModal.module.scss'
 import { useDispatch } from 'react-redux'
@@ -21,7 +19,7 @@ export default function RebootModal({ elid, closeFn, server }) {
           <h2 className={s.page_title}>{t('Server rebooting')}</h2>
         </div>
 
-        <Cross className={s.icon_cross} onClick={closeFn} width={12} height={12} />
+        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={12} height={12} />
       </div>
 
       <div className={s.modal_body}>

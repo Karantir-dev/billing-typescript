@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '@src/routes'
-import { Cross, Check, Info, Attention } from '@images'
 import {
   Select,
   InputField,
@@ -23,6 +22,7 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   ScrollToFieldError,
+  Icon
 } from '@components'
 import {
   cartOperations,
@@ -877,7 +877,7 @@ export default function Component() {
           <div className={s.modalBlock}>
             <div className={cn(s.modalHeader, s.padding)}>
               <span className={s.headerText}>{t('Payment')}</span>
-              <Cross onClick={() => setIsClosing(true)} className={s.crossIcon} />
+              <Icon name="Cross" onClick={() => setIsClosing(true)} className={s.crossIcon} />
             </div>
             <div className={s.scroll}>
               <div className={s.itemsBlock}>{renderItems()}</div>
@@ -1044,7 +1044,7 @@ export default function Component() {
                                         </>
                                       )}
                                     </span>
-                                    <Check className={s.iconCheck} />
+                                    <Icon name="Check" className={s.iconCheck} />
                                   </button>
                                 )
                               })}
@@ -1179,7 +1179,7 @@ export default function Component() {
                               />
 
                               <button type="button" className={s.infoBtn}>
-                                <Info />
+                                <Icon name="Info" />
                                 <div
                                   ref={dropdownDescription}
                                   className={s.descriptionBlock}
@@ -1285,7 +1285,7 @@ export default function Component() {
                               <>
                                 {t('Saving')}: {cartData?.full_discount} EUR{' '}
                                 <button type="button" className={s.infoBtn}>
-                                  <Info />
+                                  <Icon name="Info" />
                                   <div ref={dropdownSale} className={s.descriptionBlock}>
                                     {renderActiveDiscounts()}
                                   </div>
@@ -1332,7 +1332,7 @@ export default function Component() {
 
                         {isPhoneVerification && (
                           <div className={s.phoneVerificationBlock}>
-                            <Attention />
+                            <Icon name="Attention" />
                             <span>
                               {t('verification_required_purchase', { ns: 'billing' })}
                             </span>

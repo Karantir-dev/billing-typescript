@@ -4,8 +4,7 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CSSTransition } from 'react-transition-group'
-import { Cross } from '@images'
-import { Button, Select, CalendarModal, IconButton, InputField } from '../..'
+import { Button, Select, CalendarModal, IconButton, InputField, Icon } from '../..'
 import { useOutsideAlerter } from '@utils'
 
 import animations from './animations.module.scss'
@@ -68,7 +67,7 @@ export default function StatisticsFilterModal({
             <p className={s.heading}>{t('statistics_section.filter')}</p>
           )}
           <button type="button" onClick={closeFn}>
-            <Cross className={s.icon_cross} />
+            <Icon name="Cross" className={s.icon_cross} />
           </button>
         </div>
 

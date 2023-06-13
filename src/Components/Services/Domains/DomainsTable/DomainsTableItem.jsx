@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { ServerState, CheckBox } from '../../../'
-import { MoreDots, Edit, Clock, Refund, Whois, DomainsListName } from '@images'
+import { ServerState, CheckBox, Icon } from '../../../'
 import { useOutsideAlerter } from '@utils'
 
 export default function Component(props) {
@@ -77,7 +76,8 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.dots}>
-          <MoreDots
+          <Icon
+            name="MoreDots"
             onClick={() => setIsOpened(!isOpened)}
             className={cn(s.dotIcons, { [s.opened]: isOpened })}
           />
@@ -98,7 +98,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => editDomainHandler(id)}
             >
-              <Edit />
+              <Icon name="Edit" />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
             <button
@@ -106,7 +106,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => renewDomainHandler(id)}
             >
-              <Clock />
+              <Icon name="Clock" />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
             </button>
             <button
@@ -114,7 +114,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => historyDomainHandler(id)}
             >
-              <Refund />
+              <Icon name="Refund" />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
             <button
@@ -122,7 +122,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => whoisDomainHandler(id)}
             >
-              <Whois />
+              <Icon name="Whois" />
               <p className={s.setting_text}>{t('whois')}</p>
             </button>
             <button
@@ -130,7 +130,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => NSDomainHandler(id)}
             >
-              <DomainsListName />
+              <Icon name="DomainsListName" />
               <p className={s.setting_text}>
                 {t('View/change the list of name servers')}
               </p>

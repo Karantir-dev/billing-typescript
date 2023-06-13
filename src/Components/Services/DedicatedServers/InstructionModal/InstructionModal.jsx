@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '@images'
 import { dedicOperations } from '@redux'
-import { Loader } from '@components'
+import { Loader, Icon } from '@components'
 import s from './InstructionModal.module.scss'
 
 export default function InstructionModal({ elid, closeFn }) {
@@ -25,7 +24,7 @@ export default function InstructionModal({ elid, closeFn }) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('Activation of Dedicated server')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeFn} className={s.crossIcon} />
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: instruction?.$ }}

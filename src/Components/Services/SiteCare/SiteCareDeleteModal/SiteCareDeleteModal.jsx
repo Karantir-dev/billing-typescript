@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button } from '../../..'
+import { Button, Icon } from '../../..'
 import s from './SiteCareDeleteModal.module.scss'
 
 export default function Component(props) {
@@ -18,7 +17,7 @@ export default function Component(props) {
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Deleting a service')}</span>
         </div>
-        <Cross onClick={closeDeleteModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeDeleteModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.deleteInfo}>
         {name?.length > 0

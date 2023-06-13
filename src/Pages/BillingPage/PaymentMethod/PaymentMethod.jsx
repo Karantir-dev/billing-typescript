@@ -7,8 +7,8 @@ import {
   PaymentsMethodsTable,
   Portal,
   ModalCreatePaymentMethod,
+  Icon
 } from '@components'
-import { Wallet } from '@images'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
 
@@ -50,7 +50,7 @@ export default function Component() {
     <>
       {paymentsList?.length === 0 && (
         <div className={s.no_service_wrapper}>
-          <Wallet />
+          <Icon name="Wallet" />
           <p className={s.no_service_title}>{t('YOU DO NOT HAVE PAYMENT METHODS YET')}</p>
           <p className={s.no_service_description}>{t('no services description')}</p>
         </div>

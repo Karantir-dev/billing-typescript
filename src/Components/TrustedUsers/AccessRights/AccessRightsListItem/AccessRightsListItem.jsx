@@ -3,20 +3,8 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Client,
-  Finance,
-  Help,
-  Home,
-  Instruments,
-  Money,
-  Reference,
-  Services,
-  Shevron,
-  Statistic,
-} from '@images'
 import { authSelectors, usersOperations } from '@redux'
-import { Toggle } from '../../..'
+import { Toggle, Icon } from '../../..'
 import { checkIfTokenAlive } from '@utils'
 import s from './AccessRightsListItem.module.scss'
 
@@ -255,23 +243,23 @@ export default function AccessRightsListItem({
   const renderIcons = icon => {
     switch (icon) {
       case 'customer':
-        return <Client />
+        return <Icon name="Client" />
       case 'mainmenuservice':
-        return <Services />
+        return <Icon name="Services" />
       case 'finance':
-        return <Finance />
+        return <Icon name="Finance" />
       case 'support':
-        return <Help />
+        return <Icon name="Help" />
       case 'mainmenutool':
-        return <Instruments />
+        return <Icon name="Instruments" />
       case 'stat':
-        return <Statistic />
+        return <Icon name="Statistic" />
       case 'mgrhelp':
-        return <Reference />
+        return <Icon name="Reference" />
       case 'dashboard':
-        return <Home />
+        return <Icon name="Home" />
       case 'reselling':
-        return <Money />
+        return <Icon name="Money" />
       default:
         return null
     }
@@ -331,7 +319,7 @@ export default function AccessRightsListItem({
                   onClick={hasSubItems ? handleClick : null}
                   className={cn({ [s.shevronInserted]: inserted })}
                 >
-                  <Shevron className={s.shevron} />
+                  <Icon name="Shevron" className={s.shevron} />
                 </div>
               </div>
             ) : (
@@ -412,7 +400,7 @@ export default function AccessRightsListItem({
             onClick={handleClickCategory}
             className={cn({ [s.shevronInserted]: inserted })}
           >
-            <Shevron className={s.shevron} />
+            <Icon name="Shevron" className={s.shevron} />
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import SharedHostingHistoryItem from './SharedHostingHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Pagination } from '../../..'
+import { Pagination, Icon } from '../../..'
 import cn from 'classnames'
 import s from './SharedHostingHistoryModal.module.scss'
 
@@ -23,7 +22,7 @@ export default function Component(props) {
         <span className={s.headerText}>
           {t('Service change history')} - {name}
         </span>
-        <Cross onClick={closeHistoryModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeHistoryModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.table}>
         <div className={s.tableHeader}>

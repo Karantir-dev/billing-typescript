@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './SiteCareTarifCard.module.scss'
-import { SiteCareIcon } from '@images'
+import { Icon } from '@components'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
 
@@ -66,7 +66,7 @@ export default function Component(props) {
       className={cn(s.cardBg, { [s.selected]: selected })}
     >
       <div className={s.cardBlock}>
-        <SiteCareIcon />
+        <Icon name="SiteCareIcon" />
         <div className={s.charBlock}>
           <div className={s.tariffName}>{data?.name}</div>
           <div className={s.tariffPrice}>

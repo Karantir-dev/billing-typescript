@@ -12,8 +12,8 @@ import {
   CalendarModal,
   Button,
   SelectMultiple,
+  Icon,
 } from '../..'
-import { Cross } from '@images'
 import { supportSelectors } from '@redux'
 import s from './SupportFilter.module.scss'
 
@@ -69,7 +69,7 @@ export default function Component(props) {
             <Form className={s.form}>
               <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+                <Icon name="Cross" onClick={() => setFilterModal(false)} className={s.crossIcon} />
               </div>
               <div className={s.formContainer}>
                 <div className={s.inputRow}>

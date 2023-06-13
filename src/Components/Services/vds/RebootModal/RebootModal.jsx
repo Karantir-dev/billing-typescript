@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button } from '../../..'
+import { Button, Icon } from '../../..'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
@@ -41,7 +40,7 @@ export default function RebootModal({ id, names, closeFn }) {
   return (
     <div className={s.modal}>
       <button className={s.icon_cross} onClick={closeFn} type="button">
-        <Cross />
+        <Icon name="Cross" />
       </button>
 
       <p className={s.title}>{t('reload')}</p>

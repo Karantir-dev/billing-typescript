@@ -2,8 +2,7 @@ import s from './SupportTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import { Chats } from '@images'
-import { Button } from '@components'
+import { Button, Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -59,7 +58,7 @@ export default function Component(props) {
           onClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
           className={cn(s.item_text, s.fifth_item)}
         >
-          <Chats className={cn({ [s.unread]: unread, [s.chat_icon]: true })} />
+          <Icon name="Chats" className={cn({ [s.unread]: unread, [s.chat_icon]: true })} />
         </button>
         <Button
           className={s.openTicket}

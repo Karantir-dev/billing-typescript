@@ -2,8 +2,7 @@ import { useRef, useState } from 'react'
 import s from './PayersTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Settings, Cross } from '@images'
-import { Button, Portal } from '../..'
+import { Button, Portal, Icon } from '../..'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
@@ -49,7 +48,11 @@ export default function Component(props) {
         <span className={cn(s.item_text, s.fourth_item)}>{t(status)}</span>
       </span>
       <div className={s.tableBlockFourth}>
-        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+        <Icon
+          name="MoreDots"
+          onClick={() => setIsOpened(!isOpened)}
+          className={s.dotIcons}
+        />
         <div
           role="button"
           tabIndex={0}
@@ -63,13 +66,13 @@ export default function Component(props) {
         >
           <button className={s.settings_btn} onClick={editHanler}>
             <div className={s.iconContainer}>
-              <Settings />
+              <Icon name="Settings" />
             </div>
             <p className={s.setting_text}>{t('Edit')}</p>
           </button>
           <button className={s.settings_btn} onClick={() => setIsDeleteModal(true)}>
             <div className={s.iconContainer}>
-              <Delete />
+              <Icon name="Delete" />
             </div>
             <p className={s.setting_text}>{t('Delete')}</p>
           </button>
@@ -80,7 +83,7 @@ export default function Component(props) {
           <div className={s.modalBg}>
             <div className={s.modalBlock}>
               <button onClick={() => setIsDeleteModal(false)} className={s.closeBtn}>
-                <Cross className={s.crossIcon} />
+                <Icon name="Cross" className={s.crossIcon} />
               </button>
               <div className={s.modalDeleteText}>
                 {t('Are you sure you want to remove {{name}} from your list of payers?', {

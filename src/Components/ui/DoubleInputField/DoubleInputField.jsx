@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { CalendarModal } from '../..'
-import { Calendar } from '@images'
+import { CalendarModal, Icon } from '../..'
 import { useOutsideAlerter } from '@utils'
 import dayjs from 'dayjs'
 import s from './DoubleInputField.module.scss'
@@ -63,7 +62,7 @@ export default function InputField(props) {
           [s.calendarPicker]: isCalendar,
         })}
       >
-        {isCalendar && <Calendar className={s.calendarIcon} />}
+        {isCalendar && <Icon name="Calendar" className={s.calendarIcon} />}
         {isCalendar ? (
           <div className={cn(s.datesText, { [s.placeholderDate]: !valueLeft })}>
             {valueLeft ? dayjs(valueLeft).format('YY/MM/DD') : placeholderLeft}

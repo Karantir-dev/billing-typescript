@@ -1,22 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Clock,
-  MoreDots,
-  Edit,
-  PassChange,
-  Reload,
-  Refund,
-  IP,
-  Info,
-  Delete,
-  ExitSign,
-} from '@images'
 import * as route from '@src/routes'
 import { SITE_URL } from '@config/config'
 import { useNavigate } from 'react-router-dom'
 import { useOutsideAlerter } from '@utils'
-import { CheckBox, ServerState, EditCell } from '@components'
+import { CheckBox, ServerState, EditCell, Icon } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
@@ -87,7 +75,7 @@ export default function VDSmobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <MoreDots />
+              <Icon name="MoreDots" />
             </button>
 
             {toolsOpened && (
@@ -106,7 +94,7 @@ export default function VDSmobileItem({
                         !rights?.edit
                       }
                     >
-                      <Edit className={s.tool_icon} />
+                      <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
@@ -122,7 +110,7 @@ export default function VDSmobileItem({
                         server?.ostempl?.$?.includes('Windows')
                       }
                     >
-                      <PassChange className={s.tool_icon} />
+                      <Icon name="PassChange" className={s.tool_icon} />
                       {t('password_change')}
                     </button>
                   </li>
@@ -134,7 +122,7 @@ export default function VDSmobileItem({
                       onClick={() => handleToolBtnClick(setIdForReboot)}
                       disabled={server?.show_reboot?.$ !== 'on' || !rights?.reboot}
                     >
-                      <Reload className={s.tool_icon} />
+                      <Icon name="Reload" className={s.tool_icon} />
                       {t('reload')}
                     </button>
                   </li>
@@ -152,7 +140,7 @@ export default function VDSmobileItem({
                         !rights?.ip
                       }
                     >
-                      <IP className={s.tool_icon} />
+                      <Icon name="IP" className={s.tool_icon} />
                       {t('ip_addresses')}
                     </button>
                   </li>
@@ -169,7 +157,7 @@ export default function VDSmobileItem({
                         server?.pricelist?.$?.toLowerCase()?.includes('ddos')
                       }
                     >
-                      <Clock className={s.tool_icon} />
+                      <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
                     </button>
                   </li>
@@ -184,7 +172,7 @@ export default function VDSmobileItem({
                         !rights?.history
                       }
                     >
-                      <Refund className={s.tool_icon} />
+                      <Icon name="Refund" className={s.tool_icon} />
                       {t('history')}
                     </button>
                   </li>
@@ -199,7 +187,7 @@ export default function VDSmobileItem({
                         !rights?.instruction
                       }
                     >
-                      <Info className={s.tool_icon} />
+                      <Icon name="Info" className={s.tool_icon} />
                       {t('instruction')}
                     </button>
                   </li>
@@ -215,7 +203,7 @@ export default function VDSmobileItem({
                         !rights?.gotoserver
                       }
                     >
-                      <ExitSign className={s.tool_icon} />
+                      <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
                     </button>
                   </li>
@@ -231,7 +219,7 @@ export default function VDSmobileItem({
                       type="button"
                       onClick={() => handleToolBtnClick(setIdForDeleteModal)}
                     >
-                      <Delete className={s.tool_icon} />
+                      <Icon name="Delete" className={s.tool_icon} />
                       {t('delete', { ns: 'other' })}
                     </button>
                   </li>
