@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import { render } from '@testing-library/react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import entireStore from '@redux/store'
+import { Provider } from 'react-redux'
+import { mockedAxiosInstance } from '@config/axiosInstance'
+import AccessRights from '@components/TrustedUsers/AccessRights/AccessRights'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
@@ -20,10 +25,24 @@ mockedAxiosInstance.onPost('/').reply(200, {
   doc: { elem: baseList },
 })
 
+function renderComponent(fakeList) {
+  render(
+    <Provider store={entireStore.store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<AccessRights items={fakeList} />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>,
+  )
+}
+
 describe('Render Rights Lists', () => {
   test('Render list', async () => {
     const baseList = []
     baseList.fill({ name: { $: 'testName' } }, 0, 20)
+
+    renderComponent(baseList)
 
     // const newList = await waitFor(async () => {
     //   screen.getByRole('list')

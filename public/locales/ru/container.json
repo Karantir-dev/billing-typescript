@@ -77,5 +77,6 @@
   "Name servers for have been successfully changed": "Серверы имен для '{{value}}' были успешно изменены",
   "Check parameters and repeat the operation": "Проверьте параметры и повторите операцию",
   "Error in domain contacts for the service": "Ошибка в контактах домена для службы '{{value}}'.",
+  "Payment processing": "Обработка платежа",
   "Payment method saved": "Способ оплаты сохранен"
 }

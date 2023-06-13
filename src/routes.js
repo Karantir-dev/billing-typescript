@@ -72,3 +72,4 @@ export const VPN = '/services/vpn'
 export const VPN_ORDER = '/services/vpn/vpn_order'
 
 export const PAYMENT_SAVED = '/payment_method_saved'
+export const PAYMENT_PROCESSING = '/payment_processing'
