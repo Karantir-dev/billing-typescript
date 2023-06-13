@@ -347,7 +347,7 @@
     line-height: 130.5%;
     color: var(--main-text);
     margin-right: 15px;
-    min-width: 215px;
+    min-width: 155px;
   }
 }
 
@@ -399,7 +399,34 @@
   }
 }
 
+.hintWrapper {
+  max-width: 237px;
+  width: 237px;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.hintWrapperGeo {
+  height: 18px;
+}
+
+.hintPopUpWrapperGeoIp {
+  max-width: 210px;
+  width: 210px;
+  word-wrap: break-word;
+  white-space: pre-line;
+  text-align: center;
+}
+
 @media screen and (min-width: 768px) {
+  .hintPopUpWrapperGeoIp {
+    max-width: 300px;
+    width: 300px;
+    word-wrap: break-word;
+    white-space: pre-line;
+    text-align: start;
+  }
+
   .geoIpBlock {
     margin-right: 0;
   }
@@ -503,25 +530,6 @@
   .topBlock {
     margin-bottom: 40px;
   }
-}
-
-.hintWrapper {
-  max-width: 237px;
-  width: 237px;
-  word-wrap: break-word;
-  white-space: pre-line;
-}
-
-.hintWrapperGeo {
-  height: 18px;
-}
-
-.hintPopUpWrapperGeoIp {
-  max-width: 300px;
-  width: 300px;
-  word-wrap: break-word;
-  white-space: pre-line;
-  text-align: start;
 }
 
 @media screen and (min-width: 1124px) {

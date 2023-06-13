@@ -23,14 +23,26 @@ export default function NotificationList({ notifications }) {
   //   setClick(true)
   // }
 
+  const updateNotifyHandler = () => {
+    dispatch(userOperations.getNotify())
+  }
+
   const removeItem = id => {
-    dispatch(userOperations.removeItems(isAuthenticated, id))
+    dispatch(userOperations.removeItems(isAuthenticated, id, updateNotifyHandler))
     dispatch(userActions.removeItems({ id, messages: notifications?.messages_count }))
   }
 
   const removeAllItems = () => {
-    notifications?.messages?.forEach(el => {
-      dispatch(userOperations.removeItems(isAuthenticated, el?.$id))
+    notifications?.messages?.forEach((el, index) => {
+      dispatch(
+        userOperations.removeItems(
+          isAuthenticated,
+          el?.$id,
+          notifications?.messages?.length - 1 === index
+            ? () => updateNotifyHandler()
+            : null,
+        ),
+      )
       dispatch(userActions.removeItems({ id: el?.$id, messages: 1 }))
     })
   }

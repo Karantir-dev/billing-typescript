@@ -160,7 +160,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
     })
 }
 
-const removeItems = (sessionId, id) => dispatch => {
+const removeItems = (sessionId, id, updateNotify) => dispatch => {
   axiosInstance
     .post(
       '/',
@@ -174,6 +174,8 @@ const removeItems = (sessionId, id) => dispatch => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      updateNotify && updateNotify()
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)

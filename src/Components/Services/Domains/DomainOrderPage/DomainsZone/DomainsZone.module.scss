@@ -70,6 +70,10 @@
   background: var(--forms_bgc_2);
   position: relative;
 
+  &.transfer {
+    padding: 13px 10px;
+  }
+
   &:hover {
     background-color: var(--domains_hover_bgc);
   }
@@ -83,6 +87,10 @@
   color: var(--main-text);
   margin-left: 25px;
 
+  &.transfer {
+    margin-left: 10px;
+  }
+
   &.selected {
     background: linear-gradient(270deg, #ff42a8 0%, #e030bd 100%);
     -webkit-background-clip: text;
@@ -95,9 +103,13 @@
 .domainPrice {
   font-style: normal;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 70.9%;
   color: var(--main-text);
+
+  .year {
+    font-size: 14px;
+  }
 }
 
 .pricesBlock {
@@ -106,6 +118,12 @@
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: column;
+
+  &.transfer {
+    margin-left: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 }
 
 .sale {
@@ -126,13 +144,29 @@
 }
 
 .saleEur {
+  position: relative;
   font-style: normal;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 70.9%;
-  text-decoration-line: line-through;
+  // text-decoration-line: line-through;
   color: var(--transparent-color);
   margin-top: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &::before {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: var(--transparent-color);
+    position: absolute;
+  }
+
+  .year {
+    font-size: 12px;
+  }
 }
 
 .year {
@@ -157,5 +191,26 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 25px;
+
+    &.transfer {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .domainPrice {
+    font-size: 17px;
+    .year {
+      font-size: 16px;
+    }
+  }
+
+  .saleEur {
+    font-size: 14px;
+
+    .year {
+      font-size: 12px;
+    }
   }
 }
