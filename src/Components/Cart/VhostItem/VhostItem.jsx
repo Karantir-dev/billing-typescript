@@ -29,7 +29,7 @@ export default function Component(props) {
           </span>
           <div className={s.periodInfo}>
             <span>
-              {t('Period', { ns: 'other' })}: {period} {translatePeriodToMonths(period)}
+              {t('Period', { ns: 'other' })}: {period > 0 ? period : ''} {translatePeriodToMonths(period)}
             </span>
             <span>
               {t('amount', { ns: 'vds' })}: {count} {t('pcs.', { ns: 'vds' })}
