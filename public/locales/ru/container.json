@@ -12,7 +12,8 @@
     "visiting_log": "Журнал посещений",
     "payers": "Плательщики",
     "contracts": "Договоры",
-    "log_out": "Выход"
+    "log_out": "Выход",
+    "use_certificate": "Использовать сертификат"
   },
   "burger_menu": {
     "services": {

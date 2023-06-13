@@ -248,5 +248,10 @@
   "The phone has been successfully verified": "The phone has been successfully verified",
   "payment_saved": "Payment method successfully saved",
 
-  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation"
+  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation",
+  "certificate_code": "Certificate code",
+  "enter_certificate_code": "Enter certificate code",
+  "certificate_not_exist": "The certificate does not exist",
+  "certificate_matches_error": "Only digits and uppercase letters are allowed",
+  "certificate_applied_success": "The certificate has been successfully applied"
 }

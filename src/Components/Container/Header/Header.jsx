@@ -12,6 +12,7 @@ import {
   LangBtn,
   ModalCreatePayment,
   Portal,
+  CertificateModal,
 } from '@components'
 import { Logo, FilledEnvelope, Bell, Profile, Shevron, WalletBalance } from '@images'
 import * as routes from '@src/routes'
@@ -62,6 +63,11 @@ export default function Header() {
       routeName: routes.CONTRACTS,
       allowedToRender: areContractsAllowedToRender,
     },
+    {
+      name: t('profile.use_certificate'),
+      allowedToRender: areContractsAllowedToRender,
+      onClick: () => setIsUseCertificate(true),
+    },
   ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
@@ -88,6 +94,7 @@ export default function Header() {
 
   const [isNotificationBarOpened, setIsNotificationBarOpened] = useState(false)
   const [isProfileOpened, setIsProfileOpened] = useState(false)
+  const [isUseCertificate, setIsUseCertificate] = useState(false)
   const getProfileEl = useRef()
 
   const clickOutside = () => {
@@ -112,7 +119,6 @@ export default function Header() {
     const calcDec = Math.pow(10, dec)
     return Math.trunc(num * calcDec) / calcDec
   }
-  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
 
   return (
     <>
@@ -139,9 +145,7 @@ export default function Header() {
                       {/* {t('balance')}{' '} */}
                       <WalletBalance />
                       <span className={s.balance_sum}>
-                        {userItems?.$balance
-                          ? truncateToDecimals(userBalance, 2)?.toFixed(2)
-                          : $balance && truncateToDecimals($balance, 2)?.toFixed(2)}
+                        {$balance && truncateToDecimals($balance, 2)?.toFixed(2)}
                         EUR
                       </span>
                     </div>
@@ -258,16 +262,22 @@ export default function Header() {
                       {profileMenuListToRender.map(item => {
                         return (
                           <li key={nanoid()} className={s.profile_list_item}>
-                            <div
-                              role="button"
-                              tabIndex={0}
-                              onKeyDown={() => {}}
-                              onClick={() => setIsProfileOpened(!isProfileOpened)}
-                            >
-                              <NavLink to={item.routeName}>
+                            {item.routeName ? (
+                              <div
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={() => {}}
+                                onClick={() => setIsProfileOpened(!isProfileOpened)}
+                              >
+                                <NavLink to={item.routeName}>
+                                  <p className={s.list_item_name}>{item.name}</p>
+                                </NavLink>
+                              </div>
+                            ) : (
+                              <button onClick={item.onClick}>
                                 <p className={s.list_item_name}>{item.name}</p>
-                              </NavLink>
-                            </div>
+                              </button>
+                            )}
                           </li>
                         )
                       })}
@@ -310,6 +320,7 @@ export default function Header() {
         isOpened={isMenuOpened}
         classes={cn({ [s.burger_menu]: true, [s.opened]: isMenuOpened })}
         controlMenu={handleClick}
+        profileMenuList={profileMenuList}
       />
       <NotificationsBar
         // countNotification={notifications}
@@ -320,6 +331,9 @@ export default function Header() {
       <Portal>
         {createPaymentModal && (
           <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+        )}
+        {isUseCertificate && (
+          <CertificateModal closeModal={() => setIsUseCertificate(false)} />
         )}
       </Portal>
     </>
