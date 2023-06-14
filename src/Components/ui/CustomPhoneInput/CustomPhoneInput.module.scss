@@ -19,8 +19,9 @@
 
 .lang_btn {
   [class*='selected-flag'] {
-    padding-left: 15px;
+    width: 45px;
     height: 100%;
+    padding-left: 15px;
   }
   &.extra_style.opened {
     background-color: var(--nearby-elements-bgc);
@@ -61,7 +62,7 @@
   background-color: var(--nearby-elements-bgc);
 
   @extend %input;
-  height: 50px;
+  height: 45px;
   position: static;
   padding-left: 50px;
 
