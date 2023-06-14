@@ -1,14 +1,13 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
-import { LoginForm } from '../../Components'
+import { LoginForm } from '@components'
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import entireStore from '../../Redux/store'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import entireStore from '@redux/store'
+import { mockedAxiosInstance } from '@config/axiosInstance'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import i18n from '../../i18n'
+import i18n from '@src/i18n'
 
 describe('Login Component', () => {
   beforeAll(() => {

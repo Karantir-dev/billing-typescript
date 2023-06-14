@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
@@ -42,7 +41,7 @@ export default function FTPList({
       return (
         <div className={s.no_service_wrapper}>
           <img
-            src={require('../../../../images/services/no_ftp.png')}
+            src={require('@images/services/no_ftp.png')}
             alt="ftp"
             className={s.ftp_img}
           />

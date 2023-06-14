@@ -1,6 +1,6 @@
 .modalBg {
   position: absolute;
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -24,6 +24,8 @@
 }
 
 .modalBlock {
+  display: flex;
+  flex-direction: column;
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
@@ -32,7 +34,7 @@
   width: 95%;
   max-height: 90vh;
   overflow-y: hidden;
-  position: 'relative';
+  position: relative;
 }
 
 .form {
@@ -276,7 +278,6 @@
     margin-right: 13px;
   }
 }
-
 
 .namesBlock {
   padding: 10px 50px 0px;

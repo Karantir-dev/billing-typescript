@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
   InputField,
@@ -8,7 +8,7 @@ import {
   SocialButton,
   Backdrop,
   ModalTwoStepVerification,
-} from '../../../Components'
+} from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -18,11 +18,11 @@ import {
   settingsOperations,
   userSelectors,
   authOperations,
-} from '../../../Redux'
-import { Cross, FacebookSmall, Google, VkSmall } from '../../../images'
-import { ipRegex } from '../../../utils'
+} from '@redux'
+import { Cross, FacebookSmall, Google, VkSmall } from '@images'
+import { ipRegex } from '@utils'
 import * as Yup from 'yup'
-import * as routes from '../../../routes'
+import * as routes from '@src/routes'
 import s from './AccessSettings.module.scss'
 import { toast } from 'react-toastify'
 

@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'react-i18next'
-import { Cross, Copy } from '../../../images'
+import { Cross, Copy } from '@images'
 import { InputField, Button } from '../..'
 import {
   settingsActions,
   settingsOperations,
   settingsSelectors,
   userSelectors,
-} from '../../../Redux'
+} from '@redux'
 import * as Yup from 'yup'
 import animations from './animations.module.scss'
 import s from './ModalTwoStepVerification.module.scss'
@@ -135,7 +135,7 @@ export default function Component(props) {
                   <div className={s.field_wrapper}>
                     <label className={s.label}>{t('Key')}:</label>
                     <div
-                      className={s.copy_field}
+                      className={cn(s.copy_field, s.field_bg)}
                       onClick={() => handleCopyText(refLinkEl)}
                       role="button"
                       tabIndex={0}
@@ -172,6 +172,7 @@ export default function Component(props) {
                     name="qrcode"
                     error={!!errors.qrcode}
                     touched={!!touched.qrcode}
+                    inputClassName={s.field_bg}
                   />
                 </div>
                 <div className={s.timeRow}>

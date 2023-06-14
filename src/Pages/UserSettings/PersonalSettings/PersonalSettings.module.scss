@@ -15,6 +15,29 @@
 
 .personalBlock {
   position: relative;
+
+  .field {
+    height: 50px;
+
+    input {
+      &::placeholder {
+        font-size: 18px;
+      }
+    }
+
+    input {
+      font-size: 18px;
+    }
+
+    &_bg {
+      background-color: var(--forms_bgc_1) !important;
+      box-shadow: var(--forms3_shadow) !important;
+    }
+
+    @media (min-width: 1280px) {
+      height: 55px;
+    }
+  }
 }
 
 .input {
@@ -29,6 +52,64 @@
   align-items: flex-start;
   flex-direction: row;
   margin-top: 25px;
+}
+
+.infoBtn {
+  position: absolute;
+  margin-left: auto;
+  top: 40%;
+  right: 0px;
+  z-index: 2;
+  padding: 12px 12px 12px 0px;
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+    .descriptionBlock {
+      opacity: 1;
+      height: auto;
+      overflow: auto;
+      padding: 15px;
+    }
+  }
+}
+
+.descriptionBlock {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--forms_bgc_4);
+  padding: 0;
+  top: 90%;
+  right: 0;
+  width: 300px;
+  z-index: 3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  text-align: start;
+  transition: 0.05s linear;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 89%;
+    bottom: 99%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--forms_bgc_4);
+    clear: both;
+  }
 }
 
 .downloadText {
@@ -63,7 +144,7 @@
   font-size: 18px;
   line-height: 113%;
   color: var(--main-text);
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .formRow {
@@ -75,16 +156,25 @@
 
 .phoneInput {
   width: 100%;
+}
+
+.phoneInputVerif {
+  width: 100%;
+}
+
+.phoneBlock {
+  position: relative;
+  width: 100%;
   margin-bottom: 0;
   margin-right: 0px;
 }
 
-.emailInput {
-  margin-right: 0px;
+.phoneInputButton {
+  background-color: transparent !important;
 }
 
-.phoneInputLabel {
-  margin: 0 0 5px 10px;
+.emailInput {
+  margin-right: 0px;
 }
 
 .required_star {
@@ -94,6 +184,10 @@
 
 .topBlock {
   margin-bottom: 30px;
+
+  @media (min-width: 1280px) {
+    margin-bottom: 44px;
+  }
 }
 
 .telegramBlock {
@@ -150,7 +244,7 @@
 }
 
 .column {
-  flex-basis: 33%;
+  flex-basis: 45%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,17 +258,19 @@
 .select {
   z-index: 8;
   button {
-    height: 50px;
+    height: 55px;
+  }
+  span {
+    font-size: 18px;
   }
 }
 
 .phoneInputContainer {
-  height: 50px;
   position: relative;
 }
 
 .phoneInputClass {
-  height: 50px;
+  height: 100% !important;
 }
 
 .cancel {
@@ -228,6 +324,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 35px;
+  max-width: 520px;
 
   .securNotifnEmailBlock {
     display: flex;
@@ -250,9 +347,7 @@
     line-height: 130.5%;
     color: var(--main-text);
     margin-right: 15px;
-    max-width: 230px;
     min-width: 215px;
-    white-space: pre-line;
   }
 }
 
@@ -260,10 +355,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.notifEmail {
-  max-width: 322px;
 }
 
 .listTelegram {
@@ -275,7 +366,48 @@
   margin-top: 15px;
 }
 
+.phoneVerificationLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    margin-left: 8px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 130.5%;
+
+    color: var(--link-text);
+
+    border-bottom: 1px solid var(--link-text);
+  }
+}
+
+.geoIpBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 30px;
+  svg {
+    &:hover {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .geoIpBlock {
+    margin-right: 0;
+  }
+
+  .notifEmail {
+    max-width: 322px;
+  }
+
   .emailBlock {
     flex-direction: row;
     align-items: center;
@@ -302,8 +434,13 @@
     margin-right: 25px;
   }
 
+  .phoneBlock {
+    margin-right: 25px;
+    width: 48%;
+  }
+
   .checkBlock {
-    max-width: 500px;
+    max-width: 430px;
   }
 
   .formRow {
@@ -335,13 +472,6 @@
   }
 
   .securNotification {
-    flex-direction: row;
-
-    .securNotifnGeoBlock {
-      margin-left: 50px;
-      margin-top: 0px;
-    }
-
     .securNotifText {
       min-width: 230px;
       font-size: 17px;
@@ -382,6 +512,18 @@
   white-space: pre-line;
 }
 
+.hintWrapperGeo {
+  height: 18px;
+}
+
+.hintPopUpWrapperGeoIp {
+  max-width: 300px;
+  width: 300px;
+  word-wrap: break-word;
+  white-space: pre-line;
+  text-align: start;
+}
+
 @media screen and (min-width: 1124px) {
   .avatarBlock {
     max-width: 130px;
@@ -416,20 +558,7 @@
 @media screen and (max-width: 1280px) {
   .select {
     button {
-      height: 45px;
+      height: 50px;
     }
   }
-  .phoneInputContainer {
-    height: 45px;
-  }
-
-  .phoneInputClass {
-    height: 45px !important;
-  }
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }

@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
-import { Cross, Info } from '../../../images'
+import { Cross, Info } from '@images'
 import {
   Select,
   InputField,
@@ -11,8 +11,8 @@ import {
   InputWithAutocomplete,
   SelectGeo,
 } from '../..'
-import { payersOperations, payersSelectors, authSelectors } from '../../../Redux'
-import { OFERTA_URL, PRIVACY_URL } from '../../../config/config'
+import { payersOperations, payersSelectors, authSelectors } from '@redux'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
@@ -158,6 +158,7 @@ export default function Component(props) {
                           label: t(`${$.trim()}`),
                           value: $key,
                         }))}
+                        inputClassName={s.field}
                       />
 
                       {values?.profiletype === '3' || values?.profiletype === '2' ? (
@@ -171,6 +172,7 @@ export default function Component(props) {
                           error={!!errors.name}
                           touched={!!touched.name}
                           isRequired
+                          inputClassName={s.field}
                         />
                       ) : null}
 
@@ -184,6 +186,7 @@ export default function Component(props) {
                         error={!!errors.person}
                         touched={!!touched.person}
                         isRequired
+                        inputClassName={s.field}
                       />
 
                       {payersSelectedFields?.eu_vat_field ? (
@@ -196,6 +199,7 @@ export default function Component(props) {
                           className={s.input}
                           error={!!errors.eu_vat}
                           touched={!!touched.eu_vat}
+                          inputClassName={s.field}
                         />
                       ) : null}
                     </div>
@@ -210,6 +214,7 @@ export default function Component(props) {
                         countrySelectClassName={s.countrySelectItem}
                         geoData={geoData}
                         payersSelectLists={payersSelectLists}
+                        inputClassName={s.field}
                       />
 
                       <InputField
@@ -221,7 +226,7 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.city_physical}
                         touched={!!touched.city_physical}
-                        // isRequired
+                        inputClassName={s.field}
                       />
 
                       <div className={s.nsInputBlock}>
@@ -233,6 +238,7 @@ export default function Component(props) {
                           setFieldValue={val => {
                             setFieldValue('address_physical', val)
                           }}
+                          inputClassName={s.field}
                         />
 
                         <button type="button" className={s.infoBtn}>

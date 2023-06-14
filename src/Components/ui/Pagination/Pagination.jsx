@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './Pagination.module.scss'
 import { useTranslation } from 'react-i18next'
 
 export default function Component(props) {
-  const { onPageChange, totalCount, currentPage, pageSize, className, onPageItemChange } =
-    props
+  const {
+    onPageChange,
+    totalCount,
+    currentPage,
+    pageSize,
+    className,
+    onPageItemChange,
+    paginationItemClassName,
+  } = props
 
   const { t } = useTranslation('other')
 
@@ -79,7 +86,7 @@ export default function Component(props) {
         {onPageItemChange && (
           <div className={s.pageItemContainer}>
             <div className={s.servperpage}>{t('Services per page')}:</div>
-            <div className={cn(s.paginationItem, s.inputItem)}>
+            <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
               <input
                 className={s.input}
                 onKeyDown={onPressEnter}
@@ -105,7 +112,7 @@ export default function Component(props) {
           >
             <div className={cn(s.arrow, s.left)} />
           </div>
-          <div className={cn(s.paginationItem, s.inputItem)}>
+          <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
             <input
               className={s.input}
               onKeyDown={onPressEnter}
@@ -137,7 +144,8 @@ export default function Component(props) {
 Component.propTypes = {
   className: PropTypes.string,
   onPageChange: PropTypes.func,
-  pageSize: PropTypes.number,
+  pageSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
   currentPage: PropTypes.number,
   totalCount: PropTypes.number,
   totalPrice: PropTypes.number,

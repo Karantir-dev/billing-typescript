@@ -45,6 +45,7 @@
   },
   "Timezone": "Timezone",
   "Phone": "Phone",
+  "Phone for notifications": "Phone for notifications",
   "Enter your details": "Enter your details",
   "Full name": "Full name",
   "Save": "Save",
@@ -126,6 +127,7 @@
   "FTP server": "FTP-server",
 
   "Trial": "Trial",
+  "Trial period": "10 days",
   "Month": "Month",
   "Three months": "Three months",
   "Half a year": "Half a year",
@@ -243,5 +245,11 @@
   "month count 3/24": "months",
   "month count 6/12/36": "months",
 
-  "payment_saved": "Payment method successfully saved"
+  "fraud_invalid_code": "Incorrect verification code",
+  "The phone has been successfully verified": "The phone has been successfully verified",
+  "payment_saved": "Payment method successfully saved",
+
+  "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation",
+  "payment_processed": "Your payment is being processed, you can check the status in the section",
+  "Finance/Accounts": "Finance/Accounts"
 }

@@ -120,7 +120,7 @@
 
 .calendar_pointer {
   bottom: -15px;
-  transform: rotate(180deg);
+  transform: rotate(0);
   left: 2%;
 }
 
@@ -137,7 +137,7 @@
 
   .calendar_pointer {
     top: -15px;
-    transform: rotate(0deg);
+    transform: rotate(180deg);
     left: 2%;
   }
 }

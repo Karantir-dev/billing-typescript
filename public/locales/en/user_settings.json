@@ -62,5 +62,45 @@
   "Click \"send confirmation\" for resending": "Click \"send confirmation\" for resending",
   "Enter your login in the form below": "Enter your login in the form below",
   "Write to our bot": "Write to our bot",
-  "Confirm your email to activate the functionality": "Confirm your email to activate the functionality"
+  "Confirm your email to activate the functionality": "Confirm your email to activate the functionality",
+
+  "Must be a valid phone number": "Must be a valid phone number",
+  "Phone Verification": "Phone Verification",
+  "Verification method": "Verification method",
+  "SMS": "SMS message with a code",
+  "Automated call": "Auto informant call",
+
+  "automated_call_text": "A call will be made to the number you specified. To receive a verification code, follow the instructions of the auto informant",
+  "sms_text": "An SMS message containing a verification code will be sent to the number you specified",
+  "GET A CODE": "GET A CODE",
+
+  "You have exceeded the number of allowed phone verification attempts.": "You have exceeded the number of allowed phone verification attempts.",
+
+  "Contact": "Contact",
+  "the Technical support": "the Technical support",
+  "for verification": "for verification",
+  "Verification code": "Verification code",
+  "VERIFY": "VERIFY",
+  "CHOOSE": "CHOOSE",
+  "Choose an option": "Choose an option",
+
+  "Get a new verification code": "Get a new verification code",
+  "Enter the verification code": "Enter the verification code",
+
+  "code_length": "Invalid code",
+
+  "attempts_to_sent_code": "You have {{count}} attempts to sent the code",
+
+  "not_receive_confirmation_code_1": "If you do not receive the confirmation code, please try",
+  "not_receive_confirmation_code_2": "or contact our Technical support for manual confirmation",
+
+  "before_verified_number": "You can change and verify this number by clicking \"{{btn}}\"",
+  "after_verified_number": "To change your primary phone number, please contact our technical support",
+
+  "Another way": "Another way",
+  "Verify number": "Verify number",
+
+  "Main number": "Main number",
+  "verification_code_timeout": "The verification code can be sent again in {{time}} seconds",
+  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt."
 }

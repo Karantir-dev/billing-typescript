@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, BillingFilter, ExpensesTable } from '../../../Components/'
-import { Wallet } from '../../../images'
-import { billingOperations, billingSelectors } from '../../../Redux'
+import { Pagination, BillingFilter, ExpensesTable } from '@components'
+import { Wallet } from '@images'
+import { billingOperations, billingSelectors } from '@redux'
 import s from './Expenses.module.scss'
 
 export default function Component() {
@@ -65,6 +65,7 @@ export default function Component() {
             pageSize={p_cnt}
             onPageChange={page => setP_num(page)}
             onPageItemChange={items => setP_cnt(items)}
+            paginationItemClassName={s.pagination__item}
           />
         </div>
       )}

@@ -10,12 +10,15 @@
 }
 
 .modalBlock {
+  display: flex;
+  flex-direction: column;
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
   margin: 20px auto;
   max-width: 630px;
   width: 95%;
+  height: 90vh;
 }
 
 .modalHeader {
@@ -110,7 +113,7 @@
   flex-direction: column;
   padding: 0px 20px 21px 20px;
   margin-left: 2px;
-  max-height: 45vh;
+  height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -124,6 +127,16 @@
 
   &::-webkit-scrollbar-thumb {
     background: #e72690;
+  }
+
+  &::-webkit-scrollbar-button:start,
+  &::-webkit-scrollbar-button:end {
+    height: 10px;
+  }
+
+  &__wrapper {
+    flex-grow: 1;
+    overflow: hidden;
   }
 }
 
@@ -145,6 +158,7 @@
   max-width: 100%;
   margin-top: 20px;
   margin-right: 0px;
+  padding-bottom: 0;
 }
 
 .select {

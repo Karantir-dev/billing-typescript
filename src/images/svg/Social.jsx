@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 export default function SvgComponent(props) {
   const { className } = props
   return (

@@ -1,11 +1,11 @@
 import cn from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
 import { Button } from '../..'
 import { useDispatch } from 'react-redux'
-import { usersActions } from '../../../Redux'
+import { usersActions } from '@redux'
 
 export default function AccessRightsAlert({ isOpened, title, list1, controlAlert }) {
   const getAlerEl = useRef(null)

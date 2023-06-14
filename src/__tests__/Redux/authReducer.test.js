@@ -1,4 +1,4 @@
-import { authActions, authReducer } from '../../Redux'
+import { authActions, authReducer } from '@redux'
 
 describe('dataloader reducers', () => {
   test('CHANGE SESSION ID REQUEST', () => {

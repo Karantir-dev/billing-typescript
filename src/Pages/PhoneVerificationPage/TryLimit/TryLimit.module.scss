@@ -1,0 +1,18 @@
+.tryLimitBlock {
+  span {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    leading-trim: both;
+    text-edge: cap;
+
+    color: var(--main-text);
+
+    button {
+      color: var(--link-text);
+      border-bottom: 1px solid var(--link-text);
+      cursor: pointer;
+    }
+  }
+}

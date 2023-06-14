@@ -1,12 +1,11 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 // import { I18nextProvider } from 'react-i18next'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 
 // import i18n from '../../i18n'
-import { Alert } from '../../Components'
+import { Alert } from '@components'
 
 jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
@@ -32,8 +31,8 @@ describe('Alert Component', () => {
   )
   const root = component.root
 
-  test('Component has three buttons tags', async () => {
+  test('Component has one buttons tags', async () => {
     const button = await root.findAllByType('button')
-    expect(button).toHaveLength(2)
+    expect(button).toHaveLength(1)
   })
 })

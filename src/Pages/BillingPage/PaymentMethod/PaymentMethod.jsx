@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -7,9 +7,9 @@ import {
   PaymentsMethodsTable,
   Portal,
   ModalCreatePaymentMethod,
-} from '../../../Components'
-import { Wallet } from '../../../images'
-import { billingOperations, billingSelectors } from '../../../Redux'
+} from '@components'
+import { Wallet } from '@images'
+import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
 
 export default function Component() {

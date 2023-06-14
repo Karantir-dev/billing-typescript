@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
-import { Cross, Info } from '../../../images'
+import { Cross, Info } from '@images'
 import {
   Button,
   Select,
@@ -18,12 +18,12 @@ import {
   payersOperations,
   payersSelectors,
   authSelectors,
-} from '../../../Redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '../../../config/config'
+} from '@redux'
+import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
-import { checkIfTokenAlive } from '../../../utils'
+import { checkIfTokenAlive } from '@utils'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -279,6 +279,7 @@ export default function Component(props) {
                                 value: $key,
                               }),
                             )}
+                            inputClassName={s.field_bg}
                           />
 
                           {values?.profiletype === '3' || values?.profiletype === '2' ? (
@@ -292,6 +293,7 @@ export default function Component(props) {
                               error={!!errors.name}
                               touched={!!touched.name}
                               isRequired
+                              inputClassName={s.field_bg}
                             />
                           ) : null}
 
@@ -313,6 +315,7 @@ export default function Component(props) {
                                 label: t(`${name?.$?.trim()}`),
                                 value: id?.$,
                               }))}
+                              inputClassName={s.field_bg}
                             />
                           )}
 
@@ -330,6 +333,7 @@ export default function Component(props) {
                             error={!!errors.person}
                             touched={!!touched.person}
                             isRequired
+                            inputClassName={s.field_bg}
                           />
 
                           <SelectGeo
@@ -339,6 +343,7 @@ export default function Component(props) {
                             countrySelectClassName={s.countrySelectItem}
                             geoData={geoData}
                             payersSelectLists={payersSelectLists}
+                            inputClassName={s.field_bg}
                           />
 
                           <InputField
@@ -350,7 +355,7 @@ export default function Component(props) {
                             className={s.inputBig}
                             error={!!errors.city_physical}
                             touched={!!touched.city_physical}
-                            // isRequired
+                            inputClassName={s.field_bg}
                           />
 
                           <div className={cn(s.inputBig, s.nsInputBlock)}>
@@ -362,6 +367,7 @@ export default function Component(props) {
                               setFieldValue={val => {
                                 setFieldValue('address_physical', val)
                               }}
+                              inputClassName={s.field_bg}
                             />
 
                             <button type="button" className={s.infoBtn}>
@@ -385,13 +391,16 @@ export default function Component(props) {
                               className={s.inputBig}
                               error={!!errors.eu_vat}
                               touched={!!touched.eu_vat}
+                              inputClassName={s.field_bg}
                             />
                           ) : null}
                           {selectedPayerFields?.offer_link && (
                             <div className={s.offerBlock}>
                               <CheckBox
                                 value={values['offer_3'] || false}
-                                onClick={() => setFieldValue('offer_3', !values['offer_3'])}
+                                onClick={() =>
+                                  setFieldValue('offer_3', !values['offer_3'])
+                                }
                                 className={s.checkbox}
                                 error={!!errors['offer_3']}
                                 touched={!!touched['offer_3']}

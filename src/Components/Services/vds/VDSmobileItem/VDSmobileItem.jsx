@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Clock,
@@ -11,12 +11,12 @@ import {
   Info,
   Delete,
   ExitSign,
-} from '../../../../images'
-import * as route from '../../../../routes'
-import { SITE_URL } from '../../../../config/config'
+} from '@images'
+import * as route from '@src/routes'
+import { SITE_URL } from '@config/config'
 import { useNavigate } from 'react-router-dom'
-import { useOutsideAlerter } from '../../../../utils'
-import { CheckBox, ServerState, EditCell } from '../../..'
+import { useOutsideAlerter } from '@utils'
+import { CheckBox, ServerState, EditCell } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
@@ -56,7 +56,7 @@ export default function VDSmobileItem({
     setToolsOpened(false)
   }
 
-  const editNameHandler = (value) => {
+  const editNameHandler = value => {
     handleEditSubmit(server?.id?.$, { server_name: value })
     setOriginName(value)
   }
@@ -165,7 +165,8 @@ export default function VDSmobileItem({
                       disabled={
                         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong
+                        !rights?.prolong ||
+                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
                       }
                     >
                       <Clock className={s.tool_icon} />
@@ -269,7 +270,7 @@ export default function VDSmobileItem({
       <span className={s.label}>{t('data_center')}:</span>
       <span className={s.value}>{server?.datacentername?.$}</span>
       <span className={s.label}>{t('status')}:</span>
-      <ServerState server={server} />
+      <ServerState className={s.value} server={server} />
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>

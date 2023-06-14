@@ -1,7 +1,6 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { BASE_URL } from '../../../config/config'
+import { BASE_URL } from '@config/config'
 import { Select } from '../..'
 
 const geoImgURL = `${BASE_URL}/manimg/common/flag/`
@@ -14,6 +13,7 @@ export default function SelectGeo(props) {
     countrySelectClassName,
     geoData,
     payersSelectLists,
+    ...otherProps
   } = props
   const { t } = useTranslation(['countries', 'other'])
 
@@ -39,6 +39,7 @@ export default function SelectGeo(props) {
       isRequired
       disabled
       withoutArrow={true}
+      {...otherProps}
     />
   ) : (
     <Select
@@ -65,6 +66,7 @@ export default function SelectGeo(props) {
       isRequired
       disabled
       withoutArrow={true}
+      {...otherProps}
     />
   )
 }

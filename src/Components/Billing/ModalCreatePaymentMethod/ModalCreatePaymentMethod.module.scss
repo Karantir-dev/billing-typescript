@@ -11,8 +11,6 @@
 }
 
 .modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
   border-radius: 3px;
   margin: auto;
   max-width: 375px;
@@ -29,16 +27,22 @@
   font-size: 14px;
   line-height: 1.2;
   margin-left: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.field_bg {
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow_site);
 }
 
 .stripeCard {
-  background-color: var(--elements-bgc);
+  background-color: var(--forms_bgc_3);
   padding: 15px;
   display: flex;
   flex-direction: row;
   align-items: center;
   max-height: 55px;
+  box-shadow: var(--forms_shadow_site);
 
   img {
     width: 25px;
@@ -75,8 +79,8 @@
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--header_shadow);
 }
 
 .form {
@@ -85,7 +89,7 @@
   padding-bottom: 40px;
   overflow-y: auto;
   overflow-x: hidden;
-
+  background-color: var(--main-bgc2);
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -157,8 +161,8 @@
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--footer_shadow);
 
   .clearFilters {
     margin-top: 14px;
@@ -511,7 +515,7 @@
   }
 
   .modalHeader {
-    padding: 14px 30px;
+    padding: 20px 30px;
   }
 
   .form {

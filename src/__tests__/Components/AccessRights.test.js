@@ -1,11 +1,10 @@
-import React from 'react'
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 import { Provider } from 'react-redux'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
-import AccessRights from '../../Components/TrustedUsers/AccessRights/AccessRights'
+import { mockedAxiosInstance } from '@config/axiosInstance'
+import AccessRights from '@components/TrustedUsers/AccessRights/AccessRights'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => {

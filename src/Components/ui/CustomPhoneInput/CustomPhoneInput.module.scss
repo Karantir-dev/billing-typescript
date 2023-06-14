@@ -2,7 +2,7 @@
 
 // lang
 .phone_label {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   margin-left: 10px;
   font-size: 14px;
   color: var(--main-text);
@@ -13,11 +13,15 @@
 }
 
 .lang_container {
-  height: 50px;
+  height: 45px;
   position: relative;
 }
 
 .lang_btn {
+  [class*='selected-flag'] {
+    padding-left: 15px;
+    height: 100%;
+  }
   &.extra_style.opened {
     background-color: var(--nearby-elements-bgc);
     border: none;
@@ -59,10 +63,14 @@
   @extend %input;
   height: 50px;
   position: static;
-  padding-left: 40px;
+  padding-left: 50px;
 
   &:disabled {
     color: var(--transparent-color);
+  }
+
+  @media (min-width: 1280px) {
+    height: 50px;
   }
 }
 

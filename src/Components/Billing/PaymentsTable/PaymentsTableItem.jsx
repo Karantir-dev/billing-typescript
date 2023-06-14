@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import s from './PaymentsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import { MoreDots, Pay, Download, Delete } from '../../../images'
+import { MoreDots, Pay, Download, Delete } from '@images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { useOutsideAlerter } from '../../../utils'
-import { HintWrapper } from '../../../Components'
+import { useOutsideAlerter } from '@utils'
+import { HintWrapper } from '@components'
 
 export default function Component(props) {
   const {
@@ -49,7 +49,7 @@ export default function Component(props) {
     } else if (string.trim() === 'Paid') {
       color = '#45A884'
     } else if (string.trim() === 'Canceled') {
-      color = '#D93F21'
+      color = '#FA6848'
     }
     return {
       status,

@@ -76,5 +76,7 @@
   "Password for has been changed": "'{{value}}' құпия сөзі өзгертілді",
   "Name servers for have been successfully changed": "'{{value}}' үшін атау серверлері сәтті өзгертілді",
   "Check parameters and repeat the operation": "Параметрлерді тексеріп, әрекетті қайталаңыз",
-  "Error in domain contacts for the service": "'{{value}}' қызметінің домен контактілеріндегі қате."
+  "Error in domain contacts for the service": "'{{value}}' қызметінің домен контактілеріндегі қате.",
+  "Payment processing": "Төлемді өңдеу",
+  "Payment method saved": "Төлем әдісі сақталды"
 }

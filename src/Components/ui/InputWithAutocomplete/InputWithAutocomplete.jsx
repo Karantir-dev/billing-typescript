@@ -1,13 +1,13 @@
 import usePlacesAutocomplete from 'use-places-autocomplete'
-import { useOutsideAlerter } from '../../../utils'
-import React, { useRef, useState, useEffect } from 'react'
+import { useOutsideAlerter } from '@utils'
+import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 import s from '../InputField/InputField.module.scss'
 import ss from './InputWithAutocomplete.module.scss'
 import { useSelector } from 'react-redux'
-import { authSelectors } from '../../../Redux'
+import { authSelectors } from '@redux'
 import { ErrorMessage } from 'formik'
 
 let cachedVal = ''
@@ -19,6 +19,7 @@ export default function InputWithAutocomplete({
   error,
   touched,
   setFieldValue,
+  inputClassName,
 }) {
   const { t, i18n } = useTranslation(['other'])
   const [isFocused, setIsFocused] = useState(false)
@@ -169,13 +170,16 @@ export default function InputWithAutocomplete({
           })}
         >
           <input
-            className={cn({
-              [s.input]: true,
-              [s.shadow]: true,
-              [ss.pr35]: true,
-              [s.error]: error && touched,
-              [s.disabled]: !ready,
-            })}
+            className={cn(
+              {
+                [s.input]: true,
+                [s.shadow]: true,
+                [ss.pr35]: true,
+                [s.error]: error && touched,
+                [s.disabled]: !ready,
+              },
+              inputClassName,
+            )}
             id={fieldName}
             name={fieldName}
             value={externalValue}

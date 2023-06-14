@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '../../../../images'
-import { billingActions, dedicOperations } from '../../../../Redux'
+import { Cross } from '@images'
+import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
 import { Button, Select } from '../../..'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
-import { translatePeriod } from '../../../../utils'
-// import { SALE_55_PROMOCODE } from '../../../../config/config'
+import { translatePeriod } from '@utils'
+// import { SALE_55_PROMOCODE } from '@config/config'
 
 export default function ProlongModal({
   elidList,
@@ -107,8 +107,11 @@ export default function ProlongModal({
     setNamesToRender(!more ? names : names?.slice(0, 1))
   }
 
-  const translateFeeText = text => {
-    const feeAmount = text.match(/time: (.+?)(?= EUR)/)?.[1]
+  const translateFeeText = period => {
+    const feeAmount = initialState?.slist
+      .find(el => el.$name === 'period')
+      ?.val.find(el => el.$key === period)
+      ?.$.match(/(.+?)(?= EUR)/)?.[1]
 
     let translate = t('Late fee will be charged to the expired service', {
       value: t(+feeAmount),
@@ -213,7 +216,7 @@ export default function ProlongModal({
 
                   {initialState?.suspendpenaltywarn && (
                     <p className={s.suspendpenaltywarn}>
-                      {translateFeeText(initialState?.suspendpenaltywarn?.$)}
+                      {translateFeeText(values.period)}
                     </p>
                   )}
 

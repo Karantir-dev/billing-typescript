@@ -1,14 +1,13 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { SignupForm, Button } from '../../Components'
+import { SignupForm, Button } from '@components'
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 import ReCAPTCHA from 'react-google-recaptcha'
 import userEvent from '@testing-library/user-event'
-import i18n from '../../i18n'
+import i18n from '@src/i18n'
 
 describe('Register Component', () => {
   const component = create(

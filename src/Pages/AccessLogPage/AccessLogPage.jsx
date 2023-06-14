@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { usePageRender } from '../../utils'
-import { accessLogsSelectors, accessLogsOperations } from '../../Redux'
+import { useEffect, useState } from 'react'
+import { usePageRender } from '@utils'
+import { accessLogsSelectors, accessLogsOperations } from '@redux'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { AccessLogsTable, AccessLogsFilter, Pagination } from '../../Components'
-import * as routes from '../../routes'
+import { AccessLogsTable, AccessLogsFilter, Pagination } from '@components'
+import * as routes from '@src/routes'
 
 import s from './AccessLogPage.module.scss'
 
@@ -48,6 +48,7 @@ export default function Component() {
               pageSize={p_cnt}
               onPageChange={page => setP_num(page)}
               onPageItemChange={items => setP_cnt(items)}
+              paginationItemClassName={s.pagination_item}
             />
           </div>
         )}

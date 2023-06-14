@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, authActions, authSelectors, selectors } from '../Redux'
+import { actions, authActions, authSelectors, selectors } from '@redux'
 import i18n from 'i18next'
 import { toast } from 'react-toastify'
-import { cookies } from '../utils'
+import { cookies } from '@utils'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -40,33 +40,17 @@ const Component = () => {
   }, [onlineStatus])
 
   useEffect(() => {
-    // const checkOnlineStatus = online => {
-    //   fetch('https://www.google.com', { mode: 'no-cors' })
-    //     .then(() => {
-    //       !online && dispatch(actions.setOnline())
-    //     })
-    //     .catch(() => {
-    //       dispatch(actions.setOffline())
-    //     })
-    //     .finally(() => {
-
-    //       setTimeout(() => {
-    //         checkOnlineStatus(online)
-    //       }, 3000)
-    //     })
-    // }
-
-    // checkOnlineStatus(onlineStatus)
-
-    const intervalId = setInterval(() => {
-      fetch('https://www.google.com', { mode: 'no-cors' })
-        .then(() => {
-          !onlineStatus && dispatch(actions.setOnline())
-        })
-        .catch(() => {
-          onlineStatus && dispatch(actions.setOffline())
-        })
-    }, 3000)
+    const intervalId =
+      process.env.NODE_ENV !== 'development' &&
+      setInterval(() => {
+        fetch('https://www.google.com', { mode: 'no-cors' })
+          .then(() => {
+            !onlineStatus && dispatch(actions.setOnline())
+          })
+          .catch(() => {
+            onlineStatus && dispatch(actions.setOffline())
+          })
+      }, 3000)
 
     return () => {
       clearInterval(intervalId)
@@ -75,7 +59,7 @@ const Component = () => {
 
   useEffect(() => {
     const sessionId = cookies.getCookie('sessionId')
-    if(sessionId) {
+    if (sessionId) {
       dispatch(authActions.loginSuccess(sessionId))
     }
   }, [])
@@ -84,11 +68,11 @@ const Component = () => {
     const favicon = getFaviconEl()
     const favicon_mob = getFaviconMobEl()
     if (l !== 'ru') {
-      favicon.href = require('../images/favIcons/favicon_ua.ico')
-      favicon_mob.href = require('../images/favIcons/logo192_ua.png')
+      favicon.href = require('@images/favIcons/favicon_ua.ico')
+      favicon_mob.href = require('@images/favIcons/logo192_ua.png')
     } else {
-      favicon.href = require('../images/favIcons/favicon.ico')
-      favicon_mob.href = require('../images/favIcons/logo192.png')
+      favicon.href = require('@images/favIcons/favicon.ico')
+      favicon_mob.href = require('@images/favIcons/logo192.png')
     }
 
     dispatch(actions.hideLoader())

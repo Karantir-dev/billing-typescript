@@ -1,10 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '../../../../images'
+import { Cross } from '@images'
 import { Select, Button, InputField } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
-import { translatePeriod, orderDetailTranslate } from '../../../../utils'
+import { translatePeriod, orderDetailTranslate } from '@utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains', 'autoprolong'])
@@ -33,7 +32,7 @@ export default function Component(props) {
       </div>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>
-          <span>{t('The service is active until')}:</span>
+          <span>{t('service_created')}:</span>
           <span>{editData?.createdate}</span>
         </div>
         <div className={s.statusItem}>
@@ -60,7 +59,7 @@ export default function Component(props) {
       >
         {({ setFieldValue, values, errors, touched }) => {
           return (
-            <Form>
+            <Form className={s.form__wrapper}>
               <div className={s.form}>
                 <div className={s.fieldsBlock}>
                   <Select
@@ -189,31 +188,29 @@ export default function Component(props) {
                   {editData?.status === '1' && (
                     <div
                       className={s.orderDetail}
-                      dangerouslySetInnerHTML={{ __html: orderDetailTranslate(editData?.orderinfo, t) }}
+                      dangerouslySetInnerHTML={{
+                        __html: orderDetailTranslate(editData?.orderinfo, t),
+                      }}
                     />
                   )}
                 </div>
-              </div>
-              <div className={s.btnBlock}>
-                <Button
-                  className={s.searchBtn}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                />
-                <button
-                  onClick={closeEditModalHandler}
-                  type="button"
-                  className={s.clearFilters}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
               </div>
             </Form>
           )
         }}
       </Formik>
+      <div className={s.btnBlock}>
+        <Button
+          className={s.searchBtn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+        />
+        <button onClick={closeEditModalHandler} type="button" className={s.clearFilters}>
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </div>
     </div>
   )
 }

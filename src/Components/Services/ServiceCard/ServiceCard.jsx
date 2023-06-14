@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +25,7 @@ export default function ServiceCard(props) {
             <div className={s.triangle}>
               <img
                 alt={iconName}
-                src={iconName && require(`../../../images/services/${iconName}.webp`)}
+                src={iconName && require(`@images/services/${iconName}.webp`)}
                 className={cn(s['icon_' + iconName], {
                   [s.forexbox]: iconName === 'forexbox',
                 })}

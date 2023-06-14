@@ -2,6 +2,7 @@
   "Virtual hosting order": "ვირტუალური ჰოსტინგის შეკვეთა",
   "Service extension": "მომსახურების გაგრძელება",
   "The service is active until": "მომსახურება აქტიურია",
+  "service_created": "მომსახურება შეიქმნა",
   "Service extended until": "მომსახურება გაგრძელებულია",
   "Prolonged successfully": "გაგრძელებულია წარმატებით",
   "Username": "მომხმარებლის სახელი",
@@ -49,7 +50,6 @@
   "YOU DONT HAVE VIRTUAL HOSTING YET": "თქვენ ჯერ არ გაქვთ ვირტუალური ჰოსტინგი",
   "You cannot order this tariff plan for the selected period": "თქვენ არ შეგიძლიათ შეუკვეთოთ ეს სატარიფო გეგმა არჩეული პერიოდისთვის",
   "for 10 days": "10 დღის განმავლობაში",
-
 
   "Current end date": "მიმდინარე დასრულების თარიღი",
   "New end date": "ახალი დასრულების თარიღი"

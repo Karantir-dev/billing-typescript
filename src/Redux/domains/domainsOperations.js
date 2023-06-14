@@ -1,12 +1,12 @@
 import qs from 'qs'
-import i18n from './../../i18n'
+import i18n from '@src/i18n'
 import axios from 'axios'
-import { actions, domainsActions, cartActions } from '..'
-import { API_URL } from '../../config/config'
-import { axiosInstance } from '../../config/axiosInstance'
+import { actions, domainsActions, cartActions } from '@redux'
+import { API_URL } from '@config/config'
+import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '../../utils'
-import * as route from '../../routes'
+import { checkIfTokenAlive } from '@utils'
+import * as route from '@src/routes'
 
 const getDomains =
   (body = {}) =>
@@ -250,7 +250,6 @@ const getDomainsContacts =
           toast.error(`${i18n.t(data.doc.error.msg.$, { ns: 'other' })}`, {
             position: 'bottom-right',
           })
-
           throw new Error(data.doc.error.msg.$)
         }
 
@@ -259,6 +258,7 @@ const getDomainsContacts =
         const d = {
           owner_email: domainData?.owner_email,
           owner_phone: domainData?.owner_phone?.$,
+          owner_phone_country: domainData?.owner_phone_country?.$,
 
           owner_firstname: domainData?.owner_firstname,
           owner_firstname_locale: domainData?.owner_firstname_locale,
@@ -268,6 +268,8 @@ const getDomainsContacts =
           owner_middlename_locale: domainData?.owner_middlename_locale,
 
           owner_name: domainData?.owner_name,
+          owner_company: domainData?.owner_company?.$,
+          owner_company_locale: domainData?.owner_company_locale?.$,
 
           owner_location_country: domainData?.owner_location_country?.$,
           owner_location_address: domainData?.owner_location_address,
@@ -281,6 +283,7 @@ const getDomainsContacts =
           admin_contact_use_first: domainData?.admin_contact_use_first?.$,
           admin_email: domainData?.admin_email,
           admin_phone: domainData?.admin_phone?.$,
+          admin_phone_country: domainData?.admin_phone_country?.$,
 
           admin_firstname: domainData?.admin_firstname,
           admin_firstname_locale: domainData?.admin_firstname_locale,
@@ -290,6 +293,9 @@ const getDomainsContacts =
           admin_middlename_locale: domainData?.admin_middlename_locale,
 
           admin_name: domainData?.admin_name,
+
+          admin_company: domainData?.admin_company?.$,
+          admin_company_locale: domainData?.admin_company_locale?.$,
 
           admin_location_country: domainData?.admin_location_country?.$,
           admin_location_address: domainData?.admin_location_address,
@@ -303,6 +309,7 @@ const getDomainsContacts =
           tech_contact_use_first: domainData?.tech_contact_use_first?.$,
           tech_email: domainData?.tech_email,
           tech_phone: domainData?.tech_phone?.$,
+          tech_phone_country: domainData?.tech_phone_country?.$,
 
           tech_firstname: domainData?.tech_firstname,
           tech_firstname_locale: domainData?.tech_firstname_locale,
@@ -312,6 +319,8 @@ const getDomainsContacts =
           tech_middlename_locale: domainData?.tech_middlename_locale,
 
           tech_name: domainData?.tech_name,
+          tech_company: domainData?.tech_company?.$,
+          tech_company_locale: domainData?.tech_company_locale?.$,
 
           tech_location_country: domainData?.tech_location_country?.$,
           tech_location_address: domainData?.tech_location_address,
@@ -325,6 +334,7 @@ const getDomainsContacts =
           bill_contact_use_first: domainData?.bill_contact_use_first?.$,
           bill_email: domainData?.bill_email,
           bill_phone: domainData?.bill_phone?.$,
+          bill_phone_country: domainData?.bill_phone_country?.$,
 
           bill_firstname: domainData?.bill_firstname,
           bill_firstname_locale: domainData?.bill_firstname_locale,
@@ -334,6 +344,8 @@ const getDomainsContacts =
           bill_middlename_locale: domainData?.bill_middlename_locale,
 
           bill_name: domainData?.bill_name,
+          bill_company: domainData?.bill_company?.$,
+          bill_company_locale: domainData?.bill_company_locale?.$,
 
           bill_location_country: domainData?.bill_location_country?.$,
           bill_location_address: domainData?.bill_location_address,

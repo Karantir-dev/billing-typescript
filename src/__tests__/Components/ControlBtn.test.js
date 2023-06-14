@@ -1,13 +1,12 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { Provider } from 'react-redux'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 import { render, screen, fireEvent } from '@testing-library/react'
 
-import i18n from '../../i18n'
-import ControlBtn from '../../Components/TrustedUsers/ControlBtn/ControlBtn'
+import i18n from '@src/i18n'
+import ControlBtn from '@components/TrustedUsers/ControlBtn/ControlBtn'
 
 describe('ControlBtn Component', () => {
   const component = create(
@@ -53,7 +52,6 @@ describe('ControlBtn Component', () => {
   test('When control btn is clicked, dropdown list is shown', () => {
     const button = screen.getByTestId('controlBtn_testId')
     expect(button).toBeInTheDocument()
-
     fireEvent.click(button)
     expect(screen.getByTestId('controlBtn_dropdown_testId')).toBeInTheDocument()
   })

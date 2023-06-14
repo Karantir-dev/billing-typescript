@@ -15,6 +15,7 @@
     min-height: 183px;
     background: var(--forms_bgc_2);
     box-shadow: var(--forms2_shadow);
+    border-radius: 3px;
   }
 
   .line {
@@ -72,7 +73,7 @@
   }
 
   &.selected {
-    padding: 1.7px;
+    padding: 2px;
     box-shadow: var(--forms2_pink_shadow);
     background: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
 

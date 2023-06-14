@@ -13,7 +13,7 @@
   display: flex;
   opacity: 0;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   overflow-y: auto;
   transition: opacity 0.1s ease-in;
   pointer-events: none;
@@ -34,8 +34,8 @@
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--header_shadow);
 }
 
 .btn_wrapper {
@@ -49,8 +49,8 @@
   z-index: 2;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--footer_shadow);
 }
 
 .title_wrapper {
@@ -67,10 +67,9 @@
 .modal {
   position: fixed;
   z-index: 150;
-  border-radius: 5px;
-  background-color: var(--elements-bgc);
-  top: 50px;
-  width: 95%;
+  border-radius: 3px;
+  background-color: var(--main-bgc2);
+  width: calc(100% - 60px);
   transition: transform 0.2s ease-out;
 
   &.active {
@@ -79,7 +78,7 @@
 }
 
 .form {
-  padding: 18px;
+  padding: 20px 18px;
   max-height: 60vh;
   display: grid;
   gap: 15px;
@@ -99,6 +98,15 @@
   }
 }
 
+.field_bg {
+  background-color: var(--forms_bgc_3) !important;
+  box-shadow: var(--forms3_shadow) !important;
+}
+
+.phoneInputButton {
+  background-color: transparent !important;
+}
+
 .required_star {
   color: #d93f21;
   font-size: 20px;
@@ -109,7 +117,6 @@
   padding-bottom: 22px;
   padding-top: 22px;
   display: none;
-
   &.shown {
     display: block;
   }
@@ -219,13 +226,13 @@
 
 @media screen and (min-width: 768px) {
   .modal {
-    width: 473px;
+    width: 390px;
   }
   .form {
-    padding: 29px 78px 31px;
+    padding: 24px 45px 30px;
   }
   .form_title_wrapper {
-    padding: 20px 78px;
+    padding: 15px 30px;
   }
 
   .submit_btn.btn {

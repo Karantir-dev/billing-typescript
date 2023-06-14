@@ -1,12 +1,11 @@
-import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 // import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
-import AccessRightsAlert from '../../Components/TrustedUsers/AccessRightsAlert/AccessRightsAlert'
+import { mockedAxiosInstance } from '@config/axiosInstance'
+import AccessRightsAlert from '@components/TrustedUsers/AccessRightsAlert/AccessRightsAlert'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
@@ -48,11 +47,11 @@ describe('Render AccessRightsAlert', () => {
     expect(rightsAlert).toBeInTheDocument()
   })
 
-  //   test('Close modal window', async () => {
-  //     const user = userEvent.setup()
+  // test('Close modal window', async () => {
+  //   const user = userEvent.setup()
 
-  //     let button = screen.getByTestId('trusted_users_rights_btn')
-  //     await user.click(button)
-  //     expect(screen.queryByTestId('trusted_users_rights_alert')).not.toBeVisible()
-  //   })
+  //   let button = screen.getByTestId('trusted_users_rights_btn')
+  //   await user.click(button)
+  //   expect(screen.queryByTestId('trusted_users_rights_alert')).not.toBeVisible()
+  // })
 })

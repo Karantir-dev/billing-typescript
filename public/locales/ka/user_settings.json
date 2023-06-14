@@ -62,5 +62,43 @@
   "Click \"send confirmation\" for resending": "ხელახლა გასაგზავნად დააწკაპუნეთ \"დადასტურების გაგზავნა\".",
   "Enter your login in the form below": "შეიყვანეთ თქვენი შესვლა ქვემოთ მოცემულ ფორმაში",
   "Write to our bot": "მოგვწერეთ ჩვენს ბოტს",
-  "Confirm your email to activate the functionality": "დაადასტურეთ თქვენი ელფოსტა ფუნქციის გასააქტიურებლად"
+  "Confirm your email to activate the functionality": "დაადასტურეთ თქვენი ელფოსტა ფუნქციის გასააქტიურებლად",
+
+  "Must be a valid phone number": "უნდა იყოს სწორი ტელეფონის ნომერი",
+  "Phone Verification": "ტელეფონის დადასტურება",
+  "Verification method": "გადამოწმების მეთოდი",
+  "SMS": "SMS შეტყობინება კოდით",
+  "Automated call": "ავტოინფორმატორის ზარი",
+
+  "automated_call_text": "განხორციელდება ზარი თქვენ მიერ მითითებულ ნომერზე. დამადასტურებელი კოდის მისაღებად მიჰყევით ავტოინფორმატორის მითითებებს",
+  "sms_text": "თქვენ მიერ მითითებულ ნომერზე გაიგზავნება SMS შეტყობინება, რომელიც შეიცავს დამადასტურებელ კოდს",
+  "GET A CODE": "მიიღეთ კოდი",
+  "You have exceeded the number of allowed phone verification attempts.": "თქვენ გადააჭარბეთ ტელეფონის დადასტურების დაშვებული მცდელობების რაოდენობას.",
+
+  "Contact": "დაუკავშირდით",
+  "the Technical support": "ტექნიკური დახმარების განყოფილებას",
+  "for verification": "გადამოწმებისთვის",
+  "Verification code": "Დამადასტურებელი კოდი",
+  "VERIFY": "გადაამოწმეთ",
+  "CHOOSE": "არჩევა",
+  "Choose an option": "აირჩიეთ ვარიანტი",
+
+  "Get a new verification code": "მიიღეთ ახალი დამადასტურებელი კოდი",
+  "Enter the verification code": "შეიყვანეთ დამადასტურებელი კოდი",
+
+  "code_length": "Არასწორი კოდი",
+  "attempts_to_sent_code": "კოდის გაგზავნის {{count}} მცდელობა გაქვთ",
+
+  "not_receive_confirmation_code_1": "თუ არ მიიღებთ დადასტურების კოდს, გთხოვთ სცადოთ",
+  "not_receive_confirmation_code_2": "ან დაუკავშირდით ჩვენს ტექნიკურ მხარდაჭერას ხელით დადასტურებისთვის",
+
+  "before_verified_number": "შეგიძლიათ შეცვალოთ და დაადასტუროთ ეს ნომერი \"{{btn}}\"-ზე დაწკაპუნებით",
+  "after_verified_number": "თქვენი ძირითადი ტელეფონის ნომრის შესაცვლელად, გთხოვთ, დაუკავშირდეთ ჩვენს ტექნიკურ მხარდაჭერას",
+
+  "Another way": "სხვა გზა",
+  "Verify number": "გადაამოწმეთ ნომერი",
+
+  "Main number": "მთავარი ნომერი",
+  "verification_code_timeout": "დადასტურების კოდის ხელახლა გაგზავნა შესაძლებელია {{time}} წამში",
+  "geo_ip_info": "GeoIP მოდული განსაზღვრავს ქვეყანას, საიდანაც მომხმარებელი შედის BILLmanager-ში. როდესაც ის შედის სხვა ქვეყნიდან, BILLmanager აგზავნის შესაბამის შეტყობინებას და ითხოვს შესვლის მცდელობის დადასტურებას."
 }

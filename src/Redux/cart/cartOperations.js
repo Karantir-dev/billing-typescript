@@ -1,15 +1,15 @@
 import qs from 'qs'
-import i18n from './../../i18n'
+import i18n from '@src/i18n'
 import {
   actions,
   cartActions,
   billingOperations,
   userOperations,
   billingActions,
-} from '..'
-import { axiosInstance } from '../../config/axiosInstance'
+} from '@redux'
+import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies } from '../../utils'
+import { checkIfTokenAlive, cookies } from '@utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -324,6 +324,7 @@ const setPaymentMethods =
                   const ecommerceData = {
                     event: 'purchase',
                     ecommerce: {
+                      payment_type: cartData?.payment_name,
                       transaction_id: data.doc?.payment_id?.$,
                       affiliation: 'cp.zomro.com',
                       value: Number(cartData?.total_sum) || 0,

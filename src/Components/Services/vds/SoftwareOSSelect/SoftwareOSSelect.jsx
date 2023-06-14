@@ -1,13 +1,13 @@
 import cn from 'classnames'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Shevron } from '../../../../images'
-import { selectors } from '../../../../Redux'
-import { useOutsideAlerter } from '../../../../utils'
+import { Shevron } from '@images'
+import { selectors } from '@redux'
+import { useOutsideAlerter } from '@utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
-import { SOFTWARE_ICONS_LIST } from '../../../../utils/constants'
+import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
 export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
   const dropdown = useRef(null)
@@ -27,19 +27,19 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
 
   const renderImg = () => {
     if (inList) {
-      return require(`../../../../images/soft_os/${
+      return require(`@images/soft_os/${
         darkTheme ? iconName + '_dt' : iconName
       }.png`)
     }
 
-    return require(`../../../../images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
         <img
-          className={cn(s.img, { [s.notInList]: !inList })}
+          className={cn(s.img)}
           src={renderImg()}
           alt="icon"
         />
@@ -62,7 +62,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
                   role="button"
                 >
                   <img
-                    className={cn(s.img, s.left, s.grey, { [s.notInList]: !inList })}
+                    className={cn(s.img, s.left, s.grey)}
                     src={renderImg()}
                     alt="icon"
                   />

@@ -4,7 +4,6 @@
 }
 .content {
   width: 100%;
-  max-width: 1384px;
 }
 
 .pageTitle {
@@ -28,19 +27,12 @@
   margin-top: 31px;
 }
 
+.pagination_item {
+  background: var(--forms_bgc_1) !important;
+  box-shadow: var(--forms3_shadow) !important;
+}
+
 // ADAPTIVE
-
-@media screen and (max-width: 1700px) {
-  .content {
-    max-width: 1060px;
-  }
-}
-
-@media screen and (max-width: 1300px) {
-  .content {
-    max-width: 850px;
-  }
-}
 
 @media screen and (max-width: 1077px) {
   .pageTitle {

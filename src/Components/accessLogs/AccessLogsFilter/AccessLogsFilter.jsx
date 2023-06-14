@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { accessLogsOperations, accessLogsSelectors } from '../../../Redux'
+import { useState, useRef, useEffect } from 'react'
+import { accessLogsOperations, accessLogsSelectors } from '@redux'
 import PropTypes from 'prop-types'
 // import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -14,6 +14,7 @@ import {
   Button,
 } from '../..'
 import s from '../AccessLogsComponents.module.scss'
+import cn from 'classnames'
 
 export default function Component({ setCurrentPage, p_cnt }) {
   const { t } = useTranslation(['access_log', 'other'])
@@ -136,6 +137,7 @@ export default function Component({ setCurrentPage, p_cnt }) {
                 className={s.searchInput}
                 error={!!errors.email}
                 touched={!!touched.email}
+                inputClassName={s.field_bg}
               />
               <div className={s.selectAndBtn}>
                 <Select
@@ -153,7 +155,7 @@ export default function Component({ setCurrentPage, p_cnt }) {
                     })
                     .filter(e => e !== undefined)}
                   className={s.select}
-                  inputClassName={s.inputClassName}
+                  inputClassName={cn(s.inputClassName, s.field_bg)}
                   dropdownClass={s.dropdownClass}
                 />
                 {/* <div className={s.calendarBlock}>

@@ -1,12 +1,11 @@
-import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { AboutAffiliateProgram } from '../../Pages'
+import { AboutAffiliateProgram } from '@pages'
 import { Context as ResponsiveContext } from 'react-responsive'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import { mockedAxiosInstance } from '@config/axiosInstance'
 import userEvent from '@testing-library/user-event'
 
 jest.mock('react-i18next', () => ({
@@ -42,7 +41,6 @@ describe('AboutAffiliateProgram Page jsx', () => {
 
   test('descktop render without btn_more and mobile banner', () => {
     renderComponent(1920)
-
     expect(screen.getByTestId('descktop_banner')).toBeInTheDocument()
     expect(screen.queryByText('read_more')).toBeNull()
     expect(screen.queryByTestId('mobile_banner')).toBeNull()

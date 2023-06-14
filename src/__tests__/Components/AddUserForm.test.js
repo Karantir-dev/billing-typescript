@@ -1,13 +1,12 @@
-import React from 'react'
 import { create } from 'react-test-renderer'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import { Button } from '../../Components'
+import { Button } from '@components'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import entireStore from '../../Redux/store'
-import ManageUserForm from '../../Components/TrustedUsers/ManageUserForm/ManageUserForm'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import entireStore from '@redux/store'
+import ManageUserForm from '@components/TrustedUsers/ManageUserForm/ManageUserForm'
+import { mockedAxiosInstance } from '@config/axiosInstance'
 
 jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },

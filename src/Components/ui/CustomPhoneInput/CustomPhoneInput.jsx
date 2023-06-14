@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
@@ -8,7 +8,7 @@ import { ErrorMessage } from 'formik'
 import i18n from 'i18next'
 
 import { returnLanguage } from './langimport'
-import { selectors } from '../../../Redux'
+import { selectors } from '@redux'
 
 import s from './CustomPhoneInput.module.scss'
 
@@ -19,10 +19,13 @@ export default function CustomPhoneInput(props) {
     label,
     name,
     labelClass,
+    containerClass,
     wrapperClass,
     inputClass,
     userId,
     isRequired,
+    buttonClass,
+    setCountryCode,
     ...restProps
   } = props
 
@@ -30,7 +33,8 @@ export default function CustomPhoneInput(props) {
 
   const lang = returnLanguage(i18n.language === 'en' ? 'es' : i18n.language)
 
-  const onValueChange = value => {
+  const onValueChange = (value, data) => {
+    setCountryCode && setCountryCode(data?.countryCode)
     setFieldValue(userId ? 'phone' + userId : name, value)
   }
 
@@ -44,13 +48,13 @@ export default function CustomPhoneInput(props) {
         {isRequired ? requiredLabel(label) : label}
       </p>
       <PhoneInput
-        country={'ua'}
+        country={'us'}
         localization={lang}
         onChange={onValueChange}
         onBlur={handleBlur}
         name={name}
         className={s.field_input}
-        containerClass={s.lang_container}
+        containerClass={cn(s.lang_container, containerClass)}
         inputClass={cn({
           [s.react_phone_input]: true,
           [s.lang]: true,
@@ -62,6 +66,7 @@ export default function CustomPhoneInput(props) {
           [s.extra_style]: true,
           [s.opened]: true,
           [s.lightTheme]: !darkTheme,
+          [buttonClass]: buttonClass,
         })}
         dropdownClass={cn({
           [s.drop_down]: true,

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
 import { useDispatch } from 'react-redux'
 
-import { affiliateOperations } from '../../../Redux'
+import { affiliateOperations } from '@redux'
 import {
   Button,
   CalendarModal,
@@ -12,8 +12,8 @@ import {
   Select,
   IncomeTable,
   IncomeChart,
-} from '../../../Components'
-import { useOutsideAlerter } from '../../../utils'
+} from '@components'
+import { useOutsideAlerter } from '@utils'
 import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
 

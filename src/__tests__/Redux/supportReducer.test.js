@@ -1,4 +1,4 @@
-import { supportReducer, supportActions } from '../../Redux'
+import { supportReducer, supportActions } from '@redux'
 
 describe('support reducers', () => {
   test('GET TICKET LIST', () => {
@@ -307,11 +307,9 @@ describe('support reducers', () => {
       ticket: null,
       departmentsList: [],
       serviceList: [],
-
       abuseFilterList: [],
       tstatusFilterList: [],
       timeFilterList: [],
-
       currentFilters: { value: '1', label: 'test' },
     })
   })

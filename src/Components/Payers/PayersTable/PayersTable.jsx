@@ -1,4 +1,3 @@
-import React from 'react'
 import PayersTableItem from './PayersTableItem'
 import PropTypes from 'prop-types'
 import cn from 'classnames'

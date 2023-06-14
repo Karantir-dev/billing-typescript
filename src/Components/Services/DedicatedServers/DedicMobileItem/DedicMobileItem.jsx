@@ -1,23 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Clock,
-  MoreDots,
-  Edit,
-  Reload,
-  Refund,
-  IP,
-  Info,
-  ExitSign,
-} from '../../../../images'
-import { useOutsideAlerter } from '../../../../utils'
+import { Clock, MoreDots, Edit, Reload, Refund, IP, Info, ExitSign } from '@images'
+import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
-
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, EditCell, ServerState } from '../../../'
+import { CheckBox, EditCell, ServerState } from '@components'
 import { useNavigate } from 'react-router-dom'
-import * as route from '../../../../routes'
-import { dedicOperations } from '../../../../Redux'
+import * as route from '@src/routes'
+import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
 

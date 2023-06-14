@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
-import { IconButton, StatisticsFilterModal, Pagination } from '../../../Components'
-import { actions, affiliateOperations, usersOperations } from '../../../Redux'
-import { Check } from '../../../images'
+import { IconButton, StatisticsFilterModal, Pagination } from '@components'
+import { actions, affiliateOperations, usersOperations } from '@redux'
+import { Check } from '@images'
 
 import s from './AffiliateProgramStatistics.module.scss'
 
@@ -112,9 +112,7 @@ export default function AffiliateProgramStatistics() {
           <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
           <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
           <span className={s.table_head}>{t('statistics_section.client')}:</span>
-          <span className={cn(s.table_head, s.centered)}>
-            {t('statistics_section.payment')}:
-          </span>
+          <span className={s.table_head}>{t('statistics_section.payment')}:</span>
         </div>
       )}
       {items.length === 0 && (
@@ -148,9 +146,7 @@ export default function AffiliateProgramStatistics() {
                 {payed?.$ === 'on' ? (
                   <Check className={s.icon_check} />
                 ) : (
-                  <span className={cn(s.stub, s.centered)}>
-                    {t('statistics_section.not_paid')}
-                  </span>
+                  <span className={s.stub}>{t('statistics_section.not_paid')}</span>
                 )}
               </span>
             </li>

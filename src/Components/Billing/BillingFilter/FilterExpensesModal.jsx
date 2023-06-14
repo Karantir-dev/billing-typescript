@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import cn from 'classnames'
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
 import { InputField, Select, IconButton, CalendarModal, Button } from '../..'
-import { billingSelectors } from '../../../Redux'
+import { billingSelectors } from '@redux'
 import s from './BillingFilter.module.scss'
-import { Cross } from '../../../images'
+import { Cross } from '@images'
 
 export default function Component(props) {
   const { setFilterModal, filterModal, filterHandler, resetFilterHandler } = props

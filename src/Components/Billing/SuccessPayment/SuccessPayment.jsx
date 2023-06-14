@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { SuccessPay } from '../../../images'
-import { SITE_URL } from '../../../config/config'
-import { cookies, parseLang } from '../../../utils'
+import { SuccessPay } from '@images'
+import { SITE_URL } from '@config/config'
+import { cookies, parseLang } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { billingOperations, billingSelectors } from '../../../Redux'
-import { AuthPageHeader } from '../../../Pages'
-import * as routes from '../../../routes'
+import { billingOperations, billingSelectors } from '@redux'
+import { AuthPageHeader } from '@pages'
+import * as routes from '@src/routes'
 import s from './SuccessPayment.module.scss'
 
 export default function Component() {
@@ -74,6 +74,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
@@ -95,6 +96,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
@@ -124,6 +126,7 @@ export default function Component() {
           ecommerce = {
             event: 'purchase',
             ecommerce: {
+              payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,

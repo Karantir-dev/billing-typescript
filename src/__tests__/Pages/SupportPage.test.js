@@ -1,14 +1,13 @@
-import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import { Route, MemoryRouter, Routes } from 'react-router-dom'
 import OpenedTicket from '../../Pages/SupportPage/OpenedTicket/OpenedTicket'
-import { SupportTable, SupportArchiveTable, SendMessageForm } from '../../Components'
+import { SupportTable, SupportArchiveTable, SendMessageForm } from '@components'
 import * as redux from 'react-redux'
-import entireStore from '../../Redux/store'
+import entireStore from '@redux/store'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
-import { mockedAxiosInstance } from '../../config/axiosInstance'
+import { mockedAxiosInstance } from '@config/axiosInstance'
 
 jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
@@ -165,13 +164,9 @@ describe('Send message form', () => {
   test('render support requests', async () => {
     renderComponent('requests')
     const user = userEvent.setup()
-
     let message = screen.getByTestId('input_message')
-
     await user.type(message, 'test123243')
-
     await user.click(screen.getByTestId('btn_form_submit'))
-
     expect(message.value).toMatch('')
   })
 })

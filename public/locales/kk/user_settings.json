@@ -63,5 +63,43 @@
   "Click \"send confirmation\" for resending": "Қайта жіберу үшін \"растауды жіберу\" түймесін басыңыз",
   "Enter your login in the form below": "Төмендегі пішінге логиніңізді енгізіңіз",
   "Write to our bot": "Біздің ботқа жазыңыз",
-  "Confirm your email to activate the functionality": "Функцияны белсендіру үшін электрондық поштаңызды растаңыз"
+  "Confirm your email to activate the functionality": "Функцияны белсендіру үшін электрондық поштаңызды растаңыз",
+
+  "Must be a valid phone number": "Жарамды телефон нөмірі болуы керек",
+  "Phone Verification": "Телефонды растау",
+  "Verification method": "Тексеру әдісі",
+  "SMS": "Коды бар SMS хабарлама",
+  "Automated call": "Автоинформаторға қоңырау шалу",
+
+  "automated_call_text": "Сіз көрсеткен нөмірге қоңырау шалылады. Растау кодын алу үшін автоинформатордың нұсқауларын орындаңыз",
+  "sms_text": "Сіз көрсеткен нөмірге растау коды бар SMS хабарлама жіберіледі",
+  "GET A CODE": "КОД АЛУ",
+
+  "You have exceeded the number of allowed phone verification attempts.": "Сіз телефон арқылы растау әрекеттерінің рұқсат етілген санынан асып кеттіңіз.",
+
+  "Contact": "Байланыс",
+  "the Technical support": "техникалық қамтамасыз ету бөлімі",
+  "for verification": "тексеру үшін",
+  "Verification code": "Тексеру коды",
+  "VERIFY": "ТЕКСЕРУ",
+  "CHOOSE": "ТАҢДАУ",
+  "Choose an option": "Опцияны таңдаңыз",
+
+  "Get a new verification code": "Жаңа растау кодын алыңыз",
+  "Enter the verification code": "Тексеру кодын енгізіңіз",
+
+  "code_length": "Жарамсыз код",
+  "attempts_to_sent_code": "Сізде кодты жіберуге {{count}} әрекет жасалды",
+
+  "not_receive_confirmation_code_1": "Егер растау кодын алмасаңыз,",
+  "not_receive_confirmation_code_2": "қолданып көріңіз немесе қолмен растау үшін техникалық қолдау қызметіне хабарласыңыз.",
+  "Another way": "Басқа жол",
+
+  "before_verified_number": "Бұл нөмірді \"{{btn}}\" түймесін басу арқылы өзгертуге және растауға болады",
+  "after_verified_number": "Негізгі телефон нөміріңізді өзгерту үшін техникалық қолдау көрсету орталығына хабарласыңыз",
+
+  "Verify number": "Нөмірді растау",
+  "Main number": "Негізгі сан",
+  "verification_code_timeout": "Растау кодын {{time}} секундтан кейін қайта жіберуге болады",
+  "geo_ip_info": "GeoIP модулі пайдаланушы BILLmanager жүйесіне кіретін елді анықтайды. Ол басқа елден кіргенде, BILLmanager сәйкес хабарландыруды жібереді және кіру әрекетін растауды сұрайды."
 }

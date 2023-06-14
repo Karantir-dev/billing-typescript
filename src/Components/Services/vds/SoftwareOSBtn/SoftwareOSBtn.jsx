@@ -1,10 +1,10 @@
 import cn from 'classnames'
-import React from 'react'
+
 import { useSelector } from 'react-redux'
-import { selectors } from '../../../../Redux'
+import { selectors } from '@redux'
 
 import s from './SoftwareOSBtn.module.scss'
-import { SOFTWARE_ICONS_LIST } from '../../../../utils/constants'
+import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
 export default function SoftwareOSBtn({ iconName, label, value, state, onClick }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -13,21 +13,19 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
 
   const renderImg = () => {
     if (inList) {
-      return require(`../../../../images/soft_os/${
+      return require(`@images/soft_os/${
         darkTheme ? iconName + '_dt' : iconName
       }.png`)
     }
 
-    return require(`../../../../images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
   return (
     <div className={cn(s.bg, { [s.selected]: value === state })}>
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         <img
-          className={cn(s.img, `${iconName === 'null' ? s.without : ''}`, {
-            [s.notInList]: !inList,
-          })}
+          className={cn(s.img, `${iconName === 'null' ? s.without : ''}`)}
           src={renderImg()}
           alt="icon"
         />

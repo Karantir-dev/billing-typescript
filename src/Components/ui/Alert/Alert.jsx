@@ -1,9 +1,8 @@
 import cn from 'classnames'
-import React, { useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import { useOutsideAlerter } from '../../../utils'
+import { useOutsideAlerter } from '@utils'
 
 import s from './Alert.module.scss'
 
@@ -15,7 +14,6 @@ export default function Alert({
   controlAlert,
   dataTestid,
 }) {
-  const { t } = useTranslation('trusted_users')
   const getAlerEl = useRef()
 
   useOutsideAlerter(getAlerEl, isOpened, controlAlert)
@@ -35,13 +33,7 @@ export default function Alert({
             <p className={s.alert_text}>{text}</p>
           </div>
 
-          <div className={s.control_btns_container}>
-            {mainBtn}
-
-            <button className={s.cancel_btn} onClick={controlAlert}>
-              {t('trusted_users.alerts.remove.btn_text_cancel')}
-            </button>
-          </div>
+          <div className={s.control_btns_container}>{mainBtn}</div>
         </div>
       </div>
     </>
