@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import { authOperations } from '@redux'
-import { SelectOfCountries, InputField, Button, LoginBtnBlock } from '@components'
+import { SelectOfCountries, InputField, Button, LoginBtnBlock, LoaderDots } from '@components'
 import * as routes from '@src/routes'
 import { Facebook, Google, Vk } from '@images'
 import {
@@ -243,11 +243,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
               {!isCaptchaLoaded && (
                 <div className={s.loaderBlock}>
-                  <div className={s.loader}>
-                    <div className={`${s.loader_circle} ${s.first}`}></div>
-                    <div className={`${s.loader_circle} ${s.second}`}></div>
-                    <div className={s.loader_circle}></div>
-                  </div>
+                  <LoaderDots classname={s.loader} />
                 </div>
               )}
 

@@ -46,6 +46,7 @@ export { default as Pagination } from './ui/Pagination/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'
+export { default as LoaderDots } from './ui/LoaderDots/LoaderDots'
 
 export { default as CheckBox } from './ui/CheckBox/CheckBox'
 export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'

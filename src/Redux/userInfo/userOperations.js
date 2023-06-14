@@ -33,8 +33,9 @@ const userTickets = (data, dispatch) => {
   dispatch(userActions.setTickets(elem))
 }
 
-const userNotifications = (data, dispatch) => {
+const userNotifications = (data, dispatch, setIsLoader) => {
   const d = {}
+  const messagesIds = []
 
   if (Array.isArray(data?.doc?.notify?.item)) {
     data?.doc?.notify?.item.forEach(el => {
@@ -50,6 +51,22 @@ const userNotifications = (data, dispatch) => {
       }
     })
   }
+
+  if (d?.messages) {
+    d?.messages?.forEach(e => messagesIds?.push(e?.$id))
+  }
+
+  setIsLoader &&
+    setIsLoader(loaders => {
+      const newArr = []
+      loaders?.forEach(l => {
+        if (messagesIds.indexOf(l) != -1) {
+          newArr?.push(l)
+        }
+      })
+
+      return newArr
+    })
 
   dispatch(userActions.setItems(d))
 }
@@ -206,7 +223,7 @@ const getDashboardTickets = () => (dispatch, getState) => {
     })
 }
 
-const getNotify = () => (dispatch, getState) => {
+const getNotify = setIsLoader => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -224,7 +241,7 @@ const getNotify = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      userNotifications(data, dispatch)
+      userNotifications(data, dispatch, setIsLoader)
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)

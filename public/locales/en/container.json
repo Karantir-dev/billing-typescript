@@ -61,7 +61,7 @@
     "has been prolonged": "has been prolonged",
     "is ready for use": "is ready for use"
   },
-  "clear_all": "Clear all",
+  "clear_all": "Clear {{num}} notifications",
   "Service is ready for use": "Service '{{value}}' is ready for use",
   "Service has been deleted": "Service '{{value}}' has been deleted",
   "Service has been suspended": "Service '{{value}}' has been suspended",

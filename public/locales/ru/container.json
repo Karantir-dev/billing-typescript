@@ -61,7 +61,7 @@
     "has been prolonged": "продлена",
     "is ready for use": "готова к использованию"
   },
-  "clear_all": "Очистить все",
+  "clear_all": "Очистить {{num}} уведомлений",
   "Service is ready for use": "Услуга '{{value}}' готова к использованию",
   "Service has been deleted": "Услуга '{{value}}' удалена",
   "Service has been suspended": "Услуга '{{value}}' приостановлена",

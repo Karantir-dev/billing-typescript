@@ -1,6 +1,7 @@
 import s from './Button.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
+import { LoaderDots } from '@components'
 
 export default function Component(props) {
   const {
@@ -33,11 +34,7 @@ export default function Component(props) {
       onClick={onClick}
     >
       {loading ? (
-        <div className={s.loader}>
-          <div className={cn(s.loader_circle, s.first)}></div>
-          <div className={cn(s.loader_circle, s.second)}></div>
-          <div className={s.loader_circle}></div>
-        </div>
+        <LoaderDots classname={s.loader} />
       ) : (
         <span className={s.btn_text}>{label}</span>
       )}
