@@ -73,6 +73,7 @@
   "automated_call_text": "A call will be made to the number you specified. To receive a verification code, follow the instructions of the auto informant",
   "sms_text": "An SMS message containing a verification code will be sent to the number you specified",
   "GET A CODE": "GET A CODE",
+  "SET A PHONE": "SET A PHONE",
 
   "You have exceeded the number of allowed phone verification attempts.": "You have exceeded the number of allowed phone verification attempts.",
 
