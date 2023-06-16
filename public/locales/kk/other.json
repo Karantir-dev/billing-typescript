@@ -254,6 +254,7 @@
   "certificate_not_exist": "Сертификат жоқ",
   "certificate_matches_error": "Тек әріптер мен үлкен әріптер қолданылуы мүмкін",
   "certificate_applied_success": "Сертификат сәтті түрде қолданылды",
+
   "payment_processed": "Төлеміңіз өңделуде, күйді бөлімде тексеруге болады",
   "Finance/Accounts": "Қаржы/Шот"
 }
