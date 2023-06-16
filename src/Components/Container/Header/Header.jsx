@@ -120,6 +120,9 @@ export default function Header() {
     return Math.trunc(num * calcDec) / calcDec
   }
 
+  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
+  const closeCertificateModal = () => setIsUseCertificate(false)
+
   return (
     <>
       <header className={s.main_header}>
@@ -145,7 +148,9 @@ export default function Header() {
                       {/* {t('balance')}{' '} */}
                       <WalletBalance />
                       <span className={s.balance_sum}>
-                        {$balance && truncateToDecimals($balance, 2)?.toFixed(2)}
+                        {userItems?.$balance
+                          ? truncateToDecimals(userBalance, 2)?.toFixed(2)
+                          : $balance && truncateToDecimals($balance, 2)?.toFixed(2)}
                         EUR
                       </span>
                     </div>
@@ -332,9 +337,7 @@ export default function Header() {
         {createPaymentModal && (
           <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
         )}
-        {isUseCertificate && (
-          <CertificateModal closeModal={() => setIsUseCertificate(false)} />
-        )}
+        {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
       </Portal>
     </>
   )

@@ -12,6 +12,7 @@ import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '@utils'
+import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
   (body = {}) =>
@@ -1179,6 +1180,20 @@ const useCertificate =
             }),
           )
           .then(response => dispatch(userActions.setUserInfo(response.data.doc.user)))
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'notify',
+              out: 'json',
+              lang: 'en',
+              auth: sessionId,
+            }),
+          )
+          .then(response => {
+            userNotifications(response.data, dispatch)
+          })
 
         toast.success(
           i18n.t('certificate_applied_success', {
