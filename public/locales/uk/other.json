@@ -126,6 +126,7 @@
   "FTP server": "FTP-сервер",
 
   "Trial": "Пробний",
+  "Trial period": "10 днів",
   "Month": "Місяць",
   "Three months": "Три місяці",
   "Half a year": "Півроку",
@@ -255,5 +256,7 @@
   "enter_certificate_code": "Введіть код сертифіката",
   "certificate_not_exist": "Сертифікат не існує",
   "certificate_matches_error": "Дозволяються лише цифри та великі літери",
-  "certificate_applied_success": "Сертифікат успішно застосований"
+  "certificate_applied_success": "Сертифікат успішно застосований",
+  "payment_processed": "Ваш платіж в обробці, перевірити статус ви можете у розділі",
+  "Finance/Accounts": "Фінанси/Рахунки"
 }

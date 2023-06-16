@@ -162,6 +162,12 @@ const BillingPage = lazy(() =>
   import(/* webpackChunkName: "BillingPage" */ '@pages/BillingPage/BillingPage'),
 )
 
+const PaymentProcessingPage = lazy(() =>
+  import(
+    /* webpackChunkName: "PaymentProcessingPage" */ '@pages/PaymentProcessingPage/PaymentProcessingPage'
+  ),
+)
+
 const ShellСomponent = props => {
   const { children, title } = props
 
@@ -619,6 +625,16 @@ export const BillingPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <BillingPage />
+    </ShellСomponent>
+  )
+}
+
+export const PaymentProcessingPageLazy = () => {
+  const title = [{ value: 'Payment processing', ns: 'container' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <PaymentProcessingPage />
     </ShellСomponent>
   )
 }

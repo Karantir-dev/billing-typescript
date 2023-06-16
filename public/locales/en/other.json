@@ -127,6 +127,7 @@
   "FTP server": "FTP-server",
 
   "Trial": "Trial",
+  "Trial period": "10 days",
   "Month": "Month",
   "Three months": "Three months",
   "Half a year": "Half a year",
@@ -253,5 +254,7 @@
   "enter_certificate_code": "Enter certificate code",
   "certificate_not_exist": "The certificate does not exist",
   "certificate_matches_error": "Only digits and uppercase letters are allowed",
-  "certificate_applied_success": "The certificate has been successfully applied"
+  "certificate_applied_success": "The certificate has been successfully applied",
+  "payment_processed": "Your payment is being processed, you can check the status in the section",
+  "Finance/Accounts": "Finance/Accounts"
 }

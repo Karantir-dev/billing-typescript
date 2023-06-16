@@ -6,6 +6,6 @@ export default function translatePeriodToMonths(count) {
   if (count === '1') return t('month count 1')
   if (count === '3' || count === '24') return t('month count 3/24')
   if (count === '6' || count === '12' || count === '36') return t('month count 6/12/36')
-
+  if (count === '-100') return t('Trial')
   return ''
 }

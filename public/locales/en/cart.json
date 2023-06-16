@@ -26,6 +26,7 @@
   "Late fee": "Late fee",
   "order_amount_is_less": "Order amount is less than minimum payment amount for the selected payment methods. You can add the minimum amount of funds and pay for order using funds on your account",
   "Tax included": "Tax included",
+  "Tax": "Tax amount",
   "Gift": "Gift",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code",
   "can be used only once": "can be used only once",

@@ -126,6 +126,7 @@
   "FTP server": "FTP сервері",
 
   "Trial": "Сынақ",
+  "Trial period": "10 күн",
   "Month": "Ай",
   "Three months": "Үш ай",
   "Half a year": "Жарты жыл",
@@ -252,5 +253,7 @@
   "enter_certificate_code": "Сертификат кодын енгізіңіз",
   "certificate_not_exist": "Сертификат жоқ",
   "certificate_matches_error": "Тек әріптер мен үлкен әріптер қолданылуы мүмкін",
-  "certificate_applied_success": "Сертификат сәтті түрде қолданылды"
+  "certificate_applied_success": "Сертификат сәтті түрде қолданылды",
+  "payment_processed": "Төлеміңіз өңделуде, күйді бөлімде тексеруге болады",
+  "Finance/Accounts": "Қаржы/Шот"
 }

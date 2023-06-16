@@ -71,7 +71,7 @@ export default function Component() {
 
   const validationSchema = Yup.object().shape({
     phone:
-      isFirst || notHaveNumber
+      !isCodeStep && countryCode
         ? Yup.string().phone(countryCode, false, t('Must be a valid phone number'))
         : null,
     code: isCodeStep

@@ -78,5 +78,6 @@
   "Name servers for have been successfully changed": "სახელის სერვერები '{{value}}'-ისთვის წარმატებით შეიცვალა",
   "Check parameters and repeat the operation": "შეამოწმეთ პარამეტრები და გაიმეორეთ ოპერაცია",
   "Error in domain contacts for the service": "შეცდომა დომენის კონტაქტებში სერვისისთვის '{{value}}'.",
+  "Payment processing": "გადახდის დამუშავება",
   "Payment method saved": "გადახდის მეთოდი შენახულია"
 }

@@ -19,14 +19,16 @@
 }
 
 .history_modal {
+  display: flex;
+  flex-direction: column;
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
   margin: 20px auto;
   width: 95%;
-  max-height: 90vh;
+  height: 90vh;
   overflow-y: hidden;
-  position: 'relative';
+  position: relative;
 }
 
 .head_row {
@@ -57,34 +59,17 @@
 }
 
 .modal_body {
-  // overflow-y: auto;
-  // max-height: 60vh;
-  // position: relative;
+  flex-grow: 1;
   border-radius: 5px;
-  padding: 15px 21px;
-
-  // overflow-y: auto;
-  // -webkit-overflow-scrolling: touch;
-
-  // &::-webkit-scrollbar {
-  //   width: 5px;
-  // }
-
-  // &::-webkit-scrollbar-track {
-  //   background: rgba(161, 161, 161, 23%);
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background: #e72690;
-  // }
+  padding: 0 21px;
+  overflow: hidden;
 }
 
 .list {
-  min-height: 400px;
-  max-height: 400px;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 5px;
+  padding: 20px 5px;
   display: flex;
   flex-wrap: wrap;
 
@@ -101,6 +86,11 @@
 
   &::-webkit-scrollbar-thumb {
     background: #e72690;
+  }
+
+  &::-webkit-scrollbar-button:start,
+  &::-webkit-scrollbar-button:end {
+    height: 10px;
   }
 }
 

@@ -126,6 +126,7 @@
   "FTP server": "FTP-сервер",
 
   "Trial": "Пробный",
+  "Trial period": "10 дней",
   "Month": "Месяц",
   "Three months": "Три месяца",
   "Half a year": "Пол года",
@@ -251,5 +252,7 @@
   "enter_certificate_code": "Введите код сертификата",
   "certificate_not_exist": "Сертификат не существует",
   "certificate_matches_error": "Допускаются только цифры и заглавные буквы",
-  "certificate_applied_success": "Сертификат успешно применен"
+  "certificate_applied_success": "Сертификат успешно применен",
+  "payment_processed": "Ваш платеж в обработке, проверить статус вы можете в разделе",
+  "Finance/Accounts": "Финансы/Счета"
 }
