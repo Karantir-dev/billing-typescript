@@ -10,7 +10,7 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   Icon
-} from '../..'
+} from '@components'
 import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'

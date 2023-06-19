@@ -1,6 +1,6 @@
 import DomainsHistoryItem from './DomainsHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Pagination, Icon } from '../../..'
+import { Pagination, Icon } from '@components'
 import cn from 'classnames'
 import s from './DomainsHistoryModal.module.scss'
 

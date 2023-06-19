@@ -1,7 +1,7 @@
 import cn from 'classnames'
 
 import { useTranslation } from 'react-i18next'
-import { HintWrapper, Icon } from '../../../'
+import { HintWrapper, Icon } from '@components'
 import PropTypes from 'prop-types'
 
 import s from './ServerState.module.scss'

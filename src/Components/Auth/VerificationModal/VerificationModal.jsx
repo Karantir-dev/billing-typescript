@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Button, Icon } from '../../'
+import { Button, Icon } from '@components'
 import { authSelectors, authActions, authOperations } from '@redux'
 
 import s from './VerificationModal.module.scss'

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '../../..'
+import { Button, Icon } from '@components'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'

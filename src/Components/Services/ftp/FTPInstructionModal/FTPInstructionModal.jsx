@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Icon } from '@components'
+import { Icon, Loader } from '@components'
 import { ftpOperations } from '@redux'
-
-import Loader from '../../../ui/Loader/Loader'
 
 import s from './FTPInstructionModal.module.scss'
 

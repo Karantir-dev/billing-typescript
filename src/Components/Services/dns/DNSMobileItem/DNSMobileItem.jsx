@@ -4,7 +4,7 @@ import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
 import s from './DNSMobileItem.module.scss'
-import { CheckBox, ServerState, Icon } from '../../..'
+import { CheckBox, ServerState, Icon } from '@components'
 
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'

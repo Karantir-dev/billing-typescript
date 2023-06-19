@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CSSTransition } from 'react-transition-group'
-import { Button, Select, CalendarModal, IconButton, InputField, Icon } from '../..'
+import { Button, Select, CalendarModal, IconButton, InputField, Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 
 import animations from './animations.module.scss'

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '../../..'
+import { Button, Icon } from '@components'
 import s from './ForexDeletionModal.module.scss'
 import { useDispatch } from 'react-redux'
 import { forexOperations } from '@redux'

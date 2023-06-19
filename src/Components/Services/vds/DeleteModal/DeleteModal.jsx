@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '../../../'
+import { Button, Icon } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 

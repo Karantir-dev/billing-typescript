@@ -12,7 +12,7 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   Icon,
-} from '../..'
+} from '@components'
 import {
   billingOperations,
   billingSelectors,

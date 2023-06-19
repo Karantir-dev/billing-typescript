@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'react-i18next'
-import { InputField, Button, Icon } from '../..'
+import { InputField, Button, Icon } from '@components'
 import {
   settingsActions,
   settingsOperations,

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Select, Button, InputField, Icon } from '../../..'
+import { Select, Button, InputField, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import { translatePeriod } from '@utils'
 import s from './VpnEditModal.module.scss'

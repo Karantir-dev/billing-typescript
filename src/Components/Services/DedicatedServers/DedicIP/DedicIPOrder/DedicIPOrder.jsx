@@ -5,7 +5,7 @@ import { dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
-import { Button, InputField, Select, Icon } from '../../../..'
+import { Button, InputField, Select, Icon } from '@components'
 import { useLocation } from 'react-router-dom'
 import s from './DedicIPOrder.module.scss'
 

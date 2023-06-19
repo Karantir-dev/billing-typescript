@@ -13,7 +13,7 @@ import {
   Button,
   SelectMultiple,
   Icon,
-} from '../..'
+} from '@components'
 import { supportSelectors } from '@redux'
 import s from './SupportFilter.module.scss'
 

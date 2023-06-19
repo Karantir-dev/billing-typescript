@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
-import { Button, Select, Icon } from '../../..'
+import { Button, Select, Icon } from '@components'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'

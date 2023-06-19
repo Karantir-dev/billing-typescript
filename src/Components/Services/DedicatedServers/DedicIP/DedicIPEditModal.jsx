@@ -5,9 +5,8 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './DedicIPEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
 
-import { Button, Icon } from '../../..'
+import { Button, Icon, InputField } from '@components'
 import { useLocation } from 'react-router-dom'
 import { dedicOperations } from '@redux'
 
@@ -49,7 +48,13 @@ export default function DedicIPEditModal({ elid, closeFn }) {
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.ip_id}>{initialState?.domain_name?.$}</span>
         </div>
-        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+        <Icon
+          name="Cross"
+          className={s.icon_cross}
+          onClick={closeFn}
+          width={17}
+          height={17}
+        />
       </div>
 
       <Formik

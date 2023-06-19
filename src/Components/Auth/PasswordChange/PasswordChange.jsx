@@ -8,7 +8,7 @@ import { authOperations } from '@redux'
 import * as routes from '@src/routes'
 
 import s from './PasswordChange.module.scss'
-import { InputField, Button } from '../..'
+import { InputField, Button } from '@components'
 
 export default function PasswordChange() {
   const { t } = useTranslation('auth')

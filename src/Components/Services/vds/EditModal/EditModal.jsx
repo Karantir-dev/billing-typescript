@@ -6,8 +6,7 @@ import { Formik, Form } from 'formik'
 import cn from 'classnames'
 
 import s from './EditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import { Select, Button, Icon } from '../../..'
+import { Select, Button, Icon, InputField } from '@components'
 
 export default function EditModal({ elid, closeFn, getVDSHandler }) {
   const { t } = useTranslation(['vds', 'other', 'billing'])
@@ -301,7 +300,8 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                   onClick={handleAddOnsClick}
                 >
                   2. {t('additionally')}{' '}
-                  <Icon name="ArrowSign"
+                  <Icon
+                    name="ArrowSign"
                     className={cn(s.arrow_icon, { [s.opened]: isAddOnsOpened })}
                   />
                 </button>

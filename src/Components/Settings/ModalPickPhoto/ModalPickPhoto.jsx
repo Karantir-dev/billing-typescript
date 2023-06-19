@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Avatar from 'react-avatar-edit'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '../..'
+import { Button, Icon } from '@components'
 import { settingsOperations, userSelectors, settingsActions } from '@redux'
 import s from './ModalPickPhoto.module.scss'
 

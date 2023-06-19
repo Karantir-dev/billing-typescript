@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { CheckBox, ServerState, Icon } from '../../..'
+import { CheckBox, ServerState, Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './SharedHostingTable.module.scss'
 

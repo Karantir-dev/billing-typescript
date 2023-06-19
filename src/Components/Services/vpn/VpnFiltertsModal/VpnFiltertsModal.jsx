@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
-import { InputField, Select, Button, DoubleInputField, Icon } from '../../..'
+import { InputField, Select, Button, DoubleInputField, Icon } from '@components'
 import s from './VpnFiltertsModal.module.scss'
 
 export default function Component(props) {

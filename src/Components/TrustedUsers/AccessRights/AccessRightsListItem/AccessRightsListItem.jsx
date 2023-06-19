@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, usersOperations } from '@redux'
-import { Toggle, Icon } from '../../..'
+import { Toggle, Icon } from '@components'
 import { checkIfTokenAlive } from '@utils'
 import s from './AccessRightsListItem.module.scss'
 

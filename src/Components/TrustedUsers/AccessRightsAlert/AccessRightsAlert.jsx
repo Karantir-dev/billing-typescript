@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
-import { Button } from '../..'
+import { Button } from '@components'
 import { useDispatch } from 'react-redux'
 import { usersActions } from '@redux'
 

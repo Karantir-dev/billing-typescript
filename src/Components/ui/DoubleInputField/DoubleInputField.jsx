@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { CalendarModal, Icon } from '../..'
+import { CalendarModal, Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import dayjs from 'dayjs'
 import s from './DoubleInputField.module.scss'

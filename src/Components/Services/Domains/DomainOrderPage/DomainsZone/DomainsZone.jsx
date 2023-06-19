@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { CheckBox } from '../../../..'
+import { CheckBox } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './DomainsZone.module.scss'
 

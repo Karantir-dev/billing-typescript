@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DNSItem.module.scss'
-import { CheckBox, ServerState, Icon } from '../../..'
+import { CheckBox, ServerState, Icon } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
 import { useOutsideAlerter } from '@utils'

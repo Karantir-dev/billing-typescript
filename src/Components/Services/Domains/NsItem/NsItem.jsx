@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { InputField, Icon } from '../../..'
+import { InputField, Icon } from '@components'
 import s from './NsItem.module.scss'
 
 const nslists = ['ns0', 'ns1', 'ns2', 'ns3', 'ns_additional']

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '../../..'
+import { Button, Icon } from '@components'
 import s from './SiteCareDeleteModal.module.scss'
 
 export default function Component(props) {

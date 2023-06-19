@@ -3,10 +3,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Icon } from '@components'
+import { Icon, Loader } from '@components'
 import { dnsOperations } from '@redux'
-
-import Loader from '../../../ui/Loader/Loader'
 
 import s from './DNSInstructionModal.module.scss'
 

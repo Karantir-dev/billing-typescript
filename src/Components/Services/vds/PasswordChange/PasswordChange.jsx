@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Icon } from '../../..'
+import { Button, InputField, Icon } from '@components'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'

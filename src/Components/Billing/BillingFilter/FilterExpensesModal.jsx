@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
-import { InputField, Select, IconButton, CalendarModal, Button, Icon } from '../..'
+import { InputField, Select, IconButton, CalendarModal, Button, Icon } from '@components'
 import { billingSelectors } from '@redux'
 import s from './BillingFilter.module.scss'
 

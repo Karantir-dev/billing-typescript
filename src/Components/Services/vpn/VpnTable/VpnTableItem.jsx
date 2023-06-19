@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { ServerState, CheckBox, Icon } from '../../..'
+import { ServerState, CheckBox, Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './VpnTable.module.scss'
 

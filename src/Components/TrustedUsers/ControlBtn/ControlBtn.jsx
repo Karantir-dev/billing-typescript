@@ -8,8 +8,7 @@ import PropTypes from 'prop-types'
 import { usersOperations } from '@redux'
 import ManageUserForm from '../ManageUserForm/ManageUserForm'
 import { useOutsideAlerter } from '@utils'
-import Alert from '../../ui/Alert/Alert'
-import { Button, Icon } from '../..'
+import { Button, Icon, Alert } from '@components'
 
 import s from './ControlBtn.module.scss'
 

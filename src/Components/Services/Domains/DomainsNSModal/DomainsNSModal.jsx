@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { InputField, Button, Icon } from '../../..'
+import { InputField, Button, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
 

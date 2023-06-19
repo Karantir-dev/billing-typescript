@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
-import { Loader, Icon } from '../../..'
+import { Loader, Icon } from '@components'
 
 import s from './InstructionModal.module.scss'
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { InputField, Button, Select, CustomPhoneInput, CheckBox, Icon } from '../../..'
+import { InputField, Button, Select, CustomPhoneInput, CheckBox, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { BASE_URL } from '@config/config'

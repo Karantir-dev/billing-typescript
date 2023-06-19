@@ -4,7 +4,7 @@ import { ErrorMessage } from 'formik'
 import cn from 'classnames'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
-import { SelectOfRegions, Icon } from '../../'
+import { SelectOfRegions, Icon } from '@components'
 import { authOperations } from '@redux'
 import s from './SignupSelects.module.scss'
 
