@@ -106,8 +106,11 @@ export default function ProlongModal({
     setNamesToRender(!more ? names : names?.slice(0, 1))
   }
 
-  const translateFeeText = text => {
-    const feeAmount = text.match(/time: (.+?)(?= EUR)/)?.[1]
+  const translateFeeText = period => {
+    const feeAmount = initialState?.slist
+      .find(el => el.$name === 'period')
+      ?.val.find(el => el.$key === period)
+      ?.$.match(/(.+?)(?= EUR)/)?.[1]
 
     let translate = t('Late fee will be charged to the expired service', {
       value: t(+feeAmount),
@@ -212,7 +215,7 @@ export default function ProlongModal({
 
                   {initialState?.suspendpenaltywarn && (
                     <p className={s.suspendpenaltywarn}>
-                      {translateFeeText(initialState?.suspendpenaltywarn?.$)}
+                      {translateFeeText(values.period)}
                     </p>
                   )}
 

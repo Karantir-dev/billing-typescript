@@ -52,7 +52,7 @@ export default function Component() {
     'dedicated_servers',
     'crumbs',
     'domains',
-    'user_settings'
+    'user_settings',
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -1275,15 +1275,11 @@ export default function Component() {
                       )}
                       <div className={s.padding}>
                         <div className={s.totalSum}>
-                          <b>{t('Total')}:</b>
-                          <span>
-                            {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
-                          </span>
                           <span>
                             {cartData?.full_discount &&
                             Number(cartData?.full_discount) !== 0 ? (
                               <>
-                                {t('Saving')}: {cartData?.full_discount} EUR{' '}
+                                {t('Saving')}: <b>{cartData?.full_discount} EUR</b>
                                 <button type="button" className={s.infoBtn}>
                                   <Icon name="Info" />
                                   <div ref={dropdownSale} className={s.descriptionBlock}>
@@ -1293,6 +1289,17 @@ export default function Component() {
                               </>
                             ) : null}
                           </span>
+                          {Number(cartData?.tax) > 0 ? (
+                            <div className={s.priceBlock}>
+                              {t('Tax')}:<b>{cartData?.tax} EUR</b>
+                            </div>
+                          ) : null}
+                          <div className={s.priceBlock}>
+                            {t('Total')}
+                            {Number(cartData?.tax) > 0 &&
+                              ' (' + t('Tax included').toLocaleLowerCase() + ')'}
+                            : <b>{cartData?.total_sum} EUR</b>
+                          </div>
                         </div>
 
                         {!isPhoneVerification && (
@@ -1339,11 +1346,7 @@ export default function Component() {
                           </div>
                         )}
                       </div>
-                      {Number(cartData?.tax) > 0 ? (
-                        <div className={cn(s.totalSum, s.padding)}>
-                          {t('Tax included')}: <b>{cartData?.tax} EUR</b>
-                        </div>
-                      ) : null}
+
                       <div className={s.btnBlock}>
                         {isPhoneVerification ? (
                           <Button

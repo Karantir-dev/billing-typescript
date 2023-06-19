@@ -13,12 +13,15 @@
 }
 
 .modalBlock {
+  display: flex;
+  flex-direction: column;
   background: var(--main-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
   margin: 20px 10px;
   max-width: 990px;
   width: 95%;
+  height: 90vh;
 }
 
 .modalHeader {
@@ -54,8 +57,10 @@
 
 .table {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  flex-grow: 1;
   padding: 0px 21px;
+  overflow: hidden;
 }
 
 .tableHeader {
@@ -95,7 +100,6 @@
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms_shadow);
-  margin-bottom: 7px;
   position: relative;
   cursor: pointer;
   position: relative;
@@ -140,13 +144,14 @@
 
 .tableItems {
   width: 100%;
-  min-height: 400px;
-  max-height: 400px;
+  flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 5px;
+  padding: 20px 5px;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 7px;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -158,6 +163,11 @@
 
   &::-webkit-scrollbar-thumb {
     background: #e72690;
+  }
+
+  &::-webkit-scrollbar-button:start,
+  &::-webkit-scrollbar-button:end {
+    height: 10px;
   }
 }
 
@@ -216,14 +226,6 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .tableItems {
-    display: block;
-  }
-
-  .table {
-    display: block;
-  }
-
   .dotIcons {
     display: flex;
     align-items: center;

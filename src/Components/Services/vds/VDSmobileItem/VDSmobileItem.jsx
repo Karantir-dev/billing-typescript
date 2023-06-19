@@ -258,7 +258,7 @@ export default function VDSmobileItem({
       <span className={s.label}>{t('data_center')}:</span>
       <span className={s.value}>{server?.datacentername?.$}</span>
       <span className={s.label}>{t('status')}:</span>
-      <ServerState server={server} />
+      <ServerState className={s.value} server={server} />
       <span className={s.label}>{t('created')}:</span>
       <span className={s.value}>{server?.createdate?.$}</span>
       <span className={s.label}>{t('valid_until')}:</span>

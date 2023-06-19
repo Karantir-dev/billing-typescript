@@ -74,7 +74,7 @@
   flex-direction: column;
 
   &.promocodeBlock {
-    padding-bottom: 25px;
+    padding-bottom: 15px;
 
     &::after {
       margin-top: 20px;
@@ -84,8 +84,6 @@
       height: 1px;
       background-color: var(--card-line);
     }
-
-    margin-top: 15px;
   }
 
   &.last {
@@ -433,15 +431,18 @@
 }
 
 .inputPerson {
-  // margin-top: 10px;
   max-width: 100%;
 }
 
+.priceBlock {
+  margin-top: 9px;
+  display: flex;
+  gap: 5px;
+}
+
 .totalSum {
-  margin-top: 17px;
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
   line-height: 130.5%;
   color: var(--main-text);
   display: flex;
@@ -452,25 +453,19 @@
   }
 
   span:last-child {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130.5%;
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
 
-    .infoBtn {
-      position: relative;
-      top: 0;
-      margin-left: 7px;
+  .infoBtn {
+    position: relative;
+    margin-left: 7px;
 
-      .descriptionBlock {
-        top: auto;
-        bottom: 90%;
-        right: auto;
-        left: 0;
-      }
+    .descriptionBlock {
+      top: auto;
+      bottom: 130%;
+      left: 0;
     }
   }
 }
@@ -601,21 +596,17 @@
 }
 
 .infoBtn {
-  position: absolute;
-  margin-left: auto;
-  top: 23px;
-  right: 0px;
+  position: relative;
+  top: 2px;
+  margin-left: 7px;
   z-index: 2;
-  padding: 12px 12px 12px 0px;
   cursor: pointer;
 
   &:hover {
-    svg {
-      path {
-        opacity: 1;
-        fill: url(#gradient);
-      }
+    svg path {
+      fill: var(--accent-color-light);
     }
+
     .descriptionBlock {
       opacity: 1;
       height: auto;
@@ -633,10 +624,10 @@
   box-shadow: var(--burger-menu-elem-box-shadow);
   background-color: var(--forms_bgc_4);
   padding: 0;
-  top: 90%;
-  right: 0;
+  bottom: 130%;
   width: 232px;
   z-index: 3;
+
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -694,11 +685,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  // .formBlock {
-  //   &:not(:first-child) {
-  //     margin-top: 20px;
-  //   }
-  // }
 
   .fieldsGrid {
     grid-template-columns: 1fr 1fr;
@@ -795,15 +781,17 @@
   }
 }
 
-@media screen and (min-width: 1281px) {
-  .infoBtn {
-    top: 26px;
-  }
-}
-
 @media screen and (min-width: 1550px) {
   .modalBlock {
     margin: 3% auto;
+  }
+}
+
+@media (max-width: 499px) {
+  .infoBtn .descriptionBlock {
+    top: auto;
+    bottom: 130%;
+    left: -1000%;
   }
 }
 
