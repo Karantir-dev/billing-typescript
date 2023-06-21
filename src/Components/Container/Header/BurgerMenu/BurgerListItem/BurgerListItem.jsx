@@ -63,17 +63,23 @@ export default function BurgerListItem({
               if (item.allowedToRender) {
                 return (
                   <li key={nanoid()} className={s.list_item}>
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={() => {}}
-                      onClick={controlMenu}
-                    >
-                      <NavLink className={s.list_item_link} to={item.routeName}>
-                        {item.name}
-                        {/* <p className={s.list_item_name}>{item.name}</p> */}
-                      </NavLink>
-                    </div>
+                    {item.routeName ? (
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={() => {}}
+                        onClick={controlMenu}
+                      >
+                        <NavLink className={s.list_item_link} to={item.routeName}>
+                          {item.name}
+                          {/* <p className={s.list_item_name}>{item.name}</p> */}
+                        </NavLink>
+                      </div>
+                    ) : (
+                      <button onClick={item.onClick}>
+                        <p className={s.list_item_link}>{item.name}</p>
+                      </button>
+                    )}
                   </li>
                 )
               } else {
