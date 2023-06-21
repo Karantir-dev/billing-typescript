@@ -336,8 +336,8 @@ const setPaymentMethods =
                     },
                   }
                   cookies.eraseCookie('payment_id')
-                  window.dataLayer.push({ ecommerce: null })
-                  window.dataLayer.push(ecommerceData)
+                  window?.dataLayer?.push({ ecommerce: null })
+                  window?.dataLayer?.push(ecommerceData)
 
                   dispatch(billingOperations.analyticSendHandler(ecommerceData))
                 } else {

@@ -56,7 +56,7 @@ export default function PaymentSaved() {
         : 'EUR' //check what currency used
       const value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
       const tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
-      window.dataLayer.push({ ecommerce: null }) //clean data layer ecommerce
+      window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
       let ecommerce = null
 
@@ -79,7 +79,7 @@ export default function PaymentSaved() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
 
           cookies.eraseCookie(`cartData_${paymentId}`)
@@ -109,7 +109,7 @@ export default function PaymentSaved() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
 
@@ -137,7 +137,7 @@ export default function PaymentSaved() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
       }

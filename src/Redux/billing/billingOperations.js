@@ -652,8 +652,8 @@ const createPaymentMethod =
                   },
                 }
                 cookies.eraseCookie('payment_id')
-                window.dataLayer.push({ ecommerce: null })
-                window.dataLayer.push(ecommerceData)
+                window?.dataLayer?.push({ ecommerce: null })
+                window?.dataLayer?.push(ecommerceData)
 
                 dispatch(analyticSendHandler(ecommerceData))
               } else {
@@ -1138,6 +1138,17 @@ const analyticSendHandler = data => () => {
   axios.post(`${API_URL}/api/analytic/add/`, data)
 }
 
+const getExchangeRate = (cur, setExchangeRate) => () => {
+  axios.get(`${API_URL}/api/service/currency/${cur}`).then(({ data }) => {
+    let currency = 1
+
+    if (data?.success === true || data?.success === 'true') {
+      currency = data?.currency
+    }
+    setExchangeRate && setExchangeRate(currency)
+  })
+}
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1164,4 +1175,5 @@ export default {
   finishAddPaymentMethod,
   editNamePaymentMethod,
   analyticSendHandler,
+  getExchangeRate,
 }
