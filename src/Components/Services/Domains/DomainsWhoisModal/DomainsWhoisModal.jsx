@@ -1,19 +1,20 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
+import { Modal } from '@components'
 import s from './DomainsWhoisModal.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other'])
 
-  const { closeWhoisModalHandler, whoisData } = props
+  const { closeModal, whoisData, isOpen } = props
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
+      <Modal.Header>
         <span className={s.headerText}>{t('Domain Information')}</span>
-        <Cross onClick={closeWhoisModalHandler} className={s.crossIcon} />
-      </div>
-      <div className={s.whoisBlock}>{whoisData}</div>
-    </div>
+      </Modal.Header>
+      <Modal.Body className={s.modal__body}>
+        <div className={s.whoisBlock}>{whoisData}</div>
+      </Modal.Body>
+    </Modal>
   )
 }

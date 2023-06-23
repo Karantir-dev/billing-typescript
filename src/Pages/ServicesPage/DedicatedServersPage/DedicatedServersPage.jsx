@@ -4,7 +4,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   DedicFiltersModal,
   DedicList,
@@ -379,53 +378,49 @@ export default function DedicatedServersPage() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <EditServerModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           names={getServerName(elidForProlongModal)}
           pageName="dedics"
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal(0)}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
+      {!!elidForInstructionModal && (
         <InstructionModal
           elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+          closeModal={() => setElidForInstructionModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForRebootModal([])}
-        isOpened={elidForRebootModal.length > 0}
-      >
+      {elidForRebootModal.length > 0 && (
         <VdsRebootModal
           id={elidForRebootModal}
           names={getServerName(elidForRebootModal)}
-          closeFn={() => setElidForRebootModal([])}
+          closeModal={() => setElidForRebootModal([])}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

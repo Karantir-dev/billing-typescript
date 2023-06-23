@@ -1,23 +1,5 @@
 @import '../../../../scss/placeholders.scss';
 
-.modal {
-  position: relative;
-  width: 90vw;
-  max-width: 530px;
-  height: fit-content;
-  border-radius: 3px;
-  padding: 20px;
-  background-color: var(--forms_bgc_1);
-  box-shadow: var(--forms2_shadow);
-}
-
-.icon_cross {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-}
-
 .title {
   font-weight: 600;
   font-size: 20px;
@@ -88,11 +70,4 @@
   font-size: 14px;
   border-bottom: 1px solid var(--link-color);
   cursor: pointer;
-}
-
-@media screen and (min-width: 768px) {
-  .modal {
-    padding: 25px 20px;
-    text-align: center;
-  }
 }

@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import { authOperations } from '@redux'
 import * as routes from '@src/routes'
-
+import { PASS_REGEX } from '@utils/constants'
 import s from './PasswordChange.module.scss'
 import { InputField, Button } from '../..'
 
@@ -33,10 +33,7 @@ export default function PasswordChange() {
       .required(t('warnings.password_required'))
       .min(12, t('warnings.invalid_pass'), { min: 12, max: 48 })
       .max(48, t('warnings.invalid_pass'), { min: 12, max: 48 })
-      .matches(
-        /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/,
-        t('warnings.invalid_pass', { min: 12, max: 48 }),
-      ),
+      .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 12, max: 48 })),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
       .required(t('warnings.mismatched_password')),

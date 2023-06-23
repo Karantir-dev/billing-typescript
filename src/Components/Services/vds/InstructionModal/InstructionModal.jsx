@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '@images'
 import { dedicOperations } from '@redux'
-import { Loader } from '../../..'
+import { Loader, Modal } from '../../..'
 
 import s from './InstructionModal.module.scss'
 
-export default function InstructionModal({ elid, closeFn }) {
+export default function InstructionModal({ elid, closeModal, isOpen }) {
   const dispatch = useDispatch()
 
   const { t } = useTranslation('other')
@@ -23,15 +22,13 @@ export default function InstructionModal({ elid, closeFn }) {
   }
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
+      <Modal.Header>
         <span className={s.headerText}>{t('Virtual server activation')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
-      </div>
-      <div
-        dangerouslySetInnerHTML={{ __html: instruction?.$ }}
-        className={s.whoisBlock}
-      />
-    </div>
+      </Modal.Header>
+      <Modal.Body className={s.modal__body}>
+        <div dangerouslySetInnerHTML={{ __html: instruction?.$ }} />
+      </Modal.Body>
+    </Modal>
   )
 }

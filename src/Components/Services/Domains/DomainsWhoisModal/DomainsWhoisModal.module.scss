@@ -1,45 +1,15 @@
-.modalBg {
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
+.modal {
   background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px 10px;
   max-width: 990px;
-  width: 95%;
-  padding-bottom: 15px;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
+  max-height: 80vh;
+  &__body {
+    margin: 25px 0 40px;
+    padding: 0 20px;
+    box-shadow: var(--forms_shadow);
+    &::-webkit-scrollbar-button:start,
+    &::-webkit-scrollbar-button:end {
+      height: 0;
+    }
   }
 }
 
@@ -53,49 +23,10 @@
 }
 
 .whoisBlock {
-  background: var(forms_bgc_4);
-  box-shadow: var(--forms_shadow);
-  padding: 20px 15px;
-  margin: 30px 15px;
-
-  max-height: 65vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 130%;
-
   color: var(--main-text);
-
   white-space: pre-line;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .modalBg {
-    display: flex;
-    height: 100vh;
-  }
-
-  .whoisBlock {
-    margin: 25px 25px;
-    padding: 20px 43px;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
 }

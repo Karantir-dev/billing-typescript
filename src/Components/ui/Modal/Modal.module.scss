@@ -1,0 +1,136 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  background: var(--forms_bgc_1);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px auto;
+  max-width: 630px;
+  width: 95%;
+  max-height: 90vh;
+  overflow: hidden;
+
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 10px 14px 20px;
+    z-index: 2;
+    background-color: var(--forms_bgc_2);
+    box-shadow: var(--modal_header_shadow);
+
+    @media screen and (min-width: 768px) {
+      padding: 18px 25px 18px 35px;
+    }
+  }
+
+  &__close {
+    padding: 5px;
+    svg {
+      vertical-align: middle;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(161, 161, 161, 23%);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #e72690;
+    }
+
+    &::-webkit-scrollbar-button:start,
+    &::-webkit-scrollbar-button:end {
+      height: 10px;
+    }
+
+    &_wrapper {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 0 10px;
+      overflow: hidden;
+
+      @media screen and (min-width: 768px) {
+        padding: 0 25px;
+      }
+    }
+  }
+
+  &__footer {
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 20px;
+    z-index: 2;
+    gap: 15px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background-color: var(--forms_bgc_2);
+    box-shadow: var(--modal_footer_shadow);
+    @media screen and (min-width: 768px) {
+      padding: 18px 35px;
+      flex-direction: row;
+    }
+
+    &_column {
+      flex-direction: column;
+    }
+  }
+}
+
+.simple {
+  max-width: 580px;
+  text-align: center;
+
+  .modal {
+    &__header,
+    &__footer {
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    &__header {
+      padding-top: 20px;
+      padding-bottom: 0;
+      margin-bottom: -15px;
+    }
+
+    &__body {
+      padding: 0 25px;
+    }
+
+    &__footer {
+      flex-direction: column;
+      padding-top: 0;
+      padding-bottom: 30px;
+    }
+  }
+}
+
+.noScroll {
+  overflow: initial;
+  .modal {
+    &__body {
+      &,
+      &_wrapper {
+        overflow: initial;
+      }
+    }
+  }
+}

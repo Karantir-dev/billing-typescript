@@ -8,7 +8,6 @@ import {
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
   SharedHostingInstructionModal,
-  Backdrop,
   HintWrapper,
   IconButton,
   ProlongModal,
@@ -374,74 +373,59 @@ export default function Component() {
         </p>
       </div>
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(historyModal && historyList?.length > 0)}
-        onClick={closeHistoryModalHandler}
-      >
+      {historyModal && historyList?.length > 0 && (
         <SharedHostingHistoryModal
           historyList={historyList}
           name={selctedItem?.name?.$}
-          closeHistoryModalHandler={closeHistoryModalHandler}
+          closeModal={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
           historyItemCount={historyItemCount}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(prolongModal)}
-        onClick={closeProlongModalHandler}
-      >
+      {prolongModal && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => closeProlongModalHandler()}
+          closeModal={() => closeProlongModalHandler()}
           names={getServerName(elidForProlongModal)}
           pageName="shared_hosting"
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(editModal && editData)}
-        onClick={closeEditModalHandler}
-      >
+      {editModal && editData && (
         <SharedHostingEditModal
           editData={editData}
           name={selctedItem?.name?.$}
-          closeEditModalHandler={closeEditModalHandler}
+          closeModal={closeEditModalHandler}
           sendEditVhostHandler={sendEditVhostHandler}
           editVhostHandler={editVhostHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(changeTariffModal && changeTariffData)}
-        onClick={closeChangeTariffModalHandler}
-      >
+      {changeTariffModal && changeTariffData && (
         <SharedHostingChangeTariffModal
           changeTariffData={changeTariffData}
           name={selctedItem?.name?.$}
-          closeChangeTariffModalHandler={closeChangeTariffModalHandler}
+          closeModal={closeChangeTariffModalHandler}
           changeTariffInfoVhostHandler={changeTariffInfoVhostHandler}
           changeTariffInfoData={changeTariffInfoData}
           changeTariffSaveVhostHandler={changeTariffSaveVhostHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(instructionModal && instructionData)}
-        onClick={closeInstructionModalHandler}
-      >
+      {instructionModal && instructionData && (
         <SharedHostingInstructionModal
           instructionData={instructionData}
           name={selctedItem?.name?.$}
-          closeInstructionModalHandler={closeInstructionModalHandler}
+          closeModal={closeInstructionModalHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
     </div>
   )
 }

@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Select, Button, InputField } from '../../..'
+import { Select, Button, InputField, Modal } from '../../..'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
 import { translatePeriod, orderDetailTranslate } from '@utils'
@@ -8,13 +7,8 @@ import { translatePeriod, orderDetailTranslate } from '@utils'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other', 'domains', 'autoprolong'])
 
-  const {
-    name,
-    closeEditModalHandler,
-    editData,
-    sendEditVhostHandler,
-    editVhostHandler,
-  } = props
+  const { name, closeModal, editData, sendEditVhostHandler, editVhostHandler, isOpen } =
+    props
 
   const editHandler = values => {
     const data = { ...values, sok: 'ok' }
@@ -22,14 +16,13 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal isOpen={isOpen} closeModal={closeModal}>
+      <Modal.Header>
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
           <span className={s.vhostName}>({name})</span>
         </div>
-        <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
-      </div>
+      </Modal.Header>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>
           <span>{t('service_created')}:</span>
@@ -40,27 +33,27 @@ export default function Component(props) {
           <span>{editData?.expiredate}</span>
         </div>
       </div>
-      <Formik
-        enableReinitialize
-        initialValues={{
-          ip: editData?.ip || '',
-          domain: editData?.domain || '',
-          autoprolong: editData?.autoprolong || '',
-          stored_method: editData?.stored_method || '',
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            ip: editData?.ip || '',
+            domain: editData?.domain || '',
+            autoprolong: editData?.autoprolong || '',
+            stored_method: editData?.stored_method || '',
 
-          username: editData?.username || '',
-          password: editData?.password || '',
-          nameserver1: editData?.nameserver1 || '',
-          nameserver2: editData?.nameserver2 || '',
-          nameserver3: editData?.nameserver3 || '',
-          nameserver4: editData?.nameserver4 || '',
-        }}
-        onSubmit={editHandler}
-      >
-        {({ setFieldValue, values, errors, touched }) => {
-          return (
-            <Form className={s.form__wrapper}>
-              <div className={s.form}>
+            username: editData?.username || '',
+            password: editData?.password || '',
+            nameserver1: editData?.nameserver1 || '',
+            nameserver2: editData?.nameserver2 || '',
+            nameserver3: editData?.nameserver3 || '',
+            nameserver4: editData?.nameserver4 || '',
+          }}
+          onSubmit={editHandler}
+        >
+          {({ setFieldValue, values, errors, touched }) => {
+            return (
+              <Form id="vhost-edit">
                 <div className={s.fieldsBlock}>
                   <Select
                     label={`${t('Auto renewal', { ns: 'domains' })}:`}
@@ -194,23 +187,24 @@ export default function Component(props) {
                     />
                   )}
                 </div>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-      <div className={s.btnBlock}>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer>
         <Button
           className={s.searchBtn}
           isShadow
           size="medium"
           label={t('Save', { ns: 'other' })}
           type="submit"
+          form="vhost-edit"
         />
-        <button onClick={closeEditModalHandler} type="button" className={s.clearFilters}>
+        <button onClick={closeModal} type="button" className={s.clearFilters}>
           {t('Cancel', { ns: 'other' })}
         </button>
-      </div>
-    </div>
+      </Modal.Footer>
+    </Modal>
   )
 }

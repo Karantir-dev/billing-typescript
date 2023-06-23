@@ -9,7 +9,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -367,53 +366,49 @@ export default function ForexPage() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <ForexEditModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           pageName="forex"
           names={getServerName(elidForProlongModal)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal(0)}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForDeletionModal([])}
-        isOpened={elidForDeletionModal.length > 0}
-      >
+      {elidForDeletionModal.length > 0 && (
         <DeleteModal
           names={getServerName(elidForDeletionModal)}
-          closeFn={() => setElidForDeletionModal([])}
+          closeModal={() => setElidForDeletionModal([])}
           deleteFn={() => handleDeletionModal(() => setElidForDeletionModal([]))}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
+      {!!elidForInstructionModal && (
         <ForexInstructionModal
           elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+          closeModal={() => setElidForInstructionModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

@@ -18,6 +18,7 @@ import { Facebook, Google, Vk } from '@images'
 import {
   SPECIAL_CHARACTERS_REGEX,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
+  PASS_REGEX
 } from '@utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
@@ -62,7 +63,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .min(12, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .max(48, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .matches(
-        /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/,
+        PASS_REGEX,
         t('warnings.invalid_pass', { min: 12, max: 48 }),
       )
       .required(t('warnings.password_required')),

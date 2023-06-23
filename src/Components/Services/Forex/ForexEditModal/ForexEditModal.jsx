@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Select } from '../../..'
+import { Button, InputField, Select, Modal } from '../../..'
 import { useDispatch } from 'react-redux'
-import { Copy, Cross } from '@images'
+import { Copy } from '@images'
 import { Formik, Form } from 'formik'
 import { forexOperations } from '@redux'
 import { translatePeriod } from '@utils'
@@ -13,7 +13,7 @@ import animations from './animations.module.scss'
 import s from './ForexEditModal.module.scss'
 import classNames from 'classnames'
 
-export default function ForexEditModal({ elid, closeFn }) {
+export default function ForexEditModal({ elid, closeModal, isOpen }) {
   const { t } = useTranslation([
     'dedicated_servers',
     'vds',
@@ -31,7 +31,7 @@ export default function ForexEditModal({ elid, closeFn }) {
   const refLinkEl = useRef(null)
 
   const handleEditionModal = () => {
-    closeFn()
+    closeModal()
   }
 
   useEffect(() => {
@@ -61,35 +61,33 @@ export default function ForexEditModal({ elid, closeFn }) {
   }
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
-      </div>
-
-      <Formik
-        enableReinitialize
-        initialValues={{
-          elid,
-          autoprolong: initialState?.autoprolong?.$ || null,
-          period: initialState?.period?.$,
-          server_ip: initialState?.server_ip?.$ || '',
-          server_hostname: initialState?.server_hostname?.$ || '',
-          server_password: initialState?.server_password?.$ || '',
-          server_user: initialState?.server_user?.$ || '',
-          server_package: initialState?.serverPackageList[0]?.$ || '',
-          url_rdp: initialState?.url_rdp?.$ || '',
-          stored_method: initialState?.stored_method?.$ || '0',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            elid,
+            autoprolong: initialState?.autoprolong?.$ || null,
+            period: initialState?.period?.$,
+            server_ip: initialState?.server_ip?.$ || '',
+            server_hostname: initialState?.server_hostname?.$ || '',
+            server_password: initialState?.server_password?.$ || '',
+            server_user: initialState?.server_user?.$ || '',
+            server_package: initialState?.serverPackageList[0]?.$ || '',
+            url_rdp: initialState?.url_rdp?.$ || '',
+            stored_method: initialState?.stored_method?.$ || '0',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form id="forex-edit">
                 <div className={s.parameters_block}>
                   <div className={s.status_wrapper}>
                     <div className={s.creation_date_wrapper}>
@@ -106,7 +104,6 @@ export default function ForexEditModal({ elid, closeFn }) {
                     <div className={s.main_block}>
                       <div>
                         <Select
-                          height={50}
                           value={values.autoprolong}
                           label={t('autoprolong')}
                           getElement={item => {
@@ -134,7 +131,6 @@ export default function ForexEditModal({ elid, closeFn }) {
                         />
 
                         <Select
-                          height={50}
                           getElement={item => {
                             setFieldValue('stored_method', item)
                           }}
@@ -251,31 +247,31 @@ export default function ForexEditModal({ elid, closeFn }) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className={s.buy_btn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="forex-edit"
+        />
 
-              <div className={s.btns_wrapper}>
-                <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                />
-
-                <button
-                  onClick={e => {
-                    e.preventDefault()
-                    closeFn()
-                  }}
-                  className={s.cancel_btn}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeModal()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

@@ -1,41 +1,20 @@
-.pagination {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 15px;
+.modal {
+  width: 90%;
+  background-color: var(--main-bgc);
 
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
-}
-
-.icon_cross {
-  cursor: pointer;
-  min-width: 10px;
-}
-
-.history_modal {
-  display: flex;
-  flex-direction: column;
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px auto;
-  width: 95%;
-  height: 90vh;
-  overflow-y: hidden;
-  position: relative;
+  @media screen and (min-width: 768px) {
+    max-width: 625px;
+  }
+  @media screen and (min-width: 1024px) {
+    max-width: 1077px;
+  }
 }
 
 .head_row {
   width: 100%;
   display: flex;
   gap: 30px;
-  padding: 15px 60px 0px;
+  padding: 15px 60px;
 }
 
 .table_head {
@@ -58,54 +37,6 @@
   }
 }
 
-.modal_body {
-  flex-grow: 1;
-  border-radius: 5px;
-  padding: 0 21px;
-  overflow: hidden;
-}
-
-.list {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 5px;
-  display: flex;
-  flex-wrap: wrap;
-
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-
-  &::-webkit-scrollbar-button:start,
-  &::-webkit-scrollbar-button:end {
-    height: 10px;
-  }
-}
-
-.title_wrapper {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-  padding: 20px 30px 15px;
-}
-
 .title {
   display: flex;
   flex-direction: column;
@@ -117,36 +48,9 @@
   color: var(--transparent-color);
 }
 
-@media screen and (min-width: 400px) {
-  .history_modal {
-    width: 90%;
-  }
-}
-@media screen and (min-width: 768px) {
-  .pagination {
-    justify-content: flex-end;
-    padding: 15px 30px;
-  }
-
-  .history_modal {
-    max-width: 623px;
-    padding: 0;
-  }
-}
-
 @media screen and (min-width: 1024px) {
   .title {
     display: flex;
     flex-direction: column;
-  }
-
-  .history_modal {
-    min-width: 95%;
-  }
-}
-@media screen and (min-width: 1200px) {
-  .history_modal {
-    max-width: 1077px;
-    min-width: 1077px;
   }
 }

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-
-import { Cross } from '@images'
 import { ftpOperations } from '@redux'
-
+import { Modal } from '@components'
 import Loader from '../../../ui/Loader/Loader'
 
 import s from './FTPInstructionModal.module.scss'
 
-export default function FTPInstructionModal({ elid, closeFn }) {
+export default function FTPInstructionModal({ elid, closeModal, isOpen }) {
   const dispatch = useDispatch()
 
   const { t } = useTranslation('other')
@@ -25,15 +23,13 @@ export default function FTPInstructionModal({ elid, closeFn }) {
   }
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <span className={s.headerText}>{t('FTP storage activation')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
-      </div>
-      <div
-        dangerouslySetInnerHTML={{ __html: instruction?.$ }}
-        className={s.whoisBlock}
-      />
-    </div>
+      </Modal.Header>
+      <Modal.Body className={s.modal__body}>
+        <div dangerouslySetInnerHTML={{ __html: instruction?.$ }} />
+      </Modal.Body>
+    </Modal>
   )
 }

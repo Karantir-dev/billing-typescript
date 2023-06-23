@@ -1,73 +1,15 @@
-.modalBg {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
+.modal {
   background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-
-  margin: 20px 10px;
-  max-width: 375px;
-  width: 95%;
+  width: 380px;
 }
 
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
-.statusBlock {
-  padding: 10px 24px;
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  margin-top: 5px;
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-.headerTitleBlock {
-  display: flex;
-  flex-direction: column;
-
-  .headerText {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 113%;
-    max-width: 100%;
-    color: var(--main-text);
-  }
-
-  .vhostName {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 130%;
-    color: var(--transparent-color);
-  }
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 100%;
+  color: var(--main-text);
 }
 
 .statusBlock {
@@ -75,7 +17,7 @@
 }
 
 .fieldsBlock {
-  padding: 0 24px 30px 24px;
+  margin-top: 20px;
 }
 
 .statusItem {
@@ -105,19 +47,6 @@
       color: var(--error-color);
     }
   }
-}
-
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
 }
 
 .clearFilters {
@@ -186,35 +115,4 @@
     max-height: 75px;
     overflow-x: hidden;
   }
-}
-
-@media screen and (min-width: 768px) {
-  .modalBg {
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
-
-  .modalHeader {
-    padding: 18px 20px;
-  }
-
-  .statusBlock {
-    padding: 20px 20px 10px;
-  }
-
-  .fieldsBlock {
-    padding: 10px 20px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }

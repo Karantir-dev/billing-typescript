@@ -9,7 +9,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -367,42 +366,40 @@ export default function DNS() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <DNSEditModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {!!elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           pageName="dns"
           names={getServerName(elidForProlongModal)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal('')}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
+      {!!elidForInstructionModal && (
         <DNSInstructionModal
           elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+          closeModal={() => setElidForInstructionModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }
