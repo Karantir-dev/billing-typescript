@@ -16,7 +16,7 @@ import {
   VdsRebootModal,
   ProlongModal,
   FiltersModal,
-  VdsInstructionModal,
+  InstructionModal,
   DedicsHistoryModal,
   Pagination,
   Portal,
@@ -441,10 +441,15 @@ export default function VDS() {
         />
       )}
 
-      {idForInstruction && (
-        <VdsInstructionModal
-          elid={idForInstruction}
+      {!!idForInstruction && (
+        <InstructionModal
+          title={t('Virtual server activation', { ns: 'other' })}
           closeModal={() => setIdForInstruction('')}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dedicOperations.getServiceInstruction(idForInstruction, setInstruction),
+            )
+          }
           isOpen
         />
       )}

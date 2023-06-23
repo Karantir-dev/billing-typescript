@@ -18,10 +18,10 @@ import {
   ForexFiltersModal,
   DeleteModal,
   Pagination,
-  ForexInstructionModal,
   CheckBox,
+  InstructionModal,
 } from '@components'
-import { actions, forexOperations, forexSelectors } from '@redux'
+import { actions, dnsOperations, forexOperations, forexSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 import { checkServicesRights, usePageRender } from '@utils'
@@ -403,9 +403,17 @@ export default function ForexPage() {
       )}
 
       {!!elidForInstructionModal && (
-        <ForexInstructionModal
-          elid={elidForInstructionModal}
+        <InstructionModal
+          title={(t('Forex server activation'), { ns: 'other' })}
           closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dnsOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
           isOpen
         />
       )}

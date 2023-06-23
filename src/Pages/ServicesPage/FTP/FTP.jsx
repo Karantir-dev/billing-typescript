@@ -13,7 +13,7 @@ import {
   FTPEditModal,
   ProlongModal,
   DedicsHistoryModal,
-  FTPInstructionModal,
+  InstructionModal,
   Portal,
   Pagination,
   CheckBox,
@@ -365,9 +365,17 @@ export default function FTP() {
       )}
 
       {!!elidForInstructionModal && (
-        <FTPInstructionModal
-          elid={elidForInstructionModal}
+        <InstructionModal
+          title={t('FTP storage activation', { ns: 'other' })}
           closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              ftpOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
           isOpen
         />
       )}

@@ -10,7 +10,7 @@ import {
   SiteCareDeleteModal,
   CheckBox,
   SiteCareBottomBar,
-  SharedHostingInstructionModal,
+  InstructionModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -23,7 +23,7 @@ import * as route from '@src/routes'
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vpn')
 
-  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -52,8 +52,7 @@ export default function Component() {
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteIds, setDeleteIds] = useState(null)
 
-  const [instructionModal, setInstructionModal] = useState(false)
-  const [instructionData, setInstructionData] = useState(null)
+  const [instructionModal, setInstructionModal] = useState(0)
 
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -184,23 +183,21 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
       p_num,
     }
-
-    // setSelctedItem([])
     dispatch(vpnOperations.deleteSiteCare(data, setDeleteModal))
   }
 
-  const instructionVhostHandler = id => {
+  const instructionVhostHandler = id => setInstructionModal(id)
+
+  const dispatchInstruction = setInstruction => {
     const data = {
-      elid: id,
-      elname: selctedItem?.name?.$,
+      elid: instructionModal,
       lang: i18n?.language,
     }
-    dispatch(vpnOperations.getInsruction(data, setInstructionModal, setInstructionData))
+    dispatch(vpnOperations.getInsruction(data, setInstruction))
   }
 
   const closeInstructionModalHandler = () => {
-    setInstructionData(null)
-    setInstructionModal(false)
+    setInstructionModal(0)
   }
 
   const setSelectedAll = val => {
@@ -364,9 +361,10 @@ export default function Component() {
         />
       )}
 
-      {instructionModal && instructionData && (
-        <SharedHostingInstructionModal
-          instructionData={instructionData}
+      {!!instructionModal && (
+        <InstructionModal
+          title={t('Instruction', { ns: 'domains' })}
+          dispatchInstruction={dispatchInstruction}
           closeModal={closeInstructionModalHandler}
           isOpen
         />

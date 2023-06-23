@@ -407,8 +407,16 @@ export default function DedicatedServersPage() {
 
       {!!elidForInstructionModal && (
         <InstructionModal
-          elid={elidForInstructionModal}
+          title={t('Activation of Dedicated server', { ns: 'dedicated_servers' })}
           closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dedicOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
           isOpen
         />
       )}

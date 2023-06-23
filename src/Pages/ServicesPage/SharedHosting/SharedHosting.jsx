@@ -7,10 +7,10 @@ import {
   SharedHostingHistoryModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
-  SharedHostingInstructionModal,
   HintWrapper,
   IconButton,
   ProlongModal,
+  InstructionModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +29,7 @@ export default function Component() {
     'other',
     'access_log',
     'virtual_hosting',
+    'domains',
   ])
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -59,7 +60,6 @@ export default function Component() {
   const [changeTariffInfoData, setChangeTariffInfoData] = useState(null)
 
   const [instructionModal, setInstructionModal] = useState(false)
-  const [instructionData, setInstructionData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -105,19 +105,18 @@ export default function Component() {
     }
   }, [historyCurrentPage])
 
-  const instructionVhostHandler = () => {
+  const instructionVhostHandler = () => setInstructionModal(selctedItem?.id?.$)
+
+  const dispatchInstruction = setInstruction => {
     const data = {
       elid: selctedItem?.id?.$,
       elname: selctedItem?.name?.$,
       lang: i18n?.language,
     }
-    dispatch(
-      vhostOperations.getInsructionVhost(data, setInstructionModal, setInstructionData),
-    )
+    dispatch(vhostOperations.getInsructionVhost(data, setInstruction))
   }
 
   const closeInstructionModalHandler = () => {
-    setInstructionData(null)
     setInstructionModal(false)
   }
 
@@ -418,10 +417,10 @@ export default function Component() {
         />
       )}
 
-      {instructionModal && instructionData && (
-        <SharedHostingInstructionModal
-          instructionData={instructionData}
-          name={selctedItem?.name?.$}
+      {!!instructionModal && (
+        <InstructionModal
+          title={`${t('Instruction', { ns: 'domains' })} ${selctedItem?.name?.$}`}
+          dispatchInstruction={dispatchInstruction}
           closeModal={closeInstructionModalHandler}
           isOpen
         />

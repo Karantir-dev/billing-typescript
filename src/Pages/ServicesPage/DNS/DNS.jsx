@@ -14,11 +14,11 @@ import {
   DedicsHistoryModal,
   DNSList,
   DNSEditModal,
-  DNSInstructionModal,
   DNSFiltersModal,
   Portal,
   Pagination,
   CheckBox,
+  InstructionModal,
 } from '@components'
 import { dnsOperations, dnsSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -394,9 +394,17 @@ export default function DNS() {
       )}
 
       {!!elidForInstructionModal && (
-        <DNSInstructionModal
-          elid={elidForInstructionModal}
+        <InstructionModal
+          title={t('DNS-hosting activation', { ns: 'other' })}
           closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dnsOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
           isOpen
         />
       )}
