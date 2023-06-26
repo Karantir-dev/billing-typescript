@@ -139,8 +139,8 @@ export default function Component() {
               payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
-              value: Number(value),
-              tax: Number(tax),
+              value: Number(value) || 0,
+              tax: Number(tax) || 0,
               currency: currency,
               items: [
                 {
