@@ -651,7 +651,7 @@ const createPaymentMethod =
                       {
                         item_name: 'Refill',
                         item_id: data.doc?.payment_id?.$,
-                        price: Number(body?.amount),
+                        price: Number(body?.amount) || 0,
                         item_category: 'Refill',
                         quantity: 1,
                       },

@@ -146,7 +146,7 @@ export default function Component() {
                 {
                   item_name: 'Refill',
                   item_id: paymentId,
-                  price: Number(value),
+                  price: Number(value) || 0,
                   item_category: 'Refill',
                   quantity: 1,
                 },
