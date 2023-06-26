@@ -60,7 +60,7 @@ export default function PaymentSaved() {
       let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
       let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
 
-      if (currency === 'RUB') {
+      if (currency === 'RUB' && Number(exchangeRate) > 1) {
         value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
         tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
         currency = 'EUR'
