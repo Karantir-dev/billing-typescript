@@ -21,10 +21,15 @@ export default function Component() {
 
   const [paymentItem, setPaymentItem] = useState(null)
   const [cartData, setCartData] = useState(null)
+  const [exchangeRate, setExchangeRate] = useState(null)
 
   const backHandler = () => {
     navigate(routes.BILLING)
   }
+
+  useEffect(() => {
+    dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
+  }, [])
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 15 }
@@ -56,14 +61,19 @@ export default function Component() {
   }, [paymentsList])
 
   useEffect(() => {
-    if (paymentItem) {
+    if (paymentItem && exchangeRate) {
       //if we have payment
-      const currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB')
-        ? 'RUB'
-        : 'EUR' //check what currency used
-      const value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
-      const tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
-      window.dataLayer.push({ ecommerce: null }) //clean data layer ecommerce
+      let currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
+      let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
+      let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
+
+      if (currency === 'RUB' && Number(exchangeRate) > 1) {
+        value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
+        tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
+        currency = 'EUR'
+      }
+
+      window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
       let ecommerce = null
 
@@ -86,7 +96,7 @@ export default function Component() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
 
           cookies.eraseCookie(`cartData_${paymentId}`)
@@ -116,7 +126,7 @@ export default function Component() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
 
@@ -144,13 +154,13 @@ export default function Component() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
-  }, [paymentItem])
+  }, [paymentItem, exchangeRate])
 
   return (
     <div className={s.modalBg}>
