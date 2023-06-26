@@ -139,14 +139,14 @@ export default function Component() {
               payment_type: paymentItem?.paymethod_name?.$,
               transaction_id: paymentId,
               affiliation: 'cp.zomro.com',
-              value: Number(value) || 0,
-              tax: Number(tax) || 0,
+              value: Number(value),
+              tax: Number(tax),
               currency: currency,
               items: [
                 {
                   item_name: 'Refill',
                   item_id: paymentId,
-                  price: 0,
+                  price: Number(value),
                   item_category: 'Refill',
                   quantity: 1,
                 },
