@@ -15,6 +15,7 @@ export default function Component(props) {
     backHandler,
     isFirst,
     isTimeOut,
+    handleSubmit,
   } = props
 
   const notHaveNumber = !validatePhoneData?.types && !validatePhoneData?.action_types
@@ -44,6 +45,7 @@ export default function Component(props) {
           dataTestid="input_phone"
           handleBlur={handleBlur}
           setFieldValue={setFieldValue}
+          onEnterKeyPress={handleSubmit}
           name="phone"
         />
       ) : null}
