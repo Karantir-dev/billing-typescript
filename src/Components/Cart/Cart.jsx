@@ -1178,7 +1178,7 @@ export default function Component() {
                                 }}
                               />
 
-                              <button type="button" className={s.infoBtn}>
+                              <button type="button" className={cn(s.infoBtn, s.infoBtn_address)}>
                                 <Info />
                                 <div
                                   ref={dropdownDescription}

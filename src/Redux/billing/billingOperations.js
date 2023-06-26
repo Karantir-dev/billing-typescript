@@ -1,11 +1,18 @@
 import qs from 'qs'
 import axios from 'axios'
 import i18n from '@src/i18n'
-import { actions, billingActions, payersOperations, payersActions } from '@redux'
+import {
+  actions,
+  billingActions,
+  payersOperations,
+  payersActions,
+  userActions,
+} from '@redux'
 import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '@utils'
+import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
   (body = {}) =>
@@ -1154,6 +1161,74 @@ const getExchangeRate = (cur, setExchangeRate) => () => {
     })
 }
 
+const useCertificate =
+  ({ coupon, errorFunc = () => {}, successFunc = () => {} }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
+    axiosInstance
+      .post(
+        '/billmgr',
+        qs.stringify({
+          func: 'coupon.use',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          coupon: coupon,
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'whoami',
+              out: 'json',
+              lang: 'en',
+              auth: sessionId,
+            }),
+          )
+          .then(response => dispatch(userActions.setUserInfo(response.data.doc.user)))
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'notify',
+              out: 'json',
+              lang: 'en',
+              auth: sessionId,
+            }),
+          )
+          .then(response => {
+            userNotifications(response.data, dispatch)
+          })
+
+        toast.success(
+          i18n.t('certificate_applied_success', {
+            ns: 'other',
+          }),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+        successFunc()
+        dispatch(actions.hideLoader())
+      })
+      .catch(() => {
+        errorFunc()
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1181,4 +1256,5 @@ export default {
   editNamePaymentMethod,
   analyticSendHandler,
   getExchangeRate,
+  useCertificate,
 }

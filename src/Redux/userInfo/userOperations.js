@@ -33,7 +33,7 @@ const userTickets = (data, dispatch) => {
   dispatch(userActions.setTickets(elem))
 }
 
-const userNotifications = (data, dispatch) => {
+export const userNotifications = (data, dispatch) => {
   const d = {}
 
   if (Array.isArray(data?.doc?.notify?.item)) {

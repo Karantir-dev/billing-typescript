@@ -132,7 +132,10 @@
   color: var(--main-text);
 
   &:hover {
-    font-weight: 600;
+    &,
+    & button {
+      font-weight: 600;
+    }
   }
 }
 

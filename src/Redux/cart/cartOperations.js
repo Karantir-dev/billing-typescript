@@ -292,7 +292,7 @@ const setPaymentMethods =
               if (
                 data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
                 'The Contact person field has invalid value. The value cannot be empty'
-              )
+              ) {
                 toast.error(
                   i18n?.t('The payer is not valid, change the payer or add a new one', {
                     ns: 'cart',
@@ -302,6 +302,24 @@ const setPaymentMethods =
                     toastId: 'customId',
                   },
                 )
+              }
+
+              if (data.doc.error.msg.$.includes('does not exist')) {
+                toast.error(
+                  i18n?.t('service_was_deleted_from_basket', {
+                    ns: 'cart',
+                  }),
+                  {
+                    position: 'bottom-right',
+                    toastId: 'customId',
+                  },
+                )
+                dispatch(
+                  cartActions.setCartIsOpenedState({
+                    isOpened: false,
+                  }),
+                )
+              }
               throw new Error(data.doc.error.msg.$)
             }
 
