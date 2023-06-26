@@ -1139,14 +1139,19 @@ const analyticSendHandler = data => () => {
 }
 
 const getExchangeRate = (cur, setExchangeRate) => () => {
-  axios.get(`${API_URL}/api/service/currency/${cur}`).then(({ data }) => {
-    let currency = 1
+  let currency = 1
 
-    if (data?.success === true || data?.success === 'true') {
-      currency = data?.currency
-    }
-    setExchangeRate && setExchangeRate(currency)
-  })
+  axios
+    .get(`${API_URL}/api/service/currency/${cur}`)
+    .then(({ data }) => {
+      if (data?.success === true || data?.success === 'true') {
+        currency = data?.currency
+      }
+      setExchangeRate && setExchangeRate(currency)
+    })
+    .catch(() => {
+      setExchangeRate && setExchangeRate(currency)
+    })
 }
 
 export default {
