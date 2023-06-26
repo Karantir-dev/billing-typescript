@@ -981,6 +981,17 @@ export default function Component() {
                     ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
                     : parsedText?.minAmount?.length > 150
 
+                  const onProfileTypeChange = item => {
+                    setFieldValue('profiletype', item)
+                    setProfileType(item)
+                    let data = {
+                      country: payersSelectLists?.country[0]?.$key,
+                      profiletype: item,
+                    }
+
+                    dispatch(payersOperations.getPayerModalInfo(data))
+                  }
+
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
@@ -1068,10 +1079,7 @@ export default function Component() {
                               placeholder={t('Not chosen', { ns: 'other' })}
                               label={`${t('Payer status', { ns: 'payers' })}:`}
                               value={values.profiletype}
-                              getElement={item => {
-                                setFieldValue('profiletype', item)
-                                setProfileType(item)
-                              }}
+                              getElement={onProfileTypeChange}
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
@@ -1178,7 +1186,10 @@ export default function Component() {
                                 }}
                               />
 
-                              <button type="button" className={cn(s.infoBtn, s.infoBtn_address)}>
+                              <button
+                                type="button"
+                                className={cn(s.infoBtn, s.infoBtn_address)}
+                              >
                                 <Info />
                                 <div
                                   ref={dropdownDescription}
@@ -1231,7 +1242,9 @@ export default function Component() {
                           onClick={() => setShowMore(!showMore)}
                           className={cn(s.readMore, s.padding)}
                         >
-                          {t(showMore ? 'Collapse' : 'Read more', {ns: 'user_settings'})}
+                          {t(showMore ? 'Collapse' : 'Read more', {
+                            ns: 'user_settings',
+                          })}
                         </button>
                       )}
 
