@@ -150,7 +150,14 @@ export default function Component() {
     navigate(prevPage)
   }
 
-  const renderScreen = ({ values, handleBlur, setFieldValue, touched, errors }) => {
+  const renderScreen = ({
+    values,
+    handleBlur,
+    setFieldValue,
+    touched,
+    errors,
+    handleSubmit,
+  }) => {
     if (isTryLimit) {
       return <TryLimit />
     }
@@ -166,6 +173,7 @@ export default function Component() {
           setCountryCode={setCountryCode}
           backHandler={backHandler}
           isTimeOut={isTimeOut}
+          handleSubmit={handleSubmit}
         />
       )
     } else {
