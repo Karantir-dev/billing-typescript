@@ -59,7 +59,7 @@ export default function Component(props) {
       >
         {({ setFieldValue, values, errors, touched }) => {
           return (
-            <Form className={s.form__wrapper}>
+            <Form className={s.form__wrapper} id="edit-vhost">
               <div className={s.form}>
                 <div className={s.fieldsBlock}>
                   <Select
@@ -206,6 +206,7 @@ export default function Component(props) {
           size="medium"
           label={t('Save', { ns: 'other' })}
           type="submit"
+          form="edit-vhost"
         />
         <button onClick={closeEditModalHandler} type="button" className={s.clearFilters}>
           {t('Cancel', { ns: 'other' })}
