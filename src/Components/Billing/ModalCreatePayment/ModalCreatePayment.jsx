@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
-import { Check, Cross, Info } from '@images'
+import { Check, Info } from '@images'
 import {
   Button,
   Select,
@@ -12,6 +12,7 @@ import {
   CheckBox,
   InputWithAutocomplete,
   SelectGeo,
+  Modal,
 } from '../..'
 import {
   billingOperations,
@@ -178,182 +179,187 @@ export default function Component(props) {
 
   return (
     <div className={s.modalBg}>
-      {payersSelectedFields && selectedPayerFields && payersSelectLists && (
-        <div className={s.modalBlock}>
-          <div className={s.modalHeader}>
+      {payersSelectedFields && !!selectedPayerFields && !!payersSelectLists && (
+        <Modal closeModal={() => setCreatePaymentModal(false)} isOpen className={s.modal}>
+          <Modal.Header>
             <span className={s.headerText}>{t('Replenishment')}</span>
-            <Cross onClick={() => setCreatePaymentModal(false)} className={s.crossIcon} />
-          </div>
-          <Formik
-            enableReinitialize
-            validateOnBlur={false}
-            validateOnMount={false}
-            validateOnChange={false}
-            validationSchema={validationSchema}
-            initialValues={{
-              profile:
-                selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
-              amount: amount || '',
-              slecetedPayMethod: slecetedPayMethod || undefined,
-              name: company || selectedPayerFields?.name || '',
-              address_physical: addressPhysical ?? selectedPayerFields?.address_physical,
-              city_physical:
-                cityPhysical ??
-                (selectedPayerFields?.city_physical || geoData?.clients_city),
-              person: person ?? selectedPayerFields?.person,
-              country:
-                payersSelectedFields?.country ||
-                payersSelectedFields?.country_physical ||
-                '',
-              profiletype:
-                profileType ||
-                selectedPayerFields?.profiletype ||
-                payersSelectedFields?.profiletype,
-              eu_vat: euVat || selectedPayerFields?.eu_vat || '',
-              [selectedPayerFields?.offer_field]: isPolicyChecked || false,
-              payment_currency: {
-                title: paymentsCurrency?.payment_currency_list?.filter(
-                  e => e?.$key === paymentsCurrency?.payment_currency,
-                )[0]?.$,
-                value: paymentsCurrency?.payment_currency,
-              },
-            }}
-            onSubmit={createPaymentMethodHandler}
-          >
-            {({ values, setFieldValue, touched, errors }) => {
-              const parsePaymentInfo = text => {
-                const splittedText = text?.split('<p>')
-                if (splittedText?.length > 0) {
-                  const minAmount = splittedText[0]?.replace('\n', '')
+          </Modal.Header>
+          <Modal.Body>
+            <Formik
+              enableReinitialize
+              validateOnBlur={false}
+              validateOnMount={false}
+              validateOnChange={false}
+              validationSchema={validationSchema}
+              initialValues={{
+                profile:
+                  selectedPayerFields?.profile ||
+                  payersList[payersList?.length - 1]?.id?.$,
+                amount: amount || '',
+                slecetedPayMethod: slecetedPayMethod || undefined,
+                name: company || selectedPayerFields?.name || '',
+                address_physical:
+                  addressPhysical ?? selectedPayerFields?.address_physical,
+                city_physical:
+                  cityPhysical ??
+                  (selectedPayerFields?.city_physical || geoData?.clients_city),
+                person: person ?? selectedPayerFields?.person,
+                country:
+                  payersSelectedFields?.country ||
+                  payersSelectedFields?.country_physical ||
+                  '',
+                profiletype:
+                  profileType ||
+                  selectedPayerFields?.profiletype ||
+                  payersSelectedFields?.profiletype,
+                eu_vat: euVat || selectedPayerFields?.eu_vat || '',
+                [selectedPayerFields?.offer_field]: isPolicyChecked || false,
+                payment_currency: {
+                  title: paymentsCurrency?.payment_currency_list?.filter(
+                    e => e?.$key === paymentsCurrency?.payment_currency,
+                  )[0]?.$,
+                  value: paymentsCurrency?.payment_currency,
+                },
+              }}
+              onSubmit={createPaymentMethodHandler}
+            >
+              {({ values, setFieldValue, touched, errors }) => {
+                const parsePaymentInfo = text => {
+                  const splittedText = text?.split('<p>')
+                  if (splittedText?.length > 0) {
+                    const minAmount = splittedText[0]?.replace('\n', '')
 
-                  let infoText = ''
+                    let infoText = ''
 
-                  if (splittedText[1] && splittedText?.length > 1) {
-                    let replacedText = splittedText[1]
-                      ?.replace('<p>', '')
-                      ?.replace('</p>', '')
-                      ?.replace('<strong>', '')
-                      ?.replace('</strong>', '')
+                    if (splittedText[1] && splittedText?.length > 1) {
+                      let replacedText = splittedText[1]
+                        ?.replace('<p>', '')
+                        ?.replace('</p>', '')
+                        ?.replace('<strong>', '')
+                        ?.replace('</strong>', '')
 
-                    infoText = replaceAllFn(replacedText, '\n', '')
-                  }
-
-                  return { minAmount, infoText }
-                }
-              }
-
-              const getFieldErrorNames = formikErrors => {
-                const transformObjectToDotNotation = (obj, prefix = '', result = []) => {
-                  Object.keys(obj).forEach(key => {
-                    const value = obj[key]
-                    if (!value) return
-
-                    const nextKey = prefix ? `${prefix}.${key}` : key
-                    if (typeof value === 'object') {
-                      transformObjectToDotNotation(value, nextKey, result)
-                    } else {
-                      result.push(nextKey)
+                      infoText = replaceAllFn(replacedText, '\n', '')
                     }
-                  })
 
-                  return result
+                    return { minAmount, infoText }
+                  }
                 }
 
-                return transformObjectToDotNotation(formikErrors)
-              }
+                const getFieldErrorNames = formikErrors => {
+                  const transformObjectToDotNotation = (
+                    obj,
+                    prefix = '',
+                    result = [],
+                  ) => {
+                    Object.keys(obj).forEach(key => {
+                      const value = obj[key]
+                      if (!value) return
 
-              const ScrollToFieldError = ({
-                scrollBehavior = { behavior: 'smooth', block: 'center' },
-              }) => {
-                const { submitCount, isValid, errors } = useFormikContext()
+                      const nextKey = prefix ? `${prefix}.${key}` : key
+                      if (typeof value === 'object') {
+                        transformObjectToDotNotation(value, nextKey, result)
+                      } else {
+                        result.push(nextKey)
+                      }
+                    })
 
-                useEffect(() => {
-                  if (isValid) return
-
-                  const fieldErrorNames = getFieldErrorNames(errors)
-                  if (fieldErrorNames.length <= 0) return
-
-                  const element =
-                    document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
-                    document.querySelector(`button[name='${fieldErrorNames[0]}']`)
-                  if (!element) return
-
-                  // Scroll to first known error into view
-                  try {
-                    element.scrollIntoView(scrollBehavior)
-                  } catch (e) {
-                    checkIfTokenAlive(e?.message, dispatch)
+                    return result
                   }
 
-                  // Formik doesn't (yet) provide a callback for a client-failed submission,
-                  // thus why this is implemented through a hook that listens to changes on
-                  // the submit count.
-                }, [submitCount])
-
-                return null
-              }
-
-              const parsedText =
-                values?.slecetedPayMethod &&
-                parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
-
-              const setPayerHandler = val => {
-                if (val === values.profile) return
-
-                setFieldValue('profile', val)
-                let data = null
-                if (val === 'new') {
-                  data = {
-                    country: payersSelectLists?.country[0]?.$key,
-                    profiletype: payersSelectLists?.profiletype[0]?.$key,
-                  }
-                  dispatch(
-                    payersOperations.getPayerModalInfo(
-                      data,
-                      false,
-                      null,
-                      setSelectedPayerFields,
-                      true,
-                    ),
-                  )
-                } else {
-                  data = { elid: val }
-                  dispatch(
-                    payersOperations.getPayerEditInfo(
-                      data,
-                      false,
-                      null,
-                      setSelectedPayerFields,
-                      false,
-                      setPayerFieldList,
-                    ),
-                  )
+                  return transformObjectToDotNotation(formikErrors)
                 }
 
-                setPerson(null)
-                setCityPhysical(null)
-                setAddressPhysical(null)
-              }
+                const ScrollToFieldError = ({
+                  scrollBehavior = { behavior: 'smooth', block: 'center' },
+                }) => {
+                  const { submitCount, isValid, errors } = useFormikContext()
 
-              const readMore = parsedText?.infoText
-                ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
-                : parsedText?.minAmount?.length > 150
+                  useEffect(() => {
+                    if (isValid) return
 
-              const payerTypeArrayHandler = () => {
-                const arr = payerFieldList?.profiletype
-                  ? payerFieldList?.profiletype
-                  : payersSelectLists?.profiletype
+                    const fieldErrorNames = getFieldErrorNames(errors)
+                    if (fieldErrorNames.length <= 0) return
 
-                return arr?.map(({ $key, $ }) => ({
-                  label: t(`${$.trim()}`, { ns: 'payers' }),
-                  value: $key,
-                }))
-              }
+                    const element =
+                      document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
+                      document.querySelector(`button[name='${fieldErrorNames[0]}']`)
+                    if (!element) return
 
-              return (
-                <Form>
-                  <ScrollToFieldError />
-                  <div className={s.form}>
+                    // Scroll to first known error into view
+                    try {
+                      element.scrollIntoView(scrollBehavior)
+                    } catch (e) {
+                      checkIfTokenAlive(e?.message, dispatch)
+                    }
+
+                    // Formik doesn't (yet) provide a callback for a client-failed submission,
+                    // thus why this is implemented through a hook that listens to changes on
+                    // the submit count.
+                  }, [submitCount])
+
+                  return null
+                }
+
+                const parsedText =
+                  values?.slecetedPayMethod &&
+                  parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+
+                const setPayerHandler = val => {
+                  if (val === values.profile) return
+
+                  setFieldValue('profile', val)
+                  let data = null
+                  if (val === 'new') {
+                    data = {
+                      country: payersSelectLists?.country[0]?.$key,
+                      profiletype: payersSelectLists?.profiletype[0]?.$key,
+                    }
+                    dispatch(
+                      payersOperations.getPayerModalInfo(
+                        data,
+                        false,
+                        null,
+                        setSelectedPayerFields,
+                        true,
+                      ),
+                    )
+                  } else {
+                    data = { elid: val }
+                    dispatch(
+                      payersOperations.getPayerEditInfo(
+                        data,
+                        false,
+                        null,
+                        setSelectedPayerFields,
+                        false,
+                        setPayerFieldList,
+                      ),
+                    )
+                  }
+
+                  setPerson(null)
+                  setCityPhysical(null)
+                  setAddressPhysical(null)
+                }
+
+                const readMore = parsedText?.infoText
+                  ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                  : parsedText?.minAmount?.length > 150
+
+                const payerTypeArrayHandler = () => {
+                  const arr = payerFieldList?.profiletype
+                    ? payerFieldList?.profiletype
+                    : payersSelectLists?.profiletype
+
+                  return arr?.map(({ $key, $ }) => ({
+                    label: t(`${$.trim()}`, { ns: 'payers' }),
+                    value: $key,
+                  }))
+                }
+
+                return (
+                  <Form id="payment">
+                    <ScrollToFieldError />
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
                       <div className={s.formFieldsBlock}>
@@ -644,25 +650,22 @@ export default function Component(props) {
                         {t(showMore ? 'Collapse' : 'Read more')}
                       </button>
                     )}
-                  </div>
-                  <div className={s.btnBlock}>
-                    <Button
-                      disabled={
-                        Number(values.amount) <
-                        values?.slecetedPayMethod?.payment_minamount?.$
-                      }
-                      className={s.saveBtn}
-                      isShadow
-                      size="medium"
-                      label={t('Pay')}
-                      type="submit"
-                    />
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
-        </div>
+                  </Form>
+                )
+              }}
+            </Formik>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              className={s.saveBtn}
+              isShadow
+              size="medium"
+              label={t('Pay')}
+              type="submit"
+              form="payment"
+            />
+          </Modal.Footer>
+        </Modal>
       )}
     </div>
   )

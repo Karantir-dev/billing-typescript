@@ -250,12 +250,10 @@
   }
 }
 
-.modalBlock {
+.modal {
   background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
+  width: fit-content;
   padding: 18px 24px;
-  margin: 20px 10px;
 }
 
 @media screen and (min-width: 1024px) {

@@ -10,14 +10,14 @@ import {
   Button,
   HintWrapper,
   IconButton,
-  Backdrop,
+  Modal,
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
 import { supportSelectors, supportOperations, supportActions } from '@redux'
 import * as route from '@src/routes'
 import s from './OpenedTicket.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import { Cross, Smile } from '@images'
+import { Smile } from '@images'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -125,34 +125,30 @@ export default function Component() {
         </div>
       )}
 
-      <Backdrop className={s.backdrop} isOpened={tipsModal} onClick={closeTipsModal}>
+      {tipsModal && (
         <TipsModal
           closeTipsModal={closeTipsModal}
           elid={params?.id}
           setSuccessModal={setSuccessModal}
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={successModal}
-        onClick={() => setSuccessModal(false)}
+      <Modal
+        isOpen={successModal}
+        closeModal={() => setSuccessModal(false)}
+        className={s.successModal}
+        simple
       >
-        <div className={s.successModal}>
-          <Cross
-            width="17px"
-            height="17px"
-            onClick={() => setSuccessModal(false)}
-            className={s.crossIcon}
-          />
+        <Modal.Header />
+        <Modal.Body>
           <Smile className={s.smileIcon} />
           <p className={s.thanksText}>
             {t(
               'Thank you on behalf of our staff. They will receive this bonus to their salary!',
             )}
           </p>
-        </div>
-      </Backdrop>
+        </Modal.Body>
+      </Modal>
     </>
   )
 }

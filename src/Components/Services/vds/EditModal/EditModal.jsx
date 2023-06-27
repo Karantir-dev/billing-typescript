@@ -18,7 +18,6 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
   const [initialState, setInitialState] = useState()
   const [isAddOnsOpened, setIsAddOnsOpened] = useState(false)
   const [orderInfo, setOrderInfo] = useState(null)
-  const [isDirty, setIsDirty] = useState(false)
 
   useEffect(() => {
     dispatch(vdsOperations.getEditFieldsVDS(elid, setInitialState))
@@ -179,10 +178,7 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
           }}
           onSubmit={handleFormSubmit}
         >
-          {({ values, setFieldValue, dirty }) => {
-            useEffect(() => {
-              setIsDirty(dirty)
-            }, [dirty])
+          {({ values, setFieldValue }) => {
             return (
               <Form id={elid}>
                 <div className={s.grid_fields}>
@@ -404,7 +400,6 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
           isShadow
           label={orderInfo ? t('buy', { ns: 'other' }) : t('Save', { ns: 'other' })}
           form={elid}
-          disabled={!isDirty}
         />
       </Modal.Footer>
     </Modal>

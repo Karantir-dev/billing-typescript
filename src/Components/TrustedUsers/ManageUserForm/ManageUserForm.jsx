@@ -3,14 +3,14 @@ import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { InputField, Button } from '../..'
+import { InputField, Button, Modal } from '../..'
 import CustomPhoneInput from '../../ui/CustomPhoneInput/CustomPhoneInput'
 
 import s from './ManageUserForm.module.scss'
 import classNames from 'classnames'
 
 export default function ManageUserForm({
-  controlForm,
+  closeModal,
   dataTestid,
   handleSubmit,
   title,
@@ -18,7 +18,7 @@ export default function ManageUserForm({
   formName,
   email,
   userName,
-  isUserFormActive,
+  isOpen,
   isEditUserAllowedToChange,
   userId,
 }) {
@@ -84,154 +84,148 @@ export default function ManageUserForm({
         })
 
   return (
-    <div data-testid={dataTestid}>
-      <div
-        className={classNames({ [s.form_wrapper]: true, [s.active]: isUserFormActive })}
-      >
-        <div className={classNames({ [s.modal]: true, [s.active]: isUserFormActive })}>
-          <div className={s.form_title_wrapper}>
-            <div className={s.title_wrapper}>
-              <p className={s.form_title}>{title}</p>
-              <p className={s.form_subtitle}>{subtitle}</p>
-            </div>
-            <div className={s.close_btn_wrapper}>
-              <button className={s.close_btn} onClick={controlForm}></button>
-            </div>
-          </div>
-
-          <Formik
-            initialValues={{
-              ['email' + userId]: '',
-              ['name' + userId]: '',
-              ['phone' + userId]: '',
-              ['password' + userId]: '',
-              ['passConfirmation' + userId]: '',
-            }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            {({ errors, touched, handleBlur, setFieldValue }) => {
-              return (
-                <Form>
-                  <div className={s.form}>
-                    <InputField
-                      dataTestid="input_email"
-                      label={
-                        formName === 'settings'
-                          ? `${t('trusted_users.form.email')}:`
-                          : requiredLabel(`${t('trusted_users.form.email')}:`)
-                      }
-                      placeholder={
-                        formName === 'settings'
-                          ? email
-                          : t('trusted_users.form_placeholders.email')
-                      }
-                      name={'email' + userId}
-                      error={!!errors['email' + userId]}
-                      touched={!!touched['email' + userId]}
-                      isShadow={true}
-                      background={true}
-                      autoComplete="off"
-                      disabled={formName === 'settings'}
-                      inputClassName={s.field_bg}
-                    />
-
-                    <InputField
-                      dataTestid="input_name"
-                      label={
-                        formName === 'settings'
-                          ? `${t('trusted_users.form.full_name')}:`
-                          : requiredLabel(`${t('trusted_users.form.full_name')}:`)
-                      }
-                      placeholder={
-                        formName === 'settings'
-                          ? userName
-                          : t('trusted_users.form_placeholders.full_name')
-                      }
-                      name={'name' + userId}
-                      error={!!errors['name' + userId]}
-                      touched={!!touched['name' + userId]}
-                      isShadow={true}
-                      background={true}
-                      disabled={formName === 'settings'}
-                      inputClassName={s.field_bg}
-                    />
-
-                    <CustomPhoneInput
-                      label={
-                        formName === 'settings'
-                          ? `${t('trusted_users.form.phone')}:`
-                          : requiredLabel(`${t('trusted_users.form.phone')}:`)
-                      }
-                      dataTestid="input_phone"
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      name={'phone' + userId}
-                      userId={userId}
-                      inputClass={s.field_bg}
-                      buttonClass={s.phoneInputButton}
-                    />
-
-                    <InputField
-                      dataTestid="input_password"
-                      label={
-                        formName === 'settings'
-                          ? `${t('trusted_users.form.password')}:`
-                          : requiredLabel(`${t('trusted_users.form.password')}:`)
-                      }
-                      placeholder={t('trusted_users.form_placeholders.password')}
-                      autoComplete="off"
-                      name={'password' + userId}
-                      error={!!errors['password' + userId]}
-                      touched={!!touched['password' + userId]}
-                      type="password"
-                      isShadow={true}
-                      background={true}
-                      inputClassName={s.field_bg}
-                    />
-
-                    <InputField
-                      dataTestid="input_passConfirmation"
-                      label={
-                        formName === 'settings'
-                          ? `${t('trusted_users.form.conf_password')}:`
-                          : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
-                      }
-                      placeholder={t('trusted_users.form_placeholders.conf_password')}
-                      autoComplete="off"
-                      name={'passConfirmation' + userId}
-                      error={!!errors['passConfirmation' + userId]}
-                      touched={!!touched['passConfirmation' + userId]}
-                      type="password"
-                      isShadow={true}
-                      background={true}
-                      inputClassName={s.field_bg}
-                    />
-                  </div>
-
-                  <div className={s.btn_wrapper}>
-                    <Button
-                      dataTestid="btn_form_submit"
-                      size="large"
-                      className={classNames({
-                        [s.submit_btn]: true,
-                        [s.btn]: true,
-                        [s.shown]:
-                          formName === 'settings' ? isEditUserAllowedToChange : true,
-                      })}
-                      label={t('trusted_users.form.submit_btn').toUpperCase()}
-                      type="submit"
-                      disabled={!isEditUserAllowedToChange}
-                      isShadow
-                    />
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
+    <Modal
+      isOpen={isOpen}
+      closeModal={closeModal}
+      data-testid={dataTestid}
+      className={s.modal}
+    >
+      <Modal.Header>
+        <div className={s.title_wrapper}>
+          <p className={s.form_title}>{title}</p>
+          <p className={s.form_subtitle}>{subtitle}</p>
         </div>
-      </div>
-    </div>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          initialValues={{
+            ['email' + userId]: '',
+            ['name' + userId]: '',
+            ['phone' + userId]: '',
+            ['password' + userId]: '',
+            ['passConfirmation' + userId]: '',
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          {({ errors, touched, handleBlur, setFieldValue }) => {
+            return (
+              <Form id="manage-user" className={s.form}>
+                <InputField
+                  dataTestid="input_email"
+                  label={
+                    formName === 'settings'
+                      ? `${t('trusted_users.form.email')}:`
+                      : requiredLabel(`${t('trusted_users.form.email')}:`)
+                  }
+                  placeholder={
+                    formName === 'settings'
+                      ? email
+                      : t('trusted_users.form_placeholders.email')
+                  }
+                  name={'email' + userId}
+                  error={!!errors['email' + userId]}
+                  touched={!!touched['email' + userId]}
+                  isShadow={true}
+                  background={true}
+                  autoComplete="off"
+                  disabled={formName === 'settings'}
+                  inputClassName={s.field_bg}
+                />
+
+                <InputField
+                  dataTestid="input_name"
+                  label={
+                    formName === 'settings'
+                      ? `${t('trusted_users.form.full_name')}:`
+                      : requiredLabel(`${t('trusted_users.form.full_name')}:`)
+                  }
+                  placeholder={
+                    formName === 'settings'
+                      ? userName
+                      : t('trusted_users.form_placeholders.full_name')
+                  }
+                  name={'name' + userId}
+                  error={!!errors['name' + userId]}
+                  touched={!!touched['name' + userId]}
+                  isShadow={true}
+                  background={true}
+                  disabled={formName === 'settings'}
+                  inputClassName={s.field_bg}
+                />
+
+                <CustomPhoneInput
+                  label={
+                    formName === 'settings'
+                      ? `${t('trusted_users.form.phone')}:`
+                      : requiredLabel(`${t('trusted_users.form.phone')}:`)
+                  }
+                  dataTestid="input_phone"
+                  handleBlur={handleBlur}
+                  setFieldValue={setFieldValue}
+                  name={'phone' + userId}
+                  userId={userId}
+                  inputClass={s.field_bg}
+                  buttonClass={s.phoneInputButton}
+                />
+
+                <InputField
+                  dataTestid="input_password"
+                  label={
+                    formName === 'settings'
+                      ? `${t('trusted_users.form.password')}:`
+                      : requiredLabel(`${t('trusted_users.form.password')}:`)
+                  }
+                  placeholder={t('trusted_users.form_placeholders.password')}
+                  autoComplete="off"
+                  name={'password' + userId}
+                  error={!!errors['password' + userId]}
+                  touched={!!touched['password' + userId]}
+                  type="password"
+                  isShadow={true}
+                  background={true}
+                  inputClassName={s.field_bg}
+                />
+
+                <InputField
+                  dataTestid="input_passConfirmation"
+                  label={
+                    formName === 'settings'
+                      ? `${t('trusted_users.form.conf_password')}:`
+                      : requiredLabel(`${t('trusted_users.form.conf_password')}:`)
+                  }
+                  placeholder={t('trusted_users.form_placeholders.conf_password')}
+                  autoComplete="off"
+                  name={'passConfirmation' + userId}
+                  error={!!errors['passConfirmation' + userId]}
+                  touched={!!touched['passConfirmation' + userId]}
+                  type="password"
+                  isShadow={true}
+                  background={true}
+                  inputClassName={s.field_bg}
+                />
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          dataTestid="btn_form_submit"
+          size="large"
+          className={classNames({
+            [s.submit_btn]: true,
+            [s.btn]: true,
+            [s.shown]: formName === 'settings' ? isEditUserAllowedToChange : true,
+          })}
+          label={t('trusted_users.form.submit_btn').toUpperCase()}
+          type="submit"
+          disabled={!isEditUserAllowedToChange}
+          isShadow
+          form="manage-user"
+        />
+      </Modal.Footer>
+    </Modal>
   )
 }
 
@@ -244,13 +238,13 @@ export function requiredLabel(labelName) {
 }
 
 ManageUserForm.propTypes = {
-  controlForm: PropTypes.func,
+  closeModal: PropTypes.func,
   dataTestid: PropTypes.string,
   title: PropTypes.string,
   subtitle: PropTypes.string,
   userName: PropTypes.string,
   email: PropTypes.string,
-  isUserFormActive: PropTypes.bool,
+  isOpen: PropTypes.bool,
   formName: PropTypes.string,
   isEditUserAllowedToChange: PropTypes.bool,
   userId: PropTypes.string,

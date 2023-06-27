@@ -454,7 +454,7 @@ export default function VDS() {
         />
       )}
 
-      {idForHistory && (
+      {!!idForHistory && (
         <DedicsHistoryModal
           elid={idForHistory}
           name={getServerName(idForHistory)}

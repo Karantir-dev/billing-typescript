@@ -6,7 +6,7 @@ import { Header } from './Header'
 import { Body } from './Body'
 import { Footer } from './Footer'
 import cn from 'classnames'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const ModalWrapper = ({
   children,
@@ -16,17 +16,43 @@ const ModalWrapper = ({
   bgClassname,
   simple,
   noScroll,
+  ...props
 }) => {
+  const modal = useRef()
+
   useEffect(() => {
-    const closeOnEscHandler = e => {
+    if (!isOpen) return
+    const elements = modal.current.querySelectorAll('button, a, input, select')
+    const firstEl = elements[0]
+    
+    if (firstEl) {
+      firstEl.focus()
+    }
+
+    const keyDownHabdler = e => {
+      const lastEl = Array.from(elements).findLast(el => !el.disabled)
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault()
+            lastEl.focus()
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault()
+            firstEl.focus()
+          }
+        }
+      }
+
       if (e.key === 'Escape') closeModal()
     }
-    window.addEventListener('keydown', closeOnEscHandler)
 
-    return () => {
-      window.removeEventListener('keydown', closeOnEscHandler)
-    }
-  })
+    window.addEventListener('keydown', keyDownHabdler)
+
+    return () => window.removeEventListener('keydown', keyDownHabdler)
+  }, [isOpen])
 
   return (
     <>
@@ -39,6 +65,8 @@ const ModalWrapper = ({
                   [s.simple]: simple,
                   [s.noScroll]: noScroll,
                 })}
+                ref={modal}
+                {...props}
               >
                 {children}
               </div>

@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn, Portal, ModalCreatePayment } from '@components'
+import { ThemeBtn, LangBtn, ModalCreatePayment } from '@components'
 import { ExitSign } from '@images'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '@redux'
@@ -294,11 +294,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
         </div>
       </div>
 
-      <Portal>
         {createPaymentModal && (
           <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
         )}
-      </Portal>
     </>
   )
 }

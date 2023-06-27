@@ -24,6 +24,7 @@ export { default as TrustedUsers } from '@pages/TrustedUsers/TrustedUsers'
 export { default as Container } from './Container/Container'
 
 //==========================================UI==========================================//
+export { default as Modal } from './ui/Modal/Modal'
 export { default as InputField } from './ui/InputField/InputField'
 export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneInput'
 export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
@@ -57,7 +58,6 @@ export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCu
 
 export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
 export { default as EditCell } from './ui/EditCell/EditCell'
-export { default as Modal } from './ui/Modal/Modal'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 

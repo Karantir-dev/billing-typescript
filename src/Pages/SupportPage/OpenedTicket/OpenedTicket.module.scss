@@ -92,22 +92,7 @@
 
 //successModal
 .successModal {
-  background: var(--forms_bgc_1);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-
-  margin: 20px 10px;
   max-width: 430px;
-  width: 95%;
-  padding: 18px 25px 42px;
-  position: relative;
-}
-
-.crossIcon {
-  position: absolute;
-  top: 20px;
-  right: 18px;
-  cursor: pointer;
 }
 .smileIcon {
   display: block;

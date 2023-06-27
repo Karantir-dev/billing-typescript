@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'react-i18next'
-import { Cross, Copy } from '@images'
-import { InputField, Button } from '../..'
+import { Copy } from '@images'
+import { InputField, Button, Modal } from '../..'
 import {
   settingsActions,
   settingsOperations,
@@ -30,7 +30,7 @@ export default function Component(props) {
 
   const { t } = useTranslation(['user_settings', 'other', 'support'])
 
-  const { setModal } = props
+  const { closeModal, isOpen } = props
 
   const validationSchema = Yup.object().shape({
     qrcode: Yup.string()
@@ -56,7 +56,7 @@ export default function Component(props) {
 
   const closeModalHandler = () => {
     dispatch(settingsActions.clearTwoStepVerif())
-    setModal(false)
+    closeModal(false)
   }
 
   const downloadQrHandler = () => {
@@ -76,37 +76,36 @@ export default function Component(props) {
   }
 
   const sendPasswrodHandler = values => {
-    dispatch(settingsOperations.setTotpPassword(userInfo?.$id, values, setModal))
+    dispatch(settingsOperations.setTotpPassword(userInfo?.$id, values, closeModal))
   }
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
-        <h2>{t('2-Step Verification')}</h2>
-        <Cross onClick={closeModalHandler} className={s.cross} />
-      </div>
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          qrcode: '',
-          secret: twoStepVerif?.secret || '',
-          email: userInfo?.$email || '',
-        }}
-        onSubmit={sendPasswrodHandler}
-      >
-        {({ errors, touched, values, setFieldValue }) => {
-          const onInputItemsChange = text => {
-            let value = text.replace(/\D/g, '')
-            if (value.length === 0) {
-              value = ''
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
+        <h2 className={s.title}>{t('2-Step Verification')}</h2>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            qrcode: '',
+            secret: twoStepVerif?.secret || '',
+            email: userInfo?.$email || '',
+          }}
+          onSubmit={sendPasswrodHandler}
+        >
+          {({ errors, touched, values, setFieldValue }) => {
+            const onInputItemsChange = text => {
+              let value = text.replace(/\D/g, '')
+              if (value.length === 0) {
+                value = ''
+              }
+              setFieldValue('qrcode', value)
             }
-            setFieldValue('qrcode', value)
-          }
 
-          return (
-            <Form className={s.form}>
-              <div className={s.mobileScroll}>
+            return (
+              <Form id="two-step-modal">
                 <div className={s.qrInstruction}>
                   <div className={cn(s.instruction, { [s.showMore]: showMore })}>
                     <p>{t('Two Step Instruction')}</p>
@@ -189,23 +188,25 @@ export default function Component(props) {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className={s.btnBlock}>
-                <Button
-                  className={s.saveBtn}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                />
-                <button onClick={closeModalHandler} type="button" className={s.cancel}>
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer>
+        {' '}
+        <Button
+          className={s.saveBtn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="two-step-modal"
+        />
+        <button onClick={closeModalHandler} type="button" className={s.cancel}>
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

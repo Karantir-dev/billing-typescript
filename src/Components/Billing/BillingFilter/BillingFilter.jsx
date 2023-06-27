@@ -8,12 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, ModalCreatePayment } from '../..'
 import { useMediaQuery } from 'react-responsive'
-import {
-  actions,
-  billingActions,
-  billingOperations,
-  billingSelectors,
-} from '@redux'
+import { actions, billingActions, billingOperations, billingSelectors } from '@redux'
 import s from './BillingFilter.module.scss'
 
 export default function Component(props) {
@@ -198,11 +193,9 @@ export default function Component(props) {
             type="button"
             onClick={() => setCreatePaymentModal(!createPaymentModal)}
           />
-          <Portal>
-            {createPaymentModal && (
-              <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-            )}
-          </Portal>
+          {createPaymentModal && (
+            <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+          )}
         </>
       )}
     </div>

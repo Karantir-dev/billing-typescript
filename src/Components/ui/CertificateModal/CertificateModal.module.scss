@@ -1,64 +1,9 @@
-.modalBg {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px 30px;
-  width: 100%;
-  max-width: 610px;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--header_shadow);
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .headerText {
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
   line-height: 113%;
   color: var(--main-text);
-}
-
-.form {
-  padding: 35px 15px;
-  background-color: var(--main-bgc2);
-}
-
-.formBlock {
-  display: flex;
-  flex-direction: column;
 }
 
 .input {
@@ -69,19 +14,6 @@
 .field {
   background-color: var(--forms_bgc_3);
   box-shadow: var(--forms_shadow_site);
-}
-
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--footer_shadow);
 }
 
 .saveBtn {
@@ -106,7 +38,6 @@
     transform: scale(0.95);
   }
 }
-
 
 .nsInputBlock {
   position: relative;
@@ -190,42 +121,6 @@
 @media screen and (min-width: 768px) {
   .saveBtn {
     font-size: 20px;
-  }
-
-  .modalBg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-    width: 100%;
-  }
-
-  .modalHeader {
-    padding: 20px 35px;
-  }
-
-  .form {
-    padding: 35px 15px 50px;
-    max-height: 75vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    @media screen and (min-width: 768px) {
-      padding: 40px 35px 60px;
-    }
-  }
-
-  .modalBody {
-    padding: 30px;
-    background-color: var(--main-bgc3);
-  }
-
-  .btnBlock {
-    flex-direction: row;
-    padding: 30px 35px;
   }
 
   .saveBtn {

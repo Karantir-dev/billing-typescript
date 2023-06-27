@@ -5,7 +5,6 @@ import {
   Button,
   Pagination,
   PaymentsMethodsTable,
-  Portal,
   ModalCreatePaymentMethod,
 } from '@components'
 import { Wallet } from '@images'
@@ -83,11 +82,9 @@ export default function Component() {
         </div>
       )}
 
-      <Portal>
-        {createPaymentModal && (
-          <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
-        )}
-      </Portal>
+      {createPaymentModal && (
+        <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
+      )}
     </>
   )
 }

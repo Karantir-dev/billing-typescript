@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Loader, Modal } from '@components'
 import s from './InstructionModal.module.scss'
+import PropTypes from 'prop-types'
 
 export default function InstructionModal({
   closeModal,
@@ -28,4 +29,11 @@ export default function InstructionModal({
       </Modal.Body>
     </Modal>
   )
+}
+
+InstructionModal.propTypes = {
+  closeModal: PropTypes.func,
+  isOpen: PropTypes.bool,
+  dispatchInstruction: PropTypes.func,
+  title: PropTypes.string,
 }

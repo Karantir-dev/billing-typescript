@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
-  Backdrop,
   BreadCrumbs,
   Button,
   HintWrapper,
@@ -9,6 +8,7 @@ import {
   DedicIPOrder,
   DedicIPList,
   DedicIPEditModal,
+  Modal,
 } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { dedicOperations } from '@redux'
@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as route from '@src/routes'
-import { Attention, Cross } from '@images'
+import { Attention } from '@images'
 import { checkServicesRights } from '@utils'
 import s from './DedicIPPage.module.scss'
 
@@ -136,77 +136,57 @@ export default function DedicIPpage() {
         setElidForDeleteModal={setElidForDeleteModal}
         rights={rights}
       />
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(elidForEditModal)}
-        onClick={() => setElidForEditModal(0)}
-      >
+
+      {!!elidForEditModal && (
         <DedicIPEditModal
           elid={elidForEditModal}
           plid={ipPlid}
           closeFn={() => setElidForEditModal(0)}
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(elidForDeleteModal)}
-        onClick={() => setElidForDeleteModal(0)}
+      <Modal
+        isOpen={!!elidForDeleteModal}
+        closeModal={() => setElidForDeleteModal(0)}
+        className={s.modal}
       >
-        <div className={s.modalCloseBlock}>
-          <div className={s.header_block}>
-            <div className={s.title_wrapper}>
-              <h2 className={s.page_title}>
-                {t('IP-address removing', { ns: 'other' })}
-              </h2>
-            </div>
-            <Cross
-              className={s.icon_cross}
-              onClick={() => setElidForDeleteModal(0)}
-              width={17}
-              height={17}
-            />
+        <Modal.Header>
+          <h2 className={s.page_title}>{t('IP-address removing', { ns: 'other' })}</h2>
+        </Modal.Header>
+        <Modal.Body>
+          <div className={s.closeText}>
+            {t('After accepting your IP-address will be automatically deleted')}
           </div>
+        </Modal.Body>
+        <Modal.Footer column>
+          <Button
+            onClick={handleRemoveIPBtn}
+            className={s.saveBtn}
+            isShadow
+            size="medium"
+            label={t('OK')}
+            type="button"
+          />
+          <button
+            onClick={e => {
+              e.preventDefault()
+              setElidForDeleteModal(0)
+            }}
+            type="button"
+            className={s.close}
+          >
+            {t('Cancel', { ns: 'other' })}
+          </button>
+        </Modal.Footer>
+      </Modal>
 
-          <div className={s.modal_content}>
-            <div className={s.closeText}>
-              {t('After accepting your IP-address will be automatically deleted')}
-            </div>
-          </div>
-          <div className={s.btnCloseBlock}>
-            <Button
-              onClick={handleRemoveIPBtn}
-              className={s.saveBtn}
-              isShadow
-              size="medium"
-              label={t('OK')}
-              type="button"
-            />
-            <button
-              onClick={e => {
-                e.preventDefault()
-                setElidForDeleteModal(0)
-              }}
-              type="button"
-              className={s.close}
-            >
-              {t('Cancel', { ns: 'other' })}
-            </button>
-          </div>
-        </div>
-      </Backdrop>
-
-      <Backdrop
-        className={s.backdrop}
-        isOpened={orderModalOpened}
-        onClick={() => setOrderModalOpened(false)}
-      >
+      {orderModalOpened && (
         <DedicIPOrder
           closeFn={() => {
             setOrderModalOpened(false)
           }}
         />
-      </Backdrop>
+      )}
     </div>
   )
 }
