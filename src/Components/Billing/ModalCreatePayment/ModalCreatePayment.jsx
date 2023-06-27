@@ -357,6 +357,17 @@ export default function Component(props) {
                   }))
                 }
 
+                const onProfileTypeChange = item => {
+                  setFieldValue('profiletype', item)
+                  setProfileType(item)
+                  let data = {
+                    country: payersSelectLists?.country[0]?.$key,
+                    profiletype: item,
+                  }
+
+                  dispatch(payersOperations.getPayerModalInfo(data))
+                }
+
                 return (
                   <Form id="payment">
                     <ScrollToFieldError />
@@ -409,10 +420,7 @@ export default function Component(props) {
                             placeholder={t('Not chosen', { ns: 'other' })}
                             label={`${t('Payer status', { ns: 'payers' })}:`}
                             value={values.profiletype}
-                            getElement={item => {
-                              setFieldValue('profiletype', item)
-                              setProfileType(item)
-                            }}
+                            getElement={onProfileTypeChange}
                             isShadow
                             className={s.select}
                             dropdownClass={s.selectDropdownClass}
