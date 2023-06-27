@@ -24,10 +24,8 @@ const ModalWrapper = ({
     if (!isOpen) return
     const elements = modal.current.querySelectorAll('button, a, input, select')
     const firstEl = elements[0]
-    
-    if (firstEl) {
-      firstEl.focus()
-    }
+
+    firstEl?.focus()
 
     const keyDownHabdler = e => {
       const lastEl = Array.from(elements).findLast(el => !el.disabled)
