@@ -144,7 +144,9 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
   ])
     .then(responses => {
       responses.forEach(({ data }, i) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          checkIfTokenAlive(data.doc.error.msg.$, dispatch)
+        }
 
         funcsArray[i](data, dispatch)
       })
