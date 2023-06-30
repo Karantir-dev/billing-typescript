@@ -47,7 +47,7 @@ export default function Component(props) {
           onSubmit={sendMessageHandle}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            let checkItemSize = values?.files.filter(el => el?.size >= 6000)
+            let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
 
             useEffect(() => {
               setIsSubmitDisabled(!!checkItemSize.length)

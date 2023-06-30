@@ -80,7 +80,7 @@ export default function Component(props) {
   }
 
   return (
-    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+    <Modal closeModal={closeModalHandler} isOpen={isOpen} className={s.modal}>
       <Modal.Header>
         <h2 className={s.title}>{t('2-Step Verification')}</h2>
       </Modal.Header>

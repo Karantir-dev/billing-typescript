@@ -31,7 +31,7 @@ export default function DedicatedServersPage() {
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
-  const { t } = useTranslation(['vds', 'container', 'other'])
+  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
   const navigate = useNavigate()
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)

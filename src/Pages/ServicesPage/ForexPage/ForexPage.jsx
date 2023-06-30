@@ -404,7 +404,7 @@ export default function ForexPage() {
 
       {!!elidForInstructionModal && (
         <InstructionModal
-          title={(t('Forex server activation'), { ns: 'other' })}
+          title={t('Forex server activation', { ns: 'other' })}
           closeModal={() => setElidForInstructionModal(0)}
           dispatchInstruction={setInstruction =>
             dispatch(

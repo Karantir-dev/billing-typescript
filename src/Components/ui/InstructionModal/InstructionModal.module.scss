@@ -6,6 +6,7 @@
     margin: 25px 0 40px;
     padding-top: 0;
     padding-bottom: 0;
+    box-shadow: var(--forms_shadow);
     &::-webkit-scrollbar-button:start,
     &::-webkit-scrollbar-button:end {
       height: 0;
