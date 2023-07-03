@@ -136,6 +136,8 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       dispatch(authActions.clearTemporaryId())
       dispatch(authActions.closeTotpForm())
       dispatch(authActions.loginSuccess(data?.doc?.auth?.$id))
+      dispatch(authActions.isLogined(true))
+      dispatch(userOperations.getUserInfo(data?.doc?.auth?.$id))
     })
     .catch(err => {
       dispatch(actions.hideLoader())
