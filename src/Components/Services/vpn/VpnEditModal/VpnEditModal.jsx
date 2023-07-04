@@ -29,7 +29,7 @@ export default function Component(props) {
       </div>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>
-          <span>{t('The service is active until')}:</span>
+          <span>{t('service_created')}:</span>
           <span>{editData?.createdate}</span>
         </div>
         <div className={s.statusItem}>
