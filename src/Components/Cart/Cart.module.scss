@@ -602,6 +602,19 @@
   z-index: 2;
   cursor: pointer;
 
+  &_address {
+    position: absolute;
+    top: 30px;
+    right: 0px;
+    z-index: 2;
+    padding: 12px 12px 12px 0px;
+    cursor: pointer;
+    
+    .descriptionBlock {
+      right: 0;
+    }
+  }
+
   &:hover {
     svg path {
       fill: var(--accent-color-light);
@@ -685,7 +698,6 @@
 }
 
 @media screen and (min-width: 768px) {
-
   .fieldsGrid {
     grid-template-columns: 1fr 1fr;
   }

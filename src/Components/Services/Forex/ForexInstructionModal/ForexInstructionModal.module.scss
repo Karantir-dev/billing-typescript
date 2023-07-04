@@ -1,3 +1,5 @@
+@import '../../../../scss/placeholders.scss';
+
 .modalBg {
   position: absolute;
   justify-content: center;
@@ -53,25 +55,7 @@
 }
 
 .whoisBlock {
-  background: var(forms_bgc_4);
-  box-shadow: var(--forms_shadow);
-  margin: 30px 15px;
-
-  max-height: 65vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
+  @extend %whois_style;
 }
 
 @media screen and (min-width: 768px) {

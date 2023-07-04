@@ -154,6 +154,7 @@ export default function ManageUserForm({
                       background={true}
                       disabled={formName === 'settings'}
                       inputClassName={s.field_bg}
+                      autoComplete="off"
                     />
 
                     <CustomPhoneInput
@@ -169,6 +170,8 @@ export default function ManageUserForm({
                       userId={userId}
                       inputClass={s.field_bg}
                       buttonClass={s.phoneInputButton}
+                      autoComplete="off"
+                      containerClass={s.phoneInputContainer}
                     />
 
                     <InputField
