@@ -92,6 +92,10 @@ export default function Component() {
     }
   }
 
+  if (params.result && !(params?.result === 'success' || params?.result === 'error')) {
+    return <Navigate to={route.ERROR_PAGE} />
+  }
+
   return (
     <>
       <div className={s.body}>
