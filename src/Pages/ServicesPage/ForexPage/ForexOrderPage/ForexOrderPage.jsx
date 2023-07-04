@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button, Select } from '@components'
+import { BreadCrumbs, Button, Select, Icon } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -12,7 +12,6 @@ import { forexOperations, selectors, userOperations } from '@redux'
 import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
-import { Germany, Usa } from '@images'
 
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
@@ -221,13 +220,13 @@ export default function ForexOrderPage() {
                   <div className={classNames(s.countyBtnsBlock)}>
                     {tarifList?.datacenter?.map(el => {
                       const selected = el?.$key === values.datacenter
-                      let flag = <Germany />
+                      let flag = <Icon name="Germany" />
                       let name = el?.$
                       if (el?.$?.toLocaleLowerCase()?.includes('germany')) {
-                        flag = <Germany />
+                        flag = <Icon name="Germany" />
                         name = 'Germany'
                       } else if (el?.$?.toLocaleLowerCase()?.includes('usa')) {
-                        flag = <Usa />
+                        flag = <Icon name="Usa" />
                         name = 'USA'
                       }
                       return (

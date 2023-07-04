@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useOutsideAlerter } from '@utils'
 import { Formik, Form } from 'formik'
-import { InputField, Select, Button, DoubleInputField } from '../../..'
+import { InputField, Select, Button, DoubleInputField, Icon } from '@components'
 import s from './FTPFiltersModal.module.scss'
-import { Cross } from '@images'
 
 export default function FTPFiltersModal(props) {
   const {
@@ -50,7 +49,7 @@ export default function FTPFiltersModal(props) {
     <div ref={modal} className={s.filterModal}>
       <div className={s.formHeader}>
         <h2>{t('Filter', { ns: 'other' })}</h2>
-        <Cross onClick={() => setFilterModal(false)} className={s.crossIcon} />
+        <Icon name="Cross" onClick={() => setFilterModal(false)} className={s.crossIcon} />
       </div>
 
       <Formik

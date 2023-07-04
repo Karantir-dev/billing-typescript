@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import DNSItem from '../DNSItem/DNSItem'
 import DNSMobileItem from '../DNSMobileItem/DNSMobileItem'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 
 import s from './DNSList.module.scss'
 

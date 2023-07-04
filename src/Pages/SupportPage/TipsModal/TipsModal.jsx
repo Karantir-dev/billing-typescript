@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import s from './TipsModal.module.scss'
-import { Cross } from '@images'
-import { Button, InputField } from '@components'
+import { Button, InputField, Icon } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { supportOperations } from '@redux'
@@ -30,7 +29,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Thank support')}</span>
         </div>
-        <Cross
+        <Icon name="Cross"
           width="17px"
           height="17px"
           onClick={closeTipsModal}

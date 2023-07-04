@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './TarifCard.module.scss'
-import { Infinity } from '@images'
+import { Icon } from '@components'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
@@ -135,21 +135,21 @@ export default function Component(props) {
           )}
           <div className={s.line} />
           <div className={s.charText}>
-            {data?.ssd === 'unlimited' ? <Infinity /> : data?.ssd} SSD
+            {data?.ssd === 'unlimited' ? <Icon name="Infinity" /> : data?.ssd} SSD
           </div>
           <div className={s.charText}>
-            {data?.sites === 'unlimited' ? <Infinity /> : data?.sites} {t('Sites')}
+            {data?.sites === 'unlimited' ? <Icon name="Infinity" /> : data?.sites} {t('Sites')}
           </div>
           <div className={s.charText}>
-            {data?.subdomains === 'unlimited' ? <Infinity /> : data?.subdomains}{' '}
+            {data?.subdomains === 'unlimited' ? <Icon name="Infinity" /> : data?.subdomains}{' '}
             {t('Subdomains')}
           </div>
           <div className={s.charText}>
-            {data?.database === 'unlimited' ? <Infinity /> : data?.database}{' '}
+            {data?.database === 'unlimited' ? <Icon name="Infinity" /> : data?.database}{' '}
             {t('Database')}
           </div>
           <div className={s.charText}>
-            {data?.ram === 'unlimited' ? <Infinity /> : data?.ram} {t('RAM')}
+            {data?.ram === 'unlimited' ? <Icon name="Infinity" /> : data?.ram} {t('RAM')}
           </div>
         </div>
       </div>

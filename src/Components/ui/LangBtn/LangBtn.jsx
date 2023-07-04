@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '@images/'
+import { Icon } from '@components'
 import { actions, settingsOperations, userSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -76,7 +76,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
         {checkIfLangIsLocale
           ? langCodeForWeb?.showLangCode?.split('-')[0]
           : langCodeForWeb?.showLangCode}
-        <Shevron className={s.icon} />
+        <Icon name="Shevron" className={s.icon} />
       </div>
 
       <div className={s.lang_dropdown}>

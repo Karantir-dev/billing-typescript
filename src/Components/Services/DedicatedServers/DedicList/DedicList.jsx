@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import s from './DedicList.module.scss'
 import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
 

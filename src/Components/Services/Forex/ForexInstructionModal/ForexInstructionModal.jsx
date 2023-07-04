@@ -3,10 +3,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { Cross } from '@images'
+import { Icon, Loader } from '@components'
 import { dnsOperations } from '@redux'
-
-import Loader from '../../../ui/Loader/Loader'
 
 import s from './ForexInstructionModal.module.scss'
 
@@ -29,7 +27,7 @@ export default function ForexInstructionModal({ elid, closeFn }) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('Forex server activation')}</span>
-        <Cross onClick={closeFn} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeFn} className={s.crossIcon} />
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: instruction?.$ }}

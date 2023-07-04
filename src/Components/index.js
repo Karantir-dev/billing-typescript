@@ -57,6 +57,7 @@ export { default as PaymentCurrencyBtn } from './ui/PaymentCurrencyBtn/PaymentCu
 
 export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender'
 export { default as EditCell } from './ui/EditCell/EditCell'
+export { default as Icon } from './ui/Icon/Icon'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
 
 //==========================================ACCESS LOGS==========================================//

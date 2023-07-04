@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '@images/'
+import { Icon } from '@components'
 import s from './PaymentCurrencyBtn.module.scss'
 
 export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {
@@ -11,7 +11,7 @@ export default function PaymentCurrencyBtn({ list, currentValue, setValue }) {
       })}
     >
       <div className={cn(s.current_lang, { [s.pointer]: list?.length > 1 })}>
-        {currentValue} {list?.length > 1 && <Shevron className={s.icon} />}
+        {currentValue} {list?.length > 1 && <Icon name="Shevron" className={s.icon} />}
       </div>
 
       {list?.length > 1 && (

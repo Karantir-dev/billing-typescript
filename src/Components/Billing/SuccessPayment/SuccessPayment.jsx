@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { SuccessPay } from '@images'
+import { Icon } from '@components'
 import { SITE_URL } from '@config/config'
 import { cookies, parseLang } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -167,7 +167,7 @@ export default function Component() {
       <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
         <div className={s.modalTopBlock}>
-          <SuccessPay />
+          <Icon name="SuccessPay" />
           <div className={s.approved}>{t('Payment approved')}</div>
           <div className={s.completed}>{t('Payment was completed successfully')}</div>
         </div>

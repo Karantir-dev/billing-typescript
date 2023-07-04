@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import SiteCareTableItem from './SiteCareTableItem'
 import cn from 'classnames'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './SiteCareTable.module.scss'
 

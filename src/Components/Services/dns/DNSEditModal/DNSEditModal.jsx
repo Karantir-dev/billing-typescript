@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '@images'
 import { Formik, Form } from 'formik'
 
 import s from './DNSEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import Select from '../../../ui/Select/Select'
-import { Button } from '../../..'
+import { Button, Icon, InputField, Select } from '@components'
 import { dnsOperations } from '@redux'
 import { translatePeriod } from '@utils'
 
@@ -60,7 +57,8 @@ export default function FTPEditModal({ elid, closeFn }) {
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Cross
+        <Icon
+          name="Cross"
           className={s.icon_cross}
           onClick={e => {
             e.preventDefault()

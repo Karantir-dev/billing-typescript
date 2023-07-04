@@ -2,13 +2,11 @@ import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
-import { Cross, ArrowSign } from '@images'
 import { Formik, Form } from 'formik'
 import cn from 'classnames'
 
 import s from './EditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import { Select, Button } from '../../..'
+import { Select, Button, Icon, InputField } from '@components'
 
 export default function EditModal({ elid, closeFn, getVDSHandler }) {
   const { t } = useTranslation(['vds', 'other', 'billing'])
@@ -136,7 +134,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
           <span className={s.tariff_name}>{initialState?.name?.$.split('(')[0]}</span>
         </p>
         <button className={s.icon_cross} onClick={closeFn} type="button">
-          <Cross width={17} height={17} />
+          <Icon name="Cross" width={17} height={17} />
         </button>
       </div>
 
@@ -302,7 +300,8 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                   onClick={handleAddOnsClick}
                 >
                   2. {t('additionally')}{' '}
-                  <ArrowSign
+                  <Icon
+                    name="ArrowSign"
                     className={cn(s.arrow_icon, { [s.opened]: isAddOnsOpened })}
                   />
                 </button>

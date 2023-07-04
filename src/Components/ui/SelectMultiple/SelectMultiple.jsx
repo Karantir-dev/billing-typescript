@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Check, Cross, Shevron } from '@images'
+import { Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './SelectMultiple.module.scss'
 
@@ -110,7 +110,7 @@ export default function Component(props) {
               {selectedItem?.map(el => (
                 <div className={s.selected_item} key={el.value}>
                   <span>{el.label}</span>
-                  <Cross
+                  <Icon name="Cross"
                     className={s.cross}
                     width={12}
                     height={12}
@@ -125,7 +125,7 @@ export default function Component(props) {
             </span>
           )}
         </div>
-        <Shevron className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
+        <Icon name="Shevron" className={cn({ [s.right_icon]: true, [s.opened]: isOpened })} />
       </button>
       {itemsList.length !== 0 && (
         <div
@@ -148,7 +148,7 @@ export default function Component(props) {
                     })}
                   >
                     {isElementSelected(el) ? (
-                      <Check
+                      <Icon name="Check"
                         onClick={e => {
                           e.stopPropagation()
                           itemSelectHandler(el)

@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'react-responsive'
-import { Delete } from '@images'
+import { Icon } from '@components'
 import s from './FtpItem.module.scss'
 import { translatePeriodToMonths } from '@utils'
 import { useTranslation } from 'react-i18next'
@@ -23,7 +23,7 @@ export default function FtpItem(props) {
                     type="button"
                     onClick={deleteItemHandler}
                   >
-                    <Delete />
+                    <Icon name="Delete" />
                   </button>
                 )}
               </div>
@@ -44,7 +44,7 @@ export default function FtpItem(props) {
 
             {typeof deleteItemHandler === 'function' && tabletOrHigher && (
               <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-                <Delete />
+                <Icon name="Delete" />
               </button>
             )}
           </div>

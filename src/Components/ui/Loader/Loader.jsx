@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import cn from 'classnames'
 
 import { selectors, userSelectors } from '@redux'
-import { Logo } from '@images'
+import { Icon } from '@components'
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false, shown }) {
@@ -19,7 +19,7 @@ export default function Loader({ logo = false, shown }) {
         [s.shown]: isLoading || userInfoLoading || shown,
       })}
     >
-      {(logo || userInfoLoading) && <Logo svgwidth="115" svgheight="53" />}
+      {(logo || userInfoLoading) && <Icon name="Logo" svgwidth="115" svgheight="53" />}
 
       <div className={s.loader}>
         <div className={`${s.loader_circle} ${s.first}`}></div>

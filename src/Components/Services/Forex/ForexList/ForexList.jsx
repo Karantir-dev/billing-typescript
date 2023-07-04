@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import s from './ForexList.module.scss'
 import ForexItem from '../ForexItem/ForexItem'
 import ForexMobileItem from '../ForexMobileItem/ForexMobileItem'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 
 export default function ForexList({
   emptyFilter,

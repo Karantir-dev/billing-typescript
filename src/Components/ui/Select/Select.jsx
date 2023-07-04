@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Shevron } from '@images'
+import { Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './Select.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -114,7 +114,7 @@ export default function Select(props) {
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
           )}
           {!withoutArrow && (
-            <Shevron
+            <Icon name="Shevron"
               className={cn({
                 [s.right_icon]: true,
                 [s.opened]: isOpened,

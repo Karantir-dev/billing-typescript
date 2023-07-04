@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { InputField } from '../../..'
+import { InputField, Icon } from '@components'
 import s from './NsItem.module.scss'
-import { Trash } from '@images'
 
 const nslists = ['ns0', 'ns1', 'ns2', 'ns3', 'ns_additional']
 const zomroNS = ['ns1.zomro.net', 'ns2.zomro.ru', 'ns3.zomro.com', 'ns4.zomro.su']
@@ -82,7 +81,7 @@ export default function Component(props) {
                   type="button"
                   className={s.deleteNs}
                 >
-                  <Trash />
+                  <Icon name="Trash" />
                 </button>
               )}
             </div>
@@ -106,7 +105,7 @@ export default function Component(props) {
                   type="button"
                   className={s.deleteNs}
                 >
-                  <Trash />
+                  <Icon name="Trash" />
                 </button>
               )}
             </div>
