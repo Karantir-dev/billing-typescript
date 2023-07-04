@@ -114,7 +114,11 @@ export default function Component(props) {
           )}
         </div>
         {params?.path === 'requests' && (
-          <HintWrapper wrapperClassName={s.archiveBtn} label={t('To the archive')}>
+          <HintWrapper 
+            wrapperClassName={s.archiveBtn}
+            popupClassName={s.archivePopUp}
+            label={t('To the archive')}
+          >
             <IconButton
               dataTestid={'archiveBtn'}
               disabled={selctedTicket?.toarchive?.$ !== 'on'}
