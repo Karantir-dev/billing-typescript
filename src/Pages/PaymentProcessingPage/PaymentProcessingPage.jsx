@@ -18,11 +18,11 @@ export default function PaymentSaved() {
 
   const [paymentItem, setPaymentItem] = useState(null)
   const [cartData, setCartData] = useState(null)
-  const [exchangeRate, setExchangeRate] = useState(null)
+  // const [exchangeRate, setExchangeRate] = useState(null)
 
-  useEffect(() => {
-    dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
-  }, [])
+  // useEffect(() => {
+  //   dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
+  // }, [])
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 15 }
@@ -54,17 +54,20 @@ export default function PaymentSaved() {
   }, [paymentsList])
 
   useEffect(() => {
-    if (paymentItem && exchangeRate) {
+    if (paymentItem) {
       //if we have payment
-      let currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
-      let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
-      let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
+      // let currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
+      // let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
+      // let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
 
-      if (currency === 'RUB' && Number(exchangeRate) > 1) {
-        value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
-        tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
-        currency = 'EUR'
-      }
+      let value = paymentItem?.subaccountamount_iso?.$
+      let tax = paymentItem?.tax?.$
+
+      // if (currency === 'RUB' && Number(exchangeRate) > 1) {
+      //   value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
+      //   tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
+      //   currency = 'EUR'
+      // }
 
       window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
@@ -82,7 +85,7 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: cartData?.promocode,
               items: cartData?.items,
@@ -104,7 +107,7 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: '',
               items: [
@@ -134,7 +137,7 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               items: [
                 {
                   item_name: 'Refill',
@@ -153,7 +156,7 @@ export default function PaymentSaved() {
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
-  }, [paymentItem, exchangeRate])
+  }, [paymentItem])
 
   return (
     <div className={s.wrapper}>
