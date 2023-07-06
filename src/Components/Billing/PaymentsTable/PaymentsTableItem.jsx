@@ -3,11 +3,10 @@ import s from './PaymentsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
-import { MoreDots, Pay, Download, Delete } from '@images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
-import { HintWrapper } from '@components'
+import { HintWrapper, Icon } from '@components'
 
 export default function Component(props) {
   const {
@@ -75,7 +74,11 @@ export default function Component(props) {
   const renderDesktopLastColumn = () => {
     return (
       <div className={cn(s.item_text, s.eighth_item)}>
-        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+        <Icon
+          name="MoreDots"
+          onClick={() => setIsOpened(!isOpened)}
+          className={s.dotIcons}
+        />
 
         <div
           role="button"
@@ -105,17 +108,17 @@ export default function Component(props) {
                 }
               }}
             >
-              <Pay />
+              <Icon name="Pay" />
               <p className={s.setting_text}>{t('Pay')}</p>
             </button>
           )}
           <button className={s.settings_btn} onClick={downloadHandler}>
-            <Download />
+            <Icon name="Download" />
             <p className={s.setting_text}>{t('Download')}</p>
           </button>
           {status.trim() === 'New' && (
             <button className={s.settings_btn} onClick={deleteHandler}>
-              <Delete />
+              <Icon name="Delete" />
               <p className={s.setting_text}>{t('Delete')}</p>
             </button>
           )}
@@ -144,17 +147,17 @@ export default function Component(props) {
             }}
             className={s.mobileBtn}
           >
-            <Pay />
+            <Icon name="Pay" />
             <div>{t('Pay')}</div>
           </button>
         )}
         <button onClick={downloadHandler} className={s.mobileBtn}>
-          <Download />
+          <Icon name="Download" />
           <div>{t('Download')}</div>
         </button>
         {status.trim() === 'New' && (
           <button onClick={deleteHandler} className={s.mobileBtn}>
-            <Delete />
+            <Icon name="Delete" />
             <div>{t('Delete')}</div>
           </button>
         )}

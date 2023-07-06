@@ -8,9 +8,7 @@ import { useTranslation } from 'react-i18next'
 import ControlBtn from '../ControlBtn/ControlBtn'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
-import { Info } from '@images'
-import Alert from '../../ui/Alert/Alert'
-import { Button, Toggle } from '../..'
+import { Button, Toggle, Icon, Alert } from '@components'
 import { selectors, usersActions, usersOperations, usersSelectors } from '@redux'
 
 import s from './UserCard.module.scss'
@@ -199,7 +197,7 @@ export default function UserCard({
                   onMouseEnter={() => setHovered(true)}
                   onMouseLeave={() => setHovered(false)}
                 >
-                  <Info className={s.warning_sign} />
+                  <Icon name="Info" className={s.warning_sign} />
                   <p
                     className={cn({
                       [s.warning_text]: true,
@@ -287,7 +285,7 @@ export default function UserCard({
                   onMouseEnter={() => setHovered(true)}
                   onMouseLeave={() => setHovered(false)}
                 >
-                  <Info className={s.warning_sign} />
+                  <Icon name="Info" className={s.warning_sign} />
                   <p
                     className={cn({
                       [s.warning_text]: true,

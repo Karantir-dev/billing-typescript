@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import { DetailsModal } from '../../'
+import { DetailsModal } from '@components'
 import { affiliateOperations } from '@redux'
 
 import s from './IncomeTable.module.scss'

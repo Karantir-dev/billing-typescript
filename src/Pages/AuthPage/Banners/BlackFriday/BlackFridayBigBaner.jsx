@@ -3,7 +3,7 @@ import StarSale from './StarSale'
 import Line from './Line'
 
 import s from '../../AuthPage.module.scss'
-import { GiftDt } from '@images'
+import { Icon } from '@components'
 
 export default function Component() {
   const { t } = useTranslation('other')
@@ -70,13 +70,13 @@ export default function Component() {
 
             <div className={s.giftList}>
               <span>
-                <GiftDt /> {t('1 VPN - free for 1 month')}
+                <Icon name="GiftDt" /> {t('1 VPN - free for 1 month')}
               </span>
               <span>
-                <GiftDt /> {t('1 FTP storage for 100 GB - free for 1 month')}
+                <Icon name="GiftDt" /> {t('1 FTP storage for 100 GB - free for 1 month')}
               </span>
               <span>
-                <GiftDt /> {t('1 Site care - free for 3 months')}
+                <Icon name="GiftDt" /> {t('1 Site care - free for 3 months')}
               </span>
             </div>
 

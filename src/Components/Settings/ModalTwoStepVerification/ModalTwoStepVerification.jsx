@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'react-i18next'
-import { Cross, Copy } from '@images'
-import { InputField, Button } from '../..'
+import { InputField, Button, Icon } from '@components'
 import {
   settingsActions,
   settingsOperations,
@@ -83,7 +82,7 @@ export default function Component(props) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <h2>{t('2-Step Verification')}</h2>
-        <Cross onClick={closeModalHandler} className={s.cross} />
+        <Icon name="Cross" onClick={closeModalHandler} className={s.cross} />
       </div>
       <Formik
         enableReinitialize
@@ -145,7 +144,7 @@ export default function Component(props) {
                       <span className={s.field_text} ref={refLinkEl}>
                         {twoStepVerif?.secret}
                       </span>
-                      <Copy className={s.copy_icon} />
+                      <Icon name="Copy" className={s.copy_icon} />
 
                       <CSSTransition
                         in={refLinkCopied}

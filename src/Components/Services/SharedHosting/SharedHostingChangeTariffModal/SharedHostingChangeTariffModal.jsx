@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { RadioButton, Button } from '../../..'
+import { RadioButton, Button, Icon } from '@components'
 import s from './SharedHostingChangeTariffModal.module.scss'
 
 export default function Component(props) {
@@ -51,7 +50,11 @@ export default function Component(props) {
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
           <span className={s.vhostName}>({name})</span>
         </div>
-        <Cross onClick={closeChangeTariffModalHandler} className={s.crossIcon} />
+        <Icon
+          name="Cross"
+          onClick={closeChangeTariffModalHandler}
+          className={s.crossIcon}
+        />
       </div>
       <div className={s.modalBody}>
         <div className={changeTariffInfoData && s.radioBlock}>

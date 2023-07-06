@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import BurgerListItem from '../BurgerListItem/BurgerListItem'
-import { ArrowSign, Box, Profile, Social, Support, Wallet } from '@images'
+import { Icon } from '@components'
 
 import s from './ListItems.module.scss'
 
@@ -22,7 +22,8 @@ export default function ListItems(props) {
     switch (name) {
       case 'services':
         return (
-          <Box
+          <Icon
+            name="Box"
             className={cn({
               [s.icon]: true,
               [s.active]: currentItem[0].active,
@@ -31,7 +32,8 @@ export default function ListItems(props) {
         )
       case 'finance':
         return (
-          <Wallet
+          <Icon
+            name="Wallet"
             className={cn({
               [s.icon]: true,
               [s.active]: currentItem[0].active,
@@ -40,7 +42,8 @@ export default function ListItems(props) {
         )
       case 'ref_program':
         return (
-          <Social
+          <Icon
+            name="Social"
             className={cn({
               [s.icon]: true,
               [s.active]: currentItem[0].active,
@@ -49,7 +52,8 @@ export default function ListItems(props) {
         )
       case 'support':
         return (
-          <Support
+          <Icon
+            name="Support"
             className={cn({
               [s.icon]: true,
               [s.active]: currentItem[0].active,
@@ -57,7 +61,9 @@ export default function ListItems(props) {
           />
         )
       default:
-        return <Profile svgwidth="31" svgheight="31" className={s.profile_icon} />
+        return (
+          <Icon name="Profile" svgwidth="31" svgheight="31" className={s.profile_icon} />
+        )
     }
   }
 
@@ -93,7 +99,8 @@ export default function ListItems(props) {
         controlMenu={controlMenu}
         name={isProfile ? name : t(`burger_menu.${name}.${name}`)}
         arrow={
-          <ArrowSign
+          <Icon
+            name="ArrowSign"
             className={cn({
               [s.arrow_icon]: true,
               [s.closed]: currentItem[0].active,

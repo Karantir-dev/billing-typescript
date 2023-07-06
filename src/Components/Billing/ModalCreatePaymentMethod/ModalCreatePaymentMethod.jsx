@@ -3,7 +3,6 @@ import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
-import { Cross, Info } from '@images'
 import {
   Button,
   Select,
@@ -11,7 +10,8 @@ import {
   CheckBox,
   InputWithAutocomplete,
   SelectGeo,
-} from '../..'
+  Icon,
+} from '@components'
 import {
   billingOperations,
   billingSelectors,
@@ -132,7 +132,11 @@ export default function Component(props) {
         <div className={s.modalBlock}>
           <div className={s.modalHeader}>
             <span className={s.headerText}>{t('New payment method')}</span>
-            <Cross onClick={() => setCreatePaymentModal(false)} className={s.crossIcon} />
+            <Icon
+              name="Cross"
+              onClick={() => setCreatePaymentModal(false)}
+              className={s.crossIcon}
+            />
           </div>
           <Formik
             enableReinitialize
@@ -371,7 +375,7 @@ export default function Component(props) {
                             />
 
                             <button type="button" className={s.infoBtn}>
-                              <Info />
+                              <Icon name="Info" />
                               <div
                                 ref={dropdownDescription}
                                 className={s.descriptionBlock}

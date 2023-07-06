@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import DomainsTableItem from './DomainsTableItem'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 import s from './DomainsTable.module.scss'
 
 export default function Component(props) {

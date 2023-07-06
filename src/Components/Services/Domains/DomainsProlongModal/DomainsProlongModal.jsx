@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Select, Button } from '../../..'
+import { Select, Button, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsProlongModal.module.scss'
 
@@ -34,7 +33,7 @@ export default function Component(props) {
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service extension')}</span>
         </div>
-        <Cross onClick={closeProlongModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeProlongModalHandler} className={s.crossIcon} />
       </div>
       {prolongData?.domain_id?.split(',')?.length > 1 && (
         <div className={s.namesBlock}>

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Button } from '../../../'
+import { Button, Icon } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
@@ -34,7 +33,7 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
   return (
     <div className={s.modal}>
       <button className={s.icon_cross} onClick={closeFn} type="button">
-        <Cross />
+        <Icon name="Cross" />
       </button>
       <p className={s.title}>{t('attention')}!</p>
       <p className={s.text}>{t('delete_message')}?</p>

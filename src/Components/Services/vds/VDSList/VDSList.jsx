@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { VDSmobileItem, VDSItem, CheckBox } from '../../..'
+import { VDSmobileItem, VDSItem, CheckBox } from '@components'
 import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'

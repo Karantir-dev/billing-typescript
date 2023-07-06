@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { ErrorPay } from '@images'
+import { Icon } from '@components'
 import { SITE_URL } from '@config/config'
 import { AuthPageHeader } from '@pages'
 import s from './ErrorPayment.module.scss'
@@ -20,7 +20,7 @@ export default function Component() {
       <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
         <div className={s.modalTopBlock}>
-          <ErrorPay />
+          <Icon name="ErrorPay" />
           <div className={s.error}>{t('Payment error')}</div>
           <div className={s.errorText}>{t('payment_error_text')}</div>
 

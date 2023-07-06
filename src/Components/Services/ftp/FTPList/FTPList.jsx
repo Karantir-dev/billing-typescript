@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import s from './FTPList.module.scss'
 import FTPItem from '../FTPItem/FTPItem'
 import FTPMobileItem from '../FTPMobileItem/FTPMobileItem'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 
 export default function FTPList({
   emptyFilter,

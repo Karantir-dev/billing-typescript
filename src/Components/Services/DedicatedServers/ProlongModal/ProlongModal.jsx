@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Cross } from '@images'
 import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
-import { Button, Select } from '../../..'
+import { Button, Select, Icon } from '@components'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
@@ -135,7 +134,7 @@ export default function ProlongModal({
           </span>
         </div>
 
-        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={17} height={17} />
       </div>
 
       <Formik

@@ -5,9 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
-import { IconButton, StatisticsFilterModal, Pagination } from '@components'
+import { IconButton, StatisticsFilterModal, Pagination, Icon } from '@components'
 import { actions, affiliateOperations, usersOperations } from '@redux'
-import { Check } from '@images'
 
 import s from './AffiliateProgramStatistics.module.scss'
 
@@ -144,7 +143,7 @@ export default function AffiliateProgramStatistics() {
 
               <span className={s.row_value}>
                 {payed?.$ === 'on' ? (
-                  <Check className={s.icon_check} />
+                  <Icon name="Check" className={s.icon_check} />
                 ) : (
                   <span className={s.stub}>{t('statistics_section.not_paid')}</span>
                 )}
@@ -177,7 +176,7 @@ export default function AffiliateProgramStatistics() {
               <span className={s.label}>{t('statistics_section.payment')}:</span>
               <span>
                 {payed?.$ === 'on' ? (
-                  <Check className={s.icon_check} />
+                  <Icon name="Check" className={s.icon_check} />
                 ) : (
                   <span className={s.stub}>{t('statistics_section.not_paid')}</span>
                 )}

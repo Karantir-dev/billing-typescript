@@ -3,7 +3,7 @@ import { translatePeriodToMonths } from '@utils'
 import { useMediaQuery } from 'react-responsive'
 
 import s from './DnsItem.module.scss'
-import { Delete } from '@images'
+import { Icon } from '@components'
 
 export default function DnsItem(props) {
   const { t } = useTranslation([
@@ -32,7 +32,7 @@ export default function DnsItem(props) {
                     type="button"
                     onClick={deleteItemHandler}
                   >
-                    <Delete />
+                    <Icon name="Delete" />
                   </button>
                 )}
               </div>
@@ -59,7 +59,7 @@ export default function DnsItem(props) {
 
             {typeof deleteItemHandler === 'function' && tabletOrHigher && (
               <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-                <Delete />
+                <Icon name="Delete" />
               </button>
             )}
           </div>

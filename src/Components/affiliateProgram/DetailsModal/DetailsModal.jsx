@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
-import { Cross } from '@images'
+import { Icon } from '@components'
 
 import s from './DetailsModal.module.scss'
 
@@ -38,7 +38,7 @@ export default function DetailsModal({ details, closeModal }) {
             <span className={s.date}>{details[0]?.cdate?.$}</span>
           </p>
           <button type="button" onClick={closeModal}>
-            <Cross className={s.icon_cross} />
+            <Icon  name="Cross" className={s.icon_cross} />
           </button>
         </div>
 

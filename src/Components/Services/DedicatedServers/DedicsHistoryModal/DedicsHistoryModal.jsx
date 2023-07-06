@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { Pagination } from '@components'
-import { Cross } from '@images'
+import { Pagination, Icon, Loader } from '@components'
 import { dedicOperations } from '@redux'
-import Loader from '../../../ui/Loader/Loader'
 
 import s from './DedicsHistoryModal.module.scss'
 import HistoryList from './HistoryList/HistoryList'
@@ -45,7 +43,7 @@ export default function DedicsHistoryModal({ elid, closeFn, name }) {
             </h3>
             <p className={s.service_name}>{name}</p>
           </div>
-          <Cross className={s.icon_cross} onClick={closeFn} width={15} height={15} />
+          <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={15} height={15} />
         </div>
 
         {widerThan1024 && (

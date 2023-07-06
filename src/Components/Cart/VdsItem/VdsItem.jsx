@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Shevron, Delete } from '@images'
+import { Icon } from '@components'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import { translatePeriodToMonths } from '@utils'
@@ -71,7 +71,8 @@ export default function VdsItem({ el, deleteItemHandler }) {
           type="button"
           onClick={onShevronClick}
         >
-          <Shevron
+          <Icon
+            name="Shevron"
             width={11}
             className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
           />
@@ -99,7 +100,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
                   type="button"
                   onClick={deleteItemHandler}
                 >
-                  <Delete />
+                  <Icon name="Delete" />
                 </button>
               )}
             </div>
@@ -165,7 +166,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
 
       {typeof deleteItemHandler === 'function' && tabletOrHigher && (
         <button className={s.btn_delete} type="button" onClick={deleteItemHandler}>
-          <Delete />
+          <Icon name="Delete" />
         </button>
       )}
     </div>

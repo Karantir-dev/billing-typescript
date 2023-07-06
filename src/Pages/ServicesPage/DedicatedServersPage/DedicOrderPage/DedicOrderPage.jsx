@@ -8,6 +8,7 @@ import {
   Toggle,
   Select,
   InputField,
+  Icon
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -18,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import { dedicOperations, dedicSelectors, userOperations } from '@redux'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { ArrowSign } from '@images'
 import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -598,7 +598,7 @@ export default function DedicOrderPage() {
 
               <div className="dedic_swiper_pagination">
                 <button onClick={handleLeftClick}>
-                  <ArrowSign
+                  <Icon name="ArrowSign"
                     className={`swiper-prev ${
                       isSwiperBeginning ? 'swiper-button-disabled' : ''
                     }`}
@@ -606,7 +606,7 @@ export default function DedicOrderPage() {
                 </button>
                 <div data-dedic-swiper-pagination></div>
                 <button onClick={handleRightClick}>
-                  <ArrowSign
+                  <Icon name="ArrowSign"
                     className={`swiper-next ${
                       isSwiperEnd ? 'swiper-button-disabled' : ''
                     }`}

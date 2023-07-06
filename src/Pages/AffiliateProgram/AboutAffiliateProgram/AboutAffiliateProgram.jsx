@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner } from '@components'
-import { Copy } from '@images'
+import { ServicesSelect, FilesBanner, Icon } from '@components'
 import { affiliateSelectors, affiliateOperations } from '@redux'
 
 import animations from './animations.module.scss'
@@ -153,7 +152,7 @@ export default function AboutAffiliateProgram() {
               disabled
               value={link}
             />
-            <Copy className={cn(s.copy_icon, { [s.selected]: link })} />
+            <Icon name="Copy" className={cn(s.copy_icon, { [s.selected]: link })} />
 
             <CSSTransition
               in={refLinkCopied}
@@ -187,7 +186,7 @@ export default function AboutAffiliateProgram() {
               value={promocode}
             />
 
-            <Copy className={cn(s.copy_icon, s.selected)} />
+            <Icon name="Copy" className={cn(s.copy_icon, s.selected)} />
 
             <CSSTransition
               in={promocodeCopied}

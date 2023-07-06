@@ -3,7 +3,7 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 
 import { selectors, actions } from '@redux'
-import { Moon, Sun } from '@images'
+import { Icon } from '@components'
 
 import s from './ThemeBtn.module.scss'
 
@@ -27,8 +27,8 @@ export default function ThemeBtn({ burgerType, authType, mainType }) {
       type="button"
       onClick={() => dispatch(actions.changeTheme())}
     >
-      <Sun className={s.icon_sun} />
-      <Moon className={s.icon_moon} />
+      <Icon name="Sun" className={s.icon_sun} />
+      <Icon name="Moon" className={s.icon_moon} />
     </button>
   )
 }

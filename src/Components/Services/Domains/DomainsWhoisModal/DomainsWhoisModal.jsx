@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
+import { Icon } from '@components'
 import s from './DomainsWhoisModal.module.scss'
 
 export default function Component(props) {
@@ -11,7 +11,7 @@ export default function Component(props) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('Domain Information')}</span>
-        <Cross onClick={closeWhoisModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeWhoisModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.whoisBlock}>{whoisData}</div>
     </div>

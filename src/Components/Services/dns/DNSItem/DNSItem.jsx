@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './DNSItem.module.scss'
-import { CheckBox, ServerState } from '../../..'
-import { Clock, Edit, ExitSign, Info, MoreDots, Refund } from '@images'
+import { CheckBox, ServerState, Icon } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
 import { useOutsideAlerter } from '@utils'
@@ -85,7 +84,7 @@ export default function DNSItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <MoreDots />
+              <Icon name="MoreDots" />
             </button>
 
             {toolsOpened && (
@@ -101,7 +100,7 @@ export default function DNSItem({
                       onClick={() => handleToolBtnClick(setElidForEditModal)}
                       disabled={!pageRights?.edit || storage?.status?.$ === '1'}
                     >
-                      <Edit className={s.tool_icon} />
+                      <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
@@ -113,7 +112,7 @@ export default function DNSItem({
                       disabled={storage?.status?.$ === '1' || !pageRights?.prolong}
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
-                      <Clock className={s.tool_icon} />
+                      <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
                     </button>
                   </li>
@@ -126,7 +125,7 @@ export default function DNSItem({
                         handleToolBtnClick(setElidForHistoryModal)
                       }}
                     >
-                      <Refund className={s.tool_icon} />
+                      <Icon name="Refund" className={s.tool_icon} />
                       {t('history')}
                     </button>
                   </li>
@@ -137,7 +136,7 @@ export default function DNSItem({
                       disabled={storage?.status?.$ === '1' || !pageRights?.instruction}
                       onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
-                      <Info className={s.tool_icon} />
+                      <Icon name="Info" className={s.tool_icon} />
                       {t('instruction')}
                     </button>
                   </li>
@@ -154,7 +153,7 @@ export default function DNSItem({
                         dispatch(dedicOperations.goToPanel(storage.id.$))
                       }}
                     >
-                      <ExitSign className={s.tool_icon} />
+                      <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
                     </button>
                   </li>

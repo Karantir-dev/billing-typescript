@@ -11,8 +11,8 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   Button,
+  Icon,
 } from '@components'
-import { SaleFiftyFive } from '@images'
 import { userOperations, vdsOperations } from '@redux'
 import { DOMAIN_REGEX, useScrollToElement } from '@utils'
 import cn from 'classnames'
@@ -569,7 +569,8 @@ export default function VDSOrder() {
                         itemsList={getOptionsListExtended('Memory')}
                         value={values.Memory}
                         saleIcon={
-                          <SaleFiftyFive
+                          <Icon
+                            name="SaleFiftyFive"
                             style={{ marginLeft: 7, position: 'absolute', top: -10 }}
                           />
                         }
