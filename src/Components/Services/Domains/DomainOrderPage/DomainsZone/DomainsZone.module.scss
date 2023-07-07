@@ -64,6 +64,7 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   border-radius: 3px;
   box-shadow: var(--forms2_shadow);
@@ -133,6 +134,11 @@
   text-decoration-line: line-through;
   color: var(--transparent-color);
   margin-top: 11px;
+
+  .selected & {
+    color: var(--red-text);
+    text-decoration-color: var(--red-text);
+  }
 }
 
 .year {
@@ -141,6 +147,18 @@
 
 .checkbox {
   background-color: var(--forms_bgc_4);
+}
+
+.prolongBlock {
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 300;
+}
+
+.prolongPeriod {
+  text-transform: lowercase;
 }
 
 @media screen and (min-width: 768px) {
