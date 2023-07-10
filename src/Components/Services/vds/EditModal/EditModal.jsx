@@ -2,13 +2,11 @@ import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
-import { ArrowSign } from '@images'
 import { Formik, Form } from 'formik'
 import cn from 'classnames'
 
 import s from './EditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import { Select, Button, Modal } from '../../..'
+import { Select, Button, Icon, InputField, Modal } from '@components'
 
 export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
   const { t } = useTranslation(['vds', 'other', 'billing'])
@@ -136,7 +134,6 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
           <span className={s.tariff_name}>{initialState?.name?.$.split('(')[0]}</span>
         </p>
       </Modal.Header>
-
       <Modal.Body>
         <div className={s.dates_wrapper}>
           <p className={s.date_line}>
@@ -299,7 +296,8 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
                   onClick={handleAddOnsClick}
                 >
                   2. {t('additionally')}{' '}
-                  <ArrowSign
+                  <Icon
+                    name="ArrowSign"
                     className={cn(s.arrow_icon, { [s.opened]: isAddOnsOpened })}
                   />
                 </button>

@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Select, Modal } from '../../..'
+import { Button, InputField, Select, Icon, Modal } from '@components'
 import { useDispatch } from 'react-redux'
-import { Copy } from '@images'
 import { Formik, Form } from 'formik'
 import { forexOperations } from '@redux'
 import { translatePeriod } from '@utils'
@@ -222,7 +221,8 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
                             >
                               {values?.url_rdp?.slice(0, 22) + '...'}
                             </span>
-                            <Copy
+                            <Icon
+                              name="Copy"
                               className={classNames(s.copy_icon, {
                                 [s.selected]: true,
                               })}

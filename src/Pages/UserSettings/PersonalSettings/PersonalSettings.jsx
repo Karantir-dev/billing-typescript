@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
-import { PhoneVerificationIcon, Profile, Info } from '@images'
 import {
   InputField,
   CustomPhoneInput,
@@ -14,6 +13,7 @@ import {
   Toggle,
   HintWrapper,
   ScrollToFieldError,
+  Icon
 } from '@components'
 import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
@@ -149,7 +149,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                   <div className={s.iconBlock}>
                     {userParams?.avatar_view === '/manimg/userdata/img/customer.png' ||
                     !userParams?.avatar_view ? (
-                      <Profile className={s.icon} />
+                      <Icon name="Profile" className={s.icon} />
                     ) : (
                       <img
                         className={s.img}
@@ -269,7 +269,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                       name="verefied_phone"
                     />
                     <button type="button" className={s.infoBtn}>
-                      <Info />
+                      <Icon name="Info" />
                       <div ref={dropdownDescription} className={s.descriptionBlock}>
                         {userInfo?.verefied_phone !== 'Verify'
                           ? t('after_verified_number')
@@ -289,7 +289,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                         phone: userEdit?.phone?.phone,
                       }}
                     >
-                      <PhoneVerificationIcon /> <span>{t('Verify number')}</span>
+                      <Icon name="PhoneVerificationIcon" /> <span>{t('Verify number')}</span>
                     </Link>
                   </div>
                 )}
@@ -364,7 +364,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                           popupClassName={s.hintPopUpWrapperGeoIp}
                           label={t('geo_ip_info')}
                         >
-                          <Info />
+                          <Icon name="Info" />
                         </HintWrapper>
                       </div>
 

@@ -1145,21 +1145,21 @@ const analyticSendHandler = data => () => {
   axios.post(`${API_URL}/api/analytic/add/`, data)
 }
 
-const getExchangeRate = (cur, setExchangeRate) => () => {
-  let currency = 1
+// const getExchangeRate = (cur, setExchangeRate) => () => {
+//   let currency = 1
 
-  axios
-    .get(`${API_URL}/api/service/currency/${cur}`)
-    .then(({ data }) => {
-      if (data?.success === true || data?.success === 'true') {
-        currency = data?.currency
-      }
-      setExchangeRate && setExchangeRate(currency)
-    })
-    .catch(() => {
-      setExchangeRate && setExchangeRate(currency)
-    })
-}
+//   axios
+//     .get(`${API_URL}/api/service/currency/${cur}`)
+//     .then(({ data }) => {
+//       if (data?.success === true || data?.success === 'true') {
+//         currency = data?.currency
+//       }
+//       setExchangeRate && setExchangeRate(currency)
+//     })
+//     .catch(() => {
+//       setExchangeRate && setExchangeRate(currency)
+//     })
+// }
 
 const useCertificate =
   ({ coupon, errorFunc = () => {}, successFunc = () => {} }) =>
@@ -1255,6 +1255,6 @@ export default {
   finishAddPaymentMethod,
   editNamePaymentMethod,
   analyticSendHandler,
-  getExchangeRate,
+  // getExchangeRate,
   useCertificate,
 }

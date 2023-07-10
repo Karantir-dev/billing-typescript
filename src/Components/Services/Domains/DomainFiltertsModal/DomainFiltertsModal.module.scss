@@ -136,6 +136,13 @@
   max-width: 100%;
   margin-top: 20px;
   margin-right: 0px;
+  padding-bottom: 0;
+
+  @media screen and (max-width: 767px) {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 }
 
 .select_wrapper {

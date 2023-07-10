@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import s from './AccessRightsAlert.module.scss'
-import { Button, Modal } from '../..'
+import { Button, Modal } from '@components'
 import { useDispatch } from 'react-redux'
 import { usersActions } from '@redux'
 

@@ -4,9 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 
 import s from './DNSEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import Select from '../../../ui/Select/Select'
-import { Button, Modal } from '../../..'
+import { Button, Modal, InputField, Select } from '@components'
 import { dnsOperations } from '@redux'
 import { translatePeriod } from '@utils'
 

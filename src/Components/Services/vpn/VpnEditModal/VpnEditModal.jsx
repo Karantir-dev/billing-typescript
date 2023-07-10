@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Select, Button, InputField, Modal } from '../../..'
+import { Select, Button, InputField, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import { translatePeriod } from '@utils'
 import s from './VpnEditModal.module.scss'
@@ -36,7 +36,6 @@ export default function Component(props) {
           initialValues={{
             autoprolong: editData?.autoprolong || '',
             stored_method: editData?.stored_method || '',
-
             vpn_password: editData?.vpn_password || '',
             vpn_username: editData?.vpn_username || '',
           }}

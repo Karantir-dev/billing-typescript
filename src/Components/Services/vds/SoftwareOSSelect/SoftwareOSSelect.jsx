@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Shevron } from '@images'
+import { Icon } from '@components'
 import { selectors } from '@redux'
 import { useOutsideAlerter } from '@utils'
 
@@ -45,7 +45,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
         />
         <p>{selectedItem?.label}</p>
 
-        <Shevron className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
+        <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
       </button>
 
       {itemsList.length !== 0 && (

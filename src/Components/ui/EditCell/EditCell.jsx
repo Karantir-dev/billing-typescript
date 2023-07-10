@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Edit, CheckEdit } from '@images'
+import { Icon } from '@components'
 
 import s from './EditCell.module.scss'
 import cn from 'classnames'
@@ -59,7 +59,7 @@ export default function EditCell({
           onMouseDown={activateEditMode}
         >
           <span className={s.text}>{placeholder}</span>
-          <Edit />
+          <Icon name="Edit" />
         </button>
       ) : (
         <form className={s.editBlock} onSubmit={onSubmitHandler}>
@@ -70,14 +70,14 @@ export default function EditCell({
             onMouseUp={() => input.current.focus()}
             ref={input}
           />
-          <Edit
+          <Icon name="Edit"
             className={cn(s.btn, s.edit_icon, { [s.btn_show]: originName === editName })}
           />
           <button
             className={cn(s.btn__check, s.btn, { [s.btn_show]: originName !== editName })}
             type="submit"
           >
-            <CheckEdit />
+            <Icon name="CheckEdit" />
           </button>
         </form>
       )}

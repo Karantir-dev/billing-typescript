@@ -133,9 +133,13 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
 
+      const sessionId = data?.doc?.auth?.$id
+
+      cookies.setCookie('sessionId', sessionId, 1)
       dispatch(authActions.clearTemporaryId())
+      dispatch(authActions.loginSuccess(sessionId))
+      dispatch(authActions.isLogined(true))
       dispatch(authActions.closeTotpForm())
-      dispatch(authActions.loginSuccess(data?.doc?.auth?.$id))
     })
     .catch(err => {
       dispatch(actions.hideLoader())

@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Info } from '@images'
-import { InputField, Button, Modal } from '../../..'
+import { InputField, Button, Icon, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
 
@@ -125,7 +124,7 @@ export default function Component(props) {
                           className={s.infoBtn}
                           style={{ zIndex: 2 * nslists?.length - index }}
                         >
-                          <Info />
+                          <Icon name="Info" />
                           <div ref={dropdownDescription} className={s.descriptionBlock}>
                             {t('record_format')}
                           </div>

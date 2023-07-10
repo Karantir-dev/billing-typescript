@@ -2,10 +2,7 @@ import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-
-import { InputField, Button, Modal } from '../..'
-import CustomPhoneInput from '../../ui/CustomPhoneInput/CustomPhoneInput'
-
+import { InputField, Button, CustomPhoneInput, Modal } from '@components'
 import s from './ManageUserForm.module.scss'
 import classNames from 'classnames'
 

@@ -2,11 +2,10 @@ import { useRef, useState } from 'react'
 import s from './PaymentsMethodsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Reload } from '@images'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
-import { EditCell } from '@components'
+import { EditCell, Icon } from '@components'
 
 export default function Component(props) {
   const {
@@ -65,7 +64,11 @@ export default function Component(props) {
   const renderDesktopLastColumn = () => {
     return (
       <div className={cn(s.item_text, s.eighth_item)}>
-        <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+        <Icon
+          name="MoreDots"
+          onClick={() => setIsOpened(!isOpened)}
+          className={s.dotIcons}
+        />
 
         <div
           role="button"
@@ -79,12 +82,12 @@ export default function Component(props) {
           ref={dropDownEl}
         >
           <button className={s.settings_btn} onClick={reconfig}>
-            <Reload />
+            <Icon name="Reload" />
             <p className={s.setting_text}>{t('Re-configure')}</p>
           </button>
 
           <button className={s.settings_btn} onClick={deleteHandler}>
-            <Delete />
+            <Icon name="Delete" />
             <p className={s.setting_text}>{t('Delete')}</p>
           </button>
         </div>

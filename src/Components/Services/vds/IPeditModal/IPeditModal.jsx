@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Modal } from '../../../'
+import { Button, InputField, Modal } from '@components'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
 import * as Yup from 'yup'

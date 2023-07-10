@@ -3,16 +3,7 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import {
-  EyeClosed,
-  Eye,
-  Envelope,
-  Padlock,
-  Search,
-  Person,
-  Copy,
-  Plus,
-} from '@images'
+import { Icon } from '@components'
 import s from './InputField.module.scss'
 
 const InputField = function InputField(props) {
@@ -50,18 +41,18 @@ const InputField = function InputField(props) {
     const pos = position === 'left' ? s.field_icon_left : s.field_icon_right
     switch (name) {
       case 'envelope':
-        return <Envelope className={pos} />
+        return <Icon name="Envelope" className={pos} />
       case 'padlock':
-        return <Padlock className={pos} />
+        return <Icon name="Padlock" className={pos} />
       case 'search':
-        return <Search className={pos} />
+        return <Icon name="Search" className={pos} />
       case 'person':
-        return <Person className={pos} />
+        return <Icon name="Person" className={pos} />
       case 'copy':
-        return <Copy className={pos} />
+        return <Icon name="Copy" className={pos} />
       case 'plus':
         return (
-          <Plus
+          <Icon name="Plus"
             onClick={() => onPlusClick && onPlusClick()}
             className={cn(pos, s.plusIcon)}
           />
@@ -82,9 +73,9 @@ const InputField = function InputField(props) {
           onClick={() => setPassShown(!passShown)}
         >
           {passShown ? (
-            <Eye className={s.icon_eye} />
+            <Icon name="Eye" className={s.icon_eye} />
           ) : (
-            <EyeClosed className={s.icon_eye} />
+            <Icon name="EyeClosed" className={s.icon_eye} />
           )}
         </button>
       )

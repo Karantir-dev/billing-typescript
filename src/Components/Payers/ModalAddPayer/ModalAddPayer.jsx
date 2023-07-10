@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
-import { Info } from '@images'
 import {
   Select,
   InputField,
@@ -11,7 +10,8 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   Modal,
-} from '../..'
+  Icon,
+} from '@components'
 import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
@@ -239,7 +239,7 @@ export default function Component(props) {
                       />
 
                       <button type="button" className={s.infoBtn}>
-                        <Info />
+                        <Icon name="Info" />
                         <div ref={dropdownDescription} className={s.descriptionBlock}>
                           {t('address_format', { ns: 'other' })}
                         </div>

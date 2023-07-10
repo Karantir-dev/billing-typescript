@@ -6,17 +6,8 @@ import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive } from '@utils'
 
 const userInfo = (data, dispatch) => {
-  const {
-    $realname,
-    $balance,
-    $email,
-    $phone,
-    $id,
-    $email_verified,
-    $need_phone_validate,
-  } = data.doc.user
-  dispatch(
-    userActions.setUserInfo({
+  try {
+    const {
       $realname,
       $balance,
       $email,
@@ -24,8 +15,21 @@ const userInfo = (data, dispatch) => {
       $id,
       $email_verified,
       $need_phone_validate,
-    }),
-  )
+    } = data.doc.user
+    dispatch(
+      userActions.setUserInfo({
+        $realname,
+        $balance,
+        $email,
+        $phone,
+        $id,
+        $email_verified,
+        $need_phone_validate,
+      }),
+    )
+  } catch (error) {
+    console.log(error.message)
+  }
 }
 
 const userTickets = (data, dispatch) => {
@@ -144,7 +148,9 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
   ])
     .then(responses => {
       responses.forEach(({ data }, i) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          checkIfTokenAlive(data.doc.error.msg.$, dispatch)
+        }
 
         funcsArray[i](data, dispatch)
       })

@@ -1,6 +1,6 @@
 import SharedHostingHistoryItem from './SharedHostingHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Pagination, Modal } from '../../..'
+import { Pagination, Modal } from '@components'
 import cn from 'classnames'
 import s from './SharedHostingHistoryModal.module.scss'
 

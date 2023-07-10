@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'react-i18next'
-import { Copy } from '@images'
-import { InputField, Button, Modal } from '../..'
+import { InputField, Button, Modal, Icon } from '@components'
 import {
   settingsActions,
   settingsOperations,
@@ -144,7 +143,7 @@ export default function Component(props) {
                       <span className={s.field_text} ref={refLinkEl}>
                         {twoStepVerif?.secret}
                       </span>
-                      <Copy className={s.copy_icon} />
+                      <Icon name="Copy" className={s.copy_icon} />
 
                       <CSSTransition
                         in={refLinkCopied}

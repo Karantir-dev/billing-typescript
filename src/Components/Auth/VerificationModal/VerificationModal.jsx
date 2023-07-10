@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Button } from '../../'
+import { Button, Icon } from '@components'
 import { authSelectors, authActions, authOperations } from '@redux'
-import { Cross } from '@images'
 
 import s from './VerificationModal.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +37,7 @@ export default function VerificationModal({ onClose }) {
       <div className={s.modalWindow}>
         <h3 className={s.title}>{t('form_title')}</h3>
         <button className={s.closeBtn} onClick={handleBtnCloseClick} type="button">
-          <Cross className={s.icon} />
+          <Icon name="Cross" className={s.icon} />
         </button>
         <p className={s.text}>{t('text')}</p>
 

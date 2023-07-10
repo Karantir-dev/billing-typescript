@@ -3,19 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
-import { Button, Select, Modal } from '../../..'
+import { Button, Select, Modal } from '@components'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '@utils'
 
-export default function ProlongModal({
-  elidList,
-  closeModal,
-  pageName,
-  names,
-  isOpen,
-}) {
+export default function ProlongModal({ elidList, closeModal, pageName, names, isOpen }) {
   const { t } = useTranslation([
     'dedicated_servers',
     'vds',

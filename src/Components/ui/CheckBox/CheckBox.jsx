@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Check } from '@images'
+import { Icon } from '@components'
 import s from './CheckBox.module.scss'
 
 export default function Component({
@@ -26,7 +26,7 @@ export default function Component({
       name={name || ''}
       onClick={onClick}
     >
-      <Check className={cn(s.check, { [s.active]: value })} />
+      <Icon name="Check" className={cn(s.check, { [s.active]: value })} />
     </button>
   )
 }

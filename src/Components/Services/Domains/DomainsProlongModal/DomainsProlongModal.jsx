@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Select, Button, Modal } from '../../..'
+import { Select, Button, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsProlongModal.module.scss'
 

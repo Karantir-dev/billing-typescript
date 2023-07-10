@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Select, Button, InputField, Modal } from '../../..'
+import { Select, Button, InputField, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
 import { translatePeriod, orderDetailTranslate } from '@utils'

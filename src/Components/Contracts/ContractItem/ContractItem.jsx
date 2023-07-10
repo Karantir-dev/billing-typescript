@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { DownloadWithFolder } from '@images'
+import { Icon } from '@components'
 import { contractOperations } from '@redux'
 import { useOutsideAlerter } from '@utils'
 
@@ -97,7 +97,7 @@ export default function ContractItem(props) {
               })}
               disabled={!rights.download || !rights.print}
             >
-              <DownloadWithFolder className={s.icon} />
+              <Icon name="DownloadWithFolder" className={s.icon} />
               <p className={s.btn_text}>{t('Download', { ns: 'billing' })}</p>
             </button>
           </div>

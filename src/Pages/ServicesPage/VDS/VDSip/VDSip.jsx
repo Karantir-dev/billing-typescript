@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { BreadCrumbs, IconButton, IPeditModal } from '@components'
+import { BreadCrumbs, IconButton, IPeditModal, Icon } from '@components'
 import { vdsOperations } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import * as route from '@src/routes'
 
 import s from './VDSip.module.scss'
-import { Edit } from '@images'
+
 
 export default function VDSip() {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
@@ -88,7 +88,7 @@ export default function VDSip() {
                     onClick={() => setIdForEditModal(el.id.$)}
                     type="button"
                   >
-                    <Edit className={s.icon_edit} />
+                    <Icon name="Edit" className={s.icon_edit} />
                   </button>
                 </li>
               ) : (

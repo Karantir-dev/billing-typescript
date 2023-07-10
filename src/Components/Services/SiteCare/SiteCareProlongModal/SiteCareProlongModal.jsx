@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Select, Button, Modal } from '../../..'
+import { Select, Button, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './SiteCareProlongModal.module.scss'
 
@@ -39,7 +39,6 @@ export default function Component(props) {
             <p className={s.warning_text}>
               {t('Attention, edit few services', { ns: 'other' })}:
             </p>
-
             <div
               className={cn({
                 [s.services_names_wrapper]: true,

@@ -5,9 +5,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './FTPEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
-import Select from '../../../ui/Select/Select'
-import { Button, Modal } from '../../..'
+import { Button, InputField, Select, Modal } from '@components'
 import { ftpOperations } from '@redux'
 import { translatePeriod } from '@utils'
 

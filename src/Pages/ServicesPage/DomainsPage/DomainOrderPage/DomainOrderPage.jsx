@@ -23,21 +23,29 @@ export default function Component({ transfer = false }) {
   const navigate = useNavigate()
 
   const [domains, setDomains] = useState([])
+  const [autoprolongPrices, setAutoprolongPrices] = useState([])
   const [pickUpDomains, setPickUpDomains] = useState([])
-
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
+
+  const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
     if (isDomainsOrderAllowed || cartFromSite) {
       if (transfer) {
         const dataTransfer = { domain_action: 'transfer' }
-        dispatch(domainsOperations.getDomainsOrderName(setDomains, dataTransfer))
+        dispatch(
+          domainsOperations.getDomainsOrderName(
+            setDomains,
+            setAutoProlong(),
+            dataTransfer,
+          ),
+        )
       } else {
-        dispatch(domainsOperations.getDomainsOrderName(setDomains))
+        dispatch(domainsOperations.getDomainsOrderName(setDomains, setAutoProlong()))
       }
     } else {
       navigate(route.DOMAINS, { replace: true })
@@ -77,7 +85,14 @@ export default function Component({ transfer = false }) {
     if (transfer) {
       values['domain_action'] = 'transfer'
     }
-    dispatch(domainsOperations.getDomainsOrderName(setPickUpDomains, values, true))
+    dispatch(
+      domainsOperations.getDomainsOrderName(
+        setPickUpDomains,
+        setAutoProlong(),
+        values,
+        true,
+      ),
+    )
 
     setSelectedDomainsNames([])
   }
@@ -190,6 +205,7 @@ export default function Component({ transfer = false }) {
           selected={pickUpDomains?.selected}
           registerDomainHandler={registerDomainHandler}
           transfer={transfer}
+          autoprolongPrices={autoprolongPrices}
         />
       ) : (
         <DomainsZone
@@ -197,6 +213,7 @@ export default function Component({ transfer = false }) {
           selectedDomains={selectedDomains}
           domains={domains}
           transfer={transfer}
+          autoprolongPrices={autoprolongPrices}
         />
       )}
     </div>

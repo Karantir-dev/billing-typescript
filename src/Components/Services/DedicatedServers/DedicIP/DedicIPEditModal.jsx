@@ -5,9 +5,8 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './DedicIPEditModal.module.scss'
-import InputField from '../../../ui/InputField/InputField'
 
-import { Button, Modal } from '../../..'
+import { Button, InputField, Modal } from '@components'
 import { useLocation } from 'react-router-dom'
 import { dedicOperations } from '@redux'
 

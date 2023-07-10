@@ -5,8 +5,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn, ModalCreatePayment } from '@components'
-import { ExitSign } from '@images'
+import { ThemeBtn, LangBtn, ModalCreatePayment, Icon } from '@components'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '@redux'
 import { useOutsideAlerter, usePageRender } from '@utils'
@@ -285,7 +284,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
                   onKeyDown={() => {}}
                   onClick={logOut}
                 >
-                  <ExitSign className={s.icon} />
+                  <Icon name="ExitSign" className={s.icon} />
                   <p className={s.exit_name}>{t('profile.log_out')}</p>
                 </div>
               </NavLink>
@@ -294,9 +293,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
         </div>
       </div>
 
-        {createPaymentModal && (
-          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-        )}
+      {createPaymentModal && (
+        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+      )}
     </>
   )
 }

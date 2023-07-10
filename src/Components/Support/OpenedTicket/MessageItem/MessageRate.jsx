@@ -3,7 +3,7 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { supportOperations } from '@redux'
-import { Like, DisLike } from '@images'
+import { Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './MessageItem.module.scss'
 
@@ -24,19 +24,19 @@ export default function Component(props) {
 
   const renderRateBlock = type => {
     if (type === 'good') {
-      return <Like className={s.likeAnsw} />
+      return <Icon name="Like" className={s.likeAnsw} />
     } else if (type === 'bad') {
-      return <DisLike className={s.disLikeAnsw} />
+      return <Icon name="DisLike" className={s.disLikeAnsw} />
     } else {
       return (
         <>
           <span className={s.rateAswText}>{t('Rate the answer')}:</span>
           <button onClick={likeHandler} className={cn(s.rateBtn, s.like)}>
-            <Like />
+            <Icon name="Like" />
           </button>
 
           <button onClick={disLikeHandler} className={cn(s.rateBtn, s.dislike)}>
-            <DisLike />
+            <Icon name="DisLike" />
           </button>
         </>
       )

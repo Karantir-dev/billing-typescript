@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { SuccessPay } from '@images'
+import { Icon } from '@components'
 import { SITE_URL } from '@config/config'
 import { cookies, parseLang } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,15 +21,15 @@ export default function Component() {
 
   const [paymentItem, setPaymentItem] = useState(null)
   const [cartData, setCartData] = useState(null)
-  const [exchangeRate, setExchangeRate] = useState(null)
+  // const [exchangeRate, setExchangeRate] = useState(null)
 
   const backHandler = () => {
     navigate(routes.BILLING)
   }
 
-  useEffect(() => {
-    dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
-  }, [])
+  // useEffect(() => {
+  //   dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
+  // }, [])
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 15 }
@@ -61,17 +61,19 @@ export default function Component() {
   }, [paymentsList])
 
   useEffect(() => {
-    if (paymentItem && exchangeRate) {
+    if (paymentItem) {
       //if we have payment
-      let currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
-      let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
-      let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
+      // let currency = paymentItem?.subaccountamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
+      // let value = paymentItem?.subaccountamount_iso?.$?.replace(currency, '') //get the payment amount
+      // let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
+      let value = paymentItem?.subaccountamount_iso?.$
+      let tax = paymentItem?.tax?.$
 
-      if (currency === 'RUB' && Number(exchangeRate) > 1) {
-        value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
-        tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
-        currency = 'EUR'
-      }
+      // if (currency === 'RUB' && Number(exchangeRate) > 1) {
+      //   value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
+      //   tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
+      //   currency = 'EUR'
+      // }
 
       window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
@@ -89,7 +91,7 @@ export default function Component() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: cartData?.promocode,
               items: cartData?.items,
@@ -111,7 +113,7 @@ export default function Component() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: '',
               items: [
@@ -141,7 +143,7 @@ export default function Component() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               items: [
                 {
                   item_name: 'Refill',
@@ -160,14 +162,14 @@ export default function Component() {
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
-  }, [paymentItem, exchangeRate])
+  }, [paymentItem])
 
   return (
     <div className={s.modalBg}>
       <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
         <div className={s.modalTopBlock}>
-          <SuccessPay />
+          <Icon name="SuccessPay" />
           <div className={s.approved}>{t('Payment approved')}</div>
           <div className={s.completed}>{t('Payment was completed successfully')}</div>
         </div>

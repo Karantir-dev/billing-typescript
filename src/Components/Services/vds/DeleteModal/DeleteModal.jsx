@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Modal } from '../../../'
+import { Button, Modal } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
@@ -47,7 +47,6 @@ export default function DeleteModal({ closeModal, names, deleteFn, isOpen }) {
               )
             })}
           </p>
-
           {names.length > 1 && (
             <button
               className={s.btn_more}

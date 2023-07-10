@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, BillingFilter, ExpensesTable } from '@components'
-import { Wallet } from '@images'
+import { Pagination, BillingFilter, ExpensesTable, Icon } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './Expenses.module.scss'
 
@@ -47,7 +46,7 @@ export default function Component() {
 
       {!isFiltered && expensesList?.length === 0 && (
         <div className={s.no_service_wrapper}>
-          <Wallet />
+          <Icon name="Wallet" />
           <p className={s.no_service_title}>{t('YOU DO NOT HAVE EXPENSES YET')}</p>
           <p className={s.no_service_description}>
             {t('no services description expenses')}

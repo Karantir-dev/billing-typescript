@@ -3,7 +3,6 @@ import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, useFormikContext } from 'formik'
-import { Info } from '@images'
 import {
   Button,
   Select,
@@ -12,7 +11,8 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   Modal,
-} from '../..'
+  Icon,
+} from '@components'
 import {
   billingOperations,
   billingSelectors,
@@ -373,7 +373,7 @@ export default function Component(props) {
                         />
 
                         <button type="button" className={s.infoBtn}>
-                          <Info />
+                          <Icon name="Info" />
                           <div ref={dropdownDescription} className={s.descriptionBlock}>
                             {t('address_format', { ns: 'other' })}
                           </div>

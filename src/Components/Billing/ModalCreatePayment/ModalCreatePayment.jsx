@@ -3,7 +3,6 @@ import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form, ErrorMessage, useFormikContext } from 'formik'
-import { Check, Info } from '@images'
 import {
   Button,
   Select,
@@ -13,7 +12,8 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   Modal,
-} from '../..'
+  Icon,
+} from '@components'
 import {
   billingOperations,
   billingSelectors,
@@ -400,7 +400,7 @@ export default function Component(props) {
                             >
                               <img src={`${BASE_URL}${image?.$}`} alt="icon" />
                               <span>{name?.$}</span>
-                              <Check className={s.iconCheck} />
+                              <Icon name="Check" className={s.iconCheck} />
                             </button>
                           )
                         })}
@@ -530,7 +530,7 @@ export default function Component(props) {
                             />
 
                             <button type="button" className={s.infoBtn}>
-                              <Info />
+                              <Icon name="Info" />
                               <div
                                 ref={dropdownDescription}
                                 className={s.descriptionBlock}

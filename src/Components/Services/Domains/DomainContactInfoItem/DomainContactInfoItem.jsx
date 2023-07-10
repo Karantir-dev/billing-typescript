@@ -1,5 +1,5 @@
 import { useEffect, useImperativeHandle, useState } from 'react'
-import { InputField, CustomPhoneInput, Select, CheckBox } from '@components'
+import { InputField, CustomPhoneInput, Select, CheckBox, Icon } from '@components'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { FormikProvider, useFormik } from 'formik'
@@ -9,7 +9,6 @@ import {
   LATIN_NUMBER_REGEX,
   LATIN_REGEX,
 } from '@utils/constants'
-import { Shevron } from '@images'
 import { useDispatch } from 'react-redux'
 import { domainsOperations } from '@redux'
 import s from './DomainContactInfoItem.module.scss'
@@ -324,7 +323,7 @@ export default function Component(props) {
         >
           <h2 className={s.category_title}>{t(`${formType}_contact`)}</h2>
           {(owner || values[contact_use_first] === 'off') && (
-            <Shevron className={cn(s.shevronIcon, { [s.isOpen]: isOpen })} />
+            <Icon name="Shevron" className={cn(s.shevronIcon, { [s.isOpen]: isOpen })} />
           )}
         </button>
         {!owner && (

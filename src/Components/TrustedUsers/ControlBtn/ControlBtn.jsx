@@ -6,11 +6,9 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import { usersOperations } from '@redux'
-import { Delete, Key, Settings } from '@images'
 import ManageUserForm from '../ManageUserForm/ManageUserForm'
 import { useOutsideAlerter } from '@utils'
-import Alert from '../../ui/Alert/Alert'
-import { Button } from '../..'
+import { Button, Icon, Alert } from '@components'
 
 import s from './ControlBtn.module.scss'
 
@@ -100,7 +98,7 @@ export default function ControlBtn({
             className={cn({ [s.settings_btn]: true, [s.owner]: !isEditUserAllowed })}
             onClick={handleSettingsForm}
           >
-            <Settings className={s.icon} />
+            <Icon name="Settings" className={s.icon} />
             <p className={s.setting_text}>
               {t('trusted_users.user_cards.drop_list.settings')}
             </p>
@@ -114,7 +112,7 @@ export default function ControlBtn({
             })}
             onClick={handleRightsAlert}
           >
-            <Key className={s.icon} />
+            <Icon name="Key" className={s.icon} />
             <p className={s.access_text}>
               {t('trusted_users.user_cards.drop_list.access_rights')}
             </p>
@@ -129,7 +127,7 @@ export default function ControlBtn({
             })}
             onClick={handleRemoveAlert}
           >
-            <Delete className={s.icon} />
+            <Icon name="Delete" className={s.icon} />
             <p className={s.delete_text}>
               {t('trusted_users.user_cards.drop_list.delete')}
             </p>

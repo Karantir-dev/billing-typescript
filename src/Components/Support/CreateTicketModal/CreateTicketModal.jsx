@@ -1,6 +1,6 @@
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
 import MessageInput from '../MessageInput/MessageInput'
-import { Button, Select, InputField, Modal } from '../..'
+import { Button, Select, InputField, Modal } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Formik, ErrorMessage } from 'formik'

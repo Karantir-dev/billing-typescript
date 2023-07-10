@@ -88,7 +88,7 @@
 
 .domainsBlock {
   display: flex;
-  max-width: 560px;
+  max-width: 740px;
   margin-top: 20px;
   flex-wrap: wrap;
   padding-bottom: 30px;
@@ -358,6 +358,49 @@
   position: absolute;
   top: 25px;
   left: 15px;
+}
+
+.prolongBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-basis: 25%;
+  font-size: 14px;
+}
+
+.prolongPeriod {
+  text-transform: lowercase;
+}
+.transferProlongBlock {
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .domainItem {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .domainPriceMobile,
+  .saleEurMobile {
+    margin-top: 5px;
+  }
+  .domainName {
+    margin: 0;
+    flex-basis: 65%;
+  }
+  .selectBtn {
+    flex-basis: 35%;
+  }
+  .prolongBlock {
+    order: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: 100%;
+    margin-top: 15px;
+  }
+  .transferProlongBlock {
+    margin-left: 40px;
+  }
 }
 
 @media screen and (min-width: 768px) {

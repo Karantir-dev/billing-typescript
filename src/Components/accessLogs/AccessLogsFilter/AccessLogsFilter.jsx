@@ -12,7 +12,7 @@ import {
   IconButton,
   // CalendarModal,
   Button,
-} from '../..'
+} from '@components'
 import s from '../AccessLogsComponents.module.scss'
 import cn from 'classnames'
 

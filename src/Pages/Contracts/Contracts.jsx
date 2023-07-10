@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton, Pagination, ContractItem } from '@components'
+import { IconButton, Pagination, ContractItem, Icon } from '@components'
 import { contractOperations, contractsSelectors } from '@redux'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +9,6 @@ import s from './Contracts.module.scss'
 import { checkServicesRights, usePageRender } from '@utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { SendArchive } from '@images'
 import { useMediaQuery } from 'react-responsive'
 
 export default function Contracts() {
@@ -104,7 +103,7 @@ export default function Contracts() {
             alt="dns"
             className={s.dns_img}
           /> */}
-          <SendArchive />
+          <Icon name="SendArchive" />
           <p className={s.no_service_title}>
             {t('YOU DO NOT HAVE CONTRACTS YET', { ns: 'contracts' })}
           </p>

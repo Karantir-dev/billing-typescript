@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-
-import { Button, InputField, Select, Modal } from '../../../..'
+import { Button, InputField, Select, Modal } from '@components'
 import { useLocation } from 'react-router-dom'
 import s from './DedicIPOrder.module.scss'
 

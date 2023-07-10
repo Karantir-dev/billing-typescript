@@ -2,8 +2,7 @@ import { useRef, useState } from 'react'
 import s from './PayersTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { MoreDots, Delete, Settings } from '@images'
-import { Button, Modal } from '../..'
+import { Button, Icon, Modal } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
@@ -50,7 +49,11 @@ export default function Component(props) {
           <span className={cn(s.item_text, s.fourth_item)}>{t(status)}</span>
         </span>
         <div className={s.tableBlockFourth}>
-          <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon
+            name="MoreDots"
+            onClick={() => setIsOpened(!isOpened)}
+            className={s.dotIcons}
+          />
           <div
             role="button"
             tabIndex={0}
@@ -64,13 +67,13 @@ export default function Component(props) {
           >
             <button className={s.settings_btn} onClick={editHanler}>
               <div className={s.iconContainer}>
-                <Settings />
+                <Icon name="Settings" />
               </div>
               <p className={s.setting_text}>{t('Edit')}</p>
             </button>
             <button className={s.settings_btn} onClick={() => setIsDeleteModal(true)}>
               <div className={s.iconContainer}>
-                <Delete />
+                <Icon name="Delete" />
               </div>
               <p className={s.setting_text}>{t('Delete')}</p>
             </button>

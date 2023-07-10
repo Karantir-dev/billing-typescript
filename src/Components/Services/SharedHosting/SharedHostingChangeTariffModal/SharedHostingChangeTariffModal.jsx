@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RadioButton, Button, Modal } from '../../..'
+import { RadioButton, Button, Modal } from '@components'
 import s from './SharedHostingChangeTariffModal.module.scss'
 
 export default function Component(props) {

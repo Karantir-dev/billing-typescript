@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { Clip, Cross } from '@images'
+import { Icon } from '@components'
 import { Field, ErrorMessage } from 'formik'
 import s from './MessageInput.module.scss'
 
@@ -35,7 +35,7 @@ export default function Component(props) {
                 [s.notEmpty]: files?.length > 0,
               })}
             >
-              <Clip />
+              <Icon name="Clip" />
             </div>
             <input
               hidden
@@ -71,7 +71,7 @@ export default function Component(props) {
                     }}
                     className={s.fileDeleteItem}
                   >
-                    <Cross />
+                    <Icon name="Cross" />
                   </button>
                 </div>
               )

@@ -1,6 +1,6 @@
 import SiteCareHistoryItem from './SiteCareHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Pagination, Modal } from '../../..'
+import { Pagination, Modal } from '@components'
 import cn from 'classnames'
 import s from './SiteCareHistoryModal.module.scss'
 

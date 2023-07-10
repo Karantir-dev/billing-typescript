@@ -3,7 +3,7 @@ import SharedHostingTableItem from './SharedHostingTableItem'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './SharedHostingTable.module.scss'
-import { CheckBox } from '../../..'
+import { CheckBox } from '@components'
 import { useMediaQuery } from 'react-responsive'
 
 export default function Component(props) {

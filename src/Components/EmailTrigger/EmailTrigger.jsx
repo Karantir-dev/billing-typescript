@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Attention } from '@images'
-import { Button, Modal } from '@components'
+import { Button, Icon, Modal } from '@components'
 import { userSelectors, userOperations } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -26,7 +25,7 @@ export default function EmailTrigger() {
           type="button"
           onClick={() => setIsModalOpened(true)}
         >
-          <Attention className={s.icon} />
+          <Icon name="Attention" className={s.icon} />
           {t('email_trigger')}
         </button>
 

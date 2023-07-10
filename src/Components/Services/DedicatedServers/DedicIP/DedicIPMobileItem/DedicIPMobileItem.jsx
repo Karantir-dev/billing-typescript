@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { MoreDots, Delete, Settings } from '@images'
+import { Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 
@@ -29,7 +29,7 @@ export default function DedicIPMobileItem({
     <li className={s.item}>
       <div className={s.dots_wrapper}>
         <button className={s.dots_btn} type="button" onClick={() => setToolsOpened(true)}>
-          <MoreDots />
+          <Icon name="MoreDots" />
         </button>
 
         {toolsOpened && (
@@ -45,7 +45,7 @@ export default function DedicIPMobileItem({
                   type="button"
                   onClick={() => handleToolBtnClick(setElidForEditModal, ip?.id.$)}
                 >
-                  <Settings className={s.tool_icon} />
+                  <Icon name="Settings" className={s.tool_icon} />
                   {t('edit', { ns: 'other' })}
                 </button>
               </li>
@@ -57,7 +57,7 @@ export default function DedicIPMobileItem({
                   disabled={ip?.no_delete?.$ === 'on' || !rights?.delete}
                   onClick={() => handleToolBtnClick(setElidForDeleteModal, ip?.id.$)}
                 >
-                  <Delete className={s.tool_icon} />
+                  <Icon name="Delete" className={s.tool_icon} />
                   {t('delete', { ns: 'other' })}
                 </button>
               </li>
