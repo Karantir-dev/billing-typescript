@@ -384,7 +384,7 @@ const setPaymentMethods =
                   redirectPath: '',
                 }),
               )
-              // dispatch(actions.hideLoader())
+              dispatch(actions.hideLoader())
             }
           })
           .then(() => dispatch(userOperations.getNotify()))

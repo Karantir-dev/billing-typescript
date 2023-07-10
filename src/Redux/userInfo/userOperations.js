@@ -65,7 +65,7 @@ const currentSessionRights = (data, dispatch) => {
 
 const clearBasket = (data, dispatch) => {
   const { billorder } = data.doc
-  if (billorder) {
+  if (billorder && !data.disableClearBasket) {
     dispatch(cartOperations.clearBasket(billorder?.$))
   }
 }
@@ -86,7 +86,7 @@ const funcsArray = [
   dashBoardInfo,
 ]
 
-const getUserInfo = (sessionId, setLoading) => dispatch => {
+const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
   setLoading && dispatch(userActions.showUserInfoLoading())
 
   Promise.all([
@@ -152,7 +152,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
           checkIfTokenAlive(data.doc.error.msg.$, dispatch)
         }
 
-        funcsArray[i](data, dispatch)
+        funcsArray[i]({...data, disableClearBasket}, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
 
