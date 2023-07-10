@@ -24,7 +24,9 @@ export default function PasswordChange() {
   // redirects to login if query parasms are missing
   useEffect(() => {
     if (!userId || !secret) {
-      navigate(routes.LOGIN)
+      navigate(routes.LOGIN, {
+        replace: true,
+      })
     }
   }, [userId, secret, navigate])
 
@@ -43,7 +45,7 @@ export default function PasswordChange() {
   })
 
   const onChangeSuccess = () => {
-    navigate(routes.LOGIN, { state: { from: location.pathname } })
+    navigate(routes.LOGIN, { state: { from: location.pathname }, replace: true })
   }
 
   const handleSubmit = ({ password }) => {

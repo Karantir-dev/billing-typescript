@@ -59,7 +59,7 @@ export default function Component() {
     !isExpensesComponentAllowedToRender &&
     !isAutoPaymentComponentAllowedToRender
   ) {
-    return <Navigate to={route.HOME} />
+    return <Navigate replace to={route.HOME} />
   }
 
   const renderPage = path => {
@@ -88,12 +88,12 @@ export default function Component() {
         </PageTitleRender>
       )
     } else {
-      return <Navigate to={route.HOME} />
+      return <Navigate replace to={route.HOME} />
     }
   }
 
   if (params.result && !(params?.result === 'success' || params?.result === 'error')) {
-    return <Navigate to={route.ERROR_PAGE} />
+    return <Navigate replace to={route.ERROR_PAGE} />
   }
 
   return (

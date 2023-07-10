@@ -44,7 +44,9 @@ export default function Component() {
 
   useEffect(() => {
     if (userInfo && userInfo?.$need_phone_validate !== 'true') {
-      navigate(routes.SERVICES)
+      navigate(routes.SERVICES, {
+        replace: true,
+      })
     }
   }, [userInfo])
 
@@ -82,7 +84,9 @@ export default function Component() {
   })
 
   const navigateToServicePage = () => {
-    navigate(routes.SERVICES)
+    navigate(routes.SERVICES, {
+      replace: true,
+    })
   }
 
   const goToFirstStepHanfler = () => {
@@ -147,7 +151,9 @@ export default function Component() {
 
   const backHandler = () => {
     const prevPage = state?.prevPath ? state?.prevPath : routes.SERVICES
-    navigate(prevPage)
+    navigate(prevPage, {
+      replace: true,
+    })
   }
 
   const renderScreen = ({
@@ -218,7 +224,8 @@ export default function Component() {
 
             {isTimeOut && (
               <div className={s.timeOutBlock}>
-                <Icon name="Attention" /> {t('verification_code_timeout', { time: timeOut })}
+                <Icon name="Attention" />{' '}
+                {t('verification_code_timeout', { time: timeOut })}
               </div>
             )}
 

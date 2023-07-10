@@ -69,7 +69,7 @@ export default function Component() {
   // }, [isComponentAllowedToRender])
 
   if (location.pathname === route.USER_SETTINGS) {
-    return <Navigate to={`${route.USER_SETTINGS}/personal`} />
+    return <Navigate replace to={`${route.USER_SETTINGS}/personal`} />
   }
 
   const renderPage = path => {
@@ -78,12 +78,12 @@ export default function Component() {
     } else if (path === 'access' && isComponentAllowedToRender) {
       return <AccessSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else {
-      return <Navigate to={route.ERROR_PAGE} />
+      return <Navigate replace to={route.ERROR_PAGE} />
     }
   }
 
   if (!isComponentAllowedToRender) {
-    return <Navigate to={route.HOME} />
+    return <Navigate replace to={route.HOME} />
   }
 
   return (

@@ -389,6 +389,7 @@ const getDomainsContacts =
           navigate &&
             navigate(transfer ? route.DOMAINS_TRANSFER_NS : route.DOMAINS_NS, {
               state: { contacts: body },
+              replace: true,
             })
         }
         dispatch(actions.hideLoader())

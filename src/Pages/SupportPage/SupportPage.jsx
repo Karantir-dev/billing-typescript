@@ -38,7 +38,7 @@ export default function Component() {
         </PageTitleRender>
       )
     } else if (path === 'requests_archive' && !isArchiveAllowedToRender) {
-      return <Navigate to={route.HOME} />
+      return <Navigate replace to={route.HOME} />
     } else if (path === 'requests_archive') {
       return (
         <PageTitleRender title={t('support') + '/' + t('request_archive')}>
@@ -49,7 +49,7 @@ export default function Component() {
   }
 
   if (!isComponentAllowedToRender) {
-    return <Navigate to={route.HOME} />
+    return <Navigate replace to={route.HOME} />
   }
 
   return (

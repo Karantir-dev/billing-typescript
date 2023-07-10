@@ -28,7 +28,11 @@ export default function Component(props) {
       role="button"
       tabIndex={0}
       onKeyDown={() => {}}
-      onDoubleClick={() => navigate(`${route.SUPPORT}/requests_archive/${id}`)}
+      onDoubleClick={() =>
+        navigate(`${route.SUPPORT}/requests_archive/${id}`, {
+          replace: true,
+        })
+      }
       onClick={() => setSelctedTicket(id)}
       className={cn(s.item, { [s.selected]: selected })}
     >

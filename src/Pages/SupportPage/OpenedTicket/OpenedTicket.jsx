@@ -11,7 +11,7 @@ import {
   HintWrapper,
   IconButton,
   Backdrop,
-  Icon
+  Icon,
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
 import { supportSelectors, supportOperations, supportActions } from '@redux'
@@ -115,7 +115,11 @@ export default function Component() {
               size="large"
               className={s.backBtn}
               label={t('Back', { ns: 'other' })}
-              onClick={() => navigate(`${route.SUPPORT}/${params.path}`)}
+              onClick={() =>
+                navigate(`${route.SUPPORT}/${params.path}`, {
+                  replace: true,
+                })
+              }
               type="button"
               // isShadow
             />
@@ -139,7 +143,8 @@ export default function Component() {
         onClick={() => setSuccessModal(false)}
       >
         <div className={s.successModal}>
-          <Icon name="Cross"
+          <Icon
+            name="Cross"
             width="17px"
             height="17px"
             onClick={() => setSuccessModal(false)}

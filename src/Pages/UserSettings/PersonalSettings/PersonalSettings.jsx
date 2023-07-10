@@ -13,7 +13,7 @@ import {
   Toggle,
   HintWrapper,
   ScrollToFieldError,
-  Icon
+  Icon,
 } from '@components'
 import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
@@ -289,7 +289,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                         phone: userEdit?.phone?.phone,
                       }}
                     >
-                      <Icon name="PhoneVerificationIcon" /> <span>{t('Verify number')}</span>
+                      <Icon name="PhoneVerificationIcon" />{' '}
+                      <span>{t('Verify number')}</span>
                     </Link>
                   </div>
                 )}
@@ -458,7 +459,11 @@ export default function Component({ isComponentAllowedToEdit }) {
                   disabled={!isComponentAllowedToEdit}
                 />
                 <button
-                  onClick={() => navigate(routes?.HOME)}
+                  onClick={() =>
+                    navigate(routes?.HOME, {
+                      replace: true,
+                    })
+                  }
                   type="button"
                   className={s.cancel}
                 >

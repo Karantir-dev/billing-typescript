@@ -61,7 +61,9 @@ export default function DedicIPpage() {
     if (ipPlid && isIpAllowedRender) {
       dispatch(dedicOperations.getIPList(ipPlid, setIPList, setRightsList))
     } else {
-      return navigate(route.DEDICATED_SERVERS)
+      return navigate(route.DEDICATED_SERVERS, {
+        replace: true,
+      })
     }
   }, [])
 

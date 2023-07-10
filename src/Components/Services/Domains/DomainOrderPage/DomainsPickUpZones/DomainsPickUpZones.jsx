@@ -292,7 +292,11 @@ export default function ServicesPage(props) {
                 <div className={s.pricesBlock}>
                   <div className={s.domainPrice}>{parsePrice(e?.price?.$)?.amoumt}</div>
                 </div>
-                <Icon name="Cross" onClick={() => setIsSelectedHandler(e)} className={s.cross} />
+                <Icon
+                  name="Cross"
+                  onClick={() => setIsSelectedHandler(e)}
+                  className={s.cross}
+                />
               </div>
             )
           })}
@@ -308,7 +312,11 @@ export default function ServicesPage(props) {
             disabled={selectedDomains.length === 0}
           />
           <button
-            onClick={() => navigate(route.DOMAINS)}
+            onClick={() =>
+              navigate(route.DOMAINS, {
+                replace: true,
+              })
+            }
             type="button"
             className={s.clearFilters}
           >

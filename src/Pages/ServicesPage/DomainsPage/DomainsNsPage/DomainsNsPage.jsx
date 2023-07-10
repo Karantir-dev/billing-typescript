@@ -8,7 +8,7 @@ import {
   Select,
   HintWrapper,
   NsItem,
-  Icon
+  Icon,
 } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -366,7 +366,11 @@ export default function Component({ transfer = false }) {
                       type="submit"
                     />
                     <button
-                      onClick={() => navigate(route.DOMAINS)}
+                      onClick={() =>
+                        navigate(route.DOMAINS, {
+                          replace: true,
+                        })
+                      }
                       type="button"
                       className={s.cancel}
                     >

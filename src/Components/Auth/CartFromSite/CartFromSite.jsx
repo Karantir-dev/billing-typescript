@@ -32,17 +32,29 @@ export default function Component(props) {
       if (data) {
         const funcName = JSON.parse(data)?.func
         if (funcName === 'vds.order.param') {
-          return navigate(route.VPS_ORDER)
+          return navigate(route.VPS_ORDER, {
+            replace: true,
+          })
         } else if (funcName === 'domain.order.name') {
-          return navigate(route.DOMAINS_ORDERS)
+          return navigate(route.DOMAINS_ORDERS, {
+            replace: true,
+          })
         } else if (funcName === 'vhost.order.param') {
-          return navigate(route.SHARED_HOSTING_ORDER)
+          return navigate(route.SHARED_HOSTING_ORDER, {
+            replace: true,
+          })
         } else if (funcName === 'forexbox.order.param') {
-          return navigate(route.FOREX_ORDER)
+          return navigate(route.FOREX_ORDER, {
+            replace: true,
+          })
         } else if (funcName === 'storage.order.param') {
-          return navigate(route.FTP_ORDER)
+          return navigate(route.FTP_ORDER, {
+            replace: true,
+          })
         } else if (funcName === 'dedic.order.param') {
-          return navigate(route.DEDICATED_SERVERS_ORDER)
+          return navigate(route.DEDICATED_SERVERS_ORDER, {
+            replace: true,
+          })
         }
       }
     }

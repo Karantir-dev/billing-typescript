@@ -377,7 +377,10 @@ const setPaymentMethods =
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
 
-              navigate && navigate(cartState?.redirectPath)
+              navigate &&
+                navigate(cartState?.redirectPath, {
+                  replace: true,
+                })
               dispatch(
                 cartActions.setCartIsOpenedState({
                   isOpened: false,

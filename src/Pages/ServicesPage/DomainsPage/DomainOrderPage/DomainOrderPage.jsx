@@ -139,7 +139,7 @@ export default function Component({ transfer = false }) {
     navigate &&
       navigate(
         transfer ? route.DOMAINS_TRANSFER_CONTACT_INFO : route.DOMAINS_CONTACT_INFO,
-        { state: { domainInfo: data } },
+        { state: { domainInfo: data }, replace: true },
       )
   }
 
