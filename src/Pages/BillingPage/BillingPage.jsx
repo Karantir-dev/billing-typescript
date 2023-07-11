@@ -11,9 +11,10 @@ import Payments from './Payments/Payments'
 import Expenses from './Expenses/Expenses'
 import PaymentMethod from './PaymentMethod/PaymentMethod'
 import AutoPayment from './AutoPayment/AutoPayment'
-import s from './BillingPgae.module.scss'
+import s from './BillingPage.module.scss'
 import * as route from '@src/routes'
 import { usePageRender } from '@utils'
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
@@ -93,7 +94,7 @@ export default function Component() {
   }
 
   if (params.result && !(params?.result === 'success' || params?.result === 'error')) {
-    return <Navigate to={route.ERROR_PAGE} />
+    return <ErrorPage />
   }
 
   return (
