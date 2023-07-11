@@ -230,14 +230,13 @@ export default function VDSmobileItem({
         </div>
       )}
       <span className={s.label}>{t('server_name')}:</span>
-      <span className={cn(s.value, { [s.active]: isActive })}>
+      <span className={cn(s.value, s.value_edit, { [s.active]: isActive })}>
         <EditCell
           originName={originName}
           onSubmit={editNameHandler}
           placeholder={t(originName || t('server_placeholder', { ns: 'vds' }), {
             ns: 'vds',
           })}
-          className={s.edit_cell}
         />
       </span>
       <span className={s.label}>Id:</span>
