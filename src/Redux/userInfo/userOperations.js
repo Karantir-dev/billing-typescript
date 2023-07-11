@@ -37,8 +37,9 @@ const userTickets = (data, dispatch) => {
   dispatch(userActions.setTickets(elem))
 }
 
-export const userNotifications = (data, dispatch) => {
+export const userNotifications = (data, dispatch, setIsLoader) => {
   const d = {}
+  const messagesIds = []
 
   if (Array.isArray(data?.doc?.notify?.item)) {
     data?.doc?.notify?.item.forEach(el => {
@@ -54,6 +55,22 @@ export const userNotifications = (data, dispatch) => {
       }
     })
   }
+
+  if (d?.messages) {
+    d?.messages?.forEach(e => messagesIds?.push(e?.$id))
+  }
+
+  setIsLoader &&
+    setIsLoader(loaders => {
+      const newArr = []
+      loaders?.forEach(l => {
+        if (messagesIds.indexOf(l) != -1) {
+          newArr?.push(l)
+        }
+      })
+
+      return newArr
+    })
 
   dispatch(userActions.setItems(d))
 }
@@ -166,7 +183,7 @@ const getUserInfo = (sessionId, setLoading) => dispatch => {
     })
 }
 
-const removeItems = (sessionId, id) => dispatch => {
+const removeItems = (sessionId, id, updateNotify) => dispatch => {
   axiosInstance
     .post(
       '/',
@@ -180,6 +197,8 @@ const removeItems = (sessionId, id) => dispatch => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      updateNotify && updateNotify()
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
@@ -210,7 +229,7 @@ const getDashboardTickets = () => (dispatch, getState) => {
     })
 }
 
-const getNotify = () => (dispatch, getState) => {
+const getNotify = setIsLoader => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -228,7 +247,7 @@ const getNotify = () => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      userNotifications(data, dispatch)
+      userNotifications(data, dispatch, setIsLoader)
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
