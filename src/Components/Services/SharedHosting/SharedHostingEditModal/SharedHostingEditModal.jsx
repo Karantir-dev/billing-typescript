@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Select, Button, InputField } from '../../..'
+import { Select, Button, InputField, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingEditModal.module.scss'
 import { translatePeriod, orderDetailTranslate } from '@utils'
@@ -28,7 +27,7 @@ export default function Component(props) {
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
           <span className={s.vhostName}>({name})</span>
         </div>
-        <Cross onClick={closeEditModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeEditModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>
@@ -59,7 +58,7 @@ export default function Component(props) {
       >
         {({ setFieldValue, values, errors, touched }) => {
           return (
-            <Form className={s.form__wrapper}>
+            <Form className={s.form__wrapper} id="edit-vhost">
               <div className={s.form}>
                 <div className={s.fieldsBlock}>
                   <Select
@@ -206,6 +205,7 @@ export default function Component(props) {
           size="medium"
           label={t('Save', { ns: 'other' })}
           type="submit"
+          form="edit-vhost"
         />
         <button onClick={closeEditModalHandler} type="button" className={s.clearFilters}>
           {t('Cancel', { ns: 'other' })}

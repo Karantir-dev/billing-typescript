@@ -1,11 +1,18 @@
 import qs from 'qs'
 import axios from 'axios'
 import i18n from '@src/i18n'
-import { actions, billingActions, payersOperations, payersActions } from '@redux'
+import {
+  actions,
+  billingActions,
+  payersOperations,
+  payersActions,
+  userActions,
+} from '@redux'
 import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, cookies } from '@utils'
+import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
   (body = {}) =>
@@ -644,7 +651,7 @@ const createPaymentMethod =
                       {
                         item_name: 'Refill',
                         item_id: data.doc?.payment_id?.$,
-                        price: 0,
+                        price: Number(body?.amount) || 0,
                         item_category: 'Refill',
                         quantity: 1,
                       },
@@ -652,8 +659,8 @@ const createPaymentMethod =
                   },
                 }
                 cookies.eraseCookie('payment_id')
-                window.dataLayer.push({ ecommerce: null })
-                window.dataLayer.push(ecommerceData)
+                window?.dataLayer?.push({ ecommerce: null })
+                window?.dataLayer?.push(ecommerceData)
 
                 dispatch(analyticSendHandler(ecommerceData))
               } else {
@@ -1138,6 +1145,90 @@ const analyticSendHandler = data => () => {
   axios.post(`${API_URL}/api/analytic/add/`, data)
 }
 
+// const getExchangeRate = (cur, setExchangeRate) => () => {
+//   let currency = 1
+
+//   axios
+//     .get(`${API_URL}/api/service/currency/${cur}`)
+//     .then(({ data }) => {
+//       if (data?.success === true || data?.success === 'true') {
+//         currency = data?.currency
+//       }
+//       setExchangeRate && setExchangeRate(currency)
+//     })
+//     .catch(() => {
+//       setExchangeRate && setExchangeRate(currency)
+//     })
+// }
+
+const useCertificate =
+  ({ coupon, errorFunc = () => {}, successFunc = () => {} }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
+    axiosInstance
+      .post(
+        '/billmgr',
+        qs.stringify({
+          func: 'coupon.use',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          coupon: coupon,
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'whoami',
+              out: 'json',
+              lang: 'en',
+              auth: sessionId,
+            }),
+          )
+          .then(response => dispatch(userActions.setUserInfo(response.data.doc.user)))
+
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'notify',
+              out: 'json',
+              lang: 'en',
+              auth: sessionId,
+            }),
+          )
+          .then(response => {
+            userNotifications(response.data, dispatch)
+          })
+
+        toast.success(
+          i18n.t('certificate_applied_success', {
+            ns: 'other',
+          }),
+          {
+            position: 'bottom-right',
+            toastId: 'customId',
+          },
+        )
+        successFunc()
+        dispatch(actions.hideLoader())
+      })
+      .catch(() => {
+        errorFunc()
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1164,4 +1255,6 @@ export default {
   finishAddPaymentMethod,
   editNamePaymentMethod,
   analyticSendHandler,
+  // getExchangeRate,
+  useCertificate,
 }

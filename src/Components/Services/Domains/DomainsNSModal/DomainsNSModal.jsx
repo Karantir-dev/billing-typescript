@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross, Info } from '@images'
-import { InputField, Button } from '../../..'
+import { InputField, Button, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
 
@@ -49,7 +48,7 @@ export default function Component(props) {
     <div className={s.modalBlock}>
       <div className={s.modalHeader}>
         <span className={s.headerText}>{t('Name servers')}</span>
-        <Cross onClick={closeNSModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeNSModalHandler} className={s.crossIcon} />
       </div>
       {NSData?.domain_id?.split(',')?.length > 1 && (
         <div className={s.namesBlock}>
@@ -129,7 +128,7 @@ export default function Component(props) {
                             className={s.infoBtn}
                             style={{ zIndex: 2 * nslists?.length - index }}
                           >
-                            <Info />
+                            <Icon name="Info" />
                             <div ref={dropdownDescription} className={s.descriptionBlock}>
                               {t('record_format')}
                             </div>

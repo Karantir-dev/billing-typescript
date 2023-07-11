@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Select } from '../../..'
+import { Button, InputField, Select, Icon } from '@components'
 import { useDispatch } from 'react-redux'
-import { Copy, Cross } from '@images'
 import { Formik, Form } from 'formik'
 import { forexOperations } from '@redux'
 import { translatePeriod } from '@utils'
@@ -67,7 +66,7 @@ export default function ForexEditModal({ elid, closeFn }) {
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Cross className={s.icon_cross} onClick={closeFn} width={17} height={17} />
+        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={17} height={17} />
       </div>
 
       <Formik
@@ -226,7 +225,7 @@ export default function ForexEditModal({ elid, closeFn }) {
                             >
                               {values?.url_rdp?.slice(0, 22) + '...'}
                             </span>
-                            <Copy
+                            <Icon name="Copy"
                               className={classNames(s.copy_icon, {
                                 [s.selected]: true,
                               })}

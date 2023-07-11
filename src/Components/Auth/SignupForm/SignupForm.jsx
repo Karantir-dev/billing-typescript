@@ -12,9 +12,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import { authOperations } from '@redux'
-import { SelectOfCountries, InputField, Button, LoginBtnBlock, LoaderDots } from '@components'
+import { SelectOfCountries, InputField, Button, LoginBtnBlock, Icon, LoaderDots } from '@components'
 import * as routes from '@src/routes'
-import { Facebook, Google, Vk } from '@images'
 import {
   SPECIAL_CHARACTERS_REGEX,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
@@ -286,17 +285,17 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         <ul className={s.social_list}>
           <li>
             <a href={FACEBOOK_LINK}>
-              <Facebook />
+              <Icon name="Facebook" />
             </a>
           </li>
           <li>
             <a href={GOOGLE_LINK}>
-              <Google />
+              <Icon name="Google" />
             </a>
           </li>
           <li>
             <a href={VK_LINK}>
-              <Vk />
+              <Icon name="Vk" />
             </a>
           </li>
         </ul>

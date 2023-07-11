@@ -14,6 +14,7 @@
     "jsx-a11y/no-autofocus": 0,
     "react/no-children-prop": 0,
     "import/no-named-as-default": 0,
+    "import/namespace": "off",
     "max-len": ["warn", { "code": 150, "ignorePattern": "d=\"([\\s\\S]*?)\"" }],
     "linebreak-style": 0,
     "quotes": ["error", "single"],

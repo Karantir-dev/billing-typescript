@@ -14,7 +14,7 @@ import s from './PhoneVerificationPage.module.scss'
 import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
-import { Attention } from '../../images'
+import { Icon } from '@components'
 
 export default function Component() {
   const { t } = useTranslation(['user_settings', 'other'])
@@ -71,7 +71,7 @@ export default function Component() {
 
   const validationSchema = Yup.object().shape({
     phone:
-      isFirst || notHaveNumber
+      !isCodeStep && countryCode
         ? Yup.string().phone(countryCode, false, t('Must be a valid phone number'))
         : null,
     code: isCodeStep
@@ -150,7 +150,14 @@ export default function Component() {
     navigate(prevPage)
   }
 
-  const renderScreen = ({ values, handleBlur, setFieldValue, touched, errors }) => {
+  const renderScreen = ({
+    values,
+    handleBlur,
+    setFieldValue,
+    touched,
+    errors,
+    handleSubmit,
+  }) => {
     if (isTryLimit) {
       return <TryLimit />
     }
@@ -166,6 +173,7 @@ export default function Component() {
           setCountryCode={setCountryCode}
           backHandler={backHandler}
           isTimeOut={isTimeOut}
+          handleSubmit={handleSubmit}
         />
       )
     } else {
@@ -210,7 +218,7 @@ export default function Component() {
 
             {isTimeOut && (
               <div className={s.timeOutBlock}>
-                <Attention /> {t('verification_code_timeout', { time: timeOut })}
+                <Icon name="Attention" /> {t('verification_code_timeout', { time: timeOut })}
               </div>
             )}
 

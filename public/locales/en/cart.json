@@ -26,6 +26,7 @@
   "Late fee": "Late fee",
   "order_amount_is_less": "Order amount is less than minimum payment amount for the selected payment methods. You can add the minimum amount of funds and pay for order using funds on your account",
   "Tax included": "Tax included",
+  "Tax": "Tax amount",
   "Gift": "Gift",
   "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code": "To receive a free service, complete the following order (with a separate check after purchase) and enter the promotional code",
   "can be used only once": "can be used only once",
@@ -54,5 +55,6 @@
 
   "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.": "Cryptocurrency payment.Altcoins available from 25EUR.When paying through third-party services, exchanges - take into account their commission and add it to the cost of the payment. Your wallet currency denomination may be set to a conventional currency, e.g. EUR. Exchange rates may differ from wallet to wallet. Therefore, always remember to select the cryptocurrency denomination, e.g. Bitcoin, so the correct transfer amount is sent. In order to complete your payment you need to scan the QR code with your wallet or copy and paste the details into your wallet. If you must type or copy and paste the details, always double check if the info is correct. Just one typo will result in a cancel.Refund available only to BTC wallet, from 10 EUR, up to 14 days after payment.",
 
-  "Payment amount from 1.00 EUR to 1000.00 EUR": "Payment amount from 1.00 EUR to 1000.00 EUR"
+  "Payment amount from 1.00 EUR to 1000.00 EUR": "Payment amount from 1.00 EUR to 1000.00 EUR",
+  "service_was_deleted_from_basket": "The service has been removed from the basket, please place your order again"
 }

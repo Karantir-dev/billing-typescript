@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
+import { Icon } from '@components'
 import s from './SharedHostingInstructionModal.module.scss'
 
 export default function Component(props) {
@@ -13,7 +13,7 @@ export default function Component(props) {
         <span className={s.headerText}>
           {t('Instruction')} {name}
         </span>
-        <Cross onClick={closeInstructionModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeInstructionModalHandler} className={s.crossIcon} />
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: instructionData }}

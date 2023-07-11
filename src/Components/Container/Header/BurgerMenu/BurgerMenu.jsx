@@ -5,8 +5,7 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn, Portal, ModalCreatePayment } from '@components'
-import { ExitSign } from '@images'
+import { ThemeBtn, LangBtn, Portal, ModalCreatePayment, Icon } from '@components'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '@redux'
 import { useOutsideAlerter, usePageRender } from '@utils'
@@ -14,17 +13,13 @@ import * as routes from '@src/routes'
 
 import s from './BurgerMenu.module.scss'
 
-export default function BurgerMenu({ classes, isOpened, controlMenu }) {
+export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenuList }) {
   const { t } = useTranslation('container')
 
   const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
-  const isTrustedUsersAllowedToRender = usePageRender('customer', 'user', false)
-
-  const isAuthLogAllowedToRender = usePageRender('stat', 'authlog', false)
   const areServicesAllowedToRender = usePageRender('mainmenuservice', null, false)
   const isFinanceAllowedToRender = usePageRender('finance', null, false)
-  const areUserSettingsAllowedToRender = usePageRender('customer', 'usrparam', false)
   const isAffiliateProgramAllowedToRender = usePageRender(
     'customer',
     'affiliate.client',
@@ -33,36 +28,6 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
   const isSupportAllowedToRender = usePageRender('support', null, false)
   const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive', false)
   const isRequestsAllowedToRender = usePageRender('support', 'clientticket', false)
-  const arePayersAllowedToRender = usePageRender('customer', 'profile', false)
-  const areContractsAllowedToRender = usePageRender('customer', 'contract', false)
-
-  const profileMenuList = [
-    {
-      name: t('profile.user_settings'),
-      routeName: routes.USER_SETTINGS,
-      allowedToRender: areUserSettingsAllowedToRender,
-    },
-    {
-      name: t('profile.trusted_users'),
-      routeName: routes.TRUSTED_USERS,
-      allowedToRender: isTrustedUsersAllowedToRender,
-    },
-    {
-      name: t('profile.visiting_log'),
-      routeName: routes.ACCESS_LOG,
-      allowedToRender: isAuthLogAllowedToRender,
-    },
-    {
-      name: t('profile.payers'),
-      routeName: routes.PAYERS,
-      allowedToRender: arePayersAllowedToRender,
-    },
-    {
-      name: t('profile.contracts'),
-      routeName: routes.CONTRACTS,
-      allowedToRender: areContractsAllowedToRender,
-    },
-  ]
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
@@ -319,7 +284,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu }) {
                   onKeyDown={() => {}}
                   onClick={logOut}
                 >
-                  <ExitSign className={s.icon} />
+                  <Icon name="ExitSign" className={s.icon} />
                   <p className={s.exit_name}>{t('profile.log_out')}</p>
                 </div>
               </NavLink>

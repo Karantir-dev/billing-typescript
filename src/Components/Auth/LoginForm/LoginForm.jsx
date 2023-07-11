@@ -11,11 +11,11 @@ import {
   Button,
   InputField,
   LoginBtnBlock,
+  Icon,
   LoaderDots,
 } from '@components'
 import * as routes from '@src/routes'
 import { RECAPTCHA_KEY } from '@config/config'
-import { Facebook, Google, Vk } from '@images'
 import { EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 import s from './LoginForm.module.scss'
 
@@ -178,17 +178,17 @@ export default function LoginForm() {
         <ul className={s.social_list}>
           <li>
             <a href={FACEBOOK_LINK}>
-              <Facebook />
+              <Icon name="Facebook" />
             </a>
           </li>
           <li>
             <a href={GOOGLE_LINK}>
-              <Google />
+              <Icon name="Google" />
             </a>
           </li>
           <li>
             <a href={VK_LINK}>
-              <Vk />
+              <Icon name="Vk" />
             </a>
           </li>
         </ul>

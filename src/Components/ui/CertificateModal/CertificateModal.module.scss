@@ -1,0 +1,239 @@
+.modalBg {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  overflow-y: auto;
+}
+
+.modalBlock {
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  margin: 20px 30px;
+  width: 100%;
+  max-width: 610px;
+}
+
+.modalHeader {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--header_shadow);
+}
+
+.crossIcon {
+  fill: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  color: var(--main-text);
+}
+
+.form {
+  padding: 35px 15px;
+  background-color: var(--main-bgc2);
+}
+
+.formBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  max-width: 100%;
+  padding-bottom: 0;
+}
+
+.field {
+  background-color: var(--forms_bgc_3);
+  box-shadow: var(--forms_shadow_site);
+}
+
+.btnBlock {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  z-index: 2;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background-color: var(--forms_bgc_5);
+  box-shadow: var(--footer_shadow);
+}
+
+.saveBtn {
+  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  font-size: 18px;
+  height: 55px;
+}
+
+.cancel {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 130%;
+  text-decoration-line: underline;
+  margin-top: 22px;
+  color: var(--main-text);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+
+.nsInputBlock {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.not_exist {
+  margin-top: 25px;
+  min-height: 50px;
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    padding: 15px;
+    background-color: var(--elements-bgc3);
+    box-shadow: var(--forms_shadow_site);
+    color: var(--red-text);
+  }
+}
+
+.infoBtn {
+  position: absolute;
+  margin-left: auto;
+  top: 30px;
+  right: 0px;
+  z-index: 2;
+  padding: 12px 12px 12px 0px;
+  cursor: pointer;
+
+  &:hover {
+    svg {
+      path {
+        opacity: 1;
+        fill: url(#gradient);
+      }
+    }
+    .descriptionBlock {
+      opacity: 1;
+      height: auto;
+      overflow: auto;
+      padding: 15px;
+    }
+  }
+}
+
+.descriptionBlock {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  box-shadow: var(--burger-menu-elem-box-shadow);
+  background-color: var(--forms_bgc_4);
+  padding: 0;
+  bottom: 100%;
+  right: 0;
+  width: 232px;
+  z-index: 3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130.5%;
+  color: var(--main-text);
+  text-align: start;
+  transition: 0.05s linear;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 89%;
+    bottom: 99%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--forms_bgc_4);
+    clear: both;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .saveBtn {
+    font-size: 20px;
+  }
+
+  .modalBg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .modalBlock {
+    margin: 0 30px;
+    width: 100%;
+  }
+
+  .modalHeader {
+    padding: 20px 35px;
+  }
+
+  .form {
+    padding: 35px 15px 50px;
+    max-height: 75vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @media screen and (min-width: 768px) {
+      padding: 40px 35px 60px;
+    }
+  }
+
+  .modalBody {
+    padding: 30px;
+    background-color: var(--main-bgc3);
+  }
+
+  .btnBlock {
+    flex-direction: row;
+    padding: 30px 35px;
+  }
+
+  .saveBtn {
+    width: 254px;
+  }
+
+  .cancel {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+}

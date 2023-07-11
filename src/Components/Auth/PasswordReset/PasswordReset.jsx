@@ -6,10 +6,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
-import { Envelope } from '@images'
 import { authOperations } from '@redux'
 import * as routes from '@src/routes'
-import { Button } from '@components'
+import { Button, Icon } from '@components'
 import s from './PasswordReset.module.scss'
 
 export default function PasswordReset() {
@@ -81,7 +80,7 @@ export default function PasswordReset() {
               onChange={handleInputChange}
               onBlur={validateEmail}
             />
-            {tabletOrHigher && <Envelope className={s.field_icon} />}
+            {tabletOrHigher && <Icon name="Envelope" className={s.field_icon} />}
             <div className={s.input_border}></div>
           </div>
 

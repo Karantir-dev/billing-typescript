@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Select, Button } from '../../..'
+import { Select, Button, Icon } from '@components'
 import { Formik, Form } from 'formik'
 import s from './SharedHostingProlongModal.module.scss'
 
@@ -22,7 +21,7 @@ export default function Component(props) {
           <span className={s.headerText}>{t('Service extension')}</span>
           <span className={s.vhostName}>{name}</span>
         </div>
-        <Cross onClick={closeProlongModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeProlongModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.statusBlock}>
         <div className={s.statusItem}>

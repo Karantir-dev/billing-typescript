@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Clock, MoreDots, Edit, Reload, Refund, IP, Info, ExitSign } from '@images'
 import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, EditCell, ServerState } from '@components'
+import { CheckBox, EditCell, ServerState, Icon } from '@components'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
@@ -76,7 +75,7 @@ export default function DedicMobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <MoreDots />
+              <Icon name="MoreDots" />
             </button>
 
             {toolsOpened && (
@@ -92,7 +91,7 @@ export default function DedicMobileItem({
                       type="button"
                       onClick={() => handleToolBtnClick(setElidForEditModal)}
                     >
-                      <Edit className={s.tool_icon} />
+                      <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
@@ -106,7 +105,7 @@ export default function DedicMobileItem({
                         handleToolBtnClick(setElidForRebootModal)
                       }}
                     >
-                      <Reload className={s.tool_icon} />
+                      <Icon name="Reload" className={s.tool_icon} />
                       {t('reload')}
                     </button>
                   </li>
@@ -122,7 +121,7 @@ export default function DedicMobileItem({
                         })
                       }
                     >
-                      <IP className={s.tool_icon} />
+                      <Icon name="IP" className={s.tool_icon} />
                       {t('ip_addresses')}
                     </button>
                   </li>
@@ -133,7 +132,7 @@ export default function DedicMobileItem({
                       disabled={server?.status?.$ === '1' || !rights?.prolong}
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
-                      <Clock className={s.tool_icon} />
+                      <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
                     </button>
                   </li>
@@ -146,7 +145,7 @@ export default function DedicMobileItem({
                         handleToolBtnClick(setElidForHistoryModal)
                       }}
                     >
-                      <Refund className={s.tool_icon} />
+                      <Icon name="Refund" className={s.tool_icon} />
                       {t('history')}
                     </button>
                   </li>
@@ -157,7 +156,7 @@ export default function DedicMobileItem({
                       disabled={server?.status?.$ === '1' || !rights?.instruction}
                       onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
-                      <Info className={s.tool_icon} />
+                      <Icon name="Info" className={s.tool_icon} />
                       {t('instruction')}
                     </button>
                   </li>
@@ -174,7 +173,7 @@ export default function DedicMobileItem({
                         dispatch(dedicOperations.goToPanel(server.id.$))
                       }}
                     >
-                      <ExitSign className={s.tool_icon} />
+                      <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
                     </button>
                   </li>

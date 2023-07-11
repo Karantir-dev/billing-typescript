@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Attention, Cross } from '@images'
-import { Backdrop, Button } from '@components'
+import { Backdrop, Button, Icon } from '@components'
 import { userSelectors, userOperations } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -26,7 +25,7 @@ export default function EmailTrigger() {
           type="button"
           onClick={() => setIsModalOpened(true)}
         >
-          <Attention className={s.icon} />
+          <Icon name="Attention" className={s.icon} />
           {t('email_trigger')}
         </button>
 
@@ -39,7 +38,7 @@ export default function EmailTrigger() {
                 onClick={() => setIsModalOpened(false)}
                 type="button"
               >
-                <Cross />
+                <Icon name="Cross" />
               </button>
             </div>
             <p className={s.modal_text}>

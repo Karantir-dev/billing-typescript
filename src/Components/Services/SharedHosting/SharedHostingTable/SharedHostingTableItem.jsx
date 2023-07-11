@@ -3,16 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { CheckBox, ServerState } from '../../..'
-import {
-  MoreDots,
-  Edit,
-  Clock,
-  Refund,
-  ExitSign,
-  Info,
-  ChangeTariff,
-} from '@images'
+import { CheckBox, ServerState, Icon } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './SharedHostingTable.module.scss'
 
@@ -133,7 +124,7 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.dots}>
-          <MoreDots onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon name="MoreDots" onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
 
           <div
             role="button"
@@ -151,7 +142,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={() => editVhostHandler()}
             >
-              <Edit />
+              <Icon name="Edit" />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
             <button
@@ -159,7 +150,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={changeTariffVhostHandler}
             >
-              <ChangeTariff />
+              <Icon name="ChangeTariff" />
               <p className={s.setting_text}>
                 {t('trusted_users.Change tariff', { ns: 'trusted_users' })}
               </p>
@@ -172,7 +163,7 @@ export default function Component(props) {
                 setElidForProlongModal([id])
               }}
             >
-              <Clock />
+              <Icon name="Clock" />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
             </button>
             <button
@@ -180,7 +171,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={historyVhostHandler}
             >
-              <Refund />
+              <Icon name="Refund" />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
             <button
@@ -188,7 +179,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={instructionVhostHandler}
             >
-              <Info />
+              <Icon name="Info" />
               <p className={s.setting_text}>{t('instruction', { ns: 'vds' })}</p>
             </button>
             <button
@@ -198,7 +189,7 @@ export default function Component(props) {
               className={s.settings_btn}
               onClick={platformVhostHandler}
             >
-              <ExitSign />
+              <Icon name="ExitSign" />
               <p className={s.setting_text}>{t('go_to_panel', { ns: 'vds' })}</p>
             </button>
           </div>

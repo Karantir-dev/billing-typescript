@@ -3,8 +3,7 @@ import { Form, Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { InputField, Button } from '../..'
-import CustomPhoneInput from '../../ui/CustomPhoneInput/CustomPhoneInput'
+import { InputField, Button, CustomPhoneInput } from '@components'
 
 import s from './ManageUserForm.module.scss'
 import classNames from 'classnames'
@@ -155,6 +154,7 @@ export default function ManageUserForm({
                       background={true}
                       disabled={formName === 'settings'}
                       inputClassName={s.field_bg}
+                      autoComplete="off"
                     />
 
                     <CustomPhoneInput
@@ -170,6 +170,8 @@ export default function ManageUserForm({
                       userId={userId}
                       inputClass={s.field_bg}
                       buttonClass={s.phoneInputButton}
+                      autoComplete="off"
+                      containerClass={s.phoneInputContainer}
                     />
 
                     <InputField

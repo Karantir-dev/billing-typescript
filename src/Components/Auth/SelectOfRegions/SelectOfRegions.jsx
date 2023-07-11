@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 import { ErrorMessage } from 'formik'
-import { Search, Shevron } from '@images'
+import { Icon } from '@components'
 import s from '../SelectOfCountries/SignupSelects.module.scss'
 
 export default function SelectOfRegions({
@@ -73,10 +73,10 @@ export default function SelectOfRegions({
           }}
         />
 
-        <Search className={s.field_icon} />
+        <Icon  name="Search" className={s.field_icon} />
 
         <div className={s.input_border}></div>
-        <Shevron
+        <Icon name="Shevron"
           className={cn({ [s.right_icon]: true, [s.opened]: regionsListOpened })}
         />
       </div>

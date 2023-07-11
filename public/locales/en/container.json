@@ -12,7 +12,8 @@
     "visiting_log": "Browsing history",
     "payers": "Payers",
     "contracts": "Contracts",
-    "log_out": "Log out"
+    "log_out": "Log out",
+    "use_certificate": "Use certificate"
   },
   "burger_menu": {
     "services": {

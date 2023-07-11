@@ -3,7 +3,7 @@ import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies } from '@utils'
-import { API_URL } from '@config/config'
+import { API_URL, SITE_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -35,6 +35,8 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
       if (data.doc.error) throw data.doc.error
 
       const sessionId = data?.doc?.auth?.$id
+
+      cookies.setCookie('sessionId', sessionId, 1)
 
       return axiosInstance
         .post(
@@ -131,9 +133,13 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
 
+      const sessionId = data?.doc?.auth?.$id
+
+      cookies.setCookie('sessionId', sessionId, 1)
       dispatch(authActions.clearTemporaryId())
+      dispatch(authActions.loginSuccess(sessionId))
+      dispatch(authActions.isLogined(true))
       dispatch(authActions.closeTotpForm())
-      dispatch(authActions.loginSuccess(data?.doc?.auth?.$id))
     })
     .catch(err => {
       dispatch(actions.hideLoader())
@@ -342,6 +348,16 @@ const register =
 const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
   dispatch(actions.showLoader())
 
+  const fromsite = cookies.getCookie('loginFromSite')
+
+  const sendInfoToSite = data => {
+    if (fromsite === 'true') {
+      cookies.setCookie('socialLoginData', JSON.stringify(data), 1)
+      cookies.eraseCookie('loginFromSite')
+      location.href = SITE_URL
+    }
+  }
+
   axiosInstance
     .post(
       '/',
@@ -354,13 +370,19 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     )
     .then(({ data }) => {
       // LOGIN
-      if (data.doc?.error?.$object === 'nolink') {
+      if (
+        data.doc?.error?.$object === 'nolink' ||
+        data.doc?.error?.$object === 'socialrequest'
+      ) {
+        sendInfoToSite({ error: 'soc_net_not_integrated' })
         redirectToLogin(
           'soc_net_not_integrated',
           data.doc?.error?.param.find(el => el.$name === 'network')?.$,
         )
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
+        cookies.setCookie('sessionId', sessionId, 1)
+        sendInfoToSite({ sessionId })
         axiosInstance
           .post(
             '/',
@@ -405,15 +427,18 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
           )
           .then(({ data }) => {
             if (data.doc?.error?.$object === 'account_exist') {
+              sendInfoToSite({ error: 'social_akk_registered' })
               redirectToLogin(
                 'social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
               )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
+              sendInfoToSite({ error: 'soc_email_exist' })
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
+              sendInfoToSite({ error: 'no_email_from_social' })
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
               redirectToRegistration('no_email_from_social', '', '')
@@ -431,6 +456,8 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                 )
                 .then(({ data }) => {
                   const sessionId = data?.doc?.auth?.$
+                  cookies.setCookie('sessionId', sessionId, 1)
+                  sendInfoToSite({ sessionId })
                   dispatch(authActions.loginSuccess(sessionId))
                 })
             }

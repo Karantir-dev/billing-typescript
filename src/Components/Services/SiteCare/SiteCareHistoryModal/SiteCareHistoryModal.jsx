@@ -1,7 +1,6 @@
 import SiteCareHistoryItem from './SiteCareHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Cross } from '@images'
-import { Pagination } from '../../..'
+import { Pagination, Icon } from '@components'
 import cn from 'classnames'
 import s from './SiteCareHistoryModal.module.scss'
 
@@ -23,7 +22,7 @@ export default function Component(props) {
         <span className={s.headerText}>
           {t('Service change history')} - {name}
         </span>
-        <Cross onClick={closeHistoryModalHandler} className={s.crossIcon} />
+        <Icon name="Cross" onClick={closeHistoryModalHandler} className={s.crossIcon} />
       </div>
       <div className={s.table}>
         <div className={s.tableHeader}>

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
-import { Logo } from '@images'
-import { ThemeBtn, LangBtn } from '@components'
+import { ThemeBtn, LangBtn, Icon } from '@components'
 import { SITE_URL } from '@config/config'
 import s from './AuthPageHeader.module.scss'
 
@@ -9,7 +8,7 @@ export default function AuthPageHeader(props) {
   return (
     <header className={s.header}>
       <div className={`container ${s.flex}`}>
-        <Logo
+        <Icon name="Logo"
           onClick={() => onLogoClick && onLogoClick()}
           svgwidth="105"
           svgheight="48"

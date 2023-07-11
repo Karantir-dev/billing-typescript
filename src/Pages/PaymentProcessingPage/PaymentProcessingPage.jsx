@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import s from './PaymentProcessingPage.module.scss'
-import { PaymentProcessing } from '../../images'
+import { Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import * as route from '../../routes'
 import { Link } from 'react-router-dom'
@@ -18,6 +18,11 @@ export default function PaymentSaved() {
 
   const [paymentItem, setPaymentItem] = useState(null)
   const [cartData, setCartData] = useState(null)
+  // const [exchangeRate, setExchangeRate] = useState(null)
+
+  // useEffect(() => {
+  //   dispatch(billingOperations?.getExchangeRate('rub', setExchangeRate))
+  // }, [])
 
   useEffect(() => {
     const data = { p_num: 1, p_cnt: 15 }
@@ -51,12 +56,20 @@ export default function PaymentSaved() {
   useEffect(() => {
     if (paymentItem) {
       //if we have payment
-      const currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB')
-        ? 'RUB'
-        : 'EUR' //check what currency used
-      const value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
-      const tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
-      window.dataLayer.push({ ecommerce: null }) //clean data layer ecommerce
+      // let currency = paymentItem?.paymethodamount_iso?.$?.includes('RUB') ? 'RUB' : 'EUR' //check what currency used
+      // let value = paymentItem?.paymethodamount_iso?.$?.replace(currency, '') //get the payment amount
+      // let tax = paymentItem?.tax?.$?.replace(currency, '') //get the payment tax
+
+      let value = paymentItem?.subaccountamount_iso?.$
+      let tax = paymentItem?.tax?.$
+
+      // if (currency === 'RUB' && Number(exchangeRate) > 1) {
+      //   value = (Number(value || 0) / Number(exchangeRate)).toFixed(2)
+      //   tax = (Number(tax || 0) / Number(exchangeRate)).toFixed(2)
+      //   currency = 'EUR'
+      // }
+
+      window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
       let ecommerce = null
 
@@ -72,14 +85,14 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: cartData?.promocode,
               items: cartData?.items,
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
 
           cookies.eraseCookie(`cartData_${paymentId}`)
@@ -94,7 +107,7 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               shipping: '0',
               coupon: '',
               items: [
@@ -109,7 +122,7 @@ export default function PaymentSaved() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
 
@@ -124,12 +137,12 @@ export default function PaymentSaved() {
               affiliation: 'cp.zomro.com',
               value: Number(value) || 0,
               tax: Number(tax) || 0,
-              currency: currency,
+              currency: 'EUR',
               items: [
                 {
                   item_name: 'Refill',
                   item_id: paymentId,
-                  price: 0,
+                  price: Number(value) || 0,
                   item_category: 'Refill',
                   quantity: 1,
                 },
@@ -137,7 +150,7 @@ export default function PaymentSaved() {
             },
           }
 
-          window.dataLayer.push(ecommerce)
+          window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
       }
@@ -147,7 +160,7 @@ export default function PaymentSaved() {
 
   return (
     <div className={s.wrapper}>
-      <PaymentProcessing color={'var(--accent-color-light)'} />
+      <Icon name="PaymentProcessing" color={'var(--accent-color-light)'} />
       <p className={s.message}>{t('payment_processed')}</p>
       <Link className={s.link} to={route.BILLING}>
         {t('Finance/Accounts')}

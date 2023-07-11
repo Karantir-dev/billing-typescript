@@ -14,6 +14,7 @@ export default function Component(props) {
     className,
     dataTestid,
     loading,
+    form,
   } = props
 
   return (
@@ -32,6 +33,7 @@ export default function Component(props) {
       })}
       type={type}
       onClick={onClick}
+      form={form}
     >
       {loading ? (
         <LoaderDots classname={s.loader} />

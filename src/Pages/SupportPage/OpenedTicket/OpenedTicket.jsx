@@ -11,13 +11,13 @@ import {
   HintWrapper,
   IconButton,
   Backdrop,
+  Icon
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
 import { supportSelectors, supportOperations, supportActions } from '@redux'
 import * as route from '@src/routes'
 import s from './OpenedTicket.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import { Cross, Smile } from '@images'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -139,13 +139,13 @@ export default function Component() {
         onClick={() => setSuccessModal(false)}
       >
         <div className={s.successModal}>
-          <Cross
+          <Icon name="Cross"
             width="17px"
             height="17px"
             onClick={() => setSuccessModal(false)}
             className={s.crossIcon}
           />
-          <Smile className={s.smileIcon} />
+          <Icon name="Smile" className={s.smileIcon} />
           <p className={s.thanksText}>
             {t(
               'Thank you on behalf of our staff. They will receive this bonus to their salary!',

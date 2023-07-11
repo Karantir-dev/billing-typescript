@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { Toggle } from '@components'
+import { Toggle, Icon } from '@components'
 import { useTranslation } from 'react-i18next'
-import { Shevron } from '@images'
 import s from './ToggleBlock.module.scss'
 
 export default function Component(props) {
@@ -22,7 +21,7 @@ export default function Component(props) {
         onClick={() => setIsOpen(!isOpen)}
         className={s.notifName}
       >
-        {t(item.name)} <Shevron className={cn(s.shevron, { [s.opened]: isOpen })} />
+        {t(item.name)} <Icon name="Shevron" className={cn(s.shevron, { [s.opened]: isOpen })} />
       </div>
       <div
         className={cn(s.columnBlock, {

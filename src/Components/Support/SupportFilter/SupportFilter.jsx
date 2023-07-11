@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useParams } from 'react-router-dom'
-import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '../..'
+import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '@components'
 import { actions, supportOperations } from '@redux'
 import s from './SupportFilter.module.scss'
 

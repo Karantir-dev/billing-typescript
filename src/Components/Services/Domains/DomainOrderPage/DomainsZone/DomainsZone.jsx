@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import s from './DomainsZone.module.scss'
 
 export default function ServicesPage(props) {
-  const { t } = useTranslation(['domains', 'other'])
+  const { t } = useTranslation(['domains', 'other', 'vds'])
 
-  const { domains, selectedDomains, setSelectedDomains, transfer } = props
-
+  const { domains, selectedDomains, setSelectedDomains, transfer, autoprolongPrices } =
+    props
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
@@ -101,7 +101,7 @@ export default function ServicesPage(props) {
         {domains?.map(d => {
           const { id, tld, price } = d
           const selected = itemIsSelected(id?.$)
-
+          const renew = autoprolongPrices.find(el => el.zone === tld.$)?.main_price_renew
           return (
             <div
               tabIndex={0}
@@ -134,6 +134,17 @@ export default function ServicesPage(props) {
                     <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
                   )}
                 </div>
+                {renew && (
+                  <div className={s.prolongBlock}>
+                    <span>{t('prolong', { ns: 'vds' })}:</span>
+                    <span>
+                      {renew} EUR/
+                      <span className={s.prolongPeriod}>
+                        {t('year', { ns: 'other' })}
+                      </span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           )

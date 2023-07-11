@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import { BASE_URL } from '@config/config'
-import { Select } from '../..'
+import { Select } from '@components'
 
 const geoImgURL = `${BASE_URL}/manimg/common/flag/`
 

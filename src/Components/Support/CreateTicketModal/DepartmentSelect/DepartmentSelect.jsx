@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Check, Info } from '@images'
+import { Icon } from '@components'
 
 import s from './DepartmentSelect.module.scss'
 
@@ -80,11 +80,11 @@ export default function Component(props) {
       className={cn(s.select, { [s.selected]: selected })}
     >
       <div className={s.checkIcon}>
-        <Check />
+        <Icon name="Check" />
       </div>
       <div className={s.title}>{t(title)}</div>
       <button type="button" className={s.infoBtn}>
-        <Info />
+        <Icon name="Info" />
         <div ref={dropdownDescription} className={s.descriptionBlock}>
           {parseDescription(description)}
         </div>

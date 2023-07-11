@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import * as routes from '@src/routes'
-import { Cross, Check, Info, Attention } from '@images'
 import {
   Select,
   InputField,
@@ -23,6 +22,7 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   ScrollToFieldError,
+  Icon
 } from '@components'
 import {
   cartOperations,
@@ -52,7 +52,7 @@ export default function Component() {
     'dedicated_servers',
     'crumbs',
     'domains',
-    'user_settings'
+    'user_settings',
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
@@ -877,7 +877,7 @@ export default function Component() {
           <div className={s.modalBlock}>
             <div className={cn(s.modalHeader, s.padding)}>
               <span className={s.headerText}>{t('Payment')}</span>
-              <Cross onClick={() => setIsClosing(true)} className={s.crossIcon} />
+              <Icon name="Cross" onClick={() => setIsClosing(true)} className={s.crossIcon} />
             </div>
             <div className={s.scroll}>
               <div className={s.itemsBlock}>{renderItems()}</div>
@@ -981,6 +981,17 @@ export default function Component() {
                     ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
                     : parsedText?.minAmount?.length > 150
 
+                  const onProfileTypeChange = item => {
+                    setFieldValue('profiletype', item)
+                    setProfileType(item)
+                    let data = {
+                      country: payersSelectLists?.country[0]?.$key,
+                      profiletype: item,
+                    }
+
+                    dispatch(payersOperations.getPayerModalInfo(data))
+                  }
+
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
@@ -1044,7 +1055,7 @@ export default function Component() {
                                         </>
                                       )}
                                     </span>
-                                    <Check className={s.iconCheck} />
+                                    <Icon name="Check" className={s.iconCheck} />
                                   </button>
                                 )
                               })}
@@ -1068,10 +1079,7 @@ export default function Component() {
                               placeholder={t('Not chosen', { ns: 'other' })}
                               label={`${t('Payer status', { ns: 'payers' })}:`}
                               value={values.profiletype}
-                              getElement={item => {
-                                setFieldValue('profiletype', item)
-                                setProfileType(item)
-                              }}
+                              getElement={onProfileTypeChange}
                               isShadow
                               className={s.select}
                               dropdownClass={s.selectDropdownClass}
@@ -1178,8 +1186,9 @@ export default function Component() {
                                 }}
                               />
 
-                              <button type="button" className={s.infoBtn}>
-                                <Info />
+                              <button type="button" className={cn(s.infoBtn, s.infoBtn_address)}>
+                                <Icon name="Info" />
+
                                 <div
                                   ref={dropdownDescription}
                                   className={s.descriptionBlock}
@@ -1231,7 +1240,9 @@ export default function Component() {
                           onClick={() => setShowMore(!showMore)}
                           className={cn(s.readMore, s.padding)}
                         >
-                          {t(showMore ? 'Collapse' : 'Read more', {ns: 'user_settings'})}
+                          {t(showMore ? 'Collapse' : 'Read more', {
+                            ns: 'user_settings',
+                          })}
                         </button>
                       )}
 
@@ -1275,17 +1286,13 @@ export default function Component() {
                       )}
                       <div className={s.padding}>
                         <div className={s.totalSum}>
-                          <b>{t('Total')}:</b>
-                          <span>
-                            {t('Excluding VAT')}: <b>{cartData?.total_sum} EUR</b>
-                          </span>
                           <span>
                             {cartData?.full_discount &&
                             Number(cartData?.full_discount) !== 0 ? (
                               <>
-                                {t('Saving')}: {cartData?.full_discount} EUR{' '}
+                                {t('Saving')}: <b>{cartData?.full_discount} EUR</b>
                                 <button type="button" className={s.infoBtn}>
-                                  <Info />
+                                  <Icon name="Info" />
                                   <div ref={dropdownSale} className={s.descriptionBlock}>
                                     {renderActiveDiscounts()}
                                   </div>
@@ -1293,6 +1300,17 @@ export default function Component() {
                               </>
                             ) : null}
                           </span>
+                          {Number(cartData?.tax) > 0 ? (
+                            <div className={s.priceBlock}>
+                              {t('Tax')}:<b>{cartData?.tax} EUR</b>
+                            </div>
+                          ) : null}
+                          <div className={s.priceBlock}>
+                            {t('Total')}
+                            {Number(cartData?.tax) > 0 &&
+                              ' (' + t('Tax included').toLocaleLowerCase() + ')'}
+                            : <b>{cartData?.total_sum} EUR</b>
+                          </div>
                         </div>
 
                         {!isPhoneVerification && (
@@ -1332,18 +1350,14 @@ export default function Component() {
 
                         {isPhoneVerification && (
                           <div className={s.phoneVerificationBlock}>
-                            <Attention />
+                            <Icon name="Attention" />
                             <span>
                               {t('verification_required_purchase', { ns: 'billing' })}
                             </span>
                           </div>
                         )}
                       </div>
-                      {Number(cartData?.tax) > 0 ? (
-                        <div className={cn(s.totalSum, s.padding)}>
-                          {t('Tax included')}: <b>{cartData?.tax} EUR</b>
-                        </div>
-                      ) : null}
+
                       <div className={s.btnBlock}>
                         {isPhoneVerification ? (
                           <Button

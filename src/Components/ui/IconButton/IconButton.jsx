@@ -1,31 +1,7 @@
 import s from './IconButton.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import {
-  Calendar,
-  CsvDoc,
-  Filter,
-  SendArchive,
-  Pdf,
-  Edit,
-  Clock,
-  Refund,
-  Transfer,
-  Whois,
-  DomainsListName,
-  Print,
-  Delete,
-  PassChange,
-  Reload,
-  IP,
-  Info,
-  ExitSign,
-  Attention,
-  Exchange,
-  ChangeTariff,
-  DownloadWithFolder,
-  Euro,
-} from '@images'
+import { Icon } from '@components'
 
 export default function Component(props) {
   const { type, onClick, disabled, icon, className, dataTestid } = props
@@ -33,51 +9,51 @@ export default function Component(props) {
   const renderIcon = name => {
     switch (name) {
       case 'calendar':
-        return <Calendar />
+        return <Icon name="Calendar" />
       case 'csv':
-        return <CsvDoc />
+        return <Icon name="CsvDoc" />
       case 'pdf':
-        return <Pdf />
+        return <Icon name="Pdf" />
       case 'filter':
-        return <Filter />
+        return <Icon name="Filter" />
       case 'archive':
-        return <SendArchive />
+        return <Icon name="SendArchive" />
       case 'edit':
-        return <Edit />
+        return <Icon name="Edit" />
       case 'clock':
-        return <Clock />
+        return <Icon name="Clock" />
       case 'refund':
-        return <Refund />
+        return <Icon name="Refund" />
       case 'transfer':
-        return <Transfer />
+        return <Icon name="Transfer" />
       case 'whois':
-        return <Whois />
+        return <Icon name="Whois" />
       case 'server-cloud':
-        return <DomainsListName />
+        return <Icon name="DomainsListName" />
       case 'print':
-        return <Print />
+        return <Icon name="Print" />
       case 'delete':
-        return <Delete />
+        return <Icon name="Delete" />
       case 'passChange':
-        return <PassChange />
+        return <Icon name="PassChange" />
       case 'reload':
-        return <Reload />
+        return <Icon name="Reload" />
       case 'ip':
-        return <IP />
+        return <Icon name="IP" />
       case 'info':
-        return <Info />
+        return <Icon name="Info" />
       case 'exitSign':
-        return <ExitSign />
+        return <Icon name="ExitSign" />
       case 'attention':
-        return <Attention />
+        return <Icon name="Attention" />
       case 'exchange':
-        return <Exchange />
+        return <Icon name="Exchange" />
       case 'change-tariff':
-        return <ChangeTariff />
+        return <Icon name="ChangeTariff" />
       case 'download-folder':
-        return <DownloadWithFolder />
+        return <Icon name="DownloadWithFolder" />
       case 'euro':
-        return <Euro />
+        return <Icon name="Euro" />
       default:
         return null
     }

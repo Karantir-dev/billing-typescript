@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Delete } from '@images'
+import { Icon } from '@components'
 import s from './DomainItem.module.scss'
 import { translatePeriodToMonths } from '@utils'
 
@@ -47,7 +47,7 @@ export default function Component(props) {
         </div>
       </div>
       {deleteItemHandler && (
-        <Delete onClick={deleteItemHandler} width={15} className={s.deleteIcon} />
+        <Icon name="Delete" onClick={deleteItemHandler} width={15} className={s.deleteIcon} />
       )}
     </div>
   )
