@@ -163,8 +163,8 @@ export default function Component(props) {
                     className={s.passInput}
                     background
                     type="text"
-                    label={`${t('A temporary password')}:`}
-                    placeholder={t('Enter password')}
+                    label={`${t('Authentication code')}:`}
+                    placeholder={t('Enter code')}
                     isShadow
                     value={values?.qrcode}
                     onChange={e => onInputItemsChange(e?.target?.value)}
