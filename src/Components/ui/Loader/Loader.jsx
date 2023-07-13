@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
-import cn from 'classnames'
-
 import { selectors, userSelectors } from '@redux'
-import { Icon } from '@components'
+import cn from 'classnames'
+import { LoaderDots, Icon } from '@components'
+
 import s from './Loader.module.scss'
 
 export default function Loader({ logo = false, shown }) {
@@ -21,11 +21,7 @@ export default function Loader({ logo = false, shown }) {
     >
       {(logo || userInfoLoading) && <Icon name="Logo" svgwidth="115" svgheight="53" />}
 
-      <div className={s.loader}>
-        <div className={`${s.loader_circle} ${s.first}`}></div>
-        <div className={`${s.loader_circle} ${s.second}`}></div>
-        <div className={s.loader_circle}></div>
-      </div>
+      <LoaderDots />
     </div>
   )
 }

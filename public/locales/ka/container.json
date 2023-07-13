@@ -62,7 +62,7 @@
     "has been prolonged": "გაგრძელებულია",
     "is ready for use": "მზად არის გამოსაყენებლად"
   },
-  "clear_all": "Ყველაფრის გასუფთავება",
+  "clear_all": "{{num}} შეტყობინებების გასუფთავება",
   "Service is ready for use": "სერვისი '{{value}}' მზად არის გამოსაყენებლად",
   "Service has been deleted": "სერვისი '{{value}}' წაიშალა",
   "Service has been suspended": "სერვისი '{{value}}' შეჩერებულია",
