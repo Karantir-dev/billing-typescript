@@ -42,6 +42,7 @@
     height: 12px;
     background-color: transparent;
     border: 1px solid var(--transparent-color);
+    transition: .2s transform,.2s left;
     &.swiper-pagination-bullet-active {
       border: none;
       background-image: radial-gradient(
