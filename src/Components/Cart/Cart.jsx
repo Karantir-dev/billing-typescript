@@ -22,14 +22,17 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   ScrollToFieldError,
-  Icon
+  Icon,
+  CustomPhoneInput,
 } from '@components'
 import {
   cartOperations,
   payersOperations,
+  settingsOperations,
   payersSelectors,
   selectors,
   authSelectors,
+  settingsSelectors,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -89,6 +92,11 @@ export default function Component() {
   const [euVat, setEUVat] = useState('')
   const [promocode, setPromocode] = useState('')
   const [isPhoneVerification, setIsPhoneVerification] = useState(false)
+  const [isYouKassa, setIsYouKassa] = useState(false)
+  const [countryCode, setCountryCode] = useState(null)
+  const [phone, setPhone] = useState('')
+
+  const userEdit = useSelector(settingsSelectors.getUserEdit)
 
   const paymentListhandler = data => {
     setPaymentsMethodList(data)
@@ -98,7 +106,16 @@ export default function Component() {
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
     dispatch(cartOperations.getSalesList(setSalesList))
+    dispatch(settingsOperations.getUserEdit())
   }, [])
+
+  useEffect(() => {
+    if (selectedPayMethod?.name.$ === 'ЮKassa') {
+      setIsYouKassa(true)
+    } else {
+      setIsYouKassa(false)
+    }
+  }, [selectedPayMethod])
 
   useEffect(() => {
     if (cartData && !isPhoneVerification) {
@@ -166,6 +183,17 @@ export default function Component() {
     }
   }, [selectedPayerFields])
 
+  useEffect(() => {
+    if (userEdit) {
+      const findCountry = userEdit?.phone_countries?.find(
+        e => e?.$key === userEdit?.phone_country,
+      )
+      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
+      setCountryCode(code)
+      setPhone(userEdit.phone.phone)
+    }
+  }, [userEdit])
+
   //isPersonalBalance
 
   const validationSchema = Yup.object().shape({
@@ -197,6 +225,9 @@ export default function Component() {
           })
         : null,
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
+    phone:
+      isYouKassa &&
+      Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
   })
 
   const setPromocodeToCart = promocode => {
@@ -260,6 +291,10 @@ export default function Component() {
 
     if (values?.selectedPayMethod?.action?.button?.$name === 'fromsubaccount') {
       data['clicked_button'] = 'fromsubaccount'
+    }
+
+    if (isYouKassa) {
+      data['phone'] = values?.phone
     }
 
     const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
@@ -877,7 +912,11 @@ export default function Component() {
           <div className={s.modalBlock}>
             <div className={cn(s.modalHeader, s.padding)}>
               <span className={s.headerText}>{t('Payment')}</span>
-              <Icon name="Cross" onClick={() => setIsClosing(true)} className={s.crossIcon} />
+              <Icon
+                name="Cross"
+                onClick={() => setIsClosing(true)}
+                className={s.crossIcon}
+              />
             </div>
             <div className={s.scroll}>
               <div className={s.itemsBlock}>{renderItems()}</div>
@@ -911,10 +950,11 @@ export default function Component() {
                     selectedPayMethod?.paymethod_type?.$ === '0'
                       ? 'on'
                       : 'off',
+                  phone: phone || '',
                 }}
                 onSubmit={payBasketHandler}
               >
-                {({ values, setFieldValue, touched, errors }) => {
+                {({ values, setFieldValue, touched, errors, handleBlur }) => {
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
@@ -1101,6 +1141,21 @@ export default function Component() {
                                 onChange={e => setCompany(e.target.value)}
                               />
                             ) : null}
+                            {isYouKassa && (
+                              <CustomPhoneInput
+                                inputWrapperClass={s.inputHeight}
+                                label={`${t('Phone', { ns: 'other' })}:`}
+                                name="phone"
+                                setFieldValue={(name, value) => {
+                                  setFieldValue(name, value)
+                                  setPhone(value)
+                                }}
+                                value={values.phone}
+                                handleBlur={handleBlur}
+                                isRequired
+                                setCountryCode={setCountryCode}
+                              />
+                            )}
                             {values?.profiletype === '1' && payersList?.length !== 0 && (
                               <Select
                                 placeholder={t('Not chosen', { ns: 'other' })}
@@ -1186,7 +1241,10 @@ export default function Component() {
                                 }}
                               />
 
-                              <button type="button" className={cn(s.infoBtn, s.infoBtn_address)}>
+                              <button
+                                type="button"
+                                className={cn(s.infoBtn, s.infoBtn_address)}
+                              >
                                 <Icon name="Info" />
 
                                 <div
