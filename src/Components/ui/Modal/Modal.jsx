@@ -8,7 +8,7 @@ import { Footer } from './Footer'
 import cn from 'classnames'
 import { useEffect, useRef } from 'react'
 
-const ModalWrapper = ({
+const Modal = ({
   children,
   closeModal,
   isOpen,
@@ -27,7 +27,7 @@ const ModalWrapper = ({
 
     firstEl?.focus()
 
-    const keyDownHabdler = e => {
+    const keyDownHandler = e => {
       const lastEl = Array.from(elements).findLast(el => !el.disabled)
 
       if (e.key === 'Tab') {
@@ -47,9 +47,9 @@ const ModalWrapper = ({
       if (e.key === 'Escape') closeModal()
     }
 
-    window.addEventListener('keydown', keyDownHabdler)
+    window.addEventListener('keydown', keyDownHandler)
 
-    return () => window.removeEventListener('keydown', keyDownHabdler)
+    return () => window.removeEventListener('keydown', keyDownHandler)
   }, [isOpen])
 
   return (
@@ -75,8 +75,6 @@ const ModalWrapper = ({
     </>
   )
 }
-
-const Modal = props => <ModalWrapper {...props} />
 
 Modal.Header = Header
 Modal.Body = Body
