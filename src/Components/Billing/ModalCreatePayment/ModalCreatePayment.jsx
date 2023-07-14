@@ -27,6 +27,7 @@ import {
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { QIWI_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -90,8 +91,9 @@ export default function Component(props) {
         e => e?.$key === userEdit?.phone_country,
       )
       const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      setCountryCode(code)
-      setPhone(userEdit.phone.phone)
+      const countryCode = QIWI_PHONE_COUNTRIES.find(el => el === code)
+
+      setCountryCode(countryCode || 'lt')
     }
   }, [userEdit])
 
@@ -492,6 +494,8 @@ export default function Component(props) {
                               handleBlur={handleBlur}
                               isRequired
                               setCountryCode={setCountryCode}
+                              onlyCountries={QIWI_PHONE_COUNTRIES}
+                              country={countryCode}
                             />
                           )}
                           {values?.profiletype === '1' && payersList?.length !== 0 && (

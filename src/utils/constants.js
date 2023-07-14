@@ -35,3 +35,27 @@ export const SOFTWARE_ICONS_LIST = [
   'Windows',
   'Rocky',
 ]
+
+// phone countries for yookassa payment method (QIWI)
+export const QIWI_PHONE_COUNTRIES = [
+  'az',
+  'in',
+  'ru',
+  'kz',
+  'gb',
+  'ge',
+  'lt',
+  'tj',
+  'th',
+  'uz',
+  'pa',
+  'am',
+  'lv',
+  'tr',
+  'md',
+  'il',
+  'vn',
+  'ee',
+  'kr',
+  'kg',
+]

@@ -26,6 +26,7 @@ export default function CustomPhoneInput(props) {
     isRequired,
     buttonClass,
     setCountryCode,
+    country = 'us',
     ...restProps
   } = props
 
@@ -48,7 +49,7 @@ export default function CustomPhoneInput(props) {
         {isRequired ? requiredLabel(label) : label}
       </p>
       <PhoneInput
-        country={'us'}
+        country={country}
         localization={lang}
         onChange={onValueChange}
         onBlur={handleBlur}

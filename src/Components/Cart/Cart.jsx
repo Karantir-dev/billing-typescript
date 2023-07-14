@@ -39,6 +39,7 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn } from '@utils'
+import { QIWI_PHONE_COUNTRIES } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -190,8 +191,9 @@ export default function Component() {
         e => e?.$key === userEdit?.phone_country,
       )
       const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      setCountryCode(code)
-      setPhone(userEdit.phone.phone)
+      const countryCode = QIWI_PHONE_COUNTRIES.find(el => el === code)
+
+      setCountryCode(countryCode || 'lt')
     }
   }, [userEdit])
 
@@ -1162,6 +1164,8 @@ export default function Component() {
                                 handleBlur={handleBlur}
                                 isRequired
                                 setCountryCode={setCountryCode}
+                                onlyCountries={QIWI_PHONE_COUNTRIES}
+                                country={countryCode}
                               />
                             )}
                             {values?.profiletype === '1' && payersList?.length !== 0 && (
