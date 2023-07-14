@@ -4,7 +4,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   DedicFiltersModal,
   DedicList,
@@ -32,7 +31,7 @@ export default function DedicatedServersPage() {
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
-  const { t } = useTranslation(['vds', 'container', 'other'])
+  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
   const navigate = useNavigate()
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)
@@ -379,53 +378,57 @@ export default function DedicatedServersPage() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <EditServerModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <EditServerModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           names={getServerName(elidForProlongModal)}
           pageName="dedics"
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal(0)}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
+      {!!elidForInstructionModal && (
         <InstructionModal
-          elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+          title={t('Activation of Dedicated server', { ns: 'dedicated_servers' })}
+          closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dedicOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForRebootModal([])}
-        isOpened={elidForRebootModal.length > 0}
-      >
+      {elidForRebootModal.length > 0 && (
         <VdsRebootModal
           id={elidForRebootModal}
           names={getServerName(elidForRebootModal)}
-          closeFn={() => setElidForRebootModal([])}
+          closeModal={() => setElidForRebootModal([])}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

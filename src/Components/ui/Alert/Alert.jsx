@@ -1,8 +1,5 @@
-import cn from 'classnames'
-import { useRef } from 'react'
 import PropTypes from 'prop-types'
-
-import { useOutsideAlerter } from '@utils'
+import { Modal } from '@components'
 
 import s from './Alert.module.scss'
 
@@ -14,29 +11,21 @@ export default function Alert({
   controlAlert,
   dataTestid,
 }) {
-  const getAlerEl = useRef()
-
-  useOutsideAlerter(getAlerEl, isOpened, controlAlert)
-
   return (
-    <>
-      <div className={cn({ [s.alert_wrapper]: true, [s.opened]: isOpened })}>
-        <div className={s.alert} ref={getAlerEl} data-testid={dataTestid}>
-          <div className={s.title_wrapper}>
-            <h5 className={s.modal_title}>{title}</h5>
-            <div className={s.close_btn_wrapper}>
-              <button className={s.close_btn} onClick={controlAlert}></button>
-            </div>
-          </div>
-
-          <div className={s.modal_content}>
-            <p className={s.alert_text}>{text}</p>
-          </div>
-
-          <div className={s.control_btns_container}>{mainBtn}</div>
-        </div>
-      </div>
-    </>
+    <Modal
+      isOpen={isOpened}
+      closeModal={controlAlert}
+      data-testid={dataTestid}
+      className={s.modal}
+    >
+      <Modal.Header>
+        <h5 className={s.modal_title}>{title}</h5>
+      </Modal.Header>
+      <Modal.Body>
+        <p className={s.alert_text}>{text}</p>
+      </Modal.Body>
+      <Modal.Footer column>{mainBtn}</Modal.Footer>
+    </Modal>
   )
 }
 

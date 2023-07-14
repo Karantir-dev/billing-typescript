@@ -334,7 +334,7 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      setInstruction(data.doc.body)
+      setInstruction(data.doc.body.$)
 
       dispatch(actions.hideLoader())
     })

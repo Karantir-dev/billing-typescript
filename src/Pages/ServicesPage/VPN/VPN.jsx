@@ -8,10 +8,9 @@ import {
   SiteCareProlongModal,
   VpnEditModal,
   SiteCareDeleteModal,
-  Backdrop,
   CheckBox,
   SiteCareBottomBar,
-  SharedHostingInstructionModal,
+  InstructionModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +23,7 @@ import * as route from '@src/routes'
 export default function Component() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vpn')
 
-  const { t, i18n } = useTranslation(['container', 'other', 'access_log'])
+  const { t, i18n } = useTranslation(['container', 'other', 'access_log', 'domains'])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -53,8 +52,7 @@ export default function Component() {
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteIds, setDeleteIds] = useState(null)
 
-  const [instructionModal, setInstructionModal] = useState(false)
-  const [instructionData, setInstructionData] = useState(null)
+  const [instructionModal, setInstructionModal] = useState(0)
 
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -185,23 +183,21 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
       p_num,
     }
-
-    // setSelctedItem([])
     dispatch(vpnOperations.deleteSiteCare(data, setDeleteModal))
   }
 
-  const instructionVhostHandler = id => {
+  const instructionVhostHandler = id => setInstructionModal(id)
+
+  const dispatchInstruction = setInstruction => {
     const data = {
-      elid: id,
-      elname: selctedItem?.name?.$,
+      elid: instructionModal,
       lang: i18n?.language,
     }
-    dispatch(vpnOperations.getInsruction(data, setInstructionModal, setInstructionData))
+    dispatch(vpnOperations.getInsruction(data, setInstruction))
   }
 
   const closeInstructionModalHandler = () => {
-    setInstructionData(null)
-    setInstructionModal(false)
+    setInstructionModal(0)
   }
 
   const setSelectedAll = val => {
@@ -319,75 +315,60 @@ export default function Component() {
         </div>
       )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(historyModal && historyList?.length > 0)}
-        onClick={closeHistoryModalHandler}
-      >
+      {historyModal && historyList?.length > 0 && (
         <SiteCareHistoryModal
           historyList={historyList}
           name={parseSelectedItemNameArr()}
-          closeHistoryModalHandler={closeHistoryModalHandler}
+          closeModal={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
           historyItemCount={historyItemCount}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(prolongModal && prolongData)}
-        onClick={closeProlongModalHandler}
-      >
+      {prolongModal && prolongData && (
         <SiteCareProlongModal
           prolongData={prolongData}
           name={parseSelectedItemNameArr()}
-          closeProlongModalHandler={closeProlongModalHandler}
+          closeModal={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditSiteCareHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(editModal && editData)}
-        onClick={closeEditModalHandler}
-      >
+      {editModal && editData && (
         <VpnEditModal
           editData={editData}
           name={parseSelectedItemNameArr()}
-          closeEditModalHandler={closeEditModalHandler}
+          closeModal={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
           editSiteCareHandler={editSiteCareHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(deleteModal)}
-        onClick={() => setDeleteModal(false)}
-      >
+      {deleteModal && (
         <SiteCareDeleteModal
-          closeDeleteModalHandler={() => {
+          closeModal={() => {
             setDeleteModal(false)
             setDeleteIds(null)
           }}
           deleteIds={deleteIds}
           deleteSiteCareHandler={deleteSiteCareHandler}
           name={parseSelectedItemNameArr()}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(instructionModal && instructionData)}
-        onClick={closeInstructionModalHandler}
-      >
-        <SharedHostingInstructionModal
-          instructionData={instructionData}
-          // name={selctedItem?.name?.$}
-          closeInstructionModalHandler={closeInstructionModalHandler}
+      {!!instructionModal && (
+        <InstructionModal
+          title={t('Instruction', { ns: 'domains' })}
+          dispatchInstruction={dispatchInstruction}
+          closeModal={closeInstructionModalHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
     </div>
   )
 }

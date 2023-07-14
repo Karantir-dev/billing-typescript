@@ -152,7 +152,7 @@ const getHistoryVhost =
   }
 
 const getInsructionVhost =
-  (body = {}, setInstructionModal, setInstructionData) =>
+  (body = {}, setInstructionData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -182,7 +182,6 @@ const getInsructionVhost =
           )
           return dispatch(actions.hideLoader())
         }
-        setInstructionModal && setInstructionModal(true)
         setInstructionData && setInstructionData(response?.data)
 
         dispatch(actions.hideLoader())

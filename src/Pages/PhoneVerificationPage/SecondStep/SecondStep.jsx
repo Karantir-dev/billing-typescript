@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Button, CustomPhoneInput, InputField } from '@components'
 
-import s from './SecondStep.module.scss'
+import s from '../PhoneVerificationPage.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['user_settings', 'other'])
@@ -46,13 +46,7 @@ export default function Component(props) {
         touched={!!touched.email}
       />
 
-      <span className={s.typeDescription}>
-        {t('not_receive_confirmation_code_1')}{' '}
-        <button type="button" onClick={goToFirstStepHanfler}>
-          {t('Another way')}
-        </button>{' '}
-        {t('not_receive_confirmation_code_2')}
-      </span>
+      <span className={s.typeDescription}>{t('not_receive_confirmation_code')}</span>
 
       <div className={s.btnBlock}>
         <Button
@@ -64,6 +58,10 @@ export default function Component(props) {
         />
         <button onClick={backHandler} type="button" className={s.cancel}>
           {t('Cancel', { ns: 'other' })}
+        </button>
+
+        <button type="button" onClick={goToFirstStepHanfler} className={s.cancel}>
+          {t('Back', { ns: 'other' })}
         </button>
       </div>
     </>

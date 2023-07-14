@@ -47,12 +47,15 @@
 }
 
 .value {
-  padding: 0 10px;
   font-size: 15px;
   word-break: break-all;
   overflow: hidden;
   &.active {
     color: var(--accent-color-light);
+  }
+
+  &_edit {
+    margin: 0 -10px;
   }
 }
 
@@ -169,8 +172,4 @@
 .check_box {
   box-shadow: var(--checkbox_shadow);
   background-color: var(--forms_bgc_4);
-}
-
-.edit_cell {
-  margin: 0 -10px;
 }

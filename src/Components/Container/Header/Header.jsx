@@ -11,7 +11,6 @@ import {
   ThemeBtn,
   LangBtn,
   ModalCreatePayment,
-  Portal,
   Icon,
   CertificateModal,
 } from '@components'
@@ -345,12 +344,10 @@ export default function Header() {
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}
       />
-      <Portal>
-        {createPaymentModal && (
-          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-        )}
-        {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
-      </Portal>
+      {createPaymentModal && (
+        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+      )}
+      {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Backdrop, Button, Icon } from '@components'
+import { Button, Icon, Modal } from '@components'
 import { userSelectors, userOperations } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -29,30 +29,29 @@ export default function EmailTrigger() {
           {t('email_trigger')}
         </button>
 
-        <Backdrop isOpened={isModalOpened} onClick={() => setIsModalOpened(false)}>
-          <div className={s.modal}>
-            <div className={s.modal_header}>
-              <p className={s.modal_title}>{t('email_verification')}</p>
-              <button
-                className={s.icon_cross}
-                onClick={() => setIsModalOpened(false)}
-                type="button"
-              >
-                <Icon name="Cross" />
-              </button>
-            </div>
+        <Modal
+          isOpen={isModalOpened}
+          closeModal={() => setIsModalOpened(false)}
+          simple
+          className={s.modal}
+        >
+          <Modal.Header>
+            <p className={s.modal_title}>{t('email_verification')}</p>
+          </Modal.Header>
+          <Modal.Body className={s.modal__body}>
             <p className={s.modal_text}>
               {t('email_verification_text', { email: $email })}
             </p>
-
+          </Modal.Body>
+          <Modal.Footer>
             <Button
               className={s.btn}
               isShadow={true}
               label={t('Send')}
               onClick={sendMail}
             />
-          </div>
-        </Backdrop>
+          </Modal.Footer>
+        </Modal>
       </>
     )
   )

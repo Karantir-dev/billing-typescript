@@ -4,11 +4,11 @@ import { useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 
 import s from './DNSEditModal.module.scss'
-import { Button, Icon, InputField, Select } from '@components'
+import { Button, Modal, InputField, Select } from '@components'
 import { dnsOperations } from '@redux'
 import { translatePeriod } from '@utils'
 
-export default function FTPEditModal({ elid, closeFn }) {
+export default function FTPEditModal({ elid, closeModal, isOpen }) {
   const { t } = useTranslation([
     'dedicated_servers',
     'vds',
@@ -23,7 +23,7 @@ export default function FTPEditModal({ elid, closeFn }) {
   const [additionalText, setAdditionalText] = useState('')
 
   const handleEditionModal = () => {
-    closeFn()
+    closeModal()
   }
 
   useEffect(() => {
@@ -51,60 +51,31 @@ export default function FTPEditModal({ elid, closeFn }) {
   }
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Icon
-          name="Cross"
-          className={s.icon_cross}
-          onClick={e => {
-            e.preventDefault()
-            closeFn()
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            elid,
+            autoprolong: initialState?.autoprolong?.$ || null,
+            payment_method: initialState?.payment_method?.val[0]?.$ || '',
+            ip: initialState?.ip?.$ || '',
+            password: initialState?.password?.$ || '',
+            username: initialState?.username?.$ || '',
+            addon_961: initialState?.addon_961_current_value?.$ || '',
           }}
-          width={17}
-          height={17}
-        />
-      </div>
-
-      <Formik
-        enableReinitialize
-        initialValues={{
-          elid,
-          autoprolong: initialState?.autoprolong?.$ || null,
-          payment_method: initialState?.payment_method?.val[0]?.$ || '',
-          ip: initialState?.ip?.$ || '',
-          password: initialState?.password?.$ || '',
-          username: initialState?.username?.$ || '',
-          addon_961: initialState?.addon_961_current_value?.$ || '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form id="dns-edit">
                 <div className={s.parameters_block}>
-                  {/* <div className={s.header_block}>
-                  <div className={s.title_wrapper}>
-                    <h2 className={s.page_title}>
-                      {t('Editing a service', { ns: 'other' })}
-                    </h2>
-                    <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
-                  </div>
-                  <Cross
-                    className={s.icon_cross}
-                    onClick={e => {
-                      e.preventDefault()
-                      closeFn()
-                    }}
-                    width={17}
-                    height={17}
-                  />
-                </div> */}
-
                   <div className={s.status_wrapper}>
                     <div className={s.creation_date_wrapper}>
                       <span className={s.label}>{t('created', { ns: 'vds' })}:</span>
@@ -223,48 +194,43 @@ export default function FTPEditModal({ elid, closeFn }) {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className={s.btns_wrapper}>
-                {currentLimit === initialState?.addon_961_current_value?.$ ||
-                currentLimit === null ? (
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('Save', { ns: 'other' })}
-                    type="submit"
-                  />
-                ) : (
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('Proceed', { ns: 'other' })}
-                    type="submit"
-                  />
-                )}
-                {/* <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                /> */}
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        {currentLimit === initialState?.addon_961_current_value?.$ ||
+        currentLimit === null ? (
+          <Button
+            className={s.buy_btn}
+            isShadow
+            size="medium"
+            label={t('Save', { ns: 'other' })}
+            type="submit"
+            form="dns-edit"
+          />
+        ) : (
+          <Button
+            className={s.buy_btn}
+            isShadow
+            size="medium"
+            label={t('Proceed', { ns: 'other' })}
+            type="submit"
+            form="dns-edit"
+          />
+        )}
 
-                <button
-                  onClick={e => {
-                    e.preventDefault()
-                    closeFn()
-                  }}
-                  className={s.cancel_btn}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeModal()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

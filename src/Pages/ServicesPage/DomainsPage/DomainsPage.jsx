@@ -8,7 +8,6 @@ import {
   DomainsWhoisModal,
   DomainsNSModal,
   DomainsEditModal,
-  Backdrop,
   DomainsProlongModal,
   DomainBottomBar,
   CheckBox,
@@ -332,70 +331,55 @@ export default function Component() {
         </div>
       )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(prolongModal && prolongData)}
-        onClick={closeProlongModalHandler}
-      >
+      {!!prolongModal && !!prolongData && (
         <DomainsProlongModal
           prolongData={prolongData}
           names={parseSelectedItemNameArr()}
-          closeProlongModalHandler={closeProlongModalHandler}
+          closeModal={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditDomainHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(historyModal && historyList?.length > 0)}
-        onClick={closeHistoryModalHandler}
-      >
+      {historyModal && historyList?.length > 0 && (
         <DomainsHistoryModal
           historyList={historyList}
-          closeHistoryModalHandler={closeHistoryModalHandler}
+          closeModal={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
           historyItemCount={historyItemCount}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(whoisModal && whoisData)}
-        onClick={closeWhoisModalHandler}
-      >
+      {!!whoisModal && !!whoisData && (
         <DomainsWhoisModal
           whoisData={whoisData}
-          closeWhoisModalHandler={closeWhoisModalHandler}
+          closeModal={closeWhoisModalHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(NSModal && NSData)}
-        onClick={closeNSModalHandler}
-      >
+      {!!NSModal && !!NSData && (
         <DomainsNSModal
           names={parseSelectedItemNameArr()}
-          closeNSModalHandler={closeNSModalHandler}
+          closeModal={closeNSModalHandler}
           NSData={NSData}
           NSEditDomainHandler={NSEditDomainHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(editModal && editData)}
-        onClick={closeEditModalHandler}
-      >
+      {!!editModal && !!editData && (
         <DomainsEditModal
           names={parseSelectedItemNameArr()}
-          closeEditModalHandler={closeEditModalHandler}
           editSaveDomainHandler={editSaveDomainHandler}
           editData={editData}
           editDomainHandler={editDomainHandler}
+          closeModal={closeEditModalHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

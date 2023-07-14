@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Backdrop, BreadCrumbs, IconButton, IPeditModal, Icon } from '@components'
+import { BreadCrumbs, IconButton, IPeditModal, Icon } from '@components'
 import { vdsOperations } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
@@ -125,14 +125,14 @@ export default function VDSip() {
         </>
       )}
 
-      <Backdrop isOpened={!!idForEditModal} onClick={() => setIdForEditModal('')}>
+      {!!idForEditModal && (
         <IPeditModal
           serverID={ServerID}
           closeFn={() => setIdForEditModal('')}
           id={idForEditModal}
           setElements={setElements}
         />
-      </Backdrop>
+      )}
     </>
   )
 }
