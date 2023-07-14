@@ -174,7 +174,7 @@ export default function ManageUserForm({
                       : requiredLabel(`${t('trusted_users.form.password')}:`)
                   }
                   placeholder={t('trusted_users.form_placeholders.password')}
-                  autoComplete="off"
+                  autoComplete="new-password"
                   name={'password' + userId}
                   error={!!errors['password' + userId]}
                   touched={!!touched['password' + userId]}
