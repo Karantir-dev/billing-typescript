@@ -1,0 +1,24 @@
+.modal {
+  background: var(--main-bgc);
+  max-width: 990px;
+  max-height: 80vh;
+  &__body {
+    margin: 25px 0 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-shadow: var(--forms_shadow);
+    &::-webkit-scrollbar-button:start,
+    &::-webkit-scrollbar-button:end {
+      height: 0;
+    }
+  }
+}
+
+.headerText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 113%;
+  max-width: 90%;
+  color: var(--main-text);
+}

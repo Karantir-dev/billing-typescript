@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import s from './CertificateModal.module.scss'
-import { Cross, Info, Attention } from '@images'
-import { Button, InputField } from '@components'
+import { Info, Attention } from '@images'
+import { Button, InputField, Modal } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useState } from 'react'
@@ -20,12 +20,11 @@ export default function CertificateModal({ closeModal }) {
   })
 
   return (
-    <div className={s.modalBg}>
-      <div className={s.modalBlock}>
-        <div className={s.modalHeader}>
-          <span className={s.headerText}>{t('profile.use_certificate')}</span>
-          <Cross className={s.crossIcon} onClick={closeModal} />
-        </div>
+    <Modal isOpen closeModal={closeModal}>
+      <Modal.Header>
+        <span className={s.headerText}>{t('profile.use_certificate')}</span>
+      </Modal.Header>
+      <Modal.Body>
         <Formik
           enableReinitialize
           validateOnMount={false}
@@ -38,62 +37,59 @@ export default function CertificateModal({ closeModal }) {
               billingOperations.useCertificate({
                 coupon: values.certificate_code,
                 errorFunc: () => setIsNotExist(true),
-                successFunc: () => closeModal()
+                successFunc: () => closeModal(),
               }),
             )
           }}
         >
           {({ errors, touched }) => {
             return (
-              <Form>
-                <div className={s.form}>
-                  <div className={s.formBlock}>
-                    <div className={s.nsInputBlock}>
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name="certificate_code"
-                        label={`${t('certificate_code', { ns: 'other' })}:`}
-                        placeholder={t('enter_certificate_code', { ns: 'other' })}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.certificate_code}
-                        touched={!!touched.certificate_code}
-                        inputClassName={s.field}
-                      />
-                      <button type="button" className={s.infoBtn}>
-                        <Info />
-                        <div className={s.descriptionBlock}>
-                          {t('enter_certificate_code', { ns: 'other' })}
-                        </div>
-                      </button>
-                    </div>
-                    <div className={s.not_exist}>
-                      {isNotExist && (
-                        <p className={s.not_exist__content}>
-                          <Attention />
-                          {t('certificate_not_exist', { ns: 'other' })}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className={s.btnBlock}>
-                  <Button
-                    className={s.saveBtn}
+              <Form id="use-certificate">
+                <div className={s.nsInputBlock}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    name="certificate_code"
+                    label={`${t('certificate_code', { ns: 'other' })}:`}
+                    placeholder={t('enter_certificate_code', { ns: 'other' })}
                     isShadow
-                    size="medium"
-                    label={t('Save', { ns: 'other' })}
-                    type="submit"
+                    className={s.input}
+                    error={!!errors.certificate_code}
+                    touched={!!touched.certificate_code}
+                    inputClassName={s.field}
                   />
-                  <button onClick={closeModal} type="button" className={s.cancel}>
-                    {t('Cancel', { ns: 'other' })}
+                  <button type="button" className={s.infoBtn}>
+                    <Info />
+                    <div className={s.descriptionBlock}>
+                      {t('enter_certificate_code', { ns: 'other' })}
+                    </div>
                   </button>
+                </div>
+                <div className={s.not_exist}>
+                  {isNotExist && (
+                    <p className={s.not_exist__content}>
+                      <Attention />
+                      {t('certificate_not_exist', { ns: 'other' })}
+                    </p>
+                  )}
                 </div>
               </Form>
             )
           }}
         </Formik>
-      </div>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className={s.saveBtn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="use-certificate"
+        />
+        <button onClick={closeModal} type="button" className={s.cancel}>
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

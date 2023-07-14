@@ -33,6 +33,7 @@ import {
   selectors,
   authSelectors,
   settingsSelectors,
+  cartActions,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -299,6 +300,13 @@ export default function Component() {
 
     const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
+  }
+
+  const hideBasketHandler = () => {
+    navigate(routes.PHONE_VERIFICATION, {
+      state: { orderPage: location.pathname },
+    })
+    dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
   }
 
   let VDS_FEE_AMOUNT = ''
@@ -1424,10 +1432,7 @@ export default function Component() {
                             size="large"
                             label={t('Verify number', { ns: 'user_settings' })}
                             type="button"
-                            onClick={() => {
-                              navigate(routes.PHONE_VERIFICATION)
-                              closeBasketHamdler(cartData?.billorder)
-                            }}
+                            onClick={hideBasketHandler}
                           />
                         ) : (
                           <>

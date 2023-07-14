@@ -1,61 +1,6 @@
-.modalBg {
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px auto;
-  max-width: 346px;
-  width: 95%;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
-.useFirstCheck {
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
-  max-width: 50%;
-
-  span {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 100.9%;
-    color: var(--main-text);
-    margin-left: 18px;
-    max-width: 100%;
-  }
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  margin-top: 5px;
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
+.modal {
+  max-width: 350px;
+  background-color: var(--main-bgc);
 }
 
 .headerText {
@@ -67,24 +12,10 @@
   color: var(--main-text);
 }
 
-.headerTitleBlock {
-  display: flex;
-  flex-direction: column;
-
-  .vhostName {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 130%;
-    color: var(--transparent-color);
-  }
-}
-
 .statusBlock {
   margin: 15px 0 10px 0;
   display: flex;
   flex-direction: column;
-  padding: 0px 20px 21px 20px;
 }
 
 .statusItem {
@@ -123,40 +54,11 @@
   }
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
 .fieldsBlock {
   display: flex;
   align-items: center;
   width: 100%;
   flex-wrap: wrap;
-  padding: 0px 20px 21px 20px;
-  margin-left: 2px;
-  max-height: 50vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-}
-
-.selectAndBtn {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
 }
 
 .input {
@@ -181,19 +83,6 @@
   }
 }
 
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
-}
-
 .searchBtn {
   height: 50px;
   max-width: 100%;
@@ -208,70 +97,11 @@
   line-height: 130%;
   text-decoration-line: underline;
   margin-left: 0px;
-  margin-top: 20px;
   color: var(--main-text);
   cursor: pointer;
 }
 
-.timeSelectBlock {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
-
-.formFieldsBlock {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.orderDetail {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 130%;
-
-  margin: 20px 0;
-}
-
 @media screen and (min-width: 768px) {
-  .statusBlock {
-    padding: 0 25px;
-  }
-
-  .modalBg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modalBg {
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
-
-  .modalHeader {
-    padding: 18px 25px;
-  }
-
-  .fieldsBlock {
-    padding: 0 25px 25px;
-    max-height: 70vh;
-  }
-
-  .headerTitleBlock {
-    align-items: center;
-    flex-direction: row;
-
-    .vhostName {
-      margin-left: 5px;
-    }
-  }
-
   .statusItem {
     flex-direction: row;
     align-items: center;
@@ -281,17 +111,7 @@
     }
   }
 
-  .input {
-    max-width: 100%;
-    margin-top: 20px;
-    margin-right: 0;
-  }
-
   .select {
-    max-width: 100%;
-    margin-top: 20px;
-    margin-right: 0px;
-
     &.dateSelect {
       max-width: 220px;
       width: 220px;
@@ -301,17 +121,7 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .input {
-    max-width: 100%;
-    margin-top: 20px;
-    margin-right: 0;
-  }
-
   .select {
-    max-width: 100%;
-    margin-top: 20px;
-    margin-right: 0;
-
     &.dateSelect {
       max-width: 175px;
       width: 175px;
@@ -320,32 +130,10 @@
 }
 
 @media screen and (min-width: 1550px) {
-  .input {
-    max-width: 100%;
-    margin-top: 13px;
-    margin-right: 0;
-  }
-
   .select {
-    max-width: 100%;
-    margin-top: 13px;
-    margin-right: 0px;
-
     &.dateSelect {
       max-width: 185px;
       width: 185px;
     }
   }
-
-  .calendarModal {
-    right: 50%;
-    transform: translateX(50%);
-  }
-
-  .calendar_pointer {
-    right: 50%;
-  }
-}
-
-@media screen and (min-width: 1918px) {
 }

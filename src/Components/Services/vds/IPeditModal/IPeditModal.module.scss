@@ -1,20 +1,6 @@
 .modal {
-  position: relative;
-  width: 90vw;
   max-width: 410px;
-  height: fit-content;
-  border-radius: 3px;
-  padding: 18px 18px 25px;
-  background-color: var(--forms_bgc_1);
-  box-shadow: var(--forms2_shadow);
-}
-
-.icon_cross {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  line-height: 0;
-  cursor: pointer;
+  text-align: left;
 }
 
 .title {
@@ -31,7 +17,6 @@
   display: block;
   max-width: 240px;
   height: 50px;
-  margin: 10px auto 12px;
   font-size: 18px;
 }
 
@@ -63,10 +48,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .modal {
-    padding: 20px 60px;
-  }
-
   .icon_cross {
     top: 20px;
     right: 20px;
@@ -83,6 +64,5 @@
 
   .save_btn {
     font-size: 20px;
-    margin: 10px auto 15px;
   }
 }

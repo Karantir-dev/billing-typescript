@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RadioButton, Button, Icon } from '@components'
+import { RadioButton, Button, Modal } from '@components'
 import s from './SharedHostingChangeTariffModal.module.scss'
 
 export default function Component(props) {
@@ -8,11 +8,12 @@ export default function Component(props) {
 
   const {
     name,
-    closeChangeTariffModalHandler,
+    closeModal,
     changeTariffData,
     changeTariffInfoVhostHandler,
     changeTariffInfoData,
     changeTariffSaveVhostHandler,
+    isOpen,
   } = props
 
   const [tariff, setTariff] = useState(null)
@@ -44,19 +45,14 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <div className={s.headerTitleBlock}>
           <span className={s.headerText}>{t('Service editing', { ns: 'domains' })}</span>
           <span className={s.vhostName}>({name})</span>
         </div>
-        <Icon
-          name="Cross"
-          onClick={closeChangeTariffModalHandler}
-          className={s.crossIcon}
-        />
-      </div>
-      <div className={s.modalBody}>
+      </Modal.Header>
+      <Modal.Body>
         <div className={changeTariffInfoData && s.radioBlock}>
           <div className={s.new_plan}>{t('New tariff plan')}:</div>
           {changeTariffData?.pricelist_list?.map(price => {
@@ -110,8 +106,8 @@ export default function Component(props) {
             </div>
           </div>
         )}
-      </div>
-      <div className={s.btnBlock}>
+      </Modal.Body>
+      <Modal.Footer column>
         <Button
           className={s.searchBtn}
           isShadow
@@ -121,14 +117,10 @@ export default function Component(props) {
           disabled={!changeTariffInfoData}
           onClick={() => changeTariffSaveVhostHandler(tariff)}
         />
-        <button
-          onClick={closeChangeTariffModalHandler}
-          type="button"
-          className={s.clearFilters}
-        >
+        <button onClick={closeModal} type="button" className={s.clearFilters}>
           {t('Cancel', { ns: 'other' })}
         </button>
-      </div>
-    </div>
+      </Modal.Footer>
+    </Modal>
   )
 }

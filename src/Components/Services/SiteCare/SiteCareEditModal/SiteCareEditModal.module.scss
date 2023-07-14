@@ -1,36 +1,3 @@
-.modalBg {
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px auto;
-  max-width: 630px;
-  width: 95%;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
 .useFirstCheck {
   display: flex;
   align-items: center;
@@ -48,16 +15,6 @@
   }
 }
 
-.crossIcon {
-  fill: var(--main-text);
-  margin-top: 5px;
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .headerText {
   font-style: normal;
   font-weight: 600;
@@ -67,22 +24,8 @@
   color: var(--main-text);
 }
 
-.headerTitleBlock {
-  display: flex;
-  flex-direction: column;
-
-  .vhostName {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 130%;
-    color: var(--transparent-color);
-  }
-}
-
 .statusBlock {
   margin: 15px 0 10px 0;
-  padding: 0px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -123,33 +66,11 @@
   }
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
 .fieldsBlock {
   display: flex;
   align-items: center;
   width: 100%;
   flex-wrap: wrap;
-  padding: 0px 20px 21px 20px;
-  margin-left: 2px;
-  max-height: 50vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
 }
 
 .selectAndBtn {
@@ -178,19 +99,6 @@
     width: 195px;
     margin-right: 20px;
   }
-}
-
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
 }
 
 .searchBtn {
@@ -237,40 +145,6 @@
   .statusBlock {
     flex-direction: row;
     align-items: center;
-    padding: 0 45px;
-  }
-
-  .modalBg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modalBg {
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
-
-  .modalHeader {
-    padding: 18px 45px;
-  }
-
-  .fieldsBlock {
-    padding: 0 45px 25px;
-    max-height: 70vh;
-  }
-
-  .headerTitleBlock {
-    align-items: center;
-    flex-direction: row;
-
-    .vhostName {
-      margin-left: 5px;
-    }
   }
 
   .statusItem {
@@ -298,14 +172,6 @@
       width: 220px;
       margin-right: 10px;
     }
-  }
-
-  .btnBlock {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
   }
 
   .searchBtn {
@@ -366,7 +232,4 @@
   .calendar_pointer {
     right: 50%;
   }
-}
-
-@media screen and (min-width: 1918px) {
 }

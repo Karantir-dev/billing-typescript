@@ -1,45 +1,5 @@
-.modalBg {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  padding: 18px 24px;
-  margin: 20px 10px;
-  max-width: 414px;
-  width: 100%;
-  position: relative;
-}
-
-.modalHeader {
-  width: 100%;
-  align-items: flex-start;
-  justify-content: center;
-  display: flex;
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  margin-top: 5px;
-  cursor: pointer;
-  position: absolute;
-  right: 20px;
-
-  &:active {
-    transform: scale(0.95);
-  }
+.modal {
+  max-width: 420px;
 }
 
 .headerText {
@@ -51,29 +11,15 @@
   color: var(--main-text);
 }
 
-.headerTitleBlock {
-  .vhostName {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 130%;
-    color: var(--transparent-color);
-  }
-}
-
 .deleteInfo {
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 120%;
   text-align: center;
-
-  color: var(--main-text);
   margin-top: 20px;
-}
-
-.statusBlock {
-  margin: 15px 0 20px 0;
+  margin-bottom: 17px;
+  color: var(--main-text);
 }
 
 .statusItem {
@@ -105,16 +51,6 @@
   }
 }
 
-.btnBlock {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 17px;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .clearFilters {
   font-style: normal;
   font-weight: 400;
@@ -132,25 +68,4 @@
   max-width: 100%;
   font-size: 18px;
   text-transform: uppercase;
-}
-
-@media screen and (min-width: 768px) {
-  .modalBg {
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    padding: 18px 40px;
-    margin: 0 30px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }
