@@ -986,54 +986,50 @@ const fetchValidatePhoneFirst =
       })
   }
 
-const fetchValidatePhoneFinish =
-  (data, navigateToServicePage) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+const fetchValidatePhoneFinish = (data, navigateAfterSuccess) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-    const {
-      auth: { sessionId },
-    } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'validatephone.finish',
-          out: 'json',
-          lang: 'en',
-          auth: sessionId,
-          sok: 'ok',
-          snext: 'ok',
-          clicked_button: 'next',
-          ...data,
-        }),
-      )
-      .then(({ data }) => {
-        if (data?.doc?.error) {
-          if (data?.doc?.error?.$type === 'fraud_invalid_code') {
-            toast.error(i18n.t('fraud_invalid_code', { ns: 'other' }), {
-              position: 'bottom-right',
-            })
-          }
-          throw new Error(data.doc.error.msg.$)
-        }
-
-        toast.success(
-          i18n.t('The phone has been successfully verified', { ns: 'other' }),
-          {
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'validatephone.finish',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+        sok: 'ok',
+        snext: 'ok',
+        clicked_button: 'next',
+        ...data,
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) {
+        if (data?.doc?.error?.$type === 'fraud_invalid_code') {
+          toast.error(i18n.t('fraud_invalid_code', { ns: 'other' }), {
             position: 'bottom-right',
-          },
-        )
+          })
+        }
+        throw new Error(data.doc.error.msg.$)
+      }
 
-        navigateToServicePage && navigateToServicePage()
-        dispatch(userOperations.getUserInfo(sessionId))
-        dispatch(actions.hideLoader())
+      toast.success(i18n.t('The phone has been successfully verified', { ns: 'other' }), {
+        position: 'bottom-right',
       })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
+
+      navigateAfterSuccess && navigateAfterSuccess()
+      dispatch(userOperations.getUserInfo(sessionId, null, true))
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 export default {
   getUserEdit,

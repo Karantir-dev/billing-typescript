@@ -22,7 +22,7 @@ import {
   InputWithAutocomplete,
   SelectGeo,
   ScrollToFieldError,
-  Icon
+  Icon,
 } from '@components'
 import {
   cartOperations,
@@ -30,6 +30,7 @@ import {
   payersSelectors,
   selectors,
   authSelectors,
+  cartActions,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -264,6 +265,13 @@ export default function Component() {
 
     const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
+  }
+
+  const hideBasketHandler = () => {
+    navigate(routes.PHONE_VERIFICATION, {
+      state: { orderPage: location.pathname },
+    })
+    dispatch(cartActions.setCartIsOpenedState({ isOpened: false }))
   }
 
   let VDS_FEE_AMOUNT = ''
@@ -877,7 +885,11 @@ export default function Component() {
           <div className={s.modalBlock}>
             <div className={cn(s.modalHeader, s.padding)}>
               <span className={s.headerText}>{t('Payment')}</span>
-              <Icon name="Cross" onClick={() => setIsClosing(true)} className={s.crossIcon} />
+              <Icon
+                name="Cross"
+                onClick={() => setIsClosing(true)}
+                className={s.crossIcon}
+              />
             </div>
             <div className={s.scroll}>
               <div className={s.itemsBlock}>{renderItems()}</div>
@@ -1186,7 +1198,10 @@ export default function Component() {
                                 }}
                               />
 
-                              <button type="button" className={cn(s.infoBtn, s.infoBtn_address)}>
+                              <button
+                                type="button"
+                                className={cn(s.infoBtn, s.infoBtn_address)}
+                              >
                                 <Icon name="Info" />
 
                                 <div
@@ -1366,10 +1381,7 @@ export default function Component() {
                             size="large"
                             label={t('Verify number', { ns: 'user_settings' })}
                             type="button"
-                            onClick={() => {
-                              navigate(routes.PHONE_VERIFICATION)
-                              closeBasketHamdler(cartData?.billorder)
-                            }}
+                            onClick={hideBasketHandler}
                           />
                         ) : (
                           <>
