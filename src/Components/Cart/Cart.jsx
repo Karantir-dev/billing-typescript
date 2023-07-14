@@ -930,7 +930,7 @@ export default function Component() {
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
-                      const minAmount = splittedText[0]?.replace('\n', '')
+                      const minAmount = splittedText[0]?.replace('\n', '').replace(/&nbsp;/g, ' ')
 
                       let infoText = ''
 
