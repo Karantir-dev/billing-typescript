@@ -89,7 +89,7 @@ export default function Component() {
         </PageTitleRender>
       )
     } else {
-      return <Navigate to={route.HOME} />
+      return <ErrorPage />
     }
   }
 

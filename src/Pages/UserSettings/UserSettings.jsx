@@ -10,6 +10,7 @@ import { PageTabBar } from '@components'
 import s from './UserSettings.module.scss'
 import * as route from '@src/routes'
 import { toast } from 'react-toastify'
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 export default function Component() {
   const { t } = useTranslation(['user_settings', 'other', 'trusted_users'])
@@ -78,7 +79,7 @@ export default function Component() {
     } else if (path === 'access' && isComponentAllowedToRender) {
       return <AccessSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else {
-      return <Navigate to={route.ERROR_PAGE} />
+      return <ErrorPage />
     }
   }
 
