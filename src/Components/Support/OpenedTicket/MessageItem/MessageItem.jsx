@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { supportOperations } from '@redux'
-import { Backdrop, Icon } from '@components'
+import { Icon, Modal } from '@components'
 import { BASE_URL } from '@config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
@@ -106,9 +106,13 @@ export default function Component(props) {
           />
         )}
       </div>
-      <Backdrop isOpened={Boolean(imageIsOpened && image)} onClick={closeImageHandler}>
-        <div className={s.modalBlock}>{image && <img src={image} alt="Opened" />}</div>
-      </Backdrop>
+      <Modal
+        isOpen={Boolean(imageIsOpened && image)}
+        closeModal={closeImageHandler}
+        className={s.modal}
+      >
+        <> {image && <img src={image} alt="Opened" />}</>
+      </Modal>
     </div>
   )
 }

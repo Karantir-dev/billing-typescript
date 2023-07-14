@@ -9,7 +9,8 @@ import {
   CheckBox,
   InputWithAutocomplete,
   SelectGeo,
-  Icon
+  Modal,
+  Icon,
 } from '@components'
 import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
@@ -87,19 +88,16 @@ export default function Component(props) {
   }
 
   return (
-    <div className={s.modalBg}>
-      <div className={s.modalBlock}>
-        <div className={s.modalHeader}>
-          <span className={s.headerText}>
-            {t(elid ? 'Edit the selected payer' : 'Adding a payer')}
-          </span>
-          <Icon name="Cross" onClick={closeAddModalHandler} className={s.crossIcon} />
-        </div>
+    <Modal isOpen closeModal={closeAddModalHandler}>
+      <Modal.Header>
+        <span className={s.headerText}>
+          {t(elid ? 'Edit the selected payer' : 'Adding a payer')}
+        </span>
+      </Modal.Header>
+      <Modal.Body>
         <Formik
           enableReinitialize
           validateOnMount={false}
-          // validateOnBlur={false}
-          // validateOnChange={false}
           validationSchema={validationSchema}
           initialValues={{
             country:
@@ -141,182 +139,177 @@ export default function Component(props) {
             }
 
             return (
-              <Form>
-                <div className={s.form}>
-                  <div className={s.formBlock}>
-                    <div className={s.formBlockTitle}>1. {t('Main')}</div>
-                    <div className={s.formFieldsBlock}>
-                      <Select
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        label={`${t('Payer status')}:`}
-                        value={values.profiletype}
-                        getElement={item => onProfileTypeChange(item)}
-                        isShadow
-                        className={s.select}
-                        dropdownClass={s.selectDropdownClass}
-                        itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
-                          label: t(`${$.trim()}`),
-                          value: $key,
-                        }))}
-                        inputClassName={s.field}
-                      />
+              <Form id="add-payer">
+                <div className={s.formBlock}>
+                  <div className={s.formBlockTitle}>1. {t('Main')}</div>
+                  <div className={s.formFieldsBlock}>
+                    <Select
+                      placeholder={t('Not chosen', { ns: 'other' })}
+                      label={`${t('Payer status')}:`}
+                      value={values.profiletype}
+                      getElement={item => onProfileTypeChange(item)}
+                      isShadow
+                      className={s.select}
+                      dropdownClass={s.selectDropdownClass}
+                      itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
+                        label: t(`${$.trim()}`),
+                        value: $key,
+                      }))}
+                      inputClassName={s.field}
+                    />
 
-                      {values?.profiletype === '3' || values?.profiletype === '2' ? (
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name="name"
-                          label={`${t('Company name')}:`}
-                          placeholder={t('Enter data', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors.name}
-                          touched={!!touched.name}
-                          isRequired
-                          inputClassName={s.field}
-                        />
-                      ) : null}
-
+                    {values?.profiletype === '3' || values?.profiletype === '2' ? (
                       <InputField
                         inputWrapperClass={s.inputHeight}
-                        name="person"
-                        label={`${t('The contact person')}:`}
+                        name="name"
+                        label={`${t('Company name')}:`}
                         placeholder={t('Enter data', { ns: 'other' })}
                         isShadow
                         className={s.input}
-                        error={!!errors.person}
-                        touched={!!touched.person}
+                        error={!!errors.name}
+                        touched={!!touched.name}
                         isRequired
                         inputClassName={s.field}
                       />
+                    ) : null}
 
-                      {payersSelectedFields?.eu_vat_field ? (
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name="eu_vat"
-                          label={`${t('EU VAT-number')}:`}
-                          placeholder={t('Enter data', { ns: 'other' })}
-                          isShadow
-                          className={s.input}
-                          error={!!errors.eu_vat}
-                          touched={!!touched.eu_vat}
-                          inputClassName={s.field}
-                        />
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className={s.formBlock}>
-                    <div className={s.formBlockTitle}>2. {t('Actual address')}</div>
-                    <div className={s.formFieldsBlock}>
-                      <SelectGeo
-                        setSelectFieldValue={item => setFieldValue('country', item)}
-                        selectValue={values.country}
-                        selectClassName={s.select}
-                        countrySelectClassName={s.countrySelectItem}
-                        geoData={geoData}
-                        payersSelectLists={payersSelectLists}
-                        inputClassName={s.field}
-                      />
+                    <InputField
+                      inputWrapperClass={s.inputHeight}
+                      name="person"
+                      label={`${t('The contact person')}:`}
+                      placeholder={t('Enter data', { ns: 'other' })}
+                      isShadow
+                      className={s.input}
+                      error={!!errors.person}
+                      touched={!!touched.person}
+                      isRequired
+                      inputClassName={s.field}
+                    />
 
+                    {payersSelectedFields?.eu_vat_field ? (
                       <InputField
                         inputWrapperClass={s.inputHeight}
-                        name="city_physical"
-                        label={`${t('City', { ns: 'other' })}:`}
-                        placeholder={t('Enter city', { ns: 'other' })}
+                        name="eu_vat"
+                        label={`${t('EU VAT-number')}:`}
+                        placeholder={t('Enter data', { ns: 'other' })}
                         isShadow
                         className={s.input}
-                        error={!!errors.city_physical}
-                        touched={!!touched.city_physical}
+                        error={!!errors.eu_vat}
+                        touched={!!touched.eu_vat}
+                        inputClassName={s.field}
+                      />
+                    ) : null}
+                  </div>
+                </div>
+                <div className={s.formBlock}>
+                  <div className={s.formBlockTitle}>2. {t('Actual address')}</div>
+                  <div className={s.formFieldsBlock}>
+                    <SelectGeo
+                      setSelectFieldValue={item => setFieldValue('country', item)}
+                      selectValue={values.country}
+                      selectClassName={s.select}
+                      countrySelectClassName={s.countrySelectItem}
+                      geoData={geoData}
+                      payersSelectLists={payersSelectLists}
+                      inputClassName={s.field}
+                    />
+
+                    <InputField
+                      inputWrapperClass={s.inputHeight}
+                      name="city_physical"
+                      label={`${t('City', { ns: 'other' })}:`}
+                      placeholder={t('Enter city', { ns: 'other' })}
+                      isShadow
+                      className={s.input}
+                      error={!!errors.city_physical}
+                      touched={!!touched.city_physical}
+                      inputClassName={s.field}
+                    />
+
+                    <div className={s.nsInputBlock}>
+                      <InputWithAutocomplete
+                        fieldName="address_physical"
+                        error={!!errors.address_physical}
+                        touched={!!touched.address_physical}
+                        externalValue={values.address_physical}
+                        setFieldValue={val => {
+                          setFieldValue('address_physical', val)
+                        }}
                         inputClassName={s.field}
                       />
 
-                      <div className={s.nsInputBlock}>
-                        <InputWithAutocomplete
-                          fieldName="address_physical"
-                          error={!!errors.address_physical}
-                          touched={!!touched.address_physical}
-                          externalValue={values.address_physical}
-                          setFieldValue={val => {
-                            setFieldValue('address_physical', val)
-                          }}
-                          inputClassName={s.field}
-                        />
-
-                        <button type="button" className={s.infoBtn}>
-                          <Icon name="Info" />
-                          <div ref={dropdownDescription} className={s.descriptionBlock}>
-                            {t('address_format', { ns: 'other' })}
-                          </div>
-                        </button>
-                      </div>
+                      <button type="button" className={s.infoBtn}>
+                        <Icon name="Info" />
+                        <div ref={dropdownDescription} className={s.descriptionBlock}>
+                          {t('address_format', { ns: 'other' })}
+                        </div>
+                      </button>
                     </div>
                   </div>
-                  {payersSelectedFields?.offer_link &&
-                    (payersSelectedFields?.passport_field || !elid) && (
-                      <div className={s.formBlock}>
-                        <div>
-                          {payersSelectedFields?.offer_link && (
-                            <div className={s.offerBlock}>
-                              <CheckBox
-                                value={values[payersSelectedFields?.offer_field]}
-                                onClick={() =>
-                                  setFieldValue(
-                                    `${payersSelectedFields?.offer_field}`,
-                                    !values[payersSelectedFields?.offer_field],
-                                  )
-                                }
-                                className={s.checkbox}
-                                error={!!errors[payersSelectedFields?.offer_field]}
-                                touched={!!touched[payersSelectedFields?.offer_field]}
-                              />
-                              <div className={s.offerBlockText}>
-                                {t('I agree with', {
-                                  ns: 'payers',
-                                })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={OFERTA_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of Service', { ns: 'domains' })}
-                                </a>{' '}
-                                {t('and', { ns: 'domains' })}{' '}
-                                <a
-                                  target="_blank"
-                                  href={PRIVACY_URL}
-                                  rel="noreferrer"
-                                  className={s.offerBlockLink}
-                                >
-                                  {t('Terms of the offer', { ns: 'domains' })}
-                                </a>
-                              </div>
+                </div>
+                {payersSelectedFields?.offer_link &&
+                  (payersSelectedFields?.passport_field || !elid) && (
+                    <div className={s.formBlock}>
+                      <div>
+                        {payersSelectedFields?.offer_link && (
+                          <div className={s.offerBlock}>
+                            <CheckBox
+                              value={values[payersSelectedFields?.offer_field]}
+                              onClick={() =>
+                                setFieldValue(
+                                  `${payersSelectedFields?.offer_field}`,
+                                  !values[payersSelectedFields?.offer_field],
+                                )
+                              }
+                              className={s.checkbox}
+                              error={!!errors[payersSelectedFields?.offer_field]}
+                              touched={!!touched[payersSelectedFields?.offer_field]}
+                            />
+                            <div className={s.offerBlockText}>
+                              {t('I agree with', {
+                                ns: 'payers',
+                              })}{' '}
+                              <a
+                                target="_blank"
+                                href={OFERTA_URL}
+                                rel="noreferrer"
+                                className={s.offerBlockLink}
+                              >
+                                {t('Terms of Service', { ns: 'domains' })}
+                              </a>{' '}
+                              {t('and', { ns: 'domains' })}{' '}
+                              <a
+                                target="_blank"
+                                href={PRIVACY_URL}
+                                rel="noreferrer"
+                                className={s.offerBlockLink}
+                              >
+                                {t('Terms of the offer', { ns: 'domains' })}
+                              </a>
                             </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                </div>
-                <div className={s.btnBlock}>
-                  <Button
-                    className={s.saveBtn}
-                    isShadow
-                    size="medium"
-                    label={t(elid ? 'Save' : 'Create', { ns: 'other' })}
-                    type="submit"
-                  />
-                  <button
-                    onClick={closeAddModalHandler}
-                    type="button"
-                    className={s.cancel}
-                  >
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
-                </div>
+                    </div>
+                  )}
               </Form>
             )
           }}
         </Formik>
-      </div>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className={s.saveBtn}
+          isShadow
+          size="medium"
+          label={t(elid ? 'Save' : 'Create', { ns: 'other' })}
+          type="submit"
+          form="add-payer"
+        />
+        <button onClick={closeAddModalHandler} type="button" className={s.cancel}>
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

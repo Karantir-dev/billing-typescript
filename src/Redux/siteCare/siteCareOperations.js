@@ -480,6 +480,7 @@ const orderSiteCarePricelist =
           auth: sessionId,
           func: 'zabota-o-servere.order.param',
           out: 'json',
+          lang: 'en',
           ...body,
         }),
       )

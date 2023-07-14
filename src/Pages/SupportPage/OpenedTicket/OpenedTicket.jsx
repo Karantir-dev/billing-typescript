@@ -10,8 +10,8 @@ import {
   Button,
   HintWrapper,
   IconButton,
-  Backdrop,
-  Icon
+  Modal,
+  Icon,
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
 import { supportSelectors, supportOperations, supportActions } from '@redux'
@@ -125,34 +125,30 @@ export default function Component() {
         </div>
       )}
 
-      <Backdrop className={s.backdrop} isOpened={tipsModal} onClick={closeTipsModal}>
+      {tipsModal && (
         <TipsModal
           closeTipsModal={closeTipsModal}
           elid={params?.id}
           setSuccessModal={setSuccessModal}
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={successModal}
-        onClick={() => setSuccessModal(false)}
+      <Modal
+        isOpen={successModal}
+        closeModal={() => setSuccessModal(false)}
+        className={s.successModal}
+        simple
       >
-        <div className={s.successModal}>
-          <Icon name="Cross"
-            width="17px"
-            height="17px"
-            onClick={() => setSuccessModal(false)}
-            className={s.crossIcon}
-          />
+        <Modal.Header />
+        <Modal.Body>
           <Icon name="Smile" className={s.smileIcon} />
           <p className={s.thanksText}>
             {t(
               'Thank you on behalf of our staff. They will receive this bonus to their salary!',
             )}
           </p>
-        </div>
-      </Backdrop>
+        </Modal.Body>
+      </Modal>
     </>
   )
 }

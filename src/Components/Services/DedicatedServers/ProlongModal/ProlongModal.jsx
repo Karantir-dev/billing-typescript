@@ -3,20 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { billingActions, dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
-import { Button, Select, Icon } from '@components'
+import { Button, Select, Modal } from '@components'
 
 import s from './ProlongModal.module.scss'
 import classNames from 'classnames'
 import { translatePeriod } from '@utils'
-// import { SALE_55_PROMOCODE } from '@config/config'
 
-export default function ProlongModal({
-  elidList,
-  closeFn,
-  pageName,
-  names,
-  // itemsList
-}) {
+export default function ProlongModal({ elidList, closeModal, pageName, names, isOpen }) {
   const { t } = useTranslation([
     'dedicated_servers',
     'vds',
@@ -34,7 +27,7 @@ export default function ProlongModal({
   )
 
   const handleEditionModal = () => {
-    closeFn()
+    closeModal()
   }
 
   useEffect(() => {
@@ -61,22 +54,6 @@ export default function ProlongModal({
     if (pageName === 'vds') {
       dispatch(billingActions.setPeriodValue(period))
     }
-
-    // if (
-    //   pageName === 'vds' &&
-    //   SALE_55_PROMOCODE &&
-    //   SALE_55_PROMOCODE?.length > 0 &&
-    //   !(elidList?.length > 1)
-    // ) {
-    //   const memoryList = initialState?.vds?.slist?.find(e => e?.$name === 'Memory')?.val
-
-    //   if (memoryList) {
-    //     const is2xRam =
-    //       initialState?.vds?.Memory === memoryList[memoryList?.length - 1]?.$key
-
-    //     withSale = is2xRam
-    //   }
-    // }
 
     if (elidList?.length > 1) {
       dispatch(
@@ -121,8 +98,8 @@ export default function ProlongModal({
   }
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal} noScroll>
+      <Modal.Header>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Prolong service')}</h2>
           <span className={s.tarif_name}>
@@ -133,21 +110,18 @@ export default function ProlongModal({
                 ?.replace('DNS-hosting', t('dns', { ns: 'crumbs' }))}
           </span>
         </div>
-
-        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={17} height={17} />
-      </div>
-
-      <Formik
-        enableReinitialize
-        initialValues={{
-          period: initialState?.period?.$?.toString() || '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            period: initialState?.period?.$?.toString() || '',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form id="prolong">
                 <div className={s.parameters_block}>
                   {elidList?.length <= 1 ? (
                     <>
@@ -250,30 +224,31 @@ export default function ProlongModal({
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className={s.btns_wrapper}>
-                <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Proceed', { ns: 'other' })}
-                  type="submit"
-                />
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        <Button
+          className={s.buy_btn}
+          isShadow
+          size="medium"
+          label={t('Proceed', { ns: 'other' })}
+          type="submit"
+          form="prolong"
+        />
 
-                <button
-                  onClick={e => {
-                    e.preventDefault()
-                    closeFn()
-                  }}
-                  className={s.cancel_btn}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeModal()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

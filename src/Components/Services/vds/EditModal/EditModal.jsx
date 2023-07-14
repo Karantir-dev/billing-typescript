@@ -6,9 +6,9 @@ import { Formik, Form } from 'formik'
 import cn from 'classnames'
 
 import s from './EditModal.module.scss'
-import { Select, Button, Icon, InputField } from '@components'
+import { Select, Button, Icon, InputField, Modal } from '@components'
 
-export default function EditModal({ elid, closeFn, getVDSHandler }) {
+export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
   const { t } = useTranslation(['vds', 'other', 'billing'])
   const dispatch = useDispatch()
   const addOnsEl = useRef(null)
@@ -117,7 +117,7 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
         getVDSHandler,
       ),
     )
-    closeFn()
+    closeModal()
   }
 
   const orderDescMonthPart = orderInfo?.description.match(/(per .+?)(?=\))/g)
@@ -127,61 +127,57 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
     .replace(/(per .+?)(?=\))/g, t(orderDescMonthPart))
 
   return initialState ? (
-    <div className={s.modal}>
-      <div className={s.title_wrapper}>
+    <Modal isOpen={isOpen} closeModal={closeModal}>
+      <Modal.Header>
         <p className={s.title}>
           {t('edit_title')}
           <span className={s.tariff_name}>{initialState?.name?.$.split('(')[0]}</span>
         </p>
-        <button className={s.icon_cross} onClick={closeFn} type="button">
-          <Icon name="Cross" width={17} height={17} />
-        </button>
-      </div>
+      </Modal.Header>
+      <Modal.Body>
+        <div className={s.dates_wrapper}>
+          <p className={s.date_line}>
+            {t('created')}: <span className={s.date}>{initialState?.opendate?.$}</span>
+          </p>
+          <p className={s.date_line}>
+            {t('valid_until')}:{' '}
+            <span className={s.date}>{initialState?.expiredate?.$}</span>
+          </p>
+        </div>
 
-      <div className={s.dates_wrapper}>
-        <p className={s.date_line}>
-          {t('created')}: <span className={s.date}>{initialState?.opendate?.$}</span>
-        </p>
-        <p className={s.date_line}>
-          {t('valid_until')}:{' '}
-          <span className={s.date}>{initialState?.expiredate?.$}</span>
-        </p>
-      </div>
+        <p className={s.chapter_title}>1. {t('main')}</p>
 
-      <p className={s.chapter_title}>1. {t('main')}</p>
-
-      <Formik
-        initialValues={{
-          autoprolong: initialState?.autoprolong?.$,
-          stored_method: initialState?.stored_method?.$,
-          domainName: initialState?.domain?.$,
-          userName: initialState?.username?.$,
-          serverid: initialState?.serverid?.$,
-          preinstalledSoft:
-            initialState?.recipe?.$ === 'null' || !initialState?.recipe?.$
-              ? t('not_installed')
-              : initialState?.recipe?.$,
-          IP: initialState?.ip?.$,
-          password: initialState?.password?.$,
-          userpassword: initialState?.userpassword?.$,
-          ostempl: initialState?.ostempl?.$,
-          Control_panel: initialState?.Control_panel,
-          processors: initialState?.CPU_count,
-          diskSpace: initialState?.Disk_space,
-          portSpeed:
-            initialState?.slist?.length > 0
-              ? initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$
-              : '',
-          memory: initialState?.Memory,
-          IPcount: initialState?.IP_addresses_count,
-          server_name: initialState?.server_name?.$ || '',
-        }}
-        onSubmit={handleFormSubmit}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
+        <Formik
+          initialValues={{
+            autoprolong: initialState?.autoprolong?.$,
+            stored_method: initialState?.stored_method?.$,
+            domainName: initialState?.domain?.$,
+            userName: initialState?.username?.$,
+            serverid: initialState?.serverid?.$,
+            preinstalledSoft:
+              initialState?.recipe?.$ === 'null' || !initialState?.recipe?.$
+                ? t('not_installed')
+                : initialState?.recipe?.$,
+            IP: initialState?.ip?.$,
+            password: initialState?.password?.$,
+            userpassword: initialState?.userpassword?.$,
+            ostempl: initialState?.ostempl?.$,
+            Control_panel: initialState?.Control_panel,
+            processors: initialState?.CPU_count,
+            diskSpace: initialState?.Disk_space,
+            portSpeed:
+              initialState?.slist?.length > 0
+                ? initialState?.slist?.find(el => el.$name === 'Port_speed')?.val[0]?.$
+                : '',
+            memory: initialState?.Memory,
+            IPcount: initialState?.IP_addresses_count,
+            server_name: initialState?.server_name?.$ || '',
+          }}
+          onSubmit={handleFormSubmit}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form id={elid}>
                 <div className={s.grid_fields}>
                   <Select
                     className={s.mb}
@@ -390,23 +386,21 @@ export default function EditModal({ elid, closeFn, getVDSHandler }) {
                     <p className={s.description}>{translatedDescription}</p>
                   </>
                 )}
-              </div>
-
-              <div className={s.btnBlock}>
-                <Button
-                  className={s.btn_save}
-                  type="submit"
-                  isShadow
-                  label={
-                    orderInfo ? t('buy', { ns: 'other' }) : t('Save', { ns: 'other' })
-                  }
-                />
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className={s.btn_save}
+          type="submit"
+          isShadow
+          label={orderInfo ? t('buy', { ns: 'other' }) : t('Save', { ns: 'other' })}
+          form={elid}
+        />
+      </Modal.Footer>
+    </Modal>
   ) : (
     <></>
   )

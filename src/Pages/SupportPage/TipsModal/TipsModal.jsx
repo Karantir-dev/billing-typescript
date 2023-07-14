@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import s from './TipsModal.module.scss'
-import { Button, InputField, Icon } from '@components'
+import { Button, InputField, Modal } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { supportOperations } from '@redux'
@@ -24,31 +24,22 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   })
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
-        <div className={s.headerTitleBlock}>
-          <span className={s.headerText}>{t('Thank support')}</span>
-        </div>
-        <Icon name="Cross"
-          width="17px"
-          height="17px"
-          onClick={closeTipsModal}
-          className={s.crossIcon}
-        />
-      </div>
-
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          summ: '',
-        }}
-        onSubmit={paymentHandler}
-      >
-        {({ values, errors, touched, setFieldValue }) => {
-          return (
-            <Form className={s.form}>
-              <div className={s.fieldsBlock}>
+    <Modal closeModal={closeTipsModal} isOpen className={s.modal}>
+      <Modal.Header>
+        <span className={s.headerText}>{t('Thank support')}</span>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            summ: '',
+          }}
+          onSubmit={paymentHandler}
+        >
+          {({ values, errors, touched, setFieldValue }) => {
+            return (
+              <Form className={s.form} id="tips">
                 <InputField
                   label={`${t('Sum', { ns: 'other' })}:`}
                   placeholder={`${t('0.00 EUR')}`}
@@ -87,23 +78,23 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   <span>*</span>
                   {t('The transfer amount will be debited from your balance')}
                 </p>
-              </div>
-
-              <div className={s.btnBlock}>
-                <Button
-                  className={s.buyBtn}
-                  isShadow
-                  label={t('THANK YOU', { ns: 'support' })}
-                  type="submit"
-                />
-                <button onClick={closeTipsModal} type="button" className={s.cancelBtn}>
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        <Button
+          className={s.buyBtn}
+          isShadow
+          label={t('THANK YOU', { ns: 'support' })}
+          type="submit"
+          form="tips"
+        />
+        <button onClick={closeTipsModal} type="button" className={s.cancelBtn}>
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

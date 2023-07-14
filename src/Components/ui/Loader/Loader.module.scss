@@ -2,6 +2,7 @@
 
 .backdrop {
   @extend %backdrop;
+  z-index: 200;
 
   &.shown {
     pointer-events: initial;

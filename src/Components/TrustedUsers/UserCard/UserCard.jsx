@@ -339,71 +339,66 @@ export default function UserCard({
         </div>
       )}
 
-      {isSuccessAlertOpened && (
-        <Alert
-          hasControlBtns={true}
-          dataTestid="trusted_users_alert_access"
-          isOpened={isSuccessAlertOpened}
-          controlAlert={handleAccessAlert}
-          title={
-            hasAccess
-              ? t('trusted_users.alerts.access.title2')
-              : t('trusted_users.alerts.access.title')
-          }
-          text={alertAccessText}
-          mainBtn={
-            <Button
-              dataTestid="alert_controlBtn_test_access"
-              size="small"
-              label={
-                hasAccess
-                  ? t('trusted_users.alerts.access.btn_text_ok2').toUpperCase()
-                  : t('trusted_users.alerts.access.btn_text_ok').toUpperCase()
-              }
-              type="button"
-              className={cn({ [s.add_btn]: true, [s.access]: true })}
-              onClick={handleAccessClick}
-              isShadow
-            />
-          }
-        />
-      )}
+      <Alert
+        hasControlBtns={true}
+        dataTestid="trusted_users_alert_access"
+        isOpened={isSuccessAlertOpened}
+        controlAlert={handleAccessAlert}
+        title={
+          hasAccess
+            ? t('trusted_users.alerts.access.title2')
+            : t('trusted_users.alerts.access.title')
+        }
+        text={alertAccessText}
+        mainBtn={
+          <Button
+            dataTestid="alert_controlBtn_test_access"
+            size="small"
+            label={
+              hasAccess
+                ? t('trusted_users.alerts.access.btn_text_ok2').toUpperCase()
+                : t('trusted_users.alerts.access.btn_text_ok').toUpperCase()
+            }
+            type="button"
+            className={cn({ [s.add_btn]: true, [s.access]: true })}
+            onClick={handleAccessClick}
+            isShadow
+          />
+        }
+      />
 
-      {isStatusAlertOpened && (
-        <Alert
-          hasControlBtns={true}
-          dataTestid="trusted_users_alert_status"
-          isOpened={isStatusAlertOpened}
-          controlAlert={handleStatusAlert}
-          title={
-            status === 'on'
-              ? t('trusted_users.alerts.status.title2')
-              : t('trusted_users.alerts.status.title')
-          }
-          text={alertStatusText}
-          mainBtn={
-            <Button
-              dataTestid="alert_controlBtn_test_status"
-              size="small"
-              label={
-                status === 'on'
-                  ? t('trusted_users.alerts.status.btn_text_ok2').toUpperCase()
-                  : t('trusted_users.alerts.status.btn_text_ok').toUpperCase()
-              }
-              type="button"
-              className={cn({ [s.add_btn]: true, [s.access]: true })}
-              onClick={handleStatusClick}
-              isShadow
-            />
-          }
-        />
-      )}
+      <Alert
+        hasControlBtns={true}
+        dataTestid="trusted_users_alert_status"
+        isOpened={isStatusAlertOpened}
+        controlAlert={handleStatusAlert}
+        title={
+          status === 'on'
+            ? t('trusted_users.alerts.status.title2')
+            : t('trusted_users.alerts.status.title')
+        }
+        text={alertStatusText}
+        mainBtn={
+          <Button
+            dataTestid="alert_controlBtn_test_status"
+            size="small"
+            label={
+              status === 'on'
+                ? t('trusted_users.alerts.status.btn_text_ok2').toUpperCase()
+                : t('trusted_users.alerts.status.btn_text_ok').toUpperCase()
+            }
+            type="button"
+            className={cn({ [s.add_btn]: true, [s.access]: true })}
+            onClick={handleStatusClick}
+            isShadow
+          />
+        }
+      />
 
       {showRightsAlert && (
         <AccessRightsAlert
           dataTestid="trusted_users_rights_alert"
-          isOpened={showRightsAlert}
-          controlAlert={handleRightsAlert}
+          closeModal={handleRightsAlert}
           title={
             mobile
               ? t('trusted_users.rights_alert.title_short')
@@ -419,6 +414,7 @@ export default function UserCard({
               userId={userId}
             />
           }
+          isOpen
         />
       )}
     </>

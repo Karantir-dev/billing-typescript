@@ -135,41 +135,41 @@ export default function ControlBtn({
         </div>
       </div>
 
-      {showRemoveAlert && (
-        <Alert
-          hasControlBtns={true}
-          dataTestid="trusted_users_alert_remove"
-          isOpened={showRemoveAlert}
-          controlAlert={handleRemoveAlert}
-          title={t('trusted_users.alerts.remove.title')}
-          text={`${t('trusted_users.alerts.remove.text')} ${userName}?`}
-          mainBtn={
-            <Button
-              dataTestid="alert_removeuser_test_status"
-              size="small"
-              label={t('trusted_users.alerts.remove.btn_text_ok').toUpperCase()}
-              type="button"
-              className={cn({ [s.remove_btn]: true, [s.btn]: true })}
-              onClick={removeUser}
-              isShadow
-            />
-          }
+      <Alert
+        hasControlBtns={true}
+        dataTestid="trusted_users_alert_remove"
+        isOpened={showRemoveAlert}
+        controlAlert={handleRemoveAlert}
+        title={t('trusted_users.alerts.remove.title')}
+        text={`${t('trusted_users.alerts.remove.text')} ${userName}?`}
+        mainBtn={
+          <Button
+            dataTestid="alert_removeuser_test_status"
+            size="small"
+            label={t('trusted_users.alerts.remove.btn_text_ok').toUpperCase()}
+            type="button"
+            className={cn({ [s.remove_btn]: true, [s.btn]: true })}
+            onClick={removeUser}
+            isShadow
+          />
+        }
+      />
+
+      {settingsForm && (
+        <ManageUserForm
+          isOpen={settingsForm}
+          formName="settings"
+          title={t('trusted_users.rights_alert.usrparam')}
+          subtitle={email}
+          handleSubmit={handleSubmit}
+          closeModal={handleSettingsForm}
+          dataTestid="settings_form"
+          email={email}
+          userName={userName}
+          isEditUserAllowedToChange={isEditUserAllowedToChange}
+          userId={userId}
         />
       )}
-
-      <ManageUserForm
-        isUserFormActive={settingsForm}
-        formName="settings"
-        title={t('trusted_users.rights_alert.usrparam')}
-        subtitle={email}
-        handleSubmit={handleSubmit}
-        controlForm={handleSettingsForm}
-        dataTestid="settings_form"
-        email={email}
-        userName={userName}
-        isEditUserAllowedToChange={isEditUserAllowedToChange}
-        userId={userId}
-      />
     </>
   )
 }

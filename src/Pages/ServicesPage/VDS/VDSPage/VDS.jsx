@@ -10,14 +10,13 @@ import {
   IconButton,
   VDSList,
   EditModal,
-  Backdrop,
   BreadCrumbs,
   DeleteModal,
   VDSPasswordChange,
   VdsRebootModal,
   ProlongModal,
   FiltersModal,
-  VdsInstructionModal,
+  InstructionModal,
   DedicsHistoryModal,
   Pagination,
   Portal,
@@ -395,72 +394,74 @@ export default function VDS() {
         </div>
       )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(elidForEditModal)}
-        onClick={() => setIdForEditModal(0)}
-      >
+      {!!elidForEditModal && (
         <EditModal
-          getVDSHandler={getVDSHandler}
           elid={elidForEditModal}
-          closeFn={() => setIdForEditModal(0)}
+          isOpen
+          closeModal={() => setIdForEditModal(0)}
+          getVDSHandler={getVDSHandler}
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        isOpened={idForDeleteModal.length > 0}
-        onClick={() => setIdForDeleteModal([])}
-      >
+      {idForDeleteModal.length > 0 && (
         <DeleteModal
           names={getServerName(idForDeleteModal)}
           deleteFn={deleteServer}
-          closeFn={() => setIdForDeleteModal([])}
+          closeModal={() => setIdForDeleteModal([])}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop isOpened={idForPassChange.length > 0}>
+      {idForPassChange.length > 0 && (
         <VDSPasswordChange
           id={idForPassChange}
           names={getServerName(idForPassChange)}
-          closeFn={() => setIdForPassChange([])}
+          closeModal={() => setIdForPassChange([])}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop isOpened={idForReboot.length > 0} onClick={() => setIdForReboot([])}>
+      {idForReboot.length > 0 && (
         <VdsRebootModal
           id={idForReboot}
           names={getServerName(idForReboot)}
-          closeFn={() => setIdForReboot([])}
+          closeModal={() => setIdForReboot([])}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop isOpened={idForProlong.length > 0} onClick={() => setIdForProlong([])}>
+      {idForProlong.length > 0 && (
         <ProlongModal
           elidList={filteredElidForProlongModal}
-          closeFn={() => setIdForProlong([])}
+          closeModal={() => setIdForProlong([])}
           pageName="vds"
           names={getServerName(idForProlong)}
           itemsList={servers.filter(item => idForProlong.includes(item.id.$))}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        isOpened={Boolean(idForInstruction)}
-        onClick={() => setIdForInstruction('')}
-      >
-        <VdsInstructionModal
-          elid={idForInstruction}
-          closeFn={() => setIdForInstruction('')}
+      {!!idForInstruction && (
+        <InstructionModal
+          title={t('Virtual server activation', { ns: 'other' })}
+          closeModal={() => setIdForInstruction('')}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dedicOperations.getServiceInstruction(idForInstruction, setInstruction),
+            )
+          }
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop isOpened={Boolean(idForHistory)} onClick={() => setIdForHistory('')}>
+      {!!idForHistory && (
         <DedicsHistoryModal
           elid={idForHistory}
           name={getServerName(idForHistory)}
-          closeFn={() => setIdForHistory('')}
+          closeModal={() => setIdForHistory('')}
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }
