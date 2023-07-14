@@ -145,9 +145,12 @@ const getDomainsOrderName =
         const domains = []
 
         setAutoprolongPrices &&
-          (await axiosInstance.get(`${API_URL}/api/domain/`).then(response => {
-            setAutoprolongPrices(response.data)
-          }))
+          (await axiosInstance
+            .get(`${API_URL}/api/domain/`)
+            .then(response => {
+              setAutoprolongPrices(response.data)
+            })
+            .catch(error => checkIfTokenAlive(error.message, dispatch)))
 
         if (!search) {
           domainData?.list?.forEach(l => {
