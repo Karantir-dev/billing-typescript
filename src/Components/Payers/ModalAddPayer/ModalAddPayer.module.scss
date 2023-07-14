@@ -1,66 +1,5 @@
-.modalBg {
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
 .selectDropdownClass {
   z-index: 9 !important;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px 30px;
-  max-width: 610px;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--header_shadow);
-}
-
-.form {
-  padding: 0 20px 10px;
-  max-height: 60vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: var(--main-bgc2);
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
 }
 
 .headerText {
@@ -75,6 +14,10 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .formBlockTitle {
@@ -132,19 +75,6 @@
   div {
     background-color: var(--elements-bgc) !important;
   }
-}
-
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 20px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--footer_shadow);
 }
 
 .saveBtn {
@@ -276,29 +206,6 @@
 @media screen and (min-width: 768px) {
   .saveBtn {
     font-size: 20px;
-  }
-
-  .modalBg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-    width: 100%;
-  }
-
-  .modalHeader {
-    padding: 20px 35px;
-  }
-
-  .form {
-    padding: 0 35px 30px;
-    max-height: 75vh;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
 
   .formBlock {

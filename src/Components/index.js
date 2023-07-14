@@ -24,6 +24,7 @@ export { default as TrustedUsers } from '@pages/TrustedUsers/TrustedUsers'
 export { default as Container } from './Container/Container'
 
 //==========================================UI==========================================//
+export { default as Modal } from './ui/Modal/Modal'
 export { default as InputField } from './ui/InputField/InputField'
 export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneInput'
 export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
@@ -60,6 +61,7 @@ export { default as PageTitleRender } from './ui/PageTitleRender/PageTitleRender
 export { default as EditCell } from './ui/EditCell/EditCell'
 export { default as Icon } from './ui/Icon/Icon'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
+export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -122,7 +124,6 @@ export { default as DomainFiltertsModal } from './Services/Domains/DomainFiltert
 export { default as SharedHostingFilter } from './Services/SharedHosting/SharedHostingFilter/SharedHostingFilter'
 export { default as SharedHostingFilterModal } from './Services/SharedHosting/SharedHostingFilterModal/SharedHostingFilterModal'
 
-export { default as SharedHostingInstructionModal } from './Services/SharedHosting/SharedHostingInstructionModal/SharedHostingInstructionModal'
 export { default as SharedHostingTable } from './Services/SharedHosting/SharedHostingTable/SharedHostingTable'
 export { default as SharedHostingHistoryModal } from './Services/SharedHosting/SharedHostingHistoryModal/SharedHostingHistoryModal'
 export { default as SharedHostingProlongModal } from './Services/SharedHosting/SharedHostingProlongModal/SharedHostingProlongModal'
@@ -145,7 +146,6 @@ export { default as DedicFiltersModal } from './Services/DedicatedServers/DedicF
 export { default as DedicList } from './Services/DedicatedServers/DedicList/DedicList'
 export { default as DedicsHistoryModal } from './Services/DedicatedServers/DedicsHistoryModal/DedicsHistoryModal'
 export { default as EditServerModal } from './Services/DedicatedServers/EditServerModal/EditServerModal'
-export { default as InstructionModal } from './Services/DedicatedServers/InstructionModal/InstructionModal'
 export { default as RebootModal } from './Services/DedicatedServers/RebootModal/RebootModal'
 export { default as ProlongModal } from './Services/DedicatedServers/ProlongModal/ProlongModal'
 
@@ -166,7 +166,6 @@ export { default as VDSPasswordChange } from './Services/vds/PasswordChange/Pass
 export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
 export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
 export { default as FiltersModal } from './Services/vds/FiltersModal/FiltersModal'
-export { default as VdsInstructionModal } from './Services/vds/InstructionModal/InstructionModal'
 
 //==========================================VPN==========================================//
 export { default as VpnFilter } from './Services/vpn/VpnFilter/VpnFilter'
@@ -178,13 +177,11 @@ export { default as VpnEditModal } from './Services/vpn/VpnEditModal/VpnEditModa
 //==========================================FTP==========================================//
 export { default as FTPEditModal } from './Services/ftp/FTPEditModal/FTPEditModal'
 export { default as FTPFiltersModal } from './Services/ftp/FTPFiltersModal/FTPFiltersModal'
-export { default as FTPInstructionModal } from './Services/ftp/FTPInstructionModal/FTPInstructionModal'
 export { default as FTPList } from './Services/ftp/FTPList/FTPList'
 
 //==========================================DNS==========================================//
 export { default as DNSList } from './Services/dns/DNSList/DNSList'
 export { default as DNSEditModal } from './Services/dns/DNSEditModal/DNSEditModal'
-export { default as DNSInstructionModal } from './Services/dns/DNSInstructionModal/DNSInstructionModal'
 export { default as DNSFiltersModal } from './Services/dns/DNSFiltersModal/DNSFiltersModal'
 
 //==========================================Forex==========================================//
@@ -192,7 +189,6 @@ export { default as ForexList } from './Services/Forex/ForexList/ForexList'
 export { default as ForexEditModal } from './Services/Forex/ForexEditModal/ForexEditModal'
 export { default as ForexFiltersModal } from './Services/Forex/ForexFiltersModal/ForexFiltersModal'
 export { default as ForexDeletionModal } from './Services/Forex/ForexDeletionModal/ForexDeletionModal'
-export { default as ForexInstructionModal } from './Services/Forex/ForexInstructionModal/ForexInstructionModal'
 
 //==========================================CART==========================================//
 export { default as Cart } from './Cart/Cart'

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { settingsOperations, userSelectors, usersOperations } from '@redux'
+import { selectors, settingsOperations, userSelectors, usersOperations } from '@redux'
 import { Form, Formik } from 'formik'
 
 import TryLimit from './TryLimit/TryLimit'
@@ -23,6 +23,7 @@ export default function Component() {
   let { state } = useLocation()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
+  const isLoading = useSelector(selectors.getIsLoadding)
 
   const [validatePhoneData, setValidatePhoneData] = useState(null)
   const [countryCode, setCountryCode] = useState(null)
@@ -81,8 +82,10 @@ export default function Component() {
       : null,
   })
 
-  const navigateToServicePage = () => {
-    navigate(routes.SERVICES)
+  const navigateAfterSuccess = () => {
+    state?.orderPage
+      ? navigate(state?.orderPage, { state: { isBasket: true } })
+      : navigate(routes.SERVICES)
   }
 
   const goToFirstStepHanfler = () => {
@@ -90,11 +93,11 @@ export default function Component() {
   }
 
   const validateHandler = values => {
-    if (notHaveNumber) {
+    if (notHaveNumber && !isCodeStep) {
       return dispatch(
         settingsOperations.fetchValidatePhoneStart(
           { phone: values?.phone },
-          null,
+          setIsCodeStep,
           setIsTryLimit,
           setValidatePhoneData,
           setTimeOut,
@@ -118,7 +121,7 @@ export default function Component() {
       return dispatch(
         settingsOperations.fetchValidatePhoneFinish(
           values,
-          navigateToServicePage,
+          navigateAfterSuccess,
           savePhoneUserEdit,
         ),
       )
@@ -192,6 +195,10 @@ export default function Component() {
     }
   }
 
+  if (isLoading) {
+    return null
+  }
+
   return (
     <Formik
       enableReinitialize
@@ -218,7 +225,8 @@ export default function Component() {
 
             {isTimeOut && (
               <div className={s.timeOutBlock}>
-                <Icon name="Attention" /> {t('verification_code_timeout', { time: timeOut })}
+                <Icon name="Attention" />{' '}
+                {t('verification_code_timeout', { time: timeOut })}
               </div>
             )}
 

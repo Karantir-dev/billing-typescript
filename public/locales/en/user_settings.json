@@ -93,8 +93,7 @@
 
   "attempts_to_sent_code": "You have {{count}} attempts to sent the code",
 
-  "not_receive_confirmation_code_1": "If you do not receive the confirmation code, please try",
-  "not_receive_confirmation_code_2": "or contact our Technical support for manual confirmation",
+  "not_receive_confirmation_code": "If you haven't received the confirmation code, please contact our technical support for manual verification.",
 
   "before_verified_number": "You can change and verify this number by clicking \"{{btn}}\"",
   "after_verified_number": "To change your primary phone number, please contact our technical support",

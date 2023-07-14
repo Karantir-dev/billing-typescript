@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Icon } from '@components'
+import { Button, Modal } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 import s from './DeleteModal.module.scss'
 
-export default function DeleteModal({ closeFn, names, deleteFn }) {
+export default function DeleteModal({ closeModal, names, deleteFn, isOpen }) {
   const { t } = useTranslation(['vds', 'other'])
   const [namesOpened, setNamesOpened] = useState(false)
   const [firstRender, setFirstRender] = useState(true)
@@ -31,53 +31,53 @@ export default function DeleteModal({ closeFn, names, deleteFn }) {
   }, [])
 
   return (
-    <div className={s.modal}>
-      <button className={s.icon_cross} onClick={closeFn} type="button">
-        <Icon name="Cross" />
-      </button>
-      <p className={s.title}>{t('attention')}!</p>
-      <p className={s.text}>{t('delete_message')}?</p>
-      <div>
-        <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
-          {names.map((name, idx) => {
-            return (
-              <span className={s.name_item} key={name}>
-                {name}
-                {names.length - 1 === idx ? '' : ','}
-              </span>
-            )
-          })}
-        </p>
+    <Modal isOpen={isOpen} closeModal={closeModal} simple>
+      <Modal.Header />
+      <Modal.Body>
+        <p className={s.title}>{t('attention')}!</p>
+        <p className={s.text}>{t('delete_message')}?</p>
+        <div>
+          <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
+            {names.map((name, idx) => {
+              return (
+                <span className={s.name_item} key={name}>
+                  {name}
+                  {names.length - 1 === idx ? '' : ','}
+                </span>
+              )
+            })}
+          </p>
+          {names.length > 1 && (
+            <button
+              className={s.btn_more}
+              type="button"
+              onClick={() => setNamesOpened(!namesOpened)}
+            >
+              {namesOpened
+                ? t('collapse', { ns: 'other' })
+                : t('and_more', { ns: 'other', value: names.length - 1 })}
+            </button>
+          )}
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          className={s.cancel_btn}
+          onClick={closeModal}
+          isShadow
+          label={t('Cancel', { ns: 'other' })}
+        />
 
-        {names.length > 1 && (
-          <button
-            className={s.btn_more}
-            type="button"
-            onClick={() => setNamesOpened(!namesOpened)}
-          >
-            {namesOpened
-              ? t('collapse', { ns: 'other' })
-              : t('and_more', { ns: 'other', value: names.length - 1 })}
-          </button>
-        )}
-      </div>
-
-      <Button
-        className={s.cancel_btn}
-        onClick={closeFn}
-        isShadow
-        label={t('Cancel', { ns: 'other' })}
-      />
-
-      <button className={s.delete_btn} type="button" onClick={deleteFn}>
-        {t('delete', { ns: 'other' })}
-      </button>
-    </div>
+        <button className={s.delete_btn} type="button" onClick={deleteFn}>
+          {t('delete', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }
 
 DeleteModal.propTypes = {
   names: PropTypes.array.isRequired,
-  closeFn: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   deleteFn: PropTypes.func.isRequired,
 }

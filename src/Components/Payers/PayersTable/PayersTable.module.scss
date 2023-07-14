@@ -205,34 +205,11 @@
   right: 25px;
 }
 
-.modalBg {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: relative;
-  background: var(--main-bgc3);
-  border-radius: 3px;
-  padding: 45px 25px;
-  margin: 20px;
+.modal {
+  max-width: 440px;
 }
 
 .modalDeleteText {
-  max-width: 320px;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -259,21 +236,7 @@
   cursor: pointer;
 }
 
-.crossIcon {
-  fill: var(--main-text);
-}
-
-.closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
 @media screen and (min-width: 768px) {
-  .modalBlock {
-    padding: 34px 60px;
-  }
-
   .openTicket {
     display: none;
   }

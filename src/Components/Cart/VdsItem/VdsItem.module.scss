@@ -119,11 +119,16 @@
 }
 
 .value {
+  margin-bottom: 6px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 130%;
   color: var(--main-text);
+
+  b {
+    font-weight: 600;
+  }
 }
 
 .periodInfo {

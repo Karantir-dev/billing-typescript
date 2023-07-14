@@ -142,9 +142,7 @@ export default function Component(props) {
         />
       )}
       {createTicketModal && (
-        <Portal>
-          <CreateTicketModal setCreateTicketModal={setCreateTicketModal} />
-        </Portal>
+        <CreateTicketModal setCreateTicketModal={setCreateTicketModal} />
       )}
     </div>
   )

@@ -8,7 +8,6 @@ import {
   SiteCareProlongModal,
   SiteCareEditModal,
   SiteCareDeleteModal,
-  Backdrop,
   CheckBox,
   SiteCareBottomBar,
 } from '@components'
@@ -310,63 +309,51 @@ export default function Component() {
         </div>
       )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(historyModal && historyList?.length > 0)}
-        onClick={closeHistoryModalHandler}
-      >
+      {historyModal && historyList?.length > 0 && (
         <SiteCareHistoryModal
           historyList={historyList}
           name={parseSelectedItemNameArr()}
-          closeHistoryModalHandler={closeHistoryModalHandler}
+          closeModal={closeHistoryModalHandler}
           setHistoryCurrentPage={setHistoryCurrentPage}
           historyCurrentPage={historyCurrentPage}
           historyItemCount={historyItemCount}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(prolongModal && prolongData)}
-        onClick={closeProlongModalHandler}
-      >
+      {prolongModal && prolongData && (
         <SiteCareProlongModal
           prolongData={prolongData}
           name={parseSelectedItemNameArr()}
-          closeProlongModalHandler={closeProlongModalHandler}
+          closeModal={closeProlongModalHandler}
           prolongEditSiteCareHandler={prolongEditSiteCareHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(editModal && editData)}
-        onClick={closeEditModalHandler}
-      >
+      {editModal && editData && (
         <SiteCareEditModal
           editData={editData}
           name={parseSelectedItemNameArr()}
-          closeEditModalHandler={closeEditModalHandler}
+          closeModal={closeEditModalHandler}
           sendEditSiteCareHandler={sendEditSiteCareHandler}
           editSiteCareHandler={editSiteCareHandler}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        className={s.backdrop}
-        isOpened={Boolean(deleteModal)}
-        onClick={() => setDeleteModal(false)}
-      >
+      {deleteModal && (
         <SiteCareDeleteModal
-          closeDeleteModalHandler={() => {
+          closeModal={() => {
             setDeleteModal(false)
             setDeleteIds(null)
           }}
           deleteIds={deleteIds}
           deleteSiteCareHandler={deleteSiteCareHandler}
           name={parseSelectedItemNameArr()}
+          isOpen
         />
-      </Backdrop>
+      )}
     </div>
   )
 }

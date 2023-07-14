@@ -193,11 +193,9 @@ export default function Component(props) {
             type="button"
             onClick={() => setCreatePaymentModal(!createPaymentModal)}
           />
-          <Portal>
-            {createPaymentModal && (
-              <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-            )}
-          </Portal>
+          {createPaymentModal && (
+            <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+          )}
         </>
       )}
     </div>

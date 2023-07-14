@@ -51,5 +51,8 @@
   "for 10 days": "for 10 days",
 
   "Current end date": "Current end date",
-  "New end date": "New end date"
+  "New end date": "New end date",
+
+  "invalid_ip": "You must specify IPv4 address",
+  "invalid_port_range": "should be an integer from the 0 to 65535 range"
 }
