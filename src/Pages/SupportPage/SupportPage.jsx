@@ -6,6 +6,7 @@ import * as route from '@src/routes'
 
 import { PageTabBar, PageTitleRender } from '@components'
 import { usePageRender } from '@utils'
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 import s from './SupportPage.module.scss'
 
@@ -45,6 +46,9 @@ export default function Component() {
           <RequestsArchive />
         </PageTitleRender>
       )
+    }
+    else {
+      return <ErrorPage />
     }
   }
 

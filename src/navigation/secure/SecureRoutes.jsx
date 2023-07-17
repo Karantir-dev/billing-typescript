@@ -93,6 +93,7 @@ const Component = () => {
     <Container>
       <EmailTrigger />
       <Routes>
+        <Route path={route.HOME} element={<Navigate to={route.SERVICES} replace={true} />} />
         <Route path={route.SERVICES} element={<ServicesPageLazy />} />
         <Route path={route.VPS} element={<VDSPageLazy />} />
         <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />
@@ -160,7 +161,7 @@ const Component = () => {
 
         <Route path={route.PAYMENT_PROCESSING} element={<PaymentProcessingPageLazy />} />
 
-        <Route path="*" element={<Navigate replace to={route.SERVICES} />} />
+        <Route path="*" element={<ErrorPageLazy />} />
       </Routes>
 
       {cartState?.isOpened && (
