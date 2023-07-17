@@ -1,6 +1,6 @@
 import DomainsHistoryItem from './DomainsHistoryItem'
 import { useTranslation } from 'react-i18next'
-import { Pagination, Icon } from '@components'
+import { Pagination, Modal } from '@components'
 import cn from 'classnames'
 import s from './DomainsHistoryModal.module.scss'
 
@@ -9,25 +9,25 @@ export default function Component(props) {
 
   const {
     historyList,
-    closeHistoryModalHandler,
+    closeModal,
     setHistoryCurrentPage,
     historyCurrentPage,
     historyItemCount,
+    isOpen = { isOpen },
   } = props
 
   return (
-    <div className={s.modalBlock}>
-      <div className={s.modalHeader}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <span className={s.headerText}>{t('Service change history')}</span>
-        <Icon name="Cross" onClick={closeHistoryModalHandler} className={s.crossIcon} />
+      </Modal.Header>
+      <div className={s.tableHeader}>
+        <span className={cn(s.title_text, s.first_item)}>{t('Date of change')}:</span>
+        <span className={cn(s.title_text, s.second_item)}>{t('Change')}:</span>
+        <span className={cn(s.title_text, s.third_item)}>{t('Username')}:</span>
+        <span className={cn(s.title_text, s.fourth_item)}>{t('IP address')}:</span>
       </div>
-      <div className={s.table}>
-        <div className={s.tableHeader}>
-          <span className={cn(s.title_text, s.first_item)}>{t('Date of change')}:</span>
-          <span className={cn(s.title_text, s.second_item)}>{t('Change')}:</span>
-          <span className={cn(s.title_text, s.third_item)}>{t('Username')}:</span>
-          <span className={cn(s.title_text, s.fourth_item)}>{t('IP address')}:</span>
-        </div>
+      <Modal.Body>
         <div className={s.tableItems}>
           {historyList?.map((el, index) => {
             const { changedate, desc, ip, user } = el
@@ -43,19 +43,17 @@ export default function Component(props) {
             )
           })}
         </div>
-      </div>
+      </Modal.Body>
       {historyItemCount > 10 && (
-        <div className={s.total}>
-          <div className={s.pagination}>
-            <Pagination
-              currentPage={historyCurrentPage}
-              totalCount={Number(historyItemCount)}
-              pageSize={10}
-              onPageChange={page => setHistoryCurrentPage(page)}
-            />
-          </div>
-        </div>
+        <Modal.Footer>
+          <Pagination
+            currentPage={historyCurrentPage}
+            totalCount={Number(historyItemCount)}
+            pageSize={10}
+            onPageChange={page => setHistoryCurrentPage(page)}
+          />
+        </Modal.Footer>
       )}
-    </div>
+    </Modal>
   )
 }

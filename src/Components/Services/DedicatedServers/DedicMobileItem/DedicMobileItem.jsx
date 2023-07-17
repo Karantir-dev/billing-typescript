@@ -185,7 +185,7 @@ export default function DedicMobileItem({
       )}
 
       <span className={s.label}>{t('server_name')}:</span>
-      <span className={cn(s.value, { [s.active]: isActive })}>
+      <span className={cn(s.value, s.value_edit, { [s.active]: isActive })}>
         <EditCell
           originName={originName}
           onSubmit={editNameHandler}

@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next'
 import s from './DomainsZone.module.scss'
 
 export default function ServicesPage(props) {
-  const { t } = useTranslation(['domains', 'other'])
+  const { t } = useTranslation(['domains', 'other', 'vds'])
 
-  const { domains, selectedDomains, setSelectedDomains, transfer } = props
-
+  const { domains, selectedDomains, setSelectedDomains, transfer, autoprolongPrices } =
+    props
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
@@ -97,11 +97,11 @@ export default function ServicesPage(props) {
         />
         <div className={s.chooseAllText}>{t('Choose all', { ns: 'other' })}</div>
       </div> */}
-      <div className={s.domainsBlock}>
+      <div className={cn(s.domainsBlock, { [s.transfer]: transfer })}>
         {domains?.map(d => {
           const { id, tld, price } = d
           const selected = itemIsSelected(id?.$)
-
+          const renew = autoprolongPrices.find(el => el.zone === tld.$)?.main_price_renew
           return (
             <div
               tabIndex={0}
@@ -114,21 +114,37 @@ export default function ServicesPage(props) {
               })}
               onClick={() => setIsSelectedHandler(id?.$)}
             >
-              <div className={cn(s.domainItem)}>
+              <div className={cn(s.domainItem, { [s.transfer]: transfer })}>
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
                 <CheckBox className={s.checkbox} value={selected} />
 
-                <div className={cn(s.domainName, { [s.selected]: selected })}>
+                <div
+                  className={cn(s.domainName, {
+                    [s.selected]: selected,
+                    [s.transfer]: transfer,
+                  })}
+                >
                   {tld?.$}
                 </div>
-                <div className={s.pricesBlock}>
+                <div className={cn(s.pricesBlock, { [s.transfer]: transfer })}>
                   <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
                   {parsePrice(price?.$)?.length > 1 && (
                     <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
                   )}
                 </div>
+                {renew && (
+                  <div className={s.prolongBlock}>
+                    <span>{t('prolong', { ns: 'vds' })}:</span>
+                    <span>
+                      {renew} EUR/
+                      <span className={s.prolongPeriod}>
+                        {t('year', { ns: 'other' })}
+                      </span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           )

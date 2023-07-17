@@ -111,7 +111,7 @@ const getDomainsFilters =
   }
 
 const getDomainsOrderName =
-  (setDomains, body = {}, search = false) =>
+  (setDomains, setAutoprolongPrices, body = {}, search = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -143,6 +143,15 @@ const getDomainsOrderName =
         const domainData = data?.doc
 
         const domains = []
+
+        setAutoprolongPrices &&
+          (await axiosInstance
+            .get(`${API_URL}/api/domain/`)
+            .then(response => {
+              setAutoprolongPrices(response.data)
+            })
+            .catch(error => checkIfTokenAlive(error.message, dispatch)))
+
         if (!search) {
           domainData?.list?.forEach(l => {
             if (l?.$name === 'pricelist_info') {

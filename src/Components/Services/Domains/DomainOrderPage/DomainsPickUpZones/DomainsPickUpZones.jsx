@@ -7,7 +7,7 @@ import * as route from '@src/routes'
 import s from './DomainsPickUpZones.module.scss'
 
 export default function ServicesPage(props) {
-  const { t } = useTranslation(['domains', 'other'])
+  const { t } = useTranslation(['domains', 'other', 'vds'])
 
   const {
     domains,
@@ -16,6 +16,7 @@ export default function ServicesPage(props) {
     selected,
     registerDomainHandler,
     transfer,
+    autoprolongPrices,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -118,111 +119,66 @@ export default function ServicesPage(props) {
     return sum.toFixed(2)
   }
 
-  const renderDomainSuggested = () => {
-    return (
-      <div className={cn(s.domainsBlock, s.suggested)}>
-        {domainsList?.suggested?.map(d => {
-          const { id, domain, price } = d
-
-          const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
-          return (
-            <div
-              tabIndex={0}
-              role="button"
-              onKeyDown={null}
-              key={id?.$}
-              className={cn(s.domainItem, {
-                [s.selected]: itemIsSelected(d),
-                [s.notAvailable]: notAvailable,
-              })}
-              onClick={() => !notAvailable && setIsSelectedHandler(d)}
-            >
-              {parsePrice(price?.$)?.length > 1 && (
-                <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
-              )}
-              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
-                <div>{domain?.$}</div>
-                <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
-                )}
-              </div>
-              <div className={s.pricesBlock}>
-                <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
-                )}
-              </div>
-              <div
-                className={cn(s.selectBtn, {
-                  [s.selected]: itemIsSelected(d),
-                  [s.notAvailable]: notAvailable,
-                })}
-              >
-                {notAvailable
-                  ? t('Not available')
-                  : itemIsSelected(d)
-                  ? t('Selected')
-                  : t('Select')}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-    )
+  const getPolongPrice = domain => {
+    return autoprolongPrices.find(el => el.zone === '.' + domain.$.split('.')[1])
+      ?.main_price_renew
   }
 
-  const renderDomainAll = () => {
+  const renderDomains = d => {
+    const { id, domain, price } = d
+    const renew = getPolongPrice(domain)
+
+    const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
+
     return (
-      <div className={s.domainsBlock}>
-        {domainsList?.allResults?.map(d => {
-          const { id, domain, price } = d
-
-          const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
-
-          return (
-            <div
-              tabIndex={0}
-              role="button"
-              onKeyDown={null}
-              key={id?.$}
-              className={cn(s.domainItem, {
-                [s.selected]: itemIsSelected(d),
-                [s.notAvailable]: notAvailable,
-              })}
-              onClick={() => !notAvailable && setIsSelectedHandler(d)}
-            >
-              {parsePrice(price?.$)?.length > 1 && (
-                <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
-              )}
-              <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
-                <div>{domain?.$}</div>
-                <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
-                )}
-              </div>
-              <div className={s.pricesBlock}>
-                <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
-                )}
-              </div>
-              <div
-                className={cn(s.selectBtn, {
-                  [s.selected]: itemIsSelected(d),
-                  [s.notAvailable]: notAvailable,
-                })}
-              >
-                {notAvailable
-                  ? t('Not available')
-                  : itemIsSelected(d)
-                  ? t('Selected')
-                  : t('Select')}
-              </div>
-            </div>
-          )
+      <div
+        tabIndex={0}
+        role="button"
+        onKeyDown={null}
+        key={id?.$}
+        className={cn(s.domainItem, {
+          [s.selected]: itemIsSelected(d),
+          [s.notAvailable]: notAvailable,
         })}
+        onClick={() => !notAvailable && setIsSelectedHandler(d)}
+      >
+        {parsePrice(price?.$)?.length > 1 && (
+          <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+        )}
+        <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
+          <div>{domain?.$}</div>
+          <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
+          {parsePrice(price?.$)?.length > 1 && (
+            <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
+          )}
+        </div>
+        <div className={s.pricesBlock}>
+          <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+          {parsePrice(price?.$)?.length > 1 && (
+            <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+          )}
+        </div>
+        {renew && (
+          <div className={s.prolongBlock}>
+            <span>{t('prolong', { ns: 'vds' })}:</span>
+            <span>
+              {renew} EUR/
+              <span className={s.prolongPeriod}>{t('year', { ns: 'other' })}</span>
+            </span>
+          </div>
+        )}
+        <div
+          className={cn(s.selectBtn, {
+            [s.selected]: itemIsSelected(d),
+            [s.notAvailable]: notAvailable,
+          })}
+        >
+          {notAvailable
+            ? t('Not available')
+            : itemIsSelected(d)
+            ? t('Selected')
+            : t('Select')}
+        </div>
       </div>
     )
   }
@@ -234,6 +190,7 @@ export default function ServicesPage(props) {
         <div className={s.domainsBlockTransfer}>
           {domainsList?.map(d => {
             const { id, domain, price } = d
+            const renew = getPolongPrice(domain)
 
             const notAvailable = d?.desc?.$.includes('Not registered') || d.premium
             const available = d?.desc?.$.includes('Registered')
@@ -271,6 +228,17 @@ export default function ServicesPage(props) {
                   )}
                   <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
                 </div>
+                {renew && (
+                  <div className={cn(s.prolongBlock, s.transferProlongBlock)}>
+                    <span>{t('prolong', { ns: 'vds' })}:</span>
+                    <span>
+                      {renew} EUR/
+                      <span className={s.prolongPeriod}>
+                        {t('year', { ns: 'other' })}
+                      </span>
+                    </span>
+                  </div>
+                )}
               </div>
             )
           })}
@@ -294,14 +262,18 @@ export default function ServicesPage(props) {
           {domainsList?.suggested?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
-              {renderDomainSuggested()}
+              <div className={cn(s.domainsBlock, s.suggested)}>
+                {domainsList?.suggested?.map(d => renderDomains(d))}
+              </div>
             </>
           )}
 
           {domainsList?.allResults?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
-              {renderDomainAll()}
+              <div className={s.domainsBlock}>
+                {domainsList?.allResults?.map(d => renderDomains(d))}
+              </div>
             </>
           )}
         </>

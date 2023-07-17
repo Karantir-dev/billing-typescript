@@ -1,48 +1,12 @@
-.modalBg {
-  position: absolute;
+.modal {
+  width: 90%;
+  background-color: var(--main-bgc);
 
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  display: flex;
-  flex-direction: column;
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px 10px;
-  max-width: 990px;
-  width: 95%;
-  height: 90vh;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
+  @media screen and (min-width: 768px) {
+    max-width: 625px;
+  }
+  @media screen and (min-width: 1024px) {
+    max-width: 1077px;
   }
 }
 
@@ -53,14 +17,6 @@
   line-height: 113%;
   max-width: 90%;
   color: var(--main-text);
-}
-
-.table {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0px 21px;
-  overflow: hidden;
 }
 
 .tableHeader {
@@ -143,80 +99,21 @@
 }
 
 .tableItems {
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 5px;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 7px;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(161, 161, 161, 23%);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e72690;
-  }
-
-  &::-webkit-scrollbar-button:start,
-  &::-webkit-scrollbar-button:end {
-    height: 10px;
-  }
-}
-
-.total {
-  position: sticky;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
-
-  font-style: normal;
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 130.9%;
-  color: var(--main-text);
-  padding: 20px 20px;
 }
 
 @media screen and (min-width: 768px) {
-  .modalHeader {
-    padding: 18px 50px;
-  }
-
-  .total {
-    padding: 18px 50px;
-  }
-
-  .modalBg {
-    display: flex;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
-
-  .table {
-    padding: 0 30px;
-  }
-
   .item {
     flex-basis: 48%;
     margin-right: 0;
 
-    &:nth-child(1n) {
-      margin-right: 10px;
+    @media (max-width: 1023px) {
+      &:nth-child(odd) {
+        margin-right: 2%;
+      }
     }
   }
 
@@ -239,7 +136,7 @@
 
   .tableHeader {
     display: flex;
-    padding: 20px 26px 13px;
+    padding: 20px 60px 13px;
   }
 
   .item {
@@ -280,10 +177,6 @@
 }
 
 @media screen and (min-width: 1550px) {
-  .tableHeader {
-    padding: 22px 27px 13px;
-  }
-
   .item {
     padding: 22px 27px;
   }
@@ -294,10 +187,6 @@
 }
 
 @media screen and (min-width: 1918px) {
-  .tableHeader {
-    padding: 22px 27px 13px;
-  }
-
   .item_text {
     font-size: 14px;
   }

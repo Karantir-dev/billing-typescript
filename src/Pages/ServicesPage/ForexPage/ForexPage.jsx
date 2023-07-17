@@ -9,7 +9,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -19,10 +18,10 @@ import {
   ForexFiltersModal,
   DeleteModal,
   Pagination,
-  ForexInstructionModal,
   CheckBox,
+  InstructionModal,
 } from '@components'
-import { actions, forexOperations, forexSelectors } from '@redux'
+import { actions, dnsOperations, forexOperations, forexSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
 import { checkServicesRights, usePageRender } from '@utils'
@@ -367,53 +366,57 @@ export default function ForexPage() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <ForexEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <ForexEditModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           pageName="forex"
           names={getServerName(elidForProlongModal)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal(0)}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForDeletionModal([])}
-        isOpened={elidForDeletionModal.length > 0}
-      >
+      {elidForDeletionModal.length > 0 && (
         <DeleteModal
           names={getServerName(elidForDeletionModal)}
-          closeFn={() => setElidForDeletionModal([])}
+          closeModal={() => setElidForDeletionModal([])}
           deleteFn={() => handleDeletionModal(() => setElidForDeletionModal([]))}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
-        <ForexInstructionModal
-          elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+      {!!elidForInstructionModal && (
+        <InstructionModal
+          title={t('Forex server activation', { ns: 'other' })}
+          closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dnsOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

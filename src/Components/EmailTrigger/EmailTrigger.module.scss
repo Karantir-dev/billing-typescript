@@ -20,26 +20,14 @@
   flex: none;
 }
 
-.icon_cross {
-  display: flex;
-  cursor: pointer;
-}
-
 .modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 22px;
-  width: 90vw;
   max-width: 370px;
-  padding: 20px 26px;
   background: var(--forms_bgc_3);
-  border-radius: 3px;
-}
+  text-align: left;
 
-.modal_header {
-  display: flex;
-  justify-content: space-between;
+  &__body {
+    margin-top: 15px;
+  }
 }
 
 .modal_title {

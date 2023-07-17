@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-
-import { Button, InputField, Select, Icon } from '@components'
+import { Button, InputField, Select, Modal } from '@components'
 import { useLocation } from 'react-router-dom'
 import s from './DedicIPOrder.module.scss'
 
@@ -53,111 +52,89 @@ export default function DedicIPOrder({ closeFn }) {
   }, [])
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
-        <div className={s.title_wrapper}>
-          <h2 className={s.page_title}>
-            {t('Add IP-address', { ns: 'dedicated_servers' })}
-          </h2>
-        </div>
-        <Icon name="Cross" className={s.icon_cross} onClick={closeFn} width={17} height={17} />
-      </div>
-
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          domain: initialValues?.domain?.$ || '',
-          ipType: initialValues?.typeList[0]?.$ || '',
-          ipAmount: initialValues?.count?.$ || '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, errors, touched, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
-                <div className={s.parameters_block}>
-                  {/* <div className={s.header_block}>
-                  <div className={s.title_wrapper}>
-                    <h2 className={s.page_title}>
-                      {t('Add IP-address', { ns: 'dedicated_servers' })}
-                    </h2>
-                  </div>
-                  <Cross
-                    className={s.icon_cross}
-                    onClick={closeFn}
-                    width={17}
-                    height={17}
-                  />
-                </div> */}
-
-                  <div className={s.parameters_wrapper}>
-                    <div className={s.main_block}>
-                      <InputField
-                        label={`${t('type')}:`}
-                        name="ipType"
-                        isShadow
-                        className={s.input_field_wrapper}
-                        inputClassName={s.input}
-                        autoComplete="off"
-                        type="text"
-                        value={t(values?.ipType)}
-                        disabled
-                      />
-                      <InputField
-                        label={`${t('domain')}:`}
-                        name="domain"
-                        error={!!errors.domain}
-                        touched={!!touched.domain}
-                        isShadow
-                        className={s.input_field_wrapper}
-                        inputClassName={s.input}
-                        autoComplete
-                        type="text"
-                        value={values?.domain}
-                      />
-
-                      <Select
-                        height={50}
-                        value={values?.ipAmount}
-                        getElement={item => {
-                          setFieldValue('ipAmount', item)
-                        }}
-                        isShadow
-                        label={t('count_ip')}
-                        itemsList={maxIPAmountList.map(el => {
-                          return { label: el, value: el.toString() }
-                        })}
-                        className={s.select}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className={s.btns_wrapper}>
-                  <Button
-                    className={s.buy_btn}
+    <Modal isOpen closeModal={closeFn} className={s.modal}>
+      <Modal.Header>
+        <h2 className={s.page_title}>
+          {t('Add IP-address', { ns: 'dedicated_servers' })}
+        </h2>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            domain: initialValues?.domain?.$ || '',
+            ipType: initialValues?.typeList[0]?.$ || '',
+            ipAmount: initialValues?.count?.$ || '',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched, setFieldValue }) => {
+            return (
+              <Form id="ip-order">
+                <div className={s.main_block}>
+                  <InputField
+                    label={`${t('type')}:`}
+                    name="ipType"
                     isShadow
-                    size="medium"
-                    label={t('Save', { ns: 'other' })}
-                    type="submit"
+                    className={s.input_field_wrapper}
+                    inputClassName={s.input}
+                    autoComplete="off"
+                    type="text"
+                    value={t(values?.ipType)}
+                    disabled
+                  />
+                  <InputField
+                    label={`${t('domain')}:`}
+                    name="domain"
+                    error={!!errors.domain}
+                    touched={!!touched.domain}
+                    isShadow
+                    className={s.input_field_wrapper}
+                    inputClassName={s.input}
+                    autoComplete
+                    type="text"
+                    value={values?.domain}
                   />
 
-                  <button
-                    onClick={e => {
-                      e.preventDefault()
-                      closeFn()
+                  <Select
+                    height={50}
+                    value={values?.ipAmount}
+                    getElement={item => {
+                      setFieldValue('ipAmount', item)
                     }}
-                    className={s.cancel_btn}
-                  >
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
+                    isShadow
+                    label={t('count_ip')}
+                    itemsList={maxIPAmountList.map(el => {
+                      return { label: el, value: el.toString() }
+                    })}
+                    className={s.select}
+                  />
                 </div>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        <Button
+          className={s.buy_btn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="ip-order"
+        />
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeFn()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

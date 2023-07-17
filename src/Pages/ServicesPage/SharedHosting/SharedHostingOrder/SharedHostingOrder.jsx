@@ -3,7 +3,7 @@ import { BreadCrumbs, Select, TarifCard, Button } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { userOperations, vhostOperations } from '@redux'
+import { cartActions, userOperations, vhostOperations } from '@redux'
 import { useScrollToElement, translatePeriod } from '@utils'
 import * as routes from '@src/routes'
 
@@ -38,8 +38,9 @@ export default function Component() {
 
   const isVhostOrderAllowed = location?.state?.isVhostOrderAllowed
 
-  const [scrollElem, runScroll] = useScrollToElement({ condition: paramsData && period !== '-100' })
-
+  const [scrollElem, runScroll] = useScrollToElement({
+    condition: paramsData && period !== '-100',
+  })
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
@@ -48,6 +49,15 @@ export default function Component() {
       dispatch(vhostOperations.orderVhost({}, setData))
     } else {
       navigate(routes.SHARED_HOSTING, { replace: true })
+    }
+
+    if (location?.state?.isBasket) {
+      dispatch(
+        cartActions.setCartIsOpenedState({
+          isOpened: true,
+          redirectPath: routes.SHARED_HOSTING,
+        }),
+      )
     }
   }, [])
 

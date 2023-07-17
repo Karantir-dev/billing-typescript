@@ -520,7 +520,7 @@ const orderSiteCarePricelist =
   }
 
 const getInsruction =
-  (body = {}, setInstructionModal, setInstructionData) =>
+  (body = {}, setInstructionData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -550,7 +550,6 @@ const getInsruction =
           )
           return dispatch(actions.hideLoader())
         }
-        setInstructionModal && setInstructionModal(true)
         setInstructionData && setInstructionData(response?.data)
 
         dispatch(actions.hideLoader())

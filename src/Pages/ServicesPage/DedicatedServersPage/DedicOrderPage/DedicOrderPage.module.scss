@@ -106,7 +106,8 @@
   margin-left: 15px;
 }
 .select {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  width: 242px;
 }
 
 .dedic-swip .tarifs_block {
@@ -351,7 +352,7 @@
   line-height: 45px;
 }
 .input_field_wrapper {
-  margin-bottom: 15px;
+  width: 242px;
 }
 
 .software_OS_List {
@@ -417,13 +418,14 @@
   }
 
   .parameters_wrapper {
-    display: grid;
-    grid-template-columns: repeat(2, 241px);
+    display: flex;
+    flex-wrap: wrap;
     align-items: start;
     grid-auto-rows: max-content;
     grid-column-gap: 24px;
     grid-row-gap: 5px;
     margin-bottom: 35px;
+    // grid-template-columns: repeat(2, 241px);
   }
 
   .terms_text {
@@ -497,10 +499,6 @@
   .tarif_card {
     width: 240px;
   }
-
-  .select {
-    margin-bottom: 40px;
-  }
 }
 
 @media screen and (min-width: 1000px) {
@@ -529,6 +527,10 @@
   }
   .terms_block {
     margin-bottom: 0px;
+  }
+  .input_field_wrapper,
+  .select {
+    width: 218px;
   }
 }
 
@@ -566,6 +568,10 @@
     margin: 0 auto;
     padding: 0 60px 0 200px;
     width: 100%;
+  }
+
+  .parameters_wrapper {
+    grid-column-gap: 15px;
   }
 }
 

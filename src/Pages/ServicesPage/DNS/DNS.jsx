@@ -9,17 +9,16 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  Backdrop,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
   DNSList,
   DNSEditModal,
-  DNSInstructionModal,
   DNSFiltersModal,
   Portal,
   Pagination,
   CheckBox,
+  InstructionModal,
 } from '@components'
 import { dnsOperations, dnsSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -367,42 +366,48 @@ export default function DNS() {
         </p>
       </div>
 
-      <Backdrop onClick={() => null} isOpened={Boolean(elidForEditModal)}>
-        <DNSEditModal elid={elidForEditModal} closeFn={() => setElidForEditModal(0)} />
-      </Backdrop>
+      {!!elidForEditModal && (
+        <DNSEditModal
+          elid={elidForEditModal}
+          closeModal={() => setElidForEditModal(0)}
+          isOpen
+        />
+      )}
 
-      <Backdrop
-        onClick={() => setElidForProlongModal([])}
-        isOpened={elidForProlongModal.length > 0}
-      >
+      {!!elidForProlongModal.length > 0 && (
         <ProlongModal
           elidList={elidForProlongModal}
-          closeFn={() => setElidForProlongModal([])}
+          closeModal={() => setElidForProlongModal([])}
           pageName="dns"
           names={getServerName(elidForProlongModal)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForHistoryModal('')}
-        isOpened={Boolean(elidForHistoryModal)}
-      >
+      {!!elidForHistoryModal && (
         <DedicsHistoryModal
           elid={elidForHistoryModal}
           name={getServerName(elidForHistoryModal)}
-          closeFn={() => setElidForHistoryModal(0)}
+          closeModal={() => setElidForHistoryModal(0)}
+          isOpen
         />
-      </Backdrop>
+      )}
 
-      <Backdrop
-        onClick={() => setElidForInstructionModal(0)}
-        isOpened={Boolean(elidForInstructionModal)}
-      >
-        <DNSInstructionModal
-          elid={elidForInstructionModal}
-          closeFn={() => setElidForInstructionModal(0)}
+      {!!elidForInstructionModal && (
+        <InstructionModal
+          title={t('DNS-hosting activation', { ns: 'other' })}
+          closeModal={() => setElidForInstructionModal(0)}
+          dispatchInstruction={setInstruction =>
+            dispatch(
+              dnsOperations.getServiceInstruction(
+                elidForInstructionModal,
+                setInstruction,
+              ),
+            )
+          }
+          isOpen
         />
-      </Backdrop>
+      )}
     </>
   )
 }

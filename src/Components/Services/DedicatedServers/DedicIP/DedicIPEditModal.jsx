@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 
 import s from './DedicIPEditModal.module.scss'
 
-import { Button, Icon, InputField } from '@components'
+import { Button, InputField, Modal } from '@components'
 import { useLocation } from 'react-router-dom'
 import { dedicOperations } from '@redux'
 
@@ -42,36 +42,25 @@ export default function DedicIPEditModal({ elid, closeFn }) {
   })
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
-        <div className={s.title_wrapper}>
-          <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
-          <span className={s.ip_id}>{initialState?.domain_name?.$}</span>
-        </div>
-        <Icon
-          name="Cross"
-          className={s.icon_cross}
-          onClick={closeFn}
-          width={17}
-          height={17}
-        />
-      </div>
-
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          domainname: initialState?.domain?.$ || '',
-          mask: initialState?.mask?.$ || '',
-          gateway: initialState?.gateway?.$ || '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, errors, touched }) => {
-          return (
-            <Form>
-              <div className={s.form}>
-                <div className={s.parameters_block}>
+    <Modal closeModal={closeFn} isOpen className={s.modal}>
+      <Modal.Header>
+        <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
+        <span className={s.ip_id}>{initialState?.domain_name?.$}</span>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            domainname: initialState?.domain?.$ || '',
+            mask: initialState?.mask?.$ || '',
+            gateway: initialState?.gateway?.$ || '',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched }) => {
+            return (
+              <Form id="edit-ip">
                   <div className={s.parameters_wrapper}>
                     <div className={s.main_block}>
                       <InputField
@@ -112,31 +101,30 @@ export default function DedicIPEditModal({ elid, closeFn }) {
                       />
                     </div>
                   </div>
-                </div>
-                <div className={s.btns_wrapper}>
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('Save', { ns: 'other' })}
-                    type="submit"
-                  />
-
-                  <button
-                    onClick={e => {
-                      e.preventDefault()
-                      closeFn()
-                    }}
-                    className={s.cancel_btn}
-                  >
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
-                </div>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        <Button
+          className={s.buy_btn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="edit-ip"
+        />
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeFn()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }

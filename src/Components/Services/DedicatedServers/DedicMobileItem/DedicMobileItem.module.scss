@@ -20,9 +20,12 @@
 }
 
 .value {
-  padding: 0 10px;
   font-size: 15px;
   overflow: hidden;
+
+  &_edit {
+    margin: 0 -10px;
+  }
 }
 
 .price {
@@ -131,8 +134,4 @@
 .HintWrapper {
   max-width: 300px !important;
   white-space: break-all;
-}
-
-.edit_cell {
-  margin: 0 -10px;
 }
