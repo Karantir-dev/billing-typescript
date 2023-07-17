@@ -107,10 +107,10 @@ export default function DedicOrderPage() {
     if (Array.isArray(el.filter.tag)) {
       let filterList = el.filter.tag
 
-      let hasListFilter = filterList.some(filter => filters.includes(filter.$))
+      let hasListFilter = filterList.some(filter => filters.includes(filter.$key))
       return hasListFilter
     } else {
-      return filters?.includes(el.filter.tag.$)
+      return filters?.includes(el.filter.tag.$key)
     }
   })
 
@@ -254,12 +254,8 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     const newArrTarifList = tarifsList?.tarifList?.map(e => {
-      const tag = []
-      tarifsList?.fpricelist?.forEach(plist => {
-        if (e?.desc?.$?.includes(plist?.$)) {
-          tag?.push({ $: plist?.$key })
-        }
-      })
+      const tag = tarifsList?.fpricelist.filter(plist => e.desc.$.includes(plist.$))
+
       return { ...e, filter: { tag } }
     })
 
@@ -319,7 +315,6 @@ export default function DedicOrderPage() {
     )
   }
 
-  console.log(filters, 'filters')
   return (
     <div className={s.modalHeader}>
       <BreadCrumbs pathnames={parseLocations()} />
