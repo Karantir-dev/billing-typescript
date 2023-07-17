@@ -93,7 +93,7 @@ const Component = () => {
     <Container>
       <EmailTrigger />
       <Routes>
-        <Route path={route.HOME} element={<Navigate to={route.SERVICES} />} />
+        <Route path={route.HOME} element={<Navigate to={route.SERVICES} replace={true} />} />
         <Route path={route.SERVICES} element={<ServicesPageLazy />} />
         <Route path={route.VPS} element={<VDSPageLazy />} />
         <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />

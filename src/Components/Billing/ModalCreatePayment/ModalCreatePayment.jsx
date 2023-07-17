@@ -13,17 +13,21 @@ import {
   SelectGeo,
   Modal,
   Icon,
+  CustomPhoneInput,
 } from '@components'
 import {
   billingOperations,
+  settingsOperations,
   billingSelectors,
   payersOperations,
   payersSelectors,
   authSelectors,
+  settingsSelectors,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { QIWI_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -62,9 +66,36 @@ export default function Component(props) {
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
   const [payerFieldList, setPayerFieldList] = useState(null)
 
+  const [isYouKassa, setIsYouKassa] = useState(false)
+  const [countryCode, setCountryCode] = useState(null)
+  const [phone, setPhone] = useState('')
+
+  const userEdit = useSelector(settingsSelectors.getUserEdit)
+
   useEffect(() => {
     dispatch(billingOperations.getPayers())
+    dispatch(settingsOperations.getUserEdit())
   }, [])
+
+  useEffect(() => {
+    if (slecetedPayMethod?.name.$ === 'ЮKassa') {
+      setIsYouKassa(true)
+    } else {
+      setIsYouKassa(false)
+    }
+  }, [slecetedPayMethod])
+
+  useEffect(() => {
+    if (userEdit) {
+      const findCountry = userEdit?.phone_countries?.find(
+        e => e?.$key === userEdit?.phone_country,
+      )
+      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
+      const countryCode = QIWI_PHONE_COUNTRIES.find(el => el === code)
+
+      setCountryCode(countryCode || 'lt')
+    }
+  }, [userEdit])
 
   useEffect(() => {
     if (payersList && payersSelectLists) {
@@ -149,6 +180,10 @@ export default function Component(props) {
         : 'off',
     }
 
+    if (isYouKassa) {
+      data['phone'] = values?.phone
+    }
+
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
@@ -175,6 +210,9 @@ export default function Component(props) {
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
+    phone:
+      isYouKassa &&
+      Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
   })
 
   return (
@@ -220,10 +258,11 @@ export default function Component(props) {
                   )[0]?.$,
                   value: paymentsCurrency?.payment_currency,
                 },
+                phone: phone || '',
               }}
               onSubmit={createPaymentMethodHandler}
             >
-              {({ values, setFieldValue, touched, errors }) => {
+              {({ values, setFieldValue, touched, errors, handleBlur }) => {
                 const parsePaymentInfo = text => {
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
@@ -442,7 +481,23 @@ export default function Component(props) {
                               onChange={e => setCompany(e.target.value)}
                             />
                           ) : null}
-
+                          {isYouKassa && (
+                            <CustomPhoneInput
+                              inputWrapperClass={s.inputHeight}
+                              label={`${t('Phone', { ns: 'other' })}:`}
+                              name="phone"
+                              setFieldValue={(name, value) => {
+                                setFieldValue(name, value)
+                                setPhone(value)
+                              }}
+                              value={values.phone}
+                              handleBlur={handleBlur}
+                              isRequired
+                              setCountryCode={setCountryCode}
+                              onlyCountries={QIWI_PHONE_COUNTRIES}
+                              country={countryCode}
+                            />
+                          )}
                           {values?.profiletype === '1' && payersList?.length !== 0 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}

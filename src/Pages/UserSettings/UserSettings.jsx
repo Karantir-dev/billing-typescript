@@ -70,7 +70,7 @@ export default function Component() {
   // }, [isComponentAllowedToRender])
 
   if (location.pathname === route.USER_SETTINGS) {
-    return <Navigate to={`${route.USER_SETTINGS}/personal`} />
+    return <Navigate to={`${route.USER_SETTINGS}/personal`} replace/>
   }
 
   const renderPage = path => {
@@ -84,7 +84,7 @@ export default function Component() {
   }
 
   if (!isComponentAllowedToRender) {
-    return <Navigate to={route.HOME} />
+    return <Navigate to={route.HOME} replace />
   }
 
   return (
