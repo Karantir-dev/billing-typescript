@@ -23,18 +23,26 @@ import {
   payersSelectors,
   authSelectors,
   settingsSelectors,
+  cartOperations,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
-import { QIWI_PHONE_COUNTRIES } from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['billing', 'other', 'payers', 'cart', 'domains'])
+  const { t } = useTranslation([
+    'billing',
+    'other',
+    'payers',
+    'cart',
+    'domains',
+    'user_settings',
+  ])
 
   const { setCreatePaymentModal } = props
 
@@ -60,17 +68,23 @@ export default function Component(props) {
   const [profileType, setProfileType] = useState('')
   const [company, setCompany] = useState('')
   const [euVat, setEUVat] = useState('')
+  const [additionalPayMethodts, setAdditionalPayMethodts] = useState(undefined)
+  const [selectedAddPaymentMethod, setSelectedAddPaymentMethod] = useState(undefined)
 
   const dropdownDescription = useRef(null)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
   const [payerFieldList, setPayerFieldList] = useState(null)
 
-  const [isYouKassa, setIsYouKassa] = useState(false)
   const [countryCode, setCountryCode] = useState(null)
   const [phone, setPhone] = useState('')
+  const [alfaLogin, setAlfaLogin] = useState('')
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+
+  const filteredPayment_method = additionalPayMethodts?.find(
+    e => e?.$key === selectedAddPaymentMethod,
+  )
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
@@ -78,12 +92,10 @@ export default function Component(props) {
   }, [])
 
   useEffect(() => {
-    if (slecetedPayMethod?.paymethod.$ === '90') {
-      setIsYouKassa(true)
-    } else {
-      setIsYouKassa(false)
+    if (additionalPayMethodts && additionalPayMethodts?.length > 0) {
+      setSelectedAddPaymentMethod(additionalPayMethodts[0]?.$key)
     }
-  }, [slecetedPayMethod])
+  }, [additionalPayMethodts])
 
   useEffect(() => {
     if (userEdit) {
@@ -180,8 +192,16 @@ export default function Component(props) {
         : 'off',
     }
 
-    if (isYouKassa) {
+    if (values?.payment_method) {
+      data['payment_method'] = values?.payment_method
+    }
+
+    if (values?.phone && values?.phone?.length > 0) {
       data['phone'] = values?.phone
+    }
+
+    if (values?.alfabank_login && values?.alfabank_login?.length > 0) {
+      data['alfabank_login'] = values?.alfabank_login
     }
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
@@ -209,10 +229,27 @@ export default function Component(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
+    payment_method:
+      additionalPayMethodts && additionalPayMethodts?.length > 0
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     phone:
-      isYouKassa &&
-      Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
+      !filteredPayment_method?.hide?.includes('phone') &&
+      filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string()
+            .phone(
+              countryCode,
+              false,
+              t('Must be a valid phone number', { ns: 'user_settings' }),
+            )
+            .required(t('Is a required field', { ns: 'other' }))
+        : null,
+    alfabank_login:
+      filteredPayment_method?.hide?.includes('phone') &&
+      !filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   return (
@@ -259,6 +296,8 @@ export default function Component(props) {
                   value: paymentsCurrency?.payment_currency,
                 },
                 phone: phone || '',
+                payment_method: selectedAddPaymentMethod || undefined,
+                alfabank_login: alfaLogin || '',
               }}
               onSubmit={createPaymentMethodHandler}
             >
@@ -407,6 +446,16 @@ export default function Component(props) {
                   dispatch(payersOperations.getPayerModalInfo(data))
                 }
 
+                const renderPhoneList = paymethod => {
+                  if (paymethod === 'qiwi') {
+                    return QIWI_PHONE_COUNTRIES
+                  } else if (paymethod === 'sberbank') {
+                    return SBER_PHONE_COUNTRIES
+                  } else {
+                    return []
+                  }
+                }
+
                 return (
                   <Form id="payment">
                     <ScrollToFieldError />
@@ -426,8 +475,17 @@ export default function Component(props) {
                               onClick={() => {
                                 setFieldValue('slecetedPayMethod', method)
                                 setSlecetedPayMethod(method)
+                                setSelectedAddPaymentMethod(undefined)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
+                                dispatch(
+                                  cartOperations.getPayMethodItem(
+                                    {
+                                      paymethod: method?.paymethod?.$,
+                                    },
+                                    setAdditionalPayMethodts,
+                                  ),
+                                )
                               }}
                               type="button"
                               className={cn(s.paymentMethodBtn, {
@@ -443,6 +501,70 @@ export default function Component(props) {
                             </button>
                           )
                         })}
+                      </div>
+                      <div className={s.additionalPayMethodBlock}>
+                        {additionalPayMethodts && additionalPayMethodts?.length > 1 && (
+                          <Select
+                            placeholder={t('Not chosen', { ns: 'other' })}
+                            label={`${t('Payment method')} Yookasa:`}
+                            value={values.payment_method}
+                            getElement={item => {
+                              setFieldValue('payment_method', item)
+                              setSelectedAddPaymentMethod(item)
+                            }}
+                            isShadow
+                            className={cn(s.select, s.additionalSelectPayMentMethod)}
+                            dropdownClass={s.selectDropdownClass}
+                            itemsList={additionalPayMethodts?.map(({ $key, $ }) => ({
+                              label: t(`${$.trim()}`, { ns: 'billing' }),
+                              value: $key,
+                            }))}
+                            error={errors.payment_method}
+                            isRequired
+                          />
+                        )}
+
+                        {filteredPayment_method?.hide?.includes('phone') &&
+                          !filteredPayment_method?.hide?.includes('alfabank_login') && (
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="alfabank_login"
+                              label={`${t('Имя пользователя в Альфа-Клик', {
+                                ns: 'payers',
+                              })}:`}
+                              placeholder={t('Enter data', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.additionalSelectPayMentMethod)}
+                              error={!!errors.alfabank_login}
+                              touched={!!touched.alfabank_login}
+                              isRequired
+                              onChange={e => setAlfaLogin(e.target.value)}
+                            />
+                          )}
+
+                        {!filteredPayment_method?.hide?.includes('phone') &&
+                          filteredPayment_method?.hide?.includes('alfabank_login') && (
+                            <CustomPhoneInput
+                              containerClass={s.inputHeight}
+                              wrapperClass={s.inputBig}
+                              inputClass={s.phoneInputClass}
+                              value={values.phone}
+                              labelClass={s.phoneInputLabel}
+                              label={`${t('Phone', { ns: 'other' })}:`}
+                              handleBlur={handleBlur}
+                              setFieldValue={(name, value) => {
+                                setFieldValue(name, value)
+                                setPhone(value)
+                              }}
+                              name="phone"
+                              onlyCountries={renderPhoneList(
+                                filteredPayment_method?.$key,
+                              )}
+                              isRequired
+                              setCountryCode={setCountryCode}
+                              country={countryCode}
+                            />
+                          )}
                       </div>
                       <ErrorMessage
                         className={s.error_message}
@@ -481,24 +603,6 @@ export default function Component(props) {
                               onChange={e => setCompany(e.target.value)}
                             />
                           ) : null}
-                          {isYouKassa && (
-                            <CustomPhoneInput
-                              containerClass={s.inputHeight}
-                              wrapperClass={s.inputBig}
-                              label={`${t('Phone', { ns: 'other' })}:`}
-                              name="phone"
-                              setFieldValue={(name, value) => {
-                                setFieldValue(name, value)
-                                setPhone(value)
-                              }}
-                              value={values.phone}
-                              handleBlur={handleBlur}
-                              isRequired
-                              setCountryCode={setCountryCode}
-                              onlyCountries={QIWI_PHONE_COUNTRIES}
-                              country={countryCode}
-                            />
-                          )}
                           {values?.profiletype === '1' && payersList?.length !== 0 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}

@@ -7,7 +7,7 @@ import { API_URL, SITE_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
-const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatch => {
+const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin) => dispatch => {
   dispatch(actions.showLoader())
   cookies.eraseCookie('sessionId')
 
@@ -62,6 +62,7 @@ const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha) => dispatc
           dispatch(authActions.loginSuccess(sessionId))
           dispatch(authActions.isLogined(true))
           dispatch(userOperations.getUserInfo(sessionId))
+          navigateAfterLogin && navigateAfterLogin()
         })
     })
     .catch(error => {

@@ -39,7 +39,7 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn } from '@utils'
-import { QIWI_PHONE_COUNTRIES } from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -94,9 +94,15 @@ export default function Component() {
   const [euVat, setEUVat] = useState('')
   const [promocode, setPromocode] = useState('')
   const [isPhoneVerification, setIsPhoneVerification] = useState(false)
-  const [isYouKassa, setIsYouKassa] = useState(false)
   const [countryCode, setCountryCode] = useState(null)
   const [phone, setPhone] = useState('')
+  const [additionalPayMethodts, setAdditionalPayMethodts] = useState(undefined)
+  const [selectedAddPaymentMethod, setSelectedAddPaymentMethod] = useState(undefined)
+  const [alfaLogin, setAlfaLogin] = useState('')
+
+  const filteredPayment_method = additionalPayMethodts?.find(
+    e => e?.$key === selectedAddPaymentMethod,
+  )
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
 
@@ -112,12 +118,10 @@ export default function Component() {
   }, [])
 
   useEffect(() => {
-    if (selectedPayMethod?.name.$ === 'ЮKassa') {
-      setIsYouKassa(true)
-    } else {
-      setIsYouKassa(false)
+    if (additionalPayMethodts && additionalPayMethodts?.length > 0) {
+      setSelectedAddPaymentMethod(additionalPayMethodts[0]?.$key)
     }
-  }, [selectedPayMethod])
+  }, [additionalPayMethodts])
 
   useEffect(() => {
     if (cartData && !isPhoneVerification) {
@@ -227,10 +231,28 @@ export default function Component() {
             then: Yup.string().required(t('Is a required field', { ns: 'other' })),
           })
         : null,
-    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
+
+    payment_method:
+      additionalPayMethodts && additionalPayMethodts?.length > 0
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     phone:
-      isYouKassa &&
-      Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
+      !filteredPayment_method?.hide?.includes('phone') &&
+      filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string()
+            .phone(
+              countryCode,
+              false,
+              t('Must be a valid phone number', { ns: 'user_settings' }),
+            )
+            .required(t('Is a required field', { ns: 'other' }))
+        : null,
+    alfabank_login:
+      filteredPayment_method?.hide?.includes('phone') &&
+      !filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
+    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   const setPromocodeToCart = promocode => {
@@ -296,8 +318,16 @@ export default function Component() {
       data['clicked_button'] = 'fromsubaccount'
     }
 
-    if (isYouKassa) {
+    if (values?.payment_method) {
+      data['payment_method'] = values?.payment_method
+    }
+
+    if (values?.phone && values?.phone?.length > 0) {
       data['phone'] = values?.phone
+    }
+
+    if (values?.alfabank_login && values?.alfabank_login?.length > 0) {
+      data['alfabank_login'] = values?.alfabank_login
     }
 
     const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
@@ -961,6 +991,8 @@ export default function Component() {
                       ? 'on'
                       : 'off',
                   phone: phone || '',
+                  payment_method: selectedAddPaymentMethod || undefined,
+                  alfabank_login: alfaLogin || '',
                 }}
                 onSubmit={payBasketHandler}
               >
@@ -968,7 +1000,9 @@ export default function Component() {
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
-                      const minAmount = splittedText[0]?.replace('\n', '').replace(/&nbsp;/g, ' ')
+                      const minAmount = splittedText[0]
+                        ?.replace('\n', '')
+                        .replace(/&nbsp;/g, ' ')
 
                       let infoText = ''
 
@@ -1042,6 +1076,16 @@ export default function Component() {
                     dispatch(payersOperations.getPayerModalInfo(data))
                   }
 
+                  const renderPhoneList = paymethod => {
+                    if (paymethod === 'qiwi') {
+                      return QIWI_PHONE_COUNTRIES
+                    } else if (paymethod === 'sberbank') {
+                      return SBER_PHONE_COUNTRIES
+                    } else {
+                      return []
+                    }
+                  }
+
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
@@ -1073,7 +1117,15 @@ export default function Component() {
                                     onClick={() => {
                                       setFieldValue('selectedPayMethod', method)
                                       setSelectedPayMethod(method)
-
+                                      setSelectedAddPaymentMethod(undefined)
+                                      dispatch(
+                                        cartOperations.getPayMethodItem(
+                                          {
+                                            paymethod: method?.paymethod?.$,
+                                          },
+                                          setAdditionalPayMethodts,
+                                        ),
+                                      )
                                       if (
                                         method?.name?.$?.includes('balance') &&
                                         method?.paymethod_type?.$ === '0'
@@ -1112,6 +1164,73 @@ export default function Component() {
                             </div>
                           </>
                         )}
+                        <div className={s.additionalPayMethodBlock}>
+                          {additionalPayMethodts && additionalPayMethodts?.length > 1 && (
+                            <Select
+                              placeholder={t('Not chosen', { ns: 'other' })}
+                              label={`${t('Payment method')} Yookasa:`}
+                              value={values.payment_method}
+                              getElement={item => {
+                                setFieldValue('payment_method', item)
+                                setSelectedAddPaymentMethod(item)
+                              }}
+                              isShadow
+                              className={cn(s.select, s.additionalSelectPayMentMethod)}
+                              dropdownClass={s.selectDropdownClass}
+                              itemsList={additionalPayMethodts?.map(({ $key, $ }) => ({
+                                label: t(`${$.trim()}`, { ns: 'billing' }),
+                                value: $key,
+                              }))}
+                              error={errors.payment_method}
+                              isRequired
+                            />
+                          )}
+
+                          {filteredPayment_method?.hide?.includes('phone') &&
+                            !filteredPayment_method?.hide?.includes('alfabank_login') && (
+                              <InputField
+                                inputWrapperClass={s.inputHeight}
+                                name="alfabank_login"
+                                label={`${t('Имя пользователя в Альфа-Клик', {
+                                  ns: 'payers',
+                                })}:`}
+                                placeholder={t('Enter data', { ns: 'other' })}
+                                isShadow
+                                className={cn(
+                                  s.inputBig,
+                                  s.additionalSelectPayMentMethod,
+                                )}
+                                error={!!errors.alfabank_login}
+                                touched={!!touched.alfabank_login}
+                                isRequired
+                                onChange={e => setAlfaLogin(e.target.value)}
+                              />
+                            )}
+
+                          {!filteredPayment_method?.hide?.includes('phone') &&
+                            filteredPayment_method?.hide?.includes('alfabank_login') && (
+                              <CustomPhoneInput
+                                containerClass={s.inputHeight}
+                                wrapperClass={s.inputBig}
+                                inputClass={s.phoneInputClass}
+                                value={values.phone}
+                                labelClass={s.phoneInputLabel}
+                                label={`${t('Phone', { ns: 'other' })}:`}
+                                handleBlur={handleBlur}
+                                setFieldValue={(name, value) => {
+                                  setFieldValue(name, value)
+                                  setPhone(value)
+                                }}
+                                name="phone"
+                                onlyCountries={renderPhoneList(
+                                  filteredPayment_method?.$key,
+                                )}
+                                isRequired
+                                setCountryCode={setCountryCode}
+                                country={countryCode}
+                              />
+                            )}
+                        </div>
 
                         <ErrorMessage
                           className={s.error_message}
@@ -1151,23 +1270,6 @@ export default function Component() {
                                 onChange={e => setCompany(e.target.value)}
                               />
                             ) : null}
-                            {isYouKassa && (
-                              <CustomPhoneInput
-                                inputWrapperClass={s.inputHeight}
-                                label={`${t('Phone', { ns: 'other' })}:`}
-                                name="phone"
-                                setFieldValue={(name, value) => {
-                                  setFieldValue(name, value)
-                                  setPhone(value)
-                                }}
-                                value={values.phone}
-                                handleBlur={handleBlur}
-                                isRequired
-                                setCountryCode={setCountryCode}
-                                onlyCountries={QIWI_PHONE_COUNTRIES}
-                                country={countryCode}
-                              />
-                            )}
                             {values?.profiletype === '1' && payersList?.length !== 0 && (
                               <Select
                                 placeholder={t('Not chosen', { ns: 'other' })}

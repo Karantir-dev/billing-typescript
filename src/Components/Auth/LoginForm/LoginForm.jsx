@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -43,13 +43,20 @@ export default function LoginForm() {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
   // }, [])
 
+  const navigate = useNavigate()
+
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
 
-    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
+    const navigateAfterLogin = () =>
+      navigate(routes.SERVICES, {
+        replace: true,
+      })
+
+    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin))
   }
 
   const handleUserKeyPress = e => {
