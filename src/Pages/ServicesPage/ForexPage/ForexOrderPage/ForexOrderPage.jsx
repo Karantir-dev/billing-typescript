@@ -222,12 +222,16 @@ export default function ForexOrderPage() {
                       const selected = el?.$key === values.datacenter
                       let flag = <Icon name="Germany" />
                       let name = el?.$
+                      console.log(name, ' name');
                       if (el?.$?.toLocaleLowerCase()?.includes('germany')) {
                         flag = <Icon name="Germany" />
-                        name = 'Germany'
+                        name = 'GE'
                       } else if (el?.$?.toLocaleLowerCase()?.includes('usa')) {
                         flag = <Icon name="Usa" />
-                        name = 'USA'
+                        name = 'US'
+                      }  else if (el?.$?.toLocaleLowerCase()?.includes('singapore')) {
+                        flag = <Icon name="Singapore" />
+                        name = 'SG'
                       }
                       return (
                         <button
@@ -247,7 +251,7 @@ export default function ForexOrderPage() {
                           disabled={selected}
                         >
                           {flag}
-                          <span>{t(name, { ns: 'countries' })}</span>
+                          <span>{name}</span>
                         </button>
                       )
                     })}
