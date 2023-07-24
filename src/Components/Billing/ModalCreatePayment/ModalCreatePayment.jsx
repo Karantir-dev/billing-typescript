@@ -78,7 +78,7 @@ export default function Component(props) {
   }, [])
 
   useEffect(() => {
-    if (slecetedPayMethod?.name.$ === 'ЮKassa') {
+    if (slecetedPayMethod?.paymethod.$ === '90') {
       setIsYouKassa(true)
     } else {
       setIsYouKassa(false)
@@ -483,7 +483,8 @@ export default function Component(props) {
                           ) : null}
                           {isYouKassa && (
                             <CustomPhoneInput
-                              inputWrapperClass={s.inputHeight}
+                              containerClass={s.inputHeight}
+                              wrapperClass={s.inputBig}
                               label={`${t('Phone', { ns: 'other' })}:`}
                               name="phone"
                               setFieldValue={(name, value) => {
