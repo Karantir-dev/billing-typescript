@@ -59,3 +59,6 @@ export const QIWI_PHONE_COUNTRIES = [
   'kr',
   'kg',
 ]
+
+// phone countries for yookassa payment method (SberPay)
+export const SBER_PHONE_COUNTRIES = ['ru']

@@ -132,6 +132,13 @@
   }
 }
 
+.additionalPayMethodBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
 .btnBlock {
   margin-top: 17px;
   display: flex;
@@ -609,7 +616,7 @@
     z-index: 2;
     padding: 12px 12px 12px 0px;
     cursor: pointer;
-    
+
     .descriptionBlock {
       right: 0;
     }
@@ -698,6 +705,15 @@
 }
 
 @media screen and (min-width: 768px) {
+  .additionalPayMethodBlock {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 14px;
+
+    margin-top: 15px;
+  }
   .fieldsGrid {
     grid-template-columns: 1fr 1fr;
   }
