@@ -1220,7 +1220,7 @@ export default function Component() {
                           {!filteredPayment_method?.hide?.includes('phone') &&
                             filteredPayment_method?.hide?.includes('alfabank_login') && (
                               <CustomPhoneInput
-                                containerClass={s.inputHeight}
+                                containerClass={cn(s.inputHeight, 'cartModal')}
                                 wrapperClass={s.inputBig}
                                 inputClass={s.phoneInputClass}
                                 value={values.phone}
