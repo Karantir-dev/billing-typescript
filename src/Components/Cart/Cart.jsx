@@ -94,6 +94,7 @@ export default function Component() {
   const [euVat, setEUVat] = useState('')
   const [promocode, setPromocode] = useState('')
   const [isPhoneVerification, setIsPhoneVerification] = useState(false)
+  const [userCountryCode, setUserCountryCode] = useState(null)
   const [countryCode, setCountryCode] = useState(null)
   const [phone, setPhone] = useState('')
   const [additionalPayMethodts, setAdditionalPayMethodts] = useState(undefined)
@@ -195,9 +196,7 @@ export default function Component() {
         e => e?.$key === userEdit?.phone_country,
       )
       const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      const countryCode = QIWI_PHONE_COUNTRIES.find(el => el === code)
-
-      setCountryCode(countryCode || 'lt')
+      setUserCountryCode(code)
     }
   }, [userEdit])
 
@@ -1086,6 +1085,12 @@ export default function Component() {
                     }
                   }
 
+                  const setCode = list => {
+                    const country = list.find(el => el === userCountryCode) || list[0]
+                    setPhone('')
+                    setCountryCode(country)
+                  }
+
                   return (
                     <Form className={s.form}>
                       <ScrollToFieldError />
@@ -1118,6 +1123,11 @@ export default function Component() {
                                       setFieldValue('selectedPayMethod', method)
                                       setSelectedPayMethod(method)
                                       setSelectedAddPaymentMethod(undefined)
+                                      if (paymethod.$ === '90') {
+                                        setCode(QIWI_PHONE_COUNTRIES)
+                                      } else if (paymethod.$ === '86') {
+                                        setCode(SBER_PHONE_COUNTRIES)
+                                      }
                                       dispatch(
                                         cartOperations.getPayMethodItem(
                                           {
