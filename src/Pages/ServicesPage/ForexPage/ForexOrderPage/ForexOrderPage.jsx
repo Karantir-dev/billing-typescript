@@ -217,17 +217,20 @@ export default function ForexOrderPage() {
               {tarifList?.datacenter?.length > 0 && (
                 <div>
                   <span>{t('datacenter', { ns: 'dedicated_servers' })}:</span>
-                  <div className={classNames(s.countyBtnsBlock)}>
+                  <div className={classNames(s.countryBtnsBlock)}>
                     {tarifList?.datacenter?.map(el => {
                       const selected = el?.$key === values.datacenter
                       let flag = <Icon name="Germany" />
                       let name = el?.$
                       if (el?.$?.toLocaleLowerCase()?.includes('germany')) {
                         flag = <Icon name="Germany" />
-                        name = 'Germany'
+                        name = 'GE'
                       } else if (el?.$?.toLocaleLowerCase()?.includes('usa')) {
                         flag = <Icon name="Usa" />
-                        name = 'USA'
+                        name = 'US'
+                      }  else if (el?.$?.toLocaleLowerCase()?.includes('singapore')) {
+                        flag = <Icon name="Singapore" />
+                        name = 'SG'
                       }
                       return (
                         <button
@@ -240,14 +243,14 @@ export default function ForexOrderPage() {
                               }),
                             )
                           }}
-                          className={classNames(s.countyBtn, {
+                          className={classNames(s.countryBtn, {
                             [s.dt]: darkTheme,
                             [s.selected]: selected,
                           })}
                           disabled={selected}
                         >
                           {flag}
-                          <span>{t(name, { ns: 'countries' })}</span>
+                          <span>{name}</span>
                         </button>
                       )
                     })}

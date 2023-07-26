@@ -38,6 +38,7 @@ export const SOFTWARE_ICONS_LIST = [
 
 // phone countries for yookassa payment method (QIWI)
 export const QIWI_PHONE_COUNTRIES = [
+  'am',
   'az',
   'in',
   'ru',
@@ -49,7 +50,6 @@ export const QIWI_PHONE_COUNTRIES = [
   'th',
   'uz',
   'pa',
-  'am',
   'lv',
   'tr',
   'md',
@@ -59,3 +59,6 @@ export const QIWI_PHONE_COUNTRIES = [
   'kr',
   'kg',
 ]
+
+// phone countries for yookassa payment method (SberPay)
+export const SBER_PHONE_COUNTRIES = ['ru']
