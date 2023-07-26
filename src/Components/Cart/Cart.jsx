@@ -1123,10 +1123,13 @@ export default function Component() {
                                       setFieldValue('selectedPayMethod', method)
                                       setSelectedPayMethod(method)
                                       setSelectedAddPaymentMethod(undefined)
-                                      if (paymethod.$ === '90') {
+                                      if (paymethod?.$ === '90') {
                                         setCode(QIWI_PHONE_COUNTRIES)
-                                      } else if (paymethod.$ === '86') {
+                                      } else if (paymethod?.$ === '86') {
                                         setCode(SBER_PHONE_COUNTRIES)
+                                      } else if (paymethod?.$ === '87') {
+                                        setPhone('')
+                                        setCountryCode(userCountryCode)
                                       }
                                       dispatch(
                                         cartOperations.getPayMethodItem(
