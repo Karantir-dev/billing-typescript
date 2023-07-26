@@ -113,3 +113,4 @@ export { default as Home } from './svg/Home'
 export { default as Money } from './svg/Money'
 
 export { default as PhoneVerificationIcon } from './svg/PhoneVerificationIcon'
+export { default as Singapore } from './svg/Singapore'
