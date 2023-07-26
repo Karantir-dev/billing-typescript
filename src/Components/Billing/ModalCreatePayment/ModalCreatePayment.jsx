@@ -76,6 +76,7 @@ export default function Component(props) {
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
   const [payerFieldList, setPayerFieldList] = useState(null)
 
+  const [userCountryCode, setUserCountryCode] = useState(null)
   const [countryCode, setCountryCode] = useState(null)
   const [phone, setPhone] = useState('')
   const [alfaLogin, setAlfaLogin] = useState('')
@@ -103,9 +104,7 @@ export default function Component(props) {
         e => e?.$key === userEdit?.phone_country,
       )
       const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      const countryCode = QIWI_PHONE_COUNTRIES.find(el => el === code)
-
-      setCountryCode(countryCode || 'lt')
+      setUserCountryCode(code)
     }
   }, [userEdit])
 
@@ -456,6 +455,12 @@ export default function Component(props) {
                   }
                 }
 
+                const setCode = list => {
+                  const country = list.find(el => el === userCountryCode) || list[0]
+                  setPhone('')
+                  setCountryCode(country)
+                }
+
                 return (
                   <Form id="payment">
                     <ScrollToFieldError />
@@ -478,6 +483,11 @@ export default function Component(props) {
                                 setSelectedAddPaymentMethod(undefined)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
+                                if (paymethod.$ === '90') {
+                                  setCode(QIWI_PHONE_COUNTRIES)
+                                } else if (paymethod.$ === '86') {
+                                  setCode(SBER_PHONE_COUNTRIES)
+                                }
                                 dispatch(
                                   cartOperations.getPayMethodItem(
                                     {
@@ -545,7 +555,7 @@ export default function Component(props) {
                         {!filteredPayment_method?.hide?.includes('phone') &&
                           filteredPayment_method?.hide?.includes('alfabank_login') && (
                             <CustomPhoneInput
-                              containerClass={s.inputHeight}
+                              containerClass={cn(s.inputHeight, 'payModal')}
                               wrapperClass={s.inputBig}
                               inputClass={s.phoneInputClass}
                               value={values.phone}
