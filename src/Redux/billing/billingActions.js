@@ -2,6 +2,10 @@ import { createAction } from '@reduxjs/toolkit'
 
 const setPaymentsList = createAction('SET_PAYMENTS_LIST')
 const setPaymentsCount = createAction('SET_PAYMENTS_COUNT')
+const setPaymentsReadOnlyList = createAction('SET_PAYMENTS_READ_ONLY_LIST')
+const setPaymentsReadOnlyCount = createAction('SET_PAYMENTS_READ_ONLY_COUNT')
+const clearPaymentsReadOnlyList = createAction('CLEAR_PAYMENTS_READ_ONLY_LIST')
+const clearPaymentsReadOnlyCount = createAction('CLEAR_PAYMENTS_READ_ONLY_COUNT')
 
 const setPaymentsFiltersLists = createAction('SET_PAYMENTS_FILTERS_LISTS')
 const setPaymentsFilters = createAction('SET_PAYMENTS_FILTERS')
@@ -45,6 +49,10 @@ export default {
 
   setPaymentsList,
   setPaymentsCount,
+  setPaymentsReadOnlyList,
+  setPaymentsReadOnlyCount,
+  clearPaymentsReadOnlyList,
+  clearPaymentsReadOnlyCount,
   clearPaymentsList,
   clearPaymentsCount,
   deletePayment,

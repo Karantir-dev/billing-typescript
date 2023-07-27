@@ -304,9 +304,7 @@ export default function Header() {
                           onKeyDown={() => {}}
                           onClick={logOut}
                         >
-                          <NavLink to={routes.LOGIN}>
-                            <p className={s.exit_name}>{t('profile.log_out')}</p>
-                          </NavLink>
+                          <p className={s.exit_name}>{t('profile.log_out')}</p>
                         </div>
                       </li>
                     </ul>

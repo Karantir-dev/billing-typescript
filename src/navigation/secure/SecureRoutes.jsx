@@ -1,6 +1,13 @@
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 import {
   Cart,
   Container,
@@ -9,8 +16,14 @@ import {
   CartFromSite,
   EmailTrigger,
   MainEmailConfirmation,
+  PromotionBanner,
 } from '@components'
-import { cartSelectors } from '@redux'
+import {
+  cartSelectors,
+  cartOperations,
+  billingSelectors,
+  billingOperations,
+} from '@redux'
 import * as route from '@src/routes'
 import {
   ServicesPageLazy,
@@ -54,8 +67,53 @@ import {
 
 const Component = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
 
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
+  const [isShowPromotion, setIsShowPromotion] = useState(false)
+  const [salesList, setSalesList] = useState()
+  const [promotionType, setPromotionType] = useState(false)
+  const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
+
+  const searchParam = useRef(searchParams.get('func'))
+  const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
+
+  useEffect(() => {
+    dispatch(cartOperations.getSalesList(setSalesList))
+    dispatch(billingOperations.setPaymentsFilters({ status: '4' }, true))
+    const isBannerClosed = localStorage.getItem('isBannerClosed')
+    setIsUserClosedBanner(!!isBannerClosed)
+  }, [])
+
+  useEffect(() => {
+    if (isUserClosedBanner) return
+
+    const isPromotionActive = salesList?.some(el => {
+      return el.promotion.$ === 'test'
+    })
+
+    if (
+      !isPromotionActive &&
+      paymentsList?.length &&
+      salesList &&
+      searchParam.current === 'vhost.order.param'
+    ) {
+      setPromotionType('third')
+      setIsShowPromotion(true)
+      return
+    }
+
+    if (paymentsList?.length && isPromotionActive && salesList) {
+      setPromotionType('second')
+      setIsShowPromotion(true)
+    }
+
+    if (!paymentsList?.length && salesList) {
+      setPromotionType('first')
+      setIsShowPromotion(true)
+    }
+  }, [salesList, paymentsList])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
@@ -89,11 +147,19 @@ const Component = () => {
     return <Navigate to={route.VPS_IP} />
   }
 
+  const closePromotionBanner = () => setIsShowPromotion(false)
+
   return (
     <Container>
+      {isShowPromotion && promotionType && (
+        <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
+      )}
       <EmailTrigger />
       <Routes>
-        <Route path={route.HOME} element={<Navigate to={route.SERVICES} replace={true} />} />
+        <Route
+          path={route.HOME}
+          element={<Navigate to={route.SERVICES} replace={true} />}
+        />
         <Route path={route.SERVICES} element={<ServicesPageLazy />} />
         <Route path={route.VPS} element={<VDSPageLazy />} />
         <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />

@@ -208,6 +208,7 @@ export { default as InputWithAutocomplete } from './ui/InputWithAutocomplete/Inp
 export { default as ScrollToFieldError } from './ui/ScrollToFieldError'
 
 export { default as ContractItem } from './Contracts/ContractItem/ContractItem'
+export { default as PromotionBanner } from './PromotionBanner/PromotionBanner'
 
 //==========================================TrustedUsers==========================================//
 export { default as UserCard } from './TrustedUsers/UserCard/UserCard'
