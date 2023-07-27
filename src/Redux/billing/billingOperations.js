@@ -15,7 +15,7 @@ import { checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
-  (body = {}) =>
+  (body = {}, readOnly) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -41,7 +41,12 @@ const getPayments =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
-
+        if (readOnly) {
+          dispatch(billingActions.setPaymentsReadOnlyList(elem))
+          dispatch(billingActions.setPaymentsReadOnlyCount(count))
+          dispatch(getPaymentsFilters())
+          return
+        }
         dispatch(billingActions.setPaymentsList(elem))
         dispatch(billingActions.setPaymentsCount(count))
         dispatch(getPaymentsFilters())
@@ -103,7 +108,7 @@ const getPaymentsFilters = () => (dispatch, getState) => {
 }
 
 const setPaymentsFilters =
-  (body = {}) =>
+  (body = {}, readOnly) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -125,8 +130,7 @@ const setPaymentsFilters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(getPayments(body))
+        dispatch(getPayments(body, readOnly))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)

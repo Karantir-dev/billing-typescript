@@ -1,6 +1,9 @@
 const getPaymentsList = state => state.billing.paymentsList
 const getPaymentsCount = state => state.billing.paymentsCount
 
+const getPaymentsReadOnlyList = state => state.billing.paymentsReadOnlyList
+const getPaymentsReadOnlyCount = state => state.billing.paymentsReadOnlyCount
+
 const getPaymentsFiltersList = state => state.billing.paymentsFiltersList
 const getPaymentsFilters = state => state.billing.paymentsFilters
 
@@ -24,6 +27,9 @@ const getPeriodValue = state => state.billing.periodValue
 export default {
   getPaymentsList,
   getPaymentsCount,
+
+  getPaymentsReadOnlyList,
+  getPaymentsReadOnlyCount,
 
   getPaymentsFiltersList,
   getPaymentsFilters,

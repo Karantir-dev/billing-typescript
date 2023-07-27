@@ -5,7 +5,7 @@ import FilterModal from './FilterModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '@components'
 import { actions, supportOperations } from '@redux'
 import s from './SupportFilter.module.scss'
@@ -25,6 +25,7 @@ export default function Component(props) {
 
   const [createTicketModal, setCreateTicketModal] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     if (filterModal) {
@@ -39,6 +40,10 @@ export default function Component(props) {
 
   useEffect(() => {
     resetFilterHandler()
+
+    if (location.state?.openModal) {
+      setCreateTicketModal(true)
+    }
   }, [])
 
   const filterHandler = values => {
@@ -114,7 +119,7 @@ export default function Component(props) {
           )}
         </div>
         {params?.path === 'requests' && (
-          <HintWrapper 
+          <HintWrapper
             wrapperClassName={s.archiveBtn}
             popupClassName={s.archivePopUp}
             label={t('To the archive')}
