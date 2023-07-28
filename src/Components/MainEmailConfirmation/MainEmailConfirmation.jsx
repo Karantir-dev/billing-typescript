@@ -19,5 +19,5 @@ export default function MainEmailConfirmation() {
     }
   }, [])
 
-  return <Navigate to={isAuthenticated ? route.SERVICES : route.LOGIN} />
+  return <Navigate to={isAuthenticated ? route.SERVICES : route.LOGIN} replace={true} />
 }

@@ -115,7 +115,11 @@ export default function Component() {
               size="large"
               className={s.backBtn}
               label={t('Back', { ns: 'other' })}
-              onClick={() => navigate(`${route.SUPPORT}/${params.path}`)}
+              onClick={() =>
+                navigate(`${route.SUPPORT}/${params.path}`, {
+                  replace: true,
+                })
+              }
               type="button"
               // isShadow
             />

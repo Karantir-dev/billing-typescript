@@ -120,31 +120,43 @@ const Component = () => {
     if (cartFromSite) {
       const funcName = JSON.parse(cartFromSite)?.func
       if (funcName === 'vds.order.param') {
-        return navigate(route.VPS_ORDER)
+        return navigate(route.VPS_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'domain.order.name') {
-        return navigate(route.DOMAINS_ORDERS)
+        return navigate(route.DOMAINS_ORDERS, {
+          replace: true,
+        })
       } else if (funcName === 'vhost.order.param') {
-        return navigate(route.SHARED_HOSTING_ORDER)
+        return navigate(route.SHARED_HOSTING_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'forexbox.order.param') {
-        return navigate(route.FOREX_ORDER)
+        return navigate(route.FOREX_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'storage.order.param') {
-        return navigate(route.FTP_ORDER)
+        return navigate(route.FTP_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'dedic.order.param') {
-        return navigate(route.DEDICATED_SERVERS_ORDER)
+        return navigate(route.DEDICATED_SERVERS_ORDER, {
+          replace: true,
+        })
       }
     }
   }, [])
 
   if (location.pathname === route.VDS) {
-    return <Navigate to={route.VPS} />
+    return <Navigate to={route.VPS} replace />
   }
 
   if (location.pathname === route.VDS_ORDER) {
-    return <Navigate to={route.VPS_ORDER} />
+    return <Navigate to={route.VPS_ORDER} replace />
   }
 
   if (location.pathname === route.VDS_IP) {
-    return <Navigate to={route.VPS_IP} />
+    return <Navigate to={route.VPS_IP} replace />
   }
 
   const closePromotionBanner = () => setIsShowPromotion(false)
@@ -243,7 +255,7 @@ const SupportScreen = () => {
   const location = useLocation()
 
   if (location.pathname === route.SUPPORT) {
-    return <Navigate to={`${route.SUPPORT}/requests`} />
+    return <Navigate to={`${route.SUPPORT}/requests`} replace />
   }
 
   return (
@@ -258,7 +270,7 @@ const BillingScreen = () => {
   const location = useLocation()
 
   if (location.pathname === route.BILLING) {
-    return <Navigate to={`${route.BILLING}/payments`} />
+    return <Navigate to={`${route.BILLING}/payments`} replace />
   }
 
   return (

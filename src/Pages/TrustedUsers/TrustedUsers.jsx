@@ -85,7 +85,7 @@ export default function TrustedUsers() {
   }, [])
 
   if (!isComponentAllowedToRender) {
-    return <Navigate to={routes.HOME} />
+    return <Navigate replace to={routes.HOME} />
   }
 
   return (

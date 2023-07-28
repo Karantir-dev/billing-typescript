@@ -7,7 +7,7 @@ import {
   Toggle,
   SocialButton,
   ModalTwoStepVerification,
-  Icon
+  Icon,
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
@@ -379,7 +379,11 @@ export default function Component({ isComponentAllowedToEdit }) {
                   disabled={!isComponentAllowedToEdit}
                 />
                 <button
-                  onClick={() => navigate(routes?.HOME)}
+                  onClick={() =>
+                    navigate(routes?.HOME, {
+                      replace: true,
+                    })
+                  }
                   type="button"
                   className={s.cancel}
                 >

@@ -29,7 +29,11 @@ export default function Component(props) {
       role="button"
       tabIndex={0}
       onKeyDown={() => null}
-      onDoubleClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+      onDoubleClick={() =>
+        navigate(`${route.SUPPORT}/requests/${id}`, {
+          replace: true,
+        })
+      }
       onClick={() => setSelctedTicket(id)}
       className={cn(s.item, { [s.selected]: selected })}
     >
@@ -55,10 +59,17 @@ export default function Component(props) {
       <div className={s.tableBlockFifth}>
         {mobile && <div className={s.line} />}
         <button
-          onClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+          onClick={() =>
+            navigate(`${route.SUPPORT}/requests/${id}`, {
+              replace: true,
+            })
+          }
           className={cn(s.item_text, s.fifth_item)}
         >
-          <Icon name="Chats" className={cn({ [s.unread]: unread, [s.chat_icon]: true })} />
+          <Icon
+            name="Chats"
+            className={cn({ [s.unread]: unread, [s.chat_icon]: true })}
+          />
         </button>
         <Button
           className={s.openTicket}
@@ -66,7 +77,11 @@ export default function Component(props) {
           size="medium"
           label={t('Open', { ns: 'other' })}
           type="button"
-          onClick={() => navigate(`${route.SUPPORT}/requests/${id}`)}
+          onClick={() =>
+            navigate(`${route.SUPPORT}/requests/${id}`, {
+              replace: true,
+            })
+          }
         />
       </div>
     </div>

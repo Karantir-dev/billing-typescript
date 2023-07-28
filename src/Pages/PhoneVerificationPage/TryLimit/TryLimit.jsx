@@ -9,7 +9,9 @@ export default function Component() {
   const navigate = useNavigate()
 
   const techSupportNavigateHandler = () => {
-    navigate(routes.SUPPORT)
+    navigate(routes.SUPPORT, {
+      replace: true,
+    })
   }
 
   return (

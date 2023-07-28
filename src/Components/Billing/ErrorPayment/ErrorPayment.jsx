@@ -12,7 +12,9 @@ export default function Component() {
   const navigate = useNavigate()
 
   const backHandler = () => {
-    navigate(routes.BILLING)
+    navigate(routes.BILLING, {
+      replace: true,
+    })
   }
 
   return (

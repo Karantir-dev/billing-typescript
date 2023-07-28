@@ -60,7 +60,7 @@ export default function Component() {
     !isExpensesComponentAllowedToRender &&
     !isAutoPaymentComponentAllowedToRender
   ) {
-    return <Navigate to={route.HOME} />
+    return <Navigate replace to={route.HOME} />
   }
 
   const renderPage = path => {

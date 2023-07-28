@@ -1563,7 +1563,9 @@ export default function Component() {
                                 label={t('OK', { ns: 'billing' })}
                                 type="button"
                                 onClick={() => {
-                                  navigate(routes.BILLING)
+                                  navigate(routes.BILLING, {
+                                    replace: true,
+                                  })
                                   closeBasketHamdler(cartData?.billorder)
                                 }}
                               />

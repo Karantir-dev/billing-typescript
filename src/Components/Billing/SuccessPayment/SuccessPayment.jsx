@@ -24,7 +24,9 @@ export default function Component() {
   // const [exchangeRate, setExchangeRate] = useState(null)
 
   const backHandler = () => {
-    navigate(routes.BILLING)
+    navigate(routes.BILLING, {
+      replace: true,
+    })
   }
 
   // useEffect(() => {

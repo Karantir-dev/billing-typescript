@@ -110,7 +110,7 @@ const Component = () => {
 
         <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
-        <Route path="*" element={<Navigate replace to={route.LOGIN} />} />
+        <Route path="*" element={<Navigate replace to={route.LOGIN}  />} />
       </Routes>
       <Portal>
         <Loader logo shown={isLangLoading} />
