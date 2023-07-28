@@ -1296,7 +1296,7 @@ const getServiceInstruction = (elid, setInstructionLink) => (dispatch, getState)
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      setInstructionLink(data.doc.body)
+      setInstructionLink(data.doc.body.$)
       dispatch(actions.hideLoader())
     })
     .catch(error => {

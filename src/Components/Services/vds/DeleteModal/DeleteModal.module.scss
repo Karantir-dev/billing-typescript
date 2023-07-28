@@ -1,24 +1,5 @@
 @import '../../../../scss/placeholders.scss';
 
-.modal {
-  position: relative;
-  width: 90vw;
-  max-width: 580px;
-  height: fit-content;
-  border-radius: 3px;
-  padding: 25px 12px;
-  text-align: center;
-  background-color: var(--forms_bgc_1);
-  box-shadow: var(--forms2_shadow);
-}
-
-.icon_cross {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  cursor: pointer;
-}
-
 .title {
   margin-bottom: 5px;
   font-weight: 600;
@@ -36,7 +17,6 @@
   display: block;
   max-width: 240px;
   height: 50px;
-  margin: 15px auto 12px;
   font-size: 18px;
 }
 
@@ -97,15 +77,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .modal {
-    padding: 30px 50px;
-  }
-
-  .icon_cross {
-    top: 20px;
-    right: 20px;
-  }
-
   .title {
     font-size: 20px;
     margin-bottom: 10px;
@@ -117,7 +88,6 @@
 
   .cancel_btn {
     font-size: 20px;
-    margin: 20px auto 15px;
   }
 
   .delete_btn {

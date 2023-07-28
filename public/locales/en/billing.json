@@ -93,5 +93,13 @@
   "Back to site": "Go to website",
 
   "VERIFY PHONE NUMBER": "VERIFY PHONE NUMBER",
-  "verification_required_purchase": "Phone number verification is required to purchase this service"
+  
+  "verification_required_purchase": "Phone number verification is required to purchase this service",
+  "promotion_vhost_title_1": "Get 30 days of shared hosting at 100% off.",
+  "promotion_vhost_description_1": "Add 1 € to your account or make any purchase on the site and get the discount.",
+  "promotion_vhost_btn_1": "Top up your credit",
+  "promotion_vhost_title_2": "Free first month of shared hosting",
+  "promotion_vhost_btn_2": "Get it",
+  "promotion_vhost_title_3": "Contact support to get free shared hosting.",
+  "promotion_vhost_description_3": "*Trial period available for those who have not used shared hosting service before"
 }

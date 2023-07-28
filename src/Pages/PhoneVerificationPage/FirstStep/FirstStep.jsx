@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Button, CustomPhoneInput, Select } from '@components'
 
-import s from './FirstStep.module.scss'
+import s from '../PhoneVerificationPage.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation(['user_settings', 'other'])
@@ -23,8 +23,6 @@ export default function Component(props) {
 
   const renderBtnTitle = () => {
     if (notHaveNumber) {
-      return t('SET A PHONE')
-    } else if (isFirst) {
       return t('GET A CODE')
     } else {
       return t('CHOOSE')

@@ -146,13 +146,15 @@ export default function TrustedUsers() {
         })}
       </section>
 
-      <ManageUserForm
-        isUserFormActive={isUserFormActive}
-        controlForm={handleUserForm}
-        handleSubmit={handleSubmit}
-        title={t('trusted_users.form.title')}
-        dataTestid="trusted_form"
-      />
+      {isUserFormActive && (
+        <ManageUserForm
+          closeModal={handleUserForm}
+          handleSubmit={handleSubmit}
+          title={t('trusted_users.form.title')}
+          dataTestid="trusted_form"
+          isOpen
+        />
+      )}
     </>
   )
 }

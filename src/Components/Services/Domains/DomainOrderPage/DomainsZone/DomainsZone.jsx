@@ -97,7 +97,7 @@ export default function ServicesPage(props) {
         />
         <div className={s.chooseAllText}>{t('Choose all', { ns: 'other' })}</div>
       </div> */}
-      <div className={s.domainsBlock}>
+      <div className={cn(s.domainsBlock, { [s.transfer]: transfer })}>
         {domains?.map(d => {
           const { id, tld, price } = d
           const selected = itemIsSelected(id?.$)
@@ -114,16 +114,21 @@ export default function ServicesPage(props) {
               })}
               onClick={() => setIsSelectedHandler(id?.$)}
             >
-              <div className={cn(s.domainItem)}>
+              <div className={cn(s.domainItem, { [s.transfer]: transfer })}>
                 {parsePrice(price?.$)?.length > 1 && (
                   <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
                 )}
                 <CheckBox className={s.checkbox} value={selected} />
 
-                <div className={cn(s.domainName, { [s.selected]: selected })}>
+                <div
+                  className={cn(s.domainName, {
+                    [s.selected]: selected,
+                    [s.transfer]: transfer,
+                  })}
+                >
                   {tld?.$}
                 </div>
-                <div className={s.pricesBlock}>
+                <div className={cn(s.pricesBlock, { [s.transfer]: transfer })}>
                   <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
                   {parsePrice(price?.$)?.length > 1 && (
                     <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>

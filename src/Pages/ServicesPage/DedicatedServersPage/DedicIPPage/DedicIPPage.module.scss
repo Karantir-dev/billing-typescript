@@ -33,29 +33,8 @@
   line-height: 66.3%;
 }
 
-.modalCloseBlock {
-  width: 95%;
-}
-
-.modal_content {
+.modal {
   background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  padding: 28px 55px;
-  width: 100%;
-}
-
-.header_block {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
 }
 
 .closeText {
@@ -66,7 +45,6 @@
 
   text-align: center;
   color: var(--main-text);
-  margin-bottom: 20px;
 }
 
 .page_title {
@@ -76,26 +54,12 @@
   color: var(--main-text);
 }
 
-.btnCloseBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
-}
-
 .close {
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 130%;
   text-decoration-line: underline;
-  margin-top: 22px;
   color: var(--main-text);
   cursor: pointer;
 
@@ -133,12 +97,10 @@
 // adaptive
 
 @media screen and (min-width: 768px) {
-  .btnCloseBlock {
-    flex-direction: column;
+  .modal {
+    max-width: 375px;
   }
-  .modalCloseBlock {
-    width: 373px;
-  }
+
   .page_title {
     font-size: 20px;
   }

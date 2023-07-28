@@ -8,7 +8,7 @@ import {
   Toggle,
   Select,
   InputField,
-  Icon
+  Icon,
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -107,10 +107,10 @@ export default function DedicOrderPage() {
     if (Array.isArray(el.filter.tag)) {
       let filterList = el.filter.tag
 
-      let hasListFilter = filterList.some(filter => filters.includes(filter.$))
+      let hasListFilter = filterList.some(filter => filters.includes(filter.$key))
       return hasListFilter
     } else {
-      return filters?.includes(el.filter.tag.$)
+      return filters?.includes(el.filter.tag.$key)
     }
   })
 
@@ -216,7 +216,11 @@ export default function DedicOrderPage() {
       const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
-            if (entry.boundingClientRect.left >= 0 && entry.boundingClientRect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
+            if (
+              entry.boundingClientRect.left >= 0 &&
+              entry.boundingClientRect.right <=
+                (window.innerWidth || document.documentElement.clientWidth)
+            ) {
               entry.target.classList.remove('notInViewport')
             } else {
               entry.target.classList.add('notInViewport')
@@ -249,7 +253,13 @@ export default function DedicOrderPage() {
   }, [])
 
   useEffect(() => {
-    setTarifList(tarifsList)
+    const newArrTarifList = tarifsList?.tarifList?.map(e => {
+      const tag = tarifsList?.fpricelist.filter(plist => e.desc.$.includes(plist.$))
+
+      return { ...e, filter: { tag } }
+    })
+
+    setTarifList({ ...tarifsList, tarifList: newArrTarifList })
   }, [tarifsList])
 
   const validationSchema = Yup.object().shape({
@@ -598,7 +608,8 @@ export default function DedicOrderPage() {
 
               <div className="dedic_swiper_pagination">
                 <button onClick={handleLeftClick}>
-                  <Icon name="ArrowSign"
+                  <Icon
+                    name="ArrowSign"
                     className={`swiper-prev ${
                       isSwiperBeginning ? 'swiper-button-disabled' : ''
                     }`}
@@ -606,7 +617,8 @@ export default function DedicOrderPage() {
                 </button>
                 <div data-dedic-swiper-pagination></div>
                 <button onClick={handleRightClick}>
-                  <Icon name="ArrowSign"
+                  <Icon
+                    name="ArrowSign"
                     className={`swiper-next ${
                       isSwiperEnd ? 'swiper-button-disabled' : ''
                     }`}

@@ -11,25 +11,38 @@ import {
   CheckBox,
   InputWithAutocomplete,
   SelectGeo,
+  Modal,
   Icon,
+  CustomPhoneInput,
 } from '@components'
 import {
   billingOperations,
+  settingsOperations,
   billingSelectors,
   payersOperations,
   payersSelectors,
   authSelectors,
+  settingsSelectors,
+  cartOperations,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
 export default function Component(props) {
   const dispatch = useDispatch()
 
-  const { t } = useTranslation(['billing', 'other', 'payers', 'cart', 'domains'])
+  const { t } = useTranslation([
+    'billing',
+    'other',
+    'payers',
+    'cart',
+    'domains',
+    'user_settings',
+  ])
 
   const { setCreatePaymentModal } = props
 
@@ -55,15 +68,45 @@ export default function Component(props) {
   const [profileType, setProfileType] = useState('')
   const [company, setCompany] = useState('')
   const [euVat, setEUVat] = useState('')
+  const [additionalPayMethodts, setAdditionalPayMethodts] = useState(undefined)
+  const [selectedAddPaymentMethod, setSelectedAddPaymentMethod] = useState(undefined)
 
   const dropdownDescription = useRef(null)
 
   const [selectedPayerFields, setSelectedPayerFields] = useState(null)
   const [payerFieldList, setPayerFieldList] = useState(null)
 
+  const [userCountryCode, setUserCountryCode] = useState(null)
+  const [countryCode, setCountryCode] = useState(null)
+  const [phone, setPhone] = useState('')
+  const [alfaLogin, setAlfaLogin] = useState('')
+
+  const userEdit = useSelector(settingsSelectors.getUserEdit)
+
+  const filteredPayment_method = additionalPayMethodts?.find(
+    e => e?.$key === selectedAddPaymentMethod,
+  )
+
   useEffect(() => {
     dispatch(billingOperations.getPayers())
+    dispatch(settingsOperations.getUserEdit())
   }, [])
+
+  useEffect(() => {
+    if (additionalPayMethodts && additionalPayMethodts?.length > 0) {
+      setSelectedAddPaymentMethod(additionalPayMethodts[0]?.$key)
+    }
+  }, [additionalPayMethodts])
+
+  useEffect(() => {
+    if (userEdit) {
+      const findCountry = userEdit?.phone_countries?.find(
+        e => e?.$key === userEdit?.phone_country,
+      )
+      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
+      setUserCountryCode(code)
+    }
+  }, [userEdit])
 
   useEffect(() => {
     if (payersList && payersSelectLists) {
@@ -148,6 +191,18 @@ export default function Component(props) {
         : 'off',
     }
 
+    if (values?.payment_method) {
+      data['payment_method'] = values?.payment_method
+    }
+
+    if (values?.phone && values?.phone?.length > 0) {
+      data['phone'] = values?.phone
+    }
+
+    if (values?.alfabank_login && values?.alfabank_login?.length > 0) {
+      data['alfabank_login'] = values?.alfabank_login
+    }
+
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
@@ -173,202 +228,242 @@ export default function Component(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
+    payment_method:
+      additionalPayMethodts && additionalPayMethodts?.length > 0
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
+    phone:
+      !filteredPayment_method?.hide?.includes('phone') &&
+      filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string()
+            .phone(
+              countryCode,
+              false,
+              t('Must be a valid phone number', { ns: 'user_settings' }),
+            )
+            .required(t('Is a required field', { ns: 'other' }))
+        : null,
+    alfabank_login:
+      filteredPayment_method?.hide?.includes('phone') &&
+      !filteredPayment_method?.hide?.includes('alfabank_login')
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
   })
 
   return (
     <div className={s.modalBg}>
-      {payersSelectedFields && selectedPayerFields && payersSelectLists && (
-        <div className={s.modalBlock}>
-          <div className={s.modalHeader}>
+      {payersSelectedFields && !!selectedPayerFields && !!payersSelectLists && (
+        <Modal closeModal={() => setCreatePaymentModal(false)} isOpen className={s.modal}>
+          <Modal.Header>
             <span className={s.headerText}>{t('Replenishment')}</span>
-            <Icon
-              name="Cross"
-              onClick={() => setCreatePaymentModal(false)}
-              className={s.crossIcon}
-            />
-          </div>
-          <Formik
-            enableReinitialize
-            validateOnBlur={false}
-            validateOnMount={false}
-            validateOnChange={false}
-            validationSchema={validationSchema}
-            initialValues={{
-              profile:
-                selectedPayerFields?.profile || payersList[payersList?.length - 1]?.id?.$,
-              amount: amount || '',
-              slecetedPayMethod: slecetedPayMethod || undefined,
-              name: company || selectedPayerFields?.name || '',
-              address_physical: addressPhysical ?? selectedPayerFields?.address_physical,
-              city_physical:
-                cityPhysical ??
-                (selectedPayerFields?.city_physical || geoData?.clients_city),
-              person: person ?? selectedPayerFields?.person,
-              country:
-                payersSelectedFields?.country ||
-                payersSelectedFields?.country_physical ||
-                '',
-              profiletype:
-                profileType ||
-                selectedPayerFields?.profiletype ||
-                payersSelectedFields?.profiletype,
-              eu_vat: euVat || selectedPayerFields?.eu_vat || '',
-              [selectedPayerFields?.offer_field]: isPolicyChecked || false,
-              payment_currency: {
-                title: paymentsCurrency?.payment_currency_list?.filter(
-                  e => e?.$key === paymentsCurrency?.payment_currency,
-                )[0]?.$,
-                value: paymentsCurrency?.payment_currency,
-              },
-            }}
-            onSubmit={createPaymentMethodHandler}
-          >
-            {({ values, setFieldValue, touched, errors }) => {
-              const parsePaymentInfo = text => {
-                const splittedText = text?.split('<p>')
-                if (splittedText?.length > 0) {
-                  const minAmount = splittedText[0]?.replace('\n', '')
+          </Modal.Header>
+          <Modal.Body>
+            <Formik
+              enableReinitialize
+              validateOnBlur={false}
+              validateOnMount={false}
+              validateOnChange={false}
+              validationSchema={validationSchema}
+              initialValues={{
+                profile:
+                  selectedPayerFields?.profile ||
+                  payersList[payersList?.length - 1]?.id?.$,
+                amount: amount || '',
+                slecetedPayMethod: slecetedPayMethod || undefined,
+                name: company || selectedPayerFields?.name || '',
+                address_physical:
+                  addressPhysical ?? selectedPayerFields?.address_physical,
+                city_physical:
+                  cityPhysical ??
+                  (selectedPayerFields?.city_physical || geoData?.clients_city),
+                person: person ?? selectedPayerFields?.person,
+                country:
+                  payersSelectedFields?.country ||
+                  payersSelectedFields?.country_physical ||
+                  '',
+                profiletype:
+                  profileType ||
+                  selectedPayerFields?.profiletype ||
+                  payersSelectedFields?.profiletype,
+                eu_vat: euVat || selectedPayerFields?.eu_vat || '',
+                [selectedPayerFields?.offer_field]: isPolicyChecked || false,
+                payment_currency: {
+                  title: paymentsCurrency?.payment_currency_list?.filter(
+                    e => e?.$key === paymentsCurrency?.payment_currency,
+                  )[0]?.$,
+                  value: paymentsCurrency?.payment_currency,
+                },
+                phone: phone || '',
+                payment_method: selectedAddPaymentMethod || undefined,
+                alfabank_login: alfaLogin || '',
+              }}
+              onSubmit={createPaymentMethodHandler}
+            >
+              {({ values, setFieldValue, touched, errors, handleBlur }) => {
+                const parsePaymentInfo = text => {
+                  const splittedText = text?.split('<p>')
+                  if (splittedText?.length > 0) {
+                    const minAmount = splittedText[0]?.replace('\n', '')
 
-                  let infoText = ''
+                    let infoText = ''
 
-                  if (splittedText[1] && splittedText?.length > 1) {
-                    let replacedText = splittedText[1]
-                      ?.replace('<p>', '')
-                      ?.replace('</p>', '')
-                      ?.replace('<strong>', '')
-                      ?.replace('</strong>', '')
+                    if (splittedText[1] && splittedText?.length > 1) {
+                      let replacedText = splittedText[1]
+                        ?.replace('<p>', '')
+                        ?.replace('</p>', '')
+                        ?.replace('<strong>', '')
+                        ?.replace('</strong>', '')
 
-                    infoText = replaceAllFn(replacedText, '\n', '')
-                  }
-
-                  return { minAmount, infoText }
-                }
-              }
-
-              const getFieldErrorNames = formikErrors => {
-                const transformObjectToDotNotation = (obj, prefix = '', result = []) => {
-                  Object.keys(obj).forEach(key => {
-                    const value = obj[key]
-                    if (!value) return
-
-                    const nextKey = prefix ? `${prefix}.${key}` : key
-                    if (typeof value === 'object') {
-                      transformObjectToDotNotation(value, nextKey, result)
-                    } else {
-                      result.push(nextKey)
+                      infoText = replaceAllFn(replacedText, '\n', '')
                     }
-                  })
 
-                  return result
+                    return { minAmount, infoText }
+                  }
                 }
 
-                return transformObjectToDotNotation(formikErrors)
-              }
+                const getFieldErrorNames = formikErrors => {
+                  const transformObjectToDotNotation = (
+                    obj,
+                    prefix = '',
+                    result = [],
+                  ) => {
+                    Object.keys(obj).forEach(key => {
+                      const value = obj[key]
+                      if (!value) return
 
-              const ScrollToFieldError = ({
-                scrollBehavior = { behavior: 'smooth', block: 'center' },
-              }) => {
-                const { submitCount, isValid, errors } = useFormikContext()
+                      const nextKey = prefix ? `${prefix}.${key}` : key
+                      if (typeof value === 'object') {
+                        transformObjectToDotNotation(value, nextKey, result)
+                      } else {
+                        result.push(nextKey)
+                      }
+                    })
 
-                useEffect(() => {
-                  if (isValid) return
-
-                  const fieldErrorNames = getFieldErrorNames(errors)
-                  if (fieldErrorNames.length <= 0) return
-
-                  const element =
-                    document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
-                    document.querySelector(`button[name='${fieldErrorNames[0]}']`)
-                  if (!element) return
-
-                  // Scroll to first known error into view
-                  try {
-                    element.scrollIntoView(scrollBehavior)
-                  } catch (e) {
-                    checkIfTokenAlive(e?.message, dispatch)
+                    return result
                   }
 
-                  // Formik doesn't (yet) provide a callback for a client-failed submission,
-                  // thus why this is implemented through a hook that listens to changes on
-                  // the submit count.
-                }, [submitCount])
+                  return transformObjectToDotNotation(formikErrors)
+                }
 
-                return null
-              }
+                const ScrollToFieldError = ({
+                  scrollBehavior = { behavior: 'smooth', block: 'center' },
+                }) => {
+                  const { submitCount, isValid, errors } = useFormikContext()
 
-              const parsedText =
-                values?.slecetedPayMethod &&
-                parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+                  useEffect(() => {
+                    if (isValid) return
 
-              const setPayerHandler = val => {
-                if (val === values.profile) return
+                    const fieldErrorNames = getFieldErrorNames(errors)
+                    if (fieldErrorNames.length <= 0) return
 
-                setFieldValue('profile', val)
-                let data = null
-                if (val === 'new') {
-                  data = {
+                    const element =
+                      document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
+                      document.querySelector(`button[name='${fieldErrorNames[0]}']`)
+                    if (!element) return
+
+                    // Scroll to first known error into view
+                    try {
+                      element.scrollIntoView(scrollBehavior)
+                    } catch (e) {
+                      checkIfTokenAlive(e?.message, dispatch)
+                    }
+
+                    // Formik doesn't (yet) provide a callback for a client-failed submission,
+                    // thus why this is implemented through a hook that listens to changes on
+                    // the submit count.
+                  }, [submitCount])
+
+                  return null
+                }
+
+                const parsedText =
+                  values?.slecetedPayMethod &&
+                  parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+
+                const setPayerHandler = val => {
+                  if (val === values.profile) return
+
+                  setFieldValue('profile', val)
+                  let data = null
+                  if (val === 'new') {
+                    data = {
+                      country: payersSelectLists?.country[0]?.$key,
+                      profiletype: payersSelectLists?.profiletype[0]?.$key,
+                    }
+                    dispatch(
+                      payersOperations.getPayerModalInfo(
+                        data,
+                        false,
+                        null,
+                        setSelectedPayerFields,
+                        true,
+                      ),
+                    )
+                  } else {
+                    data = { elid: val }
+                    dispatch(
+                      payersOperations.getPayerEditInfo(
+                        data,
+                        false,
+                        null,
+                        setSelectedPayerFields,
+                        false,
+                        setPayerFieldList,
+                      ),
+                    )
+                  }
+
+                  setPerson(null)
+                  setCityPhysical(null)
+                  setAddressPhysical(null)
+                }
+
+                const readMore = parsedText?.infoText
+                  ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                  : parsedText?.minAmount?.length > 150
+
+                const payerTypeArrayHandler = () => {
+                  const arr = payerFieldList?.profiletype
+                    ? payerFieldList?.profiletype
+                    : payersSelectLists?.profiletype
+
+                  return arr?.map(({ $key, $ }) => ({
+                    label: t(`${$.trim()}`, { ns: 'payers' }),
+                    value: $key,
+                  }))
+                }
+
+                const onProfileTypeChange = item => {
+                  setFieldValue('profiletype', item)
+                  setProfileType(item)
+                  let data = {
                     country: payersSelectLists?.country[0]?.$key,
-                    profiletype: payersSelectLists?.profiletype[0]?.$key,
+                    profiletype: item,
                   }
-                  dispatch(
-                    payersOperations.getPayerModalInfo(
-                      data,
-                      false,
-                      null,
-                      setSelectedPayerFields,
-                      true,
-                    ),
-                  )
-                } else {
-                  data = { elid: val }
-                  dispatch(
-                    payersOperations.getPayerEditInfo(
-                      data,
-                      false,
-                      null,
-                      setSelectedPayerFields,
-                      false,
-                      setPayerFieldList,
-                    ),
-                  )
+
+                  dispatch(payersOperations.getPayerModalInfo(data))
                 }
 
-                setPerson(null)
-                setCityPhysical(null)
-                setAddressPhysical(null)
-              }
-
-              const readMore = parsedText?.infoText
-                ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
-                : parsedText?.minAmount?.length > 150
-
-              const payerTypeArrayHandler = () => {
-                const arr = payerFieldList?.profiletype
-                  ? payerFieldList?.profiletype
-                  : payersSelectLists?.profiletype
-
-                return arr?.map(({ $key, $ }) => ({
-                  label: t(`${$.trim()}`, { ns: 'payers' }),
-                  value: $key,
-                }))
-              }
-
-              const onProfileTypeChange = item => {
-                setFieldValue('profiletype', item)
-                setProfileType(item)
-                let data = {
-                  country: payersSelectLists?.country[0]?.$key,
-                  profiletype: item,
+                const renderPhoneList = paymethod => {
+                  if (paymethod === 'qiwi') {
+                    return QIWI_PHONE_COUNTRIES
+                  } else if (paymethod === 'sberbank') {
+                    return SBER_PHONE_COUNTRIES
+                  } else {
+                    return []
+                  }
                 }
 
-                dispatch(payersOperations.getPayerModalInfo(data))
-              }
+                const setCode = list => {
+                  const country = list.find(el => el === userCountryCode) || list[0]
+                  setPhone('')
+                  setCountryCode(country)
+                }
 
-              return (
-                <Form>
-                  <ScrollToFieldError />
-                  <div className={s.form}>
+                return (
+                  <Form id="payment">
+                    <ScrollToFieldError />
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
                       <div className={s.formFieldsBlock}>
@@ -385,8 +480,25 @@ export default function Component(props) {
                               onClick={() => {
                                 setFieldValue('slecetedPayMethod', method)
                                 setSlecetedPayMethod(method)
+                                setSelectedAddPaymentMethod(undefined)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
+                                if (paymethod?.$ === '90') {
+                                  setCode(QIWI_PHONE_COUNTRIES)
+                                } else if (paymethod?.$ === '86') {
+                                  setCode(SBER_PHONE_COUNTRIES)
+                                } else if (paymethod?.$ === '87') {
+                                  setPhone('')
+                                  setCountryCode(userCountryCode)
+                                }
+                                dispatch(
+                                  cartOperations.getPayMethodItem(
+                                    {
+                                      paymethod: method?.paymethod?.$,
+                                    },
+                                    setAdditionalPayMethodts,
+                                  ),
+                                )
                               }}
                               type="button"
                               className={cn(s.paymentMethodBtn, {
@@ -402,6 +514,70 @@ export default function Component(props) {
                             </button>
                           )
                         })}
+                      </div>
+                      <div className={s.additionalPayMethodBlock}>
+                        {additionalPayMethodts && additionalPayMethodts?.length > 1 && (
+                          <Select
+                            placeholder={t('Not chosen', { ns: 'other' })}
+                            label={`${t('Payment method')} Yookasa:`}
+                            value={values.payment_method}
+                            getElement={item => {
+                              setFieldValue('payment_method', item)
+                              setSelectedAddPaymentMethod(item)
+                            }}
+                            isShadow
+                            className={cn(s.select, s.additionalSelectPayMentMethod)}
+                            dropdownClass={s.selectDropdownClass}
+                            itemsList={additionalPayMethodts?.map(({ $key, $ }) => ({
+                              label: t(`${$.trim()}`, { ns: 'billing' }),
+                              value: $key,
+                            }))}
+                            error={errors.payment_method}
+                            isRequired
+                          />
+                        )}
+
+                        {filteredPayment_method?.hide?.includes('phone') &&
+                          !filteredPayment_method?.hide?.includes('alfabank_login') && (
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="alfabank_login"
+                              label={`${t('Имя пользователя в Альфа-Клик', {
+                                ns: 'payers',
+                              })}:`}
+                              placeholder={t('Enter data', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.additionalSelectPayMentMethod)}
+                              error={!!errors.alfabank_login}
+                              touched={!!touched.alfabank_login}
+                              isRequired
+                              onChange={e => setAlfaLogin(e.target.value)}
+                            />
+                          )}
+
+                        {!filteredPayment_method?.hide?.includes('phone') &&
+                          filteredPayment_method?.hide?.includes('alfabank_login') && (
+                            <CustomPhoneInput
+                              containerClass={cn(s.inputHeight, 'payModal')}
+                              wrapperClass={s.inputBig}
+                              inputClass={s.phoneInputClass}
+                              value={values.phone}
+                              labelClass={s.phoneInputLabel}
+                              label={`${t('Phone', { ns: 'other' })}:`}
+                              handleBlur={handleBlur}
+                              setFieldValue={(name, value) => {
+                                setFieldValue(name, value)
+                                setPhone(value)
+                              }}
+                              name="phone"
+                              onlyCountries={renderPhoneList(
+                                filteredPayment_method?.$key,
+                              )}
+                              isRequired
+                              setCountryCode={setCountryCode}
+                              country={countryCode}
+                            />
+                          )}
                       </div>
                       <ErrorMessage
                         className={s.error_message}
@@ -440,7 +616,6 @@ export default function Component(props) {
                               onChange={e => setCompany(e.target.value)}
                             />
                           ) : null}
-
                           {values?.profiletype === '1' && payersList?.length !== 0 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}
@@ -656,25 +831,22 @@ export default function Component(props) {
                         {t(showMore ? 'Collapse' : 'Read more')}
                       </button>
                     )}
-                  </div>
-                  <div className={s.btnBlock}>
-                    <Button
-                      disabled={
-                        Number(values.amount) <
-                        values?.slecetedPayMethod?.payment_minamount?.$
-                      }
-                      className={s.saveBtn}
-                      isShadow
-                      size="medium"
-                      label={t('Pay')}
-                      type="submit"
-                    />
-                  </div>
-                </Form>
-              )
-            }}
-          </Formik>
-        </div>
+                  </Form>
+                )
+              }}
+            </Formik>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              className={s.saveBtn}
+              isShadow
+              size="medium"
+              label={t('Pay')}
+              type="submit"
+              form="payment"
+            />
+          </Modal.Footer>
+        </Modal>
       )}
     </div>
   )

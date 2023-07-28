@@ -13,7 +13,6 @@
 }
 
 .lang_container {
-  height: 45px;
   position: relative;
 }
 
@@ -83,6 +82,20 @@
   &.list {
     &.lightThemeDrop {
       &.list_hover {
+        [class*='payModal'] & {
+          width: calc(95vw - 45px);
+           max-width: 645px;
+          @media (min-width: 768px) {
+            width: 295px;
+          }
+        }
+        [class*='cartModal'] & {
+          width: calc(90vw - 45px);
+           max-width: 645px;
+          @media (min-width: 768px) {
+            width: 295px;
+          }
+        }
         width: 250px;
         &::-webkit-scrollbar {
           width: 4px;

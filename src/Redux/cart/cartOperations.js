@@ -387,7 +387,7 @@ const setPaymentMethods =
                   redirectPath: '',
                 }),
               )
-              // dispatch(actions.hideLoader())
+              dispatch(actions.hideLoader())
             }
           })
           .then(() => dispatch(userOperations.getNotify()))
@@ -438,6 +438,73 @@ const getSalesList = setSalesList => (dispatch, getState) => {
     })
 }
 
+const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  setAdditionalPayMethodts(undefined)
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.add.pay',
+        out: 'json',
+        lang: 'en',
+        // sok: 'ok',
+        // clicked_button: 'createprofile',
+        auth: sessionId,
+        ...body,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        if (
+          data.doc.error.msg.$.replace(String.fromCharCode(39), '') ===
+          'The Contact person field has invalid value. The value cannot be empty'
+        )
+          toast.error(
+            i18n?.t('The payer is not valid, change the payer or add a new one', {
+              ns: 'cart',
+            }),
+            {
+              position: 'bottom-right',
+              toastId: 'customId',
+            },
+          )
+        throw new Error(data.doc.error.msg.$)
+      }
+
+      const additionalFields = data.doc?.metadata?.form?.field?.find(
+        e => e?.$name === 'payment_method',
+      )
+      const payment_method = data.doc?.slist?.find(e => e?.$name === 'payment_method')
+
+      if (payment_method?.val) {
+        const payment_methodArr = []
+
+        payment_method?.val?.forEach(val => {
+          const filtered = additionalFields?.select[0]?.if?.filter(
+            i => i?.$value === val?.$key,
+          )
+
+          const hide = filtered?.map(e => e?.$hide)
+
+          payment_methodArr?.push({ ...val, hide })
+        })
+
+        setAdditionalPayMethodts && setAdditionalPayMethodts(payment_methodArr)
+      }
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getBasket,
   setBasketPromocode,
@@ -445,4 +512,5 @@ export default {
   clearBasket,
   setPaymentMethods,
   getSalesList,
+  getPayMethodItem
 }

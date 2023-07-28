@@ -1,51 +1,5 @@
-.modalBg {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
-  overflow-y: auto;
-}
-
-.modalBlock {
-  background: var(--main-bgc);
-  box-shadow: var(--forms2_shadow);
-  border-radius: 3px;
-  margin: 20px auto;
-  max-width: 355px;
-  width: 95%;
-}
-
-.modalBody {
-  padding: 15px 24px;
-}
-
-.modalHeader {
-  position: sticky;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_header_shadow);
-}
-
-.crossIcon {
-  fill: var(--main-text);
-  margin-top: 5px;
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.95);
-  }
+.modal {
+  max-width: 370px;
 }
 
 .headerText {
@@ -70,19 +24,6 @@
   }
 }
 
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
-}
-
 .clearFilters {
   font-style: normal;
   font-weight: 400;
@@ -90,7 +31,6 @@
   line-height: 130%;
   text-decoration-line: underline;
   margin-left: 0px;
-  margin-top: 20px;
   color: var(--main-text);
   cursor: pointer;
 }
@@ -121,7 +61,6 @@
   font-size: 14px;
   line-height: 120%;
   color: var(--main-text);
-  margin-top: 20px;
 }
 
 .pricInfoBlock {
@@ -141,28 +80,4 @@
   span:last-child {
     text-align: start;
   }
-}
-
-@media screen and (min-width: 768px) {
-  .modalBg {
-    align-items: center;
-    height: 100vh;
-  }
-
-  .modalBlock {
-    margin: 0 30px;
-  }
-
-  .modalBody {
-    padding: 15px 25px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (min-width: 1550px) {
-}
-
-@media screen and (min-width: 1918px) {
 }

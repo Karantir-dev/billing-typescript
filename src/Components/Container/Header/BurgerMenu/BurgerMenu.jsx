@@ -1,11 +1,10 @@
 import cn from 'classnames'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn, Portal, ModalCreatePayment, Icon } from '@components'
+import { ThemeBtn, LangBtn, ModalCreatePayment, Icon } from '@components'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors } from '@redux'
 import { useOutsideAlerter, usePageRender } from '@utils'
@@ -276,28 +275,24 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
               </li>
             )}
             <li className={s.exit_list_item}>
-              <NavLink to={routes.LOGIN}>
-                <div
-                  className={s.exit_wrapper}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={() => {}}
-                  onClick={logOut}
-                >
-                  <Icon name="ExitSign" className={s.icon} />
-                  <p className={s.exit_name}>{t('profile.log_out')}</p>
-                </div>
-              </NavLink>
+              <div
+                className={s.exit_wrapper}
+                role="button"
+                tabIndex={0}
+                onKeyDown={() => {}}
+                onClick={logOut}
+              >
+                <Icon name="ExitSign" className={s.icon} />
+                <p className={s.exit_name}>{t('profile.log_out')}</p>
+              </div>
             </li>
           </ul>
         </div>
       </div>
 
-      <Portal>
-        {createPaymentModal && (
-          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-        )}
-      </Portal>
+      {createPaymentModal && (
+        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+      )}
     </>
   )
 }

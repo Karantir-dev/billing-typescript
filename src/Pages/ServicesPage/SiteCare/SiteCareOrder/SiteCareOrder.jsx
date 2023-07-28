@@ -5,7 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { siteCareOperations, userOperations } from '@redux'
-import { useScrollToElement, translatePeriod } from '@utils'
+import { useScrollToElement, translatePeriod, ipRegex } from '@utils'
+import { URL_REGEX, PASS_REGEX } from '@utils/constants'
+
 import s from './SiteCareOrder.module.scss'
 import * as Yup from 'yup'
 import * as routes from '@src/routes'
@@ -17,6 +19,7 @@ export default function Component() {
     'dedicated_servers',
     'domains',
     'autoprolong',
+    'auth',
   ])
   const dispatch = useDispatch()
 
@@ -89,11 +92,19 @@ export default function Component() {
   }
 
   const validationSchema = Yup.object().shape({
-    ipServer: Yup.string().required(t(' ')),
-    loginServer: Yup.string().required(t(' ')),
-    passwordServer: Yup.string().required(t(' ')),
-    port: Yup.string().required(t(' ')),
-    url: Yup.string().required(t(' ')),
+    ipServer: Yup.string()
+      .required(t('Enter IP'))
+      .test('ip-validate', t('invalid_ip'), value => ipRegex().test(value)),
+    loginServer: Yup.string().required(t('Enter login')),
+    passwordServer: Yup.string()
+      .required(t('Enter password'))
+      .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 })),
+    port: Yup.number()
+      .required(t('Enter Port'))
+      .integer(t('invalid_port_range'))
+      .min(0, t('invalid_port_range'))
+      .max(65535, t('invalid_port_range')),
+    url: Yup.string().required(t('Enter URL')).matches(URL_REGEX, 'http://domain.com'),
   })
 
   return (

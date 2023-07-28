@@ -11,7 +11,6 @@ import {
   ThemeBtn,
   LangBtn,
   ModalCreatePayment,
-  Portal,
   Icon,
   CertificateModal,
 } from '@components'
@@ -305,9 +304,7 @@ export default function Header() {
                           onKeyDown={() => {}}
                           onClick={logOut}
                         >
-                          <NavLink to={routes.LOGIN}>
-                            <p className={s.exit_name}>{t('profile.log_out')}</p>
-                          </NavLink>
+                          <p className={s.exit_name}>{t('profile.log_out')}</p>
                         </div>
                       </li>
                     </ul>
@@ -345,12 +342,10 @@ export default function Header() {
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}
       />
-      <Portal>
-        {createPaymentModal && (
-          <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-        )}
-        {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
-      </Portal>
+      {createPaymentModal && (
+        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
+      )}
+      {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
     </>
   )
 }

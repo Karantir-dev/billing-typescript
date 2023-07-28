@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { authOperations, authSelectors } from '@redux'
-import { VerificationModal, Button, InputField, LoginBtnBlock, Icon } from '@components'
+import {
+  VerificationModal,
+  Button,
+  InputField,
+  LoginBtnBlock,
+  Icon,
+  LoaderDots,
+} from '@components'
 import * as routes from '@src/routes'
 import { RECAPTCHA_KEY } from '@config/config'
 import { EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
@@ -36,13 +43,20 @@ export default function LoginForm() {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
   // }, [])
 
+  const navigate = useNavigate()
+
   const handleSubmit = ({ email, password, reCaptcha }, { setFieldValue }) => {
     const resetRecaptcha = () => {
       recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
 
-    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha))
+    const navigateAfterLogin = () =>
+      navigate(routes.SERVICES, {
+        replace: true,
+      })
+
+    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin))
   }
 
   const handleUserKeyPress = e => {
@@ -129,11 +143,7 @@ export default function LoginForm() {
 
                 {!isCaptchaLoaded && (
                   <div className={s.loaderBlock}>
-                    <div className={s.loader}>
-                      <div className={`${s.loader_circle} ${s.first}`}></div>
-                      <div className={`${s.loader_circle} ${s.second}`}></div>
-                      <div className={s.loader_circle}></div>
-                    </div>
+                    <LoaderDots classname={s.loader} />
                   </div>
                 )}
 

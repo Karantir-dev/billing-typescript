@@ -1,58 +1,12 @@
-.alert_wrapper {
-  position: fixed;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  background-color: rgba(0, 0, 0, 0.4);
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-
-  &.opened {
-    display: block;
-    z-index: 150;
-    opacity: 1;
-  }
-}
-
-.alert {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 10%;
-  left: 10%;
-  z-index: 100;
+.modal {
   background-color: var(--elements-bgc);
-  border-radius: 3px;
   max-width: 410px;
   box-shadow: var(--forms3_shadow);
-}
-
-.modal_content {
-  padding: 30px;
-  background-color: var(--main-bgc3);
-}
-
-.title_wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 20px 30px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--header_shadow);
 }
 
 .modal_title {
   font-size: 18px;
   font-weight: 600px;
-}
-
-.text_wrapper {
-  display: flex;
 }
 
 .alert_text {
@@ -62,98 +16,9 @@
   color: var(--main-text);
 }
 
-.control_btns_container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 20px 20px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_5);
-  box-shadow: var(--footer_shadow);
-}
-
-.cancel_btn {
-  margin-top: 14px;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 130.5%;
-  color: var(--main-text);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.close_btn_wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.close_btn {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-
-  &:before,
-  &:after {
-    position: absolute;
-    top: 0px;
-    content: ' ';
-    height: 16px;
-    width: 2px;
-    background-color: var(--main-text);
-  }
-  &:before {
-    transform: rotate(45deg);
-  }
-  &:after {
-    transform: rotate(-45deg);
-  }
-
-  &:hover {
-    &::after,
-    &::before {
-      background: var(--accent-gradient);
-    }
-  }
-}
-
 // ADAPTIVE
 @media screen and (min-width: 768px) {
-  .alert {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 556px;
-  }
-
   .alert_text {
     font-size: 18px;
-  }
-
-  .control_btns_container {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .cancel_btn {
-    margin-top: 0;
-    margin-left: 23px;
-  }
-
-  .close_btn_wrapper {
-    display: flex;
-    align-items: center;
-  }
-
-  .close_btn {
-    width: 20px;
-    height: 20px;
-
-    &:before,
-    &:after {
-      height: 20px;
-    }
   }
 }

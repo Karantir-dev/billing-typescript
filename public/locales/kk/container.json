@@ -62,7 +62,7 @@
     "has been prolonged": "мерзімі ұзартылды",
     "is ready for use": "пайдалануға дайын"
   },
-  "clear_all": "Барлығын өшіру",
+  "clear_all": "{{num}} хабарландыруларды өшіріңіз",
   "Service is ready for use": "'{{value}}' қызметі пайдалануға дайын",
   "Service has been deleted": "'{{value}}' қызметі жойылды",
   "Service has been suspended": "'{{value}}' қызметі уақытша тоқтатылды",

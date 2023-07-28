@@ -5,17 +5,17 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import s from './FTPEditModal.module.scss'
-import { Button, Icon, InputField, Select } from '@components'
+import { Button, InputField, Select, Modal } from '@components'
 import { ftpOperations } from '@redux'
 import { translatePeriod } from '@utils'
 
-export default function FTPEditModal({ elid, closeFn }) {
+export default function FTPEditModal({ elid, closeModal, isOpen }) {
   const { t } = useTranslation(['dedicated_servers', 'vds', 'other', 'autoprolong'])
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
 
   const handleEditionModal = () => {
-    closeFn()
+    closeModal()
   }
 
   useEffect(() => {
@@ -36,38 +36,30 @@ export default function FTPEditModal({ elid, closeFn }) {
   })
 
   return (
-    <div className={s.modal}>
-      <div className={s.header_block}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+      <Modal.Header>
         <div className={s.title_wrapper}>
           <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
           <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
         </div>
-        <Icon
-          name="Cross"
-          className={s.icon_cross}
-          onClick={closeFn}
-          width={17}
-          height={17}
-        />
-      </div>
-
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          elid,
-          autoprolong: initialState?.autoprolong?.$ || null,
-          payment_method: initialState?.payment_method?.val[0]?.$ || '',
-          ftp_server: '',
-          password: initialState?.passwd?.$ || '',
-          username: initialState?.user?.$ || '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form>
-              <div className={s.form}>
+      </Modal.Header>
+      <Modal.Body>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            elid,
+            autoprolong: initialState?.autoprolong?.$ || null,
+            payment_method: initialState?.payment_method?.val[0]?.$ || '',
+            ftp_server: '',
+            password: initialState?.passwd?.$ || '',
+            username: initialState?.user?.$ || '',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form id="ftp-edit">
                 <div className={s.parameters_block}>
                   <div className={s.status_wrapper}>
                     <div className={s.creation_date_wrapper}>
@@ -144,30 +136,30 @@ export default function FTPEditModal({ elid, closeFn }) {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className={s.btns_wrapper}>
-                <Button
-                  className={s.buy_btn}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                />
-
-                <button
-                  onClick={e => {
-                    e.preventDefault()
-                    closeFn()
-                  }}
-                  className={s.cancel_btn}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </Modal.Body>
+      <Modal.Footer column>
+        <Button
+          className={s.buy_btn}
+          isShadow
+          size="medium"
+          label={t('Save', { ns: 'other' })}
+          type="submit"
+          form="ftp-edit"
+        />
+        <button
+          onClick={e => {
+            e.preventDefault()
+            closeModal()
+          }}
+          className={s.cancel_btn}
+        >
+          {t('Cancel', { ns: 'other' })}
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }
