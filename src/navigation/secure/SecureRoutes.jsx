@@ -109,7 +109,7 @@ const Component = () => {
       setIsShowPromotion(true)
     }
 
-    if (!paymentsList?.length && salesList) {
+    if (paymentsList && !paymentsList?.length && salesList) {
       setPromotionType('first')
       setIsShowPromotion(true)
     }

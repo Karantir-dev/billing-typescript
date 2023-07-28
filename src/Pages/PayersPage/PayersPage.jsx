@@ -35,21 +35,25 @@ export default function Component() {
     setAddPayerModal(true)
   }
 
+  if (!payersList) return null
+
   return (
     <>
       <div className={s.body}>
         <div className={s.content}>
           <h1 className={s.pageTitle}>{t('Payers')}</h1>
-          <Button
-            onClick={() => setAddPayerModal(!addPayerModal)}
-            label={t('Add')}
-            isShadow
-            className={s.addBtn}
-          />
           {payersList?.length !== 0 ? (
             <PayersTable openEditModalHandler={openEditModalHandler} list={payersList} />
           ) : (
-            <div className={s.noResults}>{t('nothing_found', { ns: 'other' })}</div>
+            <>
+              <Button
+                onClick={() => setAddPayerModal(!addPayerModal)}
+                label={t('Add')}
+                isShadow
+                className={s.addBtn}
+              />
+              <div className={s.noResults}>{t('nothing_found', { ns: 'other' })}</div>
+            </>
           )}
           {payersCount > 5 && (
             <div className={s.pagination}>
