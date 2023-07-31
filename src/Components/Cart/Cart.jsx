@@ -1291,13 +1291,7 @@ export default function Component() {
                                 getElement={item => setPayerHandler(item)}
                                 isShadow
                                 className={s.select}
-                                itemsList={[
-                                  {
-                                    name: { $: t('Add new payer', { ns: 'payers' }) },
-                                    id: { $: 'new' },
-                                  },
-                                  ...payersList,
-                                ]?.map(({ name, id }) => ({
+                                itemsList={[...payersList]?.map(({ name, id }) => ({
                                   label: t(`${name?.$?.trim()}`),
                                   value: id?.$,
                                 }))}
