@@ -8,13 +8,15 @@
   border-radius: 8px;
   box-shadow: var(--forms3_shadow);
   color: #fff;
-  background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat;
-  background-color: #a611d8;
+  background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat,
+    linear-gradient(63deg, #8f1ed0 0%, #a611d8 100%);
   &.second {
-    background-color: #cc10a3;
+    background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat,
+      linear-gradient(59deg, #6c1ed0 0%, #cc10a3 100%);
   }
   &.third {
-    background-color: #47465b;
+    background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat,
+      linear-gradient(60deg, #47465b 3.35%, #575268 100%);
   }
   &__content {
     flex-grow: 1;
@@ -22,9 +24,9 @@
   &__title {
     margin-bottom: 12px;
     &_link {
-        font-size: .8em;
-        font-weight: 400;
-        text-decoration: underline;
+      font-size: 0.8em;
+      font-weight: 400;
+      text-decoration: underline;
     }
 
     & + .banner__footer {
