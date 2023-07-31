@@ -90,7 +90,7 @@ const Component = () => {
     if (isUserClosedBanner) return
 
     const isPromotionActive = salesList?.some(el => {
-      return el.promotion.$ === 'test'
+      return el.promotion.$ === '1month-hosting'
     })
 
     if (
