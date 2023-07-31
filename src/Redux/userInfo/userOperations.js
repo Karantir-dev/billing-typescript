@@ -169,7 +169,7 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
           checkIfTokenAlive(data.doc.error.msg.$, dispatch)
         }
 
-        funcsArray[i]({...data, disableClearBasket}, dispatch)
+        funcsArray[i]({ ...data, disableClearBasket }, dispatch)
       })
       dispatch(userActions.hideUserInfoLoading())
 
