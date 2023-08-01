@@ -65,11 +65,10 @@ import {
   PaymentProcessingPageLazy,
 } from './LazyRoutes'
 
-const Component = () => {
+const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
-
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
   const [isShowPromotion, setIsShowPromotion] = useState(false)
   const [salesList, setSalesList] = useState()
@@ -97,7 +96,7 @@ const Component = () => {
       !isPromotionActive &&
       paymentsList?.length &&
       salesList &&
-      searchParam.current === 'vhost.order.param'
+      (fromPromotionLink || searchParam.current === 'vhost.order.param')
     ) {
       setPromotionType('third')
       setIsShowPromotion(true)
