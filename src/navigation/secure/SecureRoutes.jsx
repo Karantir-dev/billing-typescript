@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Navigate,
@@ -6,7 +6,6 @@ import {
   Routes,
   useLocation,
   useNavigate,
-  useSearchParams,
 } from 'react-router-dom'
 import {
   Cart,
@@ -68,14 +67,12 @@ import {
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
   const [isShowPromotion, setIsShowPromotion] = useState(false)
   const [salesList, setSalesList] = useState()
   const [promotionType, setPromotionType] = useState(false)
   const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
 
-  const searchParam = useRef(searchParams.get('func'))
   const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
 
   useEffect(() => {
@@ -92,12 +89,7 @@ const Component = ({ fromPromotionLink }) => {
       return el.promotion.$ === '1month-hosting'
     })
 
-    if (
-      !isPromotionActive &&
-      paymentsList?.length &&
-      salesList &&
-      (fromPromotionLink || searchParam.current === 'vhost.order.param')
-    ) {
+    if (!isPromotionActive && paymentsList?.length && salesList && fromPromotionLink) {
       setPromotionType('third')
       setIsShowPromotion(true)
       return
