@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { actions, authActions, authSelectors, selectors } from '@redux'
 import i18n from 'i18next'
 import { toast } from 'react-toastify'
 import { cookies } from '@utils'
+import { useSearchParams } from 'react-router-dom'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -20,6 +21,10 @@ let firstRender = true
 const Component = () => {
   const dispatch = useDispatch()
   const onlineStatus = useSelector(selectors.onlineStatus)
+
+  const [searchParams] = useSearchParams()
+
+  const searchParam = useRef(searchParams.get('func'))
 
   useEffect(() => {
     if (onlineStatus && !firstRender) {
@@ -80,7 +85,15 @@ const Component = () => {
 
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
-  return <>{isAuthenticated ? <SecureRoutes /> : <AuthRoutes />}</>
+  return (
+    <>
+      {isAuthenticated ? (
+        <SecureRoutes fromPromotionLink={searchParam.current === 'vhost.order.param'} />
+      ) : (
+        <AuthRoutes />
+      )}
+    </>
+  )
 }
 
 export default Component
