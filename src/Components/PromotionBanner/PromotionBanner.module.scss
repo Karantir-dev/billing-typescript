@@ -21,10 +21,19 @@
   &.second {
     background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat,
       linear-gradient(59deg, #6c1ed0 0%, #cc10a3 100%);
+      max-width: 544px;
+      @media (min-width: 1550px) {
+        max-width: 426px;
+      }
+
   }
   &.third {
     background: url('../../images/banners/promotion_banner.webp') 100% 100% no-repeat,
       linear-gradient(60deg, #47465b 3.35%, #575268 100%);
+      max-width: 400px;
+      @media (min-width: 1550px) {
+        max-width: 411px;
+      }
   }
   &__content {
     flex-grow: 1;
