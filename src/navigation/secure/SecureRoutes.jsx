@@ -155,7 +155,7 @@ const Component = ({ fromPromotionLink }) => {
   return (
     <Container>
       {isShowPromotion && promotionType && (
-        <PromotionBanner type={'first'} closeBanner={closePromotionBanner} />
+        <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
       <EmailTrigger />
       <Routes>
