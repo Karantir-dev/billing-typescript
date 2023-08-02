@@ -17,6 +17,9 @@ use(Backend)
     },
     // Стандартный язык
     fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false // Забороняємо екранування рядків, якщо цього потребує ваш переклад
+    },
     debug: false,
     // Распознавание и кэширование языковых кук
     detection: {

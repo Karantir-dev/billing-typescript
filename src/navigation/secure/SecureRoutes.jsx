@@ -1,6 +1,12 @@
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import {
   Cart,
   Container,
@@ -9,8 +15,14 @@ import {
   CartFromSite,
   EmailTrigger,
   MainEmailConfirmation,
+  PromotionBanner,
 } from '@components'
-import { cartSelectors } from '@redux'
+import {
+  cartSelectors,
+  cartOperations,
+  billingSelectors,
+  billingOperations,
+} from '@redux'
 import * as route from '@src/routes'
 import {
   ServicesPageLazy,
@@ -52,48 +64,105 @@ import {
   PaymentProcessingPageLazy,
 } from './LazyRoutes'
 
-const Component = () => {
+const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
+  const [isShowPromotion, setIsShowPromotion] = useState(false)
+  const [salesList, setSalesList] = useState()
+  const [promotionType, setPromotionType] = useState(false)
+  const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
+
+  const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
+
+  useEffect(() => {
+    dispatch(cartOperations.getSalesList(setSalesList))
+    dispatch(billingOperations.setPaymentsFilters({ status: '4' }, true))
+    const isBannerClosed = localStorage.getItem('isBannerClosed')
+    setIsUserClosedBanner(!!isBannerClosed)
+  }, [])
+
+  useEffect(() => {
+    if (isUserClosedBanner) return
+
+    const isPromotionActive = salesList?.some(el => {
+      return el.promotion.$ === '1month-hosting'
+    })
+
+    if (!isPromotionActive && paymentsList?.length && salesList && fromPromotionLink) {
+      setPromotionType('third')
+      setIsShowPromotion(true)
+      return
+    }
+
+    if (paymentsList?.length && isPromotionActive && salesList) {
+      setPromotionType('second')
+      setIsShowPromotion(true)
+    }
+
+    if (paymentsList && !paymentsList?.length && salesList) {
+      setPromotionType('first')
+      setIsShowPromotion(true)
+    }
+  }, [salesList, paymentsList])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
     if (cartFromSite) {
       const funcName = JSON.parse(cartFromSite)?.func
       if (funcName === 'vds.order.param') {
-        return navigate(route.VPS_ORDER)
+        return navigate(route.VPS_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'domain.order.name') {
-        return navigate(route.DOMAINS_ORDERS)
+        return navigate(route.DOMAINS_ORDERS, {
+          replace: true,
+        })
       } else if (funcName === 'vhost.order.param') {
-        return navigate(route.SHARED_HOSTING_ORDER)
+        return navigate(route.SHARED_HOSTING_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'forexbox.order.param') {
-        return navigate(route.FOREX_ORDER)
+        return navigate(route.FOREX_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'storage.order.param') {
-        return navigate(route.FTP_ORDER)
+        return navigate(route.FTP_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'dedic.order.param') {
-        return navigate(route.DEDICATED_SERVERS_ORDER)
+        return navigate(route.DEDICATED_SERVERS_ORDER, {
+          replace: true,
+        })
       }
     }
   }, [])
 
   if (location.pathname === route.VDS) {
-    return <Navigate to={route.VPS} />
+    return <Navigate to={route.VPS} replace />
   }
 
   if (location.pathname === route.VDS_ORDER) {
-    return <Navigate to={route.VPS_ORDER} />
+    return <Navigate to={route.VPS_ORDER} replace />
   }
 
   if (location.pathname === route.VDS_IP) {
-    return <Navigate to={route.VPS_IP} />
+    return <Navigate to={route.VPS_IP} replace />
   }
+
+  const closePromotionBanner = () => setIsShowPromotion(false)
 
   return (
     <Container>
+      {isShowPromotion && promotionType && (
+        <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
+      )}
       <EmailTrigger />
       <Routes>
-        <Route path={route.HOME} element={<Navigate to={route.SERVICES} replace={true} />} />
+        <Route
+          path={route.HOME}
+          element={<Navigate to={route.SERVICES} replace={true} />}
+        />
         <Route path={route.SERVICES} element={<ServicesPageLazy />} />
         <Route path={route.VPS} element={<VDSPageLazy />} />
         <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />
@@ -177,7 +246,7 @@ const SupportScreen = () => {
   const location = useLocation()
 
   if (location.pathname === route.SUPPORT) {
-    return <Navigate to={`${route.SUPPORT}/requests`} />
+    return <Navigate to={`${route.SUPPORT}/requests`} replace />
   }
 
   return (
@@ -192,7 +261,7 @@ const BillingScreen = () => {
   const location = useLocation()
 
   if (location.pathname === route.BILLING) {
-    return <Navigate to={`${route.BILLING}/payments`} />
+    return <Navigate to={`${route.BILLING}/payments`} replace />
   }
 
   return (

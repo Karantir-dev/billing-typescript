@@ -81,7 +81,7 @@ export default function Component({ transfer = false }) {
   }
 
   if (!state?.domainInfo) {
-    return <Navigate to={route.DOMAINS_ORDERS} />
+    return <Navigate replace to={route.DOMAINS_ORDERS} />
   }
 
   const refHandler = type => {
@@ -128,7 +128,11 @@ export default function Component({ transfer = false }) {
             onClick={handleSubmit}
           />
           <button
-            onClick={() => navigate(route.DOMAINS)}
+            onClick={() =>
+              navigate(route.DOMAINS, {
+                replace: true,
+              })
+            }
             type="button"
             className={s.cancel}
           >

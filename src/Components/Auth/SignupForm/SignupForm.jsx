@@ -47,7 +47,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   // const [socialLinks, setSocialLinks] = useState({})
 
   const successRegistration = () => {
-    navigate(routes.LOGIN, { state: { from: location.pathname } })
+    navigate(routes.LOGIN, { state: { from: location.pathname }, replace: true })
   }
 
   const validationSchema = Yup.object().shape({

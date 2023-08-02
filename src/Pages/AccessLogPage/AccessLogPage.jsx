@@ -27,7 +27,7 @@ export default function Component() {
   }, [p_num, p_cnt])
 
   if (!isComponentAllowedToRender) {
-    return <Navigate to={routes.HOME} />
+    return <Navigate replace to={routes.HOME} />
   }
 
   return (

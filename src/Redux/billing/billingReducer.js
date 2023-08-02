@@ -7,7 +7,8 @@ const initialState = {
   paymentsCount: 0,
   expensesList: null,
   expensesCount: 0,
-
+  paymentsReadOnlyList: null,
+  paymentsReadOnlyCount: 0,
   paymentMethodList: null,
   paymentMethodCount: 0,
 
@@ -36,6 +37,16 @@ const paymentsList = createReducer(initialState.paymentsList, {
 const paymentsCount = createReducer(initialState.paymentsCount, {
   [billingActions.setPaymentsCount]: (_, { payload }) => payload,
   [billingActions.clearPaymentsCount]: () => 0,
+})
+
+const paymentsReadOnlyList = createReducer(initialState.paymentsReadOnlyList, {
+  [billingActions.setPaymentsReadOnlyList]: (_, { payload }) => payload,
+  [billingActions.clearPaymentsReadOnlyList]: () => [],
+})
+
+const paymentsReadOnlyCount = createReducer(initialState.paymentsReadOnlyCount, {
+  [billingActions.setPaymentsReadOnlyCount]: (_, { payload }) => payload,
+  [billingActions.clearPaymentsReadOnlyCount]: () => 0,
 })
 
 const paymentMethodList = createReducer(initialState.paymentMethodList, {
@@ -103,6 +114,8 @@ const billingReducer = combineReducers({
   paymentsCount,
   expensesList,
   expensesCount,
+  paymentsReadOnlyList,
+  paymentsReadOnlyCount,
 
   paymentsFiltersList,
   paymentsFilters,
