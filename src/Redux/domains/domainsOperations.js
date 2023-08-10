@@ -146,7 +146,7 @@ const getDomainsOrderName =
 
         setAutoprolongPrices &&
           (await axiosInstance
-            .get(`${API_URL}/api/domain/`)
+            .get(`${API_URL}/v1/api/domain/`)
             .then(response => {
               setAutoprolongPrices(response.data)
             })
@@ -195,15 +195,17 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post(`${API_URL}/api/domain/check/premium/`, {
-            host: domains?.map(e => e?.domain?.$)?.join(','),
+          .post(`${API_URL}/v1/api/domain/check/`, {
+            host: domains?.map(e => e?.domain?.$),
           })
-          .then(({ data }) => {
+          .then(({ data: { data } }) => {
             const newArr = []
-            data?.domains?.forEach(d => {
+            const receivedDomains = Object.keys(data)
+
+            receivedDomains?.forEach(d => {
               domains?.forEach(dom => {
-                if (dom?.domain?.$ === d.host) {
-                  return newArr?.push({ ...dom, premium: d.premium })
+                if (dom?.domain?.$ === d) {
+                  return newArr?.push({ ...dom, premium: data[d].premium })
                 }
               })
             })
