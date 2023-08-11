@@ -146,7 +146,7 @@ const getDomainsOrderName =
 
         setAutoprolongPrices &&
           (await axiosInstance
-            .get(`${API_URL}/v1/api/domain/`)
+            .get(`${API_URL}/api/domain/`)
             .then(response => {
               setAutoprolongPrices(response.data)
             })
@@ -195,7 +195,7 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post(`${API_URL}/v1/api/domain/check/`, {
+          .post(`${API_URL}/api/domain/check/`, {
             host: domains?.map(e => e?.domain?.$),
           })
           .then(({ data: { data } }) => {
