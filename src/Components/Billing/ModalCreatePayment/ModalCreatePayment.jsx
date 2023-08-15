@@ -302,6 +302,7 @@ export default function Component(props) {
             >
               {({ values, setFieldValue, touched, errors, handleBlur }) => {
                 const parsePaymentInfo = text => {
+                  console.log(text, ' text');
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
                     const minAmount = splittedText[0]?.replace('\n', '')
