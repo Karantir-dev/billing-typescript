@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies } from '@utils'
+import { checkIfTokenAlive, cryptoAnalyticsSender } from '@utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -324,55 +324,58 @@ const setPaymentMethods =
             }
 
             if (cartData) {
-              const items = cartData?.elemList?.map(e => {
-                return {
-                  item_name: e.pricelist_name?.$ || '',
-                  item_id: e['item.id']?.$ || '',
-                  price: Number(e.cost?.$) || 0,
-                  item_category: e['item.type']?.$ || '',
-                  quantity: 1,
-                }
-              })
+              // const items = cartData?.elemList?.map(e => {
+              //   return {
+              //     item_name: e.pricelist_name?.$ || '',
+              //     item_id: e['item.id']?.$ || '',
+              //     price: Number(e.cost?.$) || 0,
+              //     item_category: e['item.type']?.$ || '',
+              //     quantity: 1,
+              //   }
+              // })
 
-              if (data.doc.ok && data.doc.ok?.$ !== 'func=order') {
-                if (
-                  cartData?.payment_name?.includes('Coinify') ||
-                  cartData?.payment_name?.includes('Bitcoin')
-                ) {
-                  const ecommerceData = {
-                    event: 'purchase',
-                    ecommerce: {
-                      payment_type: cartData?.payment_name,
-                      transaction_id: data.doc?.payment_id?.$,
-                      affiliation: 'cp.zomro.com',
-                      value: Number(cartData?.total_sum) || 0,
-                      tax: Number(cartData?.tax) || 0,
-                      currency: 'EUR',
-                      shipping: '0',
-                      coupon: body?.promocode,
-                      items: items,
-                    },
-                  }
-                  cookies.eraseCookie('payment_id')
-                  window?.dataLayer?.push({ ecommerce: null })
-                  window?.dataLayer?.push(ecommerceData)
+              if (data?.doc?.ok && data?.doc?.ok?.$ !== 'func=order') {
+                if (body?.promocode) cartData.promocode = body.promocode
 
-                  dispatch(billingOperations.analyticSendHandler(ecommerceData))
-                } else {
-                  data.doc?.payment_id &&
-                    cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
-                  cookies?.setCookie(
-                    `cartData_${data.doc?.payment_id?.$}`,
-                    JSON.stringify({
-                      billorder: cartData?.billorder,
-                      total_sum: cartData?.total_sum,
-                      tax: cartData?.tax,
-                      promocode: body?.promocode,
-                      items: items,
-                    }),
-                    5,
-                  )
-                }
+                cryptoAnalyticsSender(cartData, data.doc?.payment_id?.$)
+                // if (
+                //   cartData?.payment_name?.includes('Coinify') ||
+                //   cartData?.payment_name?.includes('Bitcoin')
+                // ) {
+                //   const ecommerceData = {
+                //     event: 'purchase',
+                //     ecommerce: {
+                //       payment_type: cartData?.payment_name,
+                //       transaction_id: data.doc?.payment_id?.$,
+                //       affiliation: 'cp.zomro.com',
+                //       value: Number(cartData?.total_sum) || 0,
+                //       tax: Number(cartData?.tax) || 0,
+                //       currency: 'EUR',
+                //       shipping: '0',
+                //       coupon: body?.promocode,
+                //       items: items,
+                //     },
+                //   }
+                //   cookies.eraseCookie('payment_id')
+                //   window?.dataLayer?.push({ ecommerce: null })
+                //   window?.dataLayer?.push(ecommerceData)
+
+                //   dispatch(billingOperations.analyticSendHandler(ecommerceData))
+                // } else {
+                //   data.doc?.payment_id &&
+                //     cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
+                //   cookies?.setCookie(
+                //     `cartData_${data.doc?.payment_id?.$}`,
+                //     JSON.stringify({
+                //       billorder: cartData?.billorder,
+                //       total_sum: cartData?.total_sum,
+                //       tax: cartData?.tax,
+                //       promocode: body?.promocode,
+                //       items: items,
+                //     }),
+                //     5,
+                //   )
+                // }
 
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
@@ -512,5 +515,5 @@ export default {
   clearBasket,
   setPaymentMethods,
   getSalesList,
-  getPayMethodItem
+  getPayMethodItem,
 }
