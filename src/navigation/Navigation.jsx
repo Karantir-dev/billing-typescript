@@ -66,6 +66,9 @@ const Component = () => {
     const sessionId = cookies.getCookie('sessionId')
     if (sessionId) {
       dispatch(authActions.loginSuccess(sessionId))
+    } 
+    else {
+      dispatch(authActions.logoutSuccess())
     }
   }, [])
 
