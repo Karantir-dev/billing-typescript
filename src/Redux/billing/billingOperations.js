@@ -639,42 +639,7 @@ const createPaymentMethod =
             if (data?.doc?.ok) {
               cryptoAnalyticsSender(body, data.doc?.payment_id?.$)
 
-              // if (
-              //   body?.paymethod_name?.includes('Coinify') ||
-              //   body?.paymethod_name?.includes('Bitcoin')
-              // ) {
-              //   const ecommerceData = {
-              //     event: 'purchase',
-              //     ecommerce: {
-              //       payment_type: body?.paymethod_name,
-              //       transaction_id: data.doc?.payment_id?.$,
-              //       affiliation: 'cp.zomro.com',
-              //       value: Number(body?.amount) || 0,
-              //       tax: Number(body?.tax) || 0,
-              //       currency: 'EUR',
-              //       shipping: '0',
-              //       items: [
-              //         {
-              //           item_name: 'Refill',
-              //           item_id: data.doc?.payment_id?.$,
-              //           price: Number(body?.amount) || 0,
-              //           item_category: 'Refill',
-              //           quantity: 1,
-              //         },
-              //       ],
-              //     },
-              //   }
-              //   cookies.eraseCookie('payment_id')
-              //   window?.dataLayer?.push({ ecommerce: null })
-              //   window?.dataLayer?.push(ecommerceData)
-
-              //   dispatch(analyticSendHandler(ecommerceData))
-              // } else {
-              //   data.doc?.payment_id &&
-              //     cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
-              // }
-
-              // dispatch(getPaymentMethodPage(data.doc.ok.$))
+              dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
             }
           })

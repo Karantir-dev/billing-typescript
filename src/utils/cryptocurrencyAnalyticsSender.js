@@ -37,7 +37,7 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
       ecommerce: {
         payment_type: orderInfo?.paymethod_name,
         transaction_id: paymentID,
-        affiliation: 'cp.zomro.com',
+        affiliation: window.location.hostname,
         value: orderAmount,
         tax: Number(orderInfo?.tax) || 0,
         currency: 'EUR',
@@ -64,8 +64,6 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
         `cartData_${paymentID}`,
         JSON.stringify({
           billorder: orderInfo?.billorder,
-          total_sum: orderInfo?.total_sum,
-          tax: orderInfo?.tax,
           promocode: orderInfo?.promocode || '',
           items: items,
         }),
