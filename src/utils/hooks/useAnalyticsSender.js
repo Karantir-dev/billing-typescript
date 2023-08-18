@@ -50,26 +50,35 @@ export default function useAnalyticsSender() {
 
       window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
-      let ecommerce = null
+      let ecommerce = {
+        event: 'purchase',
+        ecommerce: {
+          payment_type: paymentItem?.paymethod_name?.$,
+          transaction_id: paymentId,
+          affiliation: window.location.hostname,
+          value: Number(value) || 0,
+          tax: Number(tax) || 0,
+          currency: 'EUR',
+          shipping: '0',
+          coupon: '',
+          items: [
+            {
+              item_name: 'Service',
+              item_id: 'lost_data',
+              price: 0,
+              item_category: 'lost_data',
+              quantity: 1,
+            },
+          ],
+        },
+      }
 
       // If it is a purchase of services
       if (paymentItem?.billorder) {
         // If there is saved product data
         if (cartData?.billorder === paymentItem?.billorder?.$) {
-          ecommerce = {
-            event: 'purchase',
-            ecommerce: {
-              payment_type: paymentItem?.paymethod_name?.$,
-              transaction_id: paymentId,
-              affiliation: 'cp.zomro.com',
-              value: Number(value) || 0,
-              tax: Number(tax) || 0,
-              currency: 'EUR',
-              shipping: '0',
-              coupon: cartData?.promocode,
-              items: cartData?.items,
-            },
-          }
+          ecommerce.ecommerce.coupon = cartData?.promocode
+          ecommerce.ecommerce.items = cartData?.items
 
           window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
@@ -78,29 +87,6 @@ export default function useAnalyticsSender() {
 
           // If there is NO saved product data
         } else {
-          ecommerce = {
-            event: 'purchase',
-            ecommerce: {
-              payment_type: paymentItem?.paymethod_name?.$,
-              transaction_id: paymentId,
-              affiliation: 'cp.zomro.com',
-              value: Number(value) || 0,
-              tax: Number(tax) || 0,
-              currency: 'EUR',
-              shipping: '0',
-              coupon: '',
-              items: [
-                {
-                  item_name: 'Service',
-                  item_id: 'lost_data',
-                  price: 0,
-                  item_category: 'lost_data',
-                  quantity: 1,
-                },
-              ],
-            },
-          }
-
           window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
         }
@@ -108,26 +94,15 @@ export default function useAnalyticsSender() {
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
         if (!cartData) {
-          ecommerce = {
-            event: 'purchase',
-            ecommerce: {
-              payment_type: paymentItem?.paymethod_name?.$,
-              transaction_id: paymentId,
-              affiliation: 'cp.zomro.com',
-              value: Number(value) || 0,
-              tax: Number(tax) || 0,
-              currency: 'EUR',
-              items: [
-                {
-                  item_name: 'Refill',
-                  item_id: paymentId,
-                  price: Number(value) || 0,
-                  item_category: 'Refill',
-                  quantity: 1,
-                },
-              ],
+          ecommerce.ecommerce.items = [
+            {
+              item_name: 'Refill',
+              item_id: paymentId,
+              price: Number(value) || 0,
+              item_category: 'Refill',
+              quantity: 1,
             },
-          }
+          ]
 
           window?.dataLayer?.push(ecommerce)
           dispatch(billingOperations.analyticSendHandler(ecommerce))
