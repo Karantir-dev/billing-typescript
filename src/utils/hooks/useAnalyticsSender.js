@@ -50,7 +50,7 @@ export default function useAnalyticsSender() {
 
       window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
-      let ecommerce = {
+      let analyticsData = {
         event: 'purchase',
         ecommerce: {
           payment_type: paymentItem?.paymethod_name?.$,
@@ -77,24 +77,24 @@ export default function useAnalyticsSender() {
       if (paymentItem?.billorder) {
         // If there is saved product data
         if (cartData?.billorder === paymentItem?.billorder?.$) {
-          ecommerce.ecommerce.coupon = cartData?.promocode
-          ecommerce.ecommerce.items = cartData?.items
+          analyticsData.ecommerce.coupon = cartData?.promocode
+          analyticsData.ecommerce.items = cartData?.items
 
-          window?.dataLayer?.push(ecommerce)
-          dispatch(billingOperations.analyticSendHandler(ecommerce))
+          window?.dataLayer?.push(analyticsData)
+          dispatch(billingOperations.analyticSendHandler(analyticsData))
 
           cookies.eraseCookie(`cartData_${paymentId}`)
 
           // If there is NO saved product data
         } else {
-          window?.dataLayer?.push(ecommerce)
-          dispatch(billingOperations.analyticSendHandler(ecommerce))
+          window?.dataLayer?.push(analyticsData)
+          dispatch(billingOperations.analyticSendHandler(analyticsData))
         }
 
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
         if (!cartData) {
-          ecommerce.ecommerce.items = [
+          analyticsData.ecommerce.items = [
             {
               item_name: 'Refill',
               item_id: paymentId,
@@ -104,8 +104,8 @@ export default function useAnalyticsSender() {
             },
           ]
 
-          window?.dataLayer?.push(ecommerce)
-          dispatch(billingOperations.analyticSendHandler(ecommerce))
+          window?.dataLayer?.push(analyticsData)
+          dispatch(billingOperations.analyticSendHandler(analyticsData))
         }
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it

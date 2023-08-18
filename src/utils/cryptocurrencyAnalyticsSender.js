@@ -32,7 +32,7 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
     orderInfo?.paymethod_name?.includes('Coinify') ||
     orderInfo?.paymethod_name?.includes('Bitcoin')
   ) {
-    const ecommerceData = {
+    const analyticsData = {
       event: 'purchase',
       ecommerce: {
         payment_type: orderInfo?.paymethod_name,
@@ -46,13 +46,13 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
         items: items,
       },
     }
-    console.log('crypto method', ecommerceData)
+    console.log('crypto method', analyticsData)
 
     cookies.eraseCookie('payment_id')
     window?.dataLayer?.push({ ecommerce: null })
-    window?.dataLayer?.push(ecommerceData)
+    window?.dataLayer?.push(analyticsData)
 
-    axios.post(`${API_URL}/api/analytic/add/`, ecommerceData)
+    axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
     // if it is any other payment method - write down the order info into cookies
   } else {
