@@ -40,6 +40,7 @@
   & .swiper-pagination-bullet {
     width: 12px;
     height: 12px;
+    flex-shrink: 0;
     background-color: transparent;
     border: 1px solid var(--transparent-color);
     transition: .2s transform,.2s left;
@@ -93,7 +94,6 @@
 .dedic_swiper_pagination {
   .swiper-pagination-bullets {
     display: flex;
-    min-width: fit-content;
     margin-bottom: 5px;
   }
 }
