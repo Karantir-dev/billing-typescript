@@ -48,6 +48,7 @@
   "View/change the list of nameservers": "View/change the list of nameservers",
   "Domain name transfer": "Domain name transfer",
   "Domain name only Latin": "Domain name can only contain Latin characters",
+  "latin_only": "Only Latin characters",
   "Check": "Check",
   "Registered": "Registered",
   "Not registered": "Not registered",

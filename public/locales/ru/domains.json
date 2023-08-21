@@ -47,6 +47,7 @@
   "View/change the list of nameservers": "Просмотреть/изменить список серверов имен",
   "Domain name transfer": "Трансфер доменного имени",
   "Domain name only Latin": "Имя домена может содержать только латинские символы",
+  "latin_only": "Только латинские символы",
   "Check": "Проверить",
   "Registered": "Зарегистрировано",
   "Not registered": "Не зарегистрирован",

@@ -257,7 +257,7 @@ export default function Component(props) {
     },
   })
 
-  const { values, setFieldValue, errors, touched, handleBlur } = formik
+  const { values, setFieldValue, errors, touched, handleBlur, setFieldError } = formik
 
   useImperativeHandle(refId, () => ({
     Submit: async () => {
@@ -316,6 +316,9 @@ export default function Component(props) {
     const value = e.target.value
     if (value.match(LATIN_NUMBER_REGEX)) {
       setFieldValue(name, value)
+    } else {
+      setFieldError(name, t('latin_only'))
+      touched[name] = true
     }
   }
 
