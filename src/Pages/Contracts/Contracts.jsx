@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton, Pagination, ContractItem, Icon } from '@components'
+import { IconButton, Pagination, ContractItem, Icon, Loader } from '@components'
 import { contractOperations, contractsSelectors } from '@redux'
 import { useTranslation } from 'react-i18next'
 
 import s from './Contracts.module.scss'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -16,6 +16,8 @@ export default function Contracts() {
 
   const contractsRenderData = useSelector(contractsSelectors.getContractsList)
   const contractsCount = useSelector(contractsSelectors.getContractsCount)
+  const isLoading = useSelector(contractsSelectors.getIsLoadingContracts)
+  const signal = useCancelRequest()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -42,7 +44,7 @@ export default function Contracts() {
   useEffect(() => {
     if (isAllowedToRender) {
       const data = { p_num, p_cnt }
-      dispatch(contractOperations.getContracts(data))
+      dispatch(contractOperations.getContracts(data, signal))
     } else {
       navigate(route.SERVICES, { replace: true })
     }
@@ -51,7 +53,7 @@ export default function Contracts() {
   return (
     <>
       <h3 className={s.page_title}>{t('profile.contracts')}</h3>
-      {contractsRenderData?.contracts?.length > 0 && !mobile &&(
+      {contractsRenderData?.contracts?.length > 0 && !mobile && (
         <div className={s.icons_wrapper}>
           {/* <IconButton
           disabled={!selectedContract || !rights?.print || !rights?.download}
@@ -160,6 +162,8 @@ export default function Contracts() {
           />
         </div>
       )}
+
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

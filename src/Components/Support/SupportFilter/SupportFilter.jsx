@@ -21,6 +21,7 @@ export default function Component(props) {
     setIsFiltered,
     isFilterActive,
     p_cnt,
+    signal,
   } = props
 
   const [createTicketModal, setCreateTicketModal] = useState(false)
@@ -54,9 +55,9 @@ export default function Component(props) {
 
     setIsFiltered && setIsFiltered(true)
     if (params?.path === 'requests') {
-      dispatch(supportOperations.getTicketsFiltersHandler(values))
+      dispatch(supportOperations.getTicketsFiltersHandler(values, signal))
     } else if (params?.path === 'requests_archive') {
-      dispatch(supportOperations.getTicketsArchiveFiltersHandler(values))
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(values, signal))
     }
   }
 
@@ -77,9 +78,9 @@ export default function Component(props) {
     setCurrentPage(1)
     setFilterModal(false)
     if (params?.path === 'requests') {
-      dispatch(supportOperations.getTicketsFiltersHandler(clearField))
+      dispatch(supportOperations.getTicketsFiltersHandler(clearField, signal))
     } else if (params?.path === 'requests_archive') {
-      dispatch(supportOperations.getTicketsArchiveFiltersHandler(clearField))
+      dispatch(supportOperations.getTicketsArchiveFiltersHandler(clearField, signal))
     }
   }
 

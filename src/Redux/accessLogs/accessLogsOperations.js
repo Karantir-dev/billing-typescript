@@ -1,13 +1,13 @@
 import qs from 'qs'
 import { axiosInstance } from '@config/axiosInstance'
-import { actions, accessLogsActions } from '@redux'
+import { accessLogsActions } from '@redux'
 import i18n from 'i18next'
 import { checkIfTokenAlive } from '@utils'
 
 const getAccessLogsHandler =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(accessLogsActions.showLoaderLogs())
     const {
       auth: { sessionId },
     } = getState()
@@ -24,6 +24,7 @@ const getAccessLogsHandler =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -33,18 +34,18 @@ const getAccessLogsHandler =
         dispatch(accessLogsActions.getAccessLogs(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(accessLogsActions.getAccessLogsCount(count))
-        dispatch(getAccessLogsFiltersHandler())
+        dispatch(getAccessLogsFiltersHandler({}, signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(accessLogsActions.hideLoaderLogs())
       })
   }
 
 const getAccessLogsFiltersHandler =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(accessLogsActions.showLoaderLogs())
     const {
       auth: { sessionId },
     } = getState()
@@ -60,6 +61,7 @@ const getAccessLogsFiltersHandler =
           auth: sessionId,
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -70,7 +72,7 @@ const getAccessLogsFiltersHandler =
         })
         dispatch(accessLogsActions.getAccessLogsFilters(filters))
         dispatch(accessLogsActions.getCurrentFilters(data?.doc?.filter?.param))
-        dispatch(actions.hideLoader())
+        dispatch(accessLogsActions.hideLoaderLogs())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
@@ -78,9 +80,9 @@ const getAccessLogsFiltersHandler =
   }
 
 const filterDataHandler =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(accessLogsActions.showLoaderLogs())
     const {
       auth: { sessionId },
     } = getState()
@@ -94,6 +96,7 @@ const filterDataHandler =
           auth: sessionId,
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -112,6 +115,7 @@ const filterDataHandler =
               p_col: '+time',
               ...body,
             }),
+            { signal },
           )
           .then(({ data }) => {
             if (data.doc.error) {
@@ -121,15 +125,15 @@ const filterDataHandler =
             const count = data?.doc?.p_elems?.$ || 0
             dispatch(accessLogsActions.getAccessLogsCount(count))
             dispatch(accessLogsActions.getAccessLogs(elem))
-            dispatch(actions.hideLoader())
+            dispatch(accessLogsActions.hideLoaderLogs())
           })
           .catch(error => {
             checkIfTokenAlive(error.message, dispatch)
-            dispatch(actions.hideLoader())
+            dispatch(accessLogsActions.hideLoaderLogs())
           })
       })
       .catch(error => {
-        dispatch(actions.hideLoader())
+        dispatch(accessLogsActions.hideLoaderLogs())
         checkIfTokenAlive('logs -' + error.message, dispatch)
       })
   }

@@ -11,13 +11,14 @@ import {
   CheckBox,
   SiteCareBottomBar,
   InstructionModal,
+  Loader,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './VPN.module.scss'
-import { selectors, vpnOperations, vpnSelectors } from '@redux'
-import { checkServicesRights, usePageRender } from '@utils'
+import { vpnOperations, vpnSelectors } from '@redux'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
@@ -31,7 +32,8 @@ export default function Component() {
 
   const vpnRenderData = useSelector(vpnSelectors.getVpnList)
   const siteCareCount = useSelector(vpnSelectors.getVpnCount)
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const isLoading = useSelector(vpnSelectors.getIsLoadingVpn)
+  const signal = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -82,7 +84,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(vpnOperations.getSiteCare(data))
+    dispatch(vpnOperations.getSiteCare(data, signal))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -220,155 +222,160 @@ export default function Component() {
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>
-        {t('VPN')}
-        {vpnRenderData?.vpnList?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${siteCareCount})`}</span>
-        )}
-      </h1>
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>
+          {t('VPN')}
+          {vpnRenderData?.vpnList?.length !== 0 && (
+            <span className={s.title_count_services}>{` (${siteCareCount})`}</span>
+          )}
+        </h1>
 
-      <VpnFilter
-        setIsFiltered={setIsFiltered}
-        setSelctedItem={setSelctedItem}
-        setCurrentPage={setP_num}
-        p_cnt={p_cnt}
-        isFiltered={isFiltered}
-        isFilterActive={isFiltered || vpnRenderData?.vpnList?.length > 0}
-        rights={rights}
-        selctedItem={selctedItem}
-        list={vpnRenderData?.vpnList}
-      />
+        <VpnFilter
+          setIsFiltered={setIsFiltered}
+          setSelctedItem={setSelctedItem}
+          setCurrentPage={setP_num}
+          p_cnt={p_cnt}
+          isFiltered={isFiltered}
+          isFilterActive={isFiltered || vpnRenderData?.vpnList?.length > 0}
+          rights={rights}
+          selctedItem={selctedItem}
+          list={vpnRenderData?.vpnList}
+          signal={signal}
+        />
 
-      {vpnRenderData?.vpnList?.length > 0 && (
-        <div className={s.checkBoxColumn}>
-          <CheckBox
-            className={s.check_box}
-            value={isAllActive}
-            onClick={toggleIsAllActiveHandler}
-          />
-          <span>{t('Choose all', { ns: 'other' })}</span>
-        </div>
-      )}
-
-      {vpnRenderData?.vpnList?.length < 1 && isFiltered && (
-        <div className={s.no_vds_wrapper}>
-          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
-        </div>
-      )}
-
-      {vpnRenderData?.vpnList?.length < 1 &&
-        !isFiltered &&
-        vpnRenderData?.vpnList &&
-        !isLoading && (
-          <div className={s.no_service_wrapper}>
-            <img
-              src={require('@images/services/vpn.webp')}
-              alt="sitecare"
-              className={s.sitecare_img}
+        {vpnRenderData?.vpnList?.length > 0 && (
+          <div className={s.checkBoxColumn}>
+            <CheckBox
+              className={s.check_box}
+              value={isAllActive}
+              onClick={toggleIsAllActiveHandler}
             />
-            <p className={s.no_service_title}>
-              {t('YOU DONT HAVE A VPN YET', { ns: 'other' })}
-            </p>
-
-            <p className={s.no_service_description}>
-              {t('Protect yourself and your devices', {
-                ns: 'other',
-              })}
-            </p>
+            <span>{t('Choose all', { ns: 'other' })}</span>
           </div>
         )}
 
-      {vpnRenderData?.vpnList?.length > 0 && (
-        <VpnTable
-          historySiteCareHandler={historySiteCareHandler}
-          prolongSiteCareHandler={prolongSiteCareHandler}
-          editSiteCareHandler={editSiteCareHandler}
-          deleteSiteCareHandler={() => setDeleteModal(true)}
-          selctedItem={selctedItem}
-          setSelctedItem={setSelctedItem}
-          list={vpnRenderData?.vpnList}
-          rights={rights}
-          setDeleteIds={setDeleteIds}
-          instructionVhostHandler={instructionVhostHandler}
-        />
-      )}
+        {vpnRenderData?.vpnList?.length < 1 && isFiltered && (
+          <div className={s.no_vds_wrapper}>
+            <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+          </div>
+        )}
 
-      <SiteCareBottomBar
-        selctedItem={selctedItem}
-        renewDomainHandler={prolongSiteCareHandler}
-        deleteSiteCare={() => setDeleteModal(true)}
-        setDeleteIds={setDeleteIds}
-        rights={rights}
-      />
+        {vpnRenderData?.vpnList?.length < 1 &&
+          !isFiltered &&
+          vpnRenderData?.vpnList &&
+          !isLoading && (
+            <div className={s.no_service_wrapper}>
+              <img
+                src={require('@images/services/vpn.webp')}
+                alt="sitecare"
+                className={s.sitecare_img}
+              />
+              <p className={s.no_service_title}>
+                {t('YOU DONT HAVE A VPN YET', { ns: 'other' })}
+              </p>
 
-      {siteCareCount > 5 && (
-        <div className={s.pagination}>
-          <Pagination
-            totalCount={Number(siteCareCount)}
-            currentPage={p_num}
-            pageSize={p_cnt}
-            onPageChange={page => setP_num(page)}
-            onPageItemChange={items => setP_cnt(items)}
+              <p className={s.no_service_description}>
+                {t('Protect yourself and your devices', {
+                  ns: 'other',
+                })}
+              </p>
+            </div>
+          )}
+
+        {vpnRenderData?.vpnList?.length > 0 && (
+          <VpnTable
+            historySiteCareHandler={historySiteCareHandler}
+            prolongSiteCareHandler={prolongSiteCareHandler}
+            editSiteCareHandler={editSiteCareHandler}
+            deleteSiteCareHandler={() => setDeleteModal(true)}
+            selctedItem={selctedItem}
+            setSelctedItem={setSelctedItem}
+            list={vpnRenderData?.vpnList}
+            rights={rights}
+            setDeleteIds={setDeleteIds}
+            instructionVhostHandler={instructionVhostHandler}
           />
-        </div>
-      )}
+        )}
 
-      {historyModal && historyList?.length > 0 && (
-        <SiteCareHistoryModal
-          historyList={historyList}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeHistoryModalHandler}
-          setHistoryCurrentPage={setHistoryCurrentPage}
-          historyCurrentPage={historyCurrentPage}
-          historyItemCount={historyItemCount}
-          isOpen
+        <SiteCareBottomBar
+          selctedItem={selctedItem}
+          renewDomainHandler={prolongSiteCareHandler}
+          deleteSiteCare={() => setDeleteModal(true)}
+          setDeleteIds={setDeleteIds}
+          rights={rights}
         />
-      )}
 
-      {prolongModal && prolongData && (
-        <SiteCareProlongModal
-          prolongData={prolongData}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeProlongModalHandler}
-          prolongEditSiteCareHandler={prolongEditSiteCareHandler}
-          isOpen
-        />
-      )}
+        {siteCareCount > 5 && (
+          <div className={s.pagination}>
+            <Pagination
+              totalCount={Number(siteCareCount)}
+              currentPage={p_num}
+              pageSize={p_cnt}
+              onPageChange={page => setP_num(page)}
+              onPageItemChange={items => setP_cnt(items)}
+            />
+          </div>
+        )}
 
-      {editModal && editData && (
-        <VpnEditModal
-          editData={editData}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeEditModalHandler}
-          sendEditSiteCareHandler={sendEditSiteCareHandler}
-          editSiteCareHandler={editSiteCareHandler}
-          isOpen
-        />
-      )}
+        {historyModal && historyList?.length > 0 && (
+          <SiteCareHistoryModal
+            historyList={historyList}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeHistoryModalHandler}
+            setHistoryCurrentPage={setHistoryCurrentPage}
+            historyCurrentPage={historyCurrentPage}
+            historyItemCount={historyItemCount}
+            isOpen
+          />
+        )}
 
-      {deleteModal && (
-        <SiteCareDeleteModal
-          closeModal={() => {
-            setDeleteModal(false)
-            setDeleteIds(null)
-          }}
-          deleteIds={deleteIds}
-          deleteSiteCareHandler={deleteSiteCareHandler}
-          name={parseSelectedItemNameArr()}
-          isOpen
-        />
-      )}
+        {prolongModal && prolongData && (
+          <SiteCareProlongModal
+            prolongData={prolongData}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeProlongModalHandler}
+            prolongEditSiteCareHandler={prolongEditSiteCareHandler}
+            isOpen
+          />
+        )}
 
-      {!!instructionModal && (
-        <InstructionModal
-          title={t('Instruction', { ns: 'domains' })}
-          dispatchInstruction={dispatchInstruction}
-          closeModal={closeInstructionModalHandler}
-          isOpen
-        />
-      )}
-    </div>
+        {editModal && editData && (
+          <VpnEditModal
+            editData={editData}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeEditModalHandler}
+            sendEditSiteCareHandler={sendEditSiteCareHandler}
+            editSiteCareHandler={editSiteCareHandler}
+            isOpen
+          />
+        )}
+
+        {deleteModal && (
+          <SiteCareDeleteModal
+            closeModal={() => {
+              setDeleteModal(false)
+              setDeleteIds(null)
+            }}
+            deleteIds={deleteIds}
+            deleteSiteCareHandler={deleteSiteCareHandler}
+            name={parseSelectedItemNameArr()}
+            isOpen
+          />
+        )}
+
+        {!!instructionModal && (
+          <InstructionModal
+            title={t('Instruction', { ns: 'domains' })}
+            dispatchInstruction={dispatchInstruction}
+            closeModal={closeInstructionModalHandler}
+            isOpen
+          />
+        )}
+      </div>
+
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

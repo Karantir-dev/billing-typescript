@@ -10,6 +10,9 @@ const setPayersSelectedFields = createAction('SET_PAYER_SELECTED_FILEDS')
 
 const deletePayer = createAction('DELETE_PAYER')
 
+const hideLoader = createAction('SHOW_LOADER_PAYERS')
+const showLoader= createAction('HIDE_LOADER_PAYERS')
+
 export default {
   setPayersList,
   setPayersCount,
@@ -17,4 +20,6 @@ export default {
   setPayersSelectLists,
   updatePayersSelectLists,
   setPayersSelectedFields,
+  hideLoader,
+showLoader
 }

@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
-import { BreadCrumbs, Select, SiteCareTarifCard, Button, InputField } from '@components'
-import { useDispatch } from 'react-redux'
+import {
+  BreadCrumbs,
+  Select,
+  SiteCareTarifCard,
+  Button,
+  InputField,
+  Loader,
+} from '@components'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { siteCareOperations, userOperations } from '@redux'
-import { useScrollToElement, translatePeriod, ipRegex } from '@utils'
+import { siteCareOperations, siteCareSelectors, userOperations } from '@redux'
+import { useScrollToElement, translatePeriod, ipRegex, useCancelRequest } from '@utils'
 import { URL_REGEX, PASS_REGEX } from '@utils/constants'
 
 import s from './SiteCareOrder.module.scss'
@@ -25,6 +32,8 @@ export default function Component() {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const isLoading = useSelector(siteCareSelectors.getIsLoadingSiteCare)
+  const signal = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -35,7 +44,7 @@ export default function Component() {
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
-      dispatch(siteCareOperations.orderSiteCare({}, setData))
+      dispatch(siteCareOperations.orderSiteCare({}, setData, signal))
     } else {
       navigate(routes.SITE_CARE, { replace: true })
     }
@@ -86,7 +95,7 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData)),
+        dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData, signal)),
       ),
     )
   }
@@ -108,157 +117,166 @@ export default function Component() {
   })
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('Website care order')}</h1>
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>{t('Website care order')}</h1>
 
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          datacenter: data?.datacenter || '',
-          autoprolong: paramsData?.autoprolong || 'null',
-          period: data?.period || '',
-          pricelist: '',
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            datacenter: data?.datacenter || '',
+            autoprolong: paramsData?.autoprolong || 'null',
+            period: data?.period || '',
+            pricelist: '',
 
-          ipServer: '',
-          loginServer: '',
-          passwordServer: '',
-          port: '',
-          url: '',
-          licence_agreement_error: 'off',
-        }}
-        onSubmit={buyVhostHandler}
-      >
-        {({ setFieldValue, values, errors, touched }) => {
-          return (
-            <Form className={s.form}>
-              <div className={s.paymentWrapper}>
-                <Select
-                  getElement={item => {
-                    setFieldValue('period', item)
-                    setFieldValue('pricelist', '')
-                    setParamsData(null)
-                    dispatch(siteCareOperations.orderSiteCare({ period: item }, setData))
-                  }}
-                  value={values?.period}
-                  label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
-                  className={s.select}
-                  itemsList={data?.period_list.map(el => {
-                    return {
-                      label: t(el.$, { ns: 'other' }),
-                      value: el.$key,
-                    }
-                  })}
-                  isShadow
-                />
-                <div className={s.cardContainer}>
-                  {data?.tariflist_list?.map(tariff => {
-                    const { pricelist } = tariff
-                    const setPriceHandler = () => {
-                      setFieldValue('pricelist', pricelist?.$)
+            ipServer: '',
+            loginServer: '',
+            passwordServer: '',
+            port: '',
+            url: '',
+            licence_agreement_error: 'off',
+          }}
+          onSubmit={buyVhostHandler}
+        >
+          {({ setFieldValue, values, errors, touched }) => {
+            return (
+              <Form className={s.form}>
+                <div className={s.paymentWrapper}>
+                  <Select
+                    getElement={item => {
+                      setFieldValue('period', item)
+                      setFieldValue('pricelist', '')
+                      setParamsData(null)
                       dispatch(
-                        siteCareOperations.orderSiteCarePricelist(
-                          { ...values, pricelist: pricelist?.$, sv_field: 'period' },
-                          setParamsData,
+                        siteCareOperations.orderSiteCare(
+                          { period: item },
+                          setData,
+                          signal,
                         ),
                       )
-                      runScroll()
-                    }
-                    return (
-                      <SiteCareTarifCard
-                        period={
-                          data?.period_list?.filter(el => el?.$key === values?.period)[0]
-                            ?.$
-                        }
-                        selected={pricelist?.$ === values.pricelist}
-                        setPriceHandler={setPriceHandler}
-                        key={pricelist?.$}
-                        tariff={tariff}
-                      />
-                    )
-                  })}
-                </div>
-                {paramsData && (
-                  <div className={s.parametrsContainer}>
-                    <div ref={scrollElem} className={s.parametrsTitle}>
-                      {t('Options')}
-                    </div>
-                    <div className={s.inputsBlock}>
-                      <Select
-                        getElement={item => {
-                          setFieldValue('autoprolong', item)
-                        }}
-                        value={values?.autoprolong}
-                        label={`${t('Auto renewal', { ns: 'domains' })}:`}
-                        className={s.select}
-                        itemsList={paramsData?.autoprolong_list.map(el => ({
-                          label: translatePeriod(el.$, t),
-                          value: el.$key,
-                        }))}
-                        isShadow
-                      />
+                    }}
+                    value={values?.period}
+                    label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
+                    className={s.select}
+                    itemsList={data?.period_list.map(el => {
+                      return {
+                        label: t(el.$, { ns: 'other' }),
+                        value: el.$key,
+                      }
+                    })}
+                    isShadow
+                  />
+                  <div className={s.cardContainer}>
+                    {data?.tariflist_list?.map(tariff => {
+                      const { pricelist } = tariff
+                      const setPriceHandler = () => {
+                        setFieldValue('pricelist', pricelist?.$)
+                        dispatch(
+                          siteCareOperations.orderSiteCarePricelist(
+                            { ...values, pricelist: pricelist?.$, sv_field: 'period' },
+                            setParamsData,
+                            signal,
+                          ),
+                        )
+                        runScroll()
+                      }
+                      return (
+                        <SiteCareTarifCard
+                          period={
+                            data?.period_list?.filter(
+                              el => el?.$key === values?.period,
+                            )[0]?.$
+                          }
+                          selected={pricelist?.$ === values.pricelist}
+                          setPriceHandler={setPriceHandler}
+                          key={pricelist?.$}
+                          tariff={tariff}
+                        />
+                      )
+                    })}
+                  </div>
+                  {paramsData && (
+                    <div className={s.parametrsContainer}>
+                      <div ref={scrollElem} className={s.parametrsTitle}>
+                        {t('Options')}
+                      </div>
+                      <div className={s.inputsBlock}>
+                        <Select
+                          getElement={item => {
+                            setFieldValue('autoprolong', item)
+                          }}
+                          value={values?.autoprolong}
+                          label={`${t('Auto renewal', { ns: 'domains' })}:`}
+                          className={s.select}
+                          itemsList={paramsData?.autoprolong_list.map(el => ({
+                            label: translatePeriod(el.$, t),
+                            value: el.$key,
+                          }))}
+                          isShadow
+                        />
 
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        name={'loginServer'}
-                        placeholder={t('Enter login')}
-                        label={`${t('Login')}:`}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.loginServer}
-                        touched={!!touched.loginServer}
-                        isRequired
-                      />
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        placeholder={t('Enter password')}
-                        name={'passwordServer'}
-                        label={`${t('Password')}:`}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.passwordServer}
-                        touched={!!touched.passwordServer}
-                        isRequired
-                      />
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          name={'loginServer'}
+                          placeholder={t('Enter login')}
+                          label={`${t('Login')}:`}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.loginServer}
+                          touched={!!touched.loginServer}
+                          isRequired
+                        />
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          placeholder={t('Enter password')}
+                          name={'passwordServer'}
+                          label={`${t('Password')}:`}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.passwordServer}
+                          touched={!!touched.passwordServer}
+                          isRequired
+                        />
 
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        placeholder={t('Enter URL')}
-                        name={'url'}
-                        label={`${t('Site URL')}:`}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.url}
-                        touched={!!touched.url}
-                        isRequired
-                      />
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          placeholder={t('Enter URL')}
+                          name={'url'}
+                          label={`${t('Site URL')}:`}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.url}
+                          touched={!!touched.url}
+                          isRequired
+                        />
 
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        placeholder={t('Enter Port')}
-                        name={'port'}
-                        label={`SSH ${t('Port')}:`}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.port}
-                        touched={!!touched.port}
-                        isRequired
-                      />
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          placeholder={t('Enter Port')}
+                          name={'port'}
+                          label={`SSH ${t('Port')}:`}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.port}
+                          touched={!!touched.port}
+                          isRequired
+                        />
 
-                      <InputField
-                        inputWrapperClass={s.inputHeight}
-                        placeholder={t('Enter IP')}
-                        name={'ipServer'}
-                        label={`${t('IP address')}:`}
-                        isShadow
-                        className={s.input}
-                        error={!!errors.ipServer}
-                        touched={!!touched.ipServer}
-                        isRequired
-                      />
+                        <InputField
+                          inputWrapperClass={s.inputHeight}
+                          placeholder={t('Enter IP')}
+                          name={'ipServer'}
+                          label={`${t('IP address')}:`}
+                          isShadow
+                          className={s.input}
+                          error={!!errors.ipServer}
+                          touched={!!touched.ipServer}
+                          isRequired
+                        />
 
-                      {/* <div ref={licenseBlock} className={s.useFirstCheck}>
+                        {/* <div ref={licenseBlock} className={s.useFirstCheck}>
                         <CheckBox
                           initialState={licence_agreement}
                           setValue={item => {
@@ -277,40 +295,42 @@ export default function Component() {
                           )}"`}</a>
                         </span>
                       </div> */}
+                      </div>
                     </div>
+                  )}
+                </div>
+                {values.pricelist && (
+                  <div className={s.paymentBlock}>
+                    <div className={s.amountPayBlock}>
+                      <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
+                      <span>
+                        {parsePrice(paramsData?.orderinfo)?.amount} EUR/
+                        {t(
+                          `${
+                            data?.period_list?.filter(el => el?.$key === values.period)[0]
+                              ?.$
+                          }`,
+                          {
+                            ns: 'other',
+                          },
+                        )}
+                      </span>
+                    </div>
+                    <Button
+                      isShadow
+                      className={s.buy_btn}
+                      size="medium"
+                      label={t('to_order', { ns: 'other' })}
+                      type="submit"
+                    />
                   </div>
                 )}
-              </div>
-              {values.pricelist && (
-                <div className={s.paymentBlock}>
-                  <div className={s.amountPayBlock}>
-                    <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
-                    <span>
-                      {parsePrice(paramsData?.orderinfo)?.amount} EUR/
-                      {t(
-                        `${
-                          data?.period_list?.filter(el => el?.$key === values.period)[0]
-                            ?.$
-                        }`,
-                        {
-                          ns: 'other',
-                        },
-                      )}
-                    </span>
-                  </div>
-                  <Button
-                    isShadow
-                    className={s.buy_btn}
-                    size="medium"
-                    label={t('to_order', { ns: 'other' })}
-                    type="submit"
-                  />
-                </div>
-              )}
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

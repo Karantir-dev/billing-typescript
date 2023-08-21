@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { affiliateOperations } from '@redux'
+import { affiliateOperations, affiliateSelectors } from '@redux'
 import {
   Button,
   CalendarModal,
@@ -12,8 +12,9 @@ import {
   Select,
   IncomeTable,
   IncomeChart,
+  Loader,
 } from '@components'
-import { useOutsideAlerter } from '@utils'
+import { useCancelRequest, useOutsideAlerter } from '@utils'
 import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
 
@@ -23,6 +24,8 @@ export default function AffiliateProgramIncome() {
   const descrWrapper = useRef(null)
   const dropdownCalendar = useRef(null)
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateIncome)
+  const signal = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
@@ -50,6 +53,7 @@ export default function AffiliateProgramIncome() {
         setFormOptions,
         setIncomeData,
         setFixedPeriod,
+        signal,
       ),
     )
   }, [])
@@ -71,6 +75,7 @@ export default function AffiliateProgramIncome() {
           fixedPeriod,
           periodStart,
           periodEnd,
+          signal,
         ),
       )
     } else {
@@ -181,6 +186,7 @@ export default function AffiliateProgramIncome() {
             <IncomeTable list={incomeData} />
           </>
         )}
+        {isLoading && <Loader local shown={isLoading} transparent />}
       </div>
     </>
   )

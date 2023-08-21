@@ -3,8 +3,8 @@ import { axiosInstance } from '@config/axiosInstance'
 import { actions, affiliateActions, authSelectors } from '@redux'
 import { checkIfTokenAlive } from '@utils'
 
-const getReferralLink = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getReferralLink = signal => (dispatch, getState) => {
+  dispatch(affiliateActions.showLoaderAbout())
   const sessionId = authSelectors.getSessionId(getState())
 
   axiosInstance
@@ -15,6 +15,7 @@ const getReferralLink = () => (dispatch, getState) => {
         auth: sessionId,
         out: 'json',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -23,17 +24,17 @@ const getReferralLink = () => (dispatch, getState) => {
       const promocode = data.doc.promocode.$ || 'promocode will be here'
 
       dispatch(affiliateActions.setReferralLink({ refLink, promocode }))
-      dispatch(actions.hideLoader())
+      dispatch(affiliateActions.hideLoaderAbout())
     })
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(affiliateActions.hideLoaderAbout())
     })
 }
 
 const getInitialIncomeInfo =
-  (setFormOptions, setTableData, setFixedPeriod) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setFormOptions, setTableData, setFixedPeriod, signal) => (dispatch, getState) => {
+    dispatch(affiliateActions.showLoaderIncome())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -45,6 +46,7 @@ const getInitialIncomeInfo =
           out: 'json',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -74,17 +76,17 @@ const getInitialIncomeInfo =
           setTableData(modifiedTableData)
         }
 
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderIncome())
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderIncome())
       })
   }
 
 const getChartInfo =
-  (setTableData, fixedPeriod, periodStart, periodEnd) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setTableData, fixedPeriod, periodStart, periodEnd, signal) => (dispatch, getState) => {
+    dispatch(affiliateActions.showLoaderIncome())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -98,6 +100,7 @@ const getChartInfo =
           periodstart: periodStart,
           periodend: periodEnd,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -121,11 +124,11 @@ const getChartInfo =
           setTableData([])
         }
 
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderIncome())
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderIncome())
       })
   }
 
@@ -156,9 +159,9 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
 }
 
 const getInitialStatistics =
-  (setItems, setTotal, setPageNumber, setInitialFilters, p_cnt) =>
+  (setItems, setTotal, setPageNumber, setInitialFilters, p_cnt, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(affiliateActions.showLoaderStatistic())
     const sessionId = authSelectors.getSessionId(getState())
 
     const responses = Promise.all([
@@ -170,6 +173,7 @@ const getInitialStatistics =
           p_cnt,
           out: 'json',
         }),
+        { signal },
       ),
       axiosInstance.post(
         '/',
@@ -178,6 +182,7 @@ const getInitialStatistics =
           auth: sessionId,
           out: 'json',
         }),
+        { signal },
       ),
     ])
 
@@ -196,18 +201,24 @@ const getInitialStatistics =
         const datesList = filters.data.doc.slist?.find(el => el.$name === 'cdate')?.val
         setInitialFilters({ date, site, registered, payed, datesList })
 
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderStatistic())
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderStatistic())
       })
   }
 
 const getFilteredStatistics =
-  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal, p_cnt) =>
+  (
+    { date, dateStart, dateEnd, site, registered, payed },
+    setItems,
+    setTotal,
+    p_cnt,
+    signal,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(affiliateActions.showLoaderStatistic())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -225,6 +236,7 @@ const getFilteredStatistics =
           out: 'json',
           sok: 'ok',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -245,18 +257,18 @@ const getFilteredStatistics =
             setItems(data.doc?.elem || [])
             setTotal(data.doc.p_elems.$)
 
-            dispatch(actions.hideLoader())
+            dispatch(affiliateActions.hideLoaderStatistic())
           })
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderStatistic())
       })
   }
 
 const getNextPageStatistics =
-  (setItems, setTotal, pageNum, p_cnt) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setItems, setTotal, pageNum, p_cnt, signal) => (dispatch, getState) => {
+    dispatch(affiliateActions.showLoaderStatistic())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -269,6 +281,7 @@ const getNextPageStatistics =
           p_cnt,
           out: 'json',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -276,16 +289,16 @@ const getNextPageStatistics =
         setItems(data.doc?.elem || [])
         setTotal(data.doc.p_elems.$)
 
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderStatistic())
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(affiliateActions.hideLoaderStatistic())
       })
   }
 
-const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const dropFilters = (setItems, setTotal, p_cnt, signal) => (dispatch, getState) => {
+  dispatch(affiliateActions.showLoaderStatistic())
   const sessionId = authSelectors.getSessionId(getState())
 
   axiosInstance
@@ -298,6 +311,7 @@ const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
         out: 'json',
         sok: 'ok',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -311,6 +325,7 @@ const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
             p_cnt,
             out: 'json',
           }),
+          { signal },
         )
         .then(({ data }) => {
           if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -318,12 +333,12 @@ const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
           setItems(data.doc?.elem || [])
           setTotal(data.doc.p_elems.$)
 
-          dispatch(actions.hideLoader())
+          dispatch(affiliateActions.hideLoaderStatistic())
         })
     })
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(affiliateActions.hideLoaderStatistic())
     })
 }
 

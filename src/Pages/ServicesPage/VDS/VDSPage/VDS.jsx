@@ -22,10 +22,11 @@ import {
   Portal,
   HintWrapper,
   CheckBox,
+  Loader,
 } from '@components'
-import { actions, dedicOperations, selectors, vdsOperations } from '@redux'
+import { actions, dedicOperations, vdsOperations, vdsSelectors } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -34,9 +35,10 @@ export default function VDS() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
+  const signal = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
-
+  
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
 
@@ -92,7 +94,16 @@ export default function VDS() {
   }, [isFiltersOpened])
 
   const getVDSHandler = () => {
-    dispatch(vdsOperations.getVDS({ setServers, setRights, setElemsTotal, p_num, p_cnt }))
+    dispatch(
+      vdsOperations.getVDS({
+        setServers,
+        setRights,
+        setElemsTotal,
+        p_num,
+        p_cnt,
+        signal,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -116,6 +127,7 @@ export default function VDS() {
           setElemsTotal,
           setP_cnt,
           p_cnt,
+          signal,
         ),
       )
 
@@ -194,7 +206,7 @@ export default function VDS() {
     dispatch(dedicOperations.goToPanel(id))
   }
 
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
 
   const isAllActive = activeServices.length === servers.length
   const toggleIsAllActiveHandler = () => {
@@ -466,6 +478,8 @@ export default function VDS() {
           isOpen
         />
       )}
+
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

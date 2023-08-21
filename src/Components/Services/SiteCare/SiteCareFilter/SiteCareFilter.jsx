@@ -26,6 +26,7 @@ export default function Component(props) {
 
     list,
     selctedItem,
+    signal,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -74,7 +75,11 @@ export default function Component(props) {
     setCurrentPage(1)
     setFilterModal(false)
     dispatch(
-      siteCareOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true),
+      siteCareOperations.getSiteCareFilters(
+        { ...clearField, sok: 'ok', p_cnt },
+        true,
+        signal,
+      ),
     )
   }
 
@@ -87,7 +92,13 @@ export default function Component(props) {
     setFilterModal(false)
     setIsFiltered(true)
     setSelctedItem([])
-    dispatch(siteCareOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true))
+    dispatch(
+      siteCareOperations.getSiteCareFilters(
+        { ...values, sok: 'ok', p_cnt },
+        true,
+        signal,
+      ),
+    )
   }
 
   const isAllActive = list?.length === selctedItem?.length

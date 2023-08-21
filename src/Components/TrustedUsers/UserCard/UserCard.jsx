@@ -129,12 +129,18 @@ export default function UserCard({
   }, [showRightsAlert])
 
   useEffect(() => {
-    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))
+    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights, 'trusted'))
   }, [])
 
   useEffect(() => {
     if (isEditUserAllowed) {
-      dispatch(usersOperations.getAvailableRights('user.edit', setAvailableEditRights))
+      dispatch(
+        usersOperations.getAvailableRights(
+          'user.edit',
+          setAvailableEditRights,
+          'trusted',
+        ),
+      )
     }
   }, [isEditUserAllowed])
 

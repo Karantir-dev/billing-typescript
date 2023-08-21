@@ -5,6 +5,7 @@ import forexActions from './forexActions'
 const initialState = {
   forexList: null,
   forexCount: 0,
+  isLoadingForex: false,
 }
 
 const forexList = createReducer(initialState.forexList, {
@@ -14,6 +15,11 @@ const forexCount = createReducer(initialState.forexCount, {
   [forexActions.setForexCount]: (_, { payload }) => payload,
 })
 
-const forexReducer = combineReducers({ forexList, forexCount })
+const isLoadingForex = createReducer(initialState.isLoadingForex, {
+  [forexActions.showLoader]: () => true,
+  [forexActions.hideLoader]: () => false,
+})
+
+const forexReducer = combineReducers({ forexList, forexCount, isLoadingForex })
 
 export default forexReducer

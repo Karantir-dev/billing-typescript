@@ -9,6 +9,7 @@ import {
   Select,
   InputField,
   Icon,
+  Loader,
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -19,7 +20,12 @@ import { useTranslation } from 'react-i18next'
 import { dedicOperations, dedicSelectors, userOperations } from '@redux'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '@utils'
+import {
+  checkIfTokenAlive,
+  useScrollToElement,
+  translatePeriod,
+  useCancelRequest,
+} from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
 import 'swiper/swiper-bundle.min.css'
@@ -37,7 +43,8 @@ export default function DedicOrderPage() {
   const navigate = useNavigate()
 
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
-
+  const isLoading = useSelector(dedicSelectors.getIsLoadingDedics)
+  const signal = useCancelRequest()
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -246,7 +253,7 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(dedicOperations.getTarifs())
+      dispatch(dedicOperations.getTarifs(signal))
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }
@@ -316,380 +323,392 @@ export default function DedicOrderPage() {
   }
 
   return (
-    <div className={s.modalHeader}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>{t('page_title')}</h2>
+    <>
+      <div className={s.modalHeader}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h2 className={s.page_title}>{t('page_title')}</h2>
 
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          datacenter: tarifList?.currentDatacenter,
-          tarif: dataFromSite?.pricelist || null,
-          period: '1',
-          processor: null,
-          domainname: '',
-          ipTotal: '1',
-          price: null,
-          license: true,
-          server_name: '',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
-          useEffect(() => {
-            const cartFromSite = localStorage.getItem('site_cart')
-            if (cartFromSite && tarifList?.tarifList?.length > 0) {
-              const cartData = JSON.parse(cartFromSite)
-              if (cartData?.pricelist) {
-                const tariff = tarifList?.tarifList?.find(
-                  e => e?.pricelist?.$ === cartData?.pricelist,
-                )
-                setParameters(null)
-                setTarifChosen(true)
-                if (tariff) {
-                  setPrice(parsePrice(tariff?.price?.$)?.amoumt)
-                  setTarifChosen(true)
-
-                  dispatch(
-                    dedicOperations.getParameters(
-                      '1',
-                      tarifList?.currentDatacenter,
-                      cartData?.pricelist,
-                      setParameters,
-                      setFieldValue,
-                    ),
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            datacenter: tarifList?.currentDatacenter,
+            tarif: dataFromSite?.pricelist || null,
+            period: '1',
+            processor: null,
+            domainname: '',
+            ipTotal: '1',
+            price: null,
+            license: true,
+            server_name: '',
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
+            useEffect(() => {
+              const cartFromSite = localStorage.getItem('site_cart')
+              if (cartFromSite && tarifList?.tarifList?.length > 0) {
+                const cartData = JSON.parse(cartFromSite)
+                if (cartData?.pricelist) {
+                  const tariff = tarifList?.tarifList?.find(
+                    e => e?.pricelist?.$ === cartData?.pricelist,
                   )
-                }
-                localStorage.removeItem('site_cart')
-              }
-              setDataFromSite({
-                autoprolong: cartData?.autoprolong,
-                pricelist: cartData?.pricelist,
-                ostempl: cartData?.ostempl,
-                recipe: cartData?.recipe,
-                Controlpanel: cartData?.Controlpanel,
-                Portspeed: cartData?.Portspeed,
-              })
-            }
-          }, [tarifList])
-          return (
-            <Form className={s.form}>
-              <div className={s.datacenter_block}>
-                {tarifList?.datacenter?.map(item => {
-                  let countryName = item?.$?.split(',')[0]
-                  let datacenterName = item?.$?.split(',')[1]
-
-                  return (
-                    <div
-                      className={classNames(s.datacenter_card, {
-                        [s.selected]: item?.$key === values?.datacenter,
-                      })}
-                      key={item?.$key}
-                    >
-                      <button
-                        onClick={() => {
-                          setPrice('-')
-                          resetForm()
-                          // setPaymentPeriod(item)
-                          setFieldValue('datacenter', item?.$key)
-                          setParameters(null)
-                          setFilters([])
-                          setTarifChosen(false)
-                          dispatch(
-                            dedicOperations.getUpdatedTarrifs(item?.$key, setTarifList),
-                          )
-                        }}
-                        type="button"
-                        className={s.datacenter_card_btn}
-                      >
-                        <img
-                          className={classNames({
-                            [s.flag_icon]: true,
-                            [s.selected]: item?.$key === values?.datacenter,
-                          })}
-                          src={require('@images/countryFlags/netherlands_flag.webp')}
-                          alt="nth_flag"
-                        />
-                        <div className={s.datacenter__info}>
-                          <p className={s.country_name}>{countryName}</p>
-                          <span className={s.datacenter}>{datacenterName}</span>
-                        </div>
-                      </button>
-                    </div>
-                  )
-                })}
-              </div>
-              <div
-                className={classNames({
-                  [s.processors_block]: true,
-                })}
-              >
-                <div className={s.first_processors_block}>
-                  <p className={s.processors_block__label}>{t('port')}:</p>
-                  <div className={s.processors_block__row}>
-                    {tarifList?.fpricelist
-                      ?.filter(el => el.$.toLowerCase().includes('port'))
-                      .map(item => {
-                        return (
-                          <div
-                            className={classNames(s.processor_card, {
-                              [s.selected]: true,
-                            })}
-                            key={item?.$key}
-                          >
-                            <Toggle
-                              setValue={() => {
-                                setFieldValue('processor', item?.$key)
-                                if (filters.includes(item?.$key)) {
-                                  setFilters([...filters.filter(el => el !== item?.$key)])
-                                } else {
-                                  setFilters([...filters, item?.$key])
-                                }
-                                resetForm()
-                                setParameters(null)
-                                setTarifChosen(false)
-                              }}
-                              view="radio"
-                            />
-                            <span className={s.processor_name}>{item?.$}</span>
-                          </div>
-                        )
-                      })}
-                  </div>
-                </div>
-                <div className={s.second_processors_block}>
-                  <p className={s.processors_block__label}>{t('server_model')}:</p>
-                  <div className={s.processors_block__row}>
-                    {tarifList?.fpricelist
-                      ?.filter(el => !el.$.toLowerCase().includes('port'))
-                      .map(item => {
-                        return (
-                          <div
-                            className={classNames(s.processor_card, {
-                              [s.selected]: true,
-                            })}
-                            key={item?.$key}
-                          >
-                            <Toggle
-                              setValue={() => {
-                                setFieldValue('processor', item?.$key)
-                                if (filters.includes(item?.$key)) {
-                                  setFilters([...filters.filter(el => el !== item?.$key)])
-                                } else {
-                                  setFilters([...filters, item?.$key])
-                                }
-                                resetForm()
-                                setParameters(null)
-                                setTarifChosen(false)
-                              }}
-                              view="radio"
-                            />
-                            <span className={s.processor_name}>{item?.$}</span>
-                          </div>
-                        )
-                      })}
-                  </div>
-                </div>
-              </div>
-
-              <Select
-                height={50}
-                value={values.period}
-                getElement={item => {
-                  setPrice('-')
-                  resetForm()
-                  setFieldValue('period', item)
-                  // setPaymentPeriod(item)
                   setParameters(null)
-                  setTarifChosen(false)
+                  setTarifChosen(true)
+                  if (tariff) {
+                    setPrice(parsePrice(tariff?.price?.$)?.amoumt)
+                    setTarifChosen(true)
 
-                  dispatch(
-                    dedicOperations.getUpdatedPeriod(
-                      item,
-                      values.datacenter,
-                      setTarifList,
-                    ),
-                  )
-                }}
-                isShadow
-                label={`${t('payment_period')}:`}
-                itemsList={tarifList?.period?.map(el => {
-                  return { label: t(el.$), value: el.$key }
-                })}
-                className={classNames({ [s.select]: true, [s.period_select]: true })}
-              />
+                    dispatch(
+                      dedicOperations.getParameters(
+                        '1',
+                        tarifList?.currentDatacenter,
+                        cartData?.pricelist,
+                        setParameters,
+                        setFieldValue,
+                        signal,
+                      ),
+                    )
+                  }
+                  localStorage.removeItem('site_cart')
+                }
+                setDataFromSite({
+                  autoprolong: cartData?.autoprolong,
+                  pricelist: cartData?.pricelist,
+                  ostempl: cartData?.ostempl,
+                  recipe: cartData?.recipe,
+                  Controlpanel: cartData?.Controlpanel,
+                  Portspeed: cartData?.Portspeed,
+                })
+              }
+            }, [tarifList])
+            return (
+              <Form className={s.form}>
+                <div className={s.datacenter_block}>
+                  {tarifList?.datacenter?.map(item => {
+                    let countryName = item?.$?.split(',')[0]
+                    let datacenterName = item?.$?.split(',')[1]
 
-              {deskOrHigher ? (
-                <div className={s.tarifs_block}>
-                  {tariffsListToRender
-                    ?.filter(item => item.order_available.$ === 'on')
-                    ?.map(item => {
-                      return (
-                        <DedicTarifCard
-                          key={item?.desc?.$}
-                          parsePrice={parsePrice}
-                          item={item}
-                          values={values}
-                          setParameters={setParameters}
-                          setFieldValue={setFieldValue}
-                          setPrice={setPrice}
-                          setTarifChosen={() => {
-                            setTarifChosen(true)
-                            runScroll()
+                    return (
+                      <div
+                        className={classNames(s.datacenter_card, {
+                          [s.selected]: item?.$key === values?.datacenter,
+                        })}
+                        key={item?.$key}
+                      >
+                        <button
+                          onClick={() => {
+                            setPrice('-')
+                            resetForm()
+                            // setPaymentPeriod(item)
+                            setFieldValue('datacenter', item?.$key)
+                            setParameters(null)
+                            setFilters([])
+                            setTarifChosen(false)
+                            dispatch(
+                              dedicOperations.getUpdatedTarrifs(
+                                item?.$key,
+                                setTarifList,
+                                signal,
+                              ),
+                            )
                           }}
-                          periodName={periodName}
-                        />
-                      )
-                    })}
+                          type="button"
+                          className={s.datacenter_card_btn}
+                        >
+                          <img
+                            className={classNames({
+                              [s.flag_icon]: true,
+                              [s.selected]: item?.$key === values?.datacenter,
+                            })}
+                            src={require('@images/countryFlags/netherlands_flag.webp')}
+                            alt="nth_flag"
+                          />
+                          <div className={s.datacenter__info}>
+                            <p className={s.country_name}>{countryName}</p>
+                            <span className={s.datacenter}>{datacenterName}</span>
+                          </div>
+                        </button>
+                      </div>
+                    )
+                  })}
                 </div>
-              ) : (
-                <div className={s.dedic_swiper_rel_container}>
-                  <div className={s.doubled_dedic_swiper_rel_container}>
-                    <Swiper
-                      className="dedic-swiper"
-                      spaceBetween={0}
-                      slidesPerView={'auto'}
-                      effect={'creative'}
-                      pagination={{
-                        clickable: true,
-                        el: '[data-dedic-swiper-pagination]',
-                        dynamicBullets: true,
-                        dynamicMainBullets: 1,
-                      }}
-                      breakpoints={{
-                        650: {
-                          pagination: {
-                            dynamicMainBullets: 2,
-                          },
-                        },
-                        768: {
-                          pagination: {
-                            dynamicMainBullets: 3,
-                          },
-                        },
-                        1400: {
-                          pagination: {
-                            dynamicMainBullets: 4,
-                          },
-                        },
-                      }}
-                      onSwiper={setSwiperRef}
-                    >
-                      {tariffsListToRender
-                        ?.filter(item => item.order_available.$ === 'on')
-                        ?.map(item => {
+                <div
+                  className={classNames({
+                    [s.processors_block]: true,
+                  })}
+                >
+                  <div className={s.first_processors_block}>
+                    <p className={s.processors_block__label}>{t('port')}:</p>
+                    <div className={s.processors_block__row}>
+                      {tarifList?.fpricelist
+                        ?.filter(el => el.$.toLowerCase().includes('port'))
+                        .map(item => {
                           return (
-                            <SwiperSlide
-                              className="dedic-swiper-element"
-                              key={item?.desc?.$}
+                            <div
+                              className={classNames(s.processor_card, {
+                                [s.selected]: true,
+                              })}
+                              key={item?.$key}
                             >
-                              <DedicTarifCard
-                                key={item?.desc?.$}
-                                parsePrice={parsePrice}
-                                item={item}
-                                values={values}
-                                setParameters={setParameters}
-                                setFieldValue={setFieldValue}
-                                setPrice={setPrice}
-                                setTarifChosen={() => {
-                                  setTarifChosen(true)
-                                  runScroll()
+                              <Toggle
+                                setValue={() => {
+                                  setFieldValue('processor', item?.$key)
+                                  if (filters.includes(item?.$key)) {
+                                    setFilters([
+                                      ...filters.filter(el => el !== item?.$key),
+                                    ])
+                                  } else {
+                                    setFilters([...filters, item?.$key])
+                                  }
+                                  resetForm()
+                                  setParameters(null)
+                                  setTarifChosen(false)
                                 }}
-                                periodName={periodName}
+                                view="radio"
                               />
-                            </SwiperSlide>
+                              <span className={s.processor_name}>{item?.$}</span>
+                            </div>
                           )
                         })}
-                    </Swiper>
+                    </div>
+                  </div>
+                  <div className={s.second_processors_block}>
+                    <p className={s.processors_block__label}>{t('server_model')}:</p>
+                    <div className={s.processors_block__row}>
+                      {tarifList?.fpricelist
+                        ?.filter(el => !el.$.toLowerCase().includes('port'))
+                        .map(item => {
+                          return (
+                            <div
+                              className={classNames(s.processor_card, {
+                                [s.selected]: true,
+                              })}
+                              key={item?.$key}
+                            >
+                              <Toggle
+                                setValue={() => {
+                                  setFieldValue('processor', item?.$key)
+                                  if (filters.includes(item?.$key)) {
+                                    setFilters([
+                                      ...filters.filter(el => el !== item?.$key),
+                                    ])
+                                  } else {
+                                    setFilters([...filters, item?.$key])
+                                  }
+                                  resetForm()
+                                  setParameters(null)
+                                  setTarifChosen(false)
+                                }}
+                                view="radio"
+                              />
+                              <span className={s.processor_name}>{item?.$}</span>
+                            </div>
+                          )
+                        })}
+                    </div>
                   </div>
                 </div>
-              )}
 
-              <div className="dedic_swiper_pagination">
-                <button onClick={handleLeftClick}>
-                  <Icon
-                    name="ArrowSign"
-                    className={`swiper-prev ${
-                      isSwiperBeginning ? 'swiper-button-disabled' : ''
-                    }`}
-                  />
-                </button>
-                <div data-dedic-swiper-pagination></div>
-                <button onClick={handleRightClick}>
-                  <Icon
-                    name="ArrowSign"
-                    className={`swiper-next ${
-                      isSwiperEnd ? 'swiper-button-disabled' : ''
-                    }`}
-                  />
-                </button>
-              </div>
+                <Select
+                  height={50}
+                  value={values.period}
+                  getElement={item => {
+                    setPrice('-')
+                    resetForm()
+                    setFieldValue('period', item)
+                    // setPaymentPeriod(item)
+                    setParameters(null)
+                    setTarifChosen(false)
 
-              {parameters && (
-                <div className={s.parameters_block}>
-                  <p ref={scrollElem} className={s.params}>
-                    {t('os')}
-                  </p>
-                  <div className={s.software_OS_List}>
-                    {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
+                    dispatch(
+                      dedicOperations.getUpdatedPeriod(
+                        item,
+                        values.datacenter,
+                        setTarifList,
+                        signal,
+                      ),
+                    )
+                  }}
+                  isShadow
+                  label={`${t('payment_period')}:`}
+                  itemsList={tarifList?.period?.map(el => {
+                    return { label: t(el.$), value: el.$key }
+                  })}
+                  className={classNames({ [s.select]: true, [s.period_select]: true })}
+                />
+
+                {deskOrHigher ? (
+                  <div className={s.tarifs_block}>
+                    {tariffsListToRender
+                      ?.filter(item => item.order_available.$ === 'on')
+                      ?.map(item => {
+                        return (
+                          <DedicTarifCard
+                            key={item?.desc?.$}
+                            parsePrice={parsePrice}
+                            item={item}
+                            values={values}
+                            setParameters={setParameters}
+                            setFieldValue={setFieldValue}
+                            setPrice={setPrice}
+                            setTarifChosen={() => {
+                              setTarifChosen(true)
+                              runScroll()
+                            }}
+                            periodName={periodName}
+                            signal={signal}
+                          />
+                        )
+                      })}
                   </div>
-
-                  <p className={s.params}>{t('recipe')}</p>
-
-                  <div className={s.software_OS_List}>
-                    {renderSoftwareOSFields(
-                      'recipe',
-                      setFieldValue,
-                      values.recipe,
-                      values.ostempl,
-                    )}
+                ) : (
+                  <div className={s.dedic_swiper_rel_container}>
+                    <div className={s.doubled_dedic_swiper_rel_container}>
+                      <Swiper
+                        className="dedic-swiper"
+                        spaceBetween={0}
+                        slidesPerView={'auto'}
+                        effect={'creative'}
+                        pagination={{
+                          clickable: true,
+                          el: '[data-dedic-swiper-pagination]',
+                          dynamicBullets: true,
+                          dynamicMainBullets: 1,
+                        }}
+                        breakpoints={{
+                          650: {
+                            pagination: {
+                              dynamicMainBullets: 2,
+                            },
+                          },
+                          768: {
+                            pagination: {
+                              dynamicMainBullets: 3,
+                            },
+                          },
+                          1400: {
+                            pagination: {
+                              dynamicMainBullets: 4,
+                            },
+                          },
+                        }}
+                        onSwiper={setSwiperRef}
+                      >
+                        {tariffsListToRender
+                          ?.filter(item => item.order_available.$ === 'on')
+                          ?.map(item => {
+                            return (
+                              <SwiperSlide
+                                className="dedic-swiper-element"
+                                key={item?.desc?.$}
+                              >
+                                <DedicTarifCard
+                                  key={item?.desc?.$}
+                                  parsePrice={parsePrice}
+                                  item={item}
+                                  values={values}
+                                  setParameters={setParameters}
+                                  setFieldValue={setFieldValue}
+                                  setPrice={setPrice}
+                                  setTarifChosen={() => {
+                                    setTarifChosen(true)
+                                    runScroll()
+                                  }}
+                                  periodName={periodName}
+                                />
+                              </SwiperSlide>
+                            )
+                          })}
+                      </Swiper>
+                    </div>
                   </div>
+                )}
 
-                  <p className={s.params}>{t('parameters')}</p>
-
-                  <div className={s.parameters_wrapper}>
-                    <Select
-                      height={50}
-                      value={values.autoprolong}
-                      label={`${t('autoprolong')}:`}
-                      getElement={item => setFieldValue('autoprolong', item)}
-                      isShadow
-                      itemsList={values?.autoprolonglList?.map(el => ({
-                        label: translatePeriod(el?.$, t),
-                        value: el.$key,
-                      }))}
-                      className={s.select}
+                <div className="dedic_swiper_pagination">
+                  <button onClick={handleLeftClick}>
+                    <Icon
+                      name="ArrowSign"
+                      className={`swiper-prev ${
+                        isSwiperBeginning ? 'swiper-button-disabled' : ''
+                      }`}
                     />
-                    <InputField
-                      label={`${t('domain_name')}:`}
-                      placeholder={`${t('domain_placeholder')}`}
-                      name="domainname"
-                      isShadow
-                      error={!!errors.domainname}
-                      touched={!!touched.domainname}
-                      className={s.input_field_wrapper}
-                      inputClassName={s.text_area}
-                      autoComplete="off"
-                      type="text"
-                      value={values?.domainname}
+                  </button>
+                  <div data-dedic-swiper-pagination></div>
+                  <button onClick={handleRightClick}>
+                    <Icon
+                      name="ArrowSign"
+                      className={`swiper-next ${
+                        isSwiperEnd ? 'swiper-button-disabled' : ''
+                      }`}
                     />
+                  </button>
+                </div>
 
-                    <InputField
-                      label={`${t('server_name')}:`}
-                      placeholder={`${t('server_placeholder')}`}
-                      name="server_name"
-                      isShadow
-                      error={!!errors.server_name}
-                      touched={!!touched.server_name}
-                      className={s.input_field_wrapper}
-                      inputClassName={s.text_area}
-                      autoComplete="off"
-                      type="text"
-                      value={values?.server_name}
-                    />
+                {parameters && (
+                  <div className={s.parameters_block}>
+                    <p ref={scrollElem} className={s.params}>
+                      {t('os')}
+                    </p>
+                    <div className={s.software_OS_List}>
+                      {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
+                    </div>
 
-                    {/* {
+                    <p className={s.params}>{t('recipe')}</p>
+
+                    <div className={s.software_OS_List}>
+                      {renderSoftwareOSFields(
+                        'recipe',
+                        setFieldValue,
+                        values.recipe,
+                        values.ostempl,
+                      )}
+                    </div>
+
+                    <p className={s.params}>{t('parameters')}</p>
+
+                    <div className={s.parameters_wrapper}>
+                      <Select
+                        height={50}
+                        value={values.autoprolong}
+                        label={`${t('autoprolong')}:`}
+                        getElement={item => setFieldValue('autoprolong', item)}
+                        isShadow
+                        itemsList={values?.autoprolonglList?.map(el => ({
+                          label: translatePeriod(el?.$, t),
+                          value: el.$key,
+                        }))}
+                        className={s.select}
+                      />
+                      <InputField
+                        label={`${t('domain_name')}:`}
+                        placeholder={`${t('domain_placeholder')}`}
+                        name="domainname"
+                        isShadow
+                        error={!!errors.domainname}
+                        touched={!!touched.domainname}
+                        className={s.input_field_wrapper}
+                        inputClassName={s.text_area}
+                        autoComplete="off"
+                        type="text"
+                        value={values?.domainname}
+                      />
+
+                      <InputField
+                        label={`${t('server_name')}:`}
+                        placeholder={`${t('server_placeholder')}`}
+                        name="server_name"
+                        isShadow
+                        error={!!errors.server_name}
+                        touched={!!touched.server_name}
+                        className={s.input_field_wrapper}
+                        inputClassName={s.text_area}
+                        autoComplete="off"
+                        type="text"
+                        value={values?.server_name}
+                      />
+
+                      {/* {
                       <Select
                         height={50}
                         getElement={item => {
@@ -706,7 +725,7 @@ export default function DedicOrderPage() {
                       />
                     } */}
 
-                    {/* <Select
+                      {/* <Select
                       height={50}
                       getElement={item => setFieldValue('recipe', item)}
                       isShadow
@@ -727,99 +746,115 @@ export default function DedicOrderPage() {
                       className={s.select}
                     /> */}
 
-                    <Select
-                      height={50}
-                      value={values?.managePanel}
-                      getElement={item => {
-                        setFieldValue('managePanel', item)
-                        updatePrice({ ...values, managePanel: item }, dispatch, setPrice)
-                      }}
-                      isShadow
-                      label={`${t('license_to_panel', { ns: 'vds' })}:`}
-                      itemsList={values?.managePanellList?.map(el => {
-                        let labelText = el.$
-
-                        if (labelText.includes('Without a license')) {
-                          labelText = labelText.replace(
-                            'Without a license',
-                            t('Without a license'),
-                          )
-                        }
-
-                        if (labelText.includes('per month')) {
-                          labelText = labelText.replace('per month', t('per month'))
-                        }
-
-                        if (labelText.includes('Unlimited domains')) {
-                          labelText = labelText.replace(
-                            'Unlimited domains',
-                            t('Unlimited domains'),
-                          )
-                        }
-
-                        if (labelText.includes('domains')) {
-                          labelText = labelText.replace('domains', t('domains'))
-                        }
-
-                        return { label: labelText, value: el.$key }
-                      })}
-                      className={s.select}
-                    />
-
-                    {values.datacenter === '8' && values?.portSpeedlList?.length > 0 && (
                       <Select
                         height={50}
+                        value={values?.managePanel}
                         getElement={item => {
-                          setFieldValue('portSpeed', item)
-                          updatePrice({ ...values, portSpeed: item }, dispatch, setPrice)
+                          setFieldValue('managePanel', item)
+                          updatePrice(
+                            { ...values, managePanel: item },
+                            dispatch,
+                            setPrice,
+                            signal,
+                          )
                         }}
                         isShadow
-                        label={`${t('port_speed')}:`}
-                        itemsList={values?.portSpeedlList?.map(el => {
+                        label={`${t('license_to_panel', { ns: 'vds' })}:`}
+                        itemsList={values?.managePanellList?.map(el => {
                           let labelText = el.$
+
+                          if (labelText.includes('Without a license')) {
+                            labelText = labelText.replace(
+                              'Without a license',
+                              t('Without a license'),
+                            )
+                          }
+
                           if (labelText.includes('per month')) {
                             labelText = labelText.replace('per month', t('per month'))
                           }
 
-                          if (labelText.includes('unlimited traffic')) {
+                          if (labelText.includes('Unlimited domains')) {
                             labelText = labelText.replace(
-                              'unlimited traffic',
-                              t('unlimited traffic'),
+                              'Unlimited domains',
+                              t('Unlimited domains'),
                             )
+                          }
+
+                          if (labelText.includes('domains')) {
+                            labelText = labelText.replace('domains', t('domains'))
                           }
 
                           return { label: labelText, value: el.$key }
                         })}
                         className={s.select}
                       />
-                    )}
 
-                    {values?.ipList?.length > 0 && (
-                      <Select
-                        height={50}
-                        value={values?.ipTotal?.toString()}
-                        getElement={item => {
-                          setFieldValue('ipTotal', item)
-                          updatePrice({ ...values, ipTotal: item }, dispatch, setPrice)
-                        }}
-                        isShadow
-                        label={`${t('count_ip')}:`}
-                        itemsList={values?.ipList?.map(el => {
-                          return {
-                            label: `${el?.value}
+                      {values.datacenter === '8' &&
+                        values?.portSpeedlList?.length > 0 && (
+                          <Select
+                            height={50}
+                            getElement={item => {
+                              setFieldValue('portSpeed', item)
+                              updatePrice(
+                                { ...values, portSpeed: item },
+                                dispatch,
+                                setPrice,
+                                signal,
+                              )
+                            }}
+                            isShadow
+                            label={`${t('port_speed')}:`}
+                            itemsList={values?.portSpeedlList?.map(el => {
+                              let labelText = el.$
+                              if (labelText.includes('per month')) {
+                                labelText = labelText.replace('per month', t('per month'))
+                              }
+
+                              if (labelText.includes('unlimited traffic')) {
+                                labelText = labelText.replace(
+                                  'unlimited traffic',
+                                  t('unlimited traffic'),
+                                )
+                              }
+
+                              return { label: labelText, value: el.$key }
+                            })}
+                            className={s.select}
+                          />
+                        )}
+
+                      {values?.ipList?.length > 0 && (
+                        <Select
+                          height={50}
+                          value={values?.ipTotal?.toString()}
+                          getElement={item => {
+                            setFieldValue('ipTotal', item)
+                            updatePrice(
+                              { ...values, ipTotal: item },
+                              dispatch,
+                              setPrice,
+                              signal,
+                            )
+                          }}
+                          isShadow
+                          label={`${t('count_ip')}:`}
+                          itemsList={values?.ipList?.map(el => {
+                            return {
+                              label: `${el?.value}
                           ${t('pcs.', {
                             ns: 'vds',
                           })}
                           (${el?.cost} EUR)`,
-                            value: el?.value?.toString(),
-                          }
-                        })}
-                        className={s.select}
-                      />
-                    )}
-                  </div>
+                              value: el?.value?.toString(),
+                            }
+                          })}
+                          className={s.select}
+                        />
+                      )}
+                    </div>
 
-                  {/* <div className={s.terms_block} ref={licenceCheck}>
+                    {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -850,61 +885,63 @@ export default function DedicOrderPage() {
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div> */}
-                </div>
-              )}
+                  </div>
+                )}
 
-              <div
-                className={classNames({
-                  [s.buy_btn_block]: true,
-                  [s.active]: isTarifChosen,
-                })}
-              >
-                <div className={s.container}>
-                  {tabletOrHigher ? (
-                    <div className={s.sum_price_wrapper}>
-                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                      <span className={s.btn_price}>
-                        {price + ' €' + '/' + periodName}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={s.sum_price_wrapper}>
-                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                      <p className={s.btn_price_wrapper}>
-                        <span className={s.btn_price}>{'€' + price}</span>
-                        {'/' + periodName}
-                      </p>
-                    </div>
-                  )}
-                  {/* <div className={s.sum_price_wrapper}>
+                <div
+                  className={classNames({
+                    [s.buy_btn_block]: true,
+                    [s.active]: isTarifChosen,
+                  })}
+                >
+                  <div className={s.container}>
+                    {tabletOrHigher ? (
+                      <div className={s.sum_price_wrapper}>
+                        {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                        <span className={s.btn_price}>
+                          {price + ' €' + '/' + periodName}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className={s.sum_price_wrapper}>
+                        {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                        <p className={s.btn_price_wrapper}>
+                          <span className={s.btn_price}>{'€' + price}</span>
+                          {'/' + periodName}
+                        </p>
+                      </div>
+                    )}
+                    {/* <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                     <span className={s.btn_price}>{price + '/' + periodName}</span>
                   </div> */}
 
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('buy', { ns: 'other' })}
-                    type="submit"
-                    onClick={() => {
-                      setFieldTouched('license', true)
-                      if (!values.license) setFieldValue('license', false)
-                      !values.license &&
-                        licenceCheck?.current?.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                  />
+                    <Button
+                      className={s.buy_btn}
+                      isShadow
+                      size="medium"
+                      label={t('buy', { ns: 'other' })}
+                      type="submit"
+                      onClick={() => {
+                        setFieldTouched('license', true)
+                        if (!values.license) setFieldValue('license', false)
+                        !values.license &&
+                          licenceCheck?.current?.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }
 
-function updatePrice(formValues, dispatch, setNewPrice) {
+function updatePrice(formValues, dispatch, setNewPrice, signal) {
   dispatch(
     dedicOperations.updatePrice(
       formValues.datacenter,
@@ -920,6 +957,7 @@ function updatePrice(formValues, dispatch, setNewPrice) {
       formValues.ipName,
       formValues.managePanel,
       setNewPrice,
+      signal,
     ),
   )
 }

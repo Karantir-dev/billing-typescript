@@ -32,6 +32,7 @@ export default function Component(props) {
     isFilterActive,
     isFiltered,
     rights,
+    signal
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -72,7 +73,7 @@ export default function Component(props) {
     setIsFiltered(false)
     setSelctedItem(null)
     setActiveServices([])
-    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true))
+    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true, signal))
   }
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function Component(props) {
     setIsFiltered(true)
     setSelctedItem(null)
     setActiveServices([])
-    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true))
+    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true, signal))
   }
 
   const isAllActive = activeServices?.length === hostingList?.length

@@ -11,13 +11,14 @@ import {
   DomainsProlongModal,
   DomainBottomBar,
   CheckBox,
+  Loader,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '@redux'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
@@ -29,8 +30,11 @@ export default function Component() {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const signal = useCancelRequest()
+
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
+  const isLoading = useSelector(domainsSelectors.getIsLoadingDomains)
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -58,7 +62,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(domainsOperations.getDomains(data))
+    dispatch(domainsOperations.getDomains(data, signal))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -195,7 +199,7 @@ export default function Component() {
     if (d) {
       data = { ...data, ...d }
     }
-    dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
+    dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, true))
   }
 
   const closeEditModalHandler = () => {
@@ -254,6 +258,7 @@ export default function Component() {
         isFiltered={isFiltered}
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
         rights={rights}
+        signal={signal}
       />
       {domainsRenderData?.domainsList?.length > 0 && (
         <div className={s.checkBoxColumn}>
@@ -380,6 +385,8 @@ export default function Component() {
           isOpen
         />
       )}
+
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

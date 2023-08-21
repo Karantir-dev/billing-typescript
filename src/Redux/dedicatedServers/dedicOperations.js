@@ -8,51 +8,54 @@ import * as route from '@src/routes'
 
 // GET SERVERS OPERATIONS
 
-const getServersList = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getServersList =
+  ({ data }, signal) =>
+  (dispatch, getState) => {
+    dispatch(dedicActions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'dedic',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        clickstat: 'yes',
-        sok: 'ok',
-        p_cnt: data?.p_cnt || 10,
-        ...data,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          clickstat: 'yes',
+          sok: 'ok',
+          p_cnt: data?.p_cnt || 10,
+          ...data,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const dedicRenderData = {
-        serversList: data.doc.elem ? data.doc.elem : [],
-        dedicPageRights: data.doc.metadata.toolbar,
-      }
+        const dedicRenderData = {
+          serversList: data.doc.elem ? data.doc.elem : [],
+          dedicPageRights: data.doc.metadata.toolbar,
+        }
 
-      const count = data?.doc?.p_elems?.$ || 0
+        const count = data?.doc?.p_elems?.$ || 0
 
-      dispatch(dedicActions.setServersList(dedicRenderData))
-      dispatch(dedicActions.setDedicCount(count))
+        dispatch(dedicActions.setServersList(dedicRenderData))
+        dispatch(dedicActions.setDedicCount(count))
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        dispatch(dedicActions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(dedicActions.hideLoader())
+      })
+  }
 
 //ORDER NEW SERVER OPERATIONS
-const getTarifs = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getTarifs = signal => (dispatch, getState) => {
+  dispatch(dedicActions.showLoader())
 
   const {
     auth: { sessionId },
@@ -67,6 +70,7 @@ const getTarifs = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -87,105 +91,109 @@ const getTarifs = () => (dispatch, getState) => {
       }
 
       dispatch(dedicActions.setTarifList(orderData))
-      dispatch(actions.hideLoader())
+      dispatch(dedicActions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(dedicActions.hideLoader())
     })
 }
 
-const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getUpdatedTarrifs =
+  (datacenterId, setNewTariffs, signal) => (dispatch, getState) => {
+    dispatch(dedicActions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'dedic.order',
-        out: 'json',
-        auth: sessionId,
-        datacenter: datacenterId,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      const { val: fpricelist } = data.doc.flist
-      const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
-      const { $: currentDatacenter } = data.doc.datacenter
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order',
+          out: 'json',
+          auth: sessionId,
+          datacenter: datacenterId,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const { val: fpricelist } = data.doc.flist
+        const { elem: tarifList } = data.doc.list[0]
+        const { val: datacenter } = data.doc.slist[0]
+        const { val: period } = data.doc.slist[1]
+        const { $: currentDatacenter } = data.doc.datacenter
 
-      const orderData = {
-        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
-        tarifList,
-        datacenter,
-        period,
-        currentDatacenter,
-      }
+        const orderData = {
+          fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
+          tarifList,
+          datacenter,
+          period,
+          currentDatacenter,
+        }
 
-      setNewTariffs(orderData)
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        setNewTariffs(orderData)
+        dispatch(dedicActions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(dedicActions.hideLoader())
+      })
+  }
 
-const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getUpdatedPeriod =
+  (period, datacenter, setNewPeriod, signal) => (dispatch, getState) => {
+    dispatch(dedicActions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'dedic.order',
-        out: 'json',
-        auth: sessionId,
-        period,
-        datacenter,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      const { val: fpricelist } = data.doc.flist
-      const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
-      const { $: currentDatacenter } = data.doc.datacenter
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order',
+          out: 'json',
+          auth: sessionId,
+          period,
+          datacenter,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const { val: fpricelist } = data.doc.flist
+        const { elem: tarifList } = data.doc.list[0]
+        const { val: datacenter } = data.doc.slist[0]
+        const { val: period } = data.doc.slist[1]
+        const { $: currentDatacenter } = data.doc.datacenter
 
-      const orderData = {
-        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
-        tarifList,
-        datacenter,
-        period,
-        currentDatacenter,
-      }
+        const orderData = {
+          fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
+          tarifList,
+          datacenter,
+          period,
+          currentDatacenter,
+        }
 
-      setNewPeriod(orderData)
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        setNewPeriod(orderData)
+        dispatch(dedicActions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(dedicActions.hideLoader())
+      })
+  }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(dedicActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -205,6 +213,7 @@ const getParameters =
           sok: 'ok',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -264,12 +273,12 @@ const getParameters =
 
         setParameters(paramsList)
 
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
 
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
   }
 
@@ -288,9 +297,10 @@ const updatePrice =
     ipName,
     managePanel,
     updatePrice,
+    signal,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(dedicActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -313,6 +323,7 @@ const updatePrice =
           [ipName]: ipTotal,
           [portSpeedName]: portSpeed,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -320,11 +331,11 @@ const updatePrice =
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
         updatePrice(price?.replace('EUR', ''))
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
   }
 
@@ -346,7 +357,7 @@ const orderServer =
     server_name,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(dedicActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -384,11 +395,11 @@ const orderServer =
             redirectPath: route.DEDICATED_SERVERS,
           }),
         )
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
   }
 
@@ -632,7 +643,7 @@ const editDedicServerNoExtraPay =
     handleModal,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(dedicActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -670,13 +681,13 @@ const editDedicServerNoExtraPay =
           toastId: 'customId',
         })
         dispatch(getServersList({ p_num: 1 }))
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
 
         handleModal && handleModal()
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
   }
 
@@ -740,7 +751,7 @@ const updatePriceEditModal =
 
 // IP-addresses
 const getIPList = (elid, setIPlist, setRights) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(dedicActions.showLoader())
 
   const {
     auth: { sessionId },
@@ -762,11 +773,11 @@ const getIPList = (elid, setIPlist, setRights) => (dispatch, getState) => {
 
       setRights(data?.doc?.metadata?.toolbar)
       setIPlist(data.doc.elem)
-      dispatch(actions.hideLoader())
+      dispatch(dedicActions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(dedicActions.hideLoader())
     })
 }
 
@@ -1375,9 +1386,9 @@ const goToPanel = elid => (dispatch, getState) => {
 }
 
 const getDedicFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(dedicActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -1393,13 +1404,14 @@ const getDedicFilters =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getServersList({ p_num: 1, p_cnt: data?.p_cnt }))
+          return dispatch(getServersList({ p_num: 1, p_cnt: data?.p_cnt }, signal))
         }
 
         let filters = {}
@@ -1428,14 +1440,14 @@ const getDedicFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
       .catch(error => {
         if (error.message.includes('filter')) {
           dispatch(getServersList({ p_num: 1 }))
         }
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(dedicActions.hideLoader())
       })
   }
 

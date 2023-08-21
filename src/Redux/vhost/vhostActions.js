@@ -8,10 +8,15 @@ const setVhostFilters = createAction('SET_VHOST_FILTERS')
 
 const setVhostCount = createAction('SET_VHOST_COUNT')
 
+const showLoader = createAction('SHOW_LOADER_VHOST')
+const hideLoader = createAction('HIDE_LOADER_VHOST')
+
 export default {
   setVhostList,
   deleteVhost,
   setVhostFiltersLists,
   setVhostFilters,
   setVhostCount,
+  showLoader,
+  hideLoader,
 }

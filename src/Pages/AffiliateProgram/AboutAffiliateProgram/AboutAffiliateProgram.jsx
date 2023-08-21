@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner, Icon } from '@components'
+import { ServicesSelect, FilesBanner, Icon, Loader } from '@components'
 import { affiliateSelectors, affiliateOperations } from '@redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation(['affiliate_program'])
@@ -19,6 +20,8 @@ export default function AboutAffiliateProgram() {
   const descrWrapper = useRef(null)
   const referralLink = useSelector(affiliateSelectors.getRefLink)
   const promocode = useSelector(affiliateSelectors.getPromocode)
+  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateAbout)
+  const signal = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
 
@@ -30,7 +33,7 @@ export default function AboutAffiliateProgram() {
     if (referralLink) {
       return
     }
-    dispatch(affiliateOperations.getReferralLink())
+    dispatch(affiliateOperations.getReferralLink(signal))
   }, [])
 
   const showPrompt = fn => {
@@ -130,6 +133,9 @@ export default function AboutAffiliateProgram() {
       <p className={s.link_title}>{t('about_section.referral_link')}</p>
 
       <div className={s.fields_list}>
+        {isLoading && (
+          <Loader local shown={isLoading} transparent className={s.fields_list__loader} />
+        )}
         <div className={s.field_wrapper}>
           <label className={s.label}> {t('about_section.service')}: </label>
           <ServicesSelect setServiseName={handleRefLinkCreating} />

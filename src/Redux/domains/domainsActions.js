@@ -8,10 +8,15 @@ const setDomainsFilters = createAction('SET_DOMAINS_FILTERS')
 
 const setDomainsCount = createAction('SET_DOMAINS_COUNT')
 
+const showLoader = createAction('SHOW_LOADER_DOMAINS')
+const hideLoader = createAction('HIDE_LOADER_DOMAINS')
+
 export default {
   setDomainsList,
   setDomainsCount,
   deleteDomain,
   setDomainsFiltersLists,
   setDomainsFilters,
+  showLoader,
+  hideLoader,
 }

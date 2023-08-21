@@ -20,6 +20,8 @@ export default function Component(props) {
     p_cnt,
     setCreatePaymentModal,
     createPaymentModal,
+    isLoading,
+    signal,
   } = props
 
   const { t } = useTranslation(['billing', 'other'])
@@ -63,7 +65,7 @@ export default function Component(props) {
     values.saamount_from = values.sum
     values.saamount_to = values.sum
     values.p_cnt = p_cnt
-    dispatch(billingOperations.setPaymentsFilters(values))
+    dispatch(billingOperations.setPaymentsFilters(values, false, signal))
   }
 
   const resetFilterPaymentsHandler = (firstOpen = false) => {
@@ -89,7 +91,7 @@ export default function Component(props) {
     dispatch(billingActions.setPaymentsList(null))
     setIsFiltered && setIsFiltered(false)
 
-    dispatch(billingOperations.setPaymentsFilters(clearField))
+    dispatch(billingOperations.setPaymentsFilters(clearField, false, signal))
   }
 
   const filterExpensesHandler = values => {
@@ -97,7 +99,7 @@ export default function Component(props) {
     setFilterModal(false)
     values.p_cnt = p_cnt
     setIsFiltered && setIsFiltered(true)
-    dispatch(billingOperations.setExpensesFilters(values))
+    dispatch(billingOperations.setExpensesFilters(values, signal))
   }
 
   const resetFilterExpensesHandler = (firstOpen = false) => {
@@ -119,7 +121,7 @@ export default function Component(props) {
     dispatch(billingActions.setExpensesList(null))
     setIsFiltered && setIsFiltered(false)
 
-    dispatch(billingOperations.setExpensesFilters(clearField))
+    dispatch(billingOperations.setExpensesFilters(clearField, signal))
   }
 
   return (
@@ -181,6 +183,7 @@ export default function Component(props) {
           }
           icon="csv"
           className={s.archiveBtn}
+          disabled={isLoading}
         />
       </div>
       {params?.path === 'payments' && (
@@ -192,6 +195,7 @@ export default function Component(props) {
             label={t('Create')}
             type="button"
             onClick={() => setCreatePaymentModal(!createPaymentModal)}
+            disabled={isLoading}
           />
           {createPaymentModal && (
             <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />

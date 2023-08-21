@@ -1,12 +1,12 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, usersActions } from '@redux'
+import { actions, affiliateActions, settingsActions, usersActions } from '@redux'
 import i18n from '@src/i18n'
 import { checkIfTokenAlive } from '@utils'
 import { axiosInstance } from '@config/axiosInstance'
 
-const getUsers = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getUsers = signal => (dispatch, getState) => {
+  dispatch(usersActions.showLoaderTrusted())
 
   const {
     auth: { sessionId },
@@ -20,17 +20,18 @@ const getUsers = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       const { elem } = data.doc
 
       dispatch(usersActions.setUsers(elem))
-      dispatch(actions.hideLoader())
+      dispatch(usersActions.hideLoaderTrusted())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(usersActions.hideLoaderTrusted())
     })
 }
 
@@ -226,7 +227,7 @@ const removeUser = (userId, updateUsersListFunc) => (dispatch, getState) => {
 }
 
 const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) => {
-  !isOwner && dispatch(actions.showLoader())
+  !isOwner && dispatch(usersActions.showLoaderTrusted())
 
   const {
     auth: { sessionId },
@@ -252,11 +253,11 @@ const getRights = (userId, isOwner, setRightsForRender) => (dispatch, getState) 
       setRightsForRender && setRightsForRender(metadata)
 
       !setRightsForRender && dispatch(usersActions.setRights(elem))
-      dispatch(actions.hideLoader())
+      dispatch(usersActions.hideLoaderTrusted())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(usersActions.hideLoaderTrusted())
     })
 }
 
@@ -317,35 +318,71 @@ const manageUserRight = (userId, funcName, sessionId, act, type) => dispatch => 
     })
 }
 
-const getAvailableRights = (funcName, setRights) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getAvailableRights =
+  (funcName, setRights, loader, signal) => (dispatch, getState) => {
+    switch (loader) {
+      case 'statistic':
+        dispatch(affiliateActions.showLoaderStatistic())
+        break
+      case 'about':
+        dispatch(affiliateActions.showLoaderAbout())
+        break
+      case 'personal':
+        dispatch(settingsActions.showLoaderPersonal())
+        break
+      case 'trusted':
+        dispatch(usersActions.showLoaderTrusted())
+        break
+      default:
+        dispatch(actions.showLoader())
+    }
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const hideLoader = () => {
+      switch (loader) {
+        case 'statistic':
+          dispatch(affiliateActions.hideLoaderStatistic())
+          break
+        case 'about':
+          dispatch(affiliateActions.hideLoaderAbout())
+          break
+        case 'personal':
+          dispatch(settingsActions.hideLoaderPersonal())
+          break
+        case 'trusted':
+          dispatch(usersActions.hideLoaderTrusted())
+          break
+        default:
+          dispatch(actions.hideLoader())
+      }
+    }
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: funcName,
-        out: 'json',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    const {
+      auth: { sessionId },
+    } = getState()
 
-      const { metadata } = data.doc
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: funcName,
+          out: 'json',
+          auth: sessionId,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      setRights(metadata)
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        const { metadata } = data.doc
+
+        setRights(metadata)
+        hideLoader()
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        hideLoader()
+      })
+  }
 
 export default {
   getUsers,

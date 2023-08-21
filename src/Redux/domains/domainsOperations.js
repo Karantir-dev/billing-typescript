@@ -9,9 +9,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getDomains =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -30,6 +30,7 @@ const getDomains =
           p_cnt: body?.p_cnt || 10,
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -43,18 +44,18 @@ const getDomains =
 
         dispatch(domainsActions.setDomainsList(domainsRenderData))
         dispatch(domainsActions.setDomainsCount(count))
-        dispatch(getDomainsFilters())
+        dispatch(getDomainsFilters({}, false, signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getDomainsFilters =
-  (body = {}, filtered = false) =>
+  (body = {}, filtered = false, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -70,12 +71,13 @@ const getDomainsFilters =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getDomains({ p_cnt: body?.p_cnt }))
+          return dispatch(getDomains({ p_cnt: body?.p_cnt }, signal))
         }
 
         let filters = {}
@@ -102,18 +104,18 @@ const getDomainsFilters =
 
         dispatch(domainsActions.setDomainsFilters(currentFilters))
         dispatch(domainsActions.setDomainsFiltersLists(filters))
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getDomainsOrderName =
-  (setDomains, setAutoprolongPrices, body = {}, search = false) =>
+  (setDomains, setAutoprolongPrices, body = {}, search = false, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -129,6 +131,7 @@ const getDomainsOrderName =
           auth: sessionId,
           ...body,
         }),
+        { signal },
       )
       .then(async ({ data }) => {
         if (typeof data === 'string') {
@@ -146,7 +149,7 @@ const getDomainsOrderName =
 
         setAutoprolongPrices &&
           (await axiosInstance
-            .get(`${API_URL}/api/domain/`)
+            .get(`${API_URL}/api/domain/`, { signal })
             .then(response => {
               setAutoprolongPrices(response.data)
             })
@@ -164,7 +167,7 @@ const getDomainsOrderName =
           })
 
           setDomains && setDomains(domains)
-          return dispatch(actions.hideLoader())
+          return dispatch(domainsActions.hideLoader())
         }
 
         domainData?.list?.forEach(l => {
@@ -215,7 +218,7 @@ const getDomainsOrderName =
             }
 
             setDomains && setDomains(domainsData)
-            dispatch(actions.hideLoader())
+            dispatch(domainsActions.hideLoader())
           })
           .catch(err => {
             checkIfTokenAlive(err?.message, dispatch)
@@ -226,19 +229,19 @@ const getDomainsOrderName =
               domain_name: domainData?.tparams?.domain_name?.$,
             }
             setDomains && setDomains(domainsData)
-            dispatch(actions.hideLoader())
+            dispatch(domainsActions.hideLoader())
           })
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getDomainsContacts =
-  (setDomains, body = {}, navigate, transfer) =>
+  (setDomains, body = {}, navigate, transfer, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -253,6 +256,7 @@ const getDomainsContacts =
           auth: sessionId,
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -395,18 +399,18 @@ const getDomainsContacts =
               replace: true,
             })
         }
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getDomainsNS =
   (body = {}, setNS) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -429,18 +433,18 @@ const getDomainsNS =
         const domainData = data.doc
 
         setNS && setNS(domainData)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getDomainPaymentInfo =
   (body = {}, setData) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -492,18 +496,18 @@ const getDomainPaymentInfo =
         })
 
         setData && setData(paymentData)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const createDomain =
   (body = {}) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -535,16 +539,16 @@ const createDomain =
             redirectPath: route.DOMAINS,
           }),
         )
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const getTermsOfConditionalText = link => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(domainsActions.showLoader())
 
   const {
     auth: { sessionId },
@@ -564,18 +568,18 @@ const getTermsOfConditionalText = link => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
+      dispatch(domainsActions.hideLoader())
     })
     .catch(err => {
       checkIfTokenAlive(err?.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(domainsActions.hideLoader())
     })
 }
 
 const renewService =
   (body = {}, setProlongModal, setProlongData) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -683,21 +687,20 @@ const renewService =
               redirectPath: route.SITE_CARE,
             }),
           )
-          return
         }
 
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const deleteDomain =
   (body = {}) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -728,11 +731,11 @@ const deleteDomain =
 
         dispatch(domainsActions.deleteDomain(body?.elid))
 
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
@@ -781,7 +784,7 @@ const getHistoryDomain =
 const getWhoisDomain =
   (body = {}, setWhoisModal, setWhoisData) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -809,18 +812,18 @@ const getWhoisDomain =
         setWhoisData && setWhoisData(data?.doc?.whois_data?.$)
         setWhoisModal && setWhoisModal(true)
 
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 
 const editDomainNS =
   (body = {}, setNSModal, setNSData) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(domainsActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -865,11 +868,11 @@ const editDomainNS =
           })
         }
 
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(domainsActions.hideLoader())
       })
   }
 

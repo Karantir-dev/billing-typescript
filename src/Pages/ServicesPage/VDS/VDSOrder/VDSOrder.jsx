@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom'
 import {
@@ -12,8 +12,9 @@ import {
   SoftwareOSSelect,
   Button,
   Icon,
+  Loader,
 } from '@components'
-import { userOperations, vdsOperations } from '@redux'
+import { userOperations, vdsOperations, vdsSelectors } from '@redux'
 import { DOMAIN_REGEX, useScrollToElement } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
@@ -27,6 +28,7 @@ export default function VDSOrder() {
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
 
+  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
   const [tariffsList, setTariffsList] = useState([])
@@ -817,6 +819,7 @@ export default function VDSOrder() {
           }}
         </Formik>
       )}
+      {isLoading && <Loader local shown={isLoading} />}
     </div>
   )
 }

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { BreadCrumbs, IconButton, IPeditModal, Icon } from '@components'
-import { vdsOperations } from '@redux'
+import { BreadCrumbs, IconButton, IPeditModal, Icon, Loader } from '@components'
+import { vdsOperations, vdsSelectors } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import * as route from '@src/routes'
 
 import s from './VDSip.module.scss'
-
 
 export default function VDSip() {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
@@ -17,7 +16,7 @@ export default function VDSip() {
   const location = useLocation()
   const navigate = useNavigate()
   const widerThan900px = useMediaQuery({ query: '(min-width: 900px)' })
-
+  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
   const [elements, setElements] = useState()
   const [name, setName] = useState('')
   const [idForEditModal, setIdForEditModal] = useState()
@@ -133,6 +132,7 @@ export default function VDSip() {
           setElements={setElements}
         />
       )}
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

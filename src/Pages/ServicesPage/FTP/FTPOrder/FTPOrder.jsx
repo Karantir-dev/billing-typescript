@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, Select } from '@components'
+import { useDispatch, useSelector } from 'react-redux'
+import { BreadCrumbs, Button, Loader, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useScrollToElement } from '@utils'
-import { ftpOperations, userOperations } from '@redux'
+import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
+import { ftpOperations, ftpSelectors, userOperations } from '@redux'
 import * as route from '@src/routes'
 
 import s from './FTPOrder.module.scss'
@@ -25,6 +25,8 @@ export default function FTPOrder() {
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  const isLoading = useSelector(ftpSelectors.getIsLoadingFtp)
+  const signal = useCancelRequest()
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
@@ -94,7 +96,7 @@ export default function FTPOrder() {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (isFtpOrderAllowed || cartFromSite) {
-      dispatch(ftpOperations.getTarifs(setTarifList))
+      dispatch(ftpOperations.getTarifs(setTarifList, {}, signal))
     } else {
       navigate(route.FTP, { replace: true })
     }
@@ -139,151 +141,158 @@ export default function FTPOrder() {
   }
 
   return (
-    <div className={s.modalHeader}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>{t('ftp_order', { ns: 'crumbs' })}</h2>
+    <>
+      <div className={s.modalHeader}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h2 className={s.page_title}>{t('ftp_order', { ns: 'crumbs' })}</h2>
 
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={{
-          datacenter: tarifList?.currentDatacenter,
-          tarif: dataFromSite?.pricelist || null,
-          period: '1',
-          license: true,
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue, resetForm, setFieldTouched }) => {
-          if (dataFromSite && values.tarif === dataFromSite?.pricelist && !parameters) {
-            dispatch(
-              ftpOperations.getParameters(
-                values.period,
-                values.datacenter,
-                dataFromSite?.pricelist,
-                setParameters,
-                setFieldValue,
-              ),
-            )
-          }
-          return (
-            <Form className={s.form}>
-              <Select
-                height={50}
-                value={values.period}
-                getElement={item => {
-                  setPrice('-')
-                  resetForm()
-                  setFieldValue('period', item)
-                  setParameters(null)
-                  setTarifChosen(false)
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={{
+            datacenter: tarifList?.currentDatacenter,
+            tarif: dataFromSite?.pricelist || null,
+            period: '1',
+            license: true,
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ values, setFieldValue, resetForm, setFieldTouched }) => {
+            if (dataFromSite && values.tarif === dataFromSite?.pricelist && !parameters) {
+              dispatch(
+                ftpOperations.getParameters(
+                  values.period,
+                  values.datacenter,
+                  dataFromSite?.pricelist,
+                  setParameters,
+                  setFieldValue,
+                  signal,
+                ),
+              )
+            }
+            return (
+              <Form className={s.form}>
+                <Select
+                  height={50}
+                  value={values.period}
+                  getElement={item => {
+                    setPrice('-')
+                    resetForm()
+                    setFieldValue('period', item)
+                    setParameters(null)
+                    setTarifChosen(false)
 
-                  dispatch(
-                    ftpOperations.getTarifs(setTarifList, {
-                      period: item,
-                      datacenter: values.datacenter,
-                    }),
-                  )
-                }}
-                isShadow
-                label={`${t('payment_period')}:`}
-                itemsList={tarifList?.period?.map(el => {
-                  return { label: t(el.$), value: el.$key }
-                })}
-                className={classNames({ [s.select]: true, [s.period_select]: true })}
-              />
+                    dispatch(
+                      ftpOperations.getTarifs(
+                        setTarifList,
+                        {
+                          period: item,
+                          datacenter: values.datacenter,
+                        },
+                        signal,
+                      ),
+                    )
+                  }}
+                  isShadow
+                  label={`${t('payment_period')}:`}
+                  itemsList={tarifList?.period?.map(el => {
+                    return { label: t(el.$), value: el.$key }
+                  })}
+                  className={classNames({ [s.select]: true, [s.period_select]: true })}
+                />
 
-              <div className={s.tarifs_block}>
-                {tarifList?.tarifList
-                  ?.filter(item => item.order_available.$ === 'on')
-                  ?.map((item, index) => {
-                    const descriptionBlocks = item?.desc?.$.split('/')
-                    const cardTitle = descriptionBlocks[0]
+                <div className={s.tarifs_block}>
+                  {tarifList?.tarifList
+                    ?.filter(item => item.order_available.$ === 'on')
+                    ?.map((item, index) => {
+                      const descriptionBlocks = item?.desc?.$.split('/')
+                      const cardTitle = descriptionBlocks[0]
 
-                    const parsedPrice = parsePrice(item?.price?.$)
+                      const parsedPrice = parsePrice(item?.price?.$)
 
-                    const priceAmount = parsedPrice.amoumt
+                      const priceAmount = parsedPrice.amoumt
 
-                    return (
-                      <div
-                        className={classNames(s.tarif_card, {
-                          [s.selected]: item?.pricelist?.$ === values.tarif,
-                        })}
-                        key={item?.desc?.$}
-                      >
-                        <button
-                          ref={index === 2 ? secondTarrif : null}
-                          onClick={() => {
-                            setParameters(null)
-                            setFieldValue('tarif', item?.pricelist?.$)
-                            setPrice(priceAmount)
-                            setTarifChosen(true)
-                            runScroll()
-                            dispatch(
-                              ftpOperations.getParameters(
-                                values.period,
-                                values.datacenter,
-                                item?.pricelist?.$,
-                                setParameters,
-                                setFieldValue,
-                              ),
-                            )
-                          }}
-                          type="button"
-                          className={s.tarif_card_btn}
+                      return (
+                        <div
+                          className={classNames(s.tarif_card, {
+                            [s.selected]: item?.pricelist?.$ === values.tarif,
+                          })}
+                          key={item?.desc?.$}
                         >
-                          <span
-                            className={classNames({
-                              [s.card_title]: true,
-                              [s.selected]: item?.pricelist?.$ === values.tarif,
-                            })}
+                          <button
+                            ref={index === 2 ? secondTarrif : null}
+                            onClick={() => {
+                              setParameters(null)
+                              setFieldValue('tarif', item?.pricelist?.$)
+                              setPrice(priceAmount)
+                              setTarifChosen(true)
+                              runScroll()
+                              dispatch(
+                                ftpOperations.getParameters(
+                                  values.period,
+                                  values.datacenter,
+                                  item?.pricelist?.$,
+                                  setParameters,
+                                  setFieldValue,
+                                  signal,
+                                ),
+                              )
+                            }}
+                            type="button"
+                            className={s.tarif_card_btn}
                           >
-                            {cardTitle?.split(' ').slice(1).join(' ')}
-                          </span>
-                          <div className={s.price_wrapper}>
                             <span
                               className={classNames({
-                                [s.price]: true,
+                                [s.card_title]: true,
                                 [s.selected]: item?.pricelist?.$ === values.tarif,
                               })}
                             >
-                              {priceAmount + ' €' + '/' + periodName}
+                              {cardTitle?.split(' ').slice(1).join(' ')}
                             </span>
-                          </div>
+                            <div className={s.price_wrapper}>
+                              <span
+                                className={classNames({
+                                  [s.price]: true,
+                                  [s.selected]: item?.pricelist?.$ === values.tarif,
+                                })}
+                              >
+                                {priceAmount + ' €' + '/' + periodName}
+                              </span>
+                            </div>
 
-                          {descriptionBlocks.slice(1).map((el, i) => (
-                            <span key={i} className={s.card_subtitles}>
-                              {el}
-                            </span>
-                          ))}
-                        </button>
-                      </div>
-                    )
-                  })}
-              </div>
+                            {descriptionBlocks.slice(1).map((el, i) => (
+                              <span key={i} className={s.card_subtitles}>
+                                {el}
+                              </span>
+                            ))}
+                          </button>
+                        </div>
+                      )
+                    })}
+                </div>
 
-              {parameters && (
-                <div className={s.parameters_block}>
-                  <p ref={scrollElem} className={s.params}>
-                    {t('parameters')}
-                  </p>
+                {parameters && (
+                  <div className={s.parameters_block}>
+                    <p ref={scrollElem} className={s.params}>
+                      {t('parameters')}
+                    </p>
 
-                  <div className={s.parameters_wrapper}>
-                    <Select
-                      height={50}
-                      value={values.autoprolong}
-                      label={`${t('autoprolong')}:`}
-                      getElement={item => setFieldValue('autoprolong', item)}
-                      isShadow
-                      itemsList={values?.autoprolonglList?.map(el => ({
-                        label: translatePeriod(el.$, t),
-                        value: el.$key,
-                      }))}
-                      className={s.select}
-                    />
-                  </div>
+                    <div className={s.parameters_wrapper}>
+                      <Select
+                        height={50}
+                        value={values.autoprolong}
+                        label={`${t('autoprolong')}:`}
+                        getElement={item => setFieldValue('autoprolong', item)}
+                        isShadow
+                        itemsList={values?.autoprolonglList?.map(el => ({
+                          label: translatePeriod(el.$, t),
+                          value: el.$key,
+                        }))}
+                        className={s.select}
+                      />
+                    </div>
 
-                  {/* <div className={s.terms_block} ref={licenceCheck}>
+                    {/* <div className={s.terms_block} ref={licenceCheck}>
                     <div className={s.checkbox_wrapper}>
                       <CheckBox
                         setValue={item => {
@@ -314,57 +323,59 @@ export default function FTPOrder() {
                       <p className={s.license_error}>{errors.license}</p>
                     )}
                   </div> */}
-                </div>
-              )}
+                  </div>
+                )}
 
-              <div
-                className={classNames({
-                  [s.buy_btn_block]: true,
-                  [s.active]: isTarifChosen,
-                })}
-              >
-                <div className={s.container}>
-                  {/* <div className={s.sum_price_wrapper}>
+                <div
+                  className={classNames({
+                    [s.buy_btn_block]: true,
+                    [s.active]: isTarifChosen,
+                  })}
+                >
+                  <div className={s.container}>
+                    {/* <div className={s.sum_price_wrapper}>
                     {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                     <span className={s.btn_price}>{price + '/' + periodName}</span>
                   </div> */}
 
-                  {tabletOrHigher ? (
-                    <div className={s.sum_price_wrapper}>
-                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                      <span className={s.btn_price}>
-                        {price + ' €' + '/' + periodName}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={s.sum_price_wrapper}>
-                      {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                      <p className={s.price_wrapper}>
-                        <span className={s.btn_price}>{'€' + price}</span>
-                        {'/' + periodName}
-                      </p>
-                    </div>
-                  )}
+                    {tabletOrHigher ? (
+                      <div className={s.sum_price_wrapper}>
+                        {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                        <span className={s.btn_price}>
+                          {price + ' €' + '/' + periodName}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className={s.sum_price_wrapper}>
+                        {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
+                        <p className={s.price_wrapper}>
+                          <span className={s.btn_price}>{'€' + price}</span>
+                          {'/' + periodName}
+                        </p>
+                      </div>
+                    )}
 
-                  <Button
-                    className={s.buy_btn}
-                    isShadow
-                    size="medium"
-                    label={t('buy', { ns: 'other' })}
-                    type="submit"
-                    onClick={() => {
-                      setFieldTouched('license', true)
-                      if (!values.license) setFieldValue('license', false)
-                      !values.license &&
-                        licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                  />
+                    <Button
+                      className={s.buy_btn}
+                      isShadow
+                      size="medium"
+                      label={t('buy', { ns: 'other' })}
+                      type="submit"
+                      onClick={() => {
+                        setFieldTouched('license', true)
+                        if (!values.license) setFieldValue('license', false)
+                        !values.license &&
+                          licenceCheck.current.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

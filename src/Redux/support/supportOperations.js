@@ -7,9 +7,9 @@ import i18n from '@src/i18n'
 import translateSupportPaymentError from '@utils/translateSupportPaymentError'
 
 const getTicketsHandler =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(supportActions.showLoaderRequest())
     const {
       auth: { sessionId },
     } = getState()
@@ -27,6 +27,7 @@ const getTicketsHandler =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -36,11 +37,11 @@ const getTicketsHandler =
         dispatch(supportActions.getTickets(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(supportActions.getTicketCount(count))
-        dispatch(getTicketsFiltersSettingsHandler())
+        dispatch(getTicketsFiltersSettingsHandler(signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(supportActions.hideLoaderRequest())
       })
   }
 
@@ -108,9 +109,9 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
 }
 
 const getTicketsArchiveHandler =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(supportActions.showLoaderRequestArchive())
     const {
       auth: { sessionId },
     } = getState()
@@ -128,6 +129,7 @@ const getTicketsArchiveHandler =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -137,11 +139,11 @@ const getTicketsArchiveHandler =
         dispatch(supportActions.getTicketsArchive(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(supportActions.getTicketArchiveCount(count))
-        dispatch(getTicketsArchiveFiltersSettingsHandler())
+        dispatch(getTicketsArchiveFiltersSettingsHandler(signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(supportActions.hideLoaderRequestArchive())
       })
   }
 
@@ -238,7 +240,7 @@ const sendMessage = (elid, data) => (dispatch, getState) => {
     })
 }
 
-const getDepartmenList = () => (dispatch, getState) => {
+const getDepartmenList = signal => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -252,6 +254,7 @@ const getDepartmenList = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data?.doc?.error) {
@@ -268,7 +271,7 @@ const getDepartmenList = () => (dispatch, getState) => {
     })
 }
 
-const getServiceList = () => (dispatch, getState) => {
+const getServiceList = signal => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -284,6 +287,7 @@ const getServiceList = () => (dispatch, getState) => {
         sv_field: 'ticket_item',
         sv_autocomplete: 'yes',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data?.doc?.error) {
@@ -340,7 +344,7 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
     })
 }
 
-const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
+const getTicketsFiltersSettingsHandler = signal => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -354,6 +358,7 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) {
@@ -398,16 +403,16 @@ const getTicketsFiltersSettingsHandler = () => (dispatch, getState) => {
         dispatch(supportActions.getCurrentFilters(currentFilter))
       })
 
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequest())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequest())
     })
 }
 
-const getTicketsFiltersHandler = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getTicketsFiltersHandler = (data, signal) => (dispatch, getState) => {
+  dispatch(supportActions.showLoaderRequest())
   const {
     auth: { sessionId },
   } = getState()
@@ -423,6 +428,7 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
         sok: 'ok',
         ...data,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) {
@@ -449,15 +455,15 @@ const getTicketsFiltersHandler = data => (dispatch, getState) => {
       }
       dispatch(supportActions.getCurrentFilters(currentFilter))
 
-      dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }))
+      dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }, signal))
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequest())
     })
 }
 
-const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
+const getTicketsArchiveFiltersSettingsHandler = signal => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -471,6 +477,7 @@ const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) {
@@ -515,16 +522,16 @@ const getTicketsArchiveFiltersSettingsHandler = () => (dispatch, getState) => {
         dispatch(supportActions.getCurrentFilters(currentFilter))
       })
 
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequestArchive())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequestArchive())
     })
 }
 
-const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getTicketsArchiveFiltersHandler = (data, signal) => (dispatch, getState) => {
+  dispatch(supportActions.showLoaderRequestArchive())
   const {
     auth: { sessionId },
   } = getState()
@@ -540,6 +547,7 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
         sok: 'ok',
         ...data,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) {
@@ -566,11 +574,11 @@ const getTicketsArchiveFiltersHandler = data => (dispatch, getState) => {
       }
       dispatch(supportActions.getCurrentFilters(currentFilter))
 
-      dispatch(getTicketsArchiveHandler())
+      dispatch(getTicketsArchiveHandler(signal))
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(supportActions.hideLoaderRequestArchive())
     })
 }
 

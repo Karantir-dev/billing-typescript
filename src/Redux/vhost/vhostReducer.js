@@ -8,6 +8,7 @@ const initialState = {
 
   vhostFiltersList: null,
   vhostFilters: null,
+  isLoadingVhost: false,
 }
 
 const vhostList = createReducer(initialState.vhostList, {
@@ -28,11 +29,17 @@ const vhostFilters = createReducer(initialState.vhostFilters, {
   [vhostActions.setVhostFilters]: (_, { payload }) => payload,
 })
 
+const isLoadingVhost = createReducer(initialState.isLoadingVhost, {
+  [vhostActions.showLoader]: () => true,
+  [vhostActions.hideLoader]: () => false,
+})
+
 const vhostReducer = combineReducers({
   vhostList,
   vhostCount,
   vhostFiltersList,
   vhostFilters,
+  isLoadingVhost,
 })
 
 export default vhostReducer

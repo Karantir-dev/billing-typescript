@@ -17,13 +17,14 @@ import {
   Portal,
   Pagination,
   CheckBox,
+  Loader,
 } from '@components'
 import { ftpOperations, ftpSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import * as route from '@src/routes'
 import s from './FTP.module.scss'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 
 export default function FTP() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'storage')
@@ -35,6 +36,8 @@ export default function FTP() {
 
   const ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
+  const isLoading = useSelector(ftpSelectors.getIsLoadingFtp)
+  const signal = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -106,6 +109,7 @@ export default function FTP() {
         { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
       ),
     )
   }
@@ -121,6 +125,7 @@ export default function FTP() {
         { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
       ),
     )
   }
@@ -150,6 +155,8 @@ export default function FTP() {
           setFilters,
           { ...clearField, sok: 'ok', p_cnt },
           true,
+          undefined,
+          signal,
         ),
       )
     }
@@ -159,11 +166,14 @@ export default function FTP() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(ftpOperations.getFTPList(data))
+    dispatch(ftpOperations.getFTPList(data, signal))
   }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(ftpOperations.getFTPFilters(setFilters, { p_cnt }))
+    if (filterModal)
+      dispatch(
+        ftpOperations.getFTPFilters(setFilters, { p_cnt }, false, undefined, signal),
+      )
   }, [filterModal])
 
   const getServerName = id => {
@@ -379,6 +389,7 @@ export default function FTP() {
           isOpen
         />
       )}
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

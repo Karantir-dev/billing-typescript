@@ -1,9 +1,9 @@
 const getUsers = state => state.users.users
 const getRights = state => state.users.rights
-// const getCurrentSessionRights = state => state.users.currentSessionRights
+const getIsLoadingTrusted = state => state.users.isLoadingTrusted
 
 export default {
   getUsers,
   getRights,
-  // getCurrentSessionRights,
+  getIsLoadingTrusted,
 }

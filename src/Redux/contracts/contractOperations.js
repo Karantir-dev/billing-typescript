@@ -3,8 +3,8 @@ import { actions, contarctsActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive } from '@utils'
 
-const getContracts = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getContracts = (data, signal) => (dispatch, getState) => {
+  dispatch(contarctsActions.showLoader())
 
   const {
     auth: { sessionId },
@@ -20,6 +20,7 @@ const getContracts = data => (dispatch, getState) => {
         lang: 'en',
         ...data,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -34,11 +35,11 @@ const getContracts = data => (dispatch, getState) => {
 
       dispatch(contarctsActions.setContractsList(contractsRenderData))
       dispatch(contarctsActions.setContractsCount(count))
-      dispatch(actions.hideLoader())
+      dispatch(contarctsActions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(contarctsActions.hideLoader())
     })
 }
 
@@ -47,7 +48,7 @@ const getPdfFile = (elid, name) => (dispatch, getState) => {
     auth: { sessionId },
   } = getState()
 
-  dispatch(actions.showLoader())
+  dispatch(contarctsActions.showLoader())
 
   axiosInstance
     .post(
@@ -69,11 +70,11 @@ const getPdfFile = (elid, name) => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
+      dispatch(contarctsActions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(contarctsActions.hideLoader())
     })
 }
 

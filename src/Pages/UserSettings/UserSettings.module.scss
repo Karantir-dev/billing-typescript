@@ -5,6 +5,10 @@
   width: 100%;
   max-width: 1420px;
   padding: 40px 0;
+  position: relative;
+  &.disabled {
+    pointer-events: none;
+  }
 }
 
 .pageTitle {

@@ -13,6 +13,7 @@ export default function DedicTarifCard({
   setPrice,
   setTarifChosen,
   periodName,
+  signal,
 }) {
   const dispatch = useDispatch()
   const descriptionBlocks = item?.desc?.$.split('/')
@@ -46,6 +47,7 @@ export default function DedicTarifCard({
               item?.pricelist?.$,
               setParameters,
               setFieldValue,
+              signal,
             ),
           )
         }}

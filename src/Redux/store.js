@@ -32,6 +32,7 @@ import {
   forexReducer,
   siteCareReducer,
   vpnReducer,
+  vdsReducer,
 } from '@redux'
 import { theme, isLoading, pinned, scrollForbidden, online } from '@redux/reducer'
 
@@ -65,6 +66,7 @@ const rootReducer = combineReducers({
   forex: forexReducer,
   sitecare: siteCareReducer,
   vpn: vpnReducer,
+  vds: vdsReducer,
   affiliateProgram: affiliateReducer,
   theme,
   isLoading,

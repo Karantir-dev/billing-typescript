@@ -19,11 +19,12 @@ import {
   Pagination,
   CheckBox,
   InstructionModal,
+  Loader,
 } from '@components'
 import { dnsOperations, dnsSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 
 export default function DNS() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -35,7 +36,8 @@ export default function DNS() {
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
-
+  const isLoading = useSelector(dnsSelectors.getIsLoadingDns)
+  const signal = useCancelRequest()
   const [activeServices, setActiveServices] = useState([])
 
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -109,6 +111,7 @@ export default function DNS() {
         { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
       ),
     )
   }
@@ -126,6 +129,7 @@ export default function DNS() {
         { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
       ),
     )
     setActiveServices([])
@@ -156,10 +160,12 @@ export default function DNS() {
           setFilters,
           { ...clearField, sok: 'ok', p_cnt },
           true,
+          undefined,
+          signal,
         ),
       )
 
-      dispatch(dnsOperations.getTarifs(setTarifs))
+      dispatch(dnsOperations.getTarifs(setTarifs, {}, signal))
     }
   }, [])
 
@@ -179,12 +185,15 @@ export default function DNS() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(dnsOperations.getDNSList(data))
+    dispatch(dnsOperations.getDNSList(data, signal))
     setActiveServices([])
   }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(dnsOperations.getDNSFilters(setFilters, { p_cnt }))
+    if (filterModal)
+      dispatch(
+        dnsOperations.getDNSFilters(setFilters, { p_cnt }, false, undefined, signal),
+      )
   }, [filterModal])
 
   const getServerName = id => {
@@ -408,6 +417,8 @@ export default function DNS() {
           isOpen
         />
       )}
+
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

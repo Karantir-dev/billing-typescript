@@ -41,9 +41,9 @@ export default function Component(props) {
       profiletype: payersSelectLists?.profiletype[0]?.$key,
     }
 
-    dispatch(payersOperations.getPayerModalInfo(data))
+    dispatch(payersOperations.getPayerModalInfo(data, null, null, null, null, 'billing'))
   }, [])
-
+,
   useEffect(() => {
     if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
       setSelectedMethod(autoPaymentConfig?.elem[0])

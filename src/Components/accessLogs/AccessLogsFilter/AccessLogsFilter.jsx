@@ -16,7 +16,7 @@ import {
 import s from '../AccessLogsComponents.module.scss'
 import cn from 'classnames'
 
-export default function Component({ setCurrentPage, p_cnt }) {
+export default function Component({ setCurrentPage, p_cnt, signal }) {
   const { t } = useTranslation(['access_log', 'other'])
   const dispatch = useDispatch()
 
@@ -42,7 +42,7 @@ export default function Component({ setCurrentPage, p_cnt }) {
     setCurrentPage(1)
     setIsOpenedCalendar(false)
     values.p_cnt = p_cnt
-    dispatch(accessLogsOperations.filterDataHandler(values))
+    dispatch(accessLogsOperations.filterDataHandler(values, signal))
   }
 
   const resetFilterHandler = () => {
@@ -54,7 +54,7 @@ export default function Component({ setCurrentPage, p_cnt }) {
       p_cnt: p_cnt,
     }
     setCurrentPage(1)
-    dispatch(accessLogsOperations.filterDataHandler(clearField))
+    dispatch(accessLogsOperations.filterDataHandler(clearField, signal))
   }
 
   const parseCurrentFilter = () => {

@@ -1,14 +1,36 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, payersActions } from '@redux'
+import { actions, billingActions, payersActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import i18n from '@src/i18n'
 import { checkIfTokenAlive } from '@utils'
 
 const getPayers =
-  (body = {}) =>
+  (body = {}, loader, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    switch (loader) {
+      case 'billing':
+        dispatch(billingActions.showLoaderAutoPayment())
+        break
+      case 'payers':
+        dispatch(payersActions.showLoader())
+        break
+      default:
+        dispatch(actions.showLoader())
+    }
+
+    const hideLoader = () => {
+      switch (loader) {
+        case 'billing':
+          dispatch(billingActions.hideLoaderAutoPayment())
+          break
+        case 'payers':
+          dispatch(payersActions.hideLoader())
+          break
+        default:
+          dispatch(actions.hideLoader())
+      }
+    }
 
     const {
       auth: { sessionId },
@@ -25,6 +47,7 @@ const getPayers =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -36,15 +59,15 @@ const getPayers =
           payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
         )
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType())
+        dispatch(getPayerCountryType(hideLoader))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        hideLoader()
       })
   }
 
-const getPayerCountryType = () => (dispatch, getState) => {
+const getPayerCountryType = (hideLoader, signal) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -57,6 +80,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -68,11 +92,12 @@ const getPayerCountryType = () => (dispatch, getState) => {
       })
 
       dispatch(payersActions.setPayersSelectLists(filters))
-      dispatch(actions.hideLoader())
+
+      hideLoader()
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      hideLoader()
     })
 }
 
@@ -121,9 +146,19 @@ const deletePayer = elid => (dispatch, getState) => {
 }
 
 const getPayerModalInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
+  (
+    body = {},
+    isCreate = false,
+    closeModal,
+    setSelectedPayerFields,
+    newPayer = false,
+    loader = false,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    loader === 'billing'
+      ? dispatch(billingActions.showLoaderAutoPayment())
+      : dispatch(actions.showLoader())
+
     const {
       auth: { sessionId },
     } = getState()
@@ -242,18 +277,24 @@ const getPayerModalInfo =
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
-          return dispatch(actions.hideLoader())
+          return loader === 'billing'
+            ? dispatch(billingActions.hideLoaderAutoPayment())
+            : dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        dispatch(actions.hideLoader())
+        loader === 'billing'
+          ? dispatch(billingActions.hideLoaderAutoPayment())
+          : dispatch(actions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        loader === 'billing'
+          ? dispatch(billingActions.hideLoaderAutoPayment())
+          : dispatch(actions.hideLoader())
       })
   }
 

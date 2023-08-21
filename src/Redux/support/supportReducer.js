@@ -16,6 +16,8 @@ const initialState = {
   timeFilterList: [],
 
   currentFilters: null,
+  isLoadingSupportRequest: false,
+  isLoadingSupportRequestArchive: false
 }
 
 const ticketList = createReducer(initialState.ticketList, {
@@ -67,6 +69,16 @@ const currentFilters = createReducer(initialState.currentFilters, {
   [supportActions.getCurrentFilters]: (state, { payload }) => payload,
 })
 
+const isLoadingSupportRequest = createReducer(initialState.isLoadingSupportRequest, {
+  [supportActions.showLoaderRequest]: () => true,
+  [supportActions.hideLoaderRequest]: () => false,
+})
+
+const isLoadingSupportRequestArchive = createReducer(initialState.isLoadingSupportRequestArchive, {
+  [supportActions.showLoaderRequestArchive]: () => true,
+  [supportActions.hideLoaderRequestArchive]: () => false,
+})
+
 const supportReducer = combineReducers({
   ticketList,
   ticketCount,
@@ -79,6 +91,8 @@ const supportReducer = combineReducers({
   tstatusFilterList,
   timeFilterList,
   currentFilters,
+  isLoadingSupportRequest,
+  isLoadingSupportRequestArchive,
 })
 
 export default supportReducer

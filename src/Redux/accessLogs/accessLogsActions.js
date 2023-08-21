@@ -12,6 +12,9 @@ const clearAccessLogsFilters = createAction('CLEAR_ACCESS_FILTERS')
 const getCurrentFilters = createAction('GET_CURENT_FILTERS')
 const clearCurrentFilters = createAction('CLEAR_CURENT_FILTERS')
 
+const hideLoaderLogs = createAction('SHOW_LOADER_LOGS')
+const showLoaderLogs = createAction('HIDE_LOADER_LOGS')
+
 export default {
   getAccessLogs,
   clearAccessLogs,
@@ -21,4 +24,6 @@ export default {
   clearCurrentFilters,
   getAccessLogsCount,
   clearAccessLogsCount,
+  hideLoaderLogs,
+  showLoaderLogs,
 }

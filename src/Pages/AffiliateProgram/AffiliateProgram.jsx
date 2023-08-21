@@ -10,7 +10,7 @@ import {
   AffiliateProgramIncome,
   AffiliateProgramStatistics,
 } from '@pages'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 
 import s from './AffiliateProgram.module.scss'
 
@@ -23,12 +23,20 @@ export default function AffiliateProgram() {
 
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
+  const signal = useCancelRequest()
 
   const [availableRights, setAvailabelRights] = useState({})
 
   useEffect(() => {
     if (isComponentAllowedToRender) {
-      dispatch(usersOperations.getAvailableRights('affiliate.client', setAvailabelRights))
+      dispatch(
+        usersOperations.getAvailableRights(
+          'affiliate.client',
+          setAvailabelRights,
+          'about',
+          signal,
+        ),
+      )
     }
   }, [])
 

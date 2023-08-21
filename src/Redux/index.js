@@ -58,6 +58,9 @@ export { default as payersSelectors } from './payers/payersSelectors'
 
 //===========================================VDS=================================//
 export { default as vdsOperations } from './vds/vdsOperations'
+export { default as vdsReducer } from './vds/vdsReducer'
+export { default as vdsActions } from './vds/vdsActions'
+export { default as vdsSelectors } from './vds/vdsSelectors'
 
 //===========================================DOMAINS=================================//
 export { default as domainsActions } from './domains/domainsActions'

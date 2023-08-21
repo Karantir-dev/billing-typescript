@@ -7,8 +7,8 @@ import * as route from '@src/routes'
 import { actions, cartActions, forexActions } from '@redux'
 
 //GET hostings OPERATIONS
-const getForexList = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getForexList = (data, signal) => (dispatch, getState) => {
+  dispatch(forexActions.showLoader())
 
   const {
     auth: { sessionId },
@@ -26,6 +26,7 @@ const getForexList = data => (dispatch, getState) => {
         p_cnt: data?.p_cnt || 10,
         ...data,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -40,18 +41,18 @@ const getForexList = data => (dispatch, getState) => {
       dispatch(forexActions.setForexList(forexRenderData))
       dispatch(forexActions.setForexCount(count))
       // setForexList(data.doc.elem ? data.doc.elem : [])
-      dispatch(actions.hideLoader())
+      dispatch(forexActions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(forexActions.hideLoader())
     })
 }
 
 const getTarifs =
-  (setTarifs, data = {}) =>
+  (setTarifs, data = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(forexActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -67,6 +68,7 @@ const getTarifs =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -100,21 +102,21 @@ const getTarifs =
         }
 
         setTarifs(orderData)
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
       .catch(error => {
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(forexActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -134,6 +136,7 @@ const getParameters =
           sok: 'ok',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -148,12 +151,12 @@ const getParameters =
         setFieldValue('server_package', server_package?.$)
 
         setParameters({ paramsList })
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
 
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
   }
 
@@ -393,9 +396,9 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 }
 
 const getForexFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(forexActions.showLoader())
 
     const {
       auth: { sessionId },
@@ -411,13 +414,14 @@ const getForexFilters =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList({ p_num: 1, p_cnt: data?.p_cnt }))
+          return dispatch(getForexList({ p_num: 1, p_cnt: data?.p_cnt }, signal))
         }
 
         let filters = {}
@@ -443,14 +447,14 @@ const getForexFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
       .catch(error => {
         if (error.message.includes('filter')) {
           dispatch(getForexList({ p_num: 1 }))
         }
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(forexActions.hideLoader())
       })
   }
 

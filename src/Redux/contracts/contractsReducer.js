@@ -5,6 +5,8 @@ import contarctsActions from './contarctsActions'
 const initialState = {
   contractsList: [],
   contractsCount: 0,
+  isLoadingContracts: false,
+
 }
 
 const contractsList = createReducer(initialState.contractsList, {
@@ -14,6 +16,11 @@ const contractsCount = createReducer(initialState.contractsCount, {
   [contarctsActions.setContractsCount]: (_, { payload }) => payload,
 })
 
-const contractsReducer = combineReducers({ contractsList, contractsCount })
+const isLoadingContracts = createReducer(initialState.isLoadingContracts, {
+  [contarctsActions.showLoader]: () => true,
+  [contarctsActions.hideLoader]: () => false,
+})
+
+const contractsReducer = combineReducers({ contractsList, contractsCount, isLoadingContracts })
 
 export default contractsReducer

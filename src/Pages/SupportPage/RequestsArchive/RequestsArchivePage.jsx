@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, Pagination, SupportArchiveTable } from '@components'
+import { SupportFilter, Pagination, SupportArchiveTable, Loader } from '@components'
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsArchivePage.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -11,6 +12,8 @@ export default function Component() {
 
   const tickerArchiveList = useSelector(supportSelectors.getTicketArchiveList)
   const tickerArchiveCount = useSelector(supportSelectors.getTicketArchiveCount)
+  const isLoading = useSelector(supportSelectors.getIsLoadingRequestArchive)
+  const signal = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -20,17 +23,18 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(supportOperations.getTicketsArchiveHandler(data))
+    dispatch(supportOperations.getTicketsArchiveHandler(data, signal))
   }, [p_num, p_cnt])
 
   return (
-    <div data-testid="request_archive">
+    <div data-testid="request_archive" className={s.content}>
       <SupportFilter
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || tickerArchiveList?.length > 0}
         p_cnt={p_cnt}
         setCurrentPage={setP_num}
+        signal={signal}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>
@@ -54,6 +58,8 @@ export default function Component() {
           />
         </div>
       )}
+
+      {isLoading && <Loader local shown={isLoading} transparent />}
     </div>
   )
 }

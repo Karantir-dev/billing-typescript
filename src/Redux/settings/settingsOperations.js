@@ -12,9 +12,15 @@ import { checkIfTokenAlive } from '@utils'
 import i18n from '@src/i18n'
 
 const getUserEdit =
-  (elid, checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
+  (
+    elid,
+    checkEmail = false,
+    isComponentAllowedToRender,
+    setAvailableEditRights,
+    signal,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(settingsActions.showLoaderPersonal())
 
     const {
       auth: { sessionId },
@@ -30,6 +36,7 @@ const getUserEdit =
           lang: 'en',
           elid,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -78,12 +85,17 @@ const getUserEdit =
 
         dispatch(settingsActions.setUsersEdit(elem))
         dispatch(
-          getUserParams(checkEmail, isComponentAllowedToRender, setAvailableEditRights),
+          getUserParams(
+            checkEmail,
+            isComponentAllowedToRender,
+            setAvailableEditRights,
+            signal,
+          ),
         )
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(settingsActions.hideLoaderPersonal())
       })
   }
 
@@ -117,13 +129,13 @@ const setUserAvatar =
   }
 
 const getUserParams =
-  (checkEmail = false, isComponentAllowedToRender, setAvailableEditRights) =>
+  (checkEmail = false, isComponentAllowedToRender, setAvailableEditRights, signal) =>
   (dispatch, getState) => {
     const {
       auth: { sessionId },
     } = getState()
 
-    dispatch(actions.showLoader())
+    dispatch(settingsActions.showLoaderPersonal())
 
     axiosInstance
       .post(
@@ -134,6 +146,7 @@ const getUserParams =
           lang: 'en',
           auth: sessionId,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -210,19 +223,23 @@ const getUserParams =
 
         if (isComponentAllowedToRender) {
           return dispatch(
-            usersOperations.getAvailableRights('usrparam', setAvailableEditRights),
+            usersOperations.getAvailableRights(
+              'usrparam',
+              setAvailableEditRights,
+              'personal',
+            ),
           )
         }
-        dispatch(actions.hideLoader())
+        dispatch(settingsActions.hideLoaderPersonal())
       })
       .then(() => {
         if (checkEmail) {
-          dispatch(sendEmailConfirm())
+          dispatch(sendEmailConfirm(signal))
         }
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(settingsActions.hideLoaderPersonal())
       })
   }
 
@@ -257,8 +274,8 @@ const getTimeByTimeZone =
       })
   }
 
-const setPersonalSettings = (elid, data) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const setPersonalSettings = (elid, data, signal) => (dispatch, getState) => {
+  dispatch(settingsActions.showLoaderPersonal())
 
   const userEditData = {
     email: data?.email || null,
@@ -313,6 +330,7 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
         elid,
         ...userEditData,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -333,22 +351,23 @@ const setPersonalSettings = (elid, data) => (dispatch, getState) => {
             auth: sessionId,
             ...userParamsData,
           }),
+          { signal },
         )
         .then(({ data }) => {
           if (data.doc.error) throw new Error(data.doc.error.msg.$)
           toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
             position: 'bottom-right',
           })
-          dispatch(getUserEdit(elid))
+          dispatch(getUserEdit(elid, false, false, false, signal))
         })
         .catch(error => {
           checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
+          dispatch(settingsActions.hideLoaderPersonal())
         })
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(settingsActions.hideLoaderPersonal())
     })
 }
 
@@ -405,8 +424,8 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
     })
 }
 
-const sendEmailConfirm = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const sendEmailConfirm = signal => (dispatch, getState) => {
+  dispatch(settingsActions.showLoaderPersonal())
   const {
     auth: { sessionId },
   } = getState()
@@ -421,15 +440,16 @@ const sendEmailConfirm = () => (dispatch, getState) => {
         sv_field: 'send_confirm',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       dispatch(settingsActions.emailStatusUpadate(data.doc?.send_status?.$))
-      dispatch(actions.hideLoader())
+      dispatch(settingsActions.hideLoaderPersonal())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(settingsActions.hideLoaderPersonal())
     })
 }
 

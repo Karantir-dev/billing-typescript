@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
-import { IconButton, StatisticsFilterModal, Pagination, Icon } from '@components'
-import { actions, affiliateOperations, usersOperations } from '@redux'
+import { IconButton, StatisticsFilterModal, Pagination, Icon, Loader } from '@components'
+import { actions, affiliateOperations, affiliateSelectors, usersOperations } from '@redux'
 
 import s from './AffiliateProgramStatistics.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function AffiliateProgramStatistics() {
   const dispatch = useDispatch()
@@ -16,7 +17,11 @@ export default function AffiliateProgramStatistics() {
   const [availableRights, setAvailabelRights] = useState({})
   useEffect(() => {
     dispatch(
-      usersOperations.getAvailableRights('affiliate.client.click', setAvailabelRights),
+      usersOperations.getAvailableRights(
+        'affiliate.client.click',
+        setAvailabelRights,
+        'statistic',
+      ),
     )
   }, [])
   const checkIfHasArr = availableRights?.toolbar?.toolgrp
@@ -26,6 +31,8 @@ export default function AffiliateProgramStatistics() {
 
   const { t } = useTranslation(['affiliate_program', 'other'])
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateStatistic)
+  const signal = useCancelRequest()
 
   const [isFilterOpened, setIsFilterOpened] = useState(false)
   const [items, setItems] = useState([])
@@ -60,6 +67,7 @@ export default function AffiliateProgramStatistics() {
         setP_num,
         setInitialFilters,
         p_cnt,
+        signal,
       ),
     )
     onClearFilter()
@@ -68,19 +76,33 @@ export default function AffiliateProgramStatistics() {
   const onPageChange = pageNum => {
     setP_num(pageNum)
     dispatch(
-      affiliateOperations.getNextPageStatistics(setItems, setTotal, pageNum, p_cnt),
+      affiliateOperations.getNextPageStatistics(
+        setItems,
+        setTotal,
+        pageNum,
+        p_cnt,
+        signal,
+      ),
     )
   }
 
   const onSubmit = values => {
-    dispatch(affiliateOperations.getFilteredStatistics(values, setItems, setTotal, p_cnt))
+    dispatch(
+      affiliateOperations.getFilteredStatistics(
+        values,
+        setItems,
+        setTotal,
+        p_cnt,
+        signal,
+      ),
+    )
     setP_num(1)
     setIsFiltered && setIsFiltered(true)
     setIsFilterOpened(false)
   }
 
   const onClearFilter = () => {
-    dispatch(affiliateOperations.dropFilters(setItems, setTotal, p_cnt))
+    dispatch(affiliateOperations.dropFilters(setItems, setTotal, p_cnt, signal))
     setP_num(1)
     setIsFilterOpened(false)
     setIsFiltered && setIsFiltered(false)
@@ -114,7 +136,7 @@ export default function AffiliateProgramStatistics() {
           <span className={s.table_head}>{t('statistics_section.payment')}:</span>
         </div>
       )}
-      {items.length === 0 && (
+      {items.length === 0 && !isLoading && (
         <p className={s.no_results}>{t('statistics_section.no_result')}</p>
       )}
       <ul className={s.list}>
@@ -197,6 +219,8 @@ export default function AffiliateProgramStatistics() {
           />
         </div>
       )}
+
+      {isLoading && <Loader local shown={isLoading} transparent />}
     </div>
   )
 }

@@ -6,6 +6,7 @@ const initialState = {
   userEditInfo: null,
   userParamsInfo: null,
   twoStepVerif: null,
+  isLoadingPersonal: false,
 }
 
 const userEditInfo = createReducer(initialState.userEditInfo, {
@@ -29,10 +30,16 @@ const twoStepVerif = createReducer(initialState.twoStepVerif, {
   [settingsActions.clearTwoStepVerif]: () => null,
 })
 
+const isLoadingPersonal = createReducer(initialState.isLoadingPersonal, {
+  [settingsActions.showLoaderPersonal]: () => true,
+  [settingsActions.hideLoaderPersonal]: () => false,
+})
+
 const settingsReducer = combineReducers({
   userEditInfo,
   userParamsInfo,
   twoStepVerif,
+  isLoadingPersonal,
 })
 
 export default settingsReducer

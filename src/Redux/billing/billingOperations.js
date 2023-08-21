@@ -15,9 +15,9 @@ import { checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
-  (body = {}, readOnly) =>
+  (body = {}, readOnly, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderPayment())
 
     const {
       auth: { sessionId },
@@ -36,6 +36,7 @@ const getPayments =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -44,21 +45,21 @@ const getPayments =
         if (readOnly) {
           dispatch(billingActions.setPaymentsReadOnlyList(elem))
           dispatch(billingActions.setPaymentsReadOnlyCount(count))
-          dispatch(getPaymentsFilters())
+          dispatch(getPaymentsFilters(signal))
           return
         }
         dispatch(billingActions.setPaymentsList(elem))
         dispatch(billingActions.setPaymentsCount(count))
-        dispatch(getPaymentsFilters())
+        dispatch(getPaymentsFilters(signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderPayment())
       })
   }
 
-const getPaymentsFilters = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getPaymentsFilters = signal => (dispatch, getState) => {
+  dispatch(billingActions.showLoaderPayment())
 
   const {
     auth: { sessionId },
@@ -73,6 +74,7 @@ const getPaymentsFilters = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -99,18 +101,18 @@ const getPaymentsFilters = () => (dispatch, getState) => {
 
       dispatch(billingActions.setPaymentsFilters(currentFilters))
       dispatch(billingActions.setPaymentsFiltersLists(filters))
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
 }
 
 const setPaymentsFilters =
-  (body = {}, readOnly) =>
+  (body = {}, readOnly, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderPayment())
 
     const {
       auth: { sessionId },
@@ -127,19 +129,20 @@ const setPaymentsFilters =
           sok: 'ok',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        dispatch(getPayments(body, readOnly))
+        dispatch(getPayments(body, readOnly, signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderPayment())
       })
   }
 
 const getPaymentPdf = (elid, name) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(billingActions.showLoaderPayment())
 
   const {
     auth: { sessionId },
@@ -166,16 +169,16 @@ const getPaymentPdf = (elid, name) => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
 }
 
 const getPaymentCsv = p_cnt => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(billingActions.showLoaderPayment())
 
   const {
     auth: { sessionId },
@@ -202,11 +205,11 @@ const getPaymentCsv = p_cnt => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderPayment())
     })
 }
 
@@ -260,9 +263,9 @@ const deletePayment = elid => (dispatch, getState) => {
 }
 
 const getExpenses =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderExpenses())
 
     const {
       auth: { sessionId },
@@ -281,6 +284,7 @@ const getExpenses =
           p_cnt: body?.p_cnt || 10,
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -289,16 +293,16 @@ const getExpenses =
 
         dispatch(billingActions.setExpensesList(elem))
         dispatch(billingActions.setExpensesCount(count))
-        dispatch(getExpensesFilters())
+        dispatch(getExpensesFilters(signal))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderExpenses())
       })
   }
 
-const getExpensesFilters = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getExpensesFilters = signal => (dispatch, getState) => {
+  dispatch(billingActions.showLoaderPayment())
 
   const {
     auth: { sessionId },
@@ -313,6 +317,7 @@ const getExpensesFilters = () => (dispatch, getState) => {
         lang: 'en',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -335,18 +340,18 @@ const getExpensesFilters = () => (dispatch, getState) => {
       dispatch(billingActions.setExpensesFilters(currentFilters))
       dispatch(billingActions.setExpensesFiltersLists(filters))
 
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderExpenses())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderExpenses())
     })
 }
 
 const setExpensesFilters =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderExpenses())
 
     const {
       auth: { sessionId },
@@ -363,6 +368,7 @@ const setExpensesFilters =
           sok: 'ok',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -371,12 +377,12 @@ const setExpensesFilters =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderExpenses())
       })
   }
 
 const getExpensesCsv = p_cnt => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(billingActions.showLoaderExpenses())
 
   const {
     auth: { sessionId },
@@ -403,11 +409,11 @@ const getExpensesCsv = p_cnt => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderExpenses())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderExpenses())
     })
 }
 
@@ -762,8 +768,8 @@ const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => 
     })
 }
 
-const getAutoPayments = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getAutoPayments = signal => (dispatch, getState) => {
+  dispatch(billingActions.showLoaderAutoPayment())
 
   const {
     auth: { sessionId },
@@ -778,6 +784,7 @@ const getAutoPayments = () => (dispatch, getState) => {
         lang: 'en',
         out: 'json',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -788,16 +795,16 @@ const getAutoPayments = () => (dispatch, getState) => {
         }
       })
 
-      dispatch(getAutoPaymentsAdd())
+      dispatch(getAutoPaymentsAdd(signal))
     })
     .catch(err => {
       checkIfTokenAlive(err?.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderAutoPayment())
     })
 }
 
-const getAutoPaymentsAdd = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getAutoPaymentsAdd = signal => (dispatch, getState) => {
+  dispatch(billingActions.showLoaderAutoPayment())
 
   const {
     auth: { sessionId },
@@ -812,6 +819,7 @@ const getAutoPaymentsAdd = () => (dispatch, getState) => {
         lang: 'en',
         out: 'json',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -829,16 +837,16 @@ const getAutoPaymentsAdd = () => (dispatch, getState) => {
 
       dispatch(billingActions.setAutoPaymentConfig(config))
 
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderAutoPayment())
     })
     .catch(err => {
       checkIfTokenAlive(err?.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderAutoPayment())
     })
 }
 
 const stopAutoPayments = id => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+  dispatch(billingActions.showLoaderAutoPayment())
 
   const {
     auth: { sessionId },
@@ -865,18 +873,18 @@ const stopAutoPayments = id => (dispatch, getState) => {
           position: 'bottom-right',
         })
       }
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderAutoPayment())
     })
     .catch(err => {
       checkIfTokenAlive(err?.message, dispatch)
-      dispatch(actions.hideLoader())
+      dispatch(billingActions.hideLoaderAutoPayment())
     })
 }
 
 const createAutoPayment =
   (body = {}, setIsConfigure) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderAutoPayment())
 
     const {
       auth: { sessionId },
@@ -904,14 +912,14 @@ const createAutoPayment =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderAutoPayment())
       })
   }
 
 const getPaymentMethods =
-  (body = {}) =>
+  (body = {}, signal) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    dispatch(billingActions.showLoaderPaymentMethod())
 
     const {
       auth: { sessionId },
@@ -930,6 +938,7 @@ const getPaymentMethods =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -938,11 +947,11 @@ const getPaymentMethods =
 
         dispatch(billingActions.setPaymentMethodList(elem))
         dispatch(billingActions.setPaymentMethodCount(count))
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderPaymentMethod())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        dispatch(billingActions.hideLoaderPaymentMethod())
       })
   }
 
