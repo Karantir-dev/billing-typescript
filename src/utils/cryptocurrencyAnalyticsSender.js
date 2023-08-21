@@ -46,7 +46,6 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
         items: items,
       },
     }
-    console.log('crypto method', analyticsData)
 
     cookies.eraseCookie('payment_id')
     window?.dataLayer?.push({ ecommerce: null })
@@ -56,7 +55,6 @@ export default function cryptoAnalyticsSender(orderInfo, paymentID) {
 
     // if it is any other payment method - write down the order info into cookies
   } else {
-    console.log('set paymentID', paymentID)
     paymentID && cookies.setCookie('payment_id', paymentID, 5)
 
     if (orderInfo?.billorder) {
