@@ -235,7 +235,7 @@ export default function Component({ transfer = false }) {
         )}
       </div>
 
-      <Loader local shown={isLoading} />
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }
