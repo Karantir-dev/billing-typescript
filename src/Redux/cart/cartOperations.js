@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cryptoAnalyticsSender } from '@utils'
+import { checkIfTokenAlive, cryptoAnalyticsSender, fraudCheckSender } from '@utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -328,6 +328,7 @@ const setPaymentMethods =
                 if (body?.promocode) cartData.promocode = body.promocode
 
                 cryptoAnalyticsSender(cartData, data.doc?.payment_id?.$)
+                fraudCheckSender(sessionId)
 
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }

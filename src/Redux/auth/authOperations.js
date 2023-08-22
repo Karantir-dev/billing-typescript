@@ -7,77 +7,79 @@ import { API_URL, SITE_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
-const login = (email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin) => dispatch => {
-  dispatch(actions.showLoader())
-  cookies.eraseCookie('sessionId')
+const login =
+  (email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin) =>
+  dispatch => {
+    dispatch(actions.showLoader())
+    cookies.eraseCookie('sessionId')
 
-  const redirectID = localStorage.getItem('redirectID')
+    const redirectID = localStorage.getItem('redirectID')
 
-  const formDataLogin = new FormData()
+    const formDataLogin = new FormData()
 
-  formDataLogin.append('func', 'auth')
-  formDataLogin.append('username', email)
-  formDataLogin.append('password', password)
+    formDataLogin.append('func', 'auth')
+    formDataLogin.append('username', email)
+    formDataLogin.append('password', password)
 
-  formDataLogin.append('out', 'json')
-  formDataLogin.append('g-recaptcha-response', reCaptcha)
-  formDataLogin.append('sok', 'ok')
+    formDataLogin.append('out', 'json')
+    formDataLogin.append('g-recaptcha-response', reCaptcha)
+    formDataLogin.append('sok', 'ok')
 
-  if (redirectID) {
-    formDataLogin.append('redirect', redirectID)
-    formDataLogin.append('forget', 'on')
+    if (redirectID) {
+      formDataLogin.append('redirect', redirectID)
+      formDataLogin.append('forget', 'on')
+    }
+
+    axiosInstance
+      .post('/', formDataLogin)
+      .then(({ data }) => {
+        localStorage.removeItem('redirectID')
+        if (data.doc.error) throw data.doc.error
+
+        const sessionId = data?.doc?.auth?.$id
+
+        cookies.setCookie('sessionId', sessionId, 1)
+
+        return axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'whoami',
+              out: 'json',
+              auth: sessionId,
+            }),
+          )
+          .then(({ data }) => {
+            if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
+
+            if (data.doc?.ok?.$ === 'func=totp.confirm') {
+              dispatch(authActions.setTemporaryId(sessionId))
+
+              dispatch(actions.hideLoader())
+
+              dispatch(authActions.openTotpForm())
+              return
+            }
+
+            dispatch(authActions.loginSuccess(sessionId))
+            dispatch(authActions.isLogined(true))
+            dispatch(userOperations.getUserInfo(sessionId))
+            navigateAfterLogin && navigateAfterLogin()
+          })
+      })
+      .catch(error => {
+        resetRecaptcha()
+        dispatch(actions.hideLoader())
+        const errText =
+          error?.response?.status === 403
+            ? 'blocked_ip'
+            : error?.$object
+            ? error.$object
+            : SERVER_ERR_MSG
+
+        setErrMsg(errText)
+      })
   }
-
-  axiosInstance
-    .post('/', formDataLogin)
-    .then(({ data }) => {
-      localStorage.removeItem('redirectID')
-      if (data.doc.error) throw data.doc.error
-
-      const sessionId = data?.doc?.auth?.$id
-
-      cookies.setCookie('sessionId', sessionId, 1)
-
-      return axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'whoami',
-            out: 'json',
-            auth: sessionId,
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
-
-          if (data.doc?.ok?.$ === 'func=totp.confirm') {
-            dispatch(authActions.setTemporaryId(sessionId))
-
-            dispatch(actions.hideLoader())
-
-            dispatch(authActions.openTotpForm())
-            return
-          }
-
-          dispatch(authActions.loginSuccess(sessionId))
-          dispatch(authActions.isLogined(true))
-          dispatch(userOperations.getUserInfo(sessionId))
-          navigateAfterLogin && navigateAfterLogin()
-        })
-    })
-    .catch(error => {
-      resetRecaptcha()
-      dispatch(actions.hideLoader())
-      const errText =
-        error?.response?.status === 403
-          ? 'blocked_ip'
-          : error?.$object
-          ? error.$object
-          : SERVER_ERR_MSG
-
-      setErrMsg(errText)
-    })
-}
 
 const getCurrentSessionStatus = () => (dispatch, getState) => {
   const {
