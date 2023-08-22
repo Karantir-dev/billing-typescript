@@ -9,6 +9,7 @@ import cn from 'classnames'
 import * as route from '@src/routes'
 
 import s from './VDSip.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function VDSip() {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
@@ -17,6 +18,8 @@ export default function VDSip() {
   const navigate = useNavigate()
   const widerThan900px = useMediaQuery({ query: '(min-width: 900px)' })
   const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
+  const signal = useCancelRequest()
+
   const [elements, setElements] = useState()
   const [name, setName] = useState('')
   const [idForEditModal, setIdForEditModal] = useState()
@@ -26,7 +29,7 @@ export default function VDSip() {
     if (!ServerID) {
       navigate(route.VPS, { replace: true })
     } else {
-      dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName))
+      dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName, signal))
     }
   }, [])
 

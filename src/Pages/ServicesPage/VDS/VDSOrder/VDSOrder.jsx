@@ -15,7 +15,7 @@ import {
   Loader,
 } from '@components'
 import { userOperations, vdsOperations, vdsSelectors } from '@redux'
-import { DOMAIN_REGEX, useScrollToElement } from '@utils'
+import { DOMAIN_REGEX, useCancelRequest, useScrollToElement } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -29,6 +29,8 @@ export default function VDSOrder() {
   const agreementEl = useRef()
 
   const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
+  const signal = useCancelRequest()
+
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
   const [tariffsList, setTariffsList] = useState([])
@@ -57,7 +59,7 @@ export default function VDSOrder() {
   }, [tariffCategory])
 
   useEffect(() => {
-    dispatch(vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList))
+    dispatch(vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList, signal))
   }, [])
 
   useEffect(() => {
@@ -85,7 +87,9 @@ export default function VDSOrder() {
 
   const handleTariffClick = (period, pricelist) => {
     if (selectedTariffId !== pricelist) {
-      dispatch(vdsOperations.getTariffParameters(period, pricelist, setParametersInfo))
+      dispatch(
+        vdsOperations.getTariffParameters(period, pricelist, setParametersInfo, signal),
+      )
       setSelectedTariffId(pricelist)
     }
   }
@@ -283,6 +287,7 @@ export default function VDSOrder() {
         parametersInfo.register[fieldName] || fieldName,
         setParametersInfo,
         parametersInfo.register,
+        signal,
       ),
     )
   }
@@ -434,13 +439,16 @@ export default function VDSOrder() {
                   value={period}
                   getElement={period => {
                     setPeriod(period)
-                    dispatch(vdsOperations.getNewPeriodInfo(period, setTariffsList))
+                    dispatch(
+                      vdsOperations.getNewPeriodInfo(period, setTariffsList, signal),
+                    )
                     if (selectedTariffId) {
                       dispatch(
                         vdsOperations.getTariffParameters(
                           period,
                           selectedTariffId,
                           setParametersInfo,
+                          signal,
                         ),
                       )
                     }

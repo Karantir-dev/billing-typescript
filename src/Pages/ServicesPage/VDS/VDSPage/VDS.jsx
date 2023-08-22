@@ -38,7 +38,7 @@ export default function VDS() {
   const signal = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
-  
+
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
 
@@ -160,6 +160,7 @@ export default function VDS() {
         setElemsTotal,
         null,
         p_cnt,
+        signal,
       ),
     )
     setIsFiltersOpened(false)
@@ -194,6 +195,7 @@ export default function VDS() {
         setElemsTotal,
         null,
         p_cnt,
+        signal,
       ),
     )
     setIsSearchMade(true)
@@ -288,6 +290,7 @@ export default function VDS() {
         activeServices={activeServices}
         setActiveServices={setActiveServices}
         getVDSHandler={getVDSHandler}
+        signal={signal}
       />
 
       {elemsTotal > 5 && (

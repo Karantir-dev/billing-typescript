@@ -21,6 +21,7 @@ export default function VDSList({
   activeServices,
   setActiveServices,
   getVDSHandler,
+  signal
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -29,7 +30,7 @@ export default function VDSList({
   const handleEditSubmit = (elid, values) => {
     const mutatedValues = { ...values, clicked_button: 'ok' }
     dispatch(
-      vdsOperations.editVDS(elid, mutatedValues, null, null, null, null, getVDSHandler, true),
+      vdsOperations.editVDS(elid, mutatedValues, null, null, null, null, getVDSHandler, signal),
     )
   }
 
