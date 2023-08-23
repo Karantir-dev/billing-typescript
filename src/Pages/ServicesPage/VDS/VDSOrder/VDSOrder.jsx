@@ -520,25 +520,29 @@ export default function VDSOrder() {
                                 }}
                                 disabled={+count <= 1}
                               ></button>
-                              <div className={s.input_wrapper}>
-                                <input
-                                  className={s.count_input}
-                                  value={count}
-                                  onChange={event => {
-                                    const value =
-                                      event.target.value.length > 1
-                                        ? event.target.value.replace(/^0/, '')
-                                        : event.target.value
+                              <div className={s.input_wrapper_border}>
+                                <div className={s.input_wrapper_bg}>
+                                  <div className={s.input_wrapper}>
+                                    <input
+                                      className={s.count_input}
+                                      value={count}
+                                      onChange={event => {
+                                        const value =
+                                          event.target.value.length > 1
+                                            ? event.target.value.replace(/^0/, '')
+                                            : event.target.value
 
-                                    setCount(+event.target.value > 50 ? 50 : value)
-                                  }}
-                                  onBlur={event => {
-                                    if (event.target.value < 1) setCount(1)
-                                  }}
-                                  type="number"
-                                  min={1}
-                                  max={50}
-                                />
+                                        setCount(+event.target.value > 50 ? 50 : value)
+                                      }}
+                                      onBlur={event => {
+                                        if (event.target.value < 1) setCount(1)
+                                      }}
+                                      type="number"
+                                      min={1}
+                                      max={50}
+                                    />
+                                  </div>
+                                </div>
                               </div>
                               <button
                                 className={cn(s.count_btn, s.increment)}
@@ -767,25 +771,29 @@ export default function VDSOrder() {
                           }}
                           disabled={+count <= 1}
                         ></button>
-                        <div className={s.input_wrapper}>
-                          <input
-                            className={cn(s.count_input, s.amount_digit)}
-                            value={count}
-                            onChange={event => {
-                              const value =
-                                event.target.value.length > 1
-                                  ? event.target.value?.replace(/^0/, '')
-                                  : event.target.value
+                        <div className={s.input_wrapper_border}>
+                          <div className={s.input_wrapper_bg}>
+                            <div className={s.input_wrapper}>
+                              <input
+                                className={cn(s.count_input, s.amount_digit)}
+                                value={count}
+                                onChange={event => {
+                                  const value =
+                                    event.target.value.length > 1
+                                      ? event.target.value?.replace(/^0/, '')
+                                      : event.target.value
 
-                              setCount(+event.target.value > 50 ? 50 : value)
-                            }}
-                            onBlur={event => {
-                              if (event.target.value < 1) setCount(1)
-                            }}
-                            type="number"
-                            min={1}
-                            max={50}
-                          />
+                                  setCount(+event.target.value > 50 ? 50 : value)
+                                }}
+                                onBlur={event => {
+                                  if (event.target.value < 1) setCount(1)
+                                }}
+                                type="number"
+                                min={1}
+                                max={50}
+                              />
+                            </div>
+                          </div>
                         </div>
                         <button
                           className={cn(s.count_btn, s.increment)}

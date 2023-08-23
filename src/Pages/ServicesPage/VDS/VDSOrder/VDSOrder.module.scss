@@ -339,10 +339,23 @@
 
 .input_wrapper {
   width: 40px;
-  height: 25px;
+  height: 30px;
   position: relative;
-  border-radius: 4px;
-  // background: linear-gradient(90.07deg, #ff42a8 0.87%, #f02ce2 99.95%);
+  background: rgba(179, 169, 193, 0.1);
+
+  &_border {
+    border-radius: 3px;
+    padding: 1px;
+    &:hover {
+      background: var(--accent-gradient);
+    }
+  }
+
+  &_bg {
+    border-radius: 2px;
+    background: var(--elements-bgc);
+    overflow: hidden
+  }
 }
 
 .count_input {
@@ -464,7 +477,6 @@
 
   .input_wrapper {
     width: 50px;
-    height: 30px;
   }
 
   .count_input {

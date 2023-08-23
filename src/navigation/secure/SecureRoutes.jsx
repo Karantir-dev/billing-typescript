@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
   Cart,
   Container,
@@ -161,6 +155,14 @@ const Component = ({ fromPromotionLink }) => {
       <Routes>
         <Route
           path={route.HOME}
+          element={<Navigate to={route.SERVICES} replace={true} />}
+        />
+        <Route
+          path={route.LOGIN}
+          element={<Navigate to={route.SERVICES} replace={true} />}
+        />
+        <Route
+          path={route.REGISTRATION}
           element={<Navigate to={route.SERVICES} replace={true} />}
         />
         <Route path={route.SERVICES} element={<ServicesPageLazy />} />

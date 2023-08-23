@@ -472,7 +472,7 @@ const sendEmailConfirm = (signal, setIsLoading) => (dispatch, getState) => {
     })
 }
 
-const setPasswordAccess = (elid, d) => (dispatch, getState) => {
+const setPasswordAccess = (elid, d, setFieldValue) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -521,6 +521,10 @@ const setPasswordAccess = (elid, d) => (dispatch, getState) => {
       toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
         position: 'bottom-right',
       })
+
+      setFieldValue('old_passwd', '')
+      setFieldValue('passwd', '')
+      setFieldValue('confirm', '')
 
       if (d?.secureip) {
         return dispatch(authOperations.logout())
