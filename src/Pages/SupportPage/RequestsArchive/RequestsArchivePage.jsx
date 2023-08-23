@@ -12,8 +12,7 @@ export default function Component() {
 
   const tickerArchiveList = useSelector(supportSelectors.getTicketArchiveList)
   const tickerArchiveCount = useSelector(supportSelectors.getTicketArchiveCount)
-  const isLoading = useSelector(supportSelectors.getIsLoadingRequestArchive)
-  const signal = useCancelRequest()
+  const {signal, isLoading, setIsLoading} = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -23,7 +22,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(supportOperations.getTicketsArchiveHandler(data, signal))
+    dispatch(supportOperations.getTicketsArchiveHandler(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   return (
@@ -35,6 +34,7 @@ export default function Component() {
         p_cnt={p_cnt}
         setCurrentPage={setP_num}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerArchiveCount})</span>

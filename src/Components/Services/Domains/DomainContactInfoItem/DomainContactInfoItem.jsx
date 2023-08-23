@@ -25,6 +25,8 @@ export default function Component(props) {
     domainInfo,
     setPayersInfo,
     payersInfo,
+    signal,
+    setIsLoading
   } = props
 
   const dispatch = useDispatch()
@@ -289,7 +291,7 @@ export default function Component(props) {
       }
     }
 
-    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, body))
+    dispatch(domainsOperations.getDomainsContacts({setDomainsContacts, body, signal, setIsLoading}))
     setFieldValue(contact_select, item)
   }
 

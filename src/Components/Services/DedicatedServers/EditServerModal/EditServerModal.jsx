@@ -96,10 +96,10 @@ export default function EditServerModal({ elid, closeModal, isOpen }) {
       )
     } else {
       dispatch(
-        dedicOperations.editDedicServerNoExtraPay(
+        dedicOperations.editDedicServerNoExtraPay({
           elid,
           autoprolong,
-          domainname,
+          domain: domainname,
           ostempl,
           recipe,
           managePanel,
@@ -111,8 +111,8 @@ export default function EditServerModal({ elid, closeModal, isOpen }) {
           userpassword,
           password,
           server_name,
-          handleEditionModal,
-        ),
+          handleModal: handleEditionModal,
+        }),
       )
     }
   }

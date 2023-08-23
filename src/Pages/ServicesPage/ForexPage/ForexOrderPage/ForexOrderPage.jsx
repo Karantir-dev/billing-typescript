@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
-import { forexOperations, forexSelectors, selectors, userOperations } from '@redux'
+import { forexOperations, selectors, userOperations } from '@redux'
 import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
@@ -32,8 +32,7 @@ export default function ForexOrderPage() {
   const location = useLocation()
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const isLoading = useSelector(forexSelectors.getIsLoadingForex)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
@@ -105,7 +104,7 @@ export default function ForexOrderPage() {
     // dispatch(forexOperations.getTarifs(setTarifList))
     const cartFromSite = localStorage.getItem('site_cart')
     if (isForexOrderAllowed || cartFromSite) {
-      dispatch(forexOperations.getTarifs(setTarifList, {}, signal))
+      dispatch(forexOperations.getTarifs(setTarifList, {}, signal, setIsLoading))
     } else {
       navigate(route.FOREX, { replace: true })
     }
@@ -247,6 +246,7 @@ export default function ForexOrderPage() {
                                     datacenter: el?.$key,
                                   },
                                   signal,
+                                  setIsLoading,
                                 ),
                               )
                             }}
@@ -314,6 +314,7 @@ export default function ForexOrderPage() {
                                   setParameters,
                                   setFieldValue,
                                   signal,
+                                  setIsLoading,
                                 ),
                               )
                             }}

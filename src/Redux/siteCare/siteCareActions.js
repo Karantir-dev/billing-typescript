@@ -8,15 +8,10 @@ const setSiteCareFilters = createAction('SET_SITECARE_FILTERS')
 
 const setSiteCareCount = createAction('SET_SITECARE_COUNT')
 
-const showLoader = createAction('SHOW_LOADER_SITECARE')
-const hideLoader = createAction('HIDE_LOADER_SITECARE')
-
 export default {
   setSiteCareList,
   deleteSiteCare,
   setSiteCareFiltersLists,
   setSiteCareFilters,
   setSiteCareCount,
-  showLoader,
-  hideLoader,
 }

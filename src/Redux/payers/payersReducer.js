@@ -8,7 +8,6 @@ const initialState = {
 
   payersSelectLists: null,
   payersSelectedFields: null,
-  isLoadingPayers: false,
 }
 
 const payersList = createReducer(initialState.payersList, {
@@ -31,17 +30,11 @@ const payersSelectedFields = createReducer(initialState.payersSelectedFields, {
   [payersActions.setPayersSelectedFields]: (_, { payload }) => payload,
 })
 
-const isLoadingPayers = createReducer(initialState.isLoadingPayers, {
-  [payersActions.showLoader]: () => true,
-  [payersActions.hideLoader]: () => false,
-})
-
 const payersReducer = combineReducers({
   payersList,
   payersCount,
   payersSelectLists,
   payersSelectedFields,
-  isLoadingPayers,
 })
 
 export default payersReducer

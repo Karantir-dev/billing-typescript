@@ -7,8 +7,6 @@ const initialState = {
   accessLogsCount: 0,
   accessLogsFilters: [],
   accessLogsCurrentFilters: null,
-  isLoadingLogs: false
-
 }
 
 const accessLogsList = createReducer(initialState.accessLogsList, {
@@ -31,17 +29,11 @@ const accessLogsCurrentFilters = createReducer(initialState.accessLogsCurrentFil
   [accessLogsActions.clearCurrentFilters]: () => null,
 })
 
-const isLoadingLogs = createReducer(initialState.isLoadingLogs, {
-  [accessLogsActions.showLoaderLogs]: () => true,
-  [accessLogsActions.hideLoaderLogs]: () => false,
-})
-
 const accessLogsReducer = combineReducers({
   accessLogsList,
   accessLogsFilters,
   accessLogsCurrentFilters,
   accessLogsCount,
-  isLoadingLogs
 })
 
 export default accessLogsReducer

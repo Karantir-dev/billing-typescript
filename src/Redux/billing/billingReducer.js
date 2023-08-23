@@ -25,10 +25,6 @@ const initialState = {
   autoPaymentConfig: null,
 
   periodValue: null,
-  isLoadingPayment: false,
-  isLoadingAutoPayment: false,
-  isLoadingExpenses: false,
-  isLoadingPaymentMethod: false,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -113,26 +109,6 @@ const periodValue = createReducer(initialState.periodValue, {
   [billingActions.setPeriodValue]: (_, { payload }) => payload,
 })
 
-const isLoadingPayment = createReducer(initialState.isLoadingPayment, {
-  [billingActions.showLoaderPayment]: () => true,
-  [billingActions.hideLoaderPayment]: () => false,
-})
-
-const isLoadingPaymentMethod = createReducer(initialState.isLoadingPaymentMethod, {
-  [billingActions.showLoaderPaymentMethod]: () => true,
-  [billingActions.hideLoaderPaymentMethod]: () => false,
-})
-
-const isLoadingAutoPayment = createReducer(initialState.isLoadingAutoPayment, {
-  [billingActions.showLoaderAutoPayment]: () => true,
-  [billingActions.hideLoaderAutoPayment]: () => false,
-})
-
-const isLoadingExpenses = createReducer(initialState.isLoadingExpenses, {
-  [billingActions.showLoaderExpenses]: () => true,
-  [billingActions.hideLoaderExpenses]: () => false,
-})
-
 const billingReducer = combineReducers({
   paymentsList,
   paymentsCount,
@@ -157,10 +133,6 @@ const billingReducer = combineReducers({
   paymentMethodList,
 
   periodValue,
-  isLoadingPayment,
-  isLoadingAutoPayment,
-  isLoadingExpenses,
-  isLoadingPaymentMethod
 })
 
 export default billingReducer

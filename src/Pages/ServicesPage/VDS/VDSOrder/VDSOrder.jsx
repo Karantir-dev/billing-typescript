@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom'
 import {
@@ -14,7 +14,7 @@ import {
   Icon,
   Loader,
 } from '@components'
-import { userOperations, vdsOperations, vdsSelectors } from '@redux'
+import { userOperations, vdsOperations } from '@redux'
 import { DOMAIN_REGEX, useCancelRequest, useScrollToElement } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
@@ -28,8 +28,7 @@ export default function VDSOrder() {
   const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
   const agreementEl = useRef()
 
-  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [formInfo, setFormInfo] = useState(null)
   const [period, setPeriod] = useState('1')
@@ -59,7 +58,9 @@ export default function VDSOrder() {
   }, [tariffCategory])
 
   useEffect(() => {
-    dispatch(vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList, signal))
+    dispatch(
+      vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList, signal, setIsLoading),
+    )
   }, [])
 
   useEffect(() => {
@@ -88,7 +89,13 @@ export default function VDSOrder() {
   const handleTariffClick = (period, pricelist) => {
     if (selectedTariffId !== pricelist) {
       dispatch(
-        vdsOperations.getTariffParameters(period, pricelist, setParametersInfo, signal),
+        vdsOperations.getTariffParameters(
+          period,
+          pricelist,
+          setParametersInfo,
+          signal,
+          setIsLoading,
+        ),
       )
       setSelectedTariffId(pricelist)
     }
@@ -288,6 +295,7 @@ export default function VDSOrder() {
         setParametersInfo,
         parametersInfo.register,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -440,7 +448,12 @@ export default function VDSOrder() {
                   getElement={period => {
                     setPeriod(period)
                     dispatch(
-                      vdsOperations.getNewPeriodInfo(period, setTariffsList, signal),
+                      vdsOperations.getNewPeriodInfo(
+                        period,
+                        setTariffsList,
+                        signal,
+                        setIsLoading,
+                      ),
                     )
                     if (selectedTariffId) {
                       dispatch(
@@ -449,6 +462,7 @@ export default function VDSOrder() {
                           selectedTariffId,
                           setParametersInfo,
                           signal,
+                          setIsLoading,
                         ),
                       )
                     }

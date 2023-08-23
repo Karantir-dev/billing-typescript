@@ -34,8 +34,7 @@ export default function DedicatedServersPage() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
   const navigate = useNavigate()
-  const isLoading = useSelector(dedicSelectors.getIsLoadingDedics)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)
   const dedicCount = useSelector(dedicSelectors.getDedicCount)
@@ -107,6 +106,7 @@ export default function DedicatedServersPage() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
     // setEmptyFilter(false)
@@ -125,6 +125,7 @@ export default function DedicatedServersPage() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -159,6 +160,7 @@ export default function DedicatedServersPage() {
           true,
           undefined,
           signal,
+          setIsLoading,
         ),
       )
     }
@@ -168,13 +170,20 @@ export default function DedicatedServersPage() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(dedicOperations.getServersList(data, signal))
+    dispatch(dedicOperations.getServersList(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   useEffect(() => {
     if (filterModal)
       dispatch(
-        dedicOperations.getDedicFilters(setFilters, { p_cnt }, false, undefined, signal),
+        dedicOperations.getDedicFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
       )
   }, [filterModal])
 
@@ -317,6 +326,8 @@ export default function DedicatedServersPage() {
         rights={rights}
         setActiveServices={setActiveServices}
         activeServices={activeServices}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
 
       {dedicCount > 5 && (

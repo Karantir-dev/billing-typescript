@@ -20,8 +20,7 @@ export default function AboutAffiliateProgram() {
   const descrWrapper = useRef(null)
   const referralLink = useSelector(affiliateSelectors.getRefLink)
   const promocode = useSelector(affiliateSelectors.getPromocode)
-  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateAbout)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
 
@@ -33,7 +32,7 @@ export default function AboutAffiliateProgram() {
     if (referralLink) {
       return
     }
-    dispatch(affiliateOperations.getReferralLink(signal))
+    dispatch(affiliateOperations.getReferralLink(signal, setIsLoading))
   }, [])
 
   const showPrompt = fn => {

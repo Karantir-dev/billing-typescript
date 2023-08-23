@@ -11,8 +11,7 @@ export default function Component() {
   const { t } = useTranslation(['support', 'other'])
   const tickerList = useSelector(supportSelectors.getTicketList)
   const tickerCount = useSelector(supportSelectors.getTicketCount)
-  const isLoading = useSelector(supportSelectors.getIsLoadingRequest)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -27,7 +26,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(supportOperations.getTicketsHandler(data, signal))
+    dispatch(supportOperations.getTicketsHandler(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const destructuredTickerList = [...tickerList]
@@ -45,6 +44,7 @@ export default function Component() {
         p_cnt={p_cnt}
         setCurrentPage={setP_num}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>

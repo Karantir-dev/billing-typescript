@@ -15,9 +15,6 @@ const getTimeFilterList = state => state.support.timeFilterList
 
 const getCurrentFilters = state => state.support.currentFilters
 
-const getIsLoadingRequest = state => state.support.isLoadingSupportRequest
-const getIsLoadingRequestArchive = state => state.support.isLoadingSupportRequestArchive
-
 export default {
   getTicketList,
   getTicketCount,
@@ -30,6 +27,4 @@ export default {
   getTstatusFilterList,
   getTimeFilterList,
   getCurrentFilters,
-  getIsLoadingRequest,
-  getIsLoadingRequestArchive,
 }

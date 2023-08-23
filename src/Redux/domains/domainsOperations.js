@@ -9,9 +9,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getDomains =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -44,18 +44,17 @@ const getDomains =
 
         dispatch(domainsActions.setDomainsList(domainsRenderData))
         dispatch(domainsActions.setDomainsCount(count))
-        dispatch(getDomainsFilters({}, false, signal))
+        dispatch(getDomainsFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getDomainsFilters =
-  (body = {}, filtered = false, signal) =>
+  (body = {}, filtered = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -77,7 +76,7 @@ const getDomainsFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getDomains({ p_cnt: body?.p_cnt }, signal))
+          return dispatch(getDomains({ p_cnt: body?.p_cnt }, signal, setIsLoading))
         }
 
         let filters = {}
@@ -104,18 +103,17 @@ const getDomainsFilters =
 
         dispatch(domainsActions.setDomainsFilters(currentFilters))
         dispatch(domainsActions.setDomainsFiltersLists(filters))
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getDomainsOrderName =
-  (setDomains, setAutoprolongPrices, body = {}, search = false, signal) =>
+  (setDomains, setAutoprolongPrices, body = {}, search = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -153,7 +151,10 @@ const getDomainsOrderName =
             .then(response => {
               setAutoprolongPrices(response.data)
             })
-            .catch(error => checkIfTokenAlive(error.message, dispatch)))
+            .catch(
+              error =>
+                checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false),
+            ))
 
         if (!search) {
           domainData?.list?.forEach(l => {
@@ -167,7 +168,7 @@ const getDomainsOrderName =
           })
 
           setDomains && setDomains(domains)
-          return dispatch(domainsActions.hideLoader())
+          return setIsLoading(false)
         }
 
         domainData?.list?.forEach(l => {
@@ -198,9 +199,13 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post(`${API_URL}/api/domain/check/premium/`, {
-            host: domains?.map(e => e?.domain?.$)?.join(','),
-          })
+          .post(
+            `${API_URL}/api/domain/check/premium/`,
+            {
+              host: domains?.map(e => e?.domain?.$)?.join(','),
+            },
+            { signal },
+          )
           .then(({ data }) => {
             const newArr = []
             data?.domains?.forEach(d => {
@@ -218,30 +223,31 @@ const getDomainsOrderName =
             }
 
             setDomains && setDomains(domainsData)
-            dispatch(domainsActions.hideLoader())
+            setIsLoading(false)
           })
           .catch(err => {
-            checkIfTokenAlive(err?.message, dispatch)
-            const domainsData = {
-              list: domains,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
+            if (checkIfTokenAlive(err.message, dispatch, true)) {
+              checkIfTokenAlive(err?.message, dispatch)
+              const domainsData = {
+                list: domains,
+                checked_domain: domainData?.checked_domain,
+                selected: selected,
+                domain_name: domainData?.tparams?.domain_name?.$,
+              }
+              setDomains && setDomains(domainsData)
+              setIsLoading(false)
             }
-            setDomains && setDomains(domainsData)
-            dispatch(domainsActions.hideLoader())
           })
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getDomainsContacts =
-  (setDomains, body = {}, navigate, transfer, signal) =>
+  ({ setDomains, body = {}, navigate, transfer, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -399,18 +405,17 @@ const getDomainsContacts =
               replace: true,
             })
         }
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getDomainsNS =
-  (body = {}, setNS) =>
+  ({ body = {}, setNS, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -426,6 +431,7 @@ const getDomainsNS =
           hfields: 'bill_company',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -433,18 +439,17 @@ const getDomainsNS =
         const domainData = data.doc
 
         setNS && setNS(domainData)
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getDomainPaymentInfo =
-  (body = {}, setData) =>
+  (body = {}, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -459,6 +464,7 @@ const getDomainPaymentInfo =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -496,18 +502,17 @@ const getDomainPaymentInfo =
         })
 
         setData && setData(paymentData)
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const createDomain =
-  (body = {}) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -523,6 +528,7 @@ const createDomain =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -539,47 +545,46 @@ const createDomain =
             redirectPath: route.DOMAINS,
           }),
         )
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
-const getTermsOfConditionalText = link => (dispatch, getState) => {
-  dispatch(domainsActions.showLoader())
+const getTermsOfConditionalText =
+  (link, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .get(`${link}&auth=${sessionId}`, { responseType: 'blob' })
-    .then(response => {
-      const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: 'text/html' }),
-      )
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('target', '__blank')
-      link.setAttribute('rel', 'noopener noreferrer')
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
+    axiosInstance
+      .get(`${link}&auth=${sessionId}`, { responseType: 'blob', signal })
+      .then(response => {
+        const url = window.URL.createObjectURL(
+          new Blob([response.data], { type: 'text/html' }),
+        )
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('target', '__blank')
+        link.setAttribute('rel', 'noopener noreferrer')
+        document.body.appendChild(link)
+        link.click()
+        link.parentNode.removeChild(link)
 
-      dispatch(domainsActions.hideLoader())
-    })
-    .catch(err => {
-      checkIfTokenAlive(err?.message, dispatch)
-      dispatch(domainsActions.hideLoader())
-    })
-}
+        setIsLoading(false)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const renewService =
-  (body = {}, setProlongModal, setProlongData) =>
+  (body = {}, setProlongModal, setProlongData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -595,6 +600,7 @@ const renewService =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -689,18 +695,17 @@ const renewService =
           )
         }
 
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const deleteDomain =
-  (body = {}) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -715,6 +720,7 @@ const deleteDomain =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -731,11 +737,10 @@ const deleteDomain =
 
         dispatch(domainsActions.deleteDomain(body?.elid))
 
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -784,7 +789,7 @@ const getHistoryDomain =
 const getWhoisDomain =
   (body = {}, setWhoisModal, setWhoisData) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -812,18 +817,18 @@ const getWhoisDomain =
         setWhoisData && setWhoisData(data?.doc?.whois_data?.$)
         setWhoisModal && setWhoisModal(true)
 
-        dispatch(domainsActions.hideLoader())
+        dispatch(actions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        dispatch(actions.hideLoader())
       })
   }
 
 const editDomainNS =
-  (body = {}, setNSModal, setNSData) =>
+  (body = {}, setNSModal, setNSData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(domainsActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -839,6 +844,7 @@ const editDomainNS =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -868,11 +874,10 @@ const editDomainNS =
           })
         }
 
-        dispatch(domainsActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(domainsActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

@@ -23,7 +23,7 @@ export default function AffiliateProgram() {
 
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
-  const signal = useCancelRequest()
+  const {signal, setIsLoading} = useCancelRequest()
 
   const [availableRights, setAvailabelRights] = useState({})
 
@@ -33,8 +33,8 @@ export default function AffiliateProgram() {
         usersOperations.getAvailableRights(
           'affiliate.client',
           setAvailabelRights,
-          'about',
           signal,
+          setIsLoading
         ),
       )
     }

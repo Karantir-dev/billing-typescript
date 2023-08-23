@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { BreadCrumbs, Button, DomainContactInfoItem, Loader } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { domainsOperations, domainsSelectors } from '@redux'
+import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import s from './DomainContactInfoPage.module.scss'
 import { useCancelRequest } from '@src/utils'
@@ -16,10 +16,9 @@ export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other', 'trusted_users'])
   const navigate = useNavigate()
 
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const location = useLocation()
-  const isLoading = useSelector(domainsSelectors.getIsLoadingDomains)
 
   const [formData, setFormData] = useState({})
   const [domainsContacts, setDomainsContacts] = useState(null)
@@ -30,13 +29,12 @@ export default function Component({ transfer = false }) {
   useEffect(() => {
     if (state?.domainInfo) {
       dispatch(
-        domainsOperations.getDomainsContacts(
-          setDomainsContacts,
-          state?.domainInfo,
-          undefined,
-          undefined,
+        domainsOperations.getDomainsContacts({
+          setDomains: setDomainsContacts,
+          body: state?.domainInfo,
           signal,
-        ),
+          setIsLoading,
+        }),
       )
     }
   }, [])
@@ -70,13 +68,14 @@ export default function Component({ transfer = false }) {
   const setContactsHandler = values => {
     const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
     dispatch(
-      domainsOperations.getDomainsContacts(
-        setDomainsContacts,
-        data,
+      domainsOperations.getDomainsContacts({
+        setDomains: setDomainsContacts,
+        body: data,
         navigate,
         transfer,
         signal,
-      ),
+        setIsLoading,
+      }),
     )
   }
 
@@ -130,6 +129,8 @@ export default function Component({ transfer = false }) {
                 setDomainsContacts={setDomainsContacts}
                 setPayersInfo={setPayersInfo}
                 payersInfo={payersInfo}
+                signal={signal}
+                setIsLoading={setIsLoading}
               />
             )
           })}

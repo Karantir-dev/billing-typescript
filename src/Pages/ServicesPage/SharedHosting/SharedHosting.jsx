@@ -38,8 +38,7 @@ export default function Component() {
 
   const virtualHostingRenderData = useSelector(vhostSelectors.getVhostList)
   const vhostCount = useSelector(vhostSelectors.getVhostCount)
-  const isLoading = useSelector(vhostSelectors.getIsLoadingVhost)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -68,7 +67,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(vhostOperations.getVhosts(data, signal))
+    dispatch(vhostOperations.getVhosts(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -275,6 +274,7 @@ export default function Component() {
           setActiveServices={setActiveServices}
           hostingList={virtualHostingRenderData?.vhostList}
           signal={signal}
+          setIsLoading={setIsLoading}
         />
 
         {virtualHostingRenderData?.vhostList?.length < 1 && isFiltered && (

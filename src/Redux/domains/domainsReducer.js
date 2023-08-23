@@ -8,7 +8,6 @@ const initialState = {
 
   domainsFiltersList: null,
   domainsFilters: null,
-  isLoadingDomains: false,
 }
 
 const domainsList = createReducer(initialState.domainsList, {
@@ -29,17 +28,11 @@ const domainsFilters = createReducer(initialState.domainsFilters, {
   [domainsActions.setDomainsFilters]: (_, { payload }) => payload,
 })
 
-const isLoadingDomains = createReducer(initialState.isLoadingDomains, {
-  [domainsActions.showLoader]: () => true,
-  [domainsActions.hideLoader]: () => false,
-})
-
 const domainsReducer = combineReducers({
   domainsList,
   domainsCount,
   domainsFiltersList,
   domainsFilters,
-  isLoadingDomains,
 })
 
 export default domainsReducer

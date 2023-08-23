@@ -27,6 +27,7 @@ export default function Component(props) {
     list,
     selctedItem,
     signal,
+    setIsLoading,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -79,6 +80,7 @@ export default function Component(props) {
         { ...clearField, sok: 'ok', p_cnt },
         true,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -97,6 +99,7 @@ export default function Component(props) {
         { ...values, sok: 'ok', p_cnt },
         true,
         signal,
+        setIsLoading,
       ),
     )
   }

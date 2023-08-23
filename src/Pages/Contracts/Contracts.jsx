@@ -16,8 +16,7 @@ export default function Contracts() {
 
   const contractsRenderData = useSelector(contractsSelectors.getContractsList)
   const contractsCount = useSelector(contractsSelectors.getContractsCount)
-  const isLoading = useSelector(contractsSelectors.getIsLoadingContracts)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -35,7 +34,12 @@ export default function Contracts() {
   // }
   const handleDownloadBtn = () => {
     dispatch(
-      contractOperations.getPdfFile(selectedContract?.id?.$, selectedContract?.number?.$),
+      contractOperations.getPdfFile(
+        selectedContract?.id?.$,
+        selectedContract?.number?.$,
+        signal,
+        setIsLoading,
+      ),
     )
   }
 
@@ -44,7 +48,7 @@ export default function Contracts() {
   useEffect(() => {
     if (isAllowedToRender) {
       const data = { p_num, p_cnt }
-      dispatch(contractOperations.getContracts(data, signal))
+      dispatch(contractOperations.getContracts(data, signal, setIsLoading))
     } else {
       navigate(route.SERVICES, { replace: true })
     }

@@ -18,8 +18,7 @@ export default function Component() {
 
   let paymentsList = useSelector(billingSelectors.getPaymentMethodList)
   const paymentsCount = useSelector(billingSelectors.getPaymentMethodCount)
-  const isLoading = useSelector(billingSelectors.getIsLoadingPaymentMethod)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -30,7 +29,7 @@ export default function Component() {
 
   const getPageData = () => {
     const data = { p_num, p_cnt }
-    dispatch(billingOperations.getPaymentMethods(data, signal))
+    dispatch(billingOperations.getPaymentMethods(data, signal, setIsLoading))
   }
 
   useEffect(() => {

@@ -27,6 +27,7 @@ export default function Component(props) {
     list,
     selctedItem,
     signal,
+    setIsLoading,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -75,7 +76,12 @@ export default function Component(props) {
     setCurrentPage(1)
     setFilterModal(false)
     dispatch(
-      vpnOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true, signal),
+      vpnOperations.getSiteCareFilters(
+        { ...clearField, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
     )
   }
 
@@ -89,7 +95,12 @@ export default function Component(props) {
     setIsFiltered(true)
     setSelctedItem([])
     dispatch(
-      vpnOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true, signal),
+      vpnOperations.getSiteCareFilters(
+        { ...values, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
     )
   }
 

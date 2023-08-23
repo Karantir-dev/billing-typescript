@@ -32,8 +32,7 @@ export default function Component() {
 
   const vpnRenderData = useSelector(vpnSelectors.getVpnList)
   const siteCareCount = useSelector(vpnSelectors.getVpnCount)
-  const isLoading = useSelector(vpnSelectors.getIsLoadingVpn)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -84,7 +83,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(vpnOperations.getSiteCare(data, signal))
+    dispatch(vpnOperations.getSiteCare(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -243,6 +242,7 @@ export default function Component() {
           selctedItem={selctedItem}
           list={vpnRenderData?.vpnList}
           signal={signal}
+          setIsLoading={setIsLoading}
         />
 
         {vpnRenderData?.vpnList?.length > 0 && (

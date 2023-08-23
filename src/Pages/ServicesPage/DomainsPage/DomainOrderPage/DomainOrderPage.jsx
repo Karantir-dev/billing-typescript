@@ -7,11 +7,11 @@ import {
   DomainsPickUpZones,
   Loader,
 } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { domainsOperations, domainsSelectors } from '@redux'
+import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
@@ -23,9 +23,8 @@ export default function Component({ transfer = false }) {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const isLoading = useSelector(domainsSelectors.getIsLoadingDomains)
 
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [domains, setDomains] = useState([])
   const [autoprolongPrices, setAutoprolongPrices] = useState([])
@@ -49,6 +48,7 @@ export default function Component({ transfer = false }) {
             dataTransfer,
             undefined,
             signal,
+            setIsLoading,
           ),
         )
       } else {
@@ -59,6 +59,7 @@ export default function Component({ transfer = false }) {
             undefined,
             undefined,
             signal,
+            setIsLoading,
           ),
         )
       }
@@ -107,6 +108,7 @@ export default function Component({ transfer = false }) {
         values,
         true,
         signal,
+        setIsLoading,
       ),
     )
 

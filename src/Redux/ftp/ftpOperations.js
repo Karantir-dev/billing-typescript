@@ -8,8 +8,8 @@ import * as route from '@src/routes'
 
 //GET SERVERS OPERATIONS
 
-const getFTPList = (data, signal) => (dispatch, getState) => {
-  dispatch(ftpActions.showLoader())
+const getFTPList = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -41,18 +41,22 @@ const getFTPList = (data, signal) => (dispatch, getState) => {
       dispatch(ftpActions.setFtpCount(count))
       dispatch(ftpActions.setFTPList(ftpRenderData))
 
-      dispatch(ftpActions.hideLoader())
+      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(ftpActions.hideLoader())
+      if (setIsLoading) {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      }
     })
 }
 
 const getTarifs =
-  (setTarifs, data = {}, signal) =>
+  (setTarifs, data = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(ftpActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -86,18 +90,17 @@ const getTarifs =
         }
 
         setTarifs(orderData)
-        dispatch(ftpActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(ftpActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue, signal) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(ftpActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -130,12 +133,11 @@ const getParameters =
         setFieldValue('autoprolonglList', autoprolong[0].val)
         setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
         setParameters(paramsList)
-        dispatch(ftpActions.hideLoader())
+        setIsLoading(false)
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(ftpActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -348,9 +350,9 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
 }
 
 const getFTPFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter, signal) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(ftpActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -373,7 +375,9 @@ const getFTPFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getFTPList({ p_num: 1, p_cnt: data?.p_cnt }, signal))
+          return dispatch(
+            getFTPList({ p_num: 1, p_cnt: data?.p_cnt }, signal, setIsLoading),
+          )
         }
 
         let filters = {}
@@ -402,15 +406,14 @@ const getFTPFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(ftpActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message.includes('filter')) {
-          dispatch(getFTPList({ p_num: 1 }))
+          dispatch(getFTPList({ p_num: 1 }, signal, setIsLoading))
         }
 
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(ftpActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

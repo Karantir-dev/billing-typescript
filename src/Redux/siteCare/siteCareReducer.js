@@ -8,7 +8,6 @@ const initialState = {
 
   siteCareFiltersList: null,
   siteCareFilters: null,
-  isLoadingSiteCare: false,
 }
 
 const siteCareList = createReducer(initialState.siteCareList, {
@@ -29,17 +28,11 @@ const siteCareFilters = createReducer(initialState.siteCareFilters, {
   [siteCareActions.setSiteCareFilters]: (_, { payload }) => payload,
 })
 
-const isLoadingSiteCare = createReducer(initialState.isLoadingSiteCare, {
-  [siteCareActions.showLoader]: () => true,
-  [siteCareActions.hideLoader]: () => false,
-})
-
 const siteCareReducer = combineReducers({
   siteCareList,
   siteCareCount,
   siteCareFiltersList,
   siteCareFilters,
-  isLoadingSiteCare,
 })
 
 export default siteCareReducer

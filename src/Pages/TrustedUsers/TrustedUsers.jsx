@@ -59,8 +59,7 @@ export default function TrustedUsers() {
 
   const users = useSelector(usersSelectors.getUsers)
   const { $id: pageOwnerId } = useSelector(userSelectors.getUserInfo)
-  const isLoading = useSelector(usersSelectors.getIsLoadingTrusted)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const hasPageOwnerFullAccess = users.some(user => {
     return user.id.$ === pageOwnerId && user.default_access_allow
@@ -79,12 +78,19 @@ export default function TrustedUsers() {
   }, [createdNewUser])
 
   useEffect(() => {
-    if (isComponentAllowedToRender) dispatch(usersOperations.getUsers(signal))
+    if (isComponentAllowedToRender) {
+      dispatch(usersOperations.getUsers(signal, setIsLoading))
+    }
   }, [changeUserRoles, createdNewUser])
 
   useEffect(() => {
     dispatch(
-      usersOperations.getAvailableRights('user', setAvailabelRights, 'trusted', signal),
+      usersOperations.getAvailableRights(
+        'user',
+        setAvailabelRights,
+        signal,
+        setIsLoading,
+      ),
     )
   }, [])
 
@@ -145,6 +151,8 @@ export default function TrustedUsers() {
               handleUserRolesData={handleUserRolesData}
               isOwner={user.self.$ === 'on'}
               hasPageOwnerFullAccess={hasPageOwnerFullAccess}
+              signal={signal}
+              setIsLoading={setIsLoading}
             />
           )
         })}

@@ -3,8 +3,8 @@ import { actions, contarctsActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive } from '@utils'
 
-const getContracts = (data, signal) => (dispatch, getState) => {
-  dispatch(contarctsActions.showLoader())
+const getContracts = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
   const {
     auth: { sessionId },
@@ -35,20 +35,19 @@ const getContracts = (data, signal) => (dispatch, getState) => {
 
       dispatch(contarctsActions.setContractsList(contractsRenderData))
       dispatch(contarctsActions.setContractsCount(count))
-      dispatch(contarctsActions.hideLoader())
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(contarctsActions.hideLoader())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 
-const getPdfFile = (elid, name) => (dispatch, getState) => {
+const getPdfFile = (elid, name, signal, setIsLoading) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
 
-  dispatch(contarctsActions.showLoader())
+  setIsLoading(true)
 
   axiosInstance
     .post(
@@ -59,7 +58,7 @@ const getPdfFile = (elid, name) => (dispatch, getState) => {
         auth: sessionId,
         elid,
       }),
-      { responseType: 'blob' },
+      { responseType: 'blob', signal },
     )
     .then(response => {
       const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -70,11 +69,10 @@ const getPdfFile = (elid, name) => (dispatch, getState) => {
       link.click()
       link.parentNode.removeChild(link)
 
-      dispatch(contarctsActions.hideLoader())
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(contarctsActions.hideLoader())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 

@@ -20,12 +20,11 @@ export default function Component() {
 
   const logsList = useSelector(accessLogsSelectors.getLogsList)
   const logsCount = useSelector(accessLogsSelectors.getLogsCount)
-  const isLoading = useSelector(accessLogsSelectors.getIsLoadingLogs)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(accessLogsOperations.getAccessLogsHandler(data, signal))
+    dispatch(accessLogsOperations.getAccessLogsHandler(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   if (!isComponentAllowedToRender) {
@@ -36,7 +35,12 @@ export default function Component() {
     <div className={s.body}>
       <div className={s.content}>
         <h1 className={s.pageTitle}>{t('access_log')}</h1>
-        <AccessLogsFilter p_cnt={p_cnt} setCurrentPage={setP_num} signal={signal} />
+        <AccessLogsFilter
+          p_cnt={p_cnt}
+          setCurrentPage={setP_num}
+          signal={signal}
+          setIsLoading={setIsLoading}
+        />
         {logsList?.length !== 0 ? (
           <AccessLogsTable list={logsList} />
         ) : (

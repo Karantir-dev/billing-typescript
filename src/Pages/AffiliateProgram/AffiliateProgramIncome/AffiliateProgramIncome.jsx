@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { CSSTransition } from 'react-transition-group'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { affiliateOperations, affiliateSelectors } from '@redux'
+import { affiliateOperations } from '@redux'
 import {
   Button,
   CalendarModal,
@@ -24,8 +24,7 @@ export default function AffiliateProgramIncome() {
   const descrWrapper = useRef(null)
   const dropdownCalendar = useRef(null)
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
-  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateIncome)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
@@ -54,6 +53,7 @@ export default function AffiliateProgramIncome() {
         setIncomeData,
         setFixedPeriod,
         signal,
+        setIsLoading,
       ),
     )
   }, [])
@@ -76,6 +76,7 @@ export default function AffiliateProgramIncome() {
           periodStart,
           periodEnd,
           signal,
+          setIsLoading,
         ),
       )
     } else {

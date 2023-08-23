@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, Button, Loader } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { cartActions, userOperations, vhostOperations, vhostSelectors } from '@redux'
+import { cartActions, userOperations, vhostOperations } from '@redux'
 import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
 import * as routes from '@src/routes'
 
@@ -23,8 +23,7 @@ export default function Component() {
   const navigate = useNavigate()
 
   const licenseBlock = useRef()
-  const isLoading = useSelector(vhostSelectors.getIsLoadingVhost)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -48,7 +47,7 @@ export default function Component() {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (isVhostOrderAllowed || cartFromSite) {
-      dispatch(vhostOperations.orderVhost({}, setData, signal))
+      dispatch(vhostOperations.orderVhost({}, setData, signal, setIsLoading))
     } else {
       navigate(routes.SHARED_HOSTING, { replace: true })
     }
@@ -89,9 +88,12 @@ export default function Component() {
           },
           setParamsData,
           signal,
+          setIsLoading,
         ),
       )
-      dispatch(vhostOperations.orderVhost({ period: period }, setData, signal))
+      dispatch(
+        vhostOperations.orderVhost({ period: period }, setData, signal, setIsLoading),
+      )
     }
   }, [price])
 
@@ -135,7 +137,7 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(vhostOperations.orderParamVhost(d, setParamsData, signal)),
+        dispatch(vhostOperations.orderParamVhost(d, setParamsData, signal, setIsLoading)),
       ),
     )
   }
@@ -174,7 +176,14 @@ export default function Component() {
               setPrice(null)
               setParamsData(null)
               // setLicence_agreement(false)
-              dispatch(vhostOperations.orderVhost({ period: item }, setData, signal))
+              dispatch(
+                vhostOperations.orderVhost(
+                  { period: item },
+                  setData,
+                  signal,
+                  setIsLoading,
+                ),
+              )
             }}
             value={period}
             label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}

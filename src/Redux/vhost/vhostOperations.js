@@ -7,9 +7,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getVhosts =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vhostActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -42,18 +42,17 @@ const getVhosts =
 
         dispatch(vhostActions.setVhostList(virtualHostingRenderData))
         dispatch(vhostActions.setVhostCount(count))
-        dispatch(getVhostFilters({}, false, signal))
+        dispatch(getVhostFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vhostActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getVhostFilters =
-  (body = {}, filtered = false, signal) =>
+  (body = {}, filtered = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vhostActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -75,7 +74,7 @@ const getVhostFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getVhosts({ p_cnt: body?.p_cnt }, signal))
+          return dispatch(getVhosts({ p_cnt: body?.p_cnt }, signal, setIsLoading))
         }
 
         let filters = {}
@@ -104,11 +103,10 @@ const getVhostFilters =
 
         dispatch(vhostActions.setVhostFilters(currentFilters))
         dispatch(vhostActions.setVhostFiltersLists(filters))
-        dispatch(vhostActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vhostActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -566,9 +564,9 @@ const changeTariffSaveVhost =
   }
 
 const orderVhost =
-  (body = {}, setData, signal) =>
+  (body = {}, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vhostActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -616,18 +614,17 @@ const orderVhost =
 
         setData && setData(d)
 
-        dispatch(vhostActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vhostActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const orderParamVhost =
-  (body = {}, setParamsData, signal) =>
+  (body = {}, setParamsData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vhostActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -678,11 +675,10 @@ const orderParamVhost =
           setParamsData && setParamsData(d)
         }
 
-        dispatch(vhostActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vhostActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

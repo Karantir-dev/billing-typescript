@@ -7,8 +7,6 @@ const initialState = {
   filterList: [],
   serversList: null,
   dedicCount: 0,
-  isLoadingDedics: false,
-
 }
 
 const tarifList = createReducer(initialState.tarifList, {
@@ -25,11 +23,6 @@ const dedicCount = createReducer(initialState.dedicCount, {
   [dedicActions.setDedicCount]: (_, { payload }) => payload,
 })
 
-const isLoadingDedics = createReducer(initialState.isLoadingDedics, {
-  [dedicActions.showLoader]: () => true,
-  [dedicActions.hideLoader]: () => false,
-})
-
-const dedicReducer = combineReducers({ tarifList, filterList, serversList, dedicCount, isLoadingDedics })
+const dedicReducer = combineReducers({ tarifList, filterList, serversList, dedicCount })
 
 export default dedicReducer

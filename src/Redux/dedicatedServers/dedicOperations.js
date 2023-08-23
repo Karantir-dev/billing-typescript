@@ -9,9 +9,9 @@ import * as route from '@src/routes'
 // GET SERVERS OPERATIONS
 
 const getServersList =
-  ({ data }, signal) =>
+  ({ data }, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -45,17 +45,16 @@ const getServersList =
         dispatch(dedicActions.setServersList(dedicRenderData))
         dispatch(dedicActions.setDedicCount(count))
 
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 //ORDER NEW SERVER OPERATIONS
-const getTarifs = signal => (dispatch, getState) => {
-  dispatch(dedicActions.showLoader())
+const getTarifs = (signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
   const {
     auth: { sessionId },
@@ -91,17 +90,16 @@ const getTarifs = signal => (dispatch, getState) => {
       }
 
       dispatch(dedicActions.setTarifList(orderData))
-      dispatch(dedicActions.hideLoader())
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(dedicActions.hideLoader())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 
 const getUpdatedTarrifs =
-  (datacenterId, setNewTariffs, signal) => (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+  (datacenterId, setNewTariffs, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -136,17 +134,16 @@ const getUpdatedTarrifs =
         }
 
         setNewTariffs(orderData)
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getUpdatedPeriod =
-  (period, datacenter, setNewPeriod, signal) => (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+  (period, datacenter, setNewPeriod, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -182,18 +179,17 @@ const getUpdatedPeriod =
         }
 
         setNewPeriod(orderData)
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue, signal) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -273,12 +269,11 @@ const getParameters =
 
         setParameters(paramsList)
 
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -298,9 +293,10 @@ const updatePrice =
     managePanel,
     updatePrice,
     signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -331,11 +327,10 @@ const updatePrice =
         let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
 
         updatePrice(price?.replace('EUR', ''))
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -355,9 +350,11 @@ const orderServer =
     ipName,
     managePanel,
     server_name,
+    signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -386,6 +383,7 @@ const orderServer =
           [portSpeedName]: portSpeed,
           server_name: server_name,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -395,11 +393,10 @@ const orderServer =
             redirectPath: route.DEDICATED_SERVERS,
           }),
         )
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -625,7 +622,7 @@ const editDedicServer =
   }
 
 const editDedicServerNoExtraPay =
-  (
+  ({
     elid,
     autoprolong,
     domain,
@@ -641,9 +638,11 @@ const editDedicServerNoExtraPay =
     password,
     server_name,
     handleModal,
-  ) =>
+    signal,
+    setIsLoading,
+  }) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -672,6 +671,7 @@ const editDedicServerNoExtraPay =
           server_name: server_name || undefined,
           sok: 'ok',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -680,14 +680,13 @@ const editDedicServerNoExtraPay =
           position: 'bottom-right',
           toastId: 'customId',
         })
-        dispatch(getServersList({ p_num: 1 }))
-        dispatch(dedicActions.hideLoader())
+        dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
+        setIsLoading(false)
 
         handleModal && handleModal()
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -750,36 +749,37 @@ const updatePriceEditModal =
   }
 
 // IP-addresses
-const getIPList = (elid, setIPlist, setRights) => (dispatch, getState) => {
-  dispatch(dedicActions.showLoader())
+const getIPList =
+  (elid, setIPlist, setRights, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'service.ip',
-        out: 'json',
-        auth: sessionId,
-        elid,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.ip',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      setRights(data?.doc?.metadata?.toolbar)
-      setIPlist(data.doc.elem)
-      dispatch(dedicActions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(dedicActions.hideLoader())
-    })
-}
+        setRights(data?.doc?.metadata?.toolbar)
+        setIPlist(data.doc.elem)
+        setIsLoading(false)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const getInfoEditIP = (elid, plid, setInitialState) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -1386,9 +1386,9 @@ const goToPanel = elid => (dispatch, getState) => {
 }
 
 const getDedicFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter, signal) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(dedicActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -1411,7 +1411,9 @@ const getDedicFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getServersList({ p_num: 1, p_cnt: data?.p_cnt }, signal))
+          return dispatch(
+            getServersList({ p_num: 1, p_cnt: data?.p_cnt }, signal, setIsLoading),
+          )
         }
 
         let filters = {}
@@ -1440,14 +1442,13 @@ const getDedicFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(dedicActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message.includes('filter')) {
-          dispatch(getServersList({ p_num: 1 }))
+          dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(dedicActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

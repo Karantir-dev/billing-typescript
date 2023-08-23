@@ -19,12 +19,11 @@ export default function Component() {
 
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersCount = useSelector(payersSelectors.getPayersCount)
-  const isLoading = useSelector(payersSelectors.getIsLoadingPayers)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(payersOperations.getPayers(data, 'payers', signal))
+    dispatch(payersOperations.getPayers(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const closeAddModalHandler = () => {

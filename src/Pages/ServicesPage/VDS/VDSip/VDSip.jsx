@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { BreadCrumbs, IconButton, IPeditModal, Icon, Loader } from '@components'
-import { vdsOperations, vdsSelectors } from '@redux'
+import { vdsOperations } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import * as route from '@src/routes'
@@ -17,8 +17,7 @@ export default function VDSip() {
   const location = useLocation()
   const navigate = useNavigate()
   const widerThan900px = useMediaQuery({ query: '(min-width: 900px)' })
-  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [elements, setElements] = useState()
   const [name, setName] = useState('')
@@ -29,7 +28,9 @@ export default function VDSip() {
     if (!ServerID) {
       navigate(route.VPS, { replace: true })
     } else {
-      dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName, signal))
+      dispatch(
+        vdsOperations.getIpInfo(ServerID, setElements, setName, signal, setIsLoading),
+      )
     }
   }, [])
 

@@ -7,9 +7,10 @@ import i18n from '@src/i18n'
 import translateSupportPaymentError from '@utils/translateSupportPaymentError'
 
 const getTicketsHandler =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(supportActions.showLoaderRequest())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+
     const {
       auth: { sessionId },
     } = getState()
@@ -37,11 +38,15 @@ const getTicketsHandler =
         dispatch(supportActions.getTickets(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(supportActions.getTicketCount(count))
-        dispatch(getTicketsFiltersSettingsHandler(signal))
+        dispatch(getTicketsFiltersSettingsHandler(signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(supportActions.hideLoaderRequest())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -109,9 +114,9 @@ const archiveTicketsHandler = idTicket => (dispatch, getState) => {
 }
 
 const getTicketsArchiveHandler =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(supportActions.showLoaderRequestArchive())
+    setIsLoading(true)
     const {
       auth: { sessionId },
     } = getState()
@@ -139,11 +144,10 @@ const getTicketsArchiveHandler =
         dispatch(supportActions.getTicketsArchive(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(supportActions.getTicketArchiveCount(count))
-        dispatch(getTicketsArchiveFiltersSettingsHandler(signal))
+        dispatch(getTicketsArchiveFiltersSettingsHandler(signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(supportActions.hideLoaderRequestArchive())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -267,7 +271,7 @@ const getDepartmenList = signal => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -304,7 +308,7 @@ const getServiceList = signal => (dispatch, getState) => {
       })
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -344,75 +348,80 @@ const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getSt
     })
 }
 
-const getTicketsFiltersSettingsHandler = signal => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getTicketsFiltersSettingsHandler =
+  (signal, setIsLoading) => (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket.filter',
-        lang: 'en',
-        out: 'json',
-        auth: sessionId,
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-      data?.doc?.slist?.map(el => {
-        if (el?.$name === 'abuse') {
-          const abuse = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getAbuseFilterList(abuse))
-        } else if (el?.$name === 'tstatus') {
-          const tstatus = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getTstatusFilterList(tstatus))
-        } else if (el?.$name === 'message_post') {
-          const message_post = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getTimeFilterList(message_post))
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket.filter',
+          lang: 'en',
+          out: 'json',
+          auth: sessionId,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
         }
+        data?.doc?.slist?.map(el => {
+          if (el?.$name === 'abuse') {
+            const abuse = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getAbuseFilterList(abuse))
+          } else if (el?.$name === 'tstatus') {
+            const tstatus = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getTstatusFilterList(tstatus))
+          } else if (el?.$name === 'message_post') {
+            const message_post = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getTimeFilterList(message_post))
+          }
 
-        let statuses
-        if (Array.isArray(data?.doc?.tstatus)) {
-          let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
-          statuses = statusList.join(',')
-        } else {
-          statuses = data?.doc?.tstatus?.$
-        }
+          let statuses
+          if (Array.isArray(data?.doc?.tstatus)) {
+            let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+            statuses = statusList.join(',')
+          } else {
+            statuses = data?.doc?.tstatus?.$
+          }
 
-        const currentFilter = {
-          id: data?.doc?.id?.$ || '',
-          message: data?.doc?.message?.$ || '',
-          name: data?.doc?.name?.$ || '',
-          abuse: data?.doc?.abuse?.$ || '',
-          tstatus: statuses || '',
-          message_post: data?.doc?.message_post?.$ || 'nodate',
-          message_poststart: data?.doc?.message_poststart?.$ || '',
-          message_postend: data?.doc?.message_postend?.$ || '',
-        }
-        dispatch(supportActions.getCurrentFilters(currentFilter))
+          const currentFilter = {
+            id: data?.doc?.id?.$ || '',
+            message: data?.doc?.message?.$ || '',
+            name: data?.doc?.name?.$ || '',
+            abuse: data?.doc?.abuse?.$ || '',
+            tstatus: statuses || '',
+            message_post: data?.doc?.message_post?.$ || 'nodate',
+            message_poststart: data?.doc?.message_poststart?.$ || '',
+            message_postend: data?.doc?.message_postend?.$ || '',
+          }
+          dispatch(supportActions.getCurrentFilters(currentFilter))
+        })
+
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
+      .catch(error => {
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
+      })
+  }
 
-      dispatch(supportActions.hideLoaderRequest())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(supportActions.hideLoaderRequest())
-    })
-}
-
-const getTicketsFiltersHandler = (data, signal) => (dispatch, getState) => {
-  dispatch(supportActions.showLoaderRequest())
+const getTicketsFiltersHandler = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
   const {
     auth: { sessionId },
   } = getState()
@@ -455,50 +464,104 @@ const getTicketsFiltersHandler = (data, signal) => (dispatch, getState) => {
       }
       dispatch(supportActions.getCurrentFilters(currentFilter))
 
-      dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }, signal))
+      dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }, signal, setIsLoading))
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(supportActions.hideLoaderRequest())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 
-const getTicketsArchiveFiltersSettingsHandler = signal => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getTicketsArchiveFiltersSettingsHandler =
+  (signal, setIsLoading) => (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket_archive.filter',
-        lang: 'en',
-        out: 'json',
-        auth: sessionId,
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-      data?.doc?.slist?.map(el => {
-        if (el?.$name === 'abuse') {
-          const abuse = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getAbuseFilterList(abuse))
-        } else if (el?.$name === 'tstatus') {
-          const tstatus = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getTstatusFilterList(tstatus))
-        } else if (el?.$name === 'message_post') {
-          const message_post = el?.val?.map(({ $key, $ }) => {
-            return { label: $, value: $key }
-          })
-          dispatch(supportActions.getTimeFilterList(message_post))
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket_archive.filter',
+          lang: 'en',
+          out: 'json',
+          auth: sessionId,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        data?.doc?.slist?.map(el => {
+          if (el?.$name === 'abuse') {
+            const abuse = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getAbuseFilterList(abuse))
+          } else if (el?.$name === 'tstatus') {
+            const tstatus = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getTstatusFilterList(tstatus))
+          } else if (el?.$name === 'message_post') {
+            const message_post = el?.val?.map(({ $key, $ }) => {
+              return { label: $, value: $key }
+            })
+            dispatch(supportActions.getTimeFilterList(message_post))
+          }
+
+          let statuses
+          if (Array.isArray(data?.doc?.tstatus)) {
+            let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
+            statuses = statusList.join(',')
+          } else {
+            statuses = data?.doc?.tstatus?.$
+          }
+
+          const currentFilter = {
+            id: data?.doc?.id?.$ || '',
+            message: data?.doc?.message?.$ || '',
+            name: data?.doc?.name?.$ || '',
+            abuse: data?.doc?.abuse?.$ || '',
+            tstatus: statuses || '',
+            message_post: data?.doc?.message_post?.$ || 'nodate',
+            message_poststart: data?.doc?.message_poststart?.$ || '',
+            message_postend: data?.doc?.message_postend?.$ || '',
+          }
+          dispatch(supportActions.getCurrentFilters(currentFilter))
+        })
+
+        setIsLoading(false)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
+
+const getTicketsArchiveFiltersHandler =
+  (data, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket_archive.filter',
+          lang: 'en',
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          ...data,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
         }
 
         let statuses
@@ -520,67 +583,13 @@ const getTicketsArchiveFiltersSettingsHandler = signal => (dispatch, getState) =
           message_postend: data?.doc?.message_postend?.$ || '',
         }
         dispatch(supportActions.getCurrentFilters(currentFilter))
+
+        dispatch(getTicketsArchiveHandler({}, signal, setIsLoading))
       })
-
-      dispatch(supportActions.hideLoaderRequestArchive())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(supportActions.hideLoaderRequestArchive())
-    })
-}
-
-const getTicketsArchiveFiltersHandler = (data, signal) => (dispatch, getState) => {
-  dispatch(supportActions.showLoaderRequestArchive())
-  const {
-    auth: { sessionId },
-  } = getState()
-
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket_archive.filter',
-        lang: 'en',
-        out: 'json',
-        auth: sessionId,
-        sok: 'ok',
-        ...data,
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-
-      let statuses
-      if (Array.isArray(data?.doc?.tstatus)) {
-        let statusList = data?.doc?.tstatus?.map(el => `${el?.$}`)
-        statuses = statusList.join(',')
-      } else {
-        statuses = data?.doc?.tstatus?.$
-      }
-
-      const currentFilter = {
-        id: data?.doc?.id?.$ || '',
-        message: data?.doc?.message?.$ || '',
-        name: data?.doc?.name?.$ || '',
-        abuse: data?.doc?.abuse?.$ || '',
-        tstatus: statuses || '',
-        message_post: data?.doc?.message_post?.$ || 'nodate',
-        message_poststart: data?.doc?.message_poststart?.$ || '',
-        message_postend: data?.doc?.message_postend?.$ || '',
-      }
-      dispatch(supportActions.getCurrentFilters(currentFilter))
-
-      dispatch(getTicketsArchiveHandler(signal))
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(supportActions.hideLoaderRequestArchive())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())

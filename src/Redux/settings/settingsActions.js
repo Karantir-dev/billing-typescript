@@ -11,9 +11,6 @@ const setTwoStepVerif = createAction('SET_TWO_STEP_VERIF')
 const updateTwoStepVerif = createAction('UPDATE_TWO_STEP_VERIF')
 const clearTwoStepVerif = createAction('CLEAR_TWO_STEP_VERIF')
 
-const showLoaderPersonal = createAction('SHOW_LOADER_PERSONAL')
-const hideLoaderPersonal = createAction('HIDE_LOADER_PERSONAL')
-
 export default {
   setUsersEdit,
   setUsersParams,
@@ -23,6 +20,4 @@ export default {
   setTwoStepVerif,
   clearTwoStepVerif,
   updateTwoStepVerif,
-  showLoaderPersonal,
-  hideLoaderPersonal,
 }

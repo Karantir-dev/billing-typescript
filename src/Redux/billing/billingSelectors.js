@@ -23,10 +23,6 @@ const getPaymentMethodList = state => state.billing.paymentMethodList
 const getPaymentMethodCount = state => state.billing.paymentMethodCount
 
 const getPeriodValue = state => state.billing.periodValue
-const getIsLoadingPayment = state => state.billing.isLoadingPayment
-const getIsLoadingPaymentMethod = state => state.billing.isLoadingPaymentMethod
-const getIsLoadingAutoPayment = state => state.billing.isLoadingAutoPayment
-const getIsLoadingExpenses = state => state.billing.isLoadingExpenses
 
 export default {
   getPaymentsList,
@@ -54,8 +50,4 @@ export default {
   getPaymentMethodCount,
 
   getPeriodValue,
-  getIsLoadingPayment,
-  getIsLoadingAutoPayment,
-  getIsLoadingExpenses,
-  getIsLoadingPaymentMethod,
 }

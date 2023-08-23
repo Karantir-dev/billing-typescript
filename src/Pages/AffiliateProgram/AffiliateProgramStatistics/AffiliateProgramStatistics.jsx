@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
 import { IconButton, StatisticsFilterModal, Pagination, Icon, Loader } from '@components'
-import { actions, affiliateOperations, affiliateSelectors, usersOperations } from '@redux'
+import { actions, affiliateOperations, usersOperations } from '@redux'
 
 import s from './AffiliateProgramStatistics.module.scss'
 import { useCancelRequest } from '@src/utils'
@@ -15,13 +15,11 @@ export default function AffiliateProgramStatistics() {
   const dispatch = useDispatch()
 
   const [availableRights, setAvailabelRights] = useState({})
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
+
   useEffect(() => {
     dispatch(
-      usersOperations.getAvailableRights(
-        'affiliate.client.click',
-        setAvailabelRights,
-        'statistic',
-      ),
+      usersOperations.getAvailableRights('affiliate.client.click', setAvailabelRights, signal, setIsLoading),
     )
   }, [])
   const checkIfHasArr = availableRights?.toolbar?.toolgrp
@@ -31,8 +29,6 @@ export default function AffiliateProgramStatistics() {
 
   const { t } = useTranslation(['affiliate_program', 'other'])
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
-  const isLoading = useSelector(affiliateSelectors.getIsLoadingAffiliateStatistic)
-  const signal = useCancelRequest()
 
   const [isFilterOpened, setIsFilterOpened] = useState(false)
   const [items, setItems] = useState([])
@@ -68,6 +64,7 @@ export default function AffiliateProgramStatistics() {
         setInitialFilters,
         p_cnt,
         signal,
+        setIsLoading,
       ),
     )
     onClearFilter()
@@ -82,6 +79,7 @@ export default function AffiliateProgramStatistics() {
         pageNum,
         p_cnt,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -94,6 +92,7 @@ export default function AffiliateProgramStatistics() {
         setTotal,
         p_cnt,
         signal,
+        setIsLoading,
       ),
     )
     setP_num(1)
@@ -102,7 +101,9 @@ export default function AffiliateProgramStatistics() {
   }
 
   const onClearFilter = () => {
-    dispatch(affiliateOperations.dropFilters(setItems, setTotal, p_cnt, signal))
+    dispatch(
+      affiliateOperations.dropFilters(setItems, setTotal, p_cnt, signal, setIsLoading),
+    )
     setP_num(1)
     setIsFilterOpened(false)
     setIsFiltered && setIsFiltered(false)

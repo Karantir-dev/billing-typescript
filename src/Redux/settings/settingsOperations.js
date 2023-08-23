@@ -18,9 +18,10 @@ const getUserEdit =
     isComponentAllowedToRender,
     setAvailableEditRights,
     signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(settingsActions.showLoaderPersonal())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -90,12 +91,17 @@ const getUserEdit =
             isComponentAllowedToRender,
             setAvailableEditRights,
             signal,
+            setIsLoading,
           ),
         )
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(settingsActions.hideLoaderPersonal())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -129,13 +135,19 @@ const setUserAvatar =
   }
 
 const getUserParams =
-  (checkEmail = false, isComponentAllowedToRender, setAvailableEditRights, signal) =>
+  (
+    checkEmail = false,
+    isComponentAllowedToRender,
+    setAvailableEditRights,
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
     const {
       auth: { sessionId },
     } = getState()
 
-    dispatch(settingsActions.showLoaderPersonal())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     axiosInstance
       .post(
@@ -226,20 +238,25 @@ const getUserParams =
             usersOperations.getAvailableRights(
               'usrparam',
               setAvailableEditRights,
-              'personal',
+              signal,
+              setIsLoading,
             ),
           )
         }
-        dispatch(settingsActions.hideLoaderPersonal())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .then(() => {
         if (checkEmail) {
-          dispatch(sendEmailConfirm(signal))
+          dispatch(sendEmailConfirm(signal, setIsLoading))
         }
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(settingsActions.hideLoaderPersonal())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -274,102 +291,105 @@ const getTimeByTimeZone =
       })
   }
 
-const setPersonalSettings = (elid, data, signal) => (dispatch, getState) => {
-  dispatch(settingsActions.showLoaderPersonal())
+const setPersonalSettings =
+  (elid, data, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
-  const userEditData = {
-    email: data?.email || null,
-    realname: data?.realname || null,
-    phone: data?.phone || null,
-  }
+    const userEditData = {
+      email: data?.email || null,
+      realname: data?.realname || null,
+      phone: data?.phone || null,
+    }
 
-  const userParamsData = {
-    email: data?.email_notif || null,
-    telegram_id: data?.telegram_id || null,
-    timezone: data?.timezone || null,
+    const userParamsData = {
+      email: data?.email_notif || null,
+      telegram_id: data?.telegram_id || null,
+      timezone: data?.timezone || null,
 
-    service_notice_ntemail: data?.service_notice_ntemail ? 'on' : 'off',
-    service_notice_ntmessenger: data?.service_notice_ntmessenger ? 'on' : 'off',
-    service_notice_ntsms: data?.service_notice_ntsms ? 'on' : 'off',
+      service_notice_ntemail: data?.service_notice_ntemail ? 'on' : 'off',
+      service_notice_ntmessenger: data?.service_notice_ntmessenger ? 'on' : 'off',
+      service_notice_ntsms: data?.service_notice_ntsms ? 'on' : 'off',
 
-    support_notice_ntemail: data?.support_notice_ntemail ? 'on' : 'off',
-    support_notice_ntmessenger: data?.support_notice_ntmessenger ? 'on' : 'off',
-    support_notice_ntsms: data?.support_notice_ntsms ? 'on' : 'off',
+      support_notice_ntemail: data?.support_notice_ntemail ? 'on' : 'off',
+      support_notice_ntmessenger: data?.support_notice_ntmessenger ? 'on' : 'off',
+      support_notice_ntsms: data?.support_notice_ntsms ? 'on' : 'off',
 
-    news_notice_ntemail: data?.news_notice_ntemail ? 'on' : 'off',
-    news_notice_ntmessenger: data?.news_notice_ntmessenger ? 'on' : 'off',
-    news_notice_ntsms: data?.news_notice_ntsms ? 'on' : 'off',
+      news_notice_ntemail: data?.news_notice_ntemail ? 'on' : 'off',
+      news_notice_ntmessenger: data?.news_notice_ntmessenger ? 'on' : 'off',
+      news_notice_ntsms: data?.news_notice_ntsms ? 'on' : 'off',
 
-    finance_notice_ntemail: data?.finance_notice_ntemail ? 'on' : 'off',
-    finance_notice_ntmessenger: data?.finance_notice_ntmessenger ? 'on' : 'off',
-    finance_notice_ntsms: data?.finance_notice_ntsms ? 'on' : 'off',
+      finance_notice_ntemail: data?.finance_notice_ntemail ? 'on' : 'off',
+      finance_notice_ntmessenger: data?.finance_notice_ntmessenger ? 'on' : 'off',
+      finance_notice_ntsms: data?.finance_notice_ntsms ? 'on' : 'off',
 
-    sendemail: data?.sendemail ? 'on' : 'off',
-    setgeoip: data?.setgeoip ? 'on' : 'off',
-  }
+      sendemail: data?.sendemail ? 'on' : 'off',
+      setgeoip: data?.setgeoip ? 'on' : 'off',
+    }
 
-  if (data?.email_notif?.length === 0) {
-    userParamsData.sendemail = 'off'
-    userParamsData.setgeoip = 'off'
-  }
+    if (data?.email_notif?.length === 0) {
+      userParamsData.sendemail = 'off'
+      userParamsData.setgeoip = 'off'
+    }
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'user.edit',
-        sok: 'ok',
-        lang:
-          i18n.language === 'uk' ? 'ua' : i18n?.language === 'kz' ? 'kk' : i18n.language,
-        out: 'json',
-        auth: sessionId,
-        elid,
-        ...userEditData,
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'usrparam',
-            out: 'json',
-            sok: 'ok',
-            lang:
-              i18n.language === 'uk'
-                ? 'ua'
-                : i18n?.language === 'kz'
-                ? 'kk'
-                : i18n.language,
-            elid,
-            auth: sessionId,
-            ...userParamsData,
-          }),
-          { signal },
-        )
-        .then(({ data }) => {
-          if (data.doc.error) throw new Error(data.doc.error.msg.$)
-          toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-            position: 'bottom-right',
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'user.edit',
+          sok: 'ok',
+          lang:
+            i18n.language === 'uk'
+              ? 'ua'
+              : i18n?.language === 'kz'
+              ? 'kk'
+              : i18n.language,
+          out: 'json',
+          auth: sessionId,
+          elid,
+          ...userEditData,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'usrparam',
+              out: 'json',
+              sok: 'ok',
+              lang:
+                i18n.language === 'uk'
+                  ? 'ua'
+                  : i18n?.language === 'kz'
+                  ? 'kk'
+                  : i18n.language,
+              elid,
+              auth: sessionId,
+              ...userParamsData,
+            }),
+            { signal },
+          )
+          .then(({ data }) => {
+            if (data.doc.error) throw new Error(data.doc.error.msg.$)
+            toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+              position: 'bottom-right',
+            })
+            dispatch(getUserEdit(elid, false, false, false, signal, setIsLoading))
           })
-          dispatch(getUserEdit(elid, false, false, false, signal))
-        })
-        .catch(error => {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(settingsActions.hideLoaderPersonal())
-        })
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(settingsActions.hideLoaderPersonal())
-    })
-}
+          .catch(error => {
+            checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+          })
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -424,8 +444,8 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
     })
 }
 
-const sendEmailConfirm = signal => (dispatch, getState) => {
-  dispatch(settingsActions.showLoaderPersonal())
+const sendEmailConfirm = (signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
   const {
     auth: { sessionId },
   } = getState()
@@ -445,11 +465,10 @@ const sendEmailConfirm = signal => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       dispatch(settingsActions.emailStatusUpadate(data.doc?.send_status?.$))
-      dispatch(settingsActions.hideLoaderPersonal())
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(settingsActions.hideLoaderPersonal())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 

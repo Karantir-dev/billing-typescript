@@ -31,8 +31,7 @@ export default function Component() {
 
   const sitecareRenderData = useSelector(siteCareSelectors.getSiteCareList)
   const siteCareCount = useSelector(siteCareSelectors.getSiteCareCount)
-  const isLoading = useSelector(siteCareSelectors.getIsLoadingSiteCare)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -81,7 +80,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(siteCareOperations.getSiteCare(data, signal))
+    dispatch(siteCareOperations.getSiteCare(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -228,6 +227,7 @@ export default function Component() {
           selctedItem={selctedItem}
           list={sitecareRenderData?.siteCareList}
           signal={signal}
+          setIsLoading={setIsLoading}
         />
 
         {sitecareRenderData?.siteCareList?.length > 0 && (

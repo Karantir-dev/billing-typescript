@@ -11,16 +11,16 @@ import {
   Icon,
   Loader,
 } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { domainsOperations, domainsSelectors, userOperations } from '@redux'
+import { domainsOperations, userOperations } from '@redux'
 import { DOMAIN_REGEX } from '@utils/constants'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
 import s from './DomainsNsPage.module.scss'
-import { translatePeriod } from '@utils'
+import { translatePeriod, useCancelRequest } from '@utils'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users', 'auth', 'autoprolong'])
@@ -28,7 +28,7 @@ export default function Component({ transfer = false }) {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const isLoading = useSelector(domainsSelectors.getIsLoadingDomains)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [selectedDomain, setSelectedDomain] = useState([])
   const [initialValues, setInitialValues] = useState({})
@@ -49,8 +49,10 @@ export default function Component({ transfer = false }) {
     }
 
     setSelectedDomain(state?.contacts?.selected_domain?.split(', '))
-    dispatch(domainsOperations.getDomainsNS(data))
-    dispatch(domainsOperations.getDomainPaymentInfo(data, setPaymentData))
+    dispatch(domainsOperations.getDomainsNS({ body: data, signal, setIsLoading }))
+    dispatch(
+      domainsOperations.getDomainPaymentInfo(data, setPaymentData, signal, setIsLoading),
+    )
   }, [])
 
   useEffect(() => {
@@ -137,7 +139,7 @@ export default function Component({ transfer = false }) {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(domainsOperations.createDomain(data, navigate)),
+        dispatch(domainsOperations.createDomain(data, signal, setIsLoading)),
       ),
     )
   }

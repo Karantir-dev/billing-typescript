@@ -22,6 +22,7 @@ export default function Component(props) {
     createPaymentModal,
     isLoading,
     signal,
+    setIsLoading,
   } = props
 
   const { t } = useTranslation(['billing', 'other'])
@@ -50,11 +51,11 @@ export default function Component(props) {
   }, [filterModal])
 
   const downloadPaymentsCsvHandler = count => {
-    dispatch(billingOperations.getPaymentCsv(count))
+    dispatch(billingOperations.getPaymentCsv(count, signal, setIsLoading))
   }
 
   const downloadExpensesCsvHandler = count => {
-    dispatch(billingOperations.getExpensesCsv(count))
+    dispatch(billingOperations.getExpensesCsv(count, signal, setIsLoading))
   }
 
   const filterPaymentsHandler = values => {
@@ -65,7 +66,7 @@ export default function Component(props) {
     values.saamount_from = values.sum
     values.saamount_to = values.sum
     values.p_cnt = p_cnt
-    dispatch(billingOperations.setPaymentsFilters(values, false, signal))
+    dispatch(billingOperations.setPaymentsFilters(values, false, signal, setIsLoading))
   }
 
   const resetFilterPaymentsHandler = (firstOpen = false) => {
@@ -91,7 +92,9 @@ export default function Component(props) {
     dispatch(billingActions.setPaymentsList(null))
     setIsFiltered && setIsFiltered(false)
 
-    dispatch(billingOperations.setPaymentsFilters(clearField, false, signal))
+    dispatch(
+      billingOperations.setPaymentsFilters(clearField, false, signal, setIsLoading),
+    )
   }
 
   const filterExpensesHandler = values => {
@@ -99,7 +102,7 @@ export default function Component(props) {
     setFilterModal(false)
     values.p_cnt = p_cnt
     setIsFiltered && setIsFiltered(true)
-    dispatch(billingOperations.setExpensesFilters(values, signal))
+    dispatch(billingOperations.setExpensesFilters(values, signal, setIsLoading))
   }
 
   const resetFilterExpensesHandler = (firstOpen = false) => {
@@ -121,7 +124,7 @@ export default function Component(props) {
     dispatch(billingActions.setExpensesList(null))
     setIsFiltered && setIsFiltered(false)
 
-    dispatch(billingOperations.setExpensesFilters(clearField, signal))
+    dispatch(billingOperations.setExpensesFilters(clearField, signal, setIsLoading))
   }
 
   return (

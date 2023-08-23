@@ -11,8 +11,7 @@ export default function Component() {
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
-  const isLoading = useSelector(billingSelectors.getIsLoadingPayment)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -28,7 +27,7 @@ export default function Component() {
   useEffect(() => {
     if (!firstOpen) {
       const data = { p_num, p_cnt }
-      dispatch(billingOperations.getPayments(data, false, signal))
+      dispatch(billingOperations.getPayments(data, false, signal, setIsLoading))
     }
 
     setFirstOpen(false)
@@ -39,7 +38,7 @@ export default function Component() {
   }
 
   const downloadPdfHandler = (id, name) => {
-    dispatch(billingOperations.getPaymentPdf(id, name))
+    dispatch(billingOperations.getPaymentPdf(id, name, signal, setIsLoading))
   }
 
   const deletePayment = id => {
@@ -59,6 +58,7 @@ export default function Component() {
         createPaymentModal={createPaymentModal}
         isLoading={isLoading}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
       <div style={{ display: isLoading ? 'none' : '' }}>
         {isFiltered && paymentsList?.length === 0 && (

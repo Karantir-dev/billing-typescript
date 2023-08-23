@@ -22,12 +22,6 @@ const getTimeFilterList = createAction('GET_TIME_FILTER_LIST')
 
 const getCurrentFilters = createAction('GET_CURRENT_FILTERS')
 
-const showLoaderRequest = createAction('SHOW_LOADER_REQUEST')
-const hideLoaderRequest = createAction('HIDE_LOADER_REQUEST')
-
-const showLoaderRequestArchive = createAction('SHOW_LOADER_REQUEST_ARCHIVE')
-const hideLoaderRequestArchive = createAction('HIDE_LOADER_REQUEST_ARCHIVE')
-
 export default {
   getTickets,
   clearTickets,
@@ -44,8 +38,4 @@ export default {
   getTstatusFilterList,
   getTimeFilterList,
   getCurrentFilters,
-  showLoaderRequest,
-  hideLoaderRequest,
-  showLoaderRequestArchive,
-  hideLoaderRequestArchive,
 }

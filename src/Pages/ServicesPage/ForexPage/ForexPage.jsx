@@ -35,8 +35,7 @@ export default function ForexPage() {
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
   const forexCount = useSelector(forexSelectors.getForexCount)
-  const isLoading = useSelector(forexSelectors.getIsLoadingForex)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
@@ -113,6 +112,7 @@ export default function ForexPage() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -130,6 +130,7 @@ export default function ForexPage() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -161,6 +162,7 @@ export default function ForexPage() {
           true,
           undefined,
           signal,
+          setIsLoading,
         ),
       )
     }
@@ -170,13 +172,20 @@ export default function ForexPage() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(forexOperations.getForexList(data, signal))
+    dispatch(forexOperations.getForexList(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   useEffect(() => {
     if (filterModal)
       dispatch(
-        forexOperations.getForexFilters(setFilters, { p_cnt }, false, undefined, signal),
+        forexOperations.getForexFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
       )
   }, [filterModal])
 

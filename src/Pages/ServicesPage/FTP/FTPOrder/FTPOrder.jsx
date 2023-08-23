@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button, Loader, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
-import { ftpOperations, ftpSelectors, userOperations } from '@redux'
+import { ftpOperations, userOperations } from '@redux'
 import * as route from '@src/routes'
 
 import s from './FTPOrder.module.scss'
@@ -25,8 +25,7 @@ export default function FTPOrder() {
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const isLoading = useSelector(ftpSelectors.getIsLoadingFtp)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
@@ -96,7 +95,7 @@ export default function FTPOrder() {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (isFtpOrderAllowed || cartFromSite) {
-      dispatch(ftpOperations.getTarifs(setTarifList, {}, signal))
+      dispatch(ftpOperations.getTarifs(setTarifList, {}, signal, setIsLoading))
     } else {
       navigate(route.FTP, { replace: true })
     }
@@ -167,6 +166,7 @@ export default function FTPOrder() {
                   setParameters,
                   setFieldValue,
                   signal,
+                  setIsLoading,
                 ),
               )
             }
@@ -190,6 +190,7 @@ export default function FTPOrder() {
                           datacenter: values.datacenter,
                         },
                         signal,
+                        setIsLoading,
                       ),
                     )
                   }}
@@ -235,6 +236,7 @@ export default function FTPOrder() {
                                   setParameters,
                                   setFieldValue,
                                   signal,
+                                  setIsLoading,
                                 ),
                               )
                             }}

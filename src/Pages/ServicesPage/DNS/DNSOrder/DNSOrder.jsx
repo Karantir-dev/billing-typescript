@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { BreadCrumbs, Button, Loader, Select } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
-import { dnsOperations, dnsSelectors, userOperations } from '@redux'
+import { dnsOperations, userOperations } from '@redux'
 import * as routes from '@src/routes'
 
 import s from './DNSOrder.module.scss'
@@ -30,8 +30,7 @@ export default function FTPOrder() {
     'autoprolong',
   ])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const isLoading = useSelector(dnsSelectors.getIsLoadingDns)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [tarifList, setTarifList] = useState([])
   const [parameters, setParameters] = useState(null)
@@ -99,7 +98,7 @@ export default function FTPOrder() {
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
-      dispatch(dnsOperations.getTarifs(setTarifList, {}, signal))
+      dispatch(dnsOperations.getTarifs(setTarifList, {}, signal, setIsLoading))
     } else {
       navigate(routes.DNS, { replace: true })
     }
@@ -165,6 +164,7 @@ export default function FTPOrder() {
                         setTarifList,
                         { period: item, datacenter: values.datacenter },
                         signal,
+                        setIsLoading,
                       ),
                     )
                   }}
@@ -208,7 +208,8 @@ export default function FTPOrder() {
                                   item?.pricelist?.$,
                                   setParameters,
                                   setFieldValue,
-                                  signal
+                                  signal,
+                                  setIsLoading,
                                 ),
                               )
                             }}
@@ -298,7 +299,14 @@ export default function FTPOrder() {
                               period: values?.period,
                               pricelist: values?.pricelist,
                             }
-                            dispatch(dnsOperations.updateDNSPrice(setPrice, data, signal))
+                            dispatch(
+                              dnsOperations.updateDNSPrice(
+                                setPrice,
+                                data,
+                                signal,
+                                setIsLoading,
+                              ),
+                            )
                           }}
                           isShadow
                           itemsList={values?.limitsList?.map(el => {

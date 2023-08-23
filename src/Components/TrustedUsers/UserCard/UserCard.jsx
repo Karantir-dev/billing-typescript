@@ -22,6 +22,8 @@ export default function UserCard({
   handleUserRolesData,
   isOwner,
   hasPageOwnerFullAccess,
+  signal,
+  setIsLoading,
 }) {
   const { t } = useTranslation('trusted_users')
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -110,7 +112,9 @@ export default function UserCard({
     dispatch(usersOperations.changeUserRights(userId, switchAccess, handleUserRolesData))
 
     if (switchAccess === 'off') {
-      dispatch(usersOperations.getRights(userId, isOwner))
+      dispatch(
+        usersOperations.getRights(userId, isOwner, undefined, signal, setIsLoading),
+      )
     }
     setIsSuccessAlertOpened(!isSuccessAlertOpened)
   }
@@ -124,12 +128,21 @@ export default function UserCard({
   useEffect(() => {
     dispatch(usersActions.setRights([]))
     if (!isOwner && !hasAccess) {
-      dispatch(usersOperations.getRights(userId, isOwner))
+      dispatch(
+        usersOperations.getRights(userId, isOwner, undefined, signal, setIsLoading),
+      )
     }
   }, [showRightsAlert])
 
   useEffect(() => {
-    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights, 'trusted'))
+    dispatch(
+      usersOperations.getAvailableRights(
+        'user',
+        setAvailabelRights,
+        signal,
+        setIsLoading,
+      ),
+    )
   }, [])
 
   useEffect(() => {
@@ -138,7 +151,8 @@ export default function UserCard({
         usersOperations.getAvailableRights(
           'user.edit',
           setAvailableEditRights,
-          'trusted',
+          signal,
+          setIsLoading,
         ),
       )
     }
@@ -146,7 +160,15 @@ export default function UserCard({
 
   useEffect(() => {
     if (!isOwner && !hasAccess) {
-      dispatch(usersOperations.getRights(userId, isOwner, setRightsToRender))
+      dispatch(
+        usersOperations.getRights(
+          userId,
+          isOwner,
+          setRightsToRender,
+          signal,
+          setIsLoading,
+        ),
+      )
     }
   }, [isRightsComponentAllowedToRender])
 

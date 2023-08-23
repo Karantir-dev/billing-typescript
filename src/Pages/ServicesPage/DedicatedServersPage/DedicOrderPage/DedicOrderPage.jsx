@@ -43,8 +43,7 @@ export default function DedicOrderPage() {
   const navigate = useNavigate()
 
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
-  const isLoading = useSelector(dedicSelectors.getIsLoadingDedics)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
   const tarifsList = useSelector(dedicSelectors.getTafifList)
   const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -253,7 +252,7 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(dedicOperations.getTarifs(signal))
+      dispatch(dedicOperations.getTarifs(signal, setIsLoading))
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }
@@ -316,6 +315,8 @@ export default function DedicOrderPage() {
             ipName,
             managePanel,
             server_name,
+            signal,
+            setIsLoading
           ),
         ),
       ),
@@ -367,6 +368,7 @@ export default function DedicOrderPage() {
                         setParameters,
                         setFieldValue,
                         signal,
+                        setIsLoading,
                       ),
                     )
                   }
@@ -410,6 +412,7 @@ export default function DedicOrderPage() {
                                 item?.$key,
                                 setTarifList,
                                 signal,
+                                setIsLoading,
                               ),
                             )
                           }}
@@ -527,6 +530,7 @@ export default function DedicOrderPage() {
                         values.datacenter,
                         setTarifList,
                         signal,
+                        setIsLoading,
                       ),
                     )
                   }}
@@ -558,6 +562,7 @@ export default function DedicOrderPage() {
                             }}
                             periodName={periodName}
                             signal={signal}
+                            setIsLoading={setIsLoading}
                           />
                         )
                       })}
@@ -616,6 +621,8 @@ export default function DedicOrderPage() {
                                     runScroll()
                                   }}
                                   periodName={periodName}
+                                  signal={signal}
+                                  setIsLoading={setIsLoading}
                                 />
                               </SwiperSlide>
                             )
@@ -756,6 +763,7 @@ export default function DedicOrderPage() {
                             dispatch,
                             setPrice,
                             signal,
+                            setIsLoading,
                           )
                         }}
                         isShadow
@@ -801,6 +809,7 @@ export default function DedicOrderPage() {
                                 dispatch,
                                 setPrice,
                                 signal,
+                                setIsLoading,
                               )
                             }}
                             isShadow
@@ -835,6 +844,7 @@ export default function DedicOrderPage() {
                               dispatch,
                               setPrice,
                               signal,
+                              setIsLoading,
                             )
                           }}
                           isShadow
@@ -941,7 +951,7 @@ export default function DedicOrderPage() {
   )
 }
 
-function updatePrice(formValues, dispatch, setNewPrice, signal) {
+function updatePrice(formValues, dispatch, setNewPrice, signal, setIsLoading) {
   dispatch(
     dedicOperations.updatePrice(
       formValues.datacenter,
@@ -958,6 +968,7 @@ function updatePrice(formValues, dispatch, setNewPrice, signal) {
       formValues.managePanel,
       setNewPrice,
       signal,
+      setIsLoading,
     ),
   )
 }

@@ -8,7 +8,6 @@ const initialState = {
 
   vpnFiltersList: null,
   vpnFilters: null,
-  isLoadingVpn: false,
 }
 
 const vpnList = createReducer(initialState.vpnList, {
@@ -29,17 +28,11 @@ const vpnFilters = createReducer(initialState.vpnFilters, {
   [vpnActions.setVpnFilters]: (_, { payload }) => payload,
 })
 
-const isLoadingVpn = createReducer(initialState.isLoadingVpn, {
-  [vpnActions.showLoader]: () => true,
-  [vpnActions.hideLoader]: () => false,
-})
-
 const vpnReducer = combineReducers({
   vpnList,
   vpnCount,
   vpnFiltersList,
   vpnFilters,
-  isLoadingVpn,
 })
 
 export default vpnReducer

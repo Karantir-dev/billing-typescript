@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { BreadCrumbs, Select, VpnTarifCard, Button, Loader } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { userOperations, vpnOperations, vpnSelectors } from '@redux'
+import { userOperations, vpnOperations } from '@redux'
 import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
 
 import s from './VpnOrder.module.scss'
@@ -23,8 +23,7 @@ export default function Component() {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const isLoading = useSelector(vpnSelectors.getIsLoadingVpn)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -35,7 +34,7 @@ export default function Component() {
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
-      dispatch(vpnOperations.orderSiteCare({}, setData, signal))
+      dispatch(vpnOperations.orderSiteCare({}, setData, signal, setIsLoading))
     } else {
       navigate(routes.VPN, { replace: true })
     }
@@ -86,7 +85,9 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData, signal)),
+        dispatch(
+          vpnOperations.orderSiteCarePricelist(d, setParamsData, signal, setIsLoading),
+        ),
       ),
     )
   }
@@ -121,7 +122,12 @@ export default function Component() {
                       // setLicence_agreement(false)
                       setParamsData(null)
                       dispatch(
-                        vpnOperations.orderSiteCare({ period: item }, setData, signal),
+                        vpnOperations.orderSiteCare(
+                          { period: item },
+                          setData,
+                          signal,
+                          setIsLoading,
+                        ),
                       )
                     }}
                     value={values?.period}
@@ -145,6 +151,7 @@ export default function Component() {
                             { ...values, pricelist: pricelist?.$, sv_field: 'period' },
                             setParamsData,
                             signal,
+                            setIsLoading,
                           ),
                         )
                         runScroll()

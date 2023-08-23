@@ -36,8 +36,7 @@ export default function DNS() {
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
-  const isLoading = useSelector(dnsSelectors.getIsLoadingDns)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
   const [activeServices, setActiveServices] = useState([])
 
   const [elidForEditModal, setElidForEditModal] = useState(0)
@@ -112,6 +111,7 @@ export default function DNS() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -130,6 +130,7 @@ export default function DNS() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
     setActiveServices([])
@@ -162,10 +163,11 @@ export default function DNS() {
           true,
           undefined,
           signal,
+          setIsLoading,
         ),
       )
 
-      dispatch(dnsOperations.getTarifs(setTarifs, {}, signal))
+      dispatch(dnsOperations.getTarifs(setTarifs, {}, signal, setIsLoading))
     }
   }, [])
 
@@ -185,14 +187,21 @@ export default function DNS() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(dnsOperations.getDNSList(data, signal))
+    dispatch(dnsOperations.getDNSList(data, signal, setIsLoading))
     setActiveServices([])
   }, [p_num, p_cnt])
 
   useEffect(() => {
     if (filterModal)
       dispatch(
-        dnsOperations.getDNSFilters(setFilters, { p_cnt }, false, undefined, signal),
+        dnsOperations.getDNSFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
       )
   }, [filterModal])
 

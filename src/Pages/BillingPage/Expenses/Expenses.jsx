@@ -11,8 +11,7 @@ export default function Component() {
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
-  const isLoading = useSelector(billingSelectors.getIsLoadingExpenses)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -26,7 +25,7 @@ export default function Component() {
   useEffect(() => {
     if (!firstOpen) {
       const data = { p_num, p_cnt }
-      dispatch(billingOperations.getExpenses(data))
+      dispatch(billingOperations.getExpenses(data, signal, setIsLoading))
     }
     setFirstOpen(false)
   }, [p_num, p_cnt])
@@ -41,6 +40,7 @@ export default function Component() {
         setCurrentPage={setP_num}
         isLoading={isLoading}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
       <div style={{ display: isLoading ? 'none' : '' }}>
         {isFiltered && expensesList?.length === 0 && (

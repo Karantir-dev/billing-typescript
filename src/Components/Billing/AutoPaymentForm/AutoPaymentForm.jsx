@@ -23,7 +23,7 @@ export default function Component(props) {
 
   const descrWrapper = useRef(null)
 
-  const { setIsConfigure } = props
+  const { setIsConfigure, signal, setIsLoading } = props
 
   const autoPaymentConfig = useSelector(billingSelectors.getAutoPaymentConfig)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
@@ -42,13 +42,12 @@ export default function Component(props) {
     }
 
     dispatch(payersOperations.getPayerModalInfo(data, null, null, null, null, 'billing'))
-  }, [])
-,
-  useEffect(() => {
-    if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
-      setSelectedMethod(autoPaymentConfig?.elem[0])
-    }
-  }, [autoPaymentConfig])
+  }, []),
+    useEffect(() => {
+      if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
+        setSelectedMethod(autoPaymentConfig?.elem[0])
+      }
+    }, [autoPaymentConfig])
 
   // const offerTextHandler = () => {
   //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
@@ -128,7 +127,9 @@ export default function Component(props) {
         : 'off',
     }
 
-    dispatch(billingOperations.createAutoPayment(data, setIsConfigure))
+    dispatch(
+      billingOperations.createAutoPayment(data, setIsConfigure, signal, setIsLoading),
+    )
   }
 
   const toggleDescrHeight = () => {

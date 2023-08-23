@@ -7,8 +7,8 @@ import * as route from '@src/routes'
 import { actions, cartActions, forexActions } from '@redux'
 
 //GET hostings OPERATIONS
-const getForexList = (data, signal) => (dispatch, getState) => {
-  dispatch(forexActions.showLoader())
+const getForexList = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -41,18 +41,22 @@ const getForexList = (data, signal) => (dispatch, getState) => {
       dispatch(forexActions.setForexList(forexRenderData))
       dispatch(forexActions.setForexCount(count))
       // setForexList(data.doc.elem ? data.doc.elem : [])
-      dispatch(forexActions.hideLoader())
+      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(forexActions.hideLoader())
+      if (setIsLoading) {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      }
     })
 }
 
 const getTarifs =
-  (setTarifs, data = {}, signal) =>
+  (setTarifs, data = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(forexActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -102,21 +106,20 @@ const getTarifs =
         }
 
         setTarifs(orderData)
-        dispatch(forexActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(forexActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue, signal) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(forexActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -151,12 +154,11 @@ const getParameters =
         setFieldValue('server_package', server_package?.$)
 
         setParameters({ paramsList })
-        dispatch(forexActions.hideLoader())
+        setIsLoading(false)
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(forexActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -396,9 +398,9 @@ const deleteForex = (elid, handleModal) => (dispatch, getState) => {
 }
 
 const getForexFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter, signal) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(forexActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -421,7 +423,9 @@ const getForexFilters =
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getForexList({ p_num: 1, p_cnt: data?.p_cnt }, signal))
+          return dispatch(
+            getForexList({ p_num: 1, p_cnt: data?.p_cnt }, signal, setIsLoading),
+          )
         }
 
         let filters = {}
@@ -447,14 +451,13 @@ const getForexFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(forexActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message.includes('filter')) {
-          dispatch(getForexList({ p_num: 1 }))
+          dispatch(getForexList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(forexActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

@@ -5,7 +5,6 @@ import ftpActions from './ftpActions'
 const initialState = {
   ftpList: null,
   ftpCount: 0,
-  isLoadingFtp: false,
 }
 
 const ftpList = createReducer(initialState.ftpList, {
@@ -15,11 +14,6 @@ const ftpCount = createReducer(initialState.ftpCount, {
   [ftpActions.setFtpCount]: (_, { payload }) => payload,
 })
 
-const isLoadingFtp = createReducer(initialState.isLoadingFtp, {
-  [ftpActions.showLoader]: () => true,
-  [ftpActions.hideLoader]: () => false,
-})
-
-const ftpReducer = combineReducers({ ftpList, ftpCount, isLoadingFtp })
+const ftpReducer = combineReducers({ ftpList, ftpCount })
 
 export default ftpReducer

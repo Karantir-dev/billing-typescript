@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import * as route from '@src/routes'
 import cn from 'classnames'
 import {
@@ -24,7 +24,7 @@ import {
   CheckBox,
   Loader,
 } from '@components'
-import { actions, dedicOperations, vdsOperations, vdsSelectors } from '@redux'
+import { actions, dedicOperations, vdsOperations } from '@redux'
 import no_vds from '@images/services/no_vds.png'
 import { useCancelRequest, usePageRender } from '@utils'
 
@@ -35,7 +35,7 @@ export default function VDS() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
@@ -102,6 +102,7 @@ export default function VDS() {
         p_num,
         p_cnt,
         signal,
+        setIsLoading,
       }),
     )
   }
@@ -128,6 +129,7 @@ export default function VDS() {
           setP_cnt,
           p_cnt,
           signal,
+          setIsLoading,
         ),
       )
 
@@ -161,6 +163,7 @@ export default function VDS() {
         null,
         p_cnt,
         signal,
+        setIsLoading,
       ),
     )
     setIsFiltersOpened(false)
@@ -196,6 +199,7 @@ export default function VDS() {
         null,
         p_cnt,
         signal,
+        setIsLoading,
       ),
     )
     setIsSearchMade(true)
@@ -207,8 +211,6 @@ export default function VDS() {
   const goToPanelFn = id => {
     dispatch(dedicOperations.goToPanel(id))
   }
-
-  const isLoading = useSelector(vdsSelectors.getIsLoadingVDS)
 
   const isAllActive = activeServices.length === servers.length
   const toggleIsAllActiveHandler = () => {
@@ -291,6 +293,7 @@ export default function VDS() {
         setActiveServices={setActiveServices}
         getVDSHandler={getVDSHandler}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
 
       {elemsTotal > 5 && (

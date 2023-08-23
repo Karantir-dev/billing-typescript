@@ -36,8 +36,7 @@ export default function FTP() {
 
   const ftpRenderData = useSelector(ftpSelectors.getFTPList)
   const ftpCount = useSelector(ftpSelectors.getFTPCount)
-  const isLoading = useSelector(ftpSelectors.getIsLoadingFtp)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -110,6 +109,7 @@ export default function FTP() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -126,6 +126,7 @@ export default function FTP() {
         true,
         setEmptyFilter,
         signal,
+        setIsLoading,
       ),
     )
   }
@@ -157,6 +158,7 @@ export default function FTP() {
           true,
           undefined,
           signal,
+          setIsLoading
         ),
       )
     }
@@ -166,13 +168,13 @@ export default function FTP() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(ftpOperations.getFTPList(data, signal))
+    dispatch(ftpOperations.getFTPList(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   useEffect(() => {
     if (filterModal)
       dispatch(
-        ftpOperations.getFTPFilters(setFilters, { p_cnt }, false, undefined, signal),
+        ftpOperations.getFTPFilters(setFilters, { p_cnt }, false, undefined, signal, setIsLoading),
       )
   }, [filterModal])
 

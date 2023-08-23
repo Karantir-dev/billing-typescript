@@ -6,31 +6,9 @@ import i18n from '@src/i18n'
 import { checkIfTokenAlive } from '@utils'
 
 const getPayers =
-  (body = {}, loader, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    switch (loader) {
-      case 'billing':
-        dispatch(billingActions.showLoaderAutoPayment())
-        break
-      case 'payers':
-        dispatch(payersActions.showLoader())
-        break
-      default:
-        dispatch(actions.showLoader())
-    }
-
-    const hideLoader = () => {
-      switch (loader) {
-        case 'billing':
-          dispatch(billingActions.hideLoaderAutoPayment())
-          break
-        case 'payers':
-          dispatch(payersActions.hideLoader())
-          break
-        default:
-          dispatch(actions.hideLoader())
-      }
-    }
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -59,15 +37,14 @@ const getPayers =
           payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
         )
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(hideLoader))
+        dispatch(getPayerCountryType(signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        hideLoader()
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
-const getPayerCountryType = (hideLoader, signal) => (dispatch, getState) => {
+const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -93,11 +70,10 @@ const getPayerCountryType = (hideLoader, signal) => (dispatch, getState) => {
 
       dispatch(payersActions.setPayersSelectLists(filters))
 
-      hideLoader()
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      hideLoader()
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 

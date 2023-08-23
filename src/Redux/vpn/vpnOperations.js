@@ -7,9 +7,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getSiteCare =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vpnActions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -41,18 +41,22 @@ const getSiteCare =
 
         dispatch(vpnActions.setVpnList(VpnRenderData))
         dispatch(vpnActions.setVpnCount(count))
-        dispatch(getSiteCareFilters({}, false, signal))
+        dispatch(getSiteCareFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vpnActions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
 const getSiteCareFilters =
-  (body = {}, filtered = false, signal) =>
+  (body = {}, filtered = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vpnActions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -74,7 +78,7 @@ const getSiteCareFilters =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getSiteCare({ p_cnt: body?.p_cnt }, signal))
+          return dispatch(getSiteCare({ p_cnt: body?.p_cnt }, signal, setIsLoading))
         }
 
         let filters = {}
@@ -103,11 +107,15 @@ const getSiteCareFilters =
 
         dispatch(vpnActions.setVpnFilters(currentFilters))
         dispatch(vpnActions.setVpnFiltersLists(filters))
-        dispatch(vpnActions.hideLoader())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vpnActions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -404,9 +412,9 @@ const deleteSiteCare =
   }
 
 const orderSiteCare =
-  (body = {}, setData, signal) =>
+  (body = {}, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vpnActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -454,18 +462,17 @@ const orderSiteCare =
 
         setData && setData(d)
 
-        dispatch(vpnActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vpnActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const orderSiteCarePricelist =
-  (body = {}, setParamsData, signal) =>
+  (body = {}, setParamsData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(vpnActions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -515,11 +522,10 @@ const orderSiteCarePricelist =
           setParamsData && setParamsData(d)
         }
 
-        dispatch(vpnActions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(vpnActions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

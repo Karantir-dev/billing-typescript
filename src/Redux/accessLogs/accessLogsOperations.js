@@ -5,9 +5,9 @@ import i18n from 'i18next'
 import { checkIfTokenAlive } from '@utils'
 
 const getAccessLogsHandler =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(accessLogsActions.showLoaderLogs())
+    setIsLoading(true)
     const {
       auth: { sessionId },
     } = getState()
@@ -34,18 +34,17 @@ const getAccessLogsHandler =
         dispatch(accessLogsActions.getAccessLogs(elem))
         const count = data?.doc?.p_elems?.$ || 0
         dispatch(accessLogsActions.getAccessLogsCount(count))
-        dispatch(getAccessLogsFiltersHandler({}, signal))
+        dispatch(getAccessLogsFiltersHandler({}, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(accessLogsActions.hideLoaderLogs())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getAccessLogsFiltersHandler =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(accessLogsActions.showLoaderLogs())
+    setIsLoading(true)
     const {
       auth: { sessionId },
     } = getState()
@@ -72,17 +71,17 @@ const getAccessLogsFiltersHandler =
         })
         dispatch(accessLogsActions.getAccessLogsFilters(filters))
         dispatch(accessLogsActions.getCurrentFilters(data?.doc?.filter?.param))
-        dispatch(accessLogsActions.hideLoaderLogs())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const filterDataHandler =
-  (body = {}, signal) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(accessLogsActions.showLoaderLogs())
+    setIsLoading(true)
     const {
       auth: { sessionId },
     } = getState()
@@ -125,23 +124,23 @@ const filterDataHandler =
             const count = data?.doc?.p_elems?.$ || 0
             dispatch(accessLogsActions.getAccessLogsCount(count))
             dispatch(accessLogsActions.getAccessLogs(elem))
-            dispatch(accessLogsActions.hideLoaderLogs())
+            setIsLoading(false)
           })
           .catch(error => {
-            checkIfTokenAlive(error.message, dispatch)
-            dispatch(accessLogsActions.hideLoaderLogs())
+            checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
           })
       })
       .catch(error => {
-        dispatch(accessLogsActions.hideLoaderLogs())
-        checkIfTokenAlive('logs -' + error.message, dispatch)
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
-const getAccessLogsCvs = p_cnt => (dispatch, getState) => {
+const getAccessLogsCvs = (p_cnt, signal, setIsLoading) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
+  setIsLoading(true)
+
   axiosInstance
     .post(
       '/',
@@ -153,7 +152,7 @@ const getAccessLogsCvs = p_cnt => (dispatch, getState) => {
         auth: sessionId,
         p_cnt,
       }),
-      { responseType: 'blob' },
+      { responseType: 'blob', signal },
     )
     .then(response => {
       const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -163,6 +162,10 @@ const getAccessLogsCvs = p_cnt => (dispatch, getState) => {
       document.body.appendChild(link)
       link.click()
       link.parentNode.removeChild(link)
+      setIsLoading(false)
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 

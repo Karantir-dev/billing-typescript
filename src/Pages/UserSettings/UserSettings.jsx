@@ -3,7 +3,7 @@ import PersonalSettings from './PersonalSettings/PersonalSettings'
 import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { settingsOperations, settingsSelectors, userSelectors } from '@redux'
+import { settingsOperations, userSelectors } from '@redux'
 import { useCancelRequest, usePageRender } from '@utils'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
 import { Loader, PageTabBar } from '@components'
@@ -18,8 +18,7 @@ export default function Component() {
   const dispatch = useDispatch()
   const params = useParams()
   const location = useLocation()
-  const isLoading = useSelector(settingsSelectors.getIsLoadingPersonal)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
   const [availableEditRights, setAvailableEditRights] = useState({})
@@ -54,6 +53,7 @@ export default function Component() {
           isComponentAllowedToRender,
           setAvailableEditRights,
           signal,
+          setIsLoading
         ),
       )
     }
@@ -83,6 +83,7 @@ export default function Component() {
         <PersonalSettings
           isComponentAllowedToEdit={isComponentAllowedToEdit}
           signal={signal}
+          setIsLoading={setIsLoading}
         />
       )
     } else if (path === 'access' && isComponentAllowedToRender) {

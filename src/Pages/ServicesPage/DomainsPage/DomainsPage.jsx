@@ -30,11 +30,10 @@ export default function Component() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
-  const isLoading = useSelector(domainsSelectors.getIsLoadingDomains)
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -62,7 +61,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(domainsOperations.getDomains(data, signal))
+    dispatch(domainsOperations.getDomains(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -102,7 +101,15 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
     }
-    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
+    dispatch(
+      domainsOperations.renewService(
+        data,
+        setProlongModal,
+        setProlongData,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const closeProlongModalHandler = () => {
@@ -117,14 +124,22 @@ export default function Component() {
       ...values,
     }
 
-    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
+    dispatch(
+      domainsOperations.renewService(
+        data,
+        setProlongModal,
+        setProlongData,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const deleteDomainHandler = (elid = null) => {
     const data = {
       elid: elid || parseSelectedItemId(),
     }
-    dispatch(domainsOperations.deleteDomain(data))
+    dispatch(domainsOperations.deleteDomain(data, signal, setIsLoading))
   }
 
   const historyDomainHandler = (elid = null) => {
@@ -173,7 +188,9 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
     }
 
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
+    dispatch(
+      domainsOperations.editDomainNS(data, setNSModal, setNSData, signal, setIsLoading),
+    )
   }
 
   const closeNSModalHandler = () => {
@@ -187,7 +204,9 @@ export default function Component() {
       ...values,
     }
 
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
+    dispatch(
+      domainsOperations.editDomainNS(data, setNSModal, setNSData, signal, setIsLoading),
+    )
   }
 
   const editDomainHandler = (elid = null, d = null) => {
@@ -259,6 +278,7 @@ export default function Component() {
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
         rights={rights}
         signal={signal}
+        setIsLoading={setIsLoading}
       />
       {domainsRenderData?.domainsList?.length > 0 && (
         <div className={s.checkBoxColumn}>

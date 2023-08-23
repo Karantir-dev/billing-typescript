@@ -16,7 +16,7 @@ import {
 import s from '../AccessLogsComponents.module.scss'
 import cn from 'classnames'
 
-export default function Component({ setCurrentPage, p_cnt, signal }) {
+export default function Component({ setCurrentPage, p_cnt, signal, setIsLoading }) {
   const { t } = useTranslation(['access_log', 'other'])
   const dispatch = useDispatch()
 
@@ -42,7 +42,7 @@ export default function Component({ setCurrentPage, p_cnt, signal }) {
     setCurrentPage(1)
     setIsOpenedCalendar(false)
     values.p_cnt = p_cnt
-    dispatch(accessLogsOperations.filterDataHandler(values, signal))
+    dispatch(accessLogsOperations.filterDataHandler(values, signal, setIsLoading))
   }
 
   const resetFilterHandler = () => {
@@ -54,7 +54,7 @@ export default function Component({ setCurrentPage, p_cnt, signal }) {
       p_cnt: p_cnt,
     }
     setCurrentPage(1)
-    dispatch(accessLogsOperations.filterDataHandler(clearField, signal))
+    dispatch(accessLogsOperations.filterDataHandler(clearField, signal, setIsLoading))
   }
 
   const parseCurrentFilter = () => {
@@ -202,7 +202,9 @@ export default function Component({ setCurrentPage, p_cnt, signal }) {
         }}
       </Formik>
       <IconButton
-        onClick={() => dispatch(accessLogsOperations.getAccessLogsCvs(logsCount))}
+        onClick={() =>
+          dispatch(accessLogsOperations.getAccessLogsCvs(logsCount, signal, setIsLoading))
+        }
         className={s.csvBtn}
         icon="csv"
       />

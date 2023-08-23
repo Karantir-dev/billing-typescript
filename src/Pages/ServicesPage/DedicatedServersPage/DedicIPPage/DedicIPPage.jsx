@@ -13,12 +13,12 @@ import {
   Loader,
 } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { dedicOperations, dedicSelectors } from '@redux'
-import { useDispatch, useSelector } from 'react-redux'
+import { dedicOperations } from '@redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import * as route from '@src/routes'
-import { checkServicesRights } from '@utils'
+import { checkServicesRights, useCancelRequest } from '@utils'
 import s from './DedicIPPage.module.scss'
 
 export default function DedicIPpage() {
@@ -41,7 +41,7 @@ export default function DedicIPpage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const [hovered, setHovered] = useState(false)
   const navigate = useNavigate()
-  const isLoading = useSelector(dedicSelectors.getIsLoadingDedics)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs'])
 
@@ -61,7 +61,9 @@ export default function DedicIPpage() {
 
   useEffect(() => {
     if (ipPlid && isIpAllowedRender) {
-      dispatch(dedicOperations.getIPList(ipPlid, setIPList, setRightsList))
+      dispatch(
+        dedicOperations.getIPList(ipPlid, setIPList, setRightsList, signal, setIsLoading),
+      )
     } else {
       return navigate(route.DEDICATED_SERVERS, {
         replace: true,

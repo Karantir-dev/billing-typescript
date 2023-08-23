@@ -11,14 +11,13 @@ export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
 
   const [isConfigure, setIsConfigure] = useState(false)
-  const isLoading = useSelector(billingSelectors.getIsLoadingAutoPayment)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const autoPaymentsList = useSelector(billingSelectors.getAutoPaymentsList)
 
   useEffect(() => {
-    dispatch(billingOperations.getAutoPayments(signal))
-    dispatch(payersOperations.getPayers({}, 'billing', signal))
+    dispatch(billingOperations.getAutoPayments(signal, setIsLoading))
+    dispatch(payersOperations.getPayers({}, signal, setIsLoading))
   }, [])
 
   const renderInstruction = () => {
@@ -30,7 +29,7 @@ export default function Component() {
             const { id, image, name, status, maxamount } = el
 
             const stopAutoPaymentHandler = () => {
-              dispatch(billingOperations.stopAutoPayments(id.$))
+              dispatch(billingOperations.stopAutoPayments(id.$, signal, setIsLoading))
             }
 
             return (
@@ -62,7 +61,11 @@ export default function Component() {
     <>
       <div className={s.autoPayContainer}>
         {isConfigure ? (
-          <AutoPaymentForm setIsConfigure={setIsConfigure} />
+          <AutoPaymentForm
+            setIsConfigure={setIsConfigure}
+            signal={signal}
+            setIsLoading={setIsLoading}
+          />
         ) : (
           renderInstruction()
         )}

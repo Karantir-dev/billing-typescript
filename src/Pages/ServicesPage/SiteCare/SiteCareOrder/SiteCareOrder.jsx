@@ -7,11 +7,11 @@ import {
   InputField,
   Loader,
 } from '@components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { siteCareOperations, siteCareSelectors, userOperations } from '@redux'
+import { siteCareOperations, userOperations } from '@redux'
 import { useScrollToElement, translatePeriod, ipRegex, useCancelRequest } from '@utils'
 import { URL_REGEX, PASS_REGEX } from '@utils/constants'
 
@@ -32,8 +32,7 @@ export default function Component() {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const isLoading = useSelector(siteCareSelectors.getIsLoadingSiteCare)
-  const signal = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -44,7 +43,7 @@ export default function Component() {
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
-      dispatch(siteCareOperations.orderSiteCare({}, setData, signal))
+      dispatch(siteCareOperations.orderSiteCare({}, setData, signal, setIsLoading))
     } else {
       navigate(routes.SITE_CARE, { replace: true })
     }
@@ -95,7 +94,14 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(siteCareOperations.orderSiteCarePricelist(d, setParamsData, signal)),
+        dispatch(
+          siteCareOperations.orderSiteCarePricelist(
+            d,
+            setParamsData,
+            signal,
+            setIsLoading,
+          ),
+        ),
       ),
     )
   }
@@ -154,6 +160,7 @@ export default function Component() {
                           { period: item },
                           setData,
                           signal,
+                          setIsLoading,
                         ),
                       )
                     }}
@@ -178,6 +185,7 @@ export default function Component() {
                             { ...values, pricelist: pricelist?.$, sv_field: 'period' },
                             setParamsData,
                             signal,
+                            setIsLoading,
                           ),
                         )
                         runScroll()

@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function useCancelRequest() {
   const abortCont = useRef(new AbortController())
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -9,5 +10,5 @@ export default function useCancelRequest() {
     }
   }, [])
 
-  return abortCont.current.signal
+  return { signal: abortCont.current.signal, isLoading, setIsLoading }
 }

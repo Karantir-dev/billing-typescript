@@ -40,18 +40,6 @@ const clearPaymentMethodCount = createAction('CLEAR_PAYMENT_METHOD_COUNT')
 
 const setPeriodValue = createAction('SET_PERIOD_VALUE')
 
-const showLoaderPayment = createAction('SHOW_LOADER_PAYMENT')
-const hideLoaderPayment = createAction('HIDE_LOADER_PAYMENT')
-
-const showLoaderAutoPayment = createAction('SHOW_LOADER_AUTO_PAYMENT')
-const hideLoaderAutoPayment = createAction('HIDE_LOADER_AUTO_PAYMENT')
-
-const showLoaderExpenses = createAction('SHOW_LOADER_EXPENSES')
-const hideLoaderExpenses = createAction('HIDE_LOADER_EXPENSES')
-
-const showLoaderPaymentMethod = createAction('SHOW_LOADER_PAYMENT_METHOD')
-const hideLoaderPaymentMethod = createAction('HIDE_LOADER_PAYMENT_METHOD')
-
 export default {
   setPaymentMethodList,
   deletePaymentMethod,
@@ -88,12 +76,4 @@ export default {
   setAutoPaymentConfig,
 
   setPeriodValue,
-  showLoaderPayment,
-  hideLoaderPayment,
-  showLoaderExpenses,
-  hideLoaderExpenses,
-  showLoaderAutoPayment,
-  hideLoaderAutoPayment,
-  showLoaderPaymentMethod,
-  hideLoaderPaymentMethod,
 }
