@@ -11,7 +11,7 @@ import {
 import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies } from '@utils'
+import { checkIfTokenAlive, cookies, cryptoAnalyticsSender } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -636,41 +636,8 @@ const createPaymentMethod =
           .then(({ data }) => {
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-            if (data.doc.ok) {
-              if (
-                body?.paymethod_name?.includes('Coinify') ||
-                body?.paymethod_name?.includes('Bitcoin')
-              ) {
-                const ecommerceData = {
-                  event: 'purchase',
-                  ecommerce: {
-                    payment_type: body?.paymethod_name,
-                    transaction_id: data.doc?.payment_id?.$,
-                    affiliation: 'cp.zomro.com',
-                    value: Number(body?.amount) || 0,
-                    tax: Number(body?.tax) || 0,
-                    currency: 'EUR',
-                    shipping: '0',
-                    items: [
-                      {
-                        item_name: 'Refill',
-                        item_id: data.doc?.payment_id?.$,
-                        price: Number(body?.amount) || 0,
-                        item_category: 'Refill',
-                        quantity: 1,
-                      },
-                    ],
-                  },
-                }
-                cookies.eraseCookie('payment_id')
-                window?.dataLayer?.push({ ecommerce: null })
-                window?.dataLayer?.push(ecommerceData)
-
-                dispatch(analyticSendHandler(ecommerceData))
-              } else {
-                data.doc?.payment_id &&
-                  cookies.setCookie('payment_id', data.doc?.payment_id?.$, 5)
-              }
+            if (data?.doc?.ok) {
+              cryptoAnalyticsSender(body, data.doc?.payment_id?.$)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)

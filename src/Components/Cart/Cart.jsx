@@ -329,7 +329,7 @@ export default function Component() {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
+    const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
   }
 
