@@ -1257,18 +1257,22 @@ export default function Component() {
                         <div className={(s.formBlock, s.padding)}>
                           <div className={s.formBlockTitle}>{t('Payer')}:</div>
                           <div className={s.fieldsGrid}>
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('Payer status', { ns: 'payers' })}:`}
-                              value={values.profiletype}
-                              getElement={onProfileTypeChange}
-                              isShadow
-                              className={s.select}
-                              dropdownClass={s.selectDropdownClass}
-                              itemsList={payerTypeArrayHandler()}
-                            />
-                            {values?.profiletype === '3' ||
-                            values?.profiletype === '2' ? (
+                            {payerTypeArrayHandler()?.length > 1 && (
+                              <Select
+                                placeholder={t('Not chosen', { ns: 'other' })}
+                                label={`${t('Payer status', { ns: 'payers' })}:`}
+                                value={values.profiletype}
+                                getElement={onProfileTypeChange}
+                                isShadow
+                                className={s.select}
+                                dropdownClass={s.selectDropdownClass}
+                                itemsList={payerTypeArrayHandler()}
+                              />
+                            )}
+
+                            {(values?.profiletype === '3' ||
+                              values?.profiletype === '2') &&
+                            !selectedPayerFields.name ? (
                               <InputField
                                 inputWrapperClass={s.inputHeight}
                                 name="name"
@@ -1283,7 +1287,7 @@ export default function Component() {
                                 onChange={e => setCompany(e.target.value)}
                               />
                             ) : null}
-                            {values?.profiletype === '1' && payersList?.length !== 0 && (
+                            {payersList?.length !== 0 && (
                               <Select
                                 placeholder={t('Not chosen', { ns: 'other' })}
                                 label={`${t('Choose payer', { ns: 'billing' })}:`}
@@ -1295,87 +1299,83 @@ export default function Component() {
                                   label: t(`${name?.$?.trim()}`),
                                   value: id?.$,
                                 }))}
+                                disabled={payersList.length === 1}
+                                withoutArrow={payersList.length === 1}
                               />
                             )}
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name="person"
-                              label={
-                                values?.profiletype === '1'
-                                  ? `${t('Full name', { ns: 'other' })}:`
-                                  : `${t('The contact person', { ns: 'payers' })}:`
-                              }
-                              placeholder={t('Enter data', { ns: 'other' })}
-                              isShadow
-                              className={s.inputBig}
-                              error={!!errors.person}
-                              touched={!!touched.person}
-                              isRequired
-                              value={values.person}
-                              onChange={e => setPerson(e.target.value)}
-                            />
-
-                            <SelectGeo
-                              setSelectFieldValue={item => setFieldValue('country', item)}
-                              selectValue={values.country}
-                              selectClassName={s.select}
-                              countrySelectClassName={s.countrySelectItem}
-                              geoData={geoData}
-                              payersSelectLists={payersSelectLists}
-                            />
-
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name="city_physical"
-                              label={`${t('City', { ns: 'other' })}:`}
-                              placeholder={t('Enter city', { ns: 'other' })}
-                              isShadow
-                              className={s.inputBig}
-                              error={!!errors.city_physical}
-                              touched={!!touched.city_physical}
-                              value={values.city_physical}
-                              onChange={e => setCityPhysical(e.target.value)}
-                              // isRequired
-                            />
-                            <div className={cn(s.nsInputBlock, s.inputBig)}>
-                              {/* <InputField
+                            {!selectedPayerFields.person && (
+                              <InputField
                                 inputWrapperClass={s.inputHeight}
-                                inputClassName={s.inputAddressWrapp}
-                                name="address_physical"
-                                label={`${t('The address', { ns: 'other' })}:`}
-                                placeholder={t('Enter address', { ns: 'other' })}
+                                name="person"
+                                label={
+                                  values?.profiletype === '1'
+                                    ? `${t('Full name', { ns: 'other' })}:`
+                                    : `${t('The contact person', { ns: 'payers' })}:`
+                                }
+                                placeholder={t('Enter data', { ns: 'other' })}
                                 isShadow
-                                className={cn(s.inputBig, s.inputAddress)}
-                                error={!!errors.address_physical}
-                                touched={!!touched.address_physical}
+                                className={s.inputBig}
+                                error={!!errors.person}
+                                touched={!!touched.person}
                                 isRequired
-                              /> */}
-
-                              <InputWithAutocomplete
-                                fieldName="address_physical"
-                                error={!!errors.address_physical}
-                                touched={!!touched.address_physical}
-                                externalValue={values.address_physical}
-                                setFieldValue={val => {
-                                  setFieldValue('address_physical', val)
-                                  setAddressPhysical(val)
-                                }}
+                                value={values.person}
+                                onChange={e => setPerson(e.target.value)}
                               />
+                            )}
+                            {!selectedPayerFields.person && (
+                              <SelectGeo
+                                setSelectFieldValue={item =>
+                                  setFieldValue('country', item)
+                                }
+                                selectValue={values.country}
+                                selectClassName={s.select}
+                                countrySelectClassName={s.countrySelectItem}
+                                geoData={geoData}
+                                payersSelectLists={payersSelectLists}
+                              />
+                            )}
+                            {!selectedPayerFields.city_physical && (
+                              <InputField
+                                inputWrapperClass={s.inputHeight}
+                                name="city_physical"
+                                label={`${t('City', { ns: 'other' })}:`}
+                                placeholder={t('Enter city', { ns: 'other' })}
+                                isShadow
+                                className={s.inputBig}
+                                error={!!errors.city_physical}
+                                touched={!!touched.city_physical}
+                                value={values.city_physical}
+                                onChange={e => setCityPhysical(e.target.value)}
+                              />
+                            )}
+                            {!selectedPayerFields.address_physical && (
+                              <div className={cn(s.nsInputBlock, s.inputBig)}>
+                                <InputWithAutocomplete
+                                  fieldName="address_physical"
+                                  error={!!errors.address_physical}
+                                  touched={!!touched.address_physical}
+                                  externalValue={values.address_physical}
+                                  setFieldValue={val => {
+                                    setFieldValue('address_physical', val)
+                                    setAddressPhysical(val)
+                                  }}
+                                />
 
-                              <button
-                                type="button"
-                                className={cn(s.infoBtn, s.infoBtn_address)}
-                              >
-                                <Icon name="Info" />
-
-                                <div
-                                  ref={dropdownDescription}
-                                  className={s.descriptionBlock}
+                                <button
+                                  type="button"
+                                  className={cn(s.infoBtn, s.infoBtn_address)}
                                 >
-                                  {t('address_format', { ns: 'other' })}
-                                </div>
-                              </button>
-                            </div>
+                                  <Icon name="Info" />
+
+                                  <div
+                                    ref={dropdownDescription}
+                                    className={s.descriptionBlock}
+                                  >
+                                    {t('address_format', { ns: 'other' })}
+                                  </div>
+                                </button>
+                              </div>
+                            )}
 
                             {payersSelectedFields?.eu_vat_field ? (
                               <InputField
