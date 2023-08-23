@@ -2,7 +2,7 @@ import { API_URL } from '@src/config/config'
 import { cookies } from '@utils'
 import axios from 'axios'
 
-export default function cryptoAnalyticsSender(orderInfo, paymentID) {
+export default function analyticsSaver(orderInfo, paymentID) {
   const orderAmount = Number(orderInfo?.amount) || Number(orderInfo?.total_sum) || 0
   let items = [
     {

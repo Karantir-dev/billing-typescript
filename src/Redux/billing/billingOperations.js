@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies, cryptoAnalyticsSender } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -635,7 +635,7 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data?.doc?.ok) {
-              cryptoAnalyticsSender(body, data.doc?.payment_id?.$)
+              analyticsSaver(body, data.doc?.payment_id?.$)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
