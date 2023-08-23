@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { cookies } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '@redux'
+import { API_URL } from '@src/config/config'
+import axios from 'axios'
 
 export default function useAnalyticsSender() {
   const dispatch = useDispatch()
@@ -81,14 +83,14 @@ export default function useAnalyticsSender() {
           analyticsData.ecommerce.items = cartData?.items
 
           window?.dataLayer?.push(analyticsData)
-          dispatch(billingOperations.analyticSendHandler(analyticsData))
+          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
           cookies.eraseCookie(`cartData_${paymentId}`)
 
           // If there is NO saved product data
         } else {
           window?.dataLayer?.push(analyticsData)
-          dispatch(billingOperations.analyticSendHandler(analyticsData))
+          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
         }
 
         // If it is a balance replenishment (we don`t have saved product data)
@@ -105,7 +107,7 @@ export default function useAnalyticsSender() {
           ]
 
           window?.dataLayer?.push(analyticsData)
-          dispatch(billingOperations.analyticSendHandler(analyticsData))
+          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
         }
       }
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
