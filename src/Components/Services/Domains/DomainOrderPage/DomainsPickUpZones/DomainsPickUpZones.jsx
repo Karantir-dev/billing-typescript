@@ -143,7 +143,7 @@ export default function ServicesPage(props) {
         onClick={() => !notAvailable && setIsSelectedHandler(d)}
       >
         {parsePrice(price?.$)?.length > 1 && (
-          <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+          <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
         )}
         <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
           <div>{domain?.$}</div>
@@ -204,7 +204,7 @@ export default function ServicesPage(props) {
                 })}
               >
                 {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+                  <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
                 )}
                 {available && (
                   <CheckBox
