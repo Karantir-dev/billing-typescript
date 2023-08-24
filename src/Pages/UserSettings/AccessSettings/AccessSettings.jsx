@@ -38,8 +38,8 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   const [isModal, setIsModal] = useState(false)
 
-  const setSettingsHandler = values => {
-    dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values))
+  const setSettingsHandler = (values, { setFieldValue }) => {
+    dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values, setFieldValue))
   }
   const handleSocialLinkClick = values => {
     dispatch(settingsOperations?.changeSocialLinkStatus(userInfo?.$id, values))

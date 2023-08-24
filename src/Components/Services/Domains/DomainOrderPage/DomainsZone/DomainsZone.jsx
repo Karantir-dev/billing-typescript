@@ -116,7 +116,7 @@ export default function ServicesPage(props) {
             >
               <div className={cn(s.domainItem, { [s.transfer]: transfer })}>
                 {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.sale}>{parsePrice(price?.$)?.percent}</div>
+                  <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
                 )}
                 <CheckBox className={s.checkbox} value={selected} />
 

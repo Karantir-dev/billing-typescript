@@ -41,9 +41,9 @@ const rootPersistConfig = {
   whitelist: ['theme', 'pinned'],
 }
 const authPersistConfig = {
-  key: 'sessionId',
+  key: 'login',
   storage,
-  whitelist: ['sessionId', 'isLogined', 'geoData'],
+  whitelist: ['isLogined', 'geoData'],
 }
 
 const rootReducer = combineReducers({

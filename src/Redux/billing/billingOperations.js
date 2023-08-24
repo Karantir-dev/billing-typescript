@@ -1,5 +1,4 @@
 import qs from 'qs'
-import axios from 'axios'
 import i18n from '@src/i18n'
 import {
   actions,
@@ -8,10 +7,9 @@ import {
   payersActions,
   userActions,
 } from '@redux'
-import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, cookies, cryptoAnalyticsSender } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -637,7 +635,7 @@ const createPaymentMethod =
             if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
             if (data?.doc?.ok) {
-              cryptoAnalyticsSender(body, data.doc?.payment_id?.$)
+              analyticsSaver(body, data.doc?.payment_id?.$)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(false)
@@ -1112,10 +1110,6 @@ const editNamePaymentMethod =
       })
   }
 
-const analyticSendHandler = data => () => {
-  axios.post(`${API_URL}/api/analytic/add/`, data)
-}
-
 // const getExchangeRate = (cur, setExchangeRate) => () => {
 //   let currency = 1
 
@@ -1225,7 +1219,6 @@ export default {
   addPaymentMethod,
   finishAddPaymentMethod,
   editNamePaymentMethod,
-  analyticSendHandler,
   // getExchangeRate,
   useCertificate,
 }

@@ -5,7 +5,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   background-color: var(--main-bgc);
-
+  display: flex;
+  flex-direction: column;
   scrollbar-color: #e72690 rgba(161, 161, 161, 3%);
   scrollbar-width: thin;
 

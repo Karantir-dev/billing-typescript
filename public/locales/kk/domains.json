@@ -47,6 +47,7 @@
   "View/change the list of nameservers": "Атау серверлерінің тізімін қарау/өзгерту",
   "Domain name transfer": "Домен атауын тасымалдау",
   "Domain name only Latin": "Домен атауында тек латын таңбалары болуы мүмкін",
+  "latin_only": "Тек латын белгілері",
   "Check": "Тексеру",
   "Registered": "Тіркелген",
   "Not registered": "Тіркелмеген",
