@@ -130,7 +130,7 @@ export default function Component(props) {
           size="medium"
           label={t('Save', { ns: 'other' })}
           type="submit"
-          from="care-prolong"
+          form="care-prolong"
         />
         <button onClick={closeModal} type="button" className={s.clearFilters}>
           {t('Cancel', { ns: 'other' })}
