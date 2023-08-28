@@ -218,7 +218,7 @@ export default function Component() {
       is: 'off',
       then: Yup.string()
         .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-        .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+        // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
         .required(t('Is a required field', { ns: 'other' })),
     }),
 
@@ -329,7 +329,7 @@ export default function Component() {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    const cart = { ...cartData, payment_name: values?.selectedPayMethod?.name?.$ }
+    const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
   }
 

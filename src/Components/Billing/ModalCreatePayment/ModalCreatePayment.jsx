@@ -220,7 +220,7 @@ export default function Component(props) {
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
