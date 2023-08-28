@@ -331,56 +331,60 @@
 
 .countryBtnsBlock {
   width: 100%;
-  max-width: 255px;
   display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 6px;
+  padding: 9px 8px;
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  background: var(--forms_bgc_2);
-  padding: 6px;
-  max-height: 50px;
+  background: var(--elements-bgc);
   margin: 11px 0 35px;
 
   .countryBtn {
-    flex-basis: 30%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    flex-grow: 1;
     cursor: pointer;
-    border-radius: 3px;
-    height: 39px;
-    padding: 3px;
+    border-radius: 4px;
+    padding: 8px 20px;
 
     svg {
       width: 21px;
-      margin-right: 6px;
+      margin-right: 8px;
     }
 
     span {
       font-style: normal;
       font-weight: 400;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 70.9%;
       color: var(--main-text);
     }
 
-    &.selected {
-      background: #f0f0f7;
-    }
-
     &:hover {
-      background: #f0f0f7;
+      background: var(--gradient_cards_static);
     }
 
-    &.dt {
-      &.selected {
-        background: #423c4e;
-      }
-      &:hover {
-        background: #423c4e;
+    &.selected {
+      background: var(--access_rights_bg_item_title_gradient);
+      pointer-events: none;
+    }
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+    max-width: 631px;
+
+    .countryBtn {
+      padding: 8px 16px;
+      justify-content: center;
+    }
+  }
+  @media (min-width: 1550px) {
+    max-width: 748px;
+    .countryBtn {
+      span {
+        font-size: 18px;
       }
     }
   }
