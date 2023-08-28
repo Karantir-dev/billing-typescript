@@ -224,13 +224,13 @@ export default function ForexOrderPage() {
                       let name = el?.$
                       if (el?.$?.toLocaleLowerCase()?.includes('germany')) {
                         flag = <Icon name="Germany" />
-                        name = 'GE'
+                        name = 'Europe, Germany'
                       } else if (el?.$?.toLocaleLowerCase()?.includes('usa')) {
                         flag = <Icon name="Usa" />
-                        name = 'US'
+                        name = 'North America, USA'
                       }  else if (el?.$?.toLocaleLowerCase()?.includes('singapore')) {
                         flag = <Icon name="Singapore" />
-                        name = 'SG'
+                        name = 'Asia, Singapore'
                       }
                       return (
                         <button
