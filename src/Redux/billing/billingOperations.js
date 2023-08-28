@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies, fraudCheckSender } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -619,6 +619,7 @@ const createPaymentMethod =
         if (!(body?.profile && body?.profile?.length > 0)) {
           body.profile = data?.doc?.id?.$
         }
+
         axiosInstance
           .post(
             '/',
@@ -636,9 +637,10 @@ const createPaymentMethod =
 
             if (data?.doc?.ok) {
               analyticsSaver(body, data.doc?.payment_id?.$)
+              fraudCheckSender(sessionId)
 
-              dispatch(getPaymentMethodPage(data.doc.ok.$))
-              setCreatePaymentModal(false)
+              // dispatch(getPaymentMethodPage(data.doc.ok.$))
+              setCreatePaymentModal(true)
             }
           })
           .catch(error => {

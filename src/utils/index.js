@@ -2,6 +2,7 @@ export { default as useOutsideAlerter } from './hooks/outsideClick'
 export { default as usePageRender } from './hooks/usePageRender'
 export { default as useScrollToElement } from './hooks/useScrollToElement'
 export { default as useAnalyticsSender } from './hooks/useAnalyticsSender'
+export { default as useFormFraudCheckData } from './hooks/useFormFraudCheckData'
 
 export { default as isBase64 } from './isBase64'
 export { default as ipRegex } from './ipRegex'

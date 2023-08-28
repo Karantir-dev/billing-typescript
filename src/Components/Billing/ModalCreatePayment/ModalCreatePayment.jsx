@@ -27,7 +27,7 @@ import {
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -146,6 +146,8 @@ export default function Component(props) {
     }
   }, [selectedPayerFields])
 
+  const fraudData = useFormFraudCheckData()
+
   const createPaymentMethodHandler = values => {
     const data = {
       postcode_physical: values?.postcode_physical,
@@ -203,7 +205,9 @@ export default function Component(props) {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
+    dispatch(
+      billingOperations.createPaymentMethod(data, setCreatePaymentModal, fraudData),
+    )
   }
 
   const validationSchema = Yup.object().shape({
