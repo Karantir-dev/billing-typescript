@@ -24,6 +24,7 @@ import {
   ScrollToFieldError,
   Icon,
   CustomPhoneInput,
+  HintWrapper,
 } from '@components'
 import {
   cartOperations,
@@ -1155,22 +1156,32 @@ export default function Component() {
                                           values?.selectedPayMethod?.paymethod_type?.$ &&
                                         paymethod?.$ ===
                                           values?.selectedPayMethod?.paymethod?.$,
-                                    })}
+                                    },
+                                    {[s.withHint]: paymethod?.$ === '71'})}
                                     key={name?.$}
                                   >
-                                    <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                    <span>
-                                      {paymentName}
-                                      {balance?.length > 0 && (
-                                        <>
-                                          <br />{' '}
-                                          <span className={s.balance}>
-                                            {Number(balance).toFixed(2)} EUR
-                                          </span>
-                                        </>
-                                      )}
-                                    </span>
-                                    <Icon name="Check" className={s.iconCheck} />
+                                    <div className={s.descrWrapper}>
+                                      <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                      <span className={cn({[s.methodDescr]: paymethod?.$ === '71'})}>
+                                        {paymentName}
+                                        {balance?.length > 0 && (
+                                          <>
+                                            <br />{' '}
+                                            <span className={s.balance}>
+                                              {Number(balance).toFixed(2)} EUR
+                                            </span>
+                                          </>
+                                        )}
+                                      </span>
+                                    </div>
+                                    {paymethod?.$ === '71' && <HintWrapper
+                                        popupClassName={s.cardHintWrapper}
+                                        label={t('Paypalich description', { ns: 'other' })}
+                                        wrapperClassName={cn(s.infoBtnCard)}
+                                        bottom
+                                    >
+                                      <Icon name="Info" />
+                                    </HintWrapper>}
                                   </button>
                                 )
                               })}

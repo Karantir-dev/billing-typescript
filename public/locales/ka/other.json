@@ -67,6 +67,7 @@
   "Payer": "გადამხდელი",
   "Sum": "ჯამი",
   "Payment method": "გადახდის მეთოდი",
+  "Paypalich description":"გადახდა საბანკო ბარათით MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "არასაკმარისი უფლებები წვდომაზე",
   "-- without payment method --": "გადახდის მეთოდის გარეშე",
   "Create": "შექმნა",

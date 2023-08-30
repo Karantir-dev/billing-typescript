@@ -151,20 +151,27 @@
     height: 20px;
   }
 
-  &.selected {
-    span {
-      max-width: 70%;
-    }
-    .iconCheck {
-      display: flex;
+  .descrWrapper {
+    display: flex;
+    align-items: center;
+    
+    .methodDescr {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      word-break: break-all;
+
     }
   }
 
-  .iconCheck {
-    stroke: var(--success-color);
-    display: none;
-    position: absolute;
-    right: 16px;
+  &.withHint {
+    overflow: unset;
+    justify-content: space-between;
+  }
+
+  &.selected {
+    border: 1px solid var(--accent-color-light);
   }
 
   span {
@@ -196,6 +203,25 @@
     transform: scale(0.95);
   }
 }
+
+.cardHintWrapper {
+  width: 200px;
+  left: -67px;
+  word-break: normal;
+
+  div div {
+    left: 88%;
+  }
+}
+
+.infoBtnCard {
+  &:hover {
+    path {
+      fill: var(--accent-color-light);
+    }
+  }  
+}
+
 
 .infotext {
   font-style: normal;
@@ -366,6 +392,24 @@
     margin-top: 15px;
     &:not(:nth-child(3n + 3)) {
       margin-right: 19px;
+    }
+
+    
+    justify-content: space-between;
+    align-items: center;
+
+    .descrWrapper {
+      overflow: hidden;
+      max-width: unset;
+      flex-basis: unset;
+    }
+  }
+
+  .cardHintWrapper {
+    left: -50px;
+
+    div div {
+      left: 80%;
     }
   }
 
