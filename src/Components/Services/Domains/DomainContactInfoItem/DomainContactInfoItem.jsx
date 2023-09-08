@@ -259,7 +259,7 @@ export default function Component(props) {
     },
   })
 
-  const { values, setFieldValue, errors, touched, handleBlur } = formik
+  const { values, setFieldValue, errors, touched, handleBlur, setFieldError } = formik
 
   useImperativeHandle(refId, () => ({
     Submit: async () => {
@@ -311,6 +311,16 @@ export default function Component(props) {
       setIsOpen(false)
     } else {
       setIsOpen(true)
+    }
+  }
+
+  const validateENFields = (e, name) => {
+    const value = e.target.value
+    if (value.match(LATIN_NUMBER_REGEX)) {
+      setFieldValue(name, value)
+    } else {
+      setFieldError(name, t('latin_only'))
+      touched[name] = true
     }
   }
 
@@ -395,6 +405,7 @@ export default function Component(props) {
                     touched={!!touched[company]}
                     isRequired
                     disabled={domainsContacts[company]?.$readonly === 'yes'}
+                    onChange={e => validateENFields(e, company)}
                   />
                   <InputField
                     inputWrapperClass={s.inputHeight}
@@ -439,6 +450,7 @@ export default function Component(props) {
                 touched={!!touched[firstname]}
                 isRequired
                 disabled={domainsContacts[firstname]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, firstname)}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
@@ -463,6 +475,7 @@ export default function Component(props) {
                 touched={!!touched[lastname]}
                 isRequired
                 disabled={domainsContacts[lastname]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, lastname)}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
@@ -485,6 +498,7 @@ export default function Component(props) {
                 error={!!errors[middlename]}
                 touched={!!touched[middlename]}
                 disabled={domainsContacts[middlename]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, middlename)}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
@@ -560,7 +574,7 @@ export default function Component(props) {
               <InputField
                 inputWrapperClass={s.inputHeight}
                 name={location_state}
-                label={`${t('Region', { ns: 'other' })}:`}
+                label={`${t('Region', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter region', { ns: 'other' })}
                 isShadow
                 className={s.input}
@@ -568,11 +582,12 @@ export default function Component(props) {
                 touched={!!touched[location_state]}
                 isRequired
                 disabled={domainsContacts[location_state]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, location_state)}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
                 name={location_city}
-                label={`${t('City', { ns: 'other' })}:`}
+                label={`${t('City', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter city', { ns: 'other' })}
                 isShadow
                 className={s.input}
@@ -580,11 +595,12 @@ export default function Component(props) {
                 touched={!!touched[location_city]}
                 isRequired
                 disabled={domainsContacts[location_city]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, location_city)}
               />
               <InputField
                 inputWrapperClass={s.inputHeight}
                 name={location_address}
-                label={`${t('The address', { ns: 'other' })}:`}
+                label={`${t('The address', { ns: 'other' })} (EN):`}
                 placeholder={t('Enter address', { ns: 'other' })}
                 isShadow
                 className={s.input}
@@ -592,6 +608,7 @@ export default function Component(props) {
                 touched={!!touched[location_address]}
                 isRequired
                 disabled={domainsContacts[location_address]?.$readonly === 'yes'}
+                onChange={e => validateENFields(e, location_address)}
               />
             </div>
           </div>

@@ -54,6 +54,7 @@ Component.propTypes = {
   isShadow: PropTypes.bool,
   size: PropTypes.oneOf(['block', 'small', 'medium', 'large', '']),
   loading: PropTypes.bool,
+  form: PropTypes.string,
 }
 
 Component.defaultProps = {

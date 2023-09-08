@@ -32,7 +32,7 @@ import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
-export default function Component(props) {
+export default function ModalCreatePayment(props) {
   const dispatch = useDispatch()
 
   const { t } = useTranslation([
@@ -220,7 +220,7 @@ export default function Component(props) {
     // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
@@ -619,6 +619,7 @@ export default function Component(props) {
                               onChange={e => setCompany(e.target.value)}
                             />
                           ) : null}
+
                           {payersList?.length !== 0 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}
@@ -635,6 +636,7 @@ export default function Component(props) {
                               withoutArrow={payersList.length === 1}
                             />
                           )}
+
                           {!selectedPayerFields.person && (
                             <InputField
                               inputWrapperClass={s.inputHeight}
@@ -654,6 +656,7 @@ export default function Component(props) {
                               onChange={e => setPerson(e.target.value)}
                             />
                           )}
+
                           {!selectedPayerFields.person && (
                             <SelectGeo
                               setSelectFieldValue={item => setFieldValue('country', item)}
@@ -664,6 +667,7 @@ export default function Component(props) {
                               payersSelectLists={payersSelectLists}
                             />
                           )}
+
                           {!selectedPayerFields.city_physical && (
                             <InputField
                               inputWrapperClass={s.inputHeight}
@@ -678,6 +682,7 @@ export default function Component(props) {
                               onChange={e => setCityPhysical(e.target.value)}
                             />
                           )}
+
                           {!selectedPayerFields.address_physical && (
                             <div className={cn(s.inputBig, s.nsInputBlock)}>
                               <InputWithAutocomplete
