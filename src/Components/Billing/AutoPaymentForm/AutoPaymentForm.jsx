@@ -41,7 +41,7 @@ export default function Component(props) {
       profiletype: payersSelectLists?.profiletype[0]?.$key,
     }
 
-    dispatch(payersOperations.getPayerModalInfo(data, null, null, null, null, 'billing'))
+    dispatch(payersOperations.getPayerModalInfo(data))
   }, []),
     useEffect(() => {
       if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {

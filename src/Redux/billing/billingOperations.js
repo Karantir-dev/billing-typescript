@@ -379,7 +379,7 @@ const setExpensesFilters =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        dispatch(getExpenses(body))
+        dispatch(getExpenses(body, signal, setIsLoading))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)

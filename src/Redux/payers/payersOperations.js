@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
-import { actions, billingActions, payersActions } from '@redux'
+import { actions, payersActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import i18n from '@src/i18n'
 import { checkIfTokenAlive } from '@utils'
@@ -122,18 +122,9 @@ const deletePayer = elid => (dispatch, getState) => {
 }
 
 const getPayerModalInfo =
-  (
-    body = {},
-    isCreate = false,
-    closeModal,
-    setSelectedPayerFields,
-    newPayer = false,
-    loader = false,
-  ) =>
+  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
   (dispatch, getState) => {
-    loader === 'billing'
-      ? dispatch(billingActions.showLoaderAutoPayment())
-      : dispatch(actions.showLoader())
+    dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -253,24 +244,18 @@ const getPayerModalInfo =
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
-          return loader === 'billing'
-            ? dispatch(billingActions.hideLoaderAutoPayment())
-            : dispatch(actions.hideLoader())
+          return dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        loader === 'billing'
-          ? dispatch(billingActions.hideLoaderAutoPayment())
-          : dispatch(actions.hideLoader())
+        dispatch(actions.hideLoader())
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        loader === 'billing'
-          ? dispatch(billingActions.hideLoaderAutoPayment())
-          : dispatch(actions.hideLoader())
+        dispatch(actions.hideLoader())
       })
   }
 
