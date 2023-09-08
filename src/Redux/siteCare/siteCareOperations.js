@@ -41,7 +41,7 @@ const getSiteCare =
 
         dispatch(siteCareActions.setSiteCareList(sitecareRenderData))
         dispatch(siteCareActions.setSiteCareCount(count))
-        dispatch(getSiteCareFilters({}, signal, setIsLoading))
+        dispatch(getSiteCareFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
         if (setIsLoading) {

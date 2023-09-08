@@ -230,7 +230,7 @@ export default function DNS() {
   const isNoAvailableTariff = tarifs === 'No tariff plans available for order'
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dns_hosting', { ns: 'container' })}
@@ -428,6 +428,6 @@ export default function DNS() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

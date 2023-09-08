@@ -35,7 +35,7 @@ export default function VDSip() {
   }, [])
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
       {elements && (
         <>
@@ -137,6 +137,6 @@ export default function VDSip() {
         />
       )}
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

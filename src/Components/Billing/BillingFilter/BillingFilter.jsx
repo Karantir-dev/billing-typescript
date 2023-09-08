@@ -20,7 +20,6 @@ export default function Component(props) {
     p_cnt,
     setCreatePaymentModal,
     createPaymentModal,
-    isLoading,
     signal,
     setIsLoading,
   } = props
@@ -186,7 +185,6 @@ export default function Component(props) {
           }
           icon="csv"
           className={s.archiveBtn}
-          disabled={isLoading}
         />
       </div>
       {params?.path === 'payments' && (
@@ -198,7 +196,6 @@ export default function Component(props) {
             label={t('Create')}
             type="button"
             onClick={() => setCreatePaymentModal(!createPaymentModal)}
-            disabled={isLoading}
           />
           {createPaymentModal && (
             <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />

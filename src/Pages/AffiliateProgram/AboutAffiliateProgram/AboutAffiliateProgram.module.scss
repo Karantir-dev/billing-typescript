@@ -196,10 +196,6 @@
     grid-template-columns: repeat(auto-fit, minmax(246px, 1fr));
     column-gap: 20px;
     max-width: 1000px;
-
-    &__loader {
-      margin-top: -30px;
-    }
   }
 
   .percents_categories {

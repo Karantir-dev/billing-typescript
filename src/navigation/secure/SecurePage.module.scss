@@ -1,0 +1,7 @@
+.page {
+  flex-grow: 1;
+
+  & > div {
+    min-height: 100%;
+  }
+}

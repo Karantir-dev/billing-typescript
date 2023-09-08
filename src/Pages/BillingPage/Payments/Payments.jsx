@@ -56,51 +56,46 @@ export default function Component() {
         downloadPdfHandler={downloadPdfHandler}
         setCreatePaymentModal={setCreatePaymentModal}
         createPaymentModal={createPaymentModal}
-        isLoading={isLoading}
         signal={signal}
         setIsLoading={setIsLoading}
       />
-      <div style={{ display: isLoading ? 'none' : '' }}>
-        {isFiltered && paymentsList?.length === 0 && (
-          <div className={s.no_results_wrapper}>
-            <p className={s.no_results_text}>
-              {t('nothing_found', { ns: 'access_log' })}
-            </p>
-          </div>
-        )}
+      {isFiltered && paymentsList?.length === 0 && (
+        <div className={s.no_results_wrapper}>
+          <p className={s.no_results_text}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
 
-        {!isFiltered && paymentsList?.length === 0 && (
-          <div className={s.no_service_wrapper}>
-            <Icon name="Wallet" />
-            <p className={s.no_service_title}>{t('YOU DO NOT HAVE PAYMENTS YET')}</p>
-            <p className={s.no_service_description}>{t('no services description')}</p>
-          </div>
-        )}
+      {!isFiltered && paymentsList?.length === 0 && (
+        <div className={s.no_service_wrapper}>
+          <Icon name="Wallet" />
+          <p className={s.no_service_title}>{t('YOU DO NOT HAVE PAYMENTS YET')}</p>
+          <p className={s.no_service_description}>{t('no services description')}</p>
+        </div>
+      )}
 
-        {paymentsList?.length > 0 && (
-          <PaymentsTable
-            list={paymentsList}
-            downloadPdfHandler={downloadPdfHandler}
-            deletePayment={deletePayment}
-            payHandler={payHandler}
-            setCreatePaymentModal={setCreatePaymentModal}
+      {paymentsList?.length > 0 && (
+        <PaymentsTable
+          list={paymentsList}
+          downloadPdfHandler={downloadPdfHandler}
+          deletePayment={deletePayment}
+          payHandler={payHandler}
+          setCreatePaymentModal={setCreatePaymentModal}
+        />
+      )}
+
+      {paymentsList?.length > 0 && paymentsCount > 5 && (
+        <div className={s.pagination}>
+          <Pagination
+            totalCount={Number(paymentsCount)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
+            paginationItemClassName={s.pagination__item}
           />
-        )}
-
-        {paymentsList?.length > 0 && paymentsCount > 5 && (
-          <div className={s.pagination}>
-            <Pagination
-              totalCount={Number(paymentsCount)}
-              currentPage={p_num}
-              pageSize={p_cnt}
-              onPageChange={page => setP_num(page)}
-              onPageItemChange={items => setP_cnt(items)}
-              paginationItemClassName={s.pagination__item}
-            />
-          </div>
-        )}
-      </div>
-      {isLoading && <Loader local shown={isLoading} transparent staticPos />}
+        </div>
+      )}
+      {isLoading && <Loader local halfScreen shown={isLoading} />}
     </>
   )
 }

@@ -132,9 +132,6 @@ export default function AboutAffiliateProgram() {
       <p className={s.link_title}>{t('about_section.referral_link')}</p>
 
       <div className={s.fields_list}>
-        {isLoading && (
-          <Loader local shown={isLoading} transparent className={s.fields_list__loader} />
-        )}
         <div className={s.field_wrapper}>
           <label className={s.label}> {t('about_section.service')}: </label>
           <ServicesSelect setServiseName={handleRefLinkCreating} />
@@ -207,6 +204,7 @@ export default function AboutAffiliateProgram() {
           </div>
         </div>
       </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
 
       {!higherThan1550px && <FilesBanner dataTestid="mobile_banner" />}
     </>

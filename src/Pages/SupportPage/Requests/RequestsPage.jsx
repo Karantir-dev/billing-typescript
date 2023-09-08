@@ -35,7 +35,7 @@ export default function Component() {
   )
 
   return (
-    <div data-testid="request_support" className={s.content}>
+    <div data-testid="request_support">
       <SupportFilter
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
@@ -68,7 +68,7 @@ export default function Component() {
         </div>
       )}
 
-      {isLoading && <Loader local shown={isLoading} transparent />}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>
   )
 }

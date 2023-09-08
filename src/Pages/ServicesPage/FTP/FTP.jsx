@@ -158,7 +158,7 @@ export default function FTP() {
           true,
           undefined,
           signal,
-          setIsLoading
+          setIsLoading,
         ),
       )
     }
@@ -174,7 +174,14 @@ export default function FTP() {
   useEffect(() => {
     if (filterModal)
       dispatch(
-        ftpOperations.getFTPFilters(setFilters, { p_cnt }, false, undefined, signal, setIsLoading),
+        ftpOperations.getFTPFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
       )
   }, [filterModal])
 
@@ -201,7 +208,7 @@ export default function FTP() {
   }
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.external_ftp', { ns: 'container' })}
@@ -392,6 +399,6 @@ export default function FTP() {
         />
       )}
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

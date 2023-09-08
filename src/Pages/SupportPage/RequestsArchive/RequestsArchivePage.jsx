@@ -12,7 +12,7 @@ export default function Component() {
 
   const tickerArchiveList = useSelector(supportSelectors.getTicketArchiveList)
   const tickerArchiveCount = useSelector(supportSelectors.getTicketArchiveCount)
-  const {signal, isLoading, setIsLoading} = useCancelRequest()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -26,7 +26,7 @@ export default function Component() {
   }, [p_num, p_cnt])
 
   return (
-    <div data-testid="request_archive" className={s.content}>
+    <div data-testid="request_archive">
       <SupportFilter
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
@@ -59,7 +59,7 @@ export default function Component() {
         </div>
       )}
 
-      {isLoading && <Loader local shown={isLoading} transparent />}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>
   )
 }

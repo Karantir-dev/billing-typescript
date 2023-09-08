@@ -256,7 +256,7 @@ export default function Component() {
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>
         {t('burger_menu.services.services_list.domains')}
@@ -407,6 +407,6 @@ export default function Component() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

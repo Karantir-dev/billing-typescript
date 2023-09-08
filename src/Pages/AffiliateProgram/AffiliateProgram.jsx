@@ -23,7 +23,7 @@ export default function AffiliateProgram() {
 
   const { t } = useTranslation('affiliate_program')
   const dispatch = useDispatch()
-  const {signal, setIsLoading} = useCancelRequest()
+  const { signal, setIsLoading } = useCancelRequest()
 
   const [availableRights, setAvailabelRights] = useState({})
 
@@ -34,7 +34,7 @@ export default function AffiliateProgram() {
           'affiliate.client',
           setAvailabelRights,
           signal,
-          setIsLoading
+          setIsLoading,
         ),
       )
     }
@@ -69,46 +69,49 @@ export default function AffiliateProgram() {
   ]
 
   return (
-    <>
+    <div className={s.page}>
       <h2 className={s.title}>{t('page_title')}</h2>
       <PageTabBar sections={navBarSections} />
-
-      <Routes>
-        <Route
-          path={route.AFFILIATE_PROGRAM_ABOUT}
-          element={
-            <PageTitleRender title={t('page_title') + '/' + t('about_section_title')}>
-              <AboutAffiliateProgram />
-            </PageTitleRender>
-          }
-        />
-        <Route
-          path={'/'}
-          element={<Navigate replace to={route.AFFILIATE_PROGRAM_ABOUT} />}
-        />
-        {isIncomesAllowedToRender && (
+      <div className={s.content}>
+        <Routes>
           <Route
-            path={route.AFFILIATE_PROGRAM_INCOME}
+            path={route.AFFILIATE_PROGRAM_ABOUT}
             element={
-              <PageTitleRender title={t('page_title') + '/' + t('income_section_title')}>
-                <AffiliateProgramIncome />
+              <PageTitleRender title={t('page_title') + '/' + t('about_section_title')}>
+                <AboutAffiliateProgram />
               </PageTitleRender>
             }
           />
-        )}
-        {isStatisticsAllowedToRender && (
           <Route
-            path={route.AFFILIATE_PROGRAM_STATISTICS}
-            element={
-              <PageTitleRender
-                title={t('page_title') + '/' + t('statistics_section_title')}
-              >
-                <AffiliateProgramStatistics />
-              </PageTitleRender>
-            }
+            path={'/'}
+            element={<Navigate replace to={route.AFFILIATE_PROGRAM_ABOUT} />}
           />
-        )}
-      </Routes>
-    </>
+          {isIncomesAllowedToRender && (
+            <Route
+              path={route.AFFILIATE_PROGRAM_INCOME}
+              element={
+                <PageTitleRender
+                  title={t('page_title') + '/' + t('income_section_title')}
+                >
+                  <AffiliateProgramIncome />
+                </PageTitleRender>
+              }
+            />
+          )}
+          {isStatisticsAllowedToRender && (
+            <Route
+              path={route.AFFILIATE_PROGRAM_STATISTICS}
+              element={
+                <PageTitleRender
+                  title={t('page_title') + '/' + t('statistics_section_title')}
+                >
+                  <AffiliateProgramStatistics />
+                </PageTitleRender>
+              }
+            />
+          )}
+        </Routes>
+      </div>
+    </div>
   )
 }

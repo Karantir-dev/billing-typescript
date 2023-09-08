@@ -187,8 +187,8 @@ export default function AffiliateProgramIncome() {
             <IncomeTable list={incomeData} />
           </>
         )}
-        {isLoading && <Loader local shown={isLoading} transparent />}
       </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

@@ -19,7 +19,12 @@ export default function AffiliateProgramStatistics() {
 
   useEffect(() => {
     dispatch(
-      usersOperations.getAvailableRights('affiliate.client.click', setAvailabelRights, signal, setIsLoading),
+      usersOperations.getAvailableRights(
+        'affiliate.client.click',
+        setAvailabelRights,
+        signal,
+        setIsLoading,
+      ),
     )
   }, [])
   const checkIfHasArr = availableRights?.toolbar?.toolgrp
@@ -110,118 +115,129 @@ export default function AffiliateProgramStatistics() {
   }
 
   return (
-    <div className={s.content}>
-      {isFilterAllowedToRender && (
-        <div className={s.filter_wrapper}>
-          <IconButton
-            onClick={() => setIsFilterOpened(true)}
-            icon="filter"
-            disabled={!(isFiltered || items?.length > 0)}
-            className={cn(s.icon_filter, { [s.filtered]: isFiltered })}
-          />
+    <>
+      <div className={s.content}>
+        {isFilterAllowedToRender && (
+          <div className={s.filter_wrapper}>
+            <IconButton
+              onClick={() => setIsFilterOpened(true)}
+              icon="filter"
+              disabled={!(isFiltered || items?.length > 0)}
+              className={cn(s.icon_filter, { [s.filtered]: isFiltered })}
+            />
 
-          <StatisticsFilterModal
-            initialFilters={initialFilters}
-            opened={isFilterOpened}
-            closeFn={() => setIsFilterOpened(false)}
-            onSubmit={onSubmit}
-            onClearFilter={onClearFilter}
-          />
-        </div>
-      )}
-      {widerThanMobile && items.length > 0 && (
-        <div className={s.table_head_row}>
-          <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
-          <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
-          <span className={s.table_head}>{t('statistics_section.client')}:</span>
-          <span className={s.table_head}>{t('statistics_section.payment')}:</span>
-        </div>
-      )}
-      {items.length === 0 && !isLoading && (
-        <p className={s.no_results}>{t('statistics_section.no_result')}</p>
-      )}
-      <ul className={s.list}>
-        {items.map(({ cdate, payed, site, referal }, index) => {
-          return widerThanMobile ? (
-            <li className={s.list_item} key={index}>
-              <span className={s.row_value}>
-                {dayjs(cdate.$).format('DD MMM YYYY')} {t('short_year', { ns: 'other' })}
-                <span className={s.time}>{dayjs(cdate.$).format('hh:mm')}</span>
-              </span>
+            <StatisticsFilterModal
+              initialFilters={initialFilters}
+              opened={isFilterOpened}
+              closeFn={() => setIsFilterOpened(false)}
+              onSubmit={onSubmit}
+              onClearFilter={onClearFilter}
+            />
+          </div>
+        )}
+        {widerThanMobile && items.length > 0 && (
+          <div className={s.table_head_row}>
+            <span className={s.table_head}>{t('date', { ns: 'other' })}:</span>
+            <span className={s.table_head}>{t('statistics_section.from_site')}:</span>
+            <span className={s.table_head}>{t('statistics_section.client')}:</span>
+            <span className={s.table_head}>{t('statistics_section.payment')}:</span>
+          </div>
+        )}
+        {items.length === 0 && !isLoading && (
+          <p className={s.no_results}>{t('statistics_section.no_result')}</p>
+        )}
+        <ul className={s.list}>
+          {items.map(({ cdate, payed, site, referal }, index) => {
+            return widerThanMobile ? (
+              <li className={s.list_item} key={index}>
+                <span className={s.row_value}>
+                  {dayjs(cdate.$).format('DD MMM YYYY')}{' '}
+                  {t('short_year', { ns: 'other' })}
+                  <span className={s.time}>{dayjs(cdate.$).format('hh:mm')}</span>
+                </span>
 
-              <span className={cn(s.row_value, s.website)}>
-                {site?.$ ? (
-                  <span className={s.website_url}>{site?.$}</span>
-                ) : (
-                  <span className={s.stub}>{t('statistics_section.unknown_source')}</span>
-                )}
-                {site?.$ && <div className={s.full_text}>{site?.$}</div>}
-              </span>
+                <span className={cn(s.row_value, s.website)}>
+                  {site?.$ ? (
+                    <span className={s.website_url}>{site?.$}</span>
+                  ) : (
+                    <span className={s.stub}>
+                      {t('statistics_section.unknown_source')}
+                    </span>
+                  )}
+                  {site?.$ && <div className={s.full_text}>{site?.$}</div>}
+                </span>
 
-              <span className={s.row_value}>
-                {referal?.$ || (
-                  <span className={s.stub}>{t('statistics_section.not_registered')}</span>
-                )}
-              </span>
+                <span className={s.row_value}>
+                  {referal?.$ || (
+                    <span className={s.stub}>
+                      {t('statistics_section.not_registered')}
+                    </span>
+                  )}
+                </span>
 
-              <span className={s.row_value}>
-                {payed?.$ === 'on' ? (
-                  <Icon name="Check" className={s.icon_check} />
-                ) : (
-                  <span className={s.stub}>{t('statistics_section.not_paid')}</span>
-                )}
-              </span>
-            </li>
-          ) : (
-            <li className={s.list_item} key={nanoid()}>
-              <span className={s.label}>{t('date', { ns: 'other' })}:</span>
-              <span>
-                {dayjs(cdate.$).format('DD MMM YYYY')} {t('short_year', { ns: 'other' })}
-              </span>
+                <span className={s.row_value}>
+                  {payed?.$ === 'on' ? (
+                    <Icon name="Check" className={s.icon_check} />
+                  ) : (
+                    <span className={s.stub}>{t('statistics_section.not_paid')}</span>
+                  )}
+                </span>
+              </li>
+            ) : (
+              <li className={s.list_item} key={nanoid()}>
+                <span className={s.label}>{t('date', { ns: 'other' })}:</span>
+                <span>
+                  {dayjs(cdate.$).format('DD MMM YYYY')}{' '}
+                  {t('short_year', { ns: 'other' })}
+                </span>
 
-              <span className={s.label}>{t('statistics_section.from_site')}:</span>
-              <span className={s.website}>
-                {site?.$ ? (
-                  <span className={s.website_url}>{site?.$}</span>
-                ) : (
-                  <span className={s.stub}>{t('statistics_section.unknown_source')}</span>
-                )}
-                {site?.$ && <div className={s.full_text}>{site?.$}</div>}
-              </span>
+                <span className={s.label}>{t('statistics_section.from_site')}:</span>
+                <span className={s.website}>
+                  {site?.$ ? (
+                    <span className={s.website_url}>{site?.$}</span>
+                  ) : (
+                    <span className={s.stub}>
+                      {t('statistics_section.unknown_source')}
+                    </span>
+                  )}
+                  {site?.$ && <div className={s.full_text}>{site?.$}</div>}
+                </span>
 
-              <span className={s.label}>{t('statistics_section.client')}:</span>
-              <span>
-                {referal?.$ || (
-                  <span className={s.stub}>{t('statistics_section.not_registered')}</span>
-                )}
-              </span>
+                <span className={s.label}>{t('statistics_section.client')}:</span>
+                <span>
+                  {referal?.$ || (
+                    <span className={s.stub}>
+                      {t('statistics_section.not_registered')}
+                    </span>
+                  )}
+                </span>
 
-              <span className={s.label}>{t('statistics_section.payment')}:</span>
-              <span>
-                {payed?.$ === 'on' ? (
-                  <Icon name="Check" className={s.icon_check} />
-                ) : (
-                  <span className={s.stub}>{t('statistics_section.not_paid')}</span>
-                )}
-              </span>
-            </li>
-          )
-        })}
-      </ul>
+                <span className={s.label}>{t('statistics_section.payment')}:</span>
+                <span>
+                  {payed?.$ === 'on' ? (
+                    <Icon name="Check" className={s.icon_check} />
+                  ) : (
+                    <span className={s.stub}>{t('statistics_section.not_paid')}</span>
+                  )}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
 
-      {total > 5 && (
-        <div className={s.footer_wrapper}>
-          <Pagination
-            totalCount={Number(total)}
-            currentPage={Number(p_num)}
-            pageSize={Number(p_cnt)}
-            onPageChange={page => onPageChange(page)}
-            onPageItemChange={items => setP_cnt(items)}
-          />
-        </div>
-      )}
-
-      {isLoading && <Loader local shown={isLoading} transparent />}
-    </div>
+        {total > 5 && (
+          <div className={s.footer_wrapper}>
+            <Pagination
+              totalCount={Number(total)}
+              currentPage={Number(p_num)}
+              pageSize={Number(p_cnt)}
+              onPageChange={page => onPageChange(page)}
+              onPageItemChange={items => setP_cnt(items)}
+            />
+          </div>
+        )}
+      </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
+    </>
   )
 }

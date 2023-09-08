@@ -24,35 +24,33 @@ export default function Component() {
     return (
       <>
         <div className={s.autoPayTitle}>{t('AutoPaymentText')}</div>
-        <div style={{ display: isLoading ? 'none' : '' }}>
-          {autoPaymentsList?.map(el => {
-            const { id, image, name, status, maxamount } = el
+        {autoPaymentsList?.map(el => {
+          const { id, image, name, status, maxamount } = el
 
-            const stopAutoPaymentHandler = () => {
-              dispatch(billingOperations.stopAutoPayments(id.$, signal, setIsLoading))
-            }
+          const stopAutoPaymentHandler = () => {
+            dispatch(billingOperations.stopAutoPayments(id.$, signal, setIsLoading))
+          }
 
-            return (
-              <CurrentAutoPayments
-                key={id.$}
-                image={image?.$}
-                name={name?.$}
-                status={status?.$}
-                maxamount={maxamount?.$}
-                stopAutoPaymentHandler={stopAutoPaymentHandler}
-              />
-            )
-          })}
-          <Button
-            dataTestid={'back_btn'}
-            size="large"
-            className={s.configureBtn}
-            label={t('Configure')}
-            onClick={() => setIsConfigure(true)}
-            type="button"
-            isShadow
-          />
-        </div>
+          return (
+            <CurrentAutoPayments
+              key={id.$}
+              image={image?.$}
+              name={name?.$}
+              status={status?.$}
+              maxamount={maxamount?.$}
+              stopAutoPaymentHandler={stopAutoPaymentHandler}
+            />
+          )
+        })}
+        <Button
+          dataTestid={'back_btn'}
+          size="large"
+          className={s.configureBtn}
+          label={t('Configure')}
+          onClick={() => setIsConfigure(true)}
+          type="button"
+          isShadow
+        />
       </>
     )
   }
@@ -70,7 +68,7 @@ export default function Component() {
           renderInstruction()
         )}
       </div>
-      {isLoading && <Loader local shown={isLoading} transparent staticPos />}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

@@ -219,7 +219,7 @@ export default function ForexPage() {
   }
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('forex', { ns: 'crumbs' })}
@@ -438,6 +438,6 @@ export default function ForexPage() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

@@ -55,7 +55,7 @@ export default function Contracts() {
   }, [p_num, p_cnt])
 
   return (
-    <>
+    <div>
       <h3 className={s.page_title}>{t('profile.contracts')}</h3>
       {contractsRenderData?.contracts?.length > 0 && !mobile && (
         <div className={s.icons_wrapper}>
@@ -168,6 +168,6 @@ export default function Contracts() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

@@ -233,7 +233,7 @@ export default function DedicatedServersPage() {
   }
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
@@ -452,6 +452,6 @@ export default function DedicatedServersPage() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }

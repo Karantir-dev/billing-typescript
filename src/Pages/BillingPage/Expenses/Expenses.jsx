@@ -38,45 +38,40 @@ export default function Component() {
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || expensesList?.length > 0}
         setCurrentPage={setP_num}
-        isLoading={isLoading}
         signal={signal}
         setIsLoading={setIsLoading}
       />
-      <div style={{ display: isLoading ? 'none' : '' }}>
-        {isFiltered && expensesList?.length === 0 && (
-          <div className={s.no_results_wrapper}>
-            <p className={s.no_results_text}>
-              {t('nothing_found', { ns: 'access_log' })}
-            </p>
-          </div>
-        )}
+      {isFiltered && expensesList?.length === 0 && (
+        <div className={s.no_results_wrapper}>
+          <p className={s.no_results_text}>{t('nothing_found', { ns: 'access_log' })}</p>
+        </div>
+      )}
 
-        {!isFiltered && expensesList?.length === 0 && (
-          <div className={s.no_service_wrapper}>
-            <Icon name="Wallet" />
-            <p className={s.no_service_title}>{t('YOU DO NOT HAVE EXPENSES YET')}</p>
-            <p className={s.no_service_description}>
-              {t('no services description expenses')}
-            </p>
-          </div>
-        )}
+      {!isFiltered && expensesList?.length === 0 && (
+        <div className={s.no_service_wrapper}>
+          <Icon name="Wallet" />
+          <p className={s.no_service_title}>{t('YOU DO NOT HAVE EXPENSES YET')}</p>
+          <p className={s.no_service_description}>
+            {t('no services description expenses')}
+          </p>
+        </div>
+      )}
 
-        {expensesList?.length > 0 && <ExpensesTable list={expensesList} />}
+      {expensesList?.length > 0 && <ExpensesTable list={expensesList} />}
 
-        {expensesList?.length > 0 && expensesCount > 5 && (
-          <div className={s.pagination}>
-            <Pagination
-              totalCount={Number(expensesCount)}
-              currentPage={p_num}
-              pageSize={p_cnt}
-              onPageChange={page => setP_num(page)}
-              onPageItemChange={items => setP_cnt(items)}
-              paginationItemClassName={s.pagination__item}
-            />
-          </div>
-        )}
-      </div>
-      {isLoading && <Loader local shown={isLoading} transparent staticPos />}
+      {expensesList?.length > 0 && expensesCount > 5 && (
+        <div className={s.pagination}>
+          <Pagination
+            totalCount={Number(expensesCount)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
+            paginationItemClassName={s.pagination__item}
+          />
+        </div>
+      )}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

@@ -50,49 +50,45 @@ export default function Component() {
 
   return (
     <>
-      <div style={{ display: isLoading ? 'none' : '' }}>
-        {paymentsList?.length === 0 && (
-          <div className={s.no_service_wrapper}>
-            <Icon name="Wallet" />
-            <p className={s.no_service_title}>
-              {t('YOU DO NOT HAVE PAYMENT METHODS YET')}
-            </p>
-            <p className={s.no_service_description}>{t('no services description')}</p>
-          </div>
-        )}
+      {paymentsList?.length === 0 && (
+        <div className={s.no_service_wrapper}>
+          <Icon name="Wallet" />
+          <p className={s.no_service_title}>{t('YOU DO NOT HAVE PAYMENT METHODS YET')}</p>
+          <p className={s.no_service_description}>{t('no services description')}</p>
+        </div>
+      )}
 
-        {paymentsList?.length > 0 && (
-          <PaymentsMethodsTable
-            reconfigHandler={reconfigHandler}
-            deleteItemHandler={deleteItemHandler}
-            list={paymentsList}
-            editItemNameHandler={editItemNameHandler}
-          />
-        )}
-        <div className={s.addBtn}>
-          <Button
-            isShadow
-            label={t('Add', { ns: 'payers' })}
-            onClick={() => setCreatePaymentModal(!createPaymentModal)}
+      {paymentsList?.length > 0 && (
+        <PaymentsMethodsTable
+          reconfigHandler={reconfigHandler}
+          deleteItemHandler={deleteItemHandler}
+          list={paymentsList}
+          editItemNameHandler={editItemNameHandler}
+        />
+      )}
+      <div className={s.addBtn}>
+        <Button
+          isShadow
+          label={t('Add', { ns: 'payers' })}
+          onClick={() => setCreatePaymentModal(!createPaymentModal)}
+        />
+      </div>
+      {paymentsList?.length > 0 && paymentsCount > 5 && (
+        <div className={s.pagination}>
+          <Pagination
+            totalCount={Number(paymentsCount)}
+            currentPage={p_num}
+            pageSize={p_cnt}
+            onPageChange={page => setP_num(page)}
+            onPageItemChange={items => setP_cnt(items)}
           />
         </div>
-        {paymentsList?.length > 0 && paymentsCount > 5 && (
-          <div className={s.pagination}>
-            <Pagination
-              totalCount={Number(paymentsCount)}
-              currentPage={p_num}
-              pageSize={p_cnt}
-              onPageChange={page => setP_num(page)}
-              onPageItemChange={items => setP_cnt(items)}
-            />
-          </div>
-        )}
+      )}
 
-        {createPaymentModal && (
-          <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
-        )}
-      </div>
-      {isLoading && <Loader local shown={isLoading} transparent staticPos />}
+      {createPaymentModal && (
+        <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
+      )}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

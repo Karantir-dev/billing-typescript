@@ -218,7 +218,7 @@ export default function VDS() {
   }
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <h2 className={s.title}>
@@ -486,6 +486,6 @@ export default function VDS() {
       )}
 
       {isLoading && <Loader local shown={isLoading} />}
-    </>
+    </div>
   )
 }
