@@ -267,20 +267,27 @@
     object-fit: contain;
   }
 
-  &.selected {
-    span {
-      max-width: 70%;
-    }
-    .iconCheck {
-      display: flex;
+  .descrWrapper {
+    display: flex;
+    align-items: center;
+    
+    .methodDescr {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      word-break: break-all;
+
     }
   }
 
-  .iconCheck {
-    stroke: var(--success-color);
-    display: none;
-    position: absolute;
-    right: 16px;
+  &.selected {
+    border: 1px solid var(--accent-color-light);
+  }
+
+  &.withHint {
+    overflow: unset;
+    justify-content: space-between;
   }
 
   span {
@@ -636,6 +643,25 @@
   }
 }
 
+.cardHintWrapper {
+  width: 200px;
+  left: -67px;
+  word-break: normal;
+
+  div div {
+    left: 88%;
+  }
+}
+
+.infoBtnCard {
+  &:hover {
+    path {
+      fill: var(--accent-color-light);
+    }
+  }  
+}
+
+
 .descriptionBlock {
   position: absolute;
   opacity: 0;
@@ -751,6 +777,23 @@
     max-width: 30%;
     flex-basis: 30%;
     margin: 0 15px 10px 0;
+
+    justify-content: space-between;
+    align-items: center;
+
+    .descrWrapper {
+      overflow: hidden;
+      max-width: unset;
+      flex-basis: unset;
+    }
+  }
+
+  .cardHintWrapper {
+    left: -50px;
+
+    div div {
+      left: 80%;
+    }
   }
 
   .inputAmountBlock {
