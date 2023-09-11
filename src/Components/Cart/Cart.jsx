@@ -330,6 +330,8 @@ export default function Component() {
       data['alfabank_login'] = values?.alfabank_login
     }
 
+    if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+
     const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
   }
