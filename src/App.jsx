@@ -25,8 +25,9 @@ if (process.env.NODE_ENV !== 'development') {
     integrations: [new BrowserTracing()],
     tracesSampleRate: 0.7,
   })
+
+  TagManager.initialize(tagManagerArgs)
 }
-TagManager.initialize(tagManagerArgs)
 
 export default function App() {
   return (
