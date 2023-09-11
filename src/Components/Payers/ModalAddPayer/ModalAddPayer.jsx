@@ -74,6 +74,9 @@ export default function Component(props) {
         ? 'on'
         : 'off',
     }
+
+    if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+
     dispatch(payersOperations.getPayerModalInfo(data, true, closeAddModalHandler))
   }
 
