@@ -198,10 +198,6 @@
     line-height: 100%;
     color: var(--transparent-color);
   }
-
-  &:active {
-    transform: scale(0.95);
-  }
 }
 
 .cardHintWrapper {
@@ -495,4 +491,8 @@
   .infoBtn {
     top: 26px;
   }
+}
+
+@media screen and (max-width: 1023px) {
+  
 }
