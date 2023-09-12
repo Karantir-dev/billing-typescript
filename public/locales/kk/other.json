@@ -67,6 +67,7 @@
   "Payer": "Төлеуші",
   "Sum": "Сома",
   "Payment method": "Төлем әдісі",
+  "Paypalich description":"MasterCard, QIWI, USDT банк картасымен төлеу",
   "Insufficient privileges to access": "Кіру құқығы жеткіліксіз",
   "-- without payment method --": "Төлем әдісінсіз",
   "Create": "Жасау",

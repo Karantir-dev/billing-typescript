@@ -420,7 +420,7 @@
   .parameters_wrapper {
     display: flex;
     flex-wrap: wrap;
-    align-items: start;
+    align-items: flex-start;
     grid-auto-rows: max-content;
     grid-column-gap: 24px;
     grid-row-gap: 5px;

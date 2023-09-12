@@ -17,13 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install -f
       - run: npm run test
       - name: test status
@@ -42,14 +44,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install -g npm
+      - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install
       - run: npm run lint
       - name: linter status

@@ -334,6 +334,9 @@ const register =
           setErrMsg(data.doc.error.$type)
           throw new Error(data.doc.error.msg.$)
         }
+
+        if (window.fbq) window.fbq('track', 'CompleteRegistration')
+
         successRegistration()
 
         dispatch(actions.hideLoader())
@@ -461,6 +464,10 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   const sessionId = data?.doc?.auth?.$
                   cookies.setCookie('sessionId', sessionId, 1)
                   sendInfoToSite({ sessionId })
+
+                  if (window.fbq) window.fbq('track', 'CompleteRegistration')
+                  console.log('soc registered')
+
                   dispatch(authActions.loginSuccess(sessionId))
                 })
             }
