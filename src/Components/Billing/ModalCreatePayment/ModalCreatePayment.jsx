@@ -523,7 +523,7 @@ export default function ModalCreatePayment(props) {
                                         wrapperClassName={cn(s.infoBtnCard)}
                                         bottom
                                     >
-                                      <Icon name="Info" />
+                                <Icon name="Info" />
                                     </HintWrapper>}
                             </button>
                           )

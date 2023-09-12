@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 
@@ -21,12 +22,26 @@ export default function HintWrapper({
     setPageWidth(window.screen.width)
   }, [children, pageWidth, setElemWidth])
 
+  const handleClick = (e) => {
+    // is it mobile device and width of the screen is less than 1024
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(navigator.userAgent)
+      && pageWidth < 1024
+
+    // Check is it Google Chrome for mobile devices
+    const isMobileChrome = /CriOS/i.test(navigator.userAgent);
+
+    if (isMobileDevice || isMobileChrome) {
+      e.stopPropagation()
+    }
+  }
+
   return (
     <>
       {disabled ? (
         children
       ) : (
-        <div ref={ref} className={cn(s.hint_wrapper, wrapperClassName)}>
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <div ref={ref} className={cn(s.hint_wrapper, wrapperClassName)} onClick={handleClick}>
           {children}
           <div
             className={cn(
