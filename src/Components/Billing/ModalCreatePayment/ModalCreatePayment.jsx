@@ -14,6 +14,7 @@ import {
   Modal,
   Icon,
   CustomPhoneInput,
+  HintWrapper,
 } from '@components'
 import {
   billingOperations,
@@ -505,12 +506,25 @@ export default function ModalCreatePayment(props) {
                                 [s.selected]:
                                   paymethod?.$ ===
                                   values?.slecetedPayMethod?.paymethod?.$,
-                              })}
+                              },
+                                { [s.withHint]: paymethod?.$ === '71' })}
                               key={paymethod?.$}
                             >
-                              <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                              <span>{name?.$}</span>
-                              <Icon name="Check" className={s.iconCheck} />
+                              <div className={s.descrWrapper}>
+                                <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                <span className={cn({ [s.methodDescr]: paymethod?.$ === '71' })}>
+                                  {name?.$}
+                                </span>
+                              </div>
+
+                              {paymethod?.$ === '71' && <HintWrapper
+                                        popupClassName={s.cardHintWrapper}
+                                        label={t('Paypalich description', { ns: 'other' })}
+                                        wrapperClassName={cn(s.infoBtnCard)}
+                                        bottom
+                                    >
+                                <Icon name="Info" />
+                                    </HintWrapper>}
                             </button>
                           )
                         })}
