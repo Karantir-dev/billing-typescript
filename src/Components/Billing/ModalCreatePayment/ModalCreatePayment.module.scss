@@ -204,6 +204,7 @@
   width: 200px;
   left: -67px;
   word-break: normal;
+  pointer-events: none !important;
 
   div div {
     left: 88%;
@@ -402,6 +403,7 @@
   }
 
   .cardHintWrapper {
+    pointer-events: unset;
     left: -50px;
 
     div div {
