@@ -548,7 +548,7 @@ const getPaymentMethod =
   }
 
 const createPaymentMethod =
-  (body = {}, setCreatePaymentModal) =>
+  (body = {}, setCreatePaymentModal, fraudData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -637,7 +637,15 @@ const createPaymentMethod =
 
             if (data?.doc?.ok) {
               analyticsSaver(body, data.doc?.payment_id?.$)
-              fraudCheckSender(sessionId)
+
+              fraudData.shopping_cart = [
+                {
+                  category: 'Balance top up',
+                  price: body.amount,
+                  item_id: data.doc?.payment_id?.$,
+                },
+              ]
+              fraudCheckSender(sessionId, fraudData)
 
               // dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(true)

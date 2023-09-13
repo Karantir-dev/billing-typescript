@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import {
@@ -202,7 +203,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
 }
 
 const setPaymentMethods =
-  (body = {}, navigate, cartData = null) =>
+  (body = {}, navigate, cartData = null, fraudData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -275,6 +276,18 @@ const setPaymentMethods =
           body.profile = data?.doc?.id?.$
         }
 
+        const itemsForFraudData = cartData.elemList.map(el => ({
+          category: el?.['item.type']?.$,
+          quantity: 1,
+          price: Number(el?.cost?.$),
+          item_id: el?.['item.id']?.$,
+        }))
+        fraudData.shopping_cart = itemsForFraudData
+
+        console.log('fraudData', fraudData)
+
+        // fraudCheckSender(sessionId, fraudData)
+
         axiosInstance
           .post(
             '/',
@@ -327,7 +340,6 @@ const setPaymentMethods =
               if (data?.doc?.ok && data?.doc?.ok?.$ !== 'func=order') {
                 if (body?.promocode) cartData.promocode = body.promocode
 
-                
                 analyticsSaver(cartData, data.doc?.payment_id?.$)
                 fraudCheckSender(sessionId)
 

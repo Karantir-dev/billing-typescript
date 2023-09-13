@@ -56,7 +56,16 @@ export default function LoginForm() {
         replace: true,
       })
 
-    dispatch(authOperations.login(email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin))
+    dispatch(
+      authOperations.login(
+        email,
+        password,
+        reCaptcha,
+        setErrMsg,
+        resetRecaptcha,
+        navigateAfterLogin,
+      ),
+    )
   }
 
   const handleUserKeyPress = e => {

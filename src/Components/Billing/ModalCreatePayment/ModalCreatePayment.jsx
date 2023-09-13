@@ -28,7 +28,7 @@ import {
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn, useFormFraudCheckData } from '@utils'
+import { checkIfTokenAlive, replaceAllFn } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -147,8 +147,6 @@ export default function ModalCreatePayment(props) {
     }
   }, [selectedPayerFields])
 
-  const fraudData = useFormFraudCheckData()
-
   const createPaymentMethodHandler = values => {
     const data = {
       postcode_physical: values?.postcode_physical,
@@ -206,9 +204,7 @@ export default function ModalCreatePayment(props) {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    dispatch(
-      billingOperations.createPaymentMethod(data, setCreatePaymentModal, fraudData),
-    )
+    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
   const validationSchema = Yup.object().shape({
@@ -506,29 +502,38 @@ export default function ModalCreatePayment(props) {
                                 )
                               }}
                               type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod?.$ ===
-                                  values?.slecetedPayMethod?.paymethod?.$,
-                              },
-                                { [s.withHint]: paymethod?.$ === '71' })}
+                              className={cn(
+                                s.paymentMethodBtn,
+                                {
+                                  [s.selected]:
+                                    paymethod?.$ ===
+                                    values?.slecetedPayMethod?.paymethod?.$,
+                                },
+                                { [s.withHint]: paymethod?.$ === '71' },
+                              )}
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
                                 <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                <span className={cn({ [s.methodDescr]: paymethod?.$ === '71' })}>
+                                <span
+                                  className={cn({
+                                    [s.methodDescr]: paymethod?.$ === '71',
+                                  })}
+                                >
                                   {name?.$}
                                 </span>
                               </div>
 
-                              {paymethod?.$ === '71' && <HintWrapper
-                                        popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', { ns: 'other' })}
-                                        wrapperClassName={cn(s.infoBtnCard)}
-                                        bottom
-                                    >
-                                <Icon name="Info" />
-                                    </HintWrapper>}
+                              {paymethod?.$ === '71' && (
+                                <HintWrapper
+                                  popupClassName={s.cardHintWrapper}
+                                  label={t('Paypalich description', { ns: 'other' })}
+                                  wrapperClassName={cn(s.infoBtnCard)}
+                                  bottom
+                                >
+                                  <Icon name="Info" />
+                                </HintWrapper>
+                              )}
                             </button>
                           )
                         })}
