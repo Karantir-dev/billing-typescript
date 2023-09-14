@@ -45,6 +45,7 @@ export default function useAnalyticsSender() {
   }, [paymentsList])
 
   useEffect(() => {
+    console.log('is gtm initialized? -', !!window.dataLayer?.find(el => el['gtm.start']))
     if (paymentItem) {
       //if we have payment
       let value = Number(paymentItem?.subaccountamount_iso?.$.replace('EUR', ''))
@@ -134,6 +135,11 @@ export default function useAnalyticsSender() {
           fbAnalytics.content_category = 'Refill'
           fbAnalytics.content_type = 'Refill'
           fbAnalytics.content_ids = [paymentId]
+
+          console.log(
+            'is gtm initialized? - ',
+            !!window.dataLayer?.find(el => el['gtm.start']),
+          )
 
           window?.dataLayer?.push(analyticsData)
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)

@@ -20,6 +20,8 @@ export const AFFILIATE_PROGRAM_ABOUT = 'about'
 export const AFFILIATE_PROGRAM_INCOME = 'income'
 export const AFFILIATE_PROGRAM_STATISTICS = 'statistics'
 export const BILLING = '/billing'
+export const SUCCESS_PAYMENT = '/billing/payments/success'
+export const FAILED_PAYMENT = '/billing/payments/error'
 export const PAYERS = '/payers'
 
 export const CONFIRM_EMAIL = '/confirm_email'
