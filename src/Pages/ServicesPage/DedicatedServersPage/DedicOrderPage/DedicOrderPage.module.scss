@@ -120,7 +120,6 @@
 .tarif_card_btn {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   padding-bottom: 23px;
   // padding-top: 23px;
@@ -130,6 +129,10 @@
   cursor: pointer;
   background: var(--forms_bgc_2);
   border-radius: 3px;
+
+  &.vds {
+    background: var(--dedic_vds_tariff);
+  }
 }
 
 .tarif_card {
@@ -165,64 +168,69 @@
   }
 
   &:hover {
-    .card_title {
-      font-weight: 600;
-    }
-    .price {
-      font-weight: 800;
+    .price_wrapper {
+      background: var(--dedic_tariffs_gradient_hover);
+      &.vds {
+        background: linear-gradient(
+          270deg,
+          rgba(250, 75, 180, 0.2) 0%,
+          rgba(237, 50, 207, 0.2) 100%
+        );
+      }
     }
   }
 }
 
-.sale_percent {
+.sale_percent,
+.new_tariff {
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  right: 5px;
-  top: 5px;
-  width: 50px;
-  height: 25px;
+  right: 0px;
+  top: 0px;
+  width: 66px;
+  height: 22px;
+  padding: 3px 3px 0 15px;
   font-weight: 600;
   font-size: 13px;
-  line-height: 130%;
-  background-color: var(--red_text_bg);
-  color: var(--red-text);
-  border-radius: 2px;
+  line-height: 120%;
+  background: url('../../../../images/vds_sale.svg');
+  color: #fff;
+  border-radius: 0 2px 0 0;
+}
+
+.new_tariff {
+  background: url('../../../../images/vds_new.svg');
+  justify-content: center;
 }
 
 .card_title {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 130%;
   color: var(--servers_tariff_color);
   // margin-bottom: 20px;
   max-width: 60%;
   height: 51px;
 
-  &.selected {
-    font-weight: 600;
+  &.vds {
+    font-weight: 700;
   }
 }
 
 .price {
   position: relative;
   display: block;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
   line-height: 100%;
   background: var(--accent-text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  // padding-bottom: 10px;
-  // padding-top: 13px;
-
-  &.selected {
-    font-weight: 800;
-  }
 }
 
 .sale_price {
@@ -235,13 +243,25 @@
   // padding-bottom: 14px;
 }
 
+.card_parameters {
+  width: 100%;
+  padding: 0 20px;
+  text-align: left;
+
+  li {
+  }
+}
+
 .card_subtitles {
   font-size: 16px;
-  line-height: 70.9%;
   color: var(--main-text);
 
   &:not(:last-child) {
     margin-bottom: 15px;
+  }
+
+  svg {
+    vertical-align: middle;
   }
 }
 
@@ -251,10 +271,20 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  box-shadow: var(--burger-menu-elem-box-shadow);
-  background: var(--servers_price_bgc);
+  background: var(--dedic_tariffs_gradient);
   margin-bottom: 17px;
   height: 61px;
+
+  &.vds {
+    background: linear-gradient(
+      270deg,
+      rgba(250, 75, 180, 0.1) 0%,
+      rgba(237, 50, 207, 0.1) 100%
+    );
+    .price {
+      font-weight: 700;
+    }
+  }
 }
 .btn_price_wrapper {
   width: 100%;

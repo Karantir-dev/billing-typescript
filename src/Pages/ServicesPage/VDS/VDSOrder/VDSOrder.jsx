@@ -40,9 +40,10 @@ export default function VDSOrder() {
 
   const [recipe, setRecipe] = useState('null')
 
-  const filteredList = tariffsList.filter(el =>
-    tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
-  )
+  const filteredList = tariffsList
+    .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
+    .filter(el => el.pricelist.$ !== '6322')
+
   const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {
