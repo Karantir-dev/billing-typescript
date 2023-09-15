@@ -331,7 +331,7 @@ const setOrderData =
           [register.Disk_space]: values.Disk_space,
           [register.IP_addresses_count]: values.IP_addresses_count,
           [register.Memory]: values.Memory,
-          [register.Port_speed]: values.Port_speed.slice(0, 3),
+          [register.Port_speed]: values.Port_speed.split(' ')[0],
           licence_agreement: values.agreement,
           server_name: values?.server_name,
           order_count: String(count),

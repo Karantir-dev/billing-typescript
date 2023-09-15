@@ -39,10 +39,11 @@ export default function VDSOrder() {
   const [dataFromSite, setDataFromSite] = useState(null)
 
   const [recipe, setRecipe] = useState('null')
+  const VDS_IDS_EXCLUDE = ['6322', '6334']
+  const filteredList = tariffsList
+    .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
+    .filter(el => !VDS_IDS_EXCLUDE.includes(el.pricelist.$))
 
-  const filteredList = tariffsList.filter(el =>
-    tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true,
-  )
   const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {
