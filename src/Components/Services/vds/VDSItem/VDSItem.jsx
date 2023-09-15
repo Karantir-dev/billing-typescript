@@ -8,6 +8,7 @@ import { useOutsideAlerter } from '@utils'
 import { useNavigate } from 'react-router-dom'
 import { SITE_URL } from '@config/config'
 import s from './VDSItem.module.scss'
+import { VDS_IDS_EXCLUDE } from '@utils/constants'
 
 export default function VDSItem({
   server,
@@ -59,7 +60,11 @@ export default function VDSItem({
     setOriginName(value)
   }
 
-  return (
+  const serverTariff = VDS_IDS_EXCLUDE.includes(server.pricelist_id.$)
+    ? server?.pricelist?.$.split('/')[0]
+    : server?.pricelist?.$
+
+    return (
     <div className={s.item_wrapper}>
       <CheckBox
         className={s.check_box}
@@ -112,7 +117,7 @@ export default function VDSItem({
         </span>
         <ServerState className={s.value} server={server} />
         <span className={s.value}>
-          {server?.pricelist?.$}
+          {serverTariff}
           <span className={s.price}>
             {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
           </span>
