@@ -765,7 +765,7 @@ export default function DedicOrderPage() {
                       item,
                       values.datacenter,
                       setTarifList,
-                      setNewVds
+                      setNewVds,
                     ),
                   )
                 }}
