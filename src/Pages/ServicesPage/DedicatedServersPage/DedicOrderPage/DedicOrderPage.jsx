@@ -289,9 +289,9 @@ export default function DedicOrderPage() {
 
   // VDS
   const setNewVds = data => {
-    const vdsId = ['6322']
+    const VDS_IDS = ['6322']
     const vdsList = data
-      .filter(el => vdsId.includes(el.pricelist.$))
+      .filter(el => VDS_IDS.includes(el.pricelist.$))
       .map(el => ({ ...el, isVds: true }))
 
     dispatch(dedicActions.setVDSList(vdsList))
