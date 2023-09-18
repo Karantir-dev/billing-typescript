@@ -16,8 +16,8 @@ export default function useAnalyticsSender() {
   const [cartData, setCartData] = useState(null)
 
   useEffect(() => {
-    const data = { p_num: 1, p_cnt: 15 }
-    dispatch(billingOperations.getPayments(data))
+    const data = { p_num: 1, p_cnt: 15, status: '' }
+    dispatch(billingOperations.setPaymentsFilters(data))
   }, [])
 
   useEffect(() => {
