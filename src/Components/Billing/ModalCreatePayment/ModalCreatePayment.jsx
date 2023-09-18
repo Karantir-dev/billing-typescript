@@ -204,6 +204,15 @@ export default function ModalCreatePayment(props) {
       data['alfabank_login'] = values?.alfabank_login
     }
 
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
@@ -502,29 +511,38 @@ export default function ModalCreatePayment(props) {
                                 )
                               }}
                               type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod?.$ ===
-                                  values?.slecetedPayMethod?.paymethod?.$,
-                              },
-                                { [s.withHint]: paymethod?.$ === '71' })}
+                              className={cn(
+                                s.paymentMethodBtn,
+                                {
+                                  [s.selected]:
+                                    paymethod?.$ ===
+                                    values?.slecetedPayMethod?.paymethod?.$,
+                                },
+                                { [s.withHint]: paymethod?.$ === '71' },
+                              )}
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
                                 <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                <span className={cn({ [s.methodDescr]: paymethod?.$ === '71' })}>
+                                <span
+                                  className={cn({
+                                    [s.methodDescr]: paymethod?.$ === '71',
+                                  })}
+                                >
                                   {name?.$}
                                 </span>
                               </div>
 
-                              {paymethod?.$ === '71' && <HintWrapper
-                                        popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', { ns: 'other' })}
-                                        wrapperClassName={cn(s.infoBtnCard)}
-                                        bottom
-                                    >
-                                <Icon name="Info" />
-                                    </HintWrapper>}
+                              {paymethod?.$ === '71' && (
+                                <HintWrapper
+                                  popupClassName={s.cardHintWrapper}
+                                  label={t('Paypalich description', { ns: 'other' })}
+                                  wrapperClassName={cn(s.infoBtnCard)}
+                                  bottom
+                                >
+                                  <Icon name="Info" />
+                                </HintWrapper>
+                              )}
                             </button>
                           )
                         })}

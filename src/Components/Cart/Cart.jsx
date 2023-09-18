@@ -332,6 +332,15 @@ export default function Component() {
 
     if (window.fbq) window.fbq('track', 'AddPaymentInfo')
 
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
     const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
   }
@@ -1152,19 +1161,27 @@ export default function Component() {
                                       }
                                     }}
                                     type="button"
-                                    className={cn(s.paymentMethodBtn, {
-                                      [s.selected]:
-                                        paymethod_type?.$ ===
-                                          values?.selectedPayMethod?.paymethod_type?.$ &&
-                                        paymethod?.$ ===
-                                          values?.selectedPayMethod?.paymethod?.$,
-                                    },
-                                    {[s.withHint]: paymethod?.$ === '71'})}
+                                    className={cn(
+                                      s.paymentMethodBtn,
+                                      {
+                                        [s.selected]:
+                                          paymethod_type?.$ ===
+                                            values?.selectedPayMethod?.paymethod_type
+                                              ?.$ &&
+                                          paymethod?.$ ===
+                                            values?.selectedPayMethod?.paymethod?.$,
+                                      },
+                                      { [s.withHint]: paymethod?.$ === '71' },
+                                    )}
                                     key={name?.$}
                                   >
                                     <div className={s.descrWrapper}>
                                       <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                      <span className={cn({[s.methodDescr]: paymethod?.$ === '71'})}>
+                                      <span
+                                        className={cn({
+                                          [s.methodDescr]: paymethod?.$ === '71',
+                                        })}
+                                      >
                                         {paymentName}
                                         {balance?.length > 0 && (
                                           <>
@@ -1176,14 +1193,18 @@ export default function Component() {
                                         )}
                                       </span>
                                     </div>
-                                    {paymethod?.$ === '71' && <HintWrapper
+                                    {paymethod?.$ === '71' && (
+                                      <HintWrapper
                                         popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', { ns: 'other' })}
+                                        label={t('Paypalich description', {
+                                          ns: 'other',
+                                        })}
                                         wrapperClassName={cn(s.infoBtnCard)}
                                         bottom
-                                    >
-                                      <Icon name="Info" />
-                                    </HintWrapper>}
+                                      >
+                                        <Icon name="Info" />
+                                      </HintWrapper>
+                                    )}
                                   </button>
                                 )
                               })}
