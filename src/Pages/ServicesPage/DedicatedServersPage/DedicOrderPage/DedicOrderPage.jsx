@@ -16,7 +16,13 @@ import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { dedicOperations, dedicSelectors, userOperations } from '@redux'
+import {
+  dedicActions,
+  dedicOperations,
+  dedicSelectors,
+  userOperations,
+  vdsOperations,
+} from '@redux'
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { checkIfTokenAlive, useScrollToElement, translatePeriod } from '@utils'
@@ -27,6 +33,7 @@ import 'swiper/swiper.min.css'
 
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
+import { VDS_IDS_TO_SHOW } from '@src/utils/constants'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -39,21 +46,26 @@ export default function DedicOrderPage() {
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
 
   const tarifsList = useSelector(dedicSelectors.getTafifList)
+  const vdsList = useSelector(dedicSelectors.getVDSList)
   const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const deskOrHigher = useMediaQuery({ query: '(min-width: 1549px)' })
 
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
-  // const [datacenter, setDatacenter] = useState(tarifList?.currentDatacenter)
-  // const [paymentPeriod, setPaymentPeriod] = useState(null)
+  const [vdsParameters, setVdsParameters] = useState(null)
+  const [recipe, setRecipe] = useState('null')
+  const [selectedTariffId, setSelectedTariffId] = useState()
+
   const [price, setPrice] = useState('')
   const [filters, setFilters] = useState([])
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
 
-  const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
+  const [scrollElem, runScroll] = useScrollToElement({
+    condition: parameters || vdsParameters,
+  })
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -117,9 +129,9 @@ export default function DedicOrderPage() {
   let tariffsListToRender = []
 
   if (filters.length === 0) {
-    tariffsListToRender = tarifList?.tarifList
+    tariffsListToRender = tarifList?.tarifList || []
   } else {
-    tariffsListToRender = filteredTariffList
+    tariffsListToRender = filteredTariffList || []
   }
 
   const parseLocations = () => {
@@ -130,7 +142,10 @@ export default function DedicOrderPage() {
   }
 
   // RENDER ALL SELECTS 'ostempl', setFieldValue, values.ostempl
-  const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
+  const renderSoftwareOSFields = (values, fieldName, setFieldValue, state, ostempl) => {
+    if (isTarifChosen === 'vds') {
+      return renderSoftwareOSFieldsVDS(values, fieldName, setFieldValue, state, ostempl)
+    }
     let dataArr = parameters?.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
@@ -246,7 +261,7 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(dedicOperations.getTarifs())
+      dispatch(dedicOperations.getTarifs(setNewVds))
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }
@@ -264,7 +279,7 @@ export default function DedicOrderPage() {
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
-    domainname: Yup.string().matches(
+    domain: Yup.string().matches(
       /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/,
       t('licence_error'),
     ),
@@ -272,6 +287,222 @@ export default function DedicOrderPage() {
       .required('The terms and conditions must be accepted.')
       .oneOf([true], 'The terms and conditions must be accepted.'),
   })
+
+  // VDS
+  const setNewVds = data => {
+    const vdsList = data
+      .filter(el => VDS_IDS_TO_SHOW.includes(el.pricelist.$))
+      .map(el => ({ ...el, isVds: true }))
+
+    dispatch(dedicActions.setVDSList(vdsList))
+  }
+
+  const renderSoftwareOSFieldsVDS = (
+    values,
+    fieldName,
+    setFieldValue,
+    state,
+    ostempl,
+  ) => {
+    let dataArr = vdsParameters.slist.find(el => el.$name === fieldName).val
+    const elemsData = {}
+    if (fieldName === 'recipe') {
+      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      elemsData.null = [{ $key: 'null', $: t('without_software', { ns: 'vds' }) }]
+    }
+
+    dataArr.forEach(element => {
+      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
+
+      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
+        elemsData[itemName] = [element]
+      } else {
+        elemsData[itemName].push(element)
+      }
+    })
+
+    return Object.entries(elemsData).map(([name, el]) => {
+      if (el.length > 1) {
+        const optionsList = el.map(({ $key, $ }) => ({
+          value: $key,
+          label: $,
+        }))
+
+        return (
+          <SoftwareOSSelect
+            key={optionsList[0].value}
+            iconName={name}
+            itemsList={optionsList}
+            state={state}
+            getElement={value => {
+              setFieldValue(fieldName, value)
+              if (fieldName === 'ostempl') {
+                setRecipe('null')
+                vdsParameters[fieldName].$ = value
+                setVdsParameters({ ...vdsParameters })
+              } else {
+                setRecipe(value)
+              }
+
+              if (value.includes('vestacp')) {
+                onChangeField(
+                  values.period,
+                  { ...values, recipe: value, Control_panel: '97' },
+                  'Control_panel',
+                )
+              }
+            }}
+          />
+        )
+      } else {
+        return (
+          <SoftwareOSBtn
+            key={el[0].$key}
+            value={el[0].$key}
+            state={state}
+            iconName={name}
+            label={el[0].$}
+            onClick={value => {
+              if (fieldName === 'ostempl') {
+                setRecipe('null')
+                vdsParameters[fieldName].$ = value
+                setVdsParameters({ ...vdsParameters })
+              } else {
+                setRecipe(value)
+              }
+            }}
+          />
+        )
+      }
+    })
+  }
+
+  const onChangeField = (period, values, fieldName) => {
+    dispatch(
+      vdsOperations.changeOrderFormField(
+        period,
+        values,
+        recipe,
+        values.tarif,
+        vdsParameters.register[fieldName] || fieldName,
+        setVdsParameters,
+        vdsParameters.register,
+      ),
+    )
+  }
+
+  const getOptionsListExtended = fieldName => {
+    if (vdsParameters && vdsParameters.slist) {
+      const optionsList = vdsParameters.slist.find(elem => elem.$name === fieldName)?.val
+
+      let firstItem = 0
+
+      return optionsList
+        ?.filter(el => el?.$)
+        ?.map(({ $key, $ }, index) => {
+          let label = ''
+          let withSale = false
+          let words = []
+
+          if (fieldName === 'Memory') {
+            words = $?.match(/[\d|.|\\+]+/g)
+
+            if (words?.length > 0 && index === 0) {
+              firstItem = words[0]
+            }
+
+            if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+              withSale = true
+            }
+          }
+
+          if (withSale && words?.length > 0) {
+            label = (
+              <span className={s.selectWithSale}>
+                <div className={s.sale55Icon}>-55%</div>
+                <span className={s.saleSpan}>
+                  {`${words[0]} Gb (`}
+                  <span className={s.memorySale}>
+                    {Number(words[1] / 0.45).toFixed(2)}
+                  </span>
+                  {` ${Number(words[1]).toFixed(2)} EUR/${t('short_month', {
+                    ns: 'other',
+                  })})`}
+                </span>
+              </span>
+            )
+          } else if (fieldName === 'Memory') {
+            label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', {
+              ns: 'other',
+            })})`
+          } else if ($.includes('EUR ')) {
+            label = translatePeriodText($.trim())
+          } else {
+            label = t($.trim())
+          }
+          return {
+            value: $key,
+            label: label,
+            sale: withSale,
+            newPrice: Number(words[1]).toFixed(2),
+            oldPrice: (Number(words[1]) + words[1] * 0.55).toFixed(2),
+          }
+        })
+    }
+    return []
+  }
+
+  const translatePeriodText = sentence => {
+    const labelArr = sentence.split('EUR ')
+
+    return (
+      labelArr[0] +
+      'EUR ' +
+      t(labelArr[1]?.replace(')', ''), { ns: 'vds' }) +
+      (sentence.includes(')') ? ')' : '')
+    )
+  }
+
+  const getControlPanelList = fieldName => {
+    const optionsList = vdsParameters.slist.find(elem => elem.$name === fieldName)?.val
+
+    return optionsList?.map(({ $key, $ }) => {
+      let label = translatePeriodText($.trim())
+
+      label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
+      return { value: $key, label: label }
+    })
+  }
+
+  const getPortSpeed = () => {
+    const temp = vdsParameters?.slist?.find(el => el.$name === 'Port_speed')?.val
+    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
+    return value ? value : ''
+  }
+
+  const onFormSubmitVds = values => {
+    const saleMemory = getOptionsListExtended('Memory')?.find(
+      e => e?.value === values.Memory,
+    ).sale
+
+    dispatch(
+      userOperations.cleanBsketHandler(() =>
+        dispatch(
+          vdsOperations.setOrderData(
+            values.period,
+            1,
+            recipe,
+            values,
+            selectedTariffId,
+            vdsParameters.register,
+            saleMemory,
+          ),
+        ),
+      ),
+    )
+  }
+
+  const totalPrice = +vdsParameters?.orderinfo?.$?.match(/Total amount: (.+?)(?= EUR)/)[1]
 
   const handleSubmit = values => {
     const {
@@ -281,7 +512,7 @@ export default function DedicOrderPage() {
       managePanelName,
       portSpeedName,
       autoprolong,
-      domainname,
+      domain,
       ostempl,
       recipe,
       portSpeed,
@@ -291,28 +522,30 @@ export default function DedicOrderPage() {
       server_name,
     } = values
 
-    dispatch(
-      userOperations.cleanBsketHandler(() =>
-        dispatch(
-          dedicOperations.orderServer(
-            autoprolong,
-            datacenter,
-            period,
-            tarif,
-            domainname,
-            ostempl,
-            recipe,
-            portSpeed,
-            portSpeedName,
-            managePanelName,
-            ipTotal,
-            ipName,
-            managePanel,
-            server_name,
+    isTarifChosen === 'vds'
+      ? onFormSubmitVds(values)
+      : dispatch(
+          userOperations.cleanBsketHandler(() =>
+            dispatch(
+              dedicOperations.orderServer(
+                autoprolong,
+                datacenter,
+                period,
+                tarif,
+                domain,
+                ostempl,
+                recipe,
+                portSpeed,
+                portSpeedName,
+                managePanelName,
+                ipTotal,
+                ipName,
+                managePanel,
+                server_name,
+              ),
+            ),
           ),
-        ),
-      ),
-    )
+        )
   }
 
   return (
@@ -328,7 +561,7 @@ export default function DedicOrderPage() {
           tarif: dataFromSite?.pricelist || null,
           period: '1',
           processor: null,
-          domainname: '',
+          domain: '',
           ipTotal: '1',
           price: null,
           license: true,
@@ -346,6 +579,7 @@ export default function DedicOrderPage() {
                   e => e?.pricelist?.$ === cartData?.pricelist,
                 )
                 setParameters(null)
+                setVdsParameters(null)
                 setTarifChosen(true)
                 if (tariff) {
                   setPrice(parsePrice(tariff?.price?.$)?.amoumt)
@@ -373,6 +607,24 @@ export default function DedicOrderPage() {
               })
             }
           }, [tarifList])
+
+          useEffect(() => {
+            if (isTarifChosen === 'vds' && vdsParameters) {
+              setFieldValue('ostempl', vdsParameters?.ostempl?.$)
+              setFieldValue('recipe', vdsParameters?.recipe?.$)
+              setFieldValue('autoprolong', vdsParameters?.autoprolong?.$)
+              setFieldValue('domain', vdsParameters?.domain?.$)
+              setFieldValue('CPU_count', vdsParameters?.CPU_count)
+              setFieldValue('Memory', vdsParameters?.Memory)
+              setFieldValue('Disk_space', vdsParameters?.Disk_space)
+              setFieldValue('Port_speed', getPortSpeed())
+              setFieldValue('Control_panel', vdsParameters?.Control_panel)
+              setFieldValue('IP_addresses_count', vdsParameters?.IP_addresses_count)
+              setFieldValue('server_name', vdsParameters?.server_name?.$)
+              setFieldValue('agreement', 'on')
+            }
+          }, [selectedTariffId, vdsParameters])
+
           return (
             <Form className={s.form}>
               <div className={s.datacenter_block}>
@@ -394,6 +646,7 @@ export default function DedicOrderPage() {
                           // setPaymentPeriod(item)
                           setFieldValue('datacenter', item?.$key)
                           setParameters(null)
+                          setVdsParameters(null)
                           setFilters([])
                           setTarifChosen(false)
                           dispatch(
@@ -448,6 +701,7 @@ export default function DedicOrderPage() {
                                 }
                                 resetForm()
                                 setParameters(null)
+                                setVdsParameters(null)
                                 setTarifChosen(false)
                               }}
                               view="radio"
@@ -481,6 +735,7 @@ export default function DedicOrderPage() {
                                 }
                                 resetForm()
                                 setParameters(null)
+                                setVdsParameters(null)
                                 setTarifChosen(false)
                               }}
                               view="radio"
@@ -502,6 +757,7 @@ export default function DedicOrderPage() {
                   setFieldValue('period', item)
                   // setPaymentPeriod(item)
                   setParameters(null)
+                  setVdsParameters(null)
                   setTarifChosen(false)
 
                   dispatch(
@@ -509,6 +765,7 @@ export default function DedicOrderPage() {
                       item,
                       values.datacenter,
                       setTarifList,
+                      setNewVds,
                     ),
                   )
                 }}
@@ -522,7 +779,7 @@ export default function DedicOrderPage() {
 
               {deskOrHigher ? (
                 <div className={s.tarifs_block}>
-                  {tariffsListToRender
+                  {[...vdsList, ...tariffsListToRender]
                     ?.filter(item => item.order_available.$ === 'on')
                     ?.map(item => {
                       return (
@@ -534,11 +791,13 @@ export default function DedicOrderPage() {
                           setParameters={setParameters}
                           setFieldValue={setFieldValue}
                           setPrice={setPrice}
-                          setTarifChosen={() => {
-                            setTarifChosen(true)
+                          setTarifChosen={tariff => {
+                            setTarifChosen(tariff)
                             runScroll()
                           }}
                           periodName={periodName}
+                          setVdsParameters={setVdsParameters}
+                          setSelectedTariffId={setSelectedTariffId}
                         />
                       )
                     })}
@@ -576,7 +835,7 @@ export default function DedicOrderPage() {
                       }}
                       onSwiper={setSwiperRef}
                     >
-                      {tariffsListToRender
+                      {[...vdsList, ...tariffsListToRender]
                         ?.filter(item => item.order_available.$ === 'on')
                         ?.map(item => {
                           return (
@@ -592,11 +851,13 @@ export default function DedicOrderPage() {
                                 setParameters={setParameters}
                                 setFieldValue={setFieldValue}
                                 setPrice={setPrice}
-                                setTarifChosen={() => {
-                                  setTarifChosen(true)
+                                setTarifChosen={tariff => {
+                                  setTarifChosen(tariff)
                                   runScroll()
                                 }}
                                 periodName={periodName}
+                                setVdsParameters={setVdsParameters}
+                                setSelectedTariffId={setSelectedTariffId}
                               />
                             </SwiperSlide>
                           )
@@ -626,19 +887,25 @@ export default function DedicOrderPage() {
                 </button>
               </div>
 
-              {parameters && (
+              {(parameters || vdsParameters) && (
                 <div className={s.parameters_block}>
                   <p ref={scrollElem} className={s.params}>
                     {t('os')}
                   </p>
                   <div className={s.software_OS_List}>
-                    {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
+                    {renderSoftwareOSFields(
+                      values,
+                      'ostempl',
+                      setFieldValue,
+                      values.ostempl,
+                    )}
                   </div>
 
                   <p className={s.params}>{t('recipe')}</p>
 
                   <div className={s.software_OS_List}>
                     {renderSoftwareOSFields(
+                      values,
                       'recipe',
                       setFieldValue,
                       values.recipe,
@@ -649,30 +916,99 @@ export default function DedicOrderPage() {
                   <p className={s.params}>{t('parameters')}</p>
 
                   <div className={s.parameters_wrapper}>
+                    {vdsParameters && (
+                      <>
+                        <Select
+                          itemsList={getOptionsListExtended('Memory')}
+                          value={values.Memory}
+                          saleIcon={
+                            <Icon
+                              name="SaleFiftyFive"
+                              style={{ marginLeft: 7, position: 'absolute', top: -10 }}
+                            />
+                          }
+                          label={`${t('memory', { ns: 'vds' })}:`}
+                          getElement={value => {
+                            setFieldValue('Memory', value)
+
+                            onChangeField(
+                              values.period,
+                              { ...values, Memory: value },
+                              'Memory',
+                            )
+                          }}
+                          className={s.select}
+                          isShadow
+                        />
+
+                        <Select
+                          value={values.Disk_space}
+                          itemsList={getOptionsListExtended('Disk_space')}
+                          getElement={value => {
+                            setFieldValue('Disk_space', value)
+
+                            onChangeField(
+                              values.period,
+                              { ...values, Disk_space: value },
+                              'Disk_space',
+                            )
+                          }}
+                          label={`${t('disk_space', { ns: 'vds' })}:`}
+                          className={s.select}
+                          isShadow
+                        />
+                        <Select
+                          value={values.CPU_count}
+                          itemsList={getOptionsListExtended('CPU_count')}
+                          getElement={value => {
+                            setFieldValue('CPU_count', value)
+                            onChangeField(
+                              values.period,
+                              { ...values, CPU_count: value },
+                              'CPU_count',
+                            )
+                          }}
+                          label={`${t('processors', { ns: 'vds' })}:`}
+                          className={s.select}
+                          isShadow
+                        />
+                        <InputField
+                          name="Port_speed"
+                          label={`${t('port_speed', { ns: 'vds' })}:`}
+                          isShadow
+                          disabled
+                          className={s.input_field_wrapper}
+                        />
+                      </>
+                    )}
                     <Select
                       height={50}
                       value={values.autoprolong}
                       label={`${t('autoprolong')}:`}
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
-                      itemsList={values?.autoprolonglList?.map(el => ({
-                        label: translatePeriod(el?.$, t),
-                        value: el.$key,
-                      }))}
+                      itemsList={
+                        isTarifChosen === 'vds'
+                          ? getOptionsListExtended('autoprolong')
+                          : values?.autoprolonglList?.map(el => ({
+                              label: translatePeriod(el?.$, t),
+                              value: el.$key,
+                            }))
+                      }
                       className={s.select}
                     />
                     <InputField
                       label={`${t('domain_name')}:`}
                       placeholder={`${t('domain_placeholder')}`}
-                      name="domainname"
+                      name="domain"
                       isShadow
-                      error={!!errors.domainname}
-                      touched={!!touched.domainname}
+                      error={!!errors.domain}
+                      touched={!!touched.domain}
                       className={s.input_field_wrapper}
                       inputClassName={s.text_area}
                       autoComplete="off"
                       type="text"
-                      value={values?.domainname}
+                      value={values?.domain}
                     />
 
                     <InputField
@@ -688,83 +1024,68 @@ export default function DedicOrderPage() {
                       type="text"
                       value={values?.server_name}
                     />
-
-                    {/* {
+                    {isTarifChosen === 'dedic' && (
                       <Select
                         height={50}
+                        value={values?.managePanel}
                         getElement={item => {
-                          setFieldValue('ostempl', item)
-                          setFieldValue('recipe', 'null')
+                          setFieldValue('managePanel', item)
+                          updatePrice(
+                            { ...values, managePanel: item },
+                            dispatch,
+                            setPrice,
+                          )
                         }}
                         isShadow
-                        label={t('os')}
-                        value={values?.ostempl}
-                        itemsList={values?.ostemplList?.map(el => {
-                          return { label: t(el.$), value: el.$key }
+                        label={`${t('license_to_panel', { ns: 'vds' })}:`}
+                        itemsList={values?.managePanellList?.map(el => {
+                          let labelText = el.$
+
+                          if (labelText.includes('Without a license')) {
+                            labelText = labelText.replace(
+                              'Without a license',
+                              t('Without a license'),
+                            )
+                          }
+
+                          if (labelText.includes('per month')) {
+                            labelText = labelText.replace('per month', t('per month'))
+                          }
+
+                          if (labelText.includes('Unlimited domains')) {
+                            labelText = labelText.replace(
+                              'Unlimited domains',
+                              t('Unlimited domains'),
+                            )
+                          }
+
+                          if (labelText.includes('domains')) {
+                            labelText = labelText.replace('domains', t('domains'))
+                          }
+
+                          return { label: labelText, value: el.$key }
                         })}
                         className={s.select}
                       />
-                    } */}
+                    )}
 
-                    {/* <Select
-                      height={50}
-                      getElement={item => setFieldValue('recipe', item)}
-                      isShadow
-                      label={t('recipe')}
-                      value={values?.recipe}
-                      placeholder={t('recipe_placeholder')}
-                      itemsList={values?.recipelList
-                        ?.filter(e => {
-                          return e.$depend === values.ostempl
-                        })
-                        .map(el => {
-                          return {
-                            label:
-                              el.$ === '-- none --' ? t('recipe_placeholder') : t(el.$),
-                            value: el.$key,
-                          }
-                        })}
-                      className={s.select}
-                    /> */}
-
-                    <Select
-                      height={50}
-                      value={values?.managePanel}
-                      getElement={item => {
-                        setFieldValue('managePanel', item)
-                        updatePrice({ ...values, managePanel: item }, dispatch, setPrice)
-                      }}
-                      isShadow
-                      label={`${t('license_to_panel', { ns: 'vds' })}:`}
-                      itemsList={values?.managePanellList?.map(el => {
-                        let labelText = el.$
-
-                        if (labelText.includes('Without a license')) {
-                          labelText = labelText.replace(
-                            'Without a license',
-                            t('Without a license'),
+                    {isTarifChosen === 'vds' && (
+                      <Select
+                        value={values.Control_panel}
+                        itemsList={getControlPanelList('Control_panel')}
+                        getElement={value => {
+                          setFieldValue('Control_panel', value)
+                          onChangeField(
+                            values.period,
+                            { ...values, Control_panel: value },
+                            'Control_panel',
                           )
-                        }
-
-                        if (labelText.includes('per month')) {
-                          labelText = labelText.replace('per month', t('per month'))
-                        }
-
-                        if (labelText.includes('Unlimited domains')) {
-                          labelText = labelText.replace(
-                            'Unlimited domains',
-                            t('Unlimited domains'),
-                          )
-                        }
-
-                        if (labelText.includes('domains')) {
-                          labelText = labelText.replace('domains', t('domains'))
-                        }
-
-                        return { label: labelText, value: el.$key }
-                      })}
-                      className={s.select}
-                    />
+                        }}
+                        label={`${t('license_to_panel', { ns: 'vds' })}:`}
+                        isShadow
+                        className={s.select}
+                      />
+                    )}
 
                     {values.datacenter === '8' && values?.portSpeedlList?.length > 0 && (
                       <Select
@@ -794,7 +1115,7 @@ export default function DedicOrderPage() {
                       />
                     )}
 
-                    {values?.ipList?.length > 0 && (
+                    {values?.ipList?.length > 0 && isTarifChosen === 'dedic' && (
                       <Select
                         height={50}
                         value={values?.ipTotal?.toString()}
@@ -817,46 +1138,24 @@ export default function DedicOrderPage() {
                         className={s.select}
                       />
                     )}
-                  </div>
 
-                  {/* <div className={s.terms_block} ref={licenceCheck}>
-                    <div className={s.checkbox_wrapper}>
-                      <CheckBox
-                        setValue={item => {
-                          if (touched.license && !!errors.license) {
-                            setFieldTouched('license', true)
-                          }
-
-                          setFieldValue('license', item)
-                        }}
-                        className={s.checkbox}
-                        error={!values.license && touched?.license}
+                    {isTarifChosen === 'vds' && (
+                      <InputField
+                        name="IP_addresses_count"
+                        label={`${t('count_ip', { ns: 'dedicated_servers' })}:`}
+                        isShadow
+                        disabled
+                        className={s.input_field_wrapper}
                       />
-
-                      <div className={s.terms_text}>
-                        {t('terms')}
-                        <br />
-                        <a
-                          className={s.turn_link}
-                          target="_blank"
-                          href={PRIVACY_URL}
-                          rel="noreferrer"
-                        >
-                          {`"${t('terms_2')}"`}
-                        </a>
-                      </div>
-                    </div>
-                    {!values.license && touched?.license && (
-                      <p className={s.license_error}>{errors.license}</p>
                     )}
-                  </div> */}
+                  </div>
                 </div>
               )}
 
               <div
                 className={classNames({
                   [s.buy_btn_block]: true,
-                  [s.active]: isTarifChosen,
+                  [s.active]: !!isTarifChosen,
                 })}
               >
                 <div className={s.container}>
@@ -864,23 +1163,23 @@ export default function DedicOrderPage() {
                     <div className={s.sum_price_wrapper}>
                       {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                       <span className={s.btn_price}>
-                        {price + ' €' + '/' + periodName}
+                        {(isTarifChosen === 'vds' ? totalPrice : price) +
+                          ' €' +
+                          '/' +
+                          periodName}
                       </span>
                     </div>
                   ) : (
                     <div className={s.sum_price_wrapper}>
                       {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                       <p className={s.btn_price_wrapper}>
-                        <span className={s.btn_price}>{'€' + price}</span>
+                        <span className={s.btn_price}>
+                          {'€' + (isTarifChosen === 'vds' ? totalPrice : price)}
+                        </span>
                         {'/' + periodName}
                       </p>
                     </div>
                   )}
-                  {/* <div className={s.sum_price_wrapper}>
-                    {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                    <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div> */}
-
                   <Button
                     className={s.buy_btn}
                     isShadow
@@ -910,7 +1209,7 @@ function updatePrice(formValues, dispatch, setNewPrice) {
       formValues.datacenter,
       formValues.period,
       formValues.tarif,
-      formValues.domainname,
+      formValues.domain,
       formValues.ostempl,
       formValues.recipe,
       formValues.portSpeed,

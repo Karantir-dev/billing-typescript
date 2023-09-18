@@ -334,6 +334,15 @@ export default function Component() {
 
     if (window.fbq) window.fbq('track', 'AddPaymentInfo')
 
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
     const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }

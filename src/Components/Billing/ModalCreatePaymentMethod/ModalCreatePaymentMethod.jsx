@@ -89,7 +89,7 @@ export default function Component(props) {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       country_legal:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
-      profile: values?.profile === 'new' ? 'add_new' : values?.profile,
+      profile: values?.profile ?? 'add_new',
       paymethod: '57',
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
@@ -104,6 +104,15 @@ export default function Component(props) {
         ' ',
       name: values?.person,
       offer_3: values['offer_3'] ? 'on' : 'off',
+    }
+
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = 'jobtitle'
+      data.rdirector = 'rdirector'
+      data.rjobtitle = 'rjobtitle'
+      data.ddirector = 'ddirector'
+      data.djobtitle = 'djobtitle'
+      data.baseaction = 'baseaction'
     }
 
     dispatch(billingOperations.finishAddPaymentMethod(data))

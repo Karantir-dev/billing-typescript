@@ -204,6 +204,15 @@ export default function ModalCreatePayment(props) {
       data['alfabank_login'] = values?.alfabank_login
     }
 
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
 
