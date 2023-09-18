@@ -92,29 +92,29 @@ export default function useAnalyticsSender() {
 
         // checks if the GTM is already loaded and sends analytics
         if (window.dataLayer?.find(el => el['gtm.start'])) {
-          // window?.dataLayer?.push(analyticsData)
-          // axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+          window?.dataLayer?.push(analyticsData)
+          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
-          // if (window.fbq) {
-          //   fbAnalytics.contents = cartData?.items?.map(el => ({
-          //     id: el.item_id,
-          //     quantity: 1,
-          //     name: el.item_name,
-          //     price: el.price,
-          //   }))
-          //   fbAnalytics.content_category = cartData?.items?.[0]?.item_category
+          if (window.fbq) {
+            fbAnalytics.contents = cartData?.items?.map(el => ({
+              id: el.item_id,
+              quantity: 1,
+              name: el.item_name,
+              price: el.price,
+            }))
+            fbAnalytics.content_category = cartData?.items?.[0]?.item_category
 
-          //   window.fbq('track', 'Purchase', fbAnalytics)
-          // }
+            window.fbq('track', 'Purchase', fbAnalytics)
+          }
 
-          console.log(JSON.stringify(analyticsData, null, 2))
           // if the GTM is absent we add extra field to the front analytics
         } else {
           analyticsData.gtm_absent = true
+
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
         }
 
-        // cookies.eraseCookie(`cartData_${paymentId}`)
+        cookies.eraseCookie(`cartData_${paymentId}`)
 
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
@@ -133,24 +133,21 @@ export default function useAnalyticsSender() {
 
           // checks if the GTM is already loaded and sends analytics
           if (window.dataLayer?.find(el => el['gtm.start'])) {
-            // window?.dataLayer?.push(analyticsData)
-            // axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+            window?.dataLayer?.push(analyticsData)
+            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
-            // if (window.fbq) {
-            //   window.fbq('track', 'Purchase', fbAnalytics)
-            // }
-
-            console.log('GTM', JSON.stringify(analyticsData, null, 2))
+            if (window.fbq) {
+              window.fbq('track', 'Purchase', fbAnalytics)
+            }
           } else {
-            console.log('withot GTM', JSON.stringify(analyticsData, null, 2))
-
             analyticsData.gtm_absent = true
+
             axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
           }
         }
       }
 
-      // cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
+      cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
   }, [paymentItem])
 }
