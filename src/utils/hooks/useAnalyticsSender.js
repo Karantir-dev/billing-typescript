@@ -16,8 +16,8 @@ export default function useAnalyticsSender() {
   const [cartData, setCartData] = useState(null)
 
   useEffect(() => {
-    const data = { p_num: 1, p_cnt: 15 }
-    dispatch(billingOperations.getPayments(data))
+    const data = { p_num: 1, p_cnt: 15, status: '' }
+    dispatch(billingOperations.setPaymentsFilters(data))
   }, [])
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function useAnalyticsSender() {
               item_id: 'lost_data',
               price: 0,
               item_category: 'lost_data',
-              quantity: 1,
+              quantity: 0,
             },
           ],
         },
@@ -88,7 +88,10 @@ export default function useAnalyticsSender() {
         if (cartData?.billorder === paymentItem?.billorder?.$) {
           analyticsData.ecommerce.coupon = cartData?.promocode
           analyticsData.ecommerce.items = cartData?.items
+        }
 
+        // checks if the GTM is already loaded and sends analytics
+        if (window.dataLayer?.find(el => el['gtm.start'])) {
           window?.dataLayer?.push(analyticsData)
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
@@ -104,16 +107,14 @@ export default function useAnalyticsSender() {
             window.fbq('track', 'Purchase', fbAnalytics)
           }
 
-          cookies.eraseCookie(`cartData_${paymentId}`)
-
-          // If there is NO saved product data
+          // if the GTM is absent we add extra field to the front analytics
         } else {
-          window?.dataLayer?.push(analyticsData)
+          analyticsData.gtm_absent = true
+
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
-          if (window.fbq) {
-            window.fbq('track', 'Purchase', fbAnalytics)
-          }
         }
+
+        cookies.eraseCookie(`cartData_${paymentId}`)
 
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
@@ -121,7 +122,6 @@ export default function useAnalyticsSender() {
           analyticsData.ecommerce.items = [
             {
               item_name: 'Refill',
-              item_id: paymentId,
               price: value || 0,
               item_category: 'Refill',
               quantity: 1,
@@ -131,13 +131,22 @@ export default function useAnalyticsSender() {
           fbAnalytics.content_type = 'Refill'
           fbAnalytics.content_ids = [paymentId]
 
-          window?.dataLayer?.push(analyticsData)
-          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
-          if (window.fbq) {
-            window.fbq('track', 'Purchase', fbAnalytics)
+          // checks if the GTM is already loaded and sends analytics
+          if (window.dataLayer?.find(el => el['gtm.start'])) {
+            window?.dataLayer?.push(analyticsData)
+            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+
+            if (window.fbq) {
+              window.fbq('track', 'Purchase', fbAnalytics)
+            }
+          } else {
+            analyticsData.gtm_absent = true
+
+            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
           }
         }
       }
+
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
   }, [paymentItem])

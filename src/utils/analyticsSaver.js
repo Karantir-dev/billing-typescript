@@ -7,14 +7,20 @@ export default function analyticsSaver(orderInfo, paymentID) {
   let items = [
     {
       item_name: 'Refill',
-      item_id: paymentID,
       price: orderAmount,
       item_category: 'Refill',
       quantity: 1,
     },
   ]
+  const fbAnalytics = {
+    value: orderAmount,
+    currency: 'EUR',
+    content_type: 'Refill',
+    content_category: 'Refill',
+    content_ids: [paymentID],
+  }
 
-  // if it is a service purchase
+  // if it is a service purchase - form analytics data
   if (orderInfo?.billorder) {
     items = orderInfo?.elemList?.map(e => {
       return {
@@ -25,6 +31,15 @@ export default function analyticsSaver(orderInfo, paymentID) {
         quantity: 1,
       }
     })
+    fbAnalytics.content_type = 'Service'
+    fbAnalytics.content_category = orderInfo?.elemList?.[0]?.['item.type']?.$
+
+    fbAnalytics.contents = orderInfo?.elemList?.map(e => ({
+      id: e['item.id']?.$,
+      quantity: 1,
+      name: e.pricelist_name?.$,
+      price: Number(e.cost?.$),
+    }))
   }
 
   // if it is the cryptocurrency payment method - send analytics
@@ -48,10 +63,19 @@ export default function analyticsSaver(orderInfo, paymentID) {
     }
 
     cookies.eraseCookie('payment_id')
-    window?.dataLayer?.push({ ecommerce: null })
-    window?.dataLayer?.push(analyticsData)
 
-    axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+    // checks if the GTM is already loaded and sends analytics
+    if (window.dataLayer?.find(el => el['gtm.start'])) {
+      window?.dataLayer?.push({ ecommerce: null })
+      window?.dataLayer?.push(analyticsData)
+      if (window.fbq) {
+        window.fbq('track', 'Purchase', fbAnalytics)
+      }
+      axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+    } else {
+      analyticsData.gtm_absent = true
+      axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+    }
 
     // if it is any other payment method - write down the order info into cookies
   } else {
