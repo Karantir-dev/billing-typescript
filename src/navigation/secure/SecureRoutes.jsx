@@ -274,6 +274,7 @@ const BillingScreen = () => {
   return (
     <Routes>
       <Route path=":path" element={<BillingPageLazy />} />
+      <Route path="*" element={<ErrorPageLazy />} />
     </Routes>
   )
 }
