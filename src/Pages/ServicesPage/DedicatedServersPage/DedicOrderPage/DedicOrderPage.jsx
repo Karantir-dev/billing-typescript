@@ -33,6 +33,7 @@ import 'swiper/swiper.min.css'
 
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
+import { VDS_IDS_TO_SHOW } from '@src/utils/constants'
 
 SwiperCore.use([EffectCoverflow, Pagination])
 
@@ -289,9 +290,8 @@ export default function DedicOrderPage() {
 
   // VDS
   const setNewVds = data => {
-    const VDS_IDS = ['6322']
     const vdsList = data
-      .filter(el => VDS_IDS.includes(el.pricelist.$))
+      .filter(el => VDS_IDS_TO_SHOW.includes(el.pricelist.$))
       .map(el => ({ ...el, isVds: true }))
 
     dispatch(dedicActions.setVDSList(vdsList))

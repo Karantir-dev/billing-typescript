@@ -19,6 +19,7 @@ import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
+import { VDS_IDS_EXCLUDE } from '@utils/constants'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -39,7 +40,6 @@ export default function VDSOrder() {
   const [dataFromSite, setDataFromSite] = useState(null)
 
   const [recipe, setRecipe] = useState('null')
-  const VDS_IDS_EXCLUDE = ['6322', '6334']
   const filteredList = tariffsList
     .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
     .filter(el => !VDS_IDS_EXCLUDE.includes(el.pricelist.$))

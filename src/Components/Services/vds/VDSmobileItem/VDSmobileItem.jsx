@@ -7,6 +7,7 @@ import { useOutsideAlerter } from '@utils'
 import { CheckBox, ServerState, EditCell, Icon } from '@components'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
+import { VDS_IDS_EXCLUDE } from '@utils/constants'
 
 import s from './VDSmobileItem.module.scss'
 
@@ -59,6 +60,10 @@ export default function VDSmobileItem({
       ? setActiveServices(activeServices?.filter(item => item?.id?.$ !== server?.id?.$))
       : setActiveServices([...activeServices, server])
   }
+
+  const serverTariff = VDS_IDS_EXCLUDE.includes(server.pricelist_id.$)
+  ? server?.pricelist?.$.split('/')[0]
+  : server?.pricelist?.$
 
   return (
     <li className={s.item}>
@@ -252,7 +257,7 @@ export default function VDSmobileItem({
       <span className={s.value}>{server?.ostempl?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
       <span className={s.value}>
-        {server?.pricelist?.$}
+        {serverTariff}
         <span className={s.price}>
           {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
         </span>
