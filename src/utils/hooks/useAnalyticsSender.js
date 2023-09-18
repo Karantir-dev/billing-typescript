@@ -102,8 +102,6 @@ export default function useAnalyticsSender() {
             fbAnalytics.content_category = cartData?.items?.[0]?.item_category
 
             window.fbq('track', 'Purchase', fbAnalytics)
-          } else {
-            console.log('fbq absent 1 ')
           }
 
           cookies.eraseCookie(`cartData_${paymentId}`)
@@ -114,8 +112,6 @@ export default function useAnalyticsSender() {
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
           if (window.fbq) {
             window.fbq('track', 'Purchase', fbAnalytics)
-          } else {
-            console.log('fbq absent 2 ')
           }
         }
 
@@ -139,8 +135,6 @@ export default function useAnalyticsSender() {
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
           if (window.fbq) {
             window.fbq('track', 'Purchase', fbAnalytics)
-          } else {
-            console.log('fbq absent 3 ')
           }
         }
       }

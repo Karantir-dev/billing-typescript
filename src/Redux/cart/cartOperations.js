@@ -284,9 +284,7 @@ const setPaymentMethods =
         }))
         fraudData.shopping_cart = itemsForFraudData
 
-        console.log('fraudData', fraudData)
-
-        // fraudCheckSender(sessionId, fraudData)
+        fraudCheckSender(sessionId, fraudData)
 
         axiosInstance
           .post(

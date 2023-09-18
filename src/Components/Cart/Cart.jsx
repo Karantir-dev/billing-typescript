@@ -35,6 +35,7 @@ import {
   authSelectors,
   settingsSelectors,
   cartActions,
+  userSelectors,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
@@ -107,6 +108,7 @@ export default function Component() {
   )
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
     setPaymentsMethodList(data)
@@ -116,7 +118,7 @@ export default function Component() {
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
     dispatch(cartOperations.getSalesList(setSalesList))
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {

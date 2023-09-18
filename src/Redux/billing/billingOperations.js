@@ -641,13 +641,13 @@ const createPaymentMethod =
               fraudData.shopping_cart = [
                 {
                   category: 'Balance top up',
-                  price: body.amount,
+                  price: Number(body.amount),
                   item_id: data.doc?.payment_id?.$,
                 },
               ]
               fraudCheckSender(sessionId, fraudData)
 
-              // dispatch(getPaymentMethodPage(data.doc.ok.$))
+              dispatch(getPaymentMethodPage(data.doc.ok.$))
               setCreatePaymentModal(true)
             }
           })

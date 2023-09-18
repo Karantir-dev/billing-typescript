@@ -1,27 +1,31 @@
-// import qs from 'qs'
-// import { axiosInstance } from '@config/axiosInstance'
+import qs from 'qs'
+import { axiosInstance } from '@config/axiosInstance'
 
 export default function fraudCheckSender(sessionId, fraudData) {
-  console.log({
-    func: 'zomrofrautcheck',
-    auth: sessionId,
-    sessid: sessionId,
-    out: 'json',
-    sok: 'ok',
-    data: fraudData,
-  })
+  // console.log({
+  //   func: 'zomrofrautcheck',
+  //   auth: sessionId,
+  //   sessid: sessionId,
+  //   out: 'json',
+  //   sok: 'ok',
+  //   data: fraudData,
+  // })
 
-  // axiosInstance.post(
-  //   '/',
-  //   qs.stringify({
-  //     func: 'zomrofrautcheck',
-  //     auth: sessionId,
-  //     sessid: sessionId,
-  //     out: 'json',
-  //     sok: 'ok',
-  //     data: fraudData,
-  //   }),
-  // )
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'zomrofrautcheck',
+        auth: sessionId,
+        sessid: sessionId,
+        out: 'json',
+        sok: 'ok',
+        data: fraudData,
+      }),
+    )
+    .catch(err => {
+      console.log(err.msg)
+    })
 }
 
 // tocken = 'f88274ab3fa4695258c798ff'

@@ -25,10 +25,11 @@ import {
   authSelectors,
   settingsSelectors,
   cartOperations,
+  userSelectors,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -83,6 +84,7 @@ export default function ModalCreatePayment(props) {
   const [alfaLogin, setAlfaLogin] = useState('')
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const filteredPayment_method = additionalPayMethodts?.find(
     e => e?.$key === selectedAddPaymentMethod,
@@ -90,7 +92,7 @@ export default function ModalCreatePayment(props) {
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {
@@ -146,6 +148,8 @@ export default function ModalCreatePayment(props) {
       })
     }
   }, [selectedPayerFields])
+
+  const fraudData = useFormFraudCheckData()
 
   const createPaymentMethodHandler = values => {
     const data = {
@@ -213,7 +217,9 @@ export default function ModalCreatePayment(props) {
       data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
     }
 
-    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
+    dispatch(
+      billingOperations.createPaymentMethod(data, setCreatePaymentModal, fraudData),
+    )
   }
 
   const validationSchema = Yup.object().shape({
