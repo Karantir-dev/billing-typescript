@@ -170,7 +170,7 @@ export default function ModalCreatePayment(props) {
         payersSelectedFields?.country ||
         payersSelectedFields?.country_physical ||
         '',
-      profile: values?.profile === 'new' ? '' : values?.profile,
+      profile: values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
       paymethod: values?.slecetedPayMethod?.paymethod?.$,
@@ -202,6 +202,20 @@ export default function ModalCreatePayment(props) {
 
     if (values?.alfabank_login && values?.alfabank_login?.length > 0) {
       data['alfabank_login'] = values?.alfabank_login
+    }
+
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
+    // facebook pixel event
+    if (!values?.profile && window.fbq) {
+      window.fbq('track', 'AddPaymentInfo')
     }
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
@@ -269,7 +283,8 @@ export default function ModalCreatePayment(props) {
               initialValues={{
                 profile:
                   selectedPayerFields?.profile ||
-                  payersList[payersList?.length - 1]?.id?.$,
+                  payersList[payersList?.length - 1]?.id?.$ ||
+                  '',
                 amount: amount || '',
                 slecetedPayMethod: slecetedPayMethod || undefined,
                 name: company || selectedPayerFields?.name || '',
@@ -502,29 +517,38 @@ export default function ModalCreatePayment(props) {
                                 )
                               }}
                               type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod?.$ ===
-                                  values?.slecetedPayMethod?.paymethod?.$,
-                              },
-                                { [s.withHint]: paymethod?.$ === '71' })}
+                              className={cn(
+                                s.paymentMethodBtn,
+                                {
+                                  [s.selected]:
+                                    paymethod?.$ ===
+                                    values?.slecetedPayMethod?.paymethod?.$,
+                                },
+                                { [s.withHint]: paymethod?.$ === '71' },
+                              )}
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
                                 <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                <span className={cn({ [s.methodDescr]: paymethod?.$ === '71' })}>
+                                <span
+                                  className={cn({
+                                    [s.methodDescr]: paymethod?.$ === '71',
+                                  })}
+                                >
                                   {name?.$}
                                 </span>
                               </div>
 
-                              {paymethod?.$ === '71' && <HintWrapper
-                                        popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', { ns: 'other' })}
-                                        wrapperClassName={cn(s.infoBtnCard)}
-                                        bottom
-                                    >
-                                <Icon name="Info" />
-                                    </HintWrapper>}
+                              {paymethod?.$ === '71' && (
+                                <HintWrapper
+                                  popupClassName={s.cardHintWrapper}
+                                  label={t('Paypalich description', { ns: 'other' })}
+                                  wrapperClassName={cn(s.infoBtnCard)}
+                                  bottom
+                                >
+                                  <Icon name="Info" />
+                                </HintWrapper>
+                              )}
                             </button>
                           )
                         })}
