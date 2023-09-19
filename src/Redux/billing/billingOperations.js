@@ -639,7 +639,7 @@ const createPaymentMethod =
               analyticsSaver(body, data.doc?.payment_id?.$)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
-              setCreatePaymentModal(true)
+              setCreatePaymentModal(false)
             }
           })
           .catch(error => {
