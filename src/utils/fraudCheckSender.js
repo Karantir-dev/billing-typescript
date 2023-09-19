@@ -23,7 +23,6 @@ export default function fraudCheckSender(sessionId, fraudData) {
         data: JSON.stringify(fraudData),
       }),
     )
-    .then(data => console.log(data))
     .catch(err => {
       console.log(err.msg)
     })

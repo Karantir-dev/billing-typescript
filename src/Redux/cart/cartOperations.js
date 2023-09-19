@@ -339,7 +339,6 @@ const setPaymentMethods =
                 if (body?.promocode) cartData.promocode = body.promocode
 
                 analyticsSaver(cartData, data.doc?.payment_id?.$)
-                fraudCheckSender(sessionId)
 
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
