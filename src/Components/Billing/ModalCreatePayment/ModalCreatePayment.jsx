@@ -170,7 +170,7 @@ export default function ModalCreatePayment(props) {
         payersSelectedFields?.country ||
         payersSelectedFields?.country_physical ||
         '',
-      profile: values?.profile === 'new' ? '' : values?.profile,
+      profile: values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
       paymethod: values?.slecetedPayMethod?.paymethod?.$,
@@ -211,6 +211,11 @@ export default function ModalCreatePayment(props) {
       data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
       data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
       data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
+    // facebook pixel event
+    if (!values?.profile && window.fbq) {
+      window.fbq('track', 'AddPaymentInfo')
     }
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
@@ -278,7 +283,8 @@ export default function ModalCreatePayment(props) {
               initialValues={{
                 profile:
                   selectedPayerFields?.profile ||
-                  payersList[payersList?.length - 1]?.id?.$,
+                  payersList[payersList?.length - 1]?.id?.$ ||
+                  '',
                 amount: amount || '',
                 slecetedPayMethod: slecetedPayMethod || undefined,
                 name: company || selectedPayerFields?.name || '',

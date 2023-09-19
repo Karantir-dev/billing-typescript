@@ -294,7 +294,7 @@ export default function Component() {
         '',
       billorder: cartData?.billorder,
       amount: cartData?.total_sum,
-      profile: values?.profile === 'new' ? '' : values?.profile,
+      profile: values?.profile,
       paymethod: values?.selectedPayMethod?.paymethod?.$,
       country:
         selectedPayerFields?.country || selectedPayerFields?.country_physical || '',
@@ -330,7 +330,10 @@ export default function Component() {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+    // facebook pixel event
+    if (!values?.profile && window.fbq) {
+      window.fbq('track', 'AddPaymentInfo')
+    }
 
     if (values.profiletype && values.profiletype !== '1') {
       data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
@@ -978,7 +981,8 @@ export default function Component() {
                 initialValues={{
                   profile:
                     selectedPayerFields?.profile ||
-                    payersList[payersList?.length - 1]?.id?.$,
+                    payersList[payersList?.length - 1]?.id?.$ ||
+                    '',
                   name: company || selectedPayerFields?.name || '',
                   address_physical:
                     addressPhysical ?? selectedPayerFields?.address_physical,
