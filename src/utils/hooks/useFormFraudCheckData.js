@@ -9,13 +9,22 @@ export default function useFormFraudCheckData() {
   const geoData = useSelector(authSelectors.getGeoData)
 
   const [phoneCountryCode, setPhoneCountryCode] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState(
+    userPreferences?.phone?.phone?.replace('+', ''),
+  )
 
   useEffect(() => {
     if (userPreferences?.phone_countries) {
-      const phoneCode = userPreferences?.phone_countries?.find(
+      let phoneCode = userPreferences?.phone_countries?.find(
         el => el.$key === userPreferences?.phone_country,
       )?.$code
+      phoneCode = phoneCode.replace('+', '')
+
       setPhoneCountryCode(phoneCode)
+
+      userPreferences?.phone?.phone?.replace('+', '') === phoneCode
+        ? setPhoneNumber('')
+        : setPhoneNumber(userPreferences?.phone?.phone?.replace('+', ''))
     }
   }, [userPreferences])
 
@@ -28,7 +37,7 @@ export default function useFormFraudCheckData() {
       address: userParams?.addr,
       country: geoData?.clients_country_code,
       phone_country_code: phoneCountryCode,
-      phone_number: userPreferences?.phone?.phone,
+      phone_number: phoneNumber,
     },
   }
 }

@@ -647,8 +647,8 @@ const createPaymentMethod =
               ]
               fraudCheckSender(sessionId, fraudData)
 
-              dispatch(getPaymentMethodPage(data.doc.ok.$))
-              setCreatePaymentModal(true)
+              // dispatch(getPaymentMethodPage(data.doc.ok.$))
+              // setCreatePaymentModal(true)
             }
           })
           .catch(error => {

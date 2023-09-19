@@ -20,9 +20,10 @@ export default function fraudCheckSender(sessionId, fraudData) {
         sessid: sessionId,
         out: 'json',
         sok: 'ok',
-        data: fraudData,
+        data: JSON.stringify(fraudData),
       }),
     )
+    .then(data => console.log(data))
     .catch(err => {
       console.log(err.msg)
     })
