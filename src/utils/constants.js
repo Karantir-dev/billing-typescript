@@ -62,3 +62,8 @@ export const QIWI_PHONE_COUNTRIES = [
 
 // phone countries for yookassa payment method (SberPay)
 export const SBER_PHONE_COUNTRIES = ['ru']
+
+// VDS ids
+
+export const VDS_IDS_EXCLUDE = ['6322', '6334']
+export const VDS_IDS_TO_SHOW = ['6322']

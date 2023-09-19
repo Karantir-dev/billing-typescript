@@ -51,15 +51,15 @@ const getServersList = data => (dispatch, getState) => {
 }
 
 //ORDER NEW SERVER OPERATIONS
-const getTarifs = () => (dispatch, getState) => {
+const getTarifs = setNewVds => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
   } = getState()
 
-  axiosInstance
-    .post(
+  Promise.all([
+    axiosInstance.post(
       '/',
       qs.stringify({
         func: 'dedic.order',
@@ -67,8 +67,20 @@ const getTarifs = () => (dispatch, getState) => {
         auth: sessionId,
         lang: 'en',
       }),
-    )
-    .then(({ data }) => {
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'vds.order',
+        auth: sessionId,
+        out: 'json',
+        lang: 'en',
+      }),
+    ),
+  ])
+    .then(([dedicResp, vdsResp]) => {
+      const { data } = dedicResp
+
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { val: fpricelist } = data.doc.flist
@@ -85,7 +97,7 @@ const getTarifs = () => (dispatch, getState) => {
         period,
         currentDatacenter,
       }
-
+      setNewVds(vdsResp.data?.doc?.list[0]?.elem)
       dispatch(dedicActions.setTarifList(orderData))
       dispatch(actions.hideLoader())
     })
@@ -138,49 +150,63 @@ const getUpdatedTarrifs = (datacenterId, setNewTariffs) => (dispatch, getState) 
     })
 }
 
-const getUpdatedPeriod = (period, datacenter, setNewPeriod) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getUpdatedPeriod =
+  (period, datacenter, setNewPeriod, setNewVds) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'dedic.order',
-        out: 'json',
-        auth: sessionId,
-        period,
-        datacenter,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      const { val: fpricelist } = data.doc.flist
-      const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist[0]
-      const { val: period } = data.doc.slist[1]
-      const { $: currentDatacenter } = data.doc.datacenter
+    Promise.all([
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order',
+          out: 'json',
+          auth: sessionId,
+          period,
+          datacenter,
+          lang: 'en',
+        }),
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.pricelist',
+          auth: sessionId,
+          out: 'json',
+          period: period,
+          sv_field: 'period',
+          lang: 'en',
+        }),
+      ),
+    ])
+      .then(([dedicResp, vdsResp]) => {
+        const { data } = dedicResp
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const { val: fpricelist } = data.doc.flist
+        const { elem: tarifList } = data.doc.list[0]
+        const { val: datacenter } = data.doc.slist[0]
+        const { val: period } = data.doc.slist[1]
+        const { $: currentDatacenter } = data.doc.datacenter
 
-      const orderData = {
-        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
-        tarifList,
-        datacenter,
-        period,
-        currentDatacenter,
-      }
-
-      setNewPeriod(orderData)
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        const orderData = {
+          fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
+          tarifList,
+          datacenter,
+          period,
+          currentDatacenter,
+        }
+        setNewVds(vdsResp.data?.doc?.list[0]?.elem)
+        setNewPeriod(orderData)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const getParameters =
   (period, datacenter, pricelist, setParameters, setFieldValue) =>
