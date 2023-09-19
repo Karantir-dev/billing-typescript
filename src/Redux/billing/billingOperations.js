@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { analyticsSaver, checkIfTokenAlive, cookies, fraudCheckSender } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -548,7 +548,7 @@ const getPaymentMethod =
   }
 
 const createPaymentMethod =
-  (body = {}, setCreatePaymentModal, fraudData) =>
+  (body = {}, setCreatePaymentModal) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -638,17 +638,8 @@ const createPaymentMethod =
             if (data?.doc?.ok) {
               analyticsSaver(body, data.doc?.payment_id?.$)
 
-              fraudData.shopping_cart = [
-                {
-                  category: 'Balance top up',
-                  price: Number(body.amount),
-                  item_id: data.doc?.payment_id?.$,
-                },
-              ]
-              fraudCheckSender(sessionId, fraudData)
-
-              // dispatch(getPaymentMethodPage(data.doc.ok.$))
-              // setCreatePaymentModal(true)
+              dispatch(getPaymentMethodPage(data.doc.ok.$))
+              setCreatePaymentModal(true)
             }
           })
           .catch(error => {
