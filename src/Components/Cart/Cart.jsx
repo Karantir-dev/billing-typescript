@@ -35,11 +35,12 @@ import {
   authSelectors,
   settingsSelectors,
   cartActions,
+  userSelectors,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { replaceAllFn } from '@utils'
+import { replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 export default function Component() {
@@ -107,6 +108,7 @@ export default function Component() {
   )
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
     setPaymentsMethodList(data)
@@ -116,7 +118,7 @@ export default function Component() {
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
     dispatch(cartOperations.getSalesList(setSalesList))
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {
@@ -269,6 +271,8 @@ export default function Component() {
     dispatch(cartOperations.clearBasket(basket_id))
   }
 
+  const fraudData = useFormFraudCheckData()
+
   const payBasketHandler = values => {
     const data = {
       postcode_physical: values?.postcode_physical,
@@ -345,7 +349,7 @@ export default function Component() {
     }
 
     const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
-    dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
+    dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
   const hideBasketHandler = () => {

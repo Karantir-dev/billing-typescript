@@ -25,6 +25,7 @@ import {
   authSelectors,
   settingsSelectors,
   cartOperations,
+  userSelectors,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
@@ -83,6 +84,7 @@ export default function ModalCreatePayment(props) {
   const [alfaLogin, setAlfaLogin] = useState('')
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const filteredPayment_method = additionalPayMethodts?.find(
     e => e?.$key === selectedAddPaymentMethod,
@@ -90,7 +92,7 @@ export default function ModalCreatePayment(props) {
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {
