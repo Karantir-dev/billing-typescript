@@ -10,6 +10,8 @@ import {
   EmailTrigger,
   MainEmailConfirmation,
   PromotionBanner,
+  SuccessPayment,
+  ErrorPayment,
 } from '@components'
 import {
   cartSelectors,
@@ -212,6 +214,9 @@ const Component = ({ fromPromotionLink }) => {
         <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
         <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
 
+        <Route path={route.SUCCESS_PAYMENT} element={<SuccessPayment />} />
+        <Route path={route.FAILED_PAYMENT} element={<ErrorPayment />} />
+
         <Route path={route.PAYERS} element={<PayersPageLazy />} />
         <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
         <Route path={route.USER_SETTINGS} element={<UserSettingsPageLazy />}>
@@ -273,8 +278,8 @@ const BillingScreen = () => {
 
   return (
     <Routes>
-      <Route path=":path/*" element={<BillingPageLazy />} />
-      <Route path=":path/:result" element={<BillingPageLazy />} />
+      <Route path=":path" element={<BillingPageLazy />} />
+      <Route path="*" element={<ErrorPageLazy />} />
     </Routes>
   )
 }

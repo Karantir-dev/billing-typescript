@@ -619,6 +619,7 @@ const createPaymentMethod =
         if (!(body?.profile && body?.profile?.length > 0)) {
           body.profile = data?.doc?.id?.$
         }
+
         axiosInstance
           .post(
             '/',

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import {
@@ -9,7 +10,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, analyticsSaver } from '@utils'
+import { checkIfTokenAlive, analyticsSaver, fraudCheckSender } from '@utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -202,7 +203,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
 }
 
 const setPaymentMethods =
-  (body = {}, navigate, cartData = null) =>
+  (body = {}, navigate, cartData = null, fraudData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -274,6 +275,16 @@ const setPaymentMethods =
         if (!(body?.profile && body?.profile?.length > 0)) {
           body.profile = data?.doc?.id?.$
         }
+
+        const itemsForFraudData = cartData.elemList.map(el => ({
+          category: el?.['item.type']?.$,
+          quantity: 1,
+          price: Number(el?.cost?.$),
+          item_id: el?.['item.id']?.$,
+        }))
+        fraudData.shopping_cart = itemsForFraudData
+
+        fraudCheckSender(sessionId, fraudData)
 
         axiosInstance
           .post(

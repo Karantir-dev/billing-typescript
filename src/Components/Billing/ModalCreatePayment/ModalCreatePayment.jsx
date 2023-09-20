@@ -14,6 +14,7 @@ import {
   Modal,
   Icon,
   CustomPhoneInput,
+  HintWrapper,
 } from '@components'
 import {
   billingOperations,
@@ -24,6 +25,7 @@ import {
   authSelectors,
   settingsSelectors,
   cartOperations,
+  userSelectors,
 } from '@redux'
 import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
@@ -82,6 +84,7 @@ export default function ModalCreatePayment(props) {
   const [alfaLogin, setAlfaLogin] = useState('')
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const filteredPayment_method = additionalPayMethodts?.find(
     e => e?.$key === selectedAddPaymentMethod,
@@ -89,7 +92,7 @@ export default function ModalCreatePayment(props) {
 
   useEffect(() => {
     dispatch(billingOperations.getPayers())
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {
@@ -169,7 +172,7 @@ export default function ModalCreatePayment(props) {
         payersSelectedFields?.country ||
         payersSelectedFields?.country_physical ||
         '',
-      profile: values?.profile === 'new' ? '' : values?.profile,
+      profile: values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
       paymethod: values?.slecetedPayMethod?.paymethod?.$,
@@ -201,6 +204,20 @@ export default function ModalCreatePayment(props) {
 
     if (values?.alfabank_login && values?.alfabank_login?.length > 0) {
       data['alfabank_login'] = values?.alfabank_login
+    }
+
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
+    // facebook pixel event
+    if (!values?.profile && window.fbq) {
+      window.fbq('track', 'AddPaymentInfo')
     }
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
@@ -268,7 +285,8 @@ export default function ModalCreatePayment(props) {
               initialValues={{
                 profile:
                   selectedPayerFields?.profile ||
-                  payersList[payersList?.length - 1]?.id?.$,
+                  payersList[payersList?.length - 1]?.id?.$ ||
+                  '',
                 amount: amount || '',
                 slecetedPayMethod: slecetedPayMethod || undefined,
                 name: company || selectedPayerFields?.name || '',
@@ -501,16 +519,38 @@ export default function ModalCreatePayment(props) {
                                 )
                               }}
                               type="button"
-                              className={cn(s.paymentMethodBtn, {
-                                [s.selected]:
-                                  paymethod?.$ ===
-                                  values?.slecetedPayMethod?.paymethod?.$,
-                              })}
+                              className={cn(
+                                s.paymentMethodBtn,
+                                {
+                                  [s.selected]:
+                                    paymethod?.$ ===
+                                    values?.slecetedPayMethod?.paymethod?.$,
+                                },
+                                { [s.withHint]: paymethod?.$ === '71' },
+                              )}
                               key={paymethod?.$}
                             >
-                              <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                              <span>{name?.$}</span>
-                              <Icon name="Check" className={s.iconCheck} />
+                              <div className={s.descrWrapper}>
+                                <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                <span
+                                  className={cn({
+                                    [s.methodDescr]: paymethod?.$ === '71',
+                                  })}
+                                >
+                                  {name?.$}
+                                </span>
+                              </div>
+
+                              {paymethod?.$ === '71' && (
+                                <HintWrapper
+                                  popupClassName={s.cardHintWrapper}
+                                  label={t('Paypalich description', { ns: 'other' })}
+                                  wrapperClassName={cn(s.infoBtnCard)}
+                                  bottom
+                                >
+                                  <Icon name="Info" />
+                                </HintWrapper>
+                              )}
                             </button>
                           )
                         })}

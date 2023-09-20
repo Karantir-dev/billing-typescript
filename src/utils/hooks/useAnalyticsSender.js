@@ -16,8 +16,8 @@ export default function useAnalyticsSender() {
   const [cartData, setCartData] = useState(null)
 
   useEffect(() => {
-    const data = { p_num: 1, p_cnt: 15 }
-    dispatch(billingOperations.getPayments(data))
+    const data = { p_num: 1, p_cnt: 15, status: '' }
+    dispatch(billingOperations.setPaymentsFilters(data))
   }, [])
 
   useEffect(() => {
@@ -47,8 +47,8 @@ export default function useAnalyticsSender() {
   useEffect(() => {
     if (paymentItem) {
       //if we have payment
-      let value = paymentItem?.subaccountamount_iso?.$.replace('EUR', '')
-      let tax = paymentItem?.tax?.$.replace('EUR', '')
+      let value = Number(paymentItem?.subaccountamount_iso?.$.replace('EUR', ''))
+      let tax = Number(paymentItem?.tax?.$.replace('EUR', ''))
 
       window?.dataLayer?.push({ ecommerce: null }) //clean data layer ecommerce
 
@@ -58,8 +58,8 @@ export default function useAnalyticsSender() {
           payment_type: paymentItem?.paymethod_name?.$,
           transaction_id: paymentId,
           affiliation: window.location.hostname,
-          value: Number(value) || 0,
-          tax: Number(tax) || 0,
+          value: value || 0,
+          tax: tax || 0,
           currency: 'EUR',
           shipping: '0',
           coupon: '',
@@ -69,10 +69,17 @@ export default function useAnalyticsSender() {
               item_id: 'lost_data',
               price: 0,
               item_category: 'lost_data',
-              quantity: 1,
+              quantity: 0,
             },
           ],
         },
+      }
+
+      const fbAnalytics = {
+        value: value,
+        currency: 'EUR',
+        content_type: 'Service',
+        content_category: 'lost_data',
       }
 
       // If it is a purchase of services
@@ -81,17 +88,33 @@ export default function useAnalyticsSender() {
         if (cartData?.billorder === paymentItem?.billorder?.$) {
           analyticsData.ecommerce.coupon = cartData?.promocode
           analyticsData.ecommerce.items = cartData?.items
+        }
 
+        // checks if the GTM is already loaded and sends analytics
+        if (window.dataLayer?.find(el => el['gtm.start'])) {
           window?.dataLayer?.push(analyticsData)
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
 
-          cookies.eraseCookie(`cartData_${paymentId}`)
+          if (window.fbq) {
+            fbAnalytics.contents = cartData?.items?.map(el => ({
+              id: el.item_id,
+              quantity: 1,
+              name: el.item_name,
+              price: el.price,
+            }))
+            fbAnalytics.content_category = cartData?.items?.[0]?.item_category
 
-          // If there is NO saved product data
+            window.fbq('track', 'Purchase', fbAnalytics)
+          }
+
+          // if the GTM is absent we add extra field to the front analytics
         } else {
-          window?.dataLayer?.push(analyticsData)
+          analyticsData.gtm_absent = true
+
           axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
         }
+
+        cookies.eraseCookie(`cartData_${paymentId}`)
 
         // If it is a balance replenishment (we don`t have saved product data)
       } else {
@@ -99,17 +122,31 @@ export default function useAnalyticsSender() {
           analyticsData.ecommerce.items = [
             {
               item_name: 'Refill',
-              item_id: paymentId,
-              price: Number(value) || 0,
+              price: value || 0,
               item_category: 'Refill',
               quantity: 1,
             },
           ]
+          fbAnalytics.content_category = 'Refill'
+          fbAnalytics.content_type = 'Refill'
+          fbAnalytics.content_ids = [paymentId]
 
-          window?.dataLayer?.push(analyticsData)
-          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+          // checks if the GTM is already loaded and sends analytics
+          if (window.dataLayer?.find(el => el['gtm.start'])) {
+            window?.dataLayer?.push(analyticsData)
+            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+
+            if (window.fbq) {
+              window.fbq('track', 'Purchase', fbAnalytics)
+            }
+          } else {
+            analyticsData.gtm_absent = true
+
+            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+          }
         }
       }
+
       cookies.eraseCookie('payment_id') // if the payment id was used, then clear it
     }
   }, [paymentItem])
