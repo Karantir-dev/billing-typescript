@@ -54,7 +54,6 @@ export default function DedicOrderPage() {
   const [tarifList, setTarifList] = useState(tarifsList)
   const [parameters, setParameters] = useState(null)
   const [vdsParameters, setVdsParameters] = useState(null)
-  const [recipe, setRecipe] = useState('null')
   const [selectedTariffId, setSelectedTariffId] = useState()
 
   const [price, setPrice] = useState('')
@@ -66,30 +65,6 @@ export default function DedicOrderPage() {
   const [scrollElem, runScroll] = useScrollToElement({
     condition: parameters || vdsParameters,
   })
-
-  // useEffect(() => {
-  //   const cartFromSite = localStorage.getItem('site_cart')
-  //   const cartFromSiteJson = JSON.parse(cartFromSite)
-
-  //   if (cartFromSiteJson?.func === 'vds.order.param') {
-  //     // setPeriod(cartFromSiteJson?.period)
-  //     // handleTariffClick(cartFromSiteJson?.period, cartFromSiteJson?.pricelist)
-  //     // setRecipe(cartFromSiteJson?.recipe)
-  //     // setCount(Number(cartFromSiteJson?.order_count))
-  //     setDataFromSite({
-  //       recipe: cartFromSiteJson?.recipe,
-  //       ostempl: cartFromSiteJson?.ostempl,
-  //       domain: cartFromSiteJson?.domain,
-  //       CPU_count: cartFromSiteJson?.CPUcount,
-  //       Memory: cartFromSiteJson?.Memory,
-  //       Disk_space: cartFromSiteJson?.Diskspace,
-  //       Port_speed: cartFromSiteJson?.Portspeed,
-  //       Control_panel: cartFromSiteJson?.Controlpanel,
-  //       autoprolong: cartFromSiteJson?.autoprolong,
-  //     })
-  //     localStorage.removeItem('site_cart')
-  //   }
-  // }, [tarifList])
 
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
@@ -361,11 +336,11 @@ export default function DedicOrderPage() {
             getElement={value => {
               setFieldValue(fieldName, value)
               if (fieldName === 'ostempl') {
-                setRecipe('null')
+                setFieldValue('recipe', 'null')
                 vdsParameters[fieldName].$ = value
                 setVdsParameters({ ...vdsParameters })
               } else {
-                setRecipe(value)
+                setFieldValue('recipe', value)
               }
 
               if (value.includes('vestacp')) {
@@ -388,11 +363,10 @@ export default function DedicOrderPage() {
             label={el[0].$}
             onClick={value => {
               if (fieldName === 'ostempl') {
-                setRecipe('null')
+                setFieldValue('recipe', 'null')
                 vdsParameters[fieldName].$ = value
                 setVdsParameters({ ...vdsParameters })
               } else {
-                setRecipe(value)
                 setFieldValue('recipe', value)
               }
             }}
@@ -407,7 +381,7 @@ export default function DedicOrderPage() {
       vdsOperations.changeOrderFormField(
         period,
         values,
-        recipe,
+        values.recipe,
         values.tarif,
         vdsParameters.register[fieldName] || fieldName,
         setVdsParameters,
@@ -477,6 +451,8 @@ export default function DedicOrderPage() {
     return []
   }
 
+  console.log(selectedTariffId, ' selectedTariffId')
+
   const translatePeriodText = sentence => {
     const labelArr = sentence.split('EUR ')
 
@@ -516,11 +492,12 @@ export default function DedicOrderPage() {
           vdsOperations.setOrderData(
             values.period,
             1,
-            recipe,
+            values.recipe,
             values,
             selectedTariffId,
             vdsParameters.register,
             saleMemory,
+            true,
           ),
         ),
       ),
@@ -606,6 +583,19 @@ export default function DedicOrderPage() {
                 setParameters(null)
                 setVdsParameters(null)
                 setTarifChosen(true)
+
+                if (VDS_IDS_TO_SHOW.includes(cartData?.pricelist)) {
+                  setTarifChosen('vds')
+                  setSelectedTariffId(cartData?.pricelist)
+                  dispatch(
+                    vdsOperations.getTariffParameters(
+                      values.period,
+                      cartData?.pricelist,
+                      setVdsParameters,
+                    ),
+                  )
+                }
+
                 if (tariff) {
                   setPrice(parsePrice(tariff?.price?.$)?.amoumt)
                   setTarifChosen(true)
@@ -629,6 +619,12 @@ export default function DedicOrderPage() {
                 recipe: cartData?.recipe,
                 Controlpanel: cartData?.Controlpanel,
                 Portspeed: cartData?.Portspeed,
+                domain: cartData?.domain,
+                Port_speed: cartData?.Portspeed,
+                Control_panel: cartData?.Controlpanel,
+                CPU_count: cartData?.CPUcount,
+                Memory: cartData?.Memory,
+                Disk_space: cartData?.Diskspace,
               })
             }
           }, [tarifList])
@@ -727,7 +723,6 @@ export default function DedicOrderPage() {
                                 resetForm()
                                 setParameters(null)
                                 setVdsParameters(null)
-                                setTarifChosen(false)
                               }}
                               view="radio"
                             />
@@ -761,7 +756,6 @@ export default function DedicOrderPage() {
                                 resetForm()
                                 setParameters(null)
                                 setVdsParameters(null)
-                                setTarifChosen(false)
                               }}
                               view="radio"
                             />
@@ -958,6 +952,7 @@ export default function DedicOrderPage() {
                           }}
                           className={s.select}
                           isShadow
+                          disabled={getOptionsListExtended('Memory').length < 2}
                         />
 
                         <Select
@@ -975,6 +970,7 @@ export default function DedicOrderPage() {
                           label={`${t('disk_space', { ns: 'vds' })}:`}
                           className={s.select}
                           isShadow
+                          disabled={getOptionsListExtended('Disk_space').length < 2}
                         />
                         <Select
                           value={values.CPU_count}
@@ -990,6 +986,7 @@ export default function DedicOrderPage() {
                           label={`${t('processors', { ns: 'vds' })}:`}
                           className={s.select}
                           isShadow
+                          disabled={getOptionsListExtended('CPU_count').length < 2}
                         />
                         <InputField
                           name="Port_speed"
@@ -1103,6 +1100,7 @@ export default function DedicOrderPage() {
                         label={`${t('license_to_panel', { ns: 'vds' })}:`}
                         isShadow
                         className={s.select}
+                        disabled={getOptionsListExtended('Control_panel').length < 2}
                       />
                     )}
 

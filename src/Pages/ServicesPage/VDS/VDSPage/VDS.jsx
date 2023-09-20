@@ -52,7 +52,7 @@ export default function VDS({ isDedic }) {
   const [activeServices, setActiveServices] = useState([])
 
   const [filtersState, setFiltersState] = useState()
-  const [filtersListState, setfiltersListState] = useState()
+  const [filtersListState, setFiltersListState] = useState()
 
   const [elidForEditModal, setIdForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState([])
@@ -68,6 +68,13 @@ export default function VDS({ isDedic }) {
   const [p_cnt, setP_cnt] = useState(10)
 
   const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
+
+  const setFilteredFiltersListState = data => {
+    const pricelist = isDedic
+      ? data.pricelist.filter(el => VDS_IDS_LIKE_DEDICS.includes(el.$key))
+      : data.pricelist.filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.$key))
+    setFiltersListState({ ...data, pricelist })
+  }
 
   const filteredElidForProlongModal = itemWithPenalty
     ? idForProlong?.filter(el => el !== itemWithPenalty.id.$)
@@ -128,7 +135,7 @@ export default function VDS({ isDedic }) {
         vdsOperations.setVdsFilters(
           null,
           setFiltersState,
-          setfiltersListState,
+          setFilteredFiltersListState,
           setFilteredServers,
           setRights,
           setElemsTotal,
@@ -161,7 +168,7 @@ export default function VDS({ isDedic }) {
       vdsOperations.setVdsFilters(
         null,
         setFiltersState,
-        setfiltersListState,
+        setFilteredFiltersListState,
         setFilteredServers,
         setRights,
         setElemsTotal,
@@ -195,7 +202,7 @@ export default function VDS({ isDedic }) {
       vdsOperations.setVdsFilters(
         values,
         setFiltersState,
-        setfiltersListState,
+        setFilteredFiltersListState,
         setFilteredServers,
         setRights,
         setElemsTotal,

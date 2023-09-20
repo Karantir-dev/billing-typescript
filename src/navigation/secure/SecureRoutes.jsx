@@ -198,8 +198,7 @@ const Component = ({ fromPromotionLink }) => {
           element={<DomainsNsPageLazy transfer={true} />}
         />
         <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
-          <Route index element={<Navigate to="dedicated" replace />} />
-          <Route path="dedicated" element={<DedicatedServersPageLazy />} />
+          <Route index element={<DedicatedServersPageLazy />} />
           <Route path="vds" element={<VDSPageLazy isDedic />} />
         </Route>
         <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
