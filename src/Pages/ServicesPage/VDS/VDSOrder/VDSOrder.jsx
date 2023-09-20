@@ -19,7 +19,7 @@ import cn from 'classnames'
 import * as Yup from 'yup'
 
 import s from './VDSOrder.module.scss'
-import { VDS_IDS_EXCLUDE } from '@utils/constants'
+import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -42,8 +42,7 @@ export default function VDSOrder() {
   const [recipe, setRecipe] = useState('null')
   const filteredList = tariffsList
     .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
-    .filter(el => !VDS_IDS_EXCLUDE.includes(el.pricelist.$))
-
+    .filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.pricelist.$))
   const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
   useEffect(() => {

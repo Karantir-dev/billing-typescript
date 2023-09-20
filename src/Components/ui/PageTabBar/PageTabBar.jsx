@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './PageTabBar.module.scss'
+import { replace } from 'formik'
 
 export default function Component({ sections }) {
   const sectionsToRender = sections.filter(item => item.allowToRender)
@@ -16,6 +17,7 @@ export default function Component({ sections }) {
                 key={route}
                 className={({ isActive }) => cn(s.link, { [s.active_link]: isActive })}
                 to={route}
+                replace={replace}
               >
                 {label}
               </NavLink>

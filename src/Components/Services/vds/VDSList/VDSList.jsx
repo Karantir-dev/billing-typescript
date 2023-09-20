@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import s from './VDSList.module.scss'
 import { useDispatch } from 'react-redux'
 import { vdsOperations } from '@redux'
+import cn from 'classnames'
 
 export default function VDSList({
   servers,
@@ -21,6 +22,7 @@ export default function VDSList({
   activeServices,
   setActiveServices,
   getVDSHandler,
+  isDedic,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -49,16 +51,48 @@ export default function VDSList({
           />
 
           <ul className={s.head_row}>
-            <li className={s.table_head}>{t('server_name')}:</li>
-            <li className={s.table_head}>Id:</li>
-            <li className={s.table_head}>{t('domain_name')}:</li>
-            <li className={s.table_head}>{t('ip_address')}:</li>
-            <li className={s.table_head}>{t('ostempl')}:</li>
-            <li className={s.table_head}>{t('data_center')}:</li>
-            <li className={s.table_head}>{t('created')}:</li>
-            <li className={s.table_head}>{t('valid_until')}:</li>
-            <li className={s.table_head}>{t('status')}:</li>
-            <li className={s.table_head}>{t('tariff')}:</li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+              {t('server_name')}:
+            </li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>Id:</li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+              {t('domain_name')}:
+            </li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+              {t('ip_address')}:
+            </li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>{t('ostempl')}:</li>
+            {isDedic ? (
+              <>
+                <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                  {t('tariff')}:
+                </li>
+                <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                  {t('data_center')}:
+                </li>
+                <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                  {t('status')}:
+                </li>
+              </>
+            ) : (
+              <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                {t('data_center')}:
+              </li>
+            )}
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>{t('created')}:</li>
+            <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+              {t('valid_until')}:
+            </li>
+            {isDedic ? null : (
+              <>
+                <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                  {t('status')}:
+                </li>
+                <li className={cn(s.table_head, { [s.dedic]: isDedic })}>
+                  {t('tariff')}:
+                </li>
+              </>
+            )}
             <li className={s.tenth_element}></li>
           </ul>
         </div>
@@ -93,6 +127,7 @@ export default function VDSList({
               setIdForHistory={() => setIdForHistory(el.id.$)}
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
+              isDedic={isDedic}
             />
           ) : (
             <VDSmobileItem
@@ -110,6 +145,7 @@ export default function VDSList({
               setIdForHistory={() => setIdForHistory(el.id.$)}
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
+              isDedic={isDedic}
             />
           )
         })}
