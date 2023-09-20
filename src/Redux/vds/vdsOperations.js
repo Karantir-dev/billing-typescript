@@ -344,7 +344,7 @@ const setOrderData =
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
-            redirectPath: isDedic ? routes.DEDICATED_SERVERS : routes.VPS,
+            redirectPath: isDedic ? `${routes.DEDICATED_SERVERS}/vds` : routes.VPS,
             salePromocode: sale,
           }),
         )
