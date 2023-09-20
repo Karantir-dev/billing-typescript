@@ -451,8 +451,6 @@ export default function DedicOrderPage() {
     return []
   }
 
-  console.log(selectedTariffId, ' selectedTariffId')
-
   const translatePeriodText = sentence => {
     const labelArr = sentence.split('EUR ')
 
