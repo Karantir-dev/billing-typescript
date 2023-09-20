@@ -67,6 +67,30 @@ export default function DedicOrderPage() {
     condition: parameters || vdsParameters,
   })
 
+  // useEffect(() => {
+  //   const cartFromSite = localStorage.getItem('site_cart')
+  //   const cartFromSiteJson = JSON.parse(cartFromSite)
+
+  //   if (cartFromSiteJson?.func === 'vds.order.param') {
+  //     // setPeriod(cartFromSiteJson?.period)
+  //     // handleTariffClick(cartFromSiteJson?.period, cartFromSiteJson?.pricelist)
+  //     // setRecipe(cartFromSiteJson?.recipe)
+  //     // setCount(Number(cartFromSiteJson?.order_count))
+  //     setDataFromSite({
+  //       recipe: cartFromSiteJson?.recipe,
+  //       ostempl: cartFromSiteJson?.ostempl,
+  //       domain: cartFromSiteJson?.domain,
+  //       CPU_count: cartFromSiteJson?.CPUcount,
+  //       Memory: cartFromSiteJson?.Memory,
+  //       Disk_space: cartFromSiteJson?.Diskspace,
+  //       Port_speed: cartFromSiteJson?.Portspeed,
+  //       Control_panel: cartFromSiteJson?.Controlpanel,
+  //       autoprolong: cartFromSiteJson?.autoprolong,
+  //     })
+  //     localStorage.removeItem('site_cart')
+  //   }
+  // }, [tarifList])
+
   const parsePrice = price => {
     const words = price?.match(/[\d|.|\\+]+/g)
     const amounts = []
@@ -369,6 +393,7 @@ export default function DedicOrderPage() {
                 setVdsParameters({ ...vdsParameters })
               } else {
                 setRecipe(value)
+                setFieldValue('recipe', value)
               }
             }}
           />
@@ -921,12 +946,6 @@ export default function DedicOrderPage() {
                         <Select
                           itemsList={getOptionsListExtended('Memory')}
                           value={values.Memory}
-                          saleIcon={
-                            <Icon
-                              name="SaleFiftyFive"
-                              style={{ marginLeft: 7, position: 'absolute', top: -10 }}
-                            />
-                          }
                           label={`${t('memory', { ns: 'vds' })}:`}
                           getElement={value => {
                             setFieldValue('Memory', value)

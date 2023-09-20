@@ -4,7 +4,6 @@ import {
   Button,
   IconButton,
   HintWrapper,
-  BreadCrumbs,
   DedicFiltersModal,
   DedicList,
   EditServerModal,
@@ -19,7 +18,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, dedicOperations, dedicSelectors } from '@redux'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
 import * as route from '@src/routes'
@@ -61,16 +60,6 @@ export default function DedicatedServersPage() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
-
-  const location = useLocation()
-
-  const parseLocations = () => {
-    let pathnames = location?.pathname.split('/')
-
-    pathnames = pathnames.filter(p => p.length !== 0)
-
-    return pathnames
-  }
 
   const resetFilterHandler = setValues => {
     const clearField = {
@@ -215,14 +204,6 @@ export default function DedicatedServersPage() {
 
   return (
     <>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h2 className={s.page_title}>
-        {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
-        {dedicRenderData?.serversList?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${dedicCount})`}</span>
-        )}
-      </h2>
-
       <div className={s.tools_wrapper}>
         {!widerThan1600 && dedicRenderData?.serversList?.length > 0 && (
           <div className={s.check_box_wrapper}>

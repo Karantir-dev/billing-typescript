@@ -22,6 +22,7 @@
         "domains": "დომენები",
         "virtual_servers": "ვირტუალური სერვერები",
         "dedicated_servers": "გამოყოფილი სერვერები",
+        "dedicated": "გამოყოფილი სერვერები",
         "virtual_hosting": "ვირტუალური ჰოსტინგი",
         "dns_hosting": "DNS ჰოსტინგი",
         "external_ftp": "გარე FTP საცავი",

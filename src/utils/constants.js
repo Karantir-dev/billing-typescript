@@ -65,5 +65,5 @@ export const SBER_PHONE_COUNTRIES = ['ru']
 
 // VDS ids
 
-export const VDS_IDS_EXCLUDE = ['6322', '6334']
+export const VDS_IDS_LIKE_DEDICS = ['6322', '6334']
 export const VDS_IDS_TO_SHOW = ['6322']

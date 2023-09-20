@@ -22,6 +22,7 @@
         "domains": "Domains",
         "virtual_servers": "Virtual servers",
         "dedicated_servers": "Dedicated servers",
+        "dedicated": "Dedicated servers",
         "virtual_hosting": "Virtual hosting",
         "dns_hosting": "DNS-hosting",
         "external_ftp": "External FTP storage",

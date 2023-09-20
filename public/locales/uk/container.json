@@ -22,6 +22,7 @@
         "domains": "Домени",
         "virtual_servers": "Віртуальні сервери",
         "dedicated_servers": "Виділені сервери",
+        "dedicated": "Виділені сервери",
         "virtual_hosting": "Віртуальний хостинг",
         "dns_hosting": "DNS-хостинг",
         "external_ftp": "Зовнішнє сховище FTP",
