@@ -6,9 +6,10 @@ import { toast } from 'react-toastify'
 import { checkIfTokenAlive, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 import i18n from '@src/i18n'
+import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage, isDedic }) =>
+  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -18,8 +19,8 @@ const getVDS =
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: isDedic ? '9999' : p_cnt || '10',
-          p_num: isDedic ? '1' : p_num || '1',
+          p_cnt: p_cnt || '10',
+          p_num: p_num || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -308,7 +309,8 @@ const changeOrderFormField =
   }
 
 const setOrderData =
-  (period, count, recipe, values, pricelist, register, sale, isDedic) => (dispatch, getState) => {
+  (period, count, recipe, values, pricelist, register, sale, isDedic) =>
+  (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -630,29 +632,61 @@ const setVdsFilters =
           func: 'vds.filter',
           auth: sessionId,
           out: 'json',
-          sok: 'ok',
-          id: values?.id || '',
-          ip: values?.ip || '',
-          domain: values?.domain || '',
-          pricelist: values?.pricelist || '',
-          period: values?.period || '',
-          status: values?.status || '',
-          opendate: values?.opendate || '',
-          expiredate: values?.expiredate || '',
-          orderdatefrom: values?.orderdatefrom || '',
-          orderdateto: values?.orderdateto || '',
-          cost_from: values?.cost_from || '',
-          cost_to: values?.cost_to || '',
-          autoprolong: values?.autoprolong || '',
-          datacenter: values?.datacenter || '',
-          ostemplate: values?.ostemplate || '',
-          lang: 'en',
         }),
       )
       .then(({ data }) => {
+        const pricelist = data.doc?.slist
+          ?.find(el => el.$name === 'pricelist')
+          ?.val.filter(el =>
+            isDedic
+              ? VDS_IDS_LIKE_DEDICS.includes(el.$key)
+              : !VDS_IDS_LIKE_DEDICS.includes(el.$key),
+          )
+          .map(el => el.$key)
+        return pricelist.join()
+      })
+      .then(priceList => {
+        return axiosInstance.post(
+          '/',
+          qs.stringify({
+            func: 'vds.filter',
+            auth: sessionId,
+            out: 'json',
+            sok: 'ok',
+            id: values?.id || '',
+            ip: values?.ip || '',
+            domain: values?.domain || '',
+            pricelist: values?.pricelist || priceList,
+            period: values?.period || '',
+            status: values?.status || '',
+            opendate: values?.opendate || '',
+            expiredate: values?.expiredate || '',
+            orderdatefrom: values?.orderdatefrom || '',
+            orderdateto: values?.orderdateto || '',
+            cost_from: values?.cost_from || '',
+            cost_to: values?.cost_to || '',
+            autoprolong: values?.autoprolong || '',
+            datacenter: values?.datacenter || '',
+            ostemplate: values?.ostemplate || '',
+            lang: 'en',
+          }),
+        )
+      })
+      .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        axiosInstance
+        dispatch(
+          getVDS({
+            setServers,
+            setRights,
+            setElemsTotal,
+            setServicesPerPage,
+            p_cnt,
+            isDedic,
+          }),
+        )
+
+        return axiosInstance
           .post(
             '/',
             qs.stringify({
@@ -674,22 +708,18 @@ const setVdsFilters =
               status: data.doc?.slist?.find(el => el.$name === 'status').val,
               datacenter: data.doc?.slist?.find(el => el.$name === 'datacenter').val,
               period: data.doc?.slist?.find(el => el.$name === 'period').val,
-              pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
+              pricelist: data.doc?.slist
+                ?.find(el => el.$name === 'pricelist')
+                ?.val.filter(el =>
+                  isDedic
+                    ? VDS_IDS_LIKE_DEDICS.includes(el.$key) || !el.$key
+                    : !VDS_IDS_LIKE_DEDICS.includes(el.$key),
+                ),
             }
             setfiltersListState(filtersList)
           })
-
-        dispatch(
-          getVDS({
-            setServers,
-            setRights,
-            setElemsTotal,
-            setServicesPerPage,
-            p_cnt,
-            isDedic,
-          }),
-        )
       })
+
       .catch(err => {
         if (err.message.includes('filter')) {
           dispatch(getVDS({ setServers, setRights, setElemsTotal }))
