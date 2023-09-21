@@ -29,7 +29,9 @@ import { usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
-export default function VDS() {
+import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
+
+export default function VDS({ isDedic }) {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
@@ -40,10 +42,17 @@ export default function VDS() {
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
 
+  const setFilteredServers = servers => {
+    const filteredServers = isDedic
+      ? servers.filter(el => VDS_IDS_LIKE_DEDICS.includes(el.pricelist_id.$))
+      : servers.filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.pricelist_id.$))
+    setServers(filteredServers)
+  }
+
   const [activeServices, setActiveServices] = useState([])
 
   const [filtersState, setFiltersState] = useState()
-  const [filtersListState, setfiltersListState] = useState()
+  const [filtersListState, setFiltersListState] = useState()
 
   const [elidForEditModal, setIdForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState([])
@@ -59,6 +68,13 @@ export default function VDS() {
   const [p_cnt, setP_cnt] = useState(10)
 
   const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
+
+  const setFilteredFiltersListState = data => {
+    const pricelist = isDedic
+      ? data.pricelist.filter(el => VDS_IDS_LIKE_DEDICS.includes(el.$key))
+      : data.pricelist.filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.$key))
+    setFiltersListState({ ...data, pricelist })
+  }
 
   const filteredElidForProlongModal = itemWithPenalty
     ? idForProlong?.filter(el => el !== itemWithPenalty.id.$)
@@ -92,7 +108,16 @@ export default function VDS() {
   }, [isFiltersOpened])
 
   const getVDSHandler = () => {
-    dispatch(vdsOperations.getVDS({ setServers, setRights, setElemsTotal, p_num, p_cnt }))
+    dispatch(
+      vdsOperations.getVDS({
+        setServers: setFilteredServers,
+        setRights,
+        setElemsTotal,
+        p_num,
+        p_cnt,
+        isDedic,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -110,12 +135,13 @@ export default function VDS() {
         vdsOperations.setVdsFilters(
           null,
           setFiltersState,
-          setfiltersListState,
-          setServers,
+          setFilteredFiltersListState,
+          setFilteredServers,
           setRights,
           setElemsTotal,
           setP_cnt,
           p_cnt,
+          isDedic,
         ),
       )
 
@@ -127,7 +153,7 @@ export default function VDS() {
     dispatch(
       vdsOperations.deleteVDS(
         idForDeleteModal,
-        setServers,
+        setFilteredServers,
         () => setIdForDeleteModal([]),
         setElemsTotal,
       ),
@@ -142,8 +168,8 @@ export default function VDS() {
       vdsOperations.setVdsFilters(
         null,
         setFiltersState,
-        setfiltersListState,
-        setServers,
+        setFilteredFiltersListState,
+        setFilteredServers,
         setRights,
         setElemsTotal,
         null,
@@ -176,8 +202,8 @@ export default function VDS() {
       vdsOperations.setVdsFilters(
         values,
         setFiltersState,
-        setfiltersListState,
-        setServers,
+        setFilteredFiltersListState,
+        setFilteredServers,
         setRights,
         setElemsTotal,
         null,
@@ -203,14 +229,19 @@ export default function VDS() {
 
   return (
     <>
-      <BreadCrumbs pathnames={location?.pathname.split('/')} />
+      {!isDedic && (
+        <>
+          <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.title}>
-        {t('servers_title')}
-        {servers?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
-        )}
-      </h2>
+          <h2 className={s.title}>
+            {t('servers_title')}
+            {servers?.length !== 0 && (
+              <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
+            )}
+          </h2>
+        </>
+      )}
+
       <div className={s.extra_tools_wrapper}>
         <div className={s.tools_wrapper}>
           <Button
@@ -219,11 +250,16 @@ export default function VDS() {
             isShadow
             type="button"
             label={t('to_order', { ns: 'other' })}
-            onClick={() =>
-              navigate(route.VPS_ORDER, {
-                replace: true,
-              })
-            }
+            onClick={() => {
+              isDedic
+                ? navigate(route.DEDICATED_SERVERS_ORDER, {
+                    state: { isDedicOrderAllowed: rights?.new },
+                    replace: true,
+                  })
+                : navigate(route.VPS_ORDER, {
+                    replace: true,
+                  })
+            }}
           />
 
           <div className={s.filter_wrapper}>
@@ -276,9 +312,10 @@ export default function VDS() {
         activeServices={activeServices}
         setActiveServices={setActiveServices}
         getVDSHandler={getVDSHandler}
+        isDedic={isDedic}
       />
 
-      {elemsTotal > 5 && (
+      {elemsTotal > 5 && !isDedic && (
         <Pagination
           className={s.pagination}
           currentPage={p_num}

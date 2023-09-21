@@ -35,11 +35,12 @@ import {
   authSelectors,
   settingsSelectors,
   cartActions,
+  userSelectors,
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { replaceAllFn } from '@utils'
+import { replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
 export default function Component() {
@@ -107,6 +108,7 @@ export default function Component() {
   )
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
+  const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
     setPaymentsMethodList(data)
@@ -116,7 +118,7 @@ export default function Component() {
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
     dispatch(cartOperations.getSalesList(setSalesList))
-    dispatch(settingsOperations.getUserEdit())
+    dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
   useEffect(() => {
@@ -269,6 +271,8 @@ export default function Component() {
     dispatch(cartOperations.clearBasket(basket_id))
   }
 
+  const fraudData = useFormFraudCheckData()
+
   const payBasketHandler = values => {
     const data = {
       postcode_physical: values?.postcode_physical,
@@ -335,8 +339,17 @@ export default function Component() {
       window.fbq('track', 'AddPaymentInfo')
     }
 
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+    }
+
     const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
-    dispatch(cartOperations.setPaymentMethods(data, navigate, cart))
+    dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
   const hideBasketHandler = () => {
@@ -1156,19 +1169,27 @@ export default function Component() {
                                       }
                                     }}
                                     type="button"
-                                    className={cn(s.paymentMethodBtn, {
-                                      [s.selected]:
-                                        paymethod_type?.$ ===
-                                          values?.selectedPayMethod?.paymethod_type?.$ &&
-                                        paymethod?.$ ===
-                                          values?.selectedPayMethod?.paymethod?.$,
-                                    },
-                                    {[s.withHint]: paymethod?.$ === '71'})}
+                                    className={cn(
+                                      s.paymentMethodBtn,
+                                      {
+                                        [s.selected]:
+                                          paymethod_type?.$ ===
+                                            values?.selectedPayMethod?.paymethod_type
+                                              ?.$ &&
+                                          paymethod?.$ ===
+                                            values?.selectedPayMethod?.paymethod?.$,
+                                      },
+                                      { [s.withHint]: paymethod?.$ === '71' },
+                                    )}
                                     key={name?.$}
                                   >
                                     <div className={s.descrWrapper}>
                                       <img src={`${BASE_URL}${image?.$}`} alt="icon" />
-                                      <span className={cn({[s.methodDescr]: paymethod?.$ === '71'})}>
+                                      <span
+                                        className={cn({
+                                          [s.methodDescr]: paymethod?.$ === '71',
+                                        })}
+                                      >
                                         {paymentName}
                                         {balance?.length > 0 && (
                                           <>
@@ -1180,14 +1201,18 @@ export default function Component() {
                                         )}
                                       </span>
                                     </div>
-                                    {paymethod?.$ === '71' && <HintWrapper
+                                    {paymethod?.$ === '71' && (
+                                      <HintWrapper
                                         popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', { ns: 'other' })}
+                                        label={t('Paypalich description', {
+                                          ns: 'other',
+                                        })}
                                         wrapperClassName={cn(s.infoBtnCard)}
                                         bottom
-                                    >
-                                      <Icon name="Info" />
-                                    </HintWrapper>}
+                                      >
+                                        <Icon name="Info" />
+                                      </HintWrapper>
+                                    )}
                                   </button>
                                 )
                               })}

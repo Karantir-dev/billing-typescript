@@ -8,7 +8,7 @@ import { t } from 'i18next'
 import i18n from '@src/i18n'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>
+  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage, isDedic }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -18,8 +18,8 @@ const getVDS =
         '/',
         qs.stringify({
           func: 'vds',
-          p_cnt: p_cnt || '10',
-          p_num: p_num || '1',
+          p_cnt: isDedic ? '9999' : p_cnt || '10',
+          p_num: isDedic ? '1' : p_num || '1',
           auth: sessionId,
           out: 'json',
           lang: 'en',
@@ -308,7 +308,7 @@ const changeOrderFormField =
   }
 
 const setOrderData =
-  (period, count, recipe, values, pricelist, register, sale) => (dispatch, getState) => {
+  (period, count, recipe, values, pricelist, register, sale, isDedic) => (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -331,7 +331,7 @@ const setOrderData =
           [register.Disk_space]: values.Disk_space,
           [register.IP_addresses_count]: values.IP_addresses_count,
           [register.Memory]: values.Memory,
-          [register.Port_speed]: values.Port_speed.slice(0, 3),
+          [register.Port_speed]: values.Port_speed.split(' ')[0],
           licence_agreement: values.agreement,
           server_name: values?.server_name,
           order_count: String(count),
@@ -344,7 +344,7 @@ const setOrderData =
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
-            redirectPath: routes.VPS,
+            redirectPath: isDedic ? `${routes.DEDICATED_SERVERS}/vds` : routes.VPS,
             salePromocode: sale,
           }),
         )
@@ -617,6 +617,7 @@ const setVdsFilters =
     setElemsTotal,
     setServicesPerPage,
     p_cnt,
+    isDedic,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -679,7 +680,14 @@ const setVdsFilters =
           })
 
         dispatch(
-          getVDS({ setServers, setRights, setElemsTotal, setServicesPerPage, p_cnt }),
+          getVDS({
+            setServers,
+            setRights,
+            setElemsTotal,
+            setServicesPerPage,
+            p_cnt,
+            isDedic,
+          }),
         )
       })
       .catch(err => {

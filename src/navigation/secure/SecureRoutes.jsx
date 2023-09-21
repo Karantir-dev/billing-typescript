@@ -58,6 +58,7 @@ import {
   OpenedTickerPageLazy,
   BillingPageLazy,
   PaymentProcessingPageLazy,
+  DedicatedPageLazy,
 } from './LazyRoutes'
 
 const Component = ({ fromPromotionLink }) => {
@@ -196,7 +197,10 @@ const Component = ({ fromPromotionLink }) => {
           path={route.DOMAINS_TRANSFER_NS}
           element={<DomainsNsPageLazy transfer={true} />}
         />
-        <Route path={route.DEDICATED_SERVERS} element={<DedicatedServersPageLazy />} />
+        <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
+          <Route index element={<DedicatedServersPageLazy />} />
+          <Route path="vds" element={<VDSPageLazy isDedic />} />
+        </Route>
         <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
         <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
         <Route path={route.FTP} element={<FTPPageLazy />} />

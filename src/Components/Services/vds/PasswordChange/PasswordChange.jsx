@@ -45,11 +45,11 @@ export default function PasswordChange({ id, names, closeModal, isOpen }) {
 
   const validationSchema = Yup.object().shape({
     passwd: Yup.string()
-      .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }))
-      .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }))
+      .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
+      .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
       .matches(
         /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-        t('warnings.invalid_pass', { ns: 'auth', min: 8, max: 48 }),
+        t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }),
       )
       .required(t('warnings.password_required', { ns: 'auth' })),
     confirm: Yup.string()
