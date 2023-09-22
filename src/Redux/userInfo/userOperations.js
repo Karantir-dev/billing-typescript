@@ -165,14 +165,12 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
   ])
     .then(responses => {
       responses.forEach(({ data }, i) => {
-        if (data.doc.error) {
-          checkIfTokenAlive(data.doc.error.msg.$, dispatch)
-        }
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         funcsArray[i]({ ...data, disableClearBasket }, dispatch)
       })
-      dispatch(userActions.hideUserInfoLoading())
 
+      dispatch(userActions.hideUserInfoLoading())
       setLoading && setLoading(false)
     })
     .catch(err => {

@@ -5,7 +5,11 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { authOperations, authSelectors } from '@redux'
+import {
+  // authActions,
+  authOperations,
+  authSelectors,
+} from '@redux'
 import {
   VerificationModal,
   Button,
@@ -35,13 +39,23 @@ export default function LoginForm() {
 
   // const redirectID = location?.state?.redirect
 
-  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
+
+  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || globalErrMsg || '')
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   // const [socialLinks, setSocialLinks] = useState({})
 
   // useEffect(() => {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
   // }, [])
+
+  useEffect(() => {
+    setErrMsg(globalErrMsg)
+
+    // return () => {
+    //   dispatch(authActions.clearAuthErrorMsg())
+    // }
+  }, [globalErrMsg])
 
   const navigate = useNavigate()
 
@@ -61,7 +75,7 @@ export default function LoginForm() {
         email,
         password,
         reCaptcha,
-        setErrMsg,
+
         resetRecaptcha,
         navigateAfterLogin,
       ),
@@ -101,22 +115,18 @@ export default function LoginForm() {
         validationSchema={validationSchema}
       >
         {({ setFieldValue, errors, touched }) => {
-          const resetRecaptcha = () => {
-            recaptchaEl && recaptchaEl?.current?.reset()
-            setFieldValue('reCaptcha', '')
-          }
-
           return (
             <>
-              <VerificationModal resetRecaptcha={resetRecaptcha} />
+              <VerificationModal />
+
               <Form className={s.form}>
                 {errMsg && (
-                  <div className={s.credentials_error}>
-                    {t(`warnings.${errMsg}`, {
-                      value: location?.state?.value || '',
-                    })}
-                  </div>
+                  <div
+                    className={s.credentials_error}
+                    dangerouslySetInnerHTML={{ __html: errMsg }}
+                  />
                 )}
+
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (
                   <div className={s.changed_pass}>{t('changed_pass')}</div>
                 )}

@@ -2,14 +2,16 @@ import qs from 'qs'
 import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, cookies } from '@utils'
+import { checkIfTokenAlive, commonErrorHandler, cookies } from '@utils'
 import { API_URL, SITE_URL } from '@config/config'
+import { t } from 'i18next'
+import * as route from '@src/routes'
+import useCustomNavigate from '@src/utils/hooks/useCustomNavigate'
 
 const SERVER_ERR_MSG = 'auth_error'
 
 const login =
-  (email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin) =>
-  dispatch => {
+  (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
     dispatch(actions.showLoader())
     cookies.eraseCookie('sessionId')
 
@@ -34,7 +36,10 @@ const login =
       .post('/', formDataLogin)
       .then(({ data }) => {
         localStorage.removeItem('redirectID')
-        if (data.doc.error) throw data.doc.error
+        if (data.doc.error) {
+          console.log('received error', data.doc.error)
+          throw new Error(data.doc.error.$object)
+        }
 
         const sessionId = data?.doc?.auth?.$id
 
@@ -70,14 +75,24 @@ const login =
       .catch(error => {
         resetRecaptcha()
         dispatch(actions.hideLoader())
-        const errText =
-          error?.response?.status === 403
-            ? 'blocked_ip'
-            : error?.$object
-            ? error.$object
-            : SERVER_ERR_MSG
 
-        setErrMsg(errText)
+        console.log(error)
+        // billing response errors handling
+        if (!error?.response?.status) {
+          console.log('error.message -', error.message)
+          dispatch(
+            authActions.setAuthErrorMsg(t(`warnings.${error.message}`, { ns: 'auth' })),
+          )
+        } else {
+          checkIfTokenAlive(error, dispatch)
+        }
+
+        // const errText =
+        //   error?.response?.status === 403
+        //     ? 'blocked_ip'
+        //     : error?.$object
+        //     ? error.$object
+        //     : SERVER_ERR_MSG
       })
   }
 
@@ -99,15 +114,18 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       if (data.status === 200) {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
+          dispatch(authActions.setAuthErrorMsg(t('token_is_expired', { ns: 'auth' })))
+
           dispatch(authActions.logoutSuccess())
           cookies.eraseCookie('sessionId')
         }
-      } else {
-        if (data.doc.error.msg.$) throw new Error(data.doc.error.msg.$)
+      } else if (data.doc?.error?.msg?.$) {
+        throw new Error(data.doc.error.msg.$)
       }
     })
     .catch(e => {
-      checkIfTokenAlive('error during getCurrentSessionStatus' + e.message || e, dispatch)
+      // checkIfTokenAlive('error during getCurrentSessionStatus' + e.message || e, dispatch)
+      commonErrorHandler(e)
     })
 }
 
@@ -381,10 +399,21 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
         data.doc?.error?.$object === 'socialrequest'
       ) {
         sendInfoToSite({ error: 'soc_net_not_integrated' })
-        redirectToLogin(
-          'soc_net_not_integrated',
-          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+
+        dispatch(
+          authActions.setAuthErrorMsg(
+            t('soc_net_not_integrated', {
+              value: data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+            }),
+          ),
         )
+        console.log('qweqweqweqwes')
+        useCustomNavigate(route.LOGIN)
+        // navigate(route.LOGIN, { replace: true })
+        // redirectToLogin(
+        //   'soc_net_not_integrated',
+        //   data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+        // )
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
         cookies.setCookie('sessionId', sessionId, 1)
@@ -441,8 +470,11 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
               sendInfoToSite({ error: 'soc_email_exist' })
-              const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToLogin('soc_email_exist', email)
+              // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+
+              console.log('qweqweqweqwes')
+              useCustomNavigate(route.LOGIN)
+              // redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
               sendInfoToSite({ error: 'no_email_from_social' })
               // need to handle this error
