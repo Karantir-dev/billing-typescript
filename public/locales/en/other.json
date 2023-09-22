@@ -171,7 +171,7 @@
   "Name servers has been successfully changed": "Name servers has been successfully changed",
   "services_selected": "Services are selected:",
   "server_deleted": "Server {{id}} deleted",
-  "unknown_error": "Something went wrong",
+  "unknown_error": "Looks like something went wrong, we apologize for the inconvenience. You can contact our technical support support@zomro.com",
   "services_deletion": "and {{value}} more services?",
   "and_more": "and {{value}} more",
   "Services per page": "Items per page",

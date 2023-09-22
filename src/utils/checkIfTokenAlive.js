@@ -9,11 +9,8 @@ export default function checkIfTokenAlive(err, dispatch) {
     errorText.includes('У вас недостаточно прав на выполнение функции') ||
     errorText.includes('Insufficient privileges to perform')
   ) {
-    console.log('#1 Err')
     dispatch(authOperations.getCurrentSessionStatus())
   } else if (errorText.includes('Access from this IP denied')) {
-    console.log('Access from this IP denied')
-
     dispatch(authActions.setAuthErrorMsg(t('warnings.badip', { ns: 'auth' })))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())

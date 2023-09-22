@@ -4,9 +4,10 @@ import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, commonErrorHandler, cookies } from '@utils'
 import { API_URL, SITE_URL } from '@config/config'
-import { t } from 'i18next'
+import { t, exists as isTranslationExists } from 'i18next'
 import * as route from '@src/routes'
 import useCustomNavigate from '@src/utils/hooks/useCustomNavigate'
+import { toast } from 'react-toastify'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -37,7 +38,7 @@ const login =
       .then(({ data }) => {
         localStorage.removeItem('redirectID')
         if (data.doc.error) {
-          console.log('received error', data.doc.error)
+          console.log('login received error', data.doc.error)
           throw new Error(data.doc.error.$object)
         }
 
@@ -49,7 +50,7 @@ const login =
           .post(
             '/',
             qs.stringify({
-              func: 'whoami',
+              func: 'whoamid<>as',
               out: 'json',
               auth: sessionId,
             }),
@@ -77,12 +78,20 @@ const login =
         dispatch(actions.hideLoader())
 
         console.log(error)
+
         // billing response errors handling
         if (!error?.response?.status) {
           console.log('error.message -', error.message)
-          dispatch(
-            authActions.setAuthErrorMsg(t(`warnings.${error.message}`, { ns: 'auth' })),
-          )
+
+          if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
+            dispatch(
+              authActions.setAuthErrorMsg(t(`warnings.${error.message}`, { ns: 'auth' })),
+            )
+          } else {
+            toast.error(t('unknown_error', { ns: 'other' }), { position: 'bottom-right' })
+          }
+
+          // access errors handling
         } else {
           checkIfTokenAlive(error, dispatch)
         }
@@ -114,7 +123,9 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       if (data.status === 200) {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
-          dispatch(authActions.setAuthErrorMsg(t('token_is_expired', { ns: 'auth' })))
+          dispatch(
+            authActions.setAuthErrorMsg(t('warnings.token_is_expired', { ns: 'auth' })),
+          )
 
           dispatch(authActions.logoutSuccess())
           cookies.eraseCookie('sessionId')
