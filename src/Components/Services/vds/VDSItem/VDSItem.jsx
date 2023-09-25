@@ -23,6 +23,7 @@ export default function VDSItem({
   setIdForInstruction,
   goToPanelFn,
   handleEditSubmit,
+  isDedic,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -72,7 +73,7 @@ export default function VDSItem({
           [s.active_server]: isActive,
         })}
       >
-        <span className={s.value}>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>
           <EditCell
             originName={originName}
             onSubmit={editNameHandler}
@@ -82,8 +83,8 @@ export default function VDSItem({
             isShadow={true}
           />
         </span>
-        <span className={s.value}>{server?.id?.$}</span>
-        <span className={s.value}>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.id?.$}</span>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>
           {server?.domain?.$ ? (
             <HintWrapper
               popupClassName={s.HintWrapper}
@@ -94,11 +95,35 @@ export default function VDSItem({
             </HintWrapper>
           ) : null}
         </span>
-        <span className={s.value}>{server?.ip?.$}</span>
-        <span className={s.value}>{server?.ostempl?.$}</span>
-        <span className={s.value}>{server?.datacentername?.$}</span>
-        <span className={s.value}>{server?.createdate?.$}</span>
-        <span className={s.value}>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.ip?.$}</span>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.ostempl?.$}</span>
+
+        {isDedic ? (
+          <>
+            <span className={cn(s.value, { [s.dedic]: isDedic })}>
+              {server?.pricelist?.$}
+              <span className={s.price}>
+                {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
+              </span>
+            </span>
+            <span className={cn(s.value, { [s.dedic]: isDedic })}>
+              {server?.datacentername?.$}
+            </span>
+            <ServerState
+              className={cn(s.value, { [s.dedic]: isDedic })}
+              server={server}
+            />
+          </>
+        ) : (
+          <span className={cn(s.value, { [s.dedic]: isDedic })}>
+            {server?.datacentername?.$}
+          </span>
+        )}
+
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>
+          {server?.createdate?.$}
+        </span>
+        <span className={cn(s.value, { [s.dedic]: isDedic })}>
           {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
             <div className={s.dailyCharge}>
               <span>{t('daily charges')}</span>
@@ -110,13 +135,20 @@ export default function VDSItem({
             server?.expiredate?.$
           )}
         </span>
-        <ServerState className={s.value} server={server} />
-        <span className={s.value}>
-          {server?.pricelist?.$}
-          <span className={s.price}>
-            {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
-          </span>
-        </span>
+        {isDedic ? null : (
+          <>
+            <ServerState
+              className={cn(s.value, { [s.dedic]: isDedic })}
+              server={server}
+            />
+            <span className={cn(s.value, { [s.dedic]: isDedic })}>
+              {server?.pricelist?.$}
+              <span className={s.price}>
+                {server?.cost?.$?.replace('Month', t('short_month', { ns: 'other' }))}
+              </span>
+            </span>
+          </>
+        )}
         {isToolsBtnVisible && (
           <div className={cn(s.dots_wrapper, { [s.disabled]: false })}>
             <button

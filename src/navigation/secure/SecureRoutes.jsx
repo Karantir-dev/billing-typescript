@@ -10,6 +10,8 @@ import {
   EmailTrigger,
   MainEmailConfirmation,
   PromotionBanner,
+  SuccessPayment,
+  ErrorPayment,
 } from '@components'
 import {
   cartSelectors,
@@ -56,6 +58,7 @@ import {
   OpenedTickerPageLazy,
   BillingPageLazy,
   PaymentProcessingPageLazy,
+  DedicatedPageLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 
@@ -196,7 +199,10 @@ const Component = ({ fromPromotionLink }) => {
             path={route.DOMAINS_TRANSFER_NS}
             element={<DomainsNsPageLazy transfer={true} />}
           />
-          <Route path={route.DEDICATED_SERVERS} element={<DedicatedServersPageLazy />} />
+          <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
+          <Route index element={<DedicatedServersPageLazy />} />
+          <Route path="vds" element={<VDSPageLazy isDedic />} />
+        </Route>
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
           <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
           <Route path={route.FTP} element={<FTPPageLazy />} />
@@ -208,6 +214,9 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={route.ACCESS_LOG} element={<AccessLogPageLazy />} />
           <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
           <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
+
+        <Route path={route.SUCCESS_PAYMENT} element={<SuccessPayment />} />
+        <Route path={route.FAILED_PAYMENT} element={<ErrorPayment />} />
 
           <Route path={route.PAYERS} element={<PayersPageLazy />} />
           <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
@@ -277,8 +286,8 @@ const BillingScreen = () => {
 
   return (
     <Routes>
-      <Route path=":path/*" element={<BillingPageLazy />} />
-      <Route path=":path/:result" element={<BillingPageLazy />} />
+      <Route path=":path" element={<BillingPageLazy />} />
+      <Route path="*" element={<ErrorPageLazy />} />
     </Routes>
   )
 }

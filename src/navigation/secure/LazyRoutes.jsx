@@ -69,6 +69,11 @@ const DedicatedServersPage = lazy(() =>
     /* webpackChunkName: "DedicatedServersPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicatedServersPage'
   ),
 )
+const DedicatedPage = lazy(() =>
+  import(
+    /* webpackChunkName: "DedicatedServersPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicPage'
+  ),
+)
 const DedicOrderPage = lazy(() =>
   import(
     /* webpackChunkName: "DedicOrderPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
@@ -206,7 +211,7 @@ export const ServicesPageLazy = () => {
   )
 }
 
-export const VDSPageLazy = () => {
+export const VDSPageLazy = ({ isDedic }) => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
     { value: 'VDS', ns: '' },
@@ -214,7 +219,7 @@ export const VDSPageLazy = () => {
 
   return (
     <ShellСomponent title={title}>
-      <VDS />
+      <VDS isDedic={isDedic} />
     </ShellСomponent>
   )
 }
@@ -388,6 +393,19 @@ export const DedicatedServersPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <DedicatedServersPage />
+    </ShellСomponent>
+  )
+}
+
+export const DedicatedPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.dedicated_servers', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <DedicatedPage />
     </ShellСomponent>
   )
 }

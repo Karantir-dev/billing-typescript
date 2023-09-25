@@ -74,6 +74,17 @@ export default function Component(props) {
         ? 'on'
         : 'off',
     }
+
+    if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = 'jobtitle'
+      data.rdirector = 'rdirector'
+      data.rjobtitle = 'rjobtitle'
+      data.ddirector = 'ddirector'
+      data.djobtitle = 'djobtitle'
+      data.baseaction = 'baseaction'
+    }
     dispatch(payersOperations.getPayerModalInfo(data, true, closeAddModalHandler))
   }
 

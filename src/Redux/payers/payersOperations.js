@@ -234,6 +234,12 @@ const getPayerModalInfo =
           passport_field: passportField,
           eu_vat_field: euVatField,
           profile: newPayer ? 'new' : null,
+          jobtitle: data.doc.jobtitle?.$ || '',
+          rdirector: data.doc.rdirector?.$ || '',
+          rjobtitle: data.doc.rjobtitle?.$ || '',
+          ddirector: data.doc.ddirector?.$ || '',
+          djobtitle: data.doc.djobtitle?.$ || '',
+          baseaction: data.doc.baseaction?.$ || '',
         }
 
         const filters = {}
@@ -379,6 +385,12 @@ const getPayerEditInfo =
           passport_field: passportField,
           eu_vat_field: euVatField,
           profile: data.doc?.elid?.$ || '',
+          jobtitle: data.doc.jobtitle?.$ || '',
+          rdirector: data.doc.rdirector?.$ || '',
+          rjobtitle: data.doc.rjobtitle?.$ || '',
+          ddirector: data.doc.ddirector?.$ || '',
+          djobtitle: data.doc.djobtitle?.$ || '',
+          baseaction: data.doc.baseaction?.$ || '',
         }
 
         const filters = {}

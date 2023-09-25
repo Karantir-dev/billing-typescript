@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
 import {
   PageTabBar,
-  Portal,
-  SuccessPayment,
-  ErrorPayment,
+  // Portal,
+  // SuccessPayment,
+  // ErrorPayment,
   PageTitleRender,
 } from '@components'
 import Payments from './Payments/Payments'
@@ -93,9 +93,9 @@ export default function Component() {
     }
   }
 
-  if (params.result && !(params?.result === 'success' || params?.result === 'error')) {
-    return <ErrorPage />
-  }
+  // if (params.result && !(params?.result === 'success' || params?.result === 'error')) {
+  //   return <ErrorPage />
+  // }
 
   return (
     <>
@@ -103,12 +103,12 @@ export default function Component() {
         <h1 className={s.pageTitle}>{t('Finance')}</h1>
         <PageTabBar sections={tavBarSections} />
         <div className={s.content}>{renderPage(params?.path)}</div>
-        {params?.result && (
+        {/* {params?.result && (
           <Portal>
             {params?.result === 'success' && <SuccessPayment />}{' '}
             {params?.result === 'error' && <ErrorPayment />}
           </Portal>
-        )}
+        )} */}
       </div>
     </>
   )

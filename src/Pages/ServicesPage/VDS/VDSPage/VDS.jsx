@@ -30,7 +30,7 @@ import { useCancelRequest, usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
-export default function VDS() {
+export default function VDS({ isDedic }) {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
@@ -45,7 +45,7 @@ export default function VDS() {
   const [activeServices, setActiveServices] = useState([])
 
   const [filtersState, setFiltersState] = useState()
-  const [filtersListState, setfiltersListState] = useState()
+  const [filtersListState, setFiltersListState] = useState()
 
   const [elidForEditModal, setIdForEditModal] = useState(0)
   const [idForDeleteModal, setIdForDeleteModal] = useState([])
@@ -58,7 +58,7 @@ export default function VDS() {
   const [elemsTotal, setElemsTotal] = useState(0)
 
   const [p_num, setP_num] = useState(1)
-  const [p_cnt, setP_cnt] = useState(10)
+  const [p_cnt, setP_cnt] = useState('10')
 
   const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
 
@@ -101,6 +101,7 @@ export default function VDS() {
         setElemsTotal,
         p_num,
         p_cnt,
+        isDedic,
         signal,
         setIsLoading,
       }),
@@ -122,12 +123,13 @@ export default function VDS() {
         vdsOperations.setVdsFilters(
           null,
           setFiltersState,
-          setfiltersListState,
+          setFiltersListState,
           setServers,
           setRights,
           setElemsTotal,
           setP_cnt,
           p_cnt,
+          isDedic,
           signal,
           setIsLoading,
         ),
@@ -144,6 +146,8 @@ export default function VDS() {
         setServers,
         () => setIdForDeleteModal([]),
         setElemsTotal,
+        signal,
+        setIsLoading,
       ),
     )
     setActiveServices([])
@@ -156,12 +160,13 @@ export default function VDS() {
       vdsOperations.setVdsFilters(
         null,
         setFiltersState,
-        setfiltersListState,
+        setFiltersListState,
         setServers,
         setRights,
         setElemsTotal,
         null,
         p_cnt,
+        isDedic,
         signal,
         setIsLoading,
       ),
@@ -192,12 +197,13 @@ export default function VDS() {
       vdsOperations.setVdsFilters(
         values,
         setFiltersState,
-        setfiltersListState,
+        setFiltersListState,
         setServers,
         setRights,
         setElemsTotal,
         null,
         p_cnt,
+        isDedic,
         signal,
         setIsLoading,
       ),
@@ -219,14 +225,19 @@ export default function VDS() {
 
   return (
     <div>
-      <BreadCrumbs pathnames={location?.pathname.split('/')} />
+      {!isDedic && (
+        <>
+          <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.title}>
-        {t('servers_title')}
-        {servers?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
-        )}
-      </h2>
+          <h2 className={s.title}>
+            {t('servers_title')}
+            {servers?.length !== 0 && (
+              <span className={s.title_count_services}>{` (${elemsTotal})`}</span>
+            )}
+          </h2>
+        </>
+      )}
+
       <div className={s.extra_tools_wrapper}>
         <div className={s.tools_wrapper}>
           <Button
@@ -235,11 +246,16 @@ export default function VDS() {
             isShadow
             type="button"
             label={t('to_order', { ns: 'other' })}
-            onClick={() =>
-              navigate(route.VPS_ORDER, {
-                replace: true,
-              })
-            }
+            onClick={() => {
+              isDedic
+                ? navigate(route.DEDICATED_SERVERS_ORDER, {
+                    state: { isDedicOrderAllowed: rights?.new },
+                    replace: true,
+                  })
+                : navigate(route.VPS_ORDER, {
+                    replace: true,
+                  })
+            }}
           />
 
           <div className={s.filter_wrapper}>
@@ -292,6 +308,7 @@ export default function VDS() {
         activeServices={activeServices}
         setActiveServices={setActiveServices}
         getVDSHandler={getVDSHandler}
+        isDedic={isDedic}
         signal={signal}
         setIsLoading={setIsLoading}
       />
@@ -485,7 +502,7 @@ export default function VDS() {
         />
       )}
 
-      {isLoading && <Loader local shown={isLoading} />}
+      {isLoading && <Loader local shown={isLoading} halfScreen={isDedic} />}
     </div>
   )
 }

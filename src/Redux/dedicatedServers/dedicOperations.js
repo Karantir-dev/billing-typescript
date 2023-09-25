@@ -53,15 +53,15 @@ const getServersList =
   }
 
 //ORDER NEW SERVER OPERATIONS
-const getTarifs = (signal, setIsLoading) => (dispatch, getState) => {
+const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
   setIsLoading(true)
 
   const {
     auth: { sessionId },
   } = getState()
 
-  axiosInstance
-    .post(
+  Promise.all([
+    axiosInstance.post(
       '/',
       qs.stringify({
         func: 'dedic.order',
@@ -70,8 +70,21 @@ const getTarifs = (signal, setIsLoading) => (dispatch, getState) => {
         lang: 'en',
       }),
       { signal },
-    )
-    .then(({ data }) => {
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'vds.order',
+        auth: sessionId,
+        out: 'json',
+        lang: 'en',
+      }),
+      { signal },
+    ),
+  ])
+    .then(([dedicResp, vdsResp]) => {
+      const { data } = dedicResp
+
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { val: fpricelist } = data.doc.flist
@@ -88,7 +101,7 @@ const getTarifs = (signal, setIsLoading) => (dispatch, getState) => {
         period,
         currentDatacenter,
       }
-
+      setNewVds(vdsResp.data?.doc?.list[0]?.elem)
       dispatch(dedicActions.setTarifList(orderData))
       setIsLoading(false)
     })
@@ -142,15 +155,16 @@ const getUpdatedTarrifs =
   }
 
 const getUpdatedPeriod =
-  (period, datacenter, setNewPeriod, signal, setIsLoading) => (dispatch, getState) => {
+  (period, datacenter, setNewPeriod, setNewVds, signal, setIsLoading) =>
+  (dispatch, getState) => {
     setIsLoading(true)
 
     const {
       auth: { sessionId },
     } = getState()
 
-    axiosInstance
-      .post(
+    Promise.all([
+      axiosInstance.post(
         '/',
         qs.stringify({
           func: 'dedic.order',
@@ -161,8 +175,22 @@ const getUpdatedPeriod =
           lang: 'en',
         }),
         { signal },
-      )
-      .then(({ data }) => {
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.pricelist',
+          auth: sessionId,
+          out: 'json',
+          period: period,
+          sv_field: 'period',
+          lang: 'en',
+        }),
+        { signal },
+      ),
+    ])
+      .then(([dedicResp, vdsResp]) => {
+        const { data } = dedicResp
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         const { val: fpricelist } = data.doc.flist
         const { elem: tarifList } = data.doc.list[0]
@@ -177,7 +205,7 @@ const getUpdatedPeriod =
           period,
           currentDatacenter,
         }
-
+        setNewVds(vdsResp.data?.doc?.list[0]?.elem)
         setNewPeriod(orderData)
         setIsLoading(false)
       })

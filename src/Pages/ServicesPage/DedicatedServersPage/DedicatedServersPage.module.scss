@@ -1,3 +1,15 @@
+.page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  position: relative;
+  padding-top: 30px;
+  flex-grow: 1;
+}
+
 .page_title {
   margin-bottom: 40px;
 }
@@ -151,8 +163,8 @@
     margin-left: auto;
   }
   .order_btn {
-    width: 245px;
-    margin-right: 25px;
+    width: 240px;
+    margin-right: 15px;
   }
   .bg {
     align-items: center;
@@ -226,7 +238,6 @@
     margin-right: 35px;
   }
   .order_btn {
-    width: 229px;
     font-size: 20px;
   }
 }

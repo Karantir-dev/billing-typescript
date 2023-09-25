@@ -67,6 +67,7 @@
   "Payer": "Плательщик",
   "Sum": "Сумма",
   "Payment method": "Метод оплаты",
+  "Paypalich description":"Оплата банковской картой MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "Недостаточно прав для доступа",
   "-- without payment method --": "Без способа оплаты",
   "Create": "Создать",

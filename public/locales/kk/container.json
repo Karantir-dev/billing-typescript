@@ -22,6 +22,7 @@
         "domains": "Домендер",
         "virtual_servers": "Виртуалды серверлер",
         "dedicated_servers": "Белгіленген серверлер",
+        "dedicated": "Белгіленген серверлер",
         "virtual_hosting": "Виртуалды хостинг",
         "dns_hosting": "DNS-хостинг",
         "external_ftp": "Сыртқы FTP қоймасы",

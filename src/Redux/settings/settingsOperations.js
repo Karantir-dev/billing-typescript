@@ -41,7 +41,6 @@ const getUserEdit =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        // const data = data.doc
 
         const elem = {
           email: { email: data?.doc?.email?.$, readonly: false },

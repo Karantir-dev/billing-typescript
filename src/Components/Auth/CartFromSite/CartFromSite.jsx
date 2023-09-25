@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { Loader } from '@components'
+import { VDS_IDS_TO_ORDER } from '@utils/constants'
 
 export default function Component(props) {
   const location = useLocation()
@@ -32,6 +33,13 @@ export default function Component(props) {
       if (data) {
         const funcName = JSON.parse(data)?.func
         if (funcName === 'vds.order.param') {
+          const pricelist = JSON.parse(data)?.pricelist
+          if (VDS_IDS_TO_ORDER.includes(pricelist)) {
+            return navigate(route.DEDICATED_SERVERS_ORDER, {
+              replace: true,
+              state: { isDedicOrderAllowed: true },
+            })
+          }
           return navigate(route.VPS_ORDER, {
             replace: true,
           })
