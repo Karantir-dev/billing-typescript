@@ -490,6 +490,37 @@ const getPayerCountryType =
       })
   }
 
+const checkIsStripeAvailable = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.add.method',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      const isStripeAvailable = data.doc.list
+        .find(el => el.$name === 'methodlist')
+        ?.elem.find(el => el.paymethod.$ === '93')
+      dispatch(billingActions.setIsStripeAvailable(!!isStripeAvailable))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const getPaymentMethod =
   (body = {}, payerModalInfoData = null) =>
   (dispatch, getState) => {
@@ -1222,4 +1253,5 @@ export default {
   editNamePaymentMethod,
   // getExchangeRate,
   useCertificate,
+  checkIsStripeAvailable,
 }

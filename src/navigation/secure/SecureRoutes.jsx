@@ -75,6 +75,7 @@ const Component = ({ fromPromotionLink }) => {
   useEffect(() => {
     dispatch(cartOperations.getSalesList(setSalesList))
     dispatch(billingOperations.setPaymentsFilters({ status: '4' }, true))
+    dispatch(billingOperations.checkIsStripeAvailable())
     const isBannerClosed = localStorage.getItem('isBannerClosed')
     setIsUserClosedBanner(!!isBannerClosed)
   }, [])

@@ -6,13 +6,14 @@ import {
   Pagination,
   PaymentsMethodsTable,
   ModalCreatePaymentMethod,
-  Icon
+  Icon,
 } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
 
 export default function Component() {
   const dispatch = useDispatch()
+  const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
 
   let paymentsList = useSelector(billingSelectors.getPaymentMethodList)
   const paymentsCount = useSelector(billingSelectors.getPaymentMethodCount)
@@ -63,13 +64,16 @@ export default function Component() {
           editItemNameHandler={editItemNameHandler}
         />
       )}
-      <div className={s.addBtn}>
-        <Button
-          isShadow
-          label={t('Add', { ns: 'payers' })}
-          onClick={() => setCreatePaymentModal(!createPaymentModal)}
-        />
-      </div>
+      {isStripeAvailable && (
+        <div className={s.addBtn}>
+          <Button
+            isShadow
+            label={t('Add', { ns: 'payers' })}
+            onClick={() => setCreatePaymentModal(!createPaymentModal)}
+          />
+        </div>
+      )}
+
       {paymentsList?.length > 0 && paymentsCount > 5 && (
         <div className={s.pagination}>
           <Pagination

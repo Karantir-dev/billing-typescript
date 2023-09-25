@@ -90,7 +90,7 @@ export default function Component(props) {
       country_legal:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profile: values?.profile ?? 'add_new',
-      paymethod: '57',
+      paymethod: '93',
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
@@ -151,7 +151,7 @@ export default function Component(props) {
                 profile:
                   selectedPayerFields?.profile ||
                   payersList[payersList?.length - 1]?.id?.$,
-                slecetedPayMethod: '57',
+                slecetedPayMethod: '93',
                 name: selectedPayerFields?.name || '',
                 address_physical: selectedPayerFields?.address_physical || '',
                 city_physical:
@@ -255,7 +255,7 @@ export default function Component(props) {
                 }
 
                 const stripeMethod = paymentsMethodList?.find(
-                  e => e?.paymethod?.$ === '57',
+                  e => e?.paymethod?.$ === '93',
                 )
 
                 return (
