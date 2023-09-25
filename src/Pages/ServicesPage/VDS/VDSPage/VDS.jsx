@@ -29,8 +29,6 @@ import { usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
-import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
-
 export default function VDS({ isDedic }) {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
@@ -41,13 +39,6 @@ export default function VDS({ isDedic }) {
 
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
-
-  const setFilteredServers = servers => {
-    const filteredServers = isDedic
-      ? servers.filter(el => VDS_IDS_LIKE_DEDICS.includes(el.pricelist_id.$))
-      : servers.filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.pricelist_id.$))
-    setServers(filteredServers)
-  }
 
   const [activeServices, setActiveServices] = useState([])
 
@@ -65,16 +56,9 @@ export default function VDS({ isDedic }) {
   const [elemsTotal, setElemsTotal] = useState(0)
 
   const [p_num, setP_num] = useState(1)
-  const [p_cnt, setP_cnt] = useState(10)
+  const [p_cnt, setP_cnt] = useState('10')
 
   const itemWithPenalty = activeServices.find(item => item?.item_real_status?.$ === '3')
-
-  const setFilteredFiltersListState = data => {
-    const pricelist = isDedic
-      ? data.pricelist.filter(el => VDS_IDS_LIKE_DEDICS.includes(el.$key))
-      : data.pricelist.filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.$key))
-    setFiltersListState({ ...data, pricelist })
-  }
 
   const filteredElidForProlongModal = itemWithPenalty
     ? idForProlong?.filter(el => el !== itemWithPenalty.id.$)
@@ -110,7 +94,7 @@ export default function VDS({ isDedic }) {
   const getVDSHandler = () => {
     dispatch(
       vdsOperations.getVDS({
-        setServers: setFilteredServers,
+        setServers,
         setRights,
         setElemsTotal,
         p_num,
@@ -135,8 +119,8 @@ export default function VDS({ isDedic }) {
         vdsOperations.setVdsFilters(
           null,
           setFiltersState,
-          setFilteredFiltersListState,
-          setFilteredServers,
+          setFiltersListState,
+          setServers,
           setRights,
           setElemsTotal,
           setP_cnt,
@@ -153,7 +137,7 @@ export default function VDS({ isDedic }) {
     dispatch(
       vdsOperations.deleteVDS(
         idForDeleteModal,
-        setFilteredServers,
+        setServers,
         () => setIdForDeleteModal([]),
         setElemsTotal,
       ),
@@ -168,12 +152,13 @@ export default function VDS({ isDedic }) {
       vdsOperations.setVdsFilters(
         null,
         setFiltersState,
-        setFilteredFiltersListState,
-        setFilteredServers,
+        setFiltersListState,
+        setServers,
         setRights,
         setElemsTotal,
         null,
         p_cnt,
+        isDedic,
       ),
     )
     setIsFiltersOpened(false)
@@ -202,12 +187,13 @@ export default function VDS({ isDedic }) {
       vdsOperations.setVdsFilters(
         values,
         setFiltersState,
-        setFilteredFiltersListState,
-        setFilteredServers,
+        setFiltersListState,
+        setServers,
         setRights,
         setElemsTotal,
         null,
         p_cnt,
+        isDedic,
       ),
     )
     setIsSearchMade(true)
@@ -315,7 +301,7 @@ export default function VDS({ isDedic }) {
         isDedic={isDedic}
       />
 
-      {elemsTotal > 5 && !isDedic && (
+      {elemsTotal > 5 && (
         <Pagination
           className={s.pagination}
           currentPage={p_num}
