@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { BreadCrumbs, IconButton, IPeditModal, Icon } from '@components'
+import { BreadCrumbs, IconButton, IPeditModal, Icon, Loader } from '@components'
 import { vdsOperations } from '@redux'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import * as route from '@src/routes'
 
 import s from './VDSip.module.scss'
-
+import { useCancelRequest } from '@src/utils'
 
 export default function VDSip() {
   const { t } = useTranslation(['vds', 'dedicated_servers', 'other'])
@@ -17,6 +17,7 @@ export default function VDSip() {
   const location = useLocation()
   const navigate = useNavigate()
   const widerThan900px = useMediaQuery({ query: '(min-width: 900px)' })
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [elements, setElements] = useState()
   const [name, setName] = useState('')
@@ -27,12 +28,14 @@ export default function VDSip() {
     if (!ServerID) {
       navigate(route.VPS, { replace: true })
     } else {
-      dispatch(vdsOperations.getIpInfo(ServerID, setElements, setName))
+      dispatch(
+        vdsOperations.getIpInfo(ServerID, setElements, setName, signal, setIsLoading),
+      )
     }
   }, [])
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
       {elements && (
         <>
@@ -133,6 +136,7 @@ export default function VDSip() {
           setElements={setElements}
         />
       )}
-    </>
+      {isLoading && <Loader local shown={isLoading} />}
+    </div>
   )
 }

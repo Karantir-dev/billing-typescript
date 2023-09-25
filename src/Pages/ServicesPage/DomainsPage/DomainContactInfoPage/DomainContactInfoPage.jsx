@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from 'react'
-import { BreadCrumbs, Button, DomainContactInfoItem } from '@components'
+import { BreadCrumbs, Button, DomainContactInfoItem, Loader } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import s from './DomainContactInfoPage.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 const formTypes = ['owner', 'admin', 'tech', 'bill']
 
@@ -14,6 +15,8 @@ export default function Component({ transfer = false }) {
 
   const { t } = useTranslation(['domains', 'other', 'trusted_users'])
   const navigate = useNavigate()
+
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const location = useLocation()
 
@@ -26,7 +29,12 @@ export default function Component({ transfer = false }) {
   useEffect(() => {
     if (state?.domainInfo) {
       dispatch(
-        domainsOperations.getDomainsContacts(setDomainsContacts, state?.domainInfo),
+        domainsOperations.getDomainsContacts({
+          setDomains: setDomainsContacts,
+          body: state?.domainInfo,
+          signal,
+          setIsLoading,
+        }),
       )
     }
   }, [])
@@ -60,7 +68,14 @@ export default function Component({ transfer = false }) {
   const setContactsHandler = values => {
     const data = { ...values, ...state?.domainInfo, period: '12', snext: 'ok', sok: 'ok' }
     dispatch(
-      domainsOperations.getDomainsContacts(setDomainsContacts, data, navigate, transfer),
+      domainsOperations.getDomainsContacts({
+        setDomains: setDomainsContacts,
+        body: data,
+        navigate,
+        transfer,
+        signal,
+        setIsLoading,
+      }),
     )
   }
 
@@ -98,48 +113,54 @@ export default function Component({ transfer = false }) {
   }
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      {domainsContacts &&
-        formTypes?.map(type => {
-          return (
-            <DomainContactInfoItem
-              key={type}
-              onChange={data => handleChangeForm(data, type)}
-              domainInfo={state?.domainInfo}
-              formType={type}
-              refId={refHandler(type)}
-              domainsContacts={domainsContacts}
-              setDomainsContacts={setDomainsContacts}
-              setPayersInfo={setPayersInfo}
-              payersInfo={payersInfo}
-            />
-          )
-        })}
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        {domainsContacts &&
+          formTypes?.map(type => {
+            return (
+              <DomainContactInfoItem
+                key={type}
+                onChange={data => handleChangeForm(data, type)}
+                domainInfo={state?.domainInfo}
+                formType={type}
+                refId={refHandler(type)}
+                domainsContacts={domainsContacts}
+                setDomainsContacts={setDomainsContacts}
+                setPayersInfo={setPayersInfo}
+                payersInfo={payersInfo}
+                signal={signal}
+                setIsLoading={setIsLoading}
+              />
+            )
+          })}
 
-      {domainsContacts && (
-        <div className={s.btnBlock}>
-          <Button
-            className={s.saveBtn}
-            isShadow
-            size="medium"
-            label={t('Proceed', { ns: 'other' })}
-            type="button"
-            onClick={handleSubmit}
-          />
-          <button
-            onClick={() =>
-              navigate(route.DOMAINS, {
-                replace: true,
-              })
-            }
-            type="button"
-            className={s.cancel}
-          >
-            {t('Cancel', { ns: 'other' })}
-          </button>
-        </div>
-      )}
-    </div>
+        {domainsContacts && (
+          <div className={s.btnBlock}>
+            <Button
+              className={s.saveBtn}
+              isShadow
+              size="medium"
+              label={t('Proceed', { ns: 'other' })}
+              type="button"
+              onClick={handleSubmit}
+            />
+            <button
+              onClick={() =>
+                navigate(route.DOMAINS, {
+                  replace: true,
+                })
+              }
+              type="button"
+              className={s.cancel}
+            >
+              {t('Cancel', { ns: 'other' })}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

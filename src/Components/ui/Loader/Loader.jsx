@@ -5,8 +5,8 @@ import { LoaderDots, Icon } from '@components'
 
 import s from './Loader.module.scss'
 
-export default function Loader({ logo = false, shown }) {
-  const isLoading = useSelector(selectors.getIsLoadding)
+export default function Loader({ logo = false, shown, local = false, transparent = false, staticPos = false, halfScreen = false, className }) {
+  const isLoading = useSelector(selectors.getIsLoading)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const userInfoLoading = useSelector(userSelectors.getUserInfoLoading)
 
@@ -17,7 +17,11 @@ export default function Loader({ logo = false, shown }) {
         [s.main_lt]: (logo || userInfoLoading) && !darkTheme,
         [s.main_dt]: (logo || userInfoLoading) && darkTheme,
         [s.shown]: isLoading || userInfoLoading || shown,
-      })}
+        [s.local]: local,
+        [s.transparent]: transparent,
+        [s.static]: staticPos,
+        [s.halfScreen]: halfScreen,
+      }, className)}
     >
       {(logo || userInfoLoading) && <Icon name="Logo" svgwidth="115" svgheight="53" />}
 

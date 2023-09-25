@@ -32,6 +32,8 @@ export default function Component(props) {
     isFiltered,
     rights,
     p_cnt,
+    signal,
+    setIsLoading
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -82,7 +84,7 @@ export default function Component(props) {
     setSelctedItem([])
     setIsFiltered(false)
     dispatch(
-      domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok', p_cnt }, true),
+      domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok', p_cnt }, true, signal, setIsLoading),
     )
   }
 
@@ -91,7 +93,7 @@ export default function Component(props) {
     setIsFiltered(true)
     setSelctedItem([])
     setFilterModal(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok', p_cnt }, true))
+    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok', p_cnt }, true, signal, setIsLoading))
   }
 
   const isAllActive = list?.length === selctedItem?.length

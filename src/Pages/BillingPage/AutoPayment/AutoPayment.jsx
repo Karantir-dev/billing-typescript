@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Button, CurrentAutoPayments, AutoPaymentForm } from '@components'
+import { Button, CurrentAutoPayments, AutoPaymentForm, Loader } from '@components'
 import s from './AutoPayment.module.scss'
 import { billingOperations, billingSelectors, payersOperations } from '@redux'
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const navigate = useNavigate()
@@ -24,12 +26,13 @@ export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
 
   const [isConfigure, setIsConfigure] = useState(false)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const autoPaymentsList = useSelector(billingSelectors.getAutoPaymentsList)
 
   useEffect(() => {
-    dispatch(billingOperations.getAutoPayments())
-    dispatch(payersOperations.getPayers())
+    dispatch(billingOperations.getAutoPayments(signal, setIsLoading))
+    dispatch(payersOperations.getPayers({}, signal, setIsLoading))
   }, [])
 
   const renderInstruction = () => {
@@ -40,7 +43,7 @@ export default function Component() {
           const { id, image, name, status, maxamount } = el
 
           const stopAutoPaymentHandler = () => {
-            dispatch(billingOperations.stopAutoPayments(id.$))
+            dispatch(billingOperations.stopAutoPayments(id.$, signal, setIsLoading))
           }
 
           return (
@@ -68,12 +71,19 @@ export default function Component() {
   }
 
   return (
-    <div className={s.autoPayContainer}>
-      {isConfigure ? (
-        <AutoPaymentForm setIsConfigure={setIsConfigure} />
-      ) : (
-        renderInstruction()
-      )}
-    </div>
+    <>
+      <div className={s.autoPayContainer}>
+        {isConfigure ? (
+          <AutoPaymentForm
+            setIsConfigure={setIsConfigure}
+            signal={signal}
+            setIsLoading={setIsLoading}
+          />
+        ) : (
+          renderInstruction()
+        )}
+      </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
+    </>
   )
 }

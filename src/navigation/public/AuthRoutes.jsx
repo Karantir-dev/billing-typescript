@@ -82,7 +82,14 @@ const Component = () => {
   return (
     <>
       <Routes>
-        <Route path={route.LOGIN} element={<AuthPage children={<LoginForm />} />} />
+        <Route
+          path={route.LOGIN}
+          element={
+            <AuthPage
+              children={<LoginForm geoCountryId={geoData?.clients_country_id} />}
+            />
+          }
+        />
         <Route
           path={route.REGISTRATION}
           element={

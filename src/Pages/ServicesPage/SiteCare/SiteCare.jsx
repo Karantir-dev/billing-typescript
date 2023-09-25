@@ -10,13 +10,14 @@ import {
   SiteCareDeleteModal,
   CheckBox,
   SiteCareBottomBar,
+  Loader,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SiteCare.module.scss'
-import { selectors, siteCareOperations, siteCareSelectors } from '@redux'
-import { checkServicesRights, usePageRender } from '@utils'
+import { siteCareOperations, siteCareSelectors } from '@redux'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
@@ -30,7 +31,7 @@ export default function Component() {
 
   const sitecareRenderData = useSelector(siteCareSelectors.getSiteCareList)
   const siteCareCount = useSelector(siteCareSelectors.getSiteCareCount)
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -79,7 +80,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(siteCareOperations.getSiteCare(data))
+    dispatch(siteCareOperations.getSiteCare(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -205,155 +206,163 @@ export default function Component() {
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>
-        {t('burger_menu.services.services_list.wetsite_care')}
-        {sitecareRenderData?.siteCareList?.length !== 0 && (
-          <span className={s.title_count_services}>{` (${siteCareCount})`}</span>
-        )}
-      </h1>
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>
+          {t('burger_menu.services.services_list.wetsite_care')}
+          {sitecareRenderData?.siteCareList?.length !== 0 && (
+            <span className={s.title_count_services}>{` (${siteCareCount})`}</span>
+          )}
+        </h1>
 
-      <SiteCareFilter
-        setIsFiltered={setIsFiltered}
-        setSelctedItem={setSelctedItem}
-        setCurrentPage={setP_num}
-        p_cnt={p_cnt}
-        isFiltered={isFiltered}
-        isFilterActive={isFiltered || sitecareRenderData?.siteCareList?.length > 0}
-        rights={rights}
-        selctedItem={selctedItem}
-        list={sitecareRenderData?.siteCareList}
-      />
+        <SiteCareFilter
+          setIsFiltered={setIsFiltered}
+          setSelctedItem={setSelctedItem}
+          setCurrentPage={setP_num}
+          p_cnt={p_cnt}
+          isFiltered={isFiltered}
+          isFilterActive={isFiltered || sitecareRenderData?.siteCareList?.length > 0}
+          rights={rights}
+          selctedItem={selctedItem}
+          list={sitecareRenderData?.siteCareList}
+          signal={signal}
+          setIsLoading={setIsLoading}
+        />
 
-      {sitecareRenderData?.siteCareList?.length > 0 && (
-        <div className={s.checkBoxColumn}>
-          <CheckBox
-            className={s.check_box}
-            value={isAllActive}
-            onClick={toggleIsAllActiveHandler}
-          />
-          <span>{t('Choose all', { ns: 'other' })}</span>
-        </div>
-      )}
-
-      {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
-        <div className={s.no_vds_wrapper}>
-          <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
-        </div>
-      )}
-
-      {sitecareRenderData?.siteCareList?.length < 1 &&
-        !isFiltered &&
-        sitecareRenderData?.siteCareList &&
-        !isLoading && (
-          <div className={s.no_service_wrapper}>
-            <img
-              src={require('@images/services/no_site_care.png')}
-              alt="sitecare"
-              className={s.sitecare_img}
+        {sitecareRenderData?.siteCareList?.length > 0 && (
+          <div className={s.checkBoxColumn}>
+            <CheckBox
+              className={s.check_box}
+              value={isAllActive}
+              onClick={toggleIsAllActiveHandler}
             />
-            <p className={s.no_service_title}>
-              {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
-            </p>
-
-            <div className={s.discount_wrapper}>
-              <p className={s.discount_percent}>
-                {t('DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE', {
-                  ns: 'other',
-                })}
-              </p>
-              <p className={s.discount_desc}>
-                {t('You can get a discount using a promo code', { ns: 'other' })}:
-                <span className={s.promocode}>ST-ZM-CR</span>
-              </p>
-            </div>
-
-            <p className={s.no_service_description}>
-              {t('no services sitecare description', { ns: 'other' })}
-            </p>
+            <span>{t('Choose all', { ns: 'other' })}</span>
           </div>
         )}
 
-      {sitecareRenderData?.siteCareList?.length > 0 && (
-        <SiteCareTable
-          historySiteCareHandler={historySiteCareHandler}
-          prolongSiteCareHandler={prolongSiteCareHandler}
-          editSiteCareHandler={editSiteCareHandler}
-          deleteSiteCareHandler={() => setDeleteModal(true)}
-          selctedItem={selctedItem}
-          setSelctedItem={setSelctedItem}
-          list={sitecareRenderData?.siteCareList}
-          rights={rights}
-          setDeleteIds={setDeleteIds}
-        />
-      )}
+        {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
+          <div className={s.no_vds_wrapper}>
+            <p className={s.not_found}>{t('nothing_found', { ns: 'access_log' })}</p>
+          </div>
+        )}
 
-      <SiteCareBottomBar
-        selctedItem={selctedItem}
-        renewDomainHandler={prolongSiteCareHandler}
-        deleteSiteCare={() => setDeleteModal(true)}
-        setDeleteIds={setDeleteIds}
-        rights={rights}
-      />
+        {sitecareRenderData?.siteCareList?.length < 1 &&
+          !isFiltered &&
+          sitecareRenderData?.siteCareList &&
+          !isLoading && (
+            <div className={s.no_service_wrapper}>
+              <img
+                src={require('@images/services/no_site_care.png')}
+                alt="sitecare"
+                className={s.sitecare_img}
+              />
+              <p className={s.no_service_title}>
+                {t('YOU DONT HAVE A WEBSITE YET', { ns: 'other' })}
+              </p>
 
-      {siteCareCount > 5 && (
-        <div className={s.pagination}>
-          <Pagination
-            totalCount={Number(siteCareCount)}
-            currentPage={p_num}
-            pageSize={p_cnt}
-            onPageChange={page => setP_num(page)}
-            onPageItemChange={items => setP_cnt(items)}
+              <div className={s.discount_wrapper}>
+                <p className={s.discount_percent}>
+                  {t(
+                    'DISCOUNT -20% FOR THE FIRST MONTH FOR THE SERVICE CARE OF THE SITE',
+                    {
+                      ns: 'other',
+                    },
+                  )}
+                </p>
+                <p className={s.discount_desc}>
+                  {t('You can get a discount using a promo code', { ns: 'other' })}:
+                  <span className={s.promocode}>ST-ZM-CR</span>
+                </p>
+              </div>
+
+              <p className={s.no_service_description}>
+                {t('no services sitecare description', { ns: 'other' })}
+              </p>
+            </div>
+          )}
+
+        {sitecareRenderData?.siteCareList?.length > 0 && (
+          <SiteCareTable
+            historySiteCareHandler={historySiteCareHandler}
+            prolongSiteCareHandler={prolongSiteCareHandler}
+            editSiteCareHandler={editSiteCareHandler}
+            deleteSiteCareHandler={() => setDeleteModal(true)}
+            selctedItem={selctedItem}
+            setSelctedItem={setSelctedItem}
+            list={sitecareRenderData?.siteCareList}
+            rights={rights}
+            setDeleteIds={setDeleteIds}
           />
-        </div>
-      )}
+        )}
 
-      {historyModal && historyList?.length > 0 && (
-        <SiteCareHistoryModal
-          historyList={historyList}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeHistoryModalHandler}
-          setHistoryCurrentPage={setHistoryCurrentPage}
-          historyCurrentPage={historyCurrentPage}
-          historyItemCount={historyItemCount}
-          isOpen
+        <SiteCareBottomBar
+          selctedItem={selctedItem}
+          renewDomainHandler={prolongSiteCareHandler}
+          deleteSiteCare={() => setDeleteModal(true)}
+          setDeleteIds={setDeleteIds}
+          rights={rights}
         />
-      )}
 
-      {prolongModal && prolongData && (
-        <SiteCareProlongModal
-          prolongData={prolongData}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeProlongModalHandler}
-          prolongEditSiteCareHandler={prolongEditSiteCareHandler}
-          isOpen
-        />
-      )}
+        {siteCareCount > 5 && (
+          <div className={s.pagination}>
+            <Pagination
+              totalCount={Number(siteCareCount)}
+              currentPage={p_num}
+              pageSize={p_cnt}
+              onPageChange={page => setP_num(page)}
+              onPageItemChange={items => setP_cnt(items)}
+            />
+          </div>
+        )}
 
-      {editModal && editData && (
-        <SiteCareEditModal
-          editData={editData}
-          name={parseSelectedItemNameArr()}
-          closeModal={closeEditModalHandler}
-          sendEditSiteCareHandler={sendEditSiteCareHandler}
-          editSiteCareHandler={editSiteCareHandler}
-          isOpen
-        />
-      )}
+        {historyModal && historyList?.length > 0 && (
+          <SiteCareHistoryModal
+            historyList={historyList}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeHistoryModalHandler}
+            setHistoryCurrentPage={setHistoryCurrentPage}
+            historyCurrentPage={historyCurrentPage}
+            historyItemCount={historyItemCount}
+            isOpen
+          />
+        )}
 
-      {deleteModal && (
-        <SiteCareDeleteModal
-          closeModal={() => {
-            setDeleteModal(false)
-            setDeleteIds(null)
-          }}
-          deleteIds={deleteIds}
-          deleteSiteCareHandler={deleteSiteCareHandler}
-          name={parseSelectedItemNameArr()}
-          isOpen
-        />
-      )}
-    </div>
+        {prolongModal && prolongData && (
+          <SiteCareProlongModal
+            prolongData={prolongData}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeProlongModalHandler}
+            prolongEditSiteCareHandler={prolongEditSiteCareHandler}
+            isOpen
+          />
+        )}
+
+        {editModal && editData && (
+          <SiteCareEditModal
+            editData={editData}
+            name={parseSelectedItemNameArr()}
+            closeModal={closeEditModalHandler}
+            sendEditSiteCareHandler={sendEditSiteCareHandler}
+            editSiteCareHandler={editSiteCareHandler}
+            isOpen
+          />
+        )}
+
+        {deleteModal && (
+          <SiteCareDeleteModal
+            closeModal={() => {
+              setDeleteModal(false)
+              setDeleteIds(null)
+            }}
+            deleteIds={deleteIds}
+            deleteSiteCareHandler={deleteSiteCareHandler}
+            name={parseSelectedItemNameArr()}
+            isOpen
+          />
+        )}
+      </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

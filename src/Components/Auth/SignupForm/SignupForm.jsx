@@ -22,10 +22,9 @@ import {
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
 
-const FACEBOOK_LINK =
-  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
-const VK_LINK =
-  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='
+// const FACEBOOK_LINK =
+//   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
+
 const GOOGLE_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
 
@@ -284,19 +283,14 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       <div>
         <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
-          <li>
+          {/* <li>
             <a href={FACEBOOK_LINK}>
               <Icon name="Facebook" />
             </a>
-          </li>
+          </li> */}
           <li>
             <a href={GOOGLE_LINK}>
               <Icon name="Google" />
-            </a>
-          </li>
-          <li>
-            <a href={VK_LINK}>
-              <Icon name="Vk" />
             </a>
           </li>
         </ul>

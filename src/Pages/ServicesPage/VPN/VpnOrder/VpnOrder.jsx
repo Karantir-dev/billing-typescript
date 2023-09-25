@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { BreadCrumbs, Select, VpnTarifCard, Button } from '@components'
+import { BreadCrumbs, Select, VpnTarifCard, Button, Loader } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { userOperations, vpnOperations } from '@redux'
-import { useScrollToElement, translatePeriod } from '@utils'
+import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
 
 import s from './VpnOrder.module.scss'
 import * as routes from '@src/routes'
@@ -23,6 +23,7 @@ export default function Component() {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -33,7 +34,7 @@ export default function Component() {
 
   useEffect(() => {
     if (isSiteCareOrderAllowed) {
-      dispatch(vpnOperations.orderSiteCare({}, setData))
+      dispatch(vpnOperations.orderSiteCare({}, setData, signal, setIsLoading))
     } else {
       navigate(routes.VPN, { replace: true })
     }
@@ -84,100 +85,113 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(vpnOperations.orderSiteCarePricelist(d, setParamsData)),
+        dispatch(
+          vpnOperations.orderSiteCarePricelist(d, setParamsData, signal, setIsLoading),
+        ),
       ),
     )
   }
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('vpn_order', { ns: 'crumbs' })}</h1>
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>{t('vpn_order', { ns: 'crumbs' })}</h1>
 
-      <Formik
-        enableReinitialize
-        initialValues={{
-          datacenter: data?.datacenter || '',
-          autoprolong: paramsData?.autoprolong || 'null',
-          period: data?.period || '',
-          pricelist: '',
+        <Formik
+          enableReinitialize
+          initialValues={{
+            datacenter: data?.datacenter || '',
+            autoprolong: paramsData?.autoprolong || 'null',
+            period: data?.period || '',
+            pricelist: '',
 
-          licence_agreement_error: 'off',
-        }}
-        onSubmit={buyVhostHandler}
-      >
-        {({ setFieldValue, values }) => {
-          return (
-            <Form className={s.form}>
-              <div className={s.paymentWrapper}>
-                <Select
-                  getElement={item => {
-                    setFieldValue('period', item)
-                    setFieldValue('pricelist', '')
-                    // setFieldValue('licence_agreement_error', 'off')
-                    // setLicence_agreement(false)
-                    setParamsData(null)
-                    dispatch(vpnOperations.orderSiteCare({ period: item }, setData))
-                  }}
-                  value={values?.period}
-                  label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
-                  className={s.select}
-                  itemsList={data?.period_list.map(el => {
-                    return {
-                      label: t(el.$, { ns: 'other' }),
-                      value: el.$key,
-                    }
-                  })}
-                  isShadow
-                />
-                <div className={s.cardContainer}>
-                  {data?.tariflist_list?.map(tariff => {
-                    const { pricelist } = tariff
-                    const setPriceHandler = () => {
-                      setFieldValue('pricelist', pricelist?.$)
+            licence_agreement_error: 'off',
+          }}
+          onSubmit={buyVhostHandler}
+        >
+          {({ setFieldValue, values }) => {
+            return (
+              <Form className={s.form}>
+                <div className={s.paymentWrapper}>
+                  <Select
+                    getElement={item => {
+                      setFieldValue('period', item)
+                      setFieldValue('pricelist', '')
+                      // setFieldValue('licence_agreement_error', 'off')
+                      // setLicence_agreement(false)
+                      setParamsData(null)
                       dispatch(
-                        vpnOperations.orderSiteCarePricelist(
-                          { ...values, pricelist: pricelist?.$, sv_field: 'period' },
-                          setParamsData,
+                        vpnOperations.orderSiteCare(
+                          { period: item },
+                          setData,
+                          signal,
+                          setIsLoading,
                         ),
                       )
-                      runScroll()
-                    }
-                    return (
-                      <VpnTarifCard
-                        period={
-                          data?.period_list?.filter(el => el?.$key === values?.period)[0]
-                            ?.$
-                        }
-                        selected={pricelist?.$ === values.pricelist}
-                        setPriceHandler={setPriceHandler}
-                        key={pricelist?.$}
-                        tariff={tariff}
-                      />
-                    )
-                  })}
-                </div>
-                {paramsData && (
-                  <div className={s.parametrsContainer}>
-                    <div ref={scrollElem} className={s.parametrsTitle}>
-                      {t('Options')}
-                    </div>
-                    <div className={s.inputsBlock}>
-                      <Select
-                        getElement={item => {
-                          setFieldValue('autoprolong', item)
-                        }}
-                        value={values?.autoprolong}
-                        label={`${t('Auto renewal', { ns: 'domains' })}:`}
-                        className={s.select}
-                        itemsList={paramsData?.autoprolong_list.map(el => ({
-                          label: translatePeriod(el.$, t),
-                          value: el.$key,
-                        }))}
-                        isShadow
-                      />
+                    }}
+                    value={values?.period}
+                    label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
+                    className={s.select}
+                    itemsList={data?.period_list.map(el => {
+                      return {
+                        label: t(el.$, { ns: 'other' }),
+                        value: el.$key,
+                      }
+                    })}
+                    isShadow
+                  />
+                  <div className={s.cardContainer}>
+                    {data?.tariflist_list?.map(tariff => {
+                      const { pricelist } = tariff
+                      const setPriceHandler = () => {
+                        setFieldValue('pricelist', pricelist?.$)
+                        dispatch(
+                          vpnOperations.orderSiteCarePricelist(
+                            { ...values, pricelist: pricelist?.$, sv_field: 'period' },
+                            setParamsData,
+                            signal,
+                            setIsLoading,
+                          ),
+                        )
+                        runScroll()
+                      }
+                      return (
+                        <VpnTarifCard
+                          period={
+                            data?.period_list?.filter(
+                              el => el?.$key === values?.period,
+                            )[0]?.$
+                          }
+                          selected={pricelist?.$ === values.pricelist}
+                          setPriceHandler={setPriceHandler}
+                          key={pricelist?.$}
+                          tariff={tariff}
+                        />
+                      )
+                    })}
+                  </div>
+                  {paramsData && (
+                    <div className={s.parametrsContainer}>
+                      <div ref={scrollElem} className={s.parametrsTitle}>
+                        {t('Options')}
+                      </div>
+                      <div className={s.inputsBlock}>
+                        <Select
+                          getElement={item => {
+                            setFieldValue('autoprolong', item)
+                          }}
+                          value={values?.autoprolong}
+                          label={`${t('Auto renewal', { ns: 'domains' })}:`}
+                          className={s.select}
+                          itemsList={paramsData?.autoprolong_list.map(el => ({
+                            label: translatePeriod(el.$, t),
+                            value: el.$key,
+                          }))}
+                          isShadow
+                        />
 
-                      {/* <div ref={licenseBlock} className={s.useFirstCheck}>
+                        {/* <div ref={licenseBlock} className={s.useFirstCheck}>
                         <CheckBox
                           initialState={licence_agreement}
                           setValue={item => {
@@ -196,40 +210,42 @@ export default function Component() {
                           )}"`}</a>
                         </span>
                       </div> */}
+                      </div>
                     </div>
+                  )}
+                </div>
+                {values.pricelist && (
+                  <div className={s.paymentBlock}>
+                    <div className={s.amountPayBlock}>
+                      <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
+                      <span>
+                        {parsePrice(paramsData?.orderinfo)?.amount} EUR/
+                        {t(
+                          `${
+                            data?.period_list?.filter(el => el?.$key === values.period)[0]
+                              ?.$
+                          }`,
+                          {
+                            ns: 'other',
+                          },
+                        )}
+                      </span>
+                    </div>
+                    <Button
+                      isShadow
+                      className={s.buy_btn}
+                      size="medium"
+                      label={t('to_order', { ns: 'other' })}
+                      type="submit"
+                    />
                   </div>
                 )}
-              </div>
-              {values.pricelist && (
-                <div className={s.paymentBlock}>
-                  <div className={s.amountPayBlock}>
-                    <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
-                    <span>
-                      {parsePrice(paramsData?.orderinfo)?.amount} EUR/
-                      {t(
-                        `${
-                          data?.period_list?.filter(el => el?.$key === values.period)[0]
-                            ?.$
-                        }`,
-                        {
-                          ns: 'other',
-                        },
-                      )}
-                    </span>
-                  </div>
-                  <Button
-                    isShadow
-                    className={s.buy_btn}
-                    size="medium"
-                    label={t('to_order', { ns: 'other' })}
-                    type="submit"
-                  />
-                </div>
-              )}
-            </Form>
-          )
-        }}
-      </Formik>
-    </div>
+              </Form>
+            )
+          }}
+        </Formik>
+      </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

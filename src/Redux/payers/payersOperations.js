@@ -6,9 +6,9 @@ import i18n from '@src/i18n'
 import { checkIfTokenAlive } from '@utils'
 
 const getPayers =
-  (body = {}) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -25,6 +25,7 @@ const getPayers =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -36,15 +37,14 @@ const getPayers =
           payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
         )
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType())
+        dispatch(getPayerCountryType(signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
-const getPayerCountryType = () => (dispatch, getState) => {
+const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -57,6 +57,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -68,11 +69,11 @@ const getPayerCountryType = () => (dispatch, getState) => {
       })
 
       dispatch(payersActions.setPayersSelectLists(filters))
-      dispatch(actions.hideLoader())
+
+      setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 
@@ -124,6 +125,7 @@ const getPayerModalInfo =
   (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
+
     const {
       auth: { sessionId },
     } = getState()

@@ -15,6 +15,8 @@ export default function DedicTarifCard({
   periodName,
   setVdsParameters,
   setSelectedTariffId,
+  signal,
+  setIsLoading,
 }) {
   const dispatch = useDispatch()
   const descriptionBlocks = item?.desc?.$.split('/')
@@ -49,6 +51,8 @@ export default function DedicTarifCard({
                   values.period,
                   item?.pricelist?.$,
                   setVdsParameters,
+                  signal,
+                  setIsLoading,
                 ),
               )
             : dispatch(
@@ -58,6 +62,8 @@ export default function DedicTarifCard({
                   item?.pricelist?.$,
                   setParameters,
                   setFieldValue,
+                  signal,
+                  setIsLoading,
                 ),
               )
         }}

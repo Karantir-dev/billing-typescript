@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner, Icon } from '@components'
+import { ServicesSelect, FilesBanner, Icon, Loader } from '@components'
 import { affiliateSelectors, affiliateOperations } from '@redux'
 
 import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function AboutAffiliateProgram() {
   const { t } = useTranslation(['affiliate_program'])
@@ -19,6 +20,7 @@ export default function AboutAffiliateProgram() {
   const descrWrapper = useRef(null)
   const referralLink = useSelector(affiliateSelectors.getRefLink)
   const promocode = useSelector(affiliateSelectors.getPromocode)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
 
@@ -30,7 +32,7 @@ export default function AboutAffiliateProgram() {
     if (referralLink) {
       return
     }
-    dispatch(affiliateOperations.getReferralLink())
+    dispatch(affiliateOperations.getReferralLink(signal, setIsLoading))
   }, [])
 
   const showPrompt = fn => {
@@ -202,6 +204,7 @@ export default function AboutAffiliateProgram() {
           </div>
         </div>
       </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
 
       {!higherThan1550px && <FilesBanner dataTestid="mobile_banner" />}
     </>

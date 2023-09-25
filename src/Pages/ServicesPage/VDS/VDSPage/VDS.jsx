@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import * as route from '@src/routes'
 import cn from 'classnames'
 import {
@@ -22,10 +22,11 @@ import {
   Portal,
   HintWrapper,
   CheckBox,
+  Loader,
 } from '@components'
-import { actions, dedicOperations, selectors, vdsOperations } from '@redux'
+import { actions, dedicOperations, vdsOperations } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -34,6 +35,7 @@ export default function VDS({ isDedic }) {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
@@ -100,6 +102,8 @@ export default function VDS({ isDedic }) {
         p_num,
         p_cnt,
         isDedic,
+        signal,
+        setIsLoading,
       }),
     )
   }
@@ -126,6 +130,8 @@ export default function VDS({ isDedic }) {
           setP_cnt,
           p_cnt,
           isDedic,
+          signal,
+          setIsLoading,
         ),
       )
 
@@ -140,6 +146,8 @@ export default function VDS({ isDedic }) {
         setServers,
         () => setIdForDeleteModal([]),
         setElemsTotal,
+        signal,
+        setIsLoading,
       ),
     )
     setActiveServices([])
@@ -159,6 +167,8 @@ export default function VDS({ isDedic }) {
         null,
         p_cnt,
         isDedic,
+        signal,
+        setIsLoading,
       ),
     )
     setIsFiltersOpened(false)
@@ -194,6 +204,8 @@ export default function VDS({ isDedic }) {
         null,
         p_cnt,
         isDedic,
+        signal,
+        setIsLoading,
       ),
     )
     setIsSearchMade(true)
@@ -206,15 +218,13 @@ export default function VDS({ isDedic }) {
     dispatch(dedicOperations.goToPanel(id))
   }
 
-  const isLoading = useSelector(selectors.getIsLoadding)
-
   const isAllActive = activeServices.length === servers.length
   const toggleIsAllActiveHandler = () => {
     isAllActive ? setActiveServices([]) : setActiveServices(servers)
   }
 
   return (
-    <>
+    <div>
       {!isDedic && (
         <>
           <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -299,6 +309,8 @@ export default function VDS({ isDedic }) {
         setActiveServices={setActiveServices}
         getVDSHandler={getVDSHandler}
         isDedic={isDedic}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
 
       {elemsTotal > 5 && (
@@ -489,6 +501,8 @@ export default function VDS({ isDedic }) {
           isOpen
         />
       )}
-    </>
+
+      {isLoading && <Loader local shown={isLoading} halfScreen={isDedic} />}
+    </div>
   )
 }

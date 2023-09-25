@@ -11,13 +11,14 @@ import {
   DomainsProlongModal,
   DomainBottomBar,
   CheckBox,
+  Loader,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
 import { domainsOperations, domainsSelectors } from '@redux'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
@@ -28,6 +29,8 @@ export default function Component() {
 
   const location = useLocation()
   const navigate = useNavigate()
+
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const domainsRenderData = useSelector(domainsSelectors.getDomainsList)
   const domainsCount = useSelector(domainsSelectors.getDomainsCount)
@@ -58,7 +61,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(domainsOperations.getDomains(data))
+    dispatch(domainsOperations.getDomains(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -98,7 +101,15 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
     }
-    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
+    dispatch(
+      domainsOperations.renewService(
+        data,
+        setProlongModal,
+        setProlongData,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const closeProlongModalHandler = () => {
@@ -113,14 +124,22 @@ export default function Component() {
       ...values,
     }
 
-    dispatch(domainsOperations.renewService(data, setProlongModal, setProlongData))
+    dispatch(
+      domainsOperations.renewService(
+        data,
+        setProlongModal,
+        setProlongData,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const deleteDomainHandler = (elid = null) => {
     const data = {
       elid: elid || parseSelectedItemId(),
     }
-    dispatch(domainsOperations.deleteDomain(data))
+    dispatch(domainsOperations.deleteDomain(data, signal, setIsLoading))
   }
 
   const historyDomainHandler = (elid = null) => {
@@ -169,7 +188,9 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
     }
 
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
+    dispatch(
+      domainsOperations.editDomainNS(data, setNSModal, setNSData, signal, setIsLoading),
+    )
   }
 
   const closeNSModalHandler = () => {
@@ -183,7 +204,9 @@ export default function Component() {
       ...values,
     }
 
-    dispatch(domainsOperations.editDomainNS(data, setNSModal, setNSData))
+    dispatch(
+      domainsOperations.editDomainNS(data, setNSModal, setNSData, signal, setIsLoading),
+    )
   }
 
   const editDomainHandler = (elid = null, d = null) => {
@@ -195,7 +218,7 @@ export default function Component() {
     if (d) {
       data = { ...data, ...d }
     }
-    dispatch(domainsOperations.editDomain(data, setEditModal, setEditData))
+    dispatch(domainsOperations.editDomain(data, setEditModal, setEditData, true))
   }
 
   const closeEditModalHandler = () => {
@@ -233,7 +256,7 @@ export default function Component() {
   const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h1 className={s.page_title}>
         {t('burger_menu.services.services_list.domains')}
@@ -254,6 +277,8 @@ export default function Component() {
         isFiltered={isFiltered}
         isFilterActive={isFiltered || domainsRenderData?.domainsList?.length > 0}
         rights={rights}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
       {domainsRenderData?.domainsList?.length > 0 && (
         <div className={s.checkBoxColumn}>
@@ -380,6 +405,8 @@ export default function Component() {
           isOpen
         />
       )}
-    </>
+
+      {isLoading && <Loader local shown={isLoading} />}
+    </div>
   )
 }

@@ -82,7 +82,7 @@ export default function Component() {
 
   const geoData = useSelector(authSelectors.getGeoData)
 
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const isLoading = useSelector(selectors.getIsLoading)
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)

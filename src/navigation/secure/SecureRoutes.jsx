@@ -60,6 +60,7 @@ import {
   PaymentProcessingPageLazy,
   DedicatedPageLazy,
 } from './LazyRoutes'
+import s from './SecurePage.module.scss'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
@@ -156,94 +157,102 @@ const Component = ({ fromPromotionLink }) => {
         <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
       <EmailTrigger />
-      <Routes>
-        <Route
-          path={route.HOME}
-          element={<Navigate to={route.SERVICES} replace={true} />}
-        />
-        <Route
-          path={route.LOGIN}
-          element={<Navigate to={route.SERVICES} replace={true} />}
-        />
-        <Route
-          path={route.REGISTRATION}
-          element={<Navigate to={route.SERVICES} replace={true} />}
-        />
-        <Route path={route.SERVICES} element={<ServicesPageLazy />} />
-        <Route path={route.VPS} element={<VDSPageLazy />} />
-        <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />
-        <Route path={route.VPS_IP} element={<VDSipLazy />} />
-        <Route path={route.SHARED_HOSTING} element={<SharedHostingLazy />} />
-        <Route path={route.SHARED_HOSTING_ORDER} element={<SharedHostingOrderLazy />} />
-        <Route path={route.SITE_CARE} element={<SiteCareLazy />} />
-        <Route path={route.SITE_CARE_ORDER} element={<SiteCareOrderLazy />} />
-        <Route path={route.VPN} element={<VPNLazy />} />
-        <Route path={route.VPN_ORDER} element={<VPNOrderLazy />} />
-        <Route path={route.DOMAINS} element={<DomainsPageLazy />} />
-        <Route path={route.DOMAINS_ORDERS} element={<DomainOrderPageLazy />} />
-        <Route
-          path={route.DOMAINS_CONTACT_INFO}
-          element={<DomainContactInfoPageLazy />}
-        />
-        <Route path={route.DOMAINS_NS} element={<DomainsNsPageLazy />} />
-        <Route
-          path={route.DOMAINS_TRANSFER_ORDERS}
-          element={<DomainOrderPageLazy transfer={true} />}
-        />
-        <Route
-          path={route.DOMAINS_TRANSFER_CONTACT_INFO}
-          element={<DomainContactInfoPageLazy transfer={true} />}
-        />
-        <Route
-          path={route.DOMAINS_TRANSFER_NS}
-          element={<DomainsNsPageLazy transfer={true} />}
-        />
-        <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
+      <div className={s.page}>
+        <Routes>
+          <Route
+            path={route.HOME}
+            element={<Navigate to={route.SERVICES} replace={true} />}
+          />
+          <Route
+            path={route.LOGIN}
+            element={<Navigate to={route.SERVICES} replace={true} />}
+          />
+          <Route
+            path={route.REGISTRATION}
+            element={<Navigate to={route.SERVICES} replace={true} />}
+          />
+          <Route path={route.SERVICES} element={<ServicesPageLazy />} />
+          <Route path={route.VPS} element={<VDSPageLazy />} />
+          <Route path={route.VPS_ORDER} element={<VDSOrderLazy />} />
+          <Route path={route.VPS_IP} element={<VDSipLazy />} />
+          <Route path={route.SHARED_HOSTING} element={<SharedHostingLazy />} />
+          <Route path={route.SHARED_HOSTING_ORDER} element={<SharedHostingOrderLazy />} />
+          <Route path={route.SITE_CARE} element={<SiteCareLazy />} />
+          <Route path={route.SITE_CARE_ORDER} element={<SiteCareOrderLazy />} />
+          <Route path={route.VPN} element={<VPNLazy />} />
+          <Route path={route.VPN_ORDER} element={<VPNOrderLazy />} />
+          <Route path={route.DOMAINS} element={<DomainsPageLazy />} />
+          <Route path={route.DOMAINS_ORDERS} element={<DomainOrderPageLazy />} />
+          <Route
+            path={route.DOMAINS_CONTACT_INFO}
+            element={<DomainContactInfoPageLazy />}
+          />
+          <Route path={route.DOMAINS_NS} element={<DomainsNsPageLazy />} />
+          <Route
+            path={route.DOMAINS_TRANSFER_ORDERS}
+            element={<DomainOrderPageLazy transfer={true} />}
+          />
+          <Route
+            path={route.DOMAINS_TRANSFER_CONTACT_INFO}
+            element={<DomainContactInfoPageLazy transfer={true} />}
+          />
+          <Route
+            path={route.DOMAINS_TRANSFER_NS}
+            element={<DomainsNsPageLazy transfer={true} />}
+          />
+          <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
           <Route index element={<DedicatedServersPageLazy />} />
           <Route path="vds" element={<VDSPageLazy isDedic />} />
         </Route>
-        <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
-        <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
-        <Route path={route.FTP} element={<FTPPageLazy />} />
-        <Route path={route.FTP_ORDER} element={<FTPOrderPageLazy />} />
-        <Route path={route.DNS} element={<DNSPageLazy />} />
-        <Route path={route.DNS_ORDER} element={<DNSOrderPageLazy />} />
-        <Route path={route.FOREX} element={<ForexPageLazy />} />
-        <Route path={route.FOREX_ORDER} element={<ForexOrderPageLazy />} />
-        <Route path={route.ACCESS_LOG} element={<AccessLogPageLazy />} />
-        <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
-        <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
+          <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
+          <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
+          <Route path={route.FTP} element={<FTPPageLazy />} />
+          <Route path={route.FTP_ORDER} element={<FTPOrderPageLazy />} />
+          <Route path={route.DNS} element={<DNSPageLazy />} />
+          <Route path={route.DNS_ORDER} element={<DNSOrderPageLazy />} />
+          <Route path={route.FOREX} element={<ForexPageLazy />} />
+          <Route path={route.FOREX_ORDER} element={<ForexOrderPageLazy />} />
+          <Route path={route.ACCESS_LOG} element={<AccessLogPageLazy />} />
+          <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
+          <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
 
         <Route path={route.SUCCESS_PAYMENT} element={<SuccessPayment />} />
         <Route path={route.FAILED_PAYMENT} element={<ErrorPayment />} />
 
-        <Route path={route.PAYERS} element={<PayersPageLazy />} />
-        <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
-        <Route path={route.USER_SETTINGS} element={<UserSettingsPageLazy />}>
-          <Route path=":path/" element={<UserSettingsPageLazy />} />
-        </Route>
+          <Route path={route.PAYERS} element={<PayersPageLazy />} />
+          <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
+          <Route path={route.USER_SETTINGS} element={<UserSettingsPageLazy />}>
+            <Route path=":path/" element={<UserSettingsPageLazy />} />
+          </Route>
 
-        <Route path={route.PHONE_VERIFICATION} element={<PhoneVerificationPageLazy />} />
+          <Route
+            path={route.PHONE_VERIFICATION}
+            element={<PhoneVerificationPageLazy />}
+          />
 
-        <Route path={route.SOC_NET_AUTH} element={<SocialNetAddPageLazy />} />
-        <Route
-          path={`${route.AFFILIATE_PROGRAM}/*`}
-          element={<AffiliateProgramPageLazy />}
-        />
-        <Route path={route.TRUSTED_USERS} element={<TrustedUsersPageLazy />} />
+          <Route path={route.SOC_NET_AUTH} element={<SocialNetAddPageLazy />} />
+          <Route
+            path={`${route.AFFILIATE_PROGRAM}/*`}
+            element={<AffiliateProgramPageLazy />}
+          />
+          <Route path={route.TRUSTED_USERS} element={<TrustedUsersPageLazy />} />
 
-        <Route path={`${route.ERROR_PAGE}/*`} element={<ErrorPageLazy />} />
+          <Route path={`${route.ERROR_PAGE}/*`} element={<ErrorPageLazy />} />
 
-        <Route path={route.CONFIRM_EMAIL} element={<EmailConfirmation />} />
-        <Route path={route.SITE_CART} element={<CartFromSite isAuth />} />
-        <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
+          <Route path={route.CONFIRM_EMAIL} element={<EmailConfirmation />} />
+          <Route path={route.SITE_CART} element={<CartFromSite isAuth />} />
+          <Route path={route.CONFIRM_MAIN_EMAIL} element={<MainEmailConfirmation />} />
 
-        <Route path={route.PAYMENT_SAVED} element={<PaymentSavedPageLazy />} />
+          <Route path={route.PAYMENT_SAVED} element={<PaymentSavedPageLazy />} />
 
-        <Route path={route.PAYMENT_PROCESSING} element={<PaymentProcessingPageLazy />} />
+          <Route
+            path={route.PAYMENT_PROCESSING}
+            element={<PaymentProcessingPageLazy />}
+          />
 
-        <Route path="*" element={<ErrorPageLazy />} />
-      </Routes>
+          <Route path="*" element={<ErrorPageLazy />} />
+        </Routes>
+      </div>
 
       {cartState?.isOpened && (
         <Portal>

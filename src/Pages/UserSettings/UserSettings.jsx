@@ -4,19 +4,21 @@ import AccessSettings from './AccessSettings/AccessSettings'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { settingsOperations, userSelectors } from '@redux'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 import { useParams, useLocation, Navigate } from 'react-router-dom'
-import { PageTabBar } from '@components'
+import { Loader, PageTabBar } from '@components'
 import s from './UserSettings.module.scss'
 import * as route from '@src/routes'
 import { toast } from 'react-toastify'
 import ErrorPage from '../ErrorPage/ErrorPage'
+import cn from 'classnames'
 
 export default function Component() {
   const { t } = useTranslation(['user_settings', 'other', 'trusted_users'])
   const dispatch = useDispatch()
   const params = useParams()
   const location = useLocation()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
   const [availableEditRights, setAvailableEditRights] = useState({})
@@ -50,6 +52,8 @@ export default function Component() {
           false,
           isComponentAllowedToRender,
           setAvailableEditRights,
+          signal,
+          setIsLoading
         ),
       )
     }
@@ -70,12 +74,18 @@ export default function Component() {
   // }, [isComponentAllowedToRender])
 
   if (location.pathname === route.USER_SETTINGS) {
-    return <Navigate to={`${route.USER_SETTINGS}/personal`} replace/>
+    return <Navigate to={`${route.USER_SETTINGS}/personal`} replace />
   }
 
   const renderPage = path => {
     if (path === 'personal' && isComponentAllowedToRender) {
-      return <PersonalSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
+      return (
+        <PersonalSettings
+          isComponentAllowedToEdit={isComponentAllowedToEdit}
+          signal={signal}
+          setIsLoading={setIsLoading}
+        />
+      )
     } else if (path === 'access' && isComponentAllowedToRender) {
       return <AccessSettings isComponentAllowedToEdit={isComponentAllowedToEdit} />
     } else {
@@ -92,7 +102,10 @@ export default function Component() {
       <div className={s.body}>
         <h1 className={s.pageTitle}>{userInfo?.$email}</h1>
         <PageTabBar sections={tavBarSections} />
-        <div className={s.content}>{renderPage(params?.path)}</div>
+        <div className={cn(s.content, { [s.disabled]: isLoading })}>
+          {renderPage(params?.path)}
+          {isLoading && <Loader local shown={isLoading} halfScreen />}
+        </div>
       </div>
     </>
   )
