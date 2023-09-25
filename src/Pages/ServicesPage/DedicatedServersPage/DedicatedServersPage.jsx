@@ -14,6 +14,7 @@ import {
   Portal,
   Pagination,
   CheckBox,
+  Loader,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, dedicOperations, dedicSelectors } from '@redux'
@@ -23,7 +24,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '@src/routes'
 import s from './DedicatedServersPage.module.scss'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 
 export default function DedicatedServersPage() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')
@@ -32,6 +33,7 @@ export default function DedicatedServersPage() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
   const navigate = useNavigate()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const dedicRenderData = useSelector(dedicSelectors.getServersList)
   const dedicCount = useSelector(dedicSelectors.getDedicCount)
@@ -92,6 +94,8 @@ export default function DedicatedServersPage() {
         { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
+        setIsLoading,
       ),
     )
     // setEmptyFilter(false)
@@ -109,6 +113,8 @@ export default function DedicatedServersPage() {
         { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
+        setIsLoading,
       ),
     )
   }
@@ -141,6 +147,9 @@ export default function DedicatedServersPage() {
           setFilters,
           { ...clearField, sok: 'ok', p_cnt },
           true,
+          undefined,
+          signal,
+          setIsLoading,
         ),
       )
     }
@@ -150,11 +159,21 @@ export default function DedicatedServersPage() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(dedicOperations.getServersList(data))
+    dispatch(dedicOperations.getServersList(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(dedicOperations.getDedicFilters(setFilters, { p_cnt }))
+    if (filterModal)
+      dispatch(
+        dedicOperations.getDedicFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
+      )
   }, [filterModal])
 
   const getTotalPrice = () => {
@@ -203,7 +222,7 @@ export default function DedicatedServersPage() {
   }
 
   return (
-    <>
+    <div>
       <div className={s.tools_wrapper}>
         {!widerThan1600 && dedicRenderData?.serversList?.length > 0 && (
           <div className={s.check_box_wrapper}>
@@ -288,6 +307,8 @@ export default function DedicatedServersPage() {
         rights={rights}
         setActiveServices={setActiveServices}
         activeServices={activeServices}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
 
       {dedicCount > 5 && (
@@ -364,6 +385,8 @@ export default function DedicatedServersPage() {
           elid={elidForEditModal}
           closeModal={() => setElidForEditModal(0)}
           isOpen
+          signal={signal}
+          setIsLoading={setIsLoading}
         />
       )}
 
@@ -410,6 +433,8 @@ export default function DedicatedServersPage() {
           isOpen
         />
       )}
-    </>
+
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
+    </div>
   )
 }

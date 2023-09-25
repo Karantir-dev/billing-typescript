@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Pagination, PayersTable, ModalAddPayer } from '@components'
+import { Button, Pagination, PayersTable, ModalAddPayer, Loader } from '@components'
 import { payersActions, payersOperations, payersSelectors } from '@redux'
 import s from './PayersPage.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -18,10 +19,11 @@ export default function Component() {
 
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersCount = useSelector(payersSelectors.getPayersCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(payersOperations.getPayers(data))
+    dispatch(payersOperations.getPayers(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const closeAddModalHandler = () => {
@@ -71,6 +73,7 @@ export default function Component() {
       {addPayerModal && (
         <ModalAddPayer elid={elid} closeAddModalHandler={closeAddModalHandler} />
       )}
+      {isLoading && <Loader local shown={isLoading} />}
     </>
   )
 }

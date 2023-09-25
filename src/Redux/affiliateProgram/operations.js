@@ -3,8 +3,8 @@ import { axiosInstance } from '@config/axiosInstance'
 import { actions, affiliateActions, authSelectors } from '@redux'
 import { checkIfTokenAlive } from '@utils'
 
-const getReferralLink = () => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getReferralLink = (signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
   const sessionId = authSelectors.getSessionId(getState())
 
   axiosInstance
@@ -15,6 +15,7 @@ const getReferralLink = () => (dispatch, getState) => {
         auth: sessionId,
         out: 'json',
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -23,17 +24,17 @@ const getReferralLink = () => (dispatch, getState) => {
       const promocode = data.doc.promocode.$ || 'promocode will be here'
 
       dispatch(affiliateActions.setReferralLink({ refLink, promocode }))
-      dispatch(actions.hideLoader())
+      setIsLoading(false)
     })
     .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
+      checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
     })
 }
 
 const getInitialIncomeInfo =
-  (setFormOptions, setTableData, setFixedPeriod) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setFormOptions, setTableData, setFixedPeriod, signal, setIsLoading) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -45,6 +46,7 @@ const getInitialIncomeInfo =
           out: 'json',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -74,17 +76,17 @@ const getInitialIncomeInfo =
           setTableData(modifiedTableData)
         }
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getChartInfo =
-  (setTableData, fixedPeriod, periodStart, periodEnd) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setTableData, fixedPeriod, periodStart, periodEnd, signal, setIsLoading) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -98,6 +100,7 @@ const getChartInfo =
           periodstart: periodStart,
           periodend: periodEnd,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -121,11 +124,10 @@ const getChartInfo =
           setTableData([])
         }
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -156,9 +158,9 @@ const getDayDetails = (date, setDetails) => (dispatch, getState) => {
 }
 
 const getInitialStatistics =
-  (setItems, setTotal, setPageNumber, setInitialFilters, p_cnt) =>
+  (setItems, setTotal, setPageNumber, setInitialFilters, p_cnt, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     const responses = Promise.all([
@@ -170,6 +172,7 @@ const getInitialStatistics =
           p_cnt,
           out: 'json',
         }),
+        { signal },
       ),
       axiosInstance.post(
         '/',
@@ -178,6 +181,7 @@ const getInitialStatistics =
           auth: sessionId,
           out: 'json',
         }),
+        { signal },
       ),
     ])
 
@@ -196,18 +200,24 @@ const getInitialStatistics =
         const datesList = filters.data.doc.slist?.find(el => el.$name === 'cdate')?.val
         setInitialFilters({ date, site, registered, payed, datesList })
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getFilteredStatistics =
-  ({ date, dateStart, dateEnd, site, registered, payed }, setItems, setTotal, p_cnt) =>
+  (
+    { date, dateStart, dateEnd, site, registered, payed },
+    setItems,
+    setTotal,
+    p_cnt,
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -225,6 +235,7 @@ const getFilteredStatistics =
           out: 'json',
           sok: 'ok',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -238,6 +249,7 @@ const getFilteredStatistics =
               p_cnt,
               out: 'json',
             }),
+            { signal },
           )
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -245,18 +257,17 @@ const getFilteredStatistics =
             setItems(data.doc?.elem || [])
             setTotal(data.doc.p_elems.$)
 
-            dispatch(actions.hideLoader())
+            setIsLoading(false)
           })
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getNextPageStatistics =
-  (setItems, setTotal, pageNum, p_cnt) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (setItems, setTotal, pageNum, p_cnt, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -269,6 +280,7 @@ const getNextPageStatistics =
           p_cnt,
           out: 'json',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -276,56 +288,57 @@ const getNextPageStatistics =
         setItems(data.doc?.elem || [])
         setTotal(data.doc.p_elems.$)
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
-const dropFilters = (setItems, setTotal, p_cnt) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const dropFilters =
+  (setItems, setTotal, p_cnt, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'affiliate.client.click.filter',
-        auth: sessionId,
-        drop: 'on',
-        out: 'json',
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'affiliate.client.click.filter',
+          auth: sessionId,
+          drop: 'on',
+          out: 'json',
+          sok: 'ok',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      axiosInstance
-        .post(
-          '/',
-          qs.stringify({
-            func: 'affiliate.client.click',
-            auth: sessionId,
-            p_cnt,
-            out: 'json',
-          }),
-        )
-        .then(({ data }) => {
-          if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'affiliate.client.click',
+              auth: sessionId,
+              p_cnt,
+              out: 'json',
+            }),
+            { signal },
+          )
+          .then(({ data }) => {
+            if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-          setItems(data.doc?.elem || [])
-          setTotal(data.doc.p_elems.$)
+            setItems(data.doc?.elem || [])
+            setTotal(data.doc.p_elems.$)
 
-          dispatch(actions.hideLoader())
-        })
-    })
-    .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+            setIsLoading(false)
+          })
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 export default {
   getReferralLink,

@@ -7,9 +7,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getVhosts =
-  (body = {}) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -28,6 +28,7 @@ const getVhosts =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -41,18 +42,17 @@ const getVhosts =
 
         dispatch(vhostActions.setVhostList(virtualHostingRenderData))
         dispatch(vhostActions.setVhostCount(count))
-        dispatch(getVhostFilters())
+        dispatch(getVhostFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getVhostFilters =
-  (body = {}, filtered = false) =>
+  (body = {}, filtered = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -68,12 +68,13 @@ const getVhostFilters =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getVhosts({ p_cnt: body?.p_cnt }))
+          return dispatch(getVhosts({ p_cnt: body?.p_cnt }, signal, setIsLoading))
         }
 
         let filters = {}
@@ -102,11 +103,10 @@ const getVhostFilters =
 
         dispatch(vhostActions.setVhostFilters(currentFilters))
         dispatch(vhostActions.setVhostFiltersLists(filters))
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -405,7 +405,7 @@ const editVhost =
               position: 'bottom-right',
             },
           )
-          return dispatch(getVhosts())
+          dispatch(getVhosts())
         }
 
         dispatch(actions.hideLoader())
@@ -564,9 +564,9 @@ const changeTariffSaveVhost =
   }
 
 const orderVhost =
-  (body = {}, setData) =>
+  (body = {}, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -582,6 +582,7 @@ const orderVhost =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -613,18 +614,17 @@ const orderVhost =
 
         setData && setData(d)
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const orderParamVhost =
-  (body = {}, setParamsData) =>
+  (body = {}, setParamsData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -640,6 +640,7 @@ const orderParamVhost =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -674,11 +675,10 @@ const orderParamVhost =
           setParamsData && setParamsData(d)
         }
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

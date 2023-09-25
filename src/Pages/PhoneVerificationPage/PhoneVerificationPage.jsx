@@ -23,7 +23,7 @@ export default function Component() {
   let { state } = useLocation()
 
   const userInfo = useSelector(userSelectors.getUserInfo)
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const isLoading = useSelector(selectors.getIsLoading)
 
   const [validatePhoneData, setValidatePhoneData] = useState(null)
   const [countryCode, setCountryCode] = useState(null)

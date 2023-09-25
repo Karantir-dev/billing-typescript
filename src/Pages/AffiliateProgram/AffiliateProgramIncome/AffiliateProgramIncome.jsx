@@ -12,8 +12,9 @@ import {
   Select,
   IncomeTable,
   IncomeChart,
+  Loader,
 } from '@components'
-import { useOutsideAlerter } from '@utils'
+import { useCancelRequest, useOutsideAlerter } from '@utils'
 import animations from './animations.module.scss'
 import s from './AffiliateProgramIncome.module.scss'
 
@@ -23,6 +24,7 @@ export default function AffiliateProgramIncome() {
   const descrWrapper = useRef(null)
   const dropdownCalendar = useRef(null)
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isDescrOpened, setIsDescrOpened] = useState(false)
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
@@ -50,6 +52,8 @@ export default function AffiliateProgramIncome() {
         setFormOptions,
         setIncomeData,
         setFixedPeriod,
+        signal,
+        setIsLoading,
       ),
     )
   }, [])
@@ -71,6 +75,8 @@ export default function AffiliateProgramIncome() {
           fixedPeriod,
           periodStart,
           periodEnd,
+          signal,
+          setIsLoading,
         ),
       )
     } else {
@@ -182,6 +188,7 @@ export default function AffiliateProgramIncome() {
           </>
         )}
       </div>
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

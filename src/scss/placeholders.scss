@@ -44,7 +44,7 @@
   right: 0;
   bottom: 0;
   z-index: 150;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--backdrop);
   transition: opacity 0.15s;
   pointer-events: none;
   opacity: 0;

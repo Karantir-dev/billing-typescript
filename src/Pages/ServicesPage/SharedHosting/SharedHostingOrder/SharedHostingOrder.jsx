@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { BreadCrumbs, Select, TarifCard, Button } from '@components'
+import { BreadCrumbs, Select, TarifCard, Button, Loader } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { cartActions, userOperations, vhostOperations } from '@redux'
-import { useScrollToElement, translatePeriod } from '@utils'
+import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
 import * as routes from '@src/routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -23,6 +23,7 @@ export default function Component() {
   const navigate = useNavigate()
 
   const licenseBlock = useRef()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [data, setData] = useState(null)
 
@@ -46,7 +47,7 @@ export default function Component() {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (isVhostOrderAllowed || cartFromSite) {
-      dispatch(vhostOperations.orderVhost({}, setData))
+      dispatch(vhostOperations.orderVhost({}, setData, signal, setIsLoading))
     } else {
       navigate(routes.SHARED_HOSTING, { replace: true })
     }
@@ -86,9 +87,13 @@ export default function Component() {
             datacenter: data?.datacenter,
           },
           setParamsData,
+          signal,
+          setIsLoading,
         ),
       )
-      dispatch(vhostOperations.orderVhost({ period: period }, setData))
+      dispatch(
+        vhostOperations.orderVhost({ period: period }, setData, signal, setIsLoading),
+      )
     }
   }, [price])
 
@@ -132,7 +137,7 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(vhostOperations.orderParamVhost(d, setParamsData)),
+        dispatch(vhostOperations.orderParamVhost(d, setParamsData, signal, setIsLoading)),
       ),
     )
   }
@@ -160,73 +165,81 @@ export default function Component() {
   }
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>{t('Virtual hosting order')}</h1>
-      <div className={s.paymentWrapper}>
-        <Select
-          getElement={item => {
-            setPeriod(item)
-            setPrice(null)
-            setParamsData(null)
-            // setLicence_agreement(false)
-            dispatch(vhostOperations.orderVhost({ period: item }, setData))
-          }}
-          value={period}
-          label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
-          className={s.select}
-          itemsList={data?.period_list.map(el => {
-            const label =
-              el.$ === 'Trial period'
-                ? t(el.$.replace(' period', ''), { ns: 'other' })
-                : t(el.$, { ns: 'other' })
-            return {
-              label,
-              value: el.$key,
-            }
-          })}
-          isShadow
-        />
-        <div className={s.cardContainer}>
-          {data?.tariflist_list
-            ?.filter(plan => plan?.order_available?.$ === 'on')
-            ?.map(tariff => {
-              const { pricelist } = tariff
-              const setPriceHandler = () => {
-                setPrice(pricelist?.$)
-                runScroll()
-              }
-
-              return (
-                <TarifCard
-                  period={data?.period_list?.filter(el => el?.$key === period)[0]?.$}
-                  selected={pricelist?.$ === price}
-                  setPriceHandler={setPriceHandler}
-                  key={pricelist?.$}
-                  tariff={tariff}
-                />
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>{t('Virtual hosting order')}</h1>
+        <div className={s.paymentWrapper}>
+          <Select
+            getElement={item => {
+              setPeriod(item)
+              setPrice(null)
+              setParamsData(null)
+              // setLicence_agreement(false)
+              dispatch(
+                vhostOperations.orderVhost(
+                  { period: item },
+                  setData,
+                  signal,
+                  setIsLoading,
+                ),
               )
-            })}
-        </div>
-        {paramsData && period !== '-100' && (
-          <div className={s.parametrsContainer}>
-            <div ref={scrollElem} className={s.parametrsTitle}>
-              {t('Options')}
-            </div>
-            <Select
-              getElement={item => {
-                setAutoprolong(item)
-              }}
-              value={autoprolong}
-              label={`${t('Auto renewal', { ns: 'domains' })}:`}
-              className={s.select}
-              itemsList={paramsData?.autoprolong_list?.map(el => ({
-                label: translatePeriod(el.$, t),
+            }}
+            value={period}
+            label={`${t('payment_period', { ns: 'dedicated_servers' })}:`}
+            className={s.select}
+            itemsList={data?.period_list.map(el => {
+              const label =
+                el.$ === 'Trial period'
+                  ? t(el.$.replace(' period', ''), { ns: 'other' })
+                  : t(el.$, { ns: 'other' })
+              return {
+                label,
                 value: el.$key,
-              }))}
-              isShadow
-            />
-            {/* <div ref={licenseBlock} className={s.useFirstCheck}>
+              }
+            })}
+            isShadow
+          />
+          <div className={s.cardContainer}>
+            {data?.tariflist_list
+              ?.filter(plan => plan?.order_available?.$ === 'on')
+              ?.map(tariff => {
+                const { pricelist } = tariff
+                const setPriceHandler = () => {
+                  setPrice(pricelist?.$)
+                  runScroll()
+                }
+
+                return (
+                  <TarifCard
+                    period={data?.period_list?.filter(el => el?.$key === period)[0]?.$}
+                    selected={pricelist?.$ === price}
+                    setPriceHandler={setPriceHandler}
+                    key={pricelist?.$}
+                    tariff={tariff}
+                  />
+                )
+              })}
+          </div>
+          {paramsData && period !== '-100' && (
+            <div className={s.parametrsContainer}>
+              <div ref={scrollElem} className={s.parametrsTitle}>
+                {t('Options')}
+              </div>
+              <Select
+                getElement={item => {
+                  setAutoprolong(item)
+                }}
+                value={autoprolong}
+                label={`${t('Auto renewal', { ns: 'domains' })}:`}
+                className={s.select}
+                itemsList={paramsData?.autoprolong_list?.map(el => ({
+                  label: translatePeriod(el.$, t),
+                  value: el.$key,
+                }))}
+                isShadow
+              />
+              {/* <div ref={licenseBlock} className={s.useFirstCheck}>
               <CheckBox
                 initialState={licence_agreement}
                 setValue={item => {
@@ -245,30 +258,32 @@ export default function Component() {
                 )}"`}</a>
               </span>
             </div> */}
+            </div>
+          )}
+        </div>
+        {price && (
+          <div className={s.paymentBlock}>
+            <div className={s.amountPayBlock}>
+              <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
+              <span>
+                {parsePrice(paramsData?.orderinfo)?.amount} EUR/
+                {t(`${data?.period_list?.filter(el => el?.$key === period)[0]?.$}`, {
+                  ns: 'other',
+                })}
+              </span>
+            </div>
+            <Button
+              isShadow
+              className={s.buy_btn}
+              size="medium"
+              label={t('to_order', { ns: 'other' })}
+              type="button"
+              onClick={buyVhostHandler}
+            />
           </div>
         )}
       </div>
-      {price && (
-        <div className={s.paymentBlock}>
-          <div className={s.amountPayBlock}>
-            <span>{t('topay', { ns: 'dedicated_servers' })}:</span>
-            <span>
-              {parsePrice(paramsData?.orderinfo)?.amount} EUR/
-              {t(`${data?.period_list?.filter(el => el?.$key === period)[0]?.$}`, {
-                ns: 'other',
-              })}
-            </span>
-          </div>
-          <Button
-            isShadow
-            className={s.buy_btn}
-            size="medium"
-            label={t('to_order', { ns: 'other' })}
-            type="button"
-            onClick={buyVhostHandler}
-          />
-        </div>
-      )}
-    </div>
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

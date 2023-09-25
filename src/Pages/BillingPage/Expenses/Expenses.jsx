@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, BillingFilter, ExpensesTable, Icon } from '@components'
+import { Pagination, BillingFilter, ExpensesTable, Icon, Loader } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './Expenses.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [isFiltered, setIsFiltered] = useState(false)
 
@@ -23,7 +25,7 @@ export default function Component() {
   useEffect(() => {
     if (!firstOpen) {
       const data = { p_num, p_cnt }
-      dispatch(billingOperations.getExpenses(data))
+      dispatch(billingOperations.getExpenses(data, signal, setIsLoading))
     }
     setFirstOpen(false)
   }, [p_num, p_cnt])
@@ -36,8 +38,9 @@ export default function Component() {
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || expensesList?.length > 0}
         setCurrentPage={setP_num}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
-
       {isFiltered && expensesList?.length === 0 && (
         <div className={s.no_results_wrapper}>
           <p className={s.no_results_text}>{t('nothing_found', { ns: 'access_log' })}</p>
@@ -68,6 +71,7 @@ export default function Component() {
           />
         </div>
       )}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

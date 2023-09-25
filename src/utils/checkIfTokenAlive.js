@@ -1,7 +1,9 @@
 import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
 
-export default function checkIfTokenAlive(errMessage, dispatch) {
+export default function checkIfTokenAlive(errMessage, dispatch, isLocalLoader) {
+  if (errMessage === 'canceled' && isLocalLoader) return false
+
   if (
     errMessage.includes('У вас недостаточно прав на выполнение функции') ||
     errMessage.includes('Insufficient privileges to perform')
@@ -13,4 +15,5 @@ export default function checkIfTokenAlive(errMessage, dispatch) {
   } else {
     console.error(errMessage)
   }
+  return true
 }

@@ -26,7 +26,7 @@ import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
 
-export default function Component({ isComponentAllowedToEdit }) {
+export default function Component({ isComponentAllowedToEdit, signal, setIsLoading }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
@@ -41,7 +41,7 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const saveProfileHandler = values => {
-    dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values))
+    dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values, signal, setIsLoading))
   }
 
   const confirmEmailHandler = values => {
