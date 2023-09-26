@@ -36,7 +36,7 @@ export default function DedicPage() {
   ]
 
   return (
-    <>
+    <div className={s.page}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
@@ -45,6 +45,6 @@ export default function DedicPage() {
       <div className={s.content}>
         <Outlet />
       </div>
-    </>
+    </div>
   )
 }

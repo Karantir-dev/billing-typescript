@@ -6,16 +6,19 @@ import {
   Pagination,
   PaymentsMethodsTable,
   ModalCreatePaymentMethod,
-  Icon
+  Icon,
+  Loader,
 } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
 
   let paymentsList = useSelector(billingSelectors.getPaymentMethodList)
   const paymentsCount = useSelector(billingSelectors.getPaymentMethodCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -26,7 +29,7 @@ export default function Component() {
 
   const getPageData = () => {
     const data = { p_num, p_cnt }
-    dispatch(billingOperations.getPaymentMethods(data))
+    dispatch(billingOperations.getPaymentMethods(data, signal, setIsLoading))
   }
 
   useEffect(() => {
@@ -85,6 +88,7 @@ export default function Component() {
       {createPaymentModal && (
         <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
       )}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

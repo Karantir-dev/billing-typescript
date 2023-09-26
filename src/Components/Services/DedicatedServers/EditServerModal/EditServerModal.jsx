@@ -10,7 +10,13 @@ import s from './EditServerModal.module.scss'
 import { dedicOperations } from '@redux'
 import { translatePeriod } from '@utils'
 
-export default function EditServerModal({ elid, closeModal, isOpen }) {
+export default function EditServerModal({
+  elid,
+  closeModal,
+  isOpen,
+  signal,
+  setIsLoading,
+}) {
   const { t } = useTranslation([
     'dedicated_servers',
     'vds',
@@ -96,10 +102,10 @@ export default function EditServerModal({ elid, closeModal, isOpen }) {
       )
     } else {
       dispatch(
-        dedicOperations.editDedicServerNoExtraPay(
+        dedicOperations.editDedicServerNoExtraPay({
           elid,
           autoprolong,
-          domainname,
+          domain: domainname,
           ostempl,
           recipe,
           managePanel,
@@ -111,8 +117,10 @@ export default function EditServerModal({ elid, closeModal, isOpen }) {
           userpassword,
           password,
           server_name,
-          handleEditionModal,
-        ),
+          handleModal: handleEditionModal,
+          signal,
+          setIsLoading,
+        }),
       )
     }
   }

@@ -46,7 +46,7 @@ export default function Component() {
   const archivePage = ticket?.closed_ticket_user?.$ === 'on'
 
   return (
-    <>
+    <div>
       <div className={s.breadCrumb}>
         <span className={s.linkText}>
           <NavLink className={s.link} to={`${route.SUPPORT}/${params.path}`}>
@@ -153,6 +153,6 @@ export default function Component() {
           </p>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   )
 }

@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination, BillingFilter, PaymentsTable, Icon } from '@components'
+import { Pagination, BillingFilter, PaymentsTable, Icon, Loader } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './Payments.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
 
   const paymentsList = useSelector(billingSelectors.getPaymentsList)
   const paymentsCount = useSelector(billingSelectors.getPaymentsCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -25,7 +27,7 @@ export default function Component() {
   useEffect(() => {
     if (!firstOpen) {
       const data = { p_num, p_cnt }
-      dispatch(billingOperations.getPayments(data))
+      dispatch(billingOperations.getPayments(data, false, signal, setIsLoading))
     }
 
     setFirstOpen(false)
@@ -36,7 +38,7 @@ export default function Component() {
   }
 
   const downloadPdfHandler = (id, name) => {
-    dispatch(billingOperations.getPaymentPdf(id, name))
+    dispatch(billingOperations.getPaymentPdf(id, name, signal, setIsLoading))
   }
 
   const deletePayment = id => {
@@ -54,8 +56,9 @@ export default function Component() {
         downloadPdfHandler={downloadPdfHandler}
         setCreatePaymentModal={setCreatePaymentModal}
         createPaymentModal={createPaymentModal}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
-
       {isFiltered && paymentsList?.length === 0 && (
         <div className={s.no_results_wrapper}>
           <p className={s.no_results_text}>{t('nothing_found', { ns: 'access_log' })}</p>
@@ -92,6 +95,7 @@ export default function Component() {
           />
         </div>
       )}
+      {isLoading && <Loader local halfScreen shown={isLoading} />}
     </>
   )
 }

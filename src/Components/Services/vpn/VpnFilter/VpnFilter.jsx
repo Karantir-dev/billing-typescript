@@ -26,6 +26,8 @@ export default function Component(props) {
 
     list,
     selctedItem,
+    signal,
+    setIsLoading,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -73,7 +75,14 @@ export default function Component(props) {
     setSelctedItem([])
     setCurrentPage(1)
     setFilterModal(false)
-    dispatch(vpnOperations.getSiteCareFilters({ ...clearField, sok: 'ok', p_cnt }, true))
+    dispatch(
+      vpnOperations.getSiteCareFilters(
+        { ...clearField, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   useEffect(() => {
@@ -85,7 +94,14 @@ export default function Component(props) {
     setFilterModal(false)
     setIsFiltered(true)
     setSelctedItem([])
-    dispatch(vpnOperations.getSiteCareFilters({ ...values, sok: 'ok', p_cnt }, true))
+    dispatch(
+      vpnOperations.getSiteCareFilters(
+        { ...values, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const isAllActive = list?.length && list?.length === selctedItem?.length

@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
-import { Button, UserCard, ManageUserForm } from '@components'
+import { Button, UserCard, ManageUserForm, Loader } from '@components'
 import { userSelectors, usersOperations, usersSelectors } from '@redux'
 
 import * as routes from '@src/routes'
 
 import s from './TrustedUsers.module.scss'
-import { usePageRender } from '@utils'
+import { useCancelRequest, usePageRender } from '@utils'
 
 export default function TrustedUsers() {
   const isComponentAllowedToRender = usePageRender('customer', 'user')
@@ -59,6 +59,7 @@ export default function TrustedUsers() {
 
   const users = useSelector(usersSelectors.getUsers)
   const { $id: pageOwnerId } = useSelector(userSelectors.getUserInfo)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const hasPageOwnerFullAccess = users.some(user => {
     return user.id.$ === pageOwnerId && user.default_access_allow
@@ -77,11 +78,20 @@ export default function TrustedUsers() {
   }, [createdNewUser])
 
   useEffect(() => {
-    if (isComponentAllowedToRender) dispatch(usersOperations.getUsers())
+    if (isComponentAllowedToRender) {
+      dispatch(usersOperations.getUsers(signal, setIsLoading))
+    }
   }, [changeUserRoles, createdNewUser])
 
   useEffect(() => {
-    dispatch(usersOperations.getAvailableRights('user', setAvailabelRights))
+    dispatch(
+      usersOperations.getAvailableRights(
+        'user',
+        setAvailabelRights,
+        signal,
+        setIsLoading,
+      ),
+    )
   }, [])
 
   if (!isComponentAllowedToRender) {
@@ -141,9 +151,13 @@ export default function TrustedUsers() {
               handleUserRolesData={handleUserRolesData}
               isOwner={user.self.$ === 'on'}
               hasPageOwnerFullAccess={hasPageOwnerFullAccess}
+              signal={signal}
+              setIsLoading={setIsLoading}
             />
           )
         })}
+
+        {isLoading && <Loader local shown={isLoading} />}
       </section>
 
       {isUserFormActive && (

@@ -9,9 +9,18 @@ import i18n from '@src/i18n'
 import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 const getVDS =
-  ({ setServers, setRights, setElemsTotal, p_num, p_cnt, setServicesPerPage }) =>
+  ({
+    setServers,
+    setRights,
+    setElemsTotal,
+    p_num,
+    p_cnt,
+    signal,
+    setIsLoading,
+    isPutItems = true,
+  }) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -25,12 +34,12 @@ const getVDS =
           out: 'json',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        setServers(data?.doc?.elem || [])
-        setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
+        isPutItems && setServers(data?.doc?.elem || [])
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
@@ -42,11 +51,10 @@ const getVDS =
 
         setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -80,7 +88,7 @@ const getEditFieldsVDS = (elid, setInitialState, autoprolong) => (dispatch, getS
 }
 
 const editVDS =
-  (
+  ({
     elid,
     values,
     register,
@@ -88,9 +96,11 @@ const editVDS =
     mutateOptionsListData,
     setOrderInfo,
     getVDSHandler,
-  ) =>
+    signal,
+    setIsLoading,
+  }) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    signal ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -110,6 +120,7 @@ const editVDS =
           lang: 'en',
           clicked_button: values.clicked_button,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -126,9 +137,10 @@ const editVDS =
                 billorder,
                 sok: 'ok',
               }),
+              { signal },
             )
             .then(() => {
-              dispatch(actions.hideLoader())
+              signal ? setIsLoading(false) : dispatch(actions.hideLoader())
 
               dispatch(
                 cartActions.setCartIsOpenedState({
@@ -159,73 +171,77 @@ const editVDS =
 
         getVDSHandler && getVDSHandler()
 
-        dispatch(actions.hideLoader())
+        signal ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        getVDSHandler && getVDSHandler()
-        dispatch(actions.hideLoader())
+        if (checkIfTokenAlive(err.message, dispatch, !!signal)) {
+          getVDSHandler && getVDSHandler()
+          signal ? setIsLoading(false) : dispatch(actions.hideLoader())
+        }
       })
   }
 
-const getVDSOrderInfo = (setFormInfo, setTariffsList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const getVDSOrderInfo =
+  (setFormInfo, setTariffsList, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'vds.order',
-        auth: sessionId,
-        out: 'json',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order',
+          auth: sessionId,
+          out: 'json',
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setFormInfo(data.doc)
-      setTariffsList(data?.doc?.list[0]?.elem)
+        setFormInfo(data.doc)
+        setTariffsList(data?.doc?.list[0]?.elem)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        setIsLoading(false)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
-const getNewPeriodInfo = (period, setTariffsList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const getNewPeriodInfo =
+  (period, setTariffsList, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'vds.order.pricelist',
-        auth: sessionId,
-        out: 'json',
-        period: period,
-        sv_field: 'period',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-      setTariffsList(data?.doc?.list[0]?.elem)
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.order.pricelist',
+          auth: sessionId,
+          out: 'json',
+          period: period,
+          sv_field: 'period',
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setTariffsList(data?.doc?.list[0]?.elem)
+        setIsLoading(false)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const getTariffParameters =
-  (period, pricelist, setParametersInfo) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (period, pricelist, setParametersInfo, signal, setIsLoading) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -241,24 +257,34 @@ const getTariffParameters =
           pricelist: pricelist,
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         setParametersInfo(renameAddonFields(data.doc))
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const changeOrderFormField =
-  (period, values, recipe, pricelist, fieldName, setParametersInfo, register) =>
+  (
+    period,
+    values,
+    recipe,
+    pricelist,
+    fieldName,
+    setParametersInfo,
+    register,
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -283,6 +309,7 @@ const changeOrderFormField =
           sv_field: fieldName,
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -300,11 +327,10 @@ const changeOrderFormField =
 
         setParametersInfo(renameAddonFields(data.doc.doc))
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -358,40 +384,44 @@ const setOrderData =
       })
   }
 
-const deleteVDS = (id, setServers, closeFn, setElemsTotal) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const deleteVDS =
+  (id, setServers, closeFn, setElemsTotal, signal, setIsLoading) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'vds.delete',
-        auth: sessionId,
-        elid: id.join(', '),
-        out: 'json',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'vds.delete',
+          auth: sessionId,
+          elid: id.join(', '),
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getVDS({ setServers, setElemsTotal }))
-      closeFn()
+        dispatch(getVDS({ setServers, setElemsTotal, signal, setIsLoading }))
+        closeFn()
 
-      toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
-        position: 'bottom-right',
+        toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
+          position: 'bottom-right',
+        })
+
+        dispatch(actions.hideLoader())
       })
-    })
-    .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      closeFn()
-      toast.error(t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        closeFn()
+        toast.error(t('unknown_error', { ns: 'other' }), {
+          position: 'bottom-right',
+        })
+        dispatch(actions.hideLoader())
       })
-      dispatch(actions.hideLoader())
-    })
-}
+  }
 
 const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -502,34 +532,35 @@ const rebootServer = id => (dispatch, getState) => {
     })
 }
 
-const getIpInfo = (id, setElements, setName) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const sessionId = authSelectors.getSessionId(getState())
+const getIpInfo =
+  (id, setElements, setName, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+    const sessionId = authSelectors.getSessionId(getState())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'service.ip',
-        auth: sessionId,
-        elid: id,
-        out: 'json',
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'service.ip',
+          auth: sessionId,
+          elid: id,
+          out: 'json',
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      setElements(data?.doc?.elem)
-      setName(data.doc?.plname.$)
+        setElements(data?.doc?.elem)
+        setName(data.doc?.plname.$)
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      checkIfTokenAlive(err.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        setIsLoading(false)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const getEditIPInfo = (serverID, id, setInitialState) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -617,12 +648,13 @@ const setVdsFilters =
     setServers,
     setRights,
     setElemsTotal,
-    setServicesPerPage,
     p_cnt,
     isDedic,
+    signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -633,6 +665,7 @@ const setVdsFilters =
           auth: sessionId,
           out: 'json',
         }),
+        { signal },
       )
       .then(({ data }) => {
         const pricelist = data.doc?.slist
@@ -643,36 +676,45 @@ const setVdsFilters =
               : !VDS_IDS_LIKE_DEDICS.includes(el.$key),
           )
           .map(el => el.$key)
-        return pricelist.join()
+
+        if (isDedic && (!pricelist || !pricelist?.length)) {
+          throw new Error('no vds')
+        }
+
+        return pricelist?.join()
       })
       .then(priceList => {
-        return axiosInstance.post(
-          '/',
-          qs.stringify({
-            func: 'vds.filter',
-            auth: sessionId,
-            out: 'json',
-            sok: 'ok',
-            id: values?.id || '',
-            ip: values?.ip || '',
-            domain: values?.domain || '',
-            pricelist: values?.pricelist || priceList,
-            period: values?.period || '',
-            status: values?.status || '',
-            opendate: values?.opendate || '',
-            expiredate: values?.expiredate || '',
-            orderdatefrom: values?.orderdatefrom || '',
-            orderdateto: values?.orderdateto || '',
-            cost_from: values?.cost_from || '',
-            cost_to: values?.cost_to || '',
-            autoprolong: values?.autoprolong || '',
-            datacenter: values?.datacenter || '',
-            ostemplate: values?.ostemplate || '',
-            lang: 'en',
-          }),
-        )
+        return Promise.all([
+          axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: 'vds.filter',
+              auth: sessionId,
+              out: 'json',
+              sok: 'ok',
+              id: values?.id || '',
+              ip: values?.ip || '',
+              domain: values?.domain || '',
+              pricelist: values?.pricelist || priceList,
+              period: values?.period || '',
+              status: values?.status || '',
+              opendate: values?.opendate || '',
+              expiredate: values?.expiredate || '',
+              orderdatefrom: values?.orderdatefrom || '',
+              orderdateto: values?.orderdateto || '',
+              cost_from: values?.cost_from || '',
+              cost_to: values?.cost_to || '',
+              autoprolong: values?.autoprolong || '',
+              datacenter: values?.datacenter || '',
+              ostemplate: values?.ostemplate || '',
+              lang: 'en',
+            }),
+            { signal },
+          ),
+          priceList,
+        ])
       })
-      .then(({ data }) => {
+      .then(([{ data }, priceList]) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         dispatch(
@@ -680,9 +722,11 @@ const setVdsFilters =
             setServers,
             setRights,
             setElemsTotal,
-            setServicesPerPage,
             p_cnt,
             isDedic,
+            signal,
+            setIsLoading,
+            isPutItems: !!priceList,
           }),
         )
 
@@ -694,6 +738,7 @@ const setVdsFilters =
               auth: sessionId,
               out: 'json',
             }),
+            { signal },
           )
           .then(({ data }) => {
             if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -721,12 +766,15 @@ const setVdsFilters =
       })
 
       .catch(err => {
+        if (err.message === 'no vds') {
+          setIsLoading(false)
+          return
+        }
         if (err.message.includes('filter')) {
-          dispatch(getVDS({ setServers, setRights, setElemsTotal }))
+          dispatch(getVDS({ setServers, setRights, setElemsTotal, signal, setIsLoading }))
         }
 
-        checkIfTokenAlive(err.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
       })
   }
 

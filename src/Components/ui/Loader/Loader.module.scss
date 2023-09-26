@@ -19,6 +19,33 @@
     display: flex;
     flex-direction: column;
   }
+  &.local {
+    position: absolute;
+    z-index: 8;
+  }
+  &.transparent {
+    background-color: transparent;
+  }
+  &.static {
+    position: relative;
+  }
+  &.halfScreen {
+    margin: 0 -30px -125px;
+    @media screen and (min-width: 768px) {
+      --right-padding: 60px;
+      margin: 0 -60px -210px;
+    }
+    @media screen and (min-width: 1024px) {
+      margin: 0 -60px -80px -200px;
+    }
+    @media screen and (min-width: 1550px) {
+      margin: 0 -135px -188px -259px;
+    }
+
+    @media screen and (min-width: 1918px) {
+      margin: 0 -155px -120px -290px;
+    }
+  }
 }
 
 .loader__logo {
