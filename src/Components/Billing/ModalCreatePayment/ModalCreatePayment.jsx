@@ -234,7 +234,7 @@ export default function ModalCreatePayment(props) {
       )
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
       .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
