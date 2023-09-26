@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as route from '@src/routes'
 import cn from 'classnames'
 import {
@@ -24,9 +24,9 @@ import {
   CheckBox,
   Loader,
 } from '@components'
-import { actions, dedicOperations, vdsOperations } from '@redux'
+import { actions, dedicOperations, dedicSelectors, vdsOperations } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { useCancelRequest, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -36,6 +36,20 @@ export default function VDS({ isDedic }) {
   const { t } = useTranslation(['vds', 'other', 'access_log'])
   const navigate = useNavigate()
   const { signal, isLoading, setIsLoading } = useCancelRequest()
+  const dedicRenderData = useSelector(dedicSelectors.getServersList)
+  const dedicRights = checkServicesRights(dedicRenderData?.dedicPageRights?.toolgrp)
+
+  useEffect(() => {
+    if (isDedic) {
+      if ('new' in dedicRights) {
+        return
+      } else {
+        navigate(route.DEDICATED_SERVERS, {
+          replace: true,
+        })
+      }
+    }
+  }, [])
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
 
@@ -127,7 +141,6 @@ export default function VDS({ isDedic }) {
           setServers,
           setRights,
           setElemsTotal,
-          setP_cnt,
           p_cnt,
           isDedic,
           signal,
@@ -164,7 +177,6 @@ export default function VDS({ isDedic }) {
         setServers,
         setRights,
         setElemsTotal,
-        null,
         p_cnt,
         isDedic,
         signal,
@@ -201,7 +213,6 @@ export default function VDS({ isDedic }) {
         setServers,
         setRights,
         setElemsTotal,
-        null,
         p_cnt,
         isDedic,
         signal,
@@ -241,7 +252,7 @@ export default function VDS({ isDedic }) {
       <div className={s.extra_tools_wrapper}>
         <div className={s.tools_wrapper}>
           <Button
-            disabled={!rights?.new}
+            disabled={isDedic ? !dedicRights.new : !rights?.new}
             className={s.btn_order}
             isShadow
             type="button"
