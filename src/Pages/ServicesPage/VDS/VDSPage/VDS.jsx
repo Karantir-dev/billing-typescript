@@ -260,7 +260,7 @@ export default function VDS({ isDedic }) {
             onClick={() => {
               isDedic
                 ? navigate(route.DEDICATED_SERVERS_ORDER, {
-                    state: { isDedicOrderAllowed: rights?.new },
+                    state: { isDedicOrderAllowed: dedicRights?.new },
                     replace: true,
                   })
                 : navigate(route.VPS_ORDER, {
