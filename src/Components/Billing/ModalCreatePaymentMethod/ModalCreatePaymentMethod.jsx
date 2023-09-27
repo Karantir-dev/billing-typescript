@@ -281,20 +281,24 @@ export default function Component(props) {
                           </div>
                         </div>
                       </div>
-                      <Select
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        label={`${t('Payer status', { ns: 'payers' })}:`}
-                        value={values.profiletype}
-                        getElement={item => setFieldValue('profiletype', item)}
-                        isShadow
-                        className={s.select}
-                        dropdownClass={s.selectDropdownClass}
-                        itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
-                          label: t(`${$.trim()}`, { ns: 'payers' }),
-                          value: $key,
-                        }))}
-                        inputClassName={s.field_bg}
-                      />
+                      {payersSelectLists?.profiletype.length > 1 && (
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          label={`${t('Payer status', { ns: 'payers' })}:`}
+                          value={values.profiletype}
+                          getElement={item => setFieldValue('profiletype', item)}
+                          isShadow
+                          className={s.select}
+                          dropdownClass={s.selectDropdownClass}
+                          itemsList={payersSelectLists?.profiletype?.map(
+                            ({ $key, $ }) => ({
+                              label: t(`${$.trim()}`, { ns: 'payers' }),
+                              value: $key,
+                            }),
+                          )}
+                          inputClassName={s.field_bg}
+                        />
+                      )}
 
                       {values?.profiletype === '3' || values?.profiletype === '2' ? (
                         <InputField
@@ -324,6 +328,8 @@ export default function Component(props) {
                             value: id?.$,
                           }))}
                           inputClassName={s.field_bg}
+                          disabled={payersList.length === 1}
+                          withoutArrow={payersList.length === 1}
                         />
                       )}
 
