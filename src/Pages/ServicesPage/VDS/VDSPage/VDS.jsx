@@ -423,18 +423,21 @@ export default function VDS({ isDedic }) {
         <div className={s.no_vds_wrapper}>
           <img className={s.no_vds} src={no_vds} alt="no_vds" />
           <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+          {!isDedic && (
+            <>
+              <div className={s.discount_wrapper}>
+                <p className={s.discount_percent}>
+                  {t('DISCOUNT -20% ON VPS', { ns: 'other' })}
+                </p>
+                <p className={s.discount_desc}>
+                  {t('You can get a discount using a promo code', { ns: 'other' })}:
+                  <span className={s.promocode}>0-ZM-VS8</span>
+                </p>
+              </div>
 
-          <div className={s.discount_wrapper}>
-            <p className={s.discount_percent}>
-              {t('DISCOUNT -20% ON VPS', { ns: 'other' })}
-            </p>
-            <p className={s.discount_desc}>
-              {t('You can get a discount using a promo code', { ns: 'other' })}:
-              <span className={s.promocode}>0-ZM-VS8</span>
-            </p>
-          </div>
-
-          <p>{t('no_servers_yet_desc')}</p>
+              <p>{t('no_servers_yet_desc')}</p>
+            </>
+          )}
         </div>
       )}
 
