@@ -25,6 +25,7 @@ import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
 import { checkIfTokenAlive } from '@utils'
+import { STRIPE_PAYMETHOD } from '@utils/constants'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -90,7 +91,7 @@ export default function Component(props) {
       country_legal:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profile: values?.profile ?? 'add_new',
-      paymethod: '93',
+      paymethod: STRIPE_PAYMETHOD,
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
@@ -151,7 +152,7 @@ export default function Component(props) {
                 profile:
                   selectedPayerFields?.profile ||
                   payersList[payersList?.length - 1]?.id?.$,
-                slecetedPayMethod: '93',
+                slecetedPayMethod: STRIPE_PAYMETHOD,
                 name: selectedPayerFields?.name || '',
                 address_physical: selectedPayerFields?.address_physical || '',
                 city_physical:
@@ -255,7 +256,7 @@ export default function Component(props) {
                 }
 
                 const stripeMethod = paymentsMethodList?.find(
-                  e => e?.paymethod?.$ === '93',
+                  e => e?.paymethod?.$ === STRIPE_PAYMETHOD,
                 )
 
                 return (
