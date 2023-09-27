@@ -67,6 +67,8 @@ export default function DedicOrderPage() {
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
+  const [period, setPeriod] = useState('1')
+  const [filteredTariffsList, setFilteredTariffsList] = useState([])
 
   const [scrollElem, runScroll] = useScrollToElement({
     condition: parameters || vdsParameters,
@@ -118,25 +120,6 @@ export default function DedicOrderPage() {
       sale,
       length: amounts.length,
     }
-  }
-
-  let filteredTariffList = tarifList?.tarifList?.filter(el => {
-    if (Array.isArray(el.filter.tag)) {
-      let filterList = el.filter.tag
-
-      let hasListFilter = filterList.some(filter => filters.includes(filter.$key))
-      return hasListFilter
-    } else {
-      return filters?.includes(el.filter.tag.$key)
-    }
-  })
-
-  let tariffsListToRender = []
-
-  if (filters.length === 0) {
-    tariffsListToRender = tarifList?.tarifList || []
-  } else {
-    tariffsListToRender = filteredTariffList || []
   }
 
   const parseLocations = () => {
@@ -281,6 +264,29 @@ export default function DedicOrderPage() {
 
     setTarifList({ ...tarifsList, tarifList: newArrTarifList })
   }, [tarifsList])
+
+  useEffect(() => {
+    let filteredTariffList = tarifList?.tarifList?.filter(el => {
+      if (Array.isArray(el.filter.tag)) {
+        let filterList = el.filter.tag
+
+        let hasListFilter = filterList.some(filter => filters.includes(filter.$key))
+        return hasListFilter
+      } else {
+        return filters?.includes(el.filter.tag.$key)
+      }
+    })
+
+    let tariffsListToRender = []
+
+    if (filters.length === 0) {
+      tariffsListToRender = tarifList?.tarifList || []
+    } else {
+      tariffsListToRender = filteredTariffList || []
+    }
+
+    setFilteredTariffsList(tariffsListToRender)
+  }, [tarifList, filters])
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
@@ -570,7 +576,7 @@ export default function DedicOrderPage() {
           initialValues={{
             datacenter: tarifList?.currentDatacenter,
             tarif: dataFromSite?.pricelist || null,
-            period: '1',
+            period: period,
             processor: null,
             domain: '',
             ipTotal: '1',
@@ -580,7 +586,7 @@ export default function DedicOrderPage() {
           }}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, touched, errors, resetForm, setFieldTouched }) => {
+          {({ values, setFieldValue, touched, errors, setFieldTouched }) => {
             useEffect(() => {
               const cartFromSite = localStorage.getItem('site_cart')
               if (cartFromSite && tarifList?.tarifList?.length > 0) {
@@ -676,17 +682,15 @@ export default function DedicOrderPage() {
                         <button
                           onClick={() => {
                             setPrice('-')
-                            resetForm()
                             // setPaymentPeriod(item)
                             setFieldValue('datacenter', item?.$key)
                             setParameters(null)
                             setVdsParameters(null)
-                            setFilters([])
                             setTarifChosen(false)
                             dispatch(
                               dedicOperations.getUpdatedTarrifs(
                                 item?.$key,
-                                setTarifList,
+                                values.period,
                                 signal,
                                 setIsLoading,
                               ),
@@ -740,7 +744,6 @@ export default function DedicOrderPage() {
                                   } else {
                                     setFilters([...filters, item?.$key])
                                   }
-                                  resetForm()
                                   setParameters(null)
                                   setVdsParameters(null)
                                 }}
@@ -775,7 +778,6 @@ export default function DedicOrderPage() {
                                   } else {
                                     setFilters([...filters, item?.$key])
                                   }
-                                  resetForm()
                                   setParameters(null)
                                   setVdsParameters(null)
                                 }}
@@ -794,8 +796,8 @@ export default function DedicOrderPage() {
                   value={values.period}
                   getElement={item => {
                     setPrice('-')
-                    resetForm()
                     setFieldValue('period', item)
+                    setPeriod(item)
                     // setPaymentPeriod(item)
                     setParameters(null)
                     setVdsParameters(null)
@@ -805,7 +807,6 @@ export default function DedicOrderPage() {
                       dedicOperations.getUpdatedPeriod(
                         item,
                         values.datacenter,
-                        setTarifList,
                         setNewVds,
                         signal,
                         setIsLoading,
@@ -822,7 +823,7 @@ export default function DedicOrderPage() {
 
                 {deskOrHigher ? (
                   <div className={s.tarifs_block}>
-                    {[...vdsList, ...tariffsListToRender]
+                    {[...vdsList, ...filteredTariffsList]
                       ?.filter(item => item.order_available.$ === 'on')
                       ?.map(item => {
                         return (
@@ -880,7 +881,7 @@ export default function DedicOrderPage() {
                         }}
                         onSwiper={setSwiperRef}
                       >
-                        {[...vdsList, ...tariffsListToRender]
+                        {[...vdsList, ...filteredTariffsList]
                           ?.filter(item => item.order_available.$ === 'on')
                           ?.map(item => {
                             return (
