@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ ${ { env.NODE_VERSION } } ]
-        npm-version: [ ${ { env.NPM_VERSION } } ]
+        node-version: [ ${{ env.NODE_VERSION }} ]
+        npm-version: [ ${{ env.NPM_VERSION }} ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -53,8 +53,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ ${ { env.NODE_VERSION } } ]
-        npm-version: [ ${ { env.NPM_VERSION } } ]
+        node-version: [ ${{ env.NODE_VERSION }} ]
+        npm-version: [ ${{ env.NPM_VERSION }} ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
