@@ -1125,7 +1125,7 @@ export default function Component() {
                         {paymentsMethodList?.length > 0 && !isPhoneVerification && (
                           <>
                             <div className={s.formBlockTitle}>{t('Payment method')}:</div>
-                            <div className={s.formFieldsBlock}>
+                            <div className={s.formFieldsBlock} name="selectedPayMethod´">
                               {paymentsMethodList?.map(method => {
                                 const { image, name, paymethod_type, paymethod } = method
 
@@ -1615,7 +1615,7 @@ export default function Component() {
                                 className={s.saveBtn}
                                 isShadow
                                 size="medium"
-                                label={t('Pay', { ns: 'billing' })}
+                                label={t('Pay', { ns: 'billing' }) }
                                 type="submit"
                               />
                             )}

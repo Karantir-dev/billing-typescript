@@ -375,9 +375,9 @@ export default function ModalCreatePayment(props) {
                     const fieldErrorNames = getFieldErrorNames(errors)
                     if (fieldErrorNames.length <= 0) return
 
-                    const element =
-                      document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
-                      document.querySelector(`button[name='${fieldErrorNames[0]}']`)
+                    const element = document.querySelector(
+                      `[name='${fieldErrorNames[0]}']`,
+                    )
                     if (!element) return
 
                     // Scroll to first known error into view
@@ -484,7 +484,7 @@ export default function ModalCreatePayment(props) {
                     <ScrollToFieldError />
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
-                      <div className={s.formFieldsBlock}>
+                      <div className={s.formFieldsBlock} name="slecetedPayMethod">
                         {paymentsMethodList?.map(method => {
                           const {
                             paymethod,
