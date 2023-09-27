@@ -27,7 +27,7 @@ import {
   cartOperations,
   userSelectors,
 } from '@redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
@@ -531,7 +531,7 @@ export default function ModalCreatePayment(props) {
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
-                                <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                                 <span
                                   className={cn({
                                     [s.methodDescr]: paymethod?.$ === '71',

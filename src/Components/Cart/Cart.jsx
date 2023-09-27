@@ -39,7 +39,7 @@ import {
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
+import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
@@ -1184,7 +1184,7 @@ export default function Component() {
                                     key={name?.$}
                                   >
                                     <div className={s.descrWrapper}>
-                                      <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                      <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                                       <span
                                         className={cn({
                                           [s.methodDescr]: paymethod?.$ === '71',

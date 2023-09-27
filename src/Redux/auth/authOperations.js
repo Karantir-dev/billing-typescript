@@ -3,7 +3,7 @@ import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies } from '@utils'
-import { API_URL, SITE_URL } from '@config/config'
+import { SITE_URL } from '@config/config'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -611,7 +611,7 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
 }
 
 const getLocation = () => dispatch => {
-  axios.get(`${API_URL}/api/service/geo/`).then(({ data }) => {
+  axios.get(`${process.env.REACT_APP_API_URL}/api/service/geo/`).then(({ data }) => {
     dispatch(
       authActions.geoData({
         clients_country_code: data?.clients_country_code,
