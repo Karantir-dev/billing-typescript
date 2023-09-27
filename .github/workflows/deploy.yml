@@ -142,6 +142,8 @@ jobs:
     needs: [ build_and_push ]
     name: Deploy version on k8s
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name }}
     steps:
       -  uses: actions/checkout@v4
 
