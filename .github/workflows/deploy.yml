@@ -11,16 +11,14 @@ env:
   IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-${{ github.ref_name }}
   PREFIX: release-${{ github.run_number }}
   NAMESPACE: ${{ github.ref_name }}
-  NODE_VERSION: v16.13.1
-  NPM_VERSION: 8.1.2
 
 jobs:
   jest:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ ${{ env.NODE_VERSION }} ]
-        npm-version: [ ${{ env.NPM_VERSION }} ]
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -53,8 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ ${{ env.NODE_VERSION }} ]
-        npm-version: [ ${{ env.NPM_VERSION }} ]
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
