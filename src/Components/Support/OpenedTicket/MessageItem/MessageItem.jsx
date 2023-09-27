@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { supportOperations } from '@redux'
 import { Icon, Modal } from '@components'
-import { BASE_URL } from '@config/config'
 import s from './MessageItem.module.scss'
 import MessageRate from './MessageRate'
 
@@ -42,7 +41,7 @@ export default function Component(props) {
     >
       <img
         className={s.avatar}
-        src={`${BASE_URL}${message.avatar?.$}`}
+        src={`${process.env.REACT_APP_BASE_URL}${message.avatar?.$}`}
         alt={message.avatar?.$name}
       />
 
@@ -55,7 +54,7 @@ export default function Component(props) {
         <div className={s.headerWithPhoto}>
           <img
             className={s.avatarSmall}
-            src={`${BASE_URL}${message.avatar?.$}`}
+            src={`${process.env.REACT_APP_BASE_URL}${message.avatar?.$}`}
             alt={message.avatar?.$name}
           />
           <div className={s.messageHeader}>

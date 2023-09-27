@@ -2,7 +2,6 @@ import qs from 'qs'
 import i18n from '@src/i18n'
 import axios from 'axios'
 import { actions, domainsActions, cartActions } from '@redux'
-import { API_URL } from '@config/config'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive } from '@utils'
@@ -147,7 +146,7 @@ const getDomainsOrderName =
 
         setAutoprolongPrices &&
           (await axiosInstance
-            .get(`${API_URL}/api/domain/`, { signal })
+            .get(`${process.env.REACT_APP_API_URL}/api/domain/`, { signal })
             .then(response => {
               setAutoprolongPrices(response.data)
             })
@@ -199,7 +198,7 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post(`${API_URL}/api/domain/check/`, {
+          .post(`${process.env.REACT_APP_API_URL}/api/domain/check/`, {
             host: domains?.map(e => e?.domain?.$),
           },
           { signal },)

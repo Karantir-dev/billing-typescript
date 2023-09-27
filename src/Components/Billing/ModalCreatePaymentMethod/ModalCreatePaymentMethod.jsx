@@ -20,7 +20,7 @@ import {
   payersSelectors,
   authSelectors,
 } from '@redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
@@ -268,7 +268,7 @@ export default function Component(props) {
                           {t('Payment method', { ns: 'other' })}
                         </label>
                         <div className={s.stripeCard}>
-                          <img src={`${BASE_URL}${stripeMethod?.image?.$}`} alt="icon" />
+                          <img src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`} alt="icon" />
                           <div className={s.stripeDescr}>
                             <span>Stripe</span>
                             <span>

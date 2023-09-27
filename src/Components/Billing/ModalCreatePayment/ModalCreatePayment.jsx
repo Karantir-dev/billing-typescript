@@ -27,7 +27,7 @@ import {
   cartOperations,
   userSelectors,
 } from '@redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
@@ -234,10 +234,10 @@ export default function ModalCreatePayment(props) {
       )
       .required(t('Enter amount')),
     slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
@@ -318,7 +318,29 @@ export default function ModalCreatePayment(props) {
               }}
               onSubmit={createPaymentMethodHandler}
             >
-              {({ values, setFieldValue, touched, errors, handleBlur }) => {
+              {({
+                values,
+                setFieldValue,
+                touched,
+                errors,
+                handleBlur,
+                setFieldTouched,
+              }) => {
+                const [errorFields, setErrorFields] = useState({})
+
+                useEffect(() => {
+                  if (
+                    selectedPayerFields?.address_physical &&
+                    (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
+                      !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
+                  ) {
+                    setErrorFields(prev => ({ ...prev, address_physical: true }))
+                    setFieldTouched('address_physical', true, true)
+                  } else {
+                    setErrorFields(prev => ({ ...prev, address_physical: false }))
+                  }
+                }, [selectedPayerFields])
+
                 const parsePaymentInfo = text => {
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
@@ -531,7 +553,7 @@ export default function ModalCreatePayment(props) {
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
-                                <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                                 <span
                                   className={cn({
                                     [s.methodDescr]: paymethod?.$ === '71',
@@ -723,7 +745,8 @@ export default function ModalCreatePayment(props) {
                             />
                           )}
 
-                          {!selectedPayerFields.address_physical && (
+                          {(!selectedPayerFields.address_physical ||
+                            errorFields.address_physical) && (
                             <div className={cn(s.inputBig, s.nsInputBlock)}>
                               <InputWithAutocomplete
                                 fieldName="address_physical"

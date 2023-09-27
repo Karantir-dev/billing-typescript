@@ -15,9 +15,9 @@ const getVDS =
     setElemsTotal,
     p_num,
     p_cnt,
-    setServicesPerPage,
     signal,
     setIsLoading,
+    isPutItems = true,
   }) =>
   (dispatch, getState) => {
     setIsLoading(true)
@@ -39,8 +39,7 @@ const getVDS =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        setServers(data?.doc?.elem || [])
-        setServicesPerPage && setServicesPerPage(data.doc?.p_cnt?.$)
+        isPutItems && setServers(data?.doc?.elem || [])
 
         const rights = {}
         data.doc?.metadata?.toolbar?.toolgrp?.forEach(el => {
@@ -649,7 +648,6 @@ const setVdsFilters =
     setServers,
     setRights,
     setElemsTotal,
-    setServicesPerPage,
     p_cnt,
     isDedic,
     signal,
@@ -678,37 +676,45 @@ const setVdsFilters =
               : !VDS_IDS_LIKE_DEDICS.includes(el.$key),
           )
           .map(el => el.$key)
-        return pricelist.join()
+
+        if (isDedic && (!pricelist || !pricelist?.length)) {
+          throw new Error('no vds')
+        }
+
+        return pricelist?.join()
       })
       .then(priceList => {
-        return axiosInstance.post(
-          '/',
-          qs.stringify({
-            func: 'vds.filter',
-            auth: sessionId,
-            out: 'json',
-            sok: 'ok',
-            id: values?.id || '',
-            ip: values?.ip || '',
-            domain: values?.domain || '',
-            pricelist: values?.pricelist || priceList,
-            period: values?.period || '',
-            status: values?.status || '',
-            opendate: values?.opendate || '',
-            expiredate: values?.expiredate || '',
-            orderdatefrom: values?.orderdatefrom || '',
-            orderdateto: values?.orderdateto || '',
-            cost_from: values?.cost_from || '',
-            cost_to: values?.cost_to || '',
-            autoprolong: values?.autoprolong || '',
-            datacenter: values?.datacenter || '',
-            ostemplate: values?.ostemplate || '',
-            lang: 'en',
-          }),
-          { signal },
-        )
+        return Promise.all([
+          axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: 'vds.filter',
+              auth: sessionId,
+              out: 'json',
+              sok: 'ok',
+              id: values?.id || '',
+              ip: values?.ip || '',
+              domain: values?.domain || '',
+              pricelist: values?.pricelist || priceList,
+              period: values?.period || '',
+              status: values?.status || '',
+              opendate: values?.opendate || '',
+              expiredate: values?.expiredate || '',
+              orderdatefrom: values?.orderdatefrom || '',
+              orderdateto: values?.orderdateto || '',
+              cost_from: values?.cost_from || '',
+              cost_to: values?.cost_to || '',
+              autoprolong: values?.autoprolong || '',
+              datacenter: values?.datacenter || '',
+              ostemplate: values?.ostemplate || '',
+              lang: 'en',
+            }),
+            { signal },
+          ),
+          priceList,
+        ])
       })
-      .then(({ data }) => {
+      .then(([{ data }, priceList]) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         dispatch(
@@ -716,11 +722,11 @@ const setVdsFilters =
             setServers,
             setRights,
             setElemsTotal,
-            setServicesPerPage,
             p_cnt,
             isDedic,
             signal,
             setIsLoading,
+            isPutItems: !!priceList,
           }),
         )
 
@@ -760,6 +766,10 @@ const setVdsFilters =
       })
 
       .catch(err => {
+        if (err.message === 'no vds') {
+          setIsLoading(false)
+          return
+        }
         if (err.message.includes('filter')) {
           dispatch(getVDS({ setServers, setRights, setElemsTotal, signal, setIsLoading }))
         }

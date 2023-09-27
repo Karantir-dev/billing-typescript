@@ -1,16 +1,16 @@
 name: Deployment - Dev
 on:
   push:
-    branches:
-      - 'dev'
+    branches: [ prod, dev ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/zomro-bill-dev
+  IMAGE_NAME: zomro-bill-${{ github.ref_name }}
   PREFIX: release-${{ github.run_number }}
+  NAMESPACE: ${{ github.ref_name }}
 
 jobs:
   jest:
@@ -19,16 +19,27 @@ jobs:
       matrix:
         node-version: [ v16.13.1 ]
         npm-version: [ 8.1.2 ]
+    environment:
+      name: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install -f
-      - run: npm run test
-      - name: test status
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+
+      - name: Run test
+        run: npm run test
+      - name: Send fail start in Slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -46,16 +57,26 @@ jobs:
       matrix:
         node-version: [ v16.13.1 ]
         npm-version: [ 8.1.2 ]
+    environment:
+      name: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install
-      - run: npm run lint
-      - name: linter status
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+      - name: Run List
+        run: npm run lint
+      - name: Send fail start in Slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -68,61 +89,70 @@ jobs:
         if: failure()
 
   build_and_push:
-      needs: [jest, eslint]
-      name: Build and push bill docker
-      runs-on: ubuntu-latest
-      env:
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      steps:
-        - name: Checkout Code
-          uses: actions/checkout@v1
+    needs: [ jest, eslint ]
+    name: Build and push bill docker
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name }}
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v2
 
-        - name: Test with environment variables
-          run: |
-            echo $TAG_NAME - ${{ env.PREFIX }}
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+      - run: cat .env
 
-        - name: Login to docker hub
-          run:
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
-        - name: Build image
-          run: |
-            docker build -f Dockerfile -t $IMAGE_NAME .
-            docker tag $IMAGE_NAME:latest $IMAGE_NAME:latest
-            docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ env.PREFIX }}
-        - name: Push in dockerhub
-          run: |
-            docker push $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:${{ env.PREFIX }}
-        - name: Push status
-          uses: 8398a7/action-slack@v3
-          with:
-            status: ${{ job.status }}
-            fields: all
-            mention: 'channel'
-            channel: 'github-actions'
-            if_mention: always
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: failure()
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.PREFIX }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+      - name: Push status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
 
   deploy_on_server:
-    needs: [build_and_push]
-    name: Deploy version on server
+    needs: [ build_and_push ]
+    name: Deploy version on k8s
     runs-on: ubuntu-latest
-
+    environment:
+      name: ${{ github.ref_name }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
+      -  uses: actions/checkout@v4
 
-      - name: Test with environment variables
-        run: |
-          echo $TAG_NAME - ${{ env.PREFIX }}
       - name: Update Version
         run: |
-          sed -i "s|$IMAGE_NAME|$IMAGE_NAME:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|${{ env.IMAGE_NAME }}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|{NAMESPACE}|${{ env.NAMESPACE }}|g" $GITHUB_WORKSPACE/deployment/deployment.yml
+
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -136,12 +166,11 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
 
       - name: Verify deployment
-        run: kubectl rollout status deployment/zomro-bill-deployment -n dev
+        run: kubectl rollout status deployment/zomro-bill-deployment -n ${{ env.NAMESPACE }}
 
       - name: Clean CloudFlare cache
-        run: | 
-          sleep 5;
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/6562ccdfeb6b2a7793f4867f8bf6f955/purge_cache" \
+        run: |
+          curl -X POST "${{ vars.CLOUDFLARE_URL }}" \
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
           -H "Content-Type:application/json" \
           --data "{\"purge_everything\":true}"
