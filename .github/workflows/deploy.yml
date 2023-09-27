@@ -36,8 +36,10 @@ jobs:
         with:
           envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
           envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
-      - run: npm run test
-      - name: test status
+
+      - name: Run test
+        run: npm run test
+      - name: Send fail start in Slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -72,8 +74,9 @@ jobs:
         with:
           envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
           envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
-      - run: npm run lint
-      - name: linter status
+      - name: Run List
+        run: npm run lint
+      - name: Send fail start in Slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
