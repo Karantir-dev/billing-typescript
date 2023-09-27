@@ -4,7 +4,7 @@ metadata:
   name: zomro-bill-deployment
   labels:
     app: zomro-bill
-  namespace: dev
+  namespace: {NAMESPACE}
 spec:
   replicas: 1
   selector:
@@ -57,7 +57,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zomro-bill-service
-  namespace: dev
+  namespace: {NAMESPACE}
 spec:
   selector:
     app: zomro-bill
