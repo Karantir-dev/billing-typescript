@@ -79,9 +79,14 @@ export default function Component(props) {
       onClick={() => setValue(value)}
       className={cn(s.select, { [s.selected]: selected })}
     >
-      <div className={s.checkIcon}>
-        <Icon name="Check" />
+      <div
+        className={cn(s.radio, {
+          [s.active]: selected,
+        })}
+      >
+        <span className={cn(s.circle, { [s.active]: selected })}></span>
       </div>
+
       <div className={s.title}>{t(title)}</div>
       <button type="button" className={s.infoBtn}>
         <Icon name="Info" />

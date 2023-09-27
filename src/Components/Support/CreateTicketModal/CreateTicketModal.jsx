@@ -84,6 +84,7 @@ export default function Component(props) {
                     return { label: t(el.label), value: el.value }
                   })}
                   className={s.select}
+                  disabled={servicesList.length <= 1}
                 />
                 <InputField
                   label={t('Request subject:')}
