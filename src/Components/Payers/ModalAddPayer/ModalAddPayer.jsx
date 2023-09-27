@@ -167,6 +167,8 @@ export default function Component(props) {
                         value: $key,
                       }))}
                       inputClassName={s.field}
+                      disabled={payersSelectLists?.profiletype.length === 1}
+                      withoutArrow={payersSelectLists?.profiletype.length === 1}
                     />
 
                     {values?.profiletype === '3' || values?.profiletype === '2' ? (
