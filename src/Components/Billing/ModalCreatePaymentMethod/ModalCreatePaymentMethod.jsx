@@ -267,7 +267,10 @@ export default function Component(props) {
                           {t('Payment method', { ns: 'other' })}
                         </label>
                         <div className={s.stripeCard}>
-                          <img src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`} alt="icon" />
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
+                            alt="icon"
+                          />
                           <div className={s.stripeDescr}>
                             <span>Stripe</span>
                             <span>
@@ -316,13 +319,7 @@ export default function Component(props) {
                           getElement={item => setPayerHandler(item)}
                           isShadow
                           className={s.select}
-                          itemsList={[
-                            {
-                              name: { $: t('Add new payer', { ns: 'payers' }) },
-                              id: { $: 'new' },
-                            },
-                            ...payersList,
-                          ]?.map(({ name, id }) => ({
+                          itemsList={[...payersList]?.map(({ name, id }) => ({
                             label: t(`${name?.$?.trim()}`),
                             value: id?.$,
                           }))}
