@@ -1,4 +1,4 @@
-name: Deployment - Dev
+name: Deployment - Update bill
 on:
   push:
     branches: [ dev ]
