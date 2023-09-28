@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app: bill
-  minReadySeconds: 10
+  minReadySeconds: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -40,33 +40,14 @@ spec:
               containerPort: 8443
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: http
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 8080
+              port: http
             initialDelaySeconds: 15
             periodSeconds: 20
           imagePullPolicy: Always
       imagePullSecrets:
         - name: regcred
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: bill-service
-  namespace: {NAMESPACE}
-spec:
-  selector:
-    app: bill
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: http
-    - name: https
-      protocol: TCP
-      port: 443
-      targetPort: https
