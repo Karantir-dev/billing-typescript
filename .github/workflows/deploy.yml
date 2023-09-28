@@ -150,7 +150,7 @@ jobs:
 
       - name: Update Version
         run: |
-          sed -i "s|${{ env.IMAGE_NAME }}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|{IMAGE}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
           sed -i "s|{NAMESPACE}|${{ env.NAMESPACE }}|g" $GITHUB_WORKSPACE/deployment/deployment.yml
 
       - name: Install doctl
