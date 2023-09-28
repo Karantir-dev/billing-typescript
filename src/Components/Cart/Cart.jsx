@@ -217,11 +217,12 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
         .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-        // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+        .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
         .required(t('Is a required field', { ns: 'other' })),
     }),
 
@@ -560,7 +561,7 @@ export default function Component() {
       <>
         {vpnList?.length > 0 && (
           <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Site care')}:</div>
+            <div className={s.formBlockTitle}>VPN:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
                 const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
@@ -1015,7 +1016,29 @@ export default function Component() {
                 }}
                 onSubmit={payBasketHandler}
               >
-                {({ values, setFieldValue, touched, errors, handleBlur }) => {
+                {({
+                  values,
+                  setFieldValue,
+                  touched,
+                  errors,
+                  handleBlur,
+                  setFieldTouched,
+                }) => {
+                  const [errorFields, setErrorFields] = useState({})
+
+                  useEffect(() => {
+                    if (
+                      selectedPayerFields?.address_physical &&
+                      (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
+                        !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
+                    ) {
+                      setErrorFields(prev => ({ ...prev, address_physical: true }))
+                      setFieldTouched('address_physical', true, true)
+                    } else {
+                      setErrorFields(prev => ({ ...prev, address_physical: false }))
+                    }
+                  }, [selectedPayerFields])
+
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
@@ -1390,7 +1413,8 @@ export default function Component() {
                                 onChange={e => setCityPhysical(e.target.value)}
                               />
                             )}
-                            {!selectedPayerFields.address_physical && (
+                            {(!selectedPayerFields.address_physical ||
+                              errorFields.address_physical) && (
                               <div className={cn(s.nsInputBlock, s.inputBig)}>
                                 <InputWithAutocomplete
                                   fieldName="address_physical"

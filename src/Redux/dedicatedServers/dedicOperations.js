@@ -111,7 +111,7 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
 }
 
 const getUpdatedTarrifs =
-  (datacenterId, setNewTariffs, signal, setIsLoading) => (dispatch, getState) => {
+  (datacenterId, period, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -126,6 +126,7 @@ const getUpdatedTarrifs =
           out: 'json',
           auth: sessionId,
           datacenter: datacenterId,
+          period,
           lang: 'en',
         }),
         { signal },
@@ -146,7 +147,7 @@ const getUpdatedTarrifs =
           currentDatacenter,
         }
 
-        setNewTariffs(orderData)
+        dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
       .catch(error => {
@@ -155,8 +156,7 @@ const getUpdatedTarrifs =
   }
 
 const getUpdatedPeriod =
-  (period, datacenter, setNewPeriod, setNewVds, signal, setIsLoading) =>
-  (dispatch, getState) => {
+  (period, datacenter, setNewVds, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -206,7 +206,7 @@ const getUpdatedPeriod =
           currentDatacenter,
         }
         setNewVds(vdsResp.data?.doc?.list[0]?.elem)
-        setNewPeriod(orderData)
+        dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
       .catch(error => {
