@@ -1,0 +1,188 @@
+name: Deployment - Dev
+on:
+  push:
+    branches: [ dev ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: zomro-bill-${{ github.ref_name }}
+  PREFIX: release-${{ github.run_number }}-bill-update
+  NAMESPACE: bill-update
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
+    environment:
+      name: bill-update
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install -g npm@${{ matrix.npm-version }}
+      - run: npm install -f
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+
+      - name: Run test
+        run: npm run test
+      - name: Send fail start in Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: failure()
+
+  eslint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ v16.13.1 ]
+        npm-version: [ 8.1.2 ]
+    environment:
+      name: bill-update
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install -g npm@${{ matrix.npm-version }}
+      - run: npm install
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+      - name: Run List
+        run: npm run lint
+      - name: Send fail start in Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: failure()
+
+  build_and_push:
+    needs: [ jest, eslint ]
+    name: Build and push bill docker
+    runs-on: ubuntu-latest
+    environment:
+      name: bill-update
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v2
+
+      # Обов'язкові змінні потрібні лише для збірки JS
+      - name: Create core .env
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+      - run: cat .env
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.PREFIX }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Push status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+
+  deploy_on_server:
+    needs: [ build_and_push ]
+    name: Deploy version on k8s
+    runs-on: ubuntu-latest
+    environment:
+      name: bill-update
+    steps:
+      -  uses: actions/checkout@v4
+
+      - name: Update Version
+        run: |
+          sed -i "s|${{ env.IMAGE_NAME }}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|{NAMESPACE}|${{ env.NAMESPACE }}|g" $GITHUB_WORKSPACE/deployment/deployment.yml
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run:
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/zomro-bill-deployment -n ${{ env.NAMESPACE }}
+
+      - name: Clean CloudFlare cache
+        run: |
+          curl -X POST "${{ vars.CLOUDFLARE_URL }}" \
+          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
+          -H "Content-Type:application/json" \
+          --data "{\"purge_everything\":true}"
+
+      - name: Deploy status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'channel'
+          channel: 'github-actions'
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
