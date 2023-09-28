@@ -561,7 +561,7 @@ export default function Component() {
       <>
         {vpnList?.length > 0 && (
           <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Site care')}:</div>
+            <div className={s.formBlockTitle}>VPN:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
                 const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
