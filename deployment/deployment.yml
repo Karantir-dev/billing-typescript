@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: zomro-bill
-          image: zomrocom/{IMAGE}
+          image: zomrocom/zomro-bill
           resources:
             requests:
               memory: '10Mi'

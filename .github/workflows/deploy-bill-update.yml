@@ -8,8 +8,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_NAME: zomro-bill-${{ github.ref_name }}
-  PREFIX: release-${{ github.run_number }}-bill-update
+  IMAGE_NAME: zomro-bill
+  PREFIX: version-${{ github.run_number }}-bill-update
   NAMESPACE: bill-update
 
 jobs:
@@ -150,7 +150,7 @@ jobs:
 
       - name: Update Version
         run: |
-          sed -i "s|{IMAGE}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|${{ env.IMAGE_NAME }}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
           sed -i "s|{NAMESPACE}|${{ env.NAMESPACE }}|g" $GITHUB_WORKSPACE/deployment/deployment.yml
 
       - name: Install doctl
