@@ -10,7 +10,7 @@ concurrency:
 env:
   IMAGE_NAME: zomro-bill
   PREFIX: version-${{ github.run_number }}-bill-update
-  NAMESPACE: bill-update
+  NAMESPACE: bill-zomro-com-update
 
 jobs:
   jest:
