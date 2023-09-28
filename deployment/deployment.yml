@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zomro-bill-deployment
+  name: bill-deployment
   labels:
     app: bill
   namespace: {NAMESPACE}
@@ -56,7 +56,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zomro-bill-service
+  name: bill-service
   namespace: {NAMESPACE}
 spec:
   selector:
