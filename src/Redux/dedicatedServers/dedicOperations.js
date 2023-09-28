@@ -1187,14 +1187,20 @@ const payProlongPeriod =
 
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
-        } else if (routeAfterBuying === 'vds') {
+        } else if (pageName === 'vpn') {
+          routeAfterBuying = route.VPN
+        } else if (pageName === 'site_care') {
+          routeAfterBuying = route.SITE_CARE
+        } else if (pageName === 'vds') {
           routeAfterBuying = route.VPS
-        } else if (routeAfterBuying === 'ftp') {
+        } else if (pageName === 'ftp') {
           routeAfterBuying = route.FTP
-        } else if (routeAfterBuying === 'dns') {
+        } else if (pageName === 'dns') {
           routeAfterBuying = route.DNS
-        } else if (routeAfterBuying === 'forex') {
+        } else if (pageName === 'forex') {
           routeAfterBuying = route.FOREX
+        } else if (pageName === 'shared_hosting') {
+          routeAfterBuying = route.SHARED_HOSTING
         }
 
         handleModal()
@@ -1244,14 +1250,20 @@ const payProlongPeriodFewElems =
 
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
-        } else if (routeAfterBuying === 'vds') {
+        } else if (pageName === 'vpn') {
+          routeAfterBuying = route.VPN
+        } else if (pageName === 'site_care') {
+          routeAfterBuying = route.SITE_CARE
+        } else if (pageName === 'vds') {
           routeAfterBuying = route.VPS
-        } else if (routeAfterBuying === 'ftp') {
+        } else if (pageName === 'ftp') {
           routeAfterBuying = route.FTP
-        } else if (routeAfterBuying === 'dns') {
+        } else if (pageName === 'dns') {
           routeAfterBuying = route.DNS
-        } else if (routeAfterBuying === 'forex') {
+        } else if (pageName === 'forex') {
           routeAfterBuying = route.FOREX
+        } else if (pageName === 'shared_hosting') {
+          routeAfterBuying = route.SHARED_HOSTING
         }
 
         handleModal()
