@@ -281,7 +281,7 @@ export default function Component(props) {
                           </div>
                         </div>
                       </div>
-                      {payersSelectLists?.profiletype.length > 1 && (
+                      {payersSelectLists?.profiletype?.length > 1 && (
                         <Select
                           placeholder={t('Not chosen', { ns: 'other' })}
                           label={`${t('Payer status', { ns: 'payers' })}:`}
