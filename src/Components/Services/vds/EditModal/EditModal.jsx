@@ -107,15 +107,12 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
   const handleFormSubmit = values => {
     const mutatedValues = { ...values, clicked_button: orderInfo ? 'basket' : 'ok' }
     dispatch(
-      vdsOperations.editVDS(
+      vdsOperations.editVDS({
         elid,
-        mutatedValues,
-        initialState.register,
-        null,
-        null,
-        null,
+        values: mutatedValues,
+        register: initialState.register,
         getVDSHandler,
-      ),
+      }),
     )
     closeModal()
   }
@@ -311,14 +308,14 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
                       setFieldValue('Control_panel', value)
 
                       dispatch(
-                        vdsOperations.editVDS(
+                        vdsOperations.editVDS({
                           elid,
-                          { ...values, Control_panel: value },
-                          initialState.register,
-                          initialState.register.Control_panel,
+                          values: { ...values, Control_panel: value },
+                          register: initialState.register,
+                          selectedField: initialState.register.Control_panel,
                           mutateOptionsListData,
                           setOrderInfo,
-                        ),
+                        }),
                       )
                     }}
                     itemsList={getControlPanelList('Control_panel')}

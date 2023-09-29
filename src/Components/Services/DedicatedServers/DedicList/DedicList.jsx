@@ -20,6 +20,8 @@ export default function DedicList({
   rights,
   setActiveServices,
   activeServices,
+  signal,
+  setIsLoading,
 }) {
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -27,23 +29,12 @@ export default function DedicList({
 
   const handleEditSubmit = (elid, server_name) => {
     dispatch(
-      dedicOperations.editDedicServerNoExtraPay(
+      dedicOperations.editDedicServerNoExtraPay({
         elid,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
         server_name,
-        null,
-      ),
+        signal,
+        setIsLoading,
+      }),
     )
   }
 

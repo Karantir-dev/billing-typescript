@@ -48,7 +48,11 @@
   display: flex;
   width: 146px;
   margin: 0 auto;
-  justify-content: space-between;
+  justify-content: center;
+  
+  &.list_view {
+    justify-content: space-between;
+  }
 }
 
 .captcha {

@@ -11,7 +11,7 @@ import {
   billingOperations,
 } from '@redux'
 
-import { BASE_URL, PRIVACY_URL } from '@config/config'
+import { PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -23,7 +23,7 @@ export default function Component(props) {
 
   const descrWrapper = useRef(null)
 
-  const { setIsConfigure } = props
+  const { setIsConfigure, signal, setIsLoading } = props
 
   const autoPaymentConfig = useSelector(billingSelectors.getAutoPaymentConfig)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
@@ -42,13 +42,12 @@ export default function Component(props) {
     }
 
     dispatch(payersOperations.getPayerModalInfo(data))
-  }, [])
-
-  useEffect(() => {
-    if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
-      setSelectedMethod(autoPaymentConfig?.elem[0])
-    }
-  }, [autoPaymentConfig])
+  }, []),
+    useEffect(() => {
+      if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
+        setSelectedMethod(autoPaymentConfig?.elem[0])
+      }
+    }, [autoPaymentConfig])
 
   // const offerTextHandler = () => {
   //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
@@ -128,7 +127,9 @@ export default function Component(props) {
         : 'off',
     }
 
-    dispatch(billingOperations.createAutoPayment(data, setIsConfigure))
+    dispatch(
+      billingOperations.createAutoPayment(data, setIsConfigure, signal, setIsLoading),
+    )
   }
 
   const toggleDescrHeight = () => {
@@ -255,7 +256,7 @@ export default function Component(props) {
                     ({ name, payment_minamount, paymethod, image }) => ({
                       label: (
                         <div className={s.selectedItem}>
-                          <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                          <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                           <div>
                             <span>{name?.$}</span>
                             <span>

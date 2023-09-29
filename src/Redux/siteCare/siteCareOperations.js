@@ -7,9 +7,9 @@ import { checkIfTokenAlive } from '@utils'
 import * as route from '@src/routes'
 
 const getSiteCare =
-  (body = {}) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -27,6 +27,7 @@ const getSiteCare =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -40,18 +41,22 @@ const getSiteCare =
 
         dispatch(siteCareActions.setSiteCareList(sitecareRenderData))
         dispatch(siteCareActions.setSiteCareCount(count))
-        dispatch(getSiteCareFilters())
+        dispatch(getSiteCareFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
 const getSiteCareFilters =
-  (body = {}, filtered = false) =>
+  (body = {}, filtered = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -67,12 +72,13 @@ const getSiteCareFilters =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getSiteCare({ p_cnt: body?.p_cnt }))
+          return dispatch(getSiteCare({ p_cnt: body?.p_cnt }, signal, setIsLoading))
         }
 
         let filters = {}
@@ -101,11 +107,15 @@ const getSiteCareFilters =
 
         dispatch(siteCareActions.setSiteCareFilters(currentFilters))
         dispatch(siteCareActions.setSiteCareFiltersLists(filters))
-        dispatch(actions.hideLoader())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -241,7 +251,7 @@ const prolongSiteCare =
               redirectPath: route.SITE_CARE,
             }),
           )
-          return dispatch(getSiteCare({ p_num: body?.p_num }))
+          dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
         dispatch(actions.hideLoader())
@@ -319,7 +329,7 @@ const editSiteCare =
               position: 'bottom-right',
             },
           )
-          return dispatch(getSiteCare({ p_num: body?.p_num }))
+          dispatch(getSiteCare({ p_num: body?.p_num }))
         }
 
         dispatch(actions.hideLoader())
@@ -408,9 +418,9 @@ const deleteSiteCare =
   }
 
 const orderSiteCare =
-  (body = {}, setData) =>
+  (body = {}, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -425,6 +435,7 @@ const orderSiteCare =
           out: 'json',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -456,18 +467,17 @@ const orderSiteCare =
 
         setData && setData(d)
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const orderSiteCarePricelist =
-  (body = {}, setParamsData) =>
+  (body = {}, setParamsData, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -483,6 +493,7 @@ const orderSiteCarePricelist =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -517,11 +528,10 @@ const orderSiteCarePricelist =
           setParamsData && setParamsData(d)
         }
 
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

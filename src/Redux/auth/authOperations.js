@@ -3,7 +3,7 @@ import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, commonErrorHandler, cookies } from '@utils'
-import { API_URL, SITE_URL } from '@config/config'
+import { SITE_URL } from '@config/config'
 import { t, exists as isTranslationExists } from 'i18next'
 import * as route from '@src/routes'
 import useCustomNavigate from '@src/utils/hooks/useCustomNavigate'
@@ -654,7 +654,7 @@ const getLoginSocLinks = setSocialLinks => dispatch => {
 }
 
 const getLocation = () => dispatch => {
-  axios.get(`${API_URL}/api/service/geo/`).then(({ data }) => {
+  axios.get(`${process.env.REACT_APP_API_URL}/api/service/geo/`).then(({ data }) => {
     dispatch(
       authActions.geoData({
         clients_country_code: data?.clients_country_code,

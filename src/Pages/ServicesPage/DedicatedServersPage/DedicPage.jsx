@@ -18,23 +18,25 @@ export default function DedicPage() {
 
   const tavBarSections = [
     {
-      route: `${route.DEDICATED_SERVERS}/dedicated`,
+      route: `${route.DEDICATED_SERVERS}`,
       label: t('burger_menu.services.services_list.dedicated', {
         ns: 'container',
       }),
       allowToRender: true,
       replace: true,
+      end: true,
     },
     {
       route: `${route.DEDICATED_SERVERS}/vds`,
       label: 'VDS',
       allowToRender: true,
       replace: true,
+      end: true,
     },
   ]
 
   return (
-    <>
+    <div className={s.page}>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
@@ -43,6 +45,6 @@ export default function DedicPage() {
       <div className={s.content}>
         <Outlet />
       </div>
-    </>
+    </div>
   )
 }

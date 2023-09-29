@@ -185,7 +185,7 @@
 .new_tariff {
   position: absolute;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   right: 0px;
   top: 0px;
@@ -202,7 +202,8 @@
 
 .new_tariff {
   background: url('../../../../images/vds_new.svg');
-  justify-content: center;
+  left: 0;
+  padding: 3px 15px 0 3px;
 }
 
 .card_title {

@@ -8,8 +8,8 @@ import { actions, cartActions, dnsActions } from '@redux'
 
 //GET hostings OPERATIONS
 
-const getDNSList = data => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getDNSList = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -27,6 +27,7 @@ const getDNSList = data => (dispatch, getState) => {
         p_cnt: data?.p_cnt || 10,
         ...data,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -40,18 +41,22 @@ const getDNSList = data => (dispatch, getState) => {
       dispatch(dnsActions.setDNSList(dnsRenderData))
       dispatch(dnsActions.setDNSCount(count))
 
-      dispatch(actions.hideLoader())
+      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      if (setIsLoading) {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      }
     })
 }
 
 const getTarifs =
-  (setTarifs, data = {}) =>
+  (setTarifs, data = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -67,6 +72,7 @@ const getTarifs =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -84,21 +90,20 @@ const getTarifs =
         }
 
         setTarifs(orderData)
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue) =>
+  (period, datacenter, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -118,6 +123,7 @@ const getParameters =
           sok: 'ok',
           lang: 'en',
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -162,19 +168,18 @@ const getParameters =
         setFieldValue('addon_961', limitsList[0])
         setFieldValue('limitsList', limitsList)
         setParameters({ ...paramsList, domainsLimitAddon })
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
 const updateDNSPrice =
-  (setNewPrice, data = {}) =>
+  (setNewPrice, data = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -190,17 +195,17 @@ const updateDNSPrice =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         const price = data.doc.orderinfo.$.split('Total amount:')[1].split(' ')[1]
 
         setNewPrice(price)
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 
@@ -516,9 +521,9 @@ const getServiceInstruction = (elid, setInstruction) => (dispatch, getState) => 
 }
 
 const getDNSFilters =
-  (setFilters, data = {}, filtered = false, setEmptyFilter) =>
+  (setFilters, data = {}, filtered = false, setEmptyFilter, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -534,13 +539,16 @@ const getDNSFilters =
           lang: 'en',
           ...data,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
           setEmptyFilter && setEmptyFilter(true)
-          return dispatch(getDNSList({ p_num: 1, p_cnt: data?.p_cnt }))
+          return dispatch(
+            getDNSList({ p_num: 1, p_cnt: data?.p_cnt }, signal, setIsLoading),
+          )
         }
 
         let filters = {}
@@ -566,14 +574,13 @@ const getDNSFilters =
         }
 
         setFilters({ filters, currentFilters })
-        dispatch(actions.hideLoader())
+        setIsLoading(false)
       })
       .catch(error => {
         if (error.message.includes('filter')) {
-          dispatch(getDNSList({ p_num: 1 }))
+          dispatch(getDNSList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
       })
   }
 

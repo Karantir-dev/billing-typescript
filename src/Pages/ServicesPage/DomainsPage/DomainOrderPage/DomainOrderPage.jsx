@@ -5,6 +5,7 @@ import {
   DomainsZone,
   InputField,
   DomainsPickUpZones,
+  Loader,
 } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +15,7 @@ import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other'])
@@ -21,6 +23,8 @@ export default function Component({ transfer = false }) {
 
   const location = useLocation()
   const navigate = useNavigate()
+
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [domains, setDomains] = useState([])
   const [autoprolongPrices, setAutoprolongPrices] = useState([])
@@ -42,10 +46,22 @@ export default function Component({ transfer = false }) {
             setDomains,
             setAutoProlong(),
             dataTransfer,
+            undefined,
+            signal,
+            setIsLoading,
           ),
         )
       } else {
-        dispatch(domainsOperations.getDomainsOrderName(setDomains, setAutoProlong()))
+        dispatch(
+          domainsOperations.getDomainsOrderName(
+            setDomains,
+            setAutoProlong(),
+            undefined,
+            undefined,
+            signal,
+            setIsLoading,
+          ),
+        )
       }
     } else {
       navigate(route.DOMAINS, { replace: true })
@@ -91,6 +107,8 @@ export default function Component({ transfer = false }) {
         setAutoProlong(),
         values,
         true,
+        signal,
+        setIsLoading,
       ),
     )
 
@@ -144,78 +162,82 @@ export default function Component({ transfer = false }) {
   }
 
   return (
-    <div className={s.page_wrapper}>
-      <BreadCrumbs pathnames={parseLocations()} />
-      <h1 className={s.page_title}>
-        {transfer ? t('Domain name transfer') : t('Domain name order')}
-      </h1>
-      <Formik
-        validationSchema={validationSchema}
-        initialValues={{
-          domain_name: '',
-        }}
-        onSubmit={setDomainsNameHandler}
-        validateOnChange={true}
-      >
-        {({ errors, touched, setFieldValue, setFieldError }) => {
-          function validateInput(event) {
-            const value = event.target.value
-            const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
-            if (!domainnameRegex.test(value)) {
-              setFieldError('domain_name', t('Domain name only Latin'))
-              touched.domain_name = true
-            } else {
-              setFieldError('domain_name', '')
-              setFieldValue('domain_name', value)
-              setInputValue(value)
+    <>
+      <div className={s.page_wrapper}>
+        <BreadCrumbs pathnames={parseLocations()} />
+        <h1 className={s.page_title}>
+          {transfer ? t('Domain name transfer') : t('Domain name order')}
+        </h1>
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={{
+            domain_name: '',
+          }}
+          onSubmit={setDomainsNameHandler}
+          validateOnChange={true}
+        >
+          {({ errors, touched, setFieldValue, setFieldError }) => {
+            function validateInput(event) {
+              const value = event.target.value
+              const domainnameRegex = /^(?=[a-zA-Z0-9-]*$)[^\u0400-\u04FF]*$/
+              if (!domainnameRegex.test(value)) {
+                setFieldError('domain_name', t('Domain name only Latin'))
+                touched.domain_name = true
+              } else {
+                setFieldError('domain_name', '')
+                setFieldValue('domain_name', value)
+                setInputValue(value)
+              }
             }
-          }
-          return (
-            <Form className={s.form}>
-              <InputField
-                name="domain_name"
-                type="text"
-                label={`${t('Domain name')}:`}
-                placeholder={t('Enter domain name')}
-                className={s.input}
-                inputClassName={s.inputClassName}
-                inputWrapperClass={s.inputHeight}
-                error={!!errors.domain_name}
-                touched={!!touched.domain_name}
-                isShadow
-                value={inputValue}
-                onChange={validateInput}
-              />
-              <Button
-                className={s.searchBtn}
-                isShadow
-                size="medium"
-                label={t(transfer ? 'Check' : 'Pick up')}
-                type="submit"
-              />
-            </Form>
-          )
-        }}
-      </Formik>
-      {pickUpDomains?.list?.length > 0 ? (
-        <DomainsPickUpZones
-          setSelectedDomains={setSelectedDomainsNames}
-          selectedDomains={selectedDomainsNames}
-          domains={pickUpDomains?.list}
-          selected={pickUpDomains?.selected}
-          registerDomainHandler={registerDomainHandler}
-          transfer={transfer}
-          autoprolongPrices={autoprolongPrices}
-        />
-      ) : (
-        <DomainsZone
-          setSelectedDomains={setSelectedDomains}
-          selectedDomains={selectedDomains}
-          domains={domains}
-          transfer={transfer}
-          autoprolongPrices={autoprolongPrices}
-        />
-      )}
-    </div>
+            return (
+              <Form className={s.form}>
+                <InputField
+                  name="domain_name"
+                  type="text"
+                  label={`${t('Domain name')}:`}
+                  placeholder={t('Enter domain name')}
+                  className={s.input}
+                  inputClassName={s.inputClassName}
+                  inputWrapperClass={s.inputHeight}
+                  error={!!errors.domain_name}
+                  touched={!!touched.domain_name}
+                  isShadow
+                  value={inputValue}
+                  onChange={validateInput}
+                />
+                <Button
+                  className={s.searchBtn}
+                  isShadow
+                  size="medium"
+                  label={t(transfer ? 'Check' : 'Pick up')}
+                  type="submit"
+                />
+              </Form>
+            )
+          }}
+        </Formik>
+        {pickUpDomains?.list?.length > 0 ? (
+          <DomainsPickUpZones
+            setSelectedDomains={setSelectedDomainsNames}
+            selectedDomains={selectedDomainsNames}
+            domains={pickUpDomains?.list}
+            selected={pickUpDomains?.selected}
+            registerDomainHandler={registerDomainHandler}
+            transfer={transfer}
+            autoprolongPrices={autoprolongPrices}
+          />
+        ) : (
+          <DomainsZone
+            setSelectedDomains={setSelectedDomains}
+            selectedDomains={selectedDomains}
+            domains={domains}
+            transfer={transfer}
+            autoprolongPrices={autoprolongPrices}
+          />
+        )}
+      </div>
+
+      {isLoading && <Loader local shown={isLoading} />}
+    </>
   )
 }

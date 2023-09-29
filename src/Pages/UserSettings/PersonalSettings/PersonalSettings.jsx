@@ -15,7 +15,6 @@ import {
   ScrollToFieldError,
   Icon,
 } from '@components'
-import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +25,7 @@ import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
 
-export default function Component({ isComponentAllowedToEdit }) {
+export default function Component({ isComponentAllowedToEdit, signal, setIsLoading }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
@@ -41,7 +40,7 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const saveProfileHandler = values => {
-    dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values))
+    dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values, signal, setIsLoading))
   }
 
   const confirmEmailHandler = values => {
@@ -157,7 +156,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                         src={
                           isBase64(userParams?.avatar_view, { allowMime: true })
                             ? userParams?.avatar_view
-                            : `${BASE_URL}${userParams?.avatar_view}`
+                            : `${process.env.REACT_APP_BASE_URL}${userParams?.avatar_view}`
                         }
                       />
                     )}

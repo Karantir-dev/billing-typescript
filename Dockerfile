@@ -7,7 +7,7 @@ RUN cd /usr/local/src && \
        npm run build
 
 
-FROM nginx:1.21.4-alpine
+FROM nginx:1.25-alpine-slim
 
 RUN apk add --no-cache apache2-utils openssl g++ make && \
     echo 'admin:$apr1$kme5sfz3$je0SQadFV7bUoX0dtFSEB0' > /etc/nginx/.htpasswd && \

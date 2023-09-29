@@ -135,7 +135,6 @@ export { default as SiteCareFilter } from './Services/SiteCare/SiteCareFilter/Si
 export { default as SiteCareFiltertsModal } from './Services/SiteCare/SiteCareFiltertsModal/SiteCareFiltertsModal'
 export { default as SiteCareTable } from './Services/SiteCare/SiteCareTable/SiteCareTable'
 export { default as SiteCareHistoryModal } from './Services/SiteCare/SiteCareHistoryModal/SiteCareHistoryModal'
-export { default as SiteCareProlongModal } from './Services/SiteCare/SiteCareProlongModal/SiteCareProlongModal'
 export { default as SiteCareEditModal } from './Services/SiteCare/SiteCareEditModal/SiteCareEditModal'
 export { default as SiteCareDeleteModal } from './Services/SiteCare/SiteCareDeleteModal/SiteCareDeleteModal'
 export { default as SiteCareTarifCard } from './Services/SiteCare/SiteCareTarifCard/SiteCareTarifCard'

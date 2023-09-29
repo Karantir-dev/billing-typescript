@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './PageTabBar.module.scss'
-import { replace } from 'formik'
 
 export default function Component({ sections }) {
   const sectionsToRender = sections.filter(item => item.allowToRender)
@@ -11,13 +10,14 @@ export default function Component({ sections }) {
     <div className={s.nav_bar}>
       <div className={s.blur}>
         <div className={s.scroll_area}>
-          {sectionsToRender.map(({ route, label }) => {
+          {sectionsToRender.map(({ route, label, replace, end }) => {
             return (
               <NavLink
                 key={route}
                 className={({ isActive }) => cn(s.link, { [s.active_link]: isActive })}
                 to={route}
                 replace={replace}
+                end={end}
               >
                 {label}
               </NavLink>

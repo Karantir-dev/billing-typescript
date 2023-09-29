@@ -39,7 +39,7 @@ import {
 } from '@redux'
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
-import { BASE_URL, PRIVACY_URL, OFERTA_URL } from '@config/config'
+import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
 
@@ -82,7 +82,7 @@ export default function Component() {
 
   const geoData = useSelector(authSelectors.getGeoData)
 
-  const isLoading = useSelector(selectors.getIsLoadding)
+  const isLoading = useSelector(selectors.getIsLoading)
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -217,11 +217,12 @@ export default function Component() {
       is: 'off',
       then: Yup.string().required(t('Is a required field', { ns: 'other' })),
     }),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string().when('isPersonalBalance', {
       is: 'off',
       then: Yup.string()
         .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-        // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+        .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
         .required(t('Is a required field', { ns: 'other' })),
     }),
 
@@ -560,7 +561,7 @@ export default function Component() {
       <>
         {vpnList?.length > 0 && (
           <div className={s.padding}>
-            <div className={s.formBlockTitle}>{t('Site care')}:</div>
+            <div className={s.formBlockTitle}>VPN:</div>
             <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
               {displayedItems?.map(el => {
                 const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
@@ -1015,7 +1016,29 @@ export default function Component() {
                 }}
                 onSubmit={payBasketHandler}
               >
-                {({ values, setFieldValue, touched, errors, handleBlur }) => {
+                {({
+                  values,
+                  setFieldValue,
+                  touched,
+                  errors,
+                  handleBlur,
+                  setFieldTouched,
+                }) => {
+                  const [errorFields, setErrorFields] = useState({})
+
+                  useEffect(() => {
+                    if (
+                      selectedPayerFields?.address_physical &&
+                      (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
+                        !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
+                    ) {
+                      setErrorFields(prev => ({ ...prev, address_physical: true }))
+                      setFieldTouched('address_physical', true, true)
+                    } else {
+                      setErrorFields(prev => ({ ...prev, address_physical: false }))
+                    }
+                  }, [selectedPayerFields])
+
                   const parsePaymentInfo = text => {
                     const splittedText = text?.split('<p>')
                     if (splittedText?.length > 0) {
@@ -1125,7 +1148,7 @@ export default function Component() {
                         {paymentsMethodList?.length > 0 && !isPhoneVerification && (
                           <>
                             <div className={s.formBlockTitle}>{t('Payment method')}:</div>
-                            <div className={s.formFieldsBlock}>
+                            <div className={s.formFieldsBlock} name="selectedPayMethod´">
                               {paymentsMethodList?.map(method => {
                                 const { image, name, paymethod_type, paymethod } = method
 
@@ -1184,7 +1207,7 @@ export default function Component() {
                                     key={name?.$}
                                   >
                                     <div className={s.descrWrapper}>
-                                      <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                      <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                                       <span
                                         className={cn({
                                           [s.methodDescr]: paymethod?.$ === '71',
@@ -1390,7 +1413,8 @@ export default function Component() {
                                 onChange={e => setCityPhysical(e.target.value)}
                               />
                             )}
-                            {!selectedPayerFields.address_physical && (
+                            {(!selectedPayerFields.address_physical ||
+                              errorFields.address_physical) && (
                               <div className={cn(s.nsInputBlock, s.inputBig)}>
                                 <InputWithAutocomplete
                                   fieldName="address_physical"
@@ -1615,7 +1639,7 @@ export default function Component() {
                                 className={s.saveBtn}
                                 isShadow
                                 size="medium"
-                                label={t('Pay', { ns: 'billing' })}
+                                label={t('Pay', { ns: 'billing' }) }
                                 type="submit"
                               />
                             )}

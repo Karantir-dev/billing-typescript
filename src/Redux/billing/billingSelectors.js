@@ -23,6 +23,7 @@ const getPaymentMethodList = state => state.billing.paymentMethodList
 const getPaymentMethodCount = state => state.billing.paymentMethodCount
 
 const getPeriodValue = state => state.billing.periodValue
+const getIsStripeAvailable = state => state.billing.isStripeAvailable
 
 export default {
   getPaymentsList,
@@ -50,4 +51,5 @@ export default {
   getPaymentMethodCount,
 
   getPeriodValue,
+  getIsStripeAvailable
 }

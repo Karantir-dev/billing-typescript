@@ -3,7 +3,6 @@ import { InputField, CustomPhoneInput, Select, CheckBox, Icon } from '@component
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { FormikProvider, useFormik } from 'formik'
-import { BASE_URL } from '@config/config'
 import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   LATIN_NUMBER_REGEX,
@@ -25,6 +24,8 @@ export default function Component(props) {
     domainInfo,
     setPayersInfo,
     payersInfo,
+    signal,
+    setIsLoading,
   } = props
 
   const dispatch = useDispatch()
@@ -289,7 +290,14 @@ export default function Component(props) {
       }
     }
 
-    dispatch(domainsOperations.getDomainsContacts(setDomainsContacts, body))
+    dispatch(
+      domainsOperations.getDomainsContacts({
+        setDomainsContacts,
+        body,
+        signal,
+        setIsLoading,
+      }),
+    )
     setFieldValue(contact_select, item)
   }
 
@@ -543,7 +551,10 @@ export default function Component(props) {
                     label: (
                       <div className={s.countrySelectItem}>
                         {$key !== 'null' && (
-                          <img src={`${BASE_URL}${$image}`} alt="flag" />
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${$image}`}
+                            alt="flag"
+                          />
                         )}
                         {t(`${$.trim()}`)}
                       </div>

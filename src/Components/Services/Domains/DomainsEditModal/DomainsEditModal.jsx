@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { InputField, Button, Select, CustomPhoneInput, CheckBox, Icon, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
-import { BASE_URL } from '@config/config'
 import { translatePeriod } from '@utils'
 
 export default function Component(props) {
@@ -346,7 +345,7 @@ export default function Component(props) {
                             label: (
                               <div className={s.countrySelectItem}>
                                 {$key !== 'null' && (
-                                  <img src={`${BASE_URL}${$image}`} alt="flag" />
+                                  <img src={`${process.env.REACT_APP_BASE_URL}${$image}`} alt="flag" />
                                 )}
                                 {t(`${$.trim()}`)}
                               </div>

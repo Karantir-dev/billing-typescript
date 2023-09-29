@@ -22,15 +22,16 @@ import * as routes from '@src/routes'
 import { RECAPTCHA_KEY } from '@config/config'
 import { EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 import s from './LoginForm.module.scss'
+import cn from 'classnames'
 
-const FACEBOOK_LINK =
-  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook'
+// const FACEBOOK_LINK =
+//   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook'
 const VK_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte'
 const GOOGLE_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google'
 
-export default function LoginForm() {
+export default function LoginForm({ geoCountryId }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const location = useLocation()
@@ -201,22 +202,24 @@ export default function LoginForm() {
 
       <div>
         <p className={s.social_title}>{t('login_with')}</p>
-        <ul className={s.social_list}>
-          <li>
+        <ul className={cn(s.social_list, { [s.list_view]: geoCountryId === '182' })}>
+          {/* <li>
             <a href={FACEBOOK_LINK}>
               <Icon name="Facebook" />
             </a>
-          </li>
+          </li> */}
           <li>
             <a href={GOOGLE_LINK}>
               <Icon name="Google" />
             </a>
           </li>
-          <li>
-            <a href={VK_LINK}>
-              <Icon name="Vk" />
-            </a>
-          </li>
+          {geoCountryId === '182' && (
+            <li>
+              <a href={VK_LINK}>
+                <Icon name="Vk" />
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </div>

@@ -25,6 +25,7 @@ const initialState = {
   autoPaymentConfig: null,
 
   periodValue: null,
+  isStripeAvailable: false
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -108,6 +109,9 @@ const autoPaymentConfig = createReducer(initialState.autoPaymentConfig, {
 const periodValue = createReducer(initialState.periodValue, {
   [billingActions.setPeriodValue]: (_, { payload }) => payload,
 })
+const isStripeAvailable = createReducer(initialState.isStripeAvailable, {
+  [billingActions.setIsStripeAvailable]: (_, { payload }) => payload,
+})
 
 const billingReducer = combineReducers({
   paymentsList,
@@ -133,6 +137,7 @@ const billingReducer = combineReducers({
   paymentMethodList,
 
   periodValue,
+  isStripeAvailable
 })
 
 export default billingReducer

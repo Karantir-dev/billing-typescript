@@ -50,7 +50,7 @@ export default function Component(props) {
 
   const validationSchema = Yup.object().shape({
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
       .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
@@ -167,6 +167,8 @@ export default function Component(props) {
                         value: $key,
                       }))}
                       inputClassName={s.field}
+                      disabled={payersSelectLists?.profiletype?.length === 1}
+                      withoutArrow={payersSelectLists?.profiletype?.length === 1}
                     />
 
                     {values?.profiletype === '3' || values?.profiletype === '2' ? (

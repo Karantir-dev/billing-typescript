@@ -6,16 +6,20 @@ import {
   Pagination,
   PaymentsMethodsTable,
   ModalCreatePaymentMethod,
-  Icon
+  Icon,
+  Loader,
 } from '@components'
 import { billingOperations, billingSelectors } from '@redux'
 import s from './PaymentMethod.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
+  const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
 
   let paymentsList = useSelector(billingSelectors.getPaymentMethodList)
   const paymentsCount = useSelector(billingSelectors.getPaymentMethodCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -26,7 +30,7 @@ export default function Component() {
 
   const getPageData = () => {
     const data = { p_num, p_cnt }
-    dispatch(billingOperations.getPaymentMethods(data))
+    dispatch(billingOperations.getPaymentMethods(data, signal, setIsLoading))
   }
 
   useEffect(() => {
@@ -63,13 +67,16 @@ export default function Component() {
           editItemNameHandler={editItemNameHandler}
         />
       )}
-      <div className={s.addBtn}>
-        <Button
-          isShadow
-          label={t('Add', { ns: 'payers' })}
-          onClick={() => setCreatePaymentModal(!createPaymentModal)}
-        />
-      </div>
+      {isStripeAvailable && (
+        <div className={s.addBtn}>
+          <Button
+            isShadow
+            label={t('Add', { ns: 'payers' })}
+            onClick={() => setCreatePaymentModal(!createPaymentModal)}
+          />
+        </div>
+      )}
+
       {paymentsList?.length > 0 && paymentsCount > 5 && (
         <div className={s.pagination}>
           <Pagination
@@ -85,6 +92,7 @@ export default function Component() {
       {createPaymentModal && (
         <ModalCreatePaymentMethod setCreatePaymentModal={setCreatePaymentModal} />
       )}
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
 }

@@ -20,11 +20,12 @@ import {
   Pagination,
   CheckBox,
   InstructionModal,
+  Loader,
 } from '@components'
 import { actions, dnsOperations, forexOperations, forexSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
-import { checkServicesRights, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 
 export default function ForexPage() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -34,6 +35,7 @@ export default function ForexPage() {
 
   const forexRenderData = useSelector(forexSelectors.getForexList)
   const forexCount = useSelector(forexSelectors.getForexCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
 
@@ -109,6 +111,8 @@ export default function ForexPage() {
         { ...clearField, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
+        setIsLoading,
       ),
     )
   }
@@ -125,6 +129,8 @@ export default function ForexPage() {
         { ...values, sok: 'ok', p_cnt },
         true,
         setEmptyFilter,
+        signal,
+        setIsLoading,
       ),
     )
   }
@@ -154,6 +160,9 @@ export default function ForexPage() {
           setFilters,
           { ...clearField, sok: 'ok', p_cnt },
           true,
+          undefined,
+          signal,
+          setIsLoading,
         ),
       )
     }
@@ -163,11 +172,21 @@ export default function ForexPage() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(forexOperations.getForexList(data))
+    dispatch(forexOperations.getForexList(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   useEffect(() => {
-    if (filterModal) dispatch(forexOperations.getForexFilters(setFilters, { p_cnt }))
+    if (filterModal)
+      dispatch(
+        forexOperations.getForexFilters(
+          setFilters,
+          { p_cnt },
+          false,
+          undefined,
+          signal,
+          setIsLoading,
+        ),
+      )
   }, [filterModal])
 
   const getServerName = id => {
@@ -200,7 +219,7 @@ export default function ForexPage() {
   }
 
   return (
-    <>
+    <div>
       <BreadCrumbs pathnames={parseLocations()} />
       <h2 className={s.page_title}>
         {t('forex', { ns: 'crumbs' })}
@@ -417,6 +436,8 @@ export default function ForexPage() {
           isOpen
         />
       )}
-    </>
+
+      {isLoading && <Loader local shown={isLoading} />}
+    </div>
   )
 }

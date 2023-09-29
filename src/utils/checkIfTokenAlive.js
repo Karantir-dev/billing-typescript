@@ -2,8 +2,10 @@ import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
 import { t } from 'i18next'
 
-export default function checkIfTokenAlive(err, dispatch) {
+export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   const errorText = err.message || err
+
+  if (errorText === 'canceled' && isLocalLoader) return false
 
   if (
     errorText.includes('У вас недостаточно прав на выполнение функции') ||
@@ -25,4 +27,5 @@ export default function checkIfTokenAlive(err, dispatch) {
   } else {
     console.error(err)
   }
+  return true
 }

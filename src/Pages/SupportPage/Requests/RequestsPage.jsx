@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, SupportTable, Pagination } from '@components'
+import { SupportFilter, SupportTable, Pagination, Loader } from '@components'
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
+import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['support', 'other'])
   const tickerList = useSelector(supportSelectors.getTicketList)
   const tickerCount = useSelector(supportSelectors.getTicketCount)
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
@@ -18,13 +20,13 @@ export default function Component() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
-    dispatch(supportOperations.getDepartmenList())
-    dispatch(supportOperations.getServiceList())
+    dispatch(supportOperations.getDepartmenList(signal))
+    dispatch(supportOperations.getServiceList(signal))
   }, [])
 
   useEffect(() => {
     const data = { p_num, p_cnt }
-    dispatch(supportOperations.getTicketsHandler(data))
+    dispatch(supportOperations.getTicketsHandler(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
   const destructuredTickerList = [...tickerList]
@@ -41,6 +43,8 @@ export default function Component() {
         selctedTicket={selctedTicket}
         p_cnt={p_cnt}
         setCurrentPage={setP_num}
+        signal={signal}
+        setIsLoading={setIsLoading}
       />
       <h2 className={s.tickerCount}>
         {t('all_requests')} <span className={s.count}>({tickerCount})</span>
@@ -63,6 +67,8 @@ export default function Component() {
           />
         </div>
       )}
+
+      {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>
   )
 }

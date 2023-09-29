@@ -1,15 +1,14 @@
 import axios from 'axios'
-import { BASE_URL } from './config'
 import AxiosMockAdapter from 'axios-mock-adapter'
 
 const originAxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },
 })
 const fakeAxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },

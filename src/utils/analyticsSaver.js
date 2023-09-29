@@ -1,4 +1,3 @@
-import { API_URL } from '@src/config/config'
 import { cookies } from '@utils'
 import axios from 'axios'
 
@@ -71,10 +70,10 @@ export default function analyticsSaver(orderInfo, paymentID) {
       if (window.fbq) {
         window.fbq('track', 'Purchase', fbAnalytics)
       }
-      axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+      axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
     } else {
       analyticsData.gtm_absent = true
-      axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+      axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
     }
 
     // if it is any other payment method - write down the order info into cookies

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { cookies } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '@redux'
-import { API_URL } from '@src/config/config'
 import axios from 'axios'
 
 export default function useAnalyticsSender() {
@@ -93,7 +92,7 @@ export default function useAnalyticsSender() {
         // checks if the GTM is already loaded and sends analytics
         if (window.dataLayer?.find(el => el['gtm.start'])) {
           window?.dataLayer?.push(analyticsData)
-          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+          axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
 
           if (window.fbq) {
             fbAnalytics.contents = cartData?.items?.map(el => ({
@@ -111,7 +110,7 @@ export default function useAnalyticsSender() {
         } else {
           analyticsData.gtm_absent = true
 
-          axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+          axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
         }
 
         cookies.eraseCookie(`cartData_${paymentId}`)
@@ -134,7 +133,7 @@ export default function useAnalyticsSender() {
           // checks if the GTM is already loaded and sends analytics
           if (window.dataLayer?.find(el => el['gtm.start'])) {
             window?.dataLayer?.push(analyticsData)
-            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+            axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
 
             if (window.fbq) {
               window.fbq('track', 'Purchase', fbAnalytics)
@@ -142,7 +141,7 @@ export default function useAnalyticsSender() {
           } else {
             analyticsData.gtm_absent = true
 
-            axios.post(`${API_URL}/api/analytic/add/`, analyticsData)
+            axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
           }
         }
       }

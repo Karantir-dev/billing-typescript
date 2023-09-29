@@ -14,6 +14,9 @@ const contractsCount = createReducer(initialState.contractsCount, {
   [contarctsActions.setContractsCount]: (_, { payload }) => payload,
 })
 
-const contractsReducer = combineReducers({ contractsList, contractsCount })
+const contractsReducer = combineReducers({
+  contractsList,
+  contractsCount,
+})
 
 export default contractsReducer

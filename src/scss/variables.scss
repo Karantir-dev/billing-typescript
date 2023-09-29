@@ -121,6 +121,7 @@ body {
   --header_shadow: 2px 2px 8px rgba(65, 38, 114, 0.12);
   --footer_shadow: 0px -1px 8px rgba(65, 38, 114, 0.12);
 
+  --backdrop: rgba(205, 205, 205, 0.25);
   --dedic_tariffs_gradient: linear-gradient(
     90deg,
     rgba(239, 141, 248, 0.11) 0.03%,
@@ -236,4 +237,6 @@ body.dark-theme {
   --dedic_tariffs_gradient: linear-gradient(90deg, #3c354b 0.04%, #433b52 99.97%);
   --dedic_tariffs_gradient_hover: linear-gradient(90deg, #463e55 1.41%, #524965 99.95%);
   --dedic_vds_tariff: #461f44;
+
+  --backdrop: rgba(0, 0, 0, 0.4);
 }

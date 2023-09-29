@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 // import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './CurrentAutoPayments.module.scss'
-import { BASE_URL } from '@config/config'
 
 export default function Component(props) {
   const { t } = useTranslation(['billing', 'other'])
@@ -40,7 +39,7 @@ export default function Component(props) {
   return (
     <div className={s.item}>
       <div className={s.itemColoumn}>
-        <img className={s.itemImg} src={`${BASE_URL}${image}`} alt="icon" /> {name}
+        <img className={s.itemImg} src={`${process.env.REACT_APP_BASE_URL}${image}`} alt="icon" /> {name}
       </div>
       <div className={s.itemColoumn}>{getAmountsFromString(maxamount)}</div>
       <div className={s.itemColoumn}>{t(status.trim(), { ns: 'other' })}</div>
