@@ -166,7 +166,7 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
 
       - name: Verify deployment
-        run: kubectl rollout status deployment/zomro-bill-deployment -n ${{ env.NAMESPACE }}
+        run: kubectl rollout status deployment/bill-deployment -n ${{ env.NAMESPACE }}
 
       - name: Clean CloudFlare cache
         run: |
