@@ -4,12 +4,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  box-shadow: var(--forms_shadow);
-  border-radius: 3px;
-  background: var(--elements-bgc);
   flex-basis: 100%;
   width: 100%;
-  margin-top: 10px;
   &.selected {
     .title {
       color: var(--main-text);
@@ -23,48 +19,20 @@
   }
 }
 
-.radio {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  box-shadow: var(--forms_shadow_site);
-  border-radius: 50%;
-  background-color: var(--forms_bgc_4);
-
-  &.active {
-    border: 1px solid #fa4bb4;
-  }
-
-  .circle {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: linear-gradient(270deg, #fa4bb4 0%, #ed32cf 100%);
-    transform: scale(0);
-    &.active {
-      transition: 0.3s ease;
-      transform: scale(1);
-    }
-  }
-}
 
 .title {
   display: flex;
-  padding: 12px 18px 12px 20px;
+  padding: 0 10px 0 5px;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 102.9%;
   color: var(--transparent-color);
 }
 
 .infoBtn {
-  display: none;
+  display: flex;
   position: relative;
-  margin-left: auto;
-  padding: 12px 12px 12px 0px;
   cursor: pointer;
 
   &:hover {
@@ -117,9 +85,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .infoBtn {
-    display: flex;
-  }
   .select {
     flex-basis: 49%;
   }

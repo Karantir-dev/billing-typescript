@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Icon } from '@components'
+import { Icon, CheckBox } from '@components'
 
 import s from './DepartmentSelect.module.scss'
 
@@ -79,13 +79,7 @@ export default function Component(props) {
       onClick={() => setValue(value)}
       className={cn(s.select, { [s.selected]: selected })}
     >
-      <div
-        className={cn(s.radio, {
-          [s.active]: selected,
-        })}
-      >
-        <span className={cn(s.circle, { [s.active]: selected })}></span>
-      </div>
+      <CheckBox value={selected} onClick={() => setValue(value)} type="radio" />
 
       <div className={s.title}>{t(title)}</div>
       <button type="button" className={s.infoBtn}>
