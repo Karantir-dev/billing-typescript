@@ -4,9 +4,23 @@ import { useTranslation } from 'react-i18next'
 import { Button, CurrentAutoPayments, AutoPaymentForm, Loader } from '@components'
 import s from './AutoPayment.module.scss'
 import { billingOperations, billingSelectors, payersOperations } from '@redux'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 import { useCancelRequest } from '@src/utils'
 
 export default function Component() {
+  const navigate = useNavigate()
+
+  const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
+
+  useEffect(() => {
+    if (!isStripeAvailable) {
+      navigate(`${route.BILLING}/payments`, {
+        replace: true,
+      })
+    }
+  }, [isStripeAvailable])
+
   const dispatch = useDispatch()
   const { t } = useTranslation(['billing', 'other'])
 

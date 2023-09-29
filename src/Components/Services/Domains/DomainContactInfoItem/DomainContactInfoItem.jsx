@@ -25,7 +25,7 @@ export default function Component(props) {
     setPayersInfo,
     payersInfo,
     signal,
-    setIsLoading
+    setIsLoading,
   } = props
 
   const dispatch = useDispatch()
@@ -290,7 +290,14 @@ export default function Component(props) {
       }
     }
 
-    dispatch(domainsOperations.getDomainsContacts({setDomainsContacts, body, signal, setIsLoading}))
+    dispatch(
+      domainsOperations.getDomainsContacts({
+        setDomainsContacts,
+        body,
+        signal,
+        setIsLoading,
+      }),
+    )
     setFieldValue(contact_select, item)
   }
 
@@ -544,7 +551,10 @@ export default function Component(props) {
                     label: (
                       <div className={s.countrySelectItem}>
                         {$key !== 'null' && (
-                          <img src={`${process.env.REACT_APP_BASE_URL}${$image}`} alt="flag" />
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${$image}`}
+                            alt="flag"
+                          />
                         )}
                         {t(`${$.trim()}`)}
                       </div>

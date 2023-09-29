@@ -11,6 +11,7 @@ import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
+import { STRIPE_PAYMETHOD } from '@utils/constants'
 
 const getPayments =
   (body = {}, readOnly, signal, setIsLoading) =>
@@ -501,6 +502,37 @@ const getPayerCountryType =
         dispatch(actions.hideLoader())
       })
   }
+
+const checkIsStripeAvailable = () => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.add.method',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      const isStripeAvailable = data.doc.list
+        .find(el => el.$name === 'methodlist')
+        ?.elem.find(el => el.paymethod.$ === STRIPE_PAYMETHOD)
+      dispatch(billingActions.setIsStripeAvailable(!!isStripeAvailable))
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 const getPaymentMethod =
   (body = {}, payerModalInfoData = null) =>
@@ -1234,4 +1266,5 @@ export default {
   editNamePaymentMethod,
   // getExchangeRate,
   useCertificate,
+  checkIsStripeAvailable,
 }

@@ -15,10 +15,13 @@ import s from './BillingPage.module.scss'
 import * as route from '@src/routes'
 import { usePageRender } from '@utils'
 import ErrorPage from '../ErrorPage/ErrorPage'
+import { useSelector } from 'react-redux'
+import { billingSelectors } from '@src/Redux'
 
 export default function Component() {
   const { t } = useTranslation(['billing', 'other'])
   const params = useParams()
+  const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
 
   const isExpensesComponentAllowedToRender = usePageRender('finance', 'expense')
   const isPaymentsComponentAllowedToRender = usePageRender('finance', 'payment')
@@ -46,7 +49,7 @@ export default function Component() {
     {
       route: `${route.BILLING}/auto_payment`,
       label: t('Auto payment'),
-      allowToRender: isAutoPaymentComponentAllowedToRender,
+      allowToRender: isAutoPaymentComponentAllowedToRender && isStripeAvailable,
     },
     {
       route: `${route.BILLING}/payment_method`,
