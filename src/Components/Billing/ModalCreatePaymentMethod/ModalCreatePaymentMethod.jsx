@@ -268,7 +268,10 @@ export default function Component(props) {
                           {t('Payment method', { ns: 'other' })}
                         </label>
                         <div className={s.stripeCard}>
-                          <img src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`} alt="icon" />
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
+                            alt="icon"
+                          />
                           <div className={s.stripeDescr}>
                             <span>Stripe</span>
                             <span>
@@ -279,20 +282,24 @@ export default function Component(props) {
                           </div>
                         </div>
                       </div>
-                      <Select
-                        placeholder={t('Not chosen', { ns: 'other' })}
-                        label={`${t('Payer status', { ns: 'payers' })}:`}
-                        value={values.profiletype}
-                        getElement={item => setFieldValue('profiletype', item)}
-                        isShadow
-                        className={s.select}
-                        dropdownClass={s.selectDropdownClass}
-                        itemsList={payersSelectLists?.profiletype?.map(({ $key, $ }) => ({
-                          label: t(`${$.trim()}`, { ns: 'payers' }),
-                          value: $key,
-                        }))}
-                        inputClassName={s.field_bg}
-                      />
+                      {payersSelectLists?.profiletype?.length > 1 && (
+                        <Select
+                          placeholder={t('Not chosen', { ns: 'other' })}
+                          label={`${t('Payer status', { ns: 'payers' })}:`}
+                          value={values.profiletype}
+                          getElement={item => setFieldValue('profiletype', item)}
+                          isShadow
+                          className={s.select}
+                          dropdownClass={s.selectDropdownClass}
+                          itemsList={payersSelectLists?.profiletype?.map(
+                            ({ $key, $ }) => ({
+                              label: t(`${$.trim()}`, { ns: 'payers' }),
+                              value: $key,
+                            }),
+                          )}
+                          inputClassName={s.field_bg}
+                        />
+                      )}
 
                       {values?.profiletype === '3' || values?.profiletype === '2' ? (
                         <InputField
@@ -317,17 +324,13 @@ export default function Component(props) {
                           getElement={item => setPayerHandler(item)}
                           isShadow
                           className={s.select}
-                          itemsList={[
-                            {
-                              name: { $: t('Add new payer', { ns: 'payers' }) },
-                              id: { $: 'new' },
-                            },
-                            ...payersList,
-                          ]?.map(({ name, id }) => ({
+                          itemsList={[...payersList]?.map(({ name, id }) => ({
                             label: t(`${name?.$?.trim()}`),
                             value: id?.$,
                           }))}
                           inputClassName={s.field_bg}
+                          disabled={payersList.length === 1}
+                          withoutArrow={payersList.length === 1}
                         />
                       )}
 
