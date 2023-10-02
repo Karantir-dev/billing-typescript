@@ -8,49 +8,47 @@ import * as route from '@src/routes'
 
 // GET SERVERS OPERATIONS
 
-const getServersList =
-  ({ data }, signal, setIsLoading) =>
-  (dispatch, getState) => {
-    setIsLoading(true)
+const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
-    const {
-      auth: { sessionId },
-    } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'dedic',
-          out: 'json',
-          auth: sessionId,
-          lang: 'en',
-          clickstat: 'yes',
-          sok: 'ok',
-          p_cnt: data?.p_cnt || 10,
-          ...data,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dedic',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        clickstat: 'yes',
+        sok: 'ok',
+        p_cnt: data?.p_cnt || 10,
+        ...data,
+      }),
+      { signal },
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const dedicRenderData = {
-          serversList: data.doc.elem ? data.doc.elem : [],
-          dedicPageRights: data.doc.metadata.toolbar,
-        }
+      const dedicRenderData = {
+        serversList: data.doc.elem ? data.doc.elem : [],
+        dedicPageRights: data.doc.metadata.toolbar,
+      }
 
-        const count = data?.doc?.p_elems?.$ || 0
+      const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(dedicActions.setServersList(dedicRenderData))
-        dispatch(dedicActions.setDedicCount(count))
+      dispatch(dedicActions.setServersList(dedicRenderData))
+      dispatch(dedicActions.setDedicCount(count))
 
-        setIsLoading(false)
-      })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-      })
-  }
+      setIsLoading(false)
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+    })
+}
 
 //ORDER NEW SERVER OPERATIONS
 const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
