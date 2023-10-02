@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   BreadCrumbs,
   Button,
   SoftwareOSBtn,
   SoftwareOSSelect,
-  Toggle,
   Select,
   InputField,
   Icon,
   Loader,
+  CheckBox,
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -63,7 +63,12 @@ export default function DedicOrderPage() {
   const [selectedTariffId, setSelectedTariffId] = useState()
 
   const [price, setPrice] = useState('')
-  const [filters, setFilters] = useState([])
+  const [filters, setFilters] = useReducer(
+    (state, action) => {
+      return { ...state, ...action }
+    },
+    { port: [], server_model: [] },
+  )
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
@@ -267,19 +272,21 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     let filteredTariffList = tarifList?.tarifList?.filter(el => {
-      if (Array.isArray(el.filter.tag)) {
-        let filterList = el.filter.tag
+      let filterList = el.filter.tag
 
-        let hasListFilter = filterList.some(filter => filters.includes(filter.$key))
-        return hasListFilter
-      } else {
-        return filters?.includes(el.filter.tag.$key)
-      }
+      const hasPortFilter = filters.port.length
+        ? filterList.some(filter => filters.port.includes(filter.$key))
+        : true
+      const hasServerFilter = filters.server_model.length
+        ? filterList.some(filter => filters.server_model.includes(filter.$key))
+        : true
+
+      return hasPortFilter && hasServerFilter
     })
 
     let tariffsListToRender = []
 
-    if (filters.length === 0) {
+    if (filters.port.length === 0 && filters.server_model.length === 0) {
       tariffsListToRender = tarifList?.tarifList || []
     } else {
       tariffsListToRender = filteredTariffList || []
@@ -734,20 +741,20 @@ export default function DedicOrderPage() {
                               })}
                               key={item?.$key}
                             >
-                              <Toggle
-                                setValue={() => {
-                                  setFieldValue('processor', item?.$key)
-                                  if (filters.includes(item?.$key)) {
-                                    setFilters([
-                                      ...filters.filter(el => el !== item?.$key),
-                                    ])
+                              <CheckBox
+                                value={filters.port.includes(item?.$key)}
+                                onClick={() => {
+                                  if (filters.port.includes(item?.$key)) {
+                                    const port = filters.port.filter(
+                                      el => el !== item?.$key,
+                                    )
+                                    setFilters({ port })
                                   } else {
-                                    setFilters([...filters, item?.$key])
+                                    setFilters({ port: [...filters.port, item?.$key] })
                                   }
                                   setParameters(null)
                                   setVdsParameters(null)
                                 }}
-                                view="radio"
                               />
                               <span className={s.processor_name}>{item?.$}</span>
                             </div>
@@ -768,20 +775,22 @@ export default function DedicOrderPage() {
                               })}
                               key={item?.$key}
                             >
-                              <Toggle
-                                setValue={() => {
-                                  setFieldValue('processor', item?.$key)
-                                  if (filters.includes(item?.$key)) {
-                                    setFilters([
-                                      ...filters.filter(el => el !== item?.$key),
-                                    ])
+                              <CheckBox
+                                value={filters.server_model.includes(item?.$key)}
+                                onClick={() => {
+                                  if (filters.server_model.includes(item?.$key)) {
+                                    const server_model = filters.server_model.filter(
+                                      el => el !== item?.$key,
+                                    )
+                                    setFilters({ server_model })
                                   } else {
-                                    setFilters([...filters, item?.$key])
+                                    setFilters({
+                                      server_model: [...filters.server_model, item?.$key],
+                                    })
                                   }
                                   setParameters(null)
                                   setVdsParameters(null)
                                 }}
-                                view="radio"
                               />
                               <span className={s.processor_name}>{item?.$}</span>
                             </div>
