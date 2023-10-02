@@ -15,7 +15,6 @@ import {
   ScrollToFieldError,
   Icon,
 } from '@components'
-import { BASE_URL } from '@config/config'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -157,7 +156,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         src={
                           isBase64(userParams?.avatar_view, { allowMime: true })
                             ? userParams?.avatar_view
-                            : `${BASE_URL}${userParams?.avatar_view}`
+                            : `${process.env.REACT_APP_BASE_URL}${userParams?.avatar_view}`
                         }
                       />
                     )}

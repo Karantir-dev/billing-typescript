@@ -206,6 +206,7 @@ const setPaymentMethods =
   (body = {}, navigate, cartData = null, fraudData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
+    analyticsSaver()
 
     const {
       auth: { sessionId },

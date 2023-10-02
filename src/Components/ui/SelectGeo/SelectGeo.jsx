@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-import { BASE_URL } from '@config/config'
 import { Select } from '@components'
 
-const geoImgURL = `${BASE_URL}/manimg/common/flag/`
+const geoImgURL = `${process.env.REACT_APP_BASE_URL}/manimg/common/flag/`
 
 export default function SelectGeo(props) {
   let {
@@ -29,7 +28,7 @@ export default function SelectGeo(props) {
         {
           label: (
             <div className={countrySelectClassName}>
-              <img src={`${BASE_URL}${payersSelectLists.country[0].$image}`} alt="flag" />
+              <img src={`${process.env.REACT_APP_BASE_URL}${payersSelectLists.country[0].$image}`} alt="flag" />
               {t(`${payersSelectLists.country[0].$.trim()}`)}
             </div>
           ),

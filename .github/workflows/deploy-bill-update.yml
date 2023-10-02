@@ -1,7 +1,7 @@
-name: Deployment
+name: Deployment - Update bill
 on:
   push:
-    branches: [ prod, dev ]
+    branches: [ dev ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -9,8 +9,8 @@ concurrency:
 
 env:
   IMAGE_NAME: zomro-bill
-  PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
-  NAMESPACE: bill-zomro-com-${{ github.ref_name }}
+  PREFIX: version-${{ github.run_number }}-bill-update
+  NAMESPACE: bill-zomro-com-update
 
 jobs:
   jest:
@@ -20,7 +20,7 @@ jobs:
         node-version: [ v16.13.1 ]
         npm-version: [ 8.1.2 ]
     environment:
-      name: ${{ github.ref_name }}
+      name: bill-update
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -58,7 +58,7 @@ jobs:
         node-version: [ v16.13.1 ]
         npm-version: [ 8.1.2 ]
     environment:
-      name: ${{ github.ref_name }}
+      name: bill-update
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -93,7 +93,7 @@ jobs:
     name: Build and push bill docker
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name }}
+      name: bill-update
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -144,7 +144,7 @@ jobs:
     name: Deploy version on k8s
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name }}
+      name: bill-update
     steps:
       -  uses: actions/checkout@v4
 

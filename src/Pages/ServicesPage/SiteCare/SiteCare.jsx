@@ -5,12 +5,12 @@ import {
   Pagination,
   SiteCareTable,
   SiteCareHistoryModal,
-  SiteCareProlongModal,
   SiteCareEditModal,
   SiteCareDeleteModal,
   CheckBox,
   SiteCareBottomBar,
   Loader,
+  ProlongModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -43,7 +43,7 @@ export default function Component() {
   const [historyItemCount, setHistoryItemCount] = useState(0)
   const [historyCurrentPage, setHistoryCurrentPage] = useState(1)
 
-  const [prolongModal, setProlongModal] = useState(false)
+  const [isProlongModal, setIsProlongModal] = useState(false)
   const [prolongData, setProlongData] = useState(null)
 
   const [editModal, setEditModal] = useState(false)
@@ -125,24 +125,12 @@ export default function Component() {
       elid: elid || parseSelectedItemId(),
       elname: parseSelectedItemName(),
     }
-    dispatch(siteCareOperations.prolongSiteCare(data, setProlongModal, setProlongData))
+    dispatch(siteCareOperations.prolongSiteCare(data, setIsProlongModal, setProlongData))
   }
 
   const closeProlongModalHandler = () => {
     setProlongData(null)
-    setProlongModal(false)
-  }
-
-  const prolongEditSiteCareHandler = (values = {}, elid = null) => {
-    let data = {
-      elid: elid || parseSelectedItemId(),
-      p_num,
-      ...values,
-    }
-
-    setSelctedItem([])
-
-    dispatch(siteCareOperations.prolongSiteCare(data, setProlongModal, setProlongData))
+    setIsProlongModal(false)
   }
 
   const editSiteCareHandler = (elid = null, d = null) => {
@@ -328,12 +316,12 @@ export default function Component() {
           />
         )}
 
-        {prolongModal && prolongData && (
-          <SiteCareProlongModal
-            prolongData={prolongData}
-            name={parseSelectedItemNameArr()}
-            closeModal={closeProlongModalHandler}
-            prolongEditSiteCareHandler={prolongEditSiteCareHandler}
+        {isProlongModal && (
+          <ProlongModal
+            elidList={prolongData?.site_care_id.split(', ')}
+            closeModal={() => closeProlongModalHandler()}
+            names={parseSelectedItemNameArr()}
+            pageName="site_care"
             isOpen
           />
         )}

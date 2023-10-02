@@ -27,7 +27,7 @@ import {
   cartOperations,
   userSelectors,
 } from '@redux'
-import { BASE_URL, OFERTA_URL, PRIVACY_URL } from '@config/config'
+import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
@@ -62,7 +62,7 @@ export default function ModalCreatePayment(props) {
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
   const [showMore, setShowMore] = useState(false)
-  const [slecetedPayMethod, setSlecetedPayMethod] = useState(undefined)
+  const [selectedPayMethod, setSelectedPayMethod] = useState(undefined)
   const [isPolicyChecked, setIsPolicyChecked] = useState(false)
   const [person, setPerson] = useState(null)
   const [cityPhysical, setCityPhysical] = useState(null)
@@ -175,8 +175,8 @@ export default function ModalCreatePayment(props) {
       profile: values?.profile,
       amount: values?.amount,
       payment_currency: values?.payment_currency?.value,
-      paymethod: values?.slecetedPayMethod?.paymethod?.$,
-      paymethod_name: values?.slecetedPayMethod?.name?.$,
+      paymethod: values?.selectedPayMethod?.paymethod?.$,
+      paymethod_name: values?.selectedPayMethod?.name?.$,
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
@@ -233,11 +233,11 @@ export default function ModalCreatePayment(props) {
         maxAmount > 0 ? `${t('The amount must be less than')} ${maxAmount} EUR` : null,
       )
       .required(t('Enter amount')),
-    slecetedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    // city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    selectedPayMethod: Yup.object().required(t('Select a Payment Method')),
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      // .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
@@ -288,7 +288,7 @@ export default function ModalCreatePayment(props) {
                   payersList[payersList?.length - 1]?.id?.$ ||
                   '',
                 amount: amount || '',
-                slecetedPayMethod: slecetedPayMethod || undefined,
+                selectedPayMethod: selectedPayMethod || undefined,
                 name: company || selectedPayerFields?.name || '',
                 address_physical:
                   addressPhysical ?? selectedPayerFields?.address_physical,
@@ -318,7 +318,29 @@ export default function ModalCreatePayment(props) {
               }}
               onSubmit={createPaymentMethodHandler}
             >
-              {({ values, setFieldValue, touched, errors, handleBlur }) => {
+              {({
+                values,
+                setFieldValue,
+                touched,
+                errors,
+                handleBlur,
+                setFieldTouched,
+              }) => {
+                const [errorFields, setErrorFields] = useState({})
+
+                useEffect(() => {
+                  if (
+                    selectedPayerFields?.address_physical &&
+                    (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
+                      !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
+                  ) {
+                    setErrorFields(prev => ({ ...prev, address_physical: true }))
+                    setFieldTouched('address_physical', true, true)
+                  } else {
+                    setErrorFields(prev => ({ ...prev, address_physical: false }))
+                  }
+                }, [selectedPayerFields])
+
                 const parsePaymentInfo = text => {
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
@@ -375,9 +397,9 @@ export default function ModalCreatePayment(props) {
                     const fieldErrorNames = getFieldErrorNames(errors)
                     if (fieldErrorNames.length <= 0) return
 
-                    const element =
-                      document.querySelector(`input[name='${fieldErrorNames[0]}']`) ||
-                      document.querySelector(`button[name='${fieldErrorNames[0]}']`)
+                    const element = document.querySelector(
+                      `[name='${fieldErrorNames[0]}']`,
+                    )
                     if (!element) return
 
                     // Scroll to first known error into view
@@ -396,8 +418,8 @@ export default function ModalCreatePayment(props) {
                 }
 
                 const parsedText =
-                  values?.slecetedPayMethod &&
-                  parsePaymentInfo(values?.slecetedPayMethod?.desc?.$)
+                  values?.selectedPayMethod &&
+                  parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
 
                 const setPayerHandler = val => {
                   if (val === values.profile) return
@@ -484,7 +506,7 @@ export default function ModalCreatePayment(props) {
                     <ScrollToFieldError />
                     <div className={s.formBlock}>
                       <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
-                      <div className={s.formFieldsBlock}>
+                      <div className={s.formFieldsBlock} name="selectedPayMethod">
                         {paymentsMethodList?.map(method => {
                           const {
                             paymethod,
@@ -496,8 +518,8 @@ export default function ModalCreatePayment(props) {
                           return (
                             <button
                               onClick={() => {
-                                setFieldValue('slecetedPayMethod', method)
-                                setSlecetedPayMethod(method)
+                                setFieldValue('selectedPayMethod', method)
+                                setSelectedPayMethod(method)
                                 setSelectedAddPaymentMethod(undefined)
                                 setMinAmount(Number(payment_minamount?.$))
                                 setMaxAmount(Number(payment_maxamount?.$))
@@ -524,14 +546,14 @@ export default function ModalCreatePayment(props) {
                                 {
                                   [s.selected]:
                                     paymethod?.$ ===
-                                    values?.slecetedPayMethod?.paymethod?.$,
+                                    values?.selectedPayMethod?.paymethod?.$,
                                 },
                                 { [s.withHint]: paymethod?.$ === '71' },
                               )}
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
-                                <img src={`${BASE_URL}${image?.$}`} alt="icon" />
+                                <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
                                 <span
                                   className={cn({
                                     [s.methodDescr]: paymethod?.$ === '71',
@@ -621,7 +643,7 @@ export default function ModalCreatePayment(props) {
                       </div>
                       <ErrorMessage
                         className={s.error_message}
-                        name={'slecetedPayMethod'}
+                        name={'selectedPayMethod'}
                         component="span"
                       />
                     </div>
@@ -723,7 +745,8 @@ export default function ModalCreatePayment(props) {
                             />
                           )}
 
-                          {!selectedPayerFields.address_physical && (
+                          {(!selectedPayerFields.address_physical ||
+                            errorFields.address_physical) && (
                             <div className={cn(s.inputBig, s.nsInputBlock)}>
                               <InputWithAutocomplete
                                 fieldName="address_physical"
@@ -769,7 +792,7 @@ export default function ModalCreatePayment(props) {
                     <div
                       className={cn(s.formBlock, s.last, {
                         [s.border]:
-                          values?.slecetedPayMethod &&
+                          values?.selectedPayMethod &&
                           (parsedText?.minAmount || parsedText?.infoText),
                       })}
                     >
@@ -846,7 +869,7 @@ export default function ModalCreatePayment(props) {
                     </div>
 
                     <div className={cn(s.infotext, { [s.showMore]: showMore })}>
-                      {values?.slecetedPayMethod && (
+                      {values?.selectedPayMethod && (
                         <div>
                           <span>
                             {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
@@ -857,7 +880,7 @@ export default function ModalCreatePayment(props) {
                         </div>
                       )}
                     </div>
-                    {values?.slecetedPayMethod && readMore && (
+                    {values?.selectedPayMethod && readMore && (
                       <button
                         type="button"
                         onClick={() => setShowMore(!showMore)}

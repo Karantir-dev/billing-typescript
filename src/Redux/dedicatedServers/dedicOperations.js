@@ -8,49 +8,47 @@ import * as route from '@src/routes'
 
 // GET SERVERS OPERATIONS
 
-const getServersList =
-  ({ data }, signal, setIsLoading) =>
-  (dispatch, getState) => {
-    setIsLoading(true)
+const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
-    const {
-      auth: { sessionId },
-    } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'dedic',
-          out: 'json',
-          auth: sessionId,
-          lang: 'en',
-          clickstat: 'yes',
-          sok: 'ok',
-          p_cnt: data?.p_cnt || 10,
-          ...data,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dedic',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        clickstat: 'yes',
+        sok: 'ok',
+        p_cnt: data?.p_cnt || 10,
+        ...data,
+      }),
+      { signal },
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const dedicRenderData = {
-          serversList: data.doc.elem ? data.doc.elem : [],
-          dedicPageRights: data.doc.metadata.toolbar,
-        }
+      const dedicRenderData = {
+        serversList: data.doc.elem ? data.doc.elem : [],
+        dedicPageRights: data.doc.metadata.toolbar,
+      }
 
-        const count = data?.doc?.p_elems?.$ || 0
+      const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(dedicActions.setServersList(dedicRenderData))
-        dispatch(dedicActions.setDedicCount(count))
+      dispatch(dedicActions.setServersList(dedicRenderData))
+      dispatch(dedicActions.setDedicCount(count))
 
-        setIsLoading(false)
-      })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-      })
-  }
+      setIsLoading(false)
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+    })
+}
 
 //ORDER NEW SERVER OPERATIONS
 const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
@@ -111,7 +109,7 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
 }
 
 const getUpdatedTarrifs =
-  (datacenterId, setNewTariffs, signal, setIsLoading) => (dispatch, getState) => {
+  (datacenterId, period, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -126,6 +124,7 @@ const getUpdatedTarrifs =
           out: 'json',
           auth: sessionId,
           datacenter: datacenterId,
+          period,
           lang: 'en',
         }),
         { signal },
@@ -146,7 +145,7 @@ const getUpdatedTarrifs =
           currentDatacenter,
         }
 
-        setNewTariffs(orderData)
+        dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
       .catch(error => {
@@ -155,8 +154,7 @@ const getUpdatedTarrifs =
   }
 
 const getUpdatedPeriod =
-  (period, datacenter, setNewPeriod, setNewVds, signal, setIsLoading) =>
-  (dispatch, getState) => {
+  (period, datacenter, setNewVds, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -206,7 +204,7 @@ const getUpdatedPeriod =
           currentDatacenter,
         }
         setNewVds(vdsResp.data?.doc?.list[0]?.elem)
-        setNewPeriod(orderData)
+        dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
       .catch(error => {
@@ -1187,14 +1185,20 @@ const payProlongPeriod =
 
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
-        } else if (routeAfterBuying === 'vds') {
+        } else if (pageName === 'vpn') {
+          routeAfterBuying = route.VPN
+        } else if (pageName === 'site_care') {
+          routeAfterBuying = route.SITE_CARE
+        } else if (pageName === 'vds') {
           routeAfterBuying = route.VPS
-        } else if (routeAfterBuying === 'ftp') {
+        } else if (pageName === 'ftp') {
           routeAfterBuying = route.FTP
-        } else if (routeAfterBuying === 'dns') {
+        } else if (pageName === 'dns') {
           routeAfterBuying = route.DNS
-        } else if (routeAfterBuying === 'forex') {
+        } else if (pageName === 'forex') {
           routeAfterBuying = route.FOREX
+        } else if (pageName === 'shared_hosting') {
+          routeAfterBuying = route.SHARED_HOSTING
         }
 
         handleModal()
@@ -1244,14 +1248,20 @@ const payProlongPeriodFewElems =
 
         if (pageName === 'dedics') {
           routeAfterBuying = route.DEDICATED_SERVERS
-        } else if (routeAfterBuying === 'vds') {
+        } else if (pageName === 'vpn') {
+          routeAfterBuying = route.VPN
+        } else if (pageName === 'site_care') {
+          routeAfterBuying = route.SITE_CARE
+        } else if (pageName === 'vds') {
           routeAfterBuying = route.VPS
-        } else if (routeAfterBuying === 'ftp') {
+        } else if (pageName === 'ftp') {
           routeAfterBuying = route.FTP
-        } else if (routeAfterBuying === 'dns') {
+        } else if (pageName === 'dns') {
           routeAfterBuying = route.DNS
-        } else if (routeAfterBuying === 'forex') {
+        } else if (pageName === 'forex') {
           routeAfterBuying = route.FOREX
+        } else if (pageName === 'shared_hosting') {
+          routeAfterBuying = route.SHARED_HOSTING
         }
 
         handleModal()
