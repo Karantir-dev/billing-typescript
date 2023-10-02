@@ -18,6 +18,7 @@ import {
   settingsOperations,
   userSelectors,
   authOperations,
+  authSelectors,
 } from '@redux'
 import { ipRegex } from '@utils'
 import * as Yup from 'yup'
@@ -35,6 +36,8 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userParams = useSelector(settingsSelectors.getUserParams)
   const twoStepVerif = useSelector(settingsSelectors.getTwoStepVerif)
   const userInfo = useSelector(userSelectors.getUserInfo)
+  const geoData = useSelector(authSelectors.getGeoData)
+  const clientCountryId = geoData.clients_country_id
 
   const [isModal, setIsModal] = useState(false)
 
@@ -295,7 +298,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     <Icon name="Google" className={s.googleIcon} />
                   </SocialButton>
 
-                  <SocialButton
+                  {/* <SocialButton
                     onClick={
                       values?.facebook_status === 'off'
                         ? () => {
@@ -314,28 +317,30 @@ export default function Component({ isComponentAllowedToEdit }) {
                     platform="Facebook"
                   >
                     <Icon name="FacebookSmall" />
-                  </SocialButton>
+                  </SocialButton> */}
 
-                  <SocialButton
-                    onClick={
-                      values?.vkontakte_status === 'off'
-                        ? () => {
-                            localStorage.setItem('connect_social_in_settings', 'true')
-                            dispatch(authOperations.getRedirectLink('vkontakte'))
-                          }
-                        : () => {
-                            setFieldValue('facebook_status', 'off')
-                            handleSocialLinkClick({
-                              ...socialState,
-                              vkontakte_status: 'off',
-                            })
-                          }
-                    }
-                    isNotConnected={values?.vkontakte_status === 'off'}
-                    platform="Вконтакте"
-                  >
-                    <Icon name="VkSmall" />
-                  </SocialButton>
+                  {clientCountryId === '182' && (
+                    <SocialButton
+                      onClick={
+                        values?.vkontakte_status === 'off'
+                          ? () => {
+                              localStorage.setItem('connect_social_in_settings', 'true')
+                              dispatch(authOperations.getRedirectLink('vkontakte'))
+                            }
+                          : () => {
+                              setFieldValue('facebook_status', 'off')
+                              handleSocialLinkClick({
+                                ...socialState,
+                                vkontakte_status: 'off',
+                              })
+                            }
+                      }
+                      isNotConnected={values?.vkontakte_status === 'off'}
+                      platform="Вконтакте"
+                    >
+                      <Icon name="VkSmall" />
+                    </SocialButton>
+                  )}
                 </div>
               </div>
               <div className={s.block}>
