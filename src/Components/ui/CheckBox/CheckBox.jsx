@@ -12,6 +12,7 @@ export default function Component({
   touched,
   name,
   type = 'checkbox',
+  id,
 }) {
   return (
     <button
@@ -26,6 +27,7 @@ export default function Component({
       type="button"
       name={name || ''}
       onClick={onClick}
+      id={id}
     >
       {type === 'radio' ? (
         <div
@@ -50,4 +52,5 @@ Component.propTypes = {
   onClick: PropTypes.func,
   name: PropTypes.string,
   type: PropTypes.string,
+  id: PropTypes.string,
 }

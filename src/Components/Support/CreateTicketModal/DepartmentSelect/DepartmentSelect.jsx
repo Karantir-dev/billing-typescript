@@ -8,7 +8,7 @@ import s from './DepartmentSelect.module.scss'
 
 export default function Component(props) {
   const { t } = useTranslation('support')
-  const { selected, value, title, setValue, description } = props
+  const { selected, value, title, setValue, description, checkboxId } = props
 
   const dropdownDescription = useRef(null)
 
@@ -73,15 +73,11 @@ export default function Component(props) {
 
   return (
     <div
-      tabIndex={0}
-      role="button"
-      onKeyDown={null}
-      onClick={() => setValue(value)}
       className={cn(s.select, { [s.selected]: selected })}
     >
-      <CheckBox value={selected} onClick={() => setValue(value)} type="radio" />
+      <CheckBox id={checkboxId} value={selected} onClick={() => setValue(value)} type="radio" />
 
-      <div className={s.title}>{t(title)}</div>
+      <label htmlFor={checkboxId} className={s.title}>{t(title)}</label>
       <button type="button" className={s.infoBtn}>
         <Icon name="Info" />
         <div ref={dropdownDescription} className={s.descriptionBlock}>
@@ -98,6 +94,7 @@ Component.propTypes = {
   title: PropTypes.string,
   setValue: PropTypes.func,
   description: PropTypes.string,
+  checkboxId: PropTypes.string,
 }
 
 Component.defaultProps = {
@@ -106,4 +103,5 @@ Component.defaultProps = {
   title: '',
   setValue: '',
   description: '',
+  checkboxId: '',
 }
