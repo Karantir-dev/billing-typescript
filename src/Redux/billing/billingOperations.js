@@ -11,7 +11,6 @@ import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
 import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
-import { STRIPE_PAYMETHOD } from '@utils/constants'
 
 const getPayments =
   (body = {}, readOnly, signal, setIsLoading) =>
@@ -523,8 +522,10 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
     .then(({ data }) => {
       const isStripeAvailable = data.doc.list
         .find(el => el.$name === 'methodlist')
-        ?.elem.find(el => el.paymethod.$ === STRIPE_PAYMETHOD)
-      dispatch(billingActions.setIsStripeAvailable(!!isStripeAvailable))
+        ?.elem.find(el => el.name.$ === 'Visa/MasterCard (Stripe)')
+
+      console.log(data.doc.list, ' data.doc.list')
+      dispatch(billingActions.setIsStripeAvailable(isStripeAvailable))
 
       dispatch(actions.hideLoader())
     })
