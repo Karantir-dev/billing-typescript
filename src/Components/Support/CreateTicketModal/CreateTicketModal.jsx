@@ -57,6 +57,7 @@ export default function Component(props) {
               <Form id="create-ticket">
                 <div className={s.departmentSelect}>
                   {departmentsList?.map(el => {
+                    const checkboxId = `selectDepartment_${el.$key}`
                     return (
                       <DepartmentSelect
                         key={el.$key}
@@ -65,6 +66,7 @@ export default function Component(props) {
                         title={el.$plainval}
                         description={el.$}
                         setValue={value => setFieldValue('client_department', value)}
+                        checkboxId={checkboxId}
                       />
                     )
                   })}
@@ -84,6 +86,7 @@ export default function Component(props) {
                     return { label: t(el.label), value: el.value }
                   })}
                   className={s.select}
+                  disabled={servicesList.length <= 1}
                 />
                 <InputField
                   label={t('Request subject:')}

@@ -24,3 +24,30 @@
     display: flex;
   }
 }
+
+.radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  box-shadow: var(--forms_shadow_site);
+  border-radius: 50%;
+  background-color: var(--forms_bgc_4);
+
+  &.active {
+    border: 1px solid #fa4bb4;
+  }
+
+  .circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(270deg, #fa4bb4 0%, #ed32cf 100%);
+    transform: scale(0);
+    &.active {
+      transition: 0.3s ease;
+      transform: scale(1);
+    }
+  }
+}
