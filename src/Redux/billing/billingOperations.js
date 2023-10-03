@@ -522,7 +522,7 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
     .then(({ data }) => {
       const isStripeAvailable = data.doc.list
         .find(el => el.$name === 'methodlist')
-        ?.elem.find(el => el.name.$ === 'Visa/MasterCard (Stripe)')
+        ?.elem.find(el => el.name.$.includes('Stripe'))
 
       dispatch(billingActions.setIsStripeAvailable(isStripeAvailable))
 
