@@ -12,6 +12,7 @@ export default function Component({
   touched,
   name,
   type = 'checkbox',
+  id,
 }) {
   return (
     <button
@@ -26,6 +27,7 @@ export default function Component({
       type="button"
       name={name || ''}
       onClick={onClick}
+      id={id}
     >
       {type === 'checkbox' ? (
         <Icon name="Check" className={cn(s.check, { [s.active]: value })} />
@@ -43,4 +45,6 @@ Component.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func,
   name: PropTypes.string,
+  type: PropTypes.string,
+  id: PropTypes.string,
 }
