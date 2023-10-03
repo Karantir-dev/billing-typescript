@@ -4,10 +4,10 @@ import {
   InputField,
   Button,
   Select,
-  Toggle,
   SocialButton,
   ModalTwoStepVerification,
   Icon,
+  CheckBox,
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
@@ -109,6 +109,7 @@ export default function Component({ isComponentAllowedToEdit }) {
           vkontakte_status: userParams?.vkontakte_status || '',
           facebook_status: userParams?.facebook_status || '',
           google_status: userParams?.google_status || '',
+          secureip: userParams?.secureip === 'on',
         }}
         onSubmit={setSettingsHandler}
       >
@@ -252,9 +253,10 @@ export default function Component({ isComponentAllowedToEdit }) {
                   </div>
                   <div className={s.bindIp}>
                     <div className={s.bindIpText}>{t('Bind session to IP')}</div>
-                    <Toggle
-                      setValue={value => setFieldValue('secureip', value)}
-                      initialState={userParams?.secureip === 'on'}
+                    <CheckBox
+                      value={values.secureip}
+                      onClick={() => setFieldValue('secureip', !values.secureip)}
+                      type="switcher"
                     />
                   </div>
                 </div>

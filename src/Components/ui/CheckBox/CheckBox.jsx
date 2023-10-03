@@ -11,11 +11,12 @@ export default function Component({
   error,
   touched,
   name,
+  type = 'checkbox',
 }) {
   return (
     <button
       disabled={disabled}
-      className={cn({
+      className={cn(s[type], {
         [s.btn]: true,
         [s.error]: touched && error,
         [s.active]: value,
@@ -26,7 +27,11 @@ export default function Component({
       name={name || ''}
       onClick={onClick}
     >
-      <Icon name="Check" className={cn(s.check, { [s.active]: value })} />
+      {type === 'checkbox' ? (
+        <Icon name="Check" className={cn(s.check, { [s.active]: value })} />
+      ) : (
+        <p className={cn({ [s.circle]: true, [s.active]: value })}></p>
+      )}
     </button>
   )
 }

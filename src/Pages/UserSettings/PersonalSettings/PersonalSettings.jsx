@@ -10,10 +10,10 @@ import {
   Portal,
   ModalPickPhoto,
   ToggleBlock,
-  Toggle,
   HintWrapper,
   ScrollToFieldError,
   Icon,
+  CheckBox,
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
@@ -40,7 +40,14 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const saveProfileHandler = values => {
-    dispatch(settingsOperations?.setPersonalSettings(userInfo?.$id, values, signal, setIsLoading))
+    dispatch(
+      settingsOperations?.setPersonalSettings(
+        userInfo?.$id,
+        values,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const confirmEmailHandler = values => {
@@ -130,6 +137,8 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
           email_notif: userParams?.email || '',
           telegram_id: userParams?.telegram_id || '',
           timezone: userParams?.timezone || '',
+          sendemail: userParams?.sendemail === 'on',
+          setgeoip: userParams?.setgeoip === 'on',
         }}
         onSubmit={saveProfileHandler}
       >
@@ -138,6 +147,11 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
             dispatch(settingsOperations.getTimeByTimeZone(item))
             setFieldValue('timezone', item)
           }
+
+          const isConfirmEmailBtnRender = confirmEmailBtnRender(
+            userParams?.email_confirmed_status,
+            values.email_notif,
+          )
 
           return (
             <Form className={s.personalBlock}>
@@ -313,10 +327,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       inputClassName={s.field_bg}
                     />
 
-                    {confirmEmailBtnRender(
-                      userParams?.email_confirmed_status,
-                      values.email_notif,
-                    ) &&
+                    {isConfirmEmailBtnRender &&
                       values?.email_notif?.length > 0 &&
                       !errors.email_notif && (
                         <button
@@ -342,14 +353,15 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       <HintWrapper
                         popupClassName={s.hintWrapper}
                         label={t('Confirm your email to activate the functionality')}
+                        disabled={!isConfirmEmailBtnRender}
                       >
-                        <Toggle
-                          disabled={confirmEmailBtnRender(
-                            userParams?.email_confirmed_status,
-                            values.email_notif,
-                          )}
-                          setValue={value => setFieldValue('sendemail', value)}
-                          initialState={userParams?.sendemail === 'on'}
+                        <CheckBox
+                          value={values.sendemail}
+                          onClick={() => {
+                            setFieldValue('sendemail', !values.sendemail)
+                          }}
+                          disabled={isConfirmEmailBtnRender}
+                          type="switcher"
                         />
                       </HintWrapper>
                     </div>
@@ -371,14 +383,15 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       <HintWrapper
                         popupClassName={s.hintWrapper}
                         label={t('Confirm your email to activate the functionality')}
+                        disabled={!isConfirmEmailBtnRender}
                       >
-                        <Toggle
-                          disabled={confirmEmailBtnRender(
-                            userParams?.email_confirmed_status,
-                            values.email_notif,
-                          )}
-                          setValue={value => setFieldValue('setgeoip', value)}
-                          initialState={userParams?.setgeoip === 'on'}
+                        <CheckBox
+                          value={values.setgeoip}
+                          onClick={() => {
+                            setFieldValue('setgeoip', !values.setgeoip)
+                          }}
+                          disabled={isConfirmEmailBtnRender}
+                          type="switcher"
                         />
                       </HintWrapper>
                     </div>
@@ -440,6 +453,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         key={el.name}
                         item={el}
                         setFieldValue={setFieldValue}
+                        values={values}
                       />
                     ))}
                   </div>
