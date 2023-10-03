@@ -524,7 +524,6 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
         .find(el => el.$name === 'methodlist')
         ?.elem.find(el => el.name.$ === 'Visa/MasterCard (Stripe)')
 
-      console.log(data.doc.list, ' data.doc.list')
       dispatch(billingActions.setIsStripeAvailable(isStripeAvailable))
 
       dispatch(actions.hideLoader())
