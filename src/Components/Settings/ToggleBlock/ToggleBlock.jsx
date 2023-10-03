@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { Toggle, Icon, CheckBox } from '@components'
+import { Icon, CheckBox } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './ToggleBlock.module.scss'
 
