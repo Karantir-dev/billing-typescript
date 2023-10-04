@@ -90,7 +90,7 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
         data.doc.list.find(el => el?.$name === 'tariflist') || {}
       const { val: datacenter } =
         data.doc.slist.find(el => el?.$name === 'datacenter') || {}
-      const { val: period } = data.doc.slist.find(el => el.$name === 'period') || []
+      const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
 
       const { $: currentDatacenter } = data.doc.datacenter
 
