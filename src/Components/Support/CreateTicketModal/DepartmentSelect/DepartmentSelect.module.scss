@@ -4,21 +4,9 @@
   display: flex;
   align-items: center;
   position: relative;
-  box-shadow: var(--forms_shadow);
-  border-radius: 3px;
-  background: var(--elements-bgc);
   flex-basis: 100%;
   width: 100%;
-  margin-top: 10px;
   &.selected {
-    .checkIcon {
-      svg {
-        path {
-          stroke: url(#gradient);
-        }
-      }
-    }
-
     .title {
       color: var(--main-text);
     }
@@ -31,29 +19,21 @@
   }
 }
 
-.checkIcon {
-  padding: 12px 20px 12px 12px;
-  border-right: 1px solid var(--border-color);
-  &:active {
-    transform: scale(0.97);
-  }
-}
 
 .title {
   display: flex;
-  padding: 12px 18px 12px 20px;
+  padding: 0 10px 0 5px;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 102.9%;
   color: var(--transparent-color);
+  cursor: pointer;
 }
 
 .infoBtn {
-  display: none;
+  display: flex;
   position: relative;
-  margin-left: auto;
-  padding: 12px 12px 12px 0px;
   cursor: pointer;
 
   &:hover {
@@ -80,9 +60,9 @@
   box-shadow: var(--burger-menu-elem-box-shadow);
   background-color: var(--forms_bgc_4);
   padding: 0;
-  top: 110%;
+  top: 170%;
   right: 0;
-  width: 300px;
+  width: 250px;
   z-index: 111;
   font-style: normal;
   font-weight: 400;
@@ -91,6 +71,7 @@
   color: var(--main-text);
   text-align: start;
   transition: 0.05s linear;
+
   &::after {
     content: '';
     position: absolute;
@@ -106,16 +87,20 @@
 }
 
 @media screen and (min-width: 768px) {
-  .infoBtn {
-    display: flex;
-  }
   .select {
     flex-basis: 49%;
+  }
+  .descriptionBlock {
+    top: 150%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .title {
     font-size: 18px;
+  }
+
+  .descriptionBlock {
+    width: 285px;
   }
 }
