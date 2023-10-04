@@ -19,12 +19,12 @@ export default function SocialNetAuth() {
     })
   }
 
-  // const redirectToLogin = (errMsg, value) => {
-  //   navigate(route.LOGIN, {
-  //     state: { errMsg: errMsg, value },
-  //     replace: true,
-  //   })
-  // }
+  const redirectToLogin = (errMsg, value) => {
+    navigate(route.LOGIN, {
+      state: { errMsg: errMsg, value },
+      replace: true,
+    })
+  }
 
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
@@ -32,7 +32,9 @@ export default function SocialNetAuth() {
     if (!state) {
       navigate(route.LOGIN, { replace: true })
     } else {
-      dispatch(authOperations.checkGoogleState(state, redirectToRegistration, navigate))
+      dispatch(
+        authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),
+      )
     }
   }, [])
 

@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
 import {
+  authActions,
   // authActions,
   authOperations,
   authSelectors,
@@ -51,12 +52,14 @@ export default function LoginForm({ geoCountryId }) {
   // }, [])
 
   useEffect(() => {
-    setErrMsg(globalErrMsg)
-
-    // return () => {
-    //   dispatch(authActions.clearAuthErrorMsg())
-    // }
+    globalErrMsg && setErrMsg(globalErrMsg)
   }, [globalErrMsg])
+
+  useEffect(() => {
+    return () => {
+      dispatch(authActions.clearAuthErrorMsg())
+    }
+  }, [])
 
   const navigate = useNavigate()
 
@@ -66,10 +69,13 @@ export default function LoginForm({ geoCountryId }) {
       setFieldValue('reCaptcha', '')
     }
 
-    const navigateAfterLogin = () =>
+    const navigateAfterLogin = () => {
       navigate(routes.SERVICES, {
         replace: true,
       })
+    }
+
+    dispatch(authActions.clearAuthErrorMsg())
 
     dispatch(
       authOperations.login(
@@ -122,10 +128,9 @@ export default function LoginForm({ geoCountryId }) {
 
               <Form className={s.form}>
                 {errMsg && (
-                  <div
-                    className={s.credentials_error}
-                    dangerouslySetInnerHTML={{ __html: errMsg }}
-                  />
+                  <div className={s.credentials_error}>
+                    {t(errMsg, { value: location?.state?.value || '' })}
+                  </div>
                 )}
 
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (

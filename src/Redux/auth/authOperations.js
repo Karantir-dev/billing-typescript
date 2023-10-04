@@ -4,10 +4,9 @@ import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, commonErrorHandler, cookies } from '@utils'
 import { SITE_URL } from '@config/config'
-import { t, exists as isTranslationExists } from 'i18next'
-import * as route from '@src/routes'
-import useCustomNavigate from '@src/utils/hooks/useCustomNavigate'
-import { toast } from 'react-toastify'
+import { exists as isTranslationExists } from 'i18next'
+// import * as route from '@src/routes'
+// import { toast } from 'react-toastify'
 
 const SERVER_ERR_MSG = 'auth_error'
 
@@ -50,7 +49,7 @@ const login =
           .post(
             '/',
             qs.stringify({
-              func: 'whoamid<>as',
+              func: 'whoami',
               out: 'json',
               auth: sessionId,
             }),
@@ -77,31 +76,20 @@ const login =
         resetRecaptcha()
         dispatch(actions.hideLoader())
 
-        console.log(error)
-
         // billing response errors handling
         if (!error?.response?.status) {
           console.log('error.message -', error.message)
 
           if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
-            dispatch(
-              authActions.setAuthErrorMsg(t(`warnings.${error.message}`, { ns: 'auth' })),
-            )
+            dispatch(authActions.setAuthErrorMsg(`warnings.${error.message}`))
           } else {
-            toast.error(t('unknown_error', { ns: 'other' }), { position: 'bottom-right' })
+            dispatch(authActions.setAuthErrorMsg('warnings.unknown_error'))
           }
 
           // access errors handling
         } else {
           checkIfTokenAlive(error, dispatch)
         }
-
-        // const errText =
-        //   error?.response?.status === 403
-        //     ? 'blocked_ip'
-        //     : error?.$object
-        //     ? error.$object
-        //     : SERVER_ERR_MSG
       })
   }
 
@@ -123,9 +111,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       if (data.status === 200) {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
-          dispatch(
-            authActions.setAuthErrorMsg(t('warnings.token_is_expired', { ns: 'auth' })),
-          )
+          dispatch(authActions.setAuthErrorMsg('warnings.token_is_expired'))
 
           dispatch(authActions.logoutSuccess())
           cookies.eraseCookie('sessionId')
@@ -405,30 +391,24 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     )
     .then(({ data }) => {
       // LOGIN
+
       if (
         data.doc?.error?.$object === 'nolink' ||
         data.doc?.error?.$object === 'socialrequest'
       ) {
         sendInfoToSite({ error: 'soc_net_not_integrated' })
 
-        dispatch(
-          authActions.setAuthErrorMsg(
-            t('soc_net_not_integrated', {
-              value: data.doc?.error?.param.find(el => el.$name === 'network')?.$,
-            }),
-          ),
+        console.log('checkGoogleState login')
+
+        redirectToLogin(
+          'warnings.soc_net_not_integrated',
+          data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
         )
-        console.log('qweqweqweqwes')
-        useCustomNavigate(route.LOGIN)
-        // navigate(route.LOGIN, { replace: true })
-        // redirectToLogin(
-        //   'soc_net_not_integrated',
-        //   data.doc?.error?.param.find(el => el.$name === 'network')?.$,
-        // )
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
         cookies.setCookie('sessionId', sessionId, 1)
         sendInfoToSite({ sessionId })
+
         axiosInstance
           .post(
             '/',
@@ -484,7 +464,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
 
               console.log('qweqweqweqwes')
-              useCustomNavigate(route.LOGIN)
+
               // redirectToLogin('soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
               sendInfoToSite({ error: 'no_email_from_social' })
@@ -522,7 +502,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      checkIfTokenAlive('checkGoogleState ' + err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 

@@ -27,5 +27,6 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   } else {
     console.error(err)
   }
+
   return true
 }
