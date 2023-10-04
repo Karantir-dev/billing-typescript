@@ -87,7 +87,7 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
 
       const { val: fpricelist } = data.doc.flist
       const { elem: tarifList } =
-        data.doc.list.find(el => el?.$name === 'tariflist') || []
+        data.doc.list.find(el => el?.$name === 'tariflist') || {}
       const { val: datacenter } =
         data.doc.slist.find(el => el?.$name === 'datacenter') || []
       const { val: period } = data.doc.slist.find(el => el.$name === 'period') || []
