@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '@config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
-
 // import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import { useTranslation } from 'react-i18next'
@@ -10,14 +9,20 @@ import { useDispatch } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
-
 import { authOperations } from '@redux'
-import { SelectOfCountries, InputField, Button, LoginBtnBlock, Icon, LoaderDots } from '@components'
+import {
+  SelectOfCountries,
+  InputField,
+  Button,
+  LoginBtnBlock,
+  Icon,
+  LoaderDots,
+} from '@components'
 import * as routes from '@src/routes'
 import {
   SPECIAL_CHARACTERS_REGEX,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
-  PASS_REGEX
+  PASS_REGEX,
 } from '@utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
@@ -60,10 +65,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     password: Yup.string()
       .min(12, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .max(48, t('warnings.invalid_pass', { min: 12, max: 48 }))
-      .matches(
-        PASS_REGEX,
-        t('warnings.invalid_pass', { min: 12, max: 48 }),
-      )
+      .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .required(t('warnings.password_required')),
     passConfirmation: Yup.string()
       .oneOf([Yup.ref('password')], t('warnings.mismatched_password'))
@@ -170,9 +172,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         {({ setFieldValue, setFieldTouched, errors, touched }) => {
           return (
             <Form className={s.form}>
-              {errMsg && (
-                <div className={s.credentials_error}>{t(`warnings.${errMsg}`)}</div>
-              )}
+              {errMsg && <div className={s.credentials_error}>{t(errMsg)}</div>}
 
               <InputField
                 dataTestid="input_name"

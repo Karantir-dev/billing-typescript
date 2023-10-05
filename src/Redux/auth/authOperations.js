@@ -1,6 +1,6 @@
 import qs from 'qs'
 import axios from 'axios'
-import { actions, userOperations, authActions } from '@redux'
+import { actions, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies } from '@utils'
 import { SITE_URL } from '@config/config'
@@ -51,6 +51,7 @@ const login =
             qs.stringify({
               func: 'whoami',
               out: 'json',
+              lang: 'en',
               auth: sessionId,
             }),
           )
@@ -68,7 +69,7 @@ const login =
 
             dispatch(authActions.loginSuccess(sessionId))
             dispatch(authActions.isLogined(true))
-            dispatch(userOperations.getUserInfo(sessionId))
+            // dispatch(userOperations.getUserInfo(sessionId))
             navigateAfterLogin && navigateAfterLogin()
           })
       })
@@ -78,8 +79,6 @@ const login =
 
         // billing response errors handling
         if (!error?.response?.status) {
-          console.log('error.message -', error.message)
-
           if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
             dispatch(authActions.setAuthErrorMsg(`warnings.${error.message}`))
           } else {
@@ -345,8 +344,7 @@ const register =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          setErrMsg(data.doc.error.$type)
-          throw new Error(data.doc.error.msg.$)
+          throw new Error(data.doc.error.$type)
         }
 
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
@@ -355,13 +353,22 @@ const register =
 
         dispatch(actions.hideLoader())
       })
-      .catch(err => {
+      .catch(error => {
         resetRecaptcha()
         dispatch(actions.hideLoader())
-        err.message.trim() ===
-        'This email is already registered in the system. If you forgot your password, please use the password recovery form'
-          ? setErrMsg('soc_email_exist')
-          : setErrMsg(SERVER_ERR_MSG)
+
+        // billing response errors handling
+        if (!error?.response?.status) {
+          if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
+            setErrMsg(`warnings.${error.message}`)
+          } else {
+            setErrMsg('warnings.unknown_error')
+          }
+
+          // access errors handling
+        } else {
+          checkIfTokenAlive(error, dispatch)
+        }
       })
   }
 
@@ -389,20 +396,21 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
       }),
     )
     .then(({ data }) => {
-      // LOGIN
-
-      if (
-        data.doc?.error?.$object === 'nolink' ||
-        data.doc?.error?.$object === 'socialrequest'
-      ) {
+      if (data.doc?.error?.$object === 'socialrequest') {
+        // this key "soc_net_not_integrated" need to be replaced
+        // to "soc_net_auth_failed" after it is created on website
         sendInfoToSite({ error: 'soc_net_not_integrated' })
 
-        console.log('checkGoogleState login')
+        redirectToLogin('warnings.soc_net_auth_failed')
+      } else if (data.doc?.error?.$object === 'nolink') {
+        sendInfoToSite({ error: 'soc_net_not_integrated' })
 
         redirectToLogin(
           'warnings.soc_net_not_integrated',
           data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
         )
+
+        // LOGIN
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
         cookies.setCookie('sessionId', sessionId, 1)
@@ -414,6 +422,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
             qs.stringify({
               func: 'whoami',
               out: 'json',
+              lang: 'en',
               auth: sessionId,
             }),
           )
@@ -431,7 +440,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
 
             dispatch(authActions.loginSuccess(sessionId))
             // is it necessary request?
-            dispatch(userOperations.getUserInfo(sessionId))
+            // dispatch(userOperations.getUserInfo(sessionId))
           })
 
         //REGISTER
@@ -454,22 +463,20 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
             if (data.doc?.error?.$object === 'account_exist') {
               sendInfoToSite({ error: 'social_akk_registered' })
               redirectToLogin(
-                'social_akk_registered',
+                'warnings.social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
               )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
               sendInfoToSite({ error: 'soc_email_exist' })
-              // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+              const email = data.doc.error.param.find(el => el.$name === 'value')?.$
 
-              console.log('qweqweqweqwes')
-
-              // redirectToLogin('soc_email_exist', email)
+              redirectToLogin('warnings.soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
               sendInfoToSite({ error: 'no_email_from_social' })
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToRegistration('no_email_from_social', '', '')
+              redirectToRegistration('warnings.no_email_from_social', '', '')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
@@ -488,7 +495,6 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   sendInfoToSite({ sessionId })
 
                   if (window.fbq) window.fbq('track', 'CompleteRegistration')
-                  console.log('soc registered')
 
                   dispatch(authActions.loginSuccess(sessionId))
                 })

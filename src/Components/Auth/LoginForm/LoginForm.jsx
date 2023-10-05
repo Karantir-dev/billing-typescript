@@ -128,9 +128,12 @@ export default function LoginForm({ geoCountryId }) {
 
               <Form className={s.form}>
                 {errMsg && (
-                  <div className={s.credentials_error}>
-                    {t(errMsg, { value: location?.state?.value || '' })}
-                  </div>
+                  <div
+                    className={s.credentials_error}
+                    dangerouslySetInnerHTML={{
+                      __html: t(errMsg, { value: location?.state?.value || '' }),
+                    }}
+                  ></div>
                 )}
 
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (

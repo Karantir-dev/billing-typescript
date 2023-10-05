@@ -20,7 +20,7 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     dispatch(authActions.setAuthErrorMsg(t('warnings.460_error_code', { ns: 'auth' })))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
-  } else if (err?.response?.status === '403') {
+  } else if (errorText.includes('403')) {
     dispatch(authActions.setAuthErrorMsg(t('warnings.403_error_code', { ns: 'auth' })))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())

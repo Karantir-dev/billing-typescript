@@ -42,7 +42,6 @@ export default function Component({ children }) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
-        // dispatch(userOperations.getUserInfo(sessionId))
       }, 60000)
     }
 
