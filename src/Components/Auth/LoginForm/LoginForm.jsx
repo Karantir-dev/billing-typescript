@@ -46,12 +46,13 @@ export default function LoginForm({ geoCountryId }) {
   const [errMsg, setErrMsg] = useState(location?.state?.errMsg || globalErrMsg || '')
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   // const [socialLinks, setSocialLinks] = useState({})
-
+  console.log('errMsg', errMsg)
   // useEffect(() => {
   //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
   // }, [])
 
   useEffect(() => {
+    console.log('globalErrMsg', globalErrMsg)
     globalErrMsg && setErrMsg(globalErrMsg)
   }, [globalErrMsg])
 

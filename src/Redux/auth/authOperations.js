@@ -8,8 +8,6 @@ import { exists as isTranslationExists } from 'i18next'
 // import * as route from '@src/routes'
 // import { toast } from 'react-toastify'
 
-const SERVER_ERR_MSG = 'auth_error'
-
 const login =
   (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
     dispatch(actions.showLoader())
@@ -312,8 +310,8 @@ const getCountriesForRegister =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        setErrMsg(SERVER_ERR_MSG)
-        checkIfTokenAlive('getCountriesForRegister ' + err.message, dispatch)
+
+        checkIfTokenAlive(err.message, dispatch)
       })
   }
 

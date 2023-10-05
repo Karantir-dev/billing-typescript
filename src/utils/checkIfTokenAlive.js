@@ -1,6 +1,7 @@
 import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
 import { t } from 'i18next'
+import { toast } from 'react-toastify'
 
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   const errorText = err.message || err
@@ -26,6 +27,7 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     dispatch(authActions.logoutSuccess())
   } else {
     console.error(err)
+    toast.error(errorText, { position: 'bottom-right' })
   }
 
   return true

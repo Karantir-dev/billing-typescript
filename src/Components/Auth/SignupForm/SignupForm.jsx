@@ -5,11 +5,11 @@ import ReCAPTCHA from 'react-google-recaptcha'
 // import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import { authOperations } from '@redux'
+import { authActions, authOperations, authSelectors } from '@redux'
 import {
   SelectOfCountries,
   InputField,
@@ -45,10 +45,20 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   const [seconds, setSeconds] = useState(20)
 
   // const { executeRecaptcha } = useGoogleReCaptcha()
-
-  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
+  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || globalErrMsg || '')
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
   // const [socialLinks, setSocialLinks] = useState({})
+
+  useEffect(() => {
+    globalErrMsg && setErrMsg(globalErrMsg)
+  }, [globalErrMsg])
+
+  useEffect(() => {
+    return () => {
+      dispatch(authActions.clearAuthErrorMsg())
+    }
+  }, [])
 
   const successRegistration = () => {
     navigate(routes.LOGIN, { state: { from: location.pathname }, replace: true })
@@ -172,7 +182,14 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         {({ setFieldValue, setFieldTouched, errors, touched }) => {
           return (
             <Form className={s.form}>
-              {errMsg && <div className={s.credentials_error}>{t(errMsg)}</div>}
+              {errMsg && (
+                <div
+                  className={s.credentials_error}
+                  dangerouslySetInnerHTML={{
+                    __html: t(errMsg),
+                  }}
+                ></div>
+              )}
 
               <InputField
                 dataTestid="input_name"
