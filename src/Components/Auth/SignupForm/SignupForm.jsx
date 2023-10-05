@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react'
 import * as Yup from 'yup'
 import { RECAPTCHA_KEY } from '@config/config'
 import ReCAPTCHA from 'react-google-recaptcha'
-// import { GoogleReCaptcha, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,15 +43,10 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
 
   const [seconds, setSeconds] = useState(20)
 
-  // const { executeRecaptcha } = useGoogleReCaptcha()
   const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
-  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || globalErrMsg || '')
-  const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
-  // const [socialLinks, setSocialLinks] = useState({})
 
-  useEffect(() => {
-    globalErrMsg && setErrMsg(globalErrMsg)
-  }, [globalErrMsg])
+  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -102,11 +96,6 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       recaptchaEl && recaptchaEl?.current?.reset()
       setFieldValue('reCaptcha', '')
     }
-
-    // if (executeRecaptcha) {
-    //   const newToken = await executeRecaptcha('signup')
-    //   values.reCaptcha = newToken
-    // }
 
     dispatch(
       authOperations.register(
@@ -182,11 +171,11 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         {({ setFieldValue, setFieldTouched, errors, touched }) => {
           return (
             <Form className={s.form}>
-              {errMsg && (
+              {(errMsg || globalErrMsg) && (
                 <div
                   className={s.credentials_error}
                   dangerouslySetInnerHTML={{
-                    __html: t(errMsg),
+                    __html: t(errMsg || globalErrMsg),
                   }}
                 ></div>
               )}

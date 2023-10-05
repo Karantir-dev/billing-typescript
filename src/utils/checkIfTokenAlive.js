@@ -1,6 +1,6 @@
 import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
-import { t } from 'i18next'
+import { t, exists as isTranslationExists } from 'i18next'
 import { toast } from 'react-toastify'
 
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
@@ -14,20 +14,28 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   ) {
     dispatch(authOperations.getCurrentSessionStatus())
   } else if (errorText.includes('Access from this IP denied')) {
-    dispatch(authActions.setAuthErrorMsg(t('warnings.badip', { ns: 'auth' })))
+    dispatch(authActions.setAuthErrorMsg('warnings.badip'))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
   } else if (errorText.includes('460')) {
-    dispatch(authActions.setAuthErrorMsg(t('warnings.460_error_code', { ns: 'auth' })))
+    dispatch(authActions.setAuthErrorMsg('warnings.460_error_code'))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
   } else if (errorText.includes('403')) {
-    dispatch(authActions.setAuthErrorMsg(t('warnings.403_error_code', { ns: 'auth' })))
+    dispatch(authActions.setAuthErrorMsg('warnings.403_error_code'))
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
   } else {
     console.error(err)
-    toast.error(errorText, { position: 'bottom-right' })
+
+    // need to check whether it has sense (look for error translation)
+    if (isTranslationExists(errorText)) {
+      toast.error(t(errorText, { ns: ['auth', 'other'] }), { position: 'bottom-right' })
+    } else {
+      toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
+        position: 'bottom-right',
+      })
+    }
   }
 
   return true

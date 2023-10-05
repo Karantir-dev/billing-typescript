@@ -39,22 +39,10 @@ export default function LoginForm({ geoCountryId }) {
   const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
   const recaptchaEl = useRef()
 
-  // const redirectID = location?.state?.redirect
-
   const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
 
-  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || globalErrMsg || '')
+  const [errMsg, _setErrMsg] = useState(location?.state?.errMsg || '')
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
-  // const [socialLinks, setSocialLinks] = useState({})
-  console.log('errMsg', errMsg)
-  // useEffect(() => {
-  //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
-  // }, [])
-
-  useEffect(() => {
-    console.log('globalErrMsg', globalErrMsg)
-    globalErrMsg && setErrMsg(globalErrMsg)
-  }, [globalErrMsg])
 
   useEffect(() => {
     return () => {
@@ -128,11 +116,13 @@ export default function LoginForm({ geoCountryId }) {
               <VerificationModal />
 
               <Form className={s.form}>
-                {errMsg && (
+                {(errMsg || globalErrMsg) && (
                   <div
                     className={s.credentials_error}
                     dangerouslySetInnerHTML={{
-                      __html: t(errMsg, { value: location?.state?.value || '' }),
+                      __html: t(errMsg || globalErrMsg, {
+                        value: location?.state?.value || '',
+                      }),
                     }}
                   ></div>
                 )}

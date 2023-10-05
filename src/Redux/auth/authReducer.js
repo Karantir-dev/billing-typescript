@@ -8,7 +8,7 @@ const initialState = {
   isLogined: false,
   totpFormVisibility: 'hidden',
   geoData: null,
-  authErrorMsg: '',
+  authErrorMsg: null,
 }
 
 const temporaryId = createReducer(initialState.temporaryId, {
@@ -38,7 +38,7 @@ const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
 
 const authErrorMsg = createReducer(initialState.authErrorMsg, {
   [authActions.setAuthErrorMsg]: (_, { payload }) => payload,
-  [authActions.clearAuthErrorMsg]: () => '',
+  [authActions.clearAuthErrorMsg]: () => null,
 })
 
 const authReducer = combineReducers({
