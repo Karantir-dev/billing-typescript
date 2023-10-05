@@ -125,5 +125,6 @@
   "base price": "საფარიფიფო ფასი",
   "Total amount": "სულ თანხა",
 
-  "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\""
+  "ns_format": "ჩანაწერის ფორმატი \"ns.example.com\"",
+  "choose_min_one_domain": "აირჩიეთ მინიმუმ ერთი დომენი"
 }

@@ -931,7 +931,7 @@ export default function Component() {
 
     const foundSale = salesList.find(
       sale =>
-        sale.promotion.$ === 'Большие скидки на выделенные серверы' &&
+        sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
         sale.idname.$.includes(cartConfigName),
     )
 
@@ -993,7 +993,7 @@ export default function Component() {
                     addressPhysical ?? selectedPayerFields?.address_physical,
                   city_physical:
                     cityPhysical ??
-                    (selectedPayerFields?.city_physical || geoData?.clients_city),
+                    (selectedPayerFields?.city_physical || geoData?.clients_city || ''),
                   person: person ?? selectedPayerFields?.person,
                   country:
                     selectedPayerFields?.country ||
@@ -1207,7 +1207,10 @@ export default function Component() {
                                     key={name?.$}
                                   >
                                     <div className={s.descrWrapper}>
-                                      <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
+                                      <img
+                                        src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
+                                        alt="icon"
+                                      />
                                       <span
                                         className={cn({
                                           [s.methodDescr]: paymethod?.$ === '71',
@@ -1639,7 +1642,7 @@ export default function Component() {
                                 className={s.saveBtn}
                                 isShadow
                                 size="medium"
-                                label={t('Pay', { ns: 'billing' }) }
+                                label={t('Pay', { ns: 'billing' })}
                                 type="submit"
                               />
                             )}

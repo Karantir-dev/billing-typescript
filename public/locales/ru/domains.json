@@ -125,5 +125,6 @@
   "Provider's employee or system": "Сотрудник или система поставщика",
   "base price": "базовая цена",
   "Total amount": "Общая сумма",
-  "ns_format": "Формат записи \"ns.example.com\""
+  "ns_format": "Формат записи \"ns.example.com\"",
+  "choose_min_one_domain": "Выберите хотя бы один домен"
 }

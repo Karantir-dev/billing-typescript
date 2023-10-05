@@ -198,10 +198,13 @@ const getDomainsOrderName =
         }
 
         await axios
-          .post(`${process.env.REACT_APP_API_URL}/api/domain/check/`, {
-            host: domains?.map(e => e?.domain?.$),
-          },
-          { signal },)
+          .post(
+            `${process.env.REACT_APP_API_URL}/api/domain/check/`,
+            {
+              host: domains?.map(e => e?.domain?.$),
+            },
+            { signal },
+          )
           .then(({ data: { data } }) => {
             const newArr = []
             const receivedDomains = Object.keys(data)
@@ -209,7 +212,7 @@ const getDomainsOrderName =
             receivedDomains?.forEach(d => {
               domains?.forEach(dom => {
                 if (dom?.domain?.$ === d) {
-                  return newArr?.push({ ...dom, premium: data[d].premium })
+                  return newArr?.push({ ...dom, premium: data[d].info.premium })
                 }
               })
             })
