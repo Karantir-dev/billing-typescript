@@ -2,7 +2,7 @@ import qs from 'qs'
 import axios from 'axios'
 import { actions, userOperations, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, commonErrorHandler, cookies } from '@utils'
+import { checkIfTokenAlive, cookies } from '@utils'
 import { SITE_URL } from '@config/config'
 import { exists as isTranslationExists } from 'i18next'
 // import * as route from '@src/routes'
@@ -121,8 +121,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      // checkIfTokenAlive('error during getCurrentSessionStatus' + e.message || e, dispatch)
-      commonErrorHandler(e)
+      checkIfTokenAlive(e)
     })
 }
 
