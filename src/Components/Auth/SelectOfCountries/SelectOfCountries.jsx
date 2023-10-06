@@ -9,7 +9,6 @@ import { authOperations } from '@redux'
 import s from './SignupSelects.module.scss'
 
 export default function SelectOfCountries({
-  setErrMsg,
   setFieldValue,
   setFieldTouched,
   errors,
@@ -44,9 +43,7 @@ export default function SelectOfCountries({
       setCountries(countries)
       setRegions(states)
     } else {
-      dispatch(
-        authOperations.getCountriesForRegister(setCountries, setRegions, setErrMsg),
-      )
+      dispatch(authOperations.getCountriesForRegister(setCountries, setRegions))
     }
   }, [])
 
@@ -226,7 +223,6 @@ export default function SelectOfCountries({
 }
 
 SelectOfCountries.propTypes = {
-  setErrMsg: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,

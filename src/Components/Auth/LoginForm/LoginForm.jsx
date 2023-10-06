@@ -5,12 +5,7 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import {
-  authActions,
-  // authActions,
-  authOperations,
-  authSelectors,
-} from '@redux'
+import { authActions, authOperations, authSelectors } from '@redux'
 import {
   VerificationModal,
   Button,
@@ -64,14 +59,11 @@ export default function LoginForm({ geoCountryId }) {
       })
     }
 
-    dispatch(authActions.clearAuthErrorMsg())
-
     dispatch(
       authOperations.login(
         email,
         password,
         reCaptcha,
-
         resetRecaptcha,
         navigateAfterLogin,
       ),

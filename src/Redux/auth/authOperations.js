@@ -2,9 +2,10 @@ import qs from 'qs'
 import axios from 'axios'
 import { actions, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, cookies } from '@utils'
+import { checkIfTokenAlive, cookies, throwServerError } from '@utils'
 import { SITE_URL } from '@config/config'
 import { exists as isTranslationExists } from 'i18next'
+
 // import * as route from '@src/routes'
 // import { toast } from 'react-toastify'
 
@@ -35,8 +36,7 @@ const login =
       .then(({ data }) => {
         localStorage.removeItem('redirectID')
         if (data.doc.error) {
-          console.log('login received error', data.doc.error)
-          throw new Error(data.doc.error.$object)
+          throwServerError(data.doc.error.$object)
         }
 
         const sessionId = data?.doc?.auth?.$id
@@ -67,7 +67,7 @@ const login =
 
             dispatch(authActions.loginSuccess(sessionId))
             dispatch(authActions.isLogined(true))
-            // dispatch(userOperations.getUserInfo(sessionId))
+
             navigateAfterLogin && navigateAfterLogin()
           })
       })
@@ -76,7 +76,7 @@ const login =
         dispatch(actions.hideLoader())
 
         // billing response errors handling
-        if (!error?.response?.status) {
+        if (error.serverResponse) {
           if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
             dispatch(authActions.setAuthErrorMsg(`warnings.${error.message}`))
           } else {
@@ -269,51 +269,50 @@ const logout = () => (dispatch, getState) => {
     })
 }
 
-const getCountriesForRegister =
-  (setCountries, setStates, setErrMsg, setSocialLinks) => dispatch => {
-    dispatch(actions.showLoader())
+const getCountriesForRegister = (setCountries, setStates, setSocialLinks) => dispatch => {
+  dispatch(actions.showLoader())
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'register',
-          out: 'json',
-          lang: 'en',
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const countries = data.doc.slist[0].val
+      const states = data.doc.slist[1].val
+      const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+        acc[el.$img] = el.$href
+        return acc
+      }, {})
+      countries.shift()
+
+      localStorage.setItem(
+        'countriesForRegister',
+        JSON.stringify({
+          countries,
+          states,
+          socLinks,
         }),
       )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const countries = data.doc.slist[0].val
-        const states = data.doc.slist[1].val
-        const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
-          acc[el.$img] = el.$href
-          return acc
-        }, {})
-        countries.shift()
+      setCountries(countries)
+      setStates(states)
+      setSocialLinks && setSocialLinks(socLinks)
 
-        localStorage.setItem(
-          'countriesForRegister',
-          JSON.stringify({
-            countries,
-            states,
-            socLinks,
-          }),
-        )
-
-        setCountries(countries)
-        setStates(states)
-        setSocialLinks && setSocialLinks(socLinks)
-
-        dispatch(actions.hideLoader())
-      })
-      .catch(err => {
-        dispatch(actions.hideLoader())
-
-        checkIfTokenAlive(err.message, dispatch)
-      })
-  }
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      console.log(err)
+      checkIfTokenAlive(err.message, dispatch)
+    })
+}
 
 const register =
   (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
@@ -342,7 +341,7 @@ const register =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          throw new Error(data.doc.error.$type)
+          throwServerError(data.doc.error.$type)
         }
 
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
@@ -356,7 +355,7 @@ const register =
         dispatch(actions.hideLoader())
 
         // billing response errors handling
-        if (!error?.response?.status) {
+        if (error.serverResponse) {
           if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
             setErrMsg(`warnings.${error.message}`)
           } else {

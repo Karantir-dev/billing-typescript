@@ -234,7 +234,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
               />
 
               <SelectOfCountries
-                setErrMsg={setErrMsg}
+                // setErrMsg={setErrMsg}
                 // setSocialLinks={setSocialLinks}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
