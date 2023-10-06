@@ -181,7 +181,13 @@ export default function Component(props) {
                   label={`${t('Payer')}:`}
                   placeholder={t('Not chosen', { ns: 'other' })}
                   value={values.profile}
-                  getElement={item => setFieldValue('profile', item)}
+                  getElement={item => {
+                    setFieldValue('profile', item)
+                    if (!newPayer) {
+                      const person = payersList?.find(el => el.id?.$ === item)?.name?.$
+                      setFieldValue('person', person)
+                    }
+                  }}
                   isShadow
                   className={s.select}
                   itemsList={payers?.map(({ name, id }) => ({
