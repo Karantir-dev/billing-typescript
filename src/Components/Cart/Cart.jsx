@@ -1174,20 +1174,21 @@ export default function Component() {
                                         setPhone('')
                                         setCountryCode(userCountryCode)
                                       }
-                                      dispatch(
-                                        cartOperations.getPayMethodItem(
-                                          {
-                                            paymethod: method?.paymethod?.$,
-                                          },
-                                          setAdditionalPayMethodts,
-                                        ),
-                                      )
+
                                       if (
                                         method?.name?.$?.includes('balance') &&
                                         method?.paymethod_type?.$ === '0'
                                       ) {
                                         setFieldValue('isPersonalBalance', 'on')
                                       } else {
+                                        dispatch(
+                                          cartOperations.getPayMethodItem(
+                                            {
+                                              paymethod: method?.paymethod?.$,
+                                            },
+                                            setAdditionalPayMethodts,
+                                          ),
+                                        )
                                         setFieldValue('isPersonalBalance', 'off')
                                       }
                                     }}
