@@ -3,7 +3,7 @@ import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, authActions, authSelectors, selectors } from '@redux'
-// import i18n from 'i18next'
+import i18n from 'i18next'
 import { toast } from 'react-toastify'
 import { cookies } from '@utils'
 import { useSearchParams } from 'react-router-dom'
@@ -71,19 +71,19 @@ const Component = () => {
     }
   }, [])
 
-  // i18n.on('languageChanged', l => {
-  //   const favicon = getFaviconEl()
-  //   const favicon_mob = getFaviconMobEl()
-  //   if (l !== 'ru') {
-  //     favicon.href = require('@images/favIcons/favicon_ua.ico')
-  //     favicon_mob.href = require('@images/favIcons/logo192_ua.png')
-  //   } else {
-  //     favicon.href = require('@images/favIcons/favicon.ico')
-  //     favicon_mob.href = require('@images/favIcons/logo192.png')
-  //   }
+  i18n.on('languageChanged', () => {
+    // const favicon = getFaviconEl()
+    // const favicon_mob = getFaviconMobEl()
+    // if (l !== 'ru') {
+    //   favicon.href = require('@images/favIcons/favicon_ua.ico')
+    //   favicon_mob.href = require('@images/favIcons/logo192_ua.png')
+    // } else {
+    //   favicon.href = require('@images/favIcons/favicon.ico')
+    //   favicon_mob.href = require('@images/favIcons/logo192.png')
+    // }
 
-  //   dispatch(actions.hideLoader())
-  // })
+    dispatch(actions.hideLoader())
+  })
 
   const isAuthenticated = useSelector(authSelectors.getSessionId)
 
