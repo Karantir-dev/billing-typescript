@@ -86,10 +86,12 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
       const { val: fpricelist } = data.doc.flist
-      const { elem: tarifList } = data.doc.list[0]
-      const { val: datacenter } = data.doc.slist.length > 1 ? data.doc.slist[0] : []
-      const { val: period } =
-        data.doc.slist.length > 1 ? data.doc.slist[1] : data.doc.slist[0]
+      const { elem: tarifList } =
+        data.doc.list.find(el => el?.$name === 'tariflist') || {}
+      const { val: datacenter } =
+        data.doc.slist.find(el => el?.$name === 'datacenter') || {}
+      const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
+
       const { $: currentDatacenter } = data.doc.datacenter
 
       const orderData = {
@@ -132,9 +134,11 @@ const getUpdatedTarrifs =
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         const { val: fpricelist } = data.doc.flist
-        const { elem: tarifList } = data.doc.list[0]
-        const { val: datacenter } = data.doc.slist[0]
-        const { val: period } = data.doc.slist[1]
+        const { elem: tarifList } =
+          data.doc.list.find(el => el?.$name === 'tariflist') || {}
+        const { val: datacenter } =
+          data.doc.slist.find(el => el?.$name === 'datacenter') || {}
+        const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
         const { $: currentDatacenter } = data.doc.datacenter
 
         const orderData = {
@@ -191,9 +195,11 @@ const getUpdatedPeriod =
         const { data } = dedicResp
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         const { val: fpricelist } = data.doc.flist
-        const { elem: tarifList } = data.doc.list[0]
-        const { val: datacenter } = data.doc.slist[0]
-        const { val: period } = data.doc.slist[1]
+        const { elem: tarifList } =
+          data.doc.list.find(el => el?.$name === 'tariflist') || {}
+        const { val: datacenter } =
+          data.doc.slist.find(el => el?.$name === 'datacenter') || {}
+        const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
         const { $: currentDatacenter } = data.doc.datacenter
 
         const orderData = {
