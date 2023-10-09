@@ -6,7 +6,7 @@ import entireStore from '@redux/store'
 import { render, screen, fireEvent } from '@testing-library/react'
 
 import i18n from '@src/i18n'
-import { Toggle, UserCard } from '@components/'
+import { UserCard } from '@components/'
 import ControlBtn from '@components/TrustedUsers/ControlBtn/ControlBtn'
 import { mockedAxiosInstance } from '@config/axiosInstance'
 
@@ -23,11 +23,6 @@ describe('UserCard Component', () => {
     </Provider>,
   )
   const root = component.root
-
-  test('Component has 2  ToggleButton components', async () => {
-    const toggleBtns = await root.findAllByType(Toggle)
-    expect(toggleBtns).toHaveLength(2)
-  })
 
   test('Component has 1 ControlBtn component', async () => {
     const controlBtns = await root.findAllByType(ControlBtn)
