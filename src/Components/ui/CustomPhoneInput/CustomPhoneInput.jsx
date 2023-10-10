@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import PhoneInput from 'react-phone-input-2'
@@ -39,10 +38,6 @@ export default function CustomPhoneInput(props) {
     setFieldValue(userId ? 'phone' + userId : name, value)
   }
 
-  useEffect(() => {
-    document.querySelector('input[type="tel"]').setAttribute('name', name)
-  }, [])
-
   return (
     <div className={cn(s.wrapper, wrapperClass)}>
       <p className={cn(s.phone_label, labelClass)}>
@@ -56,6 +51,9 @@ export default function CustomPhoneInput(props) {
         name={name}
         className={s.field_input}
         containerClass={cn(s.lang_container, containerClass)}
+        inputProps={{
+          name,
+        }}
         inputClass={cn({
           [s.react_phone_input]: true,
           [s.lang]: true,
