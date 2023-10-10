@@ -118,6 +118,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
+      console.log('qews')
       checkIfTokenAlive(e)
     })
 }
