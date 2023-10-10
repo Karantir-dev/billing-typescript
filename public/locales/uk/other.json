@@ -260,5 +260,6 @@
   "certificate_matches_error": "Дозволяються лише цифри та великі літери",
   "certificate_applied_success": "Сертифікат успішно застосований",
   "payment_processed": "Ваш платіж в обробці, перевірити статус ви можете у розділі",
-  "Finance/Accounts": "Фінанси/Рахунки"
+  "Finance/Accounts": "Фінанси/Рахунки",
+  "online": "Ви знову в мережі"
 }

@@ -1,4 +1,4 @@
-import { authOperations, authActions, actions } from '@redux'
+import { authOperations, authActions } from '@redux'
 import cookies from './cookies'
 import { t, exists as isTranslationExists } from 'i18next'
 import { toast } from 'react-toastify'
@@ -22,12 +22,12 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
 
-    // 403 error handling
+    /* 
+      with 403 error we get "Network Error" text
+      further error handling is performed in Navigation.jsx
+    */
   } else if (errorText.includes('Network Error')) {
     dispatch(authActions.setAuthErrorMsg('warnings.403_error_code'))
-    dispatch(actions.showBlockingModal())
-    // cookies.eraseCookie('sessionId')
-    // dispatch(authActions.logoutSuccess())
   } else {
     console.error(err)
 

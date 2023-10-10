@@ -257,5 +257,6 @@
   "certificate_applied_success": "Сертификат успешно применен",
 
   "payment_processed": "Ваш платеж в обработке, проверить статус вы можете в разделе",
-  "Finance/Accounts": "Финансы/Счета"
+  "Finance/Accounts": "Финансы/Счета",
+  "online": "Вы снова онлайн"
 }

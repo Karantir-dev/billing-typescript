@@ -257,5 +257,6 @@
   "certificate_applied_success": "Сертификат сәтті түрде қолданылды",
 
   "payment_processed": "Төлеміңіз өңделуде, күйді бөлімде тексеруге болады",
-  "Finance/Accounts": "Қаржы/Шот"
+  "Finance/Accounts": "Қаржы/Шот",
+  "online": "Сіз желіге қайта оралдыңыз"
 }

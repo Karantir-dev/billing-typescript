@@ -3,7 +3,7 @@ import AuthRoutes from './public/AuthRoutes'
 import SecureRoutes from './secure/SecureRoutes'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, authActions, authSelectors, selectors } from '@redux'
-import i18n from 'i18next'
+import i18n, { t } from 'i18next'
 import { toast } from 'react-toastify'
 import { cookies } from '@utils'
 import { useSearchParams } from 'react-router-dom'
@@ -21,14 +21,34 @@ let firstRender = true
 const Component = () => {
   const dispatch = useDispatch()
   const onlineStatus = useSelector(selectors.onlineStatus)
+  const authErrorMsg = useSelector(authSelectors.getAuthErrorMsg)
 
   const [searchParams] = useSearchParams()
 
   const searchParam = useRef(searchParams.get('func'))
 
+  // Network Error / 403 error handling
+  useEffect(() => {
+    if (authErrorMsg === 'warnings.403_error_code') {
+      fetch('https://www.google.com', { mode: 'no-cors' })
+        .then(() => {
+          !onlineStatus && dispatch(actions.setOnline())
+
+          cookies.eraseCookie('sessionId')
+          dispatch(authActions.logoutSuccess())
+        })
+        .catch(() => {
+          onlineStatus && dispatch(actions.setOffline())
+        })
+    }
+  }, [authErrorMsg])
+
   useEffect(() => {
     if (onlineStatus && !firstRender) {
-      toast.success('You`re back online', { position: 'bottom-right', autoClose: 8000 })
+      toast.success(t('online', { ns: 'other' }), {
+        position: 'bottom-right',
+        autoClose: 8000,
+      })
       toast.dismiss('offlineToastId')
     } else if (!onlineStatus) {
       toast.error('You are offline', {
