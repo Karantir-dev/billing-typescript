@@ -125,5 +125,6 @@
   "Provider's employee or system": "Тапсырыс берушінің қызметкері немесе жүйесі",
   "base price": "базарча қиммат",
   "Total amount": "Тоталга сомма",
-  "ns_format": "Жазба пішімі \"ns.example.com\""
+  "ns_format": "Жазба пішімі \"ns.example.com\"",
+  "choose_min_one_domain": "Кем дегенде бір доменді таңдаңыз"
 }

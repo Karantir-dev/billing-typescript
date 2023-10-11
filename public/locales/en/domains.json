@@ -118,5 +118,6 @@
   "base price": "base price",
   "Total amount": "Total amount",
 
-  "ns_format": "Record format \"ns.example.com\""
+  "ns_format": "Record format \"ns.example.com\"",
+  "choose_min_one_domain": "Select at least one domain"
 }

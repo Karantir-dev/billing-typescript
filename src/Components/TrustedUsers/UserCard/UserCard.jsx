@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import ControlBtn from '../ControlBtn/ControlBtn'
 import AccessRights from '../AccessRights/AccessRights'
 import AccessRightsAlert from '../AccessRightsAlert/AccessRightsAlert'
-import { Button, Toggle, Icon, Alert } from '@components'
+import { Button, Icon, Alert, CheckBox } from '@components'
 import { selectors, usersActions, usersOperations, usersSelectors } from '@redux'
 
 import s from './UserCard.module.scss'
@@ -191,6 +191,28 @@ export default function UserCard({
       ? `${t('trusted_users.alerts.status.text2')} ${email}?`
       : `${t('trusted_users.alerts.status.text')} ${email}?`
 
+  const RenderAccessSwitcher = () => (
+    <CheckBox
+      value={hasAccess === 'on'}
+      onClick={handleAccessAlert}
+      disabled={!hasPageOwnerFullAccess || isOwner}
+      type="switcher"
+    />
+  )
+
+  const RenderStatusSwitcher = () => (
+    <CheckBox
+      value={status === 'on'}
+      onClick={handleStatusAlert}
+      disabled={
+        (!isTurnOnUserAllowed && status === 'off') ||
+        (!isTurnOffUserAllowed && status === 'on') ||
+        isOwner
+      }
+      type="switcher"
+    />
+  )
+
   return (
     <>
       {mobile && (
@@ -211,13 +233,7 @@ export default function UserCard({
                   ? t('trusted_users.user_cards.yes')
                   : t('trusted_users.user_cards.no')}
               </p>
-
-              <Toggle
-                initialState={hasAccess === 'on'}
-                func={handleAccessAlert}
-                disabled={!hasPageOwnerFullAccess || isOwner}
-                hasConfirmation
-              />
+              <RenderAccessSwitcher />
 
               {hasAccess && !isOwner && (
                 <div
@@ -253,17 +269,7 @@ export default function UserCard({
                   ? t('trusted_users.user_cards.active')
                   : t('trusted_users.user_cards.inactive')}
               </p>
-
-              <Toggle
-                initialState={status === 'on'}
-                func={handleStatusAlert}
-                disabled={
-                  (!isTurnOnUserAllowed && status === 'off') ||
-                  (!isTurnOffUserAllowed && status === 'on') ||
-                  isOwner
-                }
-                hasConfirmation
-              />
+              <RenderStatusSwitcher />
             </div>
           </div>
 
@@ -287,7 +293,7 @@ export default function UserCard({
       )}
 
       {!mobile && (
-        <div className={s.table_wrapper}>
+        <div className={cn(s.table_wrapper, { [s.hovered]: hovered })}>
           <div className={s.table_row}>
             <p className={s.user_email_lg}>{email}</p>
             <p className={s.user_name_lg}>{name}</p>
@@ -299,14 +305,7 @@ export default function UserCard({
                     : t('trusted_users.user_cards.turn_on_field')}
                 </p>
               )}
-
-              <Toggle
-                initialState={hasAccess === 'on'}
-                func={handleAccessAlert}
-                disabled={!hasPageOwnerFullAccess || isOwner}
-                hasConfirmation
-              />
-
+              <RenderAccessSwitcher />
               {hasAccess && !isOwner && (
                 <div
                   className={s.warning_sign_wrapper}
@@ -334,16 +333,7 @@ export default function UserCard({
                     : t('trusted_users.user_cards.inactive')}
                 </p>
               )}
-              <Toggle
-                initialState={status === 'on'}
-                func={handleStatusAlert}
-                disabled={
-                  (!isTurnOnUserAllowed && status === 'off') ||
-                  (!isTurnOffUserAllowed && status === 'on') ||
-                  isOwner
-                }
-                hasConfirmation
-              />
+              <RenderStatusSwitcher />
             </div>
             <div className={s.control_btn}>
               <ControlBtn

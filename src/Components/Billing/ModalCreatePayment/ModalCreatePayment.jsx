@@ -294,7 +294,7 @@ export default function ModalCreatePayment(props) {
                   addressPhysical ?? selectedPayerFields?.address_physical,
                 city_physical:
                   cityPhysical ??
-                  (selectedPayerFields?.city_physical || geoData?.clients_city),
+                  (selectedPayerFields?.city_physical || geoData?.clients_city || ''),
                 person: person ?? selectedPayerFields?.person,
                 country:
                   payersSelectedFields?.country ||
@@ -553,7 +553,10 @@ export default function ModalCreatePayment(props) {
                               key={paymethod?.$}
                             >
                               <div className={s.descrWrapper}>
-                                <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
+                                <img
+                                  src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
+                                  alt="icon"
+                                />
                                 <span
                                   className={cn({
                                     [s.methodDescr]: paymethod?.$ === '71',

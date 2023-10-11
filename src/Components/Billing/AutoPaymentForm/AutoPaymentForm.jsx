@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik, Form, ErrorMessage } from 'formik'
+import { Formik, Form } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { Button, Select, InputField, CheckBox } from '@components'
 import {
@@ -44,14 +44,14 @@ export default function Component(props) {
     dispatch(payersOperations.getPayerModalInfo(data))
   }, []),
     useEffect(() => {
-      if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
-        setSelectedMethod(autoPaymentConfig?.elem[0])
-      }
-    }, [autoPaymentConfig])
+      payersList.length ? setNewPayer(false) : setNewPayer(true)
+    }, [payersList])
 
-  // const offerTextHandler = () => {
-  //   dispatch(payersOperations.getPayerOfferText(payersSelectedFields?.offer_link))
-  // }
+  useEffect(() => {
+    if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
+      setSelectedMethod(autoPaymentConfig?.elem[0])
+    }
+  }, [autoPaymentConfig])
 
   const getAmountsFromString = string => {
     const words = string?.match(/[\d|.|\\+]+/g)
@@ -75,10 +75,7 @@ export default function Component(props) {
   }
 
   const payers = newPayer
-    ? [
-        { name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } },
-        ...payersList,
-      ]
+    ? [{ name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } }]
     : payersList
 
   const validationSchema = Yup.object().shape({
@@ -168,9 +165,8 @@ export default function Component(props) {
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          profile:
-            payersList?.length !== 0 ? payersList[payersList?.length - 1]?.id?.$ : '',
-          person: '',
+          profile: payers[0]?.id?.$,
+          person: newPayer ? '' : payers[0]?.name?.$,
           maxamount: autoPaymentConfig?.maxamount || '',
           paymethod: selectedMethod?.paymethod?.$ || '',
           [payersSelectedFields?.offer_field]: false,
@@ -178,15 +174,6 @@ export default function Component(props) {
         onSubmit={createAutoPaymentMethodHandler}
       >
         {({ values, setFieldValue, errors, touched }) => {
-          const setPayerHandler = val => {
-            setFieldValue('profile', val)
-            if (val === 'add_new') {
-              setNewPayer(true)
-            } else {
-              setNewPayer(false)
-            }
-          }
-
           return (
             <Form className={s.form}>
               <div className={cn(s.formFieldsBlock, s.first)}>
@@ -194,31 +181,22 @@ export default function Component(props) {
                   label={`${t('Payer')}:`}
                   placeholder={t('Not chosen', { ns: 'other' })}
                   value={values.profile}
-                  getElement={item => setPayerHandler(item)}
+                  getElement={item => {
+                    setFieldValue('profile', item)
+                    if (!newPayer) {
+                      const person = payersList?.find(el => el.id?.$ === item)?.name?.$
+                      setFieldValue('person', person)
+                    }
+                  }}
                   isShadow
                   className={s.select}
                   itemsList={payers?.map(({ name, id }) => ({
                     label: t(`${name?.$?.trim()}`),
                     value: id?.$,
                   }))}
+                  withoutArrow={payers.length === 1}
+                  disabled={payers.length === 1}
                 />
-
-                {!newPayer && (
-                  <div className={s.addPayerBtnBlock}>
-                    <button
-                      onClick={() => setPayerHandler('add_new')}
-                      type="button"
-                      className={s.addNewPayerBtn}
-                    >
-                      {t('Add new payer', { ns: 'payers' })}
-                    </button>
-                    <ErrorMessage
-                      className={s.error_message_addpayer}
-                      name={'profile'}
-                      component="span"
-                    />
-                  </div>
-                )}
               </div>
               <div className={cn(s.formFieldsBlock, s.first)}>
                 {newPayer && (
@@ -256,7 +234,10 @@ export default function Component(props) {
                     ({ name, payment_minamount, paymethod, image }) => ({
                       label: (
                         <div className={s.selectedItem}>
-                          <img src={`${process.env.REACT_APP_BASE_URL}${image?.$}`} alt="icon" />
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
+                            alt="icon"
+                          />
                           <div>
                             <span>{name?.$}</span>
                             <span>
@@ -283,6 +264,7 @@ export default function Component(props) {
                       }
                       className={s.checkbox}
                       error={!!errors[payersSelectedFields?.offer_field]}
+                      touched={!!touched[payersSelectedFields?.offer_field]}
                     />
                     <div className={s.offerBlockText}>
                       {t('I agree with the terms of the offer', { ns: 'payers' })}
