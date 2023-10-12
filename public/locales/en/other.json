@@ -260,5 +260,6 @@
   "payment_processed": "Your payment is being processed, you can check the status in the section",
   "Finance/Accounts": "Finance/Accounts",
   "online": "You`re back online",
+  "offline_title": "Internet connection error",
   "offline": "It seems that you do not have an Internet connection, check your network access"
 }
