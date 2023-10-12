@@ -75,6 +75,9 @@ export default function Select(props) {
     setIsOpened(true)
   }
 
+  const isDisabled = disabled || itemsList?.length < 2
+  const hasNoArrow = withoutArrow || itemsList?.length < 2
+
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && (
@@ -89,7 +92,7 @@ export default function Select(props) {
         className={s.input_wrapper}
         onClick={openHandler}
         data-testid="period_select"
-        disabled={disabled}
+        disabled={isDisabled}
       >
         <div
           className={cn(
@@ -97,7 +100,7 @@ export default function Select(props) {
               [s.input]: true,
               [s.shadow]: isShadow,
               [s.field_bgc]: background,
-              [s.disabled]: disabled,
+              [s.disabled]: isDisabled,
             },
             inputClassName,
           )}
@@ -113,12 +116,13 @@ export default function Select(props) {
           {additionalPlaceHolder && (
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
           )}
-          {!withoutArrow && (
-            <Icon name="Shevron"
+          {!hasNoArrow && (
+            <Icon
+              name="Shevron"
               className={cn({
                 [s.right_icon]: true,
                 [s.opened]: isOpened,
-                [s.disabled]: disabled,
+                [s.disabled]: isDisabled,
               })}
             />
           )}
