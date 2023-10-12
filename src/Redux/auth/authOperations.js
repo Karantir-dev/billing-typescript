@@ -118,7 +118,6 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       }
     })
     .catch(e => {
-      console.log('qews')
       checkIfTokenAlive(e)
     })
 }
@@ -270,7 +269,7 @@ const logout = () => (dispatch, getState) => {
     })
 }
 
-const getCountriesForRegister = (setCountries, setStates, setSocialLinks) => dispatch => {
+const getCountriesForRegister = (setCountries, setStates) => dispatch => {
   dispatch(actions.showLoader())
 
   axiosInstance
@@ -287,10 +286,10 @@ const getCountriesForRegister = (setCountries, setStates, setSocialLinks) => dis
 
       const countries = data.doc.slist[0].val
       const states = data.doc.slist[1].val
-      const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
-        acc[el.$img] = el.$href
-        return acc
-      }, {})
+      // const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+      //   acc[el.$img] = el.$href
+      //   return acc
+      // }, {})
       countries.shift()
 
       localStorage.setItem(
@@ -298,19 +297,18 @@ const getCountriesForRegister = (setCountries, setStates, setSocialLinks) => dis
         JSON.stringify({
           countries,
           states,
-          socLinks,
+          // socLinks,
         }),
       )
 
       setCountries(countries)
       setStates(states)
-      setSocialLinks && setSocialLinks(socLinks)
 
       dispatch(actions.hideLoader())
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      console.log(err)
+
       checkIfTokenAlive(err.message, dispatch)
     })
 }
@@ -585,56 +583,56 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
     })
 }
 
-const getLoginSocLinks = setSocialLinks => dispatch => {
-  dispatch(actions.showLoader())
+// const getLoginSocLinks = setSocialLinks => dispatch => {
+//   dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'logon',
-        out: 'json',
-      }),
-    )
-    .then(({ data }) => {
-      // if (data.doc.error) throw data.doc.error
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'logon',
+//         out: 'json',
+//       }),
+//     )
+//     .then(({ data }) => {
+//       // if (data.doc.error) throw data.doc.error
 
-      const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
-        acc[el.$img] = el.$href
-        return acc
-      }, {})
-      setSocialLinks(socLinks)
-      // const sessionId = data.doc.auth.$id
+//       const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+//         acc[el.$img] = el.$href
+//         return acc
+//       }, {})
+//       setSocialLinks(socLinks)
+//       // const sessionId = data.doc.auth.$id
 
-      // return axiosInstance
-      //   .post(
-      //     '/',
-      //     qs.stringify({
-      //       func: 'whoami',
-      //       out: 'json',
-      //       auth: sessionId,
-      //     }),
-      //   )
-      //   .then(({ data }) => {
-      //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
+//       // return axiosInstance
+//       //   .post(
+//       //     '/',
+//       //     qs.stringify({
+//       //       func: 'whoami',
+//       //       out: 'json',
+//       //       auth: sessionId,
+//       //     }),
+//       //   )
+//       //   .then(({ data }) => {
+//       //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-      //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
-      //       dispatch(authActions.setTemporaryId(sessionId))
+//       //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
+//       //       dispatch(authActions.setTemporaryId(sessionId))
 
-      //       dispatch(authActions.openTotpForm())
-      //       return
-      //     }
+//       //       dispatch(authActions.openTotpForm())
+//       //       return
+//       //     }
 
-      //     dispatch(authActions.loginSuccess(sessionId))
-      //     dispatch(userOperations.getUserInfo(sessionId))
-      //   })
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      dispatch(actions.hideLoader())
-      checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
-    })
-}
+//       //     dispatch(authActions.loginSuccess(sessionId))
+//       //     dispatch(userOperations.getUserInfo(sessionId))
+//       //   })
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       dispatch(actions.hideLoader())
+//       checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
+//     })
+// }
 
 const getLocation = () => dispatch => {
   axios.get(`${process.env.REACT_APP_API_URL}/api/service/geo/`).then(({ data }) => {
@@ -661,7 +659,7 @@ export default {
   getCountriesForRegister,
   getCurrentSessionStatus,
   checkGoogleState,
-  getLoginSocLinks,
+  // getLoginSocLinks,
   addLoginWithSocial,
   getRedirectLink,
   getLocation,
