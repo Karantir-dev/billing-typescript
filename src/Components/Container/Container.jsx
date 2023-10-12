@@ -62,23 +62,23 @@ export default function Component({ children }) {
 
   const favicon = getFaviconEl()
   const favicon_mob = getFaviconMobEl()
-  if (i18n.language !== 'ru') {
-    if (areNewTickets) {
-      favicon.href = require('@images/favIcons/favicon_ua_active.png')
-      favicon_mob.href = require('@images/favIcons/favicon_192_ua_active.png')
-    } else {
-      favicon.href = require('@images/favIcons/favicon_ua.ico')
-      favicon_mob.href = require('@images/favIcons/logo192_ua.png')
-    }
+  // if (i18n.language !== 'ru') {
+  //   if (areNewTickets) {
+  //     favicon.href = require('@images/favIcons/favicon_ua_active.png')
+  //     favicon_mob.href = require('@images/favIcons/favicon_192_ua_active.png')
+  //   } else {
+  //     favicon.href = require('@images/favIcons/favicon_ua.ico')
+  //     favicon_mob.href = require('@images/favIcons/logo192_ua.png')
+  //   }
+  // } else {
+  if (areNewTickets) {
+    favicon.href = require('@images/favIcons/favicon_active.png')
+    favicon_mob.href = require('@images/favIcons/favicon_192_active.png')
   } else {
-    if (areNewTickets) {
-      favicon.href = require('@images/favIcons/favicon_active.png')
-      favicon_mob.href = require('@images/favIcons/favicon_192_active.png')
-    } else {
-      favicon.href = require('@images/favIcons/favicon.ico')
-      favicon_mob.href = require('@images/favIcons/logo192.png')
-    }
+    favicon.href = require('@images/favIcons/favicon.ico')
+    favicon_mob.href = require('@images/favIcons/logo192.png')
   }
+  // }
 
   if (loading) {
     return <></>

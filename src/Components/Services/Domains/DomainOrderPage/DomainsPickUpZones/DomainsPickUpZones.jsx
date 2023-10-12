@@ -128,7 +128,8 @@ export default function ServicesPage(props) {
     const { id, domain, price } = d
     const renew = getPolongPrice(domain)
 
-    const notAvailable = d?.desc?.$?.includes('Not available') || d.premium
+    const notAvailable =
+      d?.desc?.$?.includes('Not available') || d?.desc?.$?.includes('Error') || d.premium
 
     return (
       <div
@@ -192,7 +193,10 @@ export default function ServicesPage(props) {
             const { id, domain, price } = d
             const renew = getPolongPrice(domain)
 
-            const notAvailable = d?.desc?.$.includes('Not registered') || d.premium
+            const notAvailable =
+              d?.desc?.$.includes('Not registered') ||
+              d?.desc?.$?.includes('Error') ||
+              d.premium
             const available = d?.desc?.$.includes('Registered')
 
             return (

@@ -925,7 +925,7 @@ export default function DedicOrderPage() {
                 )}
 
                 <div className="dedic_swiper_pagination">
-                  <button onClick={handleLeftClick}>
+                  <button onClick={handleLeftClick} type="button">
                     <Icon
                       name="ArrowSign"
                       className={`swiper-prev ${
@@ -934,7 +934,7 @@ export default function DedicOrderPage() {
                     />
                   </button>
                   <div data-dedic-swiper-pagination></div>
-                  <button onClick={handleRightClick}>
+                  <button onClick={handleRightClick} type="button">
                     <Icon
                       name="ArrowSign"
                       className={`swiper-next ${

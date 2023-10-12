@@ -8,13 +8,13 @@ import { toast } from 'react-toastify'
 import { cookies } from '@utils'
 import { useSearchParams } from 'react-router-dom'
 
-function getFaviconEl() {
-  return document.getElementById('favicon')
-}
+// function getFaviconEl() {
+//   return document.getElementById('favicon')
+// }
 
-function getFaviconMobEl() {
-  return document.getElementById('favicon_mob')
-}
+// function getFaviconMobEl() {
+//   return document.getElementById('favicon_mob')
+// }
 
 let firstRender = true
 
@@ -91,16 +91,16 @@ const Component = () => {
     }
   }, [])
 
-  i18n.on('languageChanged', l => {
-    const favicon = getFaviconEl()
-    const favicon_mob = getFaviconMobEl()
-    if (l !== 'ru') {
-      favicon.href = require('@images/favIcons/favicon_ua.ico')
-      favicon_mob.href = require('@images/favIcons/logo192_ua.png')
-    } else {
-      favicon.href = require('@images/favIcons/favicon.ico')
-      favicon_mob.href = require('@images/favIcons/logo192.png')
-    }
+  i18n.on('languageChanged', () => {
+    // const favicon = getFaviconEl()
+    // const favicon_mob = getFaviconMobEl()
+    // if (l !== 'ru') {
+    //   favicon.href = require('@images/favIcons/favicon_ua.ico')
+    //   favicon_mob.href = require('@images/favIcons/logo192_ua.png')
+    // } else {
+    //   favicon.href = require('@images/favIcons/favicon.ico')
+    //   favicon_mob.href = require('@images/favIcons/logo192.png')
+    // }
 
     dispatch(actions.hideLoader())
   })

@@ -8,7 +8,7 @@ import { checkIfTokenAlive } from '@utils'
 const getPayers =
   (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    setIsLoading && setIsLoading(true)
 
     const {
       auth: { sessionId },
@@ -70,7 +70,7 @@ const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
 
       dispatch(payersActions.setPayersSelectLists(filters))
 
-      setIsLoading(false)
+      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
