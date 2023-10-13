@@ -121,7 +121,7 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
                           isShadow
                           itemsList={initialState?.autoprolongList?.map(el => {
                             return {
-                              label: translatePeriod(el?.$, t),
+                              label: translatePeriod(el?.$, el.$key, t),
                               value: el.$key,
                             }
                           })}

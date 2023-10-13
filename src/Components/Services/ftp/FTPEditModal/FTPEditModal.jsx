@@ -81,7 +81,7 @@ export default function FTPEditModal({ elid, closeModal, isOpen }) {
                         getElement={item => setFieldValue('autoprolong', item)}
                         isShadow
                         itemsList={initialState?.autoprolongList?.val?.map(el => ({
-                          label: translatePeriod(el?.$, t),
+                          label: translatePeriod(el?.$, el.$key, t),
                           value: el.$key,
                         }))}
                         className={s.select}

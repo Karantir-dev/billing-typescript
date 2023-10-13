@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { InputField, Button, Select, CustomPhoneInput, CheckBox, Icon, Modal } from '@components'
+import {
+  InputField,
+  Button,
+  Select,
+  CustomPhoneInput,
+  CheckBox,
+  Icon,
+  Modal,
+} from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { translatePeriod } from '@utils'
@@ -132,7 +140,7 @@ export default function Component(props) {
                       isShadow
                       itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => {
                         return {
-                          label: translatePeriod($.trim(), t),
+                          label: translatePeriod($.trim(), $key, t),
                           value: $key,
                         }
                       })}
@@ -182,7 +190,10 @@ export default function Component(props) {
                   className={s.category_title}
                 >
                   {t('Service profiles')}
-                  <Icon name="Shevron" className={cn(s.shevronIcon, { [s.isOpen]: isOpenProfile })} />
+                  <Icon
+                    name="Shevron"
+                    className={cn(s.shevronIcon, { [s.isOpen]: isOpenProfile })}
+                  />
                 </div>
 
                 <div className={cn(s.ownerForm, { [s.isOpen]: isOpenProfile })}>
@@ -345,7 +356,10 @@ export default function Component(props) {
                             label: (
                               <div className={s.countrySelectItem}>
                                 {$key !== 'null' && (
-                                  <img src={`${process.env.REACT_APP_BASE_URL}${$image}`} alt="flag" />
+                                  <img
+                                    src={`${process.env.REACT_APP_BASE_URL}${$image}`}
+                                    alt="flag"
+                                  />
                                 )}
                                 {t(`${$.trim()}`)}
                               </div>

@@ -234,7 +234,7 @@ export default function Component() {
                 label={`${t('Auto renewal', { ns: 'domains' })}:`}
                 className={s.select}
                 itemsList={paramsData?.autoprolong_list?.map(el => ({
-                  label: translatePeriod(el.$, t),
+                  label: translatePeriod(el.$, el.$key, t),
                   value: el.$key,
                 }))}
                 isShadow

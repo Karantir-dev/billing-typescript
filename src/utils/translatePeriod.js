@@ -1,8 +1,8 @@
-export default function translatePeriod(string, t) {
+export default function translatePeriod(string, key, t) {
   let period
-
-  if (string === 'Disabled') {
-    period = t(`${string}`, 'autoprolong')
+console.log('here');
+  if (key === 'null') {
+    period = t('Disabled', 'autoprolong')
   } else {
     const currencyRegex = /[A-Z]{3}/
     const currency = string.match(currencyRegex)
