@@ -422,9 +422,9 @@ const getExpensesCsv = (p_cnt, signal, setIsLoading) => (dispatch, getState) => 
 }
 
 const getPayers =
-  (body = {}, cart = false) =>
+  (body = {}, cart = false, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -442,6 +442,7 @@ const getPayers =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -453,16 +454,20 @@ const getPayers =
           payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
         )
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(cart))
+        dispatch(getPayerCountryType(cart, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
 const getPayerCountryType =
-  (cart = false) =>
+  (cart = false, signal, setIsLoading) =>
   (dispatch, getState) => {
     const {
       auth: { sessionId },
@@ -476,6 +481,7 @@ const getPayerCountryType =
           out: 'json',
           auth: sessionId,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -493,12 +499,16 @@ const getPayerCountryType =
 
         dispatch(payersActions.setPayersSelectLists(filters))
         {
-          !cart && dispatch(getPaymentMethod({}, d))
+          !cart && dispatch(getPaymentMethod({}, d, signal, setIsLoading))
         }
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -535,9 +545,9 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
 }
 
 const getPaymentMethod =
-  (body = {}, payerModalInfoData = null) =>
+  (body = {}, payerModalInfoData = null, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -553,6 +563,7 @@ const getPaymentMethod =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -580,14 +591,27 @@ const getPaymentMethod =
         dispatch(billingActions.setPaymentCurrencyList(d))
 
         if (payerModalInfoData) {
-          return dispatch(payersOperations.getPayerModalInfo(payerModalInfoData))
+          return dispatch(
+            payersOperations.getPayerModalInfo(
+              payerModalInfoData,
+              false,
+              false,
+              false,
+              false,
+              signal,
+              setIsLoading,
+            ),
+          )
         }
-
-        dispatch(actions.hideLoader())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -909,6 +933,21 @@ const createAutoPayment =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (data.doc.ok) {
+          if (data.doc?.profile) {
+            axiosInstance.post(
+              '/',
+              qs.stringify({
+                func: 'profile.edit',
+                out: 'json',
+                auth: sessionId,
+                lang: 'en',
+                sok: 'ok',
+                ...body,
+                elid: data.doc.profile.$,
+              }),
+            )
+          }
+
           dispatch(getPaymentMethodPage(data.doc.ok.$))
           setIsConfigure(false)
         }
@@ -1112,6 +1151,21 @@ const finishAddPaymentMethod =
         }
 
         if (data.doc.ok) {
+          if (data.doc?.profile) {
+            axiosInstance.post(
+              '/',
+              qs.stringify({
+                func: 'profile.edit',
+                out: 'json',
+                auth: sessionId,
+                lang: 'en',
+                sok: 'ok',
+                ...body,
+                elid: data.doc.profile.$,
+              }),
+            )
+          }
+
           dispatch(getPaymentMethodPage(data.doc.ok.$))
         }
       })

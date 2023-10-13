@@ -10,6 +10,14 @@
 
 .form {
   margin-top: 30px;
+
+  &:not(.visible) {
+    display: none;
+  }
+}
+
+.payersList {
+  max-width: 580px;
 }
 
 .configureBtn {
@@ -22,6 +30,7 @@
 .formFieldsBlock {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-end;
 
   &.first {
     align-items: center;
@@ -50,7 +59,7 @@
   margin-top: 20px;
 
   button {
-    height: 57px;
+    height: 55px;
     align-items: flex-start;
     text-align: start;
 

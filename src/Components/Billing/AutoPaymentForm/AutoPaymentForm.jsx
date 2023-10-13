@@ -1,20 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useReducer } from 'react'
 import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { Button, Select, InputField, CheckBox } from '@components'
+import { Button, Select, InputField, CheckBox, PayersList, Loader } from '@components'
 import {
   billingSelectors,
   payersSelectors,
-  payersOperations,
   billingOperations,
+  authSelectors,
 } from '@redux'
 
 import { PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
+import { OFFER_FIELD } from '@utils/constants'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -23,29 +24,22 @@ export default function Component(props) {
 
   const descrWrapper = useRef(null)
 
+  const [state, setState] = useReducer((state, action) => {
+    return { ...state, ...action }
+  }, {})
+
   const { setIsConfigure, signal, setIsLoading } = props
 
   const autoPaymentConfig = useSelector(billingSelectors.getAutoPaymentConfig)
-  const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
 
+  const payersData = useSelector(payersSelectors.getPayersData)
+
   const payersList = useSelector(payersSelectors.getPayersList)
+  const geoData = useSelector(authSelectors.getGeoData)
 
   const [selectedMethod, setSelectedMethod] = useState(null)
-  const [newPayer, setNewPayer] = useState(false)
   const [isDescrOpened, setIsDescrOpened] = useState(false)
-
-  useEffect(() => {
-    const data = {
-      country: payersSelectLists?.country[0]?.$key,
-      profiletype: payersSelectLists?.profiletype[0]?.$key,
-    }
-
-    dispatch(payersOperations.getPayerModalInfo(data))
-  }, []),
-    useEffect(() => {
-      payersList.length ? setNewPayer(false) : setNewPayer(true)
-    }, [payersList])
 
   useEffect(() => {
     if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
@@ -74,12 +68,13 @@ export default function Component(props) {
     }
   }
 
-  const payers = newPayer
-    ? [{ name: { $: t('Add new payer', { ns: 'payers' }) }, id: { $: 'add_new' } }]
-    : payersList
-
   const validationSchema = Yup.object().shape({
-    profile: Yup.string().required(t('Choose payer')),
+    profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
+    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    address_physical: Yup.string()
+      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
+      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .required(t('Is a required field', { ns: 'other' })),
     maxamount: Yup.number()
       .positive(
         `${t('The amount must be greater than')} ${
@@ -104,24 +99,67 @@ export default function Component(props) {
       )
       .required(t('Enter amount')),
     paymethod: Yup.string().required(t('Select a Payment Method')),
-    person: newPayer
-      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+    name:
+      payersSelectedFields?.profiletype === '2' ||
+      payersSelectedFields?.profiletype === '3'
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
+    person: Yup.string().required(t('Is a required field', { ns: 'other' })),
+
+    [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
+      ? Yup.bool().oneOf([true])
       : null,
-    [payersSelectedFields?.offer_field]: newPayer ? Yup.bool().oneOf([true]) : null,
   })
 
   const createAutoPaymentMethodHandler = values => {
     const data = {
-      profile: values?.profile,
+      profile: values?.profile || 'add_new',
       maxamount: values?.maxamount,
       paymethod: values?.paymethod,
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
-      profiletype: payersSelectedFields?.profiletype || '',
-      person: values?.person?.length > 0 ? values?.person : null,
-      [payersSelectedFields?.offer_field]: values[payersSelectedFields?.offer_field]
-        ? 'on'
-        : 'off',
+      eu_vat: values?.eu_vat,
+      postcode_physical: values?.postcode_physical,
+      city_legal: values?.city_physical,
+      city_physical: values?.city_physical,
+      address_legal: values?.address_physical,
+      address_physical: values?.address_physical,
+      postcode: values?.postcode_physical,
+      city: values?.city_physical,
+      address: values?.address_physical,
+      country_physical:
+        payersData.selectedPayerFields?.country ||
+        payersData.selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
+      country_legal:
+        payersData.selectedPayerFields?.country ||
+        payersData.selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
+        '',
+      profiletype: values?.profiletype || '',
+      person:
+        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        values?.person ||
+        ' ',
+      director:
+        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        values?.person ||
+        ' ',
+      name: '',
+      [OFFER_FIELD]: values[OFFER_FIELD] ? 'on' : 'off',
+    }
+
+    if (values.profiletype && values.profiletype !== '1') {
+      data.jobtitle = 'jobtitle'
+      data.rdirector = 'rdirector'
+      data.rjobtitle = 'rjobtitle'
+      data.ddirector = 'ddirector'
+      data.djobtitle = 'djobtitle'
+      data.baseaction = 'baseaction'
+      data.name = values?.name || ''
     }
 
     dispatch(
@@ -165,54 +203,46 @@ export default function Component(props) {
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          profile: payers[0]?.id?.$,
-          person: newPayer ? '' : payers[0]?.name?.$,
-          maxamount: autoPaymentConfig?.maxamount || '',
+          profile:
+            payersData.selectedPayerFields?.profile ||
+            payersList[payersList?.length - 1]?.id?.$ ||
+            '',
+          person:
+            payersData.state?.person ?? payersData.selectedPayerFields?.person ?? '',
+          maxamount: state.maxamount || autoPaymentConfig?.maxamount || '',
           paymethod: selectedMethod?.paymethod?.$ || '',
-          [payersSelectedFields?.offer_field]: false,
+          name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
+          address_physical:
+            payersData.state?.addressPhysical ??
+            payersData.selectedPayerFields?.address_physical ??
+            '',
+          city_physical:
+            payersData.state?.cityPhysical ??
+            (payersData.selectedPayerFields?.city_physical ||
+              geoData?.clients_city ||
+              ''),
+          country:
+            payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
+          profiletype:
+            payersData.state?.profiletype ||
+            payersData.selectedPayerFields?.profiletype ||
+            payersSelectedFields?.profiletype,
+          eu_vat: payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
+          [OFFER_FIELD]: state.isPolicyChecked || false,
         }}
         onSubmit={createAutoPaymentMethodHandler}
       >
         {({ values, setFieldValue, errors, touched }) => {
           return (
-            <Form className={s.form}>
-              <div className={cn(s.formFieldsBlock, s.first)}>
-                <Select
-                  label={`${t('Payer')}:`}
-                  placeholder={t('Not chosen', { ns: 'other' })}
-                  value={values.profile}
-                  getElement={item => {
-                    setFieldValue('profile', item)
-                    if (!newPayer) {
-                      const person = payersList?.find(el => el.id?.$ === item)?.name?.$
-                      setFieldValue('person', person)
-                    }
-                  }}
-                  isShadow
-                  className={s.select}
-                  itemsList={payers?.map(({ name, id }) => ({
-                    label: t(`${name?.$?.trim()}`),
-                    value: id?.$,
-                  }))}
-                  withoutArrow={payers.length === 1}
-                  disabled={payers.length === 1}
-                />
+            <Form
+              className={cn(s.form, {
+                [s.visible]: payersSelectedFields && !!payersData.selectedPayerFields,
+              })}
+            >
+              <div className={s.payersList}>
+                <PayersList signal={signal} setIsLoading={setIsLoading} />
               </div>
-              <div className={cn(s.formFieldsBlock, s.first)}>
-                {newPayer && (
-                  <InputField
-                    inputWrapperClass={s.inputHeight}
-                    name="person"
-                    label={`${t('The contact person', { ns: 'payers' })}:`}
-                    placeholder={t('Enter data', { ns: 'other' })}
-                    isShadow
-                    className={s.inputPerson}
-                    error={!!errors.person}
-                    touched={!!touched.person}
-                    isRequired
-                  />
-                )}
-              </div>
+
               <div className={s.formFieldsBlock}>
                 <InputField
                   inputWrapperClass={s.inputHeight}
@@ -223,6 +253,10 @@ export default function Component(props) {
                   className={s.inputPerson}
                   error={!!errors.maxamount}
                   touched={!!touched.maxamount}
+                  onChange={e => {
+                    const maxamount = e?.target?.value.replace(/[^0-9.]/g, '')
+                    setState({ maxamount })
+                  }}
                 />
                 <Select
                   placeholder={t('Not chosen', { ns: 'other' })}
@@ -252,19 +286,17 @@ export default function Component(props) {
                 />
               </div>
               <div className={s.formFieldsBlock}>
-                {payersSelectedFields?.offer_link && newPayer && (
+                {payersData.selectedPayerFields?.offer_link && (
                   <div className={s.offerBlock}>
                     <CheckBox
-                      value={values[payersSelectedFields?.offer_field]}
+                      name={OFFER_FIELD}
+                      value={values[OFFER_FIELD]}
                       onClick={() =>
-                        setFieldValue(
-                          `${payersSelectedFields?.offer_field}`,
-                          !values[payersSelectedFields?.offer_field],
-                        )
+                        setState({ isPolicyChecked: !state.isPolicyChecked })
                       }
                       className={s.checkbox}
-                      error={!!errors[payersSelectedFields?.offer_field]}
-                      touched={!!touched[payersSelectedFields?.offer_field]}
+                      error={!!errors[OFFER_FIELD]}
+                      touched={!!touched[OFFER_FIELD]}
                     />
                     <div className={s.offerBlockText}>
                       {t('I agree with the terms of the offer', { ns: 'payers' })}
@@ -294,6 +326,9 @@ export default function Component(props) {
           )
         }}
       </Formik>
+      {!(payersSelectedFields && !!payersData.selectedPayerFields) && (
+        <Loader local shown halfScreen />
+      )}
     </>
   )
 }

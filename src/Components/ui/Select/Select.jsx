@@ -66,6 +66,11 @@ export default function Select(props) {
   }, [isOpened])
 
   const itemSelectHandler = item => {
+    if (value === item.value) {
+      setIsOpened(false)
+      return
+    }
+
     setSelectedItem(item)
     getElement(item?.value)
     setIsOpened(false)
@@ -114,7 +119,8 @@ export default function Select(props) {
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
           )}
           {!withoutArrow && (
-            <Icon name="Shevron"
+            <Icon
+              name="Shevron"
               className={cn({
                 [s.right_icon]: true,
                 [s.opened]: isOpened,

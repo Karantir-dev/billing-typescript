@@ -122,9 +122,17 @@ const deletePayer = elid => (dispatch, getState) => {
 }
 
 const getPayerModalInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
+  (
+    body = {},
+    isCreate = false,
+    closeModal,
+    setSelectedPayerFields,
+    newPayer = false,
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -140,6 +148,7 @@ const getPayerModalInfo =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -187,7 +196,7 @@ const getPayerModalInfo =
 
         if (isCreate) {
           closeModal()
-          return dispatch(getPayers())
+          return dispatch(getPayers({}, signal, setIsLoading))
         }
 
         let linkName = ''
@@ -250,18 +259,22 @@ const getPayerModalInfo =
 
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
-          return dispatch(actions.hideLoader())
+          return setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
 
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        dispatch(actions.hideLoader())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -273,9 +286,11 @@ const getPayerEditInfo =
     setSelectedPayerFields,
     cart = false,
     setPayerFieldList,
+    signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -291,6 +306,7 @@ const getPayerEditInfo =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
@@ -338,7 +354,7 @@ const getPayerEditInfo =
 
         if (isCreate) {
           closeModal && closeModal()
-          return dispatch(getPayers())
+          return dispatch(getPayers({}, signal, setIsLoading))
         }
 
         let passportField = false
@@ -400,22 +416,28 @@ const getPayerEditInfo =
           if (el?.$name === 'profiletype') filters[el.$name] = el?.val
         })
 
+        const hideLoader = () =>
+          setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
           setPayerFieldList && setPayerFieldList(filters)
-          return cart
-            ? setTimeout(() => dispatch(actions.hideLoader()), 1000)
-            : dispatch(actions.hideLoader())
+
+          return cart ? setTimeout(() => hideLoader(), 1000) : hideLoader()
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        dispatch(actions.hideLoader())
+        hideLoader()
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
