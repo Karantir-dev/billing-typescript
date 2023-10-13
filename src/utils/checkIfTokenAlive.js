@@ -3,6 +3,16 @@ import cookies from './cookies'
 import { t, exists as isTranslationExists } from 'i18next'
 import { toast } from 'react-toastify'
 
+const userRightsRegex =
+  /Changing rights of the user (\d+) is restricted\. This user has the full access to all functions/
+
+const bankCardsMirRegex =
+  /You are trying to access the 'Payment confirmation' step that is currently not available/
+
+const purseCurrencyRegex =
+  // eslint-disable-next-line no-regex-spaces
+  /"__purse_currency__" currency code must match the payment currency/
+
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   const errorText = err.message || err
 
@@ -15,6 +25,7 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     dispatch(authOperations.getCurrentSessionStatus())
   } else if (errorText.includes('Access from this IP denied')) {
     dispatch(authActions.setAuthErrorMsg('warnings.badip'))
+
     cookies.eraseCookie('sessionId')
     dispatch(authActions.logoutSuccess())
   } else if (errorText.includes('460')) {
@@ -31,13 +42,22 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   } else {
     console.error(err)
 
-    // need to check whether it has sense (look for error translation)
-    if (isTranslationExists(errorText)) {
-      toast.error(t(errorText, { ns: ['auth', 'other'] }), { position: 'bottom-right' })
-    } else {
-      toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
-        position: 'bottom-right',
-      })
+    const isExceptedError =
+      errorText.match(bankCardsMirRegex) ||
+      errorText.match(userRightsRegex) ||
+      errorText.match(purseCurrencyRegex)
+
+    if (!isExceptedError) {
+      // need to check whether it has sense (look for error translation)
+      if (isTranslationExists(errorText)) {
+        toast.error(t(errorText, { ns: ['auth', 'other'] }), { position: 'bottom-right' })
+      } else {
+        toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
+          position: 'bottom-right',
+          toastId: 'unknown_error',
+          updateId: 'unknown_error',
+        })
+      }
     }
   }
 
