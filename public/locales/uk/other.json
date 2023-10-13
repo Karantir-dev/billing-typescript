@@ -67,7 +67,7 @@
   "Payer": "Платник",
   "Sum": "Сума",
   "Payment method": "Метод оплати",
-  "Paypalich description":"Оплата банківською картою MasterCard, QIWI, USDT",
+  "Paypalich description": "Оплата банківською картою MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "Недостатньо прав для доступу",
   "-- without payment method --": "Без способу оплати",
   "Create": "Створити",
@@ -172,7 +172,7 @@
   "Changes saved successfully": "Зміни успішно збережені",
   "services_selected": "Обрано послуг:",
   "server_deleted": "Сервер {{id}} видалений",
-  "unknown_error": "Щось пішло не так",
+  "unknown_error": "Схоже щось пішло не так, приносимо вибачення за незручності. Ви можете звернутись в нашу техпідтримку support@zomro.com",
   "and_more": "і ще {{value}}",
   "Services per page": "Елементів на сторінці",
   "Attention, edit few services": "Увага! Наступні зміни буде застосовано до всіх вибраних послуг",
@@ -260,5 +260,8 @@
   "certificate_matches_error": "Дозволяються лише цифри та великі літери",
   "certificate_applied_success": "Сертифікат успішно застосований",
   "payment_processed": "Ваш платіж в обробці, перевірити статус ви можете у розділі",
-  "Finance/Accounts": "Фінанси/Рахунки"
+  "Finance/Accounts": "Фінанси/Рахунки",
+  "online": "Ви знову в мережі",
+  "offline_title": "Помилка інтернет з'єднання",
+  "offline": "Здається, у вас немає підключення до Інтернету, перевірте доступ до мережі"
 }

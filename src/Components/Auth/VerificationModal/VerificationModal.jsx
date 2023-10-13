@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
-import PropTypes from 'prop-types'
 import { Button, Icon } from '@components'
 import { authSelectors, authActions, authOperations } from '@redux'
+import * as route from '@src/routes'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import s from './VerificationModal.module.scss'
-import { useTranslation } from 'react-i18next'
 
-export default function VerificationModal({ onClose }) {
+export default function VerificationModal() {
   const [totp, setTotp] = useState('')
   const [error, setError] = useState(false)
+  const navigate = useNavigate()
 
   const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
 
@@ -28,8 +30,8 @@ export default function VerificationModal({ onClose }) {
   }
 
   const handleBtnCloseClick = () => {
-    onClose()
     dispatch(authActions.closeTotpForm())
+    navigate(route.LOGIN, { replace: true })
   }
 
   return (
@@ -68,11 +70,4 @@ export default function VerificationModal({ onClose }) {
       </div>
     </div>
   )
-}
-
-VerificationModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-}
-VerificationModal.defaultProps = {
-  onClose: () => {},
 }
