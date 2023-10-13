@@ -10,7 +10,6 @@ const bankCardsMirRegex =
   /You are trying to access the 'Payment confirmation' step that is currently not available/
 
 const purseCurrencyRegex =
-  // eslint-disable-next-line no-regex-spaces
   /"__purse_currency__" currency code must match the payment currency/
 
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
