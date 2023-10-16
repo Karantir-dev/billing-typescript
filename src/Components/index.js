@@ -213,4 +213,4 @@ export { default as PromotionBanner } from './PromotionBanner/PromotionBanner'
 export { default as UserCard } from './TrustedUsers/UserCard/UserCard'
 export { default as ManageUserForm } from './TrustedUsers/ManageUserForm/ManageUserForm'
 
-export { default as PayersList } from './PayersList'
+export { default as PayersList } from './PayersList/PayersList'

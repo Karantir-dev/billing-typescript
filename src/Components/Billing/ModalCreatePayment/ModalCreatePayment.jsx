@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useLayoutEffect, useReducer } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +24,7 @@ import {
   settingsSelectors,
   cartOperations,
   userSelectors,
+  billingActions,
 } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
@@ -66,6 +67,12 @@ export default function ModalCreatePayment(props) {
   const filteredPayment_method = state.additionalPayMethodts?.find(
     e => e?.$key === state.selectedAddPaymentMethod,
   )
+
+  useLayoutEffect(() => {
+    dispatch(billingActions.setIsModalCreatePaymentOpened(true))
+
+    return () => dispatch(billingActions.setIsModalCreatePaymentOpened(false))
+  }, [])
 
   useEffect(() => {
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
@@ -211,7 +218,9 @@ export default function ModalCreatePayment(props) {
   })
 
   const renderPayersListTitle = () => (
-    <div className={cn(s.formBlockTitle, s.formBlockTitlePayers)}>2. {t('Payers choice')}</div>
+    <div className={cn(s.formBlockTitle, s.formBlockTitlePayers)}>
+      2. {t('Payers choice')}
+    </div>
   )
 
   return (

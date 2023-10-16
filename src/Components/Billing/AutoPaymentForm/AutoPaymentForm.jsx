@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { Button, Select, InputField, CheckBox, PayersList, Loader } from '@components'
+import { Button, Select, InputField, CheckBox, PayersList } from '@components'
 import {
   billingSelectors,
   payersSelectors,
@@ -326,9 +326,6 @@ export default function Component(props) {
           )
         }}
       </Formik>
-      {!(payersSelectedFields && !!payersData.selectedPayerFields) && (
-        <Loader local shown halfScreen />
-      )}
     </>
   )
 }

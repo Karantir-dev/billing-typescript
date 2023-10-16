@@ -12,6 +12,9 @@ export default function Component() {
   const navigate = useNavigate()
 
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
+  const isModalCreatePaymentOpened = useSelector(
+    billingSelectors.getIsModalCreatePaymentOpened,
+  )
 
   useEffect(() => {
     if (!isStripeAvailable) {
@@ -33,6 +36,13 @@ export default function Component() {
     dispatch(billingOperations.getAutoPayments(signal, setIsLoading))
     dispatch(payersOperations.getPayers({}, signal, setIsLoading))
   }, [])
+
+  useEffect(() => {
+    console.log(isModalCreatePaymentOpened, ' isModalCreatePaymentOpened')
+    if (isModalCreatePaymentOpened) {
+      setIsConfigure(false)
+    }
+  }, [isModalCreatePaymentOpened])
 
   const renderInstruction = () => {
     return (

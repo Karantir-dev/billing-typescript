@@ -33,7 +33,13 @@ import {
   siteCareReducer,
   vpnReducer,
 } from '@redux'
-import { theme, isLoading, pinned, scrollForbidden, online } from '@redux/reducer'
+import {
+  theme,
+  isLoading,
+  pinned,
+  scrollForbidden,
+  online,
+} from '@redux/reducer'
 
 const rootPersistConfig = {
   key: 'theme',

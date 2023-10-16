@@ -20,7 +20,6 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   const { values, setFieldValue, errors, touched, setFieldTouched } = useFormikContext()
 
   const dispatch = useDispatch()
-
   const payersList = useSelector(payersSelectors.getPayersList)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
@@ -50,7 +49,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }, [state])
 
   useEffect(() => {
-    if (payersList && payersSelectLists) {
+    if (payersList && payersSelectLists && payersSelectLists.maildocs) {
       let data = {
         country: payersSelectLists?.country[0]?.$key,
         profiletype: payersSelectLists?.profiletype[0]?.$key,
@@ -93,7 +92,6 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
       country: payersSelectLists?.country[0]?.$key,
       profiletype: value,
     }
-
     dispatch(payersOperations.getPayerModalInfo(data))
   }
 
@@ -129,7 +127,6 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
         country: payersSelectLists?.country[0]?.$key,
         profiletype: payersSelectLists?.profiletype[0]?.$key,
       }
-
       dispatch(
         payersOperations.getPayerModalInfo(
           data,
