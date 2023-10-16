@@ -109,6 +109,7 @@
   "Enter promo code": "Enter promo code",
   "Apply": "Apply",
   "Invalid promo code": "Invalid promo code",
+  "promocode_not_use": "Promo code '{{promocode}}' can not be applied to ordered services or its discount doesn't exceed the existing one",
   "Close": "Close",
   "Changing": "Changing",
   "Service change history": "Service change history",
