@@ -12,7 +12,13 @@ export default function Component(props) {
   }
 
   return (
-    <Modal closeModal={closeModal} isOpen={isOpen} simple className={s.modal}>
+    <Modal
+      closeModal={closeModal}
+      isOpen={isOpen}
+      simple
+      className={s.modal}
+      isClickOutside
+    >
       <Modal.Header />
       <Modal.Body>
         <span className={s.headerText}>{t('Deleting a service')}</span>

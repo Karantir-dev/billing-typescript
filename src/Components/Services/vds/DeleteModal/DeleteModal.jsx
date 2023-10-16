@@ -31,7 +31,7 @@ export default function DeleteModal({ closeModal, names, deleteFn, isOpen }) {
   }, [])
 
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} simple>
+    <Modal isOpen={isOpen} closeModal={closeModal} simple isClickOutside>
       <Modal.Header />
       <Modal.Body>
         <p className={s.title}>{t('attention')}!</p>
