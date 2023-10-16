@@ -46,8 +46,7 @@ export default function Component() {
           <RequestsArchive />
         </PageTitleRender>
       )
-    }
-    else {
+    } else {
       return <ErrorPage />
     }
   }
@@ -61,7 +60,9 @@ export default function Component() {
       <div className={s.body}>
         <h1 className={s.pageTitle}>{t('support')}</h1>
         <PageTabBar sections={tavBarSections} />
-        <div className={s.content}>{renderPage(params?.path)}</div>
+        <div className={s.content_wrapper}>
+          <div className={s.content}>{renderPage(params?.path)}</div>
+        </div>
       </div>
     </>
   )
