@@ -67,7 +67,7 @@
   "Payer": "Төлеуші",
   "Sum": "Сома",
   "Payment method": "Төлем әдісі",
-  "Paypalich description":"MasterCard, QIWI, USDT банк картасымен төлеу",
+  "Paypalich description": "MasterCard, QIWI, USDT банк картасымен төлеу",
   "Insufficient privileges to access": "Кіру құқығы жеткіліксіз",
   "-- without payment method --": "Төлем әдісінсіз",
   "Create": "Жасау",
@@ -170,7 +170,7 @@
   "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді",
   "services_selected": "Қызметтер таңдалды:",
   "server_deleted": "{{id}} сервері жойылды",
-  "unknown_error": "Бірдеңе дұрыс болмады",
+  "unknown_error": "Бірдеңе дұрыс болмады, қолайсыздықтар үшін кешірім сұраймыз. Сіз біздің техникалық қолдау көрсетуге support@zomro.com хабарласа аласыз",
   "and_more": "және тағы басқа {{value}}",
   "Services per page": "Әр беттегі элементтер",
   "Attention, edit few services": "Назар аударыңыз! Келесі өзгертулер барлық таңдалған қызметтерге қолданылады",
@@ -257,5 +257,8 @@
   "certificate_applied_success": "Сертификат сәтті түрде қолданылды",
 
   "payment_processed": "Төлеміңіз өңделуде, күйді бөлімде тексеруге болады",
-  "Finance/Accounts": "Қаржы/Шот"
+  "Finance/Accounts": "Қаржы/Шот",
+  "online": "Сіз желіге қайта оралдыңыз",
+  "offline_title": "Интернетке қосылу қатесі",
+  "offline": "Сізде интернет байланысы жоқ сияқты, желіге кіру мүмкіндігін тексеріңіз"
 }

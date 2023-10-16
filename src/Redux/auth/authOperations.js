@@ -1,15 +1,16 @@
 import qs from 'qs'
 import axios from 'axios'
-import { actions, userOperations, authActions } from '@redux'
+import { actions, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, cookies } from '@utils'
+import { checkIfTokenAlive, cookies, throwServerError } from '@utils'
 import { SITE_URL } from '@config/config'
+import { exists as isTranslationExists } from 'i18next'
 
-const SERVER_ERR_MSG = 'auth_error'
+// import * as route from '@src/routes'
+// import { toast } from 'react-toastify'
 
 const login =
-  (email, password, reCaptcha, setErrMsg, resetRecaptcha, navigateAfterLogin) =>
-  dispatch => {
+  (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
     dispatch(actions.showLoader())
     cookies.eraseCookie('sessionId')
 
@@ -34,7 +35,9 @@ const login =
       .post('/', formDataLogin)
       .then(({ data }) => {
         localStorage.removeItem('redirectID')
-        if (data.doc.error) throw data.doc.error
+        if (data.doc.error) {
+          throwServerError(data.doc.error.$object)
+        }
 
         const sessionId = data?.doc?.auth?.$id
 
@@ -46,6 +49,7 @@ const login =
             qs.stringify({
               func: 'whoami',
               out: 'json',
+              lang: 'en',
               auth: sessionId,
             }),
           )
@@ -63,21 +67,26 @@ const login =
 
             dispatch(authActions.loginSuccess(sessionId))
             dispatch(authActions.isLogined(true))
-            dispatch(userOperations.getUserInfo(sessionId))
+
             navigateAfterLogin && navigateAfterLogin()
           })
       })
       .catch(error => {
         resetRecaptcha()
         dispatch(actions.hideLoader())
-        const errText =
-          error?.response?.status === 403
-            ? 'blocked_ip'
-            : error?.$object
-            ? error.$object
-            : SERVER_ERR_MSG
 
-        setErrMsg(errText)
+        // billing response errors handling
+        if (error.serverResponse) {
+          if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
+            dispatch(authActions.setAuthErrorMsg(`warnings.${error.message}`))
+          } else {
+            dispatch(authActions.setAuthErrorMsg('warnings.unknown_error'))
+          }
+
+          // access errors handling
+        } else {
+          checkIfTokenAlive(error, dispatch)
+        }
       })
   }
 
@@ -99,15 +108,17 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
       if (data.status === 200) {
         const tokenIsExpired = data?.data?.doc?.error?.$type === 'access'
         if (tokenIsExpired) {
+          dispatch(authActions.setAuthErrorMsg('warnings.token_is_expired'))
+
           dispatch(authActions.logoutSuccess())
           cookies.eraseCookie('sessionId')
         }
-      } else {
-        if (data.doc.error.msg.$) throw new Error(data.doc.error.msg.$)
+      } else if (data.doc?.error?.msg?.$) {
+        throw new Error(data.doc.error.msg.$)
       }
     })
     .catch(e => {
-      checkIfTokenAlive('error during getCurrentSessionStatus' + e.message || e, dispatch)
+      checkIfTokenAlive(e)
     })
 }
 
@@ -258,51 +269,49 @@ const logout = () => (dispatch, getState) => {
     })
 }
 
-const getCountriesForRegister =
-  (setCountries, setStates, setErrMsg, setSocialLinks) => dispatch => {
-    dispatch(actions.showLoader())
+const getCountriesForRegister = (setCountries, setStates) => dispatch => {
+  dispatch(actions.showLoader())
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'register',
-          out: 'json',
-          lang: 'en',
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'register',
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const countries = data.doc.slist[0].val
+      const states = data.doc.slist[1].val
+      // const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+      //   acc[el.$img] = el.$href
+      //   return acc
+      // }, {})
+      countries.shift()
+
+      localStorage.setItem(
+        'countriesForRegister',
+        JSON.stringify({
+          countries,
+          states,
+          // socLinks,
         }),
       )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const countries = data.doc.slist[0].val
-        const states = data.doc.slist[1].val
-        const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
-          acc[el.$img] = el.$href
-          return acc
-        }, {})
-        countries.shift()
+      setCountries(countries)
+      setStates(states)
 
-        localStorage.setItem(
-          'countriesForRegister',
-          JSON.stringify({
-            countries,
-            states,
-            socLinks,
-          }),
-        )
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
 
-        setCountries(countries)
-        setStates(states)
-        setSocialLinks && setSocialLinks(socLinks)
-
-        dispatch(actions.hideLoader())
-      })
-      .catch(err => {
-        dispatch(actions.hideLoader())
-        setErrMsg(SERVER_ERR_MSG)
-        checkIfTokenAlive('getCountriesForRegister ' + err.message, dispatch)
-      })
-  }
+      checkIfTokenAlive(err.message, dispatch)
+    })
+}
 
 const register =
   (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
@@ -331,8 +340,7 @@ const register =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          setErrMsg(data.doc.error.$type)
-          throw new Error(data.doc.error.msg.$)
+          throwServerError(data.doc.error.$type)
         }
 
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
@@ -341,13 +349,22 @@ const register =
 
         dispatch(actions.hideLoader())
       })
-      .catch(err => {
+      .catch(error => {
         resetRecaptcha()
         dispatch(actions.hideLoader())
-        err.message.trim() ===
-        'This email is already registered in the system. If you forgot your password, please use the password recovery form'
-          ? setErrMsg('soc_email_exist')
-          : setErrMsg(SERVER_ERR_MSG)
+
+        // billing response errors handling
+        if (error.serverResponse) {
+          if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
+            setErrMsg(`warnings.${error.message}`)
+          } else {
+            setErrMsg('warnings.unknown_error')
+          }
+
+          // access errors handling
+        } else {
+          checkIfTokenAlive(error, dispatch)
+        }
       })
   }
 
@@ -375,26 +392,33 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
       }),
     )
     .then(({ data }) => {
-      // LOGIN
-      if (
-        data.doc?.error?.$object === 'nolink' ||
-        data.doc?.error?.$object === 'socialrequest'
-      ) {
+      if (data.doc?.error?.$object === 'socialrequest') {
+        // this key "soc_net_not_integrated" need to be replaced
+        // to "soc_net_auth_failed" after it is created on website
         sendInfoToSite({ error: 'soc_net_not_integrated' })
+
+        redirectToLogin('warnings.soc_net_auth_failed')
+      } else if (data.doc?.error?.$object === 'nolink') {
+        sendInfoToSite({ error: 'soc_net_not_integrated' })
+
         redirectToLogin(
-          'soc_net_not_integrated',
-          data.doc?.error?.param.find(el => el.$name === 'network')?.$,
+          'warnings.soc_net_not_integrated',
+          data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
         )
+
+        // LOGIN
       } else if (data.doc?.auth?.$id) {
         const sessionId = data.doc?.auth?.$id
         cookies.setCookie('sessionId', sessionId, 1)
         sendInfoToSite({ sessionId })
+
         axiosInstance
           .post(
             '/',
             qs.stringify({
               func: 'whoami',
               out: 'json',
+              lang: 'en',
               auth: sessionId,
             }),
           )
@@ -412,7 +436,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
 
             dispatch(authActions.loginSuccess(sessionId))
             // is it necessary request?
-            dispatch(userOperations.getUserInfo(sessionId))
+            // dispatch(userOperations.getUserInfo(sessionId))
           })
 
         //REGISTER
@@ -435,19 +459,20 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
             if (data.doc?.error?.$object === 'account_exist') {
               sendInfoToSite({ error: 'social_akk_registered' })
               redirectToLogin(
-                'social_akk_registered',
+                'warnings.social_akk_registered',
                 data.doc.error.param.find(el => el.$name === 'email')?.$,
               )
             } else if (data.doc?.error?.$type === 'email_exist') {
               // need to handle this error
               sendInfoToSite({ error: 'soc_email_exist' })
               const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToLogin('soc_email_exist', email)
+
+              redirectToLogin('warnings.soc_email_exist', email)
             } else if (data.doc?.error?.$object === 'email') {
               sendInfoToSite({ error: 'no_email_from_social' })
               // need to handle this error
               // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToRegistration('no_email_from_social', '', '')
+              redirectToRegistration('warnings.no_email_from_social', '', '')
             } else if (data.doc?.ok?.$) {
               axiosInstance
                 .post(
@@ -466,7 +491,6 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   sendInfoToSite({ sessionId })
 
                   if (window.fbq) window.fbq('track', 'CompleteRegistration')
-                  console.log('soc registered')
 
                   dispatch(authActions.loginSuccess(sessionId))
                 })
@@ -479,7 +503,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
     .catch(err => {
       dispatch(actions.hideLoader())
 
-      checkIfTokenAlive('checkGoogleState ' + err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 
@@ -559,56 +583,56 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
     })
 }
 
-const getLoginSocLinks = setSocialLinks => dispatch => {
-  dispatch(actions.showLoader())
+// const getLoginSocLinks = setSocialLinks => dispatch => {
+//   dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'logon',
-        out: 'json',
-      }),
-    )
-    .then(({ data }) => {
-      // if (data.doc.error) throw data.doc.error
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'logon',
+//         out: 'json',
+//       }),
+//     )
+//     .then(({ data }) => {
+//       // if (data.doc.error) throw data.doc.error
 
-      const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
-        acc[el.$img] = el.$href
-        return acc
-      }, {})
-      setSocialLinks(socLinks)
-      // const sessionId = data.doc.auth.$id
+//       const socLinks = data.doc?.imglinks?.elem?.reduce((acc, el) => {
+//         acc[el.$img] = el.$href
+//         return acc
+//       }, {})
+//       setSocialLinks(socLinks)
+//       // const sessionId = data.doc.auth.$id
 
-      // return axiosInstance
-      //   .post(
-      //     '/',
-      //     qs.stringify({
-      //       func: 'whoami',
-      //       out: 'json',
-      //       auth: sessionId,
-      //     }),
-      //   )
-      //   .then(({ data }) => {
-      //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
+//       // return axiosInstance
+//       //   .post(
+//       //     '/',
+//       //     qs.stringify({
+//       //       func: 'whoami',
+//       //       out: 'json',
+//       //       auth: sessionId,
+//       //     }),
+//       //   )
+//       //   .then(({ data }) => {
+//       //     if (data.doc.error) throw new Error(`usrparam - ${data.doc.error.msg.$}`)
 
-      //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
-      //       dispatch(authActions.setTemporaryId(sessionId))
+//       //     if (data.doc?.ok?.$ === 'func=totp.confirm') {
+//       //       dispatch(authActions.setTemporaryId(sessionId))
 
-      //       dispatch(authActions.openTotpForm())
-      //       return
-      //     }
+//       //       dispatch(authActions.openTotpForm())
+//       //       return
+//       //     }
 
-      //     dispatch(authActions.loginSuccess(sessionId))
-      //     dispatch(userOperations.getUserInfo(sessionId))
-      //   })
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      dispatch(actions.hideLoader())
-      checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
-    })
-}
+//       //     dispatch(authActions.loginSuccess(sessionId))
+//       //     dispatch(userOperations.getUserInfo(sessionId))
+//       //   })
+//       dispatch(actions.hideLoader())
+//     })
+//     .catch(error => {
+//       dispatch(actions.hideLoader())
+//       checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
+//     })
+// }
 
 const getLocation = () => dispatch => {
   axios.get(`${process.env.REACT_APP_API_URL}/api/service/geo/`).then(({ data }) => {
@@ -635,7 +659,7 @@ export default {
   getCountriesForRegister,
   getCurrentSessionStatus,
   checkGoogleState,
-  getLoginSocLinks,
+  // getLoginSocLinks,
   addLoginWithSocial,
   getRedirectLink,
   getLocation,

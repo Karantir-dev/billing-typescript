@@ -61,6 +61,7 @@ import {
   DedicatedPageLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
+import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
@@ -259,6 +260,7 @@ const Component = ({ fromPromotionLink }) => {
           <Cart />
         </Portal>
       )}
+      <BlockingModal />
     </Container>
   )
 }

@@ -9,6 +9,7 @@ body {
     rgba(255, 255, 255, 0.09) 0%,
     #ffffff 92.92%
   );
+  --red_gradient_elements: linear-gradient(180deg, #ff6f66 12.11%, #fa487d 98.37%);
 
   // images
   --auth-lines: url('../images/auth_lines.svg');

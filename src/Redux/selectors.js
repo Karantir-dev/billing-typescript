@@ -3,6 +3,7 @@ const getIsPinned = state => state.pinned
 const getIsLoading = state => state.isLoading
 const isScrollForbidden = state => state.scrollForbidden
 const onlineStatus = state => state.online
+const getBlockingModalStatus = state => state.blockingModalShown
 
 export default {
   getTheme,
@@ -10,4 +11,5 @@ export default {
   getIsPinned,
   isScrollForbidden,
   onlineStatus,
+  getBlockingModalStatus,
 }

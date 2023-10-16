@@ -39,6 +39,7 @@ import {
   pinned,
   scrollForbidden,
   online,
+  blockingModalShown,
 } from '@redux/reducer'
 
 const rootPersistConfig = {
@@ -77,6 +78,7 @@ const rootReducer = combineReducers({
   pinned,
   scrollForbidden,
   online,
+  blockingModalShown,
 })
 
 const store = configureStore({

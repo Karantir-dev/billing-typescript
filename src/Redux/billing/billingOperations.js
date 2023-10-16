@@ -530,6 +530,8 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
       const isStripeAvailable = data.doc.list
         .find(el => el.$name === 'methodlist')
         ?.elem.find(el => el.name.$.includes('Stripe'))
