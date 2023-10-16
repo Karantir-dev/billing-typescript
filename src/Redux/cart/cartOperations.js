@@ -87,9 +87,9 @@ const setBasketPromocode =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
-            position: 'bottom-right',
-          })
+          // toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
+          //   position: 'bottom-right',
+          // })
 
           throw new Error(data.doc.error.msg.$)
         }
