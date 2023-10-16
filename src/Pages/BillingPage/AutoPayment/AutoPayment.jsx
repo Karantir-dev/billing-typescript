@@ -38,7 +38,6 @@ export default function Component() {
   }, [])
 
   useEffect(() => {
-    console.log(isModalCreatePaymentOpened, ' isModalCreatePaymentOpened')
     if (isModalCreatePaymentOpened) {
       setIsConfigure(false)
     }
