@@ -38,7 +38,7 @@ export default function RebootModal({ id, names, closeModal, isOpen }) {
   }, [])
 
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} simple>
+    <Modal isOpen={isOpen} closeModal={closeModal} simple isClickOutside>
       <Modal.Header />
       <Modal.Body>
         <p className={s.title}>{t('reload')}</p>

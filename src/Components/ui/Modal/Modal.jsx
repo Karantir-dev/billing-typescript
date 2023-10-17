@@ -16,6 +16,7 @@ const Modal = ({
   bgClassname,
   simple,
   noScroll,
+  isClickOutside,
   ...props
 }) => {
   const modal = useRef()
@@ -52,12 +53,14 @@ const Modal = ({
     return () => window.removeEventListener('keydown', keyDownHandler)
   }, [isOpen])
 
+  const clickOutside = isClickOutside ? closeModal : null
+
   return (
     <>
       {isOpen && (
         <Portal>
           <ModalProvider value={{ closeModal }}>
-            <Backdrop isOpened={isOpen} onClick={closeModal} className={bgClassname}>
+            <Backdrop isOpened={isOpen} onClick={clickOutside} className={bgClassname}>
               <div
                 className={cn(s.modal, className, {
                   [s.simple]: simple,
