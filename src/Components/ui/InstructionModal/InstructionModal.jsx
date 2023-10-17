@@ -20,7 +20,7 @@ export default function InstructionModal({
   }
 
   return (
-    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
+    <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal} isClickOutside>
       <Modal.Header>
         <span className={s.headerText}>{title}</span>
       </Modal.Header>

@@ -1390,11 +1390,6 @@ export default function Component() {
                             />
                           ) : (
                             <Button
-                              disabled={
-                                Number(values.amount) <
-                                  values?.selectedPayMethod?.payment_minamount?.$ ||
-                                !values?.selectedPayMethod
-                              }
                               className={s.saveBtn}
                               isShadow
                               size="medium"
@@ -1404,7 +1399,6 @@ export default function Component() {
                           )}
                         </>
                       )}
-
                       <button
                         onClick={() => setState({ isClosing: true })}
                         type="button"
