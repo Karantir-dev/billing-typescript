@@ -1635,11 +1635,11 @@ export default function Component() {
                               />
                             ) : (
                               <Button
-                                disabled={
-                                  Number(values.amount) <
-                                    values?.selectedPayMethod?.payment_minamount?.$ ||
-                                  !values?.selectedPayMethod
-                                }
+                                // disabled={
+                                //   Number(values.amount) <
+                                //     values?.selectedPayMethod?.payment_minamount?.$ ||
+                                //   !values?.selectedPayMethod
+                                // }
                                 className={s.saveBtn}
                                 isShadow
                                 size="medium"
