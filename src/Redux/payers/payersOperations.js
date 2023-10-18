@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, payersActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import i18n from '@src/i18n'
+import { t, exists as isTranslationExists } from 'i18next'
 import { checkIfTokenAlive } from '@utils'
 
 const getPayers =
@@ -37,17 +37,27 @@ const getPayers =
           payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
         )
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(signal, setIsLoading))
+
+        // we dont need this info to render payers list
+        // dispatch(getPayerCountryType(signal, setIsLoading))
+
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        if (checkIfTokenAlive(error.message, dispatch, true) && setIsLoading) {
+          setIsLoading(false)
+        } else {
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
-const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
+const getPayerCountryType = () => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
+
+  dispatch(actions.showLoader())
 
   axiosInstance
     .post(
@@ -57,7 +67,6 @@ const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
         out: 'json',
         auth: sessionId,
       }),
-      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -70,10 +79,20 @@ const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
 
       dispatch(payersActions.setPayersSelectLists(filters))
 
-      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+      let fixedFields = {
+        country: filters?.country?.[0]?.$key,
+        profiletype: filters?.profiletype?.[0]?.$key,
+      }
+      dispatch(getPayerModalInfo(fixedFields))
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      const errorText = error.message.trim()
+      if (isTranslationExists(errorText)) {
+        toast.error(t(errorText, { ns: ['auth', 'other'] }))
+        dispatch(actions.hideLoader())
+      } else {
+        checkIfTokenAlive(errorText, dispatch, true)
+      }
     })
 }
 
@@ -106,7 +125,7 @@ const deletePayer = elid => (dispatch, getState) => {
         error.message.trim() === 'You cannot delete the payer who already made payments'
       ) {
         toast.error(
-          i18n.t('You cannot delete the payer who already made payments', {
+          t('You cannot delete the payer who already made payments', {
             ns: 'payers',
           }),
           {
@@ -154,7 +173,7 @@ const getPayerModalInfo =
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
-              i18n.t('does not correspond to country', {
+              t('does not correspond to country', {
                 ns: 'payers',
               }),
               {
@@ -168,7 +187,7 @@ const getPayerModalInfo =
             data.doc.error.msg.$.includes('Company')
           ) {
             toast.error(
-              i18n.t('The maximum number of payers Company', {
+              t('The maximum number of payers Company', {
                 ns: 'payers',
               }),
               {
@@ -182,7 +201,7 @@ const getPayerModalInfo =
             data.doc.error.msg.$.includes('field has invalid value')
           ) {
             toast.error(
-              i18n.t('eu_vat field has invalid value', {
+              t('eu_vat field has invalid value', {
                 ns: 'payers',
               }),
               {
@@ -312,7 +331,7 @@ const getPayerEditInfo =
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
-              i18n.t('does not correspond to country', {
+              t('does not correspond to country', {
                 ns: 'payers',
               }),
               {
@@ -326,7 +345,7 @@ const getPayerEditInfo =
             data.doc.error.msg.$.includes('Company')
           ) {
             toast.error(
-              i18n.t('The maximum number of payers Company', {
+              t('The maximum number of payers Company', {
                 ns: 'payers',
               }),
               {
@@ -340,7 +359,7 @@ const getPayerEditInfo =
             data.doc.error.msg.$.includes('field has invalid value')
           ) {
             toast.error(
-              i18n.t('eu_vat field has invalid value', {
+              t('eu_vat field has invalid value', {
                 ns: 'payers',
               }),
               {
@@ -427,7 +446,7 @@ const getPayerEditInfo =
         }
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
-        dispatch(payersActions.updatePayersSelectLists(filters))
+        dispatch(payersActions.setPayersSelectLists(filters))
 
         hideLoader()
       })
@@ -483,4 +502,5 @@ export default {
   getPayerModalInfo,
   getPayerEditInfo,
   getPayerOfferText,
+  getPayerCountryType,
 }

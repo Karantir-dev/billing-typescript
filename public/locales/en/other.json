@@ -261,5 +261,6 @@
   "Finance/Accounts": "Finance/Accounts",
   "online": "You`re back online",
   "offline_title": "Internet connection error",
-  "offline": "It seems that you do not have an Internet connection, check your network access"
+  "offline": "It seems that you do not have an Internet connection, check your network access",
+  "Payer creation function is temporarily unavailable": "Payer creation function is temporarily unavailable"
 }
