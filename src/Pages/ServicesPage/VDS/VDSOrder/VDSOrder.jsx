@@ -491,6 +491,7 @@ export default function VDSOrder() {
                           role="button"
                           onClick={() => {
                             handleTariffClick(period, pricelist.$)
+                            setRecipe('null')
                             runScroll()
                           }}
                         >

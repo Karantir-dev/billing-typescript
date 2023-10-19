@@ -12,6 +12,9 @@ const enableScrolling = createAction('ENABLE_SCROLLING')
 const setOnline = createAction('SET_ONLINE')
 const setOffline = createAction('SET_OFFLINE')
 
+const showBlockingModal = createAction('SHOW_BLOCKING_MODAL')
+const hideBlockingModal = createAction('HIDE_BLOCKING_MODAL')
+
 export default {
   changeTheme,
   showLoader,
@@ -21,4 +24,6 @@ export default {
   enableScrolling,
   setOnline,
   setOffline,
+  showBlockingModal,
+  hideBlockingModal,
 }

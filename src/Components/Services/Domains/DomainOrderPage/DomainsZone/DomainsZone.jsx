@@ -2,6 +2,7 @@ import cn from 'classnames'
 import { CheckBox } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './DomainsZone.module.scss'
+import { ErrorMessage } from 'formik'
 
 export default function ServicesPage(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -86,7 +87,7 @@ export default function ServicesPage(props) {
   return (
     <div className={s.domainsZone}>
       <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
-
+      <ErrorMessage className={s.error_message} name="selectedDomains" component="span" />
       {/* 
         commented all domains checkbox while we have a trouble with long request 
       */}

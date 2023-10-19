@@ -17,8 +17,8 @@ export default function Component({
   return (
     <button
       disabled={disabled}
-      className={cn({
-        [s.btn]: type === 'checkbox',
+      className={cn(s[type], {
+        [s.btn]: true,
         [s.error]: touched && error,
         [s.active]: value,
         [s.disabled]: disabled,
@@ -29,16 +29,10 @@ export default function Component({
       onClick={onClick}
       id={id}
     >
-      {type === 'radio' ? (
-        <div
-          className={cn(s.radio, {
-            [s.active]: value,
-          })}
-        >
-          <span className={cn(s.circle, { [s.active]: value })}></span>
-        </div>
-      ) : (
+      {type === 'checkbox' ? (
         <Icon name="Check" className={cn(s.check, { [s.active]: value })} />
+      ) : (
+        <p className={cn({ [s.circle]: true, [s.active]: value })}></p>
       )}
     </button>
   )

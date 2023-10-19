@@ -61,6 +61,7 @@ import {
   DedicatedPageLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
+import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
@@ -201,9 +202,9 @@ const Component = ({ fromPromotionLink }) => {
             element={<DomainsNsPageLazy transfer={true} />}
           />
           <Route path={`${route.DEDICATED_SERVERS}`} element={<DedicatedPageLazy />}>
-          <Route index element={<DedicatedServersPageLazy />} />
-          <Route path="vds" element={<VDSPageLazy isDedic />} />
-        </Route>
+            <Route index element={<DedicatedServersPageLazy />} />
+            <Route path="vds" element={<VDSPageLazy isDedic />} />
+          </Route>
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
           <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
           <Route path={route.FTP} element={<FTPPageLazy />} />
@@ -216,8 +217,8 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={`${route.SUPPORT}/*`} element={<SupportScreen />} />
           <Route path={`${route.BILLING}/*`} element={<BillingScreen />} />
 
-        <Route path={route.SUCCESS_PAYMENT} element={<SuccessPayment />} />
-        <Route path={route.FAILED_PAYMENT} element={<ErrorPayment />} />
+          <Route path={route.SUCCESS_PAYMENT} element={<SuccessPayment />} />
+          <Route path={route.FAILED_PAYMENT} element={<ErrorPayment />} />
 
           <Route path={route.PAYERS} element={<PayersPageLazy />} />
           <Route path={route.CONTRACTS} element={<ContractsPageLazy />} />
@@ -259,6 +260,7 @@ const Component = ({ fromPromotionLink }) => {
           <Cart />
         </Portal>
       )}
+      <BlockingModal />
     </Container>
   )
 }

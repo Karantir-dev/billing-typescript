@@ -1,0 +1,56 @@
+.modal {
+  width: 260px;
+  height: 244px;
+  background-image: url('../../images/connection_lost_mobile.png');
+}
+
+.modal_body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  background: var(--red_gradient_elements);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+.text {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.triangle {
+  width: 87px;
+  height: 87px;
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 498px;
+    height: 308px;
+    background-image: url('../../images/connection_lost.png');
+  }
+
+  .triangle {
+    width: 117px;
+    height: 117px;
+  }
+
+  .title {
+    font-size: 25px;
+    margin-bottom: 30px;
+  }
+
+  .text {
+    font-size: 18px;
+  }
+}

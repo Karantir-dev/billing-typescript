@@ -8,6 +8,7 @@ const initialState = {
   pinned: false,
   scrollForbidden: false,
   online: true,
+  blockingModalShown: false,
 }
 
 export const theme = createReducer(initialState.theme, {
@@ -34,4 +35,9 @@ export const scrollForbidden = createReducer(initialState.scrollForbidden, {
 export const online = createReducer(initialState.online, {
   [actions.setOffline]: () => false,
   [actions.setOnline]: () => true,
+})
+
+export const blockingModalShown = createReducer(initialState.blockingModalShown, {
+  [actions.hideBlockingModal]: () => false,
+  [actions.showBlockingModal]: () => true,
 })

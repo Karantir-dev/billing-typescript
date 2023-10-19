@@ -92,6 +92,7 @@ export default function Component({ transfer = false }) {
 
   const validationSchema = Yup.object().shape({
     domain_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 
   const setDomainsNameHandler = values => {
@@ -172,6 +173,7 @@ export default function Component({ transfer = false }) {
           validationSchema={validationSchema}
           initialValues={{
             domain_name: '',
+            selectedDomains: selectedDomains,
           }}
           onSubmit={setDomainsNameHandler}
           validateOnChange={true}
@@ -189,52 +191,58 @@ export default function Component({ transfer = false }) {
                 setInputValue(value)
               }
             }
+
+            useEffect(() => {
+              setFieldValue('selectedDomains', selectedDomains)
+            }, [selectedDomains])
             return (
-              <Form className={s.form}>
-                <InputField
-                  name="domain_name"
-                  type="text"
-                  label={`${t('Domain name')}:`}
-                  placeholder={t('Enter domain name')}
-                  className={s.input}
-                  inputClassName={s.inputClassName}
-                  inputWrapperClass={s.inputHeight}
-                  error={!!errors.domain_name}
-                  touched={!!touched.domain_name}
-                  isShadow
-                  value={inputValue}
-                  onChange={validateInput}
-                />
-                <Button
-                  className={s.searchBtn}
-                  isShadow
-                  size="medium"
-                  label={t(transfer ? 'Check' : 'Pick up')}
-                  type="submit"
-                />
-              </Form>
+              <>
+                <Form className={s.form}>
+                  <InputField
+                    name="domain_name"
+                    type="text"
+                    label={`${t('Domain name')}:`}
+                    placeholder={t('Enter domain name')}
+                    className={s.input}
+                    inputClassName={s.inputClassName}
+                    inputWrapperClass={s.inputHeight}
+                    error={!!errors.domain_name}
+                    touched={!!touched.domain_name}
+                    isShadow
+                    value={inputValue}
+                    onChange={validateInput}
+                  />
+                  <Button
+                    className={s.searchBtn}
+                    isShadow
+                    size="medium"
+                    label={t(transfer ? 'Check' : 'Pick up')}
+                    type="submit"
+                  />
+                </Form>
+                {pickUpDomains?.list?.length > 0 ? (
+                  <DomainsPickUpZones
+                    setSelectedDomains={setSelectedDomainsNames}
+                    selectedDomains={selectedDomainsNames}
+                    domains={pickUpDomains?.list}
+                    selected={pickUpDomains?.selected}
+                    registerDomainHandler={registerDomainHandler}
+                    transfer={transfer}
+                    autoprolongPrices={autoprolongPrices}
+                  />
+                ) : (
+                  <DomainsZone
+                    setSelectedDomains={setSelectedDomains}
+                    selectedDomains={selectedDomains}
+                    domains={domains}
+                    transfer={transfer}
+                    autoprolongPrices={autoprolongPrices}
+                  />
+                )}
+              </>
             )
           }}
         </Formik>
-        {pickUpDomains?.list?.length > 0 ? (
-          <DomainsPickUpZones
-            setSelectedDomains={setSelectedDomainsNames}
-            selectedDomains={selectedDomainsNames}
-            domains={pickUpDomains?.list}
-            selected={pickUpDomains?.selected}
-            registerDomainHandler={registerDomainHandler}
-            transfer={transfer}
-            autoprolongPrices={autoprolongPrices}
-          />
-        ) : (
-          <DomainsZone
-            setSelectedDomains={setSelectedDomains}
-            selectedDomains={selectedDomains}
-            domains={domains}
-            transfer={transfer}
-            autoprolongPrices={autoprolongPrices}
-          />
-        )}
       </div>
 
       {isLoading && <Loader local shown={isLoading} />}

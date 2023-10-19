@@ -127,5 +127,6 @@
   "base price": "базова ціна",
   "Total amount": "Загальна сума",
 
-  "ns_format": "Формат запису \"ns.example.com\""
+  "ns_format": "Формат запису \"ns.example.com\"",
+  "choose_min_one_domain": "Виберіть хоча б один домен"
 }
