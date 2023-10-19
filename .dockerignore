@@ -3,5 +3,4 @@ deployment/
 .git/
 Dockerfile
 node_modules/
-.env
 .env_example
