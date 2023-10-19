@@ -52,7 +52,7 @@ const getPayers =
       })
   }
 
-const getPayerCountryType = () => (dispatch, getState) => {
+const getPayerCountryType = setSelectedPayerFields => (dispatch, getState) => {
   const {
     auth: { sessionId },
   } = getState()
@@ -83,7 +83,7 @@ const getPayerCountryType = () => (dispatch, getState) => {
         country: filters?.country?.[0]?.$key,
         profiletype: filters?.profiletype?.[0]?.$key,
       }
-      dispatch(getPayerModalInfo(fixedFields))
+      dispatch(getPayerModalInfo(fixedFields, false, null, setSelectedPayerFields))
     })
     .catch(error => {
       const errorText = error.message.trim()
@@ -276,14 +276,13 @@ const getPayerModalInfo =
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
 
+        dispatch(payersActions.setPayersSelectedFields(selectedFields))
+        dispatch(payersActions.updatePayersSelectLists(filters))
+
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
           return setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
         }
-
-        dispatch(payersActions.setPayersSelectedFields(selectedFields))
-
-        dispatch(payersActions.updatePayersSelectLists(filters))
 
         setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
@@ -438,15 +437,15 @@ const getPayerEditInfo =
         const hideLoader = () =>
           setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
 
+        dispatch(payersActions.setPayersSelectedFields(selectedFields))
+        dispatch(payersActions.setPayersSelectLists(filters))
+
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
           setPayerFieldList && setPayerFieldList(filters)
 
           return cart ? setTimeout(() => hideLoader(), 1000) : hideLoader()
         }
-
-        dispatch(payersActions.setPayersSelectedFields(selectedFields))
-        dispatch(payersActions.setPayersSelectLists(filters))
 
         hideLoader()
       })

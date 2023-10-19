@@ -76,6 +76,7 @@ export default function ModalCreatePayment(props) {
 
   useEffect(() => {
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
+    dispatch(billingOperations.getPaymentMethod())
   }, [])
 
   useEffect(() => {
@@ -126,11 +127,11 @@ export default function ModalCreatePayment(props) {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
       person:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       director:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       name: '',
@@ -245,7 +246,7 @@ export default function ModalCreatePayment(props) {
             initialValues={{
               profile:
                 payersData.selectedPayerFields?.profile ||
-                payersList[payersList?.length - 1]?.id?.$ ||
+                payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
               amount: state.amount || '',
               selectedPayMethod: state.selectedPayMethod || undefined,

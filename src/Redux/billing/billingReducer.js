@@ -58,6 +58,10 @@ const paymentMethodList = createReducer(initialState.paymentMethodList, {
   [billingActions.clearPaymentMethodList]: () => [],
 })
 
+const paymentsMethodList = createReducer(initialState.paymentsMethodList, {
+  [billingActions.setPaymentMethodsList]: (_, { payload }) => payload,
+})
+
 const paymentsMethodCount = createReducer(initialState.paymentMethodCount, {
   [billingActions.setPaymentMethodCount]: (_, { payload }) => payload,
   [billingActions.clearPaymentMethodCount]: () => 0,
@@ -87,10 +91,6 @@ const expensesFiltersList = createReducer(initialState.expensesFiltersList, {
 
 const expensesFilters = createReducer(initialState.expensesFilters, {
   [billingActions.setExpensesFilters]: (_, { payload }) => payload,
-})
-
-const paymentsMethodList = createReducer(initialState.paymentsMethodList, {
-  [billingActions.setPaymentMethodsList]: (_, { payload }) => payload,
 })
 
 const paymentsCurrencyList = createReducer(initialState.paymentsCurrencyList, {

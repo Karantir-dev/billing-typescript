@@ -34,10 +34,12 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }, {})
 
   useEffect(() => {
-    dispatch(billingOperations.getPayers({}, false, signal, setIsLoading))
+    dispatch(billingOperations.getPayers({}, signal, setIsLoading))
 
-    return () =>
+    return () => {
       dispatch(payersActions.setPayersData({ selectedPayerFields: null, state: null }))
+      dispatch(payersActions.setPayersList(null))
+    }
   }, [])
 
   useEffect(() => {
@@ -49,17 +51,14 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }, [state])
 
   useEffect(() => {
-    if (payersList && payersSelectLists && payersSelectLists.maildocs) {
-      let data = {
-        country: payersSelectLists?.country[0]?.$key,
-        profiletype: payersSelectLists?.profiletype[0]?.$key,
-      }
-      if (payersList?.length !== 0) {
-        data = { elid: payersList[payersList?.length - 1]?.id?.$ }
+    console.log(payersList)
+    if (payersList) {
+      if (payersList.length !== 0) {
+        const requestFields = { elid: payersList[payersList.length - 1]?.id?.$ }
 
         dispatch(
           payersOperations.getPayerEditInfo(
-            data,
+            requestFields,
             false,
             null,
             setSelectedPayerFields,
@@ -70,21 +69,46 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
           ),
         )
         return
+      } else {
+        dispatch(payersOperations.getPayerCountryType(setSelectedPayerFields))
       }
-
-      dispatch(
-        payersOperations.getPayerModalInfo(
-          data,
-          false,
-          null,
-          setSelectedPayerFields,
-          false,
-          signal,
-          setIsLoading,
-        ),
-      )
     }
-  }, [payersList, payersSelectLists])
+    // if (payersList && payersSelectLists && payersSelectLists.maildocs) {
+    //   let data = {
+    //     country: payersSelectLists?.country[0]?.$key,
+    //     profiletype: payersSelectLists?.profiletype[0]?.$key,
+    //   }
+    // if (payersList?.length !== 0) {
+    //   data = { elid: payersList[payersList?.length - 1]?.id?.$ }
+
+    //   dispatch(
+    //     payersOperations.getPayerEditInfo(
+    //       data,
+    //       false,
+    //       null,
+    //       setSelectedPayerFields,
+    //       false,
+    //       setPayerFieldList,
+    //       signal,
+    //       setIsLoading,
+    //     ),
+    //   )
+    //   return
+    // }
+
+    //   dispatch(
+    //     payersOperations.getPayerModalInfo(
+    //       data,
+    //       false,
+    //       null,
+    //       setSelectedPayerFields,
+    //       false,
+    //       signal,
+    //       setIsLoading,
+    //     ),
+    //   )
+    // }
+  }, [payersList])
 
   const changeProfileTypeHandler = value => {
     setState({ profiletype: value })

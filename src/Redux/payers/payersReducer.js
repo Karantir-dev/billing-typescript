@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import payersActions from './payersActions'
 
 const initialState = {
-  payersList: [],
+  payersList: null,
   payersCount: 0,
 
   payersSelectLists: null,

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { useCancelRequest } from '@src/utils'
 
-export default function Component() {
+export default function AutoPayment() {
   const navigate = useNavigate()
 
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)

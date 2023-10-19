@@ -232,11 +232,11 @@ export default function Component() {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
       person:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       director:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       promocode: values?.promocode || '',
@@ -924,7 +924,7 @@ export default function Component() {
               initialValues={{
                 profile:
                   payersData.selectedPayerFields?.profile ||
-                  payersList[payersList?.length - 1]?.id?.$ ||
+                  payersList?.[payersList?.length - 1]?.id?.$ ||
                   '',
                 name:
                   payersData.state?.name || payersData.selectedPayerFields?.name || '',

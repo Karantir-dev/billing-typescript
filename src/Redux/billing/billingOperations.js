@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies, handleLocalLoader } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -422,7 +422,7 @@ const getExpensesCsv = (p_cnt, signal, setIsLoading) => (dispatch, getState) => 
 }
 
 const getPayers =
-  (body = {}, cart = false, signal, setIsLoading) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -450,11 +450,16 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(
-          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
-        )
+        const payersList = elem?.filter(({ name, id }) => name?.$ && id?.$)
+
+        dispatch(payersActions.setPayersList(payersList))
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(cart, signal, setIsLoading))
+
+        if (payersList.length === 0) {
+          dispatch(getPayerCountryType())
+        } else {
+          setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        }
       })
       .catch(error => {
         if (setIsLoading) {
@@ -466,51 +471,43 @@ const getPayers =
       })
   }
 
-const getPayerCountryType =
-  (cart = false, signal, setIsLoading) =>
-  (dispatch, getState) => {
-    const {
-      auth: { sessionId },
-    } = getState()
+const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'profile.add.country',
-          out: 'json',
-          auth: sessionId,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'profile.add.country',
+        out: 'json',
+        auth: sessionId,
+      }),
+      { signal },
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        const filters = {}
+      const filters = {}
 
-        data?.doc?.slist?.forEach(el => {
-          filters[el.$name] = el?.val
-        })
-
-        const d = {
-          country: filters?.country[0]?.$key,
-          profiletype: filters?.profiletype[0]?.$key,
-        }
-
-        dispatch(payersActions.setPayersSelectLists(filters))
-        {
-          !cart && dispatch(getPaymentMethod({}, d, signal, setIsLoading))
-        }
+      data?.doc?.slist?.forEach(el => {
+        filters[el.$name] = el?.val
       })
-      .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
-      })
-  }
+
+      dispatch(payersActions.setPayersSelectLists(filters))
+
+      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      if (setIsLoading) {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      }
+    })
+}
 
 const checkIsStripeAvailable = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -799,7 +796,7 @@ const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => 
 }
 
 const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading(true)
+  setIsLoading && setIsLoading(true)
 
   const {
     auth: { sessionId },
@@ -828,7 +825,8 @@ const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
       dispatch(getAutoPaymentsAdd(signal, setIsLoading))
     })
     .catch(err => {
-      checkIfTokenAlive(err?.message, dispatch, true) && setIsLoading(false)
+      handleLocalLoader(err?.message, () => setIsLoading(false))
+      checkIfTokenAlive(err?.message, dispatch)
     })
 }
 

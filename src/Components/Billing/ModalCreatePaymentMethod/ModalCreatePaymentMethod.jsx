@@ -66,11 +66,11 @@ export default function Component(props) {
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
       person:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       director:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       name: '',
@@ -129,7 +129,7 @@ export default function Component(props) {
             initialValues={{
               profile:
                 payersData.selectedPayerFields?.profile ||
-                payersList[payersList?.length - 1]?.id?.$ ||
+                payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
               slecetedPayMethod: isStripeAvailable.paymethod.$,
               name: payersData.state?.name || payersData.selectedPayerFields?.name || '',

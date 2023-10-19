@@ -17,7 +17,7 @@ import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
 import { OFFER_FIELD } from '@utils/constants'
 
-export default function Component(props) {
+export default function AutoPaymentForm(props) {
   const dispatch = useDispatch()
   const { t } = useTranslation(['billing', 'other', 'payers'])
   const higherThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
@@ -141,11 +141,11 @@ export default function Component(props) {
         '',
       profiletype: values?.profiletype || '',
       person:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       director:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       name: '',
@@ -205,7 +205,7 @@ export default function Component(props) {
         initialValues={{
           profile:
             payersData.selectedPayerFields?.profile ||
-            payersList[payersList?.length - 1]?.id?.$ ||
+            payersList?.[payersList?.length - 1]?.id?.$ ||
             '',
           person:
             payersData.state?.person ?? payersData.selectedPayerFields?.person ?? '',
