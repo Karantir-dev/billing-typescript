@@ -270,6 +270,8 @@ const getPayerModalInfo =
           offer_field: linkName || '',
           passport_field: passportField,
           eu_vat_field: euVatField,
+          // I got an error once with this value 'new'
+          // so probably it needs to be replaced with 'add_new'
           profile: newPayer ? 'new' : null,
           jobtitle: data.doc.jobtitle?.$ || '',
           rdirector: data.doc.rdirector?.$ || '',
