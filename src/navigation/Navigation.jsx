@@ -66,7 +66,7 @@ const Component = () => {
 
   useEffect(() => {
     const intervalId =
-      // process.env.NODE_ENV !== 'development' &&
+      process.env.NODE_ENV !== 'development' &&
       setInterval(() => {
         fetch('https://www.google.com', { mode: 'no-cors' })
           .then(() => {

@@ -66,6 +66,11 @@ export default function Select(props) {
   }, [isOpened])
 
   const itemSelectHandler = item => {
+    if (value === item.value) {
+      setIsOpened(false)
+      return
+    }
+
     setSelectedItem(item)
     getElement(item?.value)
     setIsOpened(false)

@@ -20,11 +20,19 @@
   background: var(--elements-bgc);
   box-shadow: var(--forms2_shadow);
   border-radius: 3px;
-  // padding: 25px 0;
-  // padding: 0 17px 0 15px;
   margin: 20px auto;
   max-width: 690px;
   width: 90vw;
+
+  &:not(.visible) {
+    opacity: 0;
+  }
+}
+
+.payersList {
+  &.hide {
+    display: none;
+  }
 }
 
 .modalCloseBlock {
@@ -44,7 +52,6 @@
   display: flex;
   background: var(--forms_bgc_3);
   box-shadow: var(--menu_shadow);
-  // box-shadow: 4px 4px 10px 0px #0000004D;
 }
 
 .crossIcon {
@@ -108,13 +115,6 @@
   background: rgba(179, 169, 193, 0.51);
 }
 
-.fieldsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  column-gap: 20px;
-  row-gap: 14px;
-}
-
 .formFieldsBlock {
   display: flex;
   flex-wrap: wrap;
@@ -163,7 +163,6 @@
   max-width: 100%;
   text-transform: uppercase;
   height: 55px;
-  //
 }
 
 .cancel {
@@ -194,11 +193,6 @@
 
 .select {
   max-width: 100%;
-  // margin-top: 10px;
-
-  // button {
-  //   height: 50px;
-  // }
 }
 
 .inputBig {
@@ -212,35 +206,6 @@
   font-size: 13px;
   line-height: 1.2;
   margin-top: 3px;
-}
-
-.inputAmountBlock {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-  flex-basis: 100%;
-  position: relative;
-
-  .input {
-    width: 100%;
-  }
-
-  .currency {
-    position: absolute;
-    right: 20px;
-    top: 13px;
-    z-index: 1;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 130.5%;
-    color: var(--main-text);
-  }
-
-  .inputHeight {
-    input {
-      padding-right: 60px;
-    }
-  }
 }
 
 .paymentMethodBtn {
@@ -270,14 +235,13 @@
   .descrWrapper {
     display: flex;
     align-items: center;
-    
+
     .methodDescr {
       max-width: 150px;
       overflow: hidden;
       text-overflow: ellipsis;
       -webkit-line-clamp: 1;
       word-break: break-all;
-
     }
   }
 
@@ -348,22 +312,6 @@
   cursor: pointer;
 
   margin-top: 5px;
-}
-
-.addNewPayerBtn {
-  margin: 10px 15px 15px;
-  display: flex;
-  width: 100%;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 70.9%;
-  letter-spacing: -0.01em;
-  text-decoration-line: underline;
-
-  color: var(--link-color);
-  cursor: pointer;
 }
 
 .notAllowPayMethod {
@@ -590,21 +538,6 @@
   margin-top: 15px;
 }
 
-.countrySelectItem {
-  display: flex;
-  align-items: center;
-
-  img {
-    margin-right: 13px;
-  }
-}
-
-.nsInputBlock {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-}
-
 .infoBtn {
   position: relative;
   top: 2px;
@@ -654,9 +587,8 @@
     path {
       fill: var(--accent-color-light);
     }
-  }  
+  }
 }
-
 
 .descriptionBlock {
   position: absolute;
@@ -689,10 +621,6 @@
     border-bottom: 10px solid var(--forms_bgc_4);
     clear: both;
   }
-}
-
-.inputAddressWrapp {
-  padding-right: 35px;
 }
 
 .phoneVerificationBlock {
@@ -736,15 +664,6 @@
 
     margin-top: 15px;
   }
-  .fieldsGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .nsInputBlock {
-    position: relative;
-    width: 100%;
-    // max-width: 46%;
-  }
 
   .modalBg {
     align-items: center;
@@ -752,18 +671,11 @@
   }
 
   .modalBlock {
-    // padding: 0 30px;
     margin: 0.5% auto;
   }
   .headerText {
     padding: 19px 0 22px 0;
   }
-
-  // .formFieldsBlock {
-  //   .InputField_input {
-  //     background-color: var(--forms_bgc_3);
-  //   }
-  // }
 
   .padding {
     padding: 0 35px;
@@ -792,15 +704,6 @@
     }
   }
 
-  .inputAmountBlock {
-    flex-basis: 30%;
-  }
-
-  .addNewPayerBtn {
-    width: auto;
-    margin: 13px 0 0 0;
-  }
-
   .promocodeBtn {
     width: auto;
     margin: 13px 0 0 0;
@@ -810,25 +713,6 @@
     max-width: 30%;
     margin-right: 20px;
   }
-
-  // .select {
-  //   max-width: 46%;
-  //   margin-top: 10px;
-  //   margin-right: 20px;
-  // }
-
-  // .inputBig {
-  //   max-width: 46%;
-  //   margin-right: 20px;
-
-  //   &.inputAddress {
-  //     max-width: 100%;
-  //   }
-
-  //   &:nth-child(2n) {
-  //     margin-right: 0px;
-  //   }
-  // }
 
   .btnBlock {
     flex-direction: row;

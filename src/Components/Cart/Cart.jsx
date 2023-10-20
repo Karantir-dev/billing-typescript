@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useReducer } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,16 +19,14 @@ import {
   ForexItem,
   SiteCareItem,
   VpnItem,
-  InputWithAutocomplete,
-  SelectGeo,
   ScrollToFieldError,
   Icon,
   CustomPhoneInput,
   HintWrapper,
+  PayersList,
 } from '@components'
 import {
   cartOperations,
-  payersOperations,
   settingsOperations,
   payersSelectors,
   selectors,
@@ -41,14 +39,17 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES } from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
-  const dropdownDescription = useRef(null)
+  const [state, setState] = useReducer((state, action) => {
+    return { ...state, ...action }
+  }, {})
+
   const dropdownSale = useRef(null)
 
   const { t } = useTranslation([
@@ -63,48 +64,18 @@ export default function Component() {
   ])
 
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
-  const [paymentListLoaded, setPaymentsListLoaded] = useState(false)
-
   const [salesList, setSalesList] = useState([])
-  const [isDedicWithSale, setIsDedicWithSale] = useState(false)
-
-  const [selectedPayerFields, setSelectedPayerFields] = useState(null)
-
-  const [cartData, setCartData] = useState(null)
-
-  const [isClosing, setIsClosing] = useState(false)
-
-  const [showMore, setShowMore] = useState(false)
-  const [showAllItems, setShowAllItems] = useState(false)
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
-  const [selectedPayMethod, setSelectedPayMethod] = useState(undefined)
-  const [isOffer, setIsOffer] = useState(false)
 
   const geoData = useSelector(authSelectors.getGeoData)
 
   const isLoading = useSelector(selectors.getIsLoading)
   const payersList = useSelector(payersSelectors.getPayersList)
-  const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
+  const payersData = useSelector(payersSelectors.getPayersData)
 
-  const [payerFieldList, setPayerFieldList] = useState(null)
-  const [profileType, setProfileType] = useState('')
-  const [company, setCompany] = useState('')
-  const [person, setPerson] = useState(null)
-  const [cityPhysical, setCityPhysical] = useState(null)
-  const [addressPhysical, setAddressPhysical] = useState(null)
-  const [euVat, setEUVat] = useState('')
-  const [promocode, setPromocode] = useState('')
-  const [isPhoneVerification, setIsPhoneVerification] = useState(false)
-  const [userCountryCode, setUserCountryCode] = useState(null)
-  const [countryCode, setCountryCode] = useState(null)
-  const [phone, setPhone] = useState('')
-  const [additionalPayMethodts, setAdditionalPayMethodts] = useState(undefined)
-  const [selectedAddPaymentMethod, setSelectedAddPaymentMethod] = useState(undefined)
-  const [alfaLogin, setAlfaLogin] = useState('')
-
-  const filteredPayment_method = additionalPayMethodts?.find(
-    e => e?.$key === selectedAddPaymentMethod,
+  const filteredPayment_method = state.additionalPayMethodts?.find(
+    e => e?.$key === state.selectedAddPaymentMethod,
   )
 
   const userEdit = useSelector(settingsSelectors.getUserEdit)
@@ -112,8 +83,10 @@ export default function Component() {
 
   const paymentListhandler = data => {
     setPaymentsMethodList(data)
-    setPaymentsListLoaded(true)
+    setState({ paymentListLoaded: true })
   }
+
+  const setCartData = value => setState({ cartData: value })
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
@@ -122,58 +95,20 @@ export default function Component() {
   }, [])
 
   useEffect(() => {
-    if (additionalPayMethodts && additionalPayMethodts?.length > 0) {
-      setSelectedAddPaymentMethod(additionalPayMethodts[0]?.$key)
+    if (state.additionalPayMethodts && state.additionalPayMethodts?.length > 0) {
+      setState({ selectedAddPaymentMethod: state.additionalPayMethodts[0]?.$key })
     }
-  }, [additionalPayMethodts])
+  }, [state.additionalPayMethodts])
 
   useEffect(() => {
-    if (cartData && !isPhoneVerification) {
-      cartData?.elemList?.forEach(e => {
+    if (state.cartData && !state.isPhoneVerification) {
+      state.cartData?.elemList?.forEach(e => {
         if (e?.needphoneverify?.$ === 'on') {
-          setIsPhoneVerification(true)
+          setState({ isPhoneVerification: true })
         }
       })
     }
-  }, [cartData])
-
-  useEffect(() => {
-    if (payersSelectLists) {
-      if (!payersSelectedFields?.country || !payersSelectedFields?.country_physical) {
-        const data = {
-          country: payersSelectLists?.country[0]?.$key,
-          profiletype: payersSelectLists?.profiletype[0]?.$key,
-        }
-        dispatch(payersOperations.getPayerModalInfo(data))
-      }
-    }
-  }, [payersSelectLists])
-
-  useEffect(() => {
-    if (payersList && payersSelectLists) {
-      let data = {
-        country: payersSelectLists?.country[0]?.$key,
-        profiletype: payersSelectLists?.profiletype[0]?.$key,
-      }
-      if (payersList?.length !== 0) {
-        data = { elid: payersList[payersList?.length - 1]?.id?.$ }
-        dispatch(
-          payersOperations.getPayerEditInfo(
-            data,
-            false,
-            null,
-            setSelectedPayerFields,
-            true,
-            setPayerFieldList,
-          ),
-        )
-        return
-      }
-      dispatch(
-        payersOperations.getPayerModalInfo(data, false, null, setSelectedPayerFields),
-      )
-    }
-  }, [payersList, payersSelectLists])
+  }, [state.cartData])
 
   useEffect(() => {
     const handleResize = () => {
@@ -186,20 +121,12 @@ export default function Component() {
   }, [])
 
   useEffect(() => {
-    if (selectedPayerFields && !selectedPayerFields?.offer_field) {
-      setSelectedPayerFields(d => {
-        return { ...d, offer_field: 'offer_3' }
-      })
-    }
-  }, [selectedPayerFields])
-
-  useEffect(() => {
     if (userEdit) {
       const findCountry = userEdit?.phone_countries?.find(
         e => e?.$key === userEdit?.phone_country,
       )
       const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      setUserCountryCode(code)
+      setState({ userCountryCode: code })
     }
   }, [userEdit])
 
@@ -236,7 +163,7 @@ export default function Component() {
         : null,
 
     payment_method:
-      additionalPayMethodts && additionalPayMethodts?.length > 0
+      state.additionalPayMethodts && state.additionalPayMethodts?.length > 0
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     phone:
@@ -244,7 +171,7 @@ export default function Component() {
       filteredPayment_method?.hide?.includes('alfabank_login')
         ? Yup.string()
             .phone(
-              countryCode,
+              state.countryCode,
               false,
               t('Must be a valid phone number', { ns: 'user_settings' }),
             )
@@ -255,7 +182,7 @@ export default function Component() {
       !filteredPayment_method?.hide?.includes('alfabank_login')
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    [selectedPayerFields?.offer_field]: Yup.bool().oneOf([true]),
+    [OFFER_FIELD]: Yup.bool().oneOf([true]),
   })
 
   const setPromocodeToCart = promocode => {
@@ -286,37 +213,34 @@ export default function Component() {
       city: values?.city_physical,
       address: values?.address_physical,
       country_physical:
-        selectedPayerFields?.country ||
-        selectedPayerFields?.country_physical ||
-        selectedPayerFields?.country ||
-        selectedPayerFields?.country_physical ||
+        payersData.selectedPayerFields?.country ||
+        payersData.selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
         '',
       country_legal:
-        selectedPayerFields?.country ||
-        selectedPayerFields?.country_physical ||
-        selectedPayerFields?.country ||
-        selectedPayerFields?.country_physical ||
+        payersData.selectedPayerFields?.country ||
+        payersData.selectedPayerFields?.country_physical ||
+        payersSelectedFields?.country ||
+        payersSelectedFields?.country_physical ||
         '',
-      billorder: cartData?.billorder,
-      amount: cartData?.total_sum,
+      billorder: state.cartData?.billorder,
+      amount: state.cartData?.total_sum,
       profile: values?.profile,
       paymethod: values?.selectedPayMethod?.paymethod?.$,
       country:
-        selectedPayerFields?.country || selectedPayerFields?.country_physical || '',
+        payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       profiletype: values?.profiletype || '',
       person:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       director:
-        payersList?.find(e => e?.id?.$ === values?.profile)?.name?.$ ||
+        (payersList && payersList.find(e => e?.id?.$ === values?.profile)?.name?.$) ||
         values?.person ||
         ' ',
       promocode: values?.promocode || '',
-      name: values?.person,
-      [selectedPayerFields?.offer_field]: values[selectedPayerFields?.offer_field]
-        ? 'on'
-        : 'off',
+      [OFFER_FIELD]: values[OFFER_FIELD] ? 'on' : 'off',
     }
 
     if (values?.selectedPayMethod?.action?.button?.$name === 'fromsubaccount') {
@@ -341,15 +265,17 @@ export default function Component() {
     }
 
     if (values.profiletype && values.profiletype !== '1') {
-      data.jobtitle = selectedPayerFields?.jobtitle || 'jobtitle '
-      data.rdirector = selectedPayerFields?.rdirector || 'rdirector '
-      data.rjobtitle = selectedPayerFields?.rjobtitle || 'rjobtitle '
-      data.ddirector = selectedPayerFields?.ddirector || 'ddirector '
-      data.djobtitle = selectedPayerFields?.djobtitle || 'djobtitle '
-      data.baseaction = selectedPayerFields?.baseaction || 'baseaction '
+      data.jobtitle = payersData.selectedPayerFields?.jobtitle || 'jobtitle '
+      data.rdirector = payersData.selectedPayerFields?.rdirector || 'rdirector '
+      data.rjobtitle = payersData.selectedPayerFields?.rjobtitle || 'rjobtitle '
+      data.ddirector = payersData.selectedPayerFields?.ddirector || 'ddirector '
+      data.djobtitle = payersData.selectedPayerFields?.djobtitle || 'djobtitle '
+      data.baseaction = payersData.selectedPayerFields?.baseaction || 'baseaction '
+      data.name = values?.name || ''
     }
 
-    const cart = { ...cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
+    const cart = { ...state.cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
+
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
@@ -363,23 +289,35 @@ export default function Component() {
   let VDS_FEE_AMOUNT = ''
 
   const renderItems = () => {
-    const domainsList = cartData?.elemList?.filter(
+    const domainsList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'domain',
     )
-    const dedicList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dedic')
-    const vdsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vds')
-    const ftpList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'storage')
-    const dnsList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'dnshost')
-    const forexList = cartData?.elemList?.filter(
+    const dedicList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'dedic',
+    )
+    const vdsList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'vds',
+    )
+    const ftpList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'storage',
+    )
+    const dnsList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'dnshost',
+    )
+    const forexList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'forexbox',
     )
-    const vhostList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vhost')
+    const vhostList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'vhost',
+    )
 
-    const siteCareList = cartData?.elemList?.filter(
+    const siteCareList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'zabota-o-servere',
     )
 
-    const vpnList = cartData?.elemList?.filter(elem => elem['item.type']?.$ === 'vpn')
+    const vpnList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'vpn',
+    )
 
     const filteredVdsList = []
 
@@ -497,43 +435,45 @@ export default function Component() {
 
     switch (true) {
       case vpnList?.length > 0:
-        displayedItems = showAllItems ? vpnList : vpnList.slice(0, maxItemsToShow)
+        displayedItems = state.showAllItems ? vpnList : vpnList.slice(0, maxItemsToShow)
         break
       case siteCareList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? siteCareList
           : siteCareList.slice(0, maxItemsToShow)
         break
       case filteredVhostList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredVhostList
           : filteredVhostList.slice(0, maxItemsToShow)
         break
       case domainsList?.length > 0:
-        displayedItems = showAllItems ? domainsList : domainsList.slice(0, maxItemsToShow)
+        displayedItems = state.showAllItems
+          ? domainsList
+          : domainsList.slice(0, maxItemsToShow)
         break
       case filteredDedicList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredDedicList
           : filteredDedicList.slice(0, maxItemsToShow)
         break
       case filteredVdsList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredVdsList
           : filteredVdsList.slice(0, maxItemsToShow)
         break
       case filteredFtpList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredFtpList
           : filteredFtpList.slice(0, maxItemsToShow)
         break
       case filteredDnsList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredDnsList
           : filteredDnsList.slice(0, maxItemsToShow)
         break
       case filteredForexList?.length > 0:
-        displayedItems = showAllItems
+        displayedItems = state.showAllItems
           ? filteredForexList
           : filteredForexList.slice(0, maxItemsToShow)
         break
@@ -546,11 +486,11 @@ export default function Component() {
       screenWidth < 768 ? listLength > 1 : listLength > 3
 
     const showMoreButton = listLength => {
-      const toggleShowAllItems = () => setShowAllItems(!showAllItems)
+      const toggleShowAllItems = () => setState({ showAllItems: !state.showAllItems })
 
       return (
         <button className={s.showMoreItemsBtn} onClick={toggleShowAllItems}>
-          {!showAllItems
+          {!state.showAllItems
             ? `${t('Show')} ${listLength - displayedItems.length} ${t('more items')}`
             : t('Hide')}
         </button>
@@ -562,7 +502,7 @@ export default function Component() {
         {vpnList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>VPN:</div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const { id, desc, cost, pricelist_name, discount_percent, fullcost } = el
                 return (
@@ -590,7 +530,7 @@ export default function Component() {
         {siteCareList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('Site care')}:</div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -628,7 +568,7 @@ export default function Component() {
         {filteredVhostList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('vhost', { ns: 'crumbs' })}:</div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -667,7 +607,7 @@ export default function Component() {
           <>
             <div className={s.padding}>
               <div className={s.formBlockTitle}>{t('Domain registration')}:</div>
-              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
                 {displayedItems?.map(el => {
                   const { id, desc, cost, fullcost, discount_percent } = el
                   return (
@@ -696,7 +636,7 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('dedicated_server', { ns: 'dedicated_servers' })}:
             </div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -737,7 +677,7 @@ export default function Component() {
             </div>
 
             <div className={s.padding}>
-              <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+              <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
                 {displayedItems?.map(el => {
                   return (
                     <VdsItem
@@ -762,7 +702,7 @@ export default function Component() {
             <div className={s.formBlockTitle}>
               {t('services.External FTP-storage', { ns: 'other' })}:{' '}
             </div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -799,7 +739,7 @@ export default function Component() {
         {filteredDnsList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('dns', { ns: 'crumbs' })}:</div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -836,7 +776,7 @@ export default function Component() {
         {filteredForexList?.length > 0 && (
           <div className={s.padding}>
             <div className={s.formBlockTitle}>{t('forex', { ns: 'crumbs' })}:</div>
-            <div className={cn(s.elements_wrapper, { [s.opened]: showAllItems })}>
+            <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
               {displayedItems?.map(el => {
                 const {
                   id,
@@ -875,7 +815,7 @@ export default function Component() {
   }
 
   const renderActiveDiscounts = () => {
-    const arr = cartData?.elemList[0]?.price_hint?.$?.split('<br/>')
+    const arr = state.cartData?.elemList[0]?.price_hint?.$?.split('<br/>')
 
     const services = arr?.filter(
       e =>
@@ -924,9 +864,9 @@ export default function Component() {
   }
 
   useEffect(() => {
-    const cartConfigName = cartData?.elemList[0]?.pricelist_name.$?.slice(
+    const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
       0,
-      cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+      state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
     )
 
     const foundSale = salesList.find(
@@ -936,8 +876,8 @@ export default function Component() {
     )
 
     const cartDiscountPercent =
-      cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
-    const selectedPeriod = cartData?.elemList[0]?.['item.period']?.$
+      state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
+    const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
 
     if (foundSale) {
       if (
@@ -946,749 +886,557 @@ export default function Component() {
         (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
         cartDiscountPercent === 0
       ) {
-        setIsDedicWithSale(false)
+        setState({ isDedicWithSale: false })
       } else {
-        setIsDedicWithSale(true)
+        setState({ isDedicWithSale: true })
       }
     }
   }, [salesList])
 
-  const payerTypeArrayHandler = () => {
-    const arr = payerFieldList?.profiletype
-      ? payerFieldList?.profiletype
-      : payersSelectLists?.profiletype
-
-    return arr?.map(({ $key, $ }) => ({
-      label: t(`${$.trim()}`, { ns: 'payers' }),
-      value: $key,
-    }))
-  }
+  const renderPayersListTitle = () => (
+    <div className={s.formBlockTitle}>{t('Payer')}:</div>
+  )
 
   return (
-    <div className={cn(s.modalBg, { [s.closing]: isClosing })}>
-      {payersSelectedFields && selectedPayerFields && payersSelectLists ? (
-        !isClosing ? (
-          <div className={s.modalBlock}>
-            <div className={cn(s.modalHeader, s.padding)}>
-              <span className={s.headerText}>{t('Payment')}</span>
-              <Icon
-                name="Cross"
-                onClick={() => setIsClosing(true)}
-                className={s.crossIcon}
-              />
+    <div className={cn(s.modalBg, { [s.closing]: state.isClosing })}>
+      {!state.isClosing ? (
+        <div
+          className={cn(s.modalBlock, {
+            [s.visible]: payersSelectedFields && !!payersData.selectedPayerFields,
+          })}
+        >
+          <div className={cn(s.modalHeader, s.padding)}>
+            <span className={s.headerText}>{t('Payment')}</span>
+            <Icon
+              name="Cross"
+              onClick={() => setState({ isClosing: true })}
+              className={s.crossIcon}
+            />
+          </div>
+          <div className={s.scroll}>
+            <div className={s.itemsBlock}>
+              {payersSelectedFields && payersData.selectedPayerFields && renderItems()}
             </div>
-            <div className={s.scroll}>
-              <div className={s.itemsBlock}>{renderItems()}</div>
 
-              <Formik
-                enableReinitialize
-                validationSchema={validationSchema}
-                initialValues={{
-                  profile:
-                    selectedPayerFields?.profile ||
-                    payersList[payersList?.length - 1]?.id?.$ ||
-                    '',
-                  name: company || selectedPayerFields?.name || '',
-                  address_physical:
-                    addressPhysical ?? selectedPayerFields?.address_physical,
-                  city_physical:
-                    cityPhysical ??
-                    (selectedPayerFields?.city_physical || geoData?.clients_city || ''),
-                  person: person ?? selectedPayerFields?.person,
-                  country:
-                    selectedPayerFields?.country ||
-                    selectedPayerFields?.country_physical ||
-                    '',
-                  profiletype: profileType || selectedPayerFields?.profiletype,
-                  eu_vat: euVat || selectedPayerFields?.eu_vat || '',
-                  [selectedPayerFields?.offer_field]: isOffer,
+            <Formik
+              enableReinitialize
+              validationSchema={validationSchema}
+              initialValues={{
+                profile:
+                  payersData.selectedPayerFields?.profile ||
+                  payersList?.[payersList?.length - 1]?.id?.$ ||
+                  '',
+                name:
+                  payersData.state?.name || payersData.selectedPayerFields?.name || '',
+                address_physical:
+                  payersData.state?.addressPhysical ??
+                  payersData.selectedPayerFields?.address_physical ??
+                  '',
+                city_physical:
+                  payersData.state?.cityPhysical ??
+                  (payersData.selectedPayerFields?.city_physical ||
+                    geoData?.clients_city ||
+                    ''),
+                person:
+                  payersData.state?.person ??
+                  payersData.selectedPayerFields?.person ??
+                  '',
+                country:
+                  payersSelectedFields?.country ||
+                  payersSelectedFields?.country_physical ||
+                  '',
+                profiletype:
+                  payersData.state?.profiletype ||
+                  payersData.selectedPayerFields?.profiletype ||
+                  payersSelectedFields?.profiletype,
+                eu_vat:
+                  payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
+                [OFFER_FIELD]: state.isPolicyChecked || false,
 
-                  selectedPayMethod: selectedPayMethod || undefined,
-                  promocode: promocode,
-                  isPersonalBalance:
-                    selectedPayMethod?.name?.$?.includes('balance') &&
-                    selectedPayMethod?.paymethod_type?.$ === '0'
-                      ? 'on'
-                      : 'off',
-                  phone: phone || '',
-                  payment_method: selectedAddPaymentMethod || undefined,
-                  alfabank_login: alfaLogin || '',
-                }}
-                onSubmit={payBasketHandler}
-              >
-                {({
-                  values,
-                  setFieldValue,
-                  touched,
-                  errors,
-                  handleBlur,
-                  setFieldTouched,
-                }) => {
-                  const [errorFields, setErrorFields] = useState({})
+                selectedPayMethod: state.selectedPayMethod || undefined,
+                promocode: state.promocode,
+                isPersonalBalance:
+                  state.selectedPayMethod?.name?.$?.includes('balance') &&
+                  state.selectedPayMethod?.paymethod_type?.$ === '0'
+                    ? 'on'
+                    : 'off',
+                phone: state.phone || '',
+                payment_method: state.selectedAddPaymentMethod || undefined,
+                alfabank_login: state.alfaLogin || '',
+              }}
+              onSubmit={payBasketHandler}
+            >
+              {({ values, setFieldValue, touched, errors, handleBlur }) => {
+                const parsePaymentInfo = text => {
+                  const splittedText = text?.split('<p>')
+                  if (splittedText?.length > 0) {
+                    const minAmount = splittedText[0]
+                      ?.replace('\n', '')
+                      .replace(/&nbsp;/g, ' ')
 
-                  useEffect(() => {
-                    if (
-                      selectedPayerFields?.address_physical &&
-                      (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
-                        !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
-                    ) {
-                      setErrorFields(prev => ({ ...prev, address_physical: true }))
-                      setFieldTouched('address_physical', true, true)
-                    } else {
-                      setErrorFields(prev => ({ ...prev, address_physical: false }))
+                    let infoText = ''
+
+                    if (splittedText[1]) {
+                      let replacedText = splittedText[1]
+                        ?.replace('<p>', '')
+                        ?.replace('</p>', '')
+                        ?.replace('<strong>', '')
+                        ?.replace('</strong>', '')
+
+                      infoText = replaceAllFn(replacedText, '\n', '')
                     }
-                  }, [selectedPayerFields])
-
-                  const parsePaymentInfo = text => {
-                    const splittedText = text?.split('<p>')
-                    if (splittedText?.length > 0) {
-                      const minAmount = splittedText[0]
-                        ?.replace('\n', '')
-                        .replace(/&nbsp;/g, ' ')
-
-                      let infoText = ''
-
-                      if (splittedText[1]) {
-                        let replacedText = splittedText[1]
-                          ?.replace('<p>', '')
-                          ?.replace('</p>', '')
-                          ?.replace('<strong>', '')
-                          ?.replace('</strong>', '')
-
-                        infoText = replaceAllFn(replacedText, '\n', '')
-                      }
-                      return { minAmount, infoText }
-                    }
+                    return { minAmount, infoText }
                   }
+                }
 
-                  const parsedText =
-                    values?.selectedPayMethod &&
-                    parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
+                const parsedText =
+                  values?.selectedPayMethod &&
+                  parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
 
-                  const setPayerHandler = val => {
-                    if (val === values.profile) return
+                const readMore = parsedText?.infoText
+                  ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
+                  : parsedText?.minAmount?.length > 150
 
-                    setFieldValue('profile', val)
-                    let data = null
-                    if (val === 'new') {
-                      data = {
-                        country: payersSelectLists?.country[0]?.$key,
-                        profiletype: payersSelectLists?.profiletype[0]?.$key,
-                      }
-                      dispatch(
-                        payersOperations.getPayerModalInfo(
-                          data,
-                          false,
-                          null,
-                          setSelectedPayerFields,
-                          true,
-                        ),
-                      )
-                    } else {
-                      data = { elid: val }
-                      dispatch(
-                        payersOperations.getPayerEditInfo(
-                          data,
-                          false,
-                          null,
-                          setSelectedPayerFields,
-                          false,
-                          setPayerFieldList,
-                        ),
-                      )
-                    }
-
-                    setPerson(null)
-                    setCityPhysical(null)
-                    setAddressPhysical(null)
+                const renderPhoneList = paymethod => {
+                  if (paymethod === 'qiwi') {
+                    return QIWI_PHONE_COUNTRIES
+                  } else if (paymethod === 'sberbank') {
+                    return SBER_PHONE_COUNTRIES
+                  } else {
+                    return []
                   }
+                }
 
-                  const readMore = parsedText?.infoText
-                    ? parsedText?.minAmount?.length + parsedText?.infoText?.length > 140
-                    : parsedText?.minAmount?.length > 150
+                const setCode = list => {
+                  const country = list.find(el => el === state.userCountryCode) || list[0]
+                  setState({ phone: '', countryCode: country })
+                }
 
-                  const onProfileTypeChange = item => {
-                    setFieldValue('profiletype', item)
-                    setProfileType(item)
-                    let data = {
-                      country: payersSelectLists?.country[0]?.$key,
-                      profiletype: item,
-                    }
+                const setAdditionalPayMethodts = value =>
+                  setState({ additionalPayMethodts: value })
 
-                    dispatch(payersOperations.getPayerModalInfo(data))
-                  }
-
-                  const renderPhoneList = paymethod => {
-                    if (paymethod === 'qiwi') {
-                      return QIWI_PHONE_COUNTRIES
-                    } else if (paymethod === 'sberbank') {
-                      return SBER_PHONE_COUNTRIES
-                    } else {
-                      return []
-                    }
-                  }
-
-                  const setCode = list => {
-                    const country = list.find(el => el === userCountryCode) || list[0]
-                    setPhone('')
-                    setCountryCode(country)
-                  }
-
-                  return (
-                    <Form className={s.form}>
-                      <ScrollToFieldError />
-                      <div className={cn(s.formBlock, s.padding)}>
-                        {!isLoading &&
-                          paymentListLoaded &&
-                          paymentsMethodList?.length === 0 && (
-                            <div className={s.notAllowPayMethod}>
-                              {t('order_amount_is_less')}
-                            </div>
-                          )}
-                        {paymentsMethodList?.length > 0 && !isPhoneVerification && (
-                          <>
-                            <div className={s.formBlockTitle}>{t('Payment method')}:</div>
-                            <div className={s.formFieldsBlock} name="selectedPayMethod´">
-                              {paymentsMethodList?.map(method => {
-                                const { image, name, paymethod_type, paymethod } = method
-
-                                let paymentName = name?.$
-                                let balance = ''
-
-                                if (paymentName?.includes('Account balance')) {
-                                  balance = paymentName?.match(/[-\d|.|\\+]+/g)
-                                  paymentName = t('Account balance')
-                                }
-
-                                return (
-                                  <button
-                                    onClick={() => {
-                                      setFieldValue('selectedPayMethod', method)
-                                      setSelectedPayMethod(method)
-                                      setSelectedAddPaymentMethod(undefined)
-                                      if (paymethod?.$ === '90') {
-                                        setCode(QIWI_PHONE_COUNTRIES)
-                                      } else if (paymethod?.$ === '86') {
-                                        setCode(SBER_PHONE_COUNTRIES)
-                                      } else if (paymethod?.$ === '87') {
-                                        setPhone('')
-                                        setCountryCode(userCountryCode)
-                                      }
-
-                                      if (
-                                        method?.name?.$?.includes('balance') &&
-                                        method?.paymethod_type?.$ === '0'
-                                      ) {
-                                        setFieldValue('isPersonalBalance', 'on')
-                                      } else {
-                                        dispatch(
-                                          cartOperations.getPayMethodItem(
-                                            {
-                                              paymethod: method?.paymethod?.$,
-                                            },
-                                            setAdditionalPayMethodts,
-                                          ),
-                                        )
-                                        setFieldValue('isPersonalBalance', 'off')
-                                      }
-                                    }}
-                                    type="button"
-                                    className={cn(
-                                      s.paymentMethodBtn,
-                                      {
-                                        [s.selected]:
-                                          paymethod_type?.$ ===
-                                            values?.selectedPayMethod?.paymethod_type
-                                              ?.$ &&
-                                          paymethod?.$ ===
-                                            values?.selectedPayMethod?.paymethod?.$,
-                                      },
-                                      { [s.withHint]: paymethod?.$ === '71' },
-                                    )}
-                                    key={name?.$}
-                                  >
-                                    <div className={s.descrWrapper}>
-                                      <img
-                                        src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
-                                        alt="icon"
-                                      />
-                                      <span
-                                        className={cn({
-                                          [s.methodDescr]: paymethod?.$ === '71',
-                                        })}
-                                      >
-                                        {paymentName}
-                                        {balance?.length > 0 && (
-                                          <>
-                                            <br />{' '}
-                                            <span className={s.balance}>
-                                              {Number(balance).toFixed(2)} EUR
-                                            </span>
-                                          </>
-                                        )}
-                                      </span>
-                                    </div>
-                                    {paymethod?.$ === '71' && (
-                                      <HintWrapper
-                                        popupClassName={s.cardHintWrapper}
-                                        label={t('Paypalich description', {
-                                          ns: 'other',
-                                        })}
-                                        wrapperClassName={cn(s.infoBtnCard)}
-                                        bottom
-                                      >
-                                        <Icon name="Info" />
-                                      </HintWrapper>
-                                    )}
-                                  </button>
-                                )
-                              })}
-                            </div>
-                          </>
+                return (
+                  <Form className={s.form}>
+                    <ScrollToFieldError />
+                    <div className={cn(s.formBlock, s.padding)}>
+                      {!isLoading &&
+                        state.paymentListLoaded &&
+                        paymentsMethodList?.length === 0 && (
+                          <div className={s.notAllowPayMethod}>
+                            {t('order_amount_is_less')}
+                          </div>
                         )}
-                        <div className={s.additionalPayMethodBlock}>
-                          {additionalPayMethodts && additionalPayMethodts?.length > 1 && (
+                      {paymentsMethodList?.length > 0 && !state.isPhoneVerification && (
+                        <>
+                          <div className={s.formBlockTitle}>{t('Payment method')}:</div>
+                          <div className={s.formFieldsBlock} name="selectedPayMethod´">
+                            {paymentsMethodList?.map(method => {
+                              const { image, name, paymethod_type, paymethod } = method
+
+                              let paymentName = name?.$
+                              let balance = ''
+
+                              if (paymentName?.includes('Account balance')) {
+                                balance = paymentName?.match(/[-\d|.|\\+]+/g)
+                                paymentName = t('Account balance')
+                              }
+
+                              return (
+                                <button
+                                  onClick={() => {
+                                    setFieldValue('selectedPayMethod', method)
+
+                                    setState({
+                                      selectedPayMethod: method,
+                                      selectedAddPaymentMethod: undefined,
+                                    })
+
+                                    if (paymethod?.$ === '90') {
+                                      setCode(QIWI_PHONE_COUNTRIES)
+                                    } else if (paymethod?.$ === '86') {
+                                      setCode(SBER_PHONE_COUNTRIES)
+                                    } else if (paymethod?.$ === '87') {
+                                      setState({
+                                        phone: '',
+                                        countryCode: state.userCountryCode,
+                                      })
+                                    }
+
+                                    if (
+                                      method?.name?.$?.includes('balance') &&
+                                      method?.paymethod_type?.$ === '0'
+                                    ) {
+                                      setFieldValue('isPersonalBalance', 'on')
+                                    } else {
+                                      dispatch(
+                                        cartOperations.getPayMethodItem(
+                                          {
+                                            paymethod: method?.paymethod?.$,
+                                          },
+                                          setAdditionalPayMethodts,
+                                        ),
+                                      )
+                                      setFieldValue('isPersonalBalance', 'off')
+                                    }
+                                  }}
+                                  type="button"
+                                  className={cn(
+                                    s.paymentMethodBtn,
+                                    {
+                                      [s.selected]:
+                                        paymethod_type?.$ ===
+                                          values?.selectedPayMethod?.paymethod_type?.$ &&
+                                        paymethod?.$ ===
+                                          values?.selectedPayMethod?.paymethod?.$,
+                                    },
+                                    { [s.withHint]: paymethod?.$ === '71' },
+                                  )}
+                                  key={name?.$}
+                                >
+                                  <div className={s.descrWrapper}>
+                                    <img
+                                      src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
+                                      alt="icon"
+                                    />
+                                    <span
+                                      className={cn({
+                                        [s.methodDescr]: paymethod?.$ === '71',
+                                      })}
+                                    >
+                                      {paymentName}
+                                      {balance?.length > 0 && (
+                                        <>
+                                          <br />{' '}
+                                          <span className={s.balance}>
+                                            {Number(balance).toFixed(2)} EUR
+                                          </span>
+                                        </>
+                                      )}
+                                    </span>
+                                  </div>
+                                  {paymethod?.$ === '71' && (
+                                    <HintWrapper
+                                      popupClassName={s.cardHintWrapper}
+                                      label={t('Paypalich description', {
+                                        ns: 'other',
+                                      })}
+                                      wrapperClassName={cn(s.infoBtnCard)}
+                                      bottom
+                                    >
+                                      <Icon name="Info" />
+                                    </HintWrapper>
+                                  )}
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </>
+                      )}
+                      <div className={s.additionalPayMethodBlock}>
+                        {state.additionalPayMethodts &&
+                          state.additionalPayMethodts?.length > 1 && (
                             <Select
                               placeholder={t('Not chosen', { ns: 'other' })}
                               label={`${t('Payment method')} Yookasa:`}
                               value={values.payment_method}
                               getElement={item => {
                                 setFieldValue('payment_method', item)
-                                setSelectedAddPaymentMethod(item)
+                                setState({ selectedAddPaymentMethod: item })
                               }}
                               isShadow
                               className={cn(s.select, s.additionalSelectPayMentMethod)}
                               dropdownClass={s.selectDropdownClass}
-                              itemsList={additionalPayMethodts?.map(({ $key, $ }) => ({
-                                label: t(`${$.trim()}`, { ns: 'billing' }),
-                                value: $key,
-                              }))}
+                              itemsList={state.additionalPayMethodts?.map(
+                                ({ $key, $ }) => ({
+                                  label: t(`${$.trim()}`, { ns: 'billing' }),
+                                  value: $key,
+                                }),
+                              )}
                               error={errors.payment_method}
                               isRequired
                             />
                           )}
 
-                          {filteredPayment_method?.hide?.includes('phone') &&
-                            !filteredPayment_method?.hide?.includes('alfabank_login') && (
-                              <InputField
-                                inputWrapperClass={s.inputHeight}
-                                name="alfabank_login"
-                                label={`${t('Имя пользователя в Альфа-Клик', {
-                                  ns: 'payers',
-                                })}:`}
-                                placeholder={t('Enter data', { ns: 'other' })}
-                                isShadow
-                                className={cn(
-                                  s.inputBig,
-                                  s.additionalSelectPayMentMethod,
-                                )}
-                                error={!!errors.alfabank_login}
-                                touched={!!touched.alfabank_login}
-                                isRequired
-                                onChange={e => setAlfaLogin(e.target.value)}
-                              />
-                            )}
-
-                          {!filteredPayment_method?.hide?.includes('phone') &&
-                            filteredPayment_method?.hide?.includes('alfabank_login') && (
-                              <CustomPhoneInput
-                                containerClass={cn(s.inputHeight, 'cartModal')}
-                                wrapperClass={s.inputBig}
-                                inputClass={s.phoneInputClass}
-                                value={values.phone}
-                                labelClass={s.phoneInputLabel}
-                                label={`${t('Phone', { ns: 'other' })}:`}
-                                handleBlur={handleBlur}
-                                setFieldValue={(name, value) => {
-                                  setFieldValue(name, value)
-                                  setPhone(value)
-                                }}
-                                name="phone"
-                                onlyCountries={renderPhoneList(
-                                  filteredPayment_method?.$key,
-                                )}
-                                isRequired
-                                setCountryCode={setCountryCode}
-                                country={countryCode}
-                              />
-                            )}
-                        </div>
-
-                        <ErrorMessage
-                          className={s.error_message}
-                          name={'selectedPayMethod'}
-                          component="span"
-                        />
-                      </div>
-                      {(values?.selectedPayMethod?.name?.$?.includes('balance') &&
-                        values?.selectedPayMethod?.paymethod_type?.$ === '0') ||
-                      !values?.selectedPayMethod ? null : (
-                        <div className={(s.formBlock, s.padding)}>
-                          <div className={s.formBlockTitle}>{t('Payer')}:</div>
-                          <div className={s.fieldsGrid}>
-                            {payerTypeArrayHandler()?.length > 1 && (
-                              <Select
-                                placeholder={t('Not chosen', { ns: 'other' })}
-                                label={`${t('Payer status', { ns: 'payers' })}:`}
-                                value={values.profiletype}
-                                getElement={onProfileTypeChange}
-                                isShadow
-                                className={s.select}
-                                dropdownClass={s.selectDropdownClass}
-                                itemsList={payerTypeArrayHandler()}
-                              />
-                            )}
-
-                            {(values?.profiletype === '3' ||
-                              values?.profiletype === '2') &&
-                            !selectedPayerFields.name ? (
-                              <InputField
-                                inputWrapperClass={s.inputHeight}
-                                name="name"
-                                label={`${t('Company name', { ns: 'payers' })}:`}
-                                placeholder={t('Enter data', { ns: 'other' })}
-                                isShadow
-                                className={s.inputBig}
-                                error={!!errors.name}
-                                touched={!!touched.name}
-                                isRequired
-                                value={values.name}
-                                onChange={e => setCompany(e.target.value)}
-                              />
-                            ) : null}
-                            {payersList?.length !== 0 && (
-                              <Select
-                                placeholder={t('Not chosen', { ns: 'other' })}
-                                label={`${t('Choose payer', { ns: 'billing' })}:`}
-                                value={values.profile}
-                                getElement={item => setPayerHandler(item)}
-                                isShadow
-                                className={s.select}
-                                itemsList={[...payersList]?.map(({ name, id }) => ({
-                                  label: t(`${name?.$?.trim()}`),
-                                  value: id?.$,
-                                }))}
-                                disabled={payersList.length === 1}
-                                withoutArrow={payersList.length === 1}
-                              />
-                            )}
-                            {!selectedPayerFields.person && (
-                              <InputField
-                                inputWrapperClass={s.inputHeight}
-                                name="person"
-                                label={
-                                  values?.profiletype === '1'
-                                    ? `${t('Full name', { ns: 'other' })}:`
-                                    : `${t('The contact person', { ns: 'payers' })}:`
-                                }
-                                placeholder={t('Enter data', { ns: 'other' })}
-                                isShadow
-                                className={s.inputBig}
-                                error={!!errors.person}
-                                touched={!!touched.person}
-                                isRequired
-                                value={values.person}
-                                onChange={e => setPerson(e.target.value)}
-                              />
-                            )}
-                            {!selectedPayerFields.person && (
-                              <SelectGeo
-                                setSelectFieldValue={item =>
-                                  setFieldValue('country', item)
-                                }
-                                selectValue={values.country}
-                                selectClassName={s.select}
-                                countrySelectClassName={s.countrySelectItem}
-                                geoData={geoData}
-                                payersSelectLists={payersSelectLists}
-                              />
-                            )}
-                            {!selectedPayerFields.city_physical && (
-                              <InputField
-                                inputWrapperClass={s.inputHeight}
-                                name="city_physical"
-                                label={`${t('City', { ns: 'other' })}:`}
-                                placeholder={t('Enter city', { ns: 'other' })}
-                                isShadow
-                                className={s.inputBig}
-                                error={!!errors.city_physical}
-                                touched={!!touched.city_physical}
-                                value={values.city_physical}
-                                onChange={e => setCityPhysical(e.target.value)}
-                              />
-                            )}
-                            {(!selectedPayerFields.address_physical ||
-                              errorFields.address_physical) && (
-                              <div className={cn(s.nsInputBlock, s.inputBig)}>
-                                <InputWithAutocomplete
-                                  fieldName="address_physical"
-                                  error={!!errors.address_physical}
-                                  touched={!!touched.address_physical}
-                                  externalValue={values.address_physical}
-                                  setFieldValue={val => {
-                                    setFieldValue('address_physical', val)
-                                    setAddressPhysical(val)
-                                  }}
-                                />
-
-                                <button
-                                  type="button"
-                                  className={cn(s.infoBtn, s.infoBtn_address)}
-                                >
-                                  <Icon name="Info" />
-
-                                  <div
-                                    ref={dropdownDescription}
-                                    className={s.descriptionBlock}
-                                  >
-                                    {t('address_format', { ns: 'other' })}
-                                  </div>
-                                </button>
-                              </div>
-                            )}
-
-                            {payersSelectedFields?.eu_vat_field ? (
-                              <InputField
-                                inputWrapperClass={s.inputHeight}
-                                name="eu_vat"
-                                label={`${t('EU VAT-number')}:`}
-                                placeholder={t('Enter data', { ns: 'other' })}
-                                isShadow
-                                className={s.inputBig}
-                                error={!!errors.eu_vat}
-                                touched={!!touched.eu_vat}
-                                value={values.eu_vat}
-                                onChange={e => setEUVat(e.target.value)}
-                              />
-                            ) : null}
-                          </div>
-                        </div>
-                      )}
-                      {values?.selectedPayMethod &&
-                        values?.selectedPayMethod?.payment_minamount && (
-                          <div
-                            className={cn(s.infotext, s.padding, {
-                              [s.showMore]: showMore,
-                            })}
-                          >
-                            <div>
-                              <span>
-                                {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
-                              </span>
-                              {parsedText?.infoText && (
-                                <p>
-                                  {t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      {values?.selectedPayMethod && readMore && (
-                        <button
-                          type="button"
-                          onClick={() => setShowMore(!showMore)}
-                          className={cn(s.readMore, s.padding)}
-                        >
-                          {t(showMore ? 'Collapse' : 'Read more', {
-                            ns: 'user_settings',
-                          })}
-                        </button>
-                      )}
-
-                      {!isPhoneVerification && (
-                        <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
-                          <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
+                        {filteredPayment_method?.hide?.includes('phone') &&
+                          !filteredPayment_method?.hide?.includes('alfabank_login') && (
                             <InputField
                               inputWrapperClass={s.inputHeight}
-                              name="promocode"
-                              disabled={isDedicWithSale}
-                              label={`${t('Promo code')}:`}
-                              placeholder={t('Enter promo code', { ns: 'other' })}
-                              isShadow
-                              className={s.inputPerson}
-                              error={!!errors.promocode}
-                              touched={!!touched.promocode}
-                              value={values.promocode}
-                              onChange={e => setPromocode(e.target.value)}
-                            />
-                            <button
-                              onClick={() => setPromocodeToCart(values?.promocode)}
-                              disabled={values?.promocode?.length === 0}
-                              type="button"
-                              className={s.promocodeBtn}
-                            >
-                              {t('Apply', { ns: 'other' })}
-                            </button>
-                          </div>
-
-                          {isDedicWithSale ? (
-                            <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
-                          ) : null}
-                        </div>
-                      )}
-                      {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
-                        <div className={cn(s.padding, s.penalty_sum)}>
-                          {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
-                        </div>
-                      ) : (
-                        ''
-                      )}
-                      <div className={s.padding}>
-                        <div className={s.totalSum}>
-                          <span>
-                            {cartData?.full_discount &&
-                            Number(cartData?.full_discount) !== 0 ? (
-                              <>
-                                {t('Saving')}: <b>{cartData?.full_discount} EUR</b>
-                                <button type="button" className={s.infoBtn}>
-                                  <Icon name="Info" />
-                                  <div ref={dropdownSale} className={s.descriptionBlock}>
-                                    {renderActiveDiscounts()}
-                                  </div>
-                                </button>
-                              </>
-                            ) : null}
-                          </span>
-                          {Number(cartData?.tax) > 0 ? (
-                            <div className={s.priceBlock}>
-                              {t('Tax')}:<b>{cartData?.tax} EUR</b>
-                            </div>
-                          ) : null}
-                          <div className={s.priceBlock}>
-                            {t('Total')}
-                            {Number(cartData?.tax) > 0 &&
-                              ' (' + t('Tax included').toLocaleLowerCase() + ')'}
-                            : <b>{cartData?.total_sum} EUR</b>
-                          </div>
-                        </div>
-
-                        {!isPhoneVerification && (
-                          <div className={s.offerBlock}>
-                            <CheckBox
-                              value={values[selectedPayerFields?.offer_field] || false}
-                              onClick={() => setIsOffer(prev => !prev)}
-                              name={selectedPayerFields?.offer_field}
-                              className={s.checkbox}
-                              error={!!errors[selectedPayerFields?.offer_field]}
-                              touched={!!touched[selectedPayerFields?.offer_field]}
-                            />
-                            <div className={s.offerBlockText}>
-                              {t('I agree with', {
+                              name="alfabank_login"
+                              label={`${t('Имя пользователя в Альфа-Клик', {
                                 ns: 'payers',
-                              })}{' '}
-                              <a
-                                target="_blank"
-                                href={OFERTA_URL}
-                                rel="noreferrer"
-                                className={s.offerBlockLink}
-                              >
-                                {t('Terms of Service', { ns: 'domains' })}
-                              </a>{' '}
-                              {t('and', { ns: 'domains' })}{' '}
-                              <a
-                                target="_blank"
-                                href={PRIVACY_URL}
-                                rel="noreferrer"
-                                className={s.offerBlockLink}
-                              >
-                                {t('Terms of the offer', { ns: 'domains' })}
-                              </a>
-                            </div>
-                          </div>
-                        )}
+                              })}:`}
+                              placeholder={t('Enter data', { ns: 'other' })}
+                              isShadow
+                              className={cn(s.inputBig, s.additionalSelectPayMentMethod)}
+                              error={!!errors.alfabank_login}
+                              touched={!!touched.alfabank_login}
+                              isRequired
+                              onChange={e => setState({ alfaLogin: e.target.value })}
+                            />
+                          )}
 
-                        {isPhoneVerification && (
-                          <div className={s.phoneVerificationBlock}>
-                            <Icon name="Attention" />
-                            <span>
-                              {t('verification_required_purchase', { ns: 'billing' })}
-                            </span>
-                          </div>
-                        )}
+                        {!filteredPayment_method?.hide?.includes('phone') &&
+                          filteredPayment_method?.hide?.includes('alfabank_login') && (
+                            <CustomPhoneInput
+                              containerClass={cn(s.inputHeight, 'cartModal')}
+                              wrapperClass={s.inputBig}
+                              inputClass={s.phoneInputClass}
+                              value={values.phone}
+                              labelClass={s.phoneInputLabel}
+                              label={`${t('Phone', { ns: 'other' })}:`}
+                              handleBlur={handleBlur}
+                              setFieldValue={(name, value) => {
+                                setFieldValue(name, value)
+                                setState({ phone: value })
+                              }}
+                              name="phone"
+                              onlyCountries={renderPhoneList(
+                                filteredPayment_method?.$key,
+                              )}
+                              isRequired
+                              setCountryCode={value => setState({ countryCode: value })}
+                              country={state.countryCode}
+                            />
+                          )}
                       </div>
 
-                      <div className={s.btnBlock}>
-                        {isPhoneVerification ? (
-                          <Button
-                            className={s.saveBtn}
-                            isShadow
-                            size="large"
-                            label={t('Verify number', { ns: 'user_settings' })}
-                            type="button"
-                            onClick={hideBasketHandler}
-                          />
-                        ) : (
-                          <>
-                            {paymentsMethodList?.length === 0 ? (
-                              <Button
-                                className={s.saveBtn}
-                                isShadow
-                                size="medium"
-                                label={t('OK', { ns: 'billing' })}
-                                type="button"
-                                onClick={() => {
-                                  navigate(routes.BILLING, {
-                                    replace: true,
-                                  })
-                                  closeBasketHamdler(cartData?.billorder)
-                                }}
-                              />
-                            ) : (
-                              <Button
-                                // disabled={
-                                //   Number(values.amount) <
-                                //     values?.selectedPayMethod?.payment_minamount?.$ ||
-                                //   !values?.selectedPayMethod
-                                // }
-                                className={s.saveBtn}
-                                isShadow
-                                size="medium"
-                                label={t('Pay', { ns: 'billing' })}
-                                type="submit"
-                              />
-                            )}
-                          </>
-                        )}
+                      <ErrorMessage
+                        className={s.error_message}
+                        name={'selectedPayMethod'}
+                        component="span"
+                      />
+                    </div>
+                    <div
+                      className={cn(s.padding, s.payersList, {
+                        [s.hide]:
+                          (values?.selectedPayMethod?.name?.$?.includes('balance') &&
+                            values?.selectedPayMethod?.paymethod_type?.$ === '0') ||
+                          !values?.selectedPayMethod,
+                      })}
+                    >
+                      <PayersList renderTitle={renderPayersListTitle} />
+                    </div>
 
-                        <button
-                          onClick={() => setIsClosing(true)}
-                          type="button"
-                          className={s.cancel}
+                    {values?.selectedPayMethod &&
+                      values?.selectedPayMethod?.payment_minamount && (
+                        <div
+                          className={cn(s.infotext, s.padding, {
+                            [s.showMore]: state.showMore,
+                          })}
                         >
-                          {t('Close', { ns: 'other' })}
-                        </button>
+                          <div>
+                            <span>
+                              {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                            </span>
+                            {parsedText?.infoText && (
+                              <p>
+                                {t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    {values?.selectedPayMethod && readMore && (
+                      <button
+                        type="button"
+                        onClick={() => setState({ showMore: !state.showMore })}
+                        className={cn(s.readMore, s.padding)}
+                      >
+                        {t(state.showMore ? 'Collapse' : 'Read more', {
+                          ns: 'user_settings',
+                        })}
+                      </button>
+                    )}
+
+                    {!state.isPhoneVerification && (
+                      <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
+                        <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
+                          <InputField
+                            inputWrapperClass={s.inputHeight}
+                            name="promocode"
+                            disabled={state.isDedicWithSale}
+                            label={`${t('Promo code')}:`}
+                            placeholder={t('Enter promo code', { ns: 'other' })}
+                            isShadow
+                            className={s.inputPerson}
+                            error={!!errors.promocode}
+                            touched={!!touched.promocode}
+                            value={values.promocode}
+                            onChange={e => setState({ promocode: e.target.value })}
+                          />
+                          <button
+                            onClick={() => setPromocodeToCart(values?.promocode)}
+                            disabled={values?.promocode?.length === 0}
+                            type="button"
+                            className={s.promocodeBtn}
+                          >
+                            {t('Apply', { ns: 'other' })}
+                          </button>
+                        </div>
+
+                        {state.isDedicWithSale ? (
+                          <div className={s.sale55Promo}>{t('dedic_sale_text')}</div>
+                        ) : null}
                       </div>
-                    </Form>
-                  )
-                }}
-              </Formik>
-            </div>
+                    )}
+                    {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
+                      <div className={cn(s.padding, s.penalty_sum)}>
+                        {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    <div className={s.padding}>
+                      <div className={s.totalSum}>
+                        <span>
+                          {state.cartData?.full_discount &&
+                          Number(state.cartData?.full_discount) !== 0 ? (
+                            <>
+                              {t('Saving')}: <b>{state.cartData?.full_discount} EUR</b>
+                              <button type="button" className={s.infoBtn}>
+                                <Icon name="Info" />
+                                <div ref={dropdownSale} className={s.descriptionBlock}>
+                                  {renderActiveDiscounts()}
+                                </div>
+                              </button>
+                            </>
+                          ) : null}
+                        </span>
+                        {Number(state.cartData?.tax) > 0 ? (
+                          <div className={s.priceBlock}>
+                            {t('Tax')}:<b>{state.cartData?.tax} EUR</b>
+                          </div>
+                        ) : null}
+                        <div className={s.priceBlock}>
+                          {t('Total')}
+                          {Number(state.cartData?.tax) > 0 &&
+                            ' (' + t('Tax included').toLocaleLowerCase() + ')'}
+                          : <b>{state.cartData?.total_sum} EUR</b>
+                        </div>
+                      </div>
+
+                      {!state.isPhoneVerification && (
+                        <div className={s.offerBlock}>
+                          <CheckBox
+                            value={values[OFFER_FIELD] || false}
+                            onClick={() =>
+                              setState({ isPolicyChecked: !state.isPolicyChecked })
+                            }
+                            name={OFFER_FIELD}
+                            className={s.checkbox}
+                            error={!!errors[OFFER_FIELD]}
+                            touched={!!touched[OFFER_FIELD]}
+                          />
+                          <div className={s.offerBlockText}>
+                            {t('I agree with', {
+                              ns: 'payers',
+                            })}{' '}
+                            <a
+                              target="_blank"
+                              href={OFERTA_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of Service', { ns: 'domains' })}
+                            </a>{' '}
+                            {t('and', { ns: 'domains' })}{' '}
+                            <a
+                              target="_blank"
+                              href={PRIVACY_URL}
+                              rel="noreferrer"
+                              className={s.offerBlockLink}
+                            >
+                              {t('Terms of the offer', { ns: 'domains' })}
+                            </a>
+                          </div>
+                        </div>
+                      )}
+
+                      {state.isPhoneVerification && (
+                        <div className={s.phoneVerificationBlock}>
+                          <Icon name="Attention" />
+                          <span>
+                            {t('verification_required_purchase', { ns: 'billing' })}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={s.btnBlock}>
+                      {state.isPhoneVerification ? (
+                        <Button
+                          className={s.saveBtn}
+                          isShadow
+                          size="large"
+                          label={t('Verify number', { ns: 'user_settings' })}
+                          type="button"
+                          onClick={hideBasketHandler}
+                        />
+                      ) : (
+                        <>
+                          {paymentsMethodList?.length === 0 ? (
+                            <Button
+                              className={s.saveBtn}
+                              isShadow
+                              size="medium"
+                              label={t('OK', { ns: 'billing' })}
+                              type="button"
+                              onClick={() => {
+                                navigate(routes.BILLING, {
+                                  replace: true,
+                                })
+                                closeBasketHamdler(state.cartData?.billorder)
+                              }}
+                            />
+                          ) : (
+                            <Button
+                              className={s.saveBtn}
+                              isShadow
+                              size="medium"
+                              label={t('Pay', { ns: 'billing' })}
+                              type="submit"
+                            />
+                          )}
+                        </>
+                      )}
+                      <button
+                        onClick={() => setState({ isClosing: true })}
+                        type="button"
+                        className={s.cancel}
+                      >
+                        {t('Close', { ns: 'other' })}
+                      </button>
+                    </div>
+                  </Form>
+                )
+              }}
+            </Formik>
           </div>
-        ) : (
-          <div className={s.modalCloseBlock}>
-            <div className={s.closeText}>
-              {t('After closing your order will be automatically deleted')}
-            </div>
-            <div className={s.btnCloseBlock}>
-              <Button
-                onClick={() => closeBasketHamdler(cartData?.billorder)}
-                className={s.saveBtn}
-                isShadow
-                size="medium"
-                label={t('OK')}
-                type="button"
-              />
-              <button
-                onClick={() => setIsClosing(false)}
-                type="button"
-                className={s.close}
-              >
-                {t('Cancel', { ns: 'other' })}
-              </button>
-            </div>
+        </div>
+      ) : (
+        <div className={s.modalCloseBlock}>
+          <div className={s.closeText}>
+            {t('After closing your order will be automatically deleted')}
           </div>
-        )
-      ) : null}
+          <div className={s.btnCloseBlock}>
+            <Button
+              onClick={() => closeBasketHamdler(state.cartData?.billorder)}
+              className={s.saveBtn}
+              isShadow
+              size="medium"
+              label={t('OK')}
+              type="button"
+            />
+            <button
+              onClick={() => setState({ isClosing: false })}
+              type="button"
+              className={s.close}
+            >
+              {t('Cancel', { ns: 'other' })}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

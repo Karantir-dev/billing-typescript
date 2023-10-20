@@ -18,7 +18,7 @@ import ErrorPage from '../ErrorPage/ErrorPage'
 import { useSelector } from 'react-redux'
 import { billingSelectors } from '@src/Redux'
 
-export default function Component() {
+export default function BillingPage() {
   const { t } = useTranslation(['billing', 'other'])
   const params = useParams()
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)

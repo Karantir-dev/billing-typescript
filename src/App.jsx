@@ -37,7 +37,7 @@ export default function App() {
             <Navigation />
           </Suspense>
 
-          <ToastContainer autoClose={6000} />
+          <ToastContainer autoClose={6000} position="bottom-right" />
           <Portal>
             <Loader />
           </Portal>
