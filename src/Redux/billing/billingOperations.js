@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { analyticsSaver, checkIfTokenAlive, cookies, handleLocalLoader } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies, handleLoadersClosing } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -456,18 +456,14 @@ const getPayers =
         dispatch(payersActions.setPayersCount(count))
 
         if (payersList.length === 0) {
-          dispatch(getPayerCountryType())
+          dispatch(getPayerCountryType(signal, setIsLoading))
         } else {
-          setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         }
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -497,15 +493,11 @@ const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
 
       dispatch(payersActions.setPayersSelectLists(filters))
 
-      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
     })
     .catch(error => {
-      if (setIsLoading) {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-      } else {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      }
+      handleLoadersClosing(error.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -796,7 +788,7 @@ const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => 
 }
 
 const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading && setIsLoading(true)
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -825,13 +817,14 @@ const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
       dispatch(getAutoPaymentsAdd(signal, setIsLoading))
     })
     .catch(err => {
-      handleLocalLoader(err?.message, () => setIsLoading(false))
+      handleLoadersClosing(err?.message, dispatch, setIsLoading)
+
       checkIfTokenAlive(err?.message, dispatch)
     })
 }
 
 const getAutoPaymentsAdd = (signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading(true)
+  // setIsLoading(true)
 
   const {
     auth: { sessionId },
@@ -864,10 +857,11 @@ const getAutoPaymentsAdd = (signal, setIsLoading) => (dispatch, getState) => {
 
       dispatch(billingActions.setAutoPaymentConfig(config))
 
-      setIsLoading(false)
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
     })
     .catch(err => {
-      checkIfTokenAlive(err?.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(err?.message, dispatch, true)
     })
 }
 

@@ -3,12 +3,12 @@ import { toast } from 'react-toastify'
 import { actions, payersActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { t, exists as isTranslationExists } from 'i18next'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const getPayers =
   (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading && setIsLoading(true)
+    setIsLoading ? setIsLoading(true) : dispatch(actions.hideLoader())
 
     const {
       auth: { sessionId },
@@ -33,68 +33,77 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(
-          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
-        )
+        const payersList = elem?.filter(({ name, id }) => name?.$ && id?.$)
+
+        dispatch(payersActions.setPayersList(payersList))
         dispatch(payersActions.setPayersCount(count))
 
-        // we dont need this info to render payers list
-        // dispatch(getPayerCountryType(signal, setIsLoading))
-
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (checkIfTokenAlive(error.message, dispatch, true) && setIsLoading) {
-          setIsLoading(false)
-        } else {
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 
-const getPayerCountryType = setSelectedPayerFields => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getPayerCountryType =
+  (setSelectedPayerFields, signal, setIsLoading) => (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'profile.add.country',
-        out: 'json',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'profile.add.country',
+          out: 'json',
+          auth: sessionId,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const filters = {}
+        const filters = {}
 
-      data?.doc?.slist?.forEach(el => {
-        filters[el.$name] = el?.val
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el?.val
+        })
+
+        dispatch(payersActions.setPayersSelectLists(filters))
+
+        const fixedFields = {
+          country: filters?.country?.[0]?.$key,
+          profiletype: filters?.profiletype?.[0]?.$key,
+        }
+
+        dispatch(
+          getPayerModalInfo(
+            fixedFields,
+            false,
+            null,
+            setSelectedPayerFields,
+            false,
+            signal,
+            setIsLoading,
+          ),
+        )
       })
+      .catch(error => {
+        const errorText = error.message.trim()
 
-      dispatch(payersActions.setPayersSelectLists(filters))
+        handleLoadersClosing(errorText, dispatch, setIsLoading)
 
-      let fixedFields = {
-        country: filters?.country?.[0]?.$key,
-        profiletype: filters?.profiletype?.[0]?.$key,
-      }
-      dispatch(getPayerModalInfo(fixedFields, false, null, setSelectedPayerFields))
-    })
-    .catch(error => {
-      const errorText = error.message.trim()
-      if (isTranslationExists(errorText)) {
-        toast.error(t(errorText, { ns: ['auth', 'other'] }))
-        dispatch(actions.hideLoader())
-      } else {
-        checkIfTokenAlive(errorText, dispatch, true)
-      }
-    })
-}
+        if (isTranslationExists(errorText)) {
+          toast.error(t(errorText, { ns: ['auth', 'other'] }))
+        } else {
+          checkIfTokenAlive(errorText, dispatch)
+        }
+      })
+  }
 
 const deletePayer = elid => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -279,20 +288,13 @@ const getPayerModalInfo =
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        if (setSelectedPayerFields) {
-          setSelectedPayerFields(selectedFields)
-          return setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
-        }
+        setSelectedPayerFields && setSelectedPayerFields(selectedFields)
 
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 

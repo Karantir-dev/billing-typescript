@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Button, CurrentAutoPayments, AutoPaymentForm, Loader } from '@components'
 import s from './AutoPayment.module.scss'
-import { billingOperations, billingSelectors, payersOperations } from '@redux'
+import { billingOperations, billingSelectors } from '@redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { useCancelRequest } from '@src/utils'
@@ -34,7 +34,7 @@ export default function AutoPayment() {
 
   useEffect(() => {
     dispatch(billingOperations.getAutoPayments(signal, setIsLoading))
-    dispatch(payersOperations.getPayers({}, signal, setIsLoading))
+    // dispatch(payersOperations.getPayers({}, signal, setIsLoading))
   }, [])
 
   useEffect(() => {

@@ -1,13 +1,7 @@
 import { Select, InputField, InputWithAutocomplete, SelectGeo, Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  authSelectors,
-  billingOperations,
-  payersActions,
-  payersOperations,
-  payersSelectors,
-} from '@redux'
+import { authSelectors, payersOperations, payersActions, payersSelectors } from '@redux'
 import { useEffect, useReducer, useState } from 'react'
 import { useFormikContext } from 'formik'
 import s from './PayersList.module.scss'
@@ -34,7 +28,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }, {})
 
   useEffect(() => {
-    dispatch(billingOperations.getPayers({}, signal, setIsLoading))
+    dispatch(payersOperations.getPayers({}, signal, setIsLoading))
 
     return () => {
       dispatch(payersActions.setPayersData({ selectedPayerFields: null, state: null }))
@@ -51,7 +45,6 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }, [state])
 
   useEffect(() => {
-    console.log(payersList)
     if (payersList) {
       if (payersList.length !== 0) {
         const requestFields = { elid: payersList[payersList.length - 1]?.id?.$ }
@@ -70,44 +63,15 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
         )
         return
       } else {
-        dispatch(payersOperations.getPayerCountryType(setSelectedPayerFields))
+        dispatch(
+          payersOperations.getPayerCountryType(
+            setSelectedPayerFields,
+            signal,
+            setIsLoading,
+          ),
+        )
       }
     }
-    // if (payersList && payersSelectLists && payersSelectLists.maildocs) {
-    //   let data = {
-    //     country: payersSelectLists?.country[0]?.$key,
-    //     profiletype: payersSelectLists?.profiletype[0]?.$key,
-    //   }
-    // if (payersList?.length !== 0) {
-    //   data = { elid: payersList[payersList?.length - 1]?.id?.$ }
-
-    //   dispatch(
-    //     payersOperations.getPayerEditInfo(
-    //       data,
-    //       false,
-    //       null,
-    //       setSelectedPayerFields,
-    //       false,
-    //       setPayerFieldList,
-    //       signal,
-    //       setIsLoading,
-    //     ),
-    //   )
-    //   return
-    // }
-
-    //   dispatch(
-    //     payersOperations.getPayerModalInfo(
-    //       data,
-    //       false,
-    //       null,
-    //       setSelectedPayerFields,
-    //       false,
-    //       signal,
-    //       setIsLoading,
-    //     ),
-    //   )
-    // }
   }, [payersList])
 
   const changeProfileTypeHandler = value => {

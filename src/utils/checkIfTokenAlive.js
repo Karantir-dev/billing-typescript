@@ -17,6 +17,10 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   const errorText = uglyErrorText.trim()
 
   if (errorText === 'canceled' && isLocalLoader) return false
+  if (errorText === 'canceled') {
+    console.log('request canceled')
+    return
+  }
 
   if (
     errorText.includes('У вас недостаточно прав на выполнение функции') ||
