@@ -133,18 +133,11 @@ const deletePayer = elid => (dispatch, getState) => {
       if (
         error.message.trim() === 'You cannot delete the payer who already made payments'
       ) {
-        toast.error(
-          t('You cannot delete the payer who already made payments', {
-            ns: 'payers',
-          }),
-          {
-            position: 'bottom-right',
-            toastId: 'customId',
-          },
-        )
+        toast.error(t(error.message.trim(), { ns: 'payers' }), { toastId: 'customId' })
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
       }
 
-      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

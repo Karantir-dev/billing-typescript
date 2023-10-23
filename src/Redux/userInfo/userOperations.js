@@ -164,11 +164,17 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
     ),
   ])
     .then(responses => {
+      let error = ''
       responses.forEach(({ data }, i) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc.error) {
+          error = data.doc.error.msg.$
+          return
+        }
 
         funcsArray[i]({ ...data, disableClearBasket }, dispatch)
       })
+
+      if (error) throw new Error(error)
 
       dispatch(userActions.hideUserInfoLoading())
       setLoading && setLoading(false)
