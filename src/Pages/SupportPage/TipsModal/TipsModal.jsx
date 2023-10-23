@@ -35,7 +35,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
-            summ: 0,
+            summ: null,
           }}
           onSubmit={paymentHandler}
         >
