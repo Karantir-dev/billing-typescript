@@ -166,6 +166,7 @@ export default function Component() {
       state.additionalPayMethodts && state.additionalPayMethodts?.length > 0
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
+    selectedPayMethod: Yup.object().required(t('Is a required field', { ns: 'other' })),
     phone:
       !filteredPayment_method?.hide?.includes('phone') &&
       filteredPayment_method?.hide?.includes('alfabank_login')
