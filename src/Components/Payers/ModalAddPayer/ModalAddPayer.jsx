@@ -17,7 +17,7 @@ import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
 
-export default function Component(props) {
+export default function ModalAddPayer(props) {
   const dispatch = useDispatch()
 
   const { t } = useTranslation(['payers', 'other', 'trusted_users', 'domains'])
@@ -32,16 +32,17 @@ export default function Component(props) {
   const geoData = useSelector(authSelectors.getGeoData)
 
   useEffect(() => {
-    let data = {
-      country: payersSelectLists?.country[0]?.$key,
-      profiletype: payersSelectLists?.profiletype[0]?.$key,
-    }
+    // let data = {
+    //   country: payersSelectLists?.country[0]?.$key,
+    //   profiletype: payersSelectLists?.profiletype[0]?.$key,
+    // }
+
     if (elid) {
-      data = { elid }
-      dispatch(payersOperations.getPayerEditInfo(data))
+      dispatch(payersOperations.getPayerEditInfo({ elid }))
       return
     }
-    dispatch(payersOperations.getPayerModalInfo(data))
+
+    dispatch(payersOperations.getPayerCountryType())
   }, [])
 
   if (!payersSelectedFields) {
@@ -197,6 +198,7 @@ export default function Component(props) {
                       touched={!!touched.person}
                       isRequired
                       inputClassName={s.field}
+                      disabled={!!elid}
                     />
 
                     {payersSelectedFields?.eu_vat_field ? (
@@ -237,6 +239,7 @@ export default function Component(props) {
                       error={!!errors.city_physical}
                       touched={!!touched.city_physical}
                       inputClassName={s.field}
+                      isRequired
                     />
 
                     <div className={s.nsInputBlock}>

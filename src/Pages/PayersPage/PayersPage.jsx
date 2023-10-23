@@ -26,6 +26,12 @@ export default function Component() {
     dispatch(payersOperations.getPayers(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
+  useEffect(() => {
+    return () => {
+      dispatch(payersActions.setPayersList(null))
+    }
+  }, [])
+
   const closeAddModalHandler = () => {
     setElid(null)
     dispatch(payersActions.setPayersSelectedFields(null))
@@ -57,6 +63,7 @@ export default function Component() {
               <div className={s.noResults}>{t('nothing_found', { ns: 'other' })}</div>
             </>
           )}
+
           {payersCount > 5 && (
             <div className={s.pagination}>
               <Pagination

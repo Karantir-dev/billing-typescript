@@ -13,9 +13,14 @@ const purseCurrencyRegex =
   /"__purse_currency__" currency code must match the payment currency/
 
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
-  const errorText = err.message || err
+  const uglyErrorText = err.message || err
+  const errorText = uglyErrorText.trim()
 
   if (errorText === 'canceled' && isLocalLoader) return false
+  if (errorText === 'canceled') {
+    console.log('request canceled')
+    return
+  }
 
   if (
     errorText.includes('У вас недостаточно прав на выполнение функции') ||
@@ -49,10 +54,9 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     if (!isExceptedError) {
       // need to check whether it has sense (look for error translation)
       if (isTranslationExists(errorText)) {
-        toast.error(t(errorText, { ns: ['auth', 'other'] }), { position: 'bottom-right' })
+        toast.error(t(errorText, { ns: ['auth', 'other'] }))
       } else {
         toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
-          position: 'bottom-right',
           toastId: 'unknown_error',
           updateId: 'unknown_error',
         })

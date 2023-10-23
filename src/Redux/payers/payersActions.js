@@ -10,6 +10,8 @@ const setPayersSelectedFields = createAction('SET_PAYER_SELECTED_FILEDS')
 
 const deletePayer = createAction('DELETE_PAYER')
 
+const setPayersData = createAction('SET_PAYERS_DATA')
+
 export default {
   setPayersList,
   setPayersCount,
@@ -17,4 +19,5 @@ export default {
   setPayersSelectLists,
   updatePayersSelectLists,
   setPayersSelectedFields,
+  setPayersData
 }

@@ -18,7 +18,7 @@ export default function Component(props) {
   } = props
 
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal} isClickOutside>
       <Modal.Header>
         <span className={s.headerText}>
           {t('Service change history')} - {name}

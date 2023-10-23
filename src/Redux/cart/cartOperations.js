@@ -204,7 +204,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
         }
       })
 
-      dispatch(billingOperations.getPayers({}, true))
+      dispatch(billingOperations.getPayers())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)

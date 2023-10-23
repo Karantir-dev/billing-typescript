@@ -66,6 +66,11 @@ export default function Select(props) {
   }, [isOpened])
 
   const itemSelectHandler = item => {
+    if (value === item.value) {
+      setIsOpened(false)
+      return
+    }
+
     setSelectedItem(item)
     getElement(item?.value)
     setIsOpened(false)
@@ -74,6 +79,9 @@ export default function Select(props) {
   const openHandler = () => {
     setIsOpened(true)
   }
+
+  const isDisabled = disabled || itemsList?.length < 2
+  const hasNoArrow = withoutArrow || itemsList?.length < 2
 
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
@@ -89,7 +97,7 @@ export default function Select(props) {
         className={s.input_wrapper}
         onClick={openHandler}
         data-testid="period_select"
-        disabled={disabled}
+        disabled={isDisabled}
       >
         <div
           className={cn(
@@ -97,7 +105,7 @@ export default function Select(props) {
               [s.input]: true,
               [s.shadow]: isShadow,
               [s.field_bgc]: background,
-              [s.disabled]: disabled,
+              [s.disabled]: isDisabled,
             },
             inputClassName,
           )}
@@ -113,12 +121,13 @@ export default function Select(props) {
           {additionalPlaceHolder && (
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
           )}
-          {!withoutArrow && (
-            <Icon name="Shevron"
+          {!hasNoArrow && (
+            <Icon
+              name="Shevron"
               className={cn({
                 [s.right_icon]: true,
                 [s.opened]: isOpened,
-                [s.disabled]: disabled,
+                [s.disabled]: isDisabled,
               })}
             />
           )}

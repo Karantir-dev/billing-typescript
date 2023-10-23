@@ -41,6 +41,8 @@ const clearPaymentMethodCount = createAction('CLEAR_PAYMENT_METHOD_COUNT')
 const setPeriodValue = createAction('SET_PERIOD_VALUE')
 const setIsStripeAvailable = createAction('SET_IS_STRIPE_AVAILABLE')
 
+const setIsModalCreatePaymentOpened = createAction('SET_IS_MODAL_CREATE_PAYMENT_OPENED')
+
 export default {
   setPaymentMethodList,
   deletePaymentMethod,
@@ -77,5 +79,6 @@ export default {
   setAutoPaymentConfig,
 
   setPeriodValue,
-  setIsStripeAvailable
+  setIsStripeAvailable,
+  setIsModalCreatePaymentOpened,
 }
