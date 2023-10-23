@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next'
-import s from './TipsModal.module.scss'
 import { Button, InputField, Modal } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { supportOperations } from '@redux'
 import { useDispatch } from 'react-redux'
+
+import s from './TipsModal.module.scss'
 
 export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   const { t } = useTranslation(['support', 'other', 'billing'])
@@ -18,9 +19,10 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   }
 
   const validationSchema = Yup.object().shape({
-    summ: Yup.string()
+    summ: Yup.number()
       .required(t('Is a required field', { ns: 'other' }))
-      .min(1, `${t('Мінімальна сума платежу', { ns: 'billing' })}: 1 EUR`),
+      .min(1, `${t('min_payment_amount', { ns: 'billing' })}: 1 EUR`)
+      .max(9999, `${t('max_payment_amount', { ns: 'billing' })}: 9999 EUR`),
   })
 
   return (
@@ -33,11 +35,11 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
-            summ: '',
+            summ: 0,
           }}
           onSubmit={paymentHandler}
         >
-          {({ values, errors, touched, setFieldValue }) => {
+          {({ values, errors, touched }) => {
             return (
               <Form className={s.form} id="tips">
                 <InputField
@@ -48,30 +50,9 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   error={!!errors.summ}
                   touched={!!touched.summ}
                   className={s.input_field_wrapper}
-                  inputClassName={s.text_area}
                   autoComplete="off"
-                  type="text"
+                  type="number"
                   value={values?.summ}
-                  onKeyDown={e => {
-                    e.preventDefault()
-
-                    if (
-                      (e.keyCode >= 48 && e.keyCode <= 57) ||
-                      (e.keyCode >= 96 && e.keyCode <= 105) ||
-                      (e.key === ',' &&
-                        !values.summ.includes(',') &&
-                        !values.summ.includes('.') &&
-                        Number(values.summ[0])) ||
-                      (e.key === '.' &&
-                        !values.summ.includes('.') &&
-                        !values.summ.includes(',') &&
-                        Number(values.summ[0]))
-                    ) {
-                      setFieldValue('summ', values.summ + e.key)
-                    } else if (e.keyCode === 8 || e.keyCode === 46) {
-                      setFieldValue('summ', values?.summ?.slice(0, -1))
-                    }
-                  }}
                 />
 
                 <p className={s.note}>

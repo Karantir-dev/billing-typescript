@@ -52,7 +52,8 @@ const InputField = function InputField(props) {
         return <Icon name="Copy" className={pos} />
       case 'plus':
         return (
-          <Icon name="Plus"
+          <Icon
+            name="Plus"
             onClick={() => onPlusClick && onPlusClick()}
             className={cn(pos, s.plusIcon)}
           />
@@ -107,6 +108,7 @@ const InputField = function InputField(props) {
             [s.field_bgc]: background,
             [s.error]: error && touched,
             [s.disabled]: disabled,
+            [s.number]: type === 'number',
             [inputClassName]: inputClassName,
           })}
           onFocus={() => setIsFocused(true)}

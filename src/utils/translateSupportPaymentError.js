@@ -1,4 +1,6 @@
-export default function translateSupportPaymentError(str, t) {
+import { t } from 'i18next'
+
+export default function translateSupportPaymentError(str) {
   const value1 = str.match(
     /insufficient funds to complete the operation. Required amount (.+?)(?=.) Your current balance/,
   )?.[1]
