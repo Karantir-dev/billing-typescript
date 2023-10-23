@@ -170,19 +170,23 @@ export default function ModalCreatePayment(props) {
 
   const validationSchema = Yup.object().shape({
     profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
-    amount: Yup.number()
-      .positive(`${t('The amount must be greater than')} ${state.minAmount} EUR`)
-      .min(
-        state.minAmount,
-        `${t('The amount must be greater than')} ${state.minAmount} EUR`,
-      )
-      .max(
-        state.maxAmount > 0 ? state.maxAmount : null,
-        state.maxAmount > 0
-          ? `${t('The amount must be less than')} ${state.maxAmount} EUR`
-          : null,
-      )
-      .required(t('Enter amount')),
+    amount: Yup.number().when('selectedPayMethod', {
+      is: value => !!value,
+      then: Yup.number()
+        .positive(`${t('The amount must be greater than')} ${state.minAmount} EUR`)
+        .min(
+          state.minAmount,
+          `${t('The amount must be greater than')} ${state.minAmount} EUR`,
+        )
+        .max(
+          state.maxAmount > 0 ? state.maxAmount : null,
+          state.maxAmount > 0
+            ? `${t('The amount must be less than')} ${state.maxAmount} EUR`
+            : null,
+        )
+        .required(t('Enter amount')),
+    }),
+
     selectedPayMethod: Yup.object().required(t('Select a Payment Method')),
     city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
