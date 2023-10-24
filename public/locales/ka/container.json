@@ -27,7 +27,8 @@
         "dns_hosting": "DNS ჰოსტინგი",
         "external_ftp": "გარე FTP საცავი",
         "wetsite_care": "ზრუნვა საიტზე",
-        "forex_server": "სერვერი ფორექსისთვის"
+        "forex_server": "სერვერი ფორექსისთვის",
+        "wordpress_hosting": "Wordpress ჰოსტინგი"
       }
     },
     "ref_program": {

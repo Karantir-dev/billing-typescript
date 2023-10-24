@@ -17,14 +17,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
-import { vhostSelectors, vhostOperations } from '@redux'
+import { vhostSelectors, vhostOperations, vhostActions } from '@redux'
 import * as route from '@src/routes'
 import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import cn from 'classnames'
 
-export default function Component() {
+export default function Component({ type }) {
   const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
-
+  const [firstRender, setFirstRender] = useState(true)
   const { t, i18n } = useTranslation([
     'container',
     'other',
@@ -66,8 +66,24 @@ export default function Component() {
   const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
-    const data = { p_num, p_cnt }
-    dispatch(vhostOperations.getVhosts(data, signal, setIsLoading))
+    if (!isAllowedToRender) {
+      navigate(route.SERVICES, { replace: true })
+    } else {
+      resetFilterHandler()
+      setFirstRender(false)
+    }
+
+    return () => {
+      dispatch(vhostActions.setVhostCount(0))
+      dispatch(vhostActions.setVhostList(null))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!firstRender) {
+      const data = { p_num, p_cnt }
+      dispatch(vhostOperations.getVhosts(data, type, signal, setIsLoading))
+    }
   }, [p_num, p_cnt])
 
   const parseLocations = () => {
@@ -149,7 +165,7 @@ export default function Component() {
     if (d) {
       data = { ...data, ...d }
     }
-    dispatch(vhostOperations.editVhost(data, setEditModal, setEditData))
+    dispatch(vhostOperations.editVhost(data, type, setEditModal, setEditData))
   }
 
   const closeEditModalHandler = () => {
@@ -164,7 +180,7 @@ export default function Component() {
       ...values,
     }
 
-    dispatch(vhostOperations.editVhost(data, setEditModal, setEditData))
+    dispatch(vhostOperations.editVhost(data, type, setEditModal, setEditData))
   }
 
   const changeTariffVhostHandler = () => {
@@ -207,6 +223,7 @@ export default function Component() {
     dispatch(
       vhostOperations.changeTariffSaveVhost(
         data,
+        type,
         setChangeTariffModal,
         setChangeTariffInfoData,
       ),
@@ -214,12 +231,6 @@ export default function Component() {
   }
 
   let rights = checkServicesRights(virtualHostingRenderData?.vhostPageRights?.toolgrp)
-
-  useEffect(() => {
-    if (!isAllowedToRender) {
-      navigate(route.SERVICES, { replace: true })
-    }
-  }, [])
 
   const getTotalPrice = () => {
     const list = activeServices.length >= 1 ? activeServices : []
@@ -251,21 +262,69 @@ export default function Component() {
     }
   }
 
+  const resetFilterHandler = () => {
+    const clearField = {
+      id: '',
+      ip: '',
+      datacenter: '',
+      domain: '',
+      pricelist: '',
+      period: '',
+      status: '',
+      service_status: '',
+      opendate: '',
+      expiredate: '',
+      orderdatefrom: '',
+      orderdateto: '',
+      cost_from: '',
+      cost_to: '',
+      autoprolong: '',
+    }
+    setP_num(1)
+    setIsFiltered(false)
+    setSelctedItem(null)
+    setActiveServices([])
+    dispatch(
+      vhostOperations.getVhostFilters(
+        { ...clearField, sok: 'ok' },
+        true,
+        type,
+        signal,
+        setIsLoading,
+      ),
+    )
+  }
+
+  const setFilterHandler = values => {
+    setP_num(1)
+    setIsFiltered(true)
+    setSelctedItem(null)
+    setActiveServices([])
+    dispatch(
+      vhostOperations.getVhostFilters(
+        { ...values, sok: 'ok' },
+        true,
+        type,
+        signal,
+        setIsLoading,
+      ),
+    )
+  }
+
   return (
     <>
       <div className={s.page_wrapper}>
         <BreadCrumbs pathnames={parseLocations()} />
         <h1 className={s.page_title}>
-          {t('burger_menu.services.services_list.virtual_hosting')}
+          {type === 'vhost'
+            ? t('burger_menu.services.services_list.virtual_hosting')
+            : t('burger_menu.services.services_list.wordpress_hosting')}
 
           {virtualHostingRenderData?.vhostList?.length !== 0 && (
             <span className={s.title_count_services}>{` (${vhostCount})`}</span>
           )}
         </h1>
         <SharedHostingFilter
-          setIsFiltered={setIsFiltered}
-          setSelctedItem={setSelctedItem}
-          setCurrentPage={setP_num}
           p_cnt={p_cnt}
           isFiltered={isFiltered}
           isFilterActive={isFiltered || virtualHostingRenderData?.vhostList?.length > 0}
@@ -273,8 +332,9 @@ export default function Component() {
           activeServices={activeServices}
           setActiveServices={setActiveServices}
           hostingList={virtualHostingRenderData?.vhostList}
-          signal={signal}
-          setIsLoading={setIsLoading}
+          resetFilter={resetFilterHandler}
+          setFilter={setFilterHandler}
+          type={type}
         />
 
         {virtualHostingRenderData?.vhostList?.length < 1 && isFiltered && (
@@ -394,7 +454,7 @@ export default function Component() {
             elidList={elidForProlongModal}
             closeModal={() => closeProlongModalHandler()}
             names={getServerName(elidForProlongModal)}
-            pageName="shared_hosting"
+            pageName={type === 'vhost' ? 'shared_hosting' : 'wordpress'}
             isOpen
           />
         )}

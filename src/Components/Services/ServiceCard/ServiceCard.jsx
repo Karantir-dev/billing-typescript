@@ -14,7 +14,7 @@ export default function ServiceCard(props) {
       <Link to={route}>
         <div className={s.card_container}>
           <div className={s.container}>
-            <span className={s.card_numeric}>{'0' + index}</span>
+            <span className={s.card_numeric}>{index.toString().padStart(2, '0')}</span>
             <h3 className={s.card_title}>{title}</h3>
 
             <div>

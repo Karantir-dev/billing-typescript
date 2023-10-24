@@ -23,5 +23,7 @@
   "site_care_order": "საიტზე ზრუნვის შეკვეთა",
   "vpn": "VPN",
   "vpn_order": "VPN შეკვეთა",
-  "dedicated": "გამოყოფილი სერვერები"
+  "dedicated": "გამოყოფილი სერვერები",
+  "wordpress": "Wordpress ჰოსტინგი",
+  "wordpress_order": "Wordpress-ის ჰოსტინგის შეკვეთა"
 }

@@ -3,13 +3,14 @@ import i18n from '@src/i18n'
 import { actions, cartActions, vhostActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import * as route from '@src/routes'
+import { WORDPRESS_VHOST } from '@utils/constants'
 
 const getVhosts =
-  (body = {}, signal, setIsLoading) =>
+  (body = {}, type, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -42,17 +43,18 @@ const getVhosts =
 
         dispatch(vhostActions.setVhostList(virtualHostingRenderData))
         dispatch(vhostActions.setVhostCount(count))
-        dispatch(getVhostFilters({}, false, signal, setIsLoading))
+        dispatch(getVhostFilters({}, false, type, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 
 const getVhostFilters =
-  (body = {}, filtered = false, signal, setIsLoading) =>
+  (body = {}, filtered = false, type, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -66,21 +68,56 @@ const getVhostFilters =
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          ...body,
         }),
         { signal },
       )
       .then(({ data }) => {
+        const tariffs = data.doc?.slist
+          ?.find(el => el.$name === 'pricelist')
+          ?.val.filter(el =>
+            type === 'vhost'
+              ? !WORDPRESS_VHOST.includes(el.$key)
+              : WORDPRESS_VHOST.includes(el.$key),
+          )
+          .map(el => el.$key)
+
+        return tariffs?.join()
+      })
+      .then(tariffs => {
+        const { pricelist, ...values } = body
+
+        return axiosInstance.post(
+          '/',
+          qs.stringify({
+            func: 'vhost.filter',
+            out: 'json',
+            auth: sessionId,
+            lang: 'en',
+            pricelist: pricelist || tariffs,
+            ...values,
+          }),
+          { signal },
+        )
+      })
+      .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (filtered) {
-          return dispatch(getVhosts({ p_cnt: body?.p_cnt }, signal, setIsLoading))
+          return dispatch(getVhosts({ p_cnt: body?.p_cnt }, type, signal, setIsLoading))
         }
 
         let filters = {}
 
         data?.doc?.slist?.forEach(el => {
-          filters[el.$name] = el.val
+          if (el.$name === 'pricelist') {
+            filters[el.$name] = el.val.filter(el =>
+              type === 'vhost'
+                ? !WORDPRESS_VHOST.includes(el.$key)
+                : WORDPRESS_VHOST.includes(el.$key),
+            )
+          } else {
+            filters[el.$name] = el.val
+          }
         })
 
         let currentFilters = {
@@ -103,10 +140,11 @@ const getVhostFilters =
 
         dispatch(vhostActions.setVhostFilters(currentFilters))
         dispatch(vhostActions.setVhostFiltersLists(filters))
-        setIsLoading(false)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 
@@ -338,7 +376,7 @@ const prolongVhost =
   }
 
 const editVhost =
-  (body = {}, setEditModal, setEditData) =>
+  (body = {}, type, setEditModal, setEditData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -405,7 +443,7 @@ const editVhost =
               position: 'bottom-right',
             },
           )
-          dispatch(getVhosts())
+          dispatch(getVhosts({}, type))
         }
 
         dispatch(actions.hideLoader())
@@ -517,7 +555,7 @@ const changeTariffPriceListVhost =
   }
 
 const changeTariffSaveVhost =
-  (body = {}, setChangeTariffModal, setChangeTariffData) =>
+  (body = {}, type, setChangeTariffModal, setChangeTariffData) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -555,7 +593,7 @@ const changeTariffSaveVhost =
         setChangeTariffData && setChangeTariffData(null)
         setChangeTariffModal && setChangeTariffModal(false)
 
-        dispatch(getVhosts())
+        dispatch(getVhosts({}, type))
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
@@ -564,7 +602,7 @@ const changeTariffSaveVhost =
   }
 
 const orderVhost =
-  (body = {}, setData, signal, setIsLoading) =>
+  (body = {}, type, setData, signal, setIsLoading) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
@@ -608,10 +646,13 @@ const orderVhost =
 
         data.doc?.list?.forEach(list => {
           if (list?.$name === 'tariflist') {
-            d[`${list?.$name}_list`] = list?.elem
+            d[`${list?.$name}_list`] = list?.elem.filter(el =>
+              type === 'vhost'
+                ? !WORDPRESS_VHOST.includes(el.pricelist.$)
+                : WORDPRESS_VHOST.includes(el.pricelist.$),
+            )
           }
         })
-
         setData && setData(d)
 
         setIsLoading(false)
@@ -622,7 +663,7 @@ const orderVhost =
   }
 
 const orderParamVhost =
-  (body = {}, setParamsData, signal, setIsLoading) =>
+  (body = {}, type, setParamsData, signal, setIsLoading) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
@@ -668,7 +709,7 @@ const orderParamVhost =
           dispatch(
             cartActions?.setCartIsOpenedState({
               isOpened: true,
-              redirectPath: route.SHARED_HOSTING,
+              redirectPath: type === 'vhost' ? route.SHARED_HOSTING : route.WORDPRESS,
             }),
           )
         } else {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, Button, Loader } from '@components'
 import { useDispatch } from 'react-redux'
@@ -9,7 +10,7 @@ import * as routes from '@src/routes'
 
 import s from './SharedHostingOrder.module.scss'
 
-export default function Component() {
+export default function Component({ type }) {
   const { t } = useTranslation([
     'virtual_hosting',
     'other',
@@ -47,16 +48,18 @@ export default function Component() {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (isVhostOrderAllowed || cartFromSite) {
-      dispatch(vhostOperations.orderVhost({}, setData, signal, setIsLoading))
+      dispatch(vhostOperations.orderVhost({}, type, setData, signal, setIsLoading))
     } else {
-      navigate(routes.SHARED_HOSTING, { replace: true })
+      type === 'vhost'
+        ? navigate(routes.SHARED_HOSTING, { replace: true })
+        : navigate(routes.WORDPRESS, { replace: true })
     }
 
     if (location?.state?.isBasket) {
       dispatch(
         cartActions.setCartIsOpenedState({
           isOpened: true,
-          redirectPath: routes.SHARED_HOSTING,
+          redirectPath: type === 'vhost' ? routes.SHARED_HOSTING : routes.WORDPRESS,
         }),
       )
     }
@@ -86,13 +89,20 @@ export default function Component() {
             pricelist: price,
             datacenter: data?.datacenter,
           },
+          type,
           setParamsData,
           signal,
           setIsLoading,
         ),
       )
       dispatch(
-        vhostOperations.orderVhost({ period: period }, setData, signal, setIsLoading),
+        vhostOperations.orderVhost(
+          { period: period },
+          type,
+          setData,
+          signal,
+          setIsLoading,
+        ),
       )
     }
   }, [price])
@@ -137,7 +147,9 @@ export default function Component() {
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
-        dispatch(vhostOperations.orderParamVhost(d, setParamsData, signal, setIsLoading)),
+        dispatch(
+          vhostOperations.orderParamVhost(d, type, setParamsData, signal, setIsLoading),
+        ),
       ),
     )
   }
@@ -168,7 +180,9 @@ export default function Component() {
     <>
       <div className={s.page_wrapper}>
         <BreadCrumbs pathnames={parseLocations()} />
-        <h1 className={s.page_title}>{t('Virtual hosting order')}</h1>
+        <h1 className={s.page_title}>
+          {type === 'vhost' ? t('Virtual hosting order') : t('Wordpress hosting order')}
+        </h1>
         <div className={s.paymentWrapper}>
           <Select
             getElement={item => {
@@ -179,6 +193,7 @@ export default function Component() {
               dispatch(
                 vhostOperations.orderVhost(
                   { period: item },
+                  type,
                   setData,
                   signal,
                   setIsLoading,
@@ -217,6 +232,7 @@ export default function Component() {
                     setPriceHandler={setPriceHandler}
                     key={pricelist?.$}
                     tariff={tariff}
+                    type={type}
                   />
                 )
               })}

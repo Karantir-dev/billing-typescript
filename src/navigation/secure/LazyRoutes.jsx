@@ -251,28 +251,37 @@ export const VDSipLazy = () => {
   )
 }
 
-export const SharedHostingLazy = () => {
+export const SharedHostingLazy = ({ type = 'vhost' }) => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.virtual_hosting', ns: 'container' },
+    {
+      value:
+        type === 'vhost'
+          ? 'burger_menu.services.services_list.virtual_hosting'
+          : 'burger_menu.services.services_list.wordpress_hosting',
+      ns: 'container',
+    },
   ]
 
   return (
     <ShellСomponent title={title}>
-      <SharedHosting />
+      <SharedHosting type={type} />
     </ShellСomponent>
   )
 }
 
-export const SharedHostingOrderLazy = () => {
+export const SharedHostingOrderLazy = ({ type = 'vhost' }) => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'Virtual hosting order', ns: 'virtual_hosting' },
+    {
+      value: type === 'vhost' ? 'Virtual hosting order' : 'Wordpress hosting order',
+      ns: 'virtual_hosting',
+    },
   ]
 
   return (
     <ShellСomponent title={title}>
-      <SharedHostingOrder />
+      <SharedHostingOrder type={type} />
     </ShellСomponent>
   )
 }

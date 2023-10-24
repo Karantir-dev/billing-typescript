@@ -55,5 +55,6 @@
   "New end date": "Нова дата закінчення",
 
   "invalid_ip": "Ви повинні вказати IPv4 адресу",
-  "invalid_port_range": "Повинно бути ціле число в діапазоні від 0 до 65535"
+  "invalid_port_range": "Повинно бути ціле число в діапазоні від 0 до 65535",
+  "Wordpress hosting order": "Замовлення Wordpress хостингу"
 }
