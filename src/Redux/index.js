@@ -1,3 +1,7 @@
+//===========================================COMMON=================================//
+export { default as selectors } from './selectors'
+export { default as actions } from './actions'
+
 //===========================================SUPPORT=================================//
 export { default as supportActions } from './support/supportActions'
 export { default as supportOperations } from './support/supportOperations'
@@ -39,10 +43,6 @@ export { default as settingsActions } from './settings/settingsActions'
 export { default as settingsOperations } from './settings/settingsOperations'
 export { default as settingsReducer } from './settings/settingsReducer'
 export { default as settingsSelectors } from './settings/settingsSelectors'
-
-//===========================================COMMON=================================//
-export { default as selectors } from './selectors'
-export { default as actions } from './actions'
 
 //===========================================BILLING=================================//
 export { default as billingActions } from './billing/billingActions'

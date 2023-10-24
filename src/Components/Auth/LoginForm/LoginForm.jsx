@@ -5,7 +5,7 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { authOperations, authSelectors } from '@redux'
+import { authActions, authOperations, authSelectors } from '@redux'
 import {
   VerificationModal,
   Button,
@@ -34,15 +34,16 @@ export default function LoginForm({ geoCountryId }) {
   const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
   const recaptchaEl = useRef()
 
-  // const redirectID = location?.state?.redirect
+  const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
 
-  const [errMsg, setErrMsg] = useState(location?.state?.errMsg || '')
+  const [errMsg, _setErrMsg] = useState(location?.state?.errMsg || '')
   const [isCaptchaLoaded, setIsCaptchaLoaded] = useState(false)
-  // const [socialLinks, setSocialLinks] = useState({})
 
-  // useEffect(() => {
-  //   dispatch(authOperations.getLoginSocLinks(setSocialLinks))
-  // }, [])
+  useEffect(() => {
+    return () => {
+      dispatch(authActions.clearAuthErrorMsg())
+    }
+  }, [])
 
   const navigate = useNavigate()
 
@@ -52,17 +53,17 @@ export default function LoginForm({ geoCountryId }) {
       setFieldValue('reCaptcha', '')
     }
 
-    const navigateAfterLogin = () =>
+    const navigateAfterLogin = () => {
       navigate(routes.SERVICES, {
         replace: true,
       })
+    }
 
     dispatch(
       authOperations.login(
         email,
         password,
         reCaptcha,
-        setErrMsg,
         resetRecaptcha,
         navigateAfterLogin,
       ),
@@ -102,22 +103,22 @@ export default function LoginForm({ geoCountryId }) {
         validationSchema={validationSchema}
       >
         {({ setFieldValue, errors, touched }) => {
-          const resetRecaptcha = () => {
-            recaptchaEl && recaptchaEl?.current?.reset()
-            setFieldValue('reCaptcha', '')
-          }
-
           return (
             <>
-              <VerificationModal resetRecaptcha={resetRecaptcha} />
+              <VerificationModal />
+
               <Form className={s.form}>
-                {errMsg && (
-                  <div className={s.credentials_error}>
-                    {t(`warnings.${errMsg}`, {
-                      value: location?.state?.value || '',
-                    })}
-                  </div>
+                {(errMsg || globalErrMsg) && (
+                  <div
+                    className={s.credentials_error}
+                    dangerouslySetInnerHTML={{
+                      __html: t(errMsg || globalErrMsg, {
+                        value: location?.state?.value || '',
+                      }),
+                    }}
+                  ></div>
                 )}
+
                 {location.state?.from === routes.CHANGE_PASSWORD && !errMsg && (
                   <div className={s.changed_pass}>{t('changed_pass')}</div>
                 )}

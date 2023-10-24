@@ -45,7 +45,8 @@
   "Payers choice": "Payer's choice",
   "Top-up amount": "Top-up amount",
   "Payment using text": "Payment using VISA, MasterCard and American Express bank cards. When ordering a service with auto-renewal enabled, the card will be saved for further payment.",
-  "Minimum payment amount": "Minimum payment amount",
+  "min_payment_amount": "Minimum payment amount",
+  "max_payment_amount": "Maximum payment amount",
   "Enter amount": "Enter amount",
   "The amount must be greater than": "The amount must be greater than",
   "Select a Payment Method": "Select a Payment Method",
@@ -93,7 +94,7 @@
   "Back to site": "Go to website",
 
   "VERIFY PHONE NUMBER": "VERIFY PHONE NUMBER",
-  
+
   "verification_required_purchase": "Phone number verification is required to purchase this service",
   "promotion_vhost_title_1": "Get 30 days of shared hosting at 100% off.",
   "promotion_vhost_description_1": "Add 1 € to your account or make any purchase on the site and get the discount.",

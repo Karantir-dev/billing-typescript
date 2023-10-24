@@ -621,25 +621,16 @@ const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getStat
     .then(() => dispatch(userOperations.getNotify()))
     .catch(error => {
       if (error.message.includes('insufficient funds to complete the operation')) {
-        toast.error(`${translateSupportPaymentError(error.message, i18n.t)}`, {
-          position: 'bottom-right',
-        })
-      }
-      if (
+        toast.error(translateSupportPaymentError(error.message))
+      } else if (
         error.message.trim() ===
         'You can not make a transfer if the support did not answer'
       ) {
-        toast.error(
-          i18n.t('You can not make a transfer if the support did not answer', {
-            ns: 'support',
-          }),
-          {
-            position: 'bottom-right',
-          },
-        )
+        toast.error(i18n.t(error.message.trim(), { ns: 'support' }))
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
       }
 
-      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }

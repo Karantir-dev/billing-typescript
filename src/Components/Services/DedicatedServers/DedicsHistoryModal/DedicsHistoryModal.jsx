@@ -34,7 +34,7 @@ export default function DedicsHistoryModal({ elid, closeModal, name, isOpen }) {
   }
 
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal} isClickOutside>
       <Modal.Header>
         <div className={s.title}>
           <h3 className={s.modal_title}>

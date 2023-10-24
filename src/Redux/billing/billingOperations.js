@@ -9,7 +9,7 @@ import {
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { analyticsSaver, checkIfTokenAlive, cookies } from '@utils'
+import { analyticsSaver, checkIfTokenAlive, cookies, handleLoadersClosing } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
 const getPayments =
@@ -422,9 +422,9 @@ const getExpensesCsv = (p_cnt, signal, setIsLoading) => (dispatch, getState) => 
 }
 
 const getPayers =
-  (body = {}, cart = false) =>
+  (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -442,6 +442,7 @@ const getPayers =
           clickstat: 'yes',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -449,58 +450,56 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(
-          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
-        )
+        const payersList = elem?.filter(({ name, id }) => name?.$ && id?.$)
+
+        dispatch(payersActions.setPayersList(payersList))
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(cart))
-      })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
 
-const getPayerCountryType =
-  (cart = false) =>
-  (dispatch, getState) => {
-    const {
-      auth: { sessionId },
-    } = getState()
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'profile.add.country',
-          out: 'json',
-          auth: sessionId,
-        }),
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        const filters = {}
-
-        data?.doc?.slist?.forEach(el => {
-          filters[el.$name] = el?.val
-        })
-
-        const d = {
-          country: filters?.country[0]?.$key,
-          profiletype: filters?.profiletype[0]?.$key,
-        }
-
-        dispatch(payersActions.setPayersSelectLists(filters))
-        {
-          !cart && dispatch(getPaymentMethod({}, d))
+        if (payersList.length === 0) {
+          dispatch(getPayerCountryType(signal, setIsLoading))
+        } else {
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         }
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
+
+const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'profile.add.country',
+        out: 'json',
+        auth: sessionId,
+      }),
+      { signal },
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      const filters = {}
+
+      data?.doc?.slist?.forEach(el => {
+        filters[el.$name] = el?.val
+      })
+
+      dispatch(payersActions.setPayersSelectLists(filters))
+
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+    })
+    .catch(error => {
+      handleLoadersClosing(error.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
+    })
+}
 
 const checkIsStripeAvailable = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -520,6 +519,8 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
       }),
     )
     .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
       const isStripeAvailable = data.doc.list
         .find(el => el.$name === 'methodlist')
         ?.elem.find(el => el.name.$.includes('Stripe'))
@@ -535,9 +536,9 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
 }
 
 const getPaymentMethod =
-  (body = {}, payerModalInfoData = null) =>
+  (body = {}, payerModalInfoData = null, signal, setIsLoading) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -553,6 +554,7 @@ const getPaymentMethod =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -580,14 +582,27 @@ const getPaymentMethod =
         dispatch(billingActions.setPaymentCurrencyList(d))
 
         if (payerModalInfoData) {
-          return dispatch(payersOperations.getPayerModalInfo(payerModalInfoData))
+          return dispatch(
+            payersOperations.getPayerModalInfo(
+              payerModalInfoData,
+              false,
+              false,
+              false,
+              false,
+              signal,
+              setIsLoading,
+            ),
+          )
         }
-
-        dispatch(actions.hideLoader())
+        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -773,7 +788,7 @@ const getPaymentRedirect = (elid, elname, paymethod) => (dispatch, getState) => 
 }
 
 const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading(true)
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -802,12 +817,14 @@ const getAutoPayments = (signal, setIsLoading) => (dispatch, getState) => {
       dispatch(getAutoPaymentsAdd(signal, setIsLoading))
     })
     .catch(err => {
-      checkIfTokenAlive(err?.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(err?.message, dispatch, setIsLoading)
+
+      checkIfTokenAlive(err?.message, dispatch)
     })
 }
 
 const getAutoPaymentsAdd = (signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading(true)
+  // setIsLoading(true)
 
   const {
     auth: { sessionId },
@@ -840,10 +857,11 @@ const getAutoPaymentsAdd = (signal, setIsLoading) => (dispatch, getState) => {
 
       dispatch(billingActions.setAutoPaymentConfig(config))
 
-      setIsLoading(false)
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
     })
     .catch(err => {
-      checkIfTokenAlive(err?.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(err?.message, dispatch, true)
     })
 }
 
@@ -909,6 +927,21 @@ const createAutoPayment =
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
         if (data.doc.ok) {
+          if (data.doc?.profile) {
+            axiosInstance.post(
+              '/',
+              qs.stringify({
+                func: 'profile.edit',
+                out: 'json',
+                auth: sessionId,
+                lang: 'en',
+                sok: 'ok',
+                ...body,
+                elid: data.doc.profile.$,
+              }),
+            )
+          }
+
           dispatch(getPaymentMethodPage(data.doc.ok.$))
           setIsConfigure(false)
         }
@@ -1112,6 +1145,21 @@ const finishAddPaymentMethod =
         }
 
         if (data.doc.ok) {
+          if (data.doc?.profile) {
+            axiosInstance.post(
+              '/',
+              qs.stringify({
+                func: 'profile.edit',
+                out: 'json',
+                auth: sessionId,
+                lang: 'en',
+                sok: 'ok',
+                ...body,
+                elid: data.doc.profile.$,
+              }),
+            )
+          }
+
           dispatch(getPaymentMethodPage(data.doc.ok.$))
         }
       })

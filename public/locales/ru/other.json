@@ -67,7 +67,7 @@
   "Payer": "Плательщик",
   "Sum": "Сумма",
   "Payment method": "Метод оплаты",
-  "Paypalich description":"Оплата банковской картой MasterCard, QIWI, USDT",
+  "Paypalich description": "Оплата банковской картой MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "Недостаточно прав для доступа",
   "-- without payment method --": "Без способа оплаты",
   "Create": "Создать",
@@ -108,6 +108,7 @@
   "Enter promo code": "Введите промокод",
   "Apply": "Применить",
   "Invalid promo code": "Недействительный промо-код",
+  "promocode_not_use": "Промокод '{{promocode}}' нельзя применить к заказанным услугам или скидка по нему не превышает существующую.",
   "Close": "Закрыть",
   "Changing": "Изменение",
   "Service change history": "История изменения услуги ",
@@ -169,7 +170,7 @@
   "Name servers has been successfully changed": "Серверы имен были успешно изменены",
   "services_selected": "Выбрано услуг:",
   "server_deleted": "Сервер {{id}} удален",
-  "unknown_error": "Что-то пошло не так",
+  "unknown_error": "Похоже что-то пошло не так, приносим извинения за неудобства. Вы можете обратиться в нашу техническую поддержку support@zomro.com",
   "and_more": "и еще {{value}}",
   "Services per page": "Элементов на странице",
   "Attention, edit few services": "Внимание! Следующие изменения будут применены ко всем выбранным услугам",
@@ -257,5 +258,8 @@
   "certificate_applied_success": "Сертификат успешно применен",
 
   "payment_processed": "Ваш платеж в обработке, проверить статус вы можете в разделе",
-  "Finance/Accounts": "Финансы/Счета"
+  "Finance/Accounts": "Финансы/Счета",
+  "online": "Вы снова онлайн",
+  "offline_title": "Ошибка интернет соединения",
+  "offline": "Кажется, у вас нет подключения к Интернету, проверьте доступ к сети"
 }

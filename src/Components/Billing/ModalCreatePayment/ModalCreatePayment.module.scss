@@ -1,6 +1,10 @@
 .modal {
   max-width: 690px;
   background-color: var(--main-bgc);
+
+  &:not(.visible) {
+    opacity: 0;
+  }
 }
 
 .modalBg {
@@ -47,6 +51,10 @@
   line-height: 70.9%;
   margin-bottom: 5px;
   color: var(--main-text);
+
+  &Payers {
+    margin-bottom: 15px;
+  }
 }
 
 .formFieldsBlock {
@@ -56,18 +64,6 @@
   &.first {
     align-items: center;
   }
-}
-
-.btnBlock {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  padding: 14px;
-  z-index: 2;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  background-color: var(--forms_bgc_2);
-  box-shadow: var(--modal_footer_shadow);
 }
 
 .saveBtn {
@@ -94,14 +90,6 @@
   font-size: 13px;
   line-height: 1.2;
   margin-top: 3px;
-}
-
-.error_message_addpayer {
-  margin-left: 2px;
-  color: var(--error-color);
-  font-size: 13px;
-  line-height: 1.2;
-  margin-top: 10px;
 }
 
 .inputAmountBlock {
@@ -154,14 +142,13 @@
   .descrWrapper {
     display: flex;
     align-items: center;
-    
+
     .methodDescr {
       max-width: 150px;
       overflow: hidden;
       text-overflow: ellipsis;
       -webkit-line-clamp: 1;
       word-break: break-all;
-
     }
   }
 
@@ -216,9 +203,8 @@
     path {
       fill: var(--accent-color-light);
     }
-  }  
+  }
 }
-
 
 .infotext {
   font-style: normal;
@@ -255,22 +241,6 @@
   margin-bottom: 25px;
 }
 
-.addNewPayerBtn {
-  margin: 15px 15px;
-  display: flex;
-  width: 100%;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 70.9%;
-  letter-spacing: -0.01em;
-  text-decoration-line: underline;
-
-  color: var(--link-color);
-  cursor: pointer;
-}
-
 .offerBlock {
   display: flex;
   align-items: center;
@@ -297,91 +267,6 @@
   text-align: start;
 }
 
-.inputPerson {
-  margin-top: 13px;
-  max-width: 100%;
-}
-
-.addPayerBlock {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-
-.countrySelectItem {
-  display: flex;
-  align-items: center;
-
-  img {
-    margin-right: 13px;
-  }
-}
-
-.nsInputBlock {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-}
-
-.infoBtn {
-  position: absolute;
-  margin-left: auto;
-  top: 23px;
-  right: 0px;
-  z-index: 2;
-  padding: 12px 12px 12px 0px;
-  cursor: pointer;
-
-  &:hover {
-    svg {
-      path {
-        opacity: 1;
-        fill: url(#gradient);
-      }
-    }
-    .descriptionBlock {
-      opacity: 1;
-      height: auto;
-      overflow: auto;
-      padding: 15px;
-    }
-  }
-}
-
-.descriptionBlock {
-  position: absolute;
-  opacity: 0;
-  height: 0;
-  overflow: hidden;
-  box-shadow: var(--burger-menu-elem-box-shadow);
-  background-color: var(--forms_bgc_4);
-  padding: 0;
-  top: 90%;
-  right: 0;
-  width: 232px;
-  z-index: 3;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 130.5%;
-  color: var(--main-text);
-  text-align: start;
-  transition: 0.05s linear;
-  &::after {
-    content: '';
-    position: absolute;
-    left: 89%;
-    bottom: 99%;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--forms_bgc_4);
-    clear: both;
-  }
-}
-
 @media screen and (min-width: 768px) {
   .paymentMethodBtn {
     max-width: 31%;
@@ -391,7 +276,6 @@
       margin-right: 19px;
     }
 
-    
     justify-content: space-between;
     align-items: center;
 
@@ -415,18 +299,8 @@
     flex-basis: 30%;
   }
 
-  .addNewPayerBtn {
-    width: auto;
-    margin: 13px 0 5px 0;
-  }
-
   .offerBlock {
     margin-top: 33px;
-  }
-
-  .inputPerson {
-    max-width: 30%;
-    margin-right: 20px;
   }
 
   .select {
@@ -436,12 +310,6 @@
     &:nth-child(2n) {
       margin-right: 0px;
     }
-  }
-
-  .nsInputBlock {
-    position: relative;
-    width: 100%;
-    max-width: 48%;
   }
 
   .inputBig {
@@ -482,10 +350,6 @@
 
   .saveBtn {
     width: 254px;
-  }
-
-  .addPayerBlock {
-    flex-direction: row;
   }
 }
 

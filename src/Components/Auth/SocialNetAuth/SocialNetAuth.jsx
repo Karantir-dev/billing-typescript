@@ -38,9 +38,5 @@ export default function SocialNetAuth() {
     }
   }, [])
 
-  return formVisibility === 'shown' ? (
-    <VerificationModal onClose={() => redirectToLogin()} />
-  ) : (
-    <Loader shown />
-  )
+  return formVisibility === 'shown' ? <VerificationModal /> : <Loader shown />
 }

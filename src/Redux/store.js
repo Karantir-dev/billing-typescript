@@ -33,7 +33,14 @@ import {
   siteCareReducer,
   vpnReducer,
 } from '@redux'
-import { theme, isLoading, pinned, scrollForbidden, online } from '@redux/reducer'
+import {
+  theme,
+  isLoading,
+  pinned,
+  scrollForbidden,
+  online,
+  blockingModalShown,
+} from '@redux/reducer'
 
 const rootPersistConfig = {
   key: 'theme',
@@ -71,6 +78,7 @@ const rootReducer = combineReducers({
   pinned,
   scrollForbidden,
   online,
+  blockingModalShown,
 })
 
 const store = configureStore({

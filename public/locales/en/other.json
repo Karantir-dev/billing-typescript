@@ -67,7 +67,7 @@
   "Payer": "Payer",
   "Sum": "Sum",
   "Payment method": "Payment method",
-  "Paypalich description":"Payment by bank card MasterCard, QIWI, USDT",
+  "Paypalich description": "Payment by bank card MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "Insufficient privileges to access",
   "-- without payment method --": "Without payment method",
   "Create": "Create",
@@ -109,6 +109,7 @@
   "Enter promo code": "Enter promo code",
   "Apply": "Apply",
   "Invalid promo code": "Invalid promo code",
+  "promocode_not_use": "Promo code '{{promocode}}' can not be applied to ordered services or its discount doesn't exceed the existing one",
   "Close": "Close",
   "Changing": "Changing",
   "Service change history": "Service change history",
@@ -171,7 +172,7 @@
   "Name servers has been successfully changed": "Name servers has been successfully changed",
   "services_selected": "Services are selected:",
   "server_deleted": "Server {{id}} deleted",
-  "unknown_error": "Something went wrong",
+  "unknown_error": "Looks like something went wrong, we apologize for the inconvenience. You can contact our technical support support@zomro.com",
   "services_deletion": "and {{value}} more services?",
   "and_more": "and {{value}} more",
   "Services per page": "Items per page",
@@ -258,5 +259,9 @@
   "certificate_applied_success": "The certificate has been successfully applied",
 
   "payment_processed": "Your payment is being processed, you can check the status in the section",
-  "Finance/Accounts": "Finance/Accounts"
+  "Finance/Accounts": "Finance/Accounts",
+  "online": "You`re back online",
+  "offline_title": "Internet connection error",
+  "offline": "It seems that you do not have an Internet connection, check your network access",
+  "Payer creation function is temporarily unavailable": "Payer creation function is temporarily unavailable"
 }

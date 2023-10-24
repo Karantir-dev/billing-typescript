@@ -2,13 +2,13 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, payersActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import i18n from '@src/i18n'
-import { checkIfTokenAlive } from '@utils'
+import { t, exists as isTranslationExists } from 'i18next'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const getPayers =
   (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading && setIsLoading(true)
+    setIsLoading ? setIsLoading(true) : dispatch(actions.hideLoader())
 
     const {
       auth: { sessionId },
@@ -33,49 +33,77 @@ const getPayers =
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
 
-        dispatch(
-          payersActions.setPayersList(elem?.filter(({ name, id }) => name?.$ && id?.$)),
-        )
+        const payersList = elem?.filter(({ name, id }) => name?.$ && id?.$)
+
+        dispatch(payersActions.setPayersList(payersList))
         dispatch(payersActions.setPayersCount(count))
-        dispatch(getPayerCountryType(signal, setIsLoading))
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 
-const getPayerCountryType = (signal, setIsLoading) => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getPayerCountryType =
+  (setSelectedPayerFields, signal, setIsLoading) => (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'profile.add.country',
-        out: 'json',
-        auth: sessionId,
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
-      const filters = {}
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'profile.add.country',
+          out: 'json',
+          auth: sessionId,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      data?.doc?.slist?.forEach(el => {
-        filters[el.$name] = el?.val
+        const filters = {}
+
+        data?.doc?.slist?.forEach(el => {
+          filters[el.$name] = el?.val
+        })
+
+        dispatch(payersActions.setPayersSelectLists(filters))
+
+        const fixedFields = {
+          country: filters?.country?.[0]?.$key,
+          profiletype: filters?.profiletype?.[0]?.$key,
+        }
+
+        dispatch(
+          getPayerModalInfo(
+            fixedFields,
+            false,
+            null,
+            setSelectedPayerFields,
+            false,
+            signal,
+            setIsLoading,
+          ),
+        )
       })
+      .catch(error => {
+        const errorText = error.message.trim()
 
-      dispatch(payersActions.setPayersSelectLists(filters))
+        handleLoadersClosing(errorText, dispatch, setIsLoading)
 
-      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-    })
-}
+        if (isTranslationExists(errorText)) {
+          toast.error(t(errorText, { ns: ['auth', 'other'] }))
+        } else {
+          checkIfTokenAlive(errorText, dispatch)
+        }
+      })
+  }
 
 const deletePayer = elid => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -105,26 +133,27 @@ const deletePayer = elid => (dispatch, getState) => {
       if (
         error.message.trim() === 'You cannot delete the payer who already made payments'
       ) {
-        toast.error(
-          i18n.t('You cannot delete the payer who already made payments', {
-            ns: 'payers',
-          }),
-          {
-            position: 'bottom-right',
-            toastId: 'customId',
-          },
-        )
+        toast.error(t(error.message.trim(), { ns: 'payers' }), { toastId: 'customId' })
+      } else {
+        checkIfTokenAlive(error.message, dispatch)
       }
 
-      checkIfTokenAlive(error.message, dispatch)
       dispatch(actions.hideLoader())
     })
 }
 
 const getPayerModalInfo =
-  (body = {}, isCreate = false, closeModal, setSelectedPayerFields, newPayer = false) =>
+  (
+    body = {},
+    isCreate = false,
+    closeModal,
+    setSelectedPayerFields,
+    newPayer = false,
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -140,12 +169,13 @@ const getPayerModalInfo =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
-              i18n.t('does not correspond to country', {
+              t('does not correspond to country', {
                 ns: 'payers',
               }),
               {
@@ -159,7 +189,7 @@ const getPayerModalInfo =
             data.doc.error.msg.$.includes('Company')
           ) {
             toast.error(
-              i18n.t('The maximum number of payers Company', {
+              t('The maximum number of payers Company', {
                 ns: 'payers',
               }),
               {
@@ -173,7 +203,7 @@ const getPayerModalInfo =
             data.doc.error.msg.$.includes('field has invalid value')
           ) {
             toast.error(
-              i18n.t('eu_vat field has invalid value', {
+              t('eu_vat field has invalid value', {
                 ns: 'payers',
               }),
               {
@@ -187,7 +217,7 @@ const getPayerModalInfo =
 
         if (isCreate) {
           closeModal()
-          return dispatch(getPayers())
+          return dispatch(getPayers({}, signal, setIsLoading))
         }
 
         let linkName = ''
@@ -233,6 +263,8 @@ const getPayerModalInfo =
           offer_field: linkName || '',
           passport_field: passportField,
           eu_vat_field: euVatField,
+          // I got an error once with this value 'new'
+          // so probably it needs to be replaced with 'add_new'
           profile: newPayer ? 'new' : null,
           jobtitle: data.doc.jobtitle?.$ || '',
           rdirector: data.doc.rdirector?.$ || '',
@@ -248,20 +280,16 @@ const getPayerModalInfo =
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
         })
 
-        if (setSelectedPayerFields) {
-          setSelectedPayerFields(selectedFields)
-          return dispatch(actions.hideLoader())
-        }
-
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
-
         dispatch(payersActions.updatePayersSelectLists(filters))
 
-        dispatch(actions.hideLoader())
+        setSelectedPayerFields && setSelectedPayerFields(selectedFields)
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
       })
   }
 
@@ -273,9 +301,11 @@ const getPayerEditInfo =
     setSelectedPayerFields,
     cart = false,
     setPayerFieldList,
+    signal,
+    setIsLoading,
   ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -291,12 +321,13 @@ const getPayerEditInfo =
           lang: 'en',
           ...body,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) {
           if (data.doc.error.msg.$.includes('The VAT-number does not correspond to')) {
             toast.error(
-              i18n.t('does not correspond to country', {
+              t('does not correspond to country', {
                 ns: 'payers',
               }),
               {
@@ -310,7 +341,7 @@ const getPayerEditInfo =
             data.doc.error.msg.$.includes('Company')
           ) {
             toast.error(
-              i18n.t('The maximum number of payers Company', {
+              t('The maximum number of payers Company', {
                 ns: 'payers',
               }),
               {
@@ -324,7 +355,7 @@ const getPayerEditInfo =
             data.doc.error.msg.$.includes('field has invalid value')
           ) {
             toast.error(
-              i18n.t('eu_vat field has invalid value', {
+              t('eu_vat field has invalid value', {
                 ns: 'payers',
               }),
               {
@@ -338,7 +369,7 @@ const getPayerEditInfo =
 
         if (isCreate) {
           closeModal && closeModal()
-          return dispatch(getPayers())
+          return dispatch(getPayers({}, signal, setIsLoading))
         }
 
         let passportField = false
@@ -400,22 +431,28 @@ const getPayerEditInfo =
           if (el?.$name === 'profiletype') filters[el.$name] = el?.val
         })
 
+        const hideLoader = () =>
+          setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+
+        dispatch(payersActions.setPayersSelectedFields(selectedFields))
+        dispatch(payersActions.setPayersSelectLists(filters))
+
         if (setSelectedPayerFields) {
           setSelectedPayerFields(selectedFields)
           setPayerFieldList && setPayerFieldList(filters)
-          return cart
-            ? setTimeout(() => dispatch(actions.hideLoader()), 1000)
-            : dispatch(actions.hideLoader())
+
+          return cart ? setTimeout(() => hideLoader(), 1000) : hideLoader()
         }
 
-        dispatch(payersActions.setPayersSelectedFields(selectedFields))
-        dispatch(payersActions.updatePayersSelectLists(filters))
-
-        dispatch(actions.hideLoader())
+        hideLoader()
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        if (setIsLoading) {
+          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+          dispatch(actions.hideLoader())
+        }
       })
   }
 
@@ -461,4 +498,5 @@ export default {
   getPayerModalInfo,
   getPayerEditInfo,
   getPayerOfferText,
+  getPayerCountryType,
 }

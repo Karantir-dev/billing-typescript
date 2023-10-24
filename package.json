@@ -90,7 +90,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@craco/craco": "^7.1.0",
     "@storybook/addon-actions": "^6.5.5",
-    "@storybook/addon-essentials": "^7.0.6",
+    "@storybook/addon-essentials": "^7.5.0",
     "@storybook/addon-interactions": "^6.5.5",
     "@storybook/addon-links": "^6.5.5",
     "@storybook/builder-webpack5": "^6.5.5",

@@ -8,7 +8,7 @@ export default function Component(props) {
   const { closeModal, whoisData, isOpen } = props
 
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
+    <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal} isClickOutside>
       <Modal.Header>
         <span className={s.headerText}>{t('Domain Information')}</span>
       </Modal.Header>

@@ -67,7 +67,7 @@
   "Payer": "გადამხდელი",
   "Sum": "ჯამი",
   "Payment method": "გადახდის მეთოდი",
-  "Paypalich description":"გადახდა საბანკო ბარათით MasterCard, QIWI, USDT",
+  "Paypalich description": "გადახდა საბანკო ბარათით MasterCard, QIWI, USDT",
   "Insufficient privileges to access": "არასაკმარისი უფლებები წვდომაზე",
   "-- without payment method --": "გადახდის მეთოდის გარეშე",
   "Create": "შექმნა",
@@ -108,6 +108,7 @@
   "Enter promo code": "შეიყვანეთ პრომო კოდი",
   "Apply": "დადასტურება",
   "Invalid promo code": "არასწორი პრომო კოდი",
+  "promocode_not_use": "პრომო კოდი '{{promocode}}' არ შეიძლება გამოყენებულ იქნას შეკვეთილ სერვისებზე ან მისი ფასდაკლება არ აღემატება არსებულს",
   "Close": "დახურვა",
   "Changing": "შეცვლა",
   "Service change history": "მომსახურების შეცვლის ისტორია",
@@ -168,7 +169,7 @@
   "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა",
   "services_selected": "შერჩეულია სერვისები:",
   "server_deleted": "სერვერი {{id}} წაიშალა",
-  "unknown_error": "Რაღაც არასწორად წავიდა",
+  "unknown_error": "როგორც ჩანს, რაღაც შეფერხდა, ბოდიშს გიხდით შექმნილი უხერხულობისთვის. შეგიძლიათ დაუკავშირდეთ ჩვენს ტექნიკურ მხარდაჭერას support@zomro.com",
   "services_deletion": "და მეტი {{value}} სერვისი?",
   "and_more": "და მეტი {{value}}",
   "Services per page": "ნივთები თითო გვერდზე",
@@ -256,5 +257,8 @@
   "certificate_matches_error": "მხოლოდ ციფრები და დიდი ასოები შეიძლება",
   "certificate_applied_success": "სერტიფიკატი წარმატებით გამოყენებულია",
   "payment_processed": "თქვენი გადახდა მუშავდება, შეგიძლიათ შეამოწმოთ სტატუსი განყოფილებაში",
-  "Finance/Accounts": "ფინანსები/ანგარიშები"
+  "Finance/Accounts": "ფინანსები/ანგარიშები",
+  "online": "თქვენ დაბრუნდით ონლაინ",
+  "offline_title": "ინტერნეტ კავშირის შეცდომა",
+  "offline": "როგორც ჩანს, თქვენ არ გაქვთ ინტერნეტი, შეამოწმეთ თქვენი ქსელის წვდომა"
 }

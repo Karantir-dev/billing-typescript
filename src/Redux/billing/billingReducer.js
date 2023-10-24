@@ -25,7 +25,8 @@ const initialState = {
   autoPaymentConfig: null,
 
   periodValue: null,
-  isStripeAvailable: false
+  isStripeAvailable: false,
+  isModalCreatePaymentOpened: false,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -55,6 +56,10 @@ const paymentMethodList = createReducer(initialState.paymentMethodList, {
   [billingActions.deletePaymentMethod]: (state, { payload }) =>
     (state = current(state)?.filter(el => el?.recurring?.$ !== payload)),
   [billingActions.clearPaymentMethodList]: () => [],
+})
+
+const paymentsMethodList = createReducer(initialState.paymentsMethodList, {
+  [billingActions.setPaymentMethodsList]: (_, { payload }) => payload,
 })
 
 const paymentsMethodCount = createReducer(initialState.paymentMethodCount, {
@@ -88,10 +93,6 @@ const expensesFilters = createReducer(initialState.expensesFilters, {
   [billingActions.setExpensesFilters]: (_, { payload }) => payload,
 })
 
-const paymentsMethodList = createReducer(initialState.paymentsMethodList, {
-  [billingActions.setPaymentMethodsList]: (_, { payload }) => payload,
-})
-
 const paymentsCurrencyList = createReducer(initialState.paymentsCurrencyList, {
   [billingActions.setPaymentCurrencyList]: (_, { payload }) => payload,
 })
@@ -112,6 +113,13 @@ const periodValue = createReducer(initialState.periodValue, {
 const isStripeAvailable = createReducer(initialState.isStripeAvailable, {
   [billingActions.setIsStripeAvailable]: (_, { payload }) => payload,
 })
+
+const isModalCreatePaymentOpened = createReducer(
+  initialState.isModalCreatePaymentOpened,
+  {
+    [billingActions.setIsModalCreatePaymentOpened]: (_, { payload }) => payload,
+  },
+)
 
 const billingReducer = combineReducers({
   paymentsList,
@@ -137,7 +145,8 @@ const billingReducer = combineReducers({
   paymentMethodList,
 
   periodValue,
-  isStripeAvailable
+  isStripeAvailable,
+  isModalCreatePaymentOpened,
 })
 
 export default billingReducer

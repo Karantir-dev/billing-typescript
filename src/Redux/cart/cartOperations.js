@@ -87,18 +87,28 @@ const setBasketPromocode =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          toast.error(`${i18n.t(data.doc.error.msg.$?.trim(), { ns: 'other' })}`, {
-            position: 'bottom-right',
-          })
-
-          throw new Error(data.doc.error.msg.$)
+          throw data.doc.error
         }
 
         dispatch(getBasket(setCartData, setPaymentsMethodList))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
         dispatch(actions.hideLoader())
+
+        if (error.$type === 'promocode_not_use') {
+          toast.error(
+            i18n.t('promocode_not_use', {
+              ns: 'other',
+              promocode: error.param.$,
+            }),
+          )
+          return
+        } else if (error.$type === 'missed') {
+          toast.error(i18n.t('Invalid promo code', { ns: 'other' }))
+          return
+        } else {
+          checkIfTokenAlive(error.msg.$ || error.message, dispatch)
+        }
       })
   }
 
@@ -194,7 +204,7 @@ const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getSt
         }
       })
 
-      dispatch(billingOperations.getPayers({}, true))
+      dispatch(billingOperations.getPayers())
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
