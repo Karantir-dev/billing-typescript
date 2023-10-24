@@ -39,7 +39,6 @@ const totpFormVisibility = createReducer(initialState.totpFormVisibility, {
 const authErrorMsg = createReducer(initialState.authErrorMsg, {
   [authActions.setAuthErrorMsg]: (_, { payload }) => payload,
   [authActions.clearAuthErrorMsg]: () => null,
-  [authActions.logoutSuccess]: () => null,
 })
 
 const authReducer = combineReducers({

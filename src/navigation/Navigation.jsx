@@ -39,6 +39,7 @@ const Component = () => {
         })
         .catch(() => {
           onlineStatus && dispatch(actions.setOffline())
+          dispatch(authActions.clearAuthErrorMsg())
         })
     }
   }, [authErrorMsg])
@@ -66,7 +67,7 @@ const Component = () => {
 
   useEffect(() => {
     const intervalId =
-      process.env.NODE_ENV !== 'development' &&
+      // process.env.NODE_ENV !== 'development' &&
       setInterval(() => {
         fetch('https://www.google.com', { mode: 'no-cors' })
           .then(() => {
