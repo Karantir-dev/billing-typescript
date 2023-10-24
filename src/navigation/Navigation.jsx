@@ -39,6 +39,7 @@ const Component = () => {
         })
         .catch(() => {
           onlineStatus && dispatch(actions.setOffline())
+          dispatch(authActions.clearAuthErrorMsg())
         })
     }
   }, [authErrorMsg])
