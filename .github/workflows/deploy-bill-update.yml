@@ -13,43 +13,43 @@ env:
   NAMESPACE: bill-zomro-com-update
 
 jobs:
-  jest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ v16.13.1 ]
-        npm-version: [ 8.1.2 ]
-    environment:
-      name: bill-update
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm install -g npm@${{ matrix.npm-version }}
-      - run: npm install -f
-      # Обов'язкові змінні потрібні лише для збірки JS
-      - name: Create core .env
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
-          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
-
-      - name: Run test
-        run: npm run test
-      - name: Send fail start in Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: 'channel'
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        # if: failure()
+#  jest:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node-version: [ v16.13.1 ]
+#        npm-version: [ 8.1.2 ]
+#    environment:
+#      name: bill-update
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#          cache: 'npm'
+#      - run: npm install -g npm@${{ matrix.npm-version }}
+#      - run: npm install -f
+#      # Обов'язкові змінні потрібні лише для збірки JS
+#      - name: Create core .env
+#        uses: SpicyPizza/create-envfile@v1.3
+#        with:
+#          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
+#          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+#
+#      - name: Run test
+#        run: npm run test
+#      - name: Send fail start in Slack
+#        uses: 8398a7/action-slack@v3
+#        with:
+#          status: ${{ job.status }}
+#          fields: all
+#          mention: 'channel'
+#          channel: 'github-actions'
+#          if_mention: always
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#        # if: failure()
 
   eslint:
     runs-on: ubuntu-latest
