@@ -288,7 +288,7 @@ export default function Component({ transfer = false }) {
                                     itemsList={paymentData[
                                       `autoprolong_${select}_list`
                                     ]?.map(({ $key, $ }) => ({
-                                      label: translatePeriod($.trim(), t),
+                                      label: translatePeriod($.trim(), $key, t),
                                       value: $key,
                                     }))}
                                   />
