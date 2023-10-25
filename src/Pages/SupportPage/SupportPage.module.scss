@@ -3,11 +3,14 @@
   display: flex;
   flex-direction: column;
 }
-.content {
+.content_wrapper {
   width: 100%;
-  max-width: 1420px;
   flex-grow: 1;
   position: relative;
+}
+
+.content {
+  max-width: 1420px;
 }
 
 .pageTitle {
