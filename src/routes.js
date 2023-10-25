@@ -75,3 +75,6 @@ export const VPN_ORDER = '/services/vpn/vpn_order'
 
 export const PAYMENT_SAVED = '/payment_method_saved'
 export const PAYMENT_PROCESSING = '/payment_processing'
+
+export const WORDPRESS = '/services/wordpress'
+export const WORDPRESS_ORDER = '/services/wordpress/wordpress_order'

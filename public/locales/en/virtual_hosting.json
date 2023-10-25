@@ -54,5 +54,6 @@
   "New end date": "New end date",
 
   "invalid_ip": "You must specify IPv4 address",
-  "invalid_port_range": "should be an integer from the 0 to 65535 range"
+  "invalid_port_range": "should be an integer from the 0 to 65535 range",
+  "Wordpress hosting order": "Wordpress hosting order"
 }

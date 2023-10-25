@@ -178,6 +178,14 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={route.VPS_IP} element={<VDSipLazy />} />
           <Route path={route.SHARED_HOSTING} element={<SharedHostingLazy />} />
           <Route path={route.SHARED_HOSTING_ORDER} element={<SharedHostingOrderLazy />} />
+          <Route
+            path={route.WORDPRESS}
+            element={<SharedHostingLazy type="wordpress" />}
+          />
+          <Route
+            path={route.WORDPRESS_ORDER}
+            element={<SharedHostingOrderLazy type="wordpress" />}
+          />
           <Route path={route.SITE_CARE} element={<SiteCareLazy />} />
           <Route path={route.SITE_CARE_ORDER} element={<SiteCareOrderLazy />} />
           <Route path={route.VPN} element={<VPNLazy />} />
