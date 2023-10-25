@@ -69,3 +69,9 @@ export const VDS_IDS_LIKE_DEDICS = ['6322', '6334']
 export const VDS_IDS_TO_ORDER = ['6322']
 
 export const OFFER_FIELD = 'offer_3'
+
+export const profileTypes = {
+  1: 'Individual',
+  2: 'Company',
+  3: 'Sole proprietor',
+}
