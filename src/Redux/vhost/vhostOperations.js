@@ -81,6 +81,32 @@ const getVhostFilters =
           )
           .map(el => el.$key)
 
+        if (!tariffs || !tariffs?.length) {
+          return axiosInstance
+            .post(
+              '/',
+              qs.stringify({
+                func: 'vhost',
+                out: 'json',
+                auth: sessionId,
+                p_cnt: body?.p_cnt || 10,
+                p_col: '+time',
+                lang: 'en',
+                clickstat: 'yes',
+              }),
+              { signal },
+            )
+            .then(({ data }) => {
+              const virtualHostingRenderData = {
+                vhostPageRights: data?.doc?.metadata?.toolbar,
+              }
+
+              dispatch(vhostActions.setVhostList(virtualHostingRenderData))
+
+              throw new Error('no tariffs')
+            })
+        }
+
         return tariffs?.join()
       })
       .then(tariffs => {
@@ -143,6 +169,10 @@ const getVhostFilters =
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
+        if (error.message === 'no tariffs') {
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+          return
+        }
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
         checkIfTokenAlive(error.message, dispatch)
       })
