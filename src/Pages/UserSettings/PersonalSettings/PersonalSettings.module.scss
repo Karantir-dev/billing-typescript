@@ -257,12 +257,14 @@
 }
 
 .select {
-  z-index: 8;
   button {
     height: 55px;
   }
   span {
     font-size: 18px;
+  }
+  .dropdown {
+    z-index: 8;
   }
 }
 
