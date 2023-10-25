@@ -197,7 +197,8 @@ export default function ServicesPage(props) {
               d?.desc?.$.includes('Not registered') ||
               d?.desc?.$?.includes('Error') ||
               d.premium
-            const available = d?.desc?.$.includes('Registered')
+              
+            const available = !notAvailable && d?.desc?.$.includes('Registered')
 
             return (
               <div
@@ -224,7 +225,7 @@ export default function ServicesPage(props) {
                     [s.notAvailable]: notAvailable,
                   })}
                 >
-                  {available && t('Registered')} {notAvailable && t('Not registered')}
+                  {available ? t('Registered') : t('Not registered')}
                 </div>
                 <div className={s.pricesBlockTransfer}>
                   {parsePrice(price?.$)?.length > 1 && (
