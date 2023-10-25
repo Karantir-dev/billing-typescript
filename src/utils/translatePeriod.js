@@ -1,6 +1,5 @@
 export default function translatePeriod(string, key, t) {
   let period
-console.log('here');
   if (key === 'null') {
     period = t('Disabled', 'autoprolong')
   } else {
