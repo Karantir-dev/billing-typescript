@@ -16,10 +16,7 @@ import {
 } from '@components'
 import * as routes from '@src/routes'
 import { RECAPTCHA_KEY } from '@config/config'
-import {
-  EMAIL_SPECIAL_CHARACTERS_REGEX,
-  CYRILLIC_ALPHABET_PROHIBITED,
-} from '@utils/constants'
+import { EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 import s from './LoginForm.module.scss'
 import cn from 'classnames'
 
@@ -82,7 +79,6 @@ export default function LoginForm({ geoCountryId }) {
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
-      .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited'))
       .required(t('warnings.email_required')),
     password: Yup.string().required(t('warnings.password_required')),
     reCaptcha: Yup.string().nullable().required(t('warnings.recaptcha')),
