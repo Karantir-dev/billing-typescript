@@ -51,6 +51,10 @@ export default function Component(props) {
           return navigate(route.SHARED_HOSTING_ORDER, {
             replace: true,
           })
+        } else if (funcName === 'wordpress.order.param') {
+          return navigate(route.WORDPRESS_ORDER, {
+            replace: true,
+          })
         } else if (funcName === 'forexbox.order.param') {
           return navigate(route.FOREX_ORDER, {
             replace: true,
