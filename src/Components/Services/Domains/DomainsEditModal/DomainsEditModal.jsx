@@ -13,9 +13,21 @@ import {
 import { Formik, Form } from 'formik'
 import s from './DomainsEditModal.module.scss'
 import { translatePeriod } from '@utils'
+import * as Yup from 'yup'
+import {
+  CYRILLIC_ALPHABET_PROHIBITED,
+  EMAIL_SPECIAL_CHARACTERS_REGEX,
+} from '@utils/constants'
 
 export default function Component(props) {
-  const { t } = useTranslation(['domains', 'other', 'vds', 'payers', 'autoprolong'])
+  const { t } = useTranslation([
+    'domains',
+    'other',
+    'vds',
+    'payers',
+    'autoprolong',
+    'auth',
+  ])
 
   const {
     names,
@@ -69,6 +81,19 @@ export default function Component(props) {
     initialValues[editData?.addon] = editData[editData?.addon]?.$
   }
 
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .matches(
+        EMAIL_SPECIAL_CHARACTERS_REGEX,
+        t('warnings.special_characters', { ns: 'auth' }),
+      )
+      .matches(
+        CYRILLIC_ALPHABET_PROHIBITED,
+        t('warnings.cyrillic_prohibited', { ns: 'auth' }),
+      )
+      .required(t('warnings.email_required', { ns: 'auth' })),
+  })
+
   return (
     <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
       <Modal.Header>
@@ -115,6 +140,7 @@ export default function Component(props) {
         )}
         <Formik
           enableReinitialize
+          validationSchema={validationSchema}
           initialValues={initialValues}
           onSubmit={values =>
             editSaveDomainHandler(values, isOpenProfile, editData?.domain_id)
