@@ -24,6 +24,7 @@ import s from './PersonalSettings.module.scss'
 import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
+import { CYRILLIC_ALPHABET_PROHIBITED, EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 
 export default function Component({ isComponentAllowedToEdit, signal, setIsLoading }) {
   const dispatch = useDispatch()
@@ -65,7 +66,10 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
   }, [userEdit])
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
+    email: Yup.string()
+      .email(t('warnings.invalid_email', { ns: 'auth' }))
+      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited')),
     email_notif: Yup.string().email(t('warnings.invalid_email', { ns: 'auth' })),
     phone: Yup.string().phone(countryCode, false, t('Must be a valid phone number')),
   })

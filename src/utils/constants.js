@@ -3,11 +3,12 @@ export const DOMAIN_REGEX =
 
 export const SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',+:;]+$/g
 export const EMAIL_SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',:;]+$/g
+export const CYRILLIC_ALPHABET_PROHIBITED = /^[^Ѐ-ӏ]+$/g
 
 export const LATIN_REGEX = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi
 export const LATIN_NUMBER_REGEX = /^([A-Za-z0-9\s]*)$/g
 
-export const PASS_REGEX = /(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)/
+export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\x20-\x7E]+$/
 
 export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
@@ -71,6 +72,12 @@ export const VDS_IDS_TO_ORDER = ['6322']
 export const WORDPRESS_VHOST = ['6346', '6349', '6352', '6361']
 
 export const OFFER_FIELD = 'offer_3'
+
+export const PROFILE_TYPES = {
+  1: 'Individual',
+  2: 'Company',
+  3: 'Sole proprietor',
+}
 
 export const USERS_WITH_G7 = [
   223794, 63852, 36911, 219929, 54297, 184341, 272533, 173695, 273389, 226462, 173769,

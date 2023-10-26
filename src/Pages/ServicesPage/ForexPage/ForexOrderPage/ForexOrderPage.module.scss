@@ -394,7 +394,7 @@
 @media screen and (min-width: 500px) {
   .tarifs_block {
     display: grid;
-    grid-template-columns: repeat(2, minmax(179px, 228px));
+    grid-template-columns: repeat(auto-fit, minmax(179px, 1fr));
     grid-auto-rows: max-content;
     grid-column-gap: 26px;
     grid-row-gap: 20px;
@@ -426,7 +426,6 @@
 
   .tarifs_block {
     display: grid;
-    grid-template-columns: repeat(2, 228px);
     grid-auto-rows: max-content;
     grid-column-gap: 26px;
     grid-row-gap: 20px;

@@ -98,6 +98,7 @@ const getVhostFilters =
             )
             .then(({ data }) => {
               const virtualHostingRenderData = {
+                vhostList: [],
                 vhostPageRights: data?.doc?.metadata?.toolbar,
               }
 

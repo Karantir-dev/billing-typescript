@@ -49,7 +49,10 @@
 .value {
   font-size: 15px;
   word-break: break-all;
-  overflow: hidden;
+  &_edit {
+    overflow: hidden;
+  }
+
   &.active {
     color: var(--accent-color-light);
   }

@@ -46,7 +46,9 @@
   "Enter login": "Enter login",
   "Enter password": "Enter password",
   "no services description": "Shared hosting is a server resource rental service that is fully configured and ready to use. This is a low cost service suitable for small projects. We place the equipment in a high-tech, modern, reliable data center.",
+  "no wordpress description": "WordPress hosting is a reliable solution for hosting your website on the internet. We offer a full range of services that ensure fast website loading, high availability, and protection against hacking. With our affordable WordPress hosting, you can be confident in the smooth operation of your site. We provide powerful servers, dedicated resources, and optimized settings for WordPress.",
   "YOU DONT HAVE VIRTUAL HOSTING YET": "YOU DONT HAVE VIRTUAL HOSTING YET",
+  "YOU DONT HAVE WORDPRESS HOSTING YET": "YOU DONT HAVE WORDPRESS HOSTING YET",
   "You cannot order this tariff plan for the selected period": "You cannot order this tariff plan for the selected period",
   "for 10 days": "for 10 days",
 

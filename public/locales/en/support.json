@@ -41,5 +41,11 @@
   "THANK YOU": "THANK YOU",
   "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Thank you on behalf of our staff. They will receive this bonus to their salary!",
   "payment_insufficient_money": "Insufficient funds to complete the operation. Required amount  {{value1}}. Your current balance: {{value2}}, credit limit {{value3}} EUR",
-  "You can not make a transfer if the support did not answer": "You can not make a transfer if the support did not answer"
+  "You can not make a transfer if the support did not answer": "You can not make a transfer if the support did not answer",
+  "Ticket was automatically moved to Archive after a certain time of inactivity has passed": "Ticket was automatically moved to Archive after a certain time of inactivity has passed",
+  "Ticket was moved to Archive": "Ticket was moved to Archive",
+  "Ticket was removed from Archive": "Ticket was removed from Archive",
+  "The ticket was split. New discussion in the ticket": "The ticket was split. New discussion in the ticket {{ticket}}",
+  "The ticket was split. Previous discussion in the ticket": "The ticket was split. Previous discussion in the ticket {{ticket}}"
+
 }
