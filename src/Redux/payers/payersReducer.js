@@ -1,7 +1,7 @@
 import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import payersActions from './payersActions'
-import { profileTypes } from '@utils/constants'
+import { PROFILE_TYPES } from '@utils/constants'
 
 const initialState = {
   payersList: null,
@@ -27,7 +27,7 @@ const payersSelectLists = createReducer(initialState.payersSelectLists, {
   [payersActions.setPayersSelectLists]: (_, { payload }) => {
     const profiletype = payload?.profiletype.map(el => ({
       ...el,
-      $: profileTypes[el.$key],
+      $: PROFILE_TYPES[el.$key],
     }))
     return { ...payload, profiletype }
   },
