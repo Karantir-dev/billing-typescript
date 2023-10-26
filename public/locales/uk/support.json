@@ -43,5 +43,10 @@
   "THANK YOU": "ПОДЯКУВАТИ",
   "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Дякуємо від імені наших співробітників. Вони отримають цей бонус до своєї зарплати!",
   "payment_insufficient_money": "Недостатньо коштів для завершення операції. Необхідна сума {{value1}}. Ваш поточний баланс: {{value2}}, кредитний ліміт {{value3}} EUR",
-  "You can not make a transfer if the support did not answer": "Неможливо зробити переказ, спеціаліст підтримки ще не відповів"
+  "You can not make a transfer if the support did not answer": "Неможливо зробити переказ, спеціаліст підтримки ще не відповів",
+  "Ticket was automatically moved to Archive after a certain time of inactivity has passed": "Заявка автоматично переміщена в архів після закінчення певного періоду бездіяльності",
+  "Ticket was moved to Archive": "Запит був переміщений до архіву",
+  "Ticket was removed from Archive": "Заявка була видалена з архіву",
+  "The ticket was split. New discussion in the ticket": "Квиток був розділений. Нова дискусія у квитку {{ticket}}",
+  "The ticket was split. Previous discussion in the ticket": "Квиток був розділений. Попередня дискусія у квитку {{ticket}}"
 }

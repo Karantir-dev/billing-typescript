@@ -41,5 +41,11 @@
   "THANK YOU": "ᲒᲛᲐᲓᲚᲝᲑᲗ",
   "Thank you on behalf of our staff. They will receive this bonus to their salary!": "მადლობა ჩვენი თანამშრომლების სახელით. ისინი მიიღებენ ამ პრემიას ხელფასზე!",
   "payment_insufficient_money": "არასაკმარისი თანხები ოპერაციის დასასრულებლად. საჭირო თანხა {{value1}}. თქვენი მიმდინარე ბალანსი: {{value2}}, საკრედიტო ლიმიტი {{value3}} ევრო",
-  "You can not make a transfer if the support did not answer": "გადარიცხვა შეუძლებელია, მხარდაჭერა ჯერ არ უპასუხია"
+  "You can not make a transfer if the support did not answer": "გადარიცხვა შეუძლებელია, მხარდაჭერა ჯერ არ უპასუხია",
+  "Ticket was automatically moved to Archive after a certain time of inactivity has passed": "ბილეთი ავტომატურად გადატანილია არქივში, როდესაც უცნობი დრო გავიდა",
+  "Ticket was moved to Archive": "ბილეთი გადატანილი არქივში",
+  "Ticket was removed from Archive": "ბილეთი არქივიდან წაიშალა",
+  "The ticket was split. New discussion in the ticket": "ბილეთი გაყოფილდა. ახალი განხილვა ბილეთში {{ticket}}",
+  "The ticket was split. Previous discussion in the ticket": "ბილეთი გაყოფილდა. წინა განხილვა ბილეთში {{ticket}}"
+
 }
