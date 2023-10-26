@@ -65,6 +65,23 @@ export default function Component({ type }) {
 
   const [isFiltered, setIsFiltered] = useState(false)
 
+  const conditionalRendering =
+    type === 'vhost'
+      ? {
+          pageName: 'shared_hosting',
+          title: t('burger_menu.services.services_list.virtual_hosting'),
+          emptyImg: require('@images/services/virtual_hosting.webp'),
+          emptyTitle: t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' }),
+          emptyDesc: t('no services description', { ns: 'virtual_hosting' }),
+        }
+      : {
+          pageName: 'wordpress',
+          title: t('burger_menu.services.services_list.wordpress_hosting'),
+          emptyImg: require('@images/services/wordpress.webp'),
+          emptyTitle: t('YOU DONT HAVE WORDPRESS HOSTING YET', { ns: 'virtual_hosting' }),
+          emptyDesc: '',
+        }
+
   useEffect(() => {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })
@@ -316,9 +333,7 @@ export default function Component({ type }) {
       <div className={s.page_wrapper}>
         <BreadCrumbs pathnames={parseLocations()} />
         <h1 className={s.page_title}>
-          {type === 'vhost'
-            ? t('burger_menu.services.services_list.virtual_hosting')
-            : t('burger_menu.services.services_list.wordpress_hosting')}
+          {conditionalRendering.title}
 
           {virtualHostingRenderData?.vhostList?.length !== 0 && (
             <span className={s.title_count_services}>{` (${vhostCount})`}</span>
@@ -348,16 +363,12 @@ export default function Component({ type }) {
           virtualHostingRenderData?.vhostList && (
             <div className={s.no_service_wrapper}>
               <img
-                src={require('@images/services/virtual_hosting.webp')}
+                src={conditionalRendering.emptyImg}
                 alt="virtual_hosting"
                 className={s.virt_host_img}
               />
-              <p className={s.no_service_title}>
-                {t('YOU DONT HAVE VIRTUAL HOSTING YET', { ns: 'virtual_hosting' })}
-              </p>
-              <p className={s.no_service_description}>
-                {t('no services description', { ns: 'virtual_hosting' })}
-              </p>
+              <p className={s.no_service_title}>{conditionalRendering.emptyTitle}</p>
+              <p className={s.no_service_description}>{conditionalRendering.emptyDesc}</p>
             </div>
           )}
 
@@ -454,7 +465,7 @@ export default function Component({ type }) {
             elidList={elidForProlongModal}
             closeModal={() => closeProlongModalHandler()}
             names={getServerName(elidForProlongModal)}
-            pageName={type === 'vhost' ? 'shared_hosting' : 'wordpress'}
+            pageName={conditionalRendering.pageName}
             isOpen
           />
         )}
