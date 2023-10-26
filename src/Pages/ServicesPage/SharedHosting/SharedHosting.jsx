@@ -79,7 +79,7 @@ export default function Component({ type }) {
           title: t('burger_menu.services.services_list.wordpress_hosting'),
           emptyImg: require('@images/services/wordpress.webp'),
           emptyTitle: t('YOU DONT HAVE WORDPRESS HOSTING YET', { ns: 'virtual_hosting' }),
-          emptyDesc: '',
+          emptyDesc: t('no wordpress description', { ns: 'virtual_hosting' }),
         }
 
   useEffect(() => {
