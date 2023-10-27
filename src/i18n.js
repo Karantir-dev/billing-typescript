@@ -26,6 +26,9 @@ use(Backend)
       order: ['cookie', 'localStorage', 'navigator'],
       cache: ['localStorage'],
     },
+    backend: {
+      queryStringParams: { v: process.env.REACT_APP_TRANSLATION_VERSION },
+    },
   })
 
 export default i18n
