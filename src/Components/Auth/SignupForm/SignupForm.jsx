@@ -92,6 +92,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   })
   const partner = Cookies.get('billpartner')
   const sesid = Cookies.get('sesid')
+  const referrer = Cookies.get('referrer')
 
   const handleSubmit = async (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
@@ -103,7 +104,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       authOperations.register(
         values,
         partner,
-        sesid,
+        sesid || referrer,
         setErrMsg,
         successRegistration,
         resetRecaptcha,
