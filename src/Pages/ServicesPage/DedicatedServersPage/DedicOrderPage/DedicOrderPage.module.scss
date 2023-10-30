@@ -105,7 +105,7 @@
 .processor_name {
   margin-left: 15px;
 }
-.select {
+.period_select {
   margin-bottom: 20px;
   width: 242px;
 }
@@ -382,9 +382,6 @@
   height: 50px;
   line-height: 45px;
 }
-.input_field_wrapper {
-  width: 242px;
-}
 
 .software_OS_List {
   display: grid;
@@ -397,6 +394,12 @@
 .license_error {
   margin-top: 10px;
   color: var(--red-text);
+}
+
+.parameters_wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 // ADAPTIVE
@@ -438,25 +441,16 @@
     }
   }
 
-  .select {
+  .period_select {
     width: 242px;
     & span {
       font-size: 18px;
     }
   }
-  .input_field_wrapper {
-    width: 242px;
-  }
 
   .parameters_wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    grid-auto-rows: max-content;
-    grid-column-gap: 24px;
-    grid-row-gap: 5px;
-    margin-bottom: 35px;
-    // grid-template-columns: repeat(2, 241px);
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 
   .terms_text {
@@ -559,8 +553,7 @@
   .terms_block {
     margin-bottom: 0px;
   }
-  .input_field_wrapper,
-  .select {
+  .period_select {
     width: 218px;
   }
 }
@@ -599,10 +592,6 @@
     margin: 0 auto;
     padding: 0 60px 0 200px;
     width: 100%;
-  }
-
-  .parameters_wrapper {
-    grid-column-gap: 15px;
   }
 }
 
