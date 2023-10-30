@@ -46,7 +46,7 @@ export default function UpdateService() {
     >
       <Icon name="Attention" className={s.icon} />
       <p className={s.text}>
-        {t('Dear')} {userName} {t('email_trigger')}{' '}
+        {t('Dear')} {userName} {t('Update your server')}{' '}
         <span to={`${route.SUPPORT}/requests/${g7Ticket?.id?.$}`} className={s.link}>
           {t('here')}
         </span>
